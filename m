@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66334940D57
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:25:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82883940D58
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88C081C234D7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:25:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58B01C240A2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA55E194C69;
-	Tue, 30 Jul 2024 09:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B017F194C6F;
+	Tue, 30 Jul 2024 09:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rA5ae3zj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAzkdciM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE83194C65
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AB5194AF2
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722331499; cv=none; b=HWeIvUx5gG5cfPNgP/jROb+oXK31cSrj4dh2m1JSTVKEFSrtNVJmLxzSK4qKK5dg/3fvqXXmOU13ul1VSCDsdtZ+SyIMJX6eLpsXMLR03gDxBq2X/p+WUoVT5V5JCCmK8VhI7bQJV1QeGoqEGRnTnVOVYhA5LLjcS9Jkc1DtZt0=
+	t=1722331502; cv=none; b=NibU1STWVl0FUPTYJvBUBYDhlD8ibZg40RO42yZzaHVpIqVv0iS+aIRw8pSKeT4wAavGyJryqu6bnpdh2RW0oYbU8A/56NNzL8S4U01zA/38habxN3ct/bML3NSFKdjYSiyrV0xnG4srnd6HsxS7Olg4vzxhFeGx5514eRY+yYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722331499; c=relaxed/simple;
-	bh=3B2TTpDRLCxpe8zMgRw+jEeOk72cKM4nYirqfNkpesY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vBWbSJA9fo3Soclmxk1A4nmgkMqSeMonc7EWeP7DW7/yp60/0y0zliteR/irWJMu7FPcsPAkAQfiefGo8364ueYgGSdtXgcFtNF1Ff9x3M0/Ara9qpsBR8P+LnD69RM4rMpiDxmcw4zBM6LaEwKYuG7KLy2sfZoLsYg6oycz97I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rA5ae3zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952EDC32782;
-	Tue, 30 Jul 2024 09:24:58 +0000 (UTC)
+	s=arc-20240116; t=1722331502; c=relaxed/simple;
+	bh=M5u0Lnk9Fj5m2w9uibakyr442HEnPhl1FoyXgl/Gze8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=G+jZBkXU4v0atp/VHaNxiM90EODJm5b4+fSGfmhZYFjntt4BDWqQNTyrhrzqT+95ahZtOyKeEl2Imc4H19AvgTBPbrBerZvPhiEruV8vvphz17ateC4K6qoEPXk96StNdl1/1VmJw+WBopkUoB5C8TRjO5BEqevS16GVlagwKUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAzkdciM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D451EC32782;
+	Tue, 30 Jul 2024 09:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722331499;
-	bh=3B2TTpDRLCxpe8zMgRw+jEeOk72cKM4nYirqfNkpesY=;
+	s=korg; t=1722331502;
+	bh=M5u0Lnk9Fj5m2w9uibakyr442HEnPhl1FoyXgl/Gze8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rA5ae3zj+kg+5K3oLSgDQ4/F5ujqsX7JQZt5/Ov9qudAlpHCPrYsz0qjqGtU/bctK
-	 p9/Tty9AXeTBj94KdZF1tEQ/X7dYSHmnfqwtHlpUaCYRUMk31NfkKcToqbRMg2562b
-	 ct72VCj0LxR+HAMO9Qee2ExgDf6VEisidc/dWzOM=
-Subject: FAILED: patch "[PATCH] mm: shmem: rename mTHP shmem counters" failed to apply to 6.10-stable tree
+	b=UAzkdciMjbkSIegt+IUdofhqEV7SHtK8C4wKuv4+8p2QrOIY/m9azEzZjNm9fGfJV
+	 Y1UaQsK3hqFaWPn8M2R/QhSi8yIXaxPvg+/T32955lP5a76V5fz/IjJejRDcEn3hDV
+	 kM57Eu4OS+Nfjo209OuW0OXwhy8P6JF5EMIXwAWw=
+Subject: FAILED: patch "[PATCH] mm: shmem: rename mTHP shmem counters" failed to apply to 6.6-stable tree
 To: ryan.roberts@arm.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,corbet@lwn.net,da.gomez@samsung.com,david@redhat.com,hughd@google.com,ioworker0@gmail.com,stable@vger.kernel.org,willy@infradead.org,ziy@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:24:41 +0200
-Message-ID: <2024073041-sadden-duller-4fb5@gregkh>
+Date: Tue, 30 Jul 2024 11:24:42 +0200
+Message-ID: <2024073042-livable-headscarf-8bb2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 63d9866ab01ffd0d0835d5564107283a4afc0a38
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073041-sadden-duller-4fb5@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073042-livable-headscarf-8bb2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,20 @@ f216c845f3c7 ("mm: add per-order mTHP split counters")
 e7a2ab7b3bb5 ("mm: shmem: add mTHP support for anonymous shmem")
 3d95bc21cea5 ("mm: shmem: add THP validation for PMD-mapped THP related statistics")
 6f775463d002 ("mm: shmem: use folio_alloc_mpol() in shmem_alloc_folio()")
+0d648dd5c899 ("mm: drop the 'anon_' prefix for swap-out mTHP counters")
+42248b9d34ea ("mm: add docs for per-order mTHP counters and transhuge_page ABI")
+d0f048ac39f6 ("mm: add per-order mTHP anon_swpout and anon_swpout_fallback counters")
+ec33687c6749 ("mm: add per-order mTHP anon_fault_alloc and anon_fault_fallback counters")
+5ed890ce5147 ("mm: vmscan: avoid split during shrink_folio_list()")
+835c3a25aa37 ("mm: huge_memory: add the missing folio_test_pmd_mappable() for THP split statistics")
+085ff35e7636 ("mm: memory: move mem_cgroup_charge() into alloc_anon_folio()")
+19eaf44954df ("mm: thp: support allocation of anonymous multi-size THP")
+3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
+ddc1a5cbc05d ("mempolicy: alloc_pages_mpol() for NUMA policy without vma")
+23e4883248f0 ("mm: add page_rmappable_folio() wrapper")
+c36f6e6dff4d ("mempolicy trivia: slightly more consistent naming")
+7f1ee4e20708 ("mempolicy trivia: delete those ancient pr_debug()s")
+1cb5d11a370f ("mempolicy: fix migrate_pages(2) syscall return nr_failed")
 
 thanks,
 
