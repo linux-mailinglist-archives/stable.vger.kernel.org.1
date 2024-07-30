@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-63507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D76F941A32
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13119941C55
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 055CAB2C757
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45A8B1C2291F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1031A6192;
-	Tue, 30 Jul 2024 16:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A828B188003;
+	Tue, 30 Jul 2024 17:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gYb6jFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFtc5mNL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6531A619B;
-	Tue, 30 Jul 2024 16:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FB11A6192;
+	Tue, 30 Jul 2024 17:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357053; cv=none; b=iFZ6v7AZiErsDYQ3LEPWvKsLzQGi4kyDK9qS/1lkH2Mx705PP4TdkUe05xYPtntrClL2+45ji84/FrZNbkh2m2BmOGpKcz59cjFstdkM5smcSYZMCBO8/G2JYGmwxSqA4sMIaaxMjvS5Uc2RfqCHctCbXmpvogE4u/sSgEP9XU8=
+	t=1722359159; cv=none; b=fcG+EQpWxzRZyatQGhC/FmHD3CIrE4Y0/ufhITaVoiQaCAm0tvgJcy4/jLGPEKq7JEz1tw351LRDOdXYLMhvNIE2W2r682WjdCRvNFf/SYStTQWarvwQAuEtz+1rja+CuRAYlgutnhSwow2jjIh/CQ52BuV0RcMnsk5Jw39iNus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357053; c=relaxed/simple;
-	bh=/lsUdpE1I3TfOGjBL1t/BDQfHKyKJTsdiApDYp0PYjQ=;
+	s=arc-20240116; t=1722359159; c=relaxed/simple;
+	bh=9i2vCvDup8mgfydrSfjcFXSytGhTA5ISYYFeO5dhiNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmI4lVaoXRR+HvNV0J2m8+J2Ey2vPjK6je+dJnXIpCT88Cw7J9cgTR0y18wDEpnqzx+zg3stwF4xScYo4ZShV2we0XkbnbFqr/yhF8gGUwW2PFe84gtWhsVAvLWdEsIpRIqL2MbfkE0rUA3A0YKr2gudtfLoxvBOuPyg2V4H8Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gYb6jFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8254FC4AF0A;
-	Tue, 30 Jul 2024 16:30:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nJOOGdA/AcC2Z7WtVbS1PJJnAExi81R6CcUd5YrsUp2lss+Jjqwboo8IAySEkOkOOK3ttJap7xPM+EFS4ZWnHwAB+1z9DybbXe/XZ61td5z+kT6kEPCizsmVU5nzcCcUJnJ8CFqyjq7Mepfku4dHUSJPNDsZuhKuxJ6Uqzr4RFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFtc5mNL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A20C32782;
+	Tue, 30 Jul 2024 17:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357053;
-	bh=/lsUdpE1I3TfOGjBL1t/BDQfHKyKJTsdiApDYp0PYjQ=;
+	s=korg; t=1722359159;
+	bh=9i2vCvDup8mgfydrSfjcFXSytGhTA5ISYYFeO5dhiNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gYb6jFzk90wAn1u8VcshPN28xKTKofqxEiu2Qb9P6sWMHRwfM318Vj5RAojRG9/a
-	 aUqrPRHMOdPQ0OcQ4SZ8mhWOMfFAQTOu54u8A9LvcbM2N2Hvh66/pJpLSHU7saAupB
-	 HzHNfIfRgkPfH9o6BnMHWF2RLIorX2NEs2k4r1K4=
+	b=XFtc5mNLYxkSHc/PLqZY6QZkGGDi5TntBtmUvr11wEgpm6jGlVrGWLFAt8qptucoS
+	 Y4RAWFK52gqQIh+96kfBUgWKb5ZsxVvq8mwH3pndWKfDdBSMvlCXwiHpY51whuyoiD
+	 2Nw7h3yRpKQ4lfIzuxR+aY7HaigzY7DtLnjwPMQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	syzbot+6c21aeb59d0e82eb2782@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Arseny Krasnov <arseny.krasnov@kaspersky.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 213/568] drm/mediatek: Add missing plane settings when async update
+Subject: [PATCH 6.10 444/809] vhost/vsock: always initialize seqpacket_allow
 Date: Tue, 30 Jul 2024 17:45:20 +0200
-Message-ID: <20240730151648.198357395@linuxfoundation.org>
+Message-ID: <20240730151742.240054343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +68,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 86b89dc669c400576dc23aa923bcf302f99e8e3a ]
+[ Upstream commit 1e1fdcbdde3b7663e5d8faeb2245b9b151417d22 ]
 
-Fix an issue that plane coordinate was not saved when
-calling async update.
+There are two issues around seqpacket_allow:
+1. seqpacket_allow is not initialized when socket is
+   created. Thus if features are never set, it will be
+   read uninitialized.
+2. if VIRTIO_VSOCK_F_SEQPACKET is set and then cleared,
+   then seqpacket_allow will not be cleared appropriately
+   (existing apps I know about don't usually do this but
+    it's legal and there's no way to be sure no one relies
+    on this).
 
-Fixes: 920fffcc8912 ("drm/mediatek: update cursors by using async atomic update")
+To fix:
+	- initialize seqpacket_allow after allocation
+	- set it unconditionally in set_features
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-1-a9d62d2e2c7e@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Reported-by: syzbot+6c21aeb59d0e82eb2782@syzkaller.appspotmail.com
+Reported-by: Jeongjun Park <aha310510@gmail.com>
+Fixes: ced7b713711f ("vhost/vsock: support SEQPACKET for transport").
+Tested-by: Arseny Krasnov <arseny.krasnov@kaspersky.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20240422100010-mutt-send-email-mst@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_plane.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vhost/vsock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_plane.c b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
-index ddc9355b06d51..f10d4cc6c2234 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_plane.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
-@@ -227,6 +227,8 @@ static void mtk_plane_atomic_async_update(struct drm_plane *plane,
- 	plane->state->src_y = new_state->src_y;
- 	plane->state->src_h = new_state->src_h;
- 	plane->state->src_w = new_state->src_w;
-+	plane->state->dst.x1 = new_state->dst.x1;
-+	plane->state->dst.y1 = new_state->dst.y1;
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index ec20ecff85c7f..bf664ec9341b3 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -667,6 +667,7 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
+ 	}
  
- 	mtk_plane_update_new_state(new_state, new_plane_state);
- 	swap(plane->state->fb, new_state->fb);
+ 	vsock->guest_cid = 0; /* no CID assigned yet */
++	vsock->seqpacket_allow = false;
+ 
+ 	atomic_set(&vsock->queued_replies, 0);
+ 
+@@ -810,8 +811,7 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
+ 			goto err;
+ 	}
+ 
+-	if (features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET))
+-		vsock->seqpacket_allow = true;
++	vsock->seqpacket_allow = features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+ 		vq = &vsock->vqs[i];
 -- 
 2.43.0
 
