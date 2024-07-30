@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D39C9419B2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41797941DF4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2132CB26723
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3DF72891F2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE7C1A619E;
-	Tue, 30 Jul 2024 16:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C53B1A76C4;
+	Tue, 30 Jul 2024 17:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pN44LNCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm8XvNKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0A91A6192;
-	Tue, 30 Jul 2024 16:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389D51A76A1;
+	Tue, 30 Jul 2024 17:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357196; cv=none; b=eSp7IRO9vxl4IqU19RdS/rxMi90dZlha2LiuQKXndYDszjeYEKe6hfM7OsVfHqt5Z1EXTHLL74rr0vz5ldMOY7h+GnKUUVQ6NhfeOomDNTXiRqeFUbGtQPow+rvlTJ2N7YVVToRuPlTkZxWlB1eO89FSzEyvQK6SfByZl3i0tU8=
+	t=1722360218; cv=none; b=hUPitmSwrKyA6/IzE/VS/c80P6JTCDO98+sGCH+srsuSiL+hMYmvmyehDFipEHPq3QYXudoYyuKhyfBI1+DnNPNwwRC4bYzKAAO3EleaP7oDpXJUnjbU3d43aL0mH6MR7IHFZJ1VzeUxdgPO2ctZ+wBl3nrgE64yatcY/uCDoWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357196; c=relaxed/simple;
-	bh=D57W64CB1oznOWpaj7Qjpp1eCbW8XhQWLjrpl2p9Rdc=;
+	s=arc-20240116; t=1722360218; c=relaxed/simple;
+	bh=nPUPu5wGxfRQb4HnpJEHyIikwg4MmVJWxd2rtxOBKeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGHm/C7LvcElziB26QEw6mUbEUYaM3MpOP5IInUKkowRXYO5fc3JbV50a/6zvbkgE0IX/wQQ3V+l5TOHq9dl4vMdT5mUfPbpncwEldu+DDy/oBsanj4pDXl1VVbUAZ0fuvuAJaX+547wy01gNxDpYWIk6q89VGqecIdwTWTW1VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pN44LNCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C10FC32782;
-	Tue, 30 Jul 2024 16:33:16 +0000 (UTC)
+	 MIME-Version; b=JjElbOUq4ItCwQ8g0Y/9/+ylmNnp32d9nYZzcAqW085HGBtsU43BcTeapDD48hOKiGUxueQ/WgP0bGvT6EP/1wNpclp0RbotuHq84XqIGyI1Y3yhSyYCnkxfCOxHOHAkwKO5L7j1xvnn/w3ap/5JGbQ2PaZCEbPJEX6FP/W2yoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm8XvNKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B465EC32782;
+	Tue, 30 Jul 2024 17:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357196;
-	bh=D57W64CB1oznOWpaj7Qjpp1eCbW8XhQWLjrpl2p9Rdc=;
+	s=korg; t=1722360218;
+	bh=nPUPu5wGxfRQb4HnpJEHyIikwg4MmVJWxd2rtxOBKeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pN44LNCc/CvKnOo78fD9q6YlGiByHhq014kRqAEHYf6KhlWGr2NuTRBqE/QsKd8jV
-	 odPtt1zWbShmhvZ/yyd8cNJnd7iP3ZqluFlDQPygla/+hYOQiVl21/99iLxzj8NWZa
-	 ExuO/z5sTFk4v67XdU75zzXYsbZlnZbs7e8Z2PLw=
+	b=Fm8XvNKrfCr0vthE722Alg/iIfJEEd8gDvq6JQk9qY5q4uVoyPK7kf71uV9K42oM2
+	 OEa7u+6FFSIKfaUdLLODOwLWSgqWw02yUMjmM4r4F9JbnHalctPLlQFRP69zvxJiRK
+	 F6IiRwWca4v9yYMELq0o2I+wRdZyGkHbPeLmElWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linke li <lilinke99@qq.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 268/440] sbitmap: use READ_ONCE to access map->word
+	"Luke D. Jones" <luke@ljones.dev>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 625/809] ALSA: hda/realtek: cs35l41: Fixup remaining asus strix models
 Date: Tue, 30 Jul 2024 17:48:21 +0200
-Message-ID: <20240730151626.306632582@linuxfoundation.org>
+Message-ID: <20240730151749.526887049@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 6ad0d7e0f4b68f87a98ea2b239123b7d865df86b ]
+commit e6e18021ddd0dc5af487fb86b6d7c964e062d692 upstream.
 
-In __sbitmap_queue_get_batch(), map->word is read several times, and
-update atomically using atomic_long_try_cmpxchg(). But the first two read
-of map->word is not protected.
+Adjust quirks for 0x3a20, 0x3a30, 0x3a50 to match the 0x3a60. This
+set has now been confirmed to work with this patch.
 
-This patch moves the statement val = READ_ONCE(map->word) forward,
-eliminating unprotected accesses to map->word within the function.
-It is aimed at reducing the number of benign races reported by KCSAN in
-order to focus future debugging effort on harmful races.
-
-Signed-off-by: linke li <lilinke99@qq.com>
-Link: https://lore.kernel.org/r/tencent_0B517C25E519D3D002194E8445E86C04AD0A@qq.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 72d04bdcf3f7 ("sbitmap: fix io hung due to race on sbitmap_word::cleared")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Fixes: 811dd426a9b1 ("ALSA: hda/realtek: Add quirks for Asus ROG 2024 laptops using CS35L41")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240723011224.115579-1-luke@ljones.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/sbitmap.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/lib/sbitmap.c b/lib/sbitmap.c
-index b942f2ba9a415..a727d0b12763a 100644
---- a/lib/sbitmap.c
-+++ b/lib/sbitmap.c
-@@ -503,18 +503,18 @@ unsigned long __sbitmap_queue_get_batch(struct sbitmap_queue *sbq, int nr_tags,
- 		struct sbitmap_word *map = &sb->map[index];
- 		unsigned long get_mask;
- 		unsigned int map_depth = __map_depth(sb, index);
-+		unsigned long val;
- 
- 		sbitmap_deferred_clear(map);
--		if (map->word == (1UL << (map_depth - 1)) - 1)
-+		val = READ_ONCE(map->word);
-+		if (val == (1UL << (map_depth - 1)) - 1)
- 			goto next;
- 
--		nr = find_first_zero_bit(&map->word, map_depth);
-+		nr = find_first_zero_bit(&val, map_depth);
- 		if (nr + nr_tags <= map_depth) {
- 			atomic_long_t *ptr = (atomic_long_t *) &map->word;
--			unsigned long val;
- 
- 			get_mask = ((1UL << nr_tags) - 1) << nr;
--			val = READ_ONCE(map->word);
- 			while (!atomic_long_try_cmpxchg(ptr, &val,
- 							  get_mask | val))
- 				;
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10360,10 +10360,10 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+-	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
++	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+-	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x834a, "ASUS S101", ALC269_FIXUP_STEREO_DMIC),
 
 
 
