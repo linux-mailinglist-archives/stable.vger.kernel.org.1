@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-63741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C32B941A64
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FAC941D52
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324EA1F24D87
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553FC1C20F9B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59E9183CDB;
-	Tue, 30 Jul 2024 16:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738C71A76BA;
+	Tue, 30 Jul 2024 17:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyJEyw2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEgYu/6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A521A619E;
-	Tue, 30 Jul 2024 16:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300261A76B6;
+	Tue, 30 Jul 2024 17:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357803; cv=none; b=LzA+PXm39y8fdGEnQ2Rpb6mdOrpWViiLH9f/ekqugxZSLfSb0YzQdcSqvb9lNzrjgb+191ZBVME3/bAqL1I3pf1AzpTiqnxGLJx3TDDifeqLEj3wkuFtYci4q1qK23a+XyUY2+lBhV33k04upseIymwkJkCoD7YsKK1IGfKAhPo=
+	t=1722359734; cv=none; b=gXOOnDsxODQh6XdoASehtbZRRFB6GVL7gElsu3/StBP48FBVWHwtr7K6E29fnh6yiZnC9YHEE9Lce6iAoPhcKG4iKr4n9JUMoxpj5JMJBm6xHKsaNzTn3QTK1WWkIULUwVrGHuF6C7dfMR/LBEN2QHTH63Rtyz5RKEGZ9VPxpcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357803; c=relaxed/simple;
-	bh=TV/fn9aUH38tiWI2qzdpm180Dljx2hDLudwNoyBO7ic=;
+	s=arc-20240116; t=1722359734; c=relaxed/simple;
+	bh=DkXrfa9Zh0gdQoZNSc6KhjjEK09XOVlZFSOqSNDAPcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPKCdzZw3h6palncnfVaX467z9PNSGMIB1NYkMsY/x7873UHSEyuyYsyvs3qX0nEStm5iR/pYOUAWRZV9p8OPB3AN2NXqSG6XsvvUFnW4P4VmKpKH//TO0Sf/C/Yf9RSbGbbmBtS70IPZlfy0Qp9t2eiNwpvfQCRtdRp3jqysVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyJEyw2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F4BC32782;
-	Tue, 30 Jul 2024 16:43:22 +0000 (UTC)
+	 MIME-Version; b=lmbOKEv3YfOcevtQNyjXv8tDab7HS0JH/OCUPjnpnatns5vuOJ1+o5cdWaDvct+XC6AHGYw8z04GtsXQgQ77ADrKEDw6RTkjfb1qU8Kc5PRAjfjCAhLNTkZK2hf4dUnJ2Dmar3yleQkseoSe4Evkc6G76xb8iGkjLzCMnB4QW04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEgYu/6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4863CC32782;
+	Tue, 30 Jul 2024 17:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357803;
-	bh=TV/fn9aUH38tiWI2qzdpm180Dljx2hDLudwNoyBO7ic=;
+	s=korg; t=1722359733;
+	bh=DkXrfa9Zh0gdQoZNSc6KhjjEK09XOVlZFSOqSNDAPcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wyJEyw2jkHW2uHmivL2i0BrAGeNHSIcjQYTocBxif1ilrx3TSVJLeDy0TbAXEWviX
-	 KMOKanA3vXmSELJJmeiu9Q+GVHFk/tu+g9ZUcIrH09gGFqlt2N5i7BbJaCLhSVeXTG
-	 JHW0FWGPVK201lm7xYTCX2brhbUFldFT2bMs/u40=
+	b=NEgYu/6RUytAuKFRgyD33982oQVId8zYsn4aYE9YiUjEo/F1Q6mhfhJQD75tea6yG
+	 SiXbtA0WUkb2gpPaiiyEnAGusjV6c9wCb4rL2C7sFaOvz+nd0WCYYuKCZnzkPNDRc5
+	 7vq23McKcXpQdyJVLv1s5GBXtBZMODvZjE+BlejI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/568] clk: en7523: fix rate divider for slic and spi clocks
-Date: Tue, 30 Jul 2024 17:46:40 +0200
-Message-ID: <20240730151651.330381234@linuxfoundation.org>
+Subject: [PATCH 6.10 525/809] power: supply: ab8500: Fix error handling when calling iio_read_channel_processed()
+Date: Tue, 30 Jul 2024 17:46:41 +0200
+Message-ID: <20240730151745.473998963@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 58c53d43142f222221e5a76a7016c4d8f3b84b97 ]
+[ Upstream commit 3288757087cbb93b91019ba6b7de53a1908c9d48 ]
 
-Introduce div_offset field in en_clk_desc struct in order to fix rate
-divider estimation in en7523_get_div routine for slic and spi fixed
-rate clocks.
-Moreover, fix base_shift for crypto clock.
+The ab8500_charger_get_[ac|vbus]_[current|voltage]() functions should
+return an error code on error.
 
-Fixes: 1e6273179190 ("clk: en7523: Add clock driver for Airoha EN7523 SoC")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/c491bdea05d847f1f1294b94f14725d292eb95d0.1718615934.git.lorenzo@kernel.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Up to now, an un-initialized value is returned.
+This makes the error handling of the callers un-reliable.
+
+Return the error code instead, to fix the issue.
+
+Fixes: 97ab78bac5d0 ("power: supply: ab8500_charger: Convert to IIO ADC")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/f9f65642331c9e40aaebb888589db043db80b7eb.1719037737.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-en7523.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/power/supply/ab8500_charger.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
-index 7cde328495e2b..7914e60f3d6c5 100644
---- a/drivers/clk/clk-en7523.c
-+++ b/drivers/clk/clk-en7523.c
-@@ -40,6 +40,7 @@ struct en_clk_desc {
- 	u8 div_shift;
- 	u16 div_val0;
- 	u8 div_step;
-+	u8 div_offset;
- };
- 
- struct en_clk_gate {
-@@ -67,6 +68,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
- 		.div_bits = 3,
- 		.div_shift = 0,
- 		.div_step = 1,
-+		.div_offset = 1,
- 	}, {
- 		.id = EN7523_CLK_EMI,
- 		.name = "emi",
-@@ -80,6 +82,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
- 		.div_bits = 3,
- 		.div_shift = 0,
- 		.div_step = 1,
-+		.div_offset = 1,
- 	}, {
- 		.id = EN7523_CLK_BUS,
- 		.name = "bus",
-@@ -93,6 +96,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
- 		.div_bits = 3,
- 		.div_shift = 0,
- 		.div_step = 1,
-+		.div_offset = 1,
- 	}, {
- 		.id = EN7523_CLK_SLIC,
- 		.name = "slic",
-@@ -133,13 +137,14 @@ static const struct en_clk_desc en7523_base_clks[] = {
- 		.div_bits = 3,
- 		.div_shift = 0,
- 		.div_step = 1,
-+		.div_offset = 1,
- 	}, {
- 		.id = EN7523_CLK_CRYPTO,
- 		.name = "crypto",
- 
- 		.base_reg = REG_CRYPTO_CLKSRC,
- 		.base_bits = 1,
--		.base_shift = 8,
-+		.base_shift = 0,
- 		.base_values = emi_base,
- 		.n_base_values = ARRAY_SIZE(emi_base),
+diff --git a/drivers/power/supply/ab8500_charger.c b/drivers/power/supply/ab8500_charger.c
+index 9b34d1a60f662..4b0ad1b4b4c9b 100644
+--- a/drivers/power/supply/ab8500_charger.c
++++ b/drivers/power/supply/ab8500_charger.c
+@@ -488,8 +488,10 @@ static int ab8500_charger_get_ac_voltage(struct ab8500_charger *di)
+ 	/* Only measure voltage if the charger is connected */
+ 	if (di->ac.charger_connected) {
+ 		ret = iio_read_channel_processed(di->adc_main_charger_v, &vch);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
++			return ret;
++		}
+ 	} else {
+ 		vch = 0;
  	}
-@@ -184,7 +189,7 @@ static u32 en7523_get_div(void __iomem *base, int i)
- 	if (!val && desc->div_val0)
- 		return desc->div_val0;
- 
--	return (val + 1) * desc->div_step;
-+	return (val + desc->div_offset) * desc->div_step;
- }
- 
- static int en7523_pci_is_enabled(struct clk_hw *hw)
+@@ -540,8 +542,10 @@ static int ab8500_charger_get_vbus_voltage(struct ab8500_charger *di)
+ 	/* Only measure voltage if the charger is connected */
+ 	if (di->usb.charger_connected) {
+ 		ret = iio_read_channel_processed(di->adc_vbus_v, &vch);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
++			return ret;
++		}
+ 	} else {
+ 		vch = 0;
+ 	}
+@@ -563,8 +567,10 @@ static int ab8500_charger_get_usb_current(struct ab8500_charger *di)
+ 	/* Only measure current if the charger is online */
+ 	if (di->usb.charger_online) {
+ 		ret = iio_read_channel_processed(di->adc_usb_charger_c, &ich);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
++			return ret;
++		}
+ 	} else {
+ 		ich = 0;
+ 	}
+@@ -586,8 +592,10 @@ static int ab8500_charger_get_ac_current(struct ab8500_charger *di)
+ 	/* Only measure current if the charger is online */
+ 	if (di->ac.charger_online) {
+ 		ret = iio_read_channel_processed(di->adc_main_charger_c, &ich);
+-		if (ret < 0)
++		if (ret < 0) {
+ 			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
++			return ret;
++		}
+ 	} else {
+ 		ich = 0;
+ 	}
 -- 
 2.43.0
 
