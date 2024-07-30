@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC4D941D57
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B830941A76
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 807AB1C22559
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 160B12845AD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F401A76BB;
-	Tue, 30 Jul 2024 17:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88587184553;
+	Tue, 30 Jul 2024 16:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIS57b5B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZhOT+H0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C3A1A76A2;
-	Tue, 30 Jul 2024 17:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DBA1A6169;
+	Tue, 30 Jul 2024 16:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359752; cv=none; b=N8I7j6dDWJucZdcAfk6eviN6wkTG/iHBJkdAQGCx9gvStvPBNBsmT5Kajwzis3Peju0VY2fYOo6ZFiw3Zhq0aHO5jSDDatJfJq0cD/jofElQzOLSDwzTQ6SyyqTG/ZWNCQItBnCV1RN/APX13aSMz2BD6x9QT7TyXE1bPyF5CL8=
+	t=1722357845; cv=none; b=ELQWNmYxaDzMy7Kq2RD1v3l4rTxtLGRgv7FYvLtrE1AWftysYHG/zlryNsgvQsrNRC+4qTnb1dehOaNuJ3z28n717uxGMIDXir4Y9y6O4srnksvOk8mhpJVrZuIhtSLAdGghgaEqz6Ja/UvQmEi8eNFZvil/HqOUcfCvy+ah3oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359752; c=relaxed/simple;
-	bh=OWuTQSqFyaRpJpgswl+gJYF6AI9Lbzf04ajOYPNU5v0=;
+	s=arc-20240116; t=1722357845; c=relaxed/simple;
+	bh=IIQeoWypYnx0AFLQQfgmoxUTRz0ovfChcEZipfosB+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uilxE/VAyhilkCygGOaPqMbL4BQ5gDcyRi5l48dt41ESJ26A8u8l1u1jx/X3SKmmE6UnQzHDSiJIxE70fw1xZbhy05hyeZKO4i+aUJJYJWZZJ9DjX4y0SvV4QG7f3JdnA36sSqO1R1QE+iY7B/F/Y6+IjQVTxo9llg6JsP6eqQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIS57b5B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327BCC4AF0C;
-	Tue, 30 Jul 2024 17:15:52 +0000 (UTC)
+	 MIME-Version; b=T5WDKVQP07o1Qmq6N1fXQrPyh6qN2Y+7jj43AFzQSgI6fUkxJd3gIM1caUAbreXYG+3cM+7V2D5QA1eTfdNnpW1GIVrthO9sX4tOO5+SxF0RdjsW5H0C73WueyWplsJvlKFhyLr8OhzlxxBUaOdu0PYTMn2Wqz3iZVpIkOQmh60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZhOT+H0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDBCC4AF0A;
+	Tue, 30 Jul 2024 16:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359752;
-	bh=OWuTQSqFyaRpJpgswl+gJYF6AI9Lbzf04ajOYPNU5v0=;
+	s=korg; t=1722357845;
+	bh=IIQeoWypYnx0AFLQQfgmoxUTRz0ovfChcEZipfosB+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JIS57b5BXlr2PNJdrrl4nsxlNHC6HuFMUvOaTCI4GlL15IQi94W4jeopeQKdjut+A
-	 guIgKyI9ATDvRCAOBHCJUhq4xtL5E6eZXXSyZbc90NXPjgbmqSHiJ9gZQJuiv/HR45
-	 An4nTpIl8NzT8Rl84dw3dvJhcJ+Vp08JjTYBFmW8=
+	b=oZhOT+H06Ot0sxBoZXcAjmOiOhnnePzhIcQt9YzOn/8IU+7La0gxU8as6T8yI+7jz
+	 nrVckP4C0VjTG5iAG4C/0t0vWv9MaDDF2qqc2w206ho3Rr5Y1ptm3wa14P6EeiLVGS
+	 UIoezEMRwSuZn0R06JdOpxnNh8yj3vkZx/RzPQ0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Hari Nagalla <hnagalla@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 528/809] remoteproc: k3-r5: Fix IPC-only mode detection
+Subject: [PATCH 6.6 297/568] powerpc/xmon: Fix disassembly CPU feature checks
 Date: Tue, 30 Jul 2024 17:46:44 +0200
-Message-ID: <20240730151745.593152873@linuxfoundation.org>
+Message-ID: <20240730151651.485923393@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit a8631f6d6344d976096b1efafdb2fbb3111bd790 ]
+[ Upstream commit 14196e47c5ffe32af7ed5a51c9e421c5ea5bccce ]
 
-ret variable was used to test reset status, get from
-reset_control_status() call. But this variable was overwritten by
-ti_sci_proc_get_status() a few lines bellow.
-And as ti_sci_proc_get_status() returns 0 or a negative value (in this
-latter case, followed by a return), the expression !ret was always true,
+In the xmon disassembly code there are several CPU feature checks to
+determine what dialects should be passed to the disassembler. The
+dialect controls which instructions the disassembler will recognise.
 
-Clearly, this was not what was intended:
-In the comment above it's said that "requires both local and module
-resets to be deasserted"; if reset_control_status() returns 0 it means
-that the reset line is deasserted.
-So, it's pretty clear that the return value of reset_control_status()
-was intended to be used instead of ti_sci_proc_get_status() return
-value.
+Unfortunately the checks are incorrect, because instead of passing a
+single CPU feature they are passing a mask of feature bits.
 
-This could lead in an incorrect IPC-only mode detection if reset line is
-asserted (so reset_control_status() return > 0) and c_state != 0 and
-halted == 0.
-In this case, the old code would have detected an IPC-only mode instead
-of a mismatched mode.
+For example the code:
 
-Fixes: 1168af40b1ad ("remoteproc: k3-r5: Add support for IPC-only mode for all R5Fs")
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Reviewed-by: Hari Nagalla <hnagalla@ti.com>
-Link: https://lore.kernel.org/r/20240621150058.319524-2-richard.genoud@bootlin.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+  if (cpu_has_feature(CPU_FTRS_POWER5))
+      dialect |= PPC_OPCODE_POWER5;
+
+Is trying to check if the system is running on a Power5 CPU. But
+CPU_FTRS_POWER5 is a mask of *all* the feature bits that are enabled on
+a Power5.
+
+In practice the test will always return true for any 64-bit CPU, because
+at least one bit in the mask will be present in the CPU_FTRS_ALWAYS
+mask.
+
+Similarly for all the other checks against CPU_FTRS_xx masks.
+
+Rather than trying to match the disassembly behaviour exactly to the
+current CPU, just differentiate between 32-bit and 64-bit, and Altivec,
+VSX and HTM.
+
+That will cause some instructions to be shown in disassembly even
+on a CPU that doesn't support them, but that's OK, objdump -d output
+has the same behaviour, and if anything it's less confusing than some
+instructions not being disassembled.
+
+Fixes: 897f112bb42e ("[POWERPC] Import updated version of ppc disassembly code for xmon")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240509121248.270878-2-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/powerpc/xmon/ppc-dis.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-index 50e486bcfa103..39a47540c5900 100644
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -1144,6 +1144,7 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
- 	u32 atcm_enable, btcm_enable, loczrama;
- 	struct k3_r5_core *core0;
- 	enum cluster_mode mode = cluster->mode;
-+	int reset_ctrl_status;
- 	int ret;
+diff --git a/arch/powerpc/xmon/ppc-dis.c b/arch/powerpc/xmon/ppc-dis.c
+index 75fa98221d485..af105e1bc3fca 100644
+--- a/arch/powerpc/xmon/ppc-dis.c
++++ b/arch/powerpc/xmon/ppc-dis.c
+@@ -122,32 +122,21 @@ int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
+   bool insn_is_short;
+   ppc_cpu_t dialect;
  
- 	core0 = list_first_entry(&cluster->cores, struct k3_r5_core, elem);
-@@ -1160,11 +1161,11 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
- 			 r_state, c_state);
- 	}
+-  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON
+-            | PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_ALTIVEC;
++  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON;
  
--	ret = reset_control_status(core->reset);
--	if (ret < 0) {
-+	reset_ctrl_status = reset_control_status(core->reset);
-+	if (reset_ctrl_status < 0) {
- 		dev_err(cdev, "failed to get initial local reset status, ret = %d\n",
--			ret);
--		return ret;
-+			reset_ctrl_status);
-+		return reset_ctrl_status;
- 	}
+-  if (cpu_has_feature(CPU_FTRS_POWER5))
+-    dialect |= PPC_OPCODE_POWER5;
++  if (IS_ENABLED(CONFIG_PPC64))
++    dialect |= PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_CELL |
++	PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7 | PPC_OPCODE_POWER8 |
++	PPC_OPCODE_POWER9;
  
- 	/*
-@@ -1199,7 +1200,7 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
- 	 * irrelevant if module reset is asserted (POR value has local reset
- 	 * deasserted), and is deemed as remoteproc mode
- 	 */
--	if (c_state && !ret && !halted) {
-+	if (c_state && !reset_ctrl_status && !halted) {
- 		dev_info(cdev, "configured R5F for IPC-only mode\n");
- 		kproc->rproc->state = RPROC_DETACHED;
- 		ret = 1;
-@@ -1217,7 +1218,7 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
- 		ret = 0;
- 	} else {
- 		dev_err(cdev, "mismatched mode: local_reset = %s, module_reset = %s, core_state = %s\n",
--			!ret ? "deasserted" : "asserted",
-+			!reset_ctrl_status ? "deasserted" : "asserted",
- 			c_state ? "deasserted" : "asserted",
- 			halted ? "halted" : "unhalted");
- 		ret = -EINVAL;
+-  if (cpu_has_feature(CPU_FTRS_CELL))
+-    dialect |= (PPC_OPCODE_CELL | PPC_OPCODE_ALTIVEC);
++  if (cpu_has_feature(CPU_FTR_TM))
++    dialect |= PPC_OPCODE_HTM;
+ 
+-  if (cpu_has_feature(CPU_FTRS_POWER6))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_ALTIVEC);
++  if (cpu_has_feature(CPU_FTR_ALTIVEC))
++    dialect |= PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2;
+ 
+-  if (cpu_has_feature(CPU_FTRS_POWER7))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-                | PPC_OPCODE_ALTIVEC | PPC_OPCODE_VSX);
+-
+-  if (cpu_has_feature(CPU_FTRS_POWER8))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-		| PPC_OPCODE_POWER8 | PPC_OPCODE_HTM
+-		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2 | PPC_OPCODE_VSX);
+-
+-  if (cpu_has_feature(CPU_FTRS_POWER9))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-		| PPC_OPCODE_POWER8 | PPC_OPCODE_POWER9 | PPC_OPCODE_HTM
+-		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2
+-		| PPC_OPCODE_VSX | PPC_OPCODE_VSX3);
++  if (cpu_has_feature(CPU_FTR_VSX))
++    dialect |= PPC_OPCODE_VSX | PPC_OPCODE_VSX3;
+ 
+   /* Get the major opcode of the insn.  */
+   opcode = NULL;
 -- 
 2.43.0
 
