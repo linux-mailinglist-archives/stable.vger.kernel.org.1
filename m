@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01653941853
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE40941859
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6451C230B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADE29280987
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE2E1A6186;
-	Tue, 30 Jul 2024 16:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470991A618F;
+	Tue, 30 Jul 2024 16:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrQAsxfY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQcEGtIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A65318801C;
-	Tue, 30 Jul 2024 16:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051DF1A6160;
+	Tue, 30 Jul 2024 16:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356425; cv=none; b=Nw4snzRlXY8zRpRTtprJMA3YglVthPcgfUSdXUkOyvR7Ypsxg8buDqOgoCktARXfbt1NPRvIcbA233hZaR9WQMFmhafdHyfeTMbh3nzILZsvw6pmZSr1quKUB0w1ZbOylH6vM92Jo1BYCFZ3IccsrzAyXjA7hTe5jALLgkdu++k=
+	t=1722356439; cv=none; b=M1m5wvQjTxvo328zHykiiXmI5hS5qVY1azsN3dSUCmy+lxN90mQB1AyZiuw+rhbb5NOgiVYdHehwaczdL3OrNIc+zpJodYxf7cfKJiwV8WKtwuesywpGDANDbJv6QGvhL4diq5O8aaKAB4GnrPfS00gIwiAUTAKkk5y5sGBBFfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356425; c=relaxed/simple;
-	bh=QfYJKndXpODvQA6cHGsi0YFPq05Lv0BLzUTP5AOI7KY=;
+	s=arc-20240116; t=1722356439; c=relaxed/simple;
+	bh=1ZDErPhICpY4Lew8Ck9rO4e1hDenn88Xo+R7nPFIfXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REa1GU1DQ5hDdx5w3be6dX9TY6BtHY2X0/1HUqRc3XLO4CBAWXjo1VU5S9fOh9RCBuyp8Caru3O/vwMWp/oAREt/0B+Mg36G2zaTVE+yWRAg5ZH46hr957WGbjTPcVwxYJ2CwE1igS4NGgHgWdHt5mkoYrm6saLlHpm1Pm+puW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrQAsxfY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE564C32782;
-	Tue, 30 Jul 2024 16:20:24 +0000 (UTC)
+	 MIME-Version; b=A3FirOmaqe60qhYcGhBv1UoB79GZvPTQLqUWHnPc0As79zdMlXXkDgwXCTW3qCvpGMjuDEegQk5STM8OpxVOtQKqIlpe0JHQaU5x+yZnH8DPqQo2XxycyG8ECtqJw9c/Cma7W63KWqD6A6sdG10zC1rytWfG00jtWC+YYNBzeyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQcEGtIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AECC32782;
+	Tue, 30 Jul 2024 16:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356425;
-	bh=QfYJKndXpODvQA6cHGsi0YFPq05Lv0BLzUTP5AOI7KY=;
+	s=korg; t=1722356438;
+	bh=1ZDErPhICpY4Lew8Ck9rO4e1hDenn88Xo+R7nPFIfXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XrQAsxfY2FOBn/sYR6wrUtS6jqWe49QE9mx7ixBVLRygGAgLue6cBAGQvUvp2ZLBw
-	 QXUJGqVGWNPOQQWHMulxv92jnTek8E44Ari7c9GL6ui6ZTnks0WeK8o0nRGl9OMhsw
-	 P8pSvErcBUPAbGLu5wDWd9UtsqivifChdimqNpBE=
+	b=hQcEGtIrsEvVZuaZCkKICYhWbZHW+/8isth7aXJCpsvRoNA9tQf3NXW0pAcZvniuD
+	 P36zkec7c4FPm84Gte9Ifc+jOGxHOwXUgEJ/s5CjPWmqU4NucnSLrDu6O3VGqJB1Ph
+	 W54V3PfD4WR3++mcekOn9YCgPx8dWBwrasGmmTWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/568] perf/x86/intel/pt: Fix pt_topa_entry_for_page() address calculation
-Date: Tue, 30 Jul 2024 17:44:14 +0200
-Message-ID: <20240730151645.623063849@linuxfoundation.org>
+Subject: [PATCH 6.6 148/568] perf: Fix perf_aux_size() for greater-than 32-bit size
+Date: Tue, 30 Jul 2024 17:44:15 +0200
+Message-ID: <20240730151645.661268145@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -68,38 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 3520b251dcae2b4a27b95cd6f745c54fd658bda5 ]
+[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
 
-Currently, perf allocates an array of page pointers which is limited in
-size by MAX_PAGE_ORDER. That in turn limits the maximum Intel PT buffer
-size to 2GiB. Should that limitation be lifted, the Intel PT driver can
-support larger sizes, except for one calculation in
-pt_topa_entry_for_page(), which is limited to 32-bits.
+perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
+calculate a 64-bit size.
 
-Fix pt_topa_entry_for_page() address calculation by adding a cast.
-
-Fixes: 39152ee51b77 ("perf/x86/intel/pt: Get rid of reverse lookup table for ToPA")
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-4-adrian.hunter@intel.com
+Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 2 +-
+ kernel/events/internal.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index 42a55794004a7..e347e56030fd9 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -989,7 +989,7 @@ pt_topa_entry_for_page(struct pt_buffer *buf, unsigned int pg)
- 	 * order allocations, there shouldn't be many of these.
- 	 */
- 	list_for_each_entry(topa, &buf->tables, list) {
--		if (topa->offset + topa->size > pg << PAGE_SHIFT)
-+		if (topa->offset + topa->size > (unsigned long)pg << PAGE_SHIFT)
- 			goto found;
- 	}
+diff --git a/kernel/events/internal.h b/kernel/events/internal.h
+index 5150d5f84c033..386d21c7edfa0 100644
+--- a/kernel/events/internal.h
++++ b/kernel/events/internal.h
+@@ -128,7 +128,7 @@ static inline unsigned long perf_data_size(struct perf_buffer *rb)
  
+ static inline unsigned long perf_aux_size(struct perf_buffer *rb)
+ {
+-	return rb->aux_nr_pages << PAGE_SHIFT;
++	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
+ }
+ 
+ #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
 -- 
 2.43.0
 
