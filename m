@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DD09418CC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C55E941B22
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 584711C20E8E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02BAA1F2328E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772FD1A617E;
-	Tue, 30 Jul 2024 16:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6076918801A;
+	Tue, 30 Jul 2024 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubw8IUg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBl3DgLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E3D1A6160;
-	Tue, 30 Jul 2024 16:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F82E1078F;
+	Tue, 30 Jul 2024 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356709; cv=none; b=pM6M7C6bgq0mRHweKAL6RGjdAjG7AYJjszmTcx47P0IzveCog2gxAsxv1/kZDrIlBH3upWRcEfWIOjuo3CWnt+OB5GWsRelu1CXVuApCaPGr6BG37ObDJ/9IuxfYGM4CgA68Rrkw3qsz3MN2c3xJ7HnloMhGSYLq/U+fFPOhC6o=
+	t=1722358281; cv=none; b=FoqCfCqQUfJchm8woj0DTBjd3zI1Nl4jyJ81PIuHtNaKqDo4y+J0bhy6Wgy9FG9wul5y4sGZfg2dhJYXDFulADMELryrFWxWhKKCDeWguQcq2tofEjlRg463zd6fjl6kT58PG5RazpZR8wPTIqUHNv0BW+9+8Tu2vjZtjDmGpvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356709; c=relaxed/simple;
-	bh=cLCb3FfBzrNFU6aAUsC+wLNjf2A0pf4l0yRuz1tpWo8=;
+	s=arc-20240116; t=1722358281; c=relaxed/simple;
+	bh=0gv660sC7xLkzvVhcIr/x86XIVzGEqZ6SoAeeu2kWko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4+Fa9f8Hy+Ci0DJHVsAvzVUWyowJG+TU/9mt0IOvOOkxSVIN1llK/g6l3ulwmA4CYIA9p69VnyfRm2XwYKmOm45z1aOUkS7hFXLpyzXU67ZWEmacUVf5iNgkWfLZsgpnNLh4gfKyPD56dcTZrhUjiwtIRH0nlUCgBWeda7ZuOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubw8IUg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D3FC32782;
-	Tue, 30 Jul 2024 16:25:08 +0000 (UTC)
+	 MIME-Version; b=akLlz/Mq98WMYCQBFdfzVKBLtSOgigKbzcIIELF7RW1ycz0YXT3q62NH9FgFe/++cnytafk6TdNpmkCvyq5YYrp7MM1bqxIseWl4WUxOR04o+Er088GQJLmFNQ2QzkIVszHnBXuxNQRJ3ECp/VV/vnFqiwVkmSl6PL7l/I4kHyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBl3DgLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846F4C4AF0E;
+	Tue, 30 Jul 2024 16:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356708;
-	bh=cLCb3FfBzrNFU6aAUsC+wLNjf2A0pf4l0yRuz1tpWo8=;
+	s=korg; t=1722358281;
+	bh=0gv660sC7xLkzvVhcIr/x86XIVzGEqZ6SoAeeu2kWko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubw8IUg1061AwItPAK8qiNfuSlfUm5qOqPpzvm60ys4zvgKBUPSrdvFzORo/WlzuL
-	 gtYA3xAGL8lm8cQQbB0UROeJ7PyoRx7kiOQeOZwT7YDCByYQOCpMS22QbNzqlOcKiz
-	 8xSaVZtxjhGnw/tKhERSthyY6LL6OycttplfhYPk=
+	b=DBl3DgLhJRAA00hCc4RIuLAbdnVDkUZspqTIKj6DX6zpUWmYFfZo7t1dmJXRJVcF8
+	 wG5K3c5GkRGS4JLXeLv20aDfnM4h4bdtNuHzBadzPvLFJ1bk6OFlsgKsUDNn5K7wsV
+	 ouTTKSZciu0k+hQnlPZfKvFe7U70tcIN/ejnFPhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 221/440] RDMA/hns: Check atomic wr length
+Subject: [PATCH 6.6 347/568] nilfs2: avoid undefined behavior in nilfs_cnt32_ge macro
 Date: Tue, 30 Jul 2024 17:47:34 +0200
-Message-ID: <20240730151624.492574117@linuxfoundation.org>
+Message-ID: <20240730151653.432793750@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 6afa2c0bfb8ef69f65715ae059e5bd5f9bbaf03b ]
+[ Upstream commit 0f3819e8c483771a59cf9d3190cd68a7a990083c ]
 
-8 bytes is the only supported length of atomic. Add this check in
-set_rc_wqe(). Besides, stop processing WQEs and return from
-set_rc_wqe() if there is any error.
+According to the C standard 3.4.3p3, the result of signed integer overflow
+is undefined.  The macro nilfs_cnt32_ge(), which compares two sequence
+numbers, uses signed integer subtraction that can overflow, and therefore
+the result of the calculation may differ from what is expected due to
+undefined behavior in different environments.
 
-Fixes: 384f88185112 ("RDMA/hns: Add atomic support")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240710133705.896445-2-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Similar to an earlier change to the jiffies-related comparison macros in
+commit 5a581b367b5d ("jiffies: Avoid undefined behavior from signed
+overflow"), avoid this potential issue by changing the definition of the
+macro to perform the subtraction as unsigned integers, then cast the
+result to a signed integer for comparison.
+
+Link: https://lkml.kernel.org/r/20130727225828.GA11864@linux.vnet.ibm.com
+Link: https://lkml.kernel.org/r/20240702183512.6390-1-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h | 2 ++
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c  | 9 +++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ fs/nilfs2/segment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
-index 8748b65c87ea7..0a4c046cdfac4 100644
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -90,6 +90,8 @@
- /* Configure to HW for PAGE_SIZE larger than 4KB */
- #define PG_SHIFT_OFFSET				(PAGE_SHIFT - 12)
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 5783efafbabda..e10f8a777ab06 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -136,7 +136,7 @@ static void nilfs_dispose_list(struct the_nilfs *, struct list_head *, int);
  
-+#define ATOMIC_WR_LEN				8
-+
- #define HNS_ROCE_IDX_QUE_ENTRY_SZ		4
- #define SRQ_DB_REG				0x230
+ #define nilfs_cnt32_ge(a, b)   \
+ 	(typecheck(__u32, a) && typecheck(__u32, b) && \
+-	 ((__s32)(a) - (__s32)(b) >= 0))
++	 ((__s32)((a) - (b)) >= 0))
  
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index c931cce50d50d..176d75f2514eb 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -602,11 +602,16 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
- 		     (wr->send_flags & IB_SEND_SIGNALED) ? 1 : 0);
- 
- 	if (wr->opcode == IB_WR_ATOMIC_CMP_AND_SWP ||
--	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD)
-+	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD) {
-+		if (msg_len != ATOMIC_WR_LEN)
-+			return -EINVAL;
- 		set_atomic_seg(wr, rc_sq_wqe, valid_num_sge);
--	else if (wr->opcode != IB_WR_REG_MR)
-+	} else if (wr->opcode != IB_WR_REG_MR) {
- 		ret = set_rwqe_data_seg(&qp->ibqp, wr, rc_sq_wqe,
- 					&curr_idx, valid_num_sge);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	/*
- 	 * The pipeline can sequentially post all valid WQEs into WQ buffer,
+ static int nilfs_prepare_segment_lock(struct super_block *sb,
+ 				      struct nilfs_transaction_info *ti)
 -- 
 2.43.0
 
