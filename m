@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-63738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52E7941A61
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125D9941809
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D98811C231A1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 447E41C22CA0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48345184535;
-	Tue, 30 Jul 2024 16:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBE41A2562;
+	Tue, 30 Jul 2024 16:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8I3VvBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIm7mMnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0718214831F;
-	Tue, 30 Jul 2024 16:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF80318B479;
+	Tue, 30 Jul 2024 16:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357794; cv=none; b=oaVZcYrh1VqHXZb1tqpk99YyJX6NpUmCNOMsSvqo57UeLDXuexpgqB5gyLfQuzWuKg9culkZ0eootP/bT5vUwAV7k5x6afDvcvCOtzTgAI4we30QsyeMn6LWoS+ux2L4OjRJDPwamGkCE0e47gYkbddeLbuzhzcP4pGtobEl1kQ=
+	t=1722356181; cv=none; b=JHsRHjdvVp2QrF6egZki+NMoD7y01+dysv21NsUCU/8+sjVJMvTM2Eyjesid2SHIJp4+aMJVxLLjBhuIcQBP0k4ISmGBv5hLv+fl6BfFd876psbYlZJmzQvkvovw/UAmbrHhmJM6kaAM9DCCayAqVdei2lp0vpYMUjD5/KClst8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357794; c=relaxed/simple;
-	bh=/Qd7QavPxtYx9efvgNVHe6hq0abTapXd/Xd0ikZPSjU=;
+	s=arc-20240116; t=1722356181; c=relaxed/simple;
+	bh=iGSDcQE2mMR8oUdRN/LF9RKuUKinWqIDeXBFYy1Ua+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=phrrvLyyTAGMIwbFUznG2SETQQWglN0EK7jN6ikyJQwRU6TxN1FZhdCGhgpIfYSG2HBfMkYyHjjR5wmZ4DR6MHxNp2UPq75u2GOlbQgxj1XzCI82LTMmfqDXw+cvX5rzzDxTIcp9tMzFCYO68r2q1kvvcQUgV3+fU8MTu4WXAyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8I3VvBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E550C32782;
-	Tue, 30 Jul 2024 16:43:13 +0000 (UTC)
+	 MIME-Version; b=YQqGrOTwFYiYHzZWbMxUzAt86NYIEDdpGBawtm7HUcL670JQYFM5EFjVHq4TiSUTv8e215WIYX46ZeGqxXwpf1MILwwGTeO0PRP9DEUD4cNuzBcd5w9glj/T9+q+9Wz0XL5quq2MhKrdW2sBp7znyXvS683OcoHCS578qM3nLms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIm7mMnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0B9C32782;
+	Tue, 30 Jul 2024 16:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357793;
-	bh=/Qd7QavPxtYx9efvgNVHe6hq0abTapXd/Xd0ikZPSjU=;
+	s=korg; t=1722356181;
+	bh=iGSDcQE2mMR8oUdRN/LF9RKuUKinWqIDeXBFYy1Ua+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8I3VvBC/Ypq3AGARBAbLipm+MnPvpYKSJN0GhD47uxk9nAFPftOjw8s4qDVlur23
-	 B/u0x/6JcpxNwH1TvSbNJxkUBeHK+ktvRMfQYdOrLk+kcKiBRa5g/p/12QA1MJcIuB
-	 C9jddbP6Z01e/f3l8Cr4TUCKq5sqPmwKTpSDDn8E=
+	b=yIm7mMnLoZ1jb0yloEpt0/OZ+icMVtKtEoY44hcJi1NC8azZu6p/xRmD47ZcEVg2f
+	 4UYGRn7Dr0mWcU8qaXZpUspW//TRqBaX000HQeMyjxEFGyp306Mf8zg445sOobMSPD
+	 tuoBeIP44Yns4D1xfzvWvdIPiymi0MQ5uWhCXq8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <sboyd@kernel.org>,
-	Laura Nao <laura.nao@collabora.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Stephen Boyd <swboyd@chromium.org>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 292/568] clk: qcom: Park shared RCGs upon registration
+Subject: [PATCH 6.1 166/440] perf intel-pt: Fix aux_watermark calculation for 64-bit size
 Date: Tue, 30 Jul 2024 17:46:39 +0200
-Message-ID: <20240730151651.286521287@linuxfoundation.org>
+Message-ID: <20240730151622.355504974@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,187 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 01a0a6cc8cfd9952e72677d48d56cf6bc4e3a561 ]
+[ Upstream commit 36b4cd990a8fd3f5b748883050e9d8c69fe6398d ]
 
-There's two problems with shared RCGs.
+aux_watermark is a u32. For a 64-bit size, cap the aux_watermark
+calculation at UINT_MAX instead of truncating it to 32-bits.
 
-The first problem is that they incorrectly report the parent after
-commit 703db1f5da1e ("clk: qcom: rcg2: Cache CFG register updates for
-parked RCGs"). That's because the cached CFG register value needs to be
-populated when the clk is registered. clk_rcg2_shared_enable() writes
-the cached CFG register value 'parked_cfg'. This value is initially zero
-due to static initializers. If a driver calls clk_enable() before
-setting a rate or parent, it will set the parent to '0' which is
-(almost?) always XO, and may not reflect the parent at registration. In
-the worst case, this switches the RCG from sourcing a fast PLL to the
-slow crystal speed.
-
-The second problem is that the force enable bit isn't cleared. The force
-enable bit is only used during parking and unparking of shared RCGs.
-Otherwise it shouldn't be set because it keeps the RCG enabled even when
-all the branches on the output of the RCG are disabled (the hardware has
-a feedback mechanism so that any child branches keep the RCG enabled
-when the branch enable bit is set). This problem wastes power if the clk
-is unused, and is harmful in the case that the clk framework disables
-the parent of the force enabled RCG. In the latter case, the GDSC the
-shared RCG is associated with will get wedged if the RCG's source clk is
-disabled and the GDSC tries to enable the RCG to do "housekeeping" while
-powering on.
-
-Both of these problems combined with incorrect runtime PM usage in the
-display driver lead to a black screen on Qualcomm sc7180 Trogdor
-chromebooks. What happens is that the bootloader leaves the
-'disp_cc_mdss_rot_clk' enabled and the 'disp_cc_mdss_rot_clk_src' force
-enabled and parented to 'disp_cc_pll0'. The mdss driver probes and
-runtime suspends, disabling the mdss_gdsc which uses the
-'disp_cc_mdss_rot_clk_src' for "housekeeping". The
-'disp_cc_mdss_rot_clk' is disabled during late init because the clk is
-unused, but the parent 'disp_cc_mdss_rot_clk_src' is still force enabled
-because the force enable bit was never cleared. Then 'disp_cc_pll0' is
-disabled because it is also unused. That's because the clk framework
-believes the parent of the RCG is XO when it isn't. A child device of
-the mdss device (e.g. DSI) runtime resumes mdss which powers on the
-mdss_gdsc. This wedges the GDSC because 'disp_cc_mdss_rot_clk_src' is
-parented to 'disp_cc_pll0' and that PLL is off. With the GDSC wedged,
-mdss_runtime_resume() tries to enable 'disp_cc_mdss_mdp_clk' but it
-can't because the GDSC has wedged all the clks associated with the GDSC
-causing clks to stay stuck off.
-
-This leads to the following warning seen at boot and a black screen
-because the display driver fails to probe.
-
- disp_cc_mdss_mdp_clk status stuck at 'off'
- WARNING: CPU: 1 PID: 81 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x114/0x168
- Modules linked in:
- CPU: 1 PID: 81 Comm: kworker/u16:4 Not tainted 6.7.0-g0dd3ee311255 #1 f5757d475795053fd2ad52247a070cd50dd046f2
- Hardware name: Google Lazor (rev1 - 2) with LTE (DT)
- Workqueue: events_unbound deferred_probe_work_func
- pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : clk_branch_toggle+0x114/0x168
- lr : clk_branch_toggle+0x110/0x168
- sp : ffffffc08084b670
- pmr_save: 00000060
- x29: ffffffc08084b680 x28: ffffff808006de00 x27: 0000000000000001
- x26: ffffff8080dbd4f4 x25: 0000000000000000 x24: 0000000000000000
- x23: 0000000000000000 x22: ffffffd838461198 x21: ffffffd838007997
- x20: ffffffd837541d5c x19: 0000000000000001 x18: 0000000000000004
- x17: 0000000000000000 x16: 0000000000000010 x15: ffffffd837070fac
- x14: 0000000000000003 x13: 0000000000000004 x12: 0000000000000001
- x11: c0000000ffffdfff x10: ffffffd838347aa0 x9 : 08dadf92e516c000
- x8 : 08dadf92e516c000 x7 : 0000000000000000 x6 : 0000000000000027
- x5 : ffffffd8385a61f2 x4 : 0000000000000000 x3 : ffffffc08084b398
- x2 : ffffffc08084b3a0 x1 : 00000000ffffdfff x0 : 00000000fffffff0
- Call trace:
-  clk_branch_toggle+0x114/0x168
-  clk_branch2_enable+0x24/0x30
-  clk_core_enable+0x5c/0x1c8
-  clk_enable+0x38/0x58
-  clk_bulk_enable+0x40/0xb0
-  mdss_runtime_resume+0x68/0x258
-  pm_generic_runtime_resume+0x30/0x44
-  __genpd_runtime_resume+0x30/0x80
-  genpd_runtime_resume+0x124/0x214
-  __rpm_callback+0x7c/0x15c
-  rpm_callback+0x30/0x88
-  rpm_resume+0x390/0x4d8
-  rpm_resume+0x43c/0x4d8
-  __pm_runtime_resume+0x54/0x98
-  __device_attach+0xe0/0x170
-  device_initial_probe+0x1c/0x28
-  bus_probe_device+0x48/0xa4
-  device_add+0x52c/0x6fc
-  mipi_dsi_device_register_full+0x104/0x1a8
-  devm_mipi_dsi_device_register_full+0x28/0x78
-  ti_sn_bridge_probe+0x1dc/0x2bc
-  auxiliary_bus_probe+0x4c/0x94
-  really_probe+0xf8/0x270
-  __driver_probe_device+0xa8/0x130
-  driver_probe_device+0x44/0x104
-  __device_attach_driver+0xa4/0xcc
-  bus_for_each_drv+0x94/0xe8
-  __device_attach+0xf8/0x170
-  device_initial_probe+0x1c/0x28
-  bus_probe_device+0x48/0xa4
-  deferred_probe_work_func+0x9c/0xd8
-
-Fix these problems by parking shared RCGs at boot. This will properly
-initialize the parked_cfg struct member so that the parent is reported
-properly and ensure that the clk won't get stuck on or off because the
-RCG is parented to the safe source (XO).
-
-Fixes: 703db1f5da1e ("clk: qcom: rcg2: Cache CFG register updates for parked RCGs")
-Reported-by: Stephen Boyd <sboyd@kernel.org>
-Closes: https://lore.kernel.org/r/1290a5a0f7f584fcce722eeb2a1fd898.sboyd@kernel.org
-Closes: https://issuetracker.google.com/319956935
-Reported-by: Laura Nao <laura.nao@collabora.com>
-Closes: https://lore.kernel.org/r/20231218091806.7155-1-laura.nao@collabora.com
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Taniya Das <quic_tdas@quicinc.com>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20240502224703.103150-1-swboyd@chromium.org
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 874fc35cdd55 ("perf intel-pt: Use aux_watermark")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240625104532.11990-2-adrian.hunter@intel.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-rcg2.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ tools/perf/arch/x86/util/intel-pt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
-index 5183c74b074f8..b9f2a29be927c 100644
---- a/drivers/clk/qcom/clk-rcg2.c
-+++ b/drivers/clk/qcom/clk-rcg2.c
-@@ -1138,7 +1138,39 @@ clk_rcg2_shared_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
- 	return clk_rcg2_recalc_rate(hw, parent_rate);
- }
+diff --git a/tools/perf/arch/x86/util/intel-pt.c b/tools/perf/arch/x86/util/intel-pt.c
+index af102f471e9f4..357eef045f3be 100644
+--- a/tools/perf/arch/x86/util/intel-pt.c
++++ b/tools/perf/arch/x86/util/intel-pt.c
+@@ -780,7 +780,8 @@ static int intel_pt_recording_options(struct auxtrace_record *itr,
+ 	}
  
-+static int clk_rcg2_shared_init(struct clk_hw *hw)
-+{
-+	/*
-+	 * This does a few things:
-+	 *
-+	 *  1. Sets rcg->parked_cfg to reflect the value at probe so that the
-+	 *     proper parent is reported from clk_rcg2_shared_get_parent().
-+	 *
-+	 *  2. Clears the force enable bit of the RCG because we rely on child
-+	 *     clks (branches) to turn the RCG on/off with a hardware feedback
-+	 *     mechanism and only set the force enable bit in the RCG when we
-+	 *     want to make sure the clk stays on for parent switches or
-+	 *     parking.
-+	 *
-+	 *  3. Parks shared RCGs on the safe source at registration because we
-+	 *     can't be certain that the parent clk will stay on during boot,
-+	 *     especially if the parent is shared. If this RCG is enabled at
-+	 *     boot, and the parent is turned off, the RCG will get stuck on. A
-+	 *     GDSC can wedge if is turned on and the RCG is stuck on because
-+	 *     the GDSC's controller will hang waiting for the clk status to
-+	 *     toggle on when it never does.
-+	 *
-+	 * The safest option here is to "park" the RCG at init so that the clk
-+	 * can never get stuck on or off. This ensures the GDSC can't get
-+	 * wedged.
-+	 */
-+	clk_rcg2_shared_disable(hw);
-+
-+	return 0;
-+}
-+
- const struct clk_ops clk_rcg2_shared_ops = {
-+	.init = clk_rcg2_shared_init,
- 	.enable = clk_rcg2_shared_enable,
- 	.disable = clk_rcg2_shared_disable,
- 	.get_parent = clk_rcg2_shared_get_parent,
+ 	if (!opts->auxtrace_snapshot_mode && !opts->auxtrace_sample_mode) {
+-		u32 aux_watermark = opts->auxtrace_mmap_pages * page_size / 4;
++		size_t aw = opts->auxtrace_mmap_pages * (size_t)page_size / 4;
++		u32 aux_watermark = aw > UINT_MAX ? UINT_MAX : aw;
+ 
+ 		intel_pt_evsel->core.attr.aux_watermark = aux_watermark;
+ 	}
 -- 
 2.43.0
 
