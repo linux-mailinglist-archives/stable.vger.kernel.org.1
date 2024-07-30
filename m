@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DC594192D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF62941930
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 782DD1C236B9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12FB42884F4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BDF1898F4;
-	Tue, 30 Jul 2024 16:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C100F18452F;
+	Tue, 30 Jul 2024 16:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8lGujax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EcQkne7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EAB183CDA;
-	Tue, 30 Jul 2024 16:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0D11A6195;
+	Tue, 30 Jul 2024 16:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356987; cv=none; b=F2peCwCvKCvyaQ8Jl2eY8ybnjWqn13sEWGLUv4RP25AavNtUz8EEHupXG3xLkKY5Ty9HN1xghtlM4+TJWkQK44GeRMA4WMIUbQCabYBtO2hpw4hFs9iyvmO9x0zMAcKUEpLGX23Ovwjh6zr2tjI4M+aGh6BjYkJkT9yYnPpwGfU=
+	t=1722356997; cv=none; b=ATFXCbbBGVs8gX9cjsMpsbONxSiaCuW76WVXzdNepW2I0nHy6g1m4BbaTxBS8uDO4dI60GquoMUUM5SMPhQvgZ5RFCyJxz/OyvnP3G5QY6oWesXcaMvL0XxjVrEqlQ3JYy3Dyp26TxNLOFtAbm3Wu3R4qJdVh9BRsk9c0vfX/lE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356987; c=relaxed/simple;
-	bh=e6K1RAuQ4jJOBa/AxAdjvIC9juVM++Q2iEe/avJhnpM=;
+	s=arc-20240116; t=1722356997; c=relaxed/simple;
+	bh=VIl6TUtuUGtG0nwfgtVz9BHq5hP8KztgM+/HUP2JaKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kIT4K4vU2bjmhPh0GZ9ukN0+igCqvsCW1uDbncAqewdGesGFZy7nJgqJvjbeHFjDK9gyDR/Bsp//2+zaRmvM0LDDvX3FsG5O4bO3p6D3CkWYLxhCK4WujCjKkPQjd8WeQXcq/PhMrgXFmaH/Si57oCz0iNuAyyCCVWjZyCM7aCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8lGujax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D28C32782;
-	Tue, 30 Jul 2024 16:29:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rfCQQs1rw8Cp+md70pgpdn0SGjbFOymcXd/QC+eh22CH4jMYyYMi89rs8IfhjBp5HI/J9rqzT4Ff6zjeccuqZm4RvhYEX4p60kg/Miu53ZYuhjI5gZtrfrDoEaIAK441iIG/uutf4R+Dwf37ls42pAKab3OnpeIE54sa/sew8s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EcQkne7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F26C32782;
+	Tue, 30 Jul 2024 16:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356987;
-	bh=e6K1RAuQ4jJOBa/AxAdjvIC9juVM++Q2iEe/avJhnpM=;
+	s=korg; t=1722356997;
+	bh=VIl6TUtuUGtG0nwfgtVz9BHq5hP8KztgM+/HUP2JaKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8lGujax434IGAqa9+k9n9YGciYOjazAIdk1nSNBSJ7R5VIJhjme4t1XMNdX1kKMK
-	 DZHB7dCzFTpQwWMav+8ilaBcBqLkW3ir03GVu/awaetCcn+vyo/U5nS0xRbl75ew5D
-	 OV4xB8k+UY0nLqAQhoZ/Sv/ewy1JFZHpjwMslI4M=
+	b=1EcQkne7KLN/0A1v+c3MW75Sj9g4ze9aEgdCFcMbVChS7PrUb3gvdlvyHof/eLVFz
+	 uUE/JRiW5wVPumGnKZEGrF7CTwyFlOSwjvX7PA0z6bDNz3g0Hl/rTYyHkuAjDRDgJa
+	 Tvd0o7PJYOMwilDa7KBYl0hdIR5bMtMvRELMHgCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/568] drm: zynqmp_kms: Fix AUX bus not getting unregistered
-Date: Tue, 30 Jul 2024 17:45:14 +0200
-Message-ID: <20240730151647.965772866@linuxfoundation.org>
+Subject: [PATCH 6.6 208/568] media: rcar-vin: Fix YUYV8_1X16 handling for CSI-2
+Date: Tue, 30 Jul 2024 17:45:15 +0200
+Message-ID: <20240730151648.005584873@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -60,82 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-[ Upstream commit 0743dafefd3f2b92116213f2225ea355001b7948 ]
+[ Upstream commit 9caf253e8ad6f4c66f5591bac900f9f68b6b6620 ]
 
-drm_encoder_cleanup is responsible for calling drm_bridge_detach for
-each bridge attached to the encoder. zynqmp_dp_bridge_detach is in turn
-responsible for unregistering the AUX bus. However, we never ended up
-calling drm_encoder_cleanup in the remove or error paths, so the AUX bus
-would stick around after the rest of the driver had been removed.
+The YUYV8_1X16 and UYVY8_1X16 formats are treated as 'ITU-R
+BT.601/BT.1358 16-bit YCbCr-422 input' (YUV16 - 0x5) in the R-Car VIN
+driver and are thus disallowed when capturing frames from the R-Car
+CSI-2 interface according to the hardware manual.
 
-I don't really understand why drm_mode_config_cleanup doesn't call
-drm_encoder_cleanup for us. It will call destroy (which for
-simple_encoder is drm_encoder_cleanup) on encoders in the mode_config's
-encoder_list.
+As the 1X16 format variants are meant to be used with serial busses they
+have to be treated as 'YCbCr-422 8-bit data input' (0x1) when capturing
+from CSI-2, which is a valid setting for CSI-2.
 
-Should drm_encoder_cleanup get called before or after
-drm_atomic_helper_shutdown?
+Commit 78b3f9d75a62 ("media: rcar-vin: Add check that input interface
+and format are valid") disallowed capturing YUV16 when using the CSI-2
+interface. Fix this by using YUV8_BT601 for YCbCr422 when CSI-2 is in
+use.
 
-Fixes: 2dfd045c8435 ("drm: xlnx: zynqmp_dpsub: Register AUX bus at bridge attach time")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240503192922.2172314-2-sean.anderson@linux.dev
+Fixes: 78b3f9d75a62 ("media: rcar-vin: Add check that input interface and format are valid")
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://lore.kernel.org/r/20240617161135.130719-2-jacopo.mondi@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xlnx/zynqmp_kms.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ .../media/platform/renesas/rcar-vin/rcar-dma.c   | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-index a7f8611be6f42..44d4a510ad7d6 100644
---- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-@@ -434,23 +434,28 @@ static int zynqmp_dpsub_kms_init(struct zynqmp_dpsub *dpsub)
- 				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 	if (ret) {
- 		dev_err(dpsub->dev, "failed to attach bridge to encoder\n");
--		return ret;
-+		goto err_encoder;
- 	}
- 
- 	/* Create the connector for the chain of bridges. */
- 	connector = drm_bridge_connector_init(&dpsub->drm->dev, encoder);
- 	if (IS_ERR(connector)) {
- 		dev_err(dpsub->dev, "failed to created connector\n");
--		return PTR_ERR(connector);
-+		ret = PTR_ERR(connector);
-+		goto err_encoder;
- 	}
- 
- 	ret = drm_connector_attach_encoder(connector, encoder);
- 	if (ret < 0) {
- 		dev_err(dpsub->dev, "failed to attach connector to encoder\n");
--		return ret;
-+		goto err_encoder;
- 	}
- 
- 	return 0;
-+
-+err_encoder:
-+	drm_encoder_cleanup(encoder);
-+	return ret;
- }
- 
- static void zynqmp_dpsub_drm_release(struct drm_device *drm, void *res)
-@@ -530,5 +535,6 @@ void zynqmp_dpsub_drm_cleanup(struct zynqmp_dpsub *dpsub)
- 
- 	drm_dev_unregister(drm);
- 	drm_atomic_helper_shutdown(drm);
-+	drm_encoder_cleanup(&dpsub->drm->encoder);
- 	drm_kms_helper_poll_fini(drm);
- }
+diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
+index 2a77353f10b59..bb4774e2f335e 100644
+--- a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
++++ b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
+@@ -742,12 +742,22 @@ static int rvin_setup(struct rvin_dev *vin)
+ 	 */
+ 	switch (vin->mbus_code) {
+ 	case MEDIA_BUS_FMT_YUYV8_1X16:
+-		/* BT.601/BT.1358 16bit YCbCr422 */
+-		vnmc |= VNMC_INF_YUV16;
++		if (vin->is_csi)
++			/* YCbCr422 8-bit */
++			vnmc |= VNMC_INF_YUV8_BT601;
++		else
++			/* BT.601/BT.1358 16bit YCbCr422 */
++			vnmc |= VNMC_INF_YUV16;
+ 		input_is_yuv = true;
+ 		break;
+ 	case MEDIA_BUS_FMT_UYVY8_1X16:
+-		vnmc |= VNMC_INF_YUV16 | VNMC_YCAL;
++		if (vin->is_csi)
++			/* YCbCr422 8-bit */
++			vnmc |= VNMC_INF_YUV8_BT601;
++		else
++			/* BT.601/BT.1358 16bit YCbCr422 */
++			vnmc |= VNMC_INF_YUV16;
++		vnmc |= VNMC_YCAL;
+ 		input_is_yuv = true;
+ 		break;
+ 	case MEDIA_BUS_FMT_UYVY8_2X8:
 -- 
 2.43.0
 
