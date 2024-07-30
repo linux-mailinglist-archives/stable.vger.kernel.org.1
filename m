@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF639417CC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:16:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59920941D11
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E40C1C22C40
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:16:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61AA9B2937A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0271A3030;
-	Tue, 30 Jul 2024 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7631A76C1;
+	Tue, 30 Jul 2024 17:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7TWdi0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJJV9+HC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BB41A3024;
-	Tue, 30 Jul 2024 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C58F1A76A5;
+	Tue, 30 Jul 2024 17:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355933; cv=none; b=qdyiWbwRXDlU+6f9wRYxinJ3z2T5tG+cYNfisRaKyq2JXJ9GcWu6wRE3HpMGxPylsqxZhuhpldA0Eb4s/cFqg09l/CmRmGNCOYYiGWQEgC4Va+Q+UztV2niXk2p67h+WMd29XQ3g4SZItW2JE5I+mswGrenNaZ4AxlgbEBP1S4s=
+	t=1722359502; cv=none; b=fI51RUY1D3J5D4Q5coWef0f+pF0vF7ZItnQpsDZ9rv/0YYwoF/ToLy36GXhAJ+h3gRRZq607tBrVCI5s2jc/kY/n4zPiZjAwht/yMd9fTivumX8MvuL01M6CVYdYiGkjSWv5SroFNiF2TE1HOu+5OFAKbHukzFkQdhItCnM0PXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355933; c=relaxed/simple;
-	bh=lvoWrWEoXu7P/6qCfR0WWH2nC1QutuevkB/XvBCSNFA=;
+	s=arc-20240116; t=1722359502; c=relaxed/simple;
+	bh=OttFG6MErymp/2oZ2MIUaRzJFdLm5rviiRyAx2uQGNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYCFa53sPtoCfWD9/PRlsRxpAcHK5peSQ4kY9WE3nkjpXkfT0PnYofPw2mJdeQ5udKx7kGTbSLB34z6IoYYNidNjBebJBJAYArWpHawoG2cL1z+26FPVfMnPsTiIFnLzNKsq3P3gVYg914kC5fKxBoHo7AbaGKlLAaHfsuZ7JRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7TWdi0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F374C4AF0C;
-	Tue, 30 Jul 2024 16:12:12 +0000 (UTC)
+	 MIME-Version; b=GatHNMNOLHYwKkSTbvzJQYlKIpHQXna5qm7EciaXo9OB+UhRaYQdKkCDiFQzyYavNFsgWRn28duJefBWy7I4RoXq4g1oXnEFqi/Oj49IOw8szyz1N7oYv2olxm8g+HSIzXGM08AcyUlpiIoGzLF57Mi/H1q5KdHo47tGjVJKLg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJJV9+HC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8284CC32782;
+	Tue, 30 Jul 2024 17:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355932;
-	bh=lvoWrWEoXu7P/6qCfR0WWH2nC1QutuevkB/XvBCSNFA=;
+	s=korg; t=1722359501;
+	bh=OttFG6MErymp/2oZ2MIUaRzJFdLm5rviiRyAx2uQGNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7TWdi0x4HRLbYwWP0lt6cBlxxBN8ksj8JQowbsSO/FM+raV1bJYAzI3nhi+Y59gl
-	 /ksgAqFPpE5oSA4o9J0LClGc9+6kpvKHGz6E954b33md1BIhC4KkiVF56ZK9Y66oad
-	 e+4HL2dQdFISnpIwFXe/R4lT+2WI3LHH06+BUcMI=
+	b=oJJV9+HCXmqUMxkLqCUHVba4p+VXZEG4WhJuVXGQUEK0vzbrIGn5hv6QDycQUw0rr
+	 Gj7sKeWqY6eE3ok8KSBJUfevB3wtQ7iOCn0IUShVU71YAaud6GD+AcgdxtAB99cFjz
+	 b0+5QsoOIUtJxyYlvCf5SiPq8ZMMvhhmhsnxNNsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/440] media: pci: ivtv: Add check for DMA map result
+Subject: [PATCH 6.10 493/809] pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails
 Date: Tue, 30 Jul 2024 17:46:09 +0200
-Message-ID: <20240730151621.195570416@linuxfoundation.org>
+Message-ID: <20240730151744.211358097@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 629913d6d79508b166c66e07e4857e20233d85a9 ]
+[ Upstream commit 9b401f4a7170125365160c9af267a41ff6b39001 ]
 
-In case DMA fails, 'dma->SG_length' is 0. This value is later used to
-access 'dma->SGarray[dma->SG_length - 1]', which will cause out of
-bounds access.
+This driver calls pinctrl_register_and_init() which is not
+devm_ managed, it will leads memory leak if pinctrl_enable()
+fails. Replace it with devm_pinctrl_register_and_init().
+And add missing of_node_put() in the error path.
 
-Add check to return early on invalid value. Adjust warnings accordingly.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 1932dc2f4cf6 ("media: pci/ivtv: switch from 'pci_' to 'dma_' API")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-4-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/ivtv/ivtv-udma.c | 8 ++++++++
- drivers/media/pci/ivtv/ivtv-yuv.c  | 6 ++++++
- drivers/media/pci/ivtv/ivtvfb.c    | 6 +++---
- 3 files changed, 17 insertions(+), 3 deletions(-)
+ drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/pci/ivtv/ivtv-udma.c b/drivers/media/pci/ivtv/ivtv-udma.c
-index 210be8290f24d..fd76f88975ae3 100644
---- a/drivers/media/pci/ivtv/ivtv-udma.c
-+++ b/drivers/media/pci/ivtv/ivtv-udma.c
-@@ -131,6 +131,8 @@ int ivtv_udma_setup(struct ivtv *itv, unsigned long ivtv_dest_addr,
+diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+index 040f2c46a868d..ef97586385019 100644
+--- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
++++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
+@@ -876,7 +876,7 @@ static int ti_iodelay_probe(struct platform_device *pdev)
+ 	iod->desc.name = dev_name(dev);
+ 	iod->desc.owner = THIS_MODULE;
  
- 	/* Fill SG List with new values */
- 	if (ivtv_udma_fill_sg_list(dma, &user_dma, 0) < 0) {
-+		IVTV_DEBUG_WARN("%s: could not allocate bounce buffers for highmem userspace buffers\n",
-+				__func__);
- 		unpin_user_pages(dma->map, dma->page_count);
- 		dma->page_count = 0;
- 		return -ENOMEM;
-@@ -139,6 +141,12 @@ int ivtv_udma_setup(struct ivtv *itv, unsigned long ivtv_dest_addr,
- 	/* Map SG List */
- 	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
- 				    dma->page_count, DMA_TO_DEVICE);
-+	if (!dma->SG_length) {
-+		IVTV_DEBUG_WARN("%s: DMA map error, SG_length is 0\n", __func__);
-+		unpin_user_pages(dma->map, dma->page_count);
-+		dma->page_count = 0;
-+		return -EINVAL;
-+	}
+-	ret = pinctrl_register_and_init(&iod->desc, dev, iod, &iod->pctl);
++	ret = devm_pinctrl_register_and_init(dev, &iod->desc, iod, &iod->pctl);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to register pinctrl\n");
+ 		goto exit_out;
+@@ -884,7 +884,11 @@ static int ti_iodelay_probe(struct platform_device *pdev)
  
- 	/* Fill SG Array with new values */
- 	ivtv_udma_fill_sg_array (dma, ivtv_dest_addr, 0, -1);
-diff --git a/drivers/media/pci/ivtv/ivtv-yuv.c b/drivers/media/pci/ivtv/ivtv-yuv.c
-index 4ba10c34a16a4..bd0b80331602d 100644
---- a/drivers/media/pci/ivtv/ivtv-yuv.c
-+++ b/drivers/media/pci/ivtv/ivtv-yuv.c
-@@ -115,6 +115,12 @@ static int ivtv_yuv_prep_user_dma(struct ivtv *itv, struct ivtv_user_dma *dma,
- 	}
- 	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
- 				    dma->page_count, DMA_TO_DEVICE);
-+	if (!dma->SG_length) {
-+		IVTV_DEBUG_WARN("%s: DMA map error, SG_length is 0\n", __func__);
-+		unpin_user_pages(dma->map, dma->page_count);
-+		dma->page_count = 0;
-+		return -EINVAL;
-+	}
+ 	platform_set_drvdata(pdev, iod);
  
- 	/* Fill SG Array with new values */
- 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
-diff --git a/drivers/media/pci/ivtv/ivtvfb.c b/drivers/media/pci/ivtv/ivtvfb.c
-index 00ac94d4ab19d..a642becdc0d73 100644
---- a/drivers/media/pci/ivtv/ivtvfb.c
-+++ b/drivers/media/pci/ivtv/ivtvfb.c
-@@ -281,10 +281,10 @@ static int ivtvfb_prep_dec_dma_to_device(struct ivtv *itv,
- 	/* Map User DMA */
- 	if (ivtv_udma_setup(itv, ivtv_dest_addr, userbuf, size_in_bytes) <= 0) {
- 		mutex_unlock(&itv->udma.lock);
--		IVTVFB_WARN("ivtvfb_prep_dec_dma_to_device, Error with pin_user_pages: %d bytes, %d pages returned\n",
--			       size_in_bytes, itv->udma.page_count);
-+		IVTVFB_WARN("%s, Error in ivtv_udma_setup: %d bytes, %d pages returned\n",
-+			       __func__, size_in_bytes, itv->udma.page_count);
+-	return pinctrl_enable(iod->pctl);
++	ret = pinctrl_enable(iod->pctl);
++	if (ret)
++		goto exit_out;
++
++	return 0;
  
--		/* pin_user_pages must have failed completely */
-+		/* pin_user_pages or DMA must have failed completely */
- 		return -EIO;
- 	}
+ exit_out:
+ 	of_node_put(np);
+@@ -899,9 +903,6 @@ static void ti_iodelay_remove(struct platform_device *pdev)
+ {
+ 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
  
+-	if (iod->pctl)
+-		pinctrl_unregister(iod->pctl);
+-
+ 	ti_iodelay_pinconf_deinit_dev(iod);
+ 
+ 	/* Expect other allocations to be freed by devm */
 -- 
 2.43.0
 
