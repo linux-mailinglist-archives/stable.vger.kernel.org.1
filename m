@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCB4941A0E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C64F94195D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2F07B21E8F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E0FE1C232A1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4924156F53;
-	Tue, 30 Jul 2024 16:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293D2188012;
+	Tue, 30 Jul 2024 16:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKQmgLxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2YSspwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C3C1A6192;
-	Tue, 30 Jul 2024 16:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98571A6192;
+	Tue, 30 Jul 2024 16:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357081; cv=none; b=GpwkmRFPNgvT5L/viOaATKaLUsqZdSm+iYD8DACJn+tFNikg+rJLUGW1Xgxw/pD6Pfhgl+Bnga/mug0/zihIMz9o1fYbNX+buWU4sxIB3YJuRBod5iOYE3vHQTsf4UKzwCEb42Cr1ZZw+3DuKEenZ01TiCETfdeyLLoww6pvIsc=
+	t=1722357091; cv=none; b=bmFBhVPVU2s6jnGosfuOIKGIox+xFFENLZZfBobIknHDYVWkMSd2rSViYFV+clHJtuXh63cOG7IoaYIJSi45ClpEHk/bt7ZAOqAD8NCbgnUHpP1pYKq01ZhKWpIv3ZhLF/qkyinbFG04RWlVoZ1YgwX7jQD35asNKNVyAKxl11I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357081; c=relaxed/simple;
-	bh=Vr5vLu/05D+Z1FzETx8qpeV7gTs5r1de4hzmHWyB+G0=;
+	s=arc-20240116; t=1722357091; c=relaxed/simple;
+	bh=3ucQ6l6toXeV63tExeD1QjLFYqwvMstG1+aINJ9k0Qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+9EML3J8d4/6+BLT4AQokPTR7V20/rsKATNKhT5SvF77xHr8oXAW/qByQ1lzxTcjv7o/Vd3mM2FQUNOUuNmvmOVNkyd81kNJCSIXLHOKcg2aP/cjexPJfVK1c/N3QtaDIL9bszAnnCNRnbO4jGp9ZK5bUFSMhAx8HgO/XvRCn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKQmgLxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194ADC32782;
-	Tue, 30 Jul 2024 16:31:20 +0000 (UTC)
+	 MIME-Version; b=vAaUaseiyGBIOBIB+Mf07uXdKDzbPrHAiotKpKHychOZ4M65jOryEUvHz081cd656dPGY5TvJXXIdGnE74gNWwgQFUMiYqQ9WURLhHW4mBQCam8aqWgrWtXcSsvsDm2ArLYHFgNE1JVbUL1LaeFlwBvv2EuYZND30nIdd8rs9Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2YSspwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFCCC32782;
+	Tue, 30 Jul 2024 16:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357081;
-	bh=Vr5vLu/05D+Z1FzETx8qpeV7gTs5r1de4hzmHWyB+G0=;
+	s=korg; t=1722357091;
+	bh=3ucQ6l6toXeV63tExeD1QjLFYqwvMstG1+aINJ9k0Qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKQmgLxSEFMje7jUhONdIrfOY7JO5bTF7xkt/kUDyNnqwvVXAkzZGF9GcT3gkKdhr
-	 s8Luj9V+RvS0H0Kke4AqTyRBLJHJvhdpdT5V9nOAzjFk1pOzHAeXm0VXipC6Bi+J9r
-	 iB+GNuI57F9W6IcBc8+QV+XOZe/vNz+VoiffsHH4=
+	b=T2YSspwH6mZdg/DwK17jHNc4Ovpbo0iiACc6yCrPR48Vt+/2hJKWh0BxPbuhab5m2
+	 3LL33oywq02SlOKiYKNh8u5O+EtsIFgdVJWtxgb6fOVQnZKxWV0lrRpmniZEgkPDJk
+	 Q2lL2oBJnyIPklRSPgKFcbIQLpzOCIEkxHGVdBqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Chung Chen <damon.chen@realtek.com>,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 216/809] wifi: rtw89: 8852b: fix definition of KIP register number
-Date: Tue, 30 Jul 2024 17:41:32 +0200
-Message-ID: <20240730151733.135117114@linuxfoundation.org>
+Subject: [PATCH 6.10 217/809] wifi: rtl8xxxu: 8188f: Limit TX power index
+Date: Tue, 30 Jul 2024 17:41:33 +0200
+Message-ID: <20240730151733.178060662@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,36 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
 
-[ Upstream commit 2f35712ab82683554c660bc2456f05785835efbe ]
+[ Upstream commit d0b4b8ef083ca46d5d318e66a30fb80e0abbb90d ]
 
-An incorrect definition caused DPK to fail to backup and
-restore a set of KIP registers. Fixing this will improve
-RX throughput from 902 to 997 Mbps.
+TX power index is read from the efuse on init, the values get written to
+the TX power registers when the channel gets switched.
 
-Fixes: 5b8471ace5b1 ("wifi: rtw89: 8852b: rfk: add DPK")
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+When the chip has not yet been calibrated, the efuse values are 0xFF,
+which on some boards leads to USB timeouts for reading/writing registers
+after the first frames have been sent.
+
+The vendor driver (v5.11.5-1) checks for these invalid values and sets
+default values instead. Implement something similar in
+rtl8188fu_parse_efuse().
+
+Fixes: c888183b21f3 ("wifi: rtl8xxxu: Support new chip RTL8188FU")
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240621123617.6687-2-pkshih@realtek.com
+Link: https://patch.msgid.link/20240624140037.231657-1-martin.kaistra@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtl8xxxu/8188f.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-index 259df67836a0e..a2fa1d339bc21 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-@@ -20,7 +20,7 @@
- #define RTW8852B_RF_REL_VERSION 34
- #define RTW8852B_DPK_VER 0x0d
- #define RTW8852B_DPK_RF_PATH 2
--#define RTW8852B_DPK_KIP_REG_NUM 2
-+#define RTW8852B_DPK_KIP_REG_NUM 3
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
+index bd5a0603b4a23..3abf14d7044f3 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
+@@ -697,9 +697,14 @@ static void rtl8188fu_init_statistics(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_write32(priv, REG_OFDM0_FA_RSTC, val32);
+ }
  
- #define _TSSI_DE_MASK GENMASK(21, 12)
- #define ADDC_T_AVG 100
++#define TX_POWER_INDEX_MAX 0x3F
++#define TX_POWER_INDEX_DEFAULT_CCK 0x22
++#define TX_POWER_INDEX_DEFAULT_HT40 0x27
++
+ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
+ {
+ 	struct rtl8188fu_efuse *efuse = &priv->efuse_wifi.efuse8188fu;
++	int i;
+ 
+ 	if (efuse->rtl_id != cpu_to_le16(0x8129))
+ 		return -EINVAL;
+@@ -713,6 +718,16 @@ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
+ 	       efuse->tx_power_index_A.ht40_base,
+ 	       sizeof(efuse->tx_power_index_A.ht40_base));
+ 
++	for (i = 0; i < ARRAY_SIZE(priv->cck_tx_power_index_A); i++) {
++		if (priv->cck_tx_power_index_A[i] > TX_POWER_INDEX_MAX)
++			priv->cck_tx_power_index_A[i] = TX_POWER_INDEX_DEFAULT_CCK;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(priv->ht40_1s_tx_power_index_A); i++) {
++		if (priv->ht40_1s_tx_power_index_A[i] > TX_POWER_INDEX_MAX)
++			priv->ht40_1s_tx_power_index_A[i] = TX_POWER_INDEX_DEFAULT_HT40;
++	}
++
+ 	priv->ofdm_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.a;
+ 	priv->ht20_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.b;
+ 
 -- 
 2.43.0
 
