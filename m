@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B50941E7B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE89C941D1F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D130A1C23D97
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 690811F24C52
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C51187FF6;
-	Tue, 30 Jul 2024 17:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5161898E0;
+	Tue, 30 Jul 2024 17:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9T4MPun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZIMWCnB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6190B1A76BE;
-	Tue, 30 Jul 2024 17:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE0C18A6B0;
+	Tue, 30 Jul 2024 17:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360560; cv=none; b=IzyU9qfsVHST1G2jHHrKIEHkMgzJVFeu4/S8IoRiUopAExK3Ub48deTfZDv+8wtSCoO0lr7E/OlChRxRSoRsbCfwQNqbUGY7wXk3ePe578wQAKSytd7cUKaDDYL15mvys12UpO7XLqetBwJAwEofMXS+1G6qSkuv2oEzwXnm1ME=
+	t=1722359594; cv=none; b=rx9C/I4sQJ09eaH0KrG9tXvveZBXjPVpPRIE3Hopd+5m6LHryvLeflMloK6A74mjagZb1KCBA/2ZgqqUM0GJ+2InbpK7a5IjCOBn/Na7HJ9Mglp2AGXcHcG3xiKEwWRHUkqT6EPZP+cm0FHnFgVWpWu0m0p8pvkXIvReaEWv6iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360560; c=relaxed/simple;
-	bh=yEMsH3O7/PUmrYTED2ueBb5KJfJmi61IJxoZcHNDQmM=;
+	s=arc-20240116; t=1722359594; c=relaxed/simple;
+	bh=fQQpQWH9atYBbYdEhJ/tlKs/TLazm7aQ9ZGpDlLNl34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuSouEADH4XhgmrDuof2sp9kD8/eqcv3ahldb/pbFyjb3k8aWNML4ZSV7Acb4TpI3/M8WDi13EtDR1Tbw6da3pFOtzK0/ULMQDkqT6mwukx7X3vINJ9gYcCFQTjnnTQK7GqONkKa3JjGRzjJxRmsTuv1wglpDPwu01avOH5RDTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9T4MPun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9950EC4AF0A;
-	Tue, 30 Jul 2024 17:29:19 +0000 (UTC)
+	 MIME-Version; b=g5tJD0Wf2ixfcP6j5OZpOlrxtFBPpELq8+NhMslcjj8lSjbqY5PgoO0UQegnTr6wH0kfi+sJhbIK7WK0Dg197C+mtwB1LyNTC6u5iIWkhzxQTId4xnMuEudd4SfdYKyetyzkXwfwotmZDNBFh/BIruesi7Wxta8YPAu1Z1XkQiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZIMWCnB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB98DC32782;
+	Tue, 30 Jul 2024 17:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360560;
-	bh=yEMsH3O7/PUmrYTED2ueBb5KJfJmi61IJxoZcHNDQmM=;
+	s=korg; t=1722359594;
+	bh=fQQpQWH9atYBbYdEhJ/tlKs/TLazm7aQ9ZGpDlLNl34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9T4MPuneX04VAKByj9spsFuZczLv1AWifNtUDT28jbyFX6O65zj1WTFDUmphUoGO
-	 F5Jl/p0gB9YFksn5BchWaAv+vuJ4b4H8gMgn43afMdk0sGzhXaz9e03RJVi2HCwZQ8
-	 G5DLOix2ChVKYj40HVRT93UO8W3MKJowlPunHLQw=
+	b=CZIMWCnBRM9ZR5gIEJ2PvpCg35uY38/k96RF2sFVBVw0gC2ZTi1YjpPco9Ju8nksZ
+	 tz9C181AgctGPjH5+7JFIZhDb+zbTaaKAg1pLah2j2EeDmlZ+yzHLRHt+2MdrkkTbD
+	 advfGhC8zIdMl3iQ2cEjN3hvWSlRuugWPJHT8q3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 737/809] phy: qcom: qmp-pcie: restore compatibility with existing DTs
+	Hilda Wu <hildawu@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Erpeng Xu <xuerpeng@uniontech.com>
+Subject: [PATCH 6.6 506/568] Bluetooth: btusb: Add RTL8852BE device 0489:e125 to device tables
 Date: Tue, 30 Jul 2024 17:50:13 +0200
-Message-ID: <20240730151754.057431103@linuxfoundation.org>
+Message-ID: <20240730151659.803456483@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Hilda Wu <hildawu@realtek.com>
 
-[ Upstream commit 912cee11c14376a6f707d72fcaf343a40bff48e8 ]
+commit 295ef07a9dae6182ad4b689aa8c6a7dbba21474c upstream.
 
-Existing device trees specify only a single clock-output-name for the
-PCIe PHYs. The function phy_aux_clk_register() expects a second entry in
-that property. When it doesn't find it, it returns an error, thus
-failing the probe of the PHY and thus breaking support for the
-corresponding PCIe host.
+Add the support ID 0489:e125 to usb_device_id table for
+Realtek RTL8852B chip.
 
-Follow the approach of the combo USB+DT PHY and generate the name for
-the AUX clocks instead of requiring it in DT.
+The device info from /sys/kernel/debug/usb/devices as below.
 
-Fixes: 583ca9ccfa80 ("phy: qcom: qmp-pcie: register second optional PHY AUX clock")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240614-fix-pcie-phy-compat-v3-1-730d1811acf4@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=03 Dev#=  5 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e125 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+
+Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Erpeng Xu <xuerpeng@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-pcie.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/bluetooth/btusb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c b/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
-index 6c796723c8f5a..8fcdcb193d241 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
-@@ -3730,14 +3730,11 @@ static int phy_aux_clk_register(struct qmp_pcie *qmp, struct device_node *np)
- {
- 	struct clk_fixed_rate *fixed = &qmp->aux_clk_fixed;
- 	struct clk_init_data init = { };
--	int ret;
-+	char name[64];
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -551,6 +551,8 @@ static const struct usb_device_id quirks
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
--	ret = of_property_read_string_index(np, "clock-output-names", 1, &init.name);
--	if (ret) {
--		dev_err(qmp->dev, "%pOFn: No clock-output-names index 1\n", np);
--		return ret;
--	}
-+	snprintf(name, sizeof(name), "%s::phy_aux_clk", dev_name(qmp->dev));
- 
-+	init.name = name;
- 	init.ops = &clk_fixed_rate_ops;
- 
- 	fixed->fixed_rate = qmp->cfg->aux_clock_rate;
--- 
-2.43.0
-
+ 	/* Realtek Bluetooth devices */
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x0bda, 0xe0, 0x01, 0x01),
 
 
 
