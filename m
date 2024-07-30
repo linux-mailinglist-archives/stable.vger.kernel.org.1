@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136B694187F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009AB941DD2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440471C22AC5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3081E1C2366F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0D3183CD5;
-	Tue, 30 Jul 2024 16:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEC61A76BB;
+	Tue, 30 Jul 2024 17:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSzb7PdH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTFC0k3w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4761A6161;
-	Tue, 30 Jul 2024 16:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A48B1A76B3;
+	Tue, 30 Jul 2024 17:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356558; cv=none; b=ZawZpbcTVQjBYCBgXiv379fSWqnEG5CXUga3jZy8qlaP3xS3swMxwPo4DdD4vsnEcpfbVCq0xC2kiuw0nXA19kcig30dkN1C+nZ6ofkrbCmeviaP8SfdJX3JYSI4aaPk/AzyX5srPVXkO5gwBJWdARAizS8RTgvsOccYoFVRJjc=
+	t=1722360096; cv=none; b=kjMNtanK7U79V07ARaaAvLPKfN2aRTysDEqdvmURdb4MEadO9vs1R0H+oTlbRZ1TJP4yD12hbpQKfDMXBfNZ98fv+zVaMt5KsQSXVVjstZVs0sZHimnXKdZTj1Vd+bNv2kf80OAaa3ARyluhmndg/hAXJJKnBKzxr51GdI4kc5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356558; c=relaxed/simple;
-	bh=qf8AOlsqAb6zK++T16IOr+90Ae1uEZgVroWjFmKyHP8=;
+	s=arc-20240116; t=1722360096; c=relaxed/simple;
+	bh=UDA6KJWPsk6BZmAnXlX3fArIE7FnsVa8hRAWjRkqDCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FE7GQBRJOV/Y0plaxkWdgj5K61oS08UdwToB+sfEcO/DDYV/GNd16LNUU7EdvvqLkJPRy3+BH3AnSTwtIMYGse4xx1xyLIwaFdRRp0sOBCuDfza5aoJXzvGTZoxSdlgDa6PRTfd6EhFQbm6sBV1oJ4QMHZkKCWFi4YtfM2fmBWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSzb7PdH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67350C32782;
-	Tue, 30 Jul 2024 16:22:37 +0000 (UTC)
+	 MIME-Version; b=VmmkQG5VJYSxNFgu3QMFsIdC2eApMSTtY639w2EiPNqKonsYwzUud92VXsDUxbIKBYoEYNZnaaEkY9K44UWdjNDeHSAhoNPzNZNs1PZDMzkuilD69lDYhmSRy5REbwfBf6JkDP9q86bx3BqoHw74cm8fKpBuTkBvWaWSs+X4f4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTFC0k3w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46BBC32782;
+	Tue, 30 Jul 2024 17:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356557;
-	bh=qf8AOlsqAb6zK++T16IOr+90Ae1uEZgVroWjFmKyHP8=;
+	s=korg; t=1722360096;
+	bh=UDA6KJWPsk6BZmAnXlX3fArIE7FnsVa8hRAWjRkqDCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSzb7PdHooJPFXh33B+an7M5Gq7fVdJYwx8eopYQOWKw0yS8GGTE0pE9StXHucTg1
-	 2nidgePy2en0uWG+xh8Qv/Eq8p8+uU4XzMtUHszC9jPfJNBkJXJsoxDAjm8+DtDL+X
-	 6zaRZTKPTtBdinn7Jja3RXfm0Ih5G8NaC06XaZ/w=
+	b=WTFC0k3wWtvXsHHxeLTeNZ7CPE8ZfytuPNYYXqHndXcA+wnNYAUH/ewgFc3wdNtZx
+	 ABskA7kxw6DGlKoh9N16eG8RZpfofzAzU1Vxf8f2Vdm8DXpBeBt8zyKxTC5iuj6x56
+	 nQCE6sJ085ljTog5AM2k/mXaA1ERtegFL5d60p9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/440] Input: elan_i2c - do not leave interrupt disabled on suspend failure
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 564/809] null_blk: Fix description of the fua parameter
 Date: Tue, 30 Jul 2024 17:47:20 +0200
-Message-ID: <20240730151623.953787930@linuxfoundation.org>
+Message-ID: <20240730151747.043062600@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 5f82c1e04721e7cd98e604eb4e58f0724d8e5a65 ]
+commit 1c0b3fca381bf879e2168b362692f83808677f95 upstream.
 
-Make sure interrupts are not left disabled when we fail to suspend the
-touch controller.
+The description of the fua module parameter is defined using
+MODULE_PARM_DESC() with the first argument passed being "zoned". That is
+the wrong name, obviously. Fix that by using the correct "fua" parameter
+name so that "modinfo null_blk" displays correct information.
 
-Fixes: 6696777c6506 ("Input: add driver for Elan I2C/SMbus touchpad")
-Link: https://lore.kernel.org/r/ZmKiiL-1wzKrhqBj@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f4f84586c8b9 ("null_blk: Introduce fua attribute")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Link: https://lore.kernel.org/r/20240702073234.206458-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/elan_i2c_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/null_blk/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/mouse/elan_i2c_core.c b/drivers/input/mouse/elan_i2c_core.c
-index d4eb59b55bf1f..5fa0d6ef627bc 100644
---- a/drivers/input/mouse/elan_i2c_core.c
-+++ b/drivers/input/mouse/elan_i2c_core.c
-@@ -1372,6 +1372,8 @@ static int __maybe_unused elan_suspend(struct device *dev)
- 	}
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 83a4ebe4763a..5de9ca4eceb4 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -227,7 +227,7 @@ MODULE_PARM_DESC(mbps, "Cache size in MiB for memory-backed device. Default: 0 (
  
- err:
-+	if (ret)
-+		enable_irq(client->irq);
- 	mutex_unlock(&data->sysfs_mutex);
- 	return ret;
- }
+ static bool g_fua = true;
+ module_param_named(fua, g_fua, bool, 0444);
+-MODULE_PARM_DESC(zoned, "Enable/disable FUA support when cache_size is used. Default: true");
++MODULE_PARM_DESC(fua, "Enable/disable FUA support when cache_size is used. Default: true");
+ 
+ static unsigned int g_mbps;
+ module_param_named(mbps, g_mbps, uint, 0444);
 -- 
-2.43.0
+2.45.2
 
 
 
