@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-63845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B22941AEB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3C39417A5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93AC1C229BC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34D401F245E9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE66B155CB3;
-	Tue, 30 Jul 2024 16:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB3D18E040;
+	Tue, 30 Jul 2024 16:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3gxKn/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddLHot1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7C014831F;
-	Tue, 30 Jul 2024 16:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A21918E03C;
+	Tue, 30 Jul 2024 16:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358135; cv=none; b=dTGLVlRp+3Fi0IiLMhkv3AfFBEd/5yQAYqEfQz4TjuoY6gXZt9zhBIOaSOPogNWfSjP5Tr7CMzBV5ylvhssJA4N3qgX9vd7bpfU1d6ogn23BlEaWYMsnSy0gp5N1GCP1GspFi7gbmgTGXXFK48wla2OfNUaZQIEAryQWZXOq0rs=
+	t=1722355850; cv=none; b=WeSznjIl7bm1krD9Zz0C6s34q/HN74fF9nabMcrA8wOqw5TNLb+rOr4qnUbRlyf1oxaD/ZRjGzbzaGtcvfxA/wxH84hQRW0HLJ/lXdnvTSx6k8eZjRXRGHPBqRJCFG4wSAo9yKgnUP/hjAbj42rVQ9YGDk7Q+d+Gy0w5SOLETQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358135; c=relaxed/simple;
-	bh=Ue++hnAzbXuS+/GXxeMAdcWFlPMfD/PcO+liEdccaT0=;
+	s=arc-20240116; t=1722355850; c=relaxed/simple;
+	bh=PgbvTgmjHd8ef+qmKcuWLfLrPWLQrxArkyVTRuHjAjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTewY3O4eSi4H3loXLe5AqgnN+1Jd4xJlPuhgDHAS/EAhpdQHMPYurNA35NqGxUPyKN225c4jumZWEHxDttbUONT+Jnh5LN5efVLJGJaQ4vfiGmsT2LX03gEw5vZevaYAhPKVjf9ZTIH0JEsP38NskNixVzzYQ36dwPwu59nH4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3gxKn/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17275C4AF0C;
-	Tue, 30 Jul 2024 16:48:54 +0000 (UTC)
+	 MIME-Version; b=O5jiwSyNDrV5h+f/2trgIfSITnv5t6SXmfMNN7aEo/BBRiFHMM/PUb+inIV/T3ZJXS33gwaUaJP1MBwLaVtOMTQ8rSBhh/WorjLp3mEgkLCMQO7QDhz5FlSqxIfVSqWU/IWQIx8VKKHmvQvOUgTov21kR/PuRxcHVAimHOWHuuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddLHot1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9486C4AF0A;
+	Tue, 30 Jul 2024 16:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358135;
-	bh=Ue++hnAzbXuS+/GXxeMAdcWFlPMfD/PcO+liEdccaT0=;
+	s=korg; t=1722355850;
+	bh=PgbvTgmjHd8ef+qmKcuWLfLrPWLQrxArkyVTRuHjAjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A3gxKn/p1ZOVoz23rFbJ1ZMiJANfLzGmc4TexDbMDlI2fJa2LWnRmDQZK0g11uZbT
-	 5MS1XqPubagsnz1lS966tRCnnmKf47pWDkhgNgkCjOAJbtvjj4Db+6osSvn3pvOZiV
-	 D/ggnFDRQG3SnWsQkDQ0QvfsWCjoXpNVQx+IudFs=
+	b=ddLHot1RDJwC42sesrr2IelCHZepj7boIyFsx97VbQ5Aa159r37Fsr1D24dpRYac3
+	 dQ0/QOliWMrE9QlBwIXUZOKL2wkXAqjz69gDSv32aw5Lzsbzzj8xye1clgy9IkEflj
+	 iHulO9C+ofG0y1y3I+HnCZQbIEBZAF3o6Jf9fs8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	George Zhang <george.zhang@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	Sasha Levin <sashal@kernel.org>,
-	George Zhang <George.zhang@amd.com>
-Subject: [PATCH 6.10 308/809] drm/amd/display: use pre-allocated temp structure for bounding box
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 077/568] arm64: dts: amlogic: gx: correct hdmi clocks
 Date: Tue, 30 Jul 2024 17:43:04 +0200
-Message-ID: <20240730151736.763458353@linuxfoundation.org>
+Message-ID: <20240730151642.871845139@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,113 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit afe9555e79fcd0d758e3796ad00fd6292d99361b ]
+[ Upstream commit 0602ba0dcd0e76067a0b7543e92b2de3fb231073 ]
 
-This mirrors what the driver does for older DCN generations.
+The clocks provided to HDMI tx are not consistent between gx and g12:
+* gx receives the peripheral clock as 'isfr' while g12 receives it as
+  'iahb'
+* g12 gets the HDMI system clock as 'isfr' but gx does not even get it.
+  It surely needs that clock since the driver is directly poking around
+  the clock controller's registers for that clock.
 
-Should fix:
+Align gx SoCs with g12 and provide:
+ * the HDMI peripheral clock as 'iahb'
+ * the HDMI system clock as 'isfr'
 
-BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 449, name: kworker/u64:8
-preempt_count: 2, expected: 0
-RCU nest depth: 0, expected: 0
-Preemption disabled at:
-ffffffffc0ce1580>] dc_fpu_begin+0x30/0xd0 [amdgpu]
-CPU: 5 PID: 449 Comm: kworker/u64:8 Tainted: G        W          6.8.0+ #35
-Hardware name: System manufacturer System Product Name/ROG STRIX X570-E GAMING WIFI II, BIOS 4204 02/24/2022
-Workqueue: events_unbound async_run_entry_fn
-
-v2: drop extra memcpy
-
-Fixes: 88c61827cedc ("drm/amd/display: dynamically allocate dml2_configuration_options structures")
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Tested-by: George Zhang <George.zhang@amd.com> (v1)
-Suggested-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: George Zhang <george.zhang@amd.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: harry.wentland@amd.com
-Cc: sunpeng.li@amd.com
-Cc: Rodrigo.Siqueira@amd.com
+Fixes: 6939db7e0dbf ("ARM64: dts: meson-gx: Add support for HDMI output")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240626152733.1350376-2-jbrunet@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h                       | 1 +
- .../drm/amd/display/dc/resource/dcn32/dcn32_resource.c    | 8 ++------
- .../drm/amd/display/dc/resource/dcn321/dcn321_resource.c  | 8 ++------
- 3 files changed, 5 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 4 ++--
+ arch/arm64/boot/dts/amlogic/meson-gxl.dtsi  | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index 3c33c3bcbe2cb..4362fca1f15ad 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -1392,6 +1392,7 @@ struct dc {
- 	} scratch;
- 
- 	struct dml2_configuration_options dml2_options;
-+	struct dml2_configuration_options dml2_tmp;
- 	enum dc_acpi_cm_power_state power_state;
- 
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+index 12ef6e81c8bd6..a15c1ef30a88b 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+@@ -311,8 +311,8 @@ &hdmi_tx {
+ 		 <&reset RESET_HDMI_SYSTEM_RESET>,
+ 		 <&reset RESET_HDMI_TX>;
+ 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
+-	clocks = <&clkc CLKID_HDMI_PCLK>,
+-		 <&clkc CLKID_CLK81>,
++	clocks = <&clkc CLKID_HDMI>,
++		 <&clkc CLKID_HDMI_PCLK>,
+ 		 <&clkc CLKID_GCLK_VENCI_INT0>;
+ 	clock-names = "isfr", "iahb", "venci";
  };
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-index 957002967d691..d84c8e0e5c2f0 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
-@@ -2006,11 +2006,9 @@ void dcn32_calculate_wm_and_dlg(struct dc *dc, struct dc_state *context,
- 
- static void dcn32_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params)
- {
--	struct dml2_configuration_options *dml2_opt;
-+	struct dml2_configuration_options *dml2_opt = &dc->dml2_tmp;
- 
--	dml2_opt = kmemdup(&dc->dml2_options, sizeof(dc->dml2_options), GFP_KERNEL);
--	if (!dml2_opt)
--		return;
-+	memcpy(dml2_opt, &dc->dml2_options, sizeof(dc->dml2_options));
- 
- 	DC_FP_START();
- 
-@@ -2025,8 +2023,6 @@ static void dcn32_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw
- 		dml2_reinit(dc, dml2_opt, &dc->current_state->bw_ctx.dml2_dc_power_source);
- 
- 	DC_FP_END();
--
--	kfree(dml2_opt);
- }
- 
- static struct resource_funcs dcn32_res_pool_funcs = {
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-index 07ca6f58447d6..9a3cc0514a36e 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
-@@ -1581,11 +1581,9 @@ static struct dc_cap_funcs cap_funcs = {
- 
- static void dcn321_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params)
- {
--	struct dml2_configuration_options *dml2_opt;
-+	struct dml2_configuration_options *dml2_opt = &dc->dml2_tmp;
- 
--	dml2_opt = kmemdup(&dc->dml2_options, sizeof(dc->dml2_options), GFP_KERNEL);
--	if (!dml2_opt)
--		return;
-+	memcpy(dml2_opt, &dc->dml2_options, sizeof(dc->dml2_options));
- 
- 	DC_FP_START();
- 
-@@ -1600,8 +1598,6 @@ static void dcn321_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *b
- 		dml2_reinit(dc, dml2_opt, &dc->current_state->bw_ctx.dml2_dc_power_source);
- 
- 	DC_FP_END();
--
--	kfree(dml2_opt);
- }
- 
- static struct resource_funcs dcn321_res_pool_funcs = {
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
+index 17bcfa4702e17..a53b38045b3d2 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
+@@ -323,8 +323,8 @@ &hdmi_tx {
+ 		 <&reset RESET_HDMI_SYSTEM_RESET>,
+ 		 <&reset RESET_HDMI_TX>;
+ 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
+-	clocks = <&clkc CLKID_HDMI_PCLK>,
+-		 <&clkc CLKID_CLK81>,
++	clocks = <&clkc CLKID_HDMI>,
++		 <&clkc CLKID_HDMI_PCLK>,
+ 		 <&clkc CLKID_GCLK_VENCI_INT0>;
+ 	clock-names = "isfr", "iahb", "venci";
+ };
 -- 
 2.43.0
 
