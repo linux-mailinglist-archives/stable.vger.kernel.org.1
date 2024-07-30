@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FDDA9419F5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FEC941C2C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29CD9282C27
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B4441F213C6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6AE189902;
-	Tue, 30 Jul 2024 16:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B772F187FF6;
+	Tue, 30 Jul 2024 17:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veQQNDKl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5hl/4v3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD717183CDB;
-	Tue, 30 Jul 2024 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E891A6192;
+	Tue, 30 Jul 2024 17:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357498; cv=none; b=X1k/dc4Ikd/5QDC3/qiJ7PX74P4ko9qHfJ5MMv/jYXimSCLhO4ll6NT8s8dDJBoJxdQLFt0E/F6llMTP3RxgkwGYB2TH+ae0fw8lmk2dUuI+uFgjrODWVbXluxZSV0ycgxPLYZEGdHzXMBaoyBnLpwS2cK/Iba4/eQqw8HflPKw=
+	t=1722359042; cv=none; b=QI98Z7+ya+lNff6eA5Mt8aMYYri5BKgzHsDC0+mnDsUcUmwXaQ5uVm/4sJZ4Q4sKplHnU/VEo041I1OpHfmfqZ4bHMowIxMZxH2il9pufQJRJuU2JFCdixWKVUY/d/V8dSghyg1lwjmi4c+7al/SQdpK6RBYbiQZpvZSSw/Uy5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357498; c=relaxed/simple;
-	bh=6JQwwHVNK9kvcJhQODhXsQK6Is2jnZ481j59kzoQVMY=;
+	s=arc-20240116; t=1722359042; c=relaxed/simple;
+	bh=6r1T7BMXOHkU6MSPpb2BS3c5xuIvmGqPYPC7dXVh1ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cl8L2zpkfGP5ouD0RVZJYwz6RDG2kDv0Yw5zOqa6rylfzmomrN8Eb8QX38y0GcfTvEP3hnRac/OmM8Wwl266hhdMwvJgTTwp8xHCuaZ3H5Om4M0uN46w4yZK+9NIfVNMNuQsrGSS1bbAnJ6kdyu7a40tXKCm6Csr5YPY5/cOMdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veQQNDKl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45591C4AF0E;
-	Tue, 30 Jul 2024 16:38:18 +0000 (UTC)
+	 MIME-Version; b=U/eAEXfod9OXiVUPjOEAjrdbUtQcdrU2JeQCthRB72C1uQoms9Um6+3oFnPzBbn8DHrIB0wwrlJJqNedIx3Qnxe/TATp8WawsYhG/lkV1rMlfi5umqIwTOBqu75rH0G9v4ObTVZHdD6eaS4Cdbqu0g3oeDMofX1dYPMKbYa5Xs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5hl/4v3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D302FC4AF0A;
+	Tue, 30 Jul 2024 17:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357498;
-	bh=6JQwwHVNK9kvcJhQODhXsQK6Is2jnZ481j59kzoQVMY=;
+	s=korg; t=1722359042;
+	bh=6r1T7BMXOHkU6MSPpb2BS3c5xuIvmGqPYPC7dXVh1ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=veQQNDKldOhAEIJrk065SewynHSRqgpQl1S7yFg87T7LF51hS9v1HtBKr/1CI0y98
-	 EfPFrXWh15tPT0o2aWOwnjebj72AJd78pKOUbzvsmxFECdB3AEc4iqXOSwhrfIyoSV
-	 Xmxm5C4BVndVnj+dsREcRc5poEnjOicDZJp4gFYk=
+	b=g5hl/4v3hsd7dRgquYEMmggULDwDOagqHEWSs8kS61DQdWEyIJg7LydZoPysEuhhw
+	 A0qGl9A5AXs7zxlL0dq06VYTtOMGgJsbCrzVaP06KJw3TPYK0I0/zYmF9lVkvIFL/v
+	 9EJIDgm62S351Br6jcBcMzkJNOhXBJSEr+L6xMT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowell@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 298/440] cifs: mount with "unix" mount option for SMB1 incorrectly handled
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 424/568] parisc: Fix warning at drivers/pci/msi/msi.h:121
 Date: Tue, 30 Jul 2024 17:48:51 +0200
-Message-ID: <20240730151627.467521270@linuxfoundation.org>
+Message-ID: <20240730151656.438286325@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: John David Anglin <dave@mx3210.local>
 
-commit 0e314e452687ce0ec5874e42cdb993a34325d3d2 upstream.
+commit 4c29ab84cfec17081aae7a7a28f8d2c93c42dcae upstream.
 
-Although by default we negotiate CIFS Unix Extensions for SMB1 mounts to
-Samba (and they work if the user does not specify "unix" or "posix" or
-"linux" on mount), and we do properly handle when a user turns them off
-with "nounix" mount parm.  But with the changes to the mount API we
-broke cases where the user explicitly specifies the "unix" option (or
-equivalently "linux" or "posix") on mount with vers=1.0 to Samba or other
-servers which support the CIFS Unix Extensions.
+Fix warning at drivers/pci/msi/msi.h:121.
 
- "mount error(95): Operation not supported"
+Recently, I added a PCI to PCIe bridge adaptor and a PCIe NVME card
+to my rp3440. Then, I noticed this warning at boot:
 
-and logged:
+ WARNING: CPU: 0 PID: 10 at drivers/pci/msi/msi.h:121 pci_msi_setup_msi_irqs+0x68/0x90
+ CPU: 0 PID: 10 Comm: kworker/u32:0 Not tainted 6.9.7-parisc64 #1  Debian 6.9.7-1
+ Hardware name: 9000/800/rp3440
+ Workqueue: async async_run_entry_fn
 
- "CIFS: VFS: Check vers= mount option. SMB3.11 disabled but required for POSIX extensions"
+We need to select PCI_MSI_ARCH_FALLBACKS when PCI_MSI is selected.
 
-even though CIFS Unix Extensions are supported for vers=1.0  This patch fixes
-the case where the user specifies both "unix" (or equivalently "posix" or
-"linux") and "vers=1.0" on mount to a server which supports the
-CIFS Unix Extensions.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: David Howells <dhowell@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Cc: stable@vger.kernel.org	# v6.0+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/parisc/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2592,6 +2592,13 @@ cifs_get_tcon(struct cifs_ses *ses, stru
- 			cifs_dbg(VFS, "Server does not support mounting with posix SMB3.11 extensions\n");
- 			rc = -EOPNOTSUPP;
- 			goto out_fail;
-+		} else if (ses->server->vals->protocol_id == SMB10_PROT_ID)
-+			if (cap_unix(ses))
-+				cifs_dbg(FYI, "Unix Extensions requested on SMB1 mount\n");
-+			else {
-+				cifs_dbg(VFS, "SMB1 Unix Extensions not supported by server\n");
-+				rc = -EOPNOTSUPP;
-+				goto out_fail;
- 		} else {
- 			cifs_dbg(VFS, "Check vers= mount option. SMB3.11 "
- 				"disabled but required for POSIX extensions\n");
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -83,6 +83,7 @@ config PARISC
+ 	select HAVE_SOFTIRQ_ON_OWN_STACK if IRQSTACKS
+ 	select TRACE_IRQFLAGS_SUPPORT
+ 	select HAVE_FUNCTION_DESCRIPTORS if 64BIT
++	select PCI_MSI_ARCH_FALLBACKS if PCI_MSI
+ 
+ 	help
+ 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
 
 
 
