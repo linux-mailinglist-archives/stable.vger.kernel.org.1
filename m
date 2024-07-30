@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E007E941E6A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDB7941D32
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848FE1F24FF4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A14A1C23B06
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4593A1A76C2;
-	Tue, 30 Jul 2024 17:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819671A76AF;
+	Tue, 30 Jul 2024 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UK9KJhbh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBMK6Nzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0110E1A76CB;
-	Tue, 30 Jul 2024 17:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4027B1A76A0;
+	Tue, 30 Jul 2024 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360515; cv=none; b=MwHjyBsmYKHYi5sHSaiCQe4/pyuc4sUEPkVt2T/KAqcM+aFcLeBIAl14rGaNdOBrVZr9TDa81hvTnl8PAi0QgGDEkHg+031rJ8Ib57T4k043D41re2wop7pEmeTEvSGWHx5Dep2cnq0KX15+s8pEWrSjDTLCgLul26/8iebAhoE=
+	t=1722359648; cv=none; b=mtxWtfRHGBw2/REupVUr0zWh9/zvzh6mGm8NAukkqZ/QBKxXd/9NkAo1ANq+/Gj2/xMWAzZz7RT4S6wIAPtwp6VjpkW1EmBcoXrv2M1yiRJvsISU4HBXixLoDZyyiUzCna0LKVCC9frD4wHBJRUWbdNj9Vz5V6EkYNuyrKeupV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360515; c=relaxed/simple;
-	bh=XF8VD0jc/7Ksyc5q0G3i4WHyroq2VudrrsMbL5bs7h4=;
+	s=arc-20240116; t=1722359648; c=relaxed/simple;
+	bh=LCnxEwuqI/Soy44809sz3phrMGdJuM3SLMBgjAAeGhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmV2X5sKQg+WJEtXihwkpkcOJsaWUFEaXDfMfJndVcIFsCNJ9NSpoezuhDl02OMrs9t6tETPw1E+7g4dXIPZ+pBe2knl0KUv9s24hMvFk1wrIhbmmxKftFLIz6Mreu8NZtNV1Z/zvICRXLLZSfqf0zp6ltKGgybQ73FqDh4an80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UK9KJhbh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3541FC32782;
-	Tue, 30 Jul 2024 17:28:34 +0000 (UTC)
+	 MIME-Version; b=ApNGSgV1r1vQLDuKb7B5ndwWcai2thXZqeudSWQhJsZWPsYtgq3ZDi6KfttOOEoyd+IRjy5Vyi9PwRUMoDSJmPBQ8B0Ja8jqkyAKaOv59uZIgcXwPvAAXWP6a6O8uG/Aw2NU6dCW5ZcizCP66J4s0VcIw6RKrMjNdhOajN9zQ9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBMK6Nzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B8FC32782;
+	Tue, 30 Jul 2024 17:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360514;
-	bh=XF8VD0jc/7Ksyc5q0G3i4WHyroq2VudrrsMbL5bs7h4=;
+	s=korg; t=1722359648;
+	bh=LCnxEwuqI/Soy44809sz3phrMGdJuM3SLMBgjAAeGhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UK9KJhbhVQDRxRIMkVbvrWAPiqPAxa2MyYx8B832L3PbcMB5KdhY0ri6NNYhwUgMP
-	 rQiKrcOJN0DInd3wvuA0PtJS0Hef6TO6aVTofYYkOvmxborBUbKzPFdxZ90F06vDn+
-	 CXYP7+3Hea6VvElQxeO4z5MPiniCwTfpmc9dnnRs=
+	b=IBMK6Nzm9bgD95rasBAMZQUy+sEyxl6ClEZbbElmSfNqCzlCVDOoYif405tUMlv4D
+	 HTWNpXEDZOGeKi7/QzkR8B6jVD2WGqGc5WdGgPDEQHfksc6FnBCBH6t0R4FcfOvGLl
+	 B8LdloBM/Ftre0daHy075CSutpadokANNRtVkFqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Aleksandr Mishin <amishin@t-argos.ru>,
+	Peng Fan <peng.fan@nxp.com>,
 	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.10 721/809] remoteproc: imx_rproc: Fix refcount mistake in imx_rproc_addr_init
-Date: Tue, 30 Jul 2024 17:49:57 +0200
-Message-ID: <20240730151753.416450383@linuxfoundation.org>
+Subject: [PATCH 6.6 491/568] remoteproc: imx_rproc: Skip over memory region when node value is NULL
+Date: Tue, 30 Jul 2024 17:49:58 +0200
+Message-ID: <20240730151659.221145974@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit dce68a49be26abf52712e0ee452a45fa01ab4624 upstream.
+commit 2fa26ca8b786888673689ccc9da6094150939982 upstream.
 
-In imx_rproc_addr_init() strcmp() is performed over the node after the
-of_node_put() is performed over it.
-Fix this error by moving of_node_put() calls.
+In imx_rproc_addr_init() "nph = of_count_phandle_with_args()" just counts
+number of phandles. But phandles may be empty. So of_parse_phandle() in
+the parsing loop (0 < a < nph) may return NULL which is later dereferenced.
+Adjust this issue by adding NULL-return check.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 5e4c1243071d ("remoteproc: imx_rproc: support remote cores booted before Linux Kernel")
-Cc: stable@vger.kernel.org
+Fixes: a0ff4aa6f010 ("remoteproc: imx_rproc: add a NXP/Freescale imx_rproc driver")
 Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240612131714.12907-1-amishin@t-argos.ru
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240606075204.12354-1-amishin@t-argos.ru
+[Fixed title to fit within the prescribed 70-75 charcters]
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/imx_rproc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/remoteproc/imx_rproc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
 --- a/drivers/remoteproc/imx_rproc.c
 +++ b/drivers/remoteproc/imx_rproc.c
-@@ -734,25 +734,29 @@ static int imx_rproc_addr_init(struct im
- 			continue;
- 		}
- 		err = of_address_to_resource(node, 0, &res);
--		of_node_put(node);
- 		if (err) {
- 			dev_err(dev, "unable to resolve memory region\n");
-+			of_node_put(node);
- 			return err;
- 		}
+@@ -729,6 +729,8 @@ static int imx_rproc_addr_init(struct im
+ 		struct resource res;
  
--		if (b >= IMX_RPROC_MEM_MAX)
-+		if (b >= IMX_RPROC_MEM_MAX) {
-+			of_node_put(node);
- 			break;
-+		}
- 
- 		/* Not use resource version, because we might share region */
- 		priv->mem[b].cpu_addr = devm_ioremap_wc(&pdev->dev, res.start, resource_size(&res));
- 		if (!priv->mem[b].cpu_addr) {
- 			dev_err(dev, "failed to remap %pr\n", &res);
-+			of_node_put(node);
- 			return -ENOMEM;
- 		}
- 		priv->mem[b].sys_addr = res.start;
- 		priv->mem[b].size = resource_size(&res);
- 		if (!strcmp(node->name, "rsc-table"))
- 			priv->rsc_table = priv->mem[b].cpu_addr;
-+		of_node_put(node);
- 		b++;
- 	}
- 
+ 		node = of_parse_phandle(np, "memory-region", a);
++		if (!node)
++			continue;
+ 		/* Not map vdevbuffer, vdevring region */
+ 		if (!strncmp(node->name, "vdev", strlen("vdev"))) {
+ 			of_node_put(node);
 
 
 
