@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-63256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64250941817
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4012594181A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9600D1C2272B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71EE11C2087F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4DF18454A;
-	Tue, 30 Jul 2024 16:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC3918801A;
+	Tue, 30 Jul 2024 16:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bd5/myog"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLUWfLiG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD221A616E;
-	Tue, 30 Jul 2024 16:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE66187FF6;
+	Tue, 30 Jul 2024 16:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356233; cv=none; b=EuTdvdxDO56Jgm3AM9vddCJdFgMa2WFlQmvg2uDWpKv5x3DTxwH4ws8hR0MCgSJY4VgTVcMTyDLVIy9LsXRGA8PmOj8F7IOR+fidvReD4ea6iAv7XdCWGsbsxscWcZ4Wf2okDG5Vk8Ujx6yuroPJH4qccmIH8Kj/F0ujB/q6JUM=
+	t=1722356243; cv=none; b=dwNSdQGp5IkMHyywa9nB7QDYusgXv14PkorIfTLFTYuzyYLFENJMqg2SbJuAMyyP07xPZBLI19gj/W0FbAMomqcobhdTIK8kcXW0G/A+CNGG23uNYU4HMnjGSeHOVndDcEIHKBnKUd0I7ev4rOHnwClKQNIKn9EUG91oPGr/CrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356233; c=relaxed/simple;
-	bh=032EvW4DNicSBoASSpjYIK3/xUhWPEzNfTn6wIW8UH0=;
+	s=arc-20240116; t=1722356243; c=relaxed/simple;
+	bh=PfvuOJQl6CgvHaGSvOL3Cpg2VORwwRrUElaL97TGnhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rE7zi5U8O6bjvJTE915a+EpCk7c00/c7Pp0Y5Ui7oTYCD3qR0WlR14IsWtRo56tr3FilDDhCX/caOX6kIEVFbQGbHIgDHT3T7XS9/JGm4fyWu3KXojZAwkkgrJsbRy83pG35/zme7BZjel87/gd+4TgMlMveTrbOiDcDYqGpnlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bd5/myog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E37C32782;
-	Tue, 30 Jul 2024 16:17:12 +0000 (UTC)
+	 MIME-Version; b=LvJsqwAvi8NRStoyLCVqKE6uBAl4OxiiKlzuHWnSu3nABLtXsDnrDTexa47r985wAE2ftbx//7i/hHscc6dEfJsXG8o6QRXDAsBQ+CJVkFzT22oBrJ+xJl9ewvWZrNByxvTnGNwx11nXi1B9RfCjPcZm+n4CSwiyBL2EfEUKyKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLUWfLiG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52037C32782;
+	Tue, 30 Jul 2024 16:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356233;
-	bh=032EvW4DNicSBoASSpjYIK3/xUhWPEzNfTn6wIW8UH0=;
+	s=korg; t=1722356242;
+	bh=PfvuOJQl6CgvHaGSvOL3Cpg2VORwwRrUElaL97TGnhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bd5/myogGiGkWRa5FkA8AcMKhDsw7PAfNT97VUsK2e+UyNcNOj3+8YPkAqdZlFV0y
-	 M5/Q1dPxNygSJkKZocX6E4dYeqnu1ebIOJdv7fdpmPnYr+qdaKPScdHN6aZVBNt3Oa
-	 TwdNCTtBHEkDswt1pvTYyeqKUrlbqAmqor2fI5Uo=
+	b=wLUWfLiGtT9hU+/K8OlOSuIE9GoUsYzIYbZshoArGuVeREbHFoFGAmUps2s0VKjSJ
+	 NgAJUzX39n0gIOoLPkljlyCkvf75eXJc0CcXckpzGF2QP2kvkdvx7lFpD3QIb2webv
+	 vmILosjJxYRHmOFr0x7Az81JfVHfPfI3e68sxmeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+	syzbot+0333a6f4b88bcd68a62f@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/568] selftests/bpf: Check length of recv in test_sockmap
-Date: Tue, 30 Jul 2024 17:43:53 +0200
-Message-ID: <20240730151644.797663933@linuxfoundation.org>
+Subject: [PATCH 6.6 127/568] udf: Fix lock ordering in udf_evict_inode()
+Date: Tue, 30 Jul 2024 17:43:54 +0200
+Message-ID: <20240730151644.835778750@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -68,38 +66,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit de1b5ea789dc28066cc8dc634b6825bd6148f38b ]
+[ Upstream commit 8832fc1e502687869606bb0a7b79848ed3bf036f ]
 
-The value of recv in msg_loop may be negative, like EWOULDBLOCK, so it's
-necessary to check if it is positive before accumulating it to bytes_recvd.
+udf_evict_inode() calls udf_setsize() to truncate deleted inode.
+However inode deletion through udf_evict_inode() can happen from inode
+reclaim context and udf_setsize() grabs mapping->invalidate_lock which
+isn't generally safe to acquire from fs reclaim context since we
+allocate pages under mapping->invalidate_lock for example in a page
+fault path.  This is however not a real deadlock possibility as by the
+time udf_evict_inode() is called, nobody can be accessing the inode,
+even less work with its page cache. So this is just a lockdep triggering
+false positive. Fix the problem by moving mapping->invalidate_lock
+locking outsize of udf_setsize() into udf_setattr() as grabbing
+mapping->invalidate_lock from udf_evict_inode() is pointless.
 
-Fixes: 16962b2404ac ("bpf: sockmap, add selftests")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/5172563f7c7b2a2e953cef02e89fc34664a7b190.1716446893.git.tanggeliang@kylinos.cn
+Reported-by: syzbot+0333a6f4b88bcd68a62f@syzkaller.appspotmail.com
+Fixes: b9a861fd527a ("udf: Protect truncate and file type conversion with invalidate_lock")
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/udf/file.c  |  2 ++
+ fs/udf/inode.c | 11 ++++-------
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index e32e49a3eec2c..a181c0ccf98b2 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -680,7 +680,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 				}
+diff --git a/fs/udf/file.c b/fs/udf/file.c
+index 0ceac4b5937c7..94daaaf76f71c 100644
+--- a/fs/udf/file.c
++++ b/fs/udf/file.c
+@@ -232,7 +232,9 @@ static int udf_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 
+ 	if ((attr->ia_valid & ATTR_SIZE) &&
+ 	    attr->ia_size != i_size_read(inode)) {
++		filemap_invalidate_lock(inode->i_mapping);
+ 		error = udf_setsize(inode, attr->ia_size);
++		filemap_invalidate_unlock(inode->i_mapping);
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+index 1ff8c1f17f9e6..8db07d1f56bc9 100644
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -1252,7 +1252,6 @@ int udf_setsize(struct inode *inode, loff_t newsize)
+ 	if (IS_APPEND(inode) || IS_IMMUTABLE(inode))
+ 		return -EPERM;
+ 
+-	filemap_invalidate_lock(inode->i_mapping);
+ 	iinfo = UDF_I(inode);
+ 	if (newsize > inode->i_size) {
+ 		if (iinfo->i_alloc_type == ICBTAG_FLAG_AD_IN_ICB) {
+@@ -1265,11 +1264,11 @@ int udf_setsize(struct inode *inode, loff_t newsize)
  			}
+ 			err = udf_expand_file_adinicb(inode);
+ 			if (err)
+-				goto out_unlock;
++				return err;
+ 		}
+ 		err = udf_extend_file(inode, newsize);
+ 		if (err)
+-			goto out_unlock;
++			return err;
+ set_size:
+ 		truncate_setsize(inode, newsize);
+ 	} else {
+@@ -1287,14 +1286,14 @@ int udf_setsize(struct inode *inode, loff_t newsize)
+ 		err = block_truncate_page(inode->i_mapping, newsize,
+ 					  udf_get_block);
+ 		if (err)
+-			goto out_unlock;
++			return err;
+ 		truncate_setsize(inode, newsize);
+ 		down_write(&iinfo->i_data_sem);
+ 		udf_clear_extent_cache(inode);
+ 		err = udf_truncate_extents(inode);
+ 		up_write(&iinfo->i_data_sem);
+ 		if (err)
+-			goto out_unlock;
++			return err;
+ 	}
+ update_time:
+ 	inode->i_mtime = inode_set_ctime_current(inode);
+@@ -1302,8 +1301,6 @@ int udf_setsize(struct inode *inode, loff_t newsize)
+ 		udf_sync_inode(inode);
+ 	else
+ 		mark_inode_dirty(inode);
+-out_unlock:
+-	filemap_invalidate_unlock(inode->i_mapping);
+ 	return err;
+ }
  
--			s->bytes_recvd += recv;
-+			if (recv > 0)
-+				s->bytes_recvd += recv;
- 
- 			if (opt->check_recved_len && s->bytes_recvd > total_bytes) {
- 				errno = EMSGSIZE;
 -- 
 2.43.0
 
