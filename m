@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B4D941B10
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29AA0941D2D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C14BB2504D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B2E01C23B6D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC998184535;
-	Tue, 30 Jul 2024 16:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC7718B46E;
+	Tue, 30 Jul 2024 17:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0RSETiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOO0nwNa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6821A6192;
-	Tue, 30 Jul 2024 16:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8001A76A3;
+	Tue, 30 Jul 2024 17:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357662; cv=none; b=YGUTdijHYZIxPqjPnUHzZmrPampH6O0NK1Vgb5guSct1RtqMAuRctcXF7zL/VL8knjigWRAx/s+55aZZYftR5EUy4yi6gSfiLq6U+v5VSRUaTm5rBeiyENfxnTIGKh3GJlGUEiWr49ngZX1Fb/puAsmYqPTgcTe6J6G63zpXWMg=
+	t=1722359634; cv=none; b=t4S8ZYoqxsbT+RezEscPwTzRSFQIqTW/KeC7htVg0w43ZDh+h2odhl9fzacUoK5zRqvIs7TNhNjOZT70+06sZhkr9xu9EjVIBNfb3MCrb1jcp5NoT/Iz//Q/a1wgacjL1PHCeiLK8Xy+C9a7ADZrq2XBCgJN3hHVSsPfZ2psO0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357662; c=relaxed/simple;
-	bh=jR2V1zeeA9lAuftav9GmiOzbj4hGNlBn6JWZq2legFc=;
+	s=arc-20240116; t=1722359634; c=relaxed/simple;
+	bh=XgWCA9QhUYuuvC5U9INnZtVaRkZUHGWvqJs+GP4D0GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SohDPU5tJabJo4cw6UEtX+Hq5dOX6tgkXCKpXLihYOcysKYgLZ2H0ZHAM6tLWIDcxMTUE8IGysAy7uultqwV681Fq4DylWS+n3atctIpLsKKlY9uT1wZT5rlZW5iUDPDQiD9ai4+LdWh2X3x8Tk/6HKz+s7MxDUrR2ZovR4rJ6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0RSETiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209ABC32782;
-	Tue, 30 Jul 2024 16:41:01 +0000 (UTC)
+	 MIME-Version; b=TDEHB9CIAKQt6DQpmtoW8zDviXLbv37Ns/dMyiXbZsfqZcnK/WpsEYHyWA1aUghrcg8BHDi/Ywd2GtUjvWcy/vIe3zA2LXTzRdeO2LJ6mfyJW+BJn9BLA9bNKJB8j5d+mijeKSqx/SbyasZKm8RMwmzPaJ+lNtG8HHPVV/8OKJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOO0nwNa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42662C32782;
+	Tue, 30 Jul 2024 17:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357662;
-	bh=jR2V1zeeA9lAuftav9GmiOzbj4hGNlBn6JWZq2legFc=;
+	s=korg; t=1722359634;
+	bh=XgWCA9QhUYuuvC5U9INnZtVaRkZUHGWvqJs+GP4D0GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0RSETiJo+FivbuM+V/D1JG+McE0zb+g4B/Wcq2po+pGjQwH7hkLwwUbrv9T903Yb
-	 2AaR88Ct04OeUp/dhpKc68NpP3LbIeHAUZR3u6X9Ka502exnwp4aU9k4fOuyWolp2N
-	 OMcU2Zk4p7peh8H4hpB/AgJKgNJTtwbtpWCVYzwg=
+	b=iOO0nwNa42/w1oV6mPgJXmi5MTVqV737AgJqftirnLLfUBQOZ7I8rtEwwvksuMAQt
+	 km7XCvA9+LrKl4yN0j3iRnwoOcXHG8+3XvwWGaWXGIXuaRDHUy6v2cu5Bj2K5klkoJ
+	 Ak1a3php5PCRShpKazgF/m67Ll3WaFkNKIFVAroU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 279/568] powerpc/prom: Add CPU info to hardware description string later
-Date: Tue, 30 Jul 2024 17:46:26 +0200
-Message-ID: <20240730151650.781243905@linuxfoundation.org>
+Subject: [PATCH 6.10 511/809] selftests/damon/access_memory: use user-defined region size
+Date: Tue, 30 Jul 2024 17:46:27 +0200
+Message-ID: <20240730151744.919959789@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 7bdd1c6c87de758750d419eedab7285b95b66417 ]
+[ Upstream commit 34ec4344a5dabbb39e23e8daf30779892c0211a6 ]
 
-cur_cpu_spec->cpu_name is appended to ppc_hw_desc before cur_cpu_spec
-has taken on its final value. This is illustrated on pseries by
-comparing the CPU name as reported at boot ("POWER8E (raw)") to the
-contents of /proc/cpuinfo ("POWER8 (architected)"):
+Patch series "selftests/damon: test DAMOS tried regions and
+{min,max}_nr_regions".
 
-  $ dmesg | grep Hardware
-  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 \
-    of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
+This patch series fix a minor issue in a program for DAMON selftest, and
+implement new functionality selftests for DAMOS tried regions and
+{min,max}_nr_regions.  The test for max_nr_regions also test the recovery
+from online tuning-caused limit violation, which was fixed by a previous
+patch [1] titled "mm/damon/core: merge regions aggressively when
+max_nr_regions is unmet".
 
-  $ grep -m 1 ^cpu /proc/cpuinfo
-  cpu             : POWER8 (architected), altivec supported
+The first patch fixes a minor problem in the articial memory access
+pattern generator for tests.  Following 3 patches (2-4) implement schemes
+tried regions test.  Then a couple of patches (5-6) implementing static
+setup based {min,max}_nr_regions functionality test follows.  Final two
+patches (7-8) implement dynamic max_nr_regions update test.
 
-Some 44x models would appear to be affected as well; see
-identical_pvr_fixup().
+[1] https://lore.kernel.org/20240624210650.53960C2BBFC@smtp.kernel.org
 
-This results in incorrect CPU information in stack dumps --
-ppc_hw_desc is an input to dump_stack_set_arch_desc().
+This patch (of 8):
 
-Delay gathering the CPU name until after all potential calls to
-identify_cpu().
+'access_memory' is an artificial memory access pattern generator for DAMON
+tests.  It creates and accesses memory regions that the user specified the
+number and size via the command line.  However, real access part of the
+program ignores the user-specified size of each region.  Instead, it uses
+a hard-coded value, 10 MiB.  Fix it to use user-defined size.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: bd649d40e0f2 ("powerpc: Add PVR & CPU name to hardware description")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240603-fix-cpu-hwdesc-v1-1-945f2850fcaa@linux.ibm.com
+Note that all existing 'access_memory' users are setting the region size
+as 10 MiB.  Hence no real problem has happened so far.
+
+Link: https://lkml.kernel.org/r/20240625180538.73134-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20240625180538.73134-2-sj@kernel.org
+Fixes: b5906f5f7359 ("selftests/damon: add a test for update_schemes_tried_regions sysfs command")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tools/testing/selftests/damon/access_memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 77364729a1b61..bf6d8ad3819e9 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -327,6 +327,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 					  void *data)
- {
- 	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
-+	const __be32 *cpu_version = NULL;
- 	const __be32 *prop;
- 	const __be32 *intserv;
- 	int i, nthreads;
-@@ -410,7 +411,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 		prop = of_get_flat_dt_prop(node, "cpu-version", NULL);
- 		if (prop && (be32_to_cpup(prop) & 0xff000000) == 0x0f000000) {
- 			identify_cpu(0, be32_to_cpup(prop));
--			seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(prop));
-+			cpu_version = prop;
- 		}
- 
- 		check_cpu_feature_properties(node);
-@@ -421,6 +422,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+diff --git a/tools/testing/selftests/damon/access_memory.c b/tools/testing/selftests/damon/access_memory.c
+index 585a2fa543295..56b17e8fe1be8 100644
+--- a/tools/testing/selftests/damon/access_memory.c
++++ b/tools/testing/selftests/damon/access_memory.c
+@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
+ 		start_clock = clock();
+ 		while ((clock() - start_clock) * 1000 / CLOCKS_PER_SEC <
+ 				access_time_ms)
+-			memset(regions[i], i, 1024 * 1024 * 10);
++			memset(regions[i], i, sz_region);
  	}
- 
- 	identical_pvr_fixup(node);
-+
-+	// We can now add the CPU name & PVR to the hardware description
-+	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
-+	if (cpu_version)
-+		seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(cpu_version));
-+
- 	init_mmu_slb_size(node);
- 
- #ifdef CONFIG_PPC64
-@@ -858,9 +865,6 @@ void __init early_init_devtree(void *params)
- 
- 	dt_cpu_ftrs_scan();
- 
--	// We can now add the CPU name & PVR to the hardware description
--	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
--
- 	/* Retrieve CPU related informations from the flat tree
- 	 * (altivec support, boot CPU ID, ...)
- 	 */
+ 	return 0;
+ }
 -- 
 2.43.0
 
