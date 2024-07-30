@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-64180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25756941CBA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C84941CD8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3B06288E20
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC708B2357A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DC018C90B;
-	Tue, 30 Jul 2024 17:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7FD18C930;
+	Tue, 30 Jul 2024 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+AOKMiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKwNIpZU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBA218B466;
-	Tue, 30 Jul 2024 17:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A11E18C92B;
+	Tue, 30 Jul 2024 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359257; cv=none; b=KSevzCIPGA2hhBG1S7pEdMtVjUEg6GzKqkeHCpRgRZ7OyYYxQJ0iEcrxvPCEOTkmNTrL/rEiI5EyleDAOoGFCaB7fjLTNDbloa7JLFgOBdq2juej8697B2ZSw6/REY1xhYgXr1NwOMZfNJIivPMUHKmNk4zyX7Fzwi8Fob6O/cM=
+	t=1722359301; cv=none; b=GwtsUdEZFB+hA2Lt/dq7JXHfWiL/sxzB4HovUqzwecMJ2irr4+4ZtN130d0cXdIUwdRfnEFZoNc8rd1SFQemyQdqHnjuHsG64HISpmhnAsXYCmsdX5yTCjgOfm0SrfD9K30eLWNq4PVi6WhRDfSNuZmaN1VHACm1HeDpeqevVoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359257; c=relaxed/simple;
-	bh=TC8pL4QeKezOgn0bfVfI/rBxo9je0F8UDeUtUle0EUM=;
+	s=arc-20240116; t=1722359301; c=relaxed/simple;
+	bh=DEwTG81nhJpFxmqTRTihp2rN5tcg3SSrghK7i3o5PT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTDghKMGU2ASMTUPVT24E6bbQPOln9Aw+AnIaiew7Vj8lMIGoYKH4GviXkqk1pxrm094lhQ6UEvtozK4lqYH4B2SM88YQY9hx/YU7RVsAu8/+IT2HXbEuwB/wY6cB53zVpvJ3NR2fCqahjw+zSXjfxX8hwG9aaMqE/2UKLe6nqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+AOKMiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C528C4AF11;
-	Tue, 30 Jul 2024 17:07:35 +0000 (UTC)
+	 MIME-Version; b=OFF2kX30I35YEkslJx/RTpchUtcIY/Qh01CbNDlHVhyZJJXgdpeJJabEg8FxtEYTOoyUlkYpfvNs1PdZppjIlcnWH7m62/frL7JYNPycdILuJph6vVTnx99AGPosxnfeL7+0WL36Ht90waB0Ug4JOidJG7uTzTcEcD8XV5UQUs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKwNIpZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A326C32782;
+	Tue, 30 Jul 2024 17:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359256;
-	bh=TC8pL4QeKezOgn0bfVfI/rBxo9je0F8UDeUtUle0EUM=;
+	s=korg; t=1722359301;
+	bh=DEwTG81nhJpFxmqTRTihp2rN5tcg3SSrghK7i3o5PT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+AOKMiToxY+pyVvId/Ivz+Tw3gjWQkcOvNI6vCSNIKucY+jx3QxxJRIQ2K7SDHTl
-	 eh8tTwMPaew22JejqUi3JR9b2L8qa+/7DaqDvk10Z+pmVjulCHN2xuz7jl7LA2NFpU
-	 Q/RziifYAu8xCh9NofC6lI6JVttIrfwvuNcDHKc4=
+	b=jKwNIpZUuLWbiDR4G/Rr//VRHWv925r+nzanJX2NfHuag4MVftWqfIFW0wrKRXW2y
+	 a9kSG098Ajro5v1dX8QQAnVFzuXmbZFh63ovQM+P9cA8tcGOuUztG/ClWgWVe7+9sY
+	 GGXtB7WzFIPsJIrpXxKurFtjRPVwFjYNZMSgqHRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Mark Brown <broonie@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Georgi Djakov <quic_c_gdjako@quicinc.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 440/809] ASoC: amd: Adjust error handling in case of absent codec device
-Date: Tue, 30 Jul 2024 17:45:16 +0200
-Message-ID: <20240730151742.080360785@linuxfoundation.org>
+Subject: [PATCH 6.10 441/809] iommu/arm-smmu-qcom: Register the TBU driver in qcom_smmu_impl_init
+Date: Tue, 30 Jul 2024 17:45:17 +0200
+Message-ID: <20240730151742.120093637@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,45 +67,139 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Georgi Djakov <quic_c_gdjako@quicinc.com>
 
-[ Upstream commit 5080808c3339de2220c602ab7c7fa23dc6c1a5a3 ]
+[ Upstream commit 0b4eeee2876f2b08442eb32081451bf130e01a4c ]
 
-acpi_get_first_physical_node() can return NULL in several cases (no such
-device, ACPI table error, reference count drop to 0, etc).
-Existing check just emit error message, but doesn't perform return.
-Then this NULL pointer is passed to devm_acpi_dev_add_driver_gpios()
-where it is dereferenced.
+Currently the TBU driver will only probe when CONFIG_ARM_SMMU_QCOM_DEBUG
+is enabled. The driver not probing would prevent the platform to reach
+sync_state and the system will remain in sub-optimal power consumption
+mode while waiting for all consumer drivers to probe. To address this,
+let's register the TBU driver in qcom_smmu_impl_init(), so that it can
+probe, but still enable its functionality only when the debug option in
+Kconfig is enabled.
 
-Adjust this error handling by adding error code return.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 02527c3f2300 ("ASoC: amd: add Machine driver for Jadeite platform")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://patch.msgid.link/20240703191007.8524-1-amishin@t-argos.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Closes: https://lore.kernel.org/r/CAA8EJppcXVu72OSo+OiYEiC1HQjP3qCwKMumOsUhcn6Czj0URg@mail.gmail.com
+Fixes: 414ecb030870 ("iommu/arm-smmu-qcom-debug: Add support for TBUs")
+Signed-off-by: Georgi Djakov <quic_c_gdjako@quicinc.com>
+Link: https://lore.kernel.org/r/20240704010759.507798-1-quic_c_gdjako@quicinc.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp-es8336.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../iommu/arm/arm-smmu/arm-smmu-qcom-debug.c  | 17 +-------
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c    | 39 +++++++++++++++++++
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.h    |  2 +
+ 3 files changed, 42 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/amd/acp-es8336.c b/sound/soc/amd/acp-es8336.c
-index e079b3218c6f4..3756b8bef17bc 100644
---- a/sound/soc/amd/acp-es8336.c
-+++ b/sound/soc/amd/acp-es8336.c
-@@ -203,8 +203,10 @@ static int st_es8336_late_probe(struct snd_soc_card *card)
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
+index 552199cbd9e25..482c40aa029b4 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom-debug.c
+@@ -488,7 +488,7 @@ irqreturn_t qcom_smmu_context_fault(int irq, void *dev)
+ 	return ret;
+ }
  
- 	codec_dev = acpi_get_first_physical_node(adev);
- 	acpi_dev_put(adev);
--	if (!codec_dev)
-+	if (!codec_dev) {
- 		dev_err(card->dev, "can not find codec dev\n");
-+		return -ENODEV;
+-static int qcom_tbu_probe(struct platform_device *pdev)
++int qcom_tbu_probe(struct platform_device *pdev)
+ {
+ 	struct of_phandle_args args = { .args_count = 2 };
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -530,18 +530,3 @@ static int qcom_tbu_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ }
+-
+-static const struct of_device_id qcom_tbu_of_match[] = {
+-	{ .compatible = "qcom,sc7280-tbu" },
+-	{ .compatible = "qcom,sdm845-tbu" },
+-	{ }
+-};
+-
+-static struct platform_driver qcom_tbu_driver = {
+-	.driver = {
+-		.name           = "qcom_tbu",
+-		.of_match_table = qcom_tbu_of_match,
+-	},
+-	.probe = qcom_tbu_probe,
+-};
+-builtin_platform_driver(qcom_tbu_driver);
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 25f034677f568..13f3e2efb2ccb 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -8,6 +8,8 @@
+ #include <linux/delay.h>
+ #include <linux/of_device.h>
+ #include <linux/firmware/qcom/qcom_scm.h>
++#include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ 
+ #include "arm-smmu.h"
+ #include "arm-smmu-qcom.h"
+@@ -561,10 +563,47 @@ static struct acpi_platform_list qcom_acpi_platlist[] = {
+ };
+ #endif
+ 
++static int qcom_smmu_tbu_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	int ret;
++
++	if (IS_ENABLED(CONFIG_ARM_SMMU_QCOM_DEBUG)) {
++		ret = qcom_tbu_probe(pdev);
++		if (ret)
++			return ret;
 +	}
++
++	if (dev->pm_domain) {
++		pm_runtime_set_active(dev);
++		pm_runtime_enable(dev);
++	}
++
++	return 0;
++}
++
++static const struct of_device_id qcom_smmu_tbu_of_match[] = {
++	{ .compatible = "qcom,sc7280-tbu" },
++	{ .compatible = "qcom,sdm845-tbu" },
++	{ }
++};
++
++static struct platform_driver qcom_smmu_tbu_driver = {
++	.driver = {
++		.name           = "qcom_tbu",
++		.of_match_table = qcom_smmu_tbu_of_match,
++	},
++	.probe = qcom_smmu_tbu_probe,
++};
++
+ struct arm_smmu_device *qcom_smmu_impl_init(struct arm_smmu_device *smmu)
+ {
+ 	const struct device_node *np = smmu->dev->of_node;
+ 	const struct of_device_id *match;
++	static u8 tbu_registered;
++
++	if (!tbu_registered++)
++		platform_driver_register(&qcom_smmu_tbu_driver);
  
- 	ret = devm_acpi_dev_add_driver_gpios(codec_dev, acpi_es8336_gpios);
- 	if (ret)
+ #ifdef CONFIG_ACPI
+ 	if (np == NULL) {
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.h b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.h
+index 9bb3ae7d62da6..3c134d1a62773 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.h
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.h
+@@ -34,8 +34,10 @@ irqreturn_t qcom_smmu_context_fault(int irq, void *dev);
+ 
+ #ifdef CONFIG_ARM_SMMU_QCOM_DEBUG
+ void qcom_smmu_tlb_sync_debug(struct arm_smmu_device *smmu);
++int qcom_tbu_probe(struct platform_device *pdev);
+ #else
+ static inline void qcom_smmu_tlb_sync_debug(struct arm_smmu_device *smmu) { }
++static inline int qcom_tbu_probe(struct platform_device *pdev) { return -EINVAL; }
+ #endif
+ 
+ #endif /* _ARM_SMMU_QCOM_H */
 -- 
 2.43.0
 
