@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-64340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28BA941D76
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28EED9418A2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6F22B28EEF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CB2AB25921
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361991A76B4;
-	Tue, 30 Jul 2024 17:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA003189918;
+	Tue, 30 Jul 2024 16:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKXQIMbj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoQ6vEvn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A001A76A5;
-	Tue, 30 Jul 2024 17:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970E41A6193;
+	Tue, 30 Jul 2024 16:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359800; cv=none; b=Iip/OO/MH4E9e16ulyHUE40/r3VkPBvX7Lj5qKogxPR45SFsB1dv0UcIXlBYqkjWpI1wkCWNZ+lZ0WqfLKW39pRI6L07yjgybYupnxbEiiyPCsgscZfUduzV9l2A8uCdvfeL5cUs8zqkJjtjI6HUWJ+E//UR/Lk7shhM48dM/+M=
+	t=1722356361; cv=none; b=iBYd5uAOEiN4PK+XB0RgFiWr0sK/M4ewOcpL1U9TD8pEkN68LSHmXl/R/4q3iEMoIX5ztaiausnBC8V5eS8n8nnZAGvNxNg/9ls199A+4CIzEIbIpATh7kv/u+QTIBaIAicyY7QPbwvMTk7dxXyf2o7v+dt0I+wc56nd6zE1AdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359800; c=relaxed/simple;
-	bh=8v7pgffPjnS12PtuV+eDkGvST1XDgy5L9T7DWMwiPf8=;
+	s=arc-20240116; t=1722356361; c=relaxed/simple;
+	bh=8PnXbxNr/uPNolDvZXOfBhIMQHGAJlGIpIyvc36qzn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxkAtkGyAISUFbA26lDctJFb75kHDnwL5QoS5koYugzU9tSQC4Lv3HKsFZX7iT8s3Gkj9iONWpAxP+9JV6Tvoerk41CSuN9A5Iuuhh9keAYn+Ry5iFgcG4NnlaC7gbP32FwvvntiO6ncMQVgHJO+ZU34xdLS/gRdrI1jYh1QFbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKXQIMbj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF758C4AF11;
-	Tue, 30 Jul 2024 17:16:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ibh10YcZLb+W+bb8gMoUQP9WET2V6nj5pfsCiV2YaPaEG37to3aRbP/UWPmEx04wqrAfWbeRhYonQFdwLh7AzRPHjOOhqEd8ZVRBpN1iL5shpFKq3fHoDkegGgO0C4D4JQhZK2QuEFkOvNh2ScbvOCDL9rGBiJUElnuTXjq9QQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uoQ6vEvn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D55DC32782;
+	Tue, 30 Jul 2024 16:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359799;
-	bh=8v7pgffPjnS12PtuV+eDkGvST1XDgy5L9T7DWMwiPf8=;
+	s=korg; t=1722356361;
+	bh=8PnXbxNr/uPNolDvZXOfBhIMQHGAJlGIpIyvc36qzn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKXQIMbjcsV7nbmlgvSrYZNx2rva4w/QtP+7V+63wRWmu3Bz6p1yY7z59WPaoJk+W
-	 5AZ40o9586OUHDCtTuj3o52xMPMp9paXcpzaJG2USAFgWakePgWWyCQstbXA+P2NMU
-	 hOde95dIVhcrUSOf/hCzaKZ1oAMOwNfPwtXvqxZ0=
+	b=uoQ6vEvnC6Da4SuHKflBsnqLi5QfR6iTTLKbIVW2qlRs2gQ/JQSKLmafQHA3haJk8
+	 RBMtJcn/93yfgGT0hzsuHs17z+JXI161HwxK4pdMbzaULjfyFaaRt7EcI6uwyHae+/
+	 hErKrVKxI/6jJzjVHX0UbSkUuWWuhYTdpDyB1rog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Yves-Alexis Perez <corsac@debian.org>,
-	David Hildenbrand <david@redhat.com>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Christoph Lameter <cl@linux.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 534/809] mm: huge_memory: use !CONFIG_64BIT to relax huge page alignment on 32 bit machines
-Date: Tue, 30 Jul 2024 17:46:50 +0200
-Message-ID: <20240730151745.829576651@linuxfoundation.org>
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 178/440] PCI: keystone: Relocate ks_pcie_set/clear_dbi_mode()
+Date: Tue, 30 Jul 2024 17:46:51 +0200
+Message-ID: <20240730151622.826205334@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,55 +61,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit d9592025000b3cf26c742f3505da7b83aedc26d5 upstream.
+[ Upstream commit 5125fdc3292eea20870d4e6cefa62dc1245ce7ec ]
 
-Yves-Alexis Perez reported commit 4ef9ad19e176 ("mm: huge_memory: don't
-force huge page alignment on 32 bit") didn't work for x86_32 [1].  It is
-because x86_32 uses CONFIG_X86_32 instead of CONFIG_32BIT.
+Relocate ks_pcie_set_dbi_mode() and ks_pcie_clear_dbi_mode() to avoid
+forward declaration in a subsequent patch. No functional change intended.
 
-!CONFIG_64BIT should cover all 32 bit machines.
-
-[1] https://lore.kernel.org/linux-mm/CAHbLzkr1LwH3pcTgM+aGQ31ip2bKqiqEQ8=FQB+t2c3dhNKNHA@mail.gmail.com/
-
-Link: https://lkml.kernel.org/r/20240712155855.1130330-1-yang@os.amperecomputing.com
-Fixes: 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment on 32 bit")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Reported-by: Yves-Alexis Perez <corsac@debian.org>
-Tested-by: Yves-Alexis Perez <corsac@debian.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>	[6.8+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-pci/20240328085041.2916899-2-s-vadapalli@ti.com
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: 9ffa0e70b2da ("PCI: keystone: Don't enable BAR 0 for AM654x")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/huge_memory.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 84 +++++++++++------------
+ 1 file changed, 42 insertions(+), 42 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -857,7 +857,7 @@ static unsigned long __thp_get_unmapped_
- 	loff_t off_align = round_up(off, size);
- 	unsigned long len_pad, ret, off_sub;
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index 7ecad72cff7e7..348a9f755d0ba 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -247,6 +247,48 @@ static struct irq_chip ks_pcie_msi_irq_chip = {
+ 	.irq_unmask = ks_pcie_msi_unmask,
+ };
  
--	if (IS_ENABLED(CONFIG_32BIT) || in_compat_syscall())
-+	if (!IS_ENABLED(CONFIG_64BIT) || in_compat_syscall())
- 		return 0;
++/**
++ * ks_pcie_set_dbi_mode() - Set DBI mode to access overlaid BAR mask registers
++ * @ks_pcie: A pointer to the keystone_pcie structure which holds the KeyStone
++ *	     PCIe host controller driver information.
++ *
++ * Since modification of dbi_cs2 involves different clock domain, read the
++ * status back to ensure the transition is complete.
++ */
++static void ks_pcie_set_dbi_mode(struct keystone_pcie *ks_pcie)
++{
++	u32 val;
++
++	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
++	val |= DBI_CS2;
++	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
++
++	do {
++		val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
++	} while (!(val & DBI_CS2));
++}
++
++/**
++ * ks_pcie_clear_dbi_mode() - Disable DBI mode
++ * @ks_pcie: A pointer to the keystone_pcie structure which holds the KeyStone
++ *	     PCIe host controller driver information.
++ *
++ * Since modification of dbi_cs2 involves different clock domain, read the
++ * status back to ensure the transition is complete.
++ */
++static void ks_pcie_clear_dbi_mode(struct keystone_pcie *ks_pcie)
++{
++	u32 val;
++
++	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
++	val &= ~DBI_CS2;
++	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
++
++	do {
++		val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
++	} while (val & DBI_CS2);
++}
++
+ static int ks_pcie_msi_host_init(struct dw_pcie_rp *pp)
+ {
+ 	pp->msi_irq_chip = &ks_pcie_msi_irq_chip;
+@@ -343,48 +385,6 @@ static const struct irq_domain_ops ks_pcie_legacy_irq_domain_ops = {
+ 	.xlate = irq_domain_xlate_onetwocell,
+ };
  
- 	if (off_end <= off_align || (off_end - off_align) < size)
+-/**
+- * ks_pcie_set_dbi_mode() - Set DBI mode to access overlaid BAR mask registers
+- * @ks_pcie: A pointer to the keystone_pcie structure which holds the KeyStone
+- *	     PCIe host controller driver information.
+- *
+- * Since modification of dbi_cs2 involves different clock domain, read the
+- * status back to ensure the transition is complete.
+- */
+-static void ks_pcie_set_dbi_mode(struct keystone_pcie *ks_pcie)
+-{
+-	u32 val;
+-
+-	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
+-	val |= DBI_CS2;
+-	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
+-
+-	do {
+-		val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
+-	} while (!(val & DBI_CS2));
+-}
+-
+-/**
+- * ks_pcie_clear_dbi_mode() - Disable DBI mode
+- * @ks_pcie: A pointer to the keystone_pcie structure which holds the KeyStone
+- *	     PCIe host controller driver information.
+- *
+- * Since modification of dbi_cs2 involves different clock domain, read the
+- * status back to ensure the transition is complete.
+- */
+-static void ks_pcie_clear_dbi_mode(struct keystone_pcie *ks_pcie)
+-{
+-	u32 val;
+-
+-	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
+-	val &= ~DBI_CS2;
+-	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
+-
+-	do {
+-		val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
+-	} while (val & DBI_CS2);
+-}
+-
+ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ {
+ 	u32 val;
+-- 
+2.43.0
+
 
 
 
