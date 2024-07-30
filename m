@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-63600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E29941AE6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFEB99419BF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02DBDB25303
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC51E1F269C7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC2514831F;
-	Tue, 30 Jul 2024 16:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4179C146D6B;
+	Tue, 30 Jul 2024 16:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxHGqsHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKlZqciG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3F71A6192;
-	Tue, 30 Jul 2024 16:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38841A6192;
+	Tue, 30 Jul 2024 16:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357351; cv=none; b=P27qntVWXzU3UtnDW1VblVo0O8MF5LS/JaYAFpREUmek5AMPGxSlc8tDNPiLaqpcr/CzqVuVtEyDLBcSuDwI0X5ea9mt8bm9p2QfKd3bOiovGfIaX8VWh6Ypw5kFKO0Ea54plYirKiNCWCP9uswRZPweDe963CxYmPD24l8ylEE=
+	t=1722357360; cv=none; b=Ou87LAdeXok8+rKkMuB1V8sf8kL/wlhGHDb2Zw5lFOT8S0AoEETqPBe2RPM3/rmg28cU1bpRfh5EUOjnJDbdcibmAox3vdg91TSupqmjKlR2HKealkZhFCzoJyS6Ix/ujbqqMypnRs/xU+tl//lh4sVmB9M+wN7eUwF8xXr/Xyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357351; c=relaxed/simple;
-	bh=1EZnVPwormY/oFqntPxkSWz/X+7Wpy7PvPLWOTuBO2k=;
+	s=arc-20240116; t=1722357360; c=relaxed/simple;
+	bh=Ogz+kzssn0QchiFCKEiDRvcKcjk067GPSod8eNi2RMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcUGPubnQJswmSCjyq6qNPykS35f+mh28TFYTwjlGxRK7pofBWTcf0QywgQuqEFIfAQuM/G7FWu39JisxmrrM1/KBA6aPQlTuVGa0GE89Mp14Zf86XI9gQpWtfysmWnflrRukG392zdKGoowWQGe9oQ7+uryyQmAoldXtpah+Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxHGqsHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3476CC32782;
-	Tue, 30 Jul 2024 16:35:49 +0000 (UTC)
+	 MIME-Version; b=ksAyW6/dxiT9XMwhmqe1M4xxFKqBEGuVI4on0eZXT7IlyuowdE9zqovTkafn8LkPMw2V2r/YVCHv7CSYe7tOBdlH6SclFmNNEiFGhKR4EsEqhMwnhmma7hi1iPU6+kxMka/3LUehwXsMj9GwE+0RkKDOm37a8bzGiYTRmd9C9ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKlZqciG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F240C4AF15;
+	Tue, 30 Jul 2024 16:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357350;
-	bh=1EZnVPwormY/oFqntPxkSWz/X+7Wpy7PvPLWOTuBO2k=;
+	s=korg; t=1722357359;
+	bh=Ogz+kzssn0QchiFCKEiDRvcKcjk067GPSod8eNi2RMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxHGqsHu8vz4z8E5qHgqtiCCisbYuPiDvQQBG5lY0bieCvQXOpx3OS2/b37E7VgBD
-	 eXB4wfQ5KxMlDuqTz9K31gvrmCLzFTqs+Hzmx/AERE0K59yt7lUbgeAb4K/N70dqGC
-	 tnrbIP1Kkz0SujkMTbGqVFBgTObxK1EwcNeX8znE=
+	b=oKlZqciG1CSDvNPVQeToJ16UfU/BxNCjP4MbYQmDQm3EvAC4zRt3ngxkNzq1TMie6
+	 7ybcVLvpRygw84Ih63kwlI+ztscayownSiGPUKjcKC6eDbebOXLvuRVE6nfoJVuLW7
+	 gjEKPfmfJiN/2JDbyrOGGqlVcDa/ZP+WzA1KDoUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: [PATCH 6.1 284/440] fuse: verify {g,u}id mount options correctly
-Date: Tue, 30 Jul 2024 17:48:37 +0200
-Message-ID: <20240730151626.922633787@linuxfoundation.org>
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.1 285/440] char: tpm: Fix possible memory leak in tpm_bios_measurements_open()
+Date: Tue, 30 Jul 2024 17:48:38 +0200
+Message-ID: <20240730151626.962803606@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,82 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit 525bd65aa759ec320af1dc06e114ed69733e9e23 upstream.
+commit 5d8e2971e817bb64225fc0b6327a78752f58a9aa upstream.
 
-As was done in
-0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
-we need to validate that the requested uid and/or gid is representable in
-the filesystem's idmapping.
+In tpm_bios_measurements_open(), get_device() is called on the device
+embedded in struct tpm_chip. In the error path, however, put_device() is
+not called. This results in a reference count leak, which prevents the
+device from being properly released. This commit makes sure to call
+put_device() when the seq_open() call fails.
 
-Cribbing from the above commit log,
-
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, fuse has been doing the correct thing.
-But since fuse is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock.
-
-Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/8f07d45d-c806-484d-a2e3-7a2199df1cd2@redhat.com
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org # +v4.18
+Fixes: 9b01b5356629 ("tpm: Move shared eventlog functions to common.c")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/inode.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/char/tpm/eventlog/common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -724,6 +724,8 @@ static int fuse_parse_param(struct fs_co
- 	struct fs_parse_result result;
- 	struct fuse_fs_context *ctx = fsc->fs_private;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
+--- a/drivers/char/tpm/eventlog/common.c
++++ b/drivers/char/tpm/eventlog/common.c
+@@ -47,6 +47,8 @@ static int tpm_bios_measurements_open(st
+ 	if (!err) {
+ 		seq = file->private_data;
+ 		seq->private = chip;
++	} else {
++		put_device(&chip->dev);
+ 	}
  
- 	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
- 		/*
-@@ -768,16 +770,30 @@ static int fuse_parse_param(struct fs_co
- 		break;
- 
- 	case OPT_USER_ID:
--		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
--		if (!uid_valid(ctx->user_id))
-+		kuid =  make_kuid(fsc->user_ns, result.uint_32);
-+		if (!uid_valid(kuid))
- 			return invalfc(fsc, "Invalid user_id");
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fsc->user_ns, kuid))
-+			return invalfc(fsc, "Invalid user_id");
-+		ctx->user_id = kuid;
- 		ctx->user_id_present = true;
- 		break;
- 
- 	case OPT_GROUP_ID:
--		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
--		if (!gid_valid(ctx->group_id))
-+		kgid = make_kgid(fsc->user_ns, result.uint_32);;
-+		if (!gid_valid(kgid))
-+			return invalfc(fsc, "Invalid group_id");
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fsc->user_ns, kgid))
- 			return invalfc(fsc, "Invalid group_id");
-+		ctx->group_id = kgid;
- 		ctx->group_id_present = true;
- 		break;
- 
+ 	return err;
 
 
 
