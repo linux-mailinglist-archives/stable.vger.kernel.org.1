@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54926941DCE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CBF941877
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 866091C23376
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84A1E1F23CCD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8702C183CBF;
-	Tue, 30 Jul 2024 17:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F426187FF6;
+	Tue, 30 Jul 2024 16:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfL2Cf22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YS9x2VAW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453531A76AE;
-	Tue, 30 Jul 2024 17:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCB618455B;
+	Tue, 30 Jul 2024 16:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360083; cv=none; b=Q8dGmSkcMasd+k/gWrP6/qx2Od1wXL4fv1uQ0GkzB5/36HBoV0ksx1ybuNdK9maCswu2r+MPS1sA2h0auyfanlwrIJbmJ8x2ARuEbhP01La6VFMyvNPvm0iWzAfgOA6aYO6qxtrtjfM+3M9yFDTvBTIN72mhGRwjHUp92yZVGWs=
+	t=1722356538; cv=none; b=agMenHZ+69ha0QknHiOBGmINFlFwb3LafByFFBGtgykoZx69hsYTL8pdEacRAOCL0+kY7FC5zkywooEazrFU3ZKPsK1prw47tovWiEgt3lDhz5v0vdLOMLs1Mh0Hl6ALokKvvF4cQuqSXkCSHOXDpS6jDKrxtV4l2m0c0Kmz40Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360083; c=relaxed/simple;
-	bh=EqppSayDNs6k9OhVIL780PFVfIGFNoNIkolzO+KweHo=;
+	s=arc-20240116; t=1722356538; c=relaxed/simple;
+	bh=XxI731FZMYkFlfPGlquzZcApL17juxveMlb5AV11w08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nxQsRf3ZD2efbyH6NBQ1DY7oYRRGnJksRKs6dyu6axUTEGGJXKVmsqKIB5NnaOY+fng4PaD24/bWEdn8EpdunAioT2htVeYDVqlFYBIEYoRooG0kqGF0GGsN0XhcGPNxz7u4C16K4oWMP9iIQwOlgTzAEQKRsuMu1ItU/dZkcaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfL2Cf22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A39C4AF0F;
-	Tue, 30 Jul 2024 17:21:22 +0000 (UTC)
+	 MIME-Version; b=EhvkyFnZ21AJy2QliRRV7TwMqIaK+oMi2QyuZqr5hymXEqD+tdgzJPPM0i8NeOXcF5TCjP71+J2spZp3anDt0pC8TDG5l4yCZk19urQE1zVwbSXZyq/DEw/rucBBicuC2Jdq+ndfeRsyF6xYRo09/UraRzLBKw9eb24SMrFzmVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YS9x2VAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A950C32782;
+	Tue, 30 Jul 2024 16:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360083;
-	bh=EqppSayDNs6k9OhVIL780PFVfIGFNoNIkolzO+KweHo=;
+	s=korg; t=1722356538;
+	bh=XxI731FZMYkFlfPGlquzZcApL17juxveMlb5AV11w08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zfL2Cf22onc8CM8AFkrufpGVoc89oTZbRajqlOgr36v9zI5ONovV88WFnmDbHgkhg
-	 in6vtleCpW0Fw+tnbJe5uFD+7+KWrW7HmCV7fxHKI99MSY+oN+Hp7ZU8LmuBB5o5FV
-	 W7b5zq90sIxee8htArTUqOKkQPxnhY8Q4gAmDZ/I=
+	b=YS9x2VAWpckhg+Iry8Efs27E0Dse+z31DOT70YbRV2JpEUesIi19XPU6raIWlK6b8
+	 q52pebS+sAut/y2E2VFJ4zYXwCO05I1qYJ7Xdjsd2EVq+5BJ05WCErq6Pa/cL1n/Z9
+	 LLsHd2O62OeG8trE8EoigQhIUbGjcp2jyKp2n4/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.10 562/809] md/raid5: fix spares errors about rcu usage
+	Arnd Bergmann <arnd@arndb.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 205/440] mtd: make mtd_test.c a separate module
 Date: Tue, 30 Jul 2024 17:47:18 +0200
-Message-ID: <20240730151746.960964067@linuxfoundation.org>
+Message-ID: <20240730151623.877083336@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 2314c2e3a70521f055dd011245dccf6fd97c7ee0 upstream.
+[ Upstream commit a5cf054d325e6f362e82fe6d124a1871a4af8174 ]
 
-As commit ad8606702f26 ("md/raid5: remove rcu protection to access rdev
-from conf") explains, rcu protection can be removed, however, there are
-three places left, there won't be any real problems.
+This file gets linked into nine different modules, which causes a warning:
 
-drivers/md/raid5.c:8071:24: error: incompatible types in comparison expression (different address spaces):
-drivers/md/raid5.c:8071:24:    struct md_rdev [noderef] __rcu *
-drivers/md/raid5.c:8071:24:    struct md_rdev *
-drivers/md/raid5.c:7569:25: error: incompatible types in comparison expression (different address spaces):
-drivers/md/raid5.c:7569:25:    struct md_rdev [noderef] __rcu *
-drivers/md/raid5.c:7569:25:    struct md_rdev *
-drivers/md/raid5.c:7573:25: error: incompatible types in comparison expression (different address spaces):
-drivers/md/raid5.c:7573:25:    struct md_rdev [noderef] __rcu *
-drivers/md/raid5.c:7573:25:    struct md_rdev *
+scripts/Makefile.build:236: drivers/mtd/tests/Makefile: mtd_test.o is added to multiple modules: mtd_nandbiterrs mtd_oobtest mtd_pagetest mtd_readtest mtd_speedtest mtd_stresstest mtd_subpagetest mtd_torturetest
 
-Fixes: ad8606702f26 ("md/raid5: remove rcu protection to access rdev from conf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240615085143.1648223-1-yukuai1@huaweicloud.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make it a separate module instead.
+
+Fixes: a995c792280d ("mtd: tests: rename sources in order to link a helper object")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240529095049.1915393-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/mtd/tests/Makefile   | 34 +++++++++++++++++-----------------
+ drivers/mtd/tests/mtd_test.c |  9 +++++++++
+ 2 files changed, 26 insertions(+), 17 deletions(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -155,7 +155,7 @@ static int raid6_idx_to_slot(int idx, st
- 	return slot;
+diff --git a/drivers/mtd/tests/Makefile b/drivers/mtd/tests/Makefile
+index 5de0378f90dbd..7dae831ee8b6b 100644
+--- a/drivers/mtd/tests/Makefile
++++ b/drivers/mtd/tests/Makefile
+@@ -1,19 +1,19 @@
+ # SPDX-License-Identifier: GPL-2.0
+-obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o
++obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o mtd_test.o
+ 
+-mtd_oobtest-objs := oobtest.o mtd_test.o
+-mtd_pagetest-objs := pagetest.o mtd_test.o
+-mtd_readtest-objs := readtest.o mtd_test.o
+-mtd_speedtest-objs := speedtest.o mtd_test.o
+-mtd_stresstest-objs := stresstest.o mtd_test.o
+-mtd_subpagetest-objs := subpagetest.o mtd_test.o
+-mtd_torturetest-objs := torturetest.o mtd_test.o
+-mtd_nandbiterrs-objs := nandbiterrs.o mtd_test.o
++mtd_oobtest-objs := oobtest.o
++mtd_pagetest-objs := pagetest.o
++mtd_readtest-objs := readtest.o
++mtd_speedtest-objs := speedtest.o
++mtd_stresstest-objs := stresstest.o
++mtd_subpagetest-objs := subpagetest.o
++mtd_torturetest-objs := torturetest.o
++mtd_nandbiterrs-objs := nandbiterrs.o
+diff --git a/drivers/mtd/tests/mtd_test.c b/drivers/mtd/tests/mtd_test.c
+index c84250beffdc9..f391e0300cdc9 100644
+--- a/drivers/mtd/tests/mtd_test.c
++++ b/drivers/mtd/tests/mtd_test.c
+@@ -25,6 +25,7 @@ int mtdtest_erase_eraseblock(struct mtd_info *mtd, unsigned int ebnum)
+ 
+ 	return 0;
  }
++EXPORT_SYMBOL_GPL(mtdtest_erase_eraseblock);
  
--static void print_raid5_conf (struct r5conf *conf);
-+static void print_raid5_conf(struct r5conf *conf);
- 
- static int stripe_operations_active(struct stripe_head *sh)
+ static int is_block_bad(struct mtd_info *mtd, unsigned int ebnum)
  {
-@@ -7580,11 +7580,11 @@ static struct r5conf *setup_conf(struct
- 		if (test_bit(Replacement, &rdev->flags)) {
- 			if (disk->replacement)
- 				goto abort;
--			RCU_INIT_POINTER(disk->replacement, rdev);
-+			disk->replacement = rdev;
- 		} else {
- 			if (disk->rdev)
- 				goto abort;
--			RCU_INIT_POINTER(disk->rdev, rdev);
-+			disk->rdev = rdev;
- 		}
+@@ -57,6 +58,7 @@ int mtdtest_scan_for_bad_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
  
- 		if (test_bit(In_sync, &rdev->flags)) {
-@@ -8066,7 +8066,7 @@ static void raid5_status(struct seq_file
- 	seq_printf (seq, "]");
+ 	return 0;
  }
++EXPORT_SYMBOL_GPL(mtdtest_scan_for_bad_eraseblocks);
  
--static void print_raid5_conf (struct r5conf *conf)
-+static void print_raid5_conf(struct r5conf *conf)
+ int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 				unsigned int eb, int ebcnt)
+@@ -75,6 +77,7 @@ int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_erase_good_eraseblocks);
+ 
+ int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
  {
- 	struct md_rdev *rdev;
- 	int i;
-@@ -8080,15 +8080,13 @@ static void print_raid5_conf (struct r5c
- 	       conf->raid_disks,
- 	       conf->raid_disks - conf->mddev->degraded);
+@@ -92,6 +95,7 @@ int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
  
--	rcu_read_lock();
- 	for (i = 0; i < conf->raid_disks; i++) {
--		rdev = rcu_dereference(conf->disks[i].rdev);
-+		rdev = conf->disks[i].rdev;
- 		if (rdev)
- 			pr_debug(" disk %d, o:%d, dev:%pg\n",
- 			       i, !test_bit(Faulty, &rdev->flags),
- 			       rdev->bdev);
- 	}
--	rcu_read_unlock();
+ 	return err;
  }
++EXPORT_SYMBOL_GPL(mtdtest_read);
  
- static int raid5_spare_active(struct mddev *mddev)
+ int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
+ 		const void *buf)
+@@ -107,3 +111,8 @@ int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
+ 
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_write);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("MTD function test helpers");
++MODULE_AUTHOR("Akinobu Mita");
+-- 
+2.43.0
+
 
 
 
