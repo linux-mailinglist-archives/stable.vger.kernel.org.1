@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1269941772
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8757694178F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DE32B21B0B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8E531C208A1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C695C1A302A;
-	Tue, 30 Jul 2024 16:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A60189516;
+	Tue, 30 Jul 2024 16:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nU4rVNLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSo3wMHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E431A4B4C;
-	Tue, 30 Jul 2024 16:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC7B184535;
+	Tue, 30 Jul 2024 16:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355727; cv=none; b=nyXG6SdwWWlfdeCNGwhWhOAdJz5xQripLOyD3bFha5HCzuhbDnnKu7YToko8swnM75VzfH7P+YCewft2+FzFWKcgNW9RSjsSxgOZszpnX7UkmQpJoqxkJh6Yve2C0ugIrLiTzkTitRppQ6Va/SG/LYIUchIyNMeCCNIHbdFRxo4=
+	t=1722355803; cv=none; b=At3GbPsO1umEobxxcvFSFwftY7/eToL+jUNZ9SQ4FGREfjxJjVldSSixnZnbKZfQ9Fz3Nno3WCbuD8oYNCXQi2YyP8K4OtfdFhpzIKrCcenj4cewixOV5iMsE8GilmPrF2lBdG1NXS1zcRGU3aDdl65JIlSxM/jO203VFnADz9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355727; c=relaxed/simple;
-	bh=FJlj/AcmdpT+WWjebGhxj/r/+J2nQZrriPru8AP130E=;
+	s=arc-20240116; t=1722355803; c=relaxed/simple;
+	bh=4mnUT5v9UOp0Als1+snwfqczucg9LZ6AXg77oswU87Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZpi64okp1O+NZmks6Uom6NbCru5Jb1/owzhkgvWAEPJgGi04YUmI3fXwa+CCjfUgeZHT6PzoO5RFSBSjY2QdTCRGe5kSLm1XHyXZOBfuK1TWUAiUBwogo0ZVITY69usaF2rpFPLnMC83KV5TlX1pW89g/GxCyxW3JrdwolPLa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nU4rVNLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A55C32782;
-	Tue, 30 Jul 2024 16:08:46 +0000 (UTC)
+	 MIME-Version; b=e5I5+CI8SDuN5QrS1L7ck+pHB3WIgCS2gqi6oRZr8ol9UqV2DqO2ZNBFFGsqnkQVFkG5QQJ7grGIpA5GsuNFu8WWy6ln6PhLxBce0XGanE1qHOwvHIce8p9rqe3Esomo9ujI7Xye9m8wOibdxeOh5/44qxdhjpv6YdvEAbjfkP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSo3wMHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53EFC32782;
+	Tue, 30 Jul 2024 16:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355727;
-	bh=FJlj/AcmdpT+WWjebGhxj/r/+J2nQZrriPru8AP130E=;
+	s=korg; t=1722355803;
+	bh=4mnUT5v9UOp0Als1+snwfqczucg9LZ6AXg77oswU87Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nU4rVNLUZW5wMvfmrWBOo+OcFwbIMrSWbIEg4Y304Sdl6cbJa4N3Oj4HZawAykhj3
-	 TxqPE3AVg63JhZlZy1kkxsprgL3zA4JwtkifJ7PyhMQaBn+/XK7lwXS6sq/5qfl3+H
-	 sChBuihmJkdvxbZ6rdnuPH8TXHRdeOveCvoEw810=
+	b=PSo3wMHp/ugK9p3o31REjGiLb0ZhzTXhY9Ax6Ox32xJqQEEzv8GMYNUgEsMylqa2J
+	 /vB3Lfn5qvoq+whbfEwYpGR2si0yI4/iY8lJCwh7WGu2FdDDXMNh2mjfG4g0S9FohA
+	 Jr7ZZBYZD6vLbutHCrLSjYmTy8h7Zv59FN5oMUmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Esben Haabendal <esben@geanix.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 074/809] memory: fsl_ifc: Make FSL_IFC config visible and selectable
-Date: Tue, 30 Jul 2024 17:39:10 +0200
-Message-ID: <20240730151727.563694753@linuxfoundation.org>
+Subject: [PATCH 6.10 075/809] arm64: dts: ti: k3-am62-main: Fix the reg-range for main_pktdma
+Date: Tue, 30 Jul 2024 17:39:11 +0200
+Message-ID: <20240730151727.602836591@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,52 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit 9ba0cae3cac07c21c583f9ff194f74043f90d29c ]
+[ Upstream commit 6edad223553c7f1680fcaca25ded59eba7c6d82d ]
 
-While use of fsl_ifc driver with NAND flash is fine, as the fsl_ifc_nand
-driver selects FSL_IFC automatically, we need the CONFIG_FSL_IFC option to
-be selectable for platforms using fsl_ifc with NOR flash.
+For main_pktdma node, the TX Channel Realtime Register region 'tchanrt'
+is 128KB and Ring Realtime Register region 'ringrt' is 2MB as shown in
+memory map in the TRM[0] (Table 2-1).
+So fix ranges for those register regions.
 
-Fixes: ea0c0ad6b6eb ("memory: Enable compile testing for most of the drivers")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/r/20240530-fsl-ifc-config-v3-1-1fd2c3d233dd@geanix.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+[0]: <https://www.ti.com/lit/pdf/spruiv7>
+
+Fixes: c37c58fdeb8a ("arm64: dts: ti: k3-am62: Add more peripheral nodes")
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20240430105253.203750-2-j-choudhary@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/Kconfig       | 2 +-
- drivers/mtd/nand/raw/Kconfig | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-index 8efdd1f971395..c82d8d8a16eaf 100644
---- a/drivers/memory/Kconfig
-+++ b/drivers/memory/Kconfig
-@@ -167,7 +167,7 @@ config FSL_CORENET_CF
- 	  represents a coherency violation.
- 
- config FSL_IFC
--	bool "Freescale IFC driver" if COMPILE_TEST
-+	bool "Freescale IFC driver"
- 	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
- 	depends on HAS_IOMEM
- 
-diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-index cbf8ae85e1ae0..6142573085169 100644
---- a/drivers/mtd/nand/raw/Kconfig
-+++ b/drivers/mtd/nand/raw/Kconfig
-@@ -234,8 +234,7 @@ config MTD_NAND_FSL_IFC
- 	tristate "Freescale IFC NAND controller"
- 	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
- 	depends on HAS_IOMEM
--	select FSL_IFC
--	select MEMORY
-+	depends on FSL_IFC
- 	help
- 	  Various Freescale chips e.g P1010, include a NAND Flash machine
- 	  with built-in hardware ECC capabilities.
+diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+index 448a59dc53a77..0f2722c4bcc32 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+@@ -141,8 +141,8 @@ main_pktdma: dma-controller@485c0000 {
+ 			compatible = "ti,am64-dmss-pktdma";
+ 			reg = <0x00 0x485c0000 0x00 0x100>,
+ 			      <0x00 0x4a800000 0x00 0x20000>,
+-			      <0x00 0x4aa00000 0x00 0x40000>,
+-			      <0x00 0x4b800000 0x00 0x400000>,
++			      <0x00 0x4aa00000 0x00 0x20000>,
++			      <0x00 0x4b800000 0x00 0x200000>,
+ 			      <0x00 0x485e0000 0x00 0x10000>,
+ 			      <0x00 0x484a0000 0x00 0x2000>,
+ 			      <0x00 0x484c0000 0x00 0x2000>,
 -- 
 2.43.0
 
