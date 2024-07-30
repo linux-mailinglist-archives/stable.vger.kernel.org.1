@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEF8941B3A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE9B9418B6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 195052828D5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112B41F214AF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D111898EB;
-	Tue, 30 Jul 2024 16:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70381A6162;
+	Tue, 30 Jul 2024 16:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/Sv4fGw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a72KZbQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE353189514;
-	Tue, 30 Jul 2024 16:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52FF1A618E;
+	Tue, 30 Jul 2024 16:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358338; cv=none; b=ZfZFBfmB3+BciBfdsPRIJIlPEu65Y4SVt8dyuJLWkCY80LZXXmdHXGRie5wdDAXXrGJdHcA0IPURQ34iSVhx2cAhUWE29x2EX5f/3sLJHCsik1bj+HsXYsYergXO7nZHBNskMlzyvWg/NtefW7mQg7j18gbZhOxRUXI5VrkQcSo=
+	t=1722356641; cv=none; b=LE0FWpE3Uf7jZIWqjb5oeK8BWU5hGj75qAQvxY8CGPtDZQ4/lruRN9Gf3hdDDt31mggzz26jsjYPaqqCMosQoMPbIrW8y45jTVsQV8fIFZns+mWnTge1rm3xHpZo2xCCYk1oSnsYuHkkSh15nPLx91Lq/201EdE0V4qR2eKPyys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358338; c=relaxed/simple;
-	bh=Z32c/Cl92NMfBVH38XawzHBGIo5egG8KvidWbcl4M2Y=;
+	s=arc-20240116; t=1722356641; c=relaxed/simple;
+	bh=SCTSqtRT9pd3mKe4h62r359eYHeiovHdsl4xFlSAG1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NbpLXyiM8dv3LF7iSpffvuQYbFF8l928cc8bFN8lyKsy2pwpupdwe1Fr28s8lv3yBIBjv1Xv8DYzjz8lH4UhTBgUg8ncDXux09si9h8D9Rd0lo9IzOdE39QCyWXIqSxaZPAugO+elkAtBaVVqIsWdsKLNaJrAlLih90So0TGp3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/Sv4fGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4701DC32782;
-	Tue, 30 Jul 2024 16:52:18 +0000 (UTC)
+	 MIME-Version; b=c4gkaAQCSCKiCW8fOAuIU6R0kOAuXkXAv+qXyJYN05mg+/KqIlyLNCVteBHPELjQsqzHbunzcYbZjlNSudYjLZNV7HWa89/IbyNeCEP1bM3dIBccetLeV0tzAONVUNXXbHibkTeiGUM63Sb0rplzAA8tDq3DKYP8LyBy70cVMRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a72KZbQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BCCC32782;
+	Tue, 30 Jul 2024 16:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358338;
-	bh=Z32c/Cl92NMfBVH38XawzHBGIo5egG8KvidWbcl4M2Y=;
+	s=korg; t=1722356641;
+	bh=SCTSqtRT9pd3mKe4h62r359eYHeiovHdsl4xFlSAG1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/Sv4fGwYMBk6XlIXzQ5FnRdgRchg0qLNp09lDj4qzYKsPG3daBkIqmfqu5wfIcG8
-	 io+3qVQbDVLygxQjFpDWPfRMcbiMVEAuvc5D1csto106PEO06cGS+o11U2T7L3idd1
-	 pUptn8eXw+z8IcTUWsK7dNZWikzO026IUlrrVayA=
+	b=a72KZbQiKqdfDGRksdkEcK/qdrkPmp4ulfkXUA9YW+petY9aoRYvmpawiezcuOwZw
+	 wu+yhymM/oBdFvotGUFr8KL2myfbtYgVFzSpUYZxK6E/cklE21fHUGf93nyWU9ea/g
+	 ZI4rmszYfVwg+o3se647pH172+98fL+qC4UbteaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 328/568] pinctrl: ti: ti-iodelay: Drop if block with always false condition
+Subject: [PATCH 6.1 202/440] ASoC: qcom: Adjust issues in case of DT error in asoc_qcom_lpass_cpu_platform_probe()
 Date: Tue, 30 Jul 2024 17:47:15 +0200
-Message-ID: <20240730151652.693362152@linuxfoundation.org>
+Message-ID: <20240730151623.760960957@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 88b3f108502bc45e6ebd005702add46759f3f45a ]
+[ Upstream commit f9f7f29f64454bb20896c7d918c3abc3a1aa487b ]
 
-ti_iodelay_remove() is only called after ti_iodelay_probe() completed
-successfully. In this case platform_set_drvdata() was called with a
-non-NULL argument and so platform_get_drvdata() won't return NULL.
+If IORESOURCE_MEM "lpass-rxtx-cdc-dma-lpm" or "lpass-va-cdc-dma-lpm"
+resources is not provided in Device Tree due to any error,
+platform_get_resource_byname() will return NULL which is later
+dereferenced. According to sound/qcom,lpass-cpu.yaml, these resources
+are provided, but DT can be broken due to any error. In such cases driver
+must be able to protect itself, since the DT is external data for the
+driver.
+Adjust this issues by adding NULL return check.
 
-Simplify by removing the if block with the always false condition.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231009083856.222030-4-u.kleine-koenig@pengutronix.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: 9b401f4a7170 ("pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails")
+Fixes: b138706225c9 ("ASoC: qcom: Add regmap config support for codec dma driver")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://patch.msgid.link/20240605104953.12072-1-amishin@t-argos.ru
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 3 ---
- 1 file changed, 3 deletions(-)
+ sound/soc/qcom/lpass-cpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-index c1477f6578393..f3a2735620955 100644
---- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-+++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-@@ -903,9 +903,6 @@ static int ti_iodelay_remove(struct platform_device *pdev)
- {
- 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
+diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
+index dbdaaa85ce481..4387cca893c5d 100644
+--- a/sound/soc/qcom/lpass-cpu.c
++++ b/sound/soc/qcom/lpass-cpu.c
+@@ -1160,9 +1160,13 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
+ 		}
  
--	if (!iod)
--		return 0;
--
- 	if (iod->pctl)
- 		pinctrl_unregister(iod->pctl);
+ 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpass-rxtx-cdc-dma-lpm");
++		if (!res)
++			return -EINVAL;
+ 		drvdata->rxtx_cdc_dma_lpm_buf = res->start;
+ 
+ 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpass-va-cdc-dma-lpm");
++		if (!res)
++			return -EINVAL;
+ 		drvdata->va_cdc_dma_lpm_buf = res->start;
+ 	}
  
 -- 
 2.43.0
