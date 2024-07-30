@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-62936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4D0941656
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C38494165A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7A2C282B39
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D05831F24A14
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404131BD504;
-	Tue, 30 Jul 2024 15:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDA61BA885;
+	Tue, 30 Jul 2024 15:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNN61/GQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vr2JLVSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEE11BA885;
-	Tue, 30 Jul 2024 15:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C3719F467;
+	Tue, 30 Jul 2024 15:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355121; cv=none; b=azzMExgOTHajXGan9Tyy6P5Hv36PRfnd305yWXWaqk2WbKvCCMMt4UkihRS1E8l/+ROXjCw9mfqCQEEU1dJkv8oCv0sYSBPYDxnsRDG3Rq83VmPHkvWnZVQd/Xl7CnGlOwvVdPNH4nOvWF6VZKb+kGXdTmbzn98SI/DxQR25f+M=
+	t=1722355130; cv=none; b=pINZS9vzxxfpjfEEmzyWn0NYcBW6XiHoIdp0t6up6JOBrnxOSF6gqd5r/Nzo2TOfZ5xUPZKmyw6nw3WFDyGYp719fjN5UgJivdK5QFcEcB7WdGVJW2h+JO5F+D/j6X10r3OVkAhkdRVQLFjigDeYmXnffqxQx5HbxoIoOdqpPN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355121; c=relaxed/simple;
-	bh=GzS+jdv1M180B2Qj+UeyHyNQ0S1EeacX1gsBHTKAWoE=;
+	s=arc-20240116; t=1722355130; c=relaxed/simple;
+	bh=4CUDBmKuy2ZkyYN8iHjpblP3s1mzQ296ptnfSNPpx64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uGi1JSSP6rPBaR5FBd3tqFzJM8yvtrKuHzIscHaavaUCanZfWACQEQDZAxVqpcYv56jCEeW4/FZshW+Ns+sPuRIjmsKlpiCDQncjJsVMP+DqSo4A4seKPC7w2YRwMjn3A0FOjoZ3bnFEzktI2U6CKchz9Kv1S75aFCp2cagwsUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNN61/GQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E400C4AF0A;
-	Tue, 30 Jul 2024 15:58:39 +0000 (UTC)
+	 MIME-Version; b=YkCQgGyldMUUFjiYdhFGQPRV2x9sSG5y3RbgE55x/qnH2FOP8cYR3Fr82YLUkQ58P94K8BeaZl4aWhkGqqQjuMB12dn6+sXNQ4Mw+Hx3LmVC9oDt5G2MKn8oF9vb36Xo7wSFwMPfsINv5zxdcfXRVO6sTedh9800ox67wwgRbmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr2JLVSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C0CC4AF0F;
+	Tue, 30 Jul 2024 15:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355120;
-	bh=GzS+jdv1M180B2Qj+UeyHyNQ0S1EeacX1gsBHTKAWoE=;
+	s=korg; t=1722355130;
+	bh=4CUDBmKuy2ZkyYN8iHjpblP3s1mzQ296ptnfSNPpx64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNN61/GQZB2qHc/50kumZ+fr+R1Ovro59eERyJlaWzeco2Ldc3xG4TRWc0w4FNTqt
-	 ylDYqtlOlzDppJtIBDnwUE1htCWx4acWZkCFbSIoTwOunEwxLSzR+Cb7TTCMVTgjb6
-	 PGW/pLaa3/aSTdLf+OxPwG0gfBji9jK/ey326H8Q=
+	b=vr2JLVSaMw9pNFYZnit9MBWAon9rN84dFr+/MX1YccSy+cmCI+hW45Hy8L4T/Czvf
+	 dI25J5oLyfgFQ2WoiTrJawWbFolVVq669jDiqa6SiPuNV/Hv+dHc5ZlgM12oGG/aQq
+	 96rvbtJe54KSoEgtfCtXXEALoDpXAPmA+pYu/15k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 021/809] x86/platform/iosf_mbi: Convert PCIBIOS_* return codes to errnos
-Date: Tue, 30 Jul 2024 17:38:17 +0200
-Message-ID: <20240730151725.496206914@linuxfoundation.org>
+Subject: [PATCH 6.10 022/809] x86/syscall: Mark exit[_group] syscall handlers __noreturn
+Date: Tue, 30 Jul 2024 17:38:18 +0200
+Message-ID: <20240730151725.534485946@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -60,56 +61,315 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 7821fa101eab529521aa4b724bf708149d70820c ]
+[ Upstream commit 9142be9e6443fd641ca37f820efe00d9cd890eb1 ]
 
-iosf_mbi_pci_{read,write}_mdr() use pci_{read,write}_config_dword()
-that return PCIBIOS_* codes but functions also return -ENODEV which are
-not compatible error codes. As neither of the functions are related to
-PCI read/write functions, they should return normal errnos.
+The direct-call syscall dispatch function doesn't know that the exit()
+and exit_group() syscall handlers don't return, so the call sites aren't
+optimized accordingly.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it.
+Fix that by marking the exit syscall declarations __noreturn.
 
-Fixes: 46184415368a ("arch: x86: New MailBox support driver for Intel SOC's")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes the following warnings:
+
+  vmlinux.o: warning: objtool: x64_sys_call+0x2804: __x64_sys_exit() is missing a __noreturn annotation
+  vmlinux.o: warning: objtool: ia32_sys_call+0x29b6: __ia32_sys_exit_group() is missing a __noreturn annotation
+
+Fixes: 1e3ad78334a6 ("x86/syscall: Don't force use of indirect calls for system calls")
+Closes: https://lkml.kernel.org/lkml/6dba9b32-db2c-4e6d-9500-7a08852f17a3@paulmck-laptop
+Reported-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240527125538.13620-4-ilpo.jarvinen@linux.intel.com
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/5d8882bc077d8eadcc7fd1740b56dfb781f12288.1719381528.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/platform/intel/iosf_mbi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/entry/syscall_32.c            | 10 ++++++----
+ arch/x86/entry/syscall_64.c            |  9 ++++++---
+ arch/x86/entry/syscall_x32.c           |  7 +++++--
+ arch/x86/entry/syscalls/syscall_32.tbl |  6 +++---
+ arch/x86/entry/syscalls/syscall_64.tbl |  6 +++---
+ arch/x86/um/sys_call_table_32.c        | 10 ++++++----
+ arch/x86/um/sys_call_table_64.c        | 11 +++++++----
+ scripts/syscalltbl.sh                  | 18 ++++++++++++++++--
+ tools/objtool/noreturns.h              |  4 ++++
+ 9 files changed, 56 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/platform/intel/iosf_mbi.c b/arch/x86/platform/intel/iosf_mbi.c
-index fdd49d70b4373..c81cea208c2c4 100644
---- a/arch/x86/platform/intel/iosf_mbi.c
-+++ b/arch/x86/platform/intel/iosf_mbi.c
-@@ -62,7 +62,7 @@ static int iosf_mbi_pci_read_mdr(u32 mcrx, u32 mcr, u32 *mdr)
+diff --git a/arch/x86/entry/syscall_32.c b/arch/x86/entry/syscall_32.c
+index c2235bae17ef6..8cc9950d7104a 100644
+--- a/arch/x86/entry/syscall_32.c
++++ b/arch/x86/entry/syscall_32.c
+@@ -14,9 +14,12 @@
+ #endif
  
- fail_read:
- 	dev_err(&mbi_pdev->dev, "PCI config access failed with %d\n", result);
--	return result;
-+	return pcibios_err_to_errno(result);
- }
+ #define __SYSCALL(nr, sym) extern long __ia32_##sym(const struct pt_regs *);
+-
++#define __SYSCALL_NORETURN(nr, sym) extern long __noreturn __ia32_##sym(const struct pt_regs *);
+ #include <asm/syscalls_32.h>
+-#undef __SYSCALL
++#undef  __SYSCALL
++
++#undef  __SYSCALL_NORETURN
++#define __SYSCALL_NORETURN __SYSCALL
  
- static int iosf_mbi_pci_write_mdr(u32 mcrx, u32 mcr, u32 mdr)
-@@ -91,7 +91,7 @@ static int iosf_mbi_pci_write_mdr(u32 mcrx, u32 mcr, u32 mdr)
+ /*
+  * The sys_call_table[] is no longer used for system calls, but
+@@ -28,11 +31,10 @@
+ const sys_call_ptr_t sys_call_table[] = {
+ #include <asm/syscalls_32.h>
+ };
+-#undef __SYSCALL
++#undef  __SYSCALL
+ #endif
  
- fail_write:
- 	dev_err(&mbi_pdev->dev, "PCI config access failed with %d\n", result);
--	return result;
-+	return pcibios_err_to_errno(result);
- }
+ #define __SYSCALL(nr, sym) case nr: return __ia32_##sym(regs);
+-
+ long ia32_sys_call(const struct pt_regs *regs, unsigned int nr)
+ {
+ 	switch (nr) {
+diff --git a/arch/x86/entry/syscall_64.c b/arch/x86/entry/syscall_64.c
+index 33b3f09e6f151..ba8354424860c 100644
+--- a/arch/x86/entry/syscall_64.c
++++ b/arch/x86/entry/syscall_64.c
+@@ -8,8 +8,12 @@
+ #include <asm/syscall.h>
  
- int iosf_mbi_read(u8 port, u8 opcode, u32 offset, u32 *mdr)
+ #define __SYSCALL(nr, sym) extern long __x64_##sym(const struct pt_regs *);
++#define __SYSCALL_NORETURN(nr, sym) extern long __noreturn __x64_##sym(const struct pt_regs *);
+ #include <asm/syscalls_64.h>
+-#undef __SYSCALL
++#undef  __SYSCALL
++
++#undef  __SYSCALL_NORETURN
++#define __SYSCALL_NORETURN __SYSCALL
+ 
+ /*
+  * The sys_call_table[] is no longer used for system calls, but
+@@ -20,10 +24,9 @@
+ const sys_call_ptr_t sys_call_table[] = {
+ #include <asm/syscalls_64.h>
+ };
+-#undef __SYSCALL
++#undef  __SYSCALL
+ 
+ #define __SYSCALL(nr, sym) case nr: return __x64_##sym(regs);
+-
+ long x64_sys_call(const struct pt_regs *regs, unsigned int nr)
+ {
+ 	switch (nr) {
+diff --git a/arch/x86/entry/syscall_x32.c b/arch/x86/entry/syscall_x32.c
+index 03de4a9321318..fb77908f44f37 100644
+--- a/arch/x86/entry/syscall_x32.c
++++ b/arch/x86/entry/syscall_x32.c
+@@ -8,11 +8,14 @@
+ #include <asm/syscall.h>
+ 
+ #define __SYSCALL(nr, sym) extern long __x64_##sym(const struct pt_regs *);
++#define __SYSCALL_NORETURN(nr, sym) extern long __noreturn __x64_##sym(const struct pt_regs *);
+ #include <asm/syscalls_x32.h>
+-#undef __SYSCALL
++#undef  __SYSCALL
+ 
+-#define __SYSCALL(nr, sym) case nr: return __x64_##sym(regs);
++#undef  __SYSCALL_NORETURN
++#define __SYSCALL_NORETURN __SYSCALL
+ 
++#define __SYSCALL(nr, sym) case nr: return __x64_##sym(regs);
+ long x32_sys_call(const struct pt_regs *regs, unsigned int nr)
+ {
+ 	switch (nr) {
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index d6ebcab1d8b28..4b71a2607bf58 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -2,7 +2,7 @@
+ # 32-bit system call numbers and entry vectors
+ #
+ # The format is:
+-# <number> <abi> <name> <entry point> <compat entry point>
++# <number> <abi> <name> <entry point> [<compat entry point> [noreturn]]
+ #
+ # The __ia32_sys and __ia32_compat_sys stubs are created on-the-fly for
+ # sys_*() system calls and compat_sys_*() compat system calls if
+@@ -12,7 +12,7 @@
+ # The abi is always "i386" for this file.
+ #
+ 0	i386	restart_syscall		sys_restart_syscall
+-1	i386	exit			sys_exit
++1	i386	exit			sys_exit			-			noreturn
+ 2	i386	fork			sys_fork
+ 3	i386	read			sys_read
+ 4	i386	write			sys_write
+@@ -263,7 +263,7 @@
+ 249	i386	io_cancel		sys_io_cancel
+ 250	i386	fadvise64		sys_ia32_fadvise64
+ # 251 is available for reuse (was briefly sys_set_zone_reclaim)
+-252	i386	exit_group		sys_exit_group
++252	i386	exit_group		sys_exit_group			-			noreturn
+ 253	i386	lookup_dcookie
+ 254	i386	epoll_create		sys_epoll_create
+ 255	i386	epoll_ctl		sys_epoll_ctl
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index a396f6e6ab5bf..a8068f937290a 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -2,7 +2,7 @@
+ # 64-bit system call numbers and entry vectors
+ #
+ # The format is:
+-# <number> <abi> <name> <entry point>
++# <number> <abi> <name> <entry point> [<compat entry point> [noreturn]]
+ #
+ # The __x64_sys_*() stubs are created on-the-fly for sys_*() system calls
+ #
+@@ -68,7 +68,7 @@
+ 57	common	fork			sys_fork
+ 58	common	vfork			sys_vfork
+ 59	64	execve			sys_execve
+-60	common	exit			sys_exit
++60	common	exit			sys_exit			-			noreturn
+ 61	common	wait4			sys_wait4
+ 62	common	kill			sys_kill
+ 63	common	uname			sys_newuname
+@@ -239,7 +239,7 @@
+ 228	common	clock_gettime		sys_clock_gettime
+ 229	common	clock_getres		sys_clock_getres
+ 230	common	clock_nanosleep		sys_clock_nanosleep
+-231	common	exit_group		sys_exit_group
++231	common	exit_group		sys_exit_group			-			noreturn
+ 232	common	epoll_wait		sys_epoll_wait
+ 233	common	epoll_ctl		sys_epoll_ctl
+ 234	common	tgkill			sys_tgkill
+diff --git a/arch/x86/um/sys_call_table_32.c b/arch/x86/um/sys_call_table_32.c
+index 89df5d89d6640..51655133eee36 100644
+--- a/arch/x86/um/sys_call_table_32.c
++++ b/arch/x86/um/sys_call_table_32.c
+@@ -9,6 +9,10 @@
+ #include <linux/cache.h>
+ #include <asm/syscall.h>
+ 
++extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long,
++				      unsigned long, unsigned long,
++				      unsigned long, unsigned long);
++
+ /*
+  * Below you can see, in terms of #define's, the differences between the x86-64
+  * and the UML syscall table.
+@@ -22,15 +26,13 @@
+ #define sys_vm86 sys_ni_syscall
+ 
+ #define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
++#define __SYSCALL_NORETURN __SYSCALL
+ 
+ #define __SYSCALL(nr, sym) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
+ #include <asm/syscalls_32.h>
++#undef  __SYSCALL
+ 
+-#undef __SYSCALL
+ #define __SYSCALL(nr, sym) sym,
+-
+-extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
+-
+ const sys_call_ptr_t sys_call_table[] ____cacheline_aligned = {
+ #include <asm/syscalls_32.h>
+ };
+diff --git a/arch/x86/um/sys_call_table_64.c b/arch/x86/um/sys_call_table_64.c
+index b0b4cfd2308c8..943d414f21093 100644
+--- a/arch/x86/um/sys_call_table_64.c
++++ b/arch/x86/um/sys_call_table_64.c
+@@ -9,6 +9,10 @@
+ #include <linux/cache.h>
+ #include <asm/syscall.h>
+ 
++extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long,
++				      unsigned long, unsigned long,
++				      unsigned long, unsigned long);
++
+ /*
+  * Below you can see, in terms of #define's, the differences between the x86-64
+  * and the UML syscall table.
+@@ -18,14 +22,13 @@
+ #define sys_iopl sys_ni_syscall
+ #define sys_ioperm sys_ni_syscall
+ 
++#define __SYSCALL_NORETURN __SYSCALL
++
+ #define __SYSCALL(nr, sym) extern asmlinkage long sym(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
+ #include <asm/syscalls_64.h>
++#undef  __SYSCALL
+ 
+-#undef __SYSCALL
+ #define __SYSCALL(nr, sym) sym,
+-
+-extern asmlinkage long sys_ni_syscall(unsigned long, unsigned long, unsigned long, unsigned long, unsigned long, unsigned long);
+-
+ const sys_call_ptr_t sys_call_table[] ____cacheline_aligned = {
+ #include <asm/syscalls_64.h>
+ };
+diff --git a/scripts/syscalltbl.sh b/scripts/syscalltbl.sh
+index 6abe143889ef6..6a903b87a7c21 100755
+--- a/scripts/syscalltbl.sh
++++ b/scripts/syscalltbl.sh
+@@ -54,7 +54,7 @@ nxt=0
+ 
+ grep -E "^[0-9]+[[:space:]]+$abis" "$infile" | {
+ 
+-	while read nr abi name native compat ; do
++	while read nr abi name native compat noreturn; do
+ 
+ 		if [ $nxt -gt $nr ]; then
+ 			echo "error: $infile: syscall table is not sorted or duplicates the same syscall number" >&2
+@@ -66,7 +66,21 @@ grep -E "^[0-9]+[[:space:]]+$abis" "$infile" | {
+ 			nxt=$((nxt + 1))
+ 		done
+ 
+-		if [ -n "$compat" ]; then
++		if [ "$compat" = "-" ]; then
++			unset compat
++		fi
++
++		if [ -n "$noreturn" ]; then
++			if [ "$noreturn" != "noreturn" ]; then
++				echo "error: $infile: invalid string \"$noreturn\" in 'noreturn' column"
++				exit 1
++			fi
++			if [ -n "$compat" ]; then
++				echo "__SYSCALL_COMPAT_NORETURN($nr, $native, $compat)"
++			else
++				echo "__SYSCALL_NORETURN($nr, $native)"
++			fi
++		elif [ -n "$compat" ]; then
+ 			echo "__SYSCALL_WITH_COMPAT($nr, $native, $compat)"
+ 		elif [ -n "$native" ]; then
+ 			echo "__SYSCALL($nr, $native)"
+diff --git a/tools/objtool/noreturns.h b/tools/objtool/noreturns.h
+index 7ebf29c911849..1e8141ef1b15d 100644
+--- a/tools/objtool/noreturns.h
++++ b/tools/objtool/noreturns.h
+@@ -7,12 +7,16 @@
+  * Yes, this is unfortunate.  A better solution is in the works.
+  */
+ NORETURN(__fortify_panic)
++NORETURN(__ia32_sys_exit)
++NORETURN(__ia32_sys_exit_group)
+ NORETURN(__kunit_abort)
+ NORETURN(__module_put_and_kthread_exit)
+ NORETURN(__reiserfs_panic)
+ NORETURN(__stack_chk_fail)
+ NORETURN(__tdx_hypercall_failed)
+ NORETURN(__ubsan_handle_builtin_unreachable)
++NORETURN(__x64_sys_exit)
++NORETURN(__x64_sys_exit_group)
+ NORETURN(arch_cpu_idle_dead)
+ NORETURN(bch2_trans_in_restart_error)
+ NORETURN(bch2_trans_restart_error)
 -- 
 2.43.0
 
