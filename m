@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-64551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664B9941E61
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2ED941B38
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07AA51F24B41
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312B71F23601
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6C5183CC3;
-	Tue, 30 Jul 2024 17:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FAB21898F7;
+	Tue, 30 Jul 2024 16:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWySVfUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvugxLrp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAC31A76B6;
-	Tue, 30 Jul 2024 17:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288F31898EB;
+	Tue, 30 Jul 2024 16:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360496; cv=none; b=rgRqruvXQYO4JFxqscJI8HnrRslw8nswXxoaVtouUFdaxbcKCnkQNjb/Hrmrbn9qVW3EyaADuZZlfAHcrbJJDwqtGIw+lXSl7UhkXxhwm45XipGo6Mf6XjBX6PNICPg2/u9TB6t/uAcVHXsysLEcUj+0lnrqNzop+RuIuE5cqoU=
+	t=1722358336; cv=none; b=iGHcTt688SvWLTDtCBv64pq4yiQGHuV51P2VvC7COs7oQ7FxlhS713Ckhr89GXIoWj8DFE21p3dqO7Jj9vQ7j5COluyGZbgQ9pCtJt6NWFwrPPrySvBHe1eo2S6E6kTMo2my+2mOHk+Xd4HCjtMY0OEHk+ABUAKXvqOar4eoFB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360496; c=relaxed/simple;
-	bh=3hpi32gFloyuox/MaKoGRcaylG0DN8aV1l/iF1uvdc4=;
+	s=arc-20240116; t=1722358336; c=relaxed/simple;
+	bh=8irBEXBJcl3nr448p33z+2cIk7KFx7lCIxvtTPb60JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NxpKsnkdQcJOAedMYqEjBuMafMMA9ZrWrU0gi2crqpVMMZ9FRwfh5nb4BwSxLM/fNy8/UgVNLh9mk2CuwygRn9Mv0hLE+LuAc2qLap6i/oJTAS1AiHSmBinUKNO5uaDTvkH1JK+MmYGkA3o1BH0VFpKtDSWi5rmU4q94KejhC9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWySVfUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CE0C4AF0C;
-	Tue, 30 Jul 2024 17:28:15 +0000 (UTC)
+	 MIME-Version; b=JpqlIISS++//qtjpJ9WYIrn+sSxKkVNCg8lWMgN2ffQLmak4JoU0lxcBSpNDFdHZcnuQ7EydjDKhxt1rLELlGb/p59wl3LlbIQ28eLEM1UAuBiRotRORnNEtaOohvC/d2KYsc1t3QbpYRhIr/nsu87zvGYMDEqp9SwE4wZQmfDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvugxLrp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB31DC32782;
+	Tue, 30 Jul 2024 16:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360495;
-	bh=3hpi32gFloyuox/MaKoGRcaylG0DN8aV1l/iF1uvdc4=;
+	s=korg; t=1722358335;
+	bh=8irBEXBJcl3nr448p33z+2cIk7KFx7lCIxvtTPb60JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWySVfUveHwjrX/0jnKXBqQTn13KQO4uCDcTacxw2mpUss6DSh9MAh2/x4I/1WwpR
-	 9eYqIvQvpaMvCPOPy9Oi1dV/hirHAHlFucX1+DXiVj0dLUiBpYlP3llR4vroGOU+py
-	 +oWsXcP06/gCRl5d5wEkJv3/rZ8NaOmO3MH4YNnM=
+	b=EvugxLrpXPx8GKlvvGB0c83HNy2Ou/vOMkoBd09225ITnUAHGS2G27UdBfQxHJxVA
+	 xPjbPxuglpYQW4/enlwdH14M1GhdhNLSE7yD7GhfcSWynJ06eyew7YWgJB8bRfSiTt
+	 ojOWheAv/GdwWKdx9RlFlx0q+zrraV9copjHUKRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.10 716/809] selftests/sigaltstack: Fix ppc64 GCC build
-Date: Tue, 30 Jul 2024 17:49:52 +0200
-Message-ID: <20240730151753.217238514@linuxfoundation.org>
+	Lyude Paul <lyude@redhat.com>,
+	Harry Wentland <hwentlan@amd.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.1 360/440] drm/dp_mst: Fix all mstb marked as not probed after suspend/resume
+Date: Tue, 30 Jul 2024 17:49:53 +0200
+Message-ID: <20240730151629.876072220@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,53 +63,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
+commit d63d81094d208abb20fc444514b2d9ec2f4b7c4e upstream.
 
-Building the sigaltstack test with GCC on 64-bit powerpc errors with:
+[Why]
+After supend/resume, with topology unchanged, observe that
+link_address_sent of all mstb are marked as false even the topology probing
+is done without any error.
 
-  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
-  In file included from sas.c:23:
-  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
-     22 | #error "implement current_stack_pointer equivalent"
-        |  ^~~~~
-  sas.c: In function ‘my_usr1’:
-  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
-     50 |         if (sp < (unsigned long)sstack ||
-        |             ^~
+It is caused by wrongly also include "ret == 0" case as a probing failure
+case.
 
-This happens because GCC doesn't define __ppc__ for 64-bit builds, only
-32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
-is defined by clang and GCC for 64-bit and 32-bit builds.
+[How]
+Remove inappropriate checking conditions.
 
-Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
-Cc: stable@vger.kernel.org # v6.3+
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Harry Wentland <hwentlan@amd.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: stable@vger.kernel.org
+Fixes: 37dfdc55ffeb ("drm/dp_mst: Cleanup drm_dp_send_link_address() a bit")
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240626084825.878565-2-Wayne.Lin@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-+++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
- register unsigned long sp asm("esp");
- #elif __loongarch64
- register unsigned long sp asm("$sp");
--#elif __ppc__
-+#elif __powerpc__
- register unsigned long sp asm("r1");
- #elif __s390x__
- register unsigned long sp asm("%15");
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -2923,7 +2923,7 @@ static int drm_dp_send_link_address(stru
+ 
+ 	/* FIXME: Actually do some real error handling here */
+ 	ret = drm_dp_mst_wait_tx_reply(mstb, txmsg);
+-	if (ret <= 0) {
++	if (ret < 0) {
+ 		drm_err(mgr->dev, "Sending link address failed with %d\n", ret);
+ 		goto out;
+ 	}
+@@ -2975,7 +2975,7 @@ static int drm_dp_send_link_address(stru
+ 	mutex_unlock(&mgr->lock);
+ 
+ out:
+-	if (ret <= 0)
++	if (ret < 0)
+ 		mstb->link_address_sent = false;
+ 	kfree(txmsg);
+ 	return ret < 0 ? ret : changed;
 
 
 
