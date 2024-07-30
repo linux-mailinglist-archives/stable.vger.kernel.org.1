@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0888F941B2C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84298941D60
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48143B2886A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AEDF1F2613A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8B41898EB;
-	Tue, 30 Jul 2024 16:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331D31A76AB;
+	Tue, 30 Jul 2024 17:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeIFJmlV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzIZpgpo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCC1189503;
-	Tue, 30 Jul 2024 16:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52091A76D4;
+	Tue, 30 Jul 2024 17:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357892; cv=none; b=trl+TmN6nCjSGSfu/Ru5jtwsV1n1zbzVvqom5cq2F+ZhG9cMRlDmsC3pDT6EdeTKRq96UOdOmWYuYpVJMSTuaOCI9KOgV1L7/Y9jVBE6MX7HqCtM3uOiJspkcC9jG1OWzZhecT6WP0nWBQmo+r2FFBZppMOZat/LOsX6NTSLVNM=
+	t=1722359787; cv=none; b=Qpxk5BxsPMiI01a/Ycnf6hhn/fX7kdyte88ju3qkTL47YY9MY2J9Fd5u6On4HTRGJdw7ZelwYU4dgXEu8N9KvaZewliyJhf7iT71/LUFAFnwS3tdtV/TXUt93xtjUnovA8K8WAsDyyGw3Gnqa9OVyQ8b6elF6WeOf9IWHOjmFg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357892; c=relaxed/simple;
-	bh=b3J+ol486K2B/+0116NegKXvw31DcIscUTFk/Swa2Ec=;
+	s=arc-20240116; t=1722359787; c=relaxed/simple;
+	bh=pvgRUFgZ/byd87qG81E3aKO4hmmKgfxztwQYkxIT5nA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXaRDdTKBLxZX29eCcSF6evSnRYFC4Ksl0Jpuy4O57l8S63+7F1ZHGsSyKsxC4OFI3O6/I3F9dEpEpXdYyxflPlrE7Z3nPe5Ri/ju5RTX3beP8GYLCPk/HISPlFF6XubmOanSESxWykA+t+sxwweiq6dPpt+c4UQ9n4t1Bj/kSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeIFJmlV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B3FC4AF0E;
-	Tue, 30 Jul 2024 16:44:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cbv/oAeqMVhwdPGSTj4dhBmCBqK02c+WB3xgVp27dVZobRFPf3XaUTz+ZznwoJ5xAFDBS10/DUMo+m5F2AXMinlYdDfNUCi1VSq+bVnDc8lHNQxQs/DxLgBekuLVuFt9+sBaFhpQaY2X0MaKMuNPJrtX/zwpOvSCzIbpvCGg8ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzIZpgpo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAD9C32782;
+	Tue, 30 Jul 2024 17:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357892;
-	bh=b3J+ol486K2B/+0116NegKXvw31DcIscUTFk/Swa2Ec=;
+	s=korg; t=1722359786;
+	bh=pvgRUFgZ/byd87qG81E3aKO4hmmKgfxztwQYkxIT5nA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zeIFJmlV6BOisSuJreA6AhjPMDmpi5d8hFPuqcb4gFPG9+Mo5dzetROBP5RHpZpTs
-	 o8zTaTklllPU63MuufbIImpHH5ouYw6ENMnP2ZwloSkhjA3rNoLgdRxcfOWW9Fw9xA
-	 qJ3l66I2rh0MVJwYHAHpDIdcBn0F8wlesD5LTDdc=
+	b=jzIZpgpoKoZl+AziCOT8w4Jt4OSI4j3thzsyyu9/tvCbizsxwTYd4CABF/09YKalA
+	 GM95ZUVpfbSMmVJm/23tfWJ6y0lqwgJ6i0jGv23CC++y/R6wc5p4ziY9t4M9HL3y/C
+	 WiS4jsnVMYq5wJhbWgOaQKchsofEK+hxKQm8XBIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/568] RDMA/hns: Fix missing pagesize and alignment check in FRMR
+	Jann Horn <jannh@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.10 532/809] selftests/landlock: Add cred_transfer test
 Date: Tue, 30 Jul 2024 17:46:48 +0200
-Message-ID: <20240730151651.640390628@linuxfoundation.org>
+Message-ID: <20240730151745.749616228@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +59,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit d387d4b54eb84208bd4ca13572e106851d0a0819 ]
+commit cc374782b6ca0fd634482391da977542443d3368 upstream.
 
-The offset requires 128B alignment and the page size ranges from
-4K to 128M.
+Check that keyctl(KEYCTL_SESSION_TO_PARENT) preserves the parent's
+restrictions.
 
-Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240710133705.896445-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
+Co-developed-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240724.Ood5aige9she@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h | 4 ++++
- drivers/infiniband/hw/hns/hns_roce_mr.c     | 5 +++++
- 2 files changed, 9 insertions(+)
+ tools/testing/selftests/landlock/base_test.c |   74 +++++++++++++++++++++++++++
+ tools/testing/selftests/landlock/config      |    1 
+ 2 files changed, 75 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
-index b3719579a24b3..cd593d651e4ca 100644
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -82,6 +82,7 @@
- #define MR_TYPE_DMA				0x03
+--- a/tools/testing/selftests/landlock/base_test.c
++++ b/tools/testing/selftests/landlock/base_test.c
+@@ -9,6 +9,7 @@
+ #define _GNU_SOURCE
+ #include <errno.h>
+ #include <fcntl.h>
++#include <linux/keyctl.h>
+ #include <linux/landlock.h>
+ #include <string.h>
+ #include <sys/prctl.h>
+@@ -326,4 +327,77 @@ TEST(ruleset_fd_transfer)
+ 	ASSERT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
+ }
  
- #define HNS_ROCE_FRMR_MAX_PA			512
-+#define HNS_ROCE_FRMR_ALIGN_SIZE		128
- 
- #define PKEY_ID					0xffff
- #define NODE_DESC_SIZE				64
-@@ -183,6 +184,9 @@ enum {
- #define HNS_HW_PAGE_SHIFT			12
- #define HNS_HW_PAGE_SIZE			(1 << HNS_HW_PAGE_SHIFT)
- 
-+#define HNS_HW_MAX_PAGE_SHIFT			27
-+#define HNS_HW_MAX_PAGE_SIZE			(1 << HNS_HW_MAX_PAGE_SHIFT)
++TEST(cred_transfer)
++{
++	struct landlock_ruleset_attr ruleset_attr = {
++		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_DIR,
++	};
++	int ruleset_fd, dir_fd;
++	pid_t child;
++	int status;
 +
- struct hns_roce_uar {
- 	u64		pfn;
- 	unsigned long	index;
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index 190e62da98e4b..980261969b0c0 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -423,6 +423,11 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
- 	int ret, sg_num = 0;
- 
-+	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
-+	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
-+	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
-+		return sg_num;
++	drop_caps(_metadata);
 +
- 	mr->npages = 0;
- 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
- 				 sizeof(dma_addr_t), GFP_KERNEL);
--- 
-2.43.0
-
++	dir_fd = open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC);
++	EXPECT_LE(0, dir_fd);
++	EXPECT_EQ(0, close(dir_fd));
++
++	/* Denies opening directories. */
++	ruleset_fd =
++		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
++	ASSERT_LE(0, ruleset_fd);
++	EXPECT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
++	ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
++	EXPECT_EQ(0, close(ruleset_fd));
++
++	/* Checks ruleset enforcement. */
++	EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
++	EXPECT_EQ(EACCES, errno);
++
++	/* Needed for KEYCTL_SESSION_TO_PARENT permission checks */
++	EXPECT_NE(-1, syscall(__NR_keyctl, KEYCTL_JOIN_SESSION_KEYRING, NULL, 0,
++			      0, 0))
++	{
++		TH_LOG("Failed to join session keyring: %s", strerror(errno));
++	}
++
++	child = fork();
++	ASSERT_LE(0, child);
++	if (child == 0) {
++		/* Checks ruleset enforcement. */
++		EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
++		EXPECT_EQ(EACCES, errno);
++
++		/*
++		 * KEYCTL_SESSION_TO_PARENT is a no-op unless we have a
++		 * different session keyring in the child, so make that happen.
++		 */
++		EXPECT_NE(-1, syscall(__NR_keyctl, KEYCTL_JOIN_SESSION_KEYRING,
++				      NULL, 0, 0, 0));
++
++		/*
++		 * KEYCTL_SESSION_TO_PARENT installs credentials on the parent
++		 * that never go through the cred_prepare hook, this path uses
++		 * cred_transfer instead.
++		 */
++		EXPECT_EQ(0, syscall(__NR_keyctl, KEYCTL_SESSION_TO_PARENT, 0,
++				     0, 0, 0));
++
++		/* Re-checks ruleset enforcement. */
++		EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
++		EXPECT_EQ(EACCES, errno);
++
++		_exit(_metadata->exit_code);
++		return;
++	}
++
++	EXPECT_EQ(child, waitpid(child, &status, 0));
++	EXPECT_EQ(1, WIFEXITED(status));
++	EXPECT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
++
++	/* Re-checks ruleset enforcement. */
++	EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
++	EXPECT_EQ(EACCES, errno);
++}
++
+ TEST_HARNESS_MAIN
+--- a/tools/testing/selftests/landlock/config
++++ b/tools/testing/selftests/landlock/config
+@@ -2,6 +2,7 @@ CONFIG_CGROUPS=y
+ CONFIG_CGROUP_SCHED=y
+ CONFIG_INET=y
+ CONFIG_IPV6=y
++CONFIG_KEYS=y
+ CONFIG_NET=y
+ CONFIG_NET_NS=y
+ CONFIG_OVERLAY_FS=y
 
 
 
