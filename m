@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAFC941C13
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59025941ECE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 282F9285300
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107301F24DD5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D3B18454A;
-	Tue, 30 Jul 2024 17:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54036189902;
+	Tue, 30 Jul 2024 17:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLw4Aqzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NImDgGuu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609421A6192;
-	Tue, 30 Jul 2024 17:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115D81A76B3;
+	Tue, 30 Jul 2024 17:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358961; cv=none; b=MALtI514K/KiGLaDQMXpnnU2yiP5uIoIM5wWN2Zp5gtngaUqRH0RWTsoNs2mbZvPbs9lqZcEAzDahepF6RtLNcKwBI5mF/7htrtcN4kJ91TQ8gls12bFCzINB/NGCWIhLIbeLv7DcAuQqBMr25NiBi91xSjOOlk5UJCG92F9rHM=
+	t=1722360795; cv=none; b=uyLAjDavDDHz4/HKZc5rBpTDOrrgeLHPyecFX9TdElEv1V1rTKlpWFz8gr0pjSoSgT81GoFVgaS1gJe48DKeldo/wDHZiI1vfn2uFdXsjR7SNLjmJpqY6+/Pv72ov5gbyn/77Gyxvt4p4R7YZkyaX60GGI0RDgqW1a/Cz0Mzwwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358961; c=relaxed/simple;
-	bh=PUYqQU5oahFhp1AXNzebjxBEEp0f1X4Ncon1r41rn00=;
+	s=arc-20240116; t=1722360795; c=relaxed/simple;
+	bh=xYSxt+3RFjTGmZX+MFjC9ZykXsDwko0qOQG4GAvXf1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9MC8nI0vkw0ZdzoiVQVs6qfO0/nIjV6o8PmRlLh/HxDg6UbKfv7s9/3mifVH/9y2BgLr/gScW3N3z78+TubnLmLjEiQk+DrghlCjFI96KydcRRMrFBLXlizwYIKcjcCdsdZdRTGsnPl3NkK8zu3MnFv7b2HIqWDEWnyBRzJSEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLw4Aqzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4453C32782;
-	Tue, 30 Jul 2024 17:02:40 +0000 (UTC)
+	 MIME-Version; b=f6FAAzX6BE/9lUcBWQEN97O995Ei53CUyt90KXGSuYOKszPB5BppRAED1FnieBNK8++VhNdqrXPMShbhXu/3IuW7OpfrvUGrTP8U0TWyOzzDx0TOlKSkYNyJkHQr9DKLQEKG0iYp4lKs8092o4iFyap2vaCOnHb8b1ooc5IXfYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NImDgGuu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26988C4AF0A;
+	Tue, 30 Jul 2024 17:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358961;
-	bh=PUYqQU5oahFhp1AXNzebjxBEEp0f1X4Ncon1r41rn00=;
+	s=korg; t=1722360794;
+	bh=xYSxt+3RFjTGmZX+MFjC9ZykXsDwko0qOQG4GAvXf1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLw4AqzouaZVv+w9UF16yyw8TX3APVPqHk3ZwpR5qucRlsTkm5FvOvpOFhalYiHKg
-	 mEiEVCqVT5PCm3DU90CEaC4zmbZR0YCiXDv5nLktVZAgbde8Tb0/6RH9cQRYvnW8ZB
-	 JxKuQIBhylR+ZUJI6O+7q7b29w65KyqyE7E6UiJs=
+	b=NImDgGuunSrExmX40caZzV8jrEFZWmfPMZYffizbK/mz1qmt9k9qk+S5QF3HfLfL4
+	 NGcSPkf+FgNYrUOujfD4KdjU2PJao+PPg6lQHoHCF+yzXJ4OsWgKNod/ogPvAnU7n1
+	 CKZnvAdpcvd1m2MXxkJM8HMToWhx567aHcwCcD4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Will Deacon <will@kernel.org>,
+	ethanwu <ethanwu@synology.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 437/440] iommu: sprd: Avoid NULL deref in sprd_iommu_hw_en
+Subject: [PATCH 6.10 794/809] ceph: fix incorrect kmalloc size of pagevec mempool
 Date: Tue, 30 Jul 2024 17:51:10 +0200
-Message-ID: <20240730151632.842020517@linuxfoundation.org>
+Message-ID: <20240730151756.333319913@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+From: ethanwu <ethanwu@synology.com>
 
-[ Upstream commit 630482ee0653decf9e2482ac6181897eb6cde5b8 ]
+[ Upstream commit 03230edb0bd831662a7c08b6fef66b2a9a817774 ]
 
-In sprd_iommu_cleanup() before calling function sprd_iommu_hw_en()
-dom->sdev is equal to NULL, which leads to null dereference.
+The kmalloc size of pagevec mempool is incorrectly calculated.
+It misses the size of page pointer and only accounts the number for the array.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 9afea57384d4 ("iommu/sprd: Release dma buffer to avoid memory leak")
-Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Reviewed-by: Chunyan Zhang <zhang.lyra@gmail.com>
-Link: https://lore.kernel.org/r/20240716125522.3690358-1-artem.chernyshev@red-soft.ru
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: a0102bda5bc0 ("ceph: move sb->wb_pagevec_pool to be a global mempool")
+Signed-off-by: ethanwu <ethanwu@synology.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sprd-iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
-index e4358393fe378..71d22daaec2ed 100644
---- a/drivers/iommu/sprd-iommu.c
-+++ b/drivers/iommu/sprd-iommu.c
-@@ -234,8 +234,8 @@ static void sprd_iommu_cleanup(struct sprd_iommu_domain *dom)
+diff --git a/fs/ceph/super.c b/fs/ceph/super.c
+index 885cb5d4e771a..0cdf84cd17912 100644
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -961,7 +961,8 @@ static int __init init_caches(void)
+ 	if (!ceph_mds_request_cachep)
+ 		goto bad_mds_req;
  
- 	pgt_size = sprd_iommu_pgt_size(&dom->domain);
- 	dma_free_coherent(dom->sdev->dev, pgt_size, dom->pgt_va, dom->pgt_pa);
--	dom->sdev = NULL;
- 	sprd_iommu_hw_en(dom->sdev, false);
-+	dom->sdev = NULL;
- }
+-	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10, CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT);
++	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10,
++	    (CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT) * sizeof(struct page *));
+ 	if (!ceph_wb_pagevec_pool)
+ 		goto bad_pagevec_pool;
  
- static void sprd_iommu_domain_free(struct iommu_domain *domain)
 -- 
 2.43.0
 
