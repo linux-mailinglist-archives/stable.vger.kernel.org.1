@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-64353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2A1941D83
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBD6941AAC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65059B2622D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29C9D281B88
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D201B1A76A9;
-	Tue, 30 Jul 2024 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3943D18455E;
+	Tue, 30 Jul 2024 16:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRynI2Vd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEa533sf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FAC1A76A4;
-	Tue, 30 Jul 2024 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEFA1A6166;
+	Tue, 30 Jul 2024 16:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359840; cv=none; b=C51YPCpXMMgyQLlZQgxbdlOxXwemnxScAWNgPulmMmy1izGCMFUvy1eT/yrmXtXJvbau1+lIwRMNIV6QzCYvdpbAWWey+kRfEm1AZlOBHAlUMaGd3hkMZf3Z7Y8+AoREu6eV2hE6HSwPtfUQe89zRYdPHQkVNAX5+djZ7up43vU=
+	t=1722357972; cv=none; b=bv4gRnAdFX1bKH3g1AOKDeNKlcoHV6QEXCcflbwHg8iTh80mCu8PPvnKwe4Vh+yvrjavTLZy6cFh81iWZymKGMs7Xdi3RbpTSTMKIKug17PDHh+wJZB32ktbYlVIiiNyhVuJoMeU9wxWZ1mo42eHSlc2Kh9sLYxFRfOvj4rOWQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359840; c=relaxed/simple;
-	bh=K3zmFeQ4+ulanYOjIA5zCzR05hnxpqDoPHEs4SGe3U0=;
+	s=arc-20240116; t=1722357972; c=relaxed/simple;
+	bh=tpI/QsWwtKu6pHRuf6HO5viDKv5JOTMWNiFaLG2F57Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTypHgu2whoBcQ4dzSFR1jlbCECTOnpfGMvsILQ8L+RiAdIliIFMVSedtnH9/YzAgpKEt+m4GTBfEZXrhjgU2q6WfaINbm8DPbaeg+L1W5pblETD/Pr8Z+3qk/+Wl1+9zaxMjM0MWcOTjhh17FJX0EqROAStY7OzeVyj1S8Dhds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRynI2Vd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150C0C4AF0A;
-	Tue, 30 Jul 2024 17:17:19 +0000 (UTC)
+	 MIME-Version; b=jnF8eDpD3vCs1WpHQJLDfXidFJFYmKdMjdmwLms+1T3p1h/XmGz33R7FJNAaxrteBYhl+4xsIzPLT9QbN8IUyYcCdJ/Ya0DTMGY0+WZrHw9CI7/BRyg2mhPcKTEDLclGp52EXwGiz+9IFGIzClq4968/jMtwZu1fHH4GznAotwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEa533sf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73556C32782;
+	Tue, 30 Jul 2024 16:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359840;
-	bh=K3zmFeQ4+ulanYOjIA5zCzR05hnxpqDoPHEs4SGe3U0=;
+	s=korg; t=1722357971;
+	bh=tpI/QsWwtKu6pHRuf6HO5viDKv5JOTMWNiFaLG2F57Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRynI2Vddv20NVCnO7Kc7SaHgjh9WDhDqHDffEE0TB7umDP0bdvDlLnMSw0325r5T
-	 RAaS+isIg7HgAUW7QBJ2zGFWGpGVuiuKbrt+udDF78iGZyTm1IfVM9/si6DKgQGk7G
-	 Q08HJKSOYcy0dcpu0F0SVel/CnTF9LNmTeL8o/+g=
+	b=VEa533sfz9/gdkUZ/SwJP0td2R69rHbjH7FzXXRFVdnzUAoLJ8RB96JeIV4smUxzZ
+	 D7OS3qrqvrJHl3LZRJmqhxnEhR1uQgg3hSKe7c033yQyDYDOIr2JbCZmMYSKQl8IP0
+	 kc2iHGB6BZNIV3t632c45SQvQQwMT375twhTrZH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Heusel <christian@heusel.eu>,
-	mavrix#kernel@simplelogin.com,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.10 543/809] x86/efistub: Revert to heap allocated boot_params for PE entrypoint
-Date: Tue, 30 Jul 2024 17:46:59 +0200
-Message-ID: <20240730151746.197873753@linuxfoundation.org>
+	Joshua Washington <joshwash@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 313/568] gve: Fix XDP TX completion handling when counters overflow
+Date: Tue, 30 Jul 2024 17:47:00 +0200
+Message-ID: <20240730151652.105093215@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Joshua Washington <joshwash@google.com>
 
-commit ae835a96d72cd025421910edb0e8faf706998727 upstream.
+[ Upstream commit 03b54bad26f3c78bb1f90410ec3e4e7fe197adc9 ]
 
-This is a partial revert of commit
+In gve_clean_xdp_done, the driver processes the TX completions based on
+a 32-bit NIC counter and a 32-bit completion counter stored in the tx
+queue.
 
-  8117961d98f ("x86/efi: Disregard setup header of loaded image")
+Fix the for loop so that the counter wraparound is handled correctly.
 
-which triggers boot issues on older Dell laptops. As it turns out,
-switching back to a heap allocation for the struct boot_params
-constructed by the EFI stub works around this, even though it is unclear
-why.
-
-Cc: Christian Heusel <christian@heusel.eu>
-Reported-by: <mavrix#kernel@simplelogin.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 75eaae158b1b ("gve: Add XDP DROP and TX support for GQI-QPL format")
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240716171041.1561142-1-pkaligineedi@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/google/gve/gve_tx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -469,11 +469,12 @@ void __noreturn efi_stub_entry(efi_handl
- efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 				   efi_system_table_t *sys_table_arg)
+diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
+index 9f6ffc4a54f0b..2ae891a62875c 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx.c
++++ b/drivers/net/ethernet/google/gve/gve_tx.c
+@@ -158,15 +158,16 @@ static int gve_clean_xdp_done(struct gve_priv *priv, struct gve_tx_ring *tx,
+ 			      u32 to_do)
  {
--	static struct boot_params boot_params __page_aligned_bss;
--	struct setup_header *hdr = &boot_params.hdr;
- 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
-+	struct boot_params *boot_params;
-+	struct setup_header *hdr;
- 	int options_size = 0;
- 	efi_status_t status;
-+	unsigned long alloc;
- 	char *cmdline_ptr;
+ 	struct gve_tx_buffer_state *info;
+-	u32 clean_end = tx->done + to_do;
+ 	u64 pkts = 0, bytes = 0;
+ 	size_t space_freed = 0;
+ 	u32 xsk_complete = 0;
+ 	u32 idx;
++	int i;
  
- 	if (efi_is_native())
-@@ -491,6 +492,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 		efi_exit(handle, status);
- 	}
+-	for (; tx->done < clean_end; tx->done++) {
++	for (i = 0; i < to_do; i++) {
+ 		idx = tx->done & tx->mask;
+ 		info = &tx->info[idx];
++		tx->done++;
  
-+	status = efi_allocate_pages(PARAM_SIZE, &alloc, ULONG_MAX);
-+	if (status != EFI_SUCCESS)
-+		efi_exit(handle, status);
-+
-+	boot_params = memset((void *)alloc, 0x0, PARAM_SIZE);
-+	hdr	    = &boot_params->hdr;
-+
- 	/* Assign the setup_header fields that the kernel actually cares about */
- 	hdr->root_flags	= 1;
- 	hdr->vid_mode	= 0xffff;
-@@ -500,13 +508,15 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
--	if (!cmdline_ptr)
-+	if (!cmdline_ptr) {
-+		efi_free(PARAM_SIZE, alloc);
- 		efi_exit(handle, EFI_OUT_OF_RESOURCES);
-+	}
- 
- 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
--			  &boot_params.ext_cmd_line_ptr);
-+			  &boot_params->ext_cmd_line_ptr);
- 
--	efi_stub_entry(handle, sys_table_arg, &boot_params);
-+	efi_stub_entry(handle, sys_table_arg, boot_params);
- 	/* not reached */
- }
- 
+ 		if (unlikely(!info->xdp.size))
+ 			continue;
+-- 
+2.43.0
+
 
 
 
