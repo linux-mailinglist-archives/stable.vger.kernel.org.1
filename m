@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-63309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC282941967
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2863A941D74
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30E70B2765D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C70C01F2654E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C761898EE;
-	Tue, 30 Jul 2024 16:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBDB1A76AF;
+	Tue, 30 Jul 2024 17:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxF6ehSs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDwbcPqb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC05D189503;
-	Tue, 30 Jul 2024 16:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DDF1A76A4;
+	Tue, 30 Jul 2024 17:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356411; cv=none; b=gOlsENLoNPEdhtrMXK2Oi1lZ/GAJmViZzt0jwrgXMo50lifHE19gxfsAHsd6KkDk/STL2pi25uhJWAhygTYrqvtTwejYjVArJMrpHAlyYRUgPwPuWAreN00W5CxlwpRSQ7DeMI6/2OZ/EzEBiJdyxhF9AZMBdBSKv5tnTaGkURA=
+	t=1722359863; cv=none; b=a+kqstbA+vztPsVH/Je6W1cvNisfq33iP6OFkERVDzJZiSleCrAlq1z+YY8qQXqNAQBe8irVjVihH0rt4SEDCqwppiRDCqh5C007yDdMDTtuY5Lp8PD0BtwGXtWc4FFKPIKEPHwG1puL7EQK0YWg489s9J/W7gK0o6FbsRnIpbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356411; c=relaxed/simple;
-	bh=G/BEGf08i/6kyCRlRnVthOwKO7iwpbaSiMWKMadq/MY=;
+	s=arc-20240116; t=1722359863; c=relaxed/simple;
+	bh=JyNpUkievU8pE1p268MpSsBcATsxPIQf7Tn+Ah6Hw1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhxRq97cT1o4gfdb/lNJwdvcE51jXBo6gRHaiUqvQit5oxI0qFE9+56EMN/mlRbaH2RPdhJgMo7F4vVjj8xCfqZ9ESsPFx76AlYWzJDjQWqPzalB0WhEGm3Syu1ukp1bplm1HisWec9nkgQ+fVOlcOJK7S/O/akxB8pK9S83tv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxF6ehSs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F558C32782;
-	Tue, 30 Jul 2024 16:20:10 +0000 (UTC)
+	 MIME-Version; b=eu0Yr2Afj43LURejfqAQ4Q2QJ7i6b6rI0/t44cI2x+hznJV/3LYwN+xqbiyj56rabXUuKVb0GwA0N4S0dOtzg+GiKWQcHujXxDur1cnQ2XzN+IcU/Jmb9D1jbmFD+L83NtcQ7C7wLVdinESavL4zEhV68RDbpTL4RJ9K9Jh9guQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDwbcPqb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8032CC32782;
+	Tue, 30 Jul 2024 17:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356411;
-	bh=G/BEGf08i/6kyCRlRnVthOwKO7iwpbaSiMWKMadq/MY=;
+	s=korg; t=1722359863;
+	bh=JyNpUkievU8pE1p268MpSsBcATsxPIQf7Tn+Ah6Hw1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxF6ehSs8efBl9jcugeBKZB1AThS5czPDphOhz876dQabRmRB9ClmUu8nL8S6MIir
-	 pdfJwLyWMXdEkkrLCOzOhKtear9yVMTZONce3lRJAm38+EJ1rUXXb2s/LKx4QDDzbv
-	 OgvHVsyThde6mJkQfUXKTWXL5nAxuOhKISLKBrzo=
+	b=EDwbcPqbd6uoJKi95ZyGraK1JNyrkRPqnUCiUdUvtj9azQpoNv+30sClCDaXV/gOQ
+	 vyppBrNR7J95uB44KzfXCM9XKRLFaSejd5iQQgzdYdLAovWiJLjPbT+GZXzI/ZHjAV
+	 /AJRbIUXwU9cKSoSQ1k/RCNHP01tzoGiRm9TnECc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell Currey <ruscur@russell.cc>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 189/440] powerpc/pseries: Move plpks.h to include directory
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.10 546/809] thermal/drivers/broadcom: Fix race between removal and clock disable
 Date: Tue, 30 Jul 2024 17:47:02 +0200
-Message-ID: <20240730151623.255648651@linuxfoundation.org>
+Message-ID: <20240730151746.319260771@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell Currey <ruscur@russell.cc>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 90b74e305d6b5a444b1283dd7ad1caf6acaa0340 ]
+commit e90c369cc2ffcf7145a46448de101f715a1f5584 upstream.
 
-Move plpks.h from platforms/pseries/ to include/asm/. This is necessary
-for later patches to make use of the PLPKS from code in other subsystems.
+During the probe, driver enables clocks necessary to access registers
+(in get_temp()) and then registers thermal zone with managed-resources
+(devm) interface.  Removal of device is not done in reversed order,
+because:
+1. Clock will be disabled in driver remove() callback - thermal zone is
+   still registered and accessible to users,
+2. devm interface will unregister thermal zone.
 
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230210080401.345462-15-ajd@linux.ibm.com
-Stable-dep-of: 932bed412170 ("powerpc/kexec_file: fix cpus node update to FDT")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leaves short window between (1) and (2) for accessing the
+get_temp() callback with disabled clock.
+
+Fix this by enabling clock also via devm-interface, so entire cleanup
+path will be in proper, reversed order.
+
+Fixes: 8454c8c09c77 ("thermal/drivers/bcm2835: Remove buggy call to thermal_of_zone_unregister")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240709-thermal-probe-v1-1-241644e2b6e0@linaro.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../powerpc/{platforms/pseries => include/asm}/plpks.h | 10 +++++++---
- arch/powerpc/platforms/pseries/plpks.c                 |  3 +--
- 2 files changed, 8 insertions(+), 5 deletions(-)
- rename arch/powerpc/{platforms/pseries => include/asm}/plpks.h (94%)
+ drivers/thermal/broadcom/bcm2835_thermal.c |   19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/plpks.h b/arch/powerpc/include/asm/plpks.h
-similarity index 94%
-rename from arch/powerpc/platforms/pseries/plpks.h
-rename to arch/powerpc/include/asm/plpks.h
-index 07278a990c2df..44c3d93fb5e7d 100644
---- a/arch/powerpc/platforms/pseries/plpks.h
-+++ b/arch/powerpc/include/asm/plpks.h
-@@ -6,8 +6,10 @@
-  * Platform keystore for pseries LPAR(PLPKS).
-  */
+--- a/drivers/thermal/broadcom/bcm2835_thermal.c
++++ b/drivers/thermal/broadcom/bcm2835_thermal.c
+@@ -185,7 +185,7 @@ static int bcm2835_thermal_probe(struct
+ 		return err;
+ 	}
  
--#ifndef _PSERIES_PLPKS_H
--#define _PSERIES_PLPKS_H
-+#ifndef _ASM_POWERPC_PLPKS_H
-+#define _ASM_POWERPC_PLPKS_H
-+
-+#ifdef CONFIG_PSERIES_PLPKS
+-	data->clk = devm_clk_get(&pdev->dev, NULL);
++	data->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(data->clk)) {
+ 		err = PTR_ERR(data->clk);
+ 		if (err != -EPROBE_DEFER)
+@@ -193,10 +193,6 @@ static int bcm2835_thermal_probe(struct
+ 		return err;
+ 	}
  
- #include <linux/types.h>
- #include <linux/list.h>
-@@ -93,4 +95,6 @@ int plpks_read_fw_var(struct plpks_var *var);
-  */
- int plpks_read_bootloader_var(struct plpks_var *var);
- 
--#endif
-+#endif // CONFIG_PSERIES_PLPKS
-+
-+#endif // _ASM_POWERPC_PLPKS_H
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index d54188a355c9c..1c43c4febd3da 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -18,8 +18,7 @@
- #include <linux/types.h>
- #include <asm/hvcall.h>
- #include <asm/machdep.h>
+-	err = clk_prepare_enable(data->clk);
+-	if (err)
+-		return err;
 -
--#include "plpks.h"
-+#include <asm/plpks.h>
+ 	rate = clk_get_rate(data->clk);
+ 	if ((rate < 1920000) || (rate > 5000000))
+ 		dev_warn(&pdev->dev,
+@@ -211,7 +207,7 @@ static int bcm2835_thermal_probe(struct
+ 		dev_err(&pdev->dev,
+ 			"Failed to register the thermal device: %d\n",
+ 			err);
+-		goto err_clk;
++		return err;
+ 	}
  
- static u8 *ospassword;
- static u16 ospasswordlength;
--- 
-2.43.0
-
+ 	/*
+@@ -236,7 +232,7 @@ static int bcm2835_thermal_probe(struct
+ 			dev_err(&pdev->dev,
+ 				"Not able to read trip_temp: %d\n",
+ 				err);
+-			goto err_tz;
++			return err;
+ 		}
+ 
+ 		/* set bandgap reference voltage and enable voltage regulator */
+@@ -269,17 +265,11 @@ static int bcm2835_thermal_probe(struct
+ 	 */
+ 	err = thermal_add_hwmon_sysfs(tz);
+ 	if (err)
+-		goto err_tz;
++		return err;
+ 
+ 	bcm2835_thermal_debugfs(pdev);
+ 
+ 	return 0;
+-err_tz:
+-	devm_thermal_of_zone_unregister(&pdev->dev, tz);
+-err_clk:
+-	clk_disable_unprepare(data->clk);
+-
+-	return err;
+ }
+ 
+ static void bcm2835_thermal_remove(struct platform_device *pdev)
+@@ -287,7 +277,6 @@ static void bcm2835_thermal_remove(struc
+ 	struct bcm2835_thermal_data *data = platform_get_drvdata(pdev);
+ 
+ 	debugfs_remove_recursive(data->debugfsdir);
+-	clk_disable_unprepare(data->clk);
+ }
+ 
+ static struct platform_driver bcm2835_thermal_driver = {
 
 
 
