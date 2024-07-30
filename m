@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-63679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85625941A1B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADF79417DF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B608A1C23BF6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAA54B23BDF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DE61898F2;
-	Tue, 30 Jul 2024 16:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F99189503;
+	Tue, 30 Jul 2024 16:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRa2FAIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4Cbn3i7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CDA184535;
-	Tue, 30 Jul 2024 16:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682431A616E;
+	Tue, 30 Jul 2024 16:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357606; cv=none; b=ADOqk0p7dOTRh7OqgVz/snzUHyA/82zFM0IWKZK9szOrsTYVKHGm7oZatQgoyjl91UKcEVZOPwSQFLKIodX5BHlAvjwNr+vM4NiZsDs0W93FM/qezwVIDo9R09XitYaOC0g+1/ZJD8PlmN/g7eTNxI9RbL0s40DYfR6q/O663f4=
+	t=1722356014; cv=none; b=OzvAeuXAJlCJ4LD0MNZcX6HdDD89SXVokg4f9vvqQ7gL5ELQKnupatIaMofqF2krTYrMCG2qTkOUuzoF2jSGrMSeu1iWmDqJ5/YZL5rtbd+6PVv6bN0D2WPcWpX2v6Ert89R/86bMiRDr1pwg6wlfSkE5/OlRrjc8ZNYaNKACyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357606; c=relaxed/simple;
-	bh=0xhO5SXDuNhTpL0cXH3TSPXG2fIbXFr1i+zqpTrt/1o=;
+	s=arc-20240116; t=1722356014; c=relaxed/simple;
+	bh=VRnaoADRi3EXh9uef5oLRW1U8Ty/oxkcB5E5uru2fRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaEosbzY8HsSwc0xnMa6p3Zv2qlKuOV3WrbUm+yQFJw4hunePt+T1n/yf9cG31MwB5bzxcIxRNGUpSN5+YK1q3yVvOLa7rQl/VD07TkWwHSOqgJSqRnIFGXKVlVWrIF6BFFnTgGyDB2JEEx7gQgEYfxUoDBCTTmYXSwrhMzZPRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRa2FAIB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04378C4AF0C;
-	Tue, 30 Jul 2024 16:40:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IjaWs5g6CyNJ4BwtsD6YQkAiRa7u7/Ep9D1YlWWi83Y/cmxyfnnXA5mot11UYueU2qZ/v9CrskqwSIh3ZcRUe1j80JFaVfxS1JErE5JGd++R09Dnqf0lxh76iu9bnk/2eVLh7aT49GkiWHdXHkNTDEu03hZoGaJcbYmBsDTTfmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4Cbn3i7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5503C32782;
+	Tue, 30 Jul 2024 16:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357606;
-	bh=0xhO5SXDuNhTpL0cXH3TSPXG2fIbXFr1i+zqpTrt/1o=;
+	s=korg; t=1722356014;
+	bh=VRnaoADRi3EXh9uef5oLRW1U8Ty/oxkcB5E5uru2fRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRa2FAIBKN2rGG2B3VGSvtHnOC53DKc8x5nh/YLk4rh41lEAXtWAJYomy6WS2qQDE
-	 lc7nQ5bNgofgPumgVIfxOnlWNbar8AtkMgoF6YazziJvpmHc5Q9nqRULICYpeIlieH
-	 3S03zvyyF/4eqE1HPJv44Bfau0+ZN5KJdAlSSF/E=
+	b=F4Cbn3i7/rIE83sNcD3vQMfP4URhxbE3G4sPZIKdpT7LaSNFJ0BpxbSnqmYY9kSsf
+	 lYfTEX2+KkV+71nqtODJ8vlLpv9ajgv6oOL+ZMALNxWx5wPRQ3eL57KlY/Nyn1Hiwf
+	 vspUKtQVukNtzALWmY+YEtrHq/IKQ6yol35hHEP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/568] RDMA/mlx5: Use sq timestamp as QP timestamp when RoCE is disabled
+Subject: [PATCH 6.1 148/440] media: rcar-csi2: Cleanup subdevice in remove()
 Date: Tue, 30 Jul 2024 17:46:21 +0200
-Message-ID: <20240730151650.590326395@linuxfoundation.org>
+Message-ID: <20240730151621.661495712@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-[ Upstream commit 0c5275bf75ec3708d95654195ae4ed80d946d088 ]
+[ Upstream commit f6d64d0d2897ed4e85ac00afe43e45c8b8fc0c44 ]
 
-When creating a QP, one of the attributes is TS format (timestamp).
-In some devices, we have a limitation that all QPs should have the same
-ts_format. The ts_format is chosen based on the device's capability.
-The qp_ts_format cap resides under the RoCE caps table, and the
-cap will be 0 when RoCE is disabled. So when RoCE is disabled, the
-value that should be queried is sq_ts_format under HCA caps.
+Cleanup the V4L2 subdevice in the driver's remove function to
+ensure its async connection are freed, and guarantee in future that
+the subdev active state is cleaned up.
 
-Consider the case when the system supports REAL_TIME_TS format (0x2),
-some QPs are created with REAL_TIME_TS as ts_format, and afterwards
-RoCE gets disabled. When trying to construct a new QP, we can't use
-the qp_ts_format, that is queried from the RoCE caps table, Since it
-leads to passing 0x0 (FREE_RUNNING_TS) as the value of the qp_ts_format,
-which is different than the ts_format of the previously allocated
-QPs REAL_TIME_TS format (0x2).
-
-Thus, to resolve this, read the sq_ts_format, which also reflect
-the supported ts format for the QP when RoCE is disabled.
-
-Fixes: 4806f1e2fee8 ("net/mlx5: Set QP timestamp mode to default")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Link: https://lore.kernel.org/r/32801966eb767c7fd62b8dea3b63991d5fbfe213.1718554199.git.leon@kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 769afd212b16 ("media: rcar-csi2: add Renesas R-Car MIPI CSI-2 receiver driver")
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://lore.kernel.org/r/20240617161135.130719-4-jacopo.mondi@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mlx5/qp.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/media/platform/renesas/rcar-vin/rcar-csi2.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/mlx5/qp.h b/include/linux/mlx5/qp.h
-index f0e55bf3ec8b5..ad1ce650146cb 100644
---- a/include/linux/mlx5/qp.h
-+++ b/include/linux/mlx5/qp.h
-@@ -576,9 +576,12 @@ static inline const char *mlx5_qp_state_str(int state)
+diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c b/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
+index 001c4b7c59758..3b6657d4877a5 100644
+--- a/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
++++ b/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
+@@ -1583,6 +1583,7 @@ static int rcsi2_remove(struct platform_device *pdev)
+ 	v4l2_async_nf_unregister(&priv->notifier);
+ 	v4l2_async_nf_cleanup(&priv->notifier);
+ 	v4l2_async_unregister_subdev(&priv->subdev);
++	v4l2_subdev_cleanup(&priv->subdev);
  
- static inline int mlx5_get_qp_default_ts(struct mlx5_core_dev *dev)
- {
--	return !MLX5_CAP_ROCE(dev, qp_ts_format) ?
--		       MLX5_TIMESTAMP_FORMAT_FREE_RUNNING :
--		       MLX5_TIMESTAMP_FORMAT_DEFAULT;
-+	u8 supported_ts_cap = mlx5_get_roce_state(dev) ?
-+			      MLX5_CAP_ROCE(dev, qp_ts_format) :
-+			      MLX5_CAP_GEN(dev, sq_ts_format);
-+
-+	return supported_ts_cap ? MLX5_TIMESTAMP_FORMAT_DEFAULT :
-+	       MLX5_TIMESTAMP_FORMAT_FREE_RUNNING;
- }
+ 	pm_runtime_disable(&pdev->dev);
  
- #endif /* MLX5_QP_H */
 -- 
 2.43.0
 
