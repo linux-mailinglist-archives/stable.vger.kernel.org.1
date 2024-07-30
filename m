@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF299418B9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79ED94193C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62C081F22204
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35B80B27692
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8E21A6192;
-	Tue, 30 Jul 2024 16:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB2F18455D;
+	Tue, 30 Jul 2024 16:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNHvgZIk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDk+pB6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23ADA1A6166;
-	Tue, 30 Jul 2024 16:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39ED1A6197;
+	Tue, 30 Jul 2024 16:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356649; cv=none; b=myiwILElYPmzLaQ0LEWQ7tlpWdgDo6AptAJBXyTOwpTYwnpppCi7zsG3LcaArHrVFekVXwrhx4s5Qxslnp3IB3S9v0NlKPHNhX56YuvkSMiBDHUrlqna2UgzMb8WSas1DLDgi6NJefa4dUtGLbMihsSkpCDJWed9ktuCLiXmwf0=
+	t=1722356659; cv=none; b=RiXxllz0b21w20m3pX9BkL9Y71TMoY7iTY6/xvQg0RTzKvVw/kVXshHe0jmxud1Du2ro3QLrPfz1/S/MO/U2af+d30Q6pC9G/XC4e7kVlSHnkeMJLmdFS9gUiTy6w3fleYAt1NCnZbLjH17DqwZnx52g2yFqqCUyW8WrwGimGP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356649; c=relaxed/simple;
-	bh=LMATVipR7PguQNDfGkqjuO8BtGkVjnqiXDt1o0oiLmo=;
+	s=arc-20240116; t=1722356659; c=relaxed/simple;
+	bh=cIOLMUfh4SlfhB8yQI5k63AHoBzZIP/LFlCDwtubUow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4IjaRsqxGdXYZ8frtFUxXsbK8sRz3cjyWAaPvD6AdZ32U2ywokRu2ZHsSnJb4ZDfr3Sz4cNKcu9bopChvFkHq13J+6598agOB1kW6kEOoAg97lvLQtFiM6I+ZJM4xWNJVUu3xgMAhE7+ChZ9ppea1Sh8Msnjblhu3CmOY8/01M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNHvgZIk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890DCC32782;
-	Tue, 30 Jul 2024 16:24:08 +0000 (UTC)
+	 MIME-Version; b=kd1j4GJ5CwkQdGTAx0wQUJ9r0YihSwBouE+2hNRmGEbuBO/82SOpaSMJ8nD2snsTd5FBeU3CkbUK5vhHhe6W9tWki1G5wJ6M6PcP5iPMfc7AMThIoigGE2uBQi24aL03BYpRgowSH9RM+vYUJ84X2PSHYLTGAc/Z001I2Rmgbn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDk+pB6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F3FC32782;
+	Tue, 30 Jul 2024 16:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356649;
-	bh=LMATVipR7PguQNDfGkqjuO8BtGkVjnqiXDt1o0oiLmo=;
+	s=korg; t=1722356659;
+	bh=cIOLMUfh4SlfhB8yQI5k63AHoBzZIP/LFlCDwtubUow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNHvgZIk16YJIbvPkGqUGYb85pbDqQbTx9V3kh9ng7Uaudt1lM+rxhExL8xUoe3jI
-	 w8YDyi47TviRECjdE/mr9PCFMTcMFlaAKjVHFdF+4mLAC+W8KJREHHmb76uDf92TCb
-	 S+LEuJv58VGFTp8dyu3gWgXvhmB7XV+i7ET7BnB4=
+	b=fDk+pB6O4HBH/+4CT1FTHMvAGnMtvH5GziAWJNom6m3qgOZoHjOZS62m+HWcznI38
+	 rwXcKprMQnA/+UDWVH6Q8GDhQUb79E0uzlmh99mn/w+03pyrQtQ1ac+ZOyLdZLQfKx
+	 Xc84nidsXbkIeB97Zn0K2MTDFTIpkKCMenNuApVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 170/809] wifi: ath11k: fix wrong definition of CE rings base address
-Date: Tue, 30 Jul 2024 17:40:46 +0200
-Message-ID: <20240730151731.320778840@linuxfoundation.org>
+Subject: [PATCH 6.10 171/809] wifi: ath12k: fix wrong definition of CE rings base address
+Date: Tue, 30 Jul 2024 17:40:47 +0200
+Message-ID: <20240730151731.359706039@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,12 +69,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 5714e25f1d1875b300fb337dadfaa75324c1161a ]
+[ Upstream commit 0ae570703754858a77cc42b3c9fff42e9f084608 ]
 
 Base address of CE ring is defined as u32, currently this works
-because coherent DMA mask configured as 32 bit:
+because DMA mask configured as 32 bit:
 
-	#define ATH11K_PCI_COHERENT_DMA_MASK	32
+	#define ATH12K_PCI_DMA_MASK	32
 
 However this mask could be changed once firmware bugs are fixed
 to fully support 36 bit DMA addressing. So to protect against any
@@ -83,30 +83,30 @@ are dependent upon it.
 
 This is found during code review. Compile tested only.
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240524021558.34452-1-quic_bqiang@quicinc.com
+Link: https://msgid.link/20240524024021.37711-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/ce.h | 6 +++---
+ drivers/net/wireless/ath/ath12k/ce.h | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ce.h b/drivers/net/wireless/ath/ath11k/ce.h
-index 69946fc700777..bcde2fcf02cf7 100644
---- a/drivers/net/wireless/ath/ath11k/ce.h
-+++ b/drivers/net/wireless/ath/ath11k/ce.h
+diff --git a/drivers/net/wireless/ath/ath12k/ce.h b/drivers/net/wireless/ath/ath12k/ce.h
+index 79af3b6159f1c..857bc5f9e946a 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.h
++++ b/drivers/net/wireless/ath/ath12k/ce.h
 @@ -1,7 +1,7 @@
  /* SPDX-License-Identifier: BSD-3-Clause-Clear */
  /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
   */
  
- #ifndef ATH11K_CE_H
-@@ -146,7 +146,7 @@ struct ath11k_ce_ring {
+ #ifndef ATH12K_CE_H
+@@ -119,7 +119,7 @@ struct ath12k_ce_ring {
  	/* Host address space */
  	void *base_addr_owner_space_unaligned;
  	/* CE address space */
@@ -115,7 +115,7 @@ index 69946fc700777..bcde2fcf02cf7 100644
  
  	/* Actual start of descriptors.
  	 * Aligned to descriptor-size boundary.
-@@ -156,7 +156,7 @@ struct ath11k_ce_ring {
+@@ -129,7 +129,7 @@ struct ath12k_ce_ring {
  	void *base_addr_owner_space;
  
  	/* CE address space */
