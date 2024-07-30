@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549E2941796
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F06D594179C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8710F1C20847
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AE6D1F217C7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994BD189521;
-	Tue, 30 Jul 2024 16:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB88F18B465;
+	Tue, 30 Jul 2024 16:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2niGnfMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bs40gNwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EC81898FB;
-	Tue, 30 Jul 2024 16:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B2218951A;
+	Tue, 30 Jul 2024 16:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355826; cv=none; b=odY1/8+yBZFzNGEAnp2vHHeC2jrae2wQuo4sllF/BKPJtOIipzHBx6Q/bQigTm3PGYDgN128nYt5TU5YPB52ERNcgPWo66MMICM68XtQbU050rJZcNNIKxD2Zp0ieeO75vFkU5cnP2gvYa+IJpLbmGYcgWLYyXYDTENp1eB7SVQ=
+	t=1722355836; cv=none; b=HfmV4vwUcnIqdMtPOyfA7yDFWZKjDHR3vQQXaGX+GX0iL1PSMsXR+VwFaMyhxr1JQQDqpKQg+YVaHrfZRJ/WCmEGXsvEzh0wyyf4OM+zCYAgG3upQQshW0H/KZ5Xftb3Inq68FR1YG99C5+b9m2bLXgdd74BwjjoMErcaZZlPIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355826; c=relaxed/simple;
-	bh=nATbWaakCyp+NlmFb44A0BF+qxqdwaVoBrqS8+gMzXc=;
+	s=arc-20240116; t=1722355836; c=relaxed/simple;
+	bh=Rn1z14TjVH6RvsKhJSL+BnTV9R7RvGBExpr/sQU8bQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEpOMxC3WmxJ5J4ViPw1kHqbuHFjCdU9sjPVi2rgwKfFIf09gK1Gxk0F7FI8grNxAsBn1B1crMdhL+1ASpw5LoVm9G1b0YKKEbwOAauydnpSltamNA8zBtZdr806mbEPqf2agJmQUX/v0WfmUUErHTqF3vgSOelVnFX4xAQURIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2niGnfMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8D9C32782;
-	Tue, 30 Jul 2024 16:10:25 +0000 (UTC)
+	 MIME-Version; b=BwHV55CjnPM9GNTbufKdyZF8nXPZDjjxyS1+iBSBmBLjC1dc3h0nHrSNhrpR5xtpmf5BJle+O2iKdCg28R+x+XRJDPad0h0/X/3HKEQ/sKs0/pUKqxdpWKXzYFG9LaPZuMtX7azL17Ac1b3WtNRHR1x/OZKFKMUnFSFjZqbDB3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bs40gNwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C397DC32782;
+	Tue, 30 Jul 2024 16:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355826;
-	bh=nATbWaakCyp+NlmFb44A0BF+qxqdwaVoBrqS8+gMzXc=;
+	s=korg; t=1722355836;
+	bh=Rn1z14TjVH6RvsKhJSL+BnTV9R7RvGBExpr/sQU8bQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2niGnfMe6C7ATVVbRkmGRIaT/yzgYe7MRahDeemJS2IsnpZlVTxSuScDp5Htc9Knc
-	 ZizjW5wsaq+zQ/TbiIO1HywnDNOpZQOPmBSxihExipsj8Y9G9j2C9OgvyeYzbhO4yt
-	 0PxIORk+CrKGGdcXWBzqAIpES0wbY4mtPXDeot9A=
+	b=bs40gNwacsUtaA0CUcg/mLMPyTT2IUiMCDkzoZvnoSf8BzoTS26gKCFug77IkTQNB
+	 YaaHz6tjTB+OxKEfssAk3RB8UUI8/rqvggFTNKJpkEw5+G1DAGBNvMrnJ2h2VPG6B9
+	 R9Ked7EW+9KHMCoVxEZeSqvlsOi7bBETMo5u5Sok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 092/809] arm64: dts: rockchip: Increase VOP clk rate on RK3328
-Date: Tue, 30 Jul 2024 17:39:28 +0200
-Message-ID: <20240730151728.272713348@linuxfoundation.org>
+Subject: [PATCH 6.10 093/809] arm64: dts: amlogic: sm1: fix spdif compatibles
+Date: Tue, 30 Jul 2024 17:39:29 +0200
+Message-ID: <20240730151728.311650108@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,40 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 0f2ddb128fa20f8441d903285632f2c69e90fae1 ]
+[ Upstream commit b0aba467c329a89e8b325eda0cf60776958353fe ]
 
-The VOP on RK3328 needs to run at a higher rate in order to produce a
-proper 3840x2160 signal.
+The spdif input and output of g12 and sm1 are compatible but
+sm1 should use the related compatible since it exists.
 
-Change to use 300MHz for VIO clk and 400MHz for VOP clk, same rates used
-by vendor 4.4 kernel.
-
-Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240615170417.3134517-2-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 86f2159468d5 ("arm64: dts: meson-sm1: add spdifin and pdifout nodes")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240625111845.928192-1-jbrunet@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 4 ++--
+ arch/arm64/boot/dts/amlogic/meson-sm1.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index 07dcc949b8997..b01efd6d042c8 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -850,8 +850,8 @@ cru: clock-controller@ff440000 {
- 			<0>, <24000000>,
- 			<24000000>, <24000000>,
- 			<15000000>, <15000000>,
--			<100000000>, <100000000>,
--			<100000000>, <100000000>,
-+			<300000000>, <100000000>,
-+			<400000000>, <100000000>,
- 			<50000000>, <100000000>,
- 			<100000000>, <100000000>,
- 			<50000000>, <50000000>,
+diff --git a/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi b/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
+index 643f94d9d08e1..fcaa1a273829c 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
+@@ -339,7 +339,7 @@ tdmin_lb: audio-controller@3c0 {
+ 		};
+ 
+ 		spdifin: audio-controller@400 {
+-			compatible = "amlogic,g12a-spdifin",
++			compatible = "amlogic,sm1-spdifin",
+ 				     "amlogic,axg-spdifin";
+ 			reg = <0x0 0x400 0x0 0x30>;
+ 			#sound-dai-cells = <0>;
+@@ -353,7 +353,7 @@ spdifin: audio-controller@400 {
+ 		};
+ 
+ 		spdifout_a: audio-controller@480 {
+-			compatible = "amlogic,g12a-spdifout",
++			compatible = "amlogic,sm1-spdifout",
+ 				     "amlogic,axg-spdifout";
+ 			reg = <0x0 0x480 0x0 0x50>;
+ 			#sound-dai-cells = <0>;
 -- 
 2.43.0
 
