@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-64628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1876941EB8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C1B941B95
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C2641F23D01
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8850283C4B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B854166315;
-	Tue, 30 Jul 2024 17:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED07F18991F;
+	Tue, 30 Jul 2024 16:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtKDzHQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEDdahnr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7551A76A5;
-	Tue, 30 Jul 2024 17:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A343B1898EB;
+	Tue, 30 Jul 2024 16:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360742; cv=none; b=pqkqZyIxfPyztWuhEqZom5XpNfyN7l8cgt/OdVbychBChQYw9yXADkEnZIdMYeV5OofWg/Bkxb3GblK22urIbC5TRHLKiXphI+bjsQDKh7kqarTy5/BGZ55bztbfQb8ItrXgeHlf1Ba1dM+HWOa6cvPlCUukpivBrac2WPot2TQ=
+	t=1722358597; cv=none; b=MyspQR5Py7KXwwJiKzJnJCbUL5t+CsFMqYo3K3QC/TSJCF+DkIORkDeEGJEAw1CibMiNWiGPjQKkGlh521ZNwTG3raX/XXIZ+ycUM9mtTiCdIijGT99Sx0tMRh/u/deIUUpGJfJeAgNhDTSBxv7p4LjRifeS9a/wK/vtrx0FiyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360742; c=relaxed/simple;
-	bh=k/qQGen56E0Tv6t+JRI1/QRFeVvTHn6BHEco+PqueM4=;
+	s=arc-20240116; t=1722358597; c=relaxed/simple;
+	bh=Y4F6/uWfNzzKioJtNyD05JluOh7TNQUhzc14Juo1YeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdSWvoCp72PI5E3No5n15n8JkitDjZ44aclBz7pNSvBhWIYB85JVUK1LGm0h29OAr/gkfCK/kTmi3hO5hbtj1mQ8GftyxmdnKk0IJ+KqjJAYIfEOwEu4WYFwCuwmB5RTbod4B9GH6fmaDhLoUyfyG+tjMyrHZcTAobilY6sPAHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtKDzHQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5258DC32782;
-	Tue, 30 Jul 2024 17:32:21 +0000 (UTC)
+	 MIME-Version; b=D5+VjvRFGlzu+fAsgZhwkfhPjQw9AxHg0kkLLfHABEJKZLMVO1h01Miv1GT1ww5pBxwnuORCqMIBZawDOjg8o6qCYPBBDwViYd5AW3upXRHzrVF5a/lCX/Y4Y3KGm0umNvpqUqTeJFbvyrgIPYDzKkYQSe0dwCWmHiUPF02OFhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEDdahnr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9F2C32782;
+	Tue, 30 Jul 2024 16:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360741;
-	bh=k/qQGen56E0Tv6t+JRI1/QRFeVvTHn6BHEco+PqueM4=;
+	s=korg; t=1722358597;
+	bh=Y4F6/uWfNzzKioJtNyD05JluOh7TNQUhzc14Juo1YeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtKDzHQ32DIhauQ2Mu/r5gSNVj1n71i+ysgDcN1dCES3XrlEUEA6S6UnooAM7xjav
-	 2cX9Ix/9xSIlx963eoa7+uWRHGQERSnks/YY09XlCzxxGuUu/5nea28VAL2HTjfKGi
-	 o4sJ7S+tIuD7h33Iy4Mf16uv9MrmVZUt45gSPSsY=
+	b=uEDdahnr+iCgxTrrk/2uoYXLpRIzJiDP/mEH0EyBVz00TWsK69hCW7dsNZVrok15n
+	 KvAk9eAWPt4/qHaVDuru7QjuDkdUgoeNQQMNO2zOwUDnq/X2I6htHLbM9AeHMJ7EfD
+	 eKmp8NN8KmFzaIp5vyKvfeJSMSsC4Zigp9A7f4kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 762/809] net: bonding: correctly annotate RCU in bond_should_notify_peers()
+Subject: [PATCH 6.1 405/440] libbpf: Fix no-args func prototype BTF dumping syntax
 Date: Tue, 30 Jul 2024 17:50:38 +0200
-Message-ID: <20240730151755.060728009@linuxfoundation.org>
+Message-ID: <20240730151631.616493050@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 3ba359c0cd6eb5ea772125a7aededb4a2d516684 ]
+[ Upstream commit 189f1a976e426011e6a5588f1d3ceedf71fe2965 ]
 
-RCU use in bond_should_notify_peers() looks wrong, since it does
-rcu_dereference(), leaves the critical section, and uses the
-pointer after that.
+For all these years libbpf's BTF dumper has been emitting not strictly
+valid syntax for function prototypes that have no input arguments.
 
-Luckily, it's called either inside a nested RCU critical section
-or with the RTNL held.
+Instead of `int (*blah)()` we should emit `int (*blah)(void)`.
 
-Annotate it with rcu_dereference_rtnl() instead, and remove the
-inner RCU critical section.
+This is not normally a problem, but it manifests when we get kfuncs in
+vmlinux.h that have no input arguments. Due to compiler internal
+specifics, we get no BTF information for such kfuncs, if they are not
+declared with proper `(void)`.
 
-Fixes: 4cb4f97b7e36 ("bonding: rebuild the lock use for bond_mii_monitor()")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20240719094119.35c62455087d.I68eb9c0f02545b364b79a59f2110f2cf5682a8e2@changeid
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The fix is trivial. We also need to adjust a few ancient tests that
+happily assumed `()` is correct.
+
+Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
+Reported-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://lore.kernel.org/bpf/20240712224442.282823-1-andrii@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ tools/lib/bpf/btf_dump.c                                  | 8 +++++---
+ .../selftests/bpf/progs/btf_dump_test_case_multidim.c     | 4 ++--
+ .../selftests/bpf/progs/btf_dump_test_case_syntax.c       | 4 ++--
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index d19aabf5d4fba..2ed0da0684906 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1121,13 +1121,10 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
- 	return bestslave;
- }
+diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
+index 713264899250a..cfdee656789b2 100644
+--- a/tools/lib/bpf/btf_dump.c
++++ b/tools/lib/bpf/btf_dump.c
+@@ -1521,10 +1521,12 @@ static void btf_dump_emit_type_chain(struct btf_dump *d,
+ 			 * Clang for BPF target generates func_proto with no
+ 			 * args as a func_proto with a single void arg (e.g.,
+ 			 * `int (*f)(void)` vs just `int (*f)()`). We are
+-			 * going to pretend there are no args for such case.
++			 * going to emit valid empty args (void) syntax for
++			 * such case. Similarly and conveniently, valid
++			 * no args case can be special-cased here as well.
+ 			 */
+-			if (vlen == 1 && p->type == 0) {
+-				btf_dump_printf(d, ")");
++			if (vlen == 0 || (vlen == 1 && p->type == 0)) {
++				btf_dump_printf(d, "void)");
+ 				return;
+ 			}
  
-+/* must be called in RCU critical section or with RTNL held */
- static bool bond_should_notify_peers(struct bonding *bond)
- {
--	struct slave *slave;
--
--	rcu_read_lock();
--	slave = rcu_dereference(bond->curr_active_slave);
--	rcu_read_unlock();
-+	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
+diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
+index ba97165bdb282..a657651eba523 100644
+--- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
++++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
+@@ -14,9 +14,9 @@ typedef int *ptr_arr_t[6];
  
- 	if (!slave || !bond->send_peer_notif ||
- 	    bond->send_peer_notif %
+ typedef int *ptr_multiarr_t[7][8][9][10];
+ 
+-typedef int * (*fn_ptr_arr_t[11])();
++typedef int * (*fn_ptr_arr_t[11])(void);
+ 
+-typedef int * (*fn_ptr_multiarr_t[12][13])();
++typedef int * (*fn_ptr_multiarr_t[12][13])(void);
+ 
+ struct root_struct {
+ 	arr_t _1;
+diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
+index 4ee4748133fec..9355e323d40cf 100644
+--- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
++++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
+@@ -67,7 +67,7 @@ typedef void (*printf_fn_t)(const char *, ...);
+  *   `int -> char *` function and returns pointer to a char. Equivalent:
+  *   typedef char * (*fn_input_t)(int);
+  *   typedef char * (*fn_output_outer_t)(fn_input_t);
+- *   typedef const fn_output_outer_t (* fn_output_inner_t)();
++ *   typedef const fn_output_outer_t (* fn_output_inner_t)(void);
+  *   typedef const fn_output_inner_t fn_ptr_arr2_t[5];
+  */
+ /* ----- START-EXPECTED-OUTPUT ----- */
+@@ -94,7 +94,7 @@ typedef void (* (*signal_t)(int, void (*)(int)))(int);
+ 
+ typedef char * (*fn_ptr_arr1_t[10])(int **);
+ 
+-typedef char * (* (* const fn_ptr_arr2_t[5])())(char * (*)(int));
++typedef char * (* (* const fn_ptr_arr2_t[5])(void))(char * (*)(int));
+ 
+ struct struct_w_typedefs {
+ 	int_t a;
 -- 
 2.43.0
 
