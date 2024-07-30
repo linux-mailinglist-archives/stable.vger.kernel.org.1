@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE832941839
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD73941816
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B94F5B29DF0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9380287AE4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7DB18C901;
-	Tue, 30 Jul 2024 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A92A18452F;
+	Tue, 30 Jul 2024 16:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWVuefj8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSyUW4qZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA661A6185;
-	Tue, 30 Jul 2024 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAADD1A6191;
+	Tue, 30 Jul 2024 16:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356217; cv=none; b=puBW4pMsrVlg0x4yuxHqygQbPpGxHjqJdY9laXvPxbxTYp4Ze3mBhvvcMyMbx/yC6uUtCKNnzQ8maDTFCALJgur70ow7I6Bzf6vHXtnzNTJdBMQwHBSlV4Mzx8p9YXN4U7X5ULYPphNlPmKwx/OMhd0YRaRH9gvcjeMXCnhVHfU=
+	t=1722356230; cv=none; b=smpUg/VutgRN69E54d045CYcxpe+OeT/WbC2yXWN9Qr9nycdXDHszH3PZvmE5S7Fo9aSIUNpOfvQuupMethPN+kTbYy/fAjRkJnNQdCpDm1QsAkhdPT+dtl5G/Ft62Fhfs+hwHhdwET+T4V3m55YR8IFAIT0Ckdmas17hdx6Xgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356217; c=relaxed/simple;
-	bh=U/rC/4lXNAZDIvDifp0YyC7SMphll2XjdbheYgdpSAE=;
+	s=arc-20240116; t=1722356230; c=relaxed/simple;
+	bh=K2o/ZHXy994IGLZq7/Pv+ojkyC1MEQ3Iw3D7oQVq3aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=faiNvJ0RUX6cOiWWfiTIiCJUvEaMGvfNu/nOFZZmwgLT1kHy5KTVrBYSwPh/cIgnD779vuQSqMjeDu6cP/cik7xfbuHQv9g00hiGcHgSuSJSP00b5pfGGMSmHqj7ugKx8ntCS0oNCVKKEwkA6s+upD8poZ9YIPxnFxOOha25t1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWVuefj8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B9DC32782;
-	Tue, 30 Jul 2024 16:16:56 +0000 (UTC)
+	 MIME-Version; b=VMa3GvoyLFJxciQ2vev8W8Qid6hJkjcqK5Z0qcc6+PWNBrAEJWrhRpqHJQ+Jbu1JfgX+9DwWmL6/fEAhQk6ZgPIcBMMCb8om09ZHtdClvDXbRD1OtDcB64qBlxVPHycuGeLheMx5y0B6F+65dWQioLKNdHMNc/k0u0tpDh/vptQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSyUW4qZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D495C32782;
+	Tue, 30 Jul 2024 16:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356217;
-	bh=U/rC/4lXNAZDIvDifp0YyC7SMphll2XjdbheYgdpSAE=;
+	s=korg; t=1722356230;
+	bh=K2o/ZHXy994IGLZq7/Pv+ojkyC1MEQ3Iw3D7oQVq3aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWVuefj8Vr0tOmmVnPJrYHnh2ZaEsyzd94CMs76J/+KnK7dyNe61wQ9P5Q4LNX1fg
-	 YA7c1uA3lvxyVCmjakqCLG7J5sFr02qauPOxYpHs+opabzviY4xqkDAS9dgYKIiDHN
-	 awetcsrr886QIs1jRt+fZMEMjrwQ7pjsvUmlBOvw=
+	b=lSyUW4qZeZpDq3nmtmhX6610hO7tWG+qNoq48bgPL4t79YHHrQq0mCWTwQNQvDgSz
+	 1McpeEvy/oAHmxGgzoeZOLz6j+KvCfTOXu22wYuXg7izgik5OzEaf6kAZK5bGv590i
+	 ncL88EtbOd0zbO7fzKC5BHnnUGNFtzCkpXUHN49M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 130/809] arm64: dts: rockchip: Add missing power-domains for rk356x vop_mmu
-Date: Tue, 30 Jul 2024 17:40:06 +0200
-Message-ID: <20240730151729.750927964@linuxfoundation.org>
+Subject: [PATCH 6.10 131/809] arm64: dts: rockchip: fix regulator name for Lunzn Fastrhino R6xS
+Date: Tue, 30 Jul 2024 17:40:07 +0200
+Message-ID: <20240730151729.790299130@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,41 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 9d42c3ee3ce37cdad6f98c9e77bfbd0d791ac7da ]
+[ Upstream commit 2dad31528de9ea8b05245ce6ac4f76ebf8dae947 ]
 
-The iommu@fe043e00 on RK356x SoC shares the VOP power domain, but the
-power-domains property was not provided when the node has been added.
+Make the regulator name the same as those marked by schematics.
 
-The consequence is that an attempt to reload the rockchipdrm module will
-freeze the entire system.  That is because on probe time,
-pm_runtime_get_suppliers() gets called for vop@fe040000, which blocks
-when pm_runtime_get_sync() is being invoked for iommu@fe043e00.
-
-Fix the issue by adding the missing property.
-
-Fixes: 9d6c6d978f97 ("arm64: dts: rockchip: rk356x: Add VOP2 nodes")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20240702-rk356x-fix-vop-mmu-v1-1-a66d1a0c45ea@collabora.com
+Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/r/20240630150010.55729-2-amadeus@jmu.edu.cn
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk356x.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-index d8543b5557ee7..3e2a8bfcafeaa 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-@@ -790,6 +790,7 @@ vop_mmu: iommu@fe043e00 {
- 		clocks = <&cru ACLK_VOP>, <&cru HCLK_VOP>;
- 		clock-names = "aclk", "iface";
- 		#iommu-cells = <0>;
-+		power-domains = <&power RK3568_PD_VO>;
- 		status = "disabled";
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+index 89e84e3a92629..93987c8740f7b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+@@ -39,9 +39,9 @@ status_led: led-status {
+ 		};
  	};
  
+-	dc_12v: dc-12v-regulator {
++	vcc12v_dcin: vcc12v-dcin-regulator {
+ 		compatible = "regulator-fixed";
+-		regulator-name = "dc_12v";
++		regulator-name = "vcc12v_dcin";
+ 		regulator-always-on;
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <12000000>;
+@@ -65,7 +65,7 @@ vcc3v3_sys: vcc3v3-sys-regulator {
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+-		vin-supply = <&dc_12v>;
++		vin-supply = <&vcc12v_dcin>;
+ 	};
+ 
+ 	vcc5v0_sys: vcc5v0-sys-regulator {
+@@ -75,7 +75,7 @@ vcc5v0_sys: vcc5v0-sys-regulator {
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <5000000>;
+ 		regulator-max-microvolt = <5000000>;
+-		vin-supply = <&dc_12v>;
++		vin-supply = <&vcc12v_dcin>;
+ 	};
+ 
+ 	vcc5v0_usb_host: vcc5v0-usb-host-regulator {
 -- 
 2.43.0
 
