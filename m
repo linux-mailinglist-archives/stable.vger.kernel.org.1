@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C74941BE9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4F2941E0E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B3611F2258F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28AB51C23C10
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5652187FF6;
-	Tue, 30 Jul 2024 17:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2801A76BA;
+	Tue, 30 Jul 2024 17:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTk9h+y+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdE4oMth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7CF161901;
-	Tue, 30 Jul 2024 17:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483031A76A1;
+	Tue, 30 Jul 2024 17:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358844; cv=none; b=h/JshrY9wddXHMm5hAEhUHTCGgnryyRQlEVQn1onx5ov+LIskgSRan3J//BPrk9TOeJR5whLqnhTiZF0fRFyuP7fZnZZ1oaOoQDBS090m7SjYAOq2Dkq/43LGXmkB5H6hn31nkYYhONbQPRq1m+5IowfM0600d6674eK4s+qqQ0=
+	t=1722360325; cv=none; b=CfOU3UQCrTGOtk40pt/zd8lL9bGoccwQHOS3Arn12YJbROCq76sj4229WP6Km+ORYQ4YtSQUf8OD6PkB5XepicKymNOR/SOMGg9+iSJVl5/EMq58hwcCWhVq5z7Ucf6o//cdr3N+tqM+FrwnClcUa8jq72cf9STgruVqaJNpcbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358844; c=relaxed/simple;
-	bh=lLbFnYOS9rv3ISwjD7D+up6tQ5OTxGZKT3a2Z2Y6UQE=;
+	s=arc-20240116; t=1722360325; c=relaxed/simple;
+	bh=LunbCZIHiLyel9aX/hrjUe0wLeqwA87ukeEJz4pmckw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZHUonChvIAjleVay53ETYtPnC0bPNtx2+qxvUGijbpyjDxnpllgsprXmf8y6MKcoVn5W7SxDXrcXzipXSFr/D+mOpIQPSWosD72DaJIQvsKJmMvL1SZ7sw6QTHhsWmzZ8xj51MzG4Xk0MkWRgc3XJUE0Vkk1GdJOIqSK51TZfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTk9h+y+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1325EC32782;
-	Tue, 30 Jul 2024 17:00:43 +0000 (UTC)
+	 MIME-Version; b=H7+a3bzViSJhnN4jKr99C/2f54WLK55CIV1Wd8CekxqCq/D001AJ9z87AuZn6zaKPW5QuiDroFF8Ysyp+DNTWxeCsiYpzEVLXiGCSUx6trVB1aIqm8elaV3YY0HrzNgXRTBnEBb3zQfGaU0RZH5cf4LQAHzuxjdIDFR8cijiJfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdE4oMth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FC4C4AF12;
+	Tue, 30 Jul 2024 17:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358844;
-	bh=lLbFnYOS9rv3ISwjD7D+up6tQ5OTxGZKT3a2Z2Y6UQE=;
+	s=korg; t=1722360325;
+	bh=LunbCZIHiLyel9aX/hrjUe0wLeqwA87ukeEJz4pmckw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTk9h+y+ZUSrsaJQtVQgBDq3WdMfxhEPT0PSrn3wKxKquH6T0JjBv0cwpKuTfk7O/
-	 OQO8a4nZFAldoK7R7WMwXNaGkgHeLkaXgRGWC89PGbpvTwrzZQfYYP9XUTFhemPXDp
-	 K+zV/riF4DeSqkAGtIATfG0raMmcHEOySTCNLRms=
+	b=YdE4oMthiMoFBNk2rNyhTIjtZ99FggwQHibkDpdKuX1p6VkGeG4d6IaN0m9Ft5496
+	 qm3RTo50ahgenKVsjAgH8N0U55+FeIkl4ArU5T+WXhOQZwiVZhcnz8o0hWFEsw5Stt
+	 2t93Vp7ApzVzpylui5qrIGQDZY94h4b5fHydtJbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 402/568] wifi: mwifiex: Fix interface type change
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.10 633/809] fbdev: vesafb: Detect VGA compatibility from screen infos VESA attributes
 Date: Tue, 30 Jul 2024 17:48:29 +0200
-Message-ID: <20240730151655.581423671@linuxfoundation.org>
+Message-ID: <20240730151749.843861066@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Beims <rafael.beims@toradex.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272 upstream.
+commit c2bc958b2b03e361f14df99983bc64a39a7323a3 upstream.
 
-When changing the interface type we also need to update the bss_num, the
-driver private data is searched based on a unique (bss_type, bss_num)
-tuple, therefore every time bss_type changes, bss_num must also change.
+Test the vesa_attributes field in struct screen_info for compatibility
+with VGA hardware. Vesafb currently tests bit 1 in screen_info's
+capabilities field which indicates a 64-bit lfb address and is
+unrelated to VGA compatibility.
 
-This fixes for example an issue in which, after the mode changed, a
-wireless scan on the changed interface would not finish, leading to
-repeated -EBUSY messages to userspace when other scan requests were
-sent.
+Section 4.4 of the Vesa VBE 2.0 specifications defines that bit 5 in
+the mode's attributes field signals VGA compatibility. The mode is
+compatible with VGA hardware if the bit is clear. In that case, the
+driver can access VGA state of the VBE's underlying hardware. The
+vesafb driver uses this feature to program the color LUT in palette
+modes. Without, colors might be incorrect.
 
-Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240510110458.15475-1-francesco@dolcini.it
+The problem got introduced in commit 89ec4c238e7a ("[PATCH] vesafb: Fix
+incorrect logo colors in x86_64"). It incorrectly stores the mode
+attributes in the screen_info's capabilities field and updates vesafb
+accordingly. Later, commit 5e8ddcbe8692 ("Video mode probing support for
+the new x86 setup code") fixed the screen_info, but did not update vesafb.
+Color output still tends to work, because bit 1 in capabilities is
+usually 0.
+
+Besides fixing the bug in vesafb, this commit introduces a helper that
+reads the correct bit from screen_info.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 5e8ddcbe8692 ("Video mode probing support for the new x86 setup code")
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Cc: <stable@vger.kernel.org> # v2.6.23+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/vesafb.c |    2 +-
+ include/linux/screen_info.h  |   10 ++++++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -926,6 +926,8 @@ mwifiex_init_new_priv_params(struct mwif
- 		return -EOPNOTSUPP;
- 	}
+--- a/drivers/video/fbdev/vesafb.c
++++ b/drivers/video/fbdev/vesafb.c
+@@ -271,7 +271,7 @@ static int vesafb_probe(struct platform_
+ 	if (si->orig_video_isVGA != VIDEO_TYPE_VLFB)
+ 		return -ENODEV;
  
-+	priv->bss_num = mwifiex_get_unused_bss_num(adapter, priv->bss_type);
+-	vga_compat = (si->capabilities & 2) ? 0 : 1;
++	vga_compat = !__screen_info_vbe_mode_nonvga(si);
+ 	vesafb_fix.smem_start = si->lfb_base;
+ 	vesafb_defined.bits_per_pixel = si->lfb_depth;
+ 	if (15 == vesafb_defined.bits_per_pixel)
+--- a/include/linux/screen_info.h
++++ b/include/linux/screen_info.h
+@@ -49,6 +49,16 @@ static inline u64 __screen_info_lfb_size
+ 	return lfb_size;
+ }
+ 
++static inline bool __screen_info_vbe_mode_nonvga(const struct screen_info *si)
++{
++	/*
++	 * VESA modes typically run on VGA hardware. Set bit 5 signals that this
++	 * is not the case. Drivers can then not make use of VGA resources. See
++	 * Sec 4.4 of the VBE 2.0 spec.
++	 */
++	return si->vesa_attributes & BIT(5);
++}
 +
- 	spin_lock_irqsave(&adapter->main_proc_lock, flags);
- 	adapter->main_locked = false;
- 	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
+ static inline unsigned int __screen_info_video_type(unsigned int type)
+ {
+ 	switch (type) {
 
 
 
