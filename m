@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9EC941721
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:08:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CBC2941CCB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19C4B2870A3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:08:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEABFB28249
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFD2189904;
-	Tue, 30 Jul 2024 16:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8326618C933;
+	Tue, 30 Jul 2024 17:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oQIHdUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU1HjCOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D1E1898EF;
-	Tue, 30 Jul 2024 16:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC7D189901;
+	Tue, 30 Jul 2024 17:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355566; cv=none; b=jDJb0a1DrzNL+Wb6hO3ZhUKc9asDpKMyEpBEunLT1wf6yP2UTspwqRC1H0jnMJhNSTaKNjOpI3adrkrVEJ49OgdrnGeGnK959t0y634LMC/TRpRAU1gJVwmwX3JufSFapJxsBktsek0Z79QihfZKou340T60unlBCW/mre0mB2c=
+	t=1722359298; cv=none; b=XNb/fHY7UHfjuOcPdUZ/OLwjqwLxM1Dn9UG6340FYKdROIJUS4Tv6K8uJQERk0fFOVck03BkTQ9Typypr+h2XjuGXOWWUkbUASUf8CyEl7D+w5zy8b9ePxtbVN4UdorzHC+pqVMvCFsMbTc0BLPBywTSAr0gnSKvBLziMcWNDuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355566; c=relaxed/simple;
-	bh=fIMWShCXcltBdBPi0de4l1LyYoOolwpIDmZEcqEBwrg=;
+	s=arc-20240116; t=1722359298; c=relaxed/simple;
+	bh=HThQ36L3xwnJiTcoQ7WPzt55k8koJSlSpfA0ZSOKnuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cS9Zu7B2EBgZydeNtNMXb3qzpyMudRGSWNLXzeWaC6Nc0+COf77LCN8cdqhm/svXfcbMOZQLQTIemyb1kbGoAUpb8yQ+HgjwbxZYfHTeK50iPisSmSQ5mliEYzpEsyOo7E6Pc2HPUWz0rH5Mh/6sJJpairi2mKOmAQ1E9pJ8ko0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oQIHdUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB5BC32782;
-	Tue, 30 Jul 2024 16:06:05 +0000 (UTC)
+	 MIME-Version; b=EAiDfuAn4axl2+4ea+IJ0R0QWgSQIJ+7j98h/RoUnHWSO7x6FM1e3QeC9CxZHHtA+Th8ErFifYXoXFuuA5vIc/31VgO6r9KF18Spg3Gj0LRfPWmZjvQMgYqEK56sv1TJQTppCn32+GtZK5acabNZdghadLRY8a4jIH3z37v18qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU1HjCOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747BBC32782;
+	Tue, 30 Jul 2024 17:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355566;
-	bh=fIMWShCXcltBdBPi0de4l1LyYoOolwpIDmZEcqEBwrg=;
+	s=korg; t=1722359298;
+	bh=HThQ36L3xwnJiTcoQ7WPzt55k8koJSlSpfA0ZSOKnuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2oQIHdUpXQ5RQmO9zqr9pR2wO3tuxeT9SaJZVYQr8C4fhsbZLowT//jx/jCwPNH4c
-	 +WpuljptRxdqJTGOrS8pWiXDK0e23OUPojcuyOnVzpzDePDr1DN5AbzQbT6bxnofPe
-	 JV71C3UfnK2lwfoi58LlLPu0XSEpKsYzfQm+3h/Q=
+	b=EU1HjCOUnUFqAODMFhc6sbUUOvW7x0awn5xtu9xSABoNozihQ/v39vvKxQSghLHKL
+	 WebBMMoDFhMVYTYFRyf9mEVMjmeioVFRDrDwlGDZmQCvyziAEAAPK1nCH4J2jBkDuh
+	 6CmmYEp8GSVkPF/0mQGIsxQDBDgm2TssH+bi/9y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ismael Luceno <iluceno@suse.de>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/440] ipvs: Avoid unnecessary calls to skb_is_gso_sctp
+Subject: [PATCH 6.10 463/809] RDMA/hns: Fix missing pagesize and alignment check in FRMR
 Date: Tue, 30 Jul 2024 17:45:39 +0200
-Message-ID: <20240730151620.029825513@linuxfoundation.org>
+Message-ID: <20240730151743.016815774@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ismael Luceno <iluceno@suse.de>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 53796b03295cf7ab1fc8600016fa6dfbf4a494a0 ]
+[ Upstream commit d387d4b54eb84208bd4ca13572e106851d0a0819 ]
 
-In the context of the SCTP SNAT/DNAT handler, these calls can only
-return true.
+The offset requires 128B alignment and the page size ranges from
+4K to 128M.
 
-Fixes: e10d3ba4d434 ("ipvs: Fix checksumming on GSO of SCTP packets")
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_device.h | 4 ++++
+ drivers/infiniband/hw/hns/hns_roce_mr.c     | 5 +++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index 1e689c7141271..83e452916403d 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -126,7 +126,7 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	if (sctph->source != cp->vport || payload_csum ||
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
- 		sctph->source = cp->vport;
--		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+		if (!skb_is_gso(skb))
- 			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
-@@ -175,7 +175,7 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
- 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
- 		sctph->dest = cp->dport;
--		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+		if (!skb_is_gso(skb))
- 			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
+index f8451e5ab107e..7d5931872f8a7 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_device.h
++++ b/drivers/infiniband/hw/hns/hns_roce_device.h
+@@ -83,6 +83,7 @@
+ #define MR_TYPE_DMA				0x03
+ 
+ #define HNS_ROCE_FRMR_MAX_PA			512
++#define HNS_ROCE_FRMR_ALIGN_SIZE		128
+ 
+ #define PKEY_ID					0xffff
+ #define NODE_DESC_SIZE				64
+@@ -189,6 +190,9 @@ enum {
+ #define HNS_HW_PAGE_SHIFT			12
+ #define HNS_HW_PAGE_SIZE			(1 << HNS_HW_PAGE_SHIFT)
+ 
++#define HNS_HW_MAX_PAGE_SHIFT			27
++#define HNS_HW_MAX_PAGE_SIZE			(1 << HNS_HW_MAX_PAGE_SHIFT)
++
+ struct hns_roce_uar {
+ 	u64		pfn;
+ 	unsigned long	index;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 1a61dceb33197..846da8c78b8b7 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -443,6 +443,11 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+ 	int ret, sg_num = 0;
+ 
++	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
++	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
++	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
++		return sg_num;
++
+ 	mr->npages = 0;
+ 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
+ 				 sizeof(dma_addr_t), GFP_KERNEL);
 -- 
 2.43.0
 
