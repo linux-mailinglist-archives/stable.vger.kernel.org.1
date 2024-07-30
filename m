@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81819941833
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F46F9418DF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A13481C21329
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E0A1B2ACF8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EF918C91A;
-	Tue, 30 Jul 2024 16:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E53156227;
+	Tue, 30 Jul 2024 16:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHnzYpeW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyBhPWZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824D718C912;
-	Tue, 30 Jul 2024 16:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812621A6160;
+	Tue, 30 Jul 2024 16:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356307; cv=none; b=bhH5HMkF5l85QfPc3lzW4Wh9LbuLLqUhk7DVZlNzF1zlFEAQ4uwEeghqfs/fkLtloSfyaRcQ5g/cCB/6jnauF+awywQbMn8YDGYe6fbiJUv1gXcvyKXaCsfJKeBYMufeudnFZuXUFdxL0vb/9gX99Pk4NfIoSLz2zjPDSdsVf08=
+	t=1722356524; cv=none; b=GfBtzR4wSE2bxVR6wrTQBKZ3bQzdZn/qk0V1ZjpCKqN0fFJ18MCoozgb2avmbehCkzI7+395rWpfGU/K94j9CDT4aHbpICVxK1aVDjHmJD40OS24AgXquCE/zymQg9W4VmsD7nVuB/exnKLN9CwdGWoXCBC+B9A8evyYVM7S6vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356307; c=relaxed/simple;
-	bh=v9RaenV3Ign2pj5RDixLrmocTgJlNJZrBWoxNPu+xuY=;
+	s=arc-20240116; t=1722356524; c=relaxed/simple;
+	bh=B3d5gyojsmSE3GzX2AR8HOOYqxBD+SZ4hz6nXDXMIOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWD1xz1ahOCSA6IfvlIX1hBzzY3OzxpNqTFJCQyYTvvsfKAGoKJXfjbsJXuSTvC0g6MRtT1l0sAFDpWG59tPrx05HV1Vd5Cmr50L7cbK+spwUthfBOMdUBQlMo6uW4ou9gzKklNmd04jyp6gokHqp3Gid6CK6XGiDhSTeTAi+pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHnzYpeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C3BC32782;
-	Tue, 30 Jul 2024 16:18:26 +0000 (UTC)
+	 MIME-Version; b=FAYYauzjbULa1YZxX2W24Q5h23V6KWaDyAGf3fA5yheA95il9kt6y0mTS8B//fOTvdrry8m1B4VRJ4lLDtgCzbrwXAfOAAV1/DdCJSsf/Ccqs+PVIcZNFOx4fPokzbBGpllv0bCe1zVqTqMSrdm3E7euG0PSIvsgNz4lm75EzLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyBhPWZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5AFC4AF0C;
+	Tue, 30 Jul 2024 16:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356307;
-	bh=v9RaenV3Ign2pj5RDixLrmocTgJlNJZrBWoxNPu+xuY=;
+	s=korg; t=1722356524;
+	bh=B3d5gyojsmSE3GzX2AR8HOOYqxBD+SZ4hz6nXDXMIOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHnzYpeWx8oHxkETm81lqA9cHBLprgDvdev38ADZ3vLm9W2fOH2CIrjqF1bWJTzgK
-	 Pdt1AU7kJJAGIvBpgJctuFx1JAPS6BQ7RFfPVhK9CtYINxkHAKPI9a8ZbUthd3EJ8x
-	 orlCS+z0TSj/uf3H1P747Tc7McQIispwfstOwyhU=
+	b=IyBhPWZXRmEk1/miJ9tyNhgiqNN7LKoYhl9z6X11j66/CBP7HUnDJKdEwcKnVyrIL
+	 5NNHyt6Rgh26/NQtMABWwa3brS6RPDl3rEeGATuw5GGMjHLsk5T2j5Dz4Gvmdn/d0E
+	 m4YENvJthcuT+yKG6iLB4cfyboSbm/stQ+b93B3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,11 +45,10 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Arcari <darcari@redhat.com>,
 	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
 	Mario Limonciello <mario.limonciello@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 138/809] cpufreq/amd-pstate-ut: Convert nominal_freq to khz during comparisons
-Date: Tue, 30 Jul 2024 17:40:14 +0200
-Message-ID: <20240730151730.062197274@linuxfoundation.org>
+Subject: [PATCH 6.10 139/809] cpufreq/amd-pstate: Fix the scaling_max_freq setting on shared memory CPPC systems
+Date: Tue, 30 Jul 2024 17:40:15 +0200
+Message-ID: <20240730151730.100854434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -70,69 +69,100 @@ Content-Transfer-Encoding: 8bit
 
 From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-[ Upstream commit f21ab5ed4e8758b06230900f44b9dcbcfdc0c3ae ]
+[ Upstream commit 738d7d03571c7e38565bd245c0815a2c74665018 ]
 
-cpudata->nominal_freq being in MHz whereas other frequencies being in
-KHz breaks the amd-pstate-ut frequency sanity check. This fixes it.
+On shared memory CPPC systems, with amd_pstate=active mode, the change
+in scaling_max_freq doesn't get written to the shared memory
+region. Due to this, the writes to the scaling_max_freq sysfs file
+don't take effect. Fix this by propagating the scaling_max_freq
+changes to the shared memory region.
 
-Fixes: e4731baaf294 ("cpufreq: amd-pstate: Fix the inconsistency in max frequency units")
+Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
 Reported-by: David Arcari <darcari@redhat.com>
 Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://lore.kernel.org/r/20240702081413.5688-2-Dhananjay.Ugwekar@amd.com
+Link: https://lore.kernel.org/r/20240702081413.5688-3-Dhananjay.Ugwekar@amd.com
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate-ut.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 43 +++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate-ut.c b/drivers/cpufreq/amd-pstate-ut.c
-index fc275d41d51e9..66b73c308ce67 100644
---- a/drivers/cpufreq/amd-pstate-ut.c
-+++ b/drivers/cpufreq/amd-pstate-ut.c
-@@ -202,6 +202,7 @@ static void amd_pstate_ut_check_freq(u32 index)
- 	int cpu = 0;
- 	struct cpufreq_policy *policy = NULL;
- 	struct amd_cpudata *cpudata = NULL;
-+	u32 nominal_freq_khz;
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 9ad62dbe8bfbf..a092b13ffbc2f 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -247,6 +247,26 @@ static int amd_pstate_get_energy_pref_index(struct amd_cpudata *cpudata)
+ 	return index;
+ }
  
- 	for_each_possible_cpu(cpu) {
- 		policy = cpufreq_cpu_get(cpu);
-@@ -209,13 +210,14 @@ static void amd_pstate_ut_check_freq(u32 index)
- 			break;
- 		cpudata = policy->driver_data;
++static void pstate_update_perf(struct amd_cpudata *cpudata, u32 min_perf,
++			       u32 des_perf, u32 max_perf, bool fast_switch)
++{
++	if (fast_switch)
++		wrmsrl(MSR_AMD_CPPC_REQ, READ_ONCE(cpudata->cppc_req_cached));
++	else
++		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ,
++			      READ_ONCE(cpudata->cppc_req_cached));
++}
++
++DEFINE_STATIC_CALL(amd_pstate_update_perf, pstate_update_perf);
++
++static inline void amd_pstate_update_perf(struct amd_cpudata *cpudata,
++					  u32 min_perf, u32 des_perf,
++					  u32 max_perf, bool fast_switch)
++{
++	static_call(amd_pstate_update_perf)(cpudata, min_perf, des_perf,
++					    max_perf, fast_switch);
++}
++
+ static int amd_pstate_set_epp(struct amd_cpudata *cpudata, u32 epp)
+ {
+ 	int ret;
+@@ -263,6 +283,9 @@ static int amd_pstate_set_epp(struct amd_cpudata *cpudata, u32 epp)
+ 		if (!ret)
+ 			cpudata->epp_cached = epp;
+ 	} else {
++		amd_pstate_update_perf(cpudata, cpudata->min_limit_perf, 0U,
++					     cpudata->max_limit_perf, false);
++
+ 		perf_ctrls.energy_perf = epp;
+ 		ret = cppc_set_epp_perf(cpudata->cpu, &perf_ctrls, 1);
+ 		if (ret) {
+@@ -452,16 +475,6 @@ static inline int amd_pstate_init_perf(struct amd_cpudata *cpudata)
+ 	return static_call(amd_pstate_init_perf)(cpudata);
+ }
  
--		if (!((cpudata->max_freq >= cpudata->nominal_freq) &&
--			(cpudata->nominal_freq > cpudata->lowest_nonlinear_freq) &&
-+		nominal_freq_khz = cpudata->nominal_freq*1000;
-+		if (!((cpudata->max_freq >= nominal_freq_khz) &&
-+			(nominal_freq_khz > cpudata->lowest_nonlinear_freq) &&
- 			(cpudata->lowest_nonlinear_freq > cpudata->min_freq) &&
- 			(cpudata->min_freq > 0))) {
- 			amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_FAIL;
- 			pr_err("%s cpu%d max=%d >= nominal=%d > lowest_nonlinear=%d > min=%d > 0, the formula is incorrect!\n",
--				__func__, cpu, cpudata->max_freq, cpudata->nominal_freq,
-+				__func__, cpu, cpudata->max_freq, nominal_freq_khz,
- 				cpudata->lowest_nonlinear_freq, cpudata->min_freq);
- 			goto skip_test;
- 		}
-@@ -229,13 +231,13 @@ static void amd_pstate_ut_check_freq(u32 index)
+-static void pstate_update_perf(struct amd_cpudata *cpudata, u32 min_perf,
+-			       u32 des_perf, u32 max_perf, bool fast_switch)
+-{
+-	if (fast_switch)
+-		wrmsrl(MSR_AMD_CPPC_REQ, READ_ONCE(cpudata->cppc_req_cached));
+-	else
+-		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ,
+-			      READ_ONCE(cpudata->cppc_req_cached));
+-}
+-
+ static void cppc_update_perf(struct amd_cpudata *cpudata,
+ 			     u32 min_perf, u32 des_perf,
+ 			     u32 max_perf, bool fast_switch)
+@@ -475,16 +488,6 @@ static void cppc_update_perf(struct amd_cpudata *cpudata,
+ 	cppc_set_perf(cpudata->cpu, &perf_ctrls);
+ }
  
- 		if (cpudata->boost_supported) {
- 			if ((policy->max == cpudata->max_freq) ||
--					(policy->max == cpudata->nominal_freq))
-+					(policy->max == nominal_freq_khz))
- 				amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_PASS;
- 			else {
- 				amd_pstate_ut_cases[index].result = AMD_PSTATE_UT_RESULT_FAIL;
- 				pr_err("%s cpu%d policy_max=%d should be equal cpu_max=%d or cpu_nominal=%d !\n",
- 					__func__, cpu, policy->max, cpudata->max_freq,
--					cpudata->nominal_freq);
-+					nominal_freq_khz);
- 				goto skip_test;
- 			}
- 		} else {
+-DEFINE_STATIC_CALL(amd_pstate_update_perf, pstate_update_perf);
+-
+-static inline void amd_pstate_update_perf(struct amd_cpudata *cpudata,
+-					  u32 min_perf, u32 des_perf,
+-					  u32 max_perf, bool fast_switch)
+-{
+-	static_call(amd_pstate_update_perf)(cpudata, min_perf, des_perf,
+-					    max_perf, fast_switch);
+-}
+-
+ static inline bool amd_pstate_sample(struct amd_cpudata *cpudata)
+ {
+ 	u64 aperf, mperf, tsc;
 -- 
 2.43.0
 
