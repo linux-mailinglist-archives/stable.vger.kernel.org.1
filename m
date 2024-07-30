@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47B29416C8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7289416CF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11C301C23580
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6B21F24E99
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D8D18952F;
-	Tue, 30 Jul 2024 16:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FB8183CC1;
+	Tue, 30 Jul 2024 16:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEB9XZGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US3uFuC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD72189520;
-	Tue, 30 Jul 2024 16:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F007183CBF;
+	Tue, 30 Jul 2024 16:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355415; cv=none; b=FNRGtv9mTLiTLQGOcx+5MxjUSEg6nipvYBortAHLLHNW1QWhYbc86BwURc56aHo3Dai4+CB8CnHpuLW0OCFFHQmrMyd62tb5m80QnK+1m27ipDYZqN4NSGfrcGHpWhl1fUPsjTj/aKMD7vImaWmtcJWSYWBFO+WpTyfVxFd3LsQ=
+	t=1722355429; cv=none; b=mOfVlfy5WA4snRT/QbEFPN61TdjddRn8Ys7nrkfRqyZ7RB+tLQpm+OY2IIcWisucKzdPuP+/oPEXgEQ3g94wdT0XXeFZQX4VsmPsUYs9TJygNzsfzi4eDdcerVSfSh1ernqyvDG5ek7ToQE0Ky7QlTk86o2xm52dW/O+ezscyb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355415; c=relaxed/simple;
-	bh=7CTZwIU8mu9MjllYbo8HuTNfuDmc8RkO0ayIGC4JbsA=;
+	s=arc-20240116; t=1722355429; c=relaxed/simple;
+	bh=Sih6RoXnVAHcbGgPsvjWRG1wsl8a1fN9ku0R8IZIfxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5RG31ivAovptCl7hnX2nFxMxppUIfgYIjiP3tysrcHOuo8LZAfc/vnsACPyVpNBu3rIfbUCWaPVPwyMUGpji7CxObW/kKr9ACUQdldTKhURYBafMKvwjOydU5iMRLCLq7knm4DtxDtgg1M4l87J0D7xMFHjF3m7bCI+Sg31xeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEB9XZGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA104C4AF0E;
-	Tue, 30 Jul 2024 16:03:34 +0000 (UTC)
+	 MIME-Version; b=Fsz4xugB81hEB9Hw1iwhquNLBb2xQgoPNG6YMPmXp4yjchAOONPo8cQTEHIYSvt51NDL9bU5zx+DlOF83KyqS6RjFnzEacQ0H9W9pLdGceycyMJKDe557Kg7hNEPvhHmJpsiPeGUVVScR1Ll5EVBjbVa2AOFdx9hJcnoY/pj+dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=US3uFuC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D42BC32782;
+	Tue, 30 Jul 2024 16:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355415;
-	bh=7CTZwIU8mu9MjllYbo8HuTNfuDmc8RkO0ayIGC4JbsA=;
+	s=korg; t=1722355428;
+	bh=Sih6RoXnVAHcbGgPsvjWRG1wsl8a1fN9ku0R8IZIfxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEB9XZGVatgnNK6Rv0eS2emAFUkQxVYkco6pdHOFs6TVPicXyxBtPF5NrQvw5449g
-	 2uvsirLeZnt0K1AEx6fyNVmaQD58auO67TNdurjdvJ+UxvkdRHgyCfQhNoifR196mU
-	 r+KlBvu6ehctaTdRh+QRcqThWRRLFI973L+7p5+A=
+	b=US3uFuC4de1606ddveRbZ8jFK7pnqw26ekMwd+PnC/lJYqoPr1ZC9EYPEkl2pZUGO
+	 EiRX/C8cRUW58skQngAJ2jp64pq1U+Z9WYJu4hv4QlWPjQN9Ntu0YDqdM+4JFJ6ylq
+	 nTAE+21725WXdcAzrry77NJ2N65+6woLf2u4Hd9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jai Luthra <j-luthra@ti.com>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/568] arm64: dts: ti: k3-am62x: Drop McASP AFIFOs
-Date: Tue, 30 Jul 2024 17:42:43 +0200
-Message-ID: <20240730151642.045549662@linuxfoundation.org>
+Subject: [PATCH 6.6 057/568] arm64: dts: ti: k3-am625-beagleplay: Drop McASP AFIFOs
+Date: Tue, 30 Jul 2024 17:42:44 +0200
+Message-ID: <20240730151642.087832427@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -68,33 +68,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit 6ee3ca0ec7fabc63603afdb3485da04164dc8747 ]
+[ Upstream commit 3b4a03357aee07a32a44a49bb6a71f5e82b1ecc1 ]
 
 McASP AFIFOs are not necessary with UDMA-P/BCDMA as there is buffering
 on the DMA IP. Drop these for better audio latency.
 
-Fixes: b94b43715e91 ("arm64: dts: ti: Enable audio on SK-AM62(-LP)")
+Fixes: 1f7226a5e52c ("arm64: dts: ti: k3-am625-beagleplay: Add HDMI support")
 Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240606-mcasp_fifo_drop-v2-1-8c317dabdd0a@ti.com
+Link: https://lore.kernel.org/r/20240606-mcasp_fifo_drop-v2-4-8c317dabdd0a@ti.com
 Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi | 2 --
+ arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-index 677ff8de4b6ec..0f8c0f6a0f573 100644
---- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
-@@ -481,8 +481,6 @@ &mcasp1 {
+diff --git a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
+index 2de74428a8bde..3560349d63051 100644
+--- a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
++++ b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
+@@ -903,6 +903,4 @@ &mcasp1 {
  	       0 0 0 0
  	       0 0 0 0
  	>;
 -	tx-num-evt = <32>;
 -	rx-num-evt = <32>;
  };
- 
- &dss {
 -- 
 2.43.0
 
