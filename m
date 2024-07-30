@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-63467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C18941911
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A22B9941C11
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23DF828137D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E4AB1F23DBF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40941A616E;
-	Tue, 30 Jul 2024 16:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83235187FF6;
+	Tue, 30 Jul 2024 17:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzvtEMHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfhcV37K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812141A6160;
-	Tue, 30 Jul 2024 16:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395201A6192;
+	Tue, 30 Jul 2024 17:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356925; cv=none; b=rSCM4gSUnETGSrHmz+FbjSkK5yQXLsH9FWXPdpFy5RmIJ7sYsDgQZUbT8HJa99eBfJ/xGyi7xHn6BXEMl9G/krvY7KYexVEJ/DOrk4B4mtx0sDtZsp2KLldUp3+ZreI4mVBcASJKdhfwXN+s8zMMYOrgWTa/w0jac15jTPmx8os=
+	t=1722358955; cv=none; b=kvoQDYskyekA4jfa/Vh2HhLQnCVkn7mvMRZ6LhKMcsUY4NNMcD8HtfDUK6q5ECvYjUjIShW7HthrZZ8PKQm4wJXfI+OTQHWrQIy3N9qDZVAd3+hcWSyftDRfQGI4gdvFxWn5IwNP/FOIIvxeAaW2vlzhuJ0eEHoqlPRL50eIcjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356925; c=relaxed/simple;
-	bh=7kzIYoBOl7dyB27txc+a+VMUI7nfWWjmP2wJQD1pz6s=;
+	s=arc-20240116; t=1722358955; c=relaxed/simple;
+	bh=gZdl/+Y9usrDAduarSntyMOhRHABcKLnF0hHrzdUPBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XO748jbY+SGq3mk7cZ+cP56d4+UMJ848kK4ins3Jn2Evw5OKm2wWUmCuez+0Fh/O/t51wAYs9ciedWd2FnaOgdfnfS4ulvkDq9/onj7Lm7oVIx0fbR4PwKc6WnpHCC2uWHsvCc32BhS99KPHZPkCKRl212p188MbH0zEGW9yy3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzvtEMHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A8AC32782;
-	Tue, 30 Jul 2024 16:28:44 +0000 (UTC)
+	 MIME-Version; b=f693j65iLy7Qsfc3/STrCEcxAq+PveczgMTWgXAsCuyyF7k9TG/WKzq7F7Xiu+6xjCu5Z3patHodvBAQcmSSY2mqQmywPEAqn1s+BsiWT1h++jXW2sK2Qb1t1DCjOulQpKrhAbTAs/bK1yGT5/tlEX3XVwoMH0suCAFiLOQIyTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfhcV37K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2078EC32782;
+	Tue, 30 Jul 2024 17:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356925;
-	bh=7kzIYoBOl7dyB27txc+a+VMUI7nfWWjmP2wJQD1pz6s=;
+	s=korg; t=1722358954;
+	bh=gZdl/+Y9usrDAduarSntyMOhRHABcKLnF0hHrzdUPBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzvtEMHK0HYHQu9ypI6FZp6lx+QrwuY/oAwfvxkaMs/1PAtKPNexjZFtDy6rjZDBn
-	 d8vh+YMt9wzmGGT+6Y0/sZMlWyr+SYO5jNMa+/P9L6g0Bn5UqxIfmyGgv8065Ty4Jg
-	 qZZs84tDg/a2Nu7QW63rXIqCkrkPo0bRF2NQizMs=
+	b=MfhcV37K/MmINrTHSnnWz4wGvv7rvsjzCMBUlyadnG9DC6pxhn8+CHuiP7wdt/ZT4
+	 TUWEzyr+nh5eDvabFO5GVoXDAXqq7ijPgBTEr9RkeFCA2xFVMB0/KRHzgxv92pCfqK
+	 HfyGqYDJrHrKj0/pNEoG0zC1iebgtrF5CS8ZHSPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Hartmut Birr <e9hack@gmail.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Esben Haabendal <esben@geanix.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/568] drm/mipi-dsi: Fix theoretical int overflow in mipi_dsi_generic_write_seq()
-Date: Tue, 30 Jul 2024 17:44:46 +0200
-Message-ID: <20240730151646.876830181@linuxfoundation.org>
+Subject: [PATCH 6.10 411/809] mtd: spi-nor: winbond: fix w25q128 regression
+Date: Tue, 30 Jul 2024 17:44:47 +0200
+Message-ID: <20240730151740.923725268@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit 24acbcce5cc673886c2f4f9b3f6f89a9c6a53b7e ]
+[ Upstream commit d35df77707bf5ae1221b5ba1c8a88cf4fcdd4901 ]
 
-The mipi_dsi_generic_write_seq() macro makes a call to
-mipi_dsi_generic_write() which returns a type ssize_t. The macro then
-stores it in an int and checks to see if it's negative. This could
-theoretically be a problem if "ssize_t" is larger than "int".
+Commit 83e824a4a595 ("mtd: spi-nor: Correct flags for Winbond w25q128")
+removed the flags for non-SFDP devices. It was assumed that it wasn't in
+use anymore. This wasn't true. Add the no_sfdp_flags as well as the size
+again.
 
-To see the issue, imagine that "ssize_t" is 32-bits and "int" is
-16-bits, you could see a problem if there was some code out there that
-looked like:
+We add the additional flags for dual and quad read because they have
+been reported to work properly by Hartmut using both older and newer
+versions of this flash, the similar flashes with 64Mbit and 256Mbit
+already have these flags and because it will (luckily) trigger our
+legacy SFDP parsing, so newer versions with SFDP support will still get
+the parameters from the SFDP tables.
 
-  mipi_dsi_generic_write_seq(dsi, <32768 bytes as arguments>);
-
-...since we'd get back that 32768 bytes were transferred and 32768
-stored in a 16-bit int would look negative.
-
-Though there are no callsites where we'd actually hit this (even if
-"int" was only 16-bit), it's cleaner to make the types match so let's
-fix it.
-
-Fixes: a9015ce59320 ("drm/mipi-dsi: Add a mipi_dsi_dcs_write_seq() macro")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reported-by: Hartmut Birr <e9hack@gmail.com>
+Closes: https://lore.kernel.org/r/CALxbwRo_-9CaJmt7r7ELgu+vOcgk=xZcGHobnKf=oT2=u4d4aA@mail.gmail.com/
+Fixes: 83e824a4a595 ("mtd: spi-nor: Correct flags for Winbond w25q128")
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240514102056.v5.2.Iadb65b8add19ed3ae3ed6425011beb97e380a912@changeid
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240514102056.v5.2.Iadb65b8add19ed3ae3ed6425011beb97e380a912@changeid
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Esben Haabendal <esben@geanix.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20240621120929.2670185-1-mwalle@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_mipi_dsi.h | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/mtd/spi-nor/winbond.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index e0e2c17832e89..900262f4c2349 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -305,17 +305,17 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
-  * @dsi: DSI peripheral device
-  * @seq: buffer containing the payload
-  */
--#define mipi_dsi_generic_write_seq(dsi, seq...)                                \
--	do {                                                                   \
--		static const u8 d[] = { seq };                                 \
--		struct device *dev = &dsi->dev;                                \
--		int ret;                                                       \
--		ret = mipi_dsi_generic_write(dsi, d, ARRAY_SIZE(d));           \
--		if (ret < 0) {                                                 \
--			dev_err_ratelimited(dev, "transmit data failed: %d\n", \
--					    ret);                              \
--			return ret;                                            \
--		}                                                              \
-+#define mipi_dsi_generic_write_seq(dsi, seq...)                                 \
-+	do {                                                                    \
-+		static const u8 d[] = { seq };                                  \
-+		struct device *dev = &dsi->dev;                                 \
-+		ssize_t ret;                                                    \
-+		ret = mipi_dsi_generic_write(dsi, d, ARRAY_SIZE(d));            \
-+		if (ret < 0) {                                                  \
-+			dev_err_ratelimited(dev, "transmit data failed: %zd\n", \
-+					    ret);                               \
-+			return ret;                                             \
-+		}                                                               \
- 	} while (0)
- 
- /**
+diff --git a/drivers/mtd/spi-nor/winbond.c b/drivers/mtd/spi-nor/winbond.c
+index 142fb27b2ea9a..e065e4fd42a33 100644
+--- a/drivers/mtd/spi-nor/winbond.c
++++ b/drivers/mtd/spi-nor/winbond.c
+@@ -105,7 +105,9 @@ static const struct flash_info winbond_nor_parts[] = {
+ 	}, {
+ 		.id = SNOR_ID(0xef, 0x40, 0x18),
+ 		.name = "w25q128",
++		.size = SZ_16M,
+ 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB,
++		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
+ 	}, {
+ 		.id = SNOR_ID(0xef, 0x40, 0x19),
+ 		.name = "w25q256",
 -- 
 2.43.0
 
