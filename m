@@ -1,145 +1,212 @@
-Return-Path: <stable+bounces-62645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA1E940A15
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:40:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD25A940A12
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 758C428256A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 07:40:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5ADB1C2340E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 07:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6287A190467;
-	Tue, 30 Jul 2024 07:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BB718EFFB;
+	Tue, 30 Jul 2024 07:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="diHIv3wb"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA6B1684AE;
-	Tue, 30 Jul 2024 07:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE3318EFF3
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 07:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722325218; cv=none; b=tbOuuH5ENAbbERftZH3J0HKIRWPjAVg9JQzJ6PsNSBSmwwOONyDVzAyPTHxQGTiRoXUptFkQYosR5Oag89LKy8RdEv0AZeRLQRdcJEjR9jeGdr8mH0puaoUG8I25OUheyA/Bxa4b2/Bsi76Qt0MHGeWj1xouOH5ngKwDccGxCN4=
+	t=1722325193; cv=none; b=q9VY3S3yWsSxeE74udvQa5xwsuQlXk4ccHLo33TYsO6WJuq2ShHD6iA1tPX6C9RTyE26xIEhX0IjikpjMEIvbYETNV35nI8tNTdWoC5m/VVwInv5PRJxnwgBQx4OshV78iwfL5QdG6peGxAdXTJftIGiJJIpOrep8g1QxVvumP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722325218; c=relaxed/simple;
-	bh=5xpQqm67DAmlhrAIz48qHFW18uqsl0oayjA7d+Fc9WY=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:MIME-Version:
-	 Content-Type:To:Cc; b=qOpngt9kTgJrq35i7lCqHONHaGYzm64vp6JmXsdtIwIuJOF/ScmuQfW6Npu3ckP+fP2Z/t7/oac0TBfSfJUyR+rVgxY5IkDPzCTdm00R7JgZPJm/NSVLQcEzmlTxRPsO9f0HV2NFPU4NL9adkNH15ghIC8AgeIEF4911vy9o4aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout3.hostsharing.net (Postfix) with ESMTPS id 2305F10029ED4;
-	Tue, 30 Jul 2024 09:40:12 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id E07ED603B5E2;
-	Tue, 30 Jul 2024 09:40:11 +0200 (CEST)
-X-Mailbox-Line: From fea75f9e03918bf1afa7b519bc0c46fb346ec4a3 Mon Sep 17 00:00:00 2001
-Message-ID: <fea75f9e03918bf1afa7b519bc0c46fb346ec4a3.1722324537.git.lukas@wunner.de>
-In-Reply-To: <2c01e143298db3e6ed75cd7cb4ac50310a6b290c.1722324537.git.lukas@wunner.de>
-References: <2c01e143298db3e6ed75cd7cb4ac50310a6b290c.1722324537.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Tue, 30 Jul 2024 09:36:55 +0200
-Subject: [PATCH 6.1-stable 2/2] PCI/DPC: Fix use-after-free on concurrent DPC
- and hot-removal
+	s=arc-20240116; t=1722325193; c=relaxed/simple;
+	bh=FIvn3VBhlItBKROtq0Sk5a20UG1sxhpe/DEFCdS6yTY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FrBxryx8q1Wh1hmcu9KoUYw0f1n9vHEeZ1SUSQxYVFXP4+JXM+z/ia8VE4PJbbW5SUa8bpNT+OFRtijJhejWh6YEw3LgfxhsysGYBLp+QDxEtneTE4ZLr2/7i87BgoDuUvEUognjOkcCMhKu3OYHJI9CIL08kQSFlFvE5eCGRxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=diHIv3wb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722325190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aUZPwDjvCNuvdtbiS5aTn8Kyj+I15Nv8TBu2F0oVisY=;
+	b=diHIv3wbD3Xf/PgcLAIzKrKkj3xuvvqJmBLtLOL5icVaaS/CT/2LaiwjAvNMw2ZZIg9x6B
+	p5HpNvpAD/b4w7gXNgPuQB/44a4ccZ1j8U9TiBuXE+5MmSK5YgoOUeUcknc0w+fT6yv0jJ
+	/GfuVOP2WNgfvCaDRH+CcTRG2d4eTrc=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-10-TODrmbLvP_a1opaJEqD67A-1; Tue, 30 Jul 2024 03:39:48 -0400
+X-MC-Unique: TODrmbLvP_a1opaJEqD67A-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-36875698d0dso1999101f8f.3
+        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 00:39:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722325187; x=1722929987;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aUZPwDjvCNuvdtbiS5aTn8Kyj+I15Nv8TBu2F0oVisY=;
+        b=VnoC+wxVArEQ4vYkN9TeJhT7SWr9NXniUEWstDM45RJetS6OmhKcImkjXDwRKdVdpH
+         IuQcvFVI2KrCezYCkccfJQq5TrttSIZMDMbDBBO6VL+0aRFDEGOOP5MyXqnuK1zyj/cQ
+         R6YwnXBBQBPhsbE0eiyfG0d3KwnrKqyU8fMnohitKW0bVJMx1nJxHCtKr+Q1BeGf1swW
+         T84xG7Q3QmINkmFU7V6MnMGaXo0vfTKqBMuHhekkfGg//Ekygu/uXxffRyUvST02d9vz
+         PeVk0fvL+PvIAgtszNPtbGhDlH+34VexD3ljitTTJdScYrWtyQcYdeg25vEVRZKJjGg/
+         RR6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVN1NF+So9vjuY2TpsxZqxPPbtRLlYqHU6zcndbpMcZ3lQbtNEeoilzIG+TncHLREJCx9aUOluwnlXzAf0547mnY+lDNY5X
+X-Gm-Message-State: AOJu0Ywyuw4DZSg4qvai9R0fb2ThnRgAxsbAGQHsj/vWaaG+i49GUtiz
+	zmI7bTs3KK0irLRb7hjUYBwzCDLmrR2J+/RkXu7w90XDeckFTiaT4IL1vhjCAN1+uQgU2pVdfQJ
+	bf5B2CgZm+iCMhmBBEX7P5T1kYgx3iMJAOEk6faoKAVPnE4QFDsvodQ==
+X-Received: by 2002:a5d:64ed:0:b0:368:6b28:5911 with SMTP id ffacd0b85a97d-36b5cefd512mr6645316f8f.2.1722325186655;
+        Tue, 30 Jul 2024 00:39:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6FvzK9O4osBRDPn7KTIhgJWdregInCISkYcU6ZaQWQ+9Ipp/gxcHDxA2pnW/GZViF/YvC/w==
+X-Received: by 2002:a5d:64ed:0:b0:368:6b28:5911 with SMTP id ffacd0b85a97d-36b5cefd512mr6645292f8f.2.1722325186194;
+        Tue, 30 Jul 2024 00:39:46 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:d5:a000:d3ea:62cf:3052:fac6? ([2a01:e0a:d5:a000:d3ea:62cf:3052:fac6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b3686fdc5sm13798420f8f.114.2024.07.30.00.39.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jul 2024 00:39:45 -0700 (PDT)
+Message-ID: <b1d2c7da-a545-4963-9b74-fbd34c3ce089@redhat.com>
+Date: Tue, 30 Jul 2024 09:39:44 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, linux-pci@vger.kernel.org, Keith Busch <kbusch@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Bjorn Helgaas <helgaas@kernel.org>, Krzysztof Wilczynski <kwilczynski@kernel.org>, Ira Weiny <ira.weiny@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] drm/ast: astdp: Wake up during connector status
+ detection
+To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@redhat.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ daniel@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+References: <20240717143319.104012-1-tzimmermann@suse.de>
+ <20240717143319.104012-2-tzimmermann@suse.de>
+Content-Language: en-US, fr
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20240717143319.104012-2-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
 
-Keith reports a use-after-free when a DPC event occurs concurrently to
-hot-removal of the same portion of the hierarchy:
 
-The dpc_handler() awaits readiness of the secondary bus below the
-Downstream Port where the DPC event occurred.  To do so, it polls the
-config space of the first child device on the secondary bus.  If that
-child device is concurrently removed, accesses to its struct pci_dev
-cause the kernel to oops.
+On 17/07/2024 16:24, Thomas Zimmermann wrote:
+> Power up the ASTDP connector for connection status detection if the
+> connector is not active. Keep it powered if a display is attached.
+> 
+> This fixes a bug where the connector does not come back after
+> disconnecting the display. The encoder's atomic_disable turns off
+> power on the physical connector. Further HPD reads will fail,
+> thus preventing the driver from detecting re-connected displays.
+> 
+> For connectors that are actively used, only test the HPD flag without
+> touching power.
 
-That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
-reference on the child device.  Before v6.3, the function was only
-called on resume from system sleep or on runtime resume.  Holding a
-reference wasn't necessary back then because the pciehp IRQ thread
-could never run concurrently.  (On resume from system sleep, IRQs are
-not enabled until after the resume_noirq phase.  And runtime resume is
-always awaited before a PCI device is removed.)
+Thanks, it looks good to me.
 
-However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
-called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
-of secondary bus after reset"), which introduced that, failed to
-appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
-reference on the child device because dpc_handler() and pciehp may
-indeed run concurrently.  The commit was backported to v5.10+ stable
-kernels, so that's the oldest one affected.
-
-Add the missing reference acquisition.
-
-Abridged stack trace:
-
-  BUG: unable to handle page fault for address: 00000000091400c0
-  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
-  RIP: pci_bus_read_config_dword+0x17/0x50
-  pci_dev_wait()
-  pci_bridge_wait_for_secondary_bus()
-  dpc_reset_link()
-  pcie_do_recovery()
-  dpc_handler()
-
-Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
-Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
-Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
-Reported-by: Keith Busch <kbusch@kernel.org>
-Tested-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.10+
----
- drivers/pci/pci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 0399204941db..2d373ab3ccb3 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5007,7 +5007,7 @@ static int pci_bus_max_d3cold_delay(const struct pci_bus *bus)
- int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 				      int timeout)
- {
--	struct pci_dev *child;
-+	struct pci_dev *child __free(pci_dev_put) = NULL;
- 	int delay;
- 
- 	if (pci_dev_is_disconnected(dev))
-@@ -5036,8 +5036,8 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 		return 0;
- 	}
- 
--	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
--				 bus_list);
-+	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
-+					     struct pci_dev, bus_list));
- 	up_read(&pci_bus_sem);
- 
- 	/*
--- 
-2.43.0
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+> 
+> Fixes: f81bb0ac7872 ("drm/ast: report connection status on Display Port.")
+> Cc: Jocelyn Falempe <jfalempe@redhat.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Dave Airlie <airlied@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.6+
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> ---
+>   drivers/gpu/drm/ast/ast_dp.c   |  7 +++++++
+>   drivers/gpu/drm/ast/ast_drv.h  |  1 +
+>   drivers/gpu/drm/ast/ast_mode.c | 29 +++++++++++++++++++++++++++--
+>   3 files changed, 35 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
+> index 1e9259416980..e6c7f0d64e99 100644
+> --- a/drivers/gpu/drm/ast/ast_dp.c
+> +++ b/drivers/gpu/drm/ast/ast_dp.c
+> @@ -158,7 +158,14 @@ void ast_dp_launch(struct drm_device *dev)
+>   			       ASTDP_HOST_EDID_READ_DONE);
+>   }
+>   
+> +bool ast_dp_power_is_on(struct ast_device *ast)
+> +{
+> +	u8 vgacre3;
+> +
+> +	vgacre3 = ast_get_index_reg(ast, AST_IO_VGACRI, 0xe3);
+>   
+> +	return !(vgacre3 & AST_DP_PHY_SLEEP);
+> +}
+>   
+>   void ast_dp_power_on_off(struct drm_device *dev, bool on)
+>   {
+> diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
+> index ba3d86973995..47bab5596c16 100644
+> --- a/drivers/gpu/drm/ast/ast_drv.h
+> +++ b/drivers/gpu/drm/ast/ast_drv.h
+> @@ -472,6 +472,7 @@ void ast_init_3rdtx(struct drm_device *dev);
+>   bool ast_astdp_is_connected(struct ast_device *ast);
+>   int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata);
+>   void ast_dp_launch(struct drm_device *dev);
+> +bool ast_dp_power_is_on(struct ast_device *ast);
+>   void ast_dp_power_on_off(struct drm_device *dev, bool no);
+>   void ast_dp_set_on_off(struct drm_device *dev, bool no);
+>   void ast_dp_set_mode(struct drm_crtc *crtc, struct ast_vbios_mode_info *vbios_mode);
+> diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+> index dc8f639e82fd..049ee1477c33 100644
+> --- a/drivers/gpu/drm/ast/ast_mode.c
+> +++ b/drivers/gpu/drm/ast/ast_mode.c
+> @@ -28,6 +28,7 @@
+>    * Authors: Dave Airlie <airlied@redhat.com>
+>    */
+>   
+> +#include <linux/delay.h>
+>   #include <linux/export.h>
+>   #include <linux/pci.h>
+>   
+> @@ -1687,11 +1688,35 @@ static int ast_astdp_connector_helper_detect_ctx(struct drm_connector *connector
+>   						 struct drm_modeset_acquire_ctx *ctx,
+>   						 bool force)
+>   {
+> +	struct drm_device *dev = connector->dev;
+>   	struct ast_device *ast = to_ast_device(connector->dev);
+> +	enum drm_connector_status status = connector_status_disconnected;
+> +	struct drm_connector_state *connector_state = connector->state;
+> +	bool is_active = false;
+> +
+> +	mutex_lock(&ast->modeset_lock);
+> +
+> +	if (connector_state && connector_state->crtc) {
+> +		struct drm_crtc_state *crtc_state = connector_state->crtc->state;
+> +
+> +		if (crtc_state && crtc_state->active)
+> +			is_active = true;
+> +	}
+> +
+> +	if (!is_active && !ast_dp_power_is_on(ast)) {
+> +		ast_dp_power_on_off(dev, true);
+> +		msleep(50);
+> +	}
+>   
+>   	if (ast_astdp_is_connected(ast))
+> -		return connector_status_connected;
+> -	return connector_status_disconnected;
+> +		status = connector_status_connected;
+> +
+> +	if (!is_active && status == connector_status_disconnected)
+> +		ast_dp_power_on_off(dev, false);
+> +
+> +	mutex_unlock(&ast->modeset_lock);
+> +
+> +	return status;
+>   }
+>   
+>   static const struct drm_connector_helper_funcs ast_astdp_connector_helper_funcs = {
 
 
