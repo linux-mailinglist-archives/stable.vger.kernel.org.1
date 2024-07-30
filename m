@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C172941C5F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D860A941A1C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38111F24786
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 211FFB2D5C9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C4A189502;
-	Tue, 30 Jul 2024 17:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F235F1A619C;
+	Tue, 30 Jul 2024 16:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiTOioP2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWiG3Bp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEE41A6192;
-	Tue, 30 Jul 2024 17:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01D6155CB3;
+	Tue, 30 Jul 2024 16:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359185; cv=none; b=YjbGwBtX7fDp6T48VeiCzfMIREkEyijOBGCuHdj41/h9alginM6cfAoZWlwndf2tKa6ea8oKrvrJqHRyb9BMP4dj9s4VggGbgbsGVtBHghrUw2VnTJtS7fHJyThbjNaWy4RK20dxfipbl7ZjdBYPyr48MYXadQQAwJxegK5NZYA=
+	t=1722357010; cv=none; b=ea5xRlHO0UmPcQkCQRxUEe1dxtp1Z97XqTRn77GsxvnO5JNLnoxuVwareirkipfzubG8004xhJ2NdFryKf1hnsc+9m1cVXwDlZgPWkiOlYPiARPzMkSM93O6JM5S3awzDHPHofijSMVSo4zSYNY3yhB2u9ZmGvS5UR3wGSSir7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359185; c=relaxed/simple;
-	bh=+96flJv0J44mLervH6cz0kMzOMYqLOE3nptgu1oa+Dk=;
+	s=arc-20240116; t=1722357010; c=relaxed/simple;
+	bh=Vfq6iTmr72NoPoDuHlKmqU7G/loU23rg1s86HH9ku7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=trMuZudS+yOpTTIaR9WmOOJmFvikxqGqmqfzP63sGtFqYwbGa6FrptvYeZkqEegGGJPnMpsLhZ54NE6pcAxG7LqDVqhkg4uqI9ZWa5BvnSZ15xqhV5ItEXdZWiKgxjnuEeNoQBKUefPVCGnlhoo41bRkKrIkrD4qjWV8QgNAVDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiTOioP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A62C32782;
-	Tue, 30 Jul 2024 17:06:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DPQyo5l9Uy6WEDWqMXQ+gEYfGWO5UpWRbynmTXdpm2K8IrSXWansr2pBUSQYL/dJ5/ZMBrLIU36u/Sca00SoYcqlAfLWWDKoECf7LqsB+HAK7poP+hpVi8+tcsBtueihasHanzVuZt0Zs+tgtnNlD/gRCddDHhsoBO7iAu9ya5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWiG3Bp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21151C32782;
+	Tue, 30 Jul 2024 16:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359184;
-	bh=+96flJv0J44mLervH6cz0kMzOMYqLOE3nptgu1oa+Dk=;
+	s=korg; t=1722357010;
+	bh=Vfq6iTmr72NoPoDuHlKmqU7G/loU23rg1s86HH9ku7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiTOioP2qRyJFs34/zF3os85L+tnYJXh8QInBOrqly7yTUlTglJB4igVmIL0VWYNj
-	 g5BbiOf9EqydOxfVpVfpSRowdgbbXDwqP0CpuJwqo555/DvIGARQgve0PbZvgFQsYB
-	 R7/SHbRdP4TOjsGnHKHBCMAff8GDnwqiL7gPTZVQ=
+	b=kWiG3Bp0Rky9sonrFU1MllUviEMIZanWmvqAVvtVMQXgHeLSAjoCKsKxKmEqTJ/M2
+	 RcQJQ3sqb1JTHOD870qDsZBSXP2oAHJ220LHJ92H0vZ8UJvzXXm8xSMLjur3jup7tf
+	 er4qWJGAOiTbRWgMZFqbYWVC+wjOb8k3Sk0V5Lig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 439/809] eeprom: ee1004: Call i2c_new_scanned_device to instantiate thermal sensor
-Date: Tue, 30 Jul 2024 17:45:15 +0200
-Message-ID: <20240730151742.041311907@linuxfoundation.org>
+Subject: [PATCH 6.6 209/568] media: rcar-csi2: Disable runtime_pm in probe error
+Date: Tue, 30 Jul 2024 17:45:16 +0200
+Message-ID: <20240730151648.043893758@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +64,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-[ Upstream commit 249b4deaff71cfc6ac9a8e436af876be6d84052b ]
+[ Upstream commit e306183628f7c2e95f9bf853d8fcb86288f606de ]
 
-Instantiating a device by calling i2c_new_client_device() assumes that the
-device is not already instantiated. If that is not the case, it will return
-an error and generate a misleading kernel log message.
+Disable pm_runtime in the probe() function error path.
 
-i2c i2c-0: Failed to register i2c client jc42 at 0x18 (-16)
-
-This can be reproduced by unloading the ee1004 driver and loading it again.
-
-Avoid this by calling i2c_new_scanned_device() instead, which returns
-silently if a device is already instantiated or does not exist.
-
-Fixes: 393bd1000f81 ("eeprom: ee1004: add support for temperature sensor")
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240629173716.20389-1-linux@roeck-us.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 769afd212b16 ("media: rcar-csi2: add Renesas R-Car MIPI CSI-2 receiver driver")
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://lore.kernel.org/r/20240617161135.130719-3-jacopo.mondi@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/eeprom/ee1004.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/platform/renesas/rcar-vin/rcar-csi2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/eeprom/ee1004.c b/drivers/misc/eeprom/ee1004.c
-index 21feebc3044c3..71ca66d1df82c 100644
---- a/drivers/misc/eeprom/ee1004.c
-+++ b/drivers/misc/eeprom/ee1004.c
-@@ -185,6 +185,8 @@ BIN_ATTRIBUTE_GROUPS(ee1004);
- static void ee1004_probe_temp_sensor(struct i2c_client *client)
- {
- 	struct i2c_board_info info = { .type = "jc42" };
-+	unsigned short addr = 0x18 | (client->addr & 7);
-+	unsigned short addr_list[] = { addr, I2C_CLIENT_END };
- 	u8 byte14;
- 	int ret;
+diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c b/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
+index f6326df0b09be..2fc15882a6976 100644
+--- a/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
++++ b/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
+@@ -1914,12 +1914,14 @@ static int rcsi2_probe(struct platform_device *pdev)
  
-@@ -193,9 +195,7 @@ static void ee1004_probe_temp_sensor(struct i2c_client *client)
- 	if (ret != 1 || !(byte14 & BIT(7)))
- 		return;
+ 	ret = v4l2_async_register_subdev(&priv->subdev);
+ 	if (ret < 0)
+-		goto error_async;
++		goto error_pm_runtime;
  
--	info.addr = 0x18 | (client->addr & 7);
--
--	i2c_new_client_device(client->adapter, &info);
-+	i2c_new_scanned_device(client->adapter, &info, addr_list, NULL);
- }
+ 	dev_info(priv->dev, "%d lanes found\n", priv->lanes);
  
- static void ee1004_cleanup(int idx, struct ee1004_bus_data *bd)
+ 	return 0;
+ 
++error_pm_runtime:
++	pm_runtime_disable(&pdev->dev);
+ error_async:
+ 	v4l2_async_nf_unregister(&priv->notifier);
+ 	v4l2_async_nf_cleanup(&priv->notifier);
 -- 
 2.43.0
 
