@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC6DB941E28
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21FB7941962
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9318B2827A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43C01B2C7B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C91A76DE;
-	Tue, 30 Jul 2024 17:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6851A618E;
+	Tue, 30 Jul 2024 16:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7f2kbfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lR8qTH75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3380A1A76A1;
-	Tue, 30 Jul 2024 17:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CE31A6160;
+	Tue, 30 Jul 2024 16:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360178; cv=none; b=p2aZgqpq0fIZS+JaYFC9ZnvrCS3238ZL1ocFgpU8oTr2bQ4K5FE+NL1Px1H73OigY9YXq9ZbcdO2hlUC0hyvLq1LnBRmziyFm2G7Z+zXY7auw28VATI2yK1zjSt47w0/8H138K1Yaki+zPLgxtt1QwpMWRPksXEwxpzKqtqYD18=
+	t=1722356874; cv=none; b=OKwYIrDzb2O/Iz6tOsSDpyoz0vgS4fhPp5QO2NK6XAmzx+1+qhPG+mZCKk7dlmQOfvGxsXQH7u2sphhdkASH6tkzSvyHg6K0GwR1l8SIHyGb7L4arW7B7Kiz03xoimUxPvKQejJjClhh00yvr6lCeseoSptPLavfbfjHeVMiV7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360178; c=relaxed/simple;
-	bh=pOe861v5Wj8y60QgxC4ijOJLMJ3FoHaZpyfKppbfl+I=;
+	s=arc-20240116; t=1722356874; c=relaxed/simple;
+	bh=RjavC9fklaraUhxUaV+J1UZ2MdFKuRTPEwllrWGr4uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QgqEDgfrYVNMzRgHi4DKtb4jGOBEDb7Cv9vOS8fkR5HdOn8BtQreCHqLMrlP0iiCFSmCBv+AEQXksFQTXW3jRZ3kfjsj+3yiK1WC+XUPqq2Qj0q02YOJhXLkq42Mm6ss/6hKKQBx4vtAO/5of6r9xhrJCHhB+s9zSTmAbbE4Fo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7f2kbfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C4CC32782;
-	Tue, 30 Jul 2024 17:22:57 +0000 (UTC)
+	 MIME-Version; b=hLF5MjjFd4Kiz3sIAJmHq6TD/2FeC0kRLKuYBIk4j/VVeWp9f4PBhsFLvpTxKoo72jwlZT3qrHCOnkMGKF8l2/F4oPhXikTB2ubGFrog9gGkvprF7/2j0rgM+JQPZbyOfTFicA7TTDtVlbltqp/CrNFuB8eU4AauR3xAiGqhCGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lR8qTH75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B138C32782;
+	Tue, 30 Jul 2024 16:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360178;
-	bh=pOe861v5Wj8y60QgxC4ijOJLMJ3FoHaZpyfKppbfl+I=;
+	s=korg; t=1722356874;
+	bh=RjavC9fklaraUhxUaV+J1UZ2MdFKuRTPEwllrWGr4uA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7f2kbfvobSK4pcDif9O7XBMBj/bI9tHvN5AVGUqt4smERzCy/0+MvlsLYaVGwOxo
-	 csq7MAiktDZGEMCLjabiHwpbctlcnu/BpM5U2x6au+q8SZxx5H+L7r3PUwMynoSZ4u
-	 Ub2iYJlg/Pc6r7omAon39iuOD0S++KI0XhdlFcYI=
+	b=lR8qTH75VoHgwxZTq+sAql2II44xZNXYhZArUDAuL4uIWlmeINfWbtP+bs7L1DZdV
+	 tRfBJmCHzB1qnE3OQo4zTNedbKO5firPmfsBtCg9ksWO5eLZ21JuG0LuTFUHiWLhAC
+	 Ok+cIcl2m0HBzo6sjob57u2WydcBYRFFyD4DXnTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.10 593/809] ext4: make sure the first directory block is not a hole
-Date: Tue, 30 Jul 2024 17:47:49 +0200
-Message-ID: <20240730151748.252196817@linuxfoundation.org>
+	Vladimir Oltean <olteanv@gmail.com>,
+	Martin Willi <martin@strongswan.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 237/440] net: dsa: b53: Limit chip-wide jumbo frame config to CPU ports
+Date: Tue, 30 Jul 2024 17:47:50 +0200
+Message-ID: <20240730151625.111513722@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Martin Willi <martin@strongswan.org>
 
-commit f9ca51596bbfd0f9c386dd1c613c394c78d9e5e6 upstream.
+[ Upstream commit c5118072e228e7e4385fc5ac46b2e31cf6c4f2d3 ]
 
-The syzbot constructs a directory that has no dirblock but is non-inline,
-i.e. the first directory block is a hole. And no errors are reported when
-creating files in this directory in the following flow.
+Broadcom switches supported by the b53 driver use a chip-wide jumbo frame
+configuration. In the commit referenced with the Fixes tag, the setting
+is applied just for the last port changing its MTU.
 
-    ext4_mknod
-     ...
-      ext4_add_entry
-        // Read block 0
-        ext4_read_dirblock(dir, block, DIRENT)
-          bh = ext4_bread(NULL, inode, block, 0)
-          if (!bh && (type == INDEX || type == DIRENT_HTREE))
-          // The first directory block is a hole
-          // But type == DIRENT, so no error is reported.
+While configuring CPU ports accounts for tagger overhead, user ports do
+not. When setting the MTU for a user port, the chip-wide setting is
+reduced to not include the tagger overhead, resulting in an potentially
+insufficient chip-wide maximum frame size for the CPU port.
 
-After that, we get a directory block without '.' and '..' but with a valid
-dentry. This may cause some code that relies on dot or dotdot (such as
-make_indexed_dir()) to crash.
+As, by design, the CPU port MTU is adjusted for any user port change,
+apply the chip-wide setting only for CPU ports. This aligns the driver
+to the behavior of other switch drivers.
 
-Therefore when ext4_read_dirblock() finds that the first directory block
-is a hole report that the filesystem is corrupted and return an error to
-avoid loading corrupted data from disk causing something bad.
-
-Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
-Fixes: 4e19d6b65fb4 ("ext4: allow directory holes")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240702132349.2600605-3-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Suggested-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Martin Willi <martin@strongswan.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c |   17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -151,10 +151,11 @@ static struct buffer_head *__ext4_read_d
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 59cdfc51ce06a..922e5934de733 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2221,6 +2221,9 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 	if (is5325(dev) || is5365(dev))
+ 		return -EOPNOTSUPP;
  
- 		return bh;
- 	}
--	if (!bh && (type == INDEX || type == DIRENT_HTREE)) {
-+	/* The first directory block must not be a hole. */
-+	if (!bh && (type == INDEX || type == DIRENT_HTREE || block == 0)) {
- 		ext4_error_inode(inode, func, line, block,
--				 "Directory hole found for htree %s block",
--				 (type == INDEX) ? "index" : "leaf");
-+				 "Directory hole found for htree %s block %u",
-+				 (type == INDEX) ? "index" : "leaf", block);
- 		return ERR_PTR(-EFSCORRUPTED);
- 	}
- 	if (!bh)
-@@ -3129,10 +3130,7 @@ bool ext4_empty_dir(struct inode *inode)
- 		EXT4_ERROR_INODE(inode, "invalid size");
- 		return false;
- 	}
--	/* The first directory block must not be a hole,
--	 * so treat it as DIRENT_HTREE
--	 */
--	bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
-+	bh = ext4_read_dirblock(inode, 0, EITHER);
- 	if (IS_ERR(bh))
- 		return false;
++	if (!dsa_is_cpu_port(ds, port))
++		return 0;
++
+ 	enable_jumbo = (mtu >= JMS_MIN_SIZE);
+ 	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
  
-@@ -3577,10 +3575,7 @@ static struct buffer_head *ext4_get_firs
- 		struct ext4_dir_entry_2 *de;
- 		unsigned int offset;
- 
--		/* The first directory block must not be a hole, so
--		 * treat it as DIRENT_HTREE
--		 */
--		bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
-+		bh = ext4_read_dirblock(inode, 0, EITHER);
- 		if (IS_ERR(bh)) {
- 			*retval = PTR_ERR(bh);
- 			return NULL;
+-- 
+2.43.0
+
 
 
 
