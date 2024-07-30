@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-64013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6F8941BB7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2432D94196C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF1721F24117
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F74286A09
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B6B1898F8;
-	Tue, 30 Jul 2024 16:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44361898E0;
+	Tue, 30 Jul 2024 16:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeXn2u/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eja4nb+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC1018801A;
-	Tue, 30 Jul 2024 16:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637C21A6192;
+	Tue, 30 Jul 2024 16:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358692; cv=none; b=Chdox/5ewEZQI9kQX5bxXtWdlzhbfIP+HpptGnZtIBKw843QARz7/dgX0W4C0WVU+rm94oFg8tQPfuVFKBXpHDT0epplkM6+xWIWzAUgbtV+TQikUba3ERJloN/dw9Ppr/hm2cB7Z0OPgQ4eJoeVaBiQ7oEQLbNsB/WNDwtkIJ8=
+	t=1722357120; cv=none; b=STj+gP7FL5zMIme0cyODcLuSt1/zZ5KYZHLB7cQY4iTASzo+VEfJXnqpJHgY95ZOwRnu+5k5CgR42v5z9aDmn3cu4c4JUdKs86oDf/hH23iG8nZxR0jqt7DjhESon0w+F3X29EW96IqQfP3dbKIrcSTzchozZ/24nAwPrQpv6wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358692; c=relaxed/simple;
-	bh=TIKWnp+mX79eexpzDu2fsCUYyFqtX9WmjSJJYCkgqF4=;
+	s=arc-20240116; t=1722357120; c=relaxed/simple;
+	bh=SIZxUNk42M6J6KljToRMe0efIYhbSK6qFKfRfi2iGFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VGUr0DiLcxb9PqiI73bm2krP8ap485X2nEEsGHhpBsldDdMggt05B3jP0bj98jsfitcKUYwEle1RgHvT2hIEK/Id5PxHCXiZjABp3vbZgTVUYcUa5ovnIUsd6kpAkogzuercvmJoLOFkaAj4o/s9BdRl6rPXQsiBAJ/ZBb+CsN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeXn2u/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A88C4AF0A;
-	Tue, 30 Jul 2024 16:58:11 +0000 (UTC)
+	 MIME-Version; b=bULbApj91BH/nPg4PMNb9kXQ0W4n2uECqXkmpR+GBe5BwxTGnrzoc/wwzstfAY7fcUKKbOHhRdDeNleRvsb9y3072YrwSs94VN7ptkF07qCrjihrBHqBU9hEpAy7pNqnd+0yMmo8KRstawPAoKyGlB5c6G2SKJPyAwyxi7s0isc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eja4nb+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF89BC32782;
+	Tue, 30 Jul 2024 16:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358692;
-	bh=TIKWnp+mX79eexpzDu2fsCUYyFqtX9WmjSJJYCkgqF4=;
+	s=korg; t=1722357120;
+	bh=SIZxUNk42M6J6KljToRMe0efIYhbSK6qFKfRfi2iGFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VeXn2u/o1aIShgUngKnVxa6H8QKI9CRFXOqQJG0723T+nAfdFEfSW1n7M6j7PsSdM
-	 6YEflbdC8XLay1+wTUz1QiMcKsdWxabOhhaYWtlV4awDtP2JdsPtvIUDnS03EDqXw/
-	 SS99sYSO3iXP5PZR9Qu17msyQ8fHbZAjbLRRK0ms=
+	b=Eja4nb+m5bSDHxiANpBfx4BAwY9GtPvCkCAfL0WoxLXjkZnzKxrkvzW23qq+yuzf4
+	 vCGy4Uf2DsSfXSNKzqp51oDn0BeauTYuhyHjn1sGtYOBl5upVNcLUS/EwZ1EY773MK
+	 sV10C86xBWel/sJKIFy8G6mzF5fYC6Xt2bCqgjdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 6.6 386/568] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
+	David Hildenbrand <david@redhat.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 260/440] fs/proc/task_mmu: indicate PM_FILE for PMD-mapped file THP
 Date: Tue, 30 Jul 2024 17:48:13 +0200
-Message-ID: <20240730151654.953294221@linuxfoundation.org>
+Message-ID: <20240730151625.997268965@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +67,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: David Hildenbrand <david@redhat.com>
 
-commit 2df7aac81070987b0f052985856aa325a38debf6 upstream.
+[ Upstream commit 3f9f022e975d930709848a86a1c79775b0585202 ]
 
-In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+Patch series "fs/proc: move page_mapcount() to fs/proc/internal.h".
 
-Cc: stable@vger.kernel.org
-Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709092011.3204970-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With all other page_mapcount() users in the tree gone, move
+page_mapcount() to fs/proc/internal.h, rename it and extend the
+documentation to prevent future (ab)use.
+
+... of course, I find some issues while working on that code that I sort
+first ;)
+
+We'll now only end up calling page_mapcount() [now
+folio_precise_page_mapcount()] on pages mapped via present page table
+entries.  Except for /proc/kpagecount, that still does questionable
+things, but we'll leave that legacy interface as is for now.
+
+Did a quick sanity check.  Likely we would want some better selfestest for
+/proc/$/pagemap + smaps.  I'll see if I can find some time to write some
+more.
+
+This patch (of 6):
+
+Looks like we never taught pagemap_pmd_range() about the existence of
+PMD-mapped file THPs.  Seems to date back to the times when we first added
+support for non-anon THPs in the form of shmem THP.
+
+Link: https://lkml.kernel.org/r/20240607122357.115423-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20240607122357.115423-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Lance Yang <ioworker0@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/psb_intel_lvds.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/proc/task_mmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
-+++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
-@@ -504,6 +504,9 @@ static int psb_intel_lvds_get_modes(stru
- 	if (mode_dev->panel_fixed_mode != NULL) {
- 		struct drm_display_mode *mode =
- 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
-+		if (!mode)
-+			return 0;
-+
- 		drm_mode_probed_add(connector, mode);
- 		return 1;
- 	}
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index a954305fbc31b..484886cdd272c 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1513,6 +1513,8 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		}
+ #endif
+ 
++		if (page && !PageAnon(page))
++			flags |= PM_FILE;
+ 		if (page && !migration && page_mapcount(page) == 1)
+ 			flags |= PM_MMAP_EXCLUSIVE;
+ 
+-- 
+2.43.0
+
 
 
 
