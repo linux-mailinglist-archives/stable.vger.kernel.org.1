@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-64068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF035941BF3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B9F941D92
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CB291C21360
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73A7728C6E4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9755418801A;
-	Tue, 30 Jul 2024 17:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EF41A76D4;
+	Tue, 30 Jul 2024 17:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBsPNkX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zw0+nfQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E687156F30;
-	Tue, 30 Jul 2024 17:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE681A76A4;
+	Tue, 30 Jul 2024 17:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358885; cv=none; b=CYpqkSazP3sIs6oD+7qpunvHusKUTUQMis1MAgJ5qejqfQ95z/SN0L/kwXJ03NBeVr00WJDtovPueFALScS68TzwyOmLBifaMCgCgiJROwK0yY7+jDsxpaywZRZsOkaBBgLAppkOi8w/GauMWkdYdBuAKae+8Hq4Cz0x1G0I/Tc=
+	t=1722359924; cv=none; b=RCJy+B8VWHwAoA/tifzjd4gxEvktKFjfvY9CaSwtJwfksKVAOoYq8u2V/bB7B5n8+Zvb13yG/+PFr47N99+Zj8eSdlBuVYqaGYfZq3bjgzU0dBkWFJMYQueAXaHrUyMPzsF1z5YkVX2Xp/Ju9Tf9FQUqno4yKHsSUO5/hvvBxp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358885; c=relaxed/simple;
-	bh=Sy5BOcnlwo/MBWejMlQIGQgpt7xC4uQYGpfQ3ElS7h8=;
+	s=arc-20240116; t=1722359924; c=relaxed/simple;
+	bh=k7HEe/FBe1ZbO7s3h0FmRcGB7yUAWzouu8oQPOant5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRUqLcbXowRQnVsLHWErUitcVtk2tfbtQCYZZipKdvyJfNGtzmSFkFKAkyTRJoGhbtuHqx4PkEuFMu5Gh2APRkXDOimRxKV4u0jdDQtvwD7Rm7b9GFS6YBM+ulk3GMAgQxZ8ZivbtCPwojOEWcwclVXYmPvbMQFzG7H7bfXlS8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBsPNkX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CD7C32782;
-	Tue, 30 Jul 2024 17:01:24 +0000 (UTC)
+	 MIME-Version; b=Vqe6kujN8pfVMHMyTvTVqmLvfUNu+PZ7AbynTnq7BkkqsooKQI+oB3cLag0BvH2d2AV8hU3Ldn5MkQhEqLCyQ/TmEDQ9KHEhwGZSp1uF0zeN9/i1yhx70gNjJwhhq8mwsQy/grGTI9I5jLti9jEcJWnAKxsstf+OroeBSHLK8bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zw0+nfQB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB97C32782;
+	Tue, 30 Jul 2024 17:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358885;
-	bh=Sy5BOcnlwo/MBWejMlQIGQgpt7xC4uQYGpfQ3ElS7h8=;
+	s=korg; t=1722359923;
+	bh=k7HEe/FBe1ZbO7s3h0FmRcGB7yUAWzouu8oQPOant5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BBsPNkX/WKyI9/OKw6jRBf+aqC0JS0kRoDscSdFdO/YmhlUnh1olzPV3TNbnG3pyH
-	 j0H4wxVFrL4QtqjyTkfNj5MIDVX6As+iY7Iuqpru/9Brw8uaTsqp+l5kNJAlIt9T83
-	 UcbmcjO5VC9L2a4AFXMdj5pBWQ5aopavkI9C+elQ=
+	b=zw0+nfQBIG1Qen5mh42igWfIq9F6HQSmtNMFynA8GA85HclBYI5fOvq8QvWt+7M3J
+	 hMKG46UXLLShodT3pI0x92Ov8OzTrrHFIrO/glbWxF7drJ27BtWJBx4e+ugEt4EMUW
+	 lngMsX69iw8PedYKgXDqvgcU9o5ZTVn2JFvLBYFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Bart Van Assche <bvanassche@acm.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 430/440] spi: spidev: order compatibles alphabetically
+Subject: [PATCH 6.6 556/568] nvme-pci: Fix the instructions for disabling power management
 Date: Tue, 30 Jul 2024 17:51:03 +0200
-Message-ID: <20240730151632.573203722@linuxfoundation.org>
+Message-ID: <20240730151701.890741993@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit be5852457b7e85ad13b1bded9c97bed5ee1715a3 ]
+[ Upstream commit 92fc2c469eb26060384e9b2cd4cb0cc228aba582 ]
 
-Bring some order to reduce possibilities of conflicts.
+pcie_aspm=off tells the kernel not to modify the ASPM configuration. This
+setting does not guarantee that ASPM (Active State Power Management) is
+disabled. Hence add pcie_port_pm=off. This disables power management for
+all PCIe ports.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230120075651.153763-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: fc28d1c1fe3b ("spi: spidev: add correct compatible for Rohm BH2228FV")
+This patch has been tested on a workstation with a Samsung SSD 970 EVO Plus
+NVMe SSD.
+
+Fixes: 4641a8e6e145 ("nvme-pci: add trouble shooting steps for timeouts")
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 2be7138acc38a..5241785266153 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -719,14 +719,14 @@ static int spidev_of_check(struct device *dev)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 710fd4d862520..7c71431dbd6cc 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1275,7 +1275,7 @@ static void nvme_warn_reset(struct nvme_dev *dev, u32 csts)
+ 	dev_warn(dev->ctrl.device,
+ 		 "Does your device have a faulty power saving mode enabled?\n");
+ 	dev_warn(dev->ctrl.device,
+-		 "Try \"nvme_core.default_ps_max_latency_us=0 pcie_aspm=off\" and report a bug\n");
++		 "Try \"nvme_core.default_ps_max_latency_us=0 pcie_aspm=off pcie_port_pm=off\" and report a bug\n");
  }
  
- static const struct of_device_id spidev_dt_ids[] = {
--	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
-+	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
-+	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
- 	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
--	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
- 	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
--	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
- 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
--	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
- 	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
-+	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
-+	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
- 	{ .compatible = "silabs,em3581", .data = &spidev_of_check },
- 	{},
- };
+ static enum blk_eh_timer_return nvme_timeout(struct request *req)
 -- 
 2.43.0
 
