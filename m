@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EF6941C0B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3750941DF8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17B78285135
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 574821F255E5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F999189B85;
-	Tue, 30 Jul 2024 17:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E111A76BA;
+	Tue, 30 Jul 2024 17:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpUQBfmm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/Nm72pL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D862E1A6192;
-	Tue, 30 Jul 2024 17:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D8F1A76A1;
+	Tue, 30 Jul 2024 17:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358935; cv=none; b=Ag+zVswvAx+yil9CxpEBJmY3nB8ZVhmAF14DuVwrjKwdO8lMO12zuA8r6I8h58oQS1Eb1bCgcocU02ELBFitzS2gVVB60cSswGlo9aAQ0ERzCQEqXstXSt3zMy3A0uSf+wGR4+gwL0D5kS1cvLCgxw4pBvo4W9vOJSEu/Wv+Ej8=
+	t=1722360244; cv=none; b=AwcOLvrGscpaJPIsA9kJ3RPLi8BorsnAZM3LCJdPFA6z3H23j0nMr2zfxg5Z38pLLACdgLJda+FyJ43Z33Udt95XJg5iqhJ/cGc3to8A1mQexnqr2EcfYVwucBiTiWEQ7fTD2VMJ6iN+HD4So6CCzoTMyxp6zYcJ+ij/2L4O20w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358935; c=relaxed/simple;
-	bh=gapk2KAPDzsiL9GLSsaTiL/qRTYMVLVWur4R4sXyI3E=;
+	s=arc-20240116; t=1722360244; c=relaxed/simple;
+	bh=1E4pItoU0nhb/D7AtIw/W/ZHdaecy60uJwjpZzblnNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLIe9pqexIm7eIQpD5EaNhjNlJc1Dyqv9k7YHdtgQ2Tq8XAG1VlKbaffpyeDE/hjXoWuBq1TAz0hXU07pnSvY7ooZwdEK61OffTQWiUkITjp4OLSFiZGjO/fydQhqoPkQ1TXkaTJzypd63nQTL5rMKJY4AGg+Dn/8rq3I22RkWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpUQBfmm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59923C4AF0A;
-	Tue, 30 Jul 2024 17:02:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gUujzRiLyIzrTHMwi7IGVZU2SeIwSKDwgpFJY/XADJ7Hk8fu9trEDaB9nKhVqI2e+B/nI2EieHJs4dRNoI9KDrOVNKZKoSBdKbFpQOCqocmNGpkmRhLjrhGVGzuMvYhi7jxb+W2FllfLAO9X9VZxaktrQqq6Rkbt6RsUHhMW/SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/Nm72pL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF827C32782;
+	Tue, 30 Jul 2024 17:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358934;
-	bh=gapk2KAPDzsiL9GLSsaTiL/qRTYMVLVWur4R4sXyI3E=;
+	s=korg; t=1722360244;
+	bh=1E4pItoU0nhb/D7AtIw/W/ZHdaecy60uJwjpZzblnNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpUQBfmm38qx2Ad/V3J7Fsp2KMnxxKjdYmfhIY8+vPlGTdA2jRCcmCfxu3wHGkj+D
-	 L7UxT4tfnsKT5t/5ULKHBsSv7UYkb9jvzW8IEohRiagFdnlL9hs3YfzYC//gRVeF3R
-	 TIHTMjFlzzl5Q2OqowlghnRPmFuH7vTkSlZNzBGg=
+	b=M/Nm72pLOIyR9IO0hsisY0Yy7bSbybI71jH2RlAvrtSPVMPbToQpZyIZYrcfOZSrO
+	 Fqg1RPJaShqiXXsFTAuIALgUai4VtqYvOAs3k8zH1p8PokggrNn0nH+4aXfBU5gdbl
+	 A24mA8A1iKCiZ2vJtNbQbdokcB8qGS56BC6OllmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 410/568] jbd2: make jbd2_journal_get_max_txn_bufs() internal
+	Sheng Wu <wusheng@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.10 641/809] PCI: loongson: Enable MSI in LS7A Root Complex
 Date: Tue, 30 Jul 2024 17:48:37 +0200
-Message-ID: <20240730151655.894086398@linuxfoundation.org>
+Message-ID: <20240730151750.181431735@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 4aa99c71e42ad60178c1154ec24e3df9c684fb67 upstream.
+commit a4bbcac11d3cea85822af8b40daed7e96bca5068 upstream.
 
-There's no reason to have jbd2_journal_get_max_txn_bufs() public
-function. Currently all users are internal and can use
-journal->j_max_transaction_buffers instead. This saves some unnecessary
-recomputations of the limit as a bonus which becomes important as this
-function gets more complex in the following patch.
+The LS7A chipset can be used as part of a PCIe Root Complex with
+Loongson-3C6000 and similar CPUs.  In this case, DEV_LS7A_PCIE_PORT5 has a
+PCI_CLASS_BRIDGE_HOST class code, and it is a Type 0 Function whose config
+space provides access to Root Complex registers.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20240624170127.3253-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+The DEV_LS7A_PCIE_PORT5 has an MSI Capability, and its MSI Enable bit must
+be set before other devices below the Root Complex can use MSI.  This is
+not the standard PCI behavior of MSI Enable, so the normal PCI MSI code
+does not set it.
+
+Set the DEV_LS7A_PCIE_PORT5 MSI Enable bit via a quirk so other devices
+below the Root Complex can use MSI.
+
+[kwilczynski: exit early to reduce indentation; commit log]
+Link: https://lore.kernel.org/linux-pci/20240612065315.2048110-1-chenhuacai@loongson.cn
+Signed-off-by: Sheng Wu <wusheng@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/commit.c     |    2 +-
- fs/jbd2/journal.c    |    5 +++++
- include/linux/jbd2.h |    5 -----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/pci/controller/pci-loongson.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -767,7 +767,7 @@ start_journal_io:
- 		if (first_block < journal->j_tail)
- 			freed += journal->j_last - journal->j_first;
- 		/* Update tail only if we free significant amount of space */
--		if (freed < jbd2_journal_get_max_txn_bufs(journal))
-+		if (freed < journal->j_max_transaction_buffers)
- 			update_tail = 0;
- 	}
- 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1690,6 +1690,11 @@ journal_t *jbd2_journal_init_inode(struc
- 	return journal;
- }
+--- a/drivers/pci/controller/pci-loongson.c
++++ b/drivers/pci/controller/pci-loongson.c
+@@ -163,6 +163,19 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LO
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON,
+ 			DEV_LS7A_HDMI, loongson_pci_pin_quirk);
  
-+static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
++static void loongson_pci_msi_quirk(struct pci_dev *dev)
 +{
-+	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
-+}
++	u16 val, class = dev->class >> 8;
 +
- /*
-  * Given a journal_t structure, initialise the various fields for
-  * startup of a new journaling session.  We use this both when creating
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1666,11 +1666,6 @@ int jbd2_wait_inode_data(journal_t *jour
- int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
- int jbd2_fc_release_bufs(journal_t *journal);
- 
--static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
--{
--	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
--}
--
- /*
-  * is_journal_abort
-  *
++	if (class != PCI_CLASS_BRIDGE_HOST)
++		return;
++
++	pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &val);
++	val |= PCI_MSI_FLAGS_ENABLE;
++	pci_write_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, val);
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5, loongson_pci_msi_quirk);
++
+ static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus *bus)
+ {
+ 	struct pci_config_window *cfg;
 
 
 
