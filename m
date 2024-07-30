@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1783F941BEF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D354941DF6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7351FB25289
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0806D289AA6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27268188003;
-	Tue, 30 Jul 2024 17:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2441A76B2;
+	Tue, 30 Jul 2024 17:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okQTyUyi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3immezD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D136083A17;
-	Tue, 30 Jul 2024 17:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668DF1A76A1;
+	Tue, 30 Jul 2024 17:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358868; cv=none; b=BE2GHF1g405iV70RyuTREUthJU7FZmi4TaYbB6dHof7ck3vGlncXRPEHTbU3TQPGkxzDTEaSOsOLAqkrf6Xs/Y3NQxCG2Vl2p8a2foQc5T749hlAmSCL9eGDXqXFQMVUZZtu+DfIcsG0eqqw15h5/ODyDXTrSzYgxt8WIbqZ5Nk=
+	t=1722360224; cv=none; b=kv0NRuwbPkWQd4k7uOsNjozWdJxd4Lood2wad9ruJLRiI8sSM2czX6mJRoHoVQlHb9K8jcImryhR73Iuj4B2tX06AEmsiixifezDnQZyuUibr5S7Bhwia9MjP7rOll8rQHwbhxGfAZD5w/kZqmdTcpav9OEKTgLRzdriWLCiTyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358868; c=relaxed/simple;
-	bh=sFpU/7fEtNn/qK5AVW79zMXEgppwG0JN7FHrpZuVpLc=;
+	s=arc-20240116; t=1722360224; c=relaxed/simple;
+	bh=eafieAQvpRzMF+MNzRbcjzzoQL3xJhOdWx+oKvAbpn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bm3czT5H4buREtJUDtDIBbtXYEu3fBQ6VP1tGx3iOUD8D9fmZVkv9DqqsS0i7qiAoamUr7EEs/EpLXKzwYLNE1fobXKP5d2vWaZr/98gOatyWsmoSYocHDfb9EfxHL0dGVc0VfB5fMPLRwiYs6dQwsH9aad+M/4Bj2Mj2MLeVc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okQTyUyi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFE8C32782;
-	Tue, 30 Jul 2024 17:01:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gQmWinrKo6ZnacXrg/7XwPzaA66QG2MDVvBl6foQwsBRvTnjO0UO8hHKTadaqniyB9qF8eHt9NWfwK1D9qzzqWKmqE7m7yZwWmPbL7gTGtjWskt7c6rPNq4+fUeQ3HSAtmcweILzYD12ZI8ckmdh0Q0RQJtjKck+ImiqLaxl2rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3immezD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B22C32782;
+	Tue, 30 Jul 2024 17:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358868;
-	bh=sFpU/7fEtNn/qK5AVW79zMXEgppwG0JN7FHrpZuVpLc=;
+	s=korg; t=1722360224;
+	bh=eafieAQvpRzMF+MNzRbcjzzoQL3xJhOdWx+oKvAbpn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okQTyUyiABiWG+HLFVr0fMkeKO0cRlbFk4BlKAVerl2mwPBMM1+3sLJIDAIYrYYed
-	 +58Gh7AiTet3iEZfGvXo/IHL9/IBTYephSDyH++fmPMY4Lg1FT14IDYpU8HK3xryZV
-	 xMHF4I6PYtjQdIglA4uo3jOXXzZtRZnpKNeuz2+M=
+	b=Q3immezD+KLjLh0imrvyU9S4NEyfAZdLtUQ6AA5K55++knIoavyzeO/3za2b0VI8H
+	 okdcYXM+WjAB6eY0nR388iBCnIjE44b69Dm4q0K/IIOZgt3ZUHL7MlCyz0NZdmUcWi
+	 tsZ+7VFNE9y07dVGUTP1u/u5bQApM7k915eIdE5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Michal Simek <michal.simek@amd.com>
-Subject: [PATCH 6.6 404/568] drivers: soc: xilinx: check return status of get_api_version()
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.10 635/809] hwrng: amd - Convert PCIBIOS_* return codes to errnos
 Date: Tue, 30 Jul 2024 17:48:31 +0200
-Message-ID: <20240730151655.661326944@linuxfoundation.org>
+Message-ID: <20240730151749.924647604@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 9b003e14801cf85a8cebeddc87bc9fc77100fdce upstream.
+commit 14cba6ace79627a57fb9058582b03f0ed3832390 upstream.
 
-Currently return status is not getting checked for get_api_version
-and because of that for x86 arch we are getting below smatch error.
+amd_rng_mod_init() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The return code is then returned as is but amd_rng_mod_init() is
+a module_init() function that should return normal errnos.
 
-    CC      drivers/soc/xilinx/zynqmp_power.o
-drivers/soc/xilinx/zynqmp_power.c: In function 'zynqmp_pm_probe':
-drivers/soc/xilinx/zynqmp_power.c:295:12: warning: 'pm_api_version' is
-used uninitialized [-Wuninitialized]
-    295 |         if (pm_api_version < ZYNQMP_PM_VERSION)
-        |            ^
-    CHECK   drivers/soc/xilinx/zynqmp_power.c
-drivers/soc/xilinx/zynqmp_power.c:295 zynqmp_pm_probe() error:
-uninitialized symbol 'pm_api_version'.
+Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
+errno before returning it.
 
-So, check return status of pm_get_api_version and return error in case
-of failure to avoid checking uninitialized pm_api_version variable.
-
-Fixes: b9b3a8be28b3 ("firmware: xilinx: Remove eemi ops for get_api_version")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Fixes: 96d63c0297cc ("[PATCH] Add AMD HW RNG driver")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240515112345.24673-1-jay.buddhabhatti@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/xilinx/zynqmp_power.c |    4 +++-
+ drivers/char/hw_random/amd-rng.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/soc/xilinx/zynqmp_power.c
-+++ b/drivers/soc/xilinx/zynqmp_power.c
-@@ -188,7 +188,9 @@ static int zynqmp_pm_probe(struct platfo
- 	u32 pm_api_version;
- 	struct mbox_client *client;
+--- a/drivers/char/hw_random/amd-rng.c
++++ b/drivers/char/hw_random/amd-rng.c
+@@ -143,8 +143,10 @@ static int __init amd_rng_mod_init(void)
  
--	zynqmp_pm_get_api_version(&pm_api_version);
-+	ret = zynqmp_pm_get_api_version(&pm_api_version);
-+	if (ret)
-+		return ret;
+ found:
+ 	err = pci_read_config_dword(pdev, 0x58, &pmbase);
+-	if (err)
++	if (err) {
++		err = pcibios_err_to_errno(err);
+ 		goto put_dev;
++	}
  
- 	/* Check PM API version number */
- 	if (pm_api_version < ZYNQMP_PM_VERSION)
+ 	pmbase &= 0x0000FF00;
+ 	if (pmbase == 0) {
 
 
 
