@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24312941E87
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:30:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14756941D68
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2BF31F25061
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:30:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4095288981
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D26E1A76C9;
-	Tue, 30 Jul 2024 17:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607421A76C2;
+	Tue, 30 Jul 2024 17:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ddm69TEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F37qHFVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD411A76BE;
-	Tue, 30 Jul 2024 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1291A76A4;
+	Tue, 30 Jul 2024 17:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360599; cv=none; b=TLvob88dLDD6uSFL51VDoBBfw9MPtpoDWZzAllEdtk3OCP5EzZfVsCGLwBVYbSAPhco8vPzCMmLwCpLxndJfwaMEs331jTSQMFBix6q4edIzKr0/NLzLnJCx21VG9k7neavLwkb0xrLJEIrZ2PL4cUbtxtX2ytGCTiiYi1hVQ64=
+	t=1722359812; cv=none; b=V1b63nsaIPHtcXOt4JbvxAVfcH+Yf2QMnxqSiysrKa+H80hrlFMuN//sy/y3yZL0f2x/f+Lahnl1tTSHKQHr1H6Tc1CoTobAIG1bWN0eEwdHEQ+hPuJ/qbBEmBCE3oM9lt28+fRdXinEYJGrr8Rd2RY0O3JkJOMDsolWeHGfnCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360599; c=relaxed/simple;
-	bh=7uxjgYRn8MpGc4mOEydyjddqBJaKWHaW4ra7JxQRgak=;
+	s=arc-20240116; t=1722359812; c=relaxed/simple;
+	bh=zGF3yf+rSGc01y27kGuSInQgZlZ+3SqAmJkMcD8PvIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=adDzPtXNChEt79vT2gkmnoQUh51aA1mCcAIjom/2P330HjmHN7XIo48/ygl9YKIa2kf2GM3yfBWYcaWeSQP/O+ciOLo3qVIpdQcEuPSOl+V7Gp4tdFKve84zds2mLOKGHlb122JYLrQDGVnNz3W1Lv0iuGRxfBnjZM/m24MSjFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ddm69TEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2C8C32782;
-	Tue, 30 Jul 2024 17:29:58 +0000 (UTC)
+	 MIME-Version; b=KnIOwNx3B8puNZ5vrbKi8UNUr9OOcIRpIhVv6on6EFCqGxKtIXXuqhG1R6i8wwiGwRbBIoiuB4ll699EeHFvm5zS/g6XQ5lXhCO2lqBwb3nQQPQOpLOpS3OXIuOq6vp0v0iEM7RY8MSkW54KcHQVkvNF+fz+d0WXC+CxSEFiyPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F37qHFVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4BEC4AF0A;
+	Tue, 30 Jul 2024 17:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360598;
-	bh=7uxjgYRn8MpGc4mOEydyjddqBJaKWHaW4ra7JxQRgak=;
+	s=korg; t=1722359812;
+	bh=zGF3yf+rSGc01y27kGuSInQgZlZ+3SqAmJkMcD8PvIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ddm69TEuLvdCFh7bvCqzOBsqn46UjpCMrf/Ikq1ovVvTno768xJA8Q33X3wdVHG+1
-	 aEO1USkuWX02/ON2/MkmTOFMiH/mTCylqZqkyGza3Ug5BX50dO/GhLRh9L1AbFvV/q
-	 lh01rx0qqzlQhimx86xUI8fbL86ev2eHwIm9r+Xw=
+	b=F37qHFVD1q85iRvXpN/tXuxvmZK5I83AJ9KT4kc19XnH41u68VAMwUEjPcJY4Ox+X
+	 QELocDSWaYKBySWZ7iT85HZIq5Uz4SyOH0Ko3IKKQqTi48DpuITd8Y8RKYTnaJXLs2
+	 SSIKuVE9XSDcBxA2nCMOD+OpVii+nwn560TcRm3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 748/809] f2fs: fix start segno of large section
+Subject: [PATCH 6.6 517/568] kdb: Use the passed prompt in kdb_position_cursor()
 Date: Tue, 30 Jul 2024 17:50:24 +0200
-Message-ID: <20240730151754.500805306@linuxfoundation.org>
+Message-ID: <20240730151700.363215695@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong@oppo.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 8c409989678e92e4a737e7cd2bb04f3efb81071a ]
+[ Upstream commit e2e821095949cde46256034975a90f88626a2a73 ]
 
-get_ckpt_valid_blocks() checks valid ckpt blocks in current section.
-It counts all vblocks from the first to the last segment in the
-large section. However, START_SEGNO() is used to get the first segno
-in an SIT block. This patch fixes that to get the correct start segno.
+The function kdb_position_cursor() takes in a "prompt" parameter but
+never uses it. This doesn't _really_ matter since all current callers
+of the function pass the same value and it's a global variable, but
+it's a bit ugly. Let's clean it up.
 
-Fixes: 61461fc921b7 ("f2fs: fix to avoid touching checkpointed data in get_victim()")
-Signed-off-by: Sheng Yong <shengyong@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Found by code inspection. This patch is expected to functionally be a
+no-op.
+
+Fixes: 09b35989421d ("kdb: Use format-strings rather than '\0' injection in kdb_read()")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240528071144.1.I0feb49839c6b6f4f2c4bf34764f5e95de3f55a66@changeid
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/debug/kdb/kdb_io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index e1c0f418aa11f..bfc01a521cb98 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -347,7 +347,8 @@ static inline unsigned int get_ckpt_valid_blocks(struct f2fs_sb_info *sbi,
- 				unsigned int segno, bool use_section)
+diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
+index 2d65da509f699..4799f6250bb26 100644
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -206,7 +206,7 @@ char kdb_getchar(void)
+  */
+ static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
  {
- 	if (use_section && __is_large_section(sbi)) {
--		unsigned int start_segno = START_SEGNO(segno);
-+		unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
-+		unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
- 		unsigned int blocks = 0;
- 		int i;
- 
+-	kdb_printf("\r%s", kdb_prompt_str);
++	kdb_printf("\r%s", prompt);
+ 	if (cp > buffer)
+ 		kdb_printf("%.*s", (int)(cp - buffer), buffer);
+ }
 -- 
 2.43.0
 
