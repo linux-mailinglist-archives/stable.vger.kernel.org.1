@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-62949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AD6941664
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AECD941668
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 628301C23175
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF3F282EB8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEA21BBBE2;
-	Tue, 30 Jul 2024 15:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701DA1BA885;
+	Tue, 30 Jul 2024 15:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOJNwnBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1DOyWeg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822B91BA87E;
-	Tue, 30 Jul 2024 15:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274D419F467;
+	Tue, 30 Jul 2024 15:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355163; cv=none; b=TR6zALQ+PXheP2oiht7vasX8tATvXTmVPZxG6K0lF6o6t3tXwvldx/pUe5aLz6/tHndChTmnPjG4yPkaXretkzEt4V4WWJCGmKVlvNSAJvuYJPp44rs4GYtQbbrcQr3uTOI6k4o7Gh1aZ8jk/jmzDBcThZkdKLdK0w9cKtVdH+s=
+	t=1722355177; cv=none; b=SYOJ3ExhWj9pJt7P0My8HcEo1rcTD6vk1KAX+pmJ5sPLg0wC7w3sh58BN2TENxT+sQZwdjQ8TKfea2YKE77AwCCsLgO8zC/Ph+6qVD42XJLvt8Vs3xW0pQQMiLZ2wIz8Pg1DoC85bBEbnhRvgpIR2tXeyABgaQvq29fYwBooVbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355163; c=relaxed/simple;
-	bh=I8hyjo+IapU3UboB16BLYTRq6bfnx6vV3jAaj8v7/co=;
+	s=arc-20240116; t=1722355177; c=relaxed/simple;
+	bh=WKOmBUgaqXoY9toGD60tyKeWPqY7Z7Ff3qiyRabJCAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0SJ8yauNbHo9SqI67zuO8uKIkatzieKdjaWlCoZUOejbGbnydjUAp/p9rVuCZrM87t9FyOozMo8/dyh/bN5hmQld7Ft/91kibRjKqqbKzjcoXUpWvMNGcLHrAqqrdQiiFk17ej1p23m0uiXYVrVfJvkqfsL0FmaTvinyTyBCWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOJNwnBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09BFC32782;
-	Tue, 30 Jul 2024 15:59:22 +0000 (UTC)
+	 MIME-Version; b=lqZoMyHyg4ILfQ3fk/e8xKwtXzBgYnKfOJ0LJYafeYT0OhV+M5AW6xe/ENA0Vhfir9idW54LMb8vzxENqIw00k0eeoJ/2TvGoXz0hp9JiepphwJmjS0iA+OFRIzbG69Vk6kUEpzaHe6LTHroCtS4hy7n04rKrL856M9C6b+YJR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1DOyWeg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E817C4AF0A;
+	Tue, 30 Jul 2024 15:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355163;
-	bh=I8hyjo+IapU3UboB16BLYTRq6bfnx6vV3jAaj8v7/co=;
+	s=korg; t=1722355176;
+	bh=WKOmBUgaqXoY9toGD60tyKeWPqY7Z7Ff3qiyRabJCAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOJNwnBXKTia/zpmrBuxbKUcHTk+uR2wdWzSi3c37tI33L3eHH2x1orAIECn2JmPo
-	 5FNz5x69nMcYG6j7smHU5WwK+28E8y1ofAsk1993g+6oJuRrEa6UXUtBbPCesx/ILl
-	 PQfGIiVBKHN0QAhx5TMvpqpy0f+ruPUjC/11e2r0=
+	b=V1DOyWeg3pLLPsFrjX2KvpJZyXmkC6Cz9l9LGg8hkbXeMmA72RvgIcWtbr+V+F194
+	 e/pSY9SI6PepS2IhedhGQ1jTr2ncojZz4OMxsKBHnguOm2MPe7Si6FgRfSnPjTt51a
+	 QMVuK7z/+aBniHsfN5Xm+vWd3ZKy+RzKCWCHmuVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bart Van Assche <bvanassche@acm.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 025/809] block: Call .limit_depth() after .hctx has been set
-Date: Tue, 30 Jul 2024 17:38:21 +0200
-Message-ID: <20240730151725.651838201@linuxfoundation.org>
+Subject: [PATCH 6.10 026/809] block/mq-deadline: Fix the tag reservation code
+Date: Tue, 30 Jul 2024 17:38:22 +0200
+Message-ID: <20240730151725.690864238@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -71,56 +71,79 @@ Content-Transfer-Encoding: 8bit
 
 From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 6259151c04d4e0085e00d2dcb471ebdd1778e72e ]
+[ Upstream commit 39823b47bbd40502632ffba90ebb34fff7c8b5e8 ]
 
-Call .limit_depth() after data->hctx has been set such that data->hctx can
-be used in .limit_depth() implementations.
+The current tag reservation code is based on a misunderstanding of the
+meaning of data->shallow_depth. Fix the tag reservation code as follows:
+* By default, do not reserve any tags for synchronous requests because
+  for certain use cases reserving tags reduces performance. See also
+  Harshit Mogalapalli, [bug-report] Performance regression with fio
+  sequential-write on a multipath setup, 2024-03-07
+  (https://lore.kernel.org/linux-block/5ce2ae5d-61e2-4ede-ad55-551112602401@oracle.com/)
+* Reduce min_shallow_depth to one because min_shallow_depth must be less
+  than or equal any shallow_depth value.
+* Scale dd->async_depth from the range [1, nr_requests] to [1,
+  bits_per_sbitmap_word].
 
 Cc: Christoph Hellwig <hch@lst.de>
 Cc: Damien Le Moal <dlemoal@kernel.org>
 Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>
 Fixes: 07757588e507 ("block/mq-deadline: Reserve 25% of scheduler tags for synchronous requests")
 Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Tested-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240509170149.7639-2-bvanassche@acm.org
+Link: https://lore.kernel.org/r/20240509170149.7639-3-bvanassche@acm.org
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ block/mq-deadline.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 3b4df8e5ac9e5..7831af29aadaf 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -448,6 +448,10 @@ static struct request *__blk_mq_alloc_requests(struct blk_mq_alloc_data *data)
- 	if (data->cmd_flags & REQ_NOWAIT)
- 		data->flags |= BLK_MQ_REQ_NOWAIT;
+diff --git a/block/mq-deadline.c b/block/mq-deadline.c
+index 94eede4fb9ebe..acdc28756d9d7 100644
+--- a/block/mq-deadline.c
++++ b/block/mq-deadline.c
+@@ -487,6 +487,20 @@ static struct request *dd_dispatch_request(struct blk_mq_hw_ctx *hctx)
+ 	return rq;
+ }
  
-+retry:
-+	data->ctx = blk_mq_get_ctx(q);
-+	data->hctx = blk_mq_map_queue(q, data->cmd_flags, data->ctx);
++/*
++ * 'depth' is a number in the range 1..INT_MAX representing a number of
++ * requests. Scale it with a factor (1 << bt->sb.shift) / q->nr_requests since
++ * 1..(1 << bt->sb.shift) is the range expected by sbitmap_get_shallow().
++ * Values larger than q->nr_requests have the same effect as q->nr_requests.
++ */
++static int dd_to_word_depth(struct blk_mq_hw_ctx *hctx, unsigned int qdepth)
++{
++	struct sbitmap_queue *bt = &hctx->sched_tags->bitmap_tags;
++	const unsigned int nrr = hctx->queue->nr_requests;
 +
- 	if (q->elevator) {
- 		/*
- 		 * All requests use scheduler tags when an I/O scheduler is
-@@ -469,13 +473,9 @@ static struct request *__blk_mq_alloc_requests(struct blk_mq_alloc_data *data)
- 			if (ops->limit_depth)
- 				ops->limit_depth(data->cmd_flags, data);
- 		}
--	}
--
--retry:
--	data->ctx = blk_mq_get_ctx(q);
--	data->hctx = blk_mq_map_queue(q, data->cmd_flags, data->ctx);
--	if (!(data->rq_flags & RQF_SCHED_TAGS))
-+	} else {
- 		blk_mq_tag_busy(data->hctx);
-+	}
++	return ((qdepth << bt->sb.shift) + nrr - 1) / nrr;
++}
++
+ /*
+  * Called by __blk_mq_alloc_request(). The shallow_depth value set by this
+  * function is used by __blk_mq_get_tag().
+@@ -503,7 +517,7 @@ static void dd_limit_depth(blk_opf_t opf, struct blk_mq_alloc_data *data)
+ 	 * Throttle asynchronous requests and writes such that these requests
+ 	 * do not block the allocation of synchronous requests.
+ 	 */
+-	data->shallow_depth = dd->async_depth;
++	data->shallow_depth = dd_to_word_depth(data->hctx, dd->async_depth);
+ }
  
- 	if (data->flags & BLK_MQ_REQ_RESERVED)
- 		data->rq_flags |= RQF_RESV;
+ /* Called by blk_mq_update_nr_requests(). */
+@@ -513,9 +527,9 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
+ 	struct deadline_data *dd = q->elevator->elevator_data;
+ 	struct blk_mq_tags *tags = hctx->sched_tags;
+ 
+-	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
++	dd->async_depth = q->nr_requests;
+ 
+-	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
++	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, 1);
+ }
+ 
+ /* Called by blk_mq_init_hctx() and blk_mq_init_sched(). */
 -- 
 2.43.0
 
