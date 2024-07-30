@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA41E941C53
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3353F941945
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F7E81F24691
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF759282631
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082BE187FF6;
-	Tue, 30 Jul 2024 17:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF3D156F53;
+	Tue, 30 Jul 2024 16:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryoxetvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5IoiKiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E5A1E86F;
-	Tue, 30 Jul 2024 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7421A619A;
+	Tue, 30 Jul 2024 16:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359152; cv=none; b=DXOtAAL1xv1cjm+uFkqZgVwAuWQCxm7BqlABiHDKkwchv+EQV+bzYFMTP/vrff+LocyD3aq4BXlBaGCagzhizIgpFCMjaDkT07WL6yOC8bV3dwQWMzvayIiIdyo62BnMmC+O1hJREaAoK55GWXvvj5/4OGdmwJdjMdf8H5FNSBQ=
+	t=1722357040; cv=none; b=UzAtgEDmNWtL0bUM/U6uDrMCmLN1a1htr/3/Ht8PHoPFs/BynTUoDTGVoaPkX0kl9MnD3Jxdv4rwaHCjBYxev8G8iLMMxrwX5eidCELJFUCmiv+ye3cM/sldWVI9L2zrT82Fy2OiyK90dJfsRon+j8gvAa2nBdof3lhCe8H8KlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359152; c=relaxed/simple;
-	bh=Y/2XbTHug7uQw4GVhJ4kpaz+oikuGbVjNhR+ckFCP6M=;
+	s=arc-20240116; t=1722357040; c=relaxed/simple;
+	bh=Eunncti6CP74i9Nnfg1clnoMKkBIL8nYKDHyE6NDBQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mlW9nZ3W4Swk8lWvtqvCHQv6xJaytC/1FUZMQmr7PNJ3zS14I3WU6VHeFxSF2lFsFQIOsqP6e+Vz28yglhHeeNP005biWe1ljHT7Pk3wMNWjAvJ3xkOxvvG4UKThxyf+crFMLEoz6RCQ6M9fjQzk7SgZMJ83eQtI9kKdn44/mJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryoxetvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297BDC4AF0A;
-	Tue, 30 Jul 2024 17:05:51 +0000 (UTC)
+	 MIME-Version; b=aD7cxstPpPPg+KIp3d8SBpvdh9TH9PxGGl0D4KKc3MOiuj82OGlhczii+8mWSNWLuo+d3IXKN/Pn9Rgc91+QR5v490F1TVJMUh+2CYy5vPSn97vMAXCG970QxVDCh4Ny4NxiRwrXg7MuTmKT+nKLbSrRToOtEfQLA/iYKQAKIgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5IoiKiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3A3C32782;
+	Tue, 30 Jul 2024 16:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359152;
-	bh=Y/2XbTHug7uQw4GVhJ4kpaz+oikuGbVjNhR+ckFCP6M=;
+	s=korg; t=1722357040;
+	bh=Eunncti6CP74i9Nnfg1clnoMKkBIL8nYKDHyE6NDBQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryoxetvy7dNNSXVHHROb6AHxqdz/KZUlWnK5PGNV0riyEFQWZ+DV+ISpm3b3Xp93H
-	 pifjhjvLIMPSrDXgAMDllSbOwoJL9qtAeMbhxrxLWcKa6bPez44PqfMBkqRE6y8ZTY
-	 i8x5R5AMYvSJHKp/L7/efaDOARq59GFq/ncEn75I=
+	b=X5IoiKiUNcUgDnMwlI6H+QhpSuY9WqVqpXcWbuv4UY2K8RtaMtDlx4ok5GNL5+npt
+	 zpjDAXWQYcQXfev0IXRNKd4J9BEehOUcOIKfOC0ADkVQXHS4C8/sj5TcTRmkzuIp0O
+	 mZGr1Ea7jTWMWsu62x+zkyQaNOp0l3o0qNGdP9ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 443/809] PCI: endpoint: Fix error handling in epf_ntb_epc_cleanup()
+Subject: [PATCH 6.6 212/568] media: renesas: vsp1: Store RPF partition configuration per RPF instance
 Date: Tue, 30 Jul 2024 17:45:19 +0200
-Message-ID: <20240730151742.200043002@linuxfoundation.org>
+Message-ID: <20240730151648.159336103@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-[ Upstream commit 6bba3c0ac5dc54737998a0982b2e272242c87e0f ]
+[ Upstream commit a213bc09b1025c771ee722ee341af1d84375db8a ]
 
-There are two issues related to epf_ntb_epc_cleanup():
+The vsp1_partition structure stores the RPF partition configuration in a
+single field for all RPF instances, while each RPF can have its own
+configuration. Fix it by storing the configuration separately for each
+RPF instance.
 
-  1) It should call epf_ntb_config_sspad_bar_clear()
-  2) The epf_ntb_bind() function should call epf_ntb_epc_cleanup()
-     to cleanup.
-
-I also changed the ordering a bit.  Unwinding should be done in the
-mirror order from how they are allocated.
-
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Link: https://lore.kernel.org/linux-pci/aaffbe8d-7094-4083-8146-185f4a84e8a1@moroto.mountain
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Fixes: ab45e8585182 ("media: v4l: vsp1: Allow entities to participate in the partition algorithm")
+Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/platform/renesas/vsp1/vsp1_pipe.h | 2 +-
+ drivers/media/platform/renesas/vsp1/vsp1_rpf.c  | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 7f05a44e9a9fd..874cb097b093a 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -799,8 +799,9 @@ static int epf_ntb_epc_init(struct epf_ntb *ntb)
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
+index 674b5748d929e..85ecd53cda495 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
++++ b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
+@@ -73,7 +73,7 @@ struct vsp1_partition_window {
+  * @wpf: The WPF partition window configuration
   */
- static void epf_ntb_epc_cleanup(struct epf_ntb *ntb)
- {
--	epf_ntb_db_bar_clear(ntb);
- 	epf_ntb_mw_bar_clear(ntb, ntb->num_mws);
-+	epf_ntb_db_bar_clear(ntb);
-+	epf_ntb_config_sspad_bar_clear(ntb);
- }
- 
- #define EPF_NTB_R(_name)						\
-@@ -1337,7 +1338,7 @@ static int epf_ntb_bind(struct pci_epf *epf)
- 	ret = pci_register_driver(&vntb_pci_driver);
- 	if (ret) {
- 		dev_err(dev, "failure register vntb pci driver\n");
--		goto err_bar_alloc;
-+		goto err_epc_cleanup;
+ struct vsp1_partition {
+-	struct vsp1_partition_window rpf;
++	struct vsp1_partition_window rpf[VSP1_MAX_RPF];
+ 	struct vsp1_partition_window uds_sink;
+ 	struct vsp1_partition_window uds_source;
+ 	struct vsp1_partition_window sru;
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
+index ea12c3f12c92a..78b6cefc5a019 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
+@@ -315,8 +315,8 @@ static void rpf_configure_partition(struct vsp1_entity *entity,
+ 	 * 'width' need to be adjusted.
+ 	 */
+ 	if (pipe->partitions > 1) {
+-		crop.width = pipe->partition->rpf.width;
+-		crop.left += pipe->partition->rpf.left;
++		crop.width = pipe->partition->rpf[rpf->entity.index].width;
++		crop.left += pipe->partition->rpf[rpf->entity.index].left;
  	}
  
- 	ret = vpci_scan_bus(ntb);
-@@ -1348,6 +1349,8 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ 	if (pipe->interlaced) {
+@@ -371,7 +371,9 @@ static void rpf_partition(struct vsp1_entity *entity,
+ 			  unsigned int partition_idx,
+ 			  struct vsp1_partition_window *window)
+ {
+-	partition->rpf = *window;
++	struct vsp1_rwpf *rpf = to_rwpf(&entity->subdev);
++
++	partition->rpf[rpf->entity.index] = *window;
+ }
  
- err_unregister:
- 	pci_unregister_driver(&vntb_pci_driver);
-+err_epc_cleanup:
-+	epf_ntb_epc_cleanup(ntb);
- err_bar_alloc:
- 	epf_ntb_config_spad_bar_free(ntb);
- 
+ static const struct vsp1_entity_operations rpf_entity_ops = {
 -- 
 2.43.0
 
