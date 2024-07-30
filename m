@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A998941B02
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AC8941C47
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3D2CB2224F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2AB282249
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F505189B97;
-	Tue, 30 Jul 2024 16:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF089188003;
+	Tue, 30 Jul 2024 17:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7b6J4vD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCzdo72Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D224189513;
-	Tue, 30 Jul 2024 16:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC441A6192;
+	Tue, 30 Jul 2024 17:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357603; cv=none; b=PainxFZvPdL82mwPIaylWUsmgk8MofRcV95cMlmOdJOgSESO4CKFOB8QczolxYf2DnTOr+5z5R4Ak+t1IsAx49K3L+MdOgdg4zjeNJIpd/Z4myC4eNF9ZpuY6sIc1zduExiraPxfP+KAnoz4TetKIq0wvcS0VGx4KthacfF0R4U=
+	t=1722359129; cv=none; b=qHWtUdPNEx113romNu0EyvxN+fGHbP+5658tqwj6DTnhstLn6K4ujglnXmnSgRJv3KEbilJEz3u0BYHfLFu420CdWz0q23mSuSpyYTCsmaS0cR5EFJylB1K4NxvTa0zOPt2NnQBSdM+lzsrN/H/lkD4dobZoVlJMKVofXaUGK/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357603; c=relaxed/simple;
-	bh=x+FeiTP98ITJBOiPfRVjZ5X+GfaGbvCWAjE9gJjrg8A=;
+	s=arc-20240116; t=1722359129; c=relaxed/simple;
+	bh=Fx+Mq7pl3sUIwLA12lVQpVPXeAdHhbNJ99pJi3V0IsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oOpQ2mQfuCAhoAiZnPKsBmMkW2vOh3hQQl7okiz0a/l5D93iSVlcPwIcnMlv68Z5VRuqbPdsS6D+lAbY7PueTtihqVYsw8+5ykRlM++x3eDJ5HOfA8eavQkUIADFaO4S2QgpKrMzMh+WaEzZtFtRy1nSktstR7JGLUFSn0eNzns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7b6J4vD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD3EC32782;
-	Tue, 30 Jul 2024 16:40:02 +0000 (UTC)
+	 MIME-Version; b=qKORA3D6Bd5/8ENPkRhrnn6aAJYp3QNxrUP08vkNYdO/luzZNcJG/7U3jw/UqchfmqSvGpQ4RH6LtbxLN7D7Kgv/9bHHdw4u8fbHM2odFIQS2ldqn4l6hyuqHOXYy4sgiaZKdkoYfyrxrgFMpbBK8SITEOS0uY3HKUXQ4T2Fy04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCzdo72Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DB9C32782;
+	Tue, 30 Jul 2024 17:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357603;
-	bh=x+FeiTP98ITJBOiPfRVjZ5X+GfaGbvCWAjE9gJjrg8A=;
+	s=korg; t=1722359129;
+	bh=Fx+Mq7pl3sUIwLA12lVQpVPXeAdHhbNJ99pJi3V0IsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7b6J4vDU07wuI1hvxJ5ArI+3l6swPeTFdglaJE2HvdtpIfGse6H5xZv1csA9DWod
-	 7EOm+8/t//2arQdrnotzqBQuySQMPOqmF1Pc/G4xArNlmvGFQ9w+iNEqCbBVNtbT6o
-	 v6BCZlpf6ZJuq6VZjlj88Y3dW9sGySqSNp8mrBSE=
+	b=oCzdo72ZM7fsf+cJTrKab7Bs+HERCrkd8z+3HDMkc3pvQfu7Nq/aGMncX5xXcEVv7
+	 mjK5EVTV2QkRykulwBja9B2Rham6syrqvW3jyR+W2NJehKVyVyZmpd4kyP4Yj66vlb
+	 OfT7fAim/TOh9zNMALEkwv2+DrP9QjbJnnqJTs1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 308/440] wifi: mwifiex: Fix interface type change
-Date: Tue, 30 Jul 2024 17:49:01 +0200
-Message-ID: <20240730151627.852825154@linuxfoundation.org>
+	Herve Codina <herve.codina@bootlin.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 435/568] ASoC: fsl: fsl_qmc_audio: Check devm_kasprintf() returned value
+Date: Tue, 30 Jul 2024 17:49:02 +0200
+Message-ID: <20240730151656.872637842@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Beims <rafael.beims@toradex.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272 upstream.
+commit e62599902327d27687693f6e5253a5d56583db58 upstream.
 
-When changing the interface type we also need to update the bss_num, the
-driver private data is searched based on a unique (bss_type, bss_num)
-tuple, therefore every time bss_type changes, bss_num must also change.
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked.
 
-This fixes for example an issue in which, after the mode changed, a
-wireless scan on the changed interface would not finish, leading to
-repeated -EBUSY messages to userspace when other scan requests were
-sent.
+Fix this lack and check the returned value.
 
-Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
+Fixes: 075c7125b11c ("ASoC: fsl: Add support for QMC audio")
 Cc: stable@vger.kernel.org
-Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240510110458.15475-1-francesco@dolcini.it
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://patch.msgid.link/20240701113038.55144-2-herve.codina@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
+ sound/soc/fsl/fsl_qmc_audio.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -926,6 +926,8 @@ mwifiex_init_new_priv_params(struct mwif
- 		return -EOPNOTSUPP;
- 	}
+diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
+index bfaaa451735b..dd90ef16fa97 100644
+--- a/sound/soc/fsl/fsl_qmc_audio.c
++++ b/sound/soc/fsl/fsl_qmc_audio.c
+@@ -604,6 +604,8 @@ static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *
  
-+	priv->bss_num = mwifiex_get_unused_bss_num(adapter, priv->bss_type);
-+
- 	spin_lock_irqsave(&adapter->main_proc_lock, flags);
- 	adapter->main_locked = false;
- 	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
+ 	qmc_dai->name = devm_kasprintf(qmc_audio->dev, GFP_KERNEL, "%s.%d",
+ 				       np->parent->name, qmc_dai->id);
++	if (!qmc_dai->name)
++		return -ENOMEM;
+ 
+ 	qmc_dai->qmc_chan = devm_qmc_chan_get_byphandle(qmc_audio->dev, np,
+ 							"fsl,qmc-chan");
+-- 
+2.45.2
+
 
 
 
