@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA1C941D16
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993BA9417C8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B6A11F24C54
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 188ADB21B88
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338B218B46A;
-	Tue, 30 Jul 2024 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623EF1A619E;
+	Tue, 30 Jul 2024 16:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mM12QfmO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqecqs5/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4112189522;
-	Tue, 30 Jul 2024 17:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C161A4B23;
+	Tue, 30 Jul 2024 16:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359561; cv=none; b=gfAkdeLAvQYA5gMxq6zrDEn7wn+kxGb3/qopxHOVrs8YJ41fajnBYVVUve3mPxghvZ6C/Y9UPa3r70Y03hn7vHPliNWo4jMlLysdaDmbtafgSGENKl8F781OMLdDl3LzuFN6I5TfWmQ2cvCDlpTRePyVxBqhWoztKKsIfGZclrc=
+	t=1722355920; cv=none; b=fRGeDFqYOi09ZorutCUcFmnZgf4sJ27Vw9/NmVupO285HBCNKZsl9paInGrRnBvU/8OjL2HzJrxdCOqCSZ/aHZz0jJ4CMUxFcFiBlIgQF+MvrqNl0teSSIcLECG7wyCc003oXoMSoMZlyXGrAMNtN4/OqxZwnzK/+f+Kx5c8oAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359561; c=relaxed/simple;
-	bh=jCkTU8FXMHEd+qUQ8h2EZKNjgJvKYjQ5X2SmabFFAH8=;
+	s=arc-20240116; t=1722355920; c=relaxed/simple;
+	bh=iMH2HPgQnL2OAk0mujCZ4O6JWWSiPqBhtuEiM3/BDLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDJ3niK1kKm62CqWQM+mVF6sWD+dGCuPufN2yn36HzZlCKDDTBHlyllEoQxLquhz65KElst83/pESg8BtsWkjnux2Pyy6nV68jNqSp/noFnWm9eaONJjv5W3TtJdo81Bu6btPxnFkkJuW6QqFCnmfVNsqr9BMt8DK59eof+kpwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mM12QfmO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65768C32782;
-	Tue, 30 Jul 2024 17:12:40 +0000 (UTC)
+	 MIME-Version; b=oBfUQ1B1ELxiyzESM2+d+EWUV0GGFh04YrdEVMv1QiRS9sqe2hPyyL92DM86xaiS8BA6RmltFHSXbOsQdRD3xRcABvHHpVSbzhpkjmuz9UEizkLm6LnCuyXJQcbyroPL8/fsStZH9ALV/kBGdbhU+pQ9N1bOM3vp5NmrjRLueYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqecqs5/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C06C4AF0A;
+	Tue, 30 Jul 2024 16:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359560;
-	bh=jCkTU8FXMHEd+qUQ8h2EZKNjgJvKYjQ5X2SmabFFAH8=;
+	s=korg; t=1722355920;
+	bh=iMH2HPgQnL2OAk0mujCZ4O6JWWSiPqBhtuEiM3/BDLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mM12QfmOSsgnrknx6RkN07S+RT+d5oNmqkTs7GNAiTLMD77IF0yY4Bcq1vvmWJOfG
-	 UejMwfhyUeSP00tCg0MKQJlRcJtFmowuoqA9SFyfXD437MuV42I2xaaGUfcyG1pLRO
-	 8N2RaAGXyfZPfELZlx1gFAZ9kZBktnyqBAzivHGg=
+	b=kqecqs5/GcFzfsgs0pL3e1zUgG1u+neuIrMWD8z2ub90c6WUCgsU6DZgi5X55mHPV
+	 KkKE/8A0vesb3EvquENEsDDNsPSQpHRb0dsi44BcU0BjIm0OKDfwYdRT1GS5+WAcQn
+	 fZv9Btu4G5RcwOkI/F2qF8u41RwfjSvCFQs7b+ZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 501/809] pinctrl: renesas: r8a779g0: Fix FXR_TXEN[AB] suffixes
+Subject: [PATCH 6.1 144/440] saa7134: Unchecked i2c_transfer function result fixed
 Date: Tue, 30 Jul 2024 17:46:17 +0200
-Message-ID: <20240730151744.524122699@linuxfoundation.org>
+Message-ID: <20240730151621.505184104@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Aleksandr Burakov <a.burakov@rosalinux.ru>
 
-[ Upstream commit 4976d61ca39ce51f422e094de53b46e2e3ac5c0d ]
+[ Upstream commit 9d8683b3fd93f0e378f24dc3d9604e5d7d3e0a17 ]
 
-The Pin Multiplex attachment in Rev.1.10 of the R-Car V4H Series
-Hardware User's Manual still has two alternate pins named both
-"FXR_TXEN[AB]".  To differentiate, the pin control driver uses
-"FXR_TXEN[AB]" and "FXR_TXEN[AB]_X", which were considered temporary
-names until the conflict was sorted out.
+Return value of function 'i2c_transfer' is not checked that
+may cause undefined behaviour.
 
-Fix this by adopting R-Car V4M naming:
-  - Rename "FXR_TXEN[AB]" to "FXR_TXEN[AB]_A",
-  - Rename "FXR_TXEN[AB]_X" to "FXR_TXEN[AB]_B".
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
-Fixes: 1c2646b5cebfff07 ("pinctrl: renesas: r8a779g0: Add missing FlexRay")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/5e1e9abb46c311d4c54450d991072d6d0e66f14c.1717754960.git.geert+renesas@glider.be
+Fixes: 2cf36ac44730 ("[PATCH] v4l: 656: added support for the following cards")
+Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pfc-r8a779g0.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/media/pci/saa7134/saa7134-dvb.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-index d90ba8b6b4b42..ba2ec8e042119 100644
---- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
-+++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-@@ -122,11 +122,11 @@
- #define GPSR2_8		F_(TPU0TO0,		IP1SR2_3_0)
- #define GPSR2_7		F_(TPU0TO1,		IP0SR2_31_28)
- #define GPSR2_6		F_(FXR_TXDB,		IP0SR2_27_24)
--#define GPSR2_5		F_(FXR_TXENB_N,		IP0SR2_23_20)
-+#define GPSR2_5		F_(FXR_TXENB_N_A,	IP0SR2_23_20)
- #define GPSR2_4		F_(RXDB_EXTFXR,		IP0SR2_19_16)
- #define GPSR2_3		F_(CLK_EXTFXR,		IP0SR2_15_12)
- #define GPSR2_2		F_(RXDA_EXTFXR,		IP0SR2_11_8)
--#define GPSR2_1		F_(FXR_TXENA_N,		IP0SR2_7_4)
-+#define GPSR2_1		F_(FXR_TXENA_N_A,	IP0SR2_7_4)
- #define GPSR2_0		F_(FXR_TXDA,		IP0SR2_3_0)
+diff --git a/drivers/media/pci/saa7134/saa7134-dvb.c b/drivers/media/pci/saa7134/saa7134-dvb.c
+index 9c6cfef03331d..a66df6adfaad8 100644
+--- a/drivers/media/pci/saa7134/saa7134-dvb.c
++++ b/drivers/media/pci/saa7134/saa7134-dvb.c
+@@ -466,7 +466,9 @@ static int philips_europa_tuner_sleep(struct dvb_frontend *fe)
+ 	/* switch the board to analog mode */
+ 	if (fe->ops.i2c_gate_ctrl)
+ 		fe->ops.i2c_gate_ctrl(fe, 1);
+-	i2c_transfer(&dev->i2c_adap, &analog_msg, 1);
++	if (i2c_transfer(&dev->i2c_adap, &analog_msg, 1) != 1)
++		return -EIO;
++
+ 	return 0;
+ }
  
- /* GPSR3 */
-@@ -340,18 +340,18 @@
- /* SR2 */
- /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
- #define IP0SR2_3_0	FM(FXR_TXDA)		FM(CANFD1_TX)		FM(TPU0TO2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP0SR2_7_4	FM(FXR_TXENA_N)		FM(CANFD1_RX)		FM(TPU0TO3_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_7_4	FM(FXR_TXENA_N_A)	FM(CANFD1_RX)		FM(TPU0TO3_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX_A)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX_A)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_19_16	FM(RXDB_EXTFXR)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP0SR2_23_20	FM(FXR_TXENB_N)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_23_20	FM(FXR_TXENB_N_A)	F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_27_24	FM(FXR_TXDB)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_31_28	FM(TPU0TO1)		FM(CANFD6_TX)		F_(0, 0)		FM(TCLK2_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+@@ -1018,7 +1020,9 @@ static int md8800_set_voltage2(struct dvb_frontend *fe,
+ 	else
+ 		wbuf[1] = rbuf & 0xef;
+ 	msg[0].len = 2;
+-	i2c_transfer(&dev->i2c_adap, msg, 1);
++	if (i2c_transfer(&dev->i2c_adap, msg, 1) != 1)
++		return -EIO;
++
+ 	return 0;
+ }
  
- /* IP1SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
- #define IP1SR2_3_0	FM(TPU0TO0)		FM(CANFD6_RX)		F_(0, 0)		FM(TCLK1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP1SR2_7_4	FM(CAN_CLK)		FM(FXR_TXENA_N_X)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP1SR2_11_8	FM(CANFD0_TX)		FM(FXR_TXENB_N_X)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR2_7_4	FM(CAN_CLK)		FM(FXR_TXENA_N_B)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR2_11_8	FM(CANFD0_TX)		FM(FXR_TXENB_N_B)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_15_12	FM(CANFD0_RX)		FM(STPWT_EXTFXR)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_19_16	FM(CANFD2_TX)		FM(TPU0TO2)		F_(0, 0)		FM(TCLK3_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_23_20	FM(CANFD2_RX)		FM(TPU0TO3)		FM(PWM1_B)		FM(TCLK4_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-@@ -891,7 +891,7 @@ static const u16 pinmux_data[] = {
- 	PINMUX_IPSR_GPSR(IP0SR2_3_0,	CANFD1_TX),
- 	PINMUX_IPSR_GPSR(IP0SR2_3_0,	TPU0TO2_A),
- 
--	PINMUX_IPSR_GPSR(IP0SR2_7_4,	FXR_TXENA_N),
-+	PINMUX_IPSR_GPSR(IP0SR2_7_4,	FXR_TXENA_N_A),
- 	PINMUX_IPSR_GPSR(IP0SR2_7_4,	CANFD1_RX),
- 	PINMUX_IPSR_GPSR(IP0SR2_7_4,	TPU0TO3_A),
- 
-@@ -905,7 +905,7 @@ static const u16 pinmux_data[] = {
- 
- 	PINMUX_IPSR_GPSR(IP0SR2_19_16,	RXDB_EXTFXR),
- 
--	PINMUX_IPSR_GPSR(IP0SR2_23_20,	FXR_TXENB_N),
-+	PINMUX_IPSR_GPSR(IP0SR2_23_20,	FXR_TXENB_N_A),
- 
- 	PINMUX_IPSR_GPSR(IP0SR2_27_24,	FXR_TXDB),
- 
-@@ -919,10 +919,10 @@ static const u16 pinmux_data[] = {
- 	PINMUX_IPSR_GPSR(IP1SR2_3_0,	TCLK1_A),
- 
- 	PINMUX_IPSR_GPSR(IP1SR2_7_4,	CAN_CLK),
--	PINMUX_IPSR_GPSR(IP1SR2_7_4,	FXR_TXENA_N_X),
-+	PINMUX_IPSR_GPSR(IP1SR2_7_4,	FXR_TXENA_N_B),
- 
- 	PINMUX_IPSR_GPSR(IP1SR2_11_8,	CANFD0_TX),
--	PINMUX_IPSR_GPSR(IP1SR2_11_8,	FXR_TXENB_N_X),
-+	PINMUX_IPSR_GPSR(IP1SR2_11_8,	FXR_TXENB_N_B),
- 
- 	PINMUX_IPSR_GPSR(IP1SR2_15_12,	CANFD0_RX),
- 	PINMUX_IPSR_GPSR(IP1SR2_15_12,	STPWT_EXTFXR),
 -- 
 2.43.0
 
