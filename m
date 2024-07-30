@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9F3941C2A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDDA9419F5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A56CE283823
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29CD9282C27
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5EF188003;
-	Tue, 30 Jul 2024 17:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6AE189902;
+	Tue, 30 Jul 2024 16:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOJ/8C48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veQQNDKl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C251A6192;
-	Tue, 30 Jul 2024 17:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD717183CDB;
+	Tue, 30 Jul 2024 16:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359036; cv=none; b=GJ9gNJOwn36FKEOrNhKJYh3Ls7d6/4O1azgKC5+K3n/zkG05FezLzs8t28xMddP0k+L8FGSJugvoFNo8vM0j2KYh/bQRzU4bd00ijjkX2P9SDNOxo0J0ntX+LthLZx5PucgCT/aWcOTfoHYcBdJfkz/HIcdaCm7B8YNWvil7lb4=
+	t=1722357498; cv=none; b=X1k/dc4Ikd/5QDC3/qiJ7PX74P4ko9qHfJ5MMv/jYXimSCLhO4ll6NT8s8dDJBoJxdQLFt0E/F6llMTP3RxgkwGYB2TH+ae0fw8lmk2dUuI+uFgjrODWVbXluxZSV0ycgxPLYZEGdHzXMBaoyBnLpwS2cK/Iba4/eQqw8HflPKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359036; c=relaxed/simple;
-	bh=JZIgFAjle1PLMTlOpGfh1OTGk2dyDQCK/i1S79sxryw=;
+	s=arc-20240116; t=1722357498; c=relaxed/simple;
+	bh=6JQwwHVNK9kvcJhQODhXsQK6Is2jnZ481j59kzoQVMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NWz9+CtHCeKdQJzX9fgq63/CPRvI1xgjOGU87r8tO+qEedszSP+azRu9L+WLRdDuHacwpMU6m8o0qr2wQHxzxhcoXRUGyQYLSJP9EQIB+pDhRgNWifNIjyVN1cuXUACfuvUk6+v+WQbGbMsn+/WukuJnG/T8yzEJGzbFKM09X0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOJ/8C48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 517BDC32782;
-	Tue, 30 Jul 2024 17:03:55 +0000 (UTC)
+	 MIME-Version; b=cl8L2zpkfGP5ouD0RVZJYwz6RDG2kDv0Yw5zOqa6rylfzmomrN8Eb8QX38y0GcfTvEP3hnRac/OmM8Wwl266hhdMwvJgTTwp8xHCuaZ3H5Om4M0uN46w4yZK+9NIfVNMNuQsrGSS1bbAnJ6kdyu7a40tXKCm6Csr5YPY5/cOMdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veQQNDKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45591C4AF0E;
+	Tue, 30 Jul 2024 16:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359035;
-	bh=JZIgFAjle1PLMTlOpGfh1OTGk2dyDQCK/i1S79sxryw=;
+	s=korg; t=1722357498;
+	bh=6JQwwHVNK9kvcJhQODhXsQK6Is2jnZ481j59kzoQVMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOJ/8C48bXz5B0f4icm3ib7YtdPcCFcrTfJsB5dT6JiGduw8J79thSKHZZ4GQjG61
-	 OU44zm8+l0hx1N29erjupLfRFDml+BH6Lzj48PzwNgKAE6g+jmY4Qxlj0CIL/YnOir
-	 TdMhZRQmWAFAlucuOvLY3TZI7EiIo4HnKYPocVrk=
+	b=veQQNDKldOhAEIJrk065SewynHSRqgpQl1S7yFg87T7LF51hS9v1HtBKr/1CI0y98
+	 EfPFrXWh15tPT0o2aWOwnjebj72AJd78pKOUbzvsmxFECdB3AEc4iqXOSwhrfIyoSV
+	 Xmxm5C4BVndVnj+dsREcRc5poEnjOicDZJp4gFYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 423/568] hwrng: amd - Convert PCIBIOS_* return codes to errnos
-Date: Tue, 30 Jul 2024 17:48:50 +0200
-Message-ID: <20240730151656.400405647@linuxfoundation.org>
+	David Howells <dhowell@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 298/440] cifs: mount with "unix" mount option for SMB1 incorrectly handled
+Date: Tue, 30 Jul 2024 17:48:51 +0200
+Message-ID: <20240730151627.467521270@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 14cba6ace79627a57fb9058582b03f0ed3832390 upstream.
+commit 0e314e452687ce0ec5874e42cdb993a34325d3d2 upstream.
 
-amd_rng_mod_init() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is then returned as is but amd_rng_mod_init() is
-a module_init() function that should return normal errnos.
+Although by default we negotiate CIFS Unix Extensions for SMB1 mounts to
+Samba (and they work if the user does not specify "unix" or "posix" or
+"linux" on mount), and we do properly handle when a user turns them off
+with "nounix" mount parm.  But with the changes to the mount API we
+broke cases where the user explicitly specifies the "unix" option (or
+equivalently "linux" or "posix") on mount with vers=1.0 to Samba or other
+servers which support the CIFS Unix Extensions.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it.
+ "mount error(95): Operation not supported"
 
-Fixes: 96d63c0297cc ("[PATCH] Add AMD HW RNG driver")
+and logged:
+
+ "CIFS: VFS: Check vers= mount option. SMB3.11 disabled but required for POSIX extensions"
+
+even though CIFS Unix Extensions are supported for vers=1.0  This patch fixes
+the case where the user specifies both "unix" (or equivalently "posix" or
+"linux") and "vers=1.0" on mount to a server which supports the
+CIFS Unix Extensions.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: David Howells <dhowell@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/hw_random/amd-rng.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/client/connect.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/char/hw_random/amd-rng.c
-+++ b/drivers/char/hw_random/amd-rng.c
-@@ -143,8 +143,10 @@ static int __init amd_rng_mod_init(void)
- 
- found:
- 	err = pci_read_config_dword(pdev, 0x58, &pmbase);
--	if (err)
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
- 		goto put_dev;
-+	}
- 
- 	pmbase &= 0x0000FF00;
- 	if (pmbase == 0) {
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -2592,6 +2592,13 @@ cifs_get_tcon(struct cifs_ses *ses, stru
+ 			cifs_dbg(VFS, "Server does not support mounting with posix SMB3.11 extensions\n");
+ 			rc = -EOPNOTSUPP;
+ 			goto out_fail;
++		} else if (ses->server->vals->protocol_id == SMB10_PROT_ID)
++			if (cap_unix(ses))
++				cifs_dbg(FYI, "Unix Extensions requested on SMB1 mount\n");
++			else {
++				cifs_dbg(VFS, "SMB1 Unix Extensions not supported by server\n");
++				rc = -EOPNOTSUPP;
++				goto out_fail;
+ 		} else {
+ 			cifs_dbg(VFS, "Check vers= mount option. SMB3.11 "
+ 				"disabled but required for POSIX extensions\n");
 
 
 
