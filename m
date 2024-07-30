@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074EC941D9C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886AE941BD2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32EF3B2739A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E68DB265F9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDC21A76AF;
-	Tue, 30 Jul 2024 17:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994C118990A;
+	Tue, 30 Jul 2024 16:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3CyTI7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeSaeTyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF551A76A4;
-	Tue, 30 Jul 2024 17:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2A517D8BB;
+	Tue, 30 Jul 2024 16:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359837; cv=none; b=KVIk2tZdOObFsR919BMgqN3VuMh7XLlQlJP+wGRtP27hUm2S95i429FRMFwr3Men9wX1TC7+daWzuOMEdm+twiZ/CWG+kyYkLhLTEFBYaHh6m7IBqny12rFL9+y0Wcf0KpgUE/ypsxu/Qh6VwxC1PUewRLG+HXM9TdBhqukKMz8=
+	t=1722358744; cv=none; b=G5fpVAeMuKChUSUPD94Tg7wM3PhRIYdDWxJ2eIwZwUEQ4XXB6bxZ6PaxMzb00JiSHMHK7ytKCQm4cYkHOpccqrGXNzlVpBnQuJqVGBoAQtnovSHBOoCVkk1X5GcYUEQNnqajFJvk6f9Q4DlSaxi0p1Ji6Dw+AzQUEO34aBHLdgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359837; c=relaxed/simple;
-	bh=NrSUOSvtW8lOeg7bTeLNpZeKNkVk8b9/f12j4sDTyKk=;
+	s=arc-20240116; t=1722358744; c=relaxed/simple;
+	bh=DEfxtJ8WDI+pjkCDishJShdodQFX8cXdxVtQYWSt188=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYScBVZ8/M4xPsMPbw20dcB+Hb14gtCrR669zJhne/XJvLmX9LdTtgLgz6SPydw4Owh4/vS4eX1QHqkl5dcidJhn14CWU+JIBlBjhJ0iEqk9u+pxIWr+SroqqjUCjRC/wlT0p1atARJuuWInNs5IYwNeaUGO+hT7BJQZ4UoDanQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3CyTI7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7F5C32782;
-	Tue, 30 Jul 2024 17:17:16 +0000 (UTC)
+	 MIME-Version; b=XdMswDTr6Dy4sxVdt7FJRlWMN7j7GCSQkxUUpBkKe2D4fRF1Cua/AuuQC86zd0l58lUqFd1CdVF2L2PESOrtgxbgby50RaSKq9/ogvef7fQlf7l4u/3W4c2Q6N1gE3FZNRCAZK9pj6hJzehvYVra+Mef5Xl9/wE1NgBozvoiTs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeSaeTyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7F2C32782;
+	Tue, 30 Jul 2024 16:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359837;
-	bh=NrSUOSvtW8lOeg7bTeLNpZeKNkVk8b9/f12j4sDTyKk=;
+	s=korg; t=1722358744;
+	bh=DEfxtJ8WDI+pjkCDishJShdodQFX8cXdxVtQYWSt188=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3CyTI7djNfiHD5jtg46ZwIAGasSgJT9aMU/OMHztKwg/KCDMGYejh2B4xdF0OcKR
-	 j3B76Pf4Qta/PSpCTaDRRRfZk+v55KP3FqxtgiXfw4UPta5PWT4Kp2SF4JRVKTezdw
-	 rIlXgOxDdCMM1uUOCBhAoIb9CIx4Hu6IbZS6Wn6Q=
+	b=PeSaeTyjB8W+IpPP77UHfw47hLSq/rxC3dniAoIJ8r9QOzbc8nvsKNhk7DNiamNQh
+	 VjZEHipjAmokYEuvRiH+OLOErcU+s6aDwJG2p36j7FbMacHHBwNPMR2NshSVA/Nh90
+	 NJQu7yxNkvInF3qG1kv0+fOjNUG+qegWjqz1sN8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 544/568] mISDN: Fix a use after free in hfcmulti_tx()
+Subject: [PATCH 6.1 418/440] mISDN: Fix a use after free in hfcmulti_tx()
 Date: Tue, 30 Jul 2024 17:50:51 +0200
-Message-ID: <20240730151701.423643199@linuxfoundation.org>
+Message-ID: <20240730151632.112991020@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -84,10 +84,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/isdn/hardware/mISDN/hfcmulti.c b/drivers/isdn/hardware/mISDN/hfcmulti.c
-index 2e5cb9dde3ec5..44383cec1f47a 100644
+index e840609c50eb7..2063afffd0853 100644
 --- a/drivers/isdn/hardware/mISDN/hfcmulti.c
 +++ b/drivers/isdn/hardware/mISDN/hfcmulti.c
-@@ -1900,7 +1900,7 @@ hfcmulti_dtmf(struct hfc_multi *hc)
+@@ -1931,7 +1931,7 @@ hfcmulti_dtmf(struct hfc_multi *hc)
  static void
  hfcmulti_tx(struct hfc_multi *hc, int ch)
  {
@@ -96,7 +96,7 @@ index 2e5cb9dde3ec5..44383cec1f47a 100644
  	int Zspace, z1, z2; /* must be int for calculation */
  	int Fspace, f1, f2;
  	u_char *d;
-@@ -2121,14 +2121,15 @@ hfcmulti_tx(struct hfc_multi *hc, int ch)
+@@ -2152,14 +2152,15 @@ hfcmulti_tx(struct hfc_multi *hc, int ch)
  		HFC_wait_nodebug(hc);
  	}
  
