@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7255941A80
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C628941820
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58BA91F25D51
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0DC9282153
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CCC18B477;
-	Tue, 30 Jul 2024 16:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953A11898E2;
+	Tue, 30 Jul 2024 16:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NFtP7rE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrVuYZwS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D3418B46F;
-	Tue, 30 Jul 2024 16:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4163E1A616E;
+	Tue, 30 Jul 2024 16:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357858; cv=none; b=SOhqbJo6Ierzs9qk+u0gQ3lWSP0JDfIWyrl/dvRjhVeqAbqstqzjbqXDdlv8D/FIPDc0CDD/KoP8k26p0T9xkRuE15WeH7HSe/33ptQhOi/EbD5AHATNLzdICoqGjHq2qi5VkNxZclao/w3gA8LRrW2J+2xjvnWoNu8MDajf5YU=
+	t=1722356256; cv=none; b=E6L3NXe1iyiTXzXyCOiFqkUZRT0nJVH8SBpbyA2Wm7ZnSQ9afliMDk/CiRsKQ0GXnpELn+BjP6w2V4ePYbadMi8a74kSsRDOgPXSfz04iNNuL+OQ3dJSPKMyX8GoLdaua2i9Sfli0W0YmMwEixn3kzyQbMSBkPl7pKnN0nx3QAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357858; c=relaxed/simple;
-	bh=Xdj7Wr9GS/FqvlczJ1YQsXDMguHIUrcXH6TpSKBePNw=;
+	s=arc-20240116; t=1722356256; c=relaxed/simple;
+	bh=Fb7iM616dWw310G4Q016cMtycSwVkLvDm80nJ3ySMCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0LVZW5irlEuO6mhzAUUeYYuMjCJPxfhhODLOKNUE1o1gZsn/qaTpX4/jTE98Mw7R80zuGk2zwundehkRT1qZyygr5EJWWCsmaaGgI/jFYPFf2r5jwrxC3e87Qt+B2J5dal/NRNOgp+iiIG8RGz75BuliE+0HYMIaJA5QRYZ/00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NFtP7rE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F63C4AF0F;
-	Tue, 30 Jul 2024 16:44:17 +0000 (UTC)
+	 MIME-Version; b=GLqjZhXfCo6UBi3jqSeA6A6eFaVljkNbTI6zwD2qN0t39oqHehISot4ykoxxn3zxJTN8WsdML9+ZmlYS2624tjCd56ZTP4i3oQegpK23WB1wVxBB1JFu9x7mSHOB4GYAr2yOUiNQm+vYSKOkM6YD5TLprhp/FYyMYyX8yGnkSLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrVuYZwS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2B8C32782;
+	Tue, 30 Jul 2024 16:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357858;
-	bh=Xdj7Wr9GS/FqvlczJ1YQsXDMguHIUrcXH6TpSKBePNw=;
+	s=korg; t=1722356255;
+	bh=Fb7iM616dWw310G4Q016cMtycSwVkLvDm80nJ3ySMCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2NFtP7rEra+pG7C+uAjPx7nCDedbjjQypdCBneVIsN/Fs2Pp9BeE/UcbNJT4s7mtA
-	 U+rK6HtigLE7rkNcoITZ4Sd4jFhHvSD5FID5j8NVWb/otgTUH2OwXOVm+7C8hYGcoO
-	 71/Q6j6kSq4o3F+w0yGdIPnSR9z4uBSP6fO2Dmu0=
+	b=YrVuYZwSNz1d53SwTrEWef/XS28KAKQNQ7PezS2NllQa/DEnf3f6HKmugC88famLN
+	 92zuDDQurnqKMuyZkscMsZJBMhNwN+yKuCS4xsNGcLQg8mFki4Jsg8eUJCkJvrxwEp
+	 xWpyaBVjZ/6f0EzK9QcKc2kVIxrFS8QmXmWStGrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Bowler <nbowler@draconx.ca>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Ben Hutchings <benh@debian.org>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 298/568] macintosh/therm_windtunnel: fix module unload.
-Date: Tue, 30 Jul 2024 17:46:45 +0200
-Message-ID: <20240730151651.524258538@linuxfoundation.org>
+Subject: [PATCH 6.1 173/440] ext4: dont track ranges in fast_commit if inode has inlined data
+Date: Tue, 30 Jul 2024 17:46:46 +0200
+Message-ID: <20240730151622.631986828@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Bowler <nbowler@draconx.ca>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-[ Upstream commit fd748e177194ebcbbaf98df75152a30e08230cc6 ]
+[ Upstream commit 7882b0187bbeb647967a7b5998ce4ad26ef68a9a ]
 
-The of_device_unregister call in therm_windtunnel's module_exit procedure
-does not fully reverse the effects of of_platform_device_create in the
-module_init prodedure.  Once you unload this module, it is impossible
-to load it ever again since only the first of_platform_device_create
-call on the fan node succeeds.
+When fast-commit needs to track ranges, it has to handle inodes that have
+inlined data in a different way because ext4_fc_write_inode_data(), in the
+actual commit path, will attempt to map the required blocks for the range.
+However, inodes that have inlined data will have it's data stored in
+inode->i_block and, eventually, in the extended attribute space.
 
-This driver predates first git commit, and it turns out back then
-of_platform_device_create worked differently than it does today.
-So this is actually an old regression.
+Unfortunately, because fast commit doesn't currently support extended
+attributes, the solution is to mark this commit as ineligible.
 
-The appropriate function to undo of_platform_device_create now appears
-to be of_platform_device_destroy, and switching to use this makes it
-possible to unload and load the module as expected.
-
-Signed-off-by: Nick Bowler <nbowler@draconx.ca>
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240711035428.16696-1-nbowler@draconx.ca
+Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1039883
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Tested-by: Ben Hutchings <benh@debian.org>
+Fixes: 9725958bb75c ("ext4: fast commit may miss tracking unwritten range during ftruncate")
+Link: https://patch.msgid.link/20240618144312.17786-1-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/therm_windtunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/fast_commit.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
-index 3c1b29476ce24..5c001105cdd9e 100644
---- a/drivers/macintosh/therm_windtunnel.c
-+++ b/drivers/macintosh/therm_windtunnel.c
-@@ -551,7 +551,7 @@ g4fan_exit( void )
- 	platform_driver_unregister( &therm_of_driver );
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index 1110bfa0a5b73..19353a2f44bb3 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -649,6 +649,12 @@ void ext4_fc_track_range(handle_t *handle, struct inode *inode, ext4_lblk_t star
+ 	if (ext4_test_mount_flag(inode->i_sb, EXT4_MF_FC_INELIGIBLE))
+ 		return;
  
- 	if( x.of_dev )
--		of_device_unregister( x.of_dev );
-+		of_platform_device_destroy(&x.of_dev->dev, NULL);
- }
++	if (ext4_has_inline_data(inode)) {
++		ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR,
++					handle);
++		return;
++	}
++
+ 	args.start = start;
+ 	args.end = end;
  
- module_init(g4fan_init);
 -- 
 2.43.0
 
