@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FDA941A3B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7774941AB3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A58E1C227D8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC09B25231
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE7A184553;
-	Tue, 30 Jul 2024 16:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F1118455C;
+	Tue, 30 Jul 2024 16:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyiCqOwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDqw/uhS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2491A6192;
-	Tue, 30 Jul 2024 16:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766571A6192;
+	Tue, 30 Jul 2024 16:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357689; cv=none; b=IENzOV6wOa8LVasZLFuAqDFqgdw/Wsu4Co4xtkdCa47QsC2hWcjaqG3GqOQ2Rqlq2lIZLCokmXFeLybYZoJiQtW096j1Xptuw69DshwYnQkgMkCf2FgxCnQEUVuESkaCAezRlHUjJefjXqSKUhWdYu9mpEdcjUcAs4xOHhYAatA=
+	t=1722357700; cv=none; b=FHmOPHJEu+wLQyBuP/7O/JZupJxx0pF6ijwTDPW/myAiFoLsY8zbj5pzcm8TRQmdvjjEhjQroKTtZOkxigYQqLmWmFmFsZOSLygfz5wvDE1IVRIB1cAp3gVnjd++fUqq31uCKSmZJVEXtjGmPjl5tGc0tTAltO/4K+IF0f1jZLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357689; c=relaxed/simple;
-	bh=++jhZAwowutQcsAYKhQrKin2oGn+3BSoQv91Gghf3hU=;
+	s=arc-20240116; t=1722357700; c=relaxed/simple;
+	bh=d9enguOZkLzZPh7VbzDWrX+IUNxA0fw10r8ioQzTxIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSCEGUclaD6O5oC+lKtgxZYREJiLBrJRJDuj6jAht42yXjJ4tpT//qIP/Kst6ggFGUvVO0HMOLWvxjYS4L8pJfMU+ELUCsn4UAb/ase5X1euUtgxlkL+mAsDpA3YrwjHqG5odgmREBaBnbW56hFVZg65nLjG3YGLwcfOfN+hW1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyiCqOwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC07AC32782;
-	Tue, 30 Jul 2024 16:41:28 +0000 (UTC)
+	 MIME-Version; b=uQaGThHU6grV/TbGfO07DKvlwvMn5UnUhw1QKXvZQvFvJmpo+KH7NgrVb4JGGcv66D45QLP9W58UwKL+6AkfiWfR7ebn82wNS1rinqlAurcd+xIa+n2+BRl/4N8Ou83t9OHJO8EooEAKMjY/7YcPSYoo9HsSzjMjpyKrL4O8CpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDqw/uhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F170CC4AF0A;
+	Tue, 30 Jul 2024 16:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357689;
-	bh=++jhZAwowutQcsAYKhQrKin2oGn+3BSoQv91Gghf3hU=;
+	s=korg; t=1722357700;
+	bh=d9enguOZkLzZPh7VbzDWrX+IUNxA0fw10r8ioQzTxIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NyiCqOwVqtEQHl0I8npObMLPuw2xqmTyy9/1xf14MWdNFBIaKlTFAwSO+vfFd4rlQ
-	 JX6xhA9u5B3eCjNUNslg1eesrMekdZhKiv4Z5hzbKf60XydZKI5FAkr1/ZEn1xpVy2
-	 jCKRUq6OB7i/sbjdE9wGdse0dmbtKvXluNvBleY4=
+	b=PDqw/uhShF5xFwQcynaRvQJMyKWVfaZepTiVgKM7TCsr4qKXPJ9aZQytPy/5wX0bs
+	 NDn6YAWjAVq1TCvZWcc0GmjvGDSSaaP/qspA8NnDyzI5XWtymLKyq4ts7KPgZb+Ryr
+	 a0eJjVsAdImbttVA8hGAt87xH1HR0EhV/bLYxZCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Douglas Anderson <dianders@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 279/809] drm/panel: boe-tv101wum-nl6: Check for errors on the NOP in prepare()
-Date: Tue, 30 Jul 2024 17:42:35 +0200
-Message-ID: <20240730151735.611650798@linuxfoundation.org>
+Subject: [PATCH 6.10 280/809] drm/panel: ilitek-ili9882t: If prepare fails, disable GPIO before regulators
+Date: Tue, 30 Jul 2024 17:42:36 +0200
+Message-ID: <20240730151735.651092593@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -71,45 +70,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 6320b9199dd99622668649c234d4e8a99e44a9c8 ]
+[ Upstream commit 554c00181968d43426bfe68c86541b89265075de ]
 
-The mipi_dsi_dcs_nop() function returns an error but we weren't
-checking it in boe_panel_prepare(). Add a check. This is highly
-unlikely to matter in practice. If the NOP failed then likely later
-MIPI commands would fail too.
+The enable GPIO should clearly be set low before turning off
+regulators. That matches both the inverse order that things were
+enabled and also the order in unprepare().
 
-Found by code inspection.
-
-Fixes: 812562b8d881 ("drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence")
+Fixes: e2450d32e5fb ("drm/panel: ili9882t: Break out as separate driver")
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240517143643.3.Ibffbaa5b4999ac0e55f43bf353144433b099d727@changeid
+Link: https://lore.kernel.org/r/20240517143643.4.Ieb0179065847972a0f13e9a8574a80a5f65f3338@changeid
 Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.3.Ibffbaa5b4999ac0e55f43bf353144433b099d727@changeid
+Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.4.Ieb0179065847972a0f13e9a8574a80a5f65f3338@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-ilitek-ili9882t.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index ce7b4f5ce3fae..83c604ba3ee1c 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -1507,7 +1507,11 @@ static int boe_panel_prepare(struct drm_panel *panel)
- 	usleep_range(10000, 11000);
+diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9882t.c b/drivers/gpu/drm/panel/panel-ilitek-ili9882t.c
+index 267a5307041c9..5762eba73955c 100644
+--- a/drivers/gpu/drm/panel/panel-ilitek-ili9882t.c
++++ b/drivers/gpu/drm/panel/panel-ilitek-ili9882t.c
+@@ -579,13 +579,13 @@ static int ili9882t_prepare(struct drm_panel *panel)
+ 	return 0;
  
- 	if (boe->desc->lp11_before_reset) {
--		mipi_dsi_dcs_nop(boe->dsi);
-+		ret = mipi_dsi_dcs_nop(boe->dsi);
-+		if (ret < 0) {
-+			dev_err(&boe->dsi->dev, "Failed to send NOP: %d\n", ret);
-+			goto poweroff;
-+		}
- 		usleep_range(1000, 2000);
- 	}
- 	gpiod_set_value(boe->enable_gpio, 1);
+ poweroff:
++	gpiod_set_value(ili->enable_gpio, 0);
+ 	regulator_disable(ili->avee);
+ poweroffavdd:
+ 	regulator_disable(ili->avdd);
+ poweroff1v8:
+ 	usleep_range(5000, 7000);
+ 	regulator_disable(ili->pp1800);
+-	gpiod_set_value(ili->enable_gpio, 0);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
