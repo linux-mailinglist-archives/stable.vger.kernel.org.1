@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6FE941E10
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303B8941BE7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C839EB22DCD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53675B2213B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AC71A76C4;
-	Tue, 30 Jul 2024 17:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932C7188017;
+	Tue, 30 Jul 2024 17:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXOC9yEz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kk7dCuqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A76A1A76AF;
-	Tue, 30 Jul 2024 17:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CF3161901;
+	Tue, 30 Jul 2024 17:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360192; cv=none; b=LrJDcJLRIt7ZIuIXnJ9oXUtzKEF8XC0uqWn7onB25sO9Rp60UAMEfOwOjbGnT2vGprIJZ76wR6OmLYx2e7visKjxMyELr9WqFYCytKtgAlL3cZBwb96WLzoUc+oWrEnm7u0Y2kmw7tlYMOpxwJQCDO5WoCCdsE57BPiapVuwOec=
+	t=1722358838; cv=none; b=cUMMEJUxDqcQ9odXM7SklqNKUsQixLgRkShRlRwx3rTmA55FVLMvBiv77eSW6fJ6Q16InUGyw3ZZuSoMIwAVQtSm1YH5IGvjasVV6ECL4BjCfZ21N+/uB3UtqUpGvqW5qST5WcyojxSoRsLiRGQJ3Nr2K3jwtc25KJpNKmphHGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360192; c=relaxed/simple;
-	bh=me10lo12ESMI//KxvtaxFJmOHDa/di61CuY81Db4ao0=;
+	s=arc-20240116; t=1722358838; c=relaxed/simple;
+	bh=nqmALTEx261NS8LkCpSTQ8S9NEFqjnf6MfcEnLodOSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cc7waLHQFd4wbGedBqE1BOYSmiGLamfP+5OsHpHiT4G6WcVIXdnrng7seLkFL2l8XCfbk1Q4VpDYy/cTOK1IPaOMxtnxVyTcCP2/d2cVPncbdFMRScxI75W+8bTCFp6S6UDb/dpXxDKhIQ5mOHqkaz6S559cEunDxBiTEliUiGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXOC9yEz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398B5C32782;
-	Tue, 30 Jul 2024 17:23:11 +0000 (UTC)
+	 MIME-Version; b=COvW2e6XCw+UZJUL1REpqdcj7uhfyAvi4ZilA3R1J8cSZTW3rarukAyBgdjKND1kcURqblGaOCXxiUDMpI/CEYc/o/5+gFRixbvlehaxu+aoI10PCnkg1FuRuO9TjiGhRMDUEFL5qPYWjJvoA3b2PU3cpVuJADP/KxaENzAvvuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kk7dCuqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8591C32782;
+	Tue, 30 Jul 2024 17:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360191;
-	bh=me10lo12ESMI//KxvtaxFJmOHDa/di61CuY81Db4ao0=;
+	s=korg; t=1722358838;
+	bh=nqmALTEx261NS8LkCpSTQ8S9NEFqjnf6MfcEnLodOSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HXOC9yEz2GYph7EIPaRMTyvwagIoPqia2LJkV7CVworOhiFskyxeLTI7W8QpDvsK0
-	 oAdIsU2EC+pTLmdYJh8j6mXgCUV89QYoWD8Wre8CIE69ZDXcbCQHC4CwIzy5y13b/K
-	 jLBxJow5ddcDGQRqPLFX8wq67poK8kryLEHtSZY8=
+	b=kk7dCuqxl47Kmt/Q30DM6AxWNXfZ+uZh+M6t+9bo+5QEfTCEprbvv3xbj+LLoG1Pw
+	 nG2wJv2eeRgWZx+2p0P/N+8wNySu0BqZKEZIM0r3YWxZNwKCrOSo5g7J1hzE5B7ARx
+	 u2/v6RTkmoJIBYfgC5q9+sstz6fGXrySDMCnX+5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.10 623/809] KVM: nVMX: Check for pending posted interrupts when looking for nested events
+	David Howells <dhowell@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 392/568] cifs: mount with "unix" mount option for SMB1 incorrectly handled
 Date: Tue, 30 Jul 2024 17:48:19 +0200
-Message-ID: <20240730151749.447525962@linuxfoundation.org>
+Message-ID: <20240730151655.185195609@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 27c4fa42b11af780d49ce704f7fa67b3c2544df4 upstream.
+commit 0e314e452687ce0ec5874e42cdb993a34325d3d2 upstream.
 
-Check for pending (and notified!) posted interrupts when checking if L2
-has a pending wake event, as fully posted/notified virtual interrupt is a
-valid wake event for HLT.
+Although by default we negotiate CIFS Unix Extensions for SMB1 mounts to
+Samba (and they work if the user does not specify "unix" or "posix" or
+"linux" on mount), and we do properly handle when a user turns them off
+with "nounix" mount parm.  But with the changes to the mount API we
+broke cases where the user explicitly specifies the "unix" option (or
+equivalently "linux" or "posix") on mount with vers=1.0 to Samba or other
+servers which support the CIFS Unix Extensions.
 
-Note that KVM must check vmx->nested.pi_pending to avoid prematurely
-waking L2, e.g. even if KVM sees a non-zero PID.PIR and PID.0N=1, the
-virtual interrupt won't actually be recognized until a notification IRQ is
-received by the vCPU or the vCPU does (nested) VM-Enter.
+ "mount error(95): Operation not supported"
 
-Fixes: 26844fee6ade ("KVM: x86: never write to memory from kvm_vcpu_check_block()")
+and logged:
+
+ "CIFS: VFS: Check vers= mount option. SMB3.11 disabled but required for POSIX extensions"
+
+even though CIFS Unix Extensions are supported for vers=1.0  This patch fixes
+the case where the user specifies both "unix" (or equivalently "posix" or
+"linux") and "vers=1.0" on mount to a server which supports the
+CIFS Unix Extensions.
+
 Cc: stable@vger.kernel.org
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Reported-by: Jim Mattson <jmattson@google.com>
-Closes: https://lore.kernel.org/all/20231207010302.2240506-1-jmattson@google.com
-Link: https://lore.kernel.org/r/20240607172609.3205077-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: David Howells <dhowell@redhat.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/nested.c |   36 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+ fs/smb/client/connect.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4034,8 +4034,40 @@ static bool nested_vmx_preemption_timer_
- 
- static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
- {
--	return nested_vmx_preemption_timer_pending(vcpu) ||
--	       to_vmx(vcpu)->nested.mtf_pending;
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
-+	void *vapic = vmx->nested.virtual_apic_map.hva;
-+	int max_irr, vppr;
-+
-+	if (nested_vmx_preemption_timer_pending(vcpu) ||
-+	    vmx->nested.mtf_pending)
-+		return true;
-+
-+	/*
-+	 * Virtual Interrupt Delivery doesn't require manual injection.  Either
-+	 * the interrupt is already in GUEST_RVI and will be recognized by CPU
-+	 * at VM-Entry, or there is a KVM_REQ_EVENT pending and KVM will move
-+	 * the interrupt from the PIR to RVI prior to entering the guest.
-+	 */
-+	if (for_injection)
-+		return false;
-+
-+	if (!nested_cpu_has_vid(get_vmcs12(vcpu)) ||
-+	    __vmx_interrupt_blocked(vcpu))
-+		return false;
-+
-+	if (!vapic)
-+		return false;
-+
-+	vppr = *((u32 *)(vapic + APIC_PROCPRI));
-+
-+	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
-+	    pi_test_on(vmx->nested.pi_desc)) {
-+		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
-+		if (max_irr > 0 && (max_irr & 0xf0) > (vppr & 0xf0))
-+			return true;
-+	}
-+
-+	return false;
- }
- 
- /*
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -2614,6 +2614,13 @@ cifs_get_tcon(struct cifs_ses *ses, stru
+ 			cifs_dbg(VFS, "Server does not support mounting with posix SMB3.11 extensions\n");
+ 			rc = -EOPNOTSUPP;
+ 			goto out_fail;
++		} else if (ses->server->vals->protocol_id == SMB10_PROT_ID)
++			if (cap_unix(ses))
++				cifs_dbg(FYI, "Unix Extensions requested on SMB1 mount\n");
++			else {
++				cifs_dbg(VFS, "SMB1 Unix Extensions not supported by server\n");
++				rc = -EOPNOTSUPP;
++				goto out_fail;
+ 		} else {
+ 			cifs_dbg(VFS,
+ 				"Check vers= mount option. SMB3.11 disabled but required for POSIX extensions\n");
 
 
 
