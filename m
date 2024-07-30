@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EB6941A92
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A7E941739
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEB0A1F259A1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587AD1C2336A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD58155CB3;
-	Tue, 30 Jul 2024 16:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076A518953A;
+	Tue, 30 Jul 2024 16:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCzES58B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+QrumtE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D371A6166;
-	Tue, 30 Jul 2024 16:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1D7187FF2;
+	Tue, 30 Jul 2024 16:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357915; cv=none; b=pDf+eHW3NBNtw3v1aQTxka4rmVrTMuEvXPr1VkaJA+aoQ3dGdVRT647T4F/g2a9iFcz+Zp6YQtgMjZt/G/J/qHWYdeXVjEftDY/tzxSQdFxmvfykLAQl72VRoGc+NmT8io+PyR3FVsuEEsCOaNE9VUEhOt+zZfrjC8NVKUTlYKE=
+	t=1722355615; cv=none; b=pD3/GYU9aMvgZ9jyjRG02lTcM/cRbNPE4Jp4YKSYQQmXBNbz6zgFt8JCycSmMaa2iy1kpu4/uy7WkHQgUIgI/NbmL+wTajTOyHxR8BdRckzPjnBXnTppaJYU0xXVvIae4OwEhc7P/hsv9A+SGpvthYi0OqQCNXslQG2buq3TKdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357915; c=relaxed/simple;
-	bh=mv3yJ6cJOzAYePagrFevc159N2Z9N9GZwUj2Q95Naqs=;
+	s=arc-20240116; t=1722355615; c=relaxed/simple;
+	bh=6/OiqucihDT3HJulfDpe4g8K8B19ExjcTW+QOgbELDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A8yUiVMWR9qlSyyuGKyv6ar7BAEfh6YSFThxgm1tyPa5WadLU7rurNQB+i+qL1MOspl1XEC+fB31YKjggb6M1vKFIOtkn6xwlAo9WSlESfWgsj0kLL7biKtzLt1imoCXKyo7IeYoblgewNfnQpoo1EmXuEAszT23k4kjtgkpMTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCzES58B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31B1C32782;
-	Tue, 30 Jul 2024 16:45:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FBOddwEqXMqE3PcQkQ7XcI4/R46g1PI+ApWX01TqLuUPDKWEJ9GExwf9j4hbLVlz0knUqjrnUvmMalpE1tbCM2mflAA66cKKmW74y50uAJazQGOfbgBSkTo0V989tOpnuXteDfQRlXqJ97U9EZ+hXke1dntMLDVW0xiVPaHxScs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+QrumtE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9ECC32782;
+	Tue, 30 Jul 2024 16:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357915;
-	bh=mv3yJ6cJOzAYePagrFevc159N2Z9N9GZwUj2Q95Naqs=;
+	s=korg; t=1722355615;
+	bh=6/OiqucihDT3HJulfDpe4g8K8B19ExjcTW+QOgbELDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCzES58BexDMyUGfH9OoIVo+uPvFmzCoJIW3mTzadA6QU/2PL/wYLMz2MQ6ujmjOH
-	 qYg6U5RQOM4bMwivuejqdEQVDpkVpQ3F7UN0nQUIXhPhysmGbhzGLlK7cAGl4FUjwL
-	 F2yMOcAVJg9jtpePx3E61akK1uMLr+fXXYrMgNhw=
+	b=N+QrumtElnL8MafV7eTdJIOf75zYgQ0Inb34RUrZh712kLleW9uzcFvvwNXPC767z
+	 nRsBMUcDBWycMsP0CgXIBYQP/Mc0FbpT5kJMma9XN90CqKhqSz2Rd1OEJan9g0prx/
+	 ewWSAXoc4qiuVuaveHKEC9D5zYJKed7iUDZJpGUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Animesh Manna <animesh.manna@intel.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 304/809] drm/i915/display: Skip Panel Replay on pipe comparison if no active planes
-Date: Tue, 30 Jul 2024 17:43:00 +0200
-Message-ID: <20240730151736.599159645@linuxfoundation.org>
+Subject: [PATCH 6.6 074/568] arm64: dts: mediatek: mt7622: fix "emmc" pinctrl mux
+Date: Tue, 30 Jul 2024 17:43:01 +0200
+Message-ID: <20240730151642.754491322@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 955446ed6e822b86751993bd69022d347b43a99e ]
+[ Upstream commit aebba1030a5766cdf894ed4ab0cac7aed5aee9c1 ]
 
-Panel Replay is not enabled if there are no active planes. Do not compare
-it on pipe comparison. Otherwise we get pipe mismatch.
+Value "emmc_rst" is a group name and should be part of the "groups"
+property.
 
-Fixes: ac9ef327327b ("drm/i915/psr: Panel replay has to be enabled before link training")
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Animesh Manna <animesh.manna@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240607134917.1327574-5-jouni.hogander@intel.com
+This fixes:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
+        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
+arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
+        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
+
+Fixes: 3725ba3f5574 ("arm64: dts: mt7622: add pinctrl related device nodes")
+Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240604074916.7929-1-zajec5@gmail.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts | 4 ++--
+ arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index 0ae18b07ac87d..e53d3e900b3e4 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -5318,7 +5318,9 @@ intel_pipe_config_compare(const struct intel_crtc_state *current_config,
- 	 * Panel replay has to be enabled before link training. PSR doesn't have
- 	 * this requirement -> check these only if using panel replay
- 	 */
--	if (current_config->has_panel_replay || pipe_config->has_panel_replay) {
-+	if (current_config->active_planes &&
-+	    (current_config->has_panel_replay ||
-+	     pipe_config->has_panel_replay)) {
- 		PIPE_CONF_CHECK_BOOL(has_psr);
- 		PIPE_CONF_CHECK_BOOL(has_sel_update);
- 		PIPE_CONF_CHECK_BOOL(enable_psr2_sel_fetch);
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+index 7ef517e9e3746..15838c1ee8cc3 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+@@ -318,8 +318,8 @@ asm_sel {
+ 	/* eMMC is shared pin with parallel NAND */
+ 	emmc_pins_default: emmc-pins-default {
+ 		mux {
+-			function = "emmc", "emmc_rst";
+-			groups = "emmc";
++			function = "emmc";
++			groups = "emmc", "emmc_rst";
+ 		};
+ 
+ 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
+index a75dc63a1362a..0a14ef1da60de 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
+@@ -244,8 +244,8 @@ &pio {
+ 	/* eMMC is shared pin with parallel NAND */
+ 	emmc_pins_default: emmc-pins-default {
+ 		mux {
+-			function = "emmc", "emmc_rst";
+-			groups = "emmc";
++			function = "emmc";
++			groups = "emmc", "emmc_rst";
+ 		};
+ 
+ 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
 -- 
 2.43.0
 
