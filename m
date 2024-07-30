@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849989418FE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:27:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 272BE941902
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5A091C203B5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:27:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D24561F24494
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAA81A6190;
-	Tue, 30 Jul 2024 16:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45D81A6197;
+	Tue, 30 Jul 2024 16:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iC5wG1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbLBlURD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6C11A6161;
-	Tue, 30 Jul 2024 16:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647191A6160;
+	Tue, 30 Jul 2024 16:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356861; cv=none; b=XAoMSQGGZNbFmpG8pITVg+qYPjKttcYyHTLkEnxAdmh4QhO1GcvKxGPkGk3DEyk25XNTOyQzDK0ME9Jv+uGzjZ7Wl+XAyC3mI21boBu1VTRNII/ZYwOCTDuFYAh9vwDN9O+uCsUZtDYqfGO4jQFCQOq+mXWkop35lQ2qgHyobVA=
+	t=1722356871; cv=none; b=Og0f2Y7S9TkbM6nP4n0pVWfa96UgrYZyaScyslczSn83odSuIQGfki+o1L8bbe3MLrNuCfAiJ9vEKthCVq6Z/epCDiefTtmA1KHzGu39qSvnCb7PxWoUV6WsuxITpzP9C2Vaq4bKZy+TaFgfo5YLY4HP+6KUjtRj+A/ZRqsriGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356861; c=relaxed/simple;
-	bh=rx7NrnmemLcpkzISaW7tYNcWq7z0lQg5Lx2t2PQMhpo=;
+	s=arc-20240116; t=1722356871; c=relaxed/simple;
+	bh=vdPXYl0FIZEFtijsPQzHT4W6f8JqHpv56PGFL9Er3nM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDS4KZi4mnYrtU+FlX9znn1iMWXq3Ekka84ojxx6JrNOUKr1XyL5nd8E46TuB5VmTU6mlcPBW074pax91/CTuwbP/FyRxufPXX1sDJd4LRk6ZhPEJLkEKYRacgcUNXNg/KkGeFrmlDZ6mkBMJ8SY3tvBBjnDbXt8NYjcN9BpwN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iC5wG1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9D3C4AF0A;
-	Tue, 30 Jul 2024 16:27:41 +0000 (UTC)
+	 MIME-Version; b=sGudK+Rc0zuGO+kFZyCRKC60jIAXllhCOcqw5fa8SCOn1T60WXcg8c2VQL9fdvRr+djrmlneMlzdzxrwheOrEnvG+qgjPv5wJB1TrI5/XV58bdraCRaa30scYZvTUnSWMamZCFJbxyPFZre9ydMphZFoqcUo55cXH+V3yEDbUGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbLBlURD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB76FC32782;
+	Tue, 30 Jul 2024 16:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356861;
-	bh=rx7NrnmemLcpkzISaW7tYNcWq7z0lQg5Lx2t2PQMhpo=;
+	s=korg; t=1722356871;
+	bh=vdPXYl0FIZEFtijsPQzHT4W6f8JqHpv56PGFL9Er3nM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0iC5wG1ipkJMoEmj7IfRSjvxk0duIcGneMWtdOzWIg4bnJ7My6K5BpMwpuVRC7wYW
-	 GgcNqiJSaZw4M+fPvyARA/QRIthC/jDTMdIfqgmqG1AnGMIq4WarLJdJSbSEImkB5j
-	 o8yb07NUzexnHAj4/V8ZYGGvOQt5/Rz3/W06KvGM=
+	b=RbLBlURD20WUdopWPXnbhc4JhFvuHHCGupCl148Z+eLAXFhAn43w1PJPKYXRkk8Ih
+	 6999WvEwzmNB6S/izlL8rEqR1ss668Mc8/W8WNu4Py1Q3eGgFc4GspGdRUitUlGmFa
+	 hPR1j+9XvKiDmMaigdg9MR/nMLaut19oGFGPtwbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 194/809] wifi: nl80211: expose can-monitor channel property
-Date: Tue, 30 Jul 2024 17:41:10 +0200
-Message-ID: <20240730151732.271155900@linuxfoundation.org>
+Subject: [PATCH 6.10 195/809] wifi: iwlwifi: mvm: fix re-enabling EMLSR
+Date: Tue, 30 Jul 2024 17:41:11 +0200
+Message-ID: <20240730151732.309928579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,39 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit f3269b7912f75b6e34926334377ede45656a8950 ]
+[ Upstream commit bd40215b19d255b433a91a8bb8088937e5db4284 ]
 
-It may be possible to monitor on disabled channels per the
-can-monitor flag, but evidently I forgot to expose that out
-to userspace. Fix that.
+When EMLSR gets unblocked, the current code checks if the last exit was
+due to an EXIT reason (as opposed to a BLOCKING one), and if so, it
+does nothing, as in this case a MLO scan was scheduled to run in 30
+seconds.
 
-Fixes: a110a3b79177 ("wifi: cfg80211: optionally support monitor on disabled channels")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240523120945.9a2c19a51e53.I50fa1b1a18b70f63a5095131ac23dc2e71f3d426@changeid
+But the code doesn't consider the time that passed from the last exit,
+so if immediately after the exit a blocker occurred (e.g. non-BSS
+interface), and lasts for more than 30 seconds, then the MLO scan and the
+following link selection will decide not to enter EMLSR, and when the
+unblocking event finally happens, the reason is still set to the EXIT one,
+so it will do nothing, and we will not have the chance to re-enable EMLSR.
+
+Fix this by checking also the time that has passed since the last exit,
+only if it is less than 30 seconds, we can count on the scheduled MLO
+scan.
+
+Note that clearing the reason itself can't be done since it is needed
+for the EMLSR prevention mechanism.
+
+Fixes: 2f33561ea8f9 ("wifi: iwlwifi: mvm: trigger link selection after exiting EMLSR")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://msgid.link/20240605140327.58556fc4cfa9.I4c55b3cd9f20b21b37f28258d0fb6842ba413966@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 72c7bf5585816..0fd075238fc74 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -1208,6 +1208,9 @@ static int nl80211_msg_put_channel(struct sk_buff *msg, struct wiphy *wiphy,
- 		if ((chan->flags & IEEE80211_CHAN_NO_6GHZ_AFC_CLIENT) &&
- 		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_NO_6GHZ_AFC_CLIENT))
- 			goto nla_put_failure;
-+		if ((chan->flags & IEEE80211_CHAN_CAN_MONITOR) &&
-+		    nla_put_flag(msg, NL80211_FREQUENCY_ATTR_CAN_MONITOR))
-+			goto nla_put_failure;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+index b4a4d25b31cd2..92ac6cc40faa7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+@@ -1082,8 +1082,10 @@ static void iwl_mvm_esr_unblocked(struct iwl_mvm *mvm,
  
- 	if (nla_put_u32(msg, NL80211_FREQUENCY_ATTR_MAX_TX_POWER,
+ 	IWL_DEBUG_INFO(mvm, "EMLSR is unblocked\n");
+ 
+-	/* We exited due to an EXIT reason, so MLO scan was scheduled already */
+-	if (mvmvif->last_esr_exit.reason &&
++	/* If we exited due to an EXIT reason, and the exit was in less than
++	 * 30 seconds, then a MLO scan was scheduled already.
++	 */
++	if (!need_new_sel &&
+ 	    !(mvmvif->last_esr_exit.reason & IWL_MVM_BLOCK_ESR_REASONS)) {
+ 		IWL_DEBUG_INFO(mvm, "Wait for MLO scan\n");
+ 		return;
 -- 
 2.43.0
 
