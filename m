@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-63422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284D29418E3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A0F941DCC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7795284D00
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A067B2A002
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5431A618F;
-	Tue, 30 Jul 2024 16:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCAC188011;
+	Tue, 30 Jul 2024 17:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJ/g09Iq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4Qmx/6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC511A6166;
-	Tue, 30 Jul 2024 16:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A291A76DD;
+	Tue, 30 Jul 2024 17:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356783; cv=none; b=mlOvUKO2TDfqaLgeC/goQIcAbH0tiACzcTRnkz2FI0uU9HUPiC9+hwC7cBxBFxKLRs75rdhe56gbiXf5sfWM0Ma12iuxsTPC42ZQ6+ai5hyQe2MUk5hSUBb9PD8s6kZQ/1ZcB03JLGYQL5H1HRycwoHzYEw6nxrBlC4gAQHg+oo=
+	t=1722360064; cv=none; b=QXoya7+RjAetWFquOFaRKbfB2laVqpwZqNMK/wRZELL9X3BR4Vits+Z1oRBTBEqC1Tdfqh8Codag8nisKJzR03hwN9V4y4KgPCLF0bDDtW4Jv9QEXbrGeeBDSctWaJ/APEUYsX/NBco5/V7g+xTcRk2v9r4Pp4MAGSEQ6ihv+ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356783; c=relaxed/simple;
-	bh=wKYghqB33WCKCBrekGvJFnHumSjwRsmY9u5+zhdYnn4=;
+	s=arc-20240116; t=1722360064; c=relaxed/simple;
+	bh=jBpXa+xh8BVh2MEQUtxZBuZsk2dfGzG/dy2WdPbuFaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxdHpUy0QL849w+C5BtThW7WYyYrHkbMp/DhDJBq6ScbTdzfLPGXb7QJOgWMZ4PS8AzkG9UW2KvjRTMtBIY4TSxAdSxEoz4tn5UjmcQ6o9HDERnn6yOtS1v1T9Kl+A02DmZrq5JQNFAjmkiJhi3mK1Upk6nI/ag8ZnF28/XQ470=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJ/g09Iq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08717C4AF0C;
-	Tue, 30 Jul 2024 16:26:22 +0000 (UTC)
+	 MIME-Version; b=A3m7ppW3mOV0RtPZIO+qssvkEk2m3C2s00pKYEoeGF7HG+vZjS403gbmV7L9OhLVL9iw+RiaODjiweLXlHk98Ih1OSBsRU57lBVQMsF0dljUqH8mJ7sC101vb+V7RSX5MkYkLcCaWaSAm0YSfL6sGKhKWUzrj1mZ9Dnvvi+HXj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4Qmx/6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4D4C32782;
+	Tue, 30 Jul 2024 17:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356783;
-	bh=wKYghqB33WCKCBrekGvJFnHumSjwRsmY9u5+zhdYnn4=;
+	s=korg; t=1722360064;
+	bh=jBpXa+xh8BVh2MEQUtxZBuZsk2dfGzG/dy2WdPbuFaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJ/g09IqBSaHRkf4qjicauj68/STXu6IOLovyTnLcXpTJkgQV9/0HQNb9tTJIH+bA
-	 maX5jaVsM2/Zz/lRMsn8FliQw3S8MP7SlzyMtkHImtBHCEPMa3qNMf9hXR0nqNDehh
-	 jJKSVsaJnzBVP/7D6Ruan07ORu7tXEO3u3XaEg0Q=
+	b=q4Qmx/6Fz97Yu0abOSo0A0vqsSPzQJ5SZvYAe0E7okmAZLKw2akDw21Zj6VYGuMRo
+	 6mEeliaQJRlLiXjH4nT/otbkHotiHTsMUzCAxP9l7Bbr+e5e/pFHruJxVgoWXWZwLn
+	 eJyNCxTZY3rtC7VKd/L1JikDVlF57E+5e5kSL33A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Pan-Doh <pandoh@google.com>,
-	Sudheer Dantuluri <dantuluris@google.com>,
-	Gary Zibrat <gzibrat@google.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 228/440] iommu/vt-d: Fix identity map bounds in si_domain_init()
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.10 585/809] cifs: fix reconnect with SMB1 UNIX Extensions
 Date: Tue, 30 Jul 2024 17:47:41 +0200
-Message-ID: <20240730151624.763631078@linuxfoundation.org>
+Message-ID: <20240730151747.935630897@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Pan-Doh <pandoh@google.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 31000732d56b43765d51e08cccb68818fbc0032c ]
+commit a214384ce26b6111ea8c8d58fa82a1ca63996c38 upstream.
 
-Intel IOMMU operates on inclusive bounds (both generally aas well as
-iommu_domain_identity_map()). Meanwhile, for_each_mem_pfn_range() uses
-exclusive bounds for end_pfn. This creates an off-by-one error when
-switching between the two.
+When mounting with the SMB1 Unix Extensions (e.g. mounts
+to Samba with vers=1.0), reconnects no longer reset the
+Unix Extensions (SetFSInfo SET_FILE_UNIX_BASIC) after tcon so most
+operations (e.g. stat, ls, open, statfs) will fail continuously
+with:
+        "Operation not supported"
+if the connection ever resets (e.g. due to brief network disconnect)
 
-Fixes: c5395d5c4a82 ("intel-iommu: Clean up iommu_domain_identity_map()")
-Signed-off-by: Jon Pan-Doh <pandoh@google.com>
-Tested-by: Sudheer Dantuluri <dantuluris@google.com>
-Suggested-by: Gary Zibrat <gzibrat@google.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240709234913.2749386-1-pandoh@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/connect.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index e3a95a347c3b9..7b9502c30fe94 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2444,7 +2444,7 @@ static int __init si_domain_init(int hw)
- 		for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
- 			ret = iommu_domain_identity_map(si_domain,
- 					mm_to_dma_pfn_start(start_pfn),
--					mm_to_dma_pfn_end(end_pfn));
-+					mm_to_dma_pfn_end(end_pfn-1));
- 			if (ret)
- 				return ret;
- 		}
--- 
-2.43.0
-
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3686,6 +3686,7 @@ error:
+ }
+ #endif
+ 
++#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ /*
+  * Issue a TREE_CONNECT request.
+  */
+@@ -3807,11 +3808,25 @@ CIFSTCon(const unsigned int xid, struct
+ 		else
+ 			tcon->Flags = 0;
+ 		cifs_dbg(FYI, "Tcon flags: 0x%x\n", tcon->Flags);
+-	}
+ 
++		/*
++		 * reset_cifs_unix_caps calls QFSInfo which requires
++		 * need_reconnect to be false, but we would not need to call
++		 * reset_caps if this were not a reconnect case so must check
++		 * need_reconnect flag here.  The caller will also clear
++		 * need_reconnect when tcon was successful but needed to be
++		 * cleared earlier in the case of unix extensions reconnect
++		 */
++		if (tcon->need_reconnect && tcon->unix_ext) {
++			cifs_dbg(FYI, "resetting caps for %s\n", tcon->tree_name);
++			tcon->need_reconnect = false;
++			reset_cifs_unix_caps(xid, tcon, NULL, NULL);
++		}
++	}
+ 	cifs_buf_release(smb_buffer);
+ 	return rc;
+ }
++#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+ 
+ static void delayed_free(struct rcu_head *p)
+ {
 
 
 
