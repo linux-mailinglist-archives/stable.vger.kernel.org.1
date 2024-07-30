@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-63653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B579419FC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC457941C34
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B697E1C23A1A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C111C23286
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A4E189535;
-	Tue, 30 Jul 2024 16:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FAF18454A;
+	Tue, 30 Jul 2024 17:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRXH1zuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="163QF2v4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CFC189504;
-	Tue, 30 Jul 2024 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E931A6192;
+	Tue, 30 Jul 2024 17:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357521; cv=none; b=ouxO+sd6o01RdMpjjK7ipNZlN8p2KVeV1usDdZ8bp42Gm0IATtNH6z0RTG2LaOWVxfVhmTg0h2Zn313yau/VxlrvveR0sGnZoCzOXVDn0KUL5jLa7ZXeDbQ+kQA+1+drG7RUEZt/wrmI/0QE4JeOCTdG5hIpPx2BjlI1WTk/1Jw=
+	t=1722359065; cv=none; b=S5LXc4y5lXSiO0hCQOkf45/KfcN6YXLYGj+9qyuBcvAbpBB56TXmCkYvR478ZXAJACt6rPL3c20Mrliut4Hpo77Znu+E58suhxwrctDfxXBMPQ8JGIhXJqCBFd15n4xVrnSJTcdB07+ZQarQoZ2UN1IY2xAO9rF/lh8FjvCUYMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357521; c=relaxed/simple;
-	bh=AmP0iSCyFEHqTpbVPvlDv+4qhVn44hCFMqwMum+wBSk=;
+	s=arc-20240116; t=1722359065; c=relaxed/simple;
+	bh=X9Ry+Y3VC0vqZc2cNoZiYLIoBX8JnWByFvvfm5nAIrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgQ7HI7rLtPdWKU385iXG72wxh/8LL8E8y8GAbyXQANMl8QdtYSvBkQQm2Dkb8txIUxsoIMuw46Z7fZ00d98487nolts9VLfSu7ZcQH1UGEo0bXSa47cT28Xandgj+TQVV5ZXnDbNBGUI0ZkQRiOzPe/+KKA+HVbOGjtgEzJCQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRXH1zuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36668C32782;
-	Tue, 30 Jul 2024 16:38:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UEKtMvFbWxdqEWe7noRd5icFiMGgWB+0fiaSaWTwPcf1lZRAUuucbQHT2XmqcV6D5wiM16luCe5DVF86yDo34PkAOsT2OrS7h4AUlFYco4zcrBMnG9c42w67I2mrwgpYuddwE5LhTE/s3+04MNt3e5fNcMsRf/Nbut+hA22dctY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=163QF2v4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95789C32782;
+	Tue, 30 Jul 2024 17:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357521;
-	bh=AmP0iSCyFEHqTpbVPvlDv+4qhVn44hCFMqwMum+wBSk=;
+	s=korg; t=1722359065;
+	bh=X9Ry+Y3VC0vqZc2cNoZiYLIoBX8JnWByFvvfm5nAIrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRXH1zuox8Vm+rRIgotKwRpvpiojcxvqXAhgmFeTDgdSQr6JElrZOJqskTC75v1dk
-	 NbDIHkg5zU1g/dEbgL8cki0IwXZsMvTy/Vg3a7O5WNeY3uullKPr7XqyewcAyuyZYb
-	 AhouAta9t/bTs37iRNfc0Lgdqw0Rj+3sd/VbihEo=
+	b=163QF2v46Oq0VD8XYc8Qvfyz8SQR9j3QgokUoNuQTKFPuk3PXYQP2mf9FyCC3t/3/
+	 qoRl5gz1KC1TIf0tigSuk8a8nCC/i1efc3GidStrPoe+WdUbMws7wyr0vhpe5iLAvW
+	 SU3gIKH34G6uIvJaFfjgSVeaYpHA6yAYmOPly39M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 300/440] task_work: Introduce task_work_cancel() again
-Date: Tue, 30 Jul 2024 17:48:53 +0200
-Message-ID: <20240730151627.544486834@linuxfoundation.org>
+	Slark Xiao <slark_xiao@163.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.6 427/568] PCI: rockchip: Use GPIOD_OUT_LOW flag while requesting ep_gpio
+Date: Tue, 30 Jul 2024 17:48:54 +0200
+Message-ID: <20240730151656.557703817@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit f409530e4db9dd11b88cb7703c97c8f326ff6566 upstream.
+commit 840b7a5edf88fe678c60dee88a135647c0ea4375 upstream.
 
-Re-introduce task_work_cancel(), this time to cancel an actual callback
-and not *any* callback pointing to a given function. This is going to be
-needed for perf events event freeing.
+Rockchip platforms use 'GPIO_ACTIVE_HIGH' flag in the devicetree definition
+for ep_gpio. This means, whatever the logical value set by the driver for
+the ep_gpio, physical line will output the same logic level.
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240621091601.18227-3-frederic@kernel.org
+For instance,
+
+  gpiod_set_value_cansleep(rockchip->ep_gpio, 0); --> Level low
+  gpiod_set_value_cansleep(rockchip->ep_gpio, 1); --> Level high
+
+But while requesting the ep_gpio, GPIOD_OUT_HIGH flag is currently used.
+Now, this also causes the physical line to output 'high' creating trouble
+for endpoint devices during host reboot.
+
+When host reboot happens, the ep_gpio will initially output 'low' due to
+the GPIO getting reset to its POR value. Then during host controller probe,
+it will output 'high' due to GPIOD_OUT_HIGH flag. Then during
+rockchip_pcie_host_init_port(), it will first output 'low' and then 'high'
+indicating the completion of controller initialization.
+
+On the endpoint side, each output 'low' of ep_gpio is accounted for PERST#
+assert and 'high' for PERST# deassert. With the above mentioned flow during
+host reboot, endpoint will witness below state changes for PERST#:
+
+  (1) PERST# assert - GPIO POR state
+  (2) PERST# deassert - GPIOD_OUT_HIGH while requesting GPIO
+  (3) PERST# assert - rockchip_pcie_host_init_port()
+  (4) PERST# deassert - rockchip_pcie_host_init_port()
+
+Now the time interval between (2) and (3) is very short as both happen
+during the driver probe(), and this results in a race in the endpoint.
+Because, before completing the PERST# deassertion in (2), endpoint got
+another PERST# assert in (3).
+
+A proper way to fix this issue is to change the GPIOD_OUT_HIGH flag in (2)
+to GPIOD_OUT_LOW. Because the usual convention is to request the GPIO with
+a state corresponding to its 'initial/default' value and let the driver
+change the state of the GPIO when required.
+
+As per that, the ep_gpio should be requested with GPIOD_OUT_LOW as it
+corresponds to the POR value of '0' (PERST# assert in the endpoint). Then
+the driver can change the state of the ep_gpio later in
+rockchip_pcie_host_init_port() as per the initialization sequence.
+
+This fixes the firmware crash issue in Qcom based modems connected to
+Rockpro64 based board.
+
+Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
+Closes: https://lore.kernel.org/mhi/20240402045647.GG2933@thinkpad/
+Link: https://lore.kernel.org/linux-pci/20240416-pci-rockchip-perst-fix-v1-1-4800b1d4d954@linaro.org
+Reported-by: Slark Xiao <slark_xiao@163.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org	# v4.9
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/task_work.h |    1 +
- kernel/task_work.c        |   24 ++++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ drivers/pci/controller/pcie-rockchip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/task_work.h
-+++ b/include/linux/task_work.h
-@@ -31,6 +31,7 @@ int task_work_add(struct task_struct *ta
- struct callback_head *task_work_cancel_match(struct task_struct *task,
- 	bool (*match)(struct callback_head *, void *data), void *data);
- struct callback_head *task_work_cancel_func(struct task_struct *, task_work_func_t);
-+bool task_work_cancel(struct task_struct *task, struct callback_head *cb);
- void task_work_run(void);
+--- a/drivers/pci/controller/pcie-rockchip.c
++++ b/drivers/pci/controller/pcie-rockchip.c
+@@ -121,7 +121,7 @@ int rockchip_pcie_parse_dt(struct rockch
  
- static inline void exit_task_work(struct task_struct *task)
---- a/kernel/task_work.c
-+++ b/kernel/task_work.c
-@@ -135,6 +135,30 @@ task_work_cancel_func(struct task_struct
- 	return task_work_cancel_match(task, task_work_func_match, func);
- }
- 
-+static bool task_work_match(struct callback_head *cb, void *data)
-+{
-+	return cb == data;
-+}
-+
-+/**
-+ * task_work_cancel - cancel a pending work added by task_work_add()
-+ * @task: the task which should execute the work
-+ * @cb: the callback to remove if queued
-+ *
-+ * Remove a callback from a task's queue if queued.
-+ *
-+ * RETURNS:
-+ * True if the callback was queued and got cancelled, false otherwise.
-+ */
-+bool task_work_cancel(struct task_struct *task, struct callback_head *cb)
-+{
-+	struct callback_head *ret;
-+
-+	ret = task_work_cancel_match(task, task_work_match, cb);
-+
-+	return ret == cb;
-+}
-+
- /**
-  * task_work_run - execute the works added by task_work_add()
-  *
+ 	if (rockchip->is_rc) {
+ 		rockchip->ep_gpio = devm_gpiod_get_optional(dev, "ep",
+-							    GPIOD_OUT_HIGH);
++							    GPIOD_OUT_LOW);
+ 		if (IS_ERR(rockchip->ep_gpio))
+ 			return dev_err_probe(dev, PTR_ERR(rockchip->ep_gpio),
+ 					     "failed to get ep GPIO\n");
 
 
 
