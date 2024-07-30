@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-62831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979799415B9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:51:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF989415CD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432D71F253F3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:51:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C99F283757
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5991B583F;
-	Tue, 30 Jul 2024 15:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540E21BA89C;
+	Tue, 30 Jul 2024 15:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxEq1q93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bO2kGbb0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F012D1B583B;
-	Tue, 30 Jul 2024 15:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8451B583C;
+	Tue, 30 Jul 2024 15:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354711; cv=none; b=dyZYqlXWQpCQm+6qCS89DnMauACTcUiOgE46hOl+zOc077URx5LSzvnIyFpRiA1gLNREzL5UpIw63sLnq8DiwQ5F7TtE/kHqOXR4Ln2Ma/Y3wITp69abLKX6oOzZjQ9aAlWjqLxpUJ9amkbwLEIzeLb46zrutfjDV9YHe77LmTs=
+	t=1722354743; cv=none; b=cueTKXxgp7A1ZjVb3C+xBHqQBYG552eFYGNRK+XnZlyWyYXz9JirqTf7DuxxVqcd9vhnJ711bRv8b9aQ9doSmsZ3IE/v4bNeI0E0k3rkWpKNwcm0QDM5XdfCv6dqokPwwF9meez6Sd2iKyd2m+3+SNFZHu5d7ziB8+duVoGIPgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354711; c=relaxed/simple;
-	bh=8L81HC5eYCy7G0rLz3D87is9OLUkYLijjO8VSHeA9E0=;
+	s=arc-20240116; t=1722354743; c=relaxed/simple;
+	bh=NDoxv1BPL+9wX9JV6Rh2k2/qUlWN+OA9Ls6OZSBLH9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YW0zP5m+u+pdQtFP4z+VVRRBPdr2evlGw4hg7Xsm/Mlng8kZCvJ5gRMMyzdR7utifyMbIEUV9IFNbdi/FpD3QZUrO2K/eB/5FW56g4bKXKFIT6Uh5kUTBq2gPcGepS7FG124xYSKyyESn9xm9VDt5TeUqRKiw3bjy3Ux3hi9gic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxEq1q93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B1BC32782;
-	Tue, 30 Jul 2024 15:51:49 +0000 (UTC)
+	 MIME-Version; b=eSL+YGUTmrUliU/fwRWiAtvGm+zxRmffc9G8F4Y7VjmV+r+mkxNRa30OTmsuyctS4UgH9pPLFRkCCXM2gpA0q1St3k+EfPatjAWrSx526dJ9c8H673nNr57Da/cNguvZdbU60QrrtccTqB/+/njZwcFTFOVcnwPVLZ3wHs+2i0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bO2kGbb0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74041C32782;
+	Tue, 30 Jul 2024 15:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354710;
-	bh=8L81HC5eYCy7G0rLz3D87is9OLUkYLijjO8VSHeA9E0=;
+	s=korg; t=1722354742;
+	bh=NDoxv1BPL+9wX9JV6Rh2k2/qUlWN+OA9Ls6OZSBLH9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxEq1q93nElcPs8OPHad2fMB5HCIESaXw6nk160GWqzAJWZoQAMKKeFlCpXDKGv9W
-	 K+pOerYJre+YOVMudCgRju9qxNtUDzpZvt5Hu801WT+5UuhiRvhVJb4dkRFgddZVkz
-	 aZwyoihfoWgkYA1tQbY501eq/Sk6f8jeyV1JFUbg=
+	b=bO2kGbb0krjZZ3aiudyGJSFe1VlSJsCF+Gjcv5180Ky9Cn3w3rlFLgvqv0M716Uif
+	 tzg5JPfxdx9Z7s3GNz0uHdTkTQkWmyazZ3/QqNqcRgP7KWN8YsA+Xd/n4yfXDHNyWX
+	 aA17bVBdeVHfxdrDxxClrS+8RGwvsJ9GoG9j1fTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/440] spi: spi-microchip-core: Fix the number of chip selects supported
-Date: Tue, 30 Jul 2024 17:43:54 +0200
-Message-ID: <20240730151615.816774552@linuxfoundation.org>
+Subject: [PATCH 6.1 002/440] spi: atmel-quadspi: Add missing check for clk_prepare
+Date: Tue, 30 Jul 2024 17:43:55 +0200
+Message-ID: <20240730151615.855354219@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -67,40 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit a7ed3a11202d90939a3d00ffcc8cf50703cb7b35 ]
+[ Upstream commit ef901b38d3a4610c4067cd306c1a209f32e7ca31 ]
 
-The SPI "hard" controller in PolarFire SoC has eight CS lines, but only
-one CS line is wired. When the 'num-cs' property is not specified in
-the device tree, the driver defaults to the MAX_CS value, which has
-been fixed to 1 to match the hardware configuration; however, when the
-'num-cs' property is explicitly defined in the device tree, it
-overrides the default value.
+Add check for the return value of clk_prepare() and return the error if
+it fails in order to catch the error.
 
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Signed-off-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://msgid.link/r/20240514104508.938448-3-prajna.rajendrakumar@microchip.com
+Fixes: 4a2f83b7f780 ("spi: atmel-quadspi: add runtime pm support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://msgid.link/r/20240515084028.3210406-1-nichen@iscas.ac.cn
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-microchip-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/atmel-quadspi.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index d352844c798c9..d4c08d3668741 100644
---- a/drivers/spi/spi-microchip-core.c
-+++ b/drivers/spi/spi-microchip-core.c
-@@ -21,7 +21,7 @@
- #include <linux/spi/spi.h>
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 7e05b48dbd71c..1f1aee28b1f79 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -724,8 +724,15 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
+ 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+ 	int ret;
  
- #define MAX_LEN				(0xffff)
--#define MAX_CS				(8)
-+#define MAX_CS				(1)
- #define DEFAULT_FRAMESIZE		(8)
- #define FIFO_DEPTH			(32)
- #define CLK_GEN_MODE1_MAX		(255)
+-	clk_prepare(aq->pclk);
+-	clk_prepare(aq->qspick);
++	ret = clk_prepare(aq->pclk);
++	if (ret)
++		return ret;
++
++	ret = clk_prepare(aq->qspick);
++	if (ret) {
++		clk_unprepare(aq->pclk);
++		return ret;
++	}
+ 
+ 	ret = pm_runtime_force_resume(dev);
+ 	if (ret < 0)
 -- 
 2.43.0
 
