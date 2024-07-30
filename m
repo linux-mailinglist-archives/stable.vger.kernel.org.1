@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF19941797
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A45D4941D49
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0671F22128
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38E7CB29A37
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15D2189905;
-	Tue, 30 Jul 2024 16:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA211A76B3;
+	Tue, 30 Jul 2024 17:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rus7w9cD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdeTSWfZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE12189902;
-	Tue, 30 Jul 2024 16:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5171A76A2;
+	Tue, 30 Jul 2024 17:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355829; cv=none; b=AchPka8HjN9H+Q1D0/puBSzS61qgQUMEg/aaeMrymJr/grz0U4s3cbWct5BVQljpphxLvGFvyRzesgKAVNS/pluXFUBdY/JkvL/ygmO/+5q19Zi3PSmAEjpFEby+xE5CMLv5Jb0EFAue2jg5aRCci9aAS+1jSk+mZRCs3TjnHvE=
+	t=1722359651; cv=none; b=jQHWjNF70F/GomZ4qOfrNQICuLCG1mWduyvvq152Mv6TM05RAqoPKZg1dheTrosyMcj+1+EwMYg5S+y31PYO87EKMvD4G9q/NNtIPC+J+JbDWk2kETE/tO3yCyOlKpgjnlQl0jK/Tn7qYfwzgvM9W0pYao/fo87n8qc5okCzKeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355829; c=relaxed/simple;
-	bh=itqwuvuZZeYG6jEYho+F45xCOmyPapLBLGQZAS5m1Gs=;
+	s=arc-20240116; t=1722359651; c=relaxed/simple;
+	bh=sFqNY+DBUb6Jx5X5F6f2j7ZqbxtfjPPBpM4+Ajazxlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbRKOQiSqBuam7+xKg3ApuCsZc91bkNVBntbyghMjiWdezP/f49xfdrra1BJTg1jC90yMIG0cc39wtUgfARuY6gIy8nzhwgB/EVbIfCRxH2n6W8eAA5AR+EkFQhmLdMLn+PuGTYJM33MkkYE40dDUQaSLTL7VNbO/3gZF1bh2jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rus7w9cD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD6AC32782;
-	Tue, 30 Jul 2024 16:10:28 +0000 (UTC)
+	 MIME-Version; b=calsaI7kRwMcdIyuyDq+DMy+BWHHbMp1Dm4ZPlZcJRoBdpMe/ooZNFCDt19GJ6Rhcgjt33cW/8Spf+CZKdUr1lwrSam/jUespS88bdeJN8YtKnzmqMdpgYqnbpnFzypREkEoqQ9iYQc1Sy0kIi78C2CbHtkFmF7KDQcTsSyZS0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdeTSWfZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6F5C32782;
+	Tue, 30 Jul 2024 17:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355829;
-	bh=itqwuvuZZeYG6jEYho+F45xCOmyPapLBLGQZAS5m1Gs=;
+	s=korg; t=1722359651;
+	bh=sFqNY+DBUb6Jx5X5F6f2j7ZqbxtfjPPBpM4+Ajazxlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rus7w9cD2qFi1qp44THQdo1CinNbyeKHf5MKM5TERmM7hK1rT6g/8MjwuNUvmf52Z
-	 0iFa8c516N8zY+pT+Q1aE8Vh1IkXmD5EdJLwCNSoYgE55lLLUAtbeopVsJmxmtT4zo
-	 TpM6CaZ22vWUEyEVxPs3QJB+G/fukAaJw7JBwDbw=
+	b=cdeTSWfZ9G4uWBp/VPUNEbyxr2qQx/dHrgl2+pdlTFXcaJKi6HHyjEVrn7ZX49v9V
+	 SIUvkAek29WSju6TxV9/bK4BclXMNIzOdJNgZeNsQs+Vq7PtIF3pSDnSu2GVWzl+/3
+	 lfqmt52W3zU3M34pqKuZ07kZXDyJaZ2/8oInzLDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/440] drm/panel: boe-tv101wum-nl6: If prepare fails, disable GPIO before regulators
+Subject: [PATCH 6.10 491/809] pinctrl: core: fix possible memory leak when pinctrl_enable() fails
 Date: Tue, 30 Jul 2024 17:46:07 +0200
-Message-ID: <20240730151621.117125079@linuxfoundation.org>
+Message-ID: <20240730151744.131121955@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 587c48f622374e5d47b1d515c6006a4df4dee882 ]
+[ Upstream commit ae1cf4759972c5fe665ee4c5e0c29de66fe3cf4a ]
 
-The enable GPIO should clearly be set low before turning off
-regulators. That matches both the inverse order that things were
-enabled and also the order in unprepare().
+In devm_pinctrl_register(), if pinctrl_enable() fails in pinctrl_register(),
+the "pctldev" has not been added to dev resources, so devm_pinctrl_dev_release()
+can not be called, it leads memory leak.
 
-Fixes: a869b9db7adf ("drm/panel: support for boe tv101wum-nl6 wuxga dsi video mode panel")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240517143643.2.Ieac346cd0f1606948ba39ceea06b55359fe972b6@changeid
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.2.Ieac346cd0f1606948ba39ceea06b55359fe972b6@changeid
+Introduce pinctrl_uninit_controller(), call it in the error path to free memory.
+
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-2-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index 1c008bd9102ff..b26c4a09d0912 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -1292,13 +1292,13 @@ static int boe_panel_prepare(struct drm_panel *panel)
- 	return 0;
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index f424a57f00136..4438f3b4b5ef9 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -2080,6 +2080,14 @@ pinctrl_init_controller(struct pinctrl_desc *pctldesc, struct device *dev,
+ 	return ERR_PTR(ret);
+ }
  
- poweroff:
-+	gpiod_set_value(boe->enable_gpio, 0);
- 	regulator_disable(boe->avee);
- poweroffavdd:
- 	regulator_disable(boe->avdd);
- poweroff1v8:
- 	usleep_range(5000, 7000);
- 	regulator_disable(boe->pp1800);
--	gpiod_set_value(boe->enable_gpio, 0);
++static void pinctrl_uninit_controller(struct pinctrl_dev *pctldev, struct pinctrl_desc *pctldesc)
++{
++	pinctrl_free_pindescs(pctldev, pctldesc->pins,
++			      pctldesc->npins);
++	mutex_destroy(&pctldev->mutex);
++	kfree(pctldev);
++}
++
+ static int pinctrl_claim_hogs(struct pinctrl_dev *pctldev)
+ {
+ 	pctldev->p = create_pinctrl(pctldev->dev, pctldev);
+@@ -2160,8 +2168,10 @@ struct pinctrl_dev *pinctrl_register(struct pinctrl_desc *pctldesc,
+ 		return pctldev;
  
- 	return ret;
+ 	error = pinctrl_enable(pctldev);
+-	if (error)
++	if (error) {
++		pinctrl_uninit_controller(pctldev, pctldesc);
+ 		return ERR_PTR(error);
++	}
+ 
+ 	return pctldev;
  }
 -- 
 2.43.0
