@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C398A941DBF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:21:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B21E941B31
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 789611F279D7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D89A282B8F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644C11A76DD;
-	Tue, 30 Jul 2024 17:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCB518B464;
+	Tue, 30 Jul 2024 16:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXKnpI5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjfzXWKu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2166C1A76D4;
-	Tue, 30 Jul 2024 17:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D98189BB6;
+	Tue, 30 Jul 2024 16:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360048; cv=none; b=Ubu5zskwipJ704CmF+COdkY2ZWwDGIH4mT1AJDTdZRKrgYAkZKVPGmrEw3Cj+3UmX3ess8t3Nf/BKxdQFIY3P/Kxiqqy7UNkuCzmO+2dSwcFL/506JqGCd3cjcljVspX6eYG/ikIS/vJGzGu8/lecCmvGVEsmvMFMtbfSojoRjc=
+	t=1722358312; cv=none; b=cfJ3JbCERG/ri0WEHc/pbL7G/uHB5Pu3vC00mVqSQK1ucQlVplzN2nIa47IUwjsgdQhghgXQyb+veqbeK/Em/bYSxlvgZzRh2dM8l1orEAjhYv5cB5YLOty3XSelNUh+5m0q4amW0tQHriLLA89smxhXmRVMl1yzzETFOUQo+PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360048; c=relaxed/simple;
-	bh=WDqI3JGUIyi1x6wvoHl6x/AmS5nOgxWWTCXaV0LQ5sg=;
+	s=arc-20240116; t=1722358312; c=relaxed/simple;
+	bh=SUp+JsmRVJR4LDnGCDNo37ce+7eETYqjfumkk1TeILQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mj6XlZglQ3+HibBTQCcMfUTJXCg+qcnnMme359jWnnc+ByE0cssdn5phk+gnrf2ggOay7zXqH6WZ13V64a4Iq0JrHmiv8cUqDoD4v8iIfYNAj89gQ4O7elh+PRGxUEvXFFTHj6+1mVK+4nB+Btz+5pFjZfgo8iODEDv+9yhFBLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXKnpI5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D384C4AF13;
-	Tue, 30 Jul 2024 17:20:47 +0000 (UTC)
+	 MIME-Version; b=G14FzKwp0cSM2O8gG7glelxEcSuxStfTjadF0lTPo7vcg6JLV5deflXVKyHDYLkCl4eQMXblKvPz7SqaUQ5TLiRY564iD/DqtxX+hZdOTu5LUguZ/xukXOCc1p1fNjg4A2cVTq1fZ5MZFMsq4ocJZ2dJxV9CM/0jnz6OXftuHkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjfzXWKu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D547C4AF0A;
+	Tue, 30 Jul 2024 16:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360048;
-	bh=WDqI3JGUIyi1x6wvoHl6x/AmS5nOgxWWTCXaV0LQ5sg=;
+	s=korg; t=1722358312;
+	bh=SUp+JsmRVJR4LDnGCDNo37ce+7eETYqjfumkk1TeILQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXKnpI5OLEBJZABRupCrbF4JqaF9QxhwXUwvxrSkYb1wgsmjumK1/XoSPKbm2aBae
-	 C0piKl6qV30/w/UgVnu7gqbcqdoKqKIHJOL8KiM3Bj0Uyu9+3yUT3OshTKYwWqH+oC
-	 jTRjsfEALRmQiMRwRKyw5EkmYznijtsZFtB9lPbc=
+	b=EjfzXWKuAI2ENZAMFbYgeSBO013rSLSmoTpJdSXerW5EjEqFZSQ2kFU7ymPlGeeBg
+	 7Bj6VwFIgsmVnuupw8bzxugNxfUq6Qhs5ikcTt6n4Gm9eDXceWKx01ztM2ZDEPsbH7
+	 D46KdbQcnJl5far2ukDmse6+Kbifptea7HMBUaO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mikhail.v.gavrilov@gmail.com,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 580/809] drm/amd/display: fix corruption with high refresh rates on DCN 3.0
-Date: Tue, 30 Jul 2024 17:47:36 +0200
-Message-ID: <20240730151747.689088773@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 350/568] fs/ntfs3: Missed error return
+Date: Tue, 30 Jul 2024 17:47:37 +0200
+Message-ID: <20240730151653.549074269@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit e3615bd198289f319172c428f20857accb46b830 upstream.
+[ Upstream commit 2cbbd96820255fff4f0ad1533197370c9ccc570b ]
 
-This reverts commit bc87d666c05a13e6d4ae1ddce41fc43d2567b9a2 and the
-register changes from commit 6d4279cb99ac4f51d10409501d29969f687ac8dc.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3412
-Cc: mikhail.v.gavrilov@gmail.com
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.10.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f3b442b5ad2 ("fs/ntfs3: Add bitmap")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/optc/dcn10/dcn10_optc.c |   15 +++------------
- drivers/gpu/drm/amd/display/dc/optc/dcn20/dcn20_optc.c |   10 ++++++++++
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ fs/ntfs3/bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/optc/dcn10/dcn10_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/optc/dcn10/dcn10_optc.c
-@@ -945,19 +945,10 @@ void optc1_set_drr(
- 				OTG_FORCE_LOCK_ON_EVENT, 0,
- 				OTG_SET_V_TOTAL_MIN_MASK_EN, 0,
- 				OTG_SET_V_TOTAL_MIN_MASK, 0);
--
--		// Setup manual flow control for EOF via TRIG_A
--		optc->funcs->setup_manual_trigger(optc);
--
--	} else {
--		REG_UPDATE_4(OTG_V_TOTAL_CONTROL,
--				OTG_SET_V_TOTAL_MIN_MASK, 0,
--				OTG_V_TOTAL_MIN_SEL, 0,
--				OTG_V_TOTAL_MAX_SEL, 0,
--				OTG_FORCE_LOCK_ON_EVENT, 0);
--
--		optc->funcs->set_vtotal_min_max(optc, 0, 0);
- 	}
-+
-+	// Setup manual flow control for EOF via TRIG_A
-+	optc->funcs->setup_manual_trigger(optc);
- }
+diff --git a/fs/ntfs3/bitmap.c b/fs/ntfs3/bitmap.c
+index 845f9b22deef0..931a7744d1865 100644
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -1382,7 +1382,7 @@ int wnd_extend(struct wnd_bitmap *wnd, size_t new_bits)
  
- void optc1_set_vtotal_min_max(struct timing_generator *optc, int vtotal_min, int vtotal_max)
---- a/drivers/gpu/drm/amd/display/dc/optc/dcn20/dcn20_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/optc/dcn20/dcn20_optc.c
-@@ -462,6 +462,16 @@ void optc2_setup_manual_trigger(struct t
- {
- 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
+ 		err = ntfs_vbo_to_lbo(sbi, &wnd->run, vbo, &lbo, &bytes);
+ 		if (err)
+-			break;
++			return err;
  
-+	/* Set the min/max selectors unconditionally so that
-+	 * DMCUB fw may change OTG timings when necessary
-+	 * TODO: Remove the w/a after fixing the issue in DMCUB firmware
-+	 */
-+	REG_UPDATE_4(OTG_V_TOTAL_CONTROL,
-+				 OTG_V_TOTAL_MIN_SEL, 1,
-+				 OTG_V_TOTAL_MAX_SEL, 1,
-+				 OTG_FORCE_LOCK_ON_EVENT, 0,
-+				 OTG_SET_V_TOTAL_MIN_MASK, (1 << 1)); /* TRIGA */
-+
- 	REG_SET_8(OTG_TRIGA_CNTL, 0,
- 			OTG_TRIGA_SOURCE_SELECT, 21,
- 			OTG_TRIGA_SOURCE_PIPE_SELECT, optc->inst,
+ 		bh = ntfs_bread(sb, lbo >> sb->s_blocksize_bits);
+ 		if (!bh)
+-- 
+2.43.0
+
 
 
 
