@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBD6941AAC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70C194184C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29C9D281B88
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:46:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 249F11C23886
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3943D18455E;
-	Tue, 30 Jul 2024 16:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9442218800A;
+	Tue, 30 Jul 2024 16:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEa533sf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNF2eVsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEFA1A6166;
-	Tue, 30 Jul 2024 16:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524181A617E;
+	Tue, 30 Jul 2024 16:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357972; cv=none; b=bv4gRnAdFX1bKH3g1AOKDeNKlcoHV6QEXCcflbwHg8iTh80mCu8PPvnKwe4Vh+yvrjavTLZy6cFh81iWZymKGMs7Xdi3RbpTSTMKIKug17PDHh+wJZB32ktbYlVIiiNyhVuJoMeU9wxWZ1mo42eHSlc2Kh9sLYxFRfOvj4rOWQg=
+	t=1722356388; cv=none; b=b3z9E15wOeAOX2k68G2XakDn57idQ+7rNsivAn0A8hsvdl8upouENg9xbtjgpgwci1Fc2D+1D+fKDKKbKpUYkEbZGHkkjDdHfD6ihkqqirP6RGjWx1wJaF0w2eACW6MUxEDXL5+zzWV8LSsMrRQAOt8dYsScIz12NUa6c4FY4zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357972; c=relaxed/simple;
-	bh=tpI/QsWwtKu6pHRuf6HO5viDKv5JOTMWNiFaLG2F57Q=;
+	s=arc-20240116; t=1722356388; c=relaxed/simple;
+	bh=nKGAiP1IZz2PePzXw4vhF9xsVzKjVx8hF6dCOtzPOo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnF8eDpD3vCs1WpHQJLDfXidFJFYmKdMjdmwLms+1T3p1h/XmGz33R7FJNAaxrteBYhl+4xsIzPLT9QbN8IUyYcCdJ/Ya0DTMGY0+WZrHw9CI7/BRyg2mhPcKTEDLclGp52EXwGiz+9IFGIzClq4968/jMtwZu1fHH4GznAotwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEa533sf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73556C32782;
-	Tue, 30 Jul 2024 16:46:11 +0000 (UTC)
+	 MIME-Version; b=jo6vRA4N3H7en15O/4pH7nTTdiUYZ7e0sp17NmUwtAZAeCi7FMx9QZ9e25uxy4Hh0DWsdBtHpWJJi0TzMZ4r2ZsqET66xmLAc6Y165fBwbqF31jl0VCITZERtzLBlYHsCi144SgMO+aNidXcmP8SEcC86fZJflDVjMoFv5pEyG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNF2eVsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECE6C32782;
+	Tue, 30 Jul 2024 16:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357971;
-	bh=tpI/QsWwtKu6pHRuf6HO5viDKv5JOTMWNiFaLG2F57Q=;
+	s=korg; t=1722356388;
+	bh=nKGAiP1IZz2PePzXw4vhF9xsVzKjVx8hF6dCOtzPOo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEa533sfz9/gdkUZ/SwJP0td2R69rHbjH7FzXXRFVdnzUAoLJ8RB96JeIV4smUxzZ
-	 D7OS3qrqvrJHl3LZRJmqhxnEhR1uQgg3hSKe7c033yQyDYDOIr2JbCZmMYSKQl8IP0
-	 kc2iHGB6BZNIV3t632c45SQvQQwMT375twhTrZH8=
+	b=hNF2eVsFj8V+u1zSKrrpIU9dmLCKkXxi2BAKPhoGjXmAvv1tVBptJn9zInTq+VCy6
+	 DeO9MuJj3ySXfOeFnzLbRmQOgKsRR3i3K6DebPFbKJuQX4q/zE0VG723pU6Su8eYKI
+	 MY/N9x/l7YUDBU+pndbNR8bNarPcdTVIbHvR3sHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Washington <joshwash@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chiara Meiohas <cmeiohas@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 313/568] gve: Fix XDP TX completion handling when counters overflow
+Subject: [PATCH 6.1 187/440] RDMA/mlx5: Set mkeys for dmabuf at PAGE_SIZE
 Date: Tue, 30 Jul 2024 17:47:00 +0200
-Message-ID: <20240730151652.105093215@linuxfoundation.org>
+Message-ID: <20240730151623.178373488@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: Chiara Meiohas <cmeiohas@nvidia.com>
 
-[ Upstream commit 03b54bad26f3c78bb1f90410ec3e4e7fe197adc9 ]
+[ Upstream commit a4e540119be565f47c305f295ed43f8e0bc3f5c3 ]
 
-In gve_clean_xdp_done, the driver processes the TX completions based on
-a 32-bit NIC counter and a 32-bit completion counter stored in the tx
-queue.
+Set the mkey for dmabuf at PAGE_SIZE to support any SGL
+after a move operation.
 
-Fix the for loop so that the counter wraparound is handled correctly.
+ib_umem_find_best_pgsz returns 0 on error, so it is
+incorrect to check the returned page_size against PAGE_SIZE
 
-Fixes: 75eaae158b1b ("gve: Add XDP DROP and TX support for GQI-QPL format")
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240716171041.1561142-1-pkaligineedi@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 90da7dc8206a ("RDMA/mlx5: Support dma-buf based userspace memory region")
+Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/1e2289b9133e89f273a4e68d459057d032cbc2ce.1718301631.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h | 13 +++++++++++++
+ drivers/infiniband/hw/mlx5/odp.c     |  6 ++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
-index 9f6ffc4a54f0b..2ae891a62875c 100644
---- a/drivers/net/ethernet/google/gve/gve_tx.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx.c
-@@ -158,15 +158,16 @@ static int gve_clean_xdp_done(struct gve_priv *priv, struct gve_tx_ring *tx,
- 			      u32 to_do)
- {
- 	struct gve_tx_buffer_state *info;
--	u32 clean_end = tx->done + to_do;
- 	u64 pkts = 0, bytes = 0;
- 	size_t space_freed = 0;
- 	u32 xsk_complete = 0;
- 	u32 idx;
-+	int i;
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 8d94e6834e01b..0ef347e91ffeb 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -109,6 +109,19 @@ unsigned long __mlx5_umem_find_best_quantized_pgoff(
+ 		__mlx5_bit_sz(typ, page_offset_fld), 0, scale,                 \
+ 		page_offset_quantized)
  
--	for (; tx->done < clean_end; tx->done++) {
-+	for (i = 0; i < to_do; i++) {
- 		idx = tx->done & tx->mask;
- 		info = &tx->info[idx];
-+		tx->done++;
++static inline unsigned long
++mlx5_umem_dmabuf_find_best_pgsz(struct ib_umem_dmabuf *umem_dmabuf)
++{
++	/*
++	 * mkeys used for dmabuf are fixed at PAGE_SIZE because we must be able
++	 * to hold any sgl after a move operation. Ideally the mkc page size
++	 * could be changed at runtime to be optimal, but right now the driver
++	 * cannot do that.
++	 */
++	return ib_umem_find_best_pgsz(&umem_dmabuf->umem, PAGE_SIZE,
++				      umem_dmabuf->umem.iova);
++}
++
+ enum {
+ 	MLX5_IB_MMAP_OFFSET_START = 9,
+ 	MLX5_IB_MMAP_OFFSET_END = 255,
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index bc97958818bb5..af73c5ebe6ac5 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -706,10 +706,8 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
+ 		return err;
+ 	}
  
- 		if (unlikely(!info->xdp.size))
- 			continue;
+-	page_size = mlx5_umem_find_best_pgsz(&umem_dmabuf->umem, mkc,
+-					     log_page_size, 0,
+-					     umem_dmabuf->umem.iova);
+-	if (unlikely(page_size < PAGE_SIZE)) {
++	page_size = mlx5_umem_dmabuf_find_best_pgsz(umem_dmabuf);
++	if (!page_size) {
+ 		ib_umem_dmabuf_unmap_pages(umem_dmabuf);
+ 		err = -EINVAL;
+ 	} else {
 -- 
 2.43.0
 
