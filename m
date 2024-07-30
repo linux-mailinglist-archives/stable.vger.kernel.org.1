@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381909418FF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:27:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4427C941B5C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E69872858A6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:27:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75F621C21173
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4558B1A6198;
-	Tue, 30 Jul 2024 16:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FF81898EB;
+	Tue, 30 Jul 2024 16:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKWWi51I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lO/J6kM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C781A618E;
-	Tue, 30 Jul 2024 16:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0008D18800A;
+	Tue, 30 Jul 2024 16:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356865; cv=none; b=oL6qJcRLTf/6IwKxCQPKO0CHM6YYf2kIORW4da2jd34Ln4USRgNyPRm/9OyNlVgzSOxeeUONxPnNLTtkE/ak406LHPKb3MgTSNXVhmJuoG9fuWYE+CbadoWuvhG/FEUKrIKQmTKjM9anDpCzrq9RBwMmcCtMjQVDkJfhhwCaKwQ=
+	t=1722358441; cv=none; b=OB35bk0V2lnr1uQD1KRBfAlQiGXFz4A45urxcQAfc0UuX/SczGCTsou5d3Mfm432am1U9HrYKwoWfH+D0WNqL5Po6pfOakhFZITDtENiUBmJ05t30Hz8TLv3NNbZixg4XXHfXvSC4OEwuFQxsO24+KPZLASNDLN5mzf5JJDK1UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356865; c=relaxed/simple;
-	bh=ixfi1qG4oQyq07OTPjjm2Oc6CG8iVuwzqVJwP68Gn/4=;
+	s=arc-20240116; t=1722358441; c=relaxed/simple;
+	bh=GvujTPpyv6JiI1/79aIaCvt89P1Ca67tsZXFnXv66/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqkGbX82zyBVHy6yOAOr8K/GGM0DEK/qQIcnw+d8NnTSFI4c2jfHOYkg4Hln8r6NP/BQA91PBpv9XF7PjGVl8rcWbQnl1dKMjh88vpCyOz3U6FotVa903cr85OIBzOEMiik2iz8umCJSiKaRceTdPfrWDUQ3hMhw+RtCCBwzq78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKWWi51I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68493C32782;
-	Tue, 30 Jul 2024 16:27:44 +0000 (UTC)
+	 MIME-Version; b=WX5HArCKybeHtAsf506hHotxFePd9GIdY5ON6au05Vl3RdBwAT3f4OpfOouHUdlCb1FJDc1BupByad5idGwL34FguUGfoxj13uFXsspbF8xEBxTOOABTCvpwuTN0juc+jf/4M7Bgv2Dcm+h/TzaCrLi6/uo73jNeZEymER6Sz2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lO/J6kM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A962C4AF0C;
+	Tue, 30 Jul 2024 16:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356864;
-	bh=ixfi1qG4oQyq07OTPjjm2Oc6CG8iVuwzqVJwP68Gn/4=;
+	s=korg; t=1722358440;
+	bh=GvujTPpyv6JiI1/79aIaCvt89P1Ca67tsZXFnXv66/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKWWi51IlLrbmN/O3M88YKyzIfcNJBFtGYIYkLb41uCW9e4h480HQY61GFzeKp+IP
-	 y2CgRrIQkVjMLD6AxNBYwqr5VaXP4WkmwDTZv3wK0f43zuP5NzHOM8kCY5aFaUlgm7
-	 ha3XYoG/ZMPboSBzsqQKlPRhDHTsmnBZlPdubu9k=
+	b=lO/J6kM+e6kl0kj4O8WSxxx6xgGkl9JsEYCI/kHs4Jj3riN3mTdPJ6s/uHVPp3/P+
+	 9dl2vQ/uc4eCouhCV++LDtAVwZNzqouTfPwoDwOja61ev//mjxtTfuLW/a+qpcZYnt
+	 BG1D4TbhR+KSdngaMPK2nrne9djkSwkfLdCVsgqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Martin Willi <martin@strongswan.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 236/440] net: dsa: mv88e6xxx: Limit chip-wide frame size config to CPU ports
+	Yu Zhao <yuzhao@google.com>,
+	Alexander Motin <mav@ixsystems.com>,
+	Wei Xu <weixugc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 362/568] mm/mglru: fix overshooting shrinker memory
 Date: Tue, 30 Jul 2024 17:47:49 +0200
-Message-ID: <20240730151625.072298318@linuxfoundation.org>
+Message-ID: <20240730151654.010222742@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Yu Zhao <yuzhao@google.com>
 
-[ Upstream commit 66b6095c264e1b4e0a441c6329861806504e06c6 ]
+commit 3f74e6bd3b84a8b6bb3cc51609c89e5b9d58eed7 upstream.
 
-Marvell chips not supporting per-port jumbo frame size configurations use
-a chip-wide frame size configuration. In the commit referenced with the
-Fixes tag, the setting is applied just for the last port changing its MTU.
+set_initial_priority() tries to jump-start global reclaim by estimating
+the priority based on cold/hot LRU pages.  The estimation does not account
+for shrinker objects, and it cannot do so because their sizes can be in
+different units other than page.
 
-While configuring CPU ports accounts for tagger overhead, user ports do
-not. When setting the MTU for a user port, the chip-wide setting is
-reduced to not include the tagger overhead, resulting in an potentially
-insufficient maximum frame size for the CPU port. Specifically, sending
-full-size frames from the CPU port on a MV88E6097 having a user port MTU
-of 1500 bytes results in dropped frames.
+If shrinker objects are the majority, e.g., on TrueNAS SCALE 24.04.0 where
+ZFS ARC can use almost all system memory, set_initial_priority() can
+vastly underestimate how much memory ARC shrinker can evict and assign
+extreme low values to scan_control->priority, resulting in overshoots of
+shrinker objects.
 
-As, by design, the CPU port MTU is adjusted for any user port change,
-apply the chip-wide setting only for CPU ports.
+To reproduce the problem, using TrueNAS SCALE 24.04.0 with 32GB DRAM, a
+test ZFS pool and the following commands:
 
-Fixes: 1baf0fac10fb ("net: dsa: mv88e6xxx: Use chip-wide max frame size for MTU")
-Suggested-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  fio --name=mglru.file --numjobs=36 --ioengine=io_uring \
+      --directory=/root/test-zfs-pool/ --size=1024m --buffered=1 \
+      --rw=randread --random_distribution=random \
+      --time_based --runtime=1h &
+
+  for ((i = 0; i < 20; i++))
+  do
+    sleep 120
+    fio --name=mglru.anon --numjobs=16 --ioengine=mmap \
+      --filename=/dev/zero --size=1024m --fadvise_hint=0 \
+      --rw=randrw --random_distribution=random \
+      --time_based --runtime=1m
+  done
+
+To fix the problem:
+1. Cap scan_control->priority at or above DEF_PRIORITY/2, to prevent
+   the jump-start from being overly aggressive.
+2. Account for the progress from mm_account_reclaimed_pages(), to
+   prevent kswapd_shrink_node() from raising the priority
+   unnecessarily.
+
+Link: https://lkml.kernel.org/r/20240711191957.939105-2-yuzhao@google.com
+Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: Alexander Motin <mav@ixsystems.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/vmscan.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 4938550a67c02..d94b46316a117 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3606,7 +3606,8 @@ static int mv88e6xxx_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
- 	mv88e6xxx_reg_lock(chip);
- 	if (chip->info->ops->port_set_jumbo_size)
- 		ret = chip->info->ops->port_set_jumbo_size(chip, port, new_mtu);
--	else if (chip->info->ops->set_max_frame_size)
-+	else if (chip->info->ops->set_max_frame_size &&
-+		 dsa_is_cpu_port(ds, port))
- 		ret = chip->info->ops->set_max_frame_size(chip, new_mtu);
- 	mv88e6xxx_reg_unlock(chip);
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5585,7 +5585,11 @@ static void set_initial_priority(struct
+ 	/* round down reclaimable and round up sc->nr_to_reclaim */
+ 	priority = fls_long(reclaimable) - 1 - fls_long(sc->nr_to_reclaim - 1);
  
--- 
-2.43.0
-
+-	sc->priority = clamp(priority, 0, DEF_PRIORITY);
++	/*
++	 * The estimation is based on LRU pages only, so cap it to prevent
++	 * overshoots of shrinker objects by large margins.
++	 */
++	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
+ }
+ 
+ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *sc)
+@@ -7350,6 +7354,7 @@ static bool kswapd_shrink_node(pg_data_t
+ {
+ 	struct zone *zone;
+ 	int z;
++	unsigned long nr_reclaimed = sc->nr_reclaimed;
+ 
+ 	/* Reclaim a number of pages proportional to the number of zones */
+ 	sc->nr_to_reclaim = 0;
+@@ -7377,7 +7382,8 @@ static bool kswapd_shrink_node(pg_data_t
+ 	if (sc->order && sc->nr_reclaimed >= compact_gap(sc->order))
+ 		sc->order = 0;
+ 
+-	return sc->nr_scanned >= sc->nr_to_reclaim;
++	/* account for progress from mm_account_reclaimed_pages() */
++	return max(sc->nr_scanned, sc->nr_reclaimed - nr_reclaimed) >= sc->nr_to_reclaim;
+ }
+ 
+ /* Page allocator PCP high watermark is lowered if reclaim is active. */
 
 
 
