@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE569418B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2CF7941ADC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE2A6B2AC1D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC111C22EA7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC8A1A6192;
-	Tue, 30 Jul 2024 16:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC74B188018;
+	Tue, 30 Jul 2024 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0arnl+xv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haLK8irK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1F11A6161;
-	Tue, 30 Jul 2024 16:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B33F14831F;
+	Tue, 30 Jul 2024 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356511; cv=none; b=OvKD7prkZeqdXxVSvvOvqqjx9EnqWflZ2PcDPz0NxbnjXvsbSQW4re7jlnq3spxrUmn506QN7ZhwxKjz2B7qJgtrvhmEcptcgs2eZyDK5pUE0EU/+MBDWOSNtIlIA8d076vGWux6n2/sDgomfq7LkEIu/+bRV3L4GQCcfzhOozE=
+	t=1722358087; cv=none; b=hhF0SGoMBdGqABOWDgN94gFTzuOnRysCt6gyZeE88leSWB4jOdgX8L8PsQpU0s51NIjBhCMym7TXtij3O8l+m8rPoyNrraFExemizMV4drG3r3Afg+6ulVCdBF9YFlHkuYML3ZzYfoljljjtZBfnOHv20uKh7kUnzaNj/Xt0azM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356511; c=relaxed/simple;
-	bh=PT3paJKEaK8o+iUAE0luKaZpr3QKgQ4KZakUIlVlWCY=;
+	s=arc-20240116; t=1722358087; c=relaxed/simple;
+	bh=JT31WtKjCxAQbZMHxPXdlij/5FWqyQiHH+oQBjAoHLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nugoq1oSJ+RZpf2blsAzCAgnNQ9gnyF/EvPpC4YQPjPlCrlBslxKsfLFedyKmHpBDJ0FgfiTBfGV7n/PtQ/gyfQ+gihHk9vNs4wuGmh70kE0ytF7+qVUCVGIel4Xj9aSuFtmuo8ePk5GZ7xB/rZB3Lu+UOpUGPPjGYojV4qzQQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0arnl+xv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A24C32782;
-	Tue, 30 Jul 2024 16:21:50 +0000 (UTC)
+	 MIME-Version; b=l+1zrVAP4zW/z5/7Y2OvTiBsR7pWLsdl/CF60wC0JWmas1psRoK6zRS2J1sGf2xyawSENtjVOHYzNqeSQPgBspDuu68+0u+YL23Ea/RWnyXpbH7ep15uI0LDR9Chahw2mvGBep1a0Glexv+UmN8wy1LHW5+QIlP560KhLDA+91E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haLK8irK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F76C4AF0E;
+	Tue, 30 Jul 2024 16:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356511;
-	bh=PT3paJKEaK8o+iUAE0luKaZpr3QKgQ4KZakUIlVlWCY=;
+	s=korg; t=1722358087;
+	bh=JT31WtKjCxAQbZMHxPXdlij/5FWqyQiHH+oQBjAoHLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0arnl+xveAQfRkDc0Q1PAlYRrk5yYc8oZDv2TCQn4l3eDgU3NtdbOWEvL4IcOlJBF
-	 YJWCIAsgWeNWPTPmiHqpmGaSE7CTPK8HPKLNh2GHZRfcvFP0gZasKm9VQYYwwxHG67
-	 Bmv4ZGU+6NNkUQ+AG+ndd0PHE8GJhwJzTSjsMniA=
+	b=haLK8irK1Hd4AZTnc2Zkc++XXBd0XD+UpZoaMJDaKLiDK8OOS2oScTiOWp28adeFr
+	 QTG+cVtvZ3dLDO1Jzzua7GmFB3mkOYlJ2gFlUnBnYJB7jUAVfqDI2KvTD9Xn5tItrd
+	 3aJOEstux0UOALCpqXjiv0etcQMjoiga4HuEOf+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 198/440] RDMA/mlx4: Fix truncated output warning in mad.c
+Subject: [PATCH 6.6 324/568] fs/ntfs3: Add missing .dirty_folio in address_space_operations
 Date: Tue, 30 Jul 2024 17:47:11 +0200
-Message-ID: <20240730151623.606516362@linuxfoundation.org>
+Message-ID: <20240730151652.539696774@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 0d2e6992fc956e3308cd5376c18567def4cb3967 ]
+[ Upstream commit 0f9579d9e0331b6255132ac06bdf2c0a01cceb90 ]
 
-Increase size of the name array to avoid truncated output warning.
+After switching from pages to folio [1], it became evident that
+the initialization of .dirty_folio for page cache operations was missed for
+compressed files.
 
-drivers/infiniband/hw/mlx4/mad.c: In function ‘mlx4_ib_alloc_demux_ctx’:
-drivers/infiniband/hw/mlx4/mad.c:2197:47: error: ‘%d’ directive output
-may be truncated writing between 1 and 11 bytes into a region of size 4
-[-Werror=format-truncation=]
- 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
-      |                                               ^~
-drivers/infiniband/hw/mlx4/mad.c:2197:38: note: directive argument in
-the range [-2147483645, 2147483647]
- 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
-      |                                      ^~~~~~~~~~~~
-drivers/infiniband/hw/mlx4/mad.c:2197:9: note: ‘snprintf’ output between
-10 and 20 bytes into a destination of size 12
- 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/infiniband/hw/mlx4/mad.c:2205:48: error: ‘%d’ directive output
-may be truncated writing between 1 and 11 bytes into a region of size 3
-[-Werror=format-truncation=]
- 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
-      |                                                ^~
-drivers/infiniband/hw/mlx4/mad.c:2205:38: note: directive argument in
-the range [-2147483645, 2147483647]
- 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
-      |                                      ^~~~~~~~~~~~~
-drivers/infiniband/hw/mlx4/mad.c:2205:9: note: ‘snprintf’ output between
-11 and 21 bytes into a destination of size 12
- 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/infiniband/hw/mlx4/mad.c:2213:48: error: ‘%d’ directive output
-may be truncated writing between 1 and 11 bytes into a region of size 3
-[-Werror=format-truncation=]
- 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
-      |                                                ^~
-drivers/infiniband/hw/mlx4/mad.c:2213:38: note: directive argument in
-the range [-2147483645, 2147483647]
- 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
-      |                                      ^~~~~~~~~~~~~
-drivers/infiniband/hw/mlx4/mad.c:2213:9: note: ‘snprintf’ output between
-11 and 21 bytes into a destination of size 12
- 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/hw/mlx4/mad.o] Error 1
+[1] https://lore.kernel.org/ntfs3/20240422193203.3534108-1-willy@infradead.org
 
-Fixes: fc06573dfaf8 ("IB/mlx4: Initialize SR-IOV IB support for slaves in master context")
-Link: https://lore.kernel.org/r/f3798b3ce9a410257d7e1ec7c9e285f1352e256a.1718554569.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/mad.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/mlx4/mad.c b/drivers/infiniband/hw/mlx4/mad.c
-index a37cfac5e23f9..dc9cf45d2d320 100644
---- a/drivers/infiniband/hw/mlx4/mad.c
-+++ b/drivers/infiniband/hw/mlx4/mad.c
-@@ -2158,7 +2158,7 @@ static int mlx4_ib_alloc_demux_ctx(struct mlx4_ib_dev *dev,
- 				       struct mlx4_ib_demux_ctx *ctx,
- 				       int port)
- {
--	char name[12];
-+	char name[21];
- 	int ret = 0;
- 	int i;
- 
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index fab86300eb8a2..86ade4a9ec8f3 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -2117,5 +2117,6 @@ const struct address_space_operations ntfs_aops = {
+ const struct address_space_operations ntfs_aops_cmpr = {
+ 	.read_folio	= ntfs_read_folio,
+ 	.readahead	= ntfs_readahead,
++	.dirty_folio	= block_dirty_folio,
+ };
+ // clang-format on
 -- 
 2.43.0
 
