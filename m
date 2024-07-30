@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECECE94187A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB967941A02
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4F84B29370
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE991F237CD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1F21917C8;
-	Tue, 30 Jul 2024 16:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400F818455C;
+	Tue, 30 Jul 2024 16:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otK7y7uE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqP7ICBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886E318E04D;
-	Tue, 30 Jul 2024 16:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35A81A6192;
+	Tue, 30 Jul 2024 16:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356107; cv=none; b=TgL2tn1fBIdTwMwBHbEbLO7MHr+ot08wAOP10atkYNg27fp6PdjyIo9AFbcrsY5gjtkDkBX9CeF+3PFxBfNwD99txSftDiCAb08PjGGBRel7BgN5RbTro2BkzhKscXBiAkB8D7AdGCsOE+hdpxK9mWk3babxY4natjgmL8lxA0M=
+	t=1722357539; cv=none; b=Gzi6Tw47aRI4fwhHGH9Rld7lzS9mG36zwrOnX4/Wdit3Prv0UoHLfMqrWb8zacJepFnf/z9NE7WZyGrB4QeS6FoL2JLEpDm0G633pRSTGcsNU7O+N+wGJK1HjMPNTnR15+7JACH7mXw7fhgCI15wajz7eA7LA014jEkjsta3/7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356107; c=relaxed/simple;
-	bh=NGQQkWLQgaDqVs3tMK062Ekk7/PFaZo6oN32C5n279s=;
+	s=arc-20240116; t=1722357539; c=relaxed/simple;
+	bh=L6VhuMIqd5OQXNFX5C+xGQY7oyq+nFHqIYlpxD1Kyj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=to0UTtND+cr9LvKHSdLYTwAFLecScsGv8sTz4Kyj5PqPuFw3VNL6HhOJ/Np9K7kc/8W8guNGNaZ6hjG0efdnZvViKED3FNbwqM5WAUpFRN/4g0mocJXxvuwqc2Ry6w6ebR/FFyW71tfKWqhjJBhpb0uMrjbbj0IFEt+eLkRXWX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otK7y7uE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0BBC4AF0C;
-	Tue, 30 Jul 2024 16:15:06 +0000 (UTC)
+	 MIME-Version; b=NG7H51lW/yexgT+FAmVl5h2+b6t028OtgrG2hYfkY0pxUfGCop+d9s1yk4mMokMP08NBtXgmcy5UnUiPGN2t2BKtQz6GeS50gbJePIOVQrNqamJY9ur5C5dgvEp/fUmQ0fwKmKp7RWZD05qbQilsZ0bAzPYn20dzPQNP7PAzv5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqP7ICBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7702CC4AF0F;
+	Tue, 30 Jul 2024 16:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356107;
-	bh=NGQQkWLQgaDqVs3tMK062Ekk7/PFaZo6oN32C5n279s=;
+	s=korg; t=1722357538;
+	bh=L6VhuMIqd5OQXNFX5C+xGQY7oyq+nFHqIYlpxD1Kyj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otK7y7uEfeGdnmugTpOJrijF7dXnF5bhHdDHuQfM+ul7UVb2iXR1d41lke0X75jTe
-	 8dM5usTdOn2auaqGlj1317fHU6YG3EAw5Rljv6ppu8jEsqIAL85kSsFPT153xP6GpK
-	 7hFpDiQoJQMtsmeGQ7DdqqznajQYkHdoT1A1fXkI=
+	b=dqP7ICBv+jPwOd8aHjB9RaVxBKDVfYmyNQtXYBGi7OpNDA1QvAaHQnAf7o9Nt7wV3
+	 Mh4UjGc0ErvIFVg3wCjrul4HkrFN82AMYL0HZ1El/ivtEelfL5W9ePqrY61Gfj4+n+
+	 YuhwXnsXMOmu+fdL7wkjDN87rR3IVLd46Wtbt/eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/440] media: imon: Fix race getting ictx->lock
+Subject: [PATCH 6.6 264/568] RDMA/cache: Release GID table even if leak is detected
 Date: Tue, 30 Jul 2024 17:46:11 +0200
-Message-ID: <20240730151621.272861149@linuxfoundation.org>
+Message-ID: <20240730151650.193864820@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 24147897507cd3a7d63745d1518a638bf4132238 ]
+[ Upstream commit a92fbeac7e94a420b55570c10fe1b90e64da4025 ]
 
-Lets fix a race between mutex_is_lock() and mutex_lock().
+When the table is released, we nullify pointer to GID table, it means
+that in case GID entry leak is detected, we will leak table too.
 
-<-mutex is not locked
-if (!mutex_is_locked(&ictx->lock)) {
-	unlock = true; <- mutex is locked externaly
-	mutex_lock(&ictx->lock);
-}
+Delete code that prevents table destruction.
 
-Let's use mutex_trylock() that does mutex_is_lock() and mutex_lock()
-atomically.
-
-Fix the following cocci warning:
-drivers/media/rc/imon.c:1167:1-7: preceding lock on line 1153
-
-Fixes: 23ef710e1a6c ("[media] imon: add conditional locking in change_protocol")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: b150c3862d21 ("IB/core: Introduce GID entry reference counts")
+Link: https://lore.kernel.org/r/a62560af06ba82c88ef9194982bfa63d14768ff9.1716900410.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/imon.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/infiniband/core/cache.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
-index 5719dda6e0f0e..e5590a708f1c5 100644
---- a/drivers/media/rc/imon.c
-+++ b/drivers/media/rc/imon.c
-@@ -1148,10 +1148,7 @@ static int imon_ir_change_protocol(struct rc_dev *rc, u64 *rc_proto)
+diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
+index 7acc0f936dad3..b7251ed7a8dfb 100644
+--- a/drivers/infiniband/core/cache.c
++++ b/drivers/infiniband/core/cache.c
+@@ -794,7 +794,6 @@ static struct ib_gid_table *alloc_gid_table(int sz)
+ static void release_gid_table(struct ib_device *device,
+ 			      struct ib_gid_table *table)
+ {
+-	bool leak = false;
+ 	int i;
  
- 	memcpy(ictx->usb_tx_buf, &ir_proto_packet, sizeof(ir_proto_packet));
+ 	if (!table)
+@@ -803,15 +802,12 @@ static void release_gid_table(struct ib_device *device,
+ 	for (i = 0; i < table->sz; i++) {
+ 		if (is_gid_entry_free(table->data_vec[i]))
+ 			continue;
+-		if (kref_read(&table->data_vec[i]->kref) > 1) {
+-			dev_err(&device->dev,
+-				"GID entry ref leak for index %d ref=%u\n", i,
+-				kref_read(&table->data_vec[i]->kref));
+-			leak = true;
+-		}
++
++		WARN_ONCE(true,
++			  "GID entry ref leak for dev %s index %d ref=%u\n",
++			  dev_name(&device->dev), i,
++			  kref_read(&table->data_vec[i]->kref));
+ 	}
+-	if (leak)
+-		return;
  
--	if (!mutex_is_locked(&ictx->lock)) {
--		unlock = true;
--		mutex_lock(&ictx->lock);
--	}
-+	unlock = mutex_trylock(&ictx->lock);
- 
- 	retval = send_packet(ictx);
- 	if (retval)
+ 	mutex_destroy(&table->lock);
+ 	kfree(table->data_vec);
 -- 
 2.43.0
 
