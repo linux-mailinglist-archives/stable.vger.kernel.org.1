@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-64223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFA9941CE8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29285941E4C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 539BA28A179
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2FC71F24A47
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D92818A6B0;
-	Tue, 30 Jul 2024 17:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FAB1A76BF;
+	Tue, 30 Jul 2024 17:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8w1/OuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJhvpQ88"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F056418454A;
-	Tue, 30 Jul 2024 17:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AE21A76B4;
+	Tue, 30 Jul 2024 17:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359401; cv=none; b=ANqnlqQ1I4GKfgO+T4sYQVBblhxHcQ+k7KCptJWzDvSt6zr7GYYAXMw7kcpsMcw8ufl0FGv1V4HIwpelRsNbpe4Op1PMIshsmXRpl/PkkZa3hZLxoT4OsSmDr30nWOjlb5fIryRwJO75BkZZAJAmAeWVE6IqDfsjdoqz0htmROE=
+	t=1722360466; cv=none; b=c0Co4i3Ihbj2mBAPx49wEQLhNKH9XnDbjaMfSm7tc7T9jC6iijVeMaX1MBo9rnNBR+1K16ANtJpHJ5t2A6ba6WPBzMi+RQgByU0yap3jsgjPun3luuPPijIDMB4/fbm0EF5f2o9kloSXxhBdHBpECqYAIK3lk+7uZ1rf9vzdMfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359401; c=relaxed/simple;
-	bh=CHtNE4RR60e5r8/AFxwTukB99DyG/obKDZnwABGBk10=;
+	s=arc-20240116; t=1722360466; c=relaxed/simple;
+	bh=tkReMl3okzirED4Dgp9K6oE21F4PSzZkXq7tLcDM4oM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgqJa5QUULtZyxmYpB29pctkR8hAvJcea5C2RBQdcCYsZWZUJJyiMNvt3oG5R4cNwgvkX/8ugFnkplCltu+UBozR5xHUqNkFGIpGvGNxnL1RSMny8P+j/7/KwIBK+mcUJUXxePQSoITCnaZ6fA+f5Jmu/MpLUGCnGDi6YA+2NPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8w1/OuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6F1C32782;
-	Tue, 30 Jul 2024 17:10:00 +0000 (UTC)
+	 MIME-Version; b=TV1ZILN4WGVlqGt7taty/n1/WgMy9TFz418QBPZ6w64i598U8xVpbjxEHconGzNCe1yHQjfRRYoYDUuzZHBveW5mYp/m8CKMEE3rmYY5X6p6gqyFZC7CH42Bw+hwQO4ARSpAU8gacNn3cqeMeMV8zcPadPtFBxfBhK0w+E4pnOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJhvpQ88; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1CCC32782;
+	Tue, 30 Jul 2024 17:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359400;
-	bh=CHtNE4RR60e5r8/AFxwTukB99DyG/obKDZnwABGBk10=;
+	s=korg; t=1722360466;
+	bh=tkReMl3okzirED4Dgp9K6oE21F4PSzZkXq7tLcDM4oM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8w1/OuSRidSfrD2t3oVCkT90roQee/ghpftzYSRY/W285kXtdbTNJByDmv4XIuou
-	 GWAXnBDtpcst39XsztCtNxsGFLmkDbwVc2Ix4dSyqpy0aod2CEdZm0mpatdym9JlZa
-	 f24vnSX1i4QaoU3HQGtj+bqqKDSH7rfhVZxVpIkU=
+	b=WJhvpQ88S9RQhdhp+f1+aOKnl646xc3ivVqk0sido82Xh+5T+/kK5LS/mcJXsTVP4
+	 QTHegQB/ko6TyUZZ0+kvlvrKkPZi+9eEZyBaROthnJhsYORt8RZODPIxhQHFhwP5c5
+	 2Jn4gyDp4uWQ0gG1TCeKzuIIZKcbCkYxNcqp5mOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Harry Wentland <hwentlan@amd.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Wayne Lin <Wayne.Lin@amd.com>
-Subject: [PATCH 6.6 477/568] drm/dp_mst: Fix all mstb marked as not probed after suspend/resume
+	Joy Chakraborty <joychakr@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.10 708/809] rtc: abx80x: Fix return value of nvmem callback on read
 Date: Tue, 30 Jul 2024 17:49:44 +0200
-Message-ID: <20240730151658.670674273@linuxfoundation.org>
+Message-ID: <20240730151752.891655295@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-commit d63d81094d208abb20fc444514b2d9ec2f4b7c4e upstream.
+commit fc82336b50e7652530bc32caec80be0f8792513b upstream.
 
-[Why]
-After supend/resume, with topology unchanged, observe that
-link_address_sent of all mstb are marked as false even the topology probing
-is done without any error.
+Read callbacks registered with nvmem core expect 0 to be returned on
+success and a negative value to be returned on failure.
 
-It is caused by wrongly also include "ret == 0" case as a probing failure
-case.
+abx80x_nvmem_xfer() on read calls i2c_smbus_read_i2c_block_data() which
+returns the number of bytes read on success as per its api description,
+this return value is handled as an error and returned to nvmem even on
+success.
 
-[How]
-Remove inappropriate checking conditions.
+Fix to handle all possible values that would be returned by
+i2c_smbus_read_i2c_block_data().
 
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Harry Wentland <hwentlan@amd.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
+Fixes: e90ff8ede777 ("rtc: abx80x: Add nvmem support")
 Cc: stable@vger.kernel.org
-Fixes: 37dfdc55ffeb ("drm/dp_mst: Cleanup drm_dp_send_link_address() a bit")
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240626084825.878565-2-Wayne.Lin@amd.com
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Link: https://lore.kernel.org/r/20240613120750.1455209-1-joychakr@google.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-abx80x.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -2923,7 +2923,7 @@ static int drm_dp_send_link_address(stru
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -705,14 +705,18 @@ static int abx80x_nvmem_xfer(struct abx8
+ 		if (ret)
+ 			return ret;
  
- 	/* FIXME: Actually do some real error handling here */
- 	ret = drm_dp_mst_wait_tx_reply(mstb, txmsg);
--	if (ret <= 0) {
-+	if (ret < 0) {
- 		drm_err(mgr->dev, "Sending link address failed with %d\n", ret);
- 		goto out;
- 	}
-@@ -2975,7 +2975,7 @@ static int drm_dp_send_link_address(stru
- 	mutex_unlock(&mgr->lock);
+-		if (write)
++		if (write) {
+ 			ret = i2c_smbus_write_i2c_block_data(priv->client, reg,
+ 							     len, val);
+-		else
++			if (ret)
++				return ret;
++		} else {
+ 			ret = i2c_smbus_read_i2c_block_data(priv->client, reg,
+ 							    len, val);
+-		if (ret)
+-			return ret;
++			if (ret <= 0)
++				return ret ? ret : -EIO;
++			len = ret;
++		}
  
- out:
--	if (ret <= 0)
-+	if (ret < 0)
- 		mstb->link_address_sent = false;
- 	kfree(txmsg);
- 	return ret < 0 ? ret : changed;
+ 		offset += len;
+ 		val += len;
 
 
 
