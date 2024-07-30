@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-64082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2F9941C0A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E93941C0D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F189D285090
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F624285215
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4BA189B89;
-	Tue, 30 Jul 2024 17:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1655189BB6;
+	Tue, 30 Jul 2024 17:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmfbfzfo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekmDgm0k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919C5189B85;
-	Tue, 30 Jul 2024 17:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670F1189502;
+	Tue, 30 Jul 2024 17:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358931; cv=none; b=GFoXFF0yz0DCd1t0Ersu3Atj+uO0TExxRGPdajn5n0k6ciaIUVjQlGSezH4zLOcif8p64pfTxSdsN40MejnqMustkeqrNgAR7+oCWDLMwak3GbBZH6CoAEnqjWbdfLZPDvolUf4rglnYEJIDVM/he0xGbeVRvEVNW5JKaCJQ15s=
+	t=1722358941; cv=none; b=GqAMVSjej8FPJ5qFwRhGCScZx8yi/2xnnwLNen8E1OF3qQzsZnICA2s2JwefutHg5M1avCUKSmGnDYxFeeGE+v0MU9AkPU8BuIBB5Zkf00zU/MRIvCOQh1S5TOEK28welAAhrmp21xL+ow0DnLB6Uw3ZVuwCFSe5iQTYu6hOom8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358931; c=relaxed/simple;
-	bh=uMq9kgTLTixb1wPJQXokD/HjgY+CII1IjBw2/nUiDfY=;
+	s=arc-20240116; t=1722358941; c=relaxed/simple;
+	bh=sf0F9ahjHV2G2OPa/iSiHi9TNOnxsznECkFNM/YRbO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BO/VUbocXrv/7xzm3tqeSpIDsKPv1Wc7P/RFKzZSLjL4X+VSXRoeK8H7kpFd/spK6Bd0P9pHkLpAe5ZrTcGSJPfiML9V1VLaArA6E2wUegz14viGiSLFVuY5cDRzN87A8I8ly4yST85tNvSBYL3fsRvMT/nq+L1Jx+KREq+n1M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmfbfzfo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0428C32782;
-	Tue, 30 Jul 2024 17:02:10 +0000 (UTC)
+	 MIME-Version; b=KQUZHma6xM0wFIZhCvG4j2FcEEK91aWK+FqP30ktHwVq/xTtyFI/LPJ4SXcoskJblOc4qmxCml0Xg+MwZPrDHkMr2/JtDm7JuxYsd/luS3xa/EU07tnWVjStEWjMSZNXNx4vZav9LyDzTEBCz4ywNQ82wrvEadUB3nbiVJpgMc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekmDgm0k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B43C32782;
+	Tue, 30 Jul 2024 17:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358931;
-	bh=uMq9kgTLTixb1wPJQXokD/HjgY+CII1IjBw2/nUiDfY=;
+	s=korg; t=1722358941;
+	bh=sf0F9ahjHV2G2OPa/iSiHi9TNOnxsznECkFNM/YRbO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmfbfzfobH/BOSjfAchhJLP8lcH2CBwEekhiqawH4fhTXiNPu+HfRQ9RiKKqIXdbM
-	 mEBCEGY4IXp+gOCgD+AGtfbHR269hR1H7yCG+M79Y3F1E5ckPKcsobOLneI0zJ5xQ8
-	 577wpGhvFwPKtYhEjYH20/zQdQgyxGilEHyJWmWE=
+	b=ekmDgm0k5ijT7yuRC2vW7nsn9ojQm0MzIgs81BdV8wMpzfDl+HzbNunKD4Ilgj4Ni
+	 JxW2P5SOyCvwF7/GOBooHz7fogi98AdOtF/iuPERF/b3EhHufR3J5rOk42KZe9xHNr
+	 uKcIY+F9orzsWs9hT8aM1ULsOwuzLQ6xr5liWMn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Ge <gehao@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 409/809] ASoc: PCM6240: Return directly after a failed devm_kzalloc() in pcmdevice_i2c_probe()
-Date: Tue, 30 Jul 2024 17:44:45 +0200
-Message-ID: <20240730151740.844621499@linuxfoundation.org>
+Subject: [PATCH 6.10 410/809] RDMA/cache: Release GID table even if leak is detected
+Date: Tue, 30 Jul 2024 17:44:46 +0200
+Message-ID: <20240730151740.883747285@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -60,49 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 3722873d49a1788d5420894d4f6f63e35f5c1f13 ]
+[ Upstream commit a92fbeac7e94a420b55570c10fe1b90e64da4025 ]
 
-The value “-ENOMEM” was assigned to the local variable “ret”
-in one if branch after a devm_kzalloc() call failed at the beginning.
-This error code will trigger then a pcmdevice_remove() call with a passed
-null pointer so that an undesirable dereference will be performed.
-Thus return the appropriate error code directly.
+When the table is released, we nullify pointer to GID table, it means
+that in case GID entry leak is detected, we will leak table too.
 
-Fixes: 1324eafd37aa ("ASoc: PCM6240: Create PCM6240 Family driver code")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Link: https://patch.msgid.link/20240617020954.17252-1-hao.ge@linux.dev
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Delete code that prevents table destruction.
+
+Fixes: b150c3862d21 ("IB/core: Introduce GID entry reference counts")
+Link: https://lore.kernel.org/r/a62560af06ba82c88ef9194982bfa63d14768ff9.1716900410.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/pcm6240.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/infiniband/core/cache.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/codecs/pcm6240.c b/sound/soc/codecs/pcm6240.c
-index 86e126783a1df..8f7057e689fbf 100644
---- a/sound/soc/codecs/pcm6240.c
-+++ b/sound/soc/codecs/pcm6240.c
-@@ -2087,10 +2087,8 @@ static int pcmdevice_i2c_probe(struct i2c_client *i2c)
- #endif
+diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
+index c02a96d3572a8..6791df64a5fe0 100644
+--- a/drivers/infiniband/core/cache.c
++++ b/drivers/infiniband/core/cache.c
+@@ -794,7 +794,6 @@ static struct ib_gid_table *alloc_gid_table(int sz)
+ static void release_gid_table(struct ib_device *device,
+ 			      struct ib_gid_table *table)
+ {
+-	bool leak = false;
+ 	int i;
  
- 	pcm_dev = devm_kzalloc(&i2c->dev, sizeof(*pcm_dev), GFP_KERNEL);
--	if (!pcm_dev) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	if (!pcm_dev)
-+		return -ENOMEM;
+ 	if (!table)
+@@ -803,15 +802,12 @@ static void release_gid_table(struct ib_device *device,
+ 	for (i = 0; i < table->sz; i++) {
+ 		if (is_gid_entry_free(table->data_vec[i]))
+ 			continue;
+-		if (kref_read(&table->data_vec[i]->kref) > 1) {
+-			dev_err(&device->dev,
+-				"GID entry ref leak for index %d ref=%u\n", i,
+-				kref_read(&table->data_vec[i]->kref));
+-			leak = true;
+-		}
++
++		WARN_ONCE(true,
++			  "GID entry ref leak for dev %s index %d ref=%u\n",
++			  dev_name(&device->dev), i,
++			  kref_read(&table->data_vec[i]->kref));
+ 	}
+-	if (leak)
+-		return;
  
- 	pcm_dev->chip_id = (id != NULL) ? id->driver_data : 0;
- 
+ 	mutex_destroy(&table->lock);
+ 	kfree(table->data_vec);
 -- 
 2.43.0
 
