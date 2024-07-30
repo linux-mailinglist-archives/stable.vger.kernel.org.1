@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-64049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43812941BE1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABAC9418B5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAA271F23E07
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8F4E1F22D90
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED52B188017;
-	Tue, 30 Jul 2024 17:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4B81A6160;
+	Tue, 30 Jul 2024 16:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDIR/Z9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/a551DP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41CD83A17;
-	Tue, 30 Jul 2024 17:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BEE1A6162;
+	Tue, 30 Jul 2024 16:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358816; cv=none; b=JjJ3+FH0pnBv++VCRA7Ylkqq3IzpZmQB9OpGfH4/cgXiwS1STS6SaEC/TFW1bXDxDAw0K2VsmqZ13LNa45KMfjXKwrkOJOaRx3Dxb2JKH/SBU+74aS2je2DmqzYqfcnliWtlKE6+ZCrCPuHP3Hgjsn6Xigg2efWkBSL+wn3FHLY=
+	t=1722356638; cv=none; b=LW1SFE/V1UheMdf6Y0xGmamnC+T+RG5aKIGAx1zSo3iYVzyysDo8BEMdAVCJSRKwuXJe0zQliBGNrxQXT18jgHOMhfBS9b2VFbYy0U0cG46HrTMW/WRmhXRR6AgvuF9W3+Psi9cJL7ZBo/iSrnSS9A0a85fK8/Bs7qdPzsExWqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358816; c=relaxed/simple;
-	bh=ltQa8xFjd1cWd/C6yZ3oCT4Ry971ly0g3tD1unS2yHc=;
+	s=arc-20240116; t=1722356638; c=relaxed/simple;
+	bh=u9MjgaEGOI2GJsRbhKF2YXGVDJjkQ/MAw2ogNW7K4Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USAH8H8rbpMTFiTizKcDlMbYZmPbfPwZS4G5uhUNUNAglL8wddCsx9jlW3fyQqavpL5xyhJnSnOMyb80lyyYh1tzlqxysLXT1Idg2lo+fb6IhOXdKDspVXGDL87Mhz7w1MfAbOn5JzRo0MURessIRki+FWpHYnul5O6FKiZ3syw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDIR/Z9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F5AC32782;
-	Tue, 30 Jul 2024 17:00:15 +0000 (UTC)
+	 MIME-Version; b=BcJ3WWVupwgV5yqtW8FaRv0y5jH95Cp0FN0NVuxpUHh6PQC4NLErxwgXwmSrT/xdKbob8ffc3QR9fEPMkLWkZVNFC4H6h6ibPvP98M6YWfopNG04mbke3sujtMHKvaAcYd3hMlWVsYZYJnF0ipmIqUgAdon9vVHYwP9KE7DWhZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/a551DP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4E6C32782;
+	Tue, 30 Jul 2024 16:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358816;
-	bh=ltQa8xFjd1cWd/C6yZ3oCT4Ry971ly0g3tD1unS2yHc=;
+	s=korg; t=1722356638;
+	bh=u9MjgaEGOI2GJsRbhKF2YXGVDJjkQ/MAw2ogNW7K4Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDIR/Z9zVd19UxW1gy9M0RDCOjw3yrCzNb0hzphDLF0tZwSdKEVz/Hjp+rPIyG1SY
-	 tQl84XuA89agxaFNqeJ6aDEQLOJNmtVmoLk5HSeyW+HX2Lhhj4OHtDI2kQxTA7PTW8
-	 2UCJvTY+9GTKID1h1Q5Fll5Fesc8dL0KiCg2q/Cs=
+	b=P/a551DPkXKyPXBZ9yQZ656SqXIfLBm90bHCeZJoJ9ZJmAxWjpnCYHbgHhuP7sC91
+	 nXE4uJSujhFmzTH9gomEBU3i+fQX9LdIJOgJzIQ3QnE5NMEjaDmvDzu6QHlurxRV5L
+	 yIS/e3KX9EuZLvqW8Y23AkshOSIXQjj7UaZ9wzBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mostafa Saleh <smostafa@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Will Deacon <will@kernel.org>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 399/809] iommu/arm-smmu-v3: Avoid uninitialized asid in case of error
-Date: Tue, 30 Jul 2024 17:44:35 +0200
-Message-ID: <20240730151740.444912636@linuxfoundation.org>
+Subject: [PATCH 6.6 169/568] selftests: forwarding: devlink_lib: Wait for udev events after reloading
+Date: Tue, 30 Jul 2024 17:44:36 +0200
+Message-ID: <20240730151646.491585485@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit d3867e7148318e12b5d69b64950622f5ed06fe86 ]
+[ Upstream commit f67a90a0c8f5b3d0acc18f10650d90fec44775f9 ]
 
-Static checker is complaining about the ASID possibly set uninitialized.
-This only happens in case of error and this value would be ignored anyway.
+Lately, an additional locking was added by commit c0a40097f0bc
+("drivers: core: synchronize really_probe() and dev_uevent()"). The
+locking protects dev_uevent() calling. This function is used to send
+messages from the kernel to user space. Uevent messages notify user space
+about changes in device states, such as when a device is added, removed,
+or changed. These messages are used by udev (or other similar user-space
+tools) to apply device-specific rules.
 
-A simple fix would be just to initialize the local variable to zero,
-this path will only be reached on the first attach to a domain where
-the CD is already initialized to zero.
-This avoids having to bloat the function with an error path.
+After reloading devlink instance, udev events should be processed. This
+locking causes a short delay of udev events handling.
 
-Closes: https://lore.kernel.org/linux-iommu/849e3d77-0a3c-43c4-878d-a0e061c8cd61@moroto.mountain/T/#u
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Fixes: 04905c17f648 ("iommu/arm-smmu-v3: Build the whole CD in arm_smmu_make_s1_cd()")
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20240604185218.2602058-1-smostafa@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+One example for useful udev rule is renaming ports. 'forwading.config'
+can be configured to use names after udev rules are applied. Some tests run
+devlink_reload() and immediately use the updated names. This worked before
+the above mentioned commit was pushed, but now the delay of uevent messages
+causes that devlink_reload() returns before udev events are handled and
+tests fail.
+
+Adjust devlink_reload() to not assume that udev events are already
+processed when devlink reload is done, instead, wait for udev events to
+ensure they are processed before returning from the function.
+
+Without this patch:
+TESTS='rif_mac_profile' ./resource_scale.sh
+TEST: 'rif_mac_profile' 4                                           [ OK ]
+sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
+sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
+sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
+sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
+Cannot find device "swp1"
+Cannot find device "swp2"
+TEST: setup_wait_dev (: Interface swp1 does not come up.) [FAIL]
+
+With this patch:
+$ TESTS='rif_mac_profile' ./resource_scale.sh
+TEST: 'rif_mac_profile' 4                                           [ OK ]
+TEST: 'rif_mac_profile' overflow 5                                  [ OK ]
+
+This is relevant not only for this test.
+
+Fixes: bc7cbb1e9f4c ("selftests: forwarding: Add devlink_lib.sh")
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/89367666e04b38a8993027f1526801ca327ab96a.1720709333.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/forwarding/devlink_lib.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index ab415e107054c..f456bcf1890ba 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -2302,7 +2302,7 @@ static int arm_smmu_domain_finalise_s1(struct arm_smmu_device *smmu,
- 				       struct arm_smmu_domain *smmu_domain)
- {
- 	int ret;
--	u32 asid;
-+	u32 asid = 0;
- 	struct arm_smmu_ctx_desc *cd = &smmu_domain->cd;
+diff --git a/tools/testing/selftests/net/forwarding/devlink_lib.sh b/tools/testing/selftests/net/forwarding/devlink_lib.sh
+index f1de525cfa55b..62a05bca1e825 100644
+--- a/tools/testing/selftests/net/forwarding/devlink_lib.sh
++++ b/tools/testing/selftests/net/forwarding/devlink_lib.sh
+@@ -122,6 +122,8 @@ devlink_reload()
+ 	still_pending=$(devlink resource show "$DEVLINK_DEV" | \
+ 			grep -c "size_new")
+ 	check_err $still_pending "Failed reload - There are still unset sizes"
++
++	udevadm settle
+ }
  
- 	refcount_set(&cd->refs, 1);
+ declare -A DEVLINK_ORIG
 -- 
 2.43.0
 
