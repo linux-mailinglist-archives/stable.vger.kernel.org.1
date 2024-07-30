@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A2B94198B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09927941E09
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14B401C236C8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B18822875E3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763214EB2B;
-	Tue, 30 Jul 2024 16:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6592D1A76BA;
+	Tue, 30 Jul 2024 17:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/O/6qi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbKcpRjl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3600C8BE8;
-	Tue, 30 Jul 2024 16:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DD81A76A1;
+	Tue, 30 Jul 2024 17:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357229; cv=none; b=ralpnhiHYDbBZIOktNhETNf+crtq72RQS+SF5j7F+6MYRSdCLrsZMjRx7eCmT+GTBvgcRDTMZWqwQvuJqv9Hf/A1XNyGSrJ56x5B4AJ1HFXNemoCKAuVs6tsodz33SYE5jdnBJm+YVdL+lQ0oOYYm7RC6MD2i5pvaRAo8pv+agQ=
+	t=1722360312; cv=none; b=q5SDYX5SbHU9c59SyM8bmBAapuPPV90voNfHruV378ZaTmKzapbJpOPrDGyuPUF54/J7BRYVBqluIeHDXTbSSzN5X9L+XX38dzOzI0c4LCFHSNxqYw4QtSSwCe3iqeg3vPX/1DmLV78weN1tFUeajOMJAm/ylZaC6XtIKKTmyic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357229; c=relaxed/simple;
-	bh=0YzfOoLZDF779MmXZaN89Io1AckgrD/Msz7+8pqj8lo=;
+	s=arc-20240116; t=1722360312; c=relaxed/simple;
+	bh=UcGOo7QGoNZ2B3PdnPbPAA/O7rZMqhCWaZsQdbBqj4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHnV2opIVxCQt3fx/TDoATR/lDKGEaOjlAt6Ud1YOxpupBK1sHMrQ8ugm2gxI6Wj8xYHzEF0nCIT6uctwTVcrbjkQ0UD0U58WpPk7p+cxQL7ydLpkofuJqeGMULEj9r3cC5+G3Eye8X7S2F5A9f/WhbNPNMkMuI7q/6AxLhj3j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/O/6qi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FB0C32782;
-	Tue, 30 Jul 2024 16:33:48 +0000 (UTC)
+	 MIME-Version; b=VqyKeb02nvTkEUFRR+EquuILYLJgSO/Niqdw9SDHm5ffmugO0QIDaLFR322t5bawtWPEnITNSnQXB19wwuGARZj5ue7T6NzRWnLfW/XHOdkmN/Yll1y4ez6t9W03LnsB8/zka9LDsXz68aNVCCFRKmI26J4Ws2nlohqqtOMSt1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbKcpRjl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8848BC4AF0E;
+	Tue, 30 Jul 2024 17:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357229;
-	bh=0YzfOoLZDF779MmXZaN89Io1AckgrD/Msz7+8pqj8lo=;
+	s=korg; t=1722360312;
+	bh=UcGOo7QGoNZ2B3PdnPbPAA/O7rZMqhCWaZsQdbBqj4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/O/6qi7iTULSLjy88slh/kSNK7yqD7TZIlNQurJO2t3jAD1avTRKPpi6/U4dpF7U
-	 uGKK1gwDoG6BAJgzBleMcjISE5Yx8OWESXSxRkz9cONIesYIeDmzZRMuLVzpfYcWIG
-	 HgAKrXfKeAw5Y3UF8erdYEU7sk/4nMr88mfFwfqQ=
+	b=gbKcpRjlZ+//r3ownFTtZe5jCUb5jVjO7kQXoQKNRuEgzp3H3Fnr5U0dcjtQP58uQ
+	 zU1HSXRivsqtibGmkAUlTJrHT88ujYDLi8VJJ0vF7m7iNi88jMG0PKQD74wdFTruLv
+	 ARgLHtIPsqvQ1dJbxDkbTr96cMkmvPDpW6maDhnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 271/440] mm/hugetlb: fix possible recursive locking detected warning
-Date: Tue, 30 Jul 2024 17:48:24 +0200
-Message-ID: <20240730151626.420247242@linuxfoundation.org>
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 629/809] ALSA: usb-audio: Fix microphone sound on HD webcam.
+Date: Tue, 30 Jul 2024 17:48:25 +0200
+Message-ID: <20240730151749.686202328@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +61,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-commit 667574e873b5f77a220b2a93329689f36fb56d5d upstream.
+commit 74dba240881820b46b9b1c62ef4de3bfff47fbd4 upstream.
 
-When tries to demote 1G hugetlb folios, a lockdep warning is observed:
+I own an external usb Webcam, HD webcam, which had low mic volume and
+inconsistent sound quality. Video works as expected.
 
-============================================
-WARNING: possible recursive locking detected
-6.10.0-rc6-00452-ga4d0275fa660-dirty #79 Not tainted
---------------------------------------------
-bash/710 is trying to acquire lock:
-ffffffff8f0a7850 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0x244/0x460
+(snip)
+[   95.473820][ 1] [   T73] usb 5-2.2: new high-speed USB device number 7 using xhci_hcd
+[   95.773974][ 1] [   T73] usb 5-2.2: New USB device found, idVendor=1bcf, idProduct=2281, bcdDevice= 0.05
+[   95.783445][ 1] [   T73] usb 5-2.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[   95.791872][ 1] [   T73] usb 5-2.2: Product: HD webcam
+[   95.797001][ 1] [   T73] usb 5-2.2: Manufacturer: Sunplus IT Co
+[   95.802996][ 1] [   T73] usb 5-2.2: SerialNumber: 20200513
+[   96.092610][ 2] [ T3680] usb 5-2.2: Warning! Unlikely big volume range (=4096), cval->res is probably wrong.
+[   96.102436][ 2] [ T3680] usb 5-2.2: [5] FU [Mic Capture Volume] ch = 1, val = 0/4096/1
 
-but task is already holding lock:
-ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
+Set up quirk cval->res to 16 for 256 levels,
+Set GET_SAMPLE_RATE quirk flag to stop trying to get the sample rate.
+Confirmed that happened anyway later due to the backoff mechanism,
+After 3 failures.
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+All audio stream on device interfaces share the same values,
+apart from wMaxPacketSize and tSamFreq :
 
-       CPU0
-       ----
-  lock(&h->resize_lock);
-  lock(&h->resize_lock);
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        3
+      bAlternateSetting       4
+      bNumEndpoints           1
+      bInterfaceClass         1 Audio
 
- *** DEADLOCK ***
+Interface Descriptor:
+  bLength                 9
+  bDescriptorType         4
+  bInterfaceNumber        3
+  bAlternateSetting       4
+  bNumEndpoints           1
+  bInterfaceClass         1 Audio
+  bInterfaceSubClass      2 Streaming
+  bInterfaceProtocol      0
+  iInterface              0
+  AudioStreaming Interface Descriptor:
+    bLength                 7
+    bDescriptorType        36
+    bDescriptorSubtype      1 (AS_GENERAL)
+    bTerminalLink           3
+    bDelay                  1 frames
+    wFormatTag         0x0001 PCM
+  AudioStreaming Interface Descriptor:
+    bLength                11
+    bDescriptorType        36
+    bDescriptorSubtype      2 (FORMAT_TYPE)
+    bFormatType             1 (FORMAT_TYPE_I)
+    bNrChannels             1
+    bSubframeSize           2
+    bBitResolution         16
+    bSamFreqType            1 Discrete
+    tSamFreq[ 0]        48000
+  Endpoint Descriptor:
+    bLength                 9
+    bDescriptorType         5
+    bEndpointAddress     0x86  EP 6 IN
+    bmAttributes            5
+      Transfer Type            Isochronous
+      Synch Type               Asynchronous
+      Usage Type               Data
+    wMaxPacketSize     0x0064  1x 100 bytes
+    bInterval               4
+    bRefresh                0
+    bSynchAddress           0
+    AudioStreaming Endpoint Descriptor:
+      bLength                 7
+      bDescriptorType        37
+      bDescriptorSubtype      1 (EP_GENERAL)
+      bmAttributes         0x01
+        Sampling Frequency
+      bLockDelayUnits         0 Undefined
+      wLockDelay         0x0000
+(snip)
 
- May be due to missing lock nesting notation
+Testing patch provides consistent good sound recording quality and volume range.
 
-4 locks held by bash/710:
- #0: ffff8f118439c3f0 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x64/0xe0
- #1: ffff8f11893b9e88 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0xf8/0x1d0
- #2: ffff8f1183dc4428 (kn->active#98){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x100/0x1d0
- #3: ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
+(snip)
+[   95.473820][ 1] [   T73] usb 5-2.2: new high-speed USB device number 7 using xhci_hcd
+[   95.773974][ 1] [   T73] usb 5-2.2: New USB device found, idVendor=1bcf, idProduct=2281, bcdDevice= 0.05
+[   95.783445][ 1] [   T73] usb 5-2.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[   95.791872][ 1] [   T73] usb 5-2.2: Product: HD webcam
+[   95.797001][ 1] [   T73] usb 5-2.2: Manufacturer: Sunplus IT Co
+[   95.802996][ 1] [   T73] usb 5-2.2: SerialNumber: 20200513
+[   96.110630][ 3] [ T3680] usbcore: registered new interface driver snd-usb-audio
+[   96.114329][ 7] [ T3677] usb 5-2.2: Found UVC 1.00 device HD webcam (1bcf:2281)
+[   96.167555][ 7] [ T3677] usbcore: registered new interface driver uvcvideo
 
-stack backtrace:
-CPU: 3 PID: 710 Comm: bash Not tainted 6.10.0-rc6-00452-ga4d0275fa660-dirty #79
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x68/0xa0
- __lock_acquire+0x10f2/0x1ca0
- lock_acquire+0xbe/0x2d0
- __mutex_lock+0x6d/0x400
- demote_store+0x244/0x460
- kernfs_fop_write_iter+0x12c/0x1d0
- vfs_write+0x380/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa61db14887
-RSP: 002b:00007ffc56c48358 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007fa61db14887
-RDX: 0000000000000002 RSI: 000055a030050220 RDI: 0000000000000001
-RBP: 000055a030050220 R08: 00007fa61dbd1460 R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
-R13: 00007fa61dc1b780 R14: 00007fa61dc17600 R15: 00007fa61dc16a00
- </TASK>
-
-Lockdep considers this an AA deadlock because the different resize_lock
-mutexes reside in the same lockdep class, but this is a false positive.
-Place them in distinct classes to avoid these warnings.
-
-Link: https://lkml.kernel.org/r/20240712031314.2570452-1-linmiaohe@huawei.com
-Fixes: 8531fc6f52f5 ("hugetlb: add hugetlb demote page support")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://patch.msgid.link/20240719020906.8078-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hugetlb.h |    1 +
- mm/hugetlb.c            |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/mixer.c  |    7 +++++++
+ sound/usb/quirks.c |    2 ++
+ 2 files changed, 9 insertions(+)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -694,6 +694,7 @@ HPAGEFLAG(RawHwpUnreliable, raw_hwp_unre
- /* Defines one hugetlb page size */
- struct hstate {
- 	struct mutex resize_lock;
-+	struct lock_class_key resize_key;
- 	int next_nid_to_alloc;
- 	int next_nid_to_free;
- 	unsigned int order;
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4353,7 +4353,7 @@ void __init hugetlb_add_hstate(unsigned
- 	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
- 	BUG_ON(order == 0);
- 	h = &hstates[hugetlb_max_hstate++];
--	mutex_init(&h->resize_lock);
-+	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
- 	h->order = order;
- 	h->mask = ~(huge_page_size(h) - 1);
- 	for (i = 0; i < MAX_NUMNODES; ++i)
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1211,6 +1211,13 @@ static void volume_control_quirks(struct
+ 			cval->res = 16;
+ 		}
+ 		break;
++	case USB_ID(0x1bcf, 0x2281): /* HD Webcam */
++		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
++			usb_audio_info(chip,
++				"set resolution quirk: cval->res = 16\n");
++			cval->res = 16;
++		}
++		break;
+ 	}
+ }
+ 
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2225,6 +2225,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x534d, 0x2109, /* MacroSilicon MS2109 */
+ 		   QUIRK_FLAG_ALIGN_TRANSFER),
++	DEVICE_FLG(0x1bcf, 0x2281, /* HD Webcam */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 
+ 	/* Vendor matches */
+ 	VENDOR_FLG(0x045e, /* MS Lifecam */
 
 
 
