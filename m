@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A59941D8B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A50E8941AD1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474E41F26D2A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C2C71F235E5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E711A76B8;
-	Tue, 30 Jul 2024 17:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7936E18800A;
+	Tue, 30 Jul 2024 16:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xC5o2v1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w09vSypH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B743C1A76A4;
-	Tue, 30 Jul 2024 17:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373151A6166;
+	Tue, 30 Jul 2024 16:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359906; cv=none; b=g0WUjHMsPRprHsHlbIqAHtfiGriunMmGvn4OvyPLY5xdMLpQhiMGojEjeZCt/IKwkXWG2kLBVxR+YTs2zuJvDofEO4AGOgNvE2YOQhhyIqDn1OUbpuolAf1VLWXv8xcqQGzFfmKqThxaryBMXQcwLPRrS02Pdk0hacUGWDCzXw8=
+	t=1722358056; cv=none; b=BaphedaDAIajhLK+u+8pdQTLe/MmtG6AEmUZv6TqF8ASAgCEUkO8juSLlMvjlAEsb2ocpn4Gxj7HhOsQScc0W+wz5WUn1XNtY17E6fZ1hziv2YCPf3HR1Vt0qI14mFNtWrTukoayf50tkKa7uIFLrtQUl5jo+i1wZKTZBCYRKMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359906; c=relaxed/simple;
-	bh=sGj2YVFjmvK54wXb425TaR8UU37j4RgbebOvZi2g7uE=;
+	s=arc-20240116; t=1722358056; c=relaxed/simple;
+	bh=KMqOYIDLrOPMQnRcvhlUIGD0VQHX3xTqnX7DoTgWVR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuupRcCZgZ2VJLVQpHRVJeTV9PNugq4LuaErk6d1oon48oRW0QabWu5w7K9MkNWhUM+Fln2/xBa5AjWczjpUAc6/OuCL9ddgEuFrwgWyQ29nBtA5t3etUuMBQs1C/DJ2oDtvvUx8YcSwsWcuDpvrPUW2IHsxSbtcyUVRfYWSuxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xC5o2v1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251BBC32782;
-	Tue, 30 Jul 2024 17:18:25 +0000 (UTC)
+	 MIME-Version; b=HTA6YLd8GYM40x/yiKyTupzE7cK5Ousxq2PUEmO/OHQXcEaFcV/1xFboEDfAPhy+olIfm018SLkD1IYSG3mZcvaBuKkETEoZB+KMjqS0qvNKreRhr00slU9L8W6mSZX1XM2Z62IZZuvvsvVm9Jz2U/AwV3JeyOH8mShe1nYVpW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w09vSypH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4C8C4AF0F;
+	Tue, 30 Jul 2024 16:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359906;
-	bh=sGj2YVFjmvK54wXb425TaR8UU37j4RgbebOvZi2g7uE=;
+	s=korg; t=1722358056;
+	bh=KMqOYIDLrOPMQnRcvhlUIGD0VQHX3xTqnX7DoTgWVR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xC5o2v1QQExNQC8R/Qfal7HTw+4BzXGy1lXWvgsduUyKKTIqCy7jUpuUVTrM4sE9o
-	 VCZgKTU+hmCicTk4t/92PNP2jHrwoKxY5A2EmYMkdaXA4PVPty2hIsKFWQXV8MujmA
-	 KTRR9zaCSIGu7qdKHFI+dCHNw5JRKmFMLk0ToGOw=
+	b=w09vSypH8lhjitcoIHu4P+XjGK9x2TVWJu+/MGCt0rqCO3y20/l+PDZ+ie9yREAxW
+	 bParyT+L0xSaKNBsVAHSMEvUkUCDWWFfhwdQEaVJG7C0y/2KvRyG+e7EyrkcldceE7
+	 E7ufsLtJov0J7Bxf8stNw5yYHTe6r1kkBa5Dwb9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.10 552/809] btrfs: fix extent map use-after-free when adding pages to compressed bio
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 321/568] fs/ntfs3: Deny getting attr data block in compressed frame
 Date: Tue, 30 Jul 2024 17:47:08 +0200
-Message-ID: <20240730151746.558908502@linuxfoundation.org>
+Message-ID: <20240730151652.422261772@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 8e7860543a94784d744c7ce34b78a2e11beefa5c upstream.
+[ Upstream commit 69943484b95267c94331cba41e9e64ba7b24f136 ]
 
-At add_ra_bio_pages() we are accessing the extent map to calculate
-'add_size' after we dropped our reference on the extent map, resulting
-in a use-after-free. Fix this by computing 'add_size' before dropping our
-extent map reference.
+Attempting to retrieve an attribute data block in a compressed frame
+is ignored.
 
-Reported-by: syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000038144061c6d18f2@google.com/
-Fixes: 6a4049102055 ("btrfs: subpage: make add_ra_bio_pages() compatible")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be71b5cba2e64 ("fs/ntfs3: Add attrib operations")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/compression.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/attrib.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/fs/btrfs/compression.c
-+++ b/fs/btrfs/compression.c
-@@ -514,6 +514,7 @@ static noinline int add_ra_bio_pages(str
- 			put_page(page);
- 			break;
- 		}
-+		add_size = min(em->start + em->len, page_end + 1) - cur;
- 		free_extent_map(em);
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index e6c0e12d1380b..60a764ebaf570 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -975,6 +975,19 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
+ 	if (err)
+ 		goto out;
  
- 		if (page->index == end_index) {
-@@ -526,7 +527,6 @@ static noinline int add_ra_bio_pages(str
- 			}
- 		}
- 
--		add_size = min(em->start + em->len, page_end + 1) - cur;
- 		ret = bio_add_page(orig_bio, page, add_size, offset_in_page(cur));
- 		if (ret != add_size) {
- 			unlock_extent(tree, cur, page_end, NULL);
++	/* Check for compressed frame. */
++	err = attr_is_frame_compressed(ni, attr, vcn >> NTFS_LZNT_CUNIT, &hint);
++	if (err)
++		goto out;
++
++	if (hint) {
++		/* if frame is compressed - don't touch it. */
++		*lcn = COMPRESSED_LCN;
++		*len = hint;
++		err = -EOPNOTSUPP;
++		goto out;
++	}
++
+ 	if (!*len) {
+ 		if (run_lookup_entry(run, vcn, lcn, len, NULL)) {
+ 			if (*lcn != SPARSE_LCN || !new)
+-- 
+2.43.0
+
 
 
 
