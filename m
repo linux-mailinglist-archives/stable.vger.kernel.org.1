@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746A59419B7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DAE941CD9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9B3287E13
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2D5C1F23FE6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC5C1A619B;
-	Tue, 30 Jul 2024 16:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881731917D4;
+	Tue, 30 Jul 2024 17:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhzYyVmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiPtYRDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE2D1A6195;
-	Tue, 30 Jul 2024 16:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FB7189B85;
+	Tue, 30 Jul 2024 17:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357338; cv=none; b=VpSUoT9iqIKVYDjEn18ryjPO6XC8MKouJIHe0oH3IdqqDy0+2SuS0PM/dvkvD2cANrkO3UrV/ORrmffAhle3ZPVm3Mpv0aPYoCnvnP8fj8G9viUxAs0nw+H7qK9eFvs5V6YzFgxA5iwx9nFbaN/JoWvrBFONEzj24r26KB5Qdnk=
+	t=1722359352; cv=none; b=sGDorDI7r5buPmQ5nA3BLBIMbGfnh0x+KMiq5G0apaqiirqNAVhDGuo78tyaDjxo3KFyCdbw0UvVaBRKP80Yop0T3J+Ub5zHTTtz6HnDJ4AeueyLMM1WFU5Ym0SARwZYQ6SMm+Bm221lOOkF6LnoCb2VEeQCTEXu0T+fL+ZBMx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357338; c=relaxed/simple;
-	bh=RulmJPsi5dxmNXE2XsLs8hJjyzSdWfFSw0TrultzLeA=;
+	s=arc-20240116; t=1722359352; c=relaxed/simple;
+	bh=k6CRQEC5EWVdFPgUIKhJdowCMfTB8GbErKSMnvWtPOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PvDT+IkuSoR0FkgHCM3PvAZ/vzZEGmks4dS7rCOJpjD8Xz0MGbluyzCCPbsjFTU26oykZsyOyuJe2Eds5cMLwZYzQmEHUP4elkH7xuUhD1Do+lVPjzPPGgZRsz9/NIwnTJpFkHfzKVW6ZCwDf5AThdjXgDVOM8yVtAitlmzDU9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhzYyVmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E9FC32782;
-	Tue, 30 Jul 2024 16:35:37 +0000 (UTC)
+	 MIME-Version; b=ipqfue7+8gXCHHO2KXxzVPbDz1ELfOOnJPaEcZ+nI8BSaXThOiwVAuSE3psLsjYtqgoKwvcf18aa12CzQHhTktvo24dQrKD3POeGOkV81qpruHMFyqkGWNATl3ztClG/yg0snbo2JeluQICnFlesW3RNBOEMXH2p+mbWw9GLo60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiPtYRDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FC9C32782;
+	Tue, 30 Jul 2024 17:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357338;
-	bh=RulmJPsi5dxmNXE2XsLs8hJjyzSdWfFSw0TrultzLeA=;
+	s=korg; t=1722359351;
+	bh=k6CRQEC5EWVdFPgUIKhJdowCMfTB8GbErKSMnvWtPOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MhzYyVmWcXzZnq5h8X9Nw3IdYIioG4noA/6Vs6WYaXoS0bK7ygvn92tUIbytAES21
-	 eJ8dviR1BeptvzDGgxzHeIbXn2BnF9xZL48EeJsCaLIQE1EwMJwcJpMWK8yIr7SyLK
-	 xa03/8VBm3IKUwtHKs5MREIH56hkmHAFRn239g50=
+	b=MiPtYRDg2gg92dB7cwmiopnkkmWPso71SIJwxRBmDbNpj5s88tKBtks2VRPNPOUX9
+	 CWkwMLQKobad0urld182HB7twqB2Xf9KJfIZiD7WkQKytg+neKZf858BdZZxTARzb5
+	 El80sT/iYXUJ01AjVLxCI7tO9eNfJagEMrzOUNks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/568] NFSv4.1 another fix for EXCHGID4_FLAG_USE_PNFS_DS for DS server
+Subject: [PATCH 6.10 472/809] RDMA/mana_ib: set node_guid
 Date: Tue, 30 Jul 2024 17:45:48 +0200
-Message-ID: <20240730151649.300942136@linuxfoundation.org>
+Message-ID: <20240730151743.379640955@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Konstantin Taranov <kotaranov@microsoft.com>
 
-[ Upstream commit 4840c00003a2275668a13b82c9f5b1aed80183aa ]
+[ Upstream commit 65357e2c164a08bf20849dd55f46aa71e00334fa ]
 
-Previously in order to mark the communication with the DS server,
-we tried to use NFS_CS_DS in cl_flags. However, this flag would
-only be saved for the DS server and in case where DS equals MDS,
-the client would not find a matching nfs_client in nfs_match_client
-that represents the MDS (but is also a DS).
+Use the mac address for the node_guid of the IB device.
 
-Instead, don't rely on the NFS_CS_DS but instead use NFS_CS_PNFS.
-
-Fixes: 379e4adfddd6 ("NFSv4.1: fixup use EXCHGID4_FLAG_USE_PNFS_DS for DS server")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Link: https://lore.kernel.org/r/1717070117-1234-2-git-send-email-kotaranov@linux.microsoft.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 1df03a4b4414 ("RDMA/mana_ib: Set correct device into ib")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4client.c | 6 ++----
- fs/nfs/nfs4proc.c   | 2 +-
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/mana/device.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 11e3a285594c2..ac80f87cb9d99 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -231,9 +231,8 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
- 		__set_bit(NFS_CS_INFINITE_SLOTS, &clp->cl_flags);
- 	__set_bit(NFS_CS_DISCRTRY, &clp->cl_flags);
- 	__set_bit(NFS_CS_NO_RETRANS_TIMEOUT, &clp->cl_flags);
--
--	if (test_bit(NFS_CS_DS, &cl_init->init_flags))
--		__set_bit(NFS_CS_DS, &clp->cl_flags);
-+	if (test_bit(NFS_CS_PNFS, &cl_init->init_flags))
-+		__set_bit(NFS_CS_PNFS, &clp->cl_flags);
- 	/*
- 	 * Set up the connection to the server before we add add to the
- 	 * global list.
-@@ -1011,7 +1010,6 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
- 	if (mds_srv->flags & NFS_MOUNT_NORESVPORT)
- 		__set_bit(NFS_CS_NORESVPORT, &cl_init.init_flags);
+diff --git a/drivers/infiniband/hw/mana/device.c b/drivers/infiniband/hw/mana/device.c
+index 7e09ceb3da537..9a7da2ec9cdbb 100644
+--- a/drivers/infiniband/hw/mana/device.c
++++ b/drivers/infiniband/hw/mana/device.c
+@@ -5,6 +5,7 @@
  
--	__set_bit(NFS_CS_DS, &cl_init.init_flags);
- 	__set_bit(NFS_CS_PNFS, &cl_init.init_flags);
- 	cl_init.max_connect = NFS_MAX_TRANSPORTS;
- 	/*
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 05490d4784f1a..e7ac249df1ad6 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -8816,7 +8816,7 @@ nfs4_run_exchange_id(struct nfs_client *clp, const struct cred *cred,
- #ifdef CONFIG_NFS_V4_1_MIGRATION
- 	calldata->args.flags |= EXCHGID4_FLAG_SUPP_MOVED_MIGR;
- #endif
--	if (test_bit(NFS_CS_DS, &clp->cl_flags))
-+	if (test_bit(NFS_CS_PNFS, &clp->cl_flags))
- 		calldata->args.flags |= EXCHGID4_FLAG_USE_PNFS_DS;
- 	msg.rpc_argp = &calldata->args;
- 	msg.rpc_resp = &calldata->res;
+ #include "mana_ib.h"
+ #include <net/mana/mana_auxiliary.h>
++#include <net/addrconf.h>
+ 
+ MODULE_DESCRIPTION("Microsoft Azure Network Adapter IB driver");
+ MODULE_LICENSE("GPL");
+@@ -92,6 +93,7 @@ static int mana_ib_probe(struct auxiliary_device *adev,
+ 		goto free_ib_device;
+ 	}
+ 	ether_addr_copy(mac_addr, upper_ndev->dev_addr);
++	addrconf_addr_eui48((u8 *)&dev->ib_dev.node_guid, upper_ndev->dev_addr);
+ 	ret = ib_device_set_netdev(&dev->ib_dev, upper_ndev, 1);
+ 	rcu_read_unlock();
+ 	if (ret) {
 -- 
 2.43.0
 
