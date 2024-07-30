@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-64634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EBA941EBF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76A1941D4E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7ACF41C2349C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79C0728B449
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EEF166315;
-	Tue, 30 Jul 2024 17:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF4E1A76AD;
+	Tue, 30 Jul 2024 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9FWFyi9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abYhQoOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9145E1A76AD;
-	Tue, 30 Jul 2024 17:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16CA1A76A4;
+	Tue, 30 Jul 2024 17:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360761; cv=none; b=TCVg1u8Z1iVRSQBJAHjw/jpRvMHvDNhg+4/jaZ4VRkoYbK+MSogGPfr2WeYXKzierqckFZf/MJYTLRG9WMQEyDQEJ50rlVcSxKXQzprBgCXEYP6hXMBymqfj08gepl3ntilxem87TRD8aiITKTokAzp356IlY6FBDDlxZHv4vLY=
+	t=1722359721; cv=none; b=LWPB/RHCb9/GCMXvI8zH5yl7EaOU7DlwFP7AerNAUUzDF31dCUAh0IqdHNM7oOtKuYkXqUXm3cL0LoBvWEmUCzdfCLkqbuKgt116gdvky34sayPB/yCxadDdbR+EMpkQEzpn2IvMjeo3iLNWh9JR8HulXDLP51sKcOFyX/F3w78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360761; c=relaxed/simple;
-	bh=BWbwtV/BT8JqCS+ltZjahPINOA77QBadxndu8DiSbRs=;
+	s=arc-20240116; t=1722359721; c=relaxed/simple;
+	bh=Jw9GsFjIJYQZ5FaDuC3z3ayjDZq+g9X4yodlvvCSGQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXXznZ018iiuPXv8FQstTblMIl86dVRRMYZfbIn7l58HifLq9o5mkxgAcKo26lkp3LsdJlKqyDagBPArN0cc5lEBISzB5twoNMB5D51gZlkzAh5pltR7f/aO6PpdrY3C7Lt7vg/yKxdpId0CZ5ejRzwMupbH2JPi9jTPi5L79RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9FWFyi9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4043C4AF10;
-	Tue, 30 Jul 2024 17:32:40 +0000 (UTC)
+	 MIME-Version; b=F/nQY/S2wNpjKWr6jmyGDI1H5LAfsBOYfWT3kiZ58H8jz1s2ZohwF6sFUG9CV8WTE1cR5uKJIkCIx2jPIXruF2g58yRSYcWOUzzXBEzYmV5i6/144Tk1a165y4PHS1Asx3wUFn4gvJBNB6dskByZc9vyKzFxEuB2tx8YnlEwhi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abYhQoOl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CA6C4AF0F;
+	Tue, 30 Jul 2024 17:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360761;
-	bh=BWbwtV/BT8JqCS+ltZjahPINOA77QBadxndu8DiSbRs=;
+	s=korg; t=1722359720;
+	bh=Jw9GsFjIJYQZ5FaDuC3z3ayjDZq+g9X4yodlvvCSGQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9FWFyi9tjQiH0tnF7Ey39Qjs9yp/J1ba9q7PYiNOM92ALJYWu3lJzHWmKdqJMZKZ
-	 WHDOwnHHn2nDXw78gWt4p6EvxgeDmtykjDyK8iUT/gE1RfIwVak1Gwvn2Q/qzLqbTB
-	 bhejzNOePgdwsDeQCs5y38dXuMAOGV50J7Aw0XHQ=
+	b=abYhQoOl2+8bTjvYCDfIBX03mjOfBc4RRKW5LwqpamnOkhBZuJtFGGslvBkTixYgd
+	 ZzVTpY9DNpduUwUZaZmCGEuhdl9sJWi5k0pLKXeYb8PX9ygenQd0mZstuei4mDMP1M
+	 bHM5D9Qm48NZ7oNbUgXN6t51+SiqjrUHoxyp60bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Jiri Olsa <jolsa@kernel.org>,
+	Yunlei He <heyunlei@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 758/809] bpf, events: Use prog to emit ksymbol event for main program
+Subject: [PATCH 6.6 527/568] f2fs: fix to update user block counts in block_operations()
 Date: Tue, 30 Jul 2024 17:50:34 +0200
-Message-ID: <20240730151754.899999670@linuxfoundation.org>
+Message-ID: <20240730151700.756488487@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 0be9ae5486cd9e767138c13638820d240713f5f1 ]
+[ Upstream commit f06c0f82e38bbda7264d6ef3c90045ad2810e0f3 ]
 
-Since commit 0108a4e9f358 ("bpf: ensure main program has an extable"),
-prog->aux->func[0]->kallsyms is left as uninitialized. For BPF programs
-with subprogs, the symbol for the main program is missing just as shown
-in the output of perf script below:
+Commit 59c9081bc86e ("f2fs: allow write page cache when writting cp")
+allows write() to write data to page cache during checkpoint, so block
+count fields like .total_valid_block_count, .alloc_valid_block_count
+and .rf_node_block_count may encounter race condition as below:
 
- ffffffff81284b69 qp_trie_lookup_elem+0xb9 ([kernel.kallsyms])
- ffffffffc0011125 bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
- ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
- ffffffffc00110a1 +0x25 ()
- ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
+CP				Thread A
+- write_checkpoint
+ - block_operations
+  - f2fs_down_write(&sbi->node_change)
+  - __prepare_cp_block
+  : ckpt->valid_block_count = .total_valid_block_count
+  - f2fs_up_write(&sbi->node_change)
+				- write
+				 - f2fs_preallocate_blocks
+				  - f2fs_map_blocks(,F2FS_GET_BLOCK_PRE_AIO)
+				   - f2fs_map_lock
+				    - f2fs_down_read(&sbi->node_change)
+				   - f2fs_reserve_new_blocks
+				    - inc_valid_block_count
+				    : percpu_counter_add(&sbi->alloc_valid_block_count, count)
+				    : sbi->total_valid_block_count += count
+				    - f2fs_up_read(&sbi->node_change)
+ - do_checkpoint
+ : sbi->last_valid_block_count = sbi->total_valid_block_count
+ : percpu_counter_set(&sbi->alloc_valid_block_count, 0)
+ : percpu_counter_set(&sbi->rf_node_block_count, 0)
+				- fsync
+				 - need_do_checkpoint
+				  - f2fs_space_for_roll_forward
+				  : alloc_valid_block_count was reset to zero,
+				    so, it may missed last data during checkpoint
 
-Fix it by always using prog instead prog->aux->func[0] to emit ksymbol
-event for the main program. After the fix, the output of perf script
-will be correct:
+Let's change to update .total_valid_block_count, .alloc_valid_block_count
+and .rf_node_block_count in block_operations(), then their access can be
+protected by .node_change and .cp_rwsem lock, so that it can avoid above
+race condition.
 
- ffffffff81284b96 qp_trie_lookup_elem+0xe6 ([kernel.kallsyms])
- ffffffffc001382d bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
- ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
- ffffffffc0013779 bpf_prog_245c55ab25cfcf40_qp_trie_lookup+0x25 (bpf...)
- ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
-
-Fixes: 0108a4e9f358 ("bpf: ensure main program has an extable")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Yonghong Song <yonghong.song@linux.dev>
-Reviewed-by: Krister Johansen <kjlx@templeofstupid.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20240714065533.1112616-1-houtao@huaweicloud.com
+Fixes: 59c9081bc86e ("f2fs: allow write page cache when writting cp")
+Cc: Yunlei He <heyunlei@oppo.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |   26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ fs/f2fs/checkpoint.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9330,21 +9330,19 @@ static void perf_event_bpf_emit_ksymbols
- 	bool unregister = type == PERF_BPF_EVENT_PROG_UNLOAD;
- 	int i;
- 
--	if (prog->aux->func_cnt == 0) {
--		perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
--				   (u64)(unsigned long)prog->bpf_func,
--				   prog->jited_len, unregister,
--				   prog->aux->ksym.name);
--	} else {
--		for (i = 0; i < prog->aux->func_cnt; i++) {
--			struct bpf_prog *subprog = prog->aux->func[i];
-+	perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
-+			   (u64)(unsigned long)prog->bpf_func,
-+			   prog->jited_len, unregister,
-+			   prog->aux->ksym.name);
- 
--			perf_event_ksymbol(
--				PERF_RECORD_KSYMBOL_TYPE_BPF,
--				(u64)(unsigned long)subprog->bpf_func,
--				subprog->jited_len, unregister,
--				subprog->aux->ksym.name);
--		}
-+	for (i = 1; i < prog->aux->func_cnt; i++) {
-+		struct bpf_prog *subprog = prog->aux->func[i];
+diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+index 58ce751da92bf..1a33a8c1623f2 100644
+--- a/fs/f2fs/checkpoint.c
++++ b/fs/f2fs/checkpoint.c
+@@ -1170,6 +1170,11 @@ static void __prepare_cp_block(struct f2fs_sb_info *sbi)
+ 	ckpt->valid_node_count = cpu_to_le32(valid_node_count(sbi));
+ 	ckpt->valid_inode_count = cpu_to_le32(valid_inode_count(sbi));
+ 	ckpt->next_free_nid = cpu_to_le32(last_nid);
 +
-+		perf_event_ksymbol(
-+			PERF_RECORD_KSYMBOL_TYPE_BPF,
-+			(u64)(unsigned long)subprog->bpf_func,
-+			subprog->jited_len, unregister,
-+			subprog->aux->ksym.name);
- 	}
++	/* update user_block_counts */
++	sbi->last_valid_block_count = sbi->total_valid_block_count;
++	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
++	percpu_counter_set(&sbi->rf_node_block_count, 0);
  }
  
+ static bool __need_flush_quota(struct f2fs_sb_info *sbi)
+@@ -1559,11 +1564,6 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
+ 		start_blk += NR_CURSEG_NODE_TYPE;
+ 	}
+ 
+-	/* update user_block_counts */
+-	sbi->last_valid_block_count = sbi->total_valid_block_count;
+-	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
+-	percpu_counter_set(&sbi->rf_node_block_count, 0);
+-
+ 	/* Here, we have one bio having CP pack except cp pack 2 page */
+ 	f2fs_sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
+ 	/* Wait for all dirty meta pages to be submitted for IO */
+-- 
+2.43.0
+
 
 
 
