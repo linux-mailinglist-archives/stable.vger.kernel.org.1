@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4201F941A85
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90675941823
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 742681C239B0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14BE1C22BFA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2EEB187FF9;
-	Tue, 30 Jul 2024 16:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7F71898F4;
+	Tue, 30 Jul 2024 16:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alGOfJVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHTeF3q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3A1757FC;
-	Tue, 30 Jul 2024 16:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C49189516;
+	Tue, 30 Jul 2024 16:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357879; cv=none; b=XAc2ZF9kiko0GoXiisH05qCv60hrJRLKb2qVUkIdKY7KIUc8gd751Npp0JwZr9EcU8qXySPwP0oJwmktpT+VvHUbRm/+7rYlHDH+mgcwKJ6wfU4Txw3b4eMmyjIQ6mrPgM5R8IOkv4VBZl0LDTU011+mIqYPFiMtGNOINr7bVCo=
+	t=1722356269; cv=none; b=GisgFUiDJxACn1iquhqcLaSsKu0K/+vJZIQlxwSmxjaNZZYKUgVrNw0GR7LplttHDll+YsQdoQUG1Tm/aZk99uayjPvquhEMsfU/bfaShHFkoSybMXSH6+eRIhvbzar/7cXOUhwSz0fIzhPBW9ahR1FAY8j/Lgs8irZkjdQl/yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357879; c=relaxed/simple;
-	bh=jMjDfOw+EWzoVo88yxpOJ8ak7RKJ9q7YXHNemZOHtcE=;
+	s=arc-20240116; t=1722356269; c=relaxed/simple;
+	bh=KznpQmPVfPCQUjV+ktD4gJkEQQHUuj2gk0395HsrzzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlIeYvq5fxukeAx+HUV9w8ngRRdF5ud/+41Y+3NtWc4Da6T88s3wYUxDB6S8kyuvUHo67RuyYh2PkjNhpCpjCSRzXnJhyXrxG4Z4lL42xReYUH/rKtLY7xqfwGBcPWxrfigsLR5CJ9ZdObyNYwXkekGW/SsAPdoJlK98o8cSask=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alGOfJVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DF2C32782;
-	Tue, 30 Jul 2024 16:44:37 +0000 (UTC)
+	 MIME-Version; b=r0Ea2MrWL0XWMCv9dk1tbrH+YGHM1Gp8vjaoQPCjPTRDCHsPbV//H3aSh9a4Nu/Z8VzeQKih64OSSuCaLWMkHhwgb5KQxV8ggbvP7lkyCW2NK+2I1C6sAeO3b//9a8/Do/WUY2O6xl3ugNq6m+xQJKGkv1nfTKU9ueK0d82eUoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHTeF3q0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E386C32782;
+	Tue, 30 Jul 2024 16:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357879;
-	bh=jMjDfOw+EWzoVo88yxpOJ8ak7RKJ9q7YXHNemZOHtcE=;
+	s=korg; t=1722356269;
+	bh=KznpQmPVfPCQUjV+ktD4gJkEQQHUuj2gk0395HsrzzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alGOfJVVd4z7cebiJSTlBm2hCkphYl58yJDPo5NXpYNdA7Fcz+QGHU0N3iOE+LmL5
-	 SkOAWurBbtmPWllL3Fjfa3keiJ8mFi1ulSjp7+QDGUJGr4ne0kHyQSgtTWxZGOjGXZ
-	 l/A14YHTb50oomAwRyGl2uMCwLS68nUJX1AC5J2k=
+	b=CHTeF3q03cwSn5p40wxafARhb4zev8i1EPSOoBUfjvOhEyXIE8p+ChrcAUSj7lc+S
+	 sFjF90x1d+/tU+sgTu6aAlrPUNQfpGMwee2o+afFG4rQxX7e9qAfOQn7xGohuWKlQX
+	 ei/ZSHq8en2illvVW1d3b6P98y1m4gayLgj5IAPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com,
+	Hugh Dickins <hughd@google.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 300/568] RDMA/hns: Fix unmatch exception handling when init eq table fails
+Subject: [PATCH 6.1 174/440] ext4: avoid writing unitialized memory to disk in EA inodes
 Date: Tue, 30 Jul 2024 17:46:47 +0200
-Message-ID: <20240730151651.600286822@linuxfoundation.org>
+Message-ID: <20240730151622.670961763@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 543fb987bd63ed27409b5dea3d3eec27b9c1eac9 ]
+[ Upstream commit 65121eff3e4c8c90f8126debf3c369228691c591 ]
 
-The hw ctx should be destroyed when init eq table fails.
+If the extended attribute size is not a multiple of block size, the last
+block in the EA inode will have uninitialized tail which will get
+written to disk. We will never expose the data to userspace but still
+this is not a good practice so just zero out the tail of the block as it
+isn't going to cause a noticeable performance overhead.
 
-Fixes: a5073d6054f7 ("RDMA/hns: Add eq support of hip08")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240710133705.896445-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
+Reported-by: syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com
+Reported-by: Hugh Dickins <hughd@google.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240613150234.25176-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 25 +++++++++++-----------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ fs/ext4/xattr.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 8c90391fd3524..680fe2bdda09d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -6261,9 +6261,16 @@ static void hns_roce_v2_int_mask_enable(struct hns_roce_dev *hr_dev,
- 	roce_write(hr_dev, ROCEE_VF_ABN_INT_CFG_REG, enable_flag);
- }
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 28d00ed833db4..f0a45d3ec4ebb 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1384,6 +1384,12 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
+ 			goto out;
  
--static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
-+static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
-+{
-+	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
-+}
-+
-+static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev,
-+				    struct hns_roce_eq *eq)
- {
- 	struct device *dev = hr_dev->dev;
-+	int eqn = eq->eqn;
- 	int ret;
- 	u8 cmd;
+ 		memcpy(bh->b_data, buf, csize);
++		/*
++		 * Zero out block tail to avoid writing uninitialized memory
++		 * to disk.
++		 */
++		if (csize < blocksize)
++			memset(bh->b_data + csize, 0, blocksize - csize);
+ 		set_buffer_uptodate(bh);
+ 		ext4_handle_dirty_metadata(handle, ea_inode, bh);
  
-@@ -6274,12 +6281,9 @@ static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
- 
- 	ret = hns_roce_destroy_hw_ctx(hr_dev, cmd, eqn & HNS_ROCE_V2_EQN_M);
- 	if (ret)
--		dev_err(dev, "[mailbox cmd] destroy eqc(%u) failed.\n", eqn);
--}
-+		dev_err(dev, "[mailbox cmd] destroy eqc(%d) failed.\n", eqn);
- 
--static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
--{
--	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
-+	free_eq_buf(hr_dev, eq);
- }
- 
- static void init_eq_config(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
-@@ -6585,7 +6589,7 @@ static int hns_roce_v2_init_eq_table(struct hns_roce_dev *hr_dev)
- 
- err_create_eq_fail:
- 	for (i -= 1; i >= 0; i--)
--		free_eq_buf(hr_dev, &eq_table->eq[i]);
-+		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
- 	kfree(eq_table->eq);
- 
- 	return ret;
-@@ -6605,11 +6609,8 @@ static void hns_roce_v2_cleanup_eq_table(struct hns_roce_dev *hr_dev)
- 	__hns_roce_free_irq(hr_dev);
- 	destroy_workqueue(hr_dev->irq_workq);
- 
--	for (i = 0; i < eq_num; i++) {
--		hns_roce_v2_destroy_eqc(hr_dev, i);
--
--		free_eq_buf(hr_dev, &eq_table->eq[i]);
--	}
-+	for (i = 0; i < eq_num; i++)
-+		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
- 
- 	kfree(eq_table->eq);
- }
 -- 
 2.43.0
 
