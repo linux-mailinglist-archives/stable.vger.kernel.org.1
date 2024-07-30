@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-63651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16309419FA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590359419FF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6A1E1F253C3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 035411F252F2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3280184553;
-	Tue, 30 Jul 2024 16:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B78757FC;
+	Tue, 30 Jul 2024 16:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnSOzODC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTBZY+lm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717DB1A619B;
-	Tue, 30 Jul 2024 16:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8133218454A;
+	Tue, 30 Jul 2024 16:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357515; cv=none; b=oqE+32hpRcWcDMW2zQ73/Eg367AeFd/FpapgJh/YU1E0UUW7/pjdNG8b7iDkpzuo4sJcvHyGwRbQ0ieZpfAnPsDS962L+7JKoIn6wcM1iE5bIrzDKd/0hPM+JFQpY3ELCc2sD6K5PMpTLXQKJlI9r4ZTL1lQ78zOPbtldQjIhbo=
+	t=1722357528; cv=none; b=WqWJxpWrZVkz9Le4DaPTlNHXD7ujrilbkw0FWBGD+PXmVaYxOk+aS3DPlGeH4ZIyMeUMVptdzv2SrteFYwuCDJFUcOgXdVQwHh6UMG4RGfERzAV+69bKmXCPzWwfX6eDKH8g+mIMUZY1xsR/e+oIiCwdwZrEoR4OFC/Jnr7xcrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357515; c=relaxed/simple;
-	bh=0qL9rCfRUcS1PUDIvM1dOWGtMg4ZP1ny/denGQaR9dU=;
+	s=arc-20240116; t=1722357528; c=relaxed/simple;
+	bh=SyOjNUoqSjIHqitopMOVTcm1/Sp6tY4Ml1LTtK2xJ7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qg39QaZDlXzXw1idYj1q2ObLhF67eNLq2gu4Qamh6ypEpaXsLAhAS6gawugLyeB5Ef3SZl6IYKPa4K3dofczDEuyL2iIE0WWwzwAi1ijAuLX0Wk3AMck5+PSPoHjk8FaBB2I0r2FqN9SRUBzmkuzZSYEgWZzYorF1fnjumXAK4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnSOzODC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59A6C32782;
-	Tue, 30 Jul 2024 16:38:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dc+1tQS90MSlAUXlCYnmCqSFGT3EEXuRSiwved99E0lMs8wyDzhYWN3z07nUqVchATOBuuykPEokKjKZ3umauUHJy4vUX/iLHJFCSjtDPu73v/nP5ruftQEmt6qUnDncU2CGA16Wy6RGzO9iTyjJKnO2gjmzHCPIEXGFoh12ppQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTBZY+lm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A144EC4AF0E;
+	Tue, 30 Jul 2024 16:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357515;
-	bh=0qL9rCfRUcS1PUDIvM1dOWGtMg4ZP1ny/denGQaR9dU=;
+	s=korg; t=1722357528;
+	bh=SyOjNUoqSjIHqitopMOVTcm1/Sp6tY4Ml1LTtK2xJ7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnSOzODCE+IXFvp2Iab3G4gXp/QEvOi6vWDh2bNhsGO1Gxs1LgEOayPawLMpXLXEC
-	 0ZzhAW64GSryyVgQI6V4vV6zLBSerfrjf2gR0nI+QXvKq89L45CkIEa9kCYwUNwx/m
-	 EQUAaPU2vsnVJK6Zeb9HAESHqNFy/ILmvMEl/qCI=
+	b=dTBZY+lmDEDiHyEskWjtHnBJIB628L33DQuhBCCXaAFLZoXWkKWVCvYvNxd7u2EEl
+	 8Xg+j2/2hUusM0hFp4ud8V6yN7RkCZefIfsdqTkFuazR+4Wto/j+T4Jmkvk4WXoc5j
+	 4VvHCbgk5CB5bNzi93aY07M4X2ivTt7kqhq2WiN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 244/568] leds: flash: leds-qcom-flash: Test the correct variable in init
-Date: Tue, 30 Jul 2024 17:45:51 +0200
-Message-ID: <20240730151649.417546614@linuxfoundation.org>
+Subject: [PATCH 6.6 245/568] sparc64: Fix incorrect function signature and add prototype for prom_cif_init
+Date: Tue, 30 Jul 2024 17:45:52 +0200
+Message-ID: <20240730151649.456116128@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -60,57 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Andreas Larsson <andreas@gaisler.com>
 
-[ Upstream commit 87e552ad654554be73e62dd43c923bcee215287d ]
+[ Upstream commit a6c3ea1ec96307dbfbb2f16d96c674c5cc80f445 ]
 
-This code was passing the incorrect pointer to PTR_ERR_OR_ZERO() so it
-always returned success.  It should have been checking the array element
-instead of the array itself.
+Remove the unused cif_stack argument and add a protype in oplib_64.h
+Commit ef3e035c3a9b ("sparc64: Fix register corruption in top-most
+kernel stack frame during boot.") removed the cif_stack argument to
+prom_cif init in the declaration at the caller site and the usage of it
+within prom_cif_init, but not in the function signature of the function
+itself.
 
-Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/ZoWJS_epjIMCYITg@stanley.mountain
-Signed-off-by: Lee Jones <lee@kernel.org>
+This also fixes the following warning:
+arch/sparc/prom/p1275.c:52:6: warning: no previous prototype for ‘prom_cif_init’
+
+Fixes: ef3e035c3a9b ("sparc64: Fix register corruption in top-most kernel stack frame during boot.")
+Link: https://lore.kernel.org/r/20240710094155.458731-3-andreas@gaisler.com
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/flash/leds-qcom-flash.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/sparc/include/asm/oplib_64.h | 1 +
+ arch/sparc/prom/init_64.c         | 3 ---
+ arch/sparc/prom/p1275.c           | 2 +-
+ 3 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/leds/flash/leds-qcom-flash.c b/drivers/leds/flash/leds-qcom-flash.c
-index a73d3ea5c97a3..17391aefeb941 100644
---- a/drivers/leds/flash/leds-qcom-flash.c
-+++ b/drivers/leds/flash/leds-qcom-flash.c
-@@ -505,6 +505,7 @@ qcom_flash_v4l2_init(struct device *dev, struct qcom_flash_led *led, struct fwno
- 	struct qcom_flash_data *flash_data = led->flash_data;
- 	struct v4l2_flash_config v4l2_cfg = { 0 };
- 	struct led_flash_setting *intensity = &v4l2_cfg.intensity;
-+	struct v4l2_flash *v4l2_flash;
+diff --git a/arch/sparc/include/asm/oplib_64.h b/arch/sparc/include/asm/oplib_64.h
+index a67abebd43592..1b86d02a84556 100644
+--- a/arch/sparc/include/asm/oplib_64.h
++++ b/arch/sparc/include/asm/oplib_64.h
+@@ -247,6 +247,7 @@ void prom_sun4v_guest_soft_state(void);
+ int prom_ihandle2path(int handle, char *buffer, int bufsize);
  
- 	if (!(led->flash.led_cdev.flags & LED_DEV_CAP_FLASH))
- 		return 0;
-@@ -523,9 +524,12 @@ qcom_flash_v4l2_init(struct device *dev, struct qcom_flash_led *led, struct fwno
- 				LED_FAULT_OVER_TEMPERATURE |
- 				LED_FAULT_TIMEOUT;
+ /* Client interface level routines. */
++void prom_cif_init(void *cif_handler);
+ void p1275_cmd_direct(unsigned long *);
  
--	flash_data->v4l2_flash[flash_data->leds_count] =
--		v4l2_flash_init(dev, fwnode, &led->flash, &qcom_v4l2_flash_ops, &v4l2_cfg);
--	return PTR_ERR_OR_ZERO(flash_data->v4l2_flash);
-+	v4l2_flash = v4l2_flash_init(dev, fwnode, &led->flash, &qcom_v4l2_flash_ops, &v4l2_cfg);
-+	if (IS_ERR(v4l2_flash))
-+		return PTR_ERR(v4l2_flash);
-+
-+	flash_data->v4l2_flash[flash_data->leds_count] = v4l2_flash;
-+	return 0;
+ #endif /* !(__SPARC64_OPLIB_H) */
+diff --git a/arch/sparc/prom/init_64.c b/arch/sparc/prom/init_64.c
+index 103aa91043185..f7b8a1a865b8f 100644
+--- a/arch/sparc/prom/init_64.c
++++ b/arch/sparc/prom/init_64.c
+@@ -26,9 +26,6 @@ phandle prom_chosen_node;
+  * routines in the prom library.
+  * It gets passed the pointer to the PROM vector.
+  */
+-
+-extern void prom_cif_init(void *);
+-
+ void __init prom_init(void *cif_handler)
+ {
+ 	phandle node;
+diff --git a/arch/sparc/prom/p1275.c b/arch/sparc/prom/p1275.c
+index 889aa602f8d86..51c3f984bbf72 100644
+--- a/arch/sparc/prom/p1275.c
++++ b/arch/sparc/prom/p1275.c
+@@ -49,7 +49,7 @@ void p1275_cmd_direct(unsigned long *args)
+ 	local_irq_restore(flags);
  }
- # else
- static int
+ 
+-void prom_cif_init(void *cif_handler, void *cif_stack)
++void prom_cif_init(void *cif_handler)
+ {
+ 	p1275buf.prom_cif_handler = (void (*)(long *))cif_handler;
+ }
 -- 
 2.43.0
 
