@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607739417ED
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B22941B23
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91F031C22959
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50FB01C20F00
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3630518C934;
-	Tue, 30 Jul 2024 16:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D78188018;
+	Tue, 30 Jul 2024 16:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+E4SBNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+1hRx06"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD69718C931;
-	Tue, 30 Jul 2024 16:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734E41078F;
+	Tue, 30 Jul 2024 16:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356068; cv=none; b=Zpx3u06CFa7Hq6OvkGtyZWi10kivjaDFC7Hcvo+KGNOlkcxzxpYVAZYZvmscwWTbjnuFXSCwAIffrrElsgjoPnBTk2yAus0YQ4MBVS4V/t0FFPc5nZeMT/vnxpB71xqrC7sOUMBLg+zc9nUzkNvwLeUezoIDDdwtiRe2i3b2wS8=
+	t=1722358287; cv=none; b=YPiMzb96PLn1DSwiDaXSf1z4vGJRIUloGHQQo4/is2xxLjlqFQFh4577W8CiUJ5LOZz/4WyI8821KHCuLOmxrWxKpboEx05YiOpQ9bcQOEVUbrzKJmhatEg9hLJxnL5muYMQQ7WMgDupoSYsTbCHKqyxlQ2/gic7CwAAP2Dg6+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356068; c=relaxed/simple;
-	bh=JAmAP+oRiQJI+3YTaEMcVehtYcKUSKO5ITMgLWd/O/8=;
+	s=arc-20240116; t=1722358287; c=relaxed/simple;
+	bh=B2mFk8mg8TpZXtlzjDoI2RB6h/PDYxkpXZXLhp9Gxf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksJ1oqMMSrWrwxUhd1vd9zmrCZx72nYQY+TVHSoIMLb63HnS4/Q/jKPCH/Dp9xvMHhNXCdHvfwWpNUiJeNdF2goPQpx7ScGvYi5wBVQhR7mz3cQWuBVEmJ3i/W/4+gcoF4+As3RsEESLSjCvMh1OAtsMnc/98pXVW9GQuK4d8O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+E4SBNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A0CC32782;
-	Tue, 30 Jul 2024 16:14:27 +0000 (UTC)
+	 MIME-Version; b=KYMa5qe236rC+R9RtOuZeSt8nsW6E+jkhCd865dMfEHnnRdzqwG4c464+GDkv6Guj9k8IOIzu4FavFl56ghHBTn8VMeH/vCbDcuJskf7HThh5Iunk2fAnIDGz7c733zHj+jF07QKwNfGUqu1lX6uV267z9fX84gh/lEP2uadSsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+1hRx06; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE2CC4AF0E;
+	Tue, 30 Jul 2024 16:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356067;
-	bh=JAmAP+oRiQJI+3YTaEMcVehtYcKUSKO5ITMgLWd/O/8=;
+	s=korg; t=1722358287;
+	bh=B2mFk8mg8TpZXtlzjDoI2RB6h/PDYxkpXZXLhp9Gxf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+E4SBNVIW5XmpZwYEphITuszJIcW92pVIbDjqaLv/HdaU06Iowdj6ZHgEZN7EcLs
-	 /XxWUGAh8JSaXFgiu/86EbdFVR5aOwetz+49qvLD7+Kkx47nfNkmIUFw3Ycsj2DYj1
-	 tkVHDX4gPEz3GbXyHb1F1z4B2RfzuHn3LDhMqJkE=
+	b=b+1hRx06Vx3iPhFosZDuN5Ykv5jU65K8KS15RG0wge8knmRPvaJpq0D1eSN2qS+nH
+	 wvbE0VP5bGnsgen6bwc8baeZO1QC8DGG7PvxUHfU9nulHsl8uuUok6Fbf2ymcVtTEj
+	 JIjbfqvb9FqAxgUqbmFN+/0mHA84WWEkf/AzpFlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/568] wifi: ath12k: Correct 6 GHz frequency value in rx status
+Subject: [PATCH 6.10 342/809] drm/panic: Fix off-by-one logo size checks
 Date: Tue, 30 Jul 2024 17:43:38 +0200
-Message-ID: <20240730151644.214516728@linuxfoundation.org>
+Message-ID: <20240730151738.143056712@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit c3c84a74bd797f76d7da036c9fef947d674bbc18 ]
+[ Upstream commit 94ff11d3bd32506710ca43569d38420e7fc790c1 ]
 
-The frequency in the rx status is currently being filled
-incorrectly for the 6 GHz band. The channel number received is
-invalid in this case, resulting in packet drops. Fix this
-issue by correcting the frequency calculation.
+Logos that are either just as wide or just as high as the display work
+fine.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240508173655.22191-3-quic_pradeepc@quicinc.com
+Fixes: bf9fb17c6672868d ("drm/panic: Add a drm panic handler")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/1c9d02463cef3eac22cfac3ac6d1adad369f367b.1718305355.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c |  9 ++++++---
- drivers/net/wireless/ath/ath12k/wmi.c   | 10 +++++++---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/drm_panic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index dbcbe7e0cd2a7..a2d1ee1d51884 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2376,8 +2376,10 @@ void ath12k_dp_rx_h_ppdu(struct ath12k *ar, struct hal_rx_desc *rx_desc,
- 	channel_num = meta_data;
- 	center_freq = meta_data >> 16;
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index 056494ae1edef..e1c4796685692 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -439,7 +439,7 @@ static void draw_panic_static(struct drm_scanout_buffer *sb)
+ 		       bg_color, sb->format->cpp[0]);
  
--	if (center_freq >= 5935 && center_freq <= 7105) {
-+	if (center_freq >= ATH12K_MIN_6G_FREQ &&
-+	    center_freq <= ATH12K_MAX_6G_FREQ) {
- 		rx_status->band = NL80211_BAND_6GHZ;
-+		rx_status->freq = center_freq;
- 	} else if (channel_num >= 1 && channel_num <= 14) {
- 		rx_status->band = NL80211_BAND_2GHZ;
- 	} else if (channel_num >= 36 && channel_num <= 173) {
-@@ -2395,8 +2397,9 @@ void ath12k_dp_rx_h_ppdu(struct ath12k *ar, struct hal_rx_desc *rx_desc,
- 				rx_desc, sizeof(*rx_desc));
+ 	if ((r_msg.x1 >= drm_rect_width(&r_logo) || r_msg.y1 >= drm_rect_height(&r_logo)) &&
+-	    drm_rect_width(&r_logo) < sb->width && drm_rect_height(&r_logo) < sb->height) {
++	    drm_rect_width(&r_logo) <= sb->width && drm_rect_height(&r_logo) <= sb->height) {
+ 		draw_txt_rectangle(sb, font, logo, logo_lines, false, &r_logo, fg_color);
  	}
- 
--	rx_status->freq = ieee80211_channel_to_frequency(channel_num,
--							 rx_status->band);
-+	if (rx_status->band != NL80211_BAND_6GHZ)
-+		rx_status->freq = ieee80211_channel_to_frequency(channel_num,
-+								 rx_status->band);
- 
- 	ath12k_dp_rx_h_rate(ar, rx_desc, rx_status);
- }
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index cd89032fa25e1..21399ad233c02 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -5772,8 +5772,10 @@ static void ath12k_mgmt_rx_event(struct ath12k_base *ab, struct sk_buff *skb)
- 	if (rx_ev.status & WMI_RX_STATUS_ERR_MIC)
- 		status->flag |= RX_FLAG_MMIC_ERROR;
- 
--	if (rx_ev.chan_freq >= ATH12K_MIN_6G_FREQ) {
-+	if (rx_ev.chan_freq >= ATH12K_MIN_6G_FREQ &&
-+	    rx_ev.chan_freq <= ATH12K_MAX_6G_FREQ) {
- 		status->band = NL80211_BAND_6GHZ;
-+		status->freq = rx_ev.chan_freq;
- 	} else if (rx_ev.channel >= 1 && rx_ev.channel <= 14) {
- 		status->band = NL80211_BAND_2GHZ;
- 	} else if (rx_ev.channel >= 36 && rx_ev.channel <= ATH12K_MAX_5G_CHAN) {
-@@ -5794,8 +5796,10 @@ static void ath12k_mgmt_rx_event(struct ath12k_base *ab, struct sk_buff *skb)
- 
- 	sband = &ar->mac.sbands[status->band];
- 
--	status->freq = ieee80211_channel_to_frequency(rx_ev.channel,
--						      status->band);
-+	if (status->band != NL80211_BAND_6GHZ)
-+		status->freq = ieee80211_channel_to_frequency(rx_ev.channel,
-+							      status->band);
-+
- 	status->signal = rx_ev.snr + ATH12K_DEFAULT_NOISE_FLOOR;
- 	status->rate_idx = ath12k_mac_bitrate_to_idx(sband, rx_ev.rate / 100);
- 
+ 	draw_txt_rectangle(sb, font, panic_msg, msg_lines, true, &r_msg, fg_color);
 -- 
 2.43.0
 
