@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E482941D1B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DE8941B35
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 094091F24CB7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E9CE1F22FDB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DA8189B86;
-	Tue, 30 Jul 2024 17:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89111189514;
+	Tue, 30 Jul 2024 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1lFvGcr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y87qDs12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E307189537;
-	Tue, 30 Jul 2024 17:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E6C18801A;
+	Tue, 30 Jul 2024 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359574; cv=none; b=PYq6ztBVtEZa/mJKtiVvGI9EBuo/zIaolbKBOw7trRxLompE2aYjFjPEmQA/pw87EBe6TK1X5B4xIzDGJ5k+lsCn+SYRFk1TIDrF/nnEUId+KwD/iY81DTbqtP8KWPWt8QiL1GbfVWkNVS1MPi16x1brj+yX4qyIa1aNvRqARM8=
+	t=1722358322; cv=none; b=gnLitc5Tl6QjhUgZJVfzIok+yhsDpI9dnRB4a03hM6cT2ZXQu/YS8GG8QljaxNyhGNiSXjNJUOjBONGicUrvYYtITYNeTAB25kD1hjbmWAy0TH1IH30XwgPvjjruKA7TulDdSMp/fIyRsTgukliUpv5ZH/md2KCzywD4EOEN1k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359574; c=relaxed/simple;
-	bh=Hz+5JaZZy07xLFs3fUyMluOnkqDe7lVFYfJTYItVIrQ=;
+	s=arc-20240116; t=1722358322; c=relaxed/simple;
+	bh=NdXxuRrX2TzKEchvMEhBMbOi2oC3W0qutnQ+jI7kov0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQ1+sPmP99HH0DjaeKxezAVTXUof2TE5bfUtAHbVKFb1qUEbC04hwCxefHy6jNl1PkzHi68Rmc4Cky3mOjUJKqOH6e5e8+ULeuBrZYVKTt5C+DJlUZc0LH8eBakkNhBnVaQaHKPWLwzdAiCONPqK4tLm65DbkAMsc92zZTUowCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1lFvGcr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6ABC32782;
-	Tue, 30 Jul 2024 17:12:53 +0000 (UTC)
+	 MIME-Version; b=BxRmjYjhTbD85Cf4o7RrhBVpJ4IVbPhqJZnCMwKAmYWMKbymvhTV7qZotOIei7cFwx99l5j4sSg1v7uzH2MyuZ2IfT+WYcvC0nu8OVph7OZSJT533rhxkTMdyOR2InhH8Z8jAL04FkBlzYepw/gEZfMCR83l5sQjVXwB5Uek9fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y87qDs12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4E9C32782;
+	Tue, 30 Jul 2024 16:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359574;
-	bh=Hz+5JaZZy07xLFs3fUyMluOnkqDe7lVFYfJTYItVIrQ=;
+	s=korg; t=1722358322;
+	bh=NdXxuRrX2TzKEchvMEhBMbOi2oC3W0qutnQ+jI7kov0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1lFvGcrvGjeQLIpnLtDzCaPViJ+jxmQoUFiwZv7uPDaljlXmIAV94/iKL7wDizKD
-	 T8jzItCraqXc18ZMFs9UjotsC1LUf+E+6jdzSbCyd3Fg6r/0llIGXyKjj3j8hJn+Q7
-	 Zrs6DRpGDOLqBEEOh6w8M56lvKDze2NivhieFIoo=
+	b=Y87qDs123wp7p+/qlWfee3XNMq4Lsh9yKbkUloYvfF5IRAa4pjNFlMgmhubZ8asWs
+	 nPu2O0Mj8ULet7pR6ieBCLPdG8T9mB7rhLiS2WX9y74FhIRSf6D7BBSxzasgBpxUvA
+	 +OLZFj0dJjiiNS0po9dDv3pfBhh+psgJzoSl2IVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 6.6 503/568] rbd: dont assume RBD_LOCK_STATE_LOCKED for exclusive mappings
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 377/440] MIPS: Loongson64: reset: Prioritise firmware service
 Date: Tue, 30 Jul 2024 17:50:10 +0200
-Message-ID: <20240730151659.687402174@linuxfoundation.org>
+Message-ID: <20240730151630.536569987@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 2237ceb71f89837ac47c5dce2aaa2c2b3a337a3c upstream.
+commit 4e7ca0b57f3bc09ba3e4ab86bf6b7c35134bfd04 upstream.
 
-Every time a watch is reestablished after getting lost, we need to
-update the cookie which involves quiescing exclusive lock.  For this,
-we transition from RBD_LOCK_STATE_LOCKED to RBD_LOCK_STATE_QUIESCING
-roughly for the duration of rbd_reacquire_lock() call.  If the mapping
-is exclusive and I/O happens to arrive in this time window, it's failed
-with EROFS (later translated to EIO) based on the wrong assumption in
-rbd_img_exclusive_lock() -- "lock got released?" check there stopped
-making sense with commit a2b1da09793d ("rbd: lock should be quiesced on
-reacquire").
+We should always use firmware's poweroff & reboot service
+if it's available as firmware may need to perform more task
+than platform's syscon etc.
 
-To make it worse, any such I/O is added to the acquiring list before
-EROFS is returned and this sets up for violating rbd_lock_del_request()
-precondition that the request is either on the running list or not on
-any list at all -- see commit ded080c86b3f ("rbd: don't move requests
-to the running list on errors").  rbd_lock_del_request() ends up
-processing these requests as if they were on the running list which
-screws up quiescing_wait completion counter and ultimately leads to
+However _machine_restart & poweroff hooks are registered at
+low priority, which means platform reboot driver can override
+them.
 
-    rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
+Register firmware based reboot/poweroff implementation with
+register_sys_off_handler with appropriate priority so that
+they will be prioritised. Remove _machine_halt hook as it's
+deemed to be unnecessary.
 
-being triggered on the next watch error.
-
-Cc: stable@vger.kernel.org # 06ef84c4e9c4: rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
 Cc: stable@vger.kernel.org
-Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/mips/loongson64/reset.c |   38 ++++++++++++++++----------------------
+ 1 file changed, 16 insertions(+), 22 deletions(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3457,6 +3457,7 @@ static void rbd_lock_del_request(struct
- 	lockdep_assert_held(&rbd_dev->lock_rwsem);
- 	spin_lock(&rbd_dev->lock_lists_lock);
- 	if (!list_empty(&img_req->lock_item)) {
-+		rbd_assert(!list_empty(&rbd_dev->running_list));
- 		list_del_init(&img_req->lock_item);
- 		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
- 			       list_empty(&rbd_dev->running_list));
-@@ -3476,11 +3477,6 @@ static int rbd_img_exclusive_lock(struct
- 	if (rbd_lock_add_request(img_req))
- 		return 1;
+--- a/arch/mips/loongson64/reset.c
++++ b/arch/mips/loongson64/reset.c
+@@ -11,6 +11,7 @@
+ #include <linux/init.h>
+ #include <linux/kexec.h>
+ #include <linux/pm.h>
++#include <linux/reboot.h>
+ #include <linux/slab.h>
  
--	if (rbd_dev->opts->exclusive) {
--		WARN_ON(1); /* lock got released? */
--		return -EROFS;
+ #include <asm/bootinfo.h>
+@@ -21,36 +22,21 @@
+ #include <loongson.h>
+ #include <boot_param.h>
+ 
+-static void loongson_restart(char *command)
++static int firmware_restart(struct sys_off_data *unusedd)
+ {
+ 
+ 	void (*fw_restart)(void) = (void *)loongson_sysconf.restart_addr;
+ 
+ 	fw_restart();
+-	while (1) {
+-		if (cpu_wait)
+-			cpu_wait();
 -	}
--
- 	/*
- 	 * Note the use of mod_delayed_work() in rbd_acquire_lock()
- 	 * and cancel_delayed_work() in wake_lock_waiters().
-@@ -4601,6 +4597,10 @@ static void rbd_reacquire_lock(struct rb
- 			rbd_warn(rbd_dev, "failed to update lock cookie: %d",
- 				 ret);
++	return NOTIFY_DONE;
+ }
  
-+		if (rbd_dev->opts->exclusive)
-+			rbd_warn(rbd_dev,
-+			     "temporarily releasing lock on exclusive mapping");
+-static void loongson_poweroff(void)
++static int firmware_poweroff(struct sys_off_data *unused)
+ {
+ 	void (*fw_poweroff)(void) = (void *)loongson_sysconf.poweroff_addr;
+ 
+ 	fw_poweroff();
+-	while (1) {
+-		if (cpu_wait)
+-			cpu_wait();
+-	}
+-}
+-
+-static void loongson_halt(void)
+-{
+-	pr_notice("\n\n** You can safely turn off the power now **\n\n");
+-	while (1) {
+-		if (cpu_wait)
+-			cpu_wait();
+-	}
++	return NOTIFY_DONE;
+ }
+ 
+ #ifdef CONFIG_KEXEC
+@@ -154,9 +140,17 @@ static void loongson_crash_shutdown(stru
+ 
+ static int __init mips_reboot_setup(void)
+ {
+-	_machine_restart = loongson_restart;
+-	_machine_halt = loongson_halt;
+-	pm_power_off = loongson_poweroff;
++	if (loongson_sysconf.restart_addr) {
++		register_sys_off_handler(SYS_OFF_MODE_RESTART,
++				 SYS_OFF_PRIO_FIRMWARE,
++				 firmware_restart, NULL);
++	}
 +
- 		/*
- 		 * Lock cookie cannot be updated on older OSDs, so do
- 		 * a manual release and queue an acquire.
++	if (loongson_sysconf.poweroff_addr) {
++		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
++				 SYS_OFF_PRIO_FIRMWARE,
++				 firmware_poweroff, NULL);
++	}
+ 
+ #ifdef CONFIG_KEXEC
+ 	kexec_argv = kmalloc(KEXEC_ARGV_SIZE, GFP_KERNEL);
 
 
 
