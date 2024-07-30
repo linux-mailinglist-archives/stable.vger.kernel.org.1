@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800449419D1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F71941E34
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3631B1F26EB2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E2F5B2921A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FA9146D6B;
-	Tue, 30 Jul 2024 16:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DB41A76BA;
+	Tue, 30 Jul 2024 17:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4D1obkN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYT/J2oY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856BF1A6192;
-	Tue, 30 Jul 2024 16:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673041A76AF;
+	Tue, 30 Jul 2024 17:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357408; cv=none; b=drFNRvFoq2L4yAHhhmUiYlgHQvWBZmRA6Sg2PJHK0Jq7AoKxC7jYx7O4mY3B5vc7p9WL87W4r7hHdmN2/IziCrZDA49qlUNaF1wEwSXjHPGVhq3663iGJEsjgENywxfeEk8suHNnHhEKj9voUcfnE5d6mPNKCkqEtv2wYH5MreE=
+	t=1722360234; cv=none; b=HjF70Z6bJSkVTWg1YGzo7aDZIetX322JOB9US493+ih5shQ1r+5JehJqiD+CDdo7N8dht49yTIdkMaW+RuN2j2eQcWFFoEJpFoDTR3crBXEfBgvgeoGL429bm5aMFYKRHdaTV2HUrgwqfu7yW+TlcCyk0FQ3z4glPGRLKMtHpN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357408; c=relaxed/simple;
-	bh=hNZP02e7uo7whl4Hzfktj1HOKHnOb+EeRnizwHlt7uA=;
+	s=arc-20240116; t=1722360234; c=relaxed/simple;
+	bh=BV2pUa/FTcxOAELCKg51m1XhVGeO8ZpzGoQ+LZU7sCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIN4Lo+axJaPyHuvJ+3JrtB+M5V4xoqxsr0A+/66x/+wTKUkjIngGc5/If2zRoyS0eV/35Z0fdMBFJGfI0dS6/9r/7aAcr6ndP+z+J6ULY1NtJJdBCLaivZkvtrdryn8oKdB63IuD2/mBVG4nbmontoFuUAOPF6sZ9p5zNboLFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4D1obkN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC923C4AF0A;
-	Tue, 30 Jul 2024 16:36:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SSPsStCjQM7j6kALbMoySD6ENdF+vaPx4zCoEEPAhsjn0sSiBxHofYa3n3wQvXHV2oYnYr132OS1EygcK8CFHsXu3knVIET4U4bujTYfmpV23l1zwQtO7LzuNw3ryNQB+6bXMxfmlGAnfMRm8VAgI4AyuIqwEEz8maXZZ1jol+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYT/J2oY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C8CC32782;
+	Tue, 30 Jul 2024 17:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357408;
-	bh=hNZP02e7uo7whl4Hzfktj1HOKHnOb+EeRnizwHlt7uA=;
+	s=korg; t=1722360234;
+	bh=BV2pUa/FTcxOAELCKg51m1XhVGeO8ZpzGoQ+LZU7sCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4D1obkN36CvZU7p6nrAGBSAgm4uwZl7F6PgVa/pBvKTBONNTqD9WxtFOHLtksqZ6
-	 68oh9YSstywdh8+DMreW/Awv8SExR6hfBN9yrvm6ERPDXMpsZamKewomXgX7+pEUrL
-	 J+ab+q5tz/lFUxjj9s8IN6NUj6Bg+i3V41KznTpQ=
+	b=vYT/J2oY3nfmJFYDt9JZGO/z/jc0Bsd9v711AEQsWnbyE5wHXv9011PRseGnt0hqq
+	 Xq/85pyLEaCsbHxmdfjhiFc7HfwZ56qpNzQkbv6Vj/rxA3pDORti7PV1Qn8xg0bDSq
+	 dcNoxENuM4HV7H1CZ1d/kCpdAzMWxaG96qg0wHh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Orth <ju.orth@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 280/440] kernel: rerun task_work while freezing in get_signal()
-Date: Tue, 30 Jul 2024 17:48:33 +0200
-Message-ID: <20240730151626.767694336@linuxfoundation.org>
+	Wei Liu <wei.liu@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	stable@kernel.org
+Subject: [PATCH 6.10 638/809] PCI: hv: Return zero, not garbage, when reading PCI_INTERRUPT_PIN
+Date: Tue, 30 Jul 2024 17:48:34 +0200
+Message-ID: <20240730151750.047884041@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Wei Liu <wei.liu@kernel.org>
 
-commit 943ad0b62e3c21f324c4884caa6cb4a871bca05c upstream.
+commit fea93a3e5d5e6a09eb153866d2ce60ea3287a70d upstream.
 
-io_uring can asynchronously add a task_work while the task is getting
-freezed. TIF_NOTIFY_SIGNAL will prevent the task from sleeping in
-do_freezer_trap(), and since the get_signal()'s relock loop doesn't
-retry task_work, the task will spin there not being able to sleep
-until the freezing is cancelled / the task is killed / etc.
+The intent of the code snippet is to always return 0 for both
+PCI_INTERRUPT_LINE and PCI_INTERRUPT_PIN.
 
-Run task_works in the freezer path. Keep the patch small and simple
-so it can be easily back ported, but we might need to do some cleaning
-after and look if there are other places with similar problems.
+The check misses PCI_INTERRUPT_PIN. This patch fixes that.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/systemd/systemd/issues/33626
-Fixes: 12db8b690010c ("entry: Add support for TIF_NOTIFY_SIGNAL")
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/89ed3a52933370deaaf61a0a620a6ac91f1e754d.1720634146.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This is discovered by this call in VFIO:
+
+    pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+
+The old code does not set *val to 0 because it misses the check for
+PCI_INTERRUPT_PIN. Garbage is returned in that case.
+
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+Link: https://lore.kernel.org/linux-pci/20240701202606.129606-1-wei.liu@kernel.org
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/signal.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/controller/pci-hyperv.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -2558,6 +2558,14 @@ static void do_freezer_trap(void)
- 	spin_unlock_irq(&current->sighand->siglock);
- 	cgroup_enter_frozen();
- 	schedule();
-+
-+	/*
-+	 * We could've been woken by task_work, run it to clear
-+	 * TIF_NOTIFY_SIGNAL. The caller will retry if necessary.
-+	 */
-+	clear_notify_signal();
-+	if (unlikely(task_work_pending(current)))
-+		task_work_run();
- }
- 
- static int ptrace_signal(int signr, kernel_siginfo_t *info, enum pid_type type)
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -1130,8 +1130,8 @@ static void _hv_pcifront_read_config(str
+ 		   PCI_CAPABILITY_LIST) {
+ 		/* ROM BARs are unimplemented */
+ 		*val = 0;
+-	} else if (where >= PCI_INTERRUPT_LINE && where + size <=
+-		   PCI_INTERRUPT_PIN) {
++	} else if ((where >= PCI_INTERRUPT_LINE && where + size <= PCI_INTERRUPT_PIN) ||
++		   (where >= PCI_INTERRUPT_PIN && where + size <= PCI_MIN_GNT)) {
+ 		/*
+ 		 * Interrupt Line and Interrupt PIN are hard-wired to zero
+ 		 * because this front-end only supports message-signaled
 
 
 
