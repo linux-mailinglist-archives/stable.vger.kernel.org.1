@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1036E941AB1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FD4941D96
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 415981C224D2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:46:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C2FD1C23D3B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A1C18455D;
-	Tue, 30 Jul 2024 16:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE431A76BA;
+	Tue, 30 Jul 2024 17:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpqrkkWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mo53S9sP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607511A6166;
-	Tue, 30 Jul 2024 16:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095BB1A76A4;
+	Tue, 30 Jul 2024 17:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357981; cv=none; b=X64r4mQ3ORXejv6F8/i658zq/MRS6ZXh2rzZLI4scdLICmcUXcAdbDAMRtGJrklMFb/PxQKP909XX2Gt4XfGmbpRs2plGHN1GETI1WeggqAC8ebpgi2doFju9gOXEYSRweF3f9ZwXy3l2IVvDD5ShI2u+kuwua18ZGTDizjmGuc=
+	t=1722359934; cv=none; b=IkbesZo2m+tAUuY2o9z8Dkpn8Lj/Gv00lPg3BndDUWT0hxVLz711M+glPRPU5JMruTHWDWrffui4JezUXIYZiyrnJYnzNfR6qDfbkbzVILOnIt13kVsW9aRzq8/ZwRxW4hutZ+o4dUxvt1mBHjnOx/Vh+zNzw17CdQ+9h9l3nrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357981; c=relaxed/simple;
-	bh=6ii5d7VjRUlPKuZuAnDW1j3mhXCsuW7qASFE7/7k+6E=;
+	s=arc-20240116; t=1722359934; c=relaxed/simple;
+	bh=zef8wqD/xIo0CC1bybhywXQ1ZM5JSLf6JTexGXUt3As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sljl9K0Egqs4fLYIQs8FvnfaFupS95e88IgLAR5hnm4dJv3s82YVBDPVfJOFufPz4ChUnHWr9VrbW5cLyuTXaVPTOBZh4yQymFEaYSHhyhYsgs0fIopdWTzckZasUDrP/YbOPs1lju+A/E6inAQPPRw1Aq1xLkD82kxY+8rJG30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpqrkkWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC3BC32782;
-	Tue, 30 Jul 2024 16:46:20 +0000 (UTC)
+	 MIME-Version; b=CGw2zBq2rWAKBwMgxIP8Bwni/NY4hn8XcXezb7TNM5/ZG33Dh+UqlW2OWcuo1Qri8xxdSMjRgA48aXKJ4eh1JQ5OYuXyWdygZsQOCToVTqQf+xfoxTawK+QUSxepSwwGkwR0XCCRAOkfKgAh+jmDqORggHwGVOkHQMVivkXRvAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mo53S9sP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CE9C4AF0A;
+	Tue, 30 Jul 2024 17:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357981;
-	bh=6ii5d7VjRUlPKuZuAnDW1j3mhXCsuW7qASFE7/7k+6E=;
+	s=korg; t=1722359933;
+	bh=zef8wqD/xIo0CC1bybhywXQ1ZM5JSLf6JTexGXUt3As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpqrkkWgRErAdbWq6iCD9qjhd/FmYL1UXurwD2s1J8OxkkvyJMyoWyti2DLhOAK2R
-	 0qRXvtIu27/hgzqdGbbbDccwb0a7gk8+1+8uSLX8EinNxFJFKJJTS1jf6cK6VqTIZB
-	 j1EB+fsR2FSmMg4y+WCHIPLPmtsnOpA6rYQfBPlc=
+	b=mo53S9sPTm0xgziJVAnPvlwHQsf5xGKeEbi3/TZHmC9/OLzuBPvuLT5GuAqKpE/x7
+	 ME/F1SZRNO8BGR32YF40MhRnuA0gihyhTHJNfHZirvvrU4Lt8DZYqEuFCv9RczUXg/
+	 yRIPvjTr0YV+vShL63VF0nD2gEw1cVwolZ+2EMmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/568] RDMA: Fix netdev tracker in ib_device_set_netdev
+	Wei Xu <weixugc@google.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Alexander Motin <mav@ixsystems.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 538/809] mm/mglru: fix div-by-zero in vmpressure_calc_level()
 Date: Tue, 30 Jul 2024 17:46:54 +0200
-Message-ID: <20240730151651.874034509@linuxfoundation.org>
+Message-ID: <20240730151745.994893621@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ahern <dsahern@kernel.org>
+From: Yu Zhao <yuzhao@google.com>
 
-[ Upstream commit 2043a14fb3de9d88440b21590f714306fcbbd55f ]
+commit 8b671fe1a879923ecfb72dda6caf01460dd885ef upstream.
 
-If a netdev has already been assigned, ib_device_set_netdev needs to
-release the reference on the older netdev but it is mistakenly being
-called for the new netdev. Fix it and in the process use netdev_put
-to be symmetrical with the netdev_hold.
+evict_folios() uses a second pass to reclaim folios that have gone through
+page writeback and become clean before it finishes the first pass, since
+folio_rotate_reclaimable() cannot handle those folios due to the
+isolation.
 
-Fixes: 09f530f0c6d6 ("RDMA: Add netdevice_tracker to ib_device_set_netdev()")
-Signed-off-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240710203310.19317-1-dsahern@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The second pass tries to avoid potential double counting by deducting
+scan_control->nr_scanned.  However, this can result in underflow of
+nr_scanned, under a condition where shrink_folio_list() does not increment
+nr_scanned, i.e., when folio_trylock() fails.
+
+The underflow can cause the divisor, i.e., scale=scanned+reclaimed in
+vmpressure_calc_level(), to become zero, resulting in the following crash:
+
+  [exception RIP: vmpressure_work_fn+101]
+  process_one_work at ffffffffa3313f2b
+
+Since scan_control->nr_scanned has no established semantics, the potential
+double counting has minimal risks.  Therefore, fix the problem by not
+deducting scan_control->nr_scanned in evict_folios().
+
+Link: https://lkml.kernel.org/r/20240711191957.939105-1-yuzhao@google.com
+Fixes: 359a5e1416ca ("mm: multi-gen LRU: retry folios written back while isolated")
+Reported-by: Wei Xu <weixugc@google.com>
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Cc: Alexander Motin <mav@ixsystems.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/device.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ mm/vmscan.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index e70804d8de828..56dd030045a20 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -2166,16 +2166,12 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
- 		return 0;
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4582,7 +4582,6 @@ retry:
+ 
+ 		/* retry folios that may have missed folio_rotate_reclaimable() */
+ 		list_move(&folio->lru, &clean);
+-		sc->nr_scanned -= folio_nr_pages(folio);
  	}
  
--	if (old_ndev)
--		netdev_tracker_free(ndev, &pdata->netdev_tracker);
--	if (ndev)
--		netdev_hold(ndev, &pdata->netdev_tracker, GFP_ATOMIC);
- 	rcu_assign_pointer(pdata->netdev, ndev);
-+	netdev_put(old_ndev, &pdata->netdev_tracker);
-+	netdev_hold(ndev, &pdata->netdev_tracker, GFP_ATOMIC);
- 	spin_unlock_irqrestore(&pdata->netdev_lock, flags);
- 
- 	add_ndev_hash(pdata);
--	__dev_put(old_ndev);
--
- 	return 0;
- }
- EXPORT_SYMBOL(ib_device_set_netdev);
--- 
-2.43.0
-
+ 	spin_lock_irq(&lruvec->lru_lock);
 
 
 
