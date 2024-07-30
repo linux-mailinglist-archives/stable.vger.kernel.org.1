@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-63623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315D09419D7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A399419DE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60B051C20F2A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E5A1C20CB9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD99318800D;
-	Tue, 30 Jul 2024 16:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD6B18990D;
+	Tue, 30 Jul 2024 16:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4L9J8nF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyCpF+oM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1A4433A9;
-	Tue, 30 Jul 2024 16:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F9B189902;
+	Tue, 30 Jul 2024 16:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357425; cv=none; b=JmOGUEhSFcORdi+BM3YRJPrY87eq5zS1yBk399PhyE57K76PQtmIdfoZbjikBTmRWlg59M/A0IL4y9INuW1bBG4poOoZuoZ9g+S0/1xTOeMIBlWVtGskNnJPMPnTY5Kv02EVBCN+GK4gKz/8W4pyTJhqR2s/vDSxTCXlYxloTLc=
+	t=1722357434; cv=none; b=sYl5u4O4ghF/seZCg4kEpygvoXPNpJt3HE2Qw7bsXvSpeffnkt9WwGaaPMV0eyYHeUt2n/c2IPfanDyX0fqG4zgh01kxQXLz5ZFMMiEi05ij7MPuinAnbNwK7p1oqcLkMJct1tof9TMjsm3YyObVw52mhEVCPDMFToOsitXosPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357425; c=relaxed/simple;
-	bh=6nnXBmCiwQZUl6EL9nrfyxw3locsw1M48D6Ec1CznhM=;
+	s=arc-20240116; t=1722357434; c=relaxed/simple;
+	bh=obsY9om4RGj/TsLMRzXtAxR21rjosRiMV4thDaV2H8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOu7S5m0zdiJ21KMRXJwILIe6xo2KQ/gecdUTOuW2VYT6jpL89gTsuitglEyhmwP3tJZ7JI+ZHjUtyR8izTtrBAhtpQUx44CgeF7WpKK+orlN/6A1KGLIajzqO5FhjRFBzRaSwbZUntGG7SIcatciD66TfOS1euXxqZ82fzhQog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4L9J8nF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA631C32782;
-	Tue, 30 Jul 2024 16:37:04 +0000 (UTC)
+	 MIME-Version; b=XY31ATo1cqHxlsWkoY7JRom5uYXl/GTo6A8YEH78G0pNRFtwzSrnIsdvKB32bsicuxmhA6NAUrpr80+7uQ3JO1kqyWml7vTau74F6r1HT+q/K2jKPVO+7GmgC6NVDBHn9k6q5ED/ZQlRrfH3jUSbT3v3j9R2CNwqsoKzEZjqMZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyCpF+oM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECE8C4AF0E;
+	Tue, 30 Jul 2024 16:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357425;
-	bh=6nnXBmCiwQZUl6EL9nrfyxw3locsw1M48D6Ec1CznhM=;
+	s=korg; t=1722357434;
+	bh=obsY9om4RGj/TsLMRzXtAxR21rjosRiMV4thDaV2H8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4L9J8nFdiPhUu66gjnrcbSMJCQji0DD2qU2oGZpOK4kxjV6KZe4WckTo0E82x6Bj
-	 v4uw/Ms+wGF56+AF+9pbwmIdOH132Ex0CeA5iXKonIfQvmduz/5mxCj5gZ86OGVkYJ
-	 jC7p1ZWLU4ueU3eI0kCEUmOm2xQvrsZEHlCrJ8Fs=
+	b=vyCpF+oMbPtGERWTY0nrC1aCCUkXyQpDIPhPMmt6SxDzCBM80pcoLSUuLVFhaw5Zc
+	 pBobAYvqzvURZ3NL+hOtAlKx8YfT7fKi6zjsxItXr07XYJGIpxRs9bMCWxp4Muythl
+	 +u9bcTZZaJUU9OXPxXG9czC0nT2J3KqqcyyUbSJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 6.1 291/440] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
-Date: Tue, 30 Jul 2024 17:48:44 +0200
-Message-ID: <20240730151627.198182273@linuxfoundation.org>
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 292/440] scsi: qla2xxx: Fix optrom version displayed in FDMI
+Date: Tue, 30 Jul 2024 17:48:45 +0200
+Message-ID: <20240730151627.236984068@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -65,36 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-commit 2df7aac81070987b0f052985856aa325a38debf6 upstream.
+commit 348744f27a35e087acc9378bf53537fbfb072775 upstream.
 
-In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+Bios version was popluated for FDMI response. Systems with EFI would show
+optrom version as 0.  EFI version is populated here and BIOS version is
+already displayed under FDMI_HBA_BOOT_BIOS_NAME.
 
 Cc: stable@vger.kernel.org
-Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709092011.3204970-1-make24@iscas.ac.cn
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-9-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/psb_intel_lvds.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/qla2xxx/qla_gs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
-+++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
-@@ -502,6 +502,9 @@ static int psb_intel_lvds_get_modes(stru
- 	if (mode_dev->panel_fixed_mode != NULL) {
- 		struct drm_display_mode *mode =
- 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
-+		if (!mode)
-+			return 0;
-+
- 		drm_mode_probed_add(connector, mode);
- 		return 1;
- 	}
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -1710,7 +1710,7 @@ qla2x00_hba_attributes(scsi_qla_host_t *
+ 	eiter->type = cpu_to_be16(FDMI_HBA_OPTION_ROM_VERSION);
+ 	alen = scnprintf(
+ 		eiter->a.orom_version, sizeof(eiter->a.orom_version),
+-		"%d.%02d", ha->bios_revision[1], ha->bios_revision[0]);
++		"%d.%02d", ha->efi_revision[1], ha->efi_revision[0]);
+ 	alen += FDMI_ATTR_ALIGNMENT(alen);
+ 	alen += FDMI_ATTR_TYPELEN(eiter);
+ 	eiter->len = cpu_to_be16(alen);
 
 
 
