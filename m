@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B949419FB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151AD941A0B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 217841C23A39
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46FCA1C20AC9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E8B1A619B;
-	Tue, 30 Jul 2024 16:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37283184535;
+	Tue, 30 Jul 2024 16:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuZsjpqy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAACiqCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D332183CDB;
-	Tue, 30 Jul 2024 16:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9696757FC;
+	Tue, 30 Jul 2024 16:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357518; cv=none; b=Aa15sJ4z5CGAlhJouPTai2OwvLG2QRLj3Yp84C4Gbw2mfngIbuGt/eW9hjSnBHDeb/xLS0nvUAiVTaDoMdflFwmJN/jsQ5gN3+TAc2CHpejJYcXMYirFjH8SWLTN2X/lGo/c280vUCxvbvbhDDX0fWYTzz+LlOmCVa3DUOa87wo=
+	t=1722357575; cv=none; b=pPO4DM3BSmTZ63zwfMM2GSB2IlLIWbjaPWwmNsm71iGuoRxI8MOv1eTPWp6LHp+s2Rsdlm6LQTcwqvezRyM+k/1NAtAyXAusug2g5AZO0P3IYg30/pQvNt/JB0fOEa+zwvqwyQT8K15bwvo70It1BfNLKk3EYpD8d9+WzL+eo58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357518; c=relaxed/simple;
-	bh=VJ5ROerxxzcV/aaZh/9UYtkbZvJrg947okre0oqVy9Q=;
+	s=arc-20240116; t=1722357575; c=relaxed/simple;
+	bh=jXunQIRuMulQDKw4kSWklYT4pnECJqj2bVtifJ1yULY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyC9BYH69PBmwrtxdQbtiHU8/kovdTqadv5KgAR1RYO5pco9U14OJVl/XnW+4cb4alGqNzIBkgqoOdKJO4CuUAH5PFTKCTTtxbsRp4CPG6pxVAX9lOdd3hvUkCSXQhaDm9uOjpEJMkDng9353aC/g9kiCmnLhs9mE0Wkuz2pUhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuZsjpqy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2554BC32782;
-	Tue, 30 Jul 2024 16:38:37 +0000 (UTC)
+	 MIME-Version; b=TX2eqgLshkUay70ln4Gvr7Go+wt/HDUODAr+Kp0vUYVamErvn+3x5lybZ4hHilX2MKyftaQePW9f6sfhxzwLycAf4yTEiKzqo5sk/az4Cdr8e3Y0BWt5tvWRX9OD78fFEm7s5/d57TRqOgbVLiXcsDo6d1/VYlvoMH8Pr8IMEUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAACiqCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64126C4AF0C;
+	Tue, 30 Jul 2024 16:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357518;
-	bh=VJ5ROerxxzcV/aaZh/9UYtkbZvJrg947okre0oqVy9Q=;
+	s=korg; t=1722357574;
+	bh=jXunQIRuMulQDKw4kSWklYT4pnECJqj2bVtifJ1yULY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GuZsjpqysUzDPDxgZ0YHJq41o3uTP94XL7ndFYXzahs8CiLfbqGluuHi5CG4votOw
-	 zqrfmtnxmngFn0KgYUtATd8CQmwGsfygyJh7i9J3yPKjcKQNWhXULabPsiEHbC5GPk
-	 rnP/gBFgsxpshrCcTtCB0MEufZdho0BqC30O1CO0=
+	b=jAACiqCPBVrbZ+6Tk0Krh1qD8aPS0EzuQq9t7frhw4QSLKpmWiTWi40nARmrEeniy
+	 7Rk3U2ekq1PJrv16UHENQLXP2laH7qPosSh+v60VQnjqfXBEQMNk8BnX8MqVH5lEyM
+	 RjCwnyeIFq9EaswG7eeEM17Cy/HNwCD8Bl2dacgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 261/809] xdp: fix invalid wait context of page_pool_destroy()
-Date: Tue, 30 Jul 2024 17:42:17 +0200
-Message-ID: <20240730151734.902926873@linuxfoundation.org>
+Subject: [PATCH 6.10 262/809] net: bridge: mst: Check vlan state for egress decision
+Date: Tue, 30 Jul 2024 17:42:18 +0200
+Message-ID: <20240730151734.941441473@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,140 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
 
-[ Upstream commit 59a931c5b732ca5fc2ca727f5a72aeabaafa85ec ]
+[ Upstream commit 0a1868b93fad5938dbcca77286b25bf211c49f7a ]
 
-If the driver uses a page pool, it creates a page pool with
-page_pool_create().
-The reference count of page pool is 1 as default.
-A page pool will be destroyed only when a reference count reaches 0.
-page_pool_destroy() is used to destroy page pool, it decreases a
-reference count.
-When a page pool is destroyed, ->disconnect() is called, which is
-mem_allocator_disconnect().
-This function internally acquires mutex_lock().
+If a port is blocking in the common instance but forwarding in an MST
+instance, traffic egressing the bridge will be dropped because the
+state of the common instance is overriding that of the MST instance.
 
-If the driver uses XDP, it registers a memory model with
-xdp_rxq_info_reg_mem_model().
-The xdp_rxq_info_reg_mem_model() internally increases a page pool
-reference count if a memory model is a page pool.
-Now the reference count is 2.
+Fix this by skipping the port state check in MST mode to allow
+checking the vlan state via br_allowed_egress(). This is similar to
+what happens in br_handle_frame_finish() when checking ingress
+traffic, which was introduced in the change below.
 
-To destroy a page pool, the driver should call both page_pool_destroy()
-and xdp_unreg_mem_model().
-The xdp_unreg_mem_model() internally calls page_pool_destroy().
-Only page_pool_destroy() decreases a reference count.
-
-If a driver calls page_pool_destroy() then xdp_unreg_mem_model(), we
-will face an invalid wait context warning.
-Because xdp_unreg_mem_model() calls page_pool_destroy() with
-rcu_read_lock().
-The page_pool_destroy() internally acquires mutex_lock().
-
-Splat looks like:
-=============================
-[ BUG: Invalid wait context ]
-6.10.0-rc6+ #4 Tainted: G W
------------------------------
-ethtool/1806 is trying to lock:
-ffffffff90387b90 (mem_id_lock){+.+.}-{4:4}, at: mem_allocator_disconnect+0x73/0x150
-other info that might help us debug this:
-context-{5:5}
-3 locks held by ethtool/1806:
-stack backtrace:
-CPU: 0 PID: 1806 Comm: ethtool Tainted: G W 6.10.0-rc6+ #4 f916f41f172891c800f2fed
-Hardware name: ASUS System Product Name/PRIME Z690-P D4, BIOS 0603 11/01/2021
-Call Trace:
-<TASK>
-dump_stack_lvl+0x7e/0xc0
-__lock_acquire+0x1681/0x4de0
-? _printk+0x64/0xe0
-? __pfx_mark_lock.part.0+0x10/0x10
-? __pfx___lock_acquire+0x10/0x10
-lock_acquire+0x1b3/0x580
-? mem_allocator_disconnect+0x73/0x150
-? __wake_up_klogd.part.0+0x16/0xc0
-? __pfx_lock_acquire+0x10/0x10
-? dump_stack_lvl+0x91/0xc0
-__mutex_lock+0x15c/0x1690
-? mem_allocator_disconnect+0x73/0x150
-? __pfx_prb_read_valid+0x10/0x10
-? mem_allocator_disconnect+0x73/0x150
-? __pfx_llist_add_batch+0x10/0x10
-? console_unlock+0x193/0x1b0
-? lockdep_hardirqs_on+0xbe/0x140
-? __pfx___mutex_lock+0x10/0x10
-? tick_nohz_tick_stopped+0x16/0x90
-? __irq_work_queue_local+0x1e5/0x330
-? irq_work_queue+0x39/0x50
-? __wake_up_klogd.part.0+0x79/0xc0
-? mem_allocator_disconnect+0x73/0x150
-mem_allocator_disconnect+0x73/0x150
-? __pfx_mem_allocator_disconnect+0x10/0x10
-? mark_held_locks+0xa5/0xf0
-? rcu_is_watching+0x11/0xb0
-page_pool_release+0x36e/0x6d0
-page_pool_destroy+0xd7/0x440
-xdp_unreg_mem_model+0x1a7/0x2a0
-? __pfx_xdp_unreg_mem_model+0x10/0x10
-? kfree+0x125/0x370
-? bnxt_free_ring.isra.0+0x2eb/0x500
-? bnxt_free_mem+0x5ac/0x2500
-xdp_rxq_info_unreg+0x4a/0xd0
-bnxt_free_mem+0x1356/0x2500
-bnxt_close_nic+0xf0/0x3b0
-? __pfx_bnxt_close_nic+0x10/0x10
-? ethnl_parse_bit+0x2c6/0x6d0
-? __pfx___nla_validate_parse+0x10/0x10
-? __pfx_ethnl_parse_bit+0x10/0x10
-bnxt_set_features+0x2a8/0x3e0
-__netdev_update_features+0x4dc/0x1370
-? ethnl_parse_bitset+0x4ff/0x750
-? __pfx_ethnl_parse_bitset+0x10/0x10
-? __pfx___netdev_update_features+0x10/0x10
-? mark_held_locks+0xa5/0xf0
-? _raw_spin_unlock_irqrestore+0x42/0x70
-? __pm_runtime_resume+0x7d/0x110
-ethnl_set_features+0x32d/0xa20
-
-To fix this problem, it uses rhashtable_lookup_fast() instead of
-rhashtable_lookup() with rcu_read_lock().
-Using xa without rcu_read_lock() here is safe.
-xa is freed by __xdp_mem_allocator_rcu_free() and this is called by
-call_rcu() of mem_xa_remove().
-The mem_xa_remove() is called by page_pool_destroy() if a reference
-count reaches 0.
-The xa is already protected by the reference count mechanism well in the
-control plane.
-So removing rcu_read_lock() for page_pool_destroy() is safe.
-
-Fixes: c3f812cea0d7 ("page_pool: do not release pool until inflight == 0.")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20240712095116.3801586-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
+Signed-off-by: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/xdp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/bridge/br_forward.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 022c12059cf2f..bcc5551c6424b 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -127,10 +127,8 @@ void xdp_unreg_mem_model(struct xdp_mem_info *mem)
- 		return;
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index d97064d460dc7..e19b583ff2c6d 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -25,8 +25,8 @@ static inline int should_deliver(const struct net_bridge_port *p,
  
- 	if (type == MEM_TYPE_PAGE_POOL) {
--		rcu_read_lock();
--		xa = rhashtable_lookup(mem_id_ht, &id, mem_id_rht_params);
-+		xa = rhashtable_lookup_fast(mem_id_ht, &id, mem_id_rht_params);
- 		page_pool_destroy(xa->page_pool);
--		rcu_read_unlock();
- 	}
+ 	vg = nbp_vlan_group_rcu(p);
+ 	return ((p->flags & BR_HAIRPIN_MODE) || skb->dev != p->dev) &&
+-		p->state == BR_STATE_FORWARDING && br_allowed_egress(vg, skb) &&
+-		nbp_switchdev_allowed_egress(p, skb) &&
++		(br_mst_is_enabled(p->br) || p->state == BR_STATE_FORWARDING) &&
++		br_allowed_egress(vg, skb) && nbp_switchdev_allowed_egress(p, skb) &&
+ 		!br_skb_isolated(p, skb);
  }
- EXPORT_SYMBOL_GPL(xdp_unreg_mem_model);
+ 
 -- 
 2.43.0
 
