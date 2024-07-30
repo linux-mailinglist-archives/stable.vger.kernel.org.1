@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-63859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C177941AF8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717C6941AFD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E0141C222FF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 271CD1F21B99
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99FD188013;
-	Tue, 30 Jul 2024 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A3618801A;
+	Tue, 30 Jul 2024 16:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcIWflva"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/YVcd3L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C3D14831F;
-	Tue, 30 Jul 2024 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AC614831F;
+	Tue, 30 Jul 2024 16:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358181; cv=none; b=SONVZJtAIJQMl7ttwl1TYSQFMbMWaF0zd7DuUstce9plj+k3jvJPn6EubaES5TQ5Z99p7BM63VA26wUityO/339v8eggKapBp+e35/jaJrHZ93kfJCfgXcY15NisEJLjlu6fre7VUZ0wJcp80jK3LfrAOOVN93XxS/pLVI72jOE=
+	t=1722358191; cv=none; b=aSr6aj9H4zlN1A+zT/KEJZAgtMeQs2nEjQdovGPy1w7UG9zTKUmkQVGtcp3jepLfxVKLZLSoJBjKL821m2sUwRpl1rCrSXhAaBu6V7Nod1fi+UCfDuxxcbXjj5EL7CYPAernrtbvREdcyRVrXl2Rd+1s05jXWIv/yQWmSpr1274=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358181; c=relaxed/simple;
-	bh=/MWMT0ZGKhzbiCLQCGT8PCVGgMkg2nmEssHXn1lBic0=;
+	s=arc-20240116; t=1722358191; c=relaxed/simple;
+	bh=Y0DQsAzH8J1ebdW4QUzKPejjxye7LEG233zg6PFcWJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THY0/4suPGAfws5jOQK76n9ik4ktJ3fV74h9tIQk7r5c1vTeprV9vpExX6ffkcqHtFMdiAlZADzkfYRhYrfgP5U8ObsB0yCA4ta1RqY0DQOyrLvHMiO3R3uY22NvQZzBA2q0TQIUMv2/v0ZOY0XRAjQmUG3Q84PVxMDtMXfloVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcIWflva; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18735C32782;
-	Tue, 30 Jul 2024 16:49:40 +0000 (UTC)
+	 MIME-Version; b=hhYk/iWT/ZdhRWbF7KC0eInyU1VsbbY/N0USLDvyo+k+jzdYUhpgs+zkuyE+UzcY+bKEtoqHKgnFJ4bqYdAXhBch3ZpJ/HU13kJC67VFuxrf0s5L9DioH+FaEH67NjM8ooJ1nN1jmkbEs3/dfxsMiKRdTpi95P5NG0nYk9h1g3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/YVcd3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC90C4AF0A;
+	Tue, 30 Jul 2024 16:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358181;
-	bh=/MWMT0ZGKhzbiCLQCGT8PCVGgMkg2nmEssHXn1lBic0=;
+	s=korg; t=1722358190;
+	bh=Y0DQsAzH8J1ebdW4QUzKPejjxye7LEG233zg6PFcWJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mcIWflvaijINOL/LddjzpiPKUPowau6OjuBmwR1yaIT8hWSGb5NTjZvEbKj34iutV
-	 GRgFj2Z38SK6X4FqZ4JXjVdAHYoloa8I5rSicgG/6aeY56WlPu1SL14t7nrAhYrr4o
-	 pOT41X1zef6gtushjbOEiG43x5ahE8dh8fV2zjlA=
+	b=o/YVcd3LwWP/o+TzqHRvVMNgkcAVHUWjCf0rdqurcNN4hpPvI7o5tkpmT6DKyUiTn
+	 CqChweqvPePVV1iAVql6JUmiXgE2OLS6pMFma8AvB3cBqmvCT1tUMiMX8nNtkXmR7E
+	 Oysm0wkfbchJgH5YHNiiLxpv0fH6zXCWvTayyduI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Rob Clark <robdclark@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 332/809] drm/mediatek: Set DRM mode configs accordingly
-Date: Tue, 30 Jul 2024 17:43:28 +0200
-Message-ID: <20240730151737.729006342@linuxfoundation.org>
+Subject: [PATCH 6.10 333/809] drm/msm/a6xx: use __unused__ to fix compiler warnings for gen7_* includes
+Date: Tue, 30 Jul 2024 17:43:29 +0200
+Message-ID: <20240730151737.772956104@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,108 +67,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit a4c9410b31cac463599898edb5111ca9bc0810bd ]
+[ Upstream commit 71d9b458b2bfe79197194d914aa9bada46fb9e14 ]
 
-Set DRM mode configs limitation according to the hardware capabilities
-and pass the IGT checks as below:
+GCC diagnostic pragma method throws below warnings in some of the versions
 
-- The test "graphics.IgtKms.kms_plane" requires a frame buffer with
-  width of 4512 pixels (> 4096).
-- The test "graphics.IgtKms.kms_cursor_crc" checks if the cursor size is
-  defined, and run the test with cursor size from 1x1 to 512x512.
+drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c:16:9: warning: unknown
+option after '#pragma GCC diagnostic' kind [-Wpragmas]
+  #pragma GCC diagnostic ignored "-Wunused-const-variable"
+          ^
+In file included from drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c:18:0:
+drivers/gpu/drm/msm/adreno/adreno_gen7_0_0_snapshot.h:924:19: warning:
+'gen7_0_0_external_core_regs' defined but not used [-Wunused-variable]
+  static const u32 *gen7_0_0_external_core_regs[] = {
+                    ^
+In file included from drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c:19:0:
+drivers/gpu/drm/msm/adreno/adreno_gen7_2_0_snapshot.h:748:19: warning:
+'gen7_2_0_external_core_regs' defined but not used [-Wunused-variable]
+  static const u32 *gen7_2_0_external_core_regs[] = {
+                    ^
+In file included from drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c:20:0:
+drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h:1188:43: warning:
+'gen7_9_0_sptp_clusters' defined but not used [-Wunused-variable]
+  static struct gen7_sptp_cluster_registers gen7_9_0_sptp_clusters[] = {
+                                            ^
+drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h:1438:19: warning:
+'gen7_9_0_external_core_regs' defined but not used [-Wunused-variable]
+  static const u32 *gen7_9_0_external_core_regs[] = {
 
-Please notice that the test conditions may change as IGT is updated.
+Remove GCC version dependency by using __unused__ for the unused gen7_* includes.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-10-a9d62d2e2c7e@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Changes in v2:
+	- Fix the warnings in the commit text
+	- Use __attribute((__unused__)) instead of local assignment
+
+changes in v3:
+	- drop the Link from the auto add
+
+changes in v4:
+	- replace __attribute((__unused__)) with __always_unused
+
+Fixes: 64d6255650d4 ("drm/msm: More fully implement devcoredump for a7xx")
+Suggested-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/597265/
+[Add gen7_9_0_cx_debugbus_blocks as well]
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 22 ++++++++++++++++++++++
- drivers/gpu/drm/mediatek/mtk_drm_drv.h |  4 ++++
- 2 files changed, 26 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index 8c403bf566856..56f409ad7f390 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -294,6 +294,9 @@ static const struct mtk_mmsys_driver_data mt8188_vdosys0_driver_data = {
- 	.conn_routes = mt8188_mtk_ddp_main_routes,
- 	.num_conn_routes = ARRAY_SIZE(mt8188_mtk_ddp_main_routes),
- 	.mmsys_dev_num = 2,
-+	.max_width = 8191,
-+	.min_width = 1,
-+	.min_height = 1,
- };
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index 0a7717a4fc2fd..789a11416f7a4 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -8,19 +8,16 @@
+ #include "a6xx_gpu_state.h"
+ #include "a6xx_gmu.xml.h"
  
- static const struct mtk_mmsys_driver_data mt8192_mmsys_driver_data = {
-@@ -308,6 +311,9 @@ static const struct mtk_mmsys_driver_data mt8195_vdosys0_driver_data = {
- 	.main_path = mt8195_mtk_ddp_main,
- 	.main_len = ARRAY_SIZE(mt8195_mtk_ddp_main),
- 	.mmsys_dev_num = 2,
-+	.max_width = 8191,
-+	.min_width = 1,
-+	.min_height = 1,
- };
+-/* Ignore diagnostics about register tables that we aren't using yet. We don't
+- * want to modify these headers too much from their original source.
+- */
+-#pragma GCC diagnostic push
+-#pragma GCC diagnostic ignored "-Wunused-variable"
+-#pragma GCC diagnostic ignored "-Wunused-const-variable"
++static const unsigned int *gen7_0_0_external_core_regs[] __always_unused;
++static const unsigned int *gen7_2_0_external_core_regs[] __always_unused;
++static const unsigned int *gen7_9_0_external_core_regs[] __always_unused;
++static struct gen7_sptp_cluster_registers gen7_9_0_sptp_clusters[] __always_unused;
++static const u32 gen7_9_0_cx_debugbus_blocks[] __always_unused;
  
- static const struct mtk_mmsys_driver_data mt8195_vdosys1_driver_data = {
-@@ -315,6 +321,9 @@ static const struct mtk_mmsys_driver_data mt8195_vdosys1_driver_data = {
- 	.ext_len = ARRAY_SIZE(mt8195_mtk_ddp_ext),
- 	.mmsys_id = 1,
- 	.mmsys_dev_num = 2,
-+	.max_width = 8191,
-+	.min_width = 2, /* 2-pixel align when ethdr is bypassed */
-+	.min_height = 1,
- };
+ #include "adreno_gen7_0_0_snapshot.h"
+ #include "adreno_gen7_2_0_snapshot.h"
+ #include "adreno_gen7_9_0_snapshot.h"
  
- static const struct of_device_id mtk_drm_of_ids[] = {
-@@ -493,6 +502,15 @@ static int mtk_drm_kms_init(struct drm_device *drm)
- 		for (j = 0; j < private->data->mmsys_dev_num; j++) {
- 			priv_n = private->all_drm_private[j];
- 
-+			if (priv_n->data->max_width)
-+				drm->mode_config.max_width = priv_n->data->max_width;
-+
-+			if (priv_n->data->min_width)
-+				drm->mode_config.min_width = priv_n->data->min_width;
-+
-+			if (priv_n->data->min_height)
-+				drm->mode_config.min_height = priv_n->data->min_height;
-+
- 			if (i == CRTC_MAIN && priv_n->data->main_len) {
- 				ret = mtk_crtc_create(drm, priv_n->data->main_path,
- 						      priv_n->data->main_len, j,
-@@ -520,6 +538,10 @@ static int mtk_drm_kms_init(struct drm_device *drm)
- 		}
- 	}
- 
-+	/* IGT will check if the cursor size is configured */
-+	drm->mode_config.cursor_width = drm->mode_config.max_width;
-+	drm->mode_config.cursor_height = drm->mode_config.max_height;
-+
- 	/* Use OVL device for all DMA memory allocations */
- 	crtc = drm_crtc_from_index(drm, 0);
- 	if (crtc)
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.h b/drivers/gpu/drm/mediatek/mtk_drm_drv.h
-index 78d698ede1bf8..ce897984de51e 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.h
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.h
-@@ -46,6 +46,10 @@ struct mtk_mmsys_driver_data {
- 	bool shadow_register;
- 	unsigned int mmsys_id;
- 	unsigned int mmsys_dev_num;
-+
-+	u16 max_width;
-+	u16 min_width;
-+	u16 min_height;
- };
- 
- struct mtk_drm_private {
+-#pragma GCC diagnostic pop
+-
+ struct a6xx_gpu_state_obj {
+ 	const void *handle;
+ 	u32 *data;
 -- 
 2.43.0
 
