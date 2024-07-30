@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-64374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9495C941DBA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A25F1941EAF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D585B28DCD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 574A01F24473
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04C91A76A9;
-	Tue, 30 Jul 2024 17:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDC9189503;
+	Tue, 30 Jul 2024 17:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtlmVQ6v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBrhECPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7BA1A76B1;
-	Tue, 30 Jul 2024 17:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681EE1A76A5;
+	Tue, 30 Jul 2024 17:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359910; cv=none; b=TObDhxI8rvg2WgK0FQHEocJAnG5PcxsuBxWTYU1y9rU2PL/YsE5j7XLIBFRV687t5EGp+oRv/tITri+gUStfSudAcHBaSFCtvMrQjHoUmoEKTg9lK4NuH2HACMV9hP5FRlun4DzqgckTTFAev6ahZCNMcVa1yO7mjjrXAN8S7bc=
+	t=1722360716; cv=none; b=sFS5fcxnBIcF9726XwN2yObLmGKl7v5SuKf2P75aTKtBlCS1an4rSc5r8e3P1sUsinx6O0itN59MWEGbCANh+309aKWrQwL7IkQOpH99W7nLq77kKY+hJsOmH9rnRbsILjlioFi+0jhMTpaeDllxlm077x5x8oANR7+w2vhUXcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359910; c=relaxed/simple;
-	bh=Sug49TSx59Hgs99bPnXR4LdY1W8qa1rHlut1kCxZbsE=;
+	s=arc-20240116; t=1722360716; c=relaxed/simple;
+	bh=oIoU2i5tqDjoJ0zXyGxW55nwsoumyyFOGdMojPWqVeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nEy9Ld7aR1fgGpBb7EnDXyhPv9jHFn4diAD4NVPTmAVfzctY4tSNkMVmpmtsoPcCGOtYAQQc9plrmi3Czmv8RkH1K9H2u0DGPXVv2Jghqjm9G6vSgBcAA3A8G+hxaMMLgWrX+iiZg7IFEskfHYbLaI1IDVm0AVz5EkuYhWysCEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtlmVQ6v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97567C32782;
-	Tue, 30 Jul 2024 17:18:29 +0000 (UTC)
+	 MIME-Version; b=GTxMLGwJdPlQUk0eoVb1xitLVpkqyaPVxBwoMerpHhblh7d3sB1g/ydAfuxOwLdWsPk9UQs7a6TY8SzAs1kbT4W7PZwmPIF/3HyTv5S2FLwhwZz2E/nQ4GuQKE5dw1BVvLmHX1+thw1zqB2AFEOG31noQuPhuLNXbf9E5afKcTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBrhECPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6897C32782;
+	Tue, 30 Jul 2024 17:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359910;
-	bh=Sug49TSx59Hgs99bPnXR4LdY1W8qa1rHlut1kCxZbsE=;
+	s=korg; t=1722360716;
+	bh=oIoU2i5tqDjoJ0zXyGxW55nwsoumyyFOGdMojPWqVeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtlmVQ6vQ7dNC5uvFp7AwDFyzLuKUUFgbfmxjZTqaUA81h7sfdxI5tRwM6j8iXm9a
-	 +7PDdjPS+9I7hSnuOLeN4L28PGkObZHs06FhtzW7OxYmCl3e62M/YoDfVwZ5JSwPvT
-	 wwtQeQpbGGJEfEZLKIlcqTeODwpmLrNjwbtLS4/Q=
+	b=HBrhECPNK3BYcQHpblmMnmtvh/m0nt2PsaPSEh0q7ZMHR6KwtMdUw6dGxXz6jkBvu
+	 SyHmesM5AtP35yTd3RtvM8S1RdXMsmLAPPQwJAUFjC9u4WxpC/i+O2WOAx1IK5x2UU
+	 tjXNgvVUY/yggfc77TvarpJONmt34t1mzSqMXt+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Wilkins <steve.wilkins@raymarine.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Mike Krinkin <krinkin.m.u@gmail.com>,
+	Todd Brandt <todd.e.brandt@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 554/568] spi: microchip-core: fix init function not setting the master and motorola modes
+Subject: [PATCH 6.10 785/809] ASOC: SOF: Intel: hda-loader: only wait for HDaudio IOC for IPC4 devices
 Date: Tue, 30 Jul 2024 17:51:01 +0200
-Message-ID: <20240730151701.813434998@linuxfoundation.org>
+Message-ID: <20240730151755.971585316@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Wilkins <steve.wilkins@raymarine.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 3a5e76283672efddf47cea39ccfe9f5735cc91d5 ]
+[ Upstream commit 9ee3f0d8c9999eb1ef2866e86f8d57d996fc0348 ]
 
-mchp_corespi_init() reads the CONTROL register, sets the master and
-motorola bits, but doesn't write the value back to the register. The
-function also doesn't ensure the controller is disabled at the start,
-which may present a problem if the controller was used by an
-earlier boot stage as some settings (including the mode) can only be
-modified while the controller is disabled.
+Multiple users report a regression bisected to commit d5263dbbd8af
+("ASoC: SOF: Intel: don't ignore IOC interrupts for non-audio
+transfers"). The firmware version is the likely suspect, as these
+users relied on SOF 2.0 while Intel only tested with the 2.2 release.
 
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Signed-off-by: Steve Wilkins <steve.wilkins@raymarine.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20240715-designing-thus-05f7c26e1da7@wendy
+Rather than completely disable the wait_for_completion(), which can
+help us gather timing information on the different stages of the boot
+process, the simplest course of action is to just disable it for older
+IPC versions which are no longer under active development.
+
+Closes: https://github.com/thesofproject/linux/issues/5072
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218961
+Fixes: d5263dbbd8af ("ASoC: SOF: Intel: don't ignore IOC interrupts for non-audio transfers")
+Tested-by: Mike Krinkin <krinkin.m.u@gmail.com>
+Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20240716084530.300829-1-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-microchip-core.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ sound/soc/sof/intel/hda-loader.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index 096008d006009..6f59754c33472 100644
---- a/drivers/spi/spi-microchip-core.c
-+++ b/drivers/spi/spi-microchip-core.c
-@@ -292,17 +292,13 @@ static void mchp_corespi_init(struct spi_controller *host, struct mchp_corespi *
- 	unsigned long clk_hz;
- 	u32 control = mchp_corespi_read(spi, REG_CONTROL);
+diff --git a/sound/soc/sof/intel/hda-loader.c b/sound/soc/sof/intel/hda-loader.c
+index b8b914eaf7e05..75f6240cf3e1d 100644
+--- a/sound/soc/sof/intel/hda-loader.c
++++ b/sound/soc/sof/intel/hda-loader.c
+@@ -310,15 +310,19 @@ int hda_cl_copy_fw(struct snd_sof_dev *sdev, struct hdac_ext_stream *hext_stream
+ 		return ret;
+ 	}
  
--	control |= CONTROL_MASTER;
-+	control &= ~CONTROL_ENABLE;
-+	mchp_corespi_write(spi, REG_CONTROL, control);
- 
-+	control |= CONTROL_MASTER;
- 	control &= ~CONTROL_MODE_MASK;
- 	control |= MOTOROLA_MODE;
- 
--	mchp_corespi_set_framesize(spi, DEFAULT_FRAMESIZE);
+-	/* Wait for completion of transfer */
+-	time_left = wait_for_completion_timeout(&hda_stream->ioc,
+-						msecs_to_jiffies(HDA_CL_DMA_IOC_TIMEOUT_MS));
 -
--	/* max. possible spi clock rate is the apb clock rate */
--	clk_hz = clk_get_rate(spi->clk);
--	host->max_speed_hz = clk_hz;
--
- 	/*
- 	 * The controller must be configured so that it doesn't remove Chip
- 	 * Select until the entire message has been transferred, even if at
-@@ -311,11 +307,16 @@ static void mchp_corespi_init(struct spi_controller *host, struct mchp_corespi *
- 	 * BIGFIFO mode is also enabled, which sets the fifo depth to 32 frames
- 	 * for the 8 bit transfers that this driver uses.
- 	 */
--	control = mchp_corespi_read(spi, REG_CONTROL);
- 	control |= CONTROL_SPS | CONTROL_BIGFIFO;
- 
- 	mchp_corespi_write(spi, REG_CONTROL, control);
- 
-+	mchp_corespi_set_framesize(spi, DEFAULT_FRAMESIZE);
+-	if (!time_left) {
+-		dev_err(sdev->dev, "Code loader DMA did not complete\n");
+-		return -ETIMEDOUT;
++	if (sdev->pdata->ipc_type == SOF_IPC_TYPE_4) {
++		/* Wait for completion of transfer */
++		time_left = wait_for_completion_timeout(&hda_stream->ioc,
++							msecs_to_jiffies(HDA_CL_DMA_IOC_TIMEOUT_MS));
 +
-+	/* max. possible spi clock rate is the apb clock rate */
-+	clk_hz = clk_get_rate(spi->clk);
-+	host->max_speed_hz = clk_hz;
++		if (!time_left) {
++			dev_err(sdev->dev, "Code loader DMA did not complete\n");
++			return -ETIMEDOUT;
++		}
++		dev_dbg(sdev->dev, "Code loader DMA done\n");
+ 	}
+-	dev_dbg(sdev->dev, "Code loader DMA done, waiting for FW_ENTERED status\n");
 +
- 	mchp_corespi_enable_ints(spi);
++	dev_dbg(sdev->dev, "waiting for FW_ENTERED status\n");
  
- 	/*
+ 	status = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR,
+ 					chip->rom_status_reg, reg,
 -- 
 2.43.0
 
