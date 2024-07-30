@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5247E941836
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEA39417F9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 085B71F22284
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 586B32855BD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A225D189502;
-	Tue, 30 Jul 2024 16:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02501917F4;
+	Tue, 30 Jul 2024 16:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyqUAWkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozD9JtgG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612EC1A6190;
-	Tue, 30 Jul 2024 16:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4C61917F9;
+	Tue, 30 Jul 2024 16:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356315; cv=none; b=uyaHV7VMI4jtasSqjt4Y/CT+O4ub1e4rQRL95dn6P9DvTjI9ibtSexZ5RgRVJo06pV5qxG3PG5koutHvSTLo2s0w+mnq4gf3UxSkXBGaD4kIGqJLthSqNteH0lcG8hBRNE9EgeTlxzCeaiPAMvQ1XqeTEb14Ic39dp6oS4jKkcI=
+	t=1722356124; cv=none; b=UEe5P3rkf2F3Xf1zV1EXa270isWU8pY22Fkz/SQi4aj0UJVBOxliAfKTYpdTpJEq+RJig2pshF+S8SoSojVMopcZIBX6nTbL7+Dn9PAy0ealiQBMRoi2GlDlLFv1V/6PNDMHR+l/dEhhvbKjbybA+4/7fUbdwAfFsZ/SwsaxXpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356315; c=relaxed/simple;
-	bh=v2z8FmgzjPj+Mk5g5BX3vUW35J5JC4sX/qd/XkQkrQU=;
+	s=arc-20240116; t=1722356124; c=relaxed/simple;
+	bh=WuS6s15iNhqrcK+OmmQF80jAGrwLd0C5DsXBz6ee1gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e8v3L11rYCqRq1AWNtO6y6i9YXrao9/RH+6jBeODGQ+bJAZjWeyaPzxodF6sf8tNQtDdhXh77dRKFdhP13FoskJy/2geLR/hjqUMkz+UMK5gLdt66JFYmInXUyyNR0x3mT8upwJot5aeRj8yd9t5GFeHhV/a9TAhf503ex95EKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyqUAWkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655AFC4AF0C;
-	Tue, 30 Jul 2024 16:18:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fU79oRczAXfEYjqPoik1loZZMS4o/t5oAfk92L9323Os9anjbf9sL+Dnd3WYpRBKAnqfJG7vnYCUA4npKDg5R2XiLhjP4e8uehFbhq0s5nJ8LrLI2DkJHsg7FGuPOIT+DQqf9ubOGZ2sxyzvar+tlh3HMqZUp6TvVPRLphEo+Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozD9JtgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B19C32782;
+	Tue, 30 Jul 2024 16:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356315;
-	bh=v2z8FmgzjPj+Mk5g5BX3vUW35J5JC4sX/qd/XkQkrQU=;
+	s=korg; t=1722356124;
+	bh=WuS6s15iNhqrcK+OmmQF80jAGrwLd0C5DsXBz6ee1gA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MyqUAWkZ0zWoDDpHeZjBiZj1F9/HB3kcVn2DMQwimhHECfnd+lsAe52clzQN5dS9k
-	 6oYurEwDaEQrc6YL3mxL+1Ao9t6aApWqW3j+7OOMp+Q8Vw6k5iHOvy5lDzXqeDSzKo
-	 E07/I1UbMSiyNfA2Bijw7XByB6bDJlNmOMmdlOXs=
+	b=ozD9JtgGo6s7F4khFhiyTBrbrHIlucz44lUu3eFREPwQ5GfFycR3bSz6mw5DUFIKN
+	 eYzwUkyZDhBK5GyYJkEbND71QD1ASzopLUQxLad2dT2+sl2BwFFqzsbHGHMF1I63X6
+	 /E9W2KXz2hQjX+sMKoDDrS9qqllcGEzulz5FGs2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/568] net: esp: cleanup esp_output_tail_tcp() in case of unsupported ESPINTCP
-Date: Tue, 30 Jul 2024 17:43:42 +0200
-Message-ID: <20240730151644.370743996@linuxfoundation.org>
+Subject: [PATCH 6.6 116/568] wifi: ath12k: change DMA direction while mapping reinjected packets
+Date: Tue, 30 Jul 2024 17:43:43 +0200
+Message-ID: <20240730151644.409230312@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -60,66 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 96f887a612e4cda89efc3f54bc10c1997e3ab0e9 ]
+[ Upstream commit 33322e3ef07409278a18c6919c448e369d66a18e ]
 
-xmit() functions should consume skb or return error codes in error
-paths.
-When the configuration "CONFIG_INET_ESPINTCP" is not set, the
-implementation of the function "esp_output_tail_tcp" violates this rule.
-The function frees the skb and returns the error code.
-This change removes the kfree_skb from both functions, for both
-esp4 and esp6.
-WARN_ON is added because esp_output_tail_tcp() should never be called if
-CONFIG_INET_ESPINTCP is not set.
+For fragmented packets, ath12k reassembles each fragment as a normal
+packet and then reinjects it into HW ring. In this case, the DMA
+direction should be DMA_TO_DEVICE, not DMA_FROM_DEVICE. Otherwise,
+an invalid payload may be reinjected into the HW and
+subsequently delivered to the host.
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+Given that arbitrary memory can be allocated to the skb buffer,
+knowledge about the data contained in the reinjected buffer is lacking.
+Consequently, there’s a risk of private information being leaked.
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00209-QCAHKSWPL_SILICONZ-1
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Co-developed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240520070045.631029-2-quic_ppranees@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4.c | 3 +--
- net/ipv6/esp6.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index fe501d2186bcf..eeace9b509cec 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -238,8 +238,7 @@ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
- #else
- static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
- {
--	kfree_skb(skb);
--
-+	WARN_ON(1);
- 	return -EOPNOTSUPP;
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index a2d1ee1d51884..fb51cab23b623 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -3024,7 +3024,7 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
+ 
+ 	buf_paddr = dma_map_single(ab->dev, defrag_skb->data,
+ 				   defrag_skb->len + skb_tailroom(defrag_skb),
+-				   DMA_FROM_DEVICE);
++				   DMA_TO_DEVICE);
+ 	if (dma_mapping_error(ab->dev, buf_paddr))
+ 		return -ENOMEM;
+ 
+@@ -3110,7 +3110,7 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
+ 	spin_unlock_bh(&dp->rx_desc_lock);
+ err_unmap_dma:
+ 	dma_unmap_single(ab->dev, buf_paddr, defrag_skb->len + skb_tailroom(defrag_skb),
+-			 DMA_FROM_DEVICE);
++			 DMA_TO_DEVICE);
+ 	return ret;
  }
- #endif
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index a3fa3eda388a4..62bb9651133c4 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -255,8 +255,7 @@ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
- #else
- static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
- {
--	kfree_skb(skb);
--
-+	WARN_ON(1);
- 	return -EOPNOTSUPP;
- }
- #endif
+ 
 -- 
 2.43.0
 
