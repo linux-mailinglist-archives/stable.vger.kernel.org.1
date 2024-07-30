@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-63139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4E194178D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F79B941D17
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EA561F23C09
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCDCC28AF75
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276E9189503;
-	Tue, 30 Jul 2024 16:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB2618B476;
+	Tue, 30 Jul 2024 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgJDIHWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Y+H7ijv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA02A184535;
-	Tue, 30 Jul 2024 16:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A92E189522;
+	Tue, 30 Jul 2024 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355796; cv=none; b=qzuyzoyJRb3tJqZHHobq6UbNVvlwCG1Qer+Y41Yq06fhz1Gnv1VaJzsN/8Y395C37RnuEx7ND1sB1dNrXy95yvfv+kKpYjCHWgDGhrXUyZvvx86qP9Af6laZ1UlJ1yajk3BtD3pWJz5nuX8z3eiWTzD4ivO2V3PsQB0iQUUFEuM=
+	t=1722359564; cv=none; b=mnTxVpSdQjqyW7bOqGawiTJoEI1N8eFe60olDPSnDCgpZ5WCMUwhuydVg+s1nDlT3evI/w/c9HIw+m/rb4euOUWnOJfmgdyKi/Y1iOjbJqkQbYRMiOzXFjh0SoD7VtQNpJS4aA2qW71bIh4p0m8pYIYy+Zr5iSfJzAz4adHUjK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355796; c=relaxed/simple;
-	bh=dWYseY3WNzkrECzNEgextxUc/U7+6pUvSdF7Ar6hpSA=;
+	s=arc-20240116; t=1722359564; c=relaxed/simple;
+	bh=wPQcR854A52znuobzisHWB8Yvagcacc9eSNdA97zADg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7j9WhOnpL9hIQKmrQAbepmCR0LUvZ9kfXK5I6LQkfkI0wnDfPIBHT2aCZbuzyoKtZjXNY37OPszjpZevAdPvLge5Oz4ze+yCw0ATKRoFKfD68mAvBUgtVLTlJ2KmU/F5EyRoXHYlw25bdsvWjN2ELAB/codSok4ZevgXiJ/oko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgJDIHWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCB7C32782;
-	Tue, 30 Jul 2024 16:09:55 +0000 (UTC)
+	 MIME-Version; b=AcxzOz56/VuuVtOoTcCi0D7wycXCKpcx5LlvZsls6Vb4ALC42P9DdK6bCH1UAdRCd0YGtNj1G+hVobNmxK8xKtB2BggpAFKQr6K6MF4AGD5UwZt6xY+t8cwy2gvc7txvTmq3gm4zkeTuTF8VzRDBiGgeGGVAXA4BBt+e0+OEOm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Y+H7ijv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99E4C32782;
+	Tue, 30 Jul 2024 17:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355796;
-	bh=dWYseY3WNzkrECzNEgextxUc/U7+6pUvSdF7Ar6hpSA=;
+	s=korg; t=1722359564;
+	bh=wPQcR854A52znuobzisHWB8Yvagcacc9eSNdA97zADg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GgJDIHWCRb09/+GNTeRGELETMiQzrUoSac5Wgrs4yAR/NQcr+TCUQM6AyO8LPIBqv
-	 ahUbiYUlSvFuJUQH5lGesh+8+lM1kgGhRWnNk4GiDIkVlFRd9/ATYmyKiem3/9Y9Je
-	 w21O6LzmlK/Woy9VdhMofqp/Uqj/QB1mI0N6lgIY=
+	b=0Y+H7ijvWLzHBQFgrfrmecPToCiF3/wMDV0gLr9shtLQqCRmMzqPcvxOXayLca0hD
+	 YV+LxjDdOL7Yzm3z0kupDRuRFBWRbCGPYX0+tK0xj8W8ohSOslOeb5SD1+jvijVBEQ
+	 T/RrFTTkJAY1hgMUTXaLbYuzXqBLqcWltj8u1e3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/440] drm/amd/pm: Fix aldebaran pcie speed reporting
+Subject: [PATCH 6.10 488/809] fs/ntfs3: Fix getting file type
 Date: Tue, 30 Jul 2024 17:46:04 +0200
-Message-ID: <20240730151620.998755282@linuxfoundation.org>
+Message-ID: <20240730151744.013793745@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit b6420021e17e262c57bb289d0556ee181b014f9c ]
+[ Upstream commit 24c5100aceedcd47af89aaa404d4c96cd2837523 ]
 
-Fix the field definitions for LC_CURRENT_DATA_RATE.
+An additional condition causes the mft record to be read from disk
+and get the file type dt_type.
 
-Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 22457c047ed97 ("fs/ntfs3: Modified fix directory element type detection")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/dir.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-index f3257cf4b06f2..3aab1caed2ac7 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -79,8 +79,8 @@ MODULE_FIRMWARE("amdgpu/smu_13_0_10.bin");
- #define PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD_MASK 0x00000070L
- #define PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD__SHIFT 0x4
- #define smnPCIE_LC_SPEED_CNTL			0x11140290
--#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE_MASK 0xC000
--#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE__SHIFT 0xE
-+#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE_MASK 0xE0
-+#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE__SHIFT 0x5
- 
- static const int link_width[] = {0, 1, 2, 4, 8, 12, 16};
- static const int link_speed[] = {25, 50, 80, 160};
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index 1937e8e612f87..858efe255f6f3 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -326,7 +326,8 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
+ 	 * It does additional locks/reads just to get the type of name.
+ 	 * Should we use additional mount option to enable branch below?
+ 	 */
+-	if ((fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT) &&
++	if (((fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT) ||
++	     fname->dup.ea_size) &&
+ 	    ino != ni->mi.rno) {
+ 		struct inode *inode = ntfs_iget5(sbi->sb, &e->ref, NULL);
+ 		if (!IS_ERR_OR_NULL(inode)) {
 -- 
 2.43.0
 
