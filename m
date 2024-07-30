@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-64305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1B4941D71
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A1F9417FA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81BECB29B50
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAED41C22D4B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E226B189913;
-	Tue, 30 Jul 2024 17:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C641A0B06;
+	Tue, 30 Jul 2024 16:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaEaFeSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGlOQeL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DD01A76B7;
-	Tue, 30 Jul 2024 17:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B321A00F7;
+	Tue, 30 Jul 2024 16:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359680; cv=none; b=MnZ0yXUg1V7Xaov5NPHJHpKyHWgSQXIR1UKogGbySX86hWLQHbatnk/jgGEDhZDbOZFEFIdTbUhzFKBfRmYlt5WvlGOu/aaJ70Eag/B9/yxwGcT2rZPUOsrN5R5/nnL1wuBGSkkwcn45UxjQXc/3DO/FDCPxPY2PJHAh4hc33PI=
+	t=1722356128; cv=none; b=WyhF0YExdXKTAMt1N3v8QBhy/vK0q3dDHLRdgP4TkecYgHosY7CPIKdM/IEEnE7Nim855Z4HqvqEINVB5ccPKPmnEuEaZvEnMPral08lp7WFtM4utJMMBJZijLwfhOFwNWsGLKhmZjCo4xGApvs6aNcskQT9Tjx4TWNCBW/AEQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359680; c=relaxed/simple;
-	bh=Ptk/tzmgiduHhQWLE+TI3JueN+mzAqSEEp4GQTFqLjQ=;
+	s=arc-20240116; t=1722356128; c=relaxed/simple;
+	bh=NJUilYkBnTyZRRwoBIcQPbarrmuO5dWidg6hg4v+YV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7l2Mu23775DLp05YyeuDsbIkp1oneXklE6GQA2Bsd2yLmZxtuDsqGvNE8v3EEL8te92+bGvNMndqASKG6Jfgs30a9T1EUJDCfIjPknVO2M16ULlVrbSs4TkR++CVrckv5JYX/RGYh1eOZso+pkCtcBkZ2G0cYz9ofMPEWf0His=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaEaFeSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD2DC32782;
-	Tue, 30 Jul 2024 17:14:39 +0000 (UTC)
+	 MIME-Version; b=WtM6abU3L09DOVAH6oq53nc7xMZ1iY1KgLVw/fqLGzbQlHPvSRadub+Kf7jQlut5bxrskGfZjVKsbDNmXntURfZ2d/nT8OxPagKSZ4P4mXTy9cr2oBgXA9KdgKgyDKUJxE0au/hFjKn3gWgbTN9ETkQD6A9fLjCQwGcgOL2KpAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGlOQeL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DD9C32782;
+	Tue, 30 Jul 2024 16:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359680;
-	bh=Ptk/tzmgiduHhQWLE+TI3JueN+mzAqSEEp4GQTFqLjQ=;
+	s=korg; t=1722356128;
+	bh=NJUilYkBnTyZRRwoBIcQPbarrmuO5dWidg6hg4v+YV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaEaFeSgTzqtBS73tODuYfWqnI9pTmjHwK6ztrehGA1qVYzDgE/9lyPZjLBDvqB4h
-	 7dcM8p2ArqaUlyPgK2XiOnMKOMfMXcAzlcZc4014eabN5zxvRUtECF6j4QtcFfP8lx
-	 95M+J+7RR8fvnvAmTY3jQ5DRxLY+hjZhP+DURXg8=
+	b=UGlOQeL+jJ9B/oCLKsKuqUhK+4Jts9A7uj6KO4U4im5OZrTc7vJIeJv4CEiNhmDXL
+	 xk8Bnw0kz7a0nCVN5bVpsDaOJfH8WqEXPO8eDoPZH7d7SVtiSmADCZeF2RvLl4wvwQ
+	 41EqEDWh6tibYHT3zkza8vTiTti+Zrj67X64dmBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Oscar Salvador <osalvador@suse.de>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Peter Xu <peterx@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 518/809] powerpc/8xx: fix size given to set_huge_pte_at()
+Subject: [PATCH 6.1 161/440] drm/etnaviv: fix DMA direction handling for cached RW buffers
 Date: Tue, 30 Jul 2024 17:46:34 +0200
-Message-ID: <20240730151745.199494043@linuxfoundation.org>
+Message-ID: <20240730151622.162700751@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,45 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit 7ea981070fd9ec24bc0111636038193aebb0289c ]
+[ Upstream commit 58979ad6330a70450ed78837be3095107d022ea9 ]
 
-set_huge_pte_at() expects the size of the hugepage as an int, not the
-psize which is the index of the page definition in table mmu_psize_defs[]
+The dma sync operation needs to be done with DMA_BIDIRECTIONAL when
+the BO is prepared for both read and write operations.
 
-Link: https://lkml.kernel.org/r/97f2090011e25d99b6b0aae73e22e1b921c5d1fb.1719928057.git.christophe.leroy@csgroup.eu
-Fixes: 935d4f0c6dc8 ("mm: hugetlb: add huge page size param to set_huge_pte_at()")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Peter Xu <peterx@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a8c21a5451d8 ("drm/etnaviv: add initial etnaviv DRM driver")
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/nohash/8xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gem.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 43d4842bb1c7a..d93433e26dedb 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -94,7 +94,8 @@ static int __ref __early_map_kernel_hugepage(unsigned long va, phys_addr_t pa,
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+index 5cf13e52f7c94..23d5058eca8d8 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+@@ -355,9 +355,11 @@ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
  
- 	set_huge_pte_at(&init_mm, va, ptep,
--			pte_mkhuge(pfn_pte(pa >> PAGE_SHIFT, prot)), psize);
-+			pte_mkhuge(pfn_pte(pa >> PAGE_SHIFT, prot)),
-+			1UL << mmu_psize_to_shift(psize));
- 
- 	return 0;
- }
+ static inline enum dma_data_direction etnaviv_op_to_dma_dir(u32 op)
+ {
+-	if (op & ETNA_PREP_READ)
++	op &= ETNA_PREP_READ | ETNA_PREP_WRITE;
++
++	if (op == ETNA_PREP_READ)
+ 		return DMA_FROM_DEVICE;
+-	else if (op & ETNA_PREP_WRITE)
++	else if (op == ETNA_PREP_WRITE)
+ 		return DMA_TO_DEVICE;
+ 	else
+ 		return DMA_BIDIRECTIONAL;
 -- 
 2.43.0
 
