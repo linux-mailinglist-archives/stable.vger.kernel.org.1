@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964F6941DA2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6440B941AF7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54C6228C96A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95B811C20D6A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C969E1A76B1;
-	Tue, 30 Jul 2024 17:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DFB18801C;
+	Tue, 30 Jul 2024 16:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YI3/J1Qo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dU9TzFZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858731A76A9;
-	Tue, 30 Jul 2024 17:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58B614831F;
+	Tue, 30 Jul 2024 16:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359974; cv=none; b=pcszcWCB0ZpJnh8UpF0FA/MLgPFLoSriNRwBqQgxKZ/qFboLlZ4M5bfby2JY5UUrY7ig324u0EZlKtrfFTWwlnI2jT7bsF2xh3CUeFbwXqchsupbDgX99bolPqeYGcxExLRHO2LapmiVadc1jbjx4jhNiuOS5MmMCgRbTQQreVw=
+	t=1722358178; cv=none; b=f7t5W04VkUjhxKZxbXmvKK0mOfCqWKas6dmSELgLk7k95opyPaW6Fbdub1rd1423B6KFYKqukfM54uSuZPT6itdsxEw6IZKwZdo6ATYzruLx+aiipdkZ6hJ1gBkW9/qC4Vxy4CJAfB8Kz1DoR1UzkOoUvJ13psczdIxhEN87hsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359974; c=relaxed/simple;
-	bh=b7YbQ0+/Iw7nSJ+aNomQhcxDTz4b6ZXeoZzeIIgg2V8=;
+	s=arc-20240116; t=1722358178; c=relaxed/simple;
+	bh=ZFsF/vOQedZ3U2Opq8kh3cgkUZSB6J2q0rq19uJr0c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njVEvHXVvVdJXXuPQ6afNKquBMn95h8C1kkg6/DYV1TVMXQ1IDvrESt/wiIb2lputQDwCshco3fCHsggIbw99//b7Us45D+9iSfEWdxC+BZuq2XE3nEPYo8nXNk6XWvga8Y7l+SwGUZg7GNVsUyHDlHbC+0WL+MgA1vwWKdK5x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YI3/J1Qo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9027AC32782;
-	Tue, 30 Jul 2024 17:19:33 +0000 (UTC)
+	 MIME-Version; b=SqF231mwKSfxdVZvictbMkia5PS9XaqsaAYH6s6YI5WQrYAbY4T9+h3xZDVpzwiIF5PcsRoDPFoUGYE/OHqlE87rUo+1ixMAvpZfhz8ubVj3NqH/Uyi9K7r+WfPuTQ6+Z9qNOPnjWZ9xt2HhTHj+bFWHXmBc3/KV/jKzy0VmZ/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dU9TzFZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92910C32782;
+	Tue, 30 Jul 2024 16:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359974;
-	bh=b7YbQ0+/Iw7nSJ+aNomQhcxDTz4b6ZXeoZzeIIgg2V8=;
+	s=korg; t=1722358178;
+	bh=ZFsF/vOQedZ3U2Opq8kh3cgkUZSB6J2q0rq19uJr0c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YI3/J1Qogvxf6KHO1R8BkOPFzzpRn5QdcQkCT0L7mwlS1y7ybk7Gn8PoNGJkOeEAU
-	 EcVXB2fiLWnkQzpzrI4u7UTbiq+99qcMFFEZBkXClKUQS+aj8SlXE8minfSnMvU64u
-	 LaN0uxMQQGXGQXjOVWerzYSjfJinGIMVGd4RqcOI=
+	b=dU9TzFZctwpdWhv0KB3AleSBGyyVR1Y2Uqiq2RX6xNeYDtYm4ITBwxshm1DRvwKvw
+	 rbfY0SvrwVnZ8zcImdRauHkClFqnoLkeS0z5lJimvJVNSxE5NnB1K/zlB9OotTh433
+	 Xk6/Ng/w/KlYkfwGd13L48W4/+TCgcMH3WxhICJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: [PATCH 6.10 561/809] fuse: verify {g,u}id mount options correctly
+	Peng Fan <peng.fan@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 330/568] pinctrl: freescale: mxs: Fix refcount of child
 Date: Tue, 30 Jul 2024 17:47:17 +0200
-Message-ID: <20240730151746.920677237@linuxfoundation.org>
+Message-ID: <20240730151652.770887798@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 525bd65aa759ec320af1dc06e114ed69733e9e23 upstream.
+[ Upstream commit 7f500f2011c0bbb6e1cacab74b4c99222e60248e ]
 
-As was done in
-0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
-we need to validate that the requested uid and/or gid is representable in
-the filesystem's idmapping.
+of_get_next_child() will increase refcount of the returned node, need
+use of_node_put() on it when done.
 
-Cribbing from the above commit log,
+Per current implementation, 'child' will be override by
+for_each_child_of_node(np, child), so use of_get_child_count to avoid
+refcount leakage.
 
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, fuse has been doing the correct thing.
-But since fuse is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock.
-
-Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/8f07d45d-c806-484d-a2e3-7a2199df1cd2@redhat.com
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 17723111e64f ("pinctrl: add pinctrl-mxs support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/20240504-pinctrl-cleanup-v2-18-26c5f2dc1181@nxp.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/inode.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/pinctrl/freescale/pinctrl-mxs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -755,6 +755,8 @@ static int fuse_parse_param(struct fs_co
- 	struct fs_parse_result result;
- 	struct fuse_fs_context *ctx = fsc->fs_private;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
+diff --git a/drivers/pinctrl/freescale/pinctrl-mxs.c b/drivers/pinctrl/freescale/pinctrl-mxs.c
+index cf3f4d2e0c168..a53287aaa653d 100644
+--- a/drivers/pinctrl/freescale/pinctrl-mxs.c
++++ b/drivers/pinctrl/freescale/pinctrl-mxs.c
+@@ -408,8 +408,8 @@ static int mxs_pinctrl_probe_dt(struct platform_device *pdev,
+ 	int ret;
+ 	u32 val;
  
- 	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
- 		/*
-@@ -799,16 +801,30 @@ static int fuse_parse_param(struct fs_co
- 		break;
- 
- 	case OPT_USER_ID:
--		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
--		if (!uid_valid(ctx->user_id))
-+		kuid =  make_kuid(fsc->user_ns, result.uint_32);
-+		if (!uid_valid(kuid))
- 			return invalfc(fsc, "Invalid user_id");
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fsc->user_ns, kuid))
-+			return invalfc(fsc, "Invalid user_id");
-+		ctx->user_id = kuid;
- 		ctx->user_id_present = true;
- 		break;
- 
- 	case OPT_GROUP_ID:
--		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
--		if (!gid_valid(ctx->group_id))
-+		kgid = make_kgid(fsc->user_ns, result.uint_32);;
-+		if (!gid_valid(kgid))
-+			return invalfc(fsc, "Invalid group_id");
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fsc->user_ns, kgid))
- 			return invalfc(fsc, "Invalid group_id");
-+		ctx->group_id = kgid;
- 		ctx->group_id_present = true;
- 		break;
- 
+-	child = of_get_next_child(np, NULL);
+-	if (!child) {
++	val = of_get_child_count(np);
++	if (val == 0) {
+ 		dev_err(&pdev->dev, "no group is defined\n");
+ 		return -ENOENT;
+ 	}
+-- 
+2.43.0
+
 
 
 
