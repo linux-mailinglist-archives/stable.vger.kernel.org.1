@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D8A1941DB5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEF4941ED0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1961D1F2797C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E20B41F24D07
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26491A76B2;
-	Tue, 30 Jul 2024 17:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A7A188017;
+	Tue, 30 Jul 2024 17:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYZ1/DHf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtLtmL8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE41A76A9;
-	Tue, 30 Jul 2024 17:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FACA1A76AD;
+	Tue, 30 Jul 2024 17:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360032; cv=none; b=kB0P/tzi01TuzfpNWCk4QS24f4S182QbotHnLfvCda6VyrQ+glzaz6mnTaYG64FwMdcmnIEKfwwlAkuPC4rO/5kEscZe6o1E3KhSHhHVk9eisUF2hNt62NIM1Uiqp+u1fZGajB7L1/bJasFwC3oaI8nDF3iO2akjhsf1Y+5xHeA=
+	t=1722360801; cv=none; b=bxhvddj6hyQ/3gJu8mEBK29NHHZDhShEQAF+S+hh5ShjFkCJgluPtGUsGUe1Y+VIpOfS6zkeOyi80nKVphNr/1Pf4R0i4uzR9rBP/rrMTXSSPz2Ig9U3ljIJShaZ7B082nSo+5Tqxku9C6H6xYUK+0P1RgkUeqW2Gyrx0BsXgFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360032; c=relaxed/simple;
-	bh=ycRKs9ZDGJEIS0uCi4XFHZ8SXstjYr9QuX9WJ0uBfJk=;
+	s=arc-20240116; t=1722360801; c=relaxed/simple;
+	bh=L05W+dhPt4vF/gWLODjmuOPrMS3YIXFCxp0jQLXkUUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWdbanyfPiNdOj7/C+EC9g3756jzj5m4xBDeuaFOHxOZemxMHOlv/j82DvmI9hE1kIwWu3I+ojt9IE9odFDIPGzSHl03ZkO/I5SdV509CZppb3JlSNEgzuHmeAqonf6A6S1e3OroW+TVF3ADdjqkHuGde+6IylE4VOWZxZCO9Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYZ1/DHf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C354BC32782;
-	Tue, 30 Jul 2024 17:20:31 +0000 (UTC)
+	 MIME-Version; b=qyvcpzu8bDKVUWD5c+yr1Ns3Oh6RkP7D0vK7s2wxAcUA0UdWmxtPDZQY4zFWr5Vczj60oSlGu5sbCXdGZzCseYkfnH8d0g8SSMAj1xmF7KNNcQxZpvjpuTcqg2omBLZPznNQVX8jp0ElW/ldAkMRbeIW3kYPlmuq3CLpzrxxGsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtLtmL8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEBBC32782;
+	Tue, 30 Jul 2024 17:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360032;
-	bh=ycRKs9ZDGJEIS0uCi4XFHZ8SXstjYr9QuX9WJ0uBfJk=;
+	s=korg; t=1722360800;
+	bh=L05W+dhPt4vF/gWLODjmuOPrMS3YIXFCxp0jQLXkUUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fYZ1/DHf2pMJqooF7pL+7iZSZa+jac3juLSiKPNnpt+FbXx9InD5h5vgOPnMpqdBk
-	 Rx/GMMpsKVncgvMJ70lctcgOXwm8iPzjfxA86uw44hkl0mwWjNCJWrdktbIWWRHTnj
-	 AJiYoEOfwBWk5NI8mubuiderPPBqJIDFRY9T2Ef4=
+	b=PtLtmL8EQmGH0z0TP0LuO7SvTnQcKjbg75ZC5SiFkUPXVL614NnOzJ8QClJjMCB49
+	 +mSXcu8YdpODLqPkqxKQLUgtz7K69/m3sdG+se9NuKckWJXTZjWjDOAnRXurj++NFu
+	 oGjaorgntDgve4FBstihOLICDAwiGVkEIb7AfxTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Will Deacon <will@kernel.org>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 565/568] iommu: sprd: Avoid NULL deref in sprd_iommu_hw_en
+Subject: [PATCH 6.10 796/809] s390/pci: Allow allocation of more than 1 MSI interrupt
 Date: Tue, 30 Jul 2024 17:51:12 +0200
-Message-ID: <20240730151702.240728526@linuxfoundation.org>
+Message-ID: <20240730151756.415267935@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit 630482ee0653decf9e2482ac6181897eb6cde5b8 ]
+[ Upstream commit ab42fcb511fd9d241bbab7cc3ca04e34e9fc0666 ]
 
-In sprd_iommu_cleanup() before calling function sprd_iommu_hw_en()
-dom->sdev is equal to NULL, which leads to null dereference.
+On a PCI adapter that provides up to 8 MSI interrupt sources the s390
+implementation of PCI interrupts rejected to accommodate them, although
+the underlying hardware is able to support that.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+For MSI-X it is sufficient to allocate a single irq_desc per msi_desc,
+but for MSI multiple irq descriptors are attached to and controlled by
+a single msi descriptor. Add the appropriate loops to maintain multiple
+irq descriptors and tie/untie them to/from the appropriate AIBV bit, if
+a device driver allocates more than 1 MSI interrupt.
 
-Fixes: 9afea57384d4 ("iommu/sprd: Release dma buffer to avoid memory leak")
-Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Reviewed-by: Chunyan Zhang <zhang.lyra@gmail.com>
-Link: https://lore.kernel.org/r/20240716125522.3690358-1-artem.chernyshev@red-soft.ru
-Signed-off-by: Will Deacon <will@kernel.org>
+Common PCI code passes on requests to allocate a number of interrupt
+vectors based on the device drivers' demand and the PCI functions'
+capabilities. However, the root-complex of s390 systems support just a
+limited number of interrupt vectors per PCI function.
+Produce a kernel log message to inform about any architecture-specific
+capping that might be done.
+
+With this change, we had a PCI adapter successfully raising
+interrupts to its device driver via all 8 sources.
+
+Fixes: a384c8924a8b ("s390/PCI: Fix single MSI only check")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sprd-iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/pci/pci_irq.c | 62 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 42 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
-index 2fa9afebd4f5f..c8e79a2d8b4c6 100644
---- a/drivers/iommu/sprd-iommu.c
-+++ b/drivers/iommu/sprd-iommu.c
-@@ -236,8 +236,8 @@ static void sprd_iommu_cleanup(struct sprd_iommu_domain *dom)
+diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
+index 979f776b09b8d..84482a9213322 100644
+--- a/arch/s390/pci/pci_irq.c
++++ b/arch/s390/pci/pci_irq.c
+@@ -298,8 +298,8 @@ static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
  
- 	pgt_size = sprd_iommu_pgt_size(&dom->domain);
- 	dma_free_coherent(dom->sdev->dev, pgt_size, dom->pgt_va, dom->pgt_pa);
--	dom->sdev = NULL;
- 	sprd_iommu_hw_en(dom->sdev, false);
-+	dom->sdev = NULL;
+ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ {
++	unsigned int hwirq, msi_vecs, irqs_per_msi, i, cpu;
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+-	unsigned int hwirq, msi_vecs, cpu;
+ 	struct msi_desc *msi;
+ 	struct msi_msg msg;
+ 	unsigned long bit;
+@@ -309,30 +309,46 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 	zdev->aisb = -1UL;
+ 	zdev->msi_first_bit = -1U;
+ 
+-	if (type == PCI_CAP_ID_MSI && nvec > 1)
+-		return 1;
+ 	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
++	if (msi_vecs < nvec) {
++		pr_info("%s requested %d irqs, allocate system limit of %d",
++			pci_name(pdev), nvec, zdev->max_msi);
++	}
+ 
+ 	rc = __alloc_airq(zdev, msi_vecs, &bit);
+ 	if (rc < 0)
+ 		return rc;
+ 
+-	/* Request MSI interrupts */
++	/*
++	 * Request MSI interrupts:
++	 * When using MSI, nvec_used interrupt sources and their irq
++	 * descriptors are controlled through one msi descriptor.
++	 * Thus the outer loop over msi descriptors shall run only once,
++	 * while two inner loops iterate over the interrupt vectors.
++	 * When using MSI-X, each interrupt vector/irq descriptor
++	 * is bound to exactly one msi descriptor (nvec_used is one).
++	 * So the inner loops are executed once, while the outer iterates
++	 * over the MSI-X descriptors.
++	 */
+ 	hwirq = bit;
+ 	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
+-		rc = -EIO;
+ 		if (hwirq - bit >= msi_vecs)
+ 			break;
+-		irq = __irq_alloc_descs(-1, 0, 1, 0, THIS_MODULE,
+-				(irq_delivery == DIRECTED) ?
+-				msi->affinity : NULL);
++		irqs_per_msi = min_t(unsigned int, msi_vecs, msi->nvec_used);
++		irq = __irq_alloc_descs(-1, 0, irqs_per_msi, 0, THIS_MODULE,
++					(irq_delivery == DIRECTED) ?
++					msi->affinity : NULL);
+ 		if (irq < 0)
+ 			return -ENOMEM;
+-		rc = irq_set_msi_desc(irq, msi);
+-		if (rc)
+-			return rc;
+-		irq_set_chip_and_handler(irq, &zpci_irq_chip,
+-					 handle_percpu_irq);
++
++		for (i = 0; i < irqs_per_msi; i++) {
++			rc = irq_set_msi_desc_off(irq, i, msi);
++			if (rc)
++				return rc;
++			irq_set_chip_and_handler(irq + i, &zpci_irq_chip,
++						 handle_percpu_irq);
++		}
++
+ 		msg.data = hwirq - bit;
+ 		if (irq_delivery == DIRECTED) {
+ 			if (msi->affinity)
+@@ -345,31 +361,35 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 			msg.address_lo |= (cpu_addr << 8);
+ 
+ 			for_each_possible_cpu(cpu) {
+-				airq_iv_set_data(zpci_ibv[cpu], hwirq, irq);
++				for (i = 0; i < irqs_per_msi; i++)
++					airq_iv_set_data(zpci_ibv[cpu],
++							 hwirq + i, irq + i);
+ 			}
+ 		} else {
+ 			msg.address_lo = zdev->msi_addr & 0xffffffff;
+-			airq_iv_set_data(zdev->aibv, hwirq, irq);
++			for (i = 0; i < irqs_per_msi; i++)
++				airq_iv_set_data(zdev->aibv, hwirq + i, irq + i);
+ 		}
+ 		msg.address_hi = zdev->msi_addr >> 32;
+ 		pci_write_msi_msg(irq, &msg);
+-		hwirq++;
++		hwirq += irqs_per_msi;
+ 	}
+ 
+ 	zdev->msi_first_bit = bit;
+-	zdev->msi_nr_irqs = msi_vecs;
++	zdev->msi_nr_irqs = hwirq - bit;
+ 
+ 	rc = zpci_set_irq(zdev);
+ 	if (rc)
+ 		return rc;
+ 
+-	return (msi_vecs == nvec) ? 0 : msi_vecs;
++	return (zdev->msi_nr_irqs == nvec) ? 0 : zdev->msi_nr_irqs;
  }
  
- static void sprd_iommu_domain_free(struct iommu_domain *domain)
+ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+ {
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 	struct msi_desc *msi;
++	unsigned int i;
+ 	int rc;
+ 
+ 	/* Disable interrupts */
+@@ -379,8 +399,10 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+ 
+ 	/* Release MSI interrupts */
+ 	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_ASSOCIATED) {
+-		irq_set_msi_desc(msi->irq, NULL);
+-		irq_free_desc(msi->irq);
++		for (i = 0; i < msi->nvec_used; i++) {
++			irq_set_msi_desc(msi->irq + i, NULL);
++			irq_free_desc(msi->irq + i);
++		}
+ 		msi->msg.address_lo = 0;
+ 		msi->msg.address_hi = 0;
+ 		msi->msg.data = 0;
 -- 
 2.43.0
 
