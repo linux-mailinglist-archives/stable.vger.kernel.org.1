@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82666941D77
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694CB941BD6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A8CB245F3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AC8D1C228CE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ED61A76B0;
-	Tue, 30 Jul 2024 17:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D01B18990A;
+	Tue, 30 Jul 2024 16:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciSNaLlD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Od5qPCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7631C1A76A7;
-	Tue, 30 Jul 2024 17:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75DD17D8BB;
+	Tue, 30 Jul 2024 16:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359856; cv=none; b=d2bRBLJ91PNSJq05ROXskBEniG55y3a1CI1Fksc8A4kdidBh//ivgBV7YWe0dTMO9lDxfG5Xfwa19RVaRx4trTw0gkbbzj1C5oUg406JpyVlXLNuGJqCtGA/11gDcSv4wyMoaoobWyrYy091Iw+kszJxuKfpuaByqIYlREH0oys=
+	t=1722358779; cv=none; b=YT0r7vjgC4BWUCxIJnjh/YqoKe9iUgDiuqnaZHyS8J7QEI+JlFCDMt/eZDGzNgENVKKbRWt5npubVBlhiuoskantLZhfDF6iVP6qGHaNiV1hMtzbzvmKsyVO7SGGNjKRXgGjtVDGvDp+VIsYdxJKQI9THpn9Tc1PSqic++1jeC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359856; c=relaxed/simple;
-	bh=QZIZgJtC2q40qNDSSKFU+he35Q6cKp/dXYKLuSa3kzw=;
+	s=arc-20240116; t=1722358779; c=relaxed/simple;
+	bh=iuL6HEedJ9TRsfjzDhDCF59ItMF5NelpbvEZvcYbGKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=luyVM0sYDpDWRT8XnvLz1mizejyPjZFGpunxKu1JzjncU51ECX9S+VQUuApj24X8CZAb6+mfVQA/yscRJ+svdeGdkfrix8MdVTnVAfGPNLFLF4YzBLPfjyYaVPvhKzVuLu9USOJm5sO8o09q8xDfYJv72j4mBUGBRN9hyi7f4KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciSNaLlD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE18DC32782;
-	Tue, 30 Jul 2024 17:17:35 +0000 (UTC)
+	 MIME-Version; b=MftW1GzHNN/qg5u4gNbM+MlfLxD1d7n97Ii8Cpc7tUTigo5O/2mH9DK7JPTijm6p8LtGRl3h9pUSi4p2fl9xXKNAO1p4cyef6kw/IYBf8tkqsU1ayJNbsQnC90Bz7zbvEcKedlcQh5FIcr+6eYGDO4TlpEtrIh5licnwQtUDx2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Od5qPCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF03C32782;
+	Tue, 30 Jul 2024 16:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359856;
-	bh=QZIZgJtC2q40qNDSSKFU+he35Q6cKp/dXYKLuSa3kzw=;
+	s=korg; t=1722358779;
+	bh=iuL6HEedJ9TRsfjzDhDCF59ItMF5NelpbvEZvcYbGKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ciSNaLlD3hB7iUvx+oDK8DBEGysF33bIbWN4kkYtq65a0oFuZF4mZj3dGB7cVy0rm
-	 nicB/MVXEKOzHhQHVpZWNxFudkacYox/sZuQuEnGAFs5WMRq/YsqxU9vx70tjzH49K
-	 hH95mBc8BfjQDp/F7mE1Gglz4vUnBoGVGC3jEq3w=
+	b=0Od5qPCkTdtFpMERIGAfrHn/QkfpMRM/seDafT+VomA0viE69MuXwYnzZC4tYHNKz
+	 zBEcA3mxTxSm2jkfxbZs9KdZ54qoFFgI3PpIUPwNQ/UqwgIHpXzKRlPSipNSJtn9Y9
+	 elxRxMb65rvz8AWaen92KO2Jxjnl9k6uckQYVeyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 547/568] lirc: rc_dev_get_from_fd(): fix file leak
+Subject: [PATCH 6.1 421/440] lirc: rc_dev_get_from_fd(): fix file leak
 Date: Tue, 30 Jul 2024 17:50:54 +0200
-Message-ID: <20240730151701.541006380@linuxfoundation.org>
+Message-ID: <20240730151632.228259940@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -79,7 +79,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
-index caad59f76793f..f8901d6fbe9bf 100644
+index adb8c794a2d7b..d9a9017b96eaa 100644
 --- a/drivers/media/rc/lirc_dev.c
 +++ b/drivers/media/rc/lirc_dev.c
 @@ -828,8 +828,10 @@ struct rc_dev *rc_dev_get_from_fd(int fd, bool write)
