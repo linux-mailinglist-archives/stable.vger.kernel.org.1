@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9394941A94
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2186941D01
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 829451F2520D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D2771F24BA6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92D778276;
-	Tue, 30 Jul 2024 16:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA761A76B1;
+	Tue, 30 Jul 2024 17:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewpAZ2+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH77UQma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D371A618F;
-	Tue, 30 Jul 2024 16:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0BB1A76A1;
+	Tue, 30 Jul 2024 17:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357918; cv=none; b=iuilmV5/tW9Mcd4Z/9RpwiJwOUAjANGO5gVHd+1+GNMMGhtWIPN1Go/scOcreyRWpcHNWDJ7zNvYBhO5Y2gg94b03ARA10rScHcmLUhxEsTQEVOVAK4NvWN4uFGR+A6VdMPcckMbeeRmhQhXiuqpMDwQFzon10tc29Sock1YyRk=
+	t=1722359479; cv=none; b=I1TYjBtyMIJrWEyvstMENgDwQrCeYWDVshjKpfIVLfaUP7n8YeGHZCn/ZnfGLEjJh9o0EhHUs2YEoGTNjmLOcRBctBVzwT6qwxLvn8kHTWtcptqpZ5KzlD0oyxuxs0R81zsMVcAOfHHy8HMj4yMUnifkhsKXF8O77EzXZJjUjhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357918; c=relaxed/simple;
-	bh=5N72RuylBOqx0LcJoQVglTOTBVvB+NGEd28Xql4Q2Og=;
+	s=arc-20240116; t=1722359479; c=relaxed/simple;
+	bh=OIFrUfEZpmjaoTqT05HMjcvzT1HpdXeIORdW38+hEdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZserEYoaJIGXV6gVw03PlYrZRqltw5myWY5gYR+WYms8LejlCfJ4utUixPCACBf4nWces9ob/63lpQ48AKRd8Y7d3hTNJ5hHJCdGDzVi8jaUSekvqCxRY6zr7fruaZSXA/4hpEq12FURZFSwLKSwGswGq8VTDu1iRu6EoU18aHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewpAZ2+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07562C32782;
-	Tue, 30 Jul 2024 16:45:17 +0000 (UTC)
+	 MIME-Version; b=m/JCjvBnb1BE+EtI3dY+JxYKvuG2Eif9QbCJTL6Wu11zBfUcsQXU1mK0afeoPE0puC0yaGT27gtdH14z6GQ5s02BprApSzEx9+O12uByPc6ZkVUOEQ4Ihp87/dossTwdkz8sAEWkHVmU0NzRXNjoUZkIvh3/vHhut3ZzzriSSp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VH77UQma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57C5C4AF0E;
+	Tue, 30 Jul 2024 17:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357918;
-	bh=5N72RuylBOqx0LcJoQVglTOTBVvB+NGEd28Xql4Q2Og=;
+	s=korg; t=1722359479;
+	bh=OIFrUfEZpmjaoTqT05HMjcvzT1HpdXeIORdW38+hEdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewpAZ2+RCrL5JcTGrWFXqhY677Ipxa0LoYNwXHLggZJITUDh1/EflxPNRVzYVIpdW
-	 5tju0s/If7349lBQQudyKUGczVJoEbKq3Z8peti6LwTh2VsNhETPsRZQqpiV7AS0dJ
-	 8fEPa5qtq+PxKWYfrOb2jJF3FhcMrCA5ZMJRdH74=
+	b=VH77UQmaLzZcYhHSagYrwU37FbQkXJQiOG3BijhzgxV7wn1yzrSGsNzriZDpMcOjV
+	 UaetRW7i39BIra55pOm/GdbKJZKl3HlnEz9eyEePpenEPlyCCXZf1XNX0QyOHyYOAr
+	 bQzT0UsPf8Lf3lvZyXah7U4yaUSIoS3PCM8jkaJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Bailey Forrest <bcf@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 339/440] gve: Fix an edge case for TSO skb validity check
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 465/568] scsi: qla2xxx: Complete command early within lock
 Date: Tue, 30 Jul 2024 17:49:32 +0200
-Message-ID: <20240730151629.056997970@linuxfoundation.org>
+Message-ID: <20240730151658.195618606@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bailey Forrest <bcf@google.com>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-commit 36e3b949e35964e22b9a57f960660fc599038dd4 upstream.
+commit 4475afa2646d3fec176fc4d011d3879b26cb26e3 upstream.
 
-The NIC requires each TSO segment to not span more than 10
-descriptors. NIC further requires each descriptor to not exceed
-16KB - 1 (GVE_TX_MAX_BUF_SIZE_DQO).
+A crash was observed while performing NPIV and FW reset,
 
-The descriptors for an skb are generated by
-gve_tx_add_skb_no_copy_dqo() for DQO RDA queue format.
-gve_tx_add_skb_no_copy_dqo() loops through each skb frag and
-generates a descriptor for the entire frag if the frag size is
-not greater than GVE_TX_MAX_BUF_SIZE_DQO. If the frag size is
-greater than GVE_TX_MAX_BUF_SIZE_DQO, it is split into descriptor(s)
-of size GVE_TX_MAX_BUF_SIZE_DQO and a descriptor is generated for
-the remainder (frag size % GVE_TX_MAX_BUF_SIZE_DQO).
+ BUG: kernel NULL pointer dereference, address: 000000000000001c
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: 0000 1 PREEMPT_RT SMP NOPTI
+ RIP: 0010:dma_direct_unmap_sg+0x51/0x1e0
+ RSP: 0018:ffffc90026f47b88 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: 0000000000000021 RCX: 0000000000000002
+ RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff8881041130d0
+ RBP: ffff8881041130d0 R08: 0000000000000000 R09: 0000000000000034
+ R10: ffffc90026f47c48 R11: 0000000000000031 R12: 0000000000000000
+ R13: 0000000000000000 R14: ffff8881565e4a20 R15: 0000000000000000
+ FS: 00007f4c69ed3d00(0000) GS:ffff889faac80000(0000) knlGS:0000000000000000
+ CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000000000001c CR3: 0000000288a50002 CR4: 00000000007706e0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+ <TASK>
+ ? __die_body+0x1a/0x60
+ ? page_fault_oops+0x16f/0x4a0
+ ? do_user_addr_fault+0x174/0x7f0
+ ? exc_page_fault+0x69/0x1a0
+ ? asm_exc_page_fault+0x22/0x30
+ ? dma_direct_unmap_sg+0x51/0x1e0
+ ? preempt_count_sub+0x96/0xe0
+ qla2xxx_qpair_sp_free_dma+0x29f/0x3b0 [qla2xxx]
+ qla2xxx_qpair_sp_compl+0x60/0x80 [qla2xxx]
+ __qla2x00_abort_all_cmds+0xa2/0x450 [qla2xxx]
 
-gve_can_send_tso() checks if the descriptors thus generated for an
-skb would meet the requirement that each TSO-segment not span more
-than 10 descriptors. However, the current code misses an edge case
-when a TSO segment spans multiple descriptors within a large frag.
-This change fixes the edge case.
+The command completion was done early while aborting the commands in driver
+unload path but outside lock to avoid the WARN_ON condition of performing
+dma_free_attr within the lock. However this caused race condition while
+command completion via multiple paths causing system crash.
 
-gve_can_send_tso() relies on the assumption that max gso size (9728)
-is less than GVE_TX_MAX_BUF_SIZE_DQO and therefore within an skb
-fragment a TSO segment can never span more than 2 descriptors.
+Hence complete the command early in unload path but within the lock to
+avoid race condition.
 
-Fixes: a57e5de476be ("gve: DQO: Add TX path")
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Bailey Forrest <bcf@google.com>
-Reviewed-by: Jeroen de Borst <jeroendb@google.com>
+Fixes: 0367076b0817 ("scsi: qla2xxx: Perform lockless command completion in abort path")
 Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240724143431.3343722-1-pkaligineedi@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c |   22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_os.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -596,22 +596,42 @@ static bool gve_can_send_tso(const struc
- 	const int header_len = skb_tcp_all_headers(skb);
- 	const int gso_size = shinfo->gso_size;
- 	int cur_seg_num_bufs;
-+	int prev_frag_size;
- 	int cur_seg_size;
- 	int i;
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1874,14 +1874,9 @@ __qla2x00_abort_all_cmds(struct qla_qpai
+ 	for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
+ 		sp = req->outstanding_cmds[cnt];
+ 		if (sp) {
+-			/*
+-			 * perform lockless completion during driver unload
+-			 */
+ 			if (qla2x00_chip_is_down(vha)) {
+ 				req->outstanding_cmds[cnt] = NULL;
+-				spin_unlock_irqrestore(qp->qp_lock_ptr, flags);
+ 				sp->done(sp, res);
+-				spin_lock_irqsave(qp->qp_lock_ptr, flags);
+ 				continue;
+ 			}
  
- 	cur_seg_size = skb_headlen(skb) - header_len;
-+	prev_frag_size = skb_headlen(skb);
- 	cur_seg_num_bufs = cur_seg_size > 0;
- 
- 	for (i = 0; i < shinfo->nr_frags; i++) {
- 		if (cur_seg_size >= gso_size) {
- 			cur_seg_size %= gso_size;
- 			cur_seg_num_bufs = cur_seg_size > 0;
-+
-+			if (prev_frag_size > GVE_TX_MAX_BUF_SIZE_DQO) {
-+				int prev_frag_remain = prev_frag_size %
-+					GVE_TX_MAX_BUF_SIZE_DQO;
-+
-+				/* If the last descriptor of the previous frag
-+				 * is less than cur_seg_size, the segment will
-+				 * span two descriptors in the previous frag.
-+				 * Since max gso size (9728) is less than
-+				 * GVE_TX_MAX_BUF_SIZE_DQO, it is impossible
-+				 * for the segment to span more than two
-+				 * descriptors.
-+				 */
-+				if (prev_frag_remain &&
-+				    cur_seg_size > prev_frag_remain)
-+					cur_seg_num_bufs++;
-+			}
- 		}
- 
- 		if (unlikely(++cur_seg_num_bufs > max_bufs_per_seg))
- 			return false;
- 
--		cur_seg_size += skb_frag_size(&shinfo->frags[i]);
-+		prev_frag_size = skb_frag_size(&shinfo->frags[i]);
-+		cur_seg_size += prev_frag_size;
- 	}
- 
- 	return true;
 
 
 
