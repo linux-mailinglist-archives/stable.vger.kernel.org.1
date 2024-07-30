@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76A1941D4E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0CF941BCD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79C0728B449
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CC91283F40
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF4E1A76AD;
-	Tue, 30 Jul 2024 17:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FF1898F8;
+	Tue, 30 Jul 2024 16:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abYhQoOl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMlh/Fak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16CA1A76A4;
-	Tue, 30 Jul 2024 17:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A69117D8BB;
+	Tue, 30 Jul 2024 16:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359721; cv=none; b=LWPB/RHCb9/GCMXvI8zH5yl7EaOU7DlwFP7AerNAUUzDF31dCUAh0IqdHNM7oOtKuYkXqUXm3cL0LoBvWEmUCzdfCLkqbuKgt116gdvky34sayPB/yCxadDdbR+EMpkQEzpn2IvMjeo3iLNWh9JR8HulXDLP51sKcOFyX/F3w78=
+	t=1722358755; cv=none; b=apo6slYEAqO3aIPknEizuNVLDdktOK6KT9C3LI/68bqb3l1UwUbxTmfuxn7yJUemK6PSYWtv5ivMl+wynLKXA0VZRZXQR7M4Udd2gdtVsCu1SZCdz6R8dHShZy+c4dyHDyxcwvKwUx/id8mD8EwGGSXFtTIun+7PEpDXRjC+mfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359721; c=relaxed/simple;
-	bh=Jw9GsFjIJYQZ5FaDuC3z3ayjDZq+g9X4yodlvvCSGQQ=;
+	s=arc-20240116; t=1722358755; c=relaxed/simple;
+	bh=meIyLOv+1pMvyRf+/eGdWUwjSz0iz86RqePRJfsJLGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/nQY/S2wNpjKWr6jmyGDI1H5LAfsBOYfWT3kiZ58H8jz1s2ZohwF6sFUG9CV8WTE1cR5uKJIkCIx2jPIXruF2g58yRSYcWOUzzXBEzYmV5i6/144Tk1a165y4PHS1Asx3wUFn4gvJBNB6dskByZc9vyKzFxEuB2tx8YnlEwhi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abYhQoOl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CA6C4AF0F;
-	Tue, 30 Jul 2024 17:15:19 +0000 (UTC)
+	 MIME-Version; b=aB75e4r73O/Ov5C+fkV4jBp8ofwhAYp+WvKU/kMv9V+KcBJAfECp9pQQDPwYvM/zm/I3jTYQyH5nQJ2Cm9zY/P7AbDekntwBn5Rh983XzJE0+u9KMAdBDRStSjKJgVVtQ/ZqY6L+S2fydz2hHyRhEEjTQGO3I+xFfvT1cqkcHiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMlh/Fak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DC0C32782;
+	Tue, 30 Jul 2024 16:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359720;
-	bh=Jw9GsFjIJYQZ5FaDuC3z3ayjDZq+g9X4yodlvvCSGQQ=;
+	s=korg; t=1722358755;
+	bh=meIyLOv+1pMvyRf+/eGdWUwjSz0iz86RqePRJfsJLGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=abYhQoOl2+8bTjvYCDfIBX03mjOfBc4RRKW5LwqpamnOkhBZuJtFGGslvBkTixYgd
-	 ZzVTpY9DNpduUwUZaZmCGEuhdl9sJWi5k0pLKXeYb8PX9ygenQd0mZstuei4mDMP1M
-	 bHM5D9Qm48NZ7oNbUgXN6t51+SiqjrUHoxyp60bw=
+	b=NMlh/FakmJOwcEY4/8f8XYxjIm8yZMscbwFy2pGLtNp6LslJ+CBzMwgXHI/CMoeUO
+	 +BKtENWpP2j+dzyCNlGZ3xl9uNMdhRThzSW4nXET4qFbHQsHx1+jKdveZiLdtCSauj
+	 9YpDj8RTt6EOwBsJ9Te8x8Vt6/w3/A3fi9+K7yN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunlei He <heyunlei@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 527/568] f2fs: fix to update user block counts in block_operations()
+Subject: [PATCH 6.1 401/440] watchdog: rzg2l_wdt: Use pm_runtime_resume_and_get()
 Date: Tue, 30 Jul 2024 17:50:34 +0200
-Message-ID: <20240730151700.756488487@linuxfoundation.org>
+Message-ID: <20240730151631.462995463@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit f06c0f82e38bbda7264d6ef3c90045ad2810e0f3 ]
+[ Upstream commit f0ba0fcdd19943809b1a7f760f77f6673c6aa7f7 ]
 
-Commit 59c9081bc86e ("f2fs: allow write page cache when writting cp")
-allows write() to write data to page cache during checkpoint, so block
-count fields like .total_valid_block_count, .alloc_valid_block_count
-and .rf_node_block_count may encounter race condition as below:
+pm_runtime_get_sync() may return with error. In case it returns with error
+dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
+takes care of this. Thus use it.
 
-CP				Thread A
-- write_checkpoint
- - block_operations
-  - f2fs_down_write(&sbi->node_change)
-  - __prepare_cp_block
-  : ckpt->valid_block_count = .total_valid_block_count
-  - f2fs_up_write(&sbi->node_change)
-				- write
-				 - f2fs_preallocate_blocks
-				  - f2fs_map_blocks(,F2FS_GET_BLOCK_PRE_AIO)
-				   - f2fs_map_lock
-				    - f2fs_down_read(&sbi->node_change)
-				   - f2fs_reserve_new_blocks
-				    - inc_valid_block_count
-				    : percpu_counter_add(&sbi->alloc_valid_block_count, count)
-				    : sbi->total_valid_block_count += count
-				    - f2fs_up_read(&sbi->node_change)
- - do_checkpoint
- : sbi->last_valid_block_count = sbi->total_valid_block_count
- : percpu_counter_set(&sbi->alloc_valid_block_count, 0)
- : percpu_counter_set(&sbi->rf_node_block_count, 0)
-				- fsync
-				 - need_do_checkpoint
-				  - f2fs_space_for_roll_forward
-				  : alloc_valid_block_count was reset to zero,
-				    so, it may missed last data during checkpoint
+Along with it the rzg2l_wdt_set_timeout() function was updated to
+propagate the result of rzg2l_wdt_start() to its caller.
 
-Let's change to update .total_valid_block_count, .alloc_valid_block_count
-and .rf_node_block_count in block_operations(), then their access can be
-protected by .node_change and .cp_rwsem lock, so that it can avoid above
-race condition.
-
-Fixes: 59c9081bc86e ("f2fs: allow write page cache when writting cp")
-Cc: Yunlei He <heyunlei@oppo.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 2cbc5cd0b55f ("watchdog: Add Watchdog Timer driver for RZ/G2L")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240531065723.1085423-4-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/checkpoint.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/watchdog/rzg2l_wdt.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
-index 58ce751da92bf..1a33a8c1623f2 100644
---- a/fs/f2fs/checkpoint.c
-+++ b/fs/f2fs/checkpoint.c
-@@ -1170,6 +1170,11 @@ static void __prepare_cp_block(struct f2fs_sb_info *sbi)
- 	ckpt->valid_node_count = cpu_to_le32(valid_node_count(sbi));
- 	ckpt->valid_inode_count = cpu_to_le32(valid_inode_count(sbi));
- 	ckpt->next_free_nid = cpu_to_le32(last_nid);
-+
-+	/* update user_block_counts */
-+	sbi->last_valid_block_count = sbi->total_valid_block_count;
-+	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
-+	percpu_counter_set(&sbi->rf_node_block_count, 0);
- }
+diff --git a/drivers/watchdog/rzg2l_wdt.c b/drivers/watchdog/rzg2l_wdt.c
+index d404953d0e0f4..78d904df5f1ea 100644
+--- a/drivers/watchdog/rzg2l_wdt.c
++++ b/drivers/watchdog/rzg2l_wdt.c
+@@ -123,8 +123,11 @@ static void rzg2l_wdt_init_timeout(struct watchdog_device *wdev)
+ static int rzg2l_wdt_start(struct watchdog_device *wdev)
+ {
+ 	struct rzg2l_wdt_priv *priv = watchdog_get_drvdata(wdev);
++	int ret;
  
- static bool __need_flush_quota(struct f2fs_sb_info *sbi)
-@@ -1559,11 +1564,6 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
- 		start_blk += NR_CURSEG_NODE_TYPE;
+-	pm_runtime_get_sync(wdev->parent);
++	ret = pm_runtime_resume_and_get(wdev->parent);
++	if (ret)
++		return ret;
+ 
+ 	/* Initialize time out */
+ 	rzg2l_wdt_init_timeout(wdev);
+@@ -150,6 +153,8 @@ static int rzg2l_wdt_stop(struct watchdog_device *wdev)
+ 
+ static int rzg2l_wdt_set_timeout(struct watchdog_device *wdev, unsigned int timeout)
+ {
++	int ret = 0;
++
+ 	wdev->timeout = timeout;
+ 
+ 	/*
+@@ -159,10 +164,10 @@ static int rzg2l_wdt_set_timeout(struct watchdog_device *wdev, unsigned int time
+ 	 */
+ 	if (watchdog_active(wdev)) {
+ 		rzg2l_wdt_stop(wdev);
+-		rzg2l_wdt_start(wdev);
++		ret = rzg2l_wdt_start(wdev);
  	}
  
--	/* update user_block_counts */
--	sbi->last_valid_block_count = sbi->total_valid_block_count;
--	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
--	percpu_counter_set(&sbi->rf_node_block_count, 0);
--
- 	/* Here, we have one bio having CP pack except cp pack 2 page */
- 	f2fs_sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
- 	/* Wait for all dirty meta pages to be submitted for IO */
+-	return 0;
++	return ret;
+ }
+ 
+ static int rzg2l_wdt_restart(struct watchdog_device *wdev,
 -- 
 2.43.0
 
