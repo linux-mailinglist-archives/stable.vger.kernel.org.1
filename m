@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA70941709
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E3B941A71
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4D861F25118
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 834F02841C1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE18E18C913;
-	Tue, 30 Jul 2024 16:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A92189503;
+	Tue, 30 Jul 2024 16:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBf/WehG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1i54RfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0F618C903;
-	Tue, 30 Jul 2024 16:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088781A6169;
+	Tue, 30 Jul 2024 16:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355517; cv=none; b=jczgLmSVQKzJZipBytc2gFLS62r8yxY1o4hUQ0PqAYCbsXfvivgofLLw3l7oUiBMMFPWFcB8OCslSr6A+bF/bZwlW1goxZKBSupItxBwoGLDKyMcAbcwR/NIx5Dmk0eDT2DndXLzGWrUbdGHzmcCJ6rAfaevn1bbj4OSkBoXZEE=
+	t=1722357828; cv=none; b=X+6Dknk3ofwQbrH5ts9OuteX7S0E+8crZy74gVuB4w3qHs6OQsvIX5KTj54NHfD9rmO1wOY9XjLwSm7ue76RMAFCUl38NoGzxrJYTa0QTeVDdY7kd/RcOSDss2k7huUUGYMcFl857M978rLsHZBDopQbYZEws+bwIuixUg2Y5PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355517; c=relaxed/simple;
-	bh=G/IONk5rwnRNyxH5luP/Bgg9v/CPWlH7KeXXs0IdSA0=;
+	s=arc-20240116; t=1722357828; c=relaxed/simple;
+	bh=+njexO7qhtRrJYjqzLbmPHvNMqtoOfYOAjZxNdcyfOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ARc75ScsO1wnRC/DpsVWX2vRUDE46URF2JRTp+k+RZCnd6YBlbqRP7xjy8jBHy1fi6tQNoIGKeswladZLTsfiAuD17+DJ57/efe+tPaOagZharGUct8TlUylM9L+sa1Wr9UZfjBcUniqu+LdyyUjwW3mYCBkSJynv+jm3QSe51E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBf/WehG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2398BC4AF0C;
-	Tue, 30 Jul 2024 16:05:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ud+LlechsH5Xe7PBHSNyI7qR4PiWWq5XxSOlvqLZKlioFjLkQqukm02wCFiYw0KZpa8W5g0tga+8I7GWfNFw6hFyl7l3Mz4GxHwBznI4bI5J6qG6R58M7+nhQpTjzhlUKIYDjKmkcsmrHTZWUoClLDfn9FOTpJQeyXWAUyUuPiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1i54RfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851F9C4AF0F;
+	Tue, 30 Jul 2024 16:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355517;
-	bh=G/IONk5rwnRNyxH5luP/Bgg9v/CPWlH7KeXXs0IdSA0=;
+	s=korg; t=1722357827;
+	bh=+njexO7qhtRrJYjqzLbmPHvNMqtoOfYOAjZxNdcyfOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBf/WehGzUCBO+Dk1YBZ0/7v4G+yRFMYH7P6avWQ+/41tj8amMOJiE6Z7oFxfI5eI
-	 cosSdrsVI/T5pUavEKqX6aOvokHAGMNgtrG0E7NVpnBwdpgOocTrOK7iceswcA8Pa/
-	 kJgOGr+Vzn0kjltf6oYL4i7eUJjG4a5s1BTrmdh8=
+	b=i1i54RfXoMQB922plJdWYcvyjEHkrPeVx7qYDlT/3ZyBGnMoBQBCeCJ/Zu+nAQQmr
+	 lNE1rE16TZVzHPby3kcvjICX9yv1Og/IAN0z57mlno2U09Bs8rjgtyksgdNHwHmiqn
+	 mxLyeXDEvfx+yPQUWO/n6iDbD7jyPDKjdyx9tJ5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <trabarni@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/568] arm64: dts: amlogic: sm1: fix spdif compatibles
+Subject: [PATCH 6.10 296/809] drm/msm/dpu: fix encoder irq wait skip
 Date: Tue, 30 Jul 2024 17:42:52 +0200
-Message-ID: <20240730151642.401973427@linuxfoundation.org>
+Message-ID: <20240730151736.286578107@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Barnabás Czémán <trabarni@gmail.com>
 
-[ Upstream commit b0aba467c329a89e8b325eda0cf60776958353fe ]
+[ Upstream commit e42d518511871ae625b5ff699853a05af1ccccf7 ]
 
-The spdif input and output of g12 and sm1 are compatible but
-sm1 should use the related compatible since it exists.
+The irq_idx is unsigned so it cannot be lower than zero, better
+to change the condition to check if it is equal with zero.
+It could not cause any issue because a valid irq index starts from one.
 
-Fixes: 86f2159468d5 ("arm64: dts: meson-sm1: add spdifin and pdifout nodes")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240625111845.928192-1-jbrunet@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 5a9d50150c2c ("drm/msm/dpu: shift IRQ indices by 1")
+Signed-off-by: Barnabás Czémán <trabarni@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/596853/
+Link: https://lore.kernel.org/r/20240509-irq_wait-v2-1-b8b687b22cc4@gmail.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-sm1.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi b/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
-index 643f94d9d08e1..fcaa1a273829c 100644
---- a/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
-@@ -339,7 +339,7 @@ tdmin_lb: audio-controller@3c0 {
- 		};
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 119f3ea50a7c6..cf7d769ab3b95 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -428,7 +428,7 @@ int dpu_encoder_helper_wait_for_irq(struct dpu_encoder_phys *phys_enc,
+ 		return -EWOULDBLOCK;
+ 	}
  
- 		spdifin: audio-controller@400 {
--			compatible = "amlogic,g12a-spdifin",
-+			compatible = "amlogic,sm1-spdifin",
- 				     "amlogic,axg-spdifin";
- 			reg = <0x0 0x400 0x0 0x30>;
- 			#sound-dai-cells = <0>;
-@@ -353,7 +353,7 @@ spdifin: audio-controller@400 {
- 		};
- 
- 		spdifout_a: audio-controller@480 {
--			compatible = "amlogic,g12a-spdifout",
-+			compatible = "amlogic,sm1-spdifout",
- 				     "amlogic,axg-spdifout";
- 			reg = <0x0 0x480 0x0 0x50>;
- 			#sound-dai-cells = <0>;
+-	if (irq_idx < 0) {
++	if (irq_idx == 0) {
+ 		DRM_DEBUG_KMS("skip irq wait id=%u, callback=%ps\n",
+ 			      DRMID(phys_enc->parent), func);
+ 		return 0;
 -- 
 2.43.0
 
