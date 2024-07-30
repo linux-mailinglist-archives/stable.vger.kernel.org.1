@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-63809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADAA941ABF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60090941E49
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CCB41C22AD2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 158E8285BA9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A2718990F;
-	Tue, 30 Jul 2024 16:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E491A76C1;
+	Tue, 30 Jul 2024 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTPcuzs+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUAwEqWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88349183CD5;
-	Tue, 30 Jul 2024 16:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E011A76B6;
+	Tue, 30 Jul 2024 17:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358022; cv=none; b=A5GpaiUCg/5Dd1ZVUppVWdGSKHqREUdhhonA4Ag09Tt+2QaRtCtQOFyQRglM2UaiDJDHVCWdJzYNceDTPjXn52GQUnp2PAThF1fDliPfljbmjOp+vQohD6vYkZWvYay/TBRb6R5cRajdeUvTY5BvaNlG1IBsTOuWavQmPfF6V4Y=
+	t=1722360460; cv=none; b=Nt34j3OQZOXYGIPD5M4DXMCbudYrhjigocBgQBUxsUm3yy/SVRyww/ddm0E3EQDfIjdVfMF0aonGr9/ipDzpnzVs3MrW2HJV5qK1nAXIWZ7nD3M3Kxhbi7BhvmGQJYR7URJ6vG3HOPQ786woBztqmb3dOopxI8Pu14KiowKK8jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358022; c=relaxed/simple;
-	bh=yZJnf8et525kgGftER6eYFQc1J8vI96EDviips4mmZI=;
+	s=arc-20240116; t=1722360460; c=relaxed/simple;
+	bh=EmQps9hjZnEHzn6iZdGEmHG6Dhx2AhXdKlZjdZMZaJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4fA23i+evnaX1v05ZXNFk7WsSqaX9iajHJKP2CQjc5lEkiCg7qUfqvGeaR34NHDvR8sEEdUMomxDewcuGrpfeVVfjD+B5iv2oDQy3arriBVEBXtF2/PmUw6/FLvIY5jLO375+w+RZL8OPAhFIshbkwJrkqahCRGFgLvH6yhXlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTPcuzs+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7F3C32782;
-	Tue, 30 Jul 2024 16:47:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oDPQPoh5RhBkMy+ED0lwyFtTFMBZIqlIYJaJGb4VwerzSfGcjslE8btk0wZhRoSA/PnTtcStgIDx7j+VHJgzXJe3siV2mnGflG1ubUK8Eugta1GHgzoijC0idOkTCq2o99jLAUS4MkCboTLQjpfuPY780KphRmEJeF7IapR9Jmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUAwEqWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6921EC32782;
+	Tue, 30 Jul 2024 17:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358022;
-	bh=yZJnf8et525kgGftER6eYFQc1J8vI96EDviips4mmZI=;
+	s=korg; t=1722360459;
+	bh=EmQps9hjZnEHzn6iZdGEmHG6Dhx2AhXdKlZjdZMZaJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTPcuzs+99yBhx8dx7Xr+uQYUr/vwVQY9JlOvq68VLd2DvQ2nAjuKUN4SL9chpIEg
-	 YwV9j9WvjtC1Fa06+aqD09/yQbg/pT+6heyPei+aXqUtCqb+o3Cx03noGAVV9XL2eh
-	 onn/SulTTRwx5qw8P7/OfSUMAmyb65UWH8Gevjh4=
+	b=AUAwEqWZUSB9lV6f1YuSAqolwlb5m7F918EgWZf0+ndYekaKyPWkEi4TKRaUoxypw
+	 oRK7qiGlMRNRpDwKnPVkHNcf/i4c7+wB5b1JtWW0xM/3KndJoZMJzQgX7hAGH234iq
+	 6w1CSue3IYk5Qux9TLueYosreBQwsUJ3/S802jyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 349/440] scsi: qla2xxx: Use QP lock to search for bsg
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Gareth Yu <gareth.yu@intel.com>
+Subject: [PATCH 6.10 706/809] drm/i915/dp: Dont switch the LTTPR mode on an active link
 Date: Tue, 30 Jul 2024 17:49:42 +0200
-Message-ID: <20240730151629.442148043@linuxfoundation.org>
+Message-ID: <20240730151752.812742776@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,155 +62,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit c449b4198701d828e40d60a2abd30970b74a1d75 upstream.
+commit 509580fad7323b6a5da27e8365cd488f3b57210e upstream.
 
-On bsg timeout, hardware_lock is used as part of search for the srb.
-Instead, qpair lock should be used to iterate through different qpair.
+Switching to transparent mode leads to a loss of link synchronization,
+so prevent doing this on an active link. This happened at least on an
+Intel N100 system / DELL UD22 dock, the LTTPR residing either on the
+host or the dock. To fix the issue, keep the current mode on an active
+link, adjusting the LTTPR count accordingly (resetting it to 0 in
+transparent mode).
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-11-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+v2: Adjust code comment during link training about reiniting the LTTPRs.
+   (Ville)
+
+Fixes: 7b2a4ab8b0ef ("drm/i915: Switch to LTTPR transparent mode link training")
+Reported-and-tested-by: Gareth Yu <gareth.yu@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10902
+Cc: <stable@vger.kernel.org> # v5.15+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240708190029.271247-3-imre.deak@intel.com
+(cherry picked from commit 211ad49cf8ccfdc798a719b4d1e000d0a8a9e588)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |   96 ++++++++++++++++++++++++-----------------
- 1 file changed, 57 insertions(+), 39 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp_link_training.c |   55 +++++++++++++++---
+ 1 file changed, 48 insertions(+), 7 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -3059,17 +3059,61 @@ skip_chip_chk:
- 	return ret;
+--- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
+@@ -114,10 +114,24 @@ intel_dp_set_lttpr_transparent_mode(stru
+ 	return drm_dp_dpcd_write(&intel_dp->aux, DP_PHY_REPEATER_MODE, &val, 1) == 1;
  }
  
--int
--qla24xx_bsg_timeout(struct bsg_job *bsg_job)
-+static bool qla_bsg_found(struct qla_qpair *qpair, struct bsg_job *bsg_job)
- {
-+	bool found = false;
- 	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
- 	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
- 	struct qla_hw_data *ha = vha->hw;
--	srb_t *sp;
--	int cnt, que;
-+	srb_t *sp = NULL;
-+	int cnt;
- 	unsigned long flags;
- 	struct req_que *req;
- 
-+	spin_lock_irqsave(qpair->qp_lock_ptr, flags);
-+	req = qpair->req;
-+
-+	for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
-+		sp = req->outstanding_cmds[cnt];
-+		if (sp &&
-+		    (sp->type == SRB_CT_CMD ||
-+		     sp->type == SRB_ELS_CMD_HST ||
-+		     sp->type == SRB_ELS_CMD_HST_NOLOGIN) &&
-+		    sp->u.bsg_job == bsg_job) {
-+			req->outstanding_cmds[cnt] = NULL;
-+			spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
-+
-+			if (!ha->flags.eeh_busy && ha->isp_ops->abort_command(sp)) {
-+				ql_log(ql_log_warn, vha, 0x7089,
-+						"mbx abort_command failed.\n");
-+				bsg_reply->result = -EIO;
-+			} else {
-+				ql_dbg(ql_dbg_user, vha, 0x708a,
-+						"mbx abort_command success.\n");
-+				bsg_reply->result = 0;
-+			}
-+			/* ref: INIT */
-+			kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+
-+			found = true;
-+			goto done;
-+		}
-+	}
-+	spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
-+
-+done:
-+	return found;
+-static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
++static bool intel_dp_lttpr_transparent_mode_enabled(struct intel_dp *intel_dp)
++{
++	return intel_dp->lttpr_common_caps[DP_PHY_REPEATER_MODE -
++					   DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV] ==
++		DP_PHY_REPEATER_MODE_TRANSPARENT;
 +}
 +
-+int
-+qla24xx_bsg_timeout(struct bsg_job *bsg_job)
++/*
++ * Read the LTTPR common capabilities and switch the LTTPR PHYs to
++ * non-transparent mode if this is supported. Preserve the
++ * transparent/non-transparent mode on an active link.
++ *
++ * Return the number of detected LTTPRs in non-transparent mode or 0 if the
++ * LTTPRs are in transparent mode or the detection failed.
++ */
++static int intel_dp_init_lttpr_phys(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
+ {
+ 	int lttpr_count;
+-	int i;
+ 
+ 	if (!intel_dp_read_lttpr_common_caps(intel_dp, dpcd))
+ 		return 0;
+@@ -132,6 +146,19 @@ static int intel_dp_init_lttpr(struct in
+ 		return 0;
+ 
+ 	/*
++	 * Don't change the mode on an active link, to prevent a loss of link
++	 * synchronization. See DP Standard v2.0 3.6.7. about the LTTPR
++	 * resetting its internal state when the mode is changed from
++	 * non-transparent to transparent.
++	 */
++	if (intel_dp->link_trained) {
++		if (lttpr_count < 0 || intel_dp_lttpr_transparent_mode_enabled(intel_dp))
++			goto out_reset_lttpr_count;
++
++		return lttpr_count;
++	}
++
++	/*
+ 	 * See DP Standard v2.0 3.6.6.1. about the explicit disabling of
+ 	 * non-transparent mode and the disable->enable non-transparent mode
+ 	 * sequence.
+@@ -151,11 +178,25 @@ static int intel_dp_init_lttpr(struct in
+ 		       "Switching to LTTPR non-transparent LT mode failed, fall-back to transparent mode\n");
+ 
+ 		intel_dp_set_lttpr_transparent_mode(intel_dp, true);
+-		intel_dp_reset_lttpr_count(intel_dp);
+ 
+-		return 0;
++		goto out_reset_lttpr_count;
+ 	}
+ 
++	return lttpr_count;
++
++out_reset_lttpr_count:
++	intel_dp_reset_lttpr_count(intel_dp);
++
++	return 0;
++}
++
++static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
 +{
-+	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
-+	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
-+	struct qla_hw_data *ha = vha->hw;
++	int lttpr_count;
 +	int i;
-+	struct qla_qpair *qpair;
 +
- 	ql_log(ql_log_info, vha, 0x708b, "%s CMD timeout. bsg ptr %p.\n",
- 	    __func__, bsg_job);
- 
-@@ -3079,48 +3123,22 @@ qla24xx_bsg_timeout(struct bsg_job *bsg_
- 		qla_pci_set_eeh_busy(vha);
- 	}
- 
-+	if (qla_bsg_found(ha->base_qpair, bsg_job))
-+		goto done;
++	lttpr_count = intel_dp_init_lttpr_phys(intel_dp, dpcd);
 +
- 	/* find the bsg job from the active list of commands */
--	spin_lock_irqsave(&ha->hardware_lock, flags);
--	for (que = 0; que < ha->max_req_queues; que++) {
--		req = ha->req_q_map[que];
--		if (!req)
-+	for (i = 0; i < ha->max_qpairs; i++) {
-+		qpair = vha->hw->queue_pair_map[i];
-+		if (!qpair)
- 			continue;
--
--		for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
--			sp = req->outstanding_cmds[cnt];
--			if (sp &&
--			    (sp->type == SRB_CT_CMD ||
--			     sp->type == SRB_ELS_CMD_HST ||
--			     sp->type == SRB_ELS_CMD_HST_NOLOGIN ||
--			     sp->type == SRB_FXIOCB_BCMD) &&
--			    sp->u.bsg_job == bsg_job) {
--				req->outstanding_cmds[cnt] = NULL;
--				spin_unlock_irqrestore(&ha->hardware_lock, flags);
--
--				if (!ha->flags.eeh_busy && ha->isp_ops->abort_command(sp)) {
--					ql_log(ql_log_warn, vha, 0x7089,
--					    "mbx abort_command failed.\n");
--					bsg_reply->result = -EIO;
--				} else {
--					ql_dbg(ql_dbg_user, vha, 0x708a,
--					    "mbx abort_command success.\n");
--					bsg_reply->result = 0;
--				}
--				spin_lock_irqsave(&ha->hardware_lock, flags);
--				goto done;
--
--			}
--		}
-+		if (qla_bsg_found(qpair, bsg_job))
-+			goto done;
- 	}
--	spin_unlock_irqrestore(&ha->hardware_lock, flags);
-+
- 	ql_log(ql_log_info, vha, 0x708b, "SRB not found to abort.\n");
- 	bsg_reply->result = -ENXIO;
--	return 0;
+ 	for (i = 0; i < lttpr_count; i++)
+ 		intel_dp_read_lttpr_phy_caps(intel_dp, dpcd, DP_PHY_LTTPR(i));
  
- done:
--	spin_unlock_irqrestore(&ha->hardware_lock, flags);
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
- 	return 0;
- }
+@@ -1372,10 +1413,10 @@ void intel_dp_start_link_train(struct in
+ {
+ 	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
+ 	bool passed;
+-
+ 	/*
+-	 * TODO: Reiniting LTTPRs here won't be needed once proper connector
+-	 * HW state readout is added.
++	 * Reinit the LTTPRs here to ensure that they are switched to
++	 * non-transparent mode. During an earlier LTTPR detection this
++	 * could've been prevented by an active link.
+ 	 */
+ 	int lttpr_count = intel_dp_init_lttpr_and_dprx_caps(intel_dp);
  
 
 
