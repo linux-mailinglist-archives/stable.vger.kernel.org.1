@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14195941957
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C83941C5B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 454551C228D4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D73031F24699
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51321187FF9;
-	Tue, 30 Jul 2024 16:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D0018801A;
+	Tue, 30 Jul 2024 17:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsC9pPkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itC1rfks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECBB8BE8;
-	Tue, 30 Jul 2024 16:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2E31A6192;
+	Tue, 30 Jul 2024 17:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357072; cv=none; b=SObk+HzZbI5MP8ChIhDVme4t7nAKC104SsZSNpyBmLGMMGOceztHyV2fRWm0qqGO6P6LBCxgVaxCq1Bn5dfGm298l9S9f+lpTjVhYTrXVq6UG2TxiYlTTUxl1HNHSQYQPThUJAudYrUaioo1yppL/hKYkxGSShUE6ZmVSrXBEm4=
+	t=1722359178; cv=none; b=D3Bifh9Oux33wglklh3wPddhFa8vDkKsiP4L7r1WQkLg7NnNLcAwzAgGhwJjtWmADnWK8CCZ3dhABjPej9+4Q5bTTN5nSxOk9yNi8gg2cwv4AO1o71s2ECEnywUaflFS+BdiojERYifVivGSoHl3YFWMdNv3QjaYAi2YGw25hlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357072; c=relaxed/simple;
-	bh=5VRejNsdMM3h3dB/bwdbVcgkUwVGf9eD0LEiBl0FIzM=;
+	s=arc-20240116; t=1722359178; c=relaxed/simple;
+	bh=mmAPnMgJch6b5jG4vO2HsnELfwa2pJY2Gw3wfrgoLKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pc426Slc5qCx5ZT3IUeEFx5a27ilFyMehC/kYolJhsj0PLPZ6YvrB2Yd3MF0ohkQKtGKB5zD1+PuF2Dbq8qMh7jnR3EKv+no/e7rpWTNT//8KeUCrVR7fpsxLM0gUuwXTKvtm3L3m8yjbgdmIs0OpKJrq6JCDaOOBjur67uwngs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsC9pPkL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAB8C32782;
-	Tue, 30 Jul 2024 16:31:11 +0000 (UTC)
+	 MIME-Version; b=L3b6ZBDFbfMhDIX2eEtXzDY3bWaiQijthFzJLWYWao40Lq6S2aLgo32snqF5o0M2XOLnNxdKhNiU9uMaragAuXvkmCt2JL3drJH3JHObG8vZayoyNqPpilMo20YNGHVsrYAzeizMOn0G/rJc5X0UKYzuuf6wsE82UGTIdHrQr2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itC1rfks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F98C4AF0F;
+	Tue, 30 Jul 2024 17:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357071;
-	bh=5VRejNsdMM3h3dB/bwdbVcgkUwVGf9eD0LEiBl0FIzM=;
+	s=korg; t=1722359178;
+	bh=mmAPnMgJch6b5jG4vO2HsnELfwa2pJY2Gw3wfrgoLKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsC9pPkLSrvIU978rWBtQW0sPL+GGsuK3nuHAbQaSCjY5nJ8reoVEt1aDJKm/EAhM
-	 HUTbjpLJhMfRWL8TsP2aqBTEkYiHzHyRDmiVpOhTpbgck1Yv1Jr1SnETH9XSRepJ2p
-	 pfGJPK4pyi1rTX8qbFiZ2mzwy3EEwFqvTxZjwwdI=
+	b=itC1rfksa4HzHAxQ1ygHb8vuNQaS9aDJcDiTkY+1okSb2TBB5/GcghQwG9+NovQIo
+	 XoWVLHfVqjQPUcwz2naFBXnEoR2oLIQVEzm2ZLsOFI1Re8aJSNbYAh/E3VCFNHRxFd
+	 Ijex6snRgMCCoGWJv/Jt2qjzCM3TSx6cTqDZUjqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/568] drm/mediatek: Fix XRGB setting error in OVL
-Date: Tue, 30 Jul 2024 17:45:22 +0200
-Message-ID: <20240730151648.276240009@linuxfoundation.org>
+Subject: [PATCH 6.10 447/809] nvmem: rockchip-otp: set add_legacy_fixed_of_cells config option
+Date: Tue, 30 Jul 2024 17:45:23 +0200
+Message-ID: <20240730151742.361992649@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-[ Upstream commit 765f284f1fe172573021056f7e337ee53f252969 ]
+[ Upstream commit 2933e79db3c00a8cdc56f6bb050a857fec1875ad ]
 
-CONST_BLD must be enabled for XRGB formats although the alpha channel
-can be ignored, or OVL will still read the value from memory.
-This error only affects CRC generation.
+The Rockchip OTP describes its layout via devicetree subnodes,
+so set the appropriate property.
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-3-a9d62d2e2c7e@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 2cc3b37f5b6d ("nvmem: add explicit config option to read old syntax fixed OF cells")
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240705074852.423202-5-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/nvmem/rockchip-otp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-index 2bffe42454666..6c25fbc3db294 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-@@ -38,6 +38,7 @@
- #define DISP_REG_OVL_PITCH_MSB(n)		(0x0040 + 0x20 * (n))
- #define OVL_PITCH_MSB_2ND_SUBBUF			BIT(16)
- #define DISP_REG_OVL_PITCH(n)			(0x0044 + 0x20 * (n))
-+#define OVL_CONST_BLEND					BIT(28)
- #define DISP_REG_OVL_RDMA_CTRL(n)		(0x00c0 + 0x20 * (n))
- #define DISP_REG_OVL_RDMA_GMC(n)		(0x00c8 + 0x20 * (n))
- #define DISP_REG_OVL_ADDR_MT2701		0x0040
-@@ -407,6 +408,7 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 	unsigned int fmt = pending->format;
- 	unsigned int offset = (pending->y << 16) | pending->x;
- 	unsigned int src_size = (pending->height << 16) | pending->width;
-+	unsigned int ignore_pixel_alpha = 0;
- 	unsigned int con;
- 	bool is_afbc = pending->modifier != DRM_FORMAT_MOD_LINEAR;
- 	union overlay_pitch {
-@@ -428,6 +430,14 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 	if (state->base.fb && state->base.fb->format->has_alpha)
- 		con |= OVL_CON_AEN | OVL_CON_ALPHA;
- 
-+	/* CONST_BLD must be enabled for XRGB formats although the alpha channel
-+	 * can be ignored, or OVL will still read the value from memory.
-+	 * For RGB888 related formats, whether CONST_BLD is enabled or not won't
-+	 * affect the result. Therefore we use !has_alpha as the condition.
-+	 */
-+	if (state->base.fb && !state->base.fb->format->has_alpha)
-+		ignore_pixel_alpha = OVL_CONST_BLEND;
-+
- 	if (pending->rotation & DRM_MODE_REFLECT_Y) {
- 		con |= OVL_CON_VIRT_FLIP;
- 		addr += (pending->height - 1) * pending->pitch;
-@@ -443,8 +453,8 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 
- 	mtk_ddp_write_relaxed(cmdq_pkt, con, &ovl->cmdq_reg, ovl->regs,
- 			      DISP_REG_OVL_CON(idx));
--	mtk_ddp_write_relaxed(cmdq_pkt, overlay_pitch.split_pitch.lsb, &ovl->cmdq_reg, ovl->regs,
--			      DISP_REG_OVL_PITCH(idx));
-+	mtk_ddp_write_relaxed(cmdq_pkt, overlay_pitch.split_pitch.lsb | ignore_pixel_alpha,
-+			      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH(idx));
- 	mtk_ddp_write_relaxed(cmdq_pkt, src_size, &ovl->cmdq_reg, ovl->regs,
- 			      DISP_REG_OVL_SRC_SIZE(idx));
- 	mtk_ddp_write_relaxed(cmdq_pkt, offset, &ovl->cmdq_reg, ovl->regs,
+diff --git a/drivers/nvmem/rockchip-otp.c b/drivers/nvmem/rockchip-otp.c
+index cb9aa5428350a..7107d68a2f8c7 100644
+--- a/drivers/nvmem/rockchip-otp.c
++++ b/drivers/nvmem/rockchip-otp.c
+@@ -255,6 +255,7 @@ static int rockchip_otp_read(void *context, unsigned int offset,
+ static struct nvmem_config otp_config = {
+ 	.name = "rockchip-otp",
+ 	.owner = THIS_MODULE,
++	.add_legacy_fixed_of_cells = true,
+ 	.read_only = true,
+ 	.stride = 1,
+ 	.word_size = 1,
 -- 
 2.43.0
 
