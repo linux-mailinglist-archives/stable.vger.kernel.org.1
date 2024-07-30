@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB5D941E93
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:30:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 457C1941B1B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791E6287319
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:30:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFDE21F23343
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15371166315;
-	Tue, 30 Jul 2024 17:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564F11898F7;
+	Tue, 30 Jul 2024 16:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l77l4j3a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmx4HuTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7ECA1A76AD;
-	Tue, 30 Jul 2024 17:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137E81078F;
+	Tue, 30 Jul 2024 16:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360634; cv=none; b=gtrs6oCmOrIOKkL7udT0hx5AjvTibREj+NWUNzpuh+unZbRlnOscMwaNvYyosUe7X2YEFqAgR3Zq0zWjlq4UVO3zvkhWCwuA62umJSoOSLI6o2vs1GIKaPk1sQmQNP3K1N5dsKzFL44M6lVsxkZtvGPW8I6ErSoD4fP6BtR1G9M=
+	t=1722358259; cv=none; b=fOTQHsi44iM/GtNgvA2GjAR6sD8MV0IEaEoN9fv3D3uWPqniW7zvqZILxPTnP9hWR50p9OP4yDoRPHtM1ef5cQ/IKvvWOnK2yHcgl2V6rnGag7gp10NPeELjxUJH6hqV9o+GD4DaRaJfCkE+cKshDgyBkaa4mef/hyiNDHFkt64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360634; c=relaxed/simple;
-	bh=/iVjvd2G1kBmKeTOelCValeRUOC2H6tDZE+XSGnS5jI=;
+	s=arc-20240116; t=1722358259; c=relaxed/simple;
+	bh=PSpOa3ybGqdCdaXhkPWlHsw6OMqHM4bOCmz8um+SZwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HY5ShsVUPobYUIu/0zXrSmM54PGQUpiRBP2fXTM6NmfcVuf/Pe/xMaOp2jgcb4tFpo0QFEKjTGFKaA3HJoY8G4nFh/zlO1EuOchdCyamjFbYf/L4jBifPXDC2OTayNs8OJxlLekUMqbbXnpZZvGaqZ/97zmJuIzDxCMe0Y56d7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l77l4j3a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCB7C4AF0A;
-	Tue, 30 Jul 2024 17:30:34 +0000 (UTC)
+	 MIME-Version; b=Yr/HS39MfqJII0Ck69mA49zNKGmgaVa3WBkSfxMew0ayVZoZ6Mww1PnKzjrQ4JIvxUHq1//r6QPRwor8/z9S7g3P0uDj4nFf1L9uykw0O3JO05F4j1xeelcztRgaqQhAQ5bZhvagQfZNdDw+6JoOrWxOslLLyG7plGCErRUK6Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmx4HuTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5995BC32782;
+	Tue, 30 Jul 2024 16:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360634;
-	bh=/iVjvd2G1kBmKeTOelCValeRUOC2H6tDZE+XSGnS5jI=;
+	s=korg; t=1722358258;
+	bh=PSpOa3ybGqdCdaXhkPWlHsw6OMqHM4bOCmz8um+SZwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l77l4j3aQJu0c81MYi/UzDQKG+WSTD8t9bqbJLbzWahhEVwUapDK8sa0TdHzacTXr
-	 f5lZSED8dIEWGMF4TTiZHAqWzT2ZYjCTyV65Xuw+oV4suy8vYQkCx4SNafuWbj1nob
-	 ByN3fh0q7NlX+3jUiHYKnpSxz80FkRkOYFFuqRQc=
+	b=hmx4HuTUe9dNsaa67Mz7Xgs/Io2ep8BMS6mN3voC8HIR0JafuI6c/cQDkaQFUOpAF
+	 KMtzhNZluj3ABwNhPJMYAfzA5Rbz4UyoZDK+l1FRK6rbbdJQS4GOrQs8TyY0eNi4z+
+	 oQkyShq2nu5SjEB7xyhV/0j9gcwgc7CbMttNUX/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.10 728/809] MIPS: Loongson64: Test register availability before use
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.1 371/440] remoteproc: imx_rproc: Fix refcount mistake in imx_rproc_addr_init
 Date: Tue, 30 Jul 2024 17:50:04 +0200
-Message-ID: <20240730151753.692924838@linuxfoundation.org>
+Message-ID: <20240730151630.306373125@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit c04366b1207a036b7de02dfcc1ac7138d3343c9b upstream.
+commit dce68a49be26abf52712e0ee452a45fa01ab4624 upstream.
 
-Some global register address variable may be missing on
-specific CPU type, test them before use them.
+In imx_rproc_addr_init() strcmp() is performed over the node after the
+of_node_put() is performed over it.
+Fix this error by moving of_node_put() calls.
 
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 5e4c1243071d ("remoteproc: imx_rproc: support remote cores booted before Linux Kernel")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://lore.kernel.org/r/20240612131714.12907-1-amishin@t-argos.ru
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/loongson64/smp.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/remoteproc/imx_rproc.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/mips/loongson64/smp.c
-+++ b/arch/mips/loongson64/smp.c
-@@ -466,12 +466,25 @@ static void loongson3_smp_finish(void)
- static void __init loongson3_smp_setup(void)
- {
- 	int i = 0, num = 0; /* i: physical id, num: logical id */
-+	int max_cpus = 0;
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -604,25 +604,29 @@ static int imx_rproc_addr_init(struct im
+ 			continue;
+ 		}
+ 		err = of_address_to_resource(node, 0, &res);
+-		of_node_put(node);
+ 		if (err) {
+ 			dev_err(dev, "unable to resolve memory region\n");
++			of_node_put(node);
+ 			return err;
+ 		}
  
- 	init_cpu_possible(cpu_none_mask);
+-		if (b >= IMX_RPROC_MEM_MAX)
++		if (b >= IMX_RPROC_MEM_MAX) {
++			of_node_put(node);
+ 			break;
++		}
  
-+	for (i = 0; i < ARRAY_SIZE(smp_group); i++) {
-+		if (!smp_group[i])
-+			break;
-+		max_cpus += loongson_sysconf.cores_per_node;
-+	}
-+
-+	if (max_cpus < loongson_sysconf.nr_cpus) {
-+		pr_err("SMP Groups are less than the number of CPUs\n");
-+		loongson_sysconf.nr_cpus = max_cpus ? max_cpus : 1;
-+	}
-+
- 	/* For unified kernel, NR_CPUS is the maximum possible value,
- 	 * loongson_sysconf.nr_cpus is the really present value
- 	 */
-+	i = 0;
- 	while (i < loongson_sysconf.nr_cpus) {
- 		if (loongson_sysconf.reserved_cpus_mask & (1<<i)) {
- 			/* Reserved physical CPU cores */
-@@ -492,14 +505,14 @@ static void __init loongson3_smp_setup(v
- 		__cpu_logical_map[num] = -1;
- 		num++;
+ 		/* Not use resource version, because we might share region */
+ 		priv->mem[b].cpu_addr = devm_ioremap_wc(&pdev->dev, res.start, resource_size(&res));
+ 		if (!priv->mem[b].cpu_addr) {
+ 			dev_err(dev, "failed to remap %pr\n", &res);
++			of_node_put(node);
+ 			return -ENOMEM;
+ 		}
+ 		priv->mem[b].sys_addr = res.start;
+ 		priv->mem[b].size = resource_size(&res);
+ 		if (!strcmp(node->name, "rsc-table"))
+ 			priv->rsc_table = priv->mem[b].cpu_addr;
++		of_node_put(node);
+ 		b++;
  	}
--
- 	csr_ipi_probe();
- 	ipi_set0_regs_init();
- 	ipi_clear0_regs_init();
- 	ipi_status0_regs_init();
- 	ipi_en0_regs_init();
- 	ipi_mailbox_buf_init();
--	ipi_write_enable(0);
-+	if (smp_group[0])
-+		ipi_write_enable(0);
  
- 	cpu_set_core(&cpu_data[0],
- 		     cpu_logical_map(0) % loongson_sysconf.cores_per_package);
-@@ -818,6 +831,9 @@ static int loongson3_disable_clock(unsig
- 	uint64_t core_id = cpu_core(&cpu_data[cpu]);
- 	uint64_t package_id = cpu_data[cpu].package;
- 
-+	if (!loongson_chipcfg[package_id] || !loongson_freqctrl[package_id])
-+		return 0;
-+
- 	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
- 		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
- 	} else {
-@@ -832,6 +848,9 @@ static int loongson3_enable_clock(unsign
- 	uint64_t core_id = cpu_core(&cpu_data[cpu]);
- 	uint64_t package_id = cpu_data[cpu].package;
- 
-+	if (!loongson_chipcfg[package_id] || !loongson_freqctrl[package_id])
-+		return 0;
-+
- 	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
- 		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
- 	} else {
 
 
 
