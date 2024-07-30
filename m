@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0F5941CC0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAA3941A9B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CE481C2382C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E10CBB27D87
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9907918C91B;
-	Tue, 30 Jul 2024 17:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A277184553;
+	Tue, 30 Jul 2024 16:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uw6XCJh5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zpu5SzVn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B9E18C915;
-	Tue, 30 Jul 2024 17:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9D91A6169;
+	Tue, 30 Jul 2024 16:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359278; cv=none; b=COs2KsdcWQ/XU29ObfBu+SjKwEyFHg5CRu2zCjanPqP+1Rxt3Z+Z6PmG+/O68lMf8ena3oCG/oD3f7fmuass3D5s8C5k2VyFHaYelKrdVIA74TXYKzGJMUY201eP/fDm72703y9jZ/s/d+19rdK1TTUwNQJdGdD5dChzBeRTPys=
+	t=1722357841; cv=none; b=kf60dBpjIpc+yiYSzEIndb1Y84OdXL0dWec0JvrU4uNCU13B+em73HcZQWovIxUNQbsDBrbRqPhaSN+aKfCGNQq9cBtT+C6Mh5eKXkbCT1X8pPkSt7D58prdhjAS5wLDPuAWE0ZCQ2EOS7RwOHIur38K4hj6CEHoR6mxGZ+I9Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359278; c=relaxed/simple;
-	bh=KXtu/QOHalU7pWg8kXmb9YmWWqNfZco33QO39rWhpYE=;
+	s=arc-20240116; t=1722357841; c=relaxed/simple;
+	bh=ICpdWMSArYU89HA6Ga/eEPFuC9Qie6EHO0SlrNrzCL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aYXaNpC9kaKqLbc+TA8zDzfYoTl138nC1zPjT6DaUy11Usq1cm4a0WVcj6XtcYHdui0ArIzwn85K4fbM0oDCt8NO1ER/n1D0G5N5t8Euu25wbPWBK/0Q9X7Z0fhmAs4LGZvSBdEBcyt3D7Db4Awz6ouMu9sHoEcg9V8VUQ/mf+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uw6XCJh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C153C32782;
-	Tue, 30 Jul 2024 17:07:57 +0000 (UTC)
+	 MIME-Version; b=WwlBRi7VzyaP46iPS7JhSQ743P7BdVC7WFs0woUGMCMzw7VVOT5QIyNPSHc931WXLrU0r6X3XGhke4Pgwgk26+uI1hHoa5EylV3te+dvRoWN9ecv529wuNNZ5da2/uHR2FiLnQGKS1btTfd3mCTu3vqKPhohVCPh0hxuPGN31g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zpu5SzVn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633FBC32782;
+	Tue, 30 Jul 2024 16:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359278;
-	bh=KXtu/QOHalU7pWg8kXmb9YmWWqNfZco33QO39rWhpYE=;
+	s=korg; t=1722357840;
+	bh=ICpdWMSArYU89HA6Ga/eEPFuC9Qie6EHO0SlrNrzCL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uw6XCJh5liyNbZ3dOrTMRCkTQS6Uv3xweKg2EqIzP6DbxlwVAUuWEvUTjshFcniJl
-	 2SMBAQKnuaMsThwuHaifTFIsOZvQBMsfHC9WUYqbtRG0d4a4WTGfAWlZ9+cw+iB87l
-	 gfS8zeyESuifnjsmw7ihKQdhC4U6N76SWin1KwMA=
+	b=Zpu5SzVnDVKsHXBjQxQJb0mH7+N3hszOHsdpMLCdZ7ESaOnjGIrqHi6MuGNsVLrRA
+	 Tg+C+lLg/l7d2qo87QYhcTms6EGsmCT51XUbph0J0DgX+UFmwdCLKgQ2kmaMZzpbvT
+	 TRlRmrI4LHZpDWZ9Y2bsToqpdvulEaL3uWpGTCSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 457/568] rtc: cmos: Fix return value of nvmem callbacks
-Date: Tue, 30 Jul 2024 17:49:24 +0200
-Message-ID: <20240730151657.882755482@linuxfoundation.org>
+	syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.1 332/440] f2fs: fix return value of f2fs_convert_inline_inode()
+Date: Tue, 30 Jul 2024 17:49:25 +0200
+Message-ID: <20240730151628.786533760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 1c184baccf0d5e2ef4cc1562261d0e48508a1c2b upstream.
+commit a8eb3de28e7a365690c61161e7a07a4fc7c60bbf upstream.
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+If device is readonly, make f2fs_convert_inline_inode()
+return EROFS instead of zero, otherwise it may trigger
+panic during writeback of inline inode's dirty page as
+below:
 
-cmos_nvram_read()/cmos_nvram_write() currently return the number of
-bytes read or written, fix to return 0 on success and -EIO incase number
-of bytes requested was not read or written.
+ f2fs_write_single_data_page+0xbb6/0x1e90 fs/f2fs/data.c:2888
+ f2fs_write_cache_pages fs/f2fs/data.c:3187 [inline]
+ __f2fs_write_data_pages fs/f2fs/data.c:3342 [inline]
+ f2fs_write_data_pages+0x1efe/0x3a90 fs/f2fs/data.c:3369
+ do_writepages+0x359/0x870 mm/page-writeback.c:2634
+ filemap_fdatawrite_wbc+0x125/0x180 mm/filemap.c:397
+ __filemap_fdatawrite_range mm/filemap.c:430 [inline]
+ file_write_and_wait_range+0x1aa/0x290 mm/filemap.c:788
+ f2fs_do_sync_file+0x68a/0x1ae0 fs/f2fs/file.c:276
+ generic_write_sync include/linux/fs.h:2806 [inline]
+ f2fs_file_write_iter+0x7bd/0x24e0 fs/f2fs/file.c:4977
+ call_write_iter include/linux/fs.h:2114 [inline]
+ new_sync_write fs/read_write.c:497 [inline]
+ vfs_write+0xa72/0xc90 fs/read_write.c:590
+ ksys_write+0x1a0/0x2c0 fs/read_write.c:643
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 8b5b7958fd1c ("rtc: cmos: use generic nvmem")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240612083635.1253039-1-joychakr@google.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reported-by: syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000d103ce06174d7ec3@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-cmos.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ fs/f2fs/inline.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -643,11 +643,10 @@ static int cmos_nvram_read(void *priv, u
- 			   size_t count)
- {
- 	unsigned char *buf = val;
--	int	retval;
+--- a/fs/f2fs/inline.c
++++ b/fs/f2fs/inline.c
+@@ -204,8 +204,10 @@ int f2fs_convert_inline_inode(struct ino
+ 	struct page *ipage, *page;
+ 	int err = 0;
  
- 	off += NVRAM_OFFSET;
- 	spin_lock_irq(&rtc_lock);
--	for (retval = 0; count; count--, off++, retval++) {
-+	for (; count; count--, off++) {
- 		if (off < 128)
- 			*buf++ = CMOS_READ(off);
- 		else if (can_bank2)
-@@ -657,7 +656,7 @@ static int cmos_nvram_read(void *priv, u
- 	}
- 	spin_unlock_irq(&rtc_lock);
+-	if (!f2fs_has_inline_data(inode) ||
+-			f2fs_hw_is_readonly(sbi) || f2fs_readonly(sbi->sb))
++	if (f2fs_hw_is_readonly(sbi) || f2fs_readonly(sbi->sb))
++		return -EROFS;
++
++	if (!f2fs_has_inline_data(inode))
+ 		return 0;
  
--	return retval;
-+	return count ? -EIO : 0;
- }
- 
- static int cmos_nvram_write(void *priv, unsigned int off, void *val,
-@@ -665,7 +664,6 @@ static int cmos_nvram_write(void *priv,
- {
- 	struct cmos_rtc	*cmos = priv;
- 	unsigned char	*buf = val;
--	int		retval;
- 
- 	/* NOTE:  on at least PCs and Ataris, the boot firmware uses a
- 	 * checksum on part of the NVRAM data.  That's currently ignored
-@@ -674,7 +672,7 @@ static int cmos_nvram_write(void *priv,
- 	 */
- 	off += NVRAM_OFFSET;
- 	spin_lock_irq(&rtc_lock);
--	for (retval = 0; count; count--, off++, retval++) {
-+	for (; count; count--, off++) {
- 		/* don't trash RTC registers */
- 		if (off == cmos->day_alrm
- 				|| off == cmos->mon_alrm
-@@ -689,7 +687,7 @@ static int cmos_nvram_write(void *priv,
- 	}
- 	spin_unlock_irq(&rtc_lock);
- 
--	return retval;
-+	return count ? -EIO : 0;
- }
- 
- /*----------------------------------------------------------------*/
+ 	err = f2fs_dquot_initialize(inode);
 
 
 
