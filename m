@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-63784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C894C941A9E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E42941A4E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83385281FE3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20DC31C235F7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348B518455D;
-	Tue, 30 Jul 2024 16:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABFB18454A;
+	Tue, 30 Jul 2024 16:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCJBEYoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0cIA9oh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E609878276;
-	Tue, 30 Jul 2024 16:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E291A619E;
+	Tue, 30 Jul 2024 16:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357944; cv=none; b=NuBrlqLzfgsvqVx1vRkNfwVOv8vHXJarjcggURhF950fOTVIMWkV5ftVwY9tXM3aAXNKQp5A13tqo1+fFsDc3245MMXrwdOg4Eks1K5B4kywISfaa+2LejKJfaWD5xr2yV+YtdtRqn9ZMgPMYNIBdjmXyKdtzoa1vTCfzRO+jbs=
+	t=1722357744; cv=none; b=jDIE/Nm0qOwZOuGqUm1C/gNlkYr4Y3qNSE4O5RarrGeLqt896jsTmIKyMWNP3Lk2apnfJxK0A3IVNwTBiueDSgifsLGh0l3dBNvzVRsd5X1h1qR4+CYKWfEX02Mto/SCpckCZHKOCBifiRTKNqPPrYxSs3fY77sXirl5BVh4vB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357944; c=relaxed/simple;
-	bh=K0m91PcOlPg48vrlUsoLq0NUHMr2DNPYfeQsdPd83xs=;
+	s=arc-20240116; t=1722357744; c=relaxed/simple;
+	bh=Lhy/Ufx4hqCZ3ifbj3nvLOGk2qKJl971yjXDS+1LdfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tnNaCHcpe73XCsF+6lF0YchZ4se0PUYgc4jA3j7NkndWHCNOi6GdqiTtSaK1eFJJXrDN4ILmE93j5mx+bEhmbJDJ7p1jdPAPsLV6B7hS+3bTaf/XTij2EgYRPqFK3VGGSaUBs+RozWiSF82Lagt3aWgGIX/QMcE86x5lMQDHBfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCJBEYoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680C6C4AF0F;
-	Tue, 30 Jul 2024 16:45:43 +0000 (UTC)
+	 MIME-Version; b=aHQNVp4jMdKc+U3XH+eOPrJ2/TL8oLieHA1/1Z5dKoW/97x8oQPe60WUkwYh8ruYaAOSP16DCm+AZWhW/qM+7B7Cepg9P1ubtJqXXYk+Y+Avbj14AEpif8vg8S+ORFzUdwPBIK4s2oTnJ/2J17z1FuOrcQkrnGZdUe37ENDzEqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0cIA9oh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C1BC32782;
+	Tue, 30 Jul 2024 16:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357943;
-	bh=K0m91PcOlPg48vrlUsoLq0NUHMr2DNPYfeQsdPd83xs=;
+	s=korg; t=1722357743;
+	bh=Lhy/Ufx4hqCZ3ifbj3nvLOGk2qKJl971yjXDS+1LdfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCJBEYoe0KEs5+QvrcDDUDoCaTvTWFkmLg9dp1m3DVOeoRnlvBufs5rrspu+AFzXO
-	 GWLFOGa4yAAEoC2AZfxq+beCAjE80SVGLvWS9qXbJasbPfXpNDQ0Js6zJIA4G6tzTZ
-	 F2HvYGvy2e+QPluJzImQ1/ID/zR4iXZcG/z0hNvM=
+	b=S0cIA9ohGhcCdTu39iQQhEIg7llCVf8nzEHQWQ4i3RRjURPT5rDqXUhkFR3P1LITN
+	 HKMZFNzFisOkJp/sXmQnnxBgfkOJJyVDAubGAgpSgeCsIF50oVapjT5c6LDrZ1lE70
+	 zczkKbjYWtaQJ1OCxYaudqyVw1rQX8hT4AYtkp0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Arnd Bergmann <arnd@arndb.de>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 283/809] drm/amdgpu: Fix snprintf usage in amdgpu_gfx_kiq_init_ring
-Date: Tue, 30 Jul 2024 17:42:39 +0200
-Message-ID: <20240730151735.766443575@linuxfoundation.org>
+Subject: [PATCH 6.10 284/809] drm/amd/display: dynamically allocate dml2_configuration_options structures
+Date: Tue, 30 Jul 2024 17:42:40 +0200
+Message-ID: <20240730151735.811175844@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -62,70 +60,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 0ea55445554209913a72eab86b60f5788776c4d6 ]
+[ Upstream commit 88c61827cedc14cd305d4266dc18ff0fdb3f8d4c ]
 
-This commit fixes a format truncation issue arosed by the snprintf
-function potentially writing more characters into the ring->name buffer
-than it can hold, in the amdgpu_gfx_kiq_init_ring function
+This structure is too large to fit on a stack, as shown by the
+newly introduced warnings from a recent code change:
 
-The issue occurred because the '%d' format specifier could write between
-1 and 10 bytes into a region of size between 0 and 8, depending on the
-values of xcc_id, ring->me, ring->pipe, and ring->queue. The snprintf
-function could output between 12 and 41 bytes into a destination of size
-16, leading to potential truncation.
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn32/dcn32_resource.c: In function 'dcn32_update_bw_bounding_box':
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn32/dcn32_resource.c:2019:1: error: the frame size of 1180 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn321/dcn321_resource.c: In function 'dcn321_update_bw_bounding_box':
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn321/dcn321_resource.c:1597:1: error: the frame size of 1180 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_state.c: In function 'dc_state_create':
+drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_state.c:219:1: error: the frame size of 1184 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
 
-To resolve this, the snprintf line was modified to use the '%hhu' format
-specifier for xcc_id, ring->me, ring->pipe, and ring->queue. The '%hhu'
-specifier is used for unsigned char variables and ensures that these
-values are printed as unsigned decimal integers.
+Instead of open-coding the assignment of a large structure to a stack
+variable, use an explicit kmemdup() in each case to move it off the stack.
 
-Fixes the below with gcc W=1:
-drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c: In function ‘amdgpu_gfx_kiq_init_ring’:
-drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c:332:61: warning: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size between 0 and 8 [-Wformat-truncation=]
-  332 |         snprintf(ring->name, sizeof(ring->name), "kiq_%d.%d.%d.%d",
-      |                                                             ^~
-drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c:332:50: note: directive argument in the range [0, 2147483647]
-  332 |         snprintf(ring->name, sizeof(ring->name), "kiq_%d.%d.%d.%d",
-      |                                                  ^~~~~~~~~~~~~~~~~
-drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c:332:9: note: ‘snprintf’ output between 12 and 41 bytes into a destination of size 16
-  332 |         snprintf(ring->name, sizeof(ring->name), "kiq_%d.%d.%d.%d",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  333 |                  xcc_id, ring->me, ring->pipe, ring->queue);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Fixes: 345a36c4f1ba ("drm/amdgpu: prefer snprintf over sprintf")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Fixes: e779f4587f61 ("drm/amd/display: Add handling for DC power mode")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../display/dc/resource/dcn32/dcn32_resource.c   | 16 +++++++++++-----
+ .../display/dc/resource/dcn321/dcn321_resource.c | 16 +++++++++++-----
+ 2 files changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-index 1d955652f3ba6..2cb8ab86efae8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -329,7 +329,7 @@ int amdgpu_gfx_kiq_init_ring(struct amdgpu_device *adev, int xcc_id)
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+index abd76345d1e43..957002967d691 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+@@ -2006,21 +2006,27 @@ void dcn32_calculate_wm_and_dlg(struct dc *dc, struct dc_state *context,
  
- 	ring->eop_gpu_addr = kiq->eop_gpu_addr;
- 	ring->no_scheduler = true;
--	snprintf(ring->name, sizeof(ring->name), "kiq_%d.%d.%d.%d",
-+	snprintf(ring->name, sizeof(ring->name), "kiq_%hhu.%hhu.%hhu.%hhu",
- 		 xcc_id, ring->me, ring->pipe, ring->queue);
- 	r = amdgpu_ring_init(adev, ring, 1024, irq, AMDGPU_CP_KIQ_IRQ_DRIVER0,
- 			     AMDGPU_RING_PRIO_DEFAULT, NULL);
+ static void dcn32_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params)
+ {
+-	struct dml2_configuration_options dml2_opt = dc->dml2_options;
++	struct dml2_configuration_options *dml2_opt;
++
++	dml2_opt = kmemdup(&dc->dml2_options, sizeof(dc->dml2_options), GFP_KERNEL);
++	if (!dml2_opt)
++		return;
+ 
+ 	DC_FP_START();
+ 
+ 	dcn32_update_bw_bounding_box_fpu(dc, bw_params);
+ 
+-	dml2_opt.use_clock_dc_limits = false;
++	dml2_opt->use_clock_dc_limits = false;
+ 	if (dc->debug.using_dml2 && dc->current_state && dc->current_state->bw_ctx.dml2)
+-		dml2_reinit(dc, &dml2_opt, &dc->current_state->bw_ctx.dml2);
++		dml2_reinit(dc, dml2_opt, &dc->current_state->bw_ctx.dml2);
+ 
+-	dml2_opt.use_clock_dc_limits = true;
++	dml2_opt->use_clock_dc_limits = true;
+ 	if (dc->debug.using_dml2 && dc->current_state && dc->current_state->bw_ctx.dml2_dc_power_source)
+-		dml2_reinit(dc, &dml2_opt, &dc->current_state->bw_ctx.dml2_dc_power_source);
++		dml2_reinit(dc, dml2_opt, &dc->current_state->bw_ctx.dml2_dc_power_source);
+ 
+ 	DC_FP_END();
++
++	kfree(dml2_opt);
+ }
+ 
+ static struct resource_funcs dcn32_res_pool_funcs = {
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
+index e4b360d89b3be..07ca6f58447d6 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
+@@ -1581,21 +1581,27 @@ static struct dc_cap_funcs cap_funcs = {
+ 
+ static void dcn321_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params)
+ {
+-	struct dml2_configuration_options dml2_opt = dc->dml2_options;
++	struct dml2_configuration_options *dml2_opt;
++
++	dml2_opt = kmemdup(&dc->dml2_options, sizeof(dc->dml2_options), GFP_KERNEL);
++	if (!dml2_opt)
++		return;
+ 
+ 	DC_FP_START();
+ 
+ 	dcn321_update_bw_bounding_box_fpu(dc, bw_params);
+ 
+-	dml2_opt.use_clock_dc_limits = false;
++	dml2_opt->use_clock_dc_limits = false;
+ 	if (dc->debug.using_dml2 && dc->current_state && dc->current_state->bw_ctx.dml2)
+-		dml2_reinit(dc, &dml2_opt, &dc->current_state->bw_ctx.dml2);
++		dml2_reinit(dc, dml2_opt, &dc->current_state->bw_ctx.dml2);
+ 
+-	dml2_opt.use_clock_dc_limits = true;
++	dml2_opt->use_clock_dc_limits = true;
+ 	if (dc->debug.using_dml2 && dc->current_state && dc->current_state->bw_ctx.dml2_dc_power_source)
+-		dml2_reinit(dc, &dml2_opt, &dc->current_state->bw_ctx.dml2_dc_power_source);
++		dml2_reinit(dc, dml2_opt, &dc->current_state->bw_ctx.dml2_dc_power_source);
+ 
+ 	DC_FP_END();
++
++	kfree(dml2_opt);
+ }
+ 
+ static struct resource_funcs dcn321_res_pool_funcs = {
 -- 
 2.43.0
 
