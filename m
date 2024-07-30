@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C23941B65
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DBE941D3C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4AEC1C2296A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8CC91C22A63
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67180189907;
-	Tue, 30 Jul 2024 16:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CC7188003;
+	Tue, 30 Jul 2024 17:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYBp7+Pv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sjo6EPpH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0891A6195;
-	Tue, 30 Jul 2024 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1668D1A76B7;
+	Tue, 30 Jul 2024 17:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358468; cv=none; b=DCtqHxcpZk+anrkMZ0bu/rVhKxtVFbCP+FZIsJgOduZkDQ3wE4cjiZ6JQGW6MCEu1gPo9lvlQcqhlWqbwZvrlNnNoui/MkyfrC+LbeP/0faR9M6r5aD+goioqbey4vsylWD89y3xN5bLjmx1a4I8wlHLvn7BQeXfrK5NB6vr2Xo=
+	t=1722359671; cv=none; b=HpLmi28ilthsWPUY8R7pWc094LzPgJRPboxJtaSjxDf3HuXTUF2XEQeudvnjbSAwVX7ugPOBKeWU8/Ulo9owF3ocu0mQh/5CIYGvT3DQgTF7X8Wm/hpl/uQH9J/omzD6ZlO5xLHgcIDkMnnX3Ni2EE6L7K2xSdS/kCYVT6Pf0aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358468; c=relaxed/simple;
-	bh=8nS4yOd/GEyt4TsYwRzHnyGWqqrTrrLKaFI7+fzYKXI=;
+	s=arc-20240116; t=1722359671; c=relaxed/simple;
+	bh=dDT7yyOaZEc8XUrYiJrlkYNrOuXzQPBICHrzZCO/LOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eVKkLCdjLQsnrY2Y908LFu9LD6D2y9PR4ml3ajeGmzAST6p5WcsS1nAYLVvlv3Z4EdZskdWJlILB0JPWBHu+QqtwKM0DbE05A4S/9+acfZd1lFhlKUt0px5A59jzFlF8Ns4/fsM+1yuiPhN5XEBZ1A61aaUP8QZv5Rk8/mHChQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYBp7+Pv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE36C32782;
-	Tue, 30 Jul 2024 16:54:27 +0000 (UTC)
+	 MIME-Version; b=kMI0S0C8Rq48KB3gredvV6PwzBzetW24pUFWq+Woki5ujWOvJ/+tePYIqWmzt14y8XFa2j/89Abm6FynRPKYVUeAEkCJGBstZ6EasmrpnqrG0ZK6ptqV5oiwI2zLZNC0wHP3fyLcYqp8lgProBO/bm0CQEN1kxpP/POdYg0vIZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sjo6EPpH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A61DC4AF0A;
+	Tue, 30 Jul 2024 17:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358467;
-	bh=8nS4yOd/GEyt4TsYwRzHnyGWqqrTrrLKaFI7+fzYKXI=;
+	s=korg; t=1722359670;
+	bh=dDT7yyOaZEc8XUrYiJrlkYNrOuXzQPBICHrzZCO/LOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYBp7+PvAl7KAhymVfFm2/M/9YmEaj877Z3J0xPbtPBOUnXcAAWwQ5Rq7igKzGaOu
-	 ulVvS6lI8SZBOw0xvZDeHj7VFrSUKl+TOthj4ANNskxY6SeJsJrfGMcgXqbj9jAmon
-	 qxvf/ZnAGW0/3i6fu2b0ym5chONtL5sOyOaIOsZM=
+	b=Sjo6EPpH5IsD/FSw8TRn5Oj4F7/UxzPzgCWh9s3th750cxnp0f+Kaj/zR0Ajq839H
+	 RBouRQERhiQbBolGxwoOOqKhQfXyD6tk/GAYVpZvhPOQvPV5RWMso26ty//NPERxFe
+	 lz8rcYdUXKB7GCuzTzgsVA/apTyitOpJTkwlgN58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Roger Quadros <rogerq@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 393/440] kdb: address -Wformat-security warnings
-Date: Tue, 30 Jul 2024 17:50:26 +0200
-Message-ID: <20240730151631.155264233@linuxfoundation.org>
+Subject: [PATCH 6.6 520/568] phy: cadence-torrent: Check return value on register read
+Date: Tue, 30 Jul 2024 17:50:27 +0200
+Message-ID: <20240730151700.481061913@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 70867efacf4370b6c7cdfc7a5b11300e9ef7de64 ]
+[ Upstream commit 967969cf594ed3c1678a9918d6e9bb2d1591cbe9 ]
 
-When -Wformat-security is not disabled, using a string pointer
-as a format causes a warning:
+cdns_torrent_dp_set_power_state() does not consider that ret might be
+overwritten. Add return value check of regmap_read_poll_timeout() after
+register read in cdns_torrent_dp_set_power_state().
 
-kernel/debug/kdb/kdb_io.c: In function 'kdb_read':
-kernel/debug/kdb/kdb_io.c:365:36: error: format not a string literal and no format arguments [-Werror=format-security]
-  365 |                         kdb_printf(kdb_prompt_str);
-      |                                    ^~~~~~~~~~~~~~
-kernel/debug/kdb/kdb_io.c: In function 'kdb_getstr':
-kernel/debug/kdb/kdb_io.c:456:20: error: format not a string literal and no format arguments [-Werror=format-security]
-  456 |         kdb_printf(kdb_prompt_str);
-      |                    ^~~~~~~~~~~~~~
-
-Use an explcit "%s" format instead.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240528121154.3662553-1-arnd@kernel.org
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Fixes: 5b16a790f18d ("phy: cadence-torrent: Reorder few functions to remove function declarations")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20240702032042.3993031-1-make24@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/debug/kdb/kdb_io.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/phy/cadence/phy-cadence-torrent.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
-index b1f79d5a5a60e..fbbe198b056d4 100644
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -357,7 +357,7 @@ static char *kdb_read(char *buffer, size_t bufsize)
- 			if (i >= dtab_count)
- 				kdb_printf("...");
- 			kdb_printf("\n");
--			kdb_printf(kdb_prompt_str);
-+			kdb_printf("%s",  kdb_prompt_str);
- 			kdb_printf("%s", buffer);
- 			if (cp != lastchar)
- 				kdb_position_cursor(kdb_prompt_str, buffer, cp);
-@@ -449,7 +449,7 @@ char *kdb_getstr(char *buffer, size_t bufsize, const char *prompt)
- {
- 	if (prompt && kdb_prompt_str != prompt)
- 		strscpy(kdb_prompt_str, prompt, CMD_BUFLEN);
--	kdb_printf(kdb_prompt_str);
-+	kdb_printf("%s", kdb_prompt_str);
- 	kdb_nextline = 1;	/* Prompt and input resets line number */
- 	return kdb_read(buffer, bufsize);
- }
+diff --git a/drivers/phy/cadence/phy-cadence-torrent.c b/drivers/phy/cadence/phy-cadence-torrent.c
+index a75c96385c57a..a23d7f9b7d10f 100644
+--- a/drivers/phy/cadence/phy-cadence-torrent.c
++++ b/drivers/phy/cadence/phy-cadence-torrent.c
+@@ -1154,6 +1154,9 @@ static int cdns_torrent_dp_set_power_state(struct cdns_torrent_phy *cdns_phy,
+ 	ret = regmap_read_poll_timeout(regmap, PHY_PMA_XCVR_POWER_STATE_ACK,
+ 				       read_val, (read_val & mask) == value, 0,
+ 				       POLL_TIMEOUT_US);
++	if (ret)
++		return ret;
++
+ 	cdns_torrent_dp_write(regmap, PHY_PMA_XCVR_POWER_STATE_REQ, 0x00000000);
+ 	ndelay(100);
+ 
 -- 
 2.43.0
 
