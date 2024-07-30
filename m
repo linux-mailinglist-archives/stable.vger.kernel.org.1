@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67ED8941B77
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4A19418A5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF731F236A7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3B94B29BF7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCC618990C;
-	Tue, 30 Jul 2024 16:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C52618950C;
+	Tue, 30 Jul 2024 16:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVUtkc/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8c8QiJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87A21A6195;
-	Tue, 30 Jul 2024 16:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EA1189503;
+	Tue, 30 Jul 2024 16:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358515; cv=none; b=Hxv4Z9EMf3hjGhkoXIw8Q5ru2TonFaNFpcJQQoisK6M1WdPCGhyPYysEYSBp3hVewlIfLbiauvFx5NoRuVBxO1TJfPfXjS0J6YuTvtNlQPpYPReNE4esCKK0KvMxZRdAJfY+JEJ4g1P17zoOItk+Q29pT6pGtG59x/U0eqjf7ws=
+	t=1722356398; cv=none; b=fku4wLhvwGzVxAkYhKQItEYG4QA8UEekM2vOpCBnD4+5ihYYVhwuoWQiXOLeMGO+0jMdxffdYNhmnbcPE/dQIv1wB4pgRGJevacopEolmMU0sU5zxpCvz8D/cibSNT9372NZBm/Z2AfUD5/0ECZJO5ssNXyZbDcDw8zqKcY3jaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358515; c=relaxed/simple;
-	bh=xMe9p67AR7S/q+0h/BuL1kkEd8CJYTQDkzUClpl9Lig=;
+	s=arc-20240116; t=1722356398; c=relaxed/simple;
+	bh=9bQIiTJTColinOsBOUqDTy88nBQutxRSJ6XEyouNB3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYjMBTBAth8nMW8o+LJts3WIEc8IxVqMHD0/7rgVK39dLv5SLY37DXdps4F+/42YILXrzE6asVqZ97C2qjhDNmwSoyHmq/bewOpYggjq402NbWDd66eJTvqRkbvK+dtUYZBHi/NJKcTdMUrQFrQ3hSE2Yfg0wP8MHNcr82P5/5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVUtkc/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241ACC32782;
-	Tue, 30 Jul 2024 16:55:14 +0000 (UTC)
+	 MIME-Version; b=SgubvFMwGO01XEITbx+3InDoyPKxoAyqmFPINpaE8fJ/yhBLcpuBMTh32SdfeaWFKXrbkvQP6BLlA6/kpgVO2qsv/oz/6HmsL4Spiwp53NK5uoOMEUZEmO2I9uQGy5mo5EdCfpxrXQbvkx9DCZK7psX/a0RMqlScyMYR8KKbkfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8c8QiJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E83AC32782;
+	Tue, 30 Jul 2024 16:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358515;
-	bh=xMe9p67AR7S/q+0h/BuL1kkEd8CJYTQDkzUClpl9Lig=;
+	s=korg; t=1722356398;
+	bh=9bQIiTJTColinOsBOUqDTy88nBQutxRSJ6XEyouNB3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVUtkc/ceEJDiAxDoW9wMILnrgyIqByQupsqTBf9aLRoeEYIQBIvpRqPG38Z04MWA
-	 ruxRT6vZYeCkK/vKPKpiyAWope46eEK5/tBeFV91bLH31njGCuMB8ToOch4bmIa7a8
-	 rKBi7MDu4Fly45YT32ElesJT5o4FNWD8YUptdPN8=
+	b=D8c8QiJRmi/8fC5Hafuqyq4OtCppu7xXeE8XLE9OZKmSsiMVSxXRc8AD+Ci6ej3Zu
+	 sCF6aC2I+Mz9+bCVKC+j9nZFyRboxSK4QcfKPX1olqAXPl5HbXz+LA/DjM6D79YMrM
+	 yWL/U1hJzoBfff/TrK3xMU8b/Nozo8F7IGyE9mtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Lee Jones <lee@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 366/809] mfd: rsmu: Split core code into separate module
+Subject: [PATCH 6.6 135/568] wifi: cfg80211: handle 2x996 RU allocation in cfg80211_calculate_bitrate_he()
 Date: Tue, 30 Jul 2024 17:44:02 +0200
-Message-ID: <20240730151739.110065231@linuxfoundation.org>
+Message-ID: <20240730151645.149303431@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit c879a8c39dd55e7fabdd8d13341f7bc5200db377 ]
+[ Upstream commit bcbd771cd5d68c0c52567556097d75f9fc4e7cd6 ]
 
-Linking a file into two modules can have unintended side-effects
-and produces a W=1 warning:
+Currently NL80211_RATE_INFO_HE_RU_ALLOC_2x996 is not handled in
+cfg80211_calculate_bitrate_he(), leading to below warning:
 
-scripts/Makefile.build:236: drivers/mfd/Makefile: rsmu_core.o is added to multiple modules: rsmu-i2c rsmu-spi
+kernel: invalid HE MCS: bw:6, ru:6
+kernel: WARNING: CPU: 0 PID: 2312 at net/wireless/util.c:1501 cfg80211_calculate_bitrate_he+0x22b/0x270 [cfg80211]
 
-Make this one a separate module instead.
+Fix it by handling 2x996 RU allocation in the same way as 160 MHz bandwidth.
 
-Fixes: a1867f85e06e ("mfd: Add Renesas Synchronization Management Unit (SMU) support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240529094856.1869543-1-arnd@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://msgid.link/20240606020653.33205-3-quic_bqiang@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/Makefile    | 6 ++----
- drivers/mfd/rsmu_core.c | 2 ++
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/wireless/util.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index c66f07edcd0e6..db1ba39de3b59 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -280,7 +280,5 @@ obj-$(CONFIG_MFD_INTEL_M10_BMC_PMCI)   += intel-m10-bmc-pmci.o
- obj-$(CONFIG_MFD_ATC260X)	+= atc260x-core.o
- obj-$(CONFIG_MFD_ATC260X_I2C)	+= atc260x-i2c.o
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 187e29a30c2af..7acd8d0db61a7 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1480,7 +1480,9 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
+ 	if (WARN_ON_ONCE(rate->nss < 1 || rate->nss > 8))
+ 		return 0;
  
--rsmu-i2c-objs			:= rsmu_core.o rsmu_i2c.o
--rsmu-spi-objs			:= rsmu_core.o rsmu_spi.o
--obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu-i2c.o
--obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu-spi.o
-+obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu_i2c.o rsmu_core.o
-+obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu_spi.o rsmu_core.o
-diff --git a/drivers/mfd/rsmu_core.c b/drivers/mfd/rsmu_core.c
-index 29437fd0bd5bf..fd04a6e5dfa31 100644
---- a/drivers/mfd/rsmu_core.c
-+++ b/drivers/mfd/rsmu_core.c
-@@ -78,11 +78,13 @@ int rsmu_core_init(struct rsmu_ddata *rsmu)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(rsmu_core_init);
- 
- void rsmu_core_exit(struct rsmu_ddata *rsmu)
- {
- 	mutex_destroy(&rsmu->lock);
- }
-+EXPORT_SYMBOL_GPL(rsmu_core_exit);
- 
- MODULE_DESCRIPTION("Renesas SMU core driver");
- MODULE_LICENSE("GPL");
+-	if (rate->bw == RATE_INFO_BW_160)
++	if (rate->bw == RATE_INFO_BW_160 ||
++	    (rate->bw == RATE_INFO_BW_HE_RU &&
++	     rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_2x996))
+ 		result = rates_160M[rate->he_gi];
+ 	else if (rate->bw == RATE_INFO_BW_80 ||
+ 		 (rate->bw == RATE_INFO_BW_HE_RU &&
 -- 
 2.43.0
 
