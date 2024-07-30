@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-63573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D90941994
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8832941E0C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 404E6281853
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:34:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 628F828778F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD71F146D6B;
-	Tue, 30 Jul 2024 16:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D754C1A76BB;
+	Tue, 30 Jul 2024 17:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKaDyK9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5E+0he9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE2D8BE8;
-	Tue, 30 Jul 2024 16:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E961A76A1;
+	Tue, 30 Jul 2024 17:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357262; cv=none; b=a9bqINGWk6wwCRoK3bbGVTKl7oI633bi0ySnmYQ2Ip457Hz2DT7NJnVVIe+tF5uuJqApvNh49ctnK1HaLyleWjPF4VhR9Q1k8+0QHAjIfr5Y1MhQtdswxmuK/s6hNMn5UX+sEy7qho/R4HRbr9rOGgYYYSGfpj/P1UeBTO3WgdU=
+	t=1722360318; cv=none; b=CTswYIF7NsxCbJkj0pI5p46j3zBsTp13ESsVFyCXV2rqqpROG9O4sboHun1ztnJyYhUegN6wUzQvG64N8pWaiDsRuS3lUu6QmtzvTVO6XNK/c6ss2UF9qTYx2u3VnSOHA6PWheUPURKvk+SgzC74Faf18/X2ZK5orI3apv5X8pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357262; c=relaxed/simple;
-	bh=pfB4PnvCEIPb7jsNpNi2o6n5gU6T+3/GL+xAsfM5Ua0=;
+	s=arc-20240116; t=1722360318; c=relaxed/simple;
+	bh=1m6g02FkhlN8NZiGu+MVXIKUMXsz9EHRPKQN/ZrFVuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXNulgaWZ0vxoy1xeR2i3P+wCf78B9YJtwKVi7hcy0bl1Jn40T1r78g14vS7TXWvGyvvLuA0ovdYHWxsib98PxEXN/uKdcixjSQKHi6P5lxO4UWRqB0ghdhPQg50iEI5jQAwKMinJnE/4YJzOW6ESxV/Tmet0FrAHX7DaH0sKEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKaDyK9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9A7C32782;
-	Tue, 30 Jul 2024 16:34:21 +0000 (UTC)
+	 MIME-Version; b=FqlPy/V1B1sPfoK8QDw4RR6BI43TuLUYmNJI56udaWk7+CH5V8rGoUEPv/dFfXyI9w2FOHmfuP4b5YSVZq4rAYMnFml1G+NW+Th8+iX3RWvGBlcKX5225z8ZGyCfyKYIl1ZLeQJbLwcUjaLu1LFyTDaTO8evG3mvvoH0KrIkOp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5E+0he9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B05DC4AF0E;
+	Tue, 30 Jul 2024 17:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357262;
-	bh=pfB4PnvCEIPb7jsNpNi2o6n5gU6T+3/GL+xAsfM5Ua0=;
+	s=korg; t=1722360318;
+	bh=1m6g02FkhlN8NZiGu+MVXIKUMXsz9EHRPKQN/ZrFVuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKaDyK9gwuUT2xd5YxhNqzTz21xp0hN0hVyAkI4FuKz60C+2vWCrtoHobeEP+4sOE
-	 TIIhhOn4nESFrugU7UGc8AwiJ0+TukNT2TD0qCLkqzs4ruz0fmlhQpJR+eyiQwuoiv
-	 mleMkpW0IOMZYC8chI87DI7ueyF8YMKDGG9iZ5oU=
+	b=J5E+0he94tJA8fIZNT6YsmnNRlsmlcKQkKM3WnKoVtrZTj0438qpf99fJC1wPpY73
+	 1zLEXvF/mVdCN6Xkrk2Y23oQdjSQSniUnKP9C5bvWRSQ7DoI7W8rpMnv8sampc+A5C
+	 mG9zlxtQDYeqJXgD7S1vTRBaD05TeMabo5QB+EMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 274/440] x86/efistub: Avoid returning EFI_SUCCESS on error
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 631/809] ALSA: usb-audio: Add a quirk for Sonix HD USB Camera
 Date: Tue, 30 Jul 2024 17:48:27 +0200
-Message-ID: <20240730151626.536410547@linuxfoundation.org>
+Message-ID: <20240730151749.765211266@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-commit fb318ca0a522295edd6d796fb987e99ec41f0ee5 upstream.
+commit 21451dfd853e7d8e6e3fbd7ef1fbdb2f2ead12f5 upstream.
 
-The fail label is only used in a situation where the previous EFI API
-call succeeded, and so status will be set to EFI_SUCCESS. Fix this, by
-dropping the goto entirely, and call efi_exit() with the correct error
-code.
+Sonix HD USB Camera does not support reading the sample rate which leads
+to many lines of "cannot get freq at ep 0x84".
+This patch adds the USB ID to quirks.c and avoids those error messages.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+(snip)
+[1.789698] usb 3-3: new high-speed USB device number 2 using xhci_hcd
+[1.984121] usb 3-3: New USB device found, idVendor=0c45, idProduct=6340, bcdDevice= 0.00
+[1.984124] usb 3-3: New USB device strings: Mfr=2, Product=1, SerialNumber=0
+[1.984127] usb 3-3: Product: USB 2.0 Camera
+[1.984128] usb 3-3: Manufacturer: Sonix Technology Co., Ltd.
+[5.440957] usb 3-3: 3:1: cannot get freq at ep 0x84
+[12.130679] usb 3-3: 3:1: cannot get freq at ep 0x84
+[12.175065] usb 3-3: 3:1: cannot get freq at ep 0x84
+
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240722084822.31620-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -467,16 +467,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
- 	if (!cmdline_ptr)
--		goto fail;
-+		efi_exit(handle, EFI_OUT_OF_RESOURCES);
- 
- 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
- 			  &boot_params.ext_cmd_line_ptr);
- 
- 	efi_stub_entry(handle, sys_table_arg, &boot_params);
- 	/* not reached */
--
--fail:
--	efi_exit(handle, status);
- }
- 
- static void add_e820ext(struct boot_params *params,
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2125,6 +2125,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x0b0e, 0x0349, /* Jabra 550a */
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
++	DEVICE_FLG(0x0c45, 0x6340, /* Sonix HD USB Camera */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x0ecb, 0x205c, /* JBL Quantum610 Wireless */
+ 		   QUIRK_FLAG_FIXED_RATE),
+ 	DEVICE_FLG(0x0ecb, 0x2069, /* JBL Quantum810 Wireless */
 
 
 
