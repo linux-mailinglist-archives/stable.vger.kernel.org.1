@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-64256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8946D941D09
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D179417AD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAF7B1C23598
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC01E1C229D8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A6E1A76D0;
-	Tue, 30 Jul 2024 17:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18091917D1;
+	Tue, 30 Jul 2024 16:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sciZCw30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P64kVqlG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780C11A76CE;
-	Tue, 30 Jul 2024 17:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE4E1917CD;
+	Tue, 30 Jul 2024 16:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359515; cv=none; b=oAvruNIIsNY8WiM4lPV3s7WhTjBMAVbdZib9bxbzvVBrnxsdOfarUpZo0KILJ2QsvgVh4cVb6dH5W4JRPsFuraTWVliE32E14pS69t6Erw3f0Nifo793woor6CuFQsAkDePKDmZYpszRA5D3FrA4V1416i43ocqOChbJumk0qRE=
+	t=1722355869; cv=none; b=PQ3uUqDNToztFxOl5TBSdWV1DxqXQrXuo4gZ6l7W16MoPGlSmVK3FIvcyz7lDwRf46GGIOhhFA+p8T1uG+mu6q60KGQwSiFB2yTtnybNxDcJhjiUJ+K78k+AnixdsrSzOBxp/tjGy7GFrHxD/ZErSB1V4Ro0y0ng026T+op6vHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359515; c=relaxed/simple;
-	bh=6Q4xdb1roaPVOMnubtvYfmjy6KSHJLNUEGrnNNCYK/E=;
+	s=arc-20240116; t=1722355869; c=relaxed/simple;
+	bh=MAgn2A4UpSwM894RfHTd0Icc9QjoNqdGi1HGzmTR3Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pL3n7sPxzrYOVBsYjWDrNbjIghIf+3IB9KxTjkqUpHlqxTMQu1kc0DlGVHGisVv37frQQkmREDo4zRBl60nRgB6e7KYO8h63xHQo9EZIJE/ECG9B1pch4RouuhXcLZQl/sGhatLGPdVobQQuLr1s2b4pmuPTQ7jwBI9UeqguRcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sciZCw30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E16C32782;
-	Tue, 30 Jul 2024 17:11:54 +0000 (UTC)
+	 MIME-Version; b=BbindLOsr/kxWibQ39TLWfGSS60gQ6+gArt8zenvrbu/vchCkpOa1Q4ml2hh+UQSBA+8X0yUIS5St1nNNlnAHFFWtbRxBH+iiSFKRD7UzafFBuseoGWJDoFR5ajVqWOtOgMqLgmhTE4R4pCV2558fHfEcLwWwwu7Yk4k2CJOzmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P64kVqlG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62BFC32782;
+	Tue, 30 Jul 2024 16:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359515;
-	bh=6Q4xdb1roaPVOMnubtvYfmjy6KSHJLNUEGrnNNCYK/E=;
+	s=korg; t=1722355869;
+	bh=MAgn2A4UpSwM894RfHTd0Icc9QjoNqdGi1HGzmTR3Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sciZCw30fpw420tdJea4zpzn5UXmwhHxOFdJAStPbNgNRxKB/Iu4LB3j+xK+W2SI8
-	 gNQIG9TbCGnLNdYiOBiz5JuO4R+2LWIqXzhi/t38kJ7j+DeQ3NnP4TJ1p4W2sPkEu6
-	 2HJ6bkGL2gV4hrWxLoBUZ5l1Jtw13JtgOSKPap5k=
+	b=P64kVqlGSXu6ERixq4yx0UDg9zlHmZNGpy3ncEEhVIPzI4IL1v8E9phOpcu+N2g6Q
+	 FRw9aTX9tZEfUhPX0Zyc9rDQcswwxxUHWQf2jQb1ED5A302gQ8thCGWrYDtXZ4LtBm
+	 +iRRfwS62jaysfJQbJ5Y3yhytRE/ZKgaMhk3HTC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Gjorgji Rosikopulos <quic_grosikop@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 495/809] fs/ntfs3: Replace inode_trylock with inode_lock
-Date: Tue, 30 Jul 2024 17:46:11 +0200
-Message-ID: <20240730151744.288876134@linuxfoundation.org>
+Subject: [PATCH 6.1 139/440] media: i2c: Fix imx412 exposure control
+Date: Tue, 30 Jul 2024 17:46:12 +0200
+Message-ID: <20240730151621.310954107@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 69505fe98f198ee813898cbcaf6770949636430b ]
+[ Upstream commit a1956bf53a2774014ee1768b484af2c38c633a25 ]
 
-The issue was detected due to xfstest 465 failing.
+Currently we have the following algorithm to calculate what value should be
+written to the exposure control of imx412.
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+lpfr = imx412->vblank + imx412->cur_mode->height;
+shutter = lpfr - exposure;
+
+The 'shutter' value is given to IMX412_REG_EXPOSURE_CIT however, the above
+algorithm will result in the value given to IMX412_REG_EXPOSURE_CIT
+decreasing as the requested exposure value from user-space goes up.
+
+e.g.
+[ 2255.713989] imx412 20-001a: Received exp 1608, analog gain 0
+[ 2255.714002] imx412 20-001a: Set exp 1608, analog gain 0, shutter 1938, lpfr 3546
+[ 2256.302770] imx412 20-001a: Received exp 2586, analog gain 100
+[ 2256.302800] imx412 20-001a: Set exp 2586, analog gain 100, shutter 960, lpfr 3546
+[ 2256.753755] imx412 20-001a: Received exp 3524, analog gain 110
+[ 2256.753772] imx412 20-001a: Set exp 3524, analog gain 110, shutter 22, lpfr 3546
+
+This behaviour results in the image having less exposure as the requested
+exposure value from user-space increases.
+
+Other sensor drivers such as ov5675, imx218, hid556 and others take the
+requested exposure value and use the value directly.
+
+Take the example of the above cited sensor drivers and directly apply the
+requested exposure value from user-space. The 'lpfr' variable still
+functions as before but the 'shutter' variable can be dispensed with as a
+result.
+
+Once done a similar run of the test application requesting higher exposure
+looks like this, with 'exp' written directly to the sensor.
+
+[  133.207884] imx412 20-001a: Received exp 1608, analog gain 0
+[  133.207899] imx412 20-001a: Set exp 1608, analog gain 0, lpfr 3546
+[  133.905309] imx412 20-001a: Received exp 2844, analog gain 100
+[  133.905344] imx412 20-001a: Set exp 2844, analog gain 100, lpfr 3546
+[  134.241705] imx412 20-001a: Received exp 3524, analog gain 110
+[  134.241775] imx412 20-001a: Set exp 3524, analog gain 110, lpfr 3546
+
+The result is then setting the sensor exposure to lower values results in
+darker, less exposure images and vice versa with higher exposure values.
+
+Fixes: 9214e86c0cc1 ("media: i2c: Add imx412 camera sensor driver")
+Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5165-rb5/imx577
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: Gjorgji Rosikopulos <quic_grosikop@quicinc.com>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/media/i2c/imx412.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index 2f903b6ce1570..9ae202901f3c0 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -299,10 +299,7 @@ static int ntfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- 		}
+diff --git a/drivers/media/i2c/imx412.c b/drivers/media/i2c/imx412.c
+index 7f6d29e0e7c40..77fa6253ba3e3 100644
+--- a/drivers/media/i2c/imx412.c
++++ b/drivers/media/i2c/imx412.c
+@@ -544,14 +544,13 @@ static int imx412_update_controls(struct imx412 *imx412,
+  */
+ static int imx412_update_exp_gain(struct imx412 *imx412, u32 exposure, u32 gain)
+ {
+-	u32 lpfr, shutter;
++	u32 lpfr;
+ 	int ret;
  
- 		if (ni->i_valid < to) {
--			if (!inode_trylock(inode)) {
--				err = -EAGAIN;
--				goto out;
--			}
-+			inode_lock(inode);
- 			err = ntfs_extend_initialized_size(file, ni,
- 							   ni->i_valid, to);
- 			inode_unlock(inode);
+ 	lpfr = imx412->vblank + imx412->cur_mode->height;
+-	shutter = lpfr - exposure;
+ 
+-	dev_dbg(imx412->dev, "Set exp %u, analog gain %u, shutter %u, lpfr %u",
+-		exposure, gain, shutter, lpfr);
++	dev_dbg(imx412->dev, "Set exp %u, analog gain %u, lpfr %u",
++		exposure, gain, lpfr);
+ 
+ 	ret = imx412_write_reg(imx412, IMX412_REG_HOLD, 1, 1);
+ 	if (ret)
+@@ -561,7 +560,7 @@ static int imx412_update_exp_gain(struct imx412 *imx412, u32 exposure, u32 gain)
+ 	if (ret)
+ 		goto error_release_group_hold;
+ 
+-	ret = imx412_write_reg(imx412, IMX412_REG_EXPOSURE_CIT, 2, shutter);
++	ret = imx412_write_reg(imx412, IMX412_REG_EXPOSURE_CIT, 2, exposure);
+ 	if (ret)
+ 		goto error_release_group_hold;
+ 
 -- 
 2.43.0
 
