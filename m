@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-64249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B2E941D04
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6D0941B70
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1509A28AB08
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42247B24F7F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4E41A76BB;
-	Tue, 30 Jul 2024 17:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75282188018;
+	Tue, 30 Jul 2024 16:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq4Vav0G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eZ8EA2r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4CD1A76B9;
-	Tue, 30 Jul 2024 17:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339A018455B;
+	Tue, 30 Jul 2024 16:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359492; cv=none; b=nujRvwbrj2Vfh3t8Uh2qeKhMZAqEujpTk2ezoQ0AlS/Akvu5Nh671/6rAcAyvuZS5mzpe4lYTK11+muuWpHM99vN74FFEhCov6g8Xc7Tsv63Ezkc2+qPGLigSyqGekD8p6M0p2Gtc6uG9i58tJ1c1ZiHqYlp4u7fJ1C5aLV4LTw=
+	t=1722358204; cv=none; b=pHjed5f8UhZNtUrklhTvshXDiDb1sJ/KIcFV1QxXvL2cXYj5SKzKl/pgsbXcU3AN0ka7oEtNRtBzKdNT69qAK2NKG7TTew471dEMz1ET/VKw1XehW0lmGXogbVhTM4TWuXgXMzI95Aal+kDrm4aSKL51Y64oWqHvFzNHVDj9c7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359492; c=relaxed/simple;
-	bh=DBgul93pPPSRlhkqWCxkiMC/gO3kcJPEERaCtI4UdJY=;
+	s=arc-20240116; t=1722358204; c=relaxed/simple;
+	bh=JUIq2yYW7FZ9qA7+KoD0H55blhchXwQqBPj8t9haAco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMyD6Xg4kCh+7WTT/qVxmigz4d5ho7cyX4PysZRh6rDtqFQl4snJtJGjUrXRy2193uTvY4StfwxzDgUas8CYnbv6gz/3aMbpDv+91KSQDVn0sysPrmldC6FmyeXJFTwqZOxFbqCZMvN2e6XactVg1B46sPKyNSwaSkq7myZxYZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq4Vav0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B451DC32782;
-	Tue, 30 Jul 2024 17:11:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I/C1vIGQHnA75FiVNO8IXMLBiJ5pSxOiJr+KzVzcPcE+xq1PnZ9u9VVb6Sb3LNognzJQm5/JgfW/SuPuYb+KyG0Q836cIjpztp6Q3EyhdmEXBVfli6+cRUcU//+VZMPFIR8OAoRcrG3oWW4nG/TAhbF0xPL1dTLltlfLOQOE3ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eZ8EA2r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE699C32782;
+	Tue, 30 Jul 2024 16:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359492;
-	bh=DBgul93pPPSRlhkqWCxkiMC/gO3kcJPEERaCtI4UdJY=;
+	s=korg; t=1722358204;
+	bh=JUIq2yYW7FZ9qA7+KoD0H55blhchXwQqBPj8t9haAco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cq4Vav0GD5rAuhJvFeu0X6pTocsHOu/618YMIOAzr3lyi4y7DcmPZEDNAWCjC+XQC
-	 OcwqPZXvbo7lYmMs2vcdjFCzwhaJShhMD4mJ29gEYGNLfE0lvbVNnnFbllttaoVOmf
-	 0L9E/74/7JpvuJ6xVRP9Gfsw0DR/Ihw5uDtpFReU=
+	b=0eZ8EA2rivNIvxGKMqZLx6pgTD+ApaQxnPilULY1Nwp5aUq2a9k73h6U377O5DCT0
+	 M4jBHJsf8Enftvc9YpNAix3S0dlsdY53ncpSyIuGgUoxQjFuzMxUdbC5vUyAJKaEzV
+	 Znp9pwQ/qjGvsN+zCweeh97RjajEt44qCp+H/Q1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.6 492/568] remoteproc: imx_rproc: Fix refcount mistake in imx_rproc_addr_init
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.1 366/440] selftests/sigaltstack: Fix ppc64 GCC build
 Date: Tue, 30 Jul 2024 17:49:59 +0200
-Message-ID: <20240730151659.259355549@linuxfoundation.org>
+Message-ID: <20240730151630.112633499@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit dce68a49be26abf52712e0ee452a45fa01ab4624 upstream.
+commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
 
-In imx_rproc_addr_init() strcmp() is performed over the node after the
-of_node_put() is performed over it.
-Fix this error by moving of_node_put() calls.
+Building the sigaltstack test with GCC on 64-bit powerpc errors with:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
+  In file included from sas.c:23:
+  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
+     22 | #error "implement current_stack_pointer equivalent"
+        |  ^~~~~
+  sas.c: In function ‘my_usr1’:
+  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
+     50 |         if (sp < (unsigned long)sstack ||
+        |             ^~
 
-Fixes: 5e4c1243071d ("remoteproc: imx_rproc: support remote cores booted before Linux Kernel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240612131714.12907-1-amishin@t-argos.ru
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+This happens because GCC doesn't define __ppc__ for 64-bit builds, only
+32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
+is defined by clang and GCC for 64-bit and 32-bit builds.
+
+Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
+Cc: stable@vger.kernel.org # v6.3+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/imx_rproc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -737,25 +737,29 @@ static int imx_rproc_addr_init(struct im
- 			continue;
- 		}
- 		err = of_address_to_resource(node, 0, &res);
--		of_node_put(node);
- 		if (err) {
- 			dev_err(dev, "unable to resolve memory region\n");
-+			of_node_put(node);
- 			return err;
- 		}
- 
--		if (b >= IMX_RPROC_MEM_MAX)
-+		if (b >= IMX_RPROC_MEM_MAX) {
-+			of_node_put(node);
- 			break;
-+		}
- 
- 		/* Not use resource version, because we might share region */
- 		priv->mem[b].cpu_addr = devm_ioremap_wc(&pdev->dev, res.start, resource_size(&res));
- 		if (!priv->mem[b].cpu_addr) {
- 			dev_err(dev, "failed to remap %pr\n", &res);
-+			of_node_put(node);
- 			return -ENOMEM;
- 		}
- 		priv->mem[b].sys_addr = res.start;
- 		priv->mem[b].size = resource_size(&res);
- 		if (!strcmp(node->name, "rsc-table"))
- 			priv->rsc_table = priv->mem[b].cpu_addr;
-+		of_node_put(node);
- 		b++;
- 	}
- 
+--- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
++++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
+@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
+ register unsigned long sp asm("esp");
+ #elif __loongarch64
+ register unsigned long sp asm("$sp");
+-#elif __ppc__
++#elif __powerpc__
+ register unsigned long sp asm("r1");
+ #elif __s390x__
+ register unsigned long sp asm("%15");
 
 
 
