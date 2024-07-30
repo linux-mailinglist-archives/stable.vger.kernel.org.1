@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-64325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFED941D56
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC4D941D57
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98B0728B428
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 807AB1C22559
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0C21A76C9;
-	Tue, 30 Jul 2024 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F401A76BB;
+	Tue, 30 Jul 2024 17:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsMOSpQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIS57b5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6581A76C1;
-	Tue, 30 Jul 2024 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C3A1A76A2;
+	Tue, 30 Jul 2024 17:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359746; cv=none; b=sgLYT2fP/eGcWLvPLmKxZURUazB2lXtroyNEMV2TttxvtLyHH91BDJZF5RIuD2KUWTYTPaNBpMFMnOeDuPscL4UAvxxrDB+b3D3aft9NUnFnh/Tf/bpOTnM6osdY3VrG0lVXeR1Q58aWfbYrz8l5eSdydlumPiWj3ykG1ApAD9c=
+	t=1722359752; cv=none; b=N8I7j6dDWJucZdcAfk6eviN6wkTG/iHBJkdAQGCx9gvStvPBNBsmT5Kajwzis3Peju0VY2fYOo6ZFiw3Zhq0aHO5jSDDatJfJq0cD/jofElQzOLSDwzTQ6SyyqTG/ZWNCQItBnCV1RN/APX13aSMz2BD6x9QT7TyXE1bPyF5CL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359746; c=relaxed/simple;
-	bh=Kzt2gxQ1HtMJKBRDS8pH1ajUMKFxXG2ZJb5R0hqVFEg=;
+	s=arc-20240116; t=1722359752; c=relaxed/simple;
+	bh=OWuTQSqFyaRpJpgswl+gJYF6AI9Lbzf04ajOYPNU5v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O5pqWKEqdVSUX6EzH/DaxPJpT1rxiz2UJQkA8o12i1aCy5BTGki4cNn69PQXhj5xt1BhH3InKYFPr/SaAhkBtFQn1ewZs9KFeL8Ytou/rji2iNmuzoiIhpVP+Q3Wn8tDtVY0b7mqs5I4LszRLsHjpcqEp+oxvtK7Eg1///CqmBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsMOSpQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15043C4AF0C;
-	Tue, 30 Jul 2024 17:15:45 +0000 (UTC)
+	 MIME-Version; b=uilxE/VAyhilkCygGOaPqMbL4BQ5gDcyRi5l48dt41ESJ26A8u8l1u1jx/X3SKmmE6UnQzHDSiJIxE70fw1xZbhy05hyeZKO4i+aUJJYJWZZJ9DjX4y0SvV4QG7f3JdnA36sSqO1R1QE+iY7B/F/Y6+IjQVTxo9llg6JsP6eqQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIS57b5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327BCC4AF0C;
+	Tue, 30 Jul 2024 17:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359746;
-	bh=Kzt2gxQ1HtMJKBRDS8pH1ajUMKFxXG2ZJb5R0hqVFEg=;
+	s=korg; t=1722359752;
+	bh=OWuTQSqFyaRpJpgswl+gJYF6AI9Lbzf04ajOYPNU5v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RsMOSpQBE+rUGymtVaDX2Fz7soCGzkynnqlgRwBvg7IoMoTDsTf5IOStShG7vAuBl
-	 fIRS15tGSDDBowdOdAx9uP33PmHLthit8Rik6GXXytCiw7wZnHm7m+PZJUcj3QJtAG
-	 AE1RLKjuPMgVfnhHYWTVVe4fwwa46dBqtb8TLNd4=
+	b=JIS57b5BXlr2PNJdrrl4nsxlNHC6HuFMUvOaTCI4GlL15IQi94W4jeopeQKdjut+A
+	 guIgKyI9ATDvRCAOBHCJUhq4xtL5E6eZXXSyZbc90NXPjgbmqSHiJ9gZQJuiv/HR45
+	 An4nTpIl8NzT8Rl84dw3dvJhcJ+Vp08JjTYBFmW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Hari Nagalla <hnagalla@ti.com>,
 	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 527/809] remoteproc: mediatek: Dont attempt to remap l1tcm memory if missing
-Date: Tue, 30 Jul 2024 17:46:43 +0200
-Message-ID: <20240730151745.554418814@linuxfoundation.org>
+Subject: [PATCH 6.10 528/809] remoteproc: k3-r5: Fix IPC-only mode detection
+Date: Tue, 30 Jul 2024 17:46:44 +0200
+Message-ID: <20240730151745.593152873@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -62,63 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Richard Genoud <richard.genoud@bootlin.com>
 
-[ Upstream commit 67ca3f98070ffdf308b91e08a477fcb1e9684ae8 ]
+[ Upstream commit a8631f6d6344d976096b1efafdb2fbb3111bd790 ]
 
-The current code doesn't check whether platform_get_resource_byname()
-succeeded to get the l1tcm memory, which is optional, before attempting
-to map it. This results in the following error message when it is
-missing:
+ret variable was used to test reset status, get from
+reset_control_status() call. But this variable was overwritten by
+ti_sci_proc_get_status() a few lines bellow.
+And as ti_sci_proc_get_status() returns 0 or a negative value (in this
+latter case, followed by a return), the expression !ret was always true,
 
-  mtk-scp 10500000.scp: error -EINVAL: invalid resource (null)
+Clearly, this was not what was intended:
+In the comment above it's said that "requires both local and module
+resets to be deasserted"; if reset_control_status() returns 0 it means
+that the reset line is deasserted.
+So, it's pretty clear that the return value of reset_control_status()
+was intended to be used instead of ti_sci_proc_get_status() return
+value.
 
-Add a check so that the remapping is only attempted if the memory region
-exists. This also allows to simplify the logic handling failure to
-remap, since a failure then is always a failure.
+This could lead in an incorrect IPC-only mode detection if reset line is
+asserted (so reset_control_status() return > 0) and c_state != 0 and
+halted == 0.
+In this case, the old code would have detected an IPC-only mode instead
+of a mismatched mode.
 
-Fixes: ca23ecfdbd44 ("remoteproc/mediatek: support L1TCM")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240627-scp-invalid-resource-l1tcm-v1-1-7d221e6c495a@collabora.com
+Fixes: 1168af40b1ad ("remoteproc: k3-r5: Add support for IPC-only mode for all R5Fs")
+Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
+Reviewed-by: Hari Nagalla <hnagalla@ti.com>
+Link: https://lore.kernel.org/r/20240621150058.319524-2-richard.genoud@bootlin.com
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/mtk_scp.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-index b8498772dba17..3958f7b02d701 100644
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -1344,14 +1344,12 @@ static int scp_probe(struct platform_device *pdev)
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index 50e486bcfa103..39a47540c5900 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -1144,6 +1144,7 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
+ 	u32 atcm_enable, btcm_enable, loczrama;
+ 	struct k3_r5_core *core0;
+ 	enum cluster_mode mode = cluster->mode;
++	int reset_ctrl_status;
+ 	int ret;
  
- 	/* l1tcm is an optional memory region */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "l1tcm");
--	scp_cluster->l1tcm_base = devm_ioremap_resource(dev, res);
--	if (IS_ERR(scp_cluster->l1tcm_base)) {
--		ret = PTR_ERR(scp_cluster->l1tcm_base);
--		if (ret != -EINVAL)
--			return dev_err_probe(dev, ret, "Failed to map l1tcm memory\n");
-+	if (res) {
-+		scp_cluster->l1tcm_base = devm_ioremap_resource(dev, res);
-+		if (IS_ERR(scp_cluster->l1tcm_base))
-+			return dev_err_probe(dev, PTR_ERR(scp_cluster->l1tcm_base),
-+					     "Failed to map l1tcm memory\n");
- 
--		scp_cluster->l1tcm_base = NULL;
--	} else {
- 		scp_cluster->l1tcm_size = resource_size(res);
- 		scp_cluster->l1tcm_phys = res->start;
+ 	core0 = list_first_entry(&cluster->cores, struct k3_r5_core, elem);
+@@ -1160,11 +1161,11 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
+ 			 r_state, c_state);
  	}
+ 
+-	ret = reset_control_status(core->reset);
+-	if (ret < 0) {
++	reset_ctrl_status = reset_control_status(core->reset);
++	if (reset_ctrl_status < 0) {
+ 		dev_err(cdev, "failed to get initial local reset status, ret = %d\n",
+-			ret);
+-		return ret;
++			reset_ctrl_status);
++		return reset_ctrl_status;
+ 	}
+ 
+ 	/*
+@@ -1199,7 +1200,7 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
+ 	 * irrelevant if module reset is asserted (POR value has local reset
+ 	 * deasserted), and is deemed as remoteproc mode
+ 	 */
+-	if (c_state && !ret && !halted) {
++	if (c_state && !reset_ctrl_status && !halted) {
+ 		dev_info(cdev, "configured R5F for IPC-only mode\n");
+ 		kproc->rproc->state = RPROC_DETACHED;
+ 		ret = 1;
+@@ -1217,7 +1218,7 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
+ 		ret = 0;
+ 	} else {
+ 		dev_err(cdev, "mismatched mode: local_reset = %s, module_reset = %s, core_state = %s\n",
+-			!ret ? "deasserted" : "asserted",
++			!reset_ctrl_status ? "deasserted" : "asserted",
+ 			c_state ? "deasserted" : "asserted",
+ 			halted ? "halted" : "unhalted");
+ 		ret = -EINVAL;
 -- 
 2.43.0
 
