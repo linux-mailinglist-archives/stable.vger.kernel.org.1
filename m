@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2151F941A48
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400B3941E41
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C14011F21EE7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDC1C285814
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4C418454A;
-	Tue, 30 Jul 2024 16:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29581A76DE;
+	Tue, 30 Jul 2024 17:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxa2uuW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLiPgM9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B491183CD5;
-	Tue, 30 Jul 2024 16:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEF41A76D9;
+	Tue, 30 Jul 2024 17:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357731; cv=none; b=rrYe6qlnxqxjZzSIO244Tc8R1KHI/hplzxeb9HAmTsimQLvgSAV8tD1cRhcxC/bsHTp3uJXtpcin1ad3J+7fp02FxaKj8B3w9XzmIWpMiE0ta0nOiLiUSm6tZCZKRYDNLAcywZnSeUjSdjuyLK5civwuDi5TVVMtTiOOqy/lwvQ=
+	t=1722360437; cv=none; b=DtEBvbQSMsjpLxJ/kwQd1K0Jvudhfm9QdRNDKkDeMvt7mlAXSabwy5hqwIhsonbfJutQEyMDNgiu7q//K7IWWdypu7kCjt9PXCnes5YlI890OuWR3zsG/ft9zwecjFC8Ljr6euK4bcgr5shkiCqur15rV1X57MckIKiDlm05yGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357731; c=relaxed/simple;
-	bh=/HBD9UAwvi0lqKJ9K+7OzJ4FHZeRqlSDdvgFujQA4+Q=;
+	s=arc-20240116; t=1722360437; c=relaxed/simple;
+	bh=bAUu+vb47xmKDHMXKVxRr++CVOLpxUWhCOz1zhfFazY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sEF32JENuqXvxYInxRVSalT4Y3A7/MjITfRnMuYnsSSZOKpU1HGtb4RcSclzF6akc/xhIymR1kQrr9vBSxsHoj2YsFh4cnmt4AKLo+lg+EYJ1x0we3q1sdGMePobLaez0ZEJqQaQwqhN5obRl+hcZ8ZmhQIuLA7HO5Gw92nLIkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxa2uuW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806D2C32782;
-	Tue, 30 Jul 2024 16:42:10 +0000 (UTC)
+	 MIME-Version; b=joZv1pxSXh5jP3JQG/626qrZCP4BOPseP5ktOZ3UjLdMDVHGTI5P+1ZByz03vFchpssIKiYOZL2n+OA20+gu8pNjT3Jzja3Lvs3pT38q6amJy2VzEhbuoC5MEAwwHRTxJTnpyXfu0w5Ix1BcSXTci1nDSROy/jlxioQPE42S1vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLiPgM9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F407CC4AF0E;
+	Tue, 30 Jul 2024 17:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357731;
-	bh=/HBD9UAwvi0lqKJ9K+7OzJ4FHZeRqlSDdvgFujQA4+Q=;
+	s=korg; t=1722360437;
+	bh=bAUu+vb47xmKDHMXKVxRr++CVOLpxUWhCOz1zhfFazY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cxa2uuW/52YnkGxjEXYKljv7ga5hiL8XHDrB+sINqEI5k7YfR2T1sTj3I5gSDlc0H
-	 lQr9nHWfneSLqhg74Sm2B94mYVlwb/rNq9XgD3p0TmycDPBAvvpTjt/25j5ih7gokE
-	 6OtAu5imJN79BYI5sbH9lTlea4CxU0OuyakbBERQ=
+	b=JLiPgM9s6GfeWdirkf0HYzUXrtQUreaNHZqxvOPIPCB1wP6BbwVe6WnyuoYGpUaGX
+	 rLqjxaIcCWTJ7UglstxCVZ1fGyzNCPe5XUBESfNFgtVXobLeIATjgr6u1TL2Q4RRmg
+	 y8HnYEAaEeuM/SOkz3gq75NhzHAEQJWg0dZWZvBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5f682cd029581f9edfd1@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.1 301/440] udf: Avoid using corrupted block bitmap buffer
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 658/809] nilfs2: handle inconsistent state in nilfs_btnode_create_block()
 Date: Tue, 30 Jul 2024 17:48:54 +0200
-Message-ID: <20240730151627.583787595@linuxfoundation.org>
+Message-ID: <20240730151750.880620976@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit a90d4471146de21745980cba51ce88e7926bcc4f upstream.
+commit 4811f7af6090e8f5a398fbdd766f903ef6c0d787 upstream.
 
-When the filesystem block bitmap is corrupted, we detect the corruption
-while loading the bitmap and fail the allocation with error. However the
-next allocation from the same bitmap will notice the bitmap buffer is
-already loaded and tries to allocate from the bitmap with mixed results
-(depending on the exact nature of the bitmap corruption). Fix the
-problem by using BH_verified bit to indicate whether the bitmap is valid
-or not.
+Syzbot reported that a buffer state inconsistency was detected in
+nilfs_btnode_create_block(), triggering a kernel bug.
 
-Reported-by: syzbot+5f682cd029581f9edfd1@syzkaller.appspotmail.com
-CC: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240617154201.29512-2-jack@suse.cz
-Fixes: 1e0d4adf17e7 ("udf: Check consistency of Space Bitmap Descriptor")
-Signed-off-by: Jan Kara <jack@suse.cz>
+It is not appropriate to treat this inconsistency as a bug; it can occur
+if the argument block address (the buffer index of the newly created
+block) is a virtual block number and has been reallocated due to
+corruption of the bitmap used to manage its allocation state.
+
+So, modify nilfs_btnode_create_block() and its callers to treat it as a
+possible filesystem error, rather than triggering a kernel bug.
+
+Link: https://lkml.kernel.org/r/20240725052007.4562-1-konishi.ryusuke@gmail.com
+Fixes: a60be987d45d ("nilfs2: B-tree node cache")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=89cc4f2324ed37988b60
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/udf/balloc.c |   15 +++++++++++++--
- fs/udf/super.c  |    3 ++-
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ fs/nilfs2/btnode.c |   25 ++++++++++++++++++++-----
+ fs/nilfs2/btree.c  |    4 ++--
+ 2 files changed, 22 insertions(+), 7 deletions(-)
 
---- a/fs/udf/balloc.c
-+++ b/fs/udf/balloc.c
-@@ -68,8 +68,12 @@ static int read_block_bitmap(struct supe
- 	}
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -51,12 +51,21 @@ nilfs_btnode_create_block(struct address
  
- 	for (i = 0; i < count; i++)
--		if (udf_test_bit(i + off, bh->b_data))
-+		if (udf_test_bit(i + off, bh->b_data)) {
-+			bitmap->s_block_bitmap[bitmap_nr] =
-+							ERR_PTR(-EFSCORRUPTED);
-+			brelse(bh);
- 			return -EFSCORRUPTED;
-+		}
- 	return 0;
- }
+ 	bh = nilfs_grab_buffer(inode, btnc, blocknr, BIT(BH_NILFS_Node));
+ 	if (unlikely(!bh))
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
  
-@@ -85,8 +89,15 @@ static int __load_block_bitmap(struct su
- 			  block_group, nr_groups);
- 	}
- 
--	if (bitmap->s_block_bitmap[block_group])
-+	if (bitmap->s_block_bitmap[block_group]) {
+ 	if (unlikely(buffer_mapped(bh) || buffer_uptodate(bh) ||
+ 		     buffer_dirty(bh))) {
+-		brelse(bh);
+-		BUG();
 +		/*
-+		 * The bitmap failed verification in the past. No point in
-+		 * trying again.
++		 * The block buffer at the specified new address was already
++		 * in use.  This can happen if it is a virtual block number
++		 * and has been reallocated due to corruption of the bitmap
++		 * used to manage its allocation state (if not, the buffer
++		 * clearing of an abandoned b-tree node is missing somewhere).
 +		 */
-+		if (IS_ERR(bitmap->s_block_bitmap[block_group]))
-+			return PTR_ERR(bitmap->s_block_bitmap[block_group]);
- 		return block_group;
-+	}
- 
- 	retval = read_block_bitmap(sb, bitmap, block_group, block_group);
- 	if (retval < 0)
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -266,7 +266,8 @@ static void udf_sb_free_bitmap(struct ud
- 	int nr_groups = bitmap->s_nr_groups;
- 
- 	for (i = 0; i < nr_groups; i++)
--		brelse(bitmap->s_block_bitmap[i]);
-+		if (!IS_ERR_OR_NULL(bitmap->s_block_bitmap[i]))
-+			brelse(bitmap->s_block_bitmap[i]);
- 
- 	kvfree(bitmap);
++		nilfs_error(inode->i_sb,
++			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
++			    (unsigned long long)blocknr, inode->i_ino);
++		goto failed;
+ 	}
+ 	memset(bh->b_data, 0, i_blocksize(inode));
+ 	bh->b_bdev = inode->i_sb->s_bdev;
+@@ -67,6 +76,12 @@ nilfs_btnode_create_block(struct address
+ 	folio_unlock(bh->b_folio);
+ 	folio_put(bh->b_folio);
+ 	return bh;
++
++failed:
++	folio_unlock(bh->b_folio);
++	folio_put(bh->b_folio);
++	brelse(bh);
++	return ERR_PTR(-EIO);
  }
+ 
+ int nilfs_btnode_submit_block(struct address_space *btnc, __u64 blocknr,
+@@ -217,8 +232,8 @@ retry:
+ 	}
+ 
+ 	nbh = nilfs_btnode_create_block(btnc, newkey);
+-	if (!nbh)
+-		return -ENOMEM;
++	if (IS_ERR(nbh))
++		return PTR_ERR(nbh);
+ 
+ 	BUG_ON(nbh == obh);
+ 	ctxt->newbh = nbh;
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -63,8 +63,8 @@ static int nilfs_btree_get_new_block(con
+ 	struct buffer_head *bh;
+ 
+ 	bh = nilfs_btnode_create_block(btnc, ptr);
+-	if (!bh)
+-		return -ENOMEM;
++	if (IS_ERR(bh))
++		return PTR_ERR(bh);
+ 
+ 	set_buffer_nilfs_volatile(bh);
+ 	*bhp = bh;
 
 
 
