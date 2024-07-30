@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C11F941D88
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4EB941AC8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D7ED1C23C3A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DB11281DAF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5D11A76BB;
-	Tue, 30 Jul 2024 17:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62B31898E0;
+	Tue, 30 Jul 2024 16:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLajuQcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUnIEtfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAC81A76B4;
-	Tue, 30 Jul 2024 17:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CDD18801C;
+	Tue, 30 Jul 2024 16:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359900; cv=none; b=H3VjJFdiah6IYc7OR2RXkk4ZcxT4BEgPvhb9mgUwKQ2TjGz5BiPqz0dVeFBiuuukTn1FaaOhm36e+CHjqhJi/j7YwU3dnfEdBkbsq2H1EHvrRgR+KkR0pJL9NDqZYn4w6nobhD9ByczJ95LK3OPxILRHm+co8tqzJk8eekP6K1I=
+	t=1722358043; cv=none; b=VxjMPUppxFzIFUlls84e4D3Lmj/dlzAtt2O+IXq7GVvw6UsmhHWIUJSd8GyGcRL345SanN59nBAKHKsxd+Y38Da5CROmxElb5vS8kpCY5kyFTA1gmZVvnN525XxocRDeXb9YAhpMRaBgJK/52Ttypf39pJVMM9AtpaPlfQZfmLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359900; c=relaxed/simple;
-	bh=5p2EiN/a0DtftaLEryc2Q0sbeiPbsCzul6ooBFVJBqI=;
+	s=arc-20240116; t=1722358043; c=relaxed/simple;
+	bh=kOzxpNXnRcacxQk1aZkEDoITg2iW+X8A9w8/j0GSaGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqoJ6Gz0HWTdRxxnLF/RDFxrsAuA3WM9CWK/0NKnyVQHh++supZLlQXufu2hbr6B0KFbgMwxgUVTr7DXYAy+8A6wTRQYUFSFUbHo/eHPmIXbQaRLiLIrAkT+bNpfK7eEEfqMP77sI/kP2lENJq6hdh8XQAaeq05Jf1SbXN1IoAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLajuQcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151DDC32782;
-	Tue, 30 Jul 2024 17:18:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hM9StQ5Acf+aUCUSlw6eXHFmx7IqBgdqolzg6GLfVR2vjEdAy8Q5fXlCJhHTpt5YYVm9WjXffm/JTfptVYbfW5D+RC8n35g40sM97wfh4YwhI8kmqegoz9aLImPKxnjZI3LFMjbUtxQTbI2ZMwDyOWankcT7dt2fw0MnbGvUTZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUnIEtfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042EFC32782;
+	Tue, 30 Jul 2024 16:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359900;
-	bh=5p2EiN/a0DtftaLEryc2Q0sbeiPbsCzul6ooBFVJBqI=;
+	s=korg; t=1722358043;
+	bh=kOzxpNXnRcacxQk1aZkEDoITg2iW+X8A9w8/j0GSaGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLajuQcYrD6Y8K84bJnwi+EB38OD4sN1kLnWxCH8fAlipjBfcq4R8AvQwidpDHb99
-	 bKEVUKZwyZkQIDyXT25F1iP2IjAmGX3jzbtNzUgfBNuWs6J8f3/KNqGMRFEOoWF6Us
-	 z2WJlMRynDw1cnE6A1UicwvkYeDdD60LeI0hflXI=
+	b=iUnIEtfGafq7iz0cUF0W1Tu/R+eRu7yk1cUVGWAWQDUvxzZA55sDITfXQYnJ/8J3c
+	 h2tBIucrN2U1Qgk8iek7YeZIZe+Cvql9gfZjkFLggwNeMnsolyQFX6bXlIMjn3Jecu
+	 hTGDmmYZ1+A76UkLtqBmmz9Nvgw/WfqMawqq4Bmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lai Jiangshan <jiangshan.ljs@antgroup.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.10 551/809] workqueue: Always queue work items to the newest PWQ for order workqueues
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 320/568] fs/ntfs3: Fix transform resident to nonresident for compressed files
 Date: Tue, 30 Jul 2024 17:47:07 +0200
-Message-ID: <20240730151746.519009290@linuxfoundation.org>
+Message-ID: <20240730151652.383375050@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lai Jiangshan <jiangshan.ljs@antgroup.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 58629d4871e8eb2c385b16a73a8451669db59f39 upstream.
+[ Upstream commit 25610ff98d4a34e6a85cbe4fd8671be6b0829f8f ]
 
-To ensure non-reentrancy, __queue_work() attempts to enqueue a work
-item to the pool of the currently executing worker. This is not only
-unnecessary for an ordered workqueue, where order inherently suggests
-non-reentrancy, but it could also disrupt the sequence if the item is
-not enqueued on the newest PWQ.
+Сorrected calculation of required space len (in clusters)
+for attribute data storage in case of compression.
 
-Just queue it to the newest PWQ and let order management guarantees
-non-reentrancy.
-
-Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
-Fixes: 4c065dbce1e8 ("workqueue: Enable unbound cpumask update on ordered workqueues")
-Cc: stable@vger.kernel.org # v6.9+
-Signed-off-by: Tejun Heo <tj@kernel.org>
-(cherry picked from commit 74347be3edfd11277799242766edf844c43dd5d3)
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be71b5cba2e64 ("fs/ntfs3: Add attrib operations")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ntfs3/attrib.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -2298,9 +2298,13 @@ retry:
- 	 * If @work was previously on a different pool, it might still be
- 	 * running there, in which case the work needs to be queued on that
- 	 * pool to guarantee non-reentrancy.
-+	 *
-+	 * For ordered workqueue, work items must be queued on the newest pwq
-+	 * for accurate order management.  Guaranteed order also guarantees
-+	 * non-reentrancy.  See the comments above unplug_oldest_pwq().
- 	 */
- 	last_pool = get_work_pool(work);
--	if (last_pool && last_pool != pool) {
-+	if (last_pool && last_pool != pool && !(wq->flags & __WQ_ORDERED)) {
- 		struct worker *worker;
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 47d388699f5f0..e6c0e12d1380b 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -231,7 +231,7 @@ int attr_make_nonresident(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 	struct ntfs_sb_info *sbi;
+ 	struct ATTRIB *attr_s;
+ 	struct MFT_REC *rec;
+-	u32 used, asize, rsize, aoff, align;
++	u32 used, asize, rsize, aoff;
+ 	bool is_data;
+ 	CLST len, alen;
+ 	char *next;
+@@ -252,10 +252,13 @@ int attr_make_nonresident(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 	rsize = le32_to_cpu(attr->res.data_size);
+ 	is_data = attr->type == ATTR_DATA && !attr->name_len;
  
- 		raw_spin_lock(&last_pool->lock);
+-	align = sbi->cluster_size;
+-	if (is_attr_compressed(attr))
+-		align <<= NTFS_LZNT_CUNIT;
+-	len = (rsize + align - 1) >> sbi->cluster_bits;
++	/* len - how many clusters required to store 'rsize' bytes */
++	if (is_attr_compressed(attr)) {
++		u8 shift = sbi->cluster_bits + NTFS_LZNT_CUNIT;
++		len = ((rsize + (1u << shift) - 1) >> shift) << NTFS_LZNT_CUNIT;
++	} else {
++		len = bytes_to_cluster(sbi, rsize);
++	}
+ 
+ 	run_init(run);
+ 
+-- 
+2.43.0
+
 
 
 
