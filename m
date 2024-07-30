@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A5B941AA3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDEC2941747
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF7E1F235E8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF28286438
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE8518455E;
-	Tue, 30 Jul 2024 16:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6384A183CBF;
+	Tue, 30 Jul 2024 16:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSPDVLLY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCExj5WK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9F81A6166;
-	Tue, 30 Jul 2024 16:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A7C183CD5;
+	Tue, 30 Jul 2024 16:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357956; cv=none; b=H1YGsd2+xXoovLtUd4J9D+u7snPOEOk+W4Kw4NJUzpIYtUGslImtM9iY/GnwB+6BAOygsd19zbTZ8I7KA4JUnD44pEPXRwxJP49i51DsGGiE2dDWNMavI42bapDTgCJxOIpyMhozxCrktWiO0tNWvzbwHixBdZL0l0d+WAoy/C8=
+	t=1722355656; cv=none; b=ThQn7aWyT7wx6nW5dqz0by6NHp27nCDi+myi/niigrHLnwAYGqLdKmpqYAMu8L3RoW7KzQYsxnwamC4o4mZ9HZJYIGcVEh/O/clA79aF2V5bXro8+clJdHSYyMjsOLMXE0F3HBubVK2x2hZwLhIZu1nGUyAM8eYO9fTB8NYz1pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357956; c=relaxed/simple;
-	bh=Loqe/KBr9MGYDziaiaBXM0kXXADvLeVKvMcfQP0hC5E=;
+	s=arc-20240116; t=1722355656; c=relaxed/simple;
+	bh=j1mU/lFA4tRN7hG0jG0gW4CfGYCPHmQ4sE04G7tS+RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QX4XlOFldS7qjmnNSe0/lxjnMELd0SvQ0Km/0Swiq9HMypcBhlo9Ajgkk2sDY0Ye2UlLtSYj1TbINaDkExM6anwIwkyxC2uVykm+C9g/lrO9yY+M1Z9P2TjidUSHQus9fii56T4K3CCY2poNhE2aTQnWFIHXcJGb4Y5HS9xopTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSPDVLLY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C46C4AF0A;
-	Tue, 30 Jul 2024 16:45:55 +0000 (UTC)
+	 MIME-Version; b=Bz1IKCZ1JtkQRqQPc91W/W6zEaE9M+jKX5JCmIzMAYr9OfFwr+pcFWi5e0J5YYlTMfeWh+zkvavsvEXrIiysDVSFL0p6HvDpemGfkYJBk7sORg7t3dkrL9QDg0hEQL5adFEhvmv/N+YmpBpw78WBVEVcTZsBR4fTJRt8b+6+/kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCExj5WK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD3CC32782;
+	Tue, 30 Jul 2024 16:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357955;
-	bh=Loqe/KBr9MGYDziaiaBXM0kXXADvLeVKvMcfQP0hC5E=;
+	s=korg; t=1722355656;
+	bh=j1mU/lFA4tRN7hG0jG0gW4CfGYCPHmQ4sE04G7tS+RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSPDVLLYo1dZppPEdHA+OTekqzYwcTC+C6tAX3P2UdMRCFgxXpkif0CAZTYNDTSO5
-	 Lu/BviNsjmr7IvNoG0/fqNxIdU3LgLoq+VV64srhO2m1pZ8Tous4Uhu60HWWB3XqLR
-	 VcBoXMz7bbLQA4Egh9KNuEgvxbKsNoT4WXwhKnOo=
+	b=jCExj5WKvr4pyBk9/+3gJ+lsXpFJyVzq1729w1kos84lGzRkN25cXFZtBcvt74VEX
+	 5FmBfmYWoZKBmXRQLL/b/JqdrLeP4PC69/EF/l8RQ89IKRH2WnSjKdU5JUjUqJCPUK
+	 iO6ZeygnRNDT/OlcwChxmphIBOmTy/TXpg4tOUiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 309/809] saa7134: Unchecked i2c_transfer function result fixed
+Subject: [PATCH 6.6 078/568] arm64: dts: amlogic: add power domain to hdmitx
 Date: Tue, 30 Jul 2024 17:43:05 +0200
-Message-ID: <20240730151736.803846453@linuxfoundation.org>
+Message-ID: <20240730151642.911036650@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Burakov <a.burakov@rosalinux.ru>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 9d8683b3fd93f0e378f24dc3d9604e5d7d3e0a17 ]
+[ Upstream commit f1ab099d6591a353899a2ee09c89de0fc908e2d2 ]
 
-Return value of function 'i2c_transfer' is not checked that
-may cause undefined behaviour.
+HDMI Tx needs HDMI Tx memory power domain turned on. This power domain is
+handled under the VPU power domain.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The HDMI Tx currently works because it is enabling the PD by directly
+poking the power controller register. It is should not do that but properly
+use the power domain controller.
 
-Fixes: 2cf36ac44730 ("[PATCH] v4l: 656: added support for the following cards")
-Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fix this by adding the power domain to HDMI Tx.
+
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20240625145017.1003346-3-jbrunet@baylibre.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Stable-dep-of: 1443b6ea806d ("arm64: dts: amlogic: setup hdmi system clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/saa7134/saa7134-dvb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-g12.dtsi  | 4 ++++
+ arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 1 +
+ arch/arm64/boot/dts/amlogic/meson-gxl.dtsi  | 1 +
+ arch/arm64/boot/dts/amlogic/meson-sm1.dtsi  | 4 ++++
+ 4 files changed, 10 insertions(+)
 
-diff --git a/drivers/media/pci/saa7134/saa7134-dvb.c b/drivers/media/pci/saa7134/saa7134-dvb.c
-index 9c6cfef03331d..a66df6adfaad8 100644
---- a/drivers/media/pci/saa7134/saa7134-dvb.c
-+++ b/drivers/media/pci/saa7134/saa7134-dvb.c
-@@ -466,7 +466,9 @@ static int philips_europa_tuner_sleep(struct dvb_frontend *fe)
- 	/* switch the board to analog mode */
- 	if (fe->ops.i2c_gate_ctrl)
- 		fe->ops.i2c_gate_ctrl(fe, 1);
--	i2c_transfer(&dev->i2c_adap, &analog_msg, 1);
-+	if (i2c_transfer(&dev->i2c_adap, &analog_msg, 1) != 1)
-+		return -EIO;
-+
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/amlogic/meson-g12.dtsi b/arch/arm64/boot/dts/amlogic/meson-g12.dtsi
+index 6a1f4dcf64885..7b655e07e80cf 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-g12.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-g12.dtsi
+@@ -367,6 +367,10 @@ &ethmac {
+ 	power-domains = <&pwrc PWRC_G12A_ETH_ID>;
+ };
  
-@@ -1018,7 +1020,9 @@ static int md8800_set_voltage2(struct dvb_frontend *fe,
- 	else
- 		wbuf[1] = rbuf & 0xef;
- 	msg[0].len = 2;
--	i2c_transfer(&dev->i2c_adap, msg, 1);
-+	if (i2c_transfer(&dev->i2c_adap, msg, 1) != 1)
-+		return -EIO;
++&hdmi_tx {
++	power-domains = <&pwrc PWRC_G12A_VPU_ID>;
++};
 +
- 	return 0;
- }
+ &vpu {
+ 	power-domains = <&pwrc PWRC_G12A_VPU_ID>;
+ };
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+index a15c1ef30a88b..041c37b809f27 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
+@@ -315,6 +315,7 @@ &hdmi_tx {
+ 		 <&clkc CLKID_HDMI_PCLK>,
+ 		 <&clkc CLKID_GCLK_VENCI_INT0>;
+ 	clock-names = "isfr", "iahb", "venci";
++	power-domains = <&pwrc PWRC_GXBB_VPU_ID>;
+ };
  
+ &sysctrl {
+diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
+index a53b38045b3d2..067108800a58d 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
+@@ -327,6 +327,7 @@ &hdmi_tx {
+ 		 <&clkc CLKID_HDMI_PCLK>,
+ 		 <&clkc CLKID_GCLK_VENCI_INT0>;
+ 	clock-names = "isfr", "iahb", "venci";
++	power-domains = <&pwrc PWRC_GXBB_VPU_ID>;
+ };
+ 
+ &sysctrl {
+diff --git a/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi b/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
+index fcaa1a273829c..13e742ba00bea 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
+@@ -518,6 +518,10 @@ &gpio_intc {
+ 		     "amlogic,meson-gpio-intc";
+ };
+ 
++&hdmi_tx {
++	power-domains = <&pwrc PWRC_SM1_VPU_ID>;
++};
++
+ &pcie {
+ 	power-domains = <&pwrc PWRC_SM1_PCIE_ID>;
+ };
 -- 
 2.43.0
 
