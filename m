@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-64291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AA0941D2D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AB29417F0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B2E01C23B6D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9443C1F25232
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC7718B46E;
-	Tue, 30 Jul 2024 17:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909D618C93B;
+	Tue, 30 Jul 2024 16:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOO0nwNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzinGnHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8001A76A3;
-	Tue, 30 Jul 2024 17:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC8C18B46F;
+	Tue, 30 Jul 2024 16:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359634; cv=none; b=t4S8ZYoqxsbT+RezEscPwTzRSFQIqTW/KeC7htVg0w43ZDh+h2odhl9fzacUoK5zRqvIs7TNhNjOZT70+06sZhkr9xu9EjVIBNfb3MCrb1jcp5NoT/Iz//Q/a1wgacjL1PHCeiLK8Xy+C9a7ADZrq2XBCgJN3hHVSsPfZ2psO0s=
+	t=1722356081; cv=none; b=ShotIGbfdWts+j6K0BMnawVWpo11wj3GoI04VUb1Y3qGuLXzwZ/hUQMdSv/mLcdkBYFiJKnT5NwguSlGT4ivHqDmNpYNlCR4CFV7cNbwoozX0MyJpHL6uTDTpS4qIT0UDFcvVGm/xR2mdnyPWMOcL+C5pTPB4jrH+0qM5FmSKgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359634; c=relaxed/simple;
-	bh=XgWCA9QhUYuuvC5U9INnZtVaRkZUHGWvqJs+GP4D0GE=;
+	s=arc-20240116; t=1722356081; c=relaxed/simple;
+	bh=9dO8mmUQn53+SZnmZHfaKw11SxSoC8vmgpHqRvVOQBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TDEHB9CIAKQt6DQpmtoW8zDviXLbv37Ns/dMyiXbZsfqZcnK/WpsEYHyWA1aUghrcg8BHDi/Ywd2GtUjvWcy/vIe3zA2LXTzRdeO2LJ6mfyJW+BJn9BLA9bNKJB8j5d+mijeKSqx/SbyasZKm8RMwmzPaJ+lNtG8HHPVV/8OKJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOO0nwNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42662C32782;
-	Tue, 30 Jul 2024 17:13:54 +0000 (UTC)
+	 MIME-Version; b=ifhTeKg16GBs4F/GHaDSJpMQTtfSe6aFe45XywgK242s+96dFYPKvv2CnRX+eP26LpH3S5MWf7PEn8lJqkPs+U8oBcaFZxn/MtJrxFNmOblCM2RoEmco0FawmEEes+8thTc3gDRKLRSblA4yZiyIs1gmqfMs7NhsFu2XTYYTSiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzinGnHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7664C32782;
+	Tue, 30 Jul 2024 16:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359634;
-	bh=XgWCA9QhUYuuvC5U9INnZtVaRkZUHGWvqJs+GP4D0GE=;
+	s=korg; t=1722356081;
+	bh=9dO8mmUQn53+SZnmZHfaKw11SxSoC8vmgpHqRvVOQBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iOO0nwNa42/w1oV6mPgJXmi5MTVqV737AgJqftirnLLfUBQOZ7I8rtEwwvksuMAQt
-	 km7XCvA9+LrKl4yN0j3iRnwoOcXHG8+3XvwWGaWXGIXuaRDHUy6v2cu5Bj2K5klkoJ
-	 Ak1a3php5PCRShpKazgF/m67Ll3WaFkNKIFVAroU=
+	b=pzinGnHdFl9jK8MPQzrt/exhfYSLiK2s3LhUNYcOJcovCDShM7wpIeeQHcp/67Q5S
+	 uOsgfl3ZjcL5j76Db6TdLIMWud2fv1MuNEeeJ1y4TJYEA5exJnOe6HbIdJfPnbpg/7
+	 F3dxViHK7z6UlkaRaWY6F5L8B7PtE5tb8nPTi1iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 511/809] selftests/damon/access_memory: use user-defined region size
+	Jonathan Marek <jonathan@marek.ca>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jun Nie <jun.nie@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 154/440] drm/msm/dsi: set VIDEO_COMPRESSION_MODE_CTRL_WC
 Date: Tue, 30 Jul 2024 17:46:27 +0200
-Message-ID: <20240730151744.919959789@linuxfoundation.org>
+Message-ID: <20240730151621.893421469@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit 34ec4344a5dabbb39e23e8daf30779892c0211a6 ]
+[ Upstream commit 9ecd0ddd223b68b4603e4766a1d51f6c6cda346e ]
 
-Patch series "selftests/damon: test DAMOS tried regions and
-{min,max}_nr_regions".
+Video mode DSC won't work if this field is not set correctly. Set it to fix
+video mode DSC (for slice_per_pkt==1 cases at least).
 
-This patch series fix a minor issue in a program for DAMON selftest, and
-implement new functionality selftests for DAMOS tried regions and
-{min,max}_nr_regions.  The test for max_nr_regions also test the recovery
-from online tuning-caused limit violation, which was fixed by a previous
-patch [1] titled "mm/damon/core: merge regions aggressively when
-max_nr_regions is unmet".
-
-The first patch fixes a minor problem in the articial memory access
-pattern generator for tests.  Following 3 patches (2-4) implement schemes
-tried regions test.  Then a couple of patches (5-6) implementing static
-setup based {min,max}_nr_regions functionality test follows.  Final two
-patches (7-8) implement dynamic max_nr_regions update test.
-
-[1] https://lore.kernel.org/20240624210650.53960C2BBFC@smtp.kernel.org
-
-This patch (of 8):
-
-'access_memory' is an artificial memory access pattern generator for DAMON
-tests.  It creates and accesses memory regions that the user specified the
-number and size via the command line.  However, real access part of the
-program ignores the user-specified size of each region.  Instead, it uses
-a hard-coded value, 10 MiB.  Fix it to use user-defined size.
-
-Note that all existing 'access_memory' users are setting the region size
-as 10 MiB.  Hence no real problem has happened so far.
-
-Link: https://lkml.kernel.org/r/20240625180538.73134-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20240625180538.73134-2-sj@kernel.org
-Fixes: b5906f5f7359 ("selftests/damon: add a test for update_schemes_tried_regions sysfs command")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jun Nie <jun.nie@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/596234/
+Link: https://lore.kernel.org/r/20240530-msm-drm-dsc-dsi-video-upstream-4-v6-5-2ab1d334c657@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/damon/access_memory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/access_memory.c b/tools/testing/selftests/damon/access_memory.c
-index 585a2fa543295..56b17e8fe1be8 100644
---- a/tools/testing/selftests/damon/access_memory.c
-+++ b/tools/testing/selftests/damon/access_memory.c
-@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
- 		start_clock = clock();
- 		while ((clock() - start_clock) * 1000 / CLOCKS_PER_SEC <
- 				access_time_ms)
--			memset(regions[i], i, 1024 * 1024 * 10);
-+			memset(regions[i], i, sz_region);
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index cd9ca36901611..034ad810fd653 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -848,6 +848,7 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
+ 	u32 slice_per_intf, total_bytes_per_intf;
+ 	u32 pkt_per_line;
+ 	u32 eol_byte_num;
++	u32 bytes_per_pkt;
+ 
+ 	/* first calculate dsc parameters and then program
+ 	 * compress mode registers
+@@ -855,6 +856,7 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
+ 	slice_per_intf = DIV_ROUND_UP(hdisplay, dsc->slice_width);
+ 
+ 	total_bytes_per_intf = dsc->slice_chunk_size * slice_per_intf;
++	bytes_per_pkt = dsc->slice_chunk_size; /* * slice_per_pkt; */
+ 
+ 	eol_byte_num = total_bytes_per_intf % 3;
+ 
+@@ -892,6 +894,7 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
+ 		dsi_write(msm_host, REG_DSI_COMMAND_COMPRESSION_MODE_CTRL, reg_ctrl);
+ 		dsi_write(msm_host, REG_DSI_COMMAND_COMPRESSION_MODE_CTRL2, reg_ctrl2);
+ 	} else {
++		reg |= DSI_VIDEO_COMPRESSION_MODE_CTRL_WC(bytes_per_pkt);
+ 		dsi_write(msm_host, REG_DSI_VIDEO_COMPRESSION_MODE_CTRL, reg);
  	}
- 	return 0;
  }
 -- 
 2.43.0
