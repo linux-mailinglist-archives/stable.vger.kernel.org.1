@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA2A941EA7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6D3941D75
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EE1C1C215E6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81B691F26562
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7F8187FEC;
-	Tue, 30 Jul 2024 17:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18581A76A4;
+	Tue, 30 Jul 2024 17:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImaC3c+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kA6SFYoX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594E51A76A5;
-	Tue, 30 Jul 2024 17:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614E11A76A7;
+	Tue, 30 Jul 2024 17:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360694; cv=none; b=n1ZdMYw10vjwy9fpj4dBFOgEcSVK7UqtmCAuNwevG7maEhvCYtcw/SIcZoOijZpjQrODu2M/11eBtr1roomflyEO2V+roy7E4H/slfjLe9ZQAuaRz39QPz1Ivu3nhSI5ksvU0+z0ibytHsx6t0OtG7cBGaooX0DmoXf3lweL9C4=
+	t=1722359866; cv=none; b=NNe4byH4EdylgXXDm2+wL05Luc9mnBMpnG5yXH/22A2N8EKwKXmE5NMBmeMbZl9ZJ9l3ORY1eAUixgiW5BKsHftOqfMWlu0TICfwmPfkxk6pHcZ/WvaJtYDomi6xuCz3jeGcZj/z9aTYV49KA/29pw+VtysjtCu3x4q9tWg5rQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360694; c=relaxed/simple;
-	bh=/W8t4e3FRhH4xgOjx0E0L/xGfLmdAjE4bFGftQEQd3E=;
+	s=arc-20240116; t=1722359866; c=relaxed/simple;
+	bh=xXJF6qXqUnSNPhhVXd/FvdtOtHV4WNGPEAxWRewBUH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8ElRC1xl31gdLOZn48z8dV5FrOExZ9gyIhPFWw0vjCBMXe9BSuslJqBu4kysU9AGqwINEc/q4RDrigrubpqSuNBl7nikCn898vVbIfmq/RIb6J/NHBYsvdrrx4j+ElZoyswo83RW8+qKu2naM5s+tJyPRwSEsVjUOcgQ/Cc7zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImaC3c+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF41C4AF0A;
-	Tue, 30 Jul 2024 17:31:33 +0000 (UTC)
+	 MIME-Version; b=RZp8pwOjV5hZyBKezmrkfksHJiCmuP+b9ReWFsSjwSg5ZnxyY3YGOO1ZU4ZjylNxt4UhK5NFfj1hmVlxj+P+0bKur/4/bNpoEayi7BnYJVW9W5jVEmy4ktO4cuCfe0h7K+w/A5KbUGC+c3DX2+rIVf5l+1ZRNnNnD/xI9SV81H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kA6SFYoX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C015FC4AF0A;
+	Tue, 30 Jul 2024 17:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360694;
-	bh=/W8t4e3FRhH4xgOjx0E0L/xGfLmdAjE4bFGftQEQd3E=;
+	s=korg; t=1722359866;
+	bh=xXJF6qXqUnSNPhhVXd/FvdtOtHV4WNGPEAxWRewBUH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImaC3c+Q2QScI9TGWE64lPr0cMpuWj55/MdUB/PICmmvuDkFFhS4FXkdQdjI51pB6
-	 uV38ODPiDvuJBGQhnZnueAQt1rCI4asjgrU4USINuEQ0S6xHAJ5dT6SSgzSTgAwVOt
-	 0RDXr17fZM/J+L1hrR38x2a93GSOmw77tOnC3DAg=
+	b=kA6SFYoXWP/bxRAjk0Mt/SO+yjzpD6MdJ/pTAuypHSayH9k8oSg/3ljyOENzzBO5U
+	 1Zxl/YMuAmnN7AcS1rB+VLvXCy3nM55uOojq7YygbMVO2mXFWzlqLw0W5fGilkSB60
+	 igA3fXKAYLsv4xsgAV925Vt+VS4zdEmtCxDsB1hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 778/809] ASoC: SOF: imx8m: Fix DSP control regmap retrieval
-Date: Tue, 30 Jul 2024 17:50:54 +0200
-Message-ID: <20240730151755.695747138@linuxfoundation.org>
+Subject: [PATCH 6.6 548/568] auxdisplay: ht16k33: Drop reference after LED registration
+Date: Tue, 30 Jul 2024 17:50:55 +0200
+Message-ID: <20240730151701.581837082@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Baluta <daniel.baluta@nxp.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 2634f745eac25a33f032df32cf98fca8538a534a ]
+[ Upstream commit 2ccfe94bc3ac980d2d1df9f7a0b2c6d2137abe55 ]
 
-According to Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
-fsl,dsp-ctrl is a phandle to syscon block so we need to use correct
-function to retrieve it.
+The reference count is bumped by device_get_named_child_node()
+and never dropped. Since LED APIs do not require it to be
+bumped by the user, drop the reference after LED registration.
 
-Currently there is no SOF DSP DTS merged into mainline so there is no
-need to support the old way of retrieving the dsp control node.
+[andy: rewritten the commit message and amended the change]
 
-Fixes: 9ba23717b292 ("ASoC: SOF: imx8m: Implement DSP start")
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/20240715151653.114751-1-daniel.baluta@oss.nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c223d9c636ed ("auxdisplay: ht16k33: Add LED support")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/imx/imx8m.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/auxdisplay/ht16k33.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/imx/imx8m.c b/sound/soc/sof/imx/imx8m.c
-index 1c7019c3cbd38..cdd1e79ef9f6a 100644
---- a/sound/soc/sof/imx/imx8m.c
-+++ b/sound/soc/sof/imx/imx8m.c
-@@ -234,7 +234,7 @@ static int imx8m_probe(struct snd_sof_dev *sdev)
- 	/* set default mailbox offset for FW ready message */
- 	sdev->dsp_box.offset = MBOX_OFFSET;
+diff --git a/drivers/auxdisplay/ht16k33.c b/drivers/auxdisplay/ht16k33.c
+index 3a2d883872249..b360ddefc4238 100644
+--- a/drivers/auxdisplay/ht16k33.c
++++ b/drivers/auxdisplay/ht16k33.c
+@@ -507,6 +507,7 @@ static int ht16k33_led_probe(struct device *dev, struct led_classdev *led,
+ 	led->max_brightness = MAX_BRIGHTNESS;
  
--	priv->regmap = syscon_regmap_lookup_by_compatible("fsl,dsp-ctrl");
-+	priv->regmap = syscon_regmap_lookup_by_phandle(np, "fsl,dsp-ctrl");
- 	if (IS_ERR(priv->regmap)) {
- 		dev_err(sdev->dev, "cannot find dsp-ctrl registers");
- 		ret = PTR_ERR(priv->regmap);
+ 	err = devm_led_classdev_register_ext(dev, led, &init_data);
++	fwnode_handle_put(init_data.fwnode);
+ 	if (err)
+ 		dev_err(dev, "Failed to register LED\n");
+ 
 -- 
 2.43.0
 
