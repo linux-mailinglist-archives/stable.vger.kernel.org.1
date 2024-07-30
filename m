@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95120941E69
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C388941A8F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 365311F253F1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDE1B1C2380B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1941C1A76C9;
-	Tue, 30 Jul 2024 17:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6AF757FC;
+	Tue, 30 Jul 2024 16:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X18dM38b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slagj+fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8B71A76C2;
-	Tue, 30 Jul 2024 17:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C54188013;
+	Tue, 30 Jul 2024 16:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360511; cv=none; b=kzkKjKJvkyUIEdFmydS5fmvk2CS/n2B6lYueO5S5UajSar4DQwy5eAv9mS6yLydzfa+x7U3xYyp/5XdBWUJsWbrMUJN36XXg6DL8U9AgClg1BXFDuw77u+I3TH4yumopgDGxT3YghakOZtIhH9pcKksQiADgFJcldhiQFKTTH2c=
+	t=1722357908; cv=none; b=XBCReR18DKX5RRUdupeLvmT9HNEkYYbS61d3e2U6sv36Ry4/Uqxp39DHARLUFZGR/GbECqzPL3Wwr5qoHWfaDU/NH2tywVZ71nS8vbwuaeI/f+Tln3shT9CZBGaea34inP5JNZ9vu51xgeBm78RBuGp/ij0mc21LF/zRn7ZZT3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360511; c=relaxed/simple;
-	bh=gtPEWiN5B+lcaH0QfeSUse6XP5LAna6Wu2BJLDX+0XI=;
+	s=arc-20240116; t=1722357908; c=relaxed/simple;
+	bh=gdJnLC/QNTTYUmK/PY/jMRc6JlwKtg0/+RzwtYSKD9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozZC7KaeNCYDTpHQoYIbPFhNr8Psv+GDKfwTgOak6XU7yTfsjDeTTAdZE08lWrheh0pf07mTbeNcpc8DZQiII7gRF6EcqyVs0EphYM8Dlz9hRZTDMpeemJ3CroNjL/12Ftu660FbT4YPUNlVA+sewQYWbnTuxVXZgy/pPMVUm8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X18dM38b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07999C32782;
-	Tue, 30 Jul 2024 17:28:30 +0000 (UTC)
+	 MIME-Version; b=dzOa3zX5R4RbYGPfVMEDOkUplFHxy38SJyCProR9KZ93PwCZDURHDQWoByhZZlhloiS2kGtiSU4naI/Vw62Harse0kvkglhbI0y4DfUq7GbZWQZz6Bk2l8NhM4utgGSUikEg98zF4uMRXAz0UsXttsjMvPGuukSh4cm/HamNf/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slagj+fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180CCC32782;
+	Tue, 30 Jul 2024 16:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360511;
-	bh=gtPEWiN5B+lcaH0QfeSUse6XP5LAna6Wu2BJLDX+0XI=;
+	s=korg; t=1722357908;
+	bh=gdJnLC/QNTTYUmK/PY/jMRc6JlwKtg0/+RzwtYSKD9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X18dM38b0NSxWW6bWI7qzMlQV8O7gm2TD9PNyu/SL/89s+IHHlhOrVqWXJNlHhhhb
-	 gfeyrWW/K1CmHNokTw7lJD39q+2CbhpQwU4h0e2X+4n2payFRBxZ721fd6craLJW02
-	 vDemmsKBhdY6hO90DC9H9M8W3bYRfmCV4qsyPqLI=
+	b=slagj+fksTigVnz7JayMFvvvGHGQ62CNq1vPEz4hXloFfXAlatzzs/hUURXb0Ecuv
+	 9tR8sSRzg1whjbvzFZh3WlCKbUMVWILnbGxqzHN+mVcgWJpMXL3ZtiJq91oht6rqdR
+	 yyNE6sUePSYYCqI3IzviJs8n5XEr4YrGrYs3HDqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ian Rogers <irogers@google.com>
-Subject: [PATCH 6.10 694/809] perf/x86/intel/uncore: Fix the bits of the CHA extended umask for SPR
-Date: Tue, 30 Jul 2024 17:49:30 +0200
-Message-ID: <20240730151752.327125583@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Lk Sii <lk_sii@163.com>
+Subject: [PATCH 6.1 338/440] kobject_uevent: Fix OOB access within zap_modalias_env()
+Date: Tue, 30 Jul 2024 17:49:31 +0200
+Message-ID: <20240730151629.019122951@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit a5a6ff3d639d088d4af7e2935e1ee0d8b4e817d4 upstream.
+commit dd6e9894b451e7c85cceb8e9dc5432679a70e7dc upstream.
 
-The perf stat errors out with UNC_CHA_TOR_INSERTS.IA_HIT_CXL_ACC_LOCAL
-event.
+zap_modalias_env() wrongly calculates size of memory block to move, so
+will cause OOB memory access issue if variable MODALIAS is not the last
+one within its @env parameter, fixed by correcting size to memmove.
 
- $perf stat -e uncore_cha_55/event=0x35,umask=0x10c0008101/ -a -- ls
-    event syntax error: '..0x35,umask=0x10c0008101/'
-                                      \___ Bad event or PMU
-
-The definition of the CHA umask is config:8-15,32-55, which is 32bit.
-However, the umask of the event is bigger than 32bit.
-This is an error in the original uncore spec.
-
-Add a new umask_ext5 for the new CHA umask range.
-
-Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
-Closes: https://lore.kernel.org/linux-perf-users/alpine.LRH.2.20.2401300733310.11354@Diego/
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Ian Rogers <irogers@google.com>
+Fixes: 9b3fa47d4a76 ("kobject: fix suppressing modalias in uevents delivered over netlink")
 Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240708185524.1185505-1-kan.liang@linux.intel.com
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Reviewed-by: Lk Sii <lk_sii@163.com>
+Link: https://lore.kernel.org/r/1717074877-11352-1-git-send-email-quic_zijuhu@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/kobject_uevent.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -462,6 +462,7 @@
- #define SPR_UBOX_DID				0x3250
+--- a/lib/kobject_uevent.c
++++ b/lib/kobject_uevent.c
+@@ -432,8 +432,23 @@ static void zap_modalias_env(struct kobj
+ 		len = strlen(env->envp[i]) + 1;
  
- /* SPR CHA */
-+#define SPR_CHA_EVENT_MASK_EXT			0xffffffff
- #define SPR_CHA_PMON_CTL_TID_EN			(1 << 16)
- #define SPR_CHA_PMON_EVENT_MASK			(SNBEP_PMON_RAW_EVENT_MASK | \
- 						 SPR_CHA_PMON_CTL_TID_EN)
-@@ -478,6 +479,7 @@ DEFINE_UNCORE_FORMAT_ATTR(umask_ext, uma
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext2, umask, "config:8-15,32-57");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext3, umask, "config:8-15,32-39");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext4, umask, "config:8-15,32-55");
-+DEFINE_UNCORE_FORMAT_ATTR(umask_ext5, umask, "config:8-15,32-63");
- DEFINE_UNCORE_FORMAT_ATTR(qor, qor, "config:16");
- DEFINE_UNCORE_FORMAT_ATTR(edge, edge, "config:18");
- DEFINE_UNCORE_FORMAT_ATTR(tid_en, tid_en, "config:19");
-@@ -5958,7 +5960,7 @@ static struct intel_uncore_ops spr_uncor
+ 		if (i != env->envp_idx - 1) {
++			/* @env->envp[] contains pointers to @env->buf[]
++			 * with @env->buflen chars, and we are removing
++			 * variable MODALIAS here pointed by @env->envp[i]
++			 * with length @len as shown below:
++			 *
++			 * 0               @env->buf[]      @env->buflen
++			 * ---------------------------------------------
++			 * ^             ^              ^              ^
++			 * |             |->   @len   <-| target block |
++			 * @env->envp[0] @env->envp[i]  @env->envp[i + 1]
++			 *
++			 * so the "target block" indicated above is moved
++			 * backward by @len, and its right size is
++			 * @env->buflen - (@env->envp[i + 1] - @env->envp[0]).
++			 */
+ 			memmove(env->envp[i], env->envp[i + 1],
+-				env->buflen - len);
++				env->buflen - (env->envp[i + 1] - env->envp[0]));
  
- static struct attribute *spr_uncore_cha_formats_attr[] = {
- 	&format_attr_event.attr,
--	&format_attr_umask_ext4.attr,
-+	&format_attr_umask_ext5.attr,
- 	&format_attr_tid_en2.attr,
- 	&format_attr_edge.attr,
- 	&format_attr_inv.attr,
-@@ -5994,7 +5996,7 @@ ATTRIBUTE_GROUPS(uncore_alias);
- static struct intel_uncore_type spr_uncore_chabox = {
- 	.name			= "cha",
- 	.event_mask		= SPR_CHA_PMON_EVENT_MASK,
--	.event_mask_ext		= SPR_RAW_EVENT_MASK_EXT,
-+	.event_mask_ext		= SPR_CHA_EVENT_MASK_EXT,
- 	.num_shared_regs	= 1,
- 	.constraints		= skx_uncore_chabox_constraints,
- 	.ops			= &spr_uncore_chabox_ops,
+ 			for (j = i; j < env->envp_idx - 1; j++)
+ 				env->envp[j] = env->envp[j + 1] - len;
 
 
 
