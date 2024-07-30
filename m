@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3EB941757
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:10:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF50A941AB9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EA9E1C23596
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7831128154C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15E4189B86;
-	Tue, 30 Jul 2024 16:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210DF18B466;
+	Tue, 30 Jul 2024 16:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywTBNR9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYcfZ3j+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC2818800D;
-	Tue, 30 Jul 2024 16:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D092D189514;
+	Tue, 30 Jul 2024 16:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355700; cv=none; b=dgaUMxxQXvNHFuds1754QFIVk9S+mlqJH0LJReeMb6Xn+jELZUJ3ge4sXLutGEIvoGvRrvxiogxAg00So04Fy9pvwAvawAc+Ixz7ox1wnXb1hJKr/+Y7v+op+S8uATiGu6JqN9VeZWqJ4pK2dvpJfg/Blv4m7+CtVFxO9yKJZts=
+	t=1722357996; cv=none; b=HNTTYr5n9Olmx+vHXONVG7no5mgunuBH8PmmHIHRwoYwE0KHECpziqRZAhki6lsJJStEhvccc10sfz1FkUMVpj/d/Azxcchje2XwDDG3p4evTJIylLwT+XTSzj4z/OW9di2xH4ZCzOxRv5hIfw7rSAasf/K8pj5j9IIYd7HAGFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355700; c=relaxed/simple;
-	bh=nKQ740NYFVFo3IfOPhC4c8CNCiGNhseulkTJCKy9m5M=;
+	s=arc-20240116; t=1722357996; c=relaxed/simple;
+	bh=YupZyQBRWykfT2Lg8fTo9DQMsgxex4L4uteAuNupo1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mO2cyMPH5zdtbeuDFiORFIWFKsRYx320TTIaSg7g2sflYvC8xPrRB0y0Ti2CEQ/YcVKf9IMJznsy+Ripd+JecHWF7LAgt0ivrEqnUPSYdnB7Szuso0S5QrXKceP9598UFbuPI3+bjhqdFZd6Ej6sImYrh0l2qGBPLajPUIrRHBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywTBNR9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B83C4AF0A;
-	Tue, 30 Jul 2024 16:08:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eJflFg2DBlw0vzcjcaz1sexhGPc68pzoHOPa9ZCHlb/UGlkfDhtsIryIz3+dh3oes+yVdrrX9byNbTMjImXxeUEm7Oqdjn4Ut8q4DJpkgJDCj1N+FxwZNDCvZObAJ2Hi/I9mrFvneeCoKrDva4RmReqeUHjV4DwTSyyVCzR1aeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYcfZ3j+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A375C4AF13;
+	Tue, 30 Jul 2024 16:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355700;
-	bh=nKQ740NYFVFo3IfOPhC4c8CNCiGNhseulkTJCKy9m5M=;
+	s=korg; t=1722357996;
+	bh=YupZyQBRWykfT2Lg8fTo9DQMsgxex4L4uteAuNupo1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywTBNR9pJDgQaC2Hy8pYNiwJtWuaFmstnkX+XptSGwKWSlo+ncdQKtbDZjtOy8AcQ
-	 afr5RuEMYzPrhYgXmgJ41frgRrJJjsWxguYbjN8okpD9ySOcxlEvlzy3u+AxB4WwsF
-	 YemoTvibsNOaoefOYyiDws7L7sJRwRHcLY71nRyQ=
+	b=NYcfZ3j+kYLi/AqZTjrLwQEVYW0oIPG28Gn2Ap/3Zi+N+Rv4Z4/7dyDKDOvkXOQjX
+	 xQ4G2U8F2efZ4CZvzwUF6iaFJN4q0IVc2Vi7oxsMOLRIGZkb0DUniwlQvxrl12pthV
+	 S3ECBBwOQg10hiWUXM/Qpt1f2QniQ7X6hc/PfGzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/568] arm64: dts: rockchip: Fix mic-in-differential usage on rk3568-evb1-v10
+Subject: [PATCH 6.10 313/809] media: uvcvideo: Add quirk for invalid dev_sof in Logitech C920
 Date: Tue, 30 Jul 2024 17:43:09 +0200
-Message-ID: <20240730151643.067753326@linuxfoundation.org>
+Message-ID: <20240730151736.959788334@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
 
-[ Upstream commit ec03073888ad23223ebb986e62583c20a9ed3c07 ]
+[ Upstream commit 85fbe91a7c9210bb30638846b551fa5d3cb7bc4c ]
 
-The 'mic-in-differential' DT property supported by the RK809/RK817 audio
-codec driver is actually valid if prefixed with 'rockchip,':
+Similarly to Logitech C922, C920 seems to also suffer from a firmware
+bug that breaks hardware timestamping.
 
-  DTC_CHK arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dtb
+Add a quirk for this camera model too.
 
-  rk3568-evb1-v10.dtb: pmic@20: codec: 'mic-in-differential' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/mfd/rockchip,rk809.yaml#
+Before applying the quirk:
 
-Make use of the correct property name.
+```
+100 (4) [-] none 100 200717 B 212.919114 213.079004 33.727 fps ts mono/SoE
+101 (5) [-] none 101 200889 B 213.003703 213.114996 11.822 fps ts mono/SoE
+102 (6) [-] none 102 200926 B 213.035571 213.146999 31.379 fps ts mono/SoE
+103 (7) [-] none 103 200839 B 213.067424 213.179003 31.394 fps ts mono/SoE
+104 (0) [-] none 104 200692 B 213.293180 213.214991 4.430 fps ts mono/SoE
+105 (1) [-] none 105 200937 B 213.322374 213.247001 34.254 fps ts mono/SoE
+106 (2) [-] none 106 201013 B 213.352228 213.279005 33.496 fps ts mono/SoE
+…
+```
 
-Fixes: 3e4c629ca680 ("arm64: dts: rockchip: enable rk809 audio codec on the rk3568 evb1-v10")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20240622-rk809-fixes-v2-5-c0db420d3639@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+After applying the quirk:
+
+```
+154 (2) [-] none 154 192417 B 42.199823 42.207788 27.779 fps ts mono/SoE
+155 (3) [-] none 155 192040 B 42.231834 42.239791 31.239 fps ts mono/SoE
+156 (4) [-] none 156 192213 B 42.263823 42.271822 31.261 fps ts mono/SoE
+157 (5) [-] none 157 191981 B 42.299824 42.303827 27.777 fps ts mono/SoE
+158 (6) [-] none 158 191953 B 42.331835 42.339811 31.239 fps ts mono/SoE
+159 (7) [-] none 159 191904 B 42.363824 42.371813 31.261 fps ts mono/SoE
+160 (0) [-] none 160 192210 B 42.399834 42.407801 27.770 fps ts mono/SoE
+```
+
+Fixes: 5d0fd3c806b9 ("[media] uvcvideo: Disable hardware timestamps by default")
+Signed-off-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240325142611.15550-1-oleksandr@natalenko.name
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_driver.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-index 19f8fc369b130..8c3ab07d38079 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-@@ -475,7 +475,7 @@ regulator-state-mem {
- 		};
- 
- 		codec {
--			mic-in-differential;
-+			rockchip,mic-in-differential;
- 		};
- 	};
- };
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 6e55f91ac17fe..d435b6a6c295d 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2580,7 +2580,8 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceClass	= USB_CLASS_VIDEO,
+ 	  .bInterfaceSubClass	= 1,
+ 	  .bInterfaceProtocol	= 0,
+-	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
++	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT
++					       | UVC_QUIRK_INVALID_DEVICE_SOF) },
+ 	/* Logitech HD Pro Webcam C922 */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
 -- 
 2.43.0
 
