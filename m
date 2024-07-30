@@ -1,218 +1,110 @@
-Return-Path: <stable+bounces-62657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70BA6940CAE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:00:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35081940D15
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26A2F283798
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:00:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A067CB2A620
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0300119306B;
-	Tue, 30 Jul 2024 08:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA090194087;
+	Tue, 30 Jul 2024 09:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M5VVoylI"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="df/UTeRk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C746193066;
-	Tue, 30 Jul 2024 08:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF83442C;
+	Tue, 30 Jul 2024 09:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722329990; cv=none; b=o1DBHBCcmhdniSL4jY/qiQayT1Q8wh3XzWT1I5fsB4uA4/FfCA+aHLGClYcNp1Sl0rtNBSOaNC4rD+hZBCx1dB/tqvr1OnotQqe4RFC45/6cdyMOKgvpc5H5rODo1/eqZuqGHlVjvfjfWcfyYpQK3VL/CUJ/qtetEp/8Gxzu2a0=
+	t=1722330232; cv=none; b=fvmRHM6cvqCwlWZiDDWtyy7S0kDT7bcKs/ezPkjpBzTNtZOidIsxPxZptcxLAneFHgSSKAlIeizf/N8qnW8rc5BtrkTj+J5HXHPXBI1in3vKMD3rTppbet4XXP2NBFa4V/+WlaBFlq3KnM3bhaTE9c8bP73CXWRjpjugeDwcclI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722329990; c=relaxed/simple;
-	bh=UoLFiRXLnSzQFz3vQxHApNbca+UPgWp52jw1xG/qCOc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VVofBhpmntIm4HuPPBmnibvmyZ8yLAXidYpSV+IMqLhxJU5FSSd7vETQwK3DuMDwSSBzt/p115Hx5ojrY4kXG5cy5hu/9v3TRvxAfwjg0EIJumn6a67XoFis9R/QSvcLeRZM0c0OTFUdmoJg2RcNxfGxhyVP8uvXOZTKUe3LMew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M5VVoylI; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722329990; x=1753865990;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=UoLFiRXLnSzQFz3vQxHApNbca+UPgWp52jw1xG/qCOc=;
-  b=M5VVoylIvvkcXRr2bR2UGgflFrazbBtc8TL5O6T0LYopmrrvNfslXVJO
-   4bDzW0+nqpBaHO37SGASjOxtcgMShIR6Hta5Uklrxh5bzCljkQkw6EYi+
-   19/SGGnGvIRnWTmEcvOC9gXNQ+EfbJlMYWsWIkLfUbSb1FgctY5Sa3flT
-   U+2pRN/6U/WyRvbzRDC0wAjK3iKDVJ+K5FEigvZnfKkN5qspK9QwSp9ZX
-   oa96NE+G7qx69XYoUOjbgY4Oqa6kw+Xvtbwjob2VzQR7ORAsQqKanFLSJ
-   /q1y62uSVrnD2VztTCbHE8n7wwiUPaF2FCTT/sJpusX8u7Y4acAP5Qkln
-   w==;
-X-CSE-ConnectionGUID: q9XmkROgSQCo6/GOhHskWA==
-X-CSE-MsgGUID: mncge4JvQN6oEc1c1CLYeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23893704"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; 
-   d="scan'208";a="23893704"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 01:59:49 -0700
-X-CSE-ConnectionGUID: 53BEnqcuT4uuBZiTGV0yGg==
-X-CSE-MsgGUID: SxIeXmWdSMSPNv+Hi2iRcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; 
-   d="scan'208";a="58407084"
-Received: from sschumil-mobl2.ger.corp.intel.com (HELO [10.245.246.40]) ([10.245.246.40])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 01:59:45 -0700
-Message-ID: <62280458-3e74-43b0-b9a1-84df09abd30e@linux.intel.com>
-Date: Tue, 30 Jul 2024 10:59:42 +0200
+	s=arc-20240116; t=1722330232; c=relaxed/simple;
+	bh=aT6YWkhZEjQkMgQHoHWRPl+epeU7SgJNatRtcANLLYU=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=CoqXdFWkmHAdowJTR5LkyQTidO7LSui437cxaPymWyWUp9Ey5lsKxnJNrQTNbHfo922lHkMKzKQBWfMxtVGC7FBANMpf96WaiVNyqSHPSGKxTHYfTLfmLz26gNLwwKHkl8zWrQca4rmwhM1rE+fatLEmzXYJLVn1bfI0R3aDOOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=df/UTeRk; arc=none smtp.client-ip=203.205.221.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1722330222; bh=aT6YWkhZEjQkMgQHoHWRPl+epeU7SgJNatRtcANLLYU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=df/UTeRk6OMrA44J1VPz4wDecfgCMZAf1keSpOP7+/rg0OgQCdoquWal6kHhEbrIF
+	 7NwPXCW2leY9hKPZQW0R74UBLQq+EM6ThDqtzaJhtzbbqHVYVRYf4E3gOkDVn3TL4m
+	 hBTCPwmfkZB9rleklXdgC+0vH3jma24KTxpoK/Bo=
+Received: from localhost.localdomain ([36.111.64.84])
+	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
+	id E632620; Tue, 30 Jul 2024 17:03:38 +0800
+X-QQ-mid: xmsmtpt1722330218txljhelz7
+Message-ID: <tencent_0C989DE2631E74C23BA8B60EA234C4B2FA0A@qq.com>
+X-QQ-XMAILINFO: NQR8mRxMnur9EFx0+urXeijJN/+EJfxmwlNIY4BESdMbuBo+oGNSI8+KoUd3B9
+	 CnZUyf58rLslEK8uADQd6L6gQC3EZPf19y1NH5bDfHV4gj46tViFU5jD25hF40HSPR5YoWGyPfdy
+	 fI4Uk9W7J+dodq6c6lZfC2vAIoLvzDblfNJp/q0ZwqD42T3t4Ji4UJF0kUzyblNyrHZKFzMlpYLs
+	 nHO2TrS6KqgF4U9XJc7kDdySW6PWTvv1Y50NJ7L61gIx3bKhD8eSJ6ElQs/dB3TfyawecUlebuB3
+	 J8XmqxbtzZzS78JaaKQ0A0ujk7GaEUEIapOvn562ELhyeV9PIU5uN0wyP0pLLY2YuuBebYC8hj/K
+	 YBkc2nlqptrxW2L5ssUN3/tYNB+U+gnT5mXfwnSAjBDixDZEymuU4xWlu1Ie3Q8ONXQD491cvAbK
+	 3WQIk9/ZN7Nf2p2oZj9vtY172XmpIF4U/UPyDEl877d6t6S2qyUuA/KNG/XnPVDcs5lmO271Wrbo
+	 ZtNzyUgarDYdDPmgMuwYg2D5igxikBKT6oL2G2SErjPKnkbT4ep/RdJJcLPzlEFxgv5ok5p7VUKD
+	 5/oMucmjCLU48ea3ebIy8bb9SN9pn1hrtLODBNcEUSYWG8858A4Ha7Qrq0KCE+b6zHd6s+m6/b0P
+	 tMS0JMLfdmT37iiUZPL6R65t11YqLUyDF4KBGOODOU4PFCqN2OueE3NWa+OPnhQyIxUdQJZpfGVk
+	 wjy8UoMsaK09RhQuPgxz/pqEsSX4OXECX3YZR+d8imUq1ihqFFkyAo2BiEpoaMOLoTBJz5auwGqS
+	 3mtu/m90/1giQMqqBI3eTBLjcb+sDe1pz7QGqcPsSVHvpr6M0teqIIciHaq/5FHKp3f4miqlOQor
+	 hxCWCDmJgsxjHOKe1epvf9Vw1+stby01YmNL/6jOJKfzp3NNIkTxCaQZJ5LLpAQ1t+DFayBkN6e4
+	 2uhny4FV7VorVH8mseI1Qo8wqAZtiyZp/4lD2cFKbllYUd7xAheVnODUT3hZdj
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+From: wujing <realwujing@qq.com>
+To: peterz@infradead.org
+Cc: dongml2@chinatelecom.cn,
+	linux-kernel@vger.kernel.org,
+	mingo@redhat.com,
+	realwujing@qq.com,
+	yuanql9@chinatelecom.cn,
+	stable@vger.kernel.org,
+	mengong8.dong@gmail.com
+Subject: Re: Re: [PATCH] sched/fair: Correct CPU selection from isolated domain
+Date: Tue, 30 Jul 2024 17:03:38 +0800
+X-OQ-MSGID: <20240730090338.28438-1-realwujing@qq.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240730082239.GF33588@noisy.programming.kicks-ass.net>
+References: <20240730082239.GF33588@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soundwire: stream: fix programming slave ports for
- non-continous port maps
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Vinod Koul <vkoul@kernel.org>, Bard Liao <yung-chuan.liao@linux.intel.com>,
- Sanyog Kale <sanyog.r.kale@intel.com>, Shreyas NC <shreyas.nc@intel.com>,
- alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20240729140157.326450-1-krzysztof.kozlowski@linaro.org>
- <095d7119-8221-450a-9616-2df6a0df4c77@linux.intel.com>
- <22b20ad7-8a25-4cb2-a24e-d6841b219977@linaro.org>
- <dc66cd0d-6807-4613-89a8-296ce5dd2daf@linaro.org>
-Content-Language: en-US
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <dc66cd0d-6807-4613-89a8-296ce5dd2daf@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+> If you're trying to backport something, I think you forgot to Cc stable
+> and provide the proper upstream commit.
+>
+> As is this isn't something I can do anything with. The patch does not
+> apply to any recent kernel and AFAICT this issue has long since been
+> fixed.
 
+When fixing this bug, I didn't pay much attention to upstream changes.
+Upon reviewing the history of relevant commits, I found that they have
+been merged and reverted multiple times:
 
-On 7/30/24 10:39, Krzysztof Kozlowski wrote:
-> On 30/07/2024 10:23, Krzysztof Kozlowski wrote:
->> On 29/07/2024 16:25, Pierre-Louis Bossart wrote:
->>>
->>>
->>> On 7/29/24 16:01, Krzysztof Kozlowski wrote:
->>>> Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
->>>> 'sink_ports' - define which ports to program in
->>>> sdw_program_slave_port_params().  The masks are used to get the
->>>> appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
->>>> an array.
->>>>
->>>> Bitmasks can be non-continuous or can start from index different than 0,
->>>> thus when looking for matching port property for given port, we must
->>>> iterate over mask bits, not from 0 up to number of ports.
->>>>
->>>> This fixes allocation and programming slave ports, when a source or sink
->>>> masks start from further index.
->>>>
->>>> Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
->>>> Cc: <stable@vger.kernel.org>
->>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>>
->>> This is a valid change to optimize how the port are accessed.
->>>
->>> But the commit message is not completely clear, the allocation in
->>> mipi_disco.c is not modified and I don't think there's anything that
->>> would crash. If there are non-contiguous ports, we will still allocate
->>> space that will not be initialized/used.
->>>
->>> 	/* Allocate memory for set bits in port lists */
->>> 	nval = hweight32(prop->source_ports);
->>> 	prop->src_dpn_prop = devm_kcalloc(&slave->dev, nval,
->>> 					  sizeof(*prop->src_dpn_prop),
->>> 					  GFP_KERNEL);
->>> 	if (!prop->src_dpn_prop)
->>> 		return -ENOMEM;
->>>
->>> 	/* Read dpn properties for source port(s) */
->>> 	sdw_slave_read_dpn(slave, prop->src_dpn_prop, nval,
->>> 			   prop->source_ports, "source");
->>>
->>> IOW, this is a valid change, but it's an optimization, not a fix in the
->>> usual sense of 'kernel oops otherwise'.
->>>
->>> Am I missing something?
->>>
->>> BTW, the notion of DPn is that n > 0. DP0 is a special case with
->>> different properties, BIT(0) cannot be set for either of the sink/source
->>> port bitmask.
->>
->> I think we speak about two different things. port num > 1, that's
->> correct. But index for src_dpn_prop array is something different. Look
->> at mipi-disco sdw_slave_read_dpn():
->>
->> 173         u32 bit, i = 0;
->> ...
->> 178         addr = ports;
->> 179         /* valid ports are 1 to 14 so apply mask */
->> 180         addr &= GENMASK(14, 1);
->> 181
->> 182         for_each_set_bit(bit, &addr, 32) {
->> ...
->> 186                 dpn[i].num = bit;
->>
->>
->> so dpn[0..i] = 1..n
->> where i is also the bit in the mask.
+```bash
+git log -S 'cpumask_test_cpu(cpu, sched_domain_span(sd))' --oneline \
+kernel/sched/fair.c
 
-yes, agreed on the indexing.
+8aeaffef8c6e sched/fair: Take the scheduling domain into account in select_idle_smt()
+3e6efe87cd5c sched/fair: Remove redundant check in select_idle_smt()
+3e8c6c9aac42 sched/fair: Remove task_util from effective utilization in feec()
+c722f35b513f sched/fair: Bring back select_idle_smt(), but differently
+6cd56ef1df39 sched/fair: Remove select_idle_smt()
+df3cb4ea1fb6 sched/fair: Fix wrong cpu selecting from isolated domain
+```
 
-But are we in agreement that the case of non-contiguous ports would not
-create any issues? the existing code is not efficient but it wouldn't
-crash, would it?
-
-There are multiple cases of non-contiguous ports, I am not aware of any
-issues...
-
-rt700-sdw.c:    prop->source_ports = 0x14; /* BITMAP: 00010100 */
-rt711-sdca-sdw.c:       prop->source_ports = 0x14; /* BITMAP: 00010100
-rt712-sdca-sdw.c:       prop->source_ports = BIT(8) | BIT(4);
-rt715-sdca-sdw.c:       prop->source_ports = 0x50;/* BITMAP: 01010000 */
-rt722-sdca-sdw.c:       prop->source_ports = BIT(6) | BIT(2); /* BITMAP:
-01000100 */
-
-same for sinks:
-
-rt712-sdca-sdw.c:       prop->sink_ports = BIT(3) | BIT(1); /* BITMAP:
-00001010 */
-rt722-sdca-sdw.c:       prop->sink_ports = BIT(3) | BIT(1); /* BITMAP:
-00001010 */
-
->> Similar implementation was done in Qualcomm wsa and wcd codecs like:
->> array indexed from 0:
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/codecs/wcd938x-sdw.c?h=v6.11-rc1#n51
->>
->> genmask from 0, with a mistake:
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/codecs/wcd938x-sdw.c?h=v6.11-rc1#n1255
->>
->> The mistake I corrected here:
->> https://lore.kernel.org/all/20240726-asoc-wcd-wsa-swr-ports-genmask-v1-0-d4d7a8b56f05@linaro.org/
->>
->> To summarize, the mask does not denote port numbers (1...14) but indices
->> of the dpn array which are from 0..whatever (usually -1 from port number).
->>
-> 
-> Let me also complete this with a real life example of my work in
-> progress. I want to use same dpn_prop array for sink and source ports
-> and use different masks. The code in progress is:
-> 
-> https://git.codelinaro.org/krzysztof.kozlowski/linux/-/commit/ef709a0e8ab2498751305367e945df18d7a05c78#6f965d7b74e712a5cfcbc1cca407b85443a66bac_2147_2157
-> 
-> Without this patch, I get -EINVAL from sdw_get_slave_dpn_prop():
->   soundwire sdw-master-1-0: Program transport params failed: -2
-
-Not following, sorry. The sink and source masks are separate on purpose,
-to allow for bi-directional ports. The SoundWire spec allows a port to
-be configured at run-time either as source or sink. In practice I've
-never seen this happen, all existing hardware relies on ports where the
-direction is hard-coded/fixed, but still we want to follow the spec.
-
-So if ports can be either source or sink, I am not sure how the
-properties could be shared with a single array?
-
-Those two lines aren't clear to me at all:
-
-	pdev->prop.sink_dpn_prop = wsa884x_sink_dpn_prop;
-	pdev->prop.src_dpn_prop = wsa884x_sink_dpn_prop;
+The latest upstream commit 8aeaffef8c6e is not applicable to linux-4.19.y.
+The current patch has been tested on linux-4.19.y and I am looking forward
+to its inclusion in the stable version.
 
 
