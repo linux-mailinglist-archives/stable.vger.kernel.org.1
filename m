@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-64631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7A5941EBA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE26941BA3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D81C1C23279
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3072283D67
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCA6189503;
-	Tue, 30 Jul 2024 17:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF04189903;
+	Tue, 30 Jul 2024 16:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqV86MCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZq5DIo6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37621A76A5;
-	Tue, 30 Jul 2024 17:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71613184549;
+	Tue, 30 Jul 2024 16:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360751; cv=none; b=HxeuOrgUKaR2o0MuM7Mp2cf6RvQ6lbe8RI+mtC/hOLu3Y4nr8ujRtt6zusb7/4YM5zYfXygwCTcFa8wOagTmVw40XsTvncVn/2kBG1bHGp9ds4Nr1mexO1P/QgVBSLEQi03CCaqVs6zir8OgEf6cJoOl6Bmtlnp15fFXF+vquFc=
+	t=1722358631; cv=none; b=j9pNRxBGbPAb0T1g9gWMBmE9t7hRiLuJqgOvigx+bAo1XXMb3Pnqm6Ebw3CXxBZaKJyuW8xJqFqIthp9nTWKQ+BSzu32YCL+PZzcD8B/G2nIYAvSeWOPB447WN2CK1Dk3GuaqUSBXliU4aF14gZqddU68TdH2Ltt9tXTgz7soL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360751; c=relaxed/simple;
-	bh=6HKrVpCh038ALVGKfmwKomASOXh2xU4n+pSFA20jBoE=;
+	s=arc-20240116; t=1722358631; c=relaxed/simple;
+	bh=Rvic1+ZSOSKOX0iZo5Aj1KVFve6F7xPV1dN5jbr0rX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8dXhhdPKinS4BI2HHz4uy8gqEhiVNTpQb3xTurU2V6epW1dBhmEv/zDiKwFZix57U4XvLq9fXIzUKpcI/IEhc2ZxnXcfEhKt6ixtvGtveoXQjHUIDcbTj9oIEAcyepTkGpAV/Yc8WW9U/a43OlYED0s9p2ELq6lSXfO9D5Y7Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqV86MCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C54C32782;
-	Tue, 30 Jul 2024 17:32:30 +0000 (UTC)
+	 MIME-Version; b=pyVWYpTeyM70VyEJJjIocwD0A3JcaFqBI5v23QBvvjiJWxMufysfmnB/RUgnrG408zAKaJISYMs6gxl48mTr1E6cEJo4HVyPKPIRV9uc6gKjLyUcyG7VO7/3XnvMnaHOBOYJ8OdfmDoJZdo0449jZgBPk2loa+jaV61MFE36dpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZq5DIo6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7F1C32782;
+	Tue, 30 Jul 2024 16:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360751;
-	bh=6HKrVpCh038ALVGKfmwKomASOXh2xU4n+pSFA20jBoE=;
+	s=korg; t=1722358631;
+	bh=Rvic1+ZSOSKOX0iZo5Aj1KVFve6F7xPV1dN5jbr0rX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqV86MCTJ+hB0ZomRFVF4M80A+tJVsiX05ChH9oMnpxr/TCJ6/0wErjGVEyA/hDyE
-	 2qr7aIWiiP1NjKQZCV2Pp/of35Lq1dmNMQxHTlBvHhVeT+YonphJ7Foa7b58Ph3Ajb
-	 uFylVhPgUqDiIY2Akzbhd/nNXxCKY65wnxJ/NXVY=
+	b=jZq5DIo6CrM/lsy0Kd3tLqTdkRjUOjVdJhmBpVjAgFkhs2lzfsTrBeKItY5PbtlX5
+	 RuWQx8q6p5VnPuINX9mcoMyaVLDLjRaIbXj5wZ1Bne1Ok3oeGe/eIGR0DLJnMnWG/n
+	 x8JlViSagrEhllGyluc7iMFtlVqDUkz/NbX1yi2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 765/809] netfs: Fix writeback that needs to go to both server and cache
+Subject: [PATCH 6.1 408/440] bpf, events: Use prog to emit ksymbol event for main program
 Date: Tue, 30 Jul 2024 17:50:41 +0200
-Message-ID: <20240730151755.181800045@linuxfoundation.org>
+Message-ID: <20240730151631.731617291@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 212be98aa19303cbf376d61faf9de3ec9997c1cd ]
+[ Upstream commit 0be9ae5486cd9e767138c13638820d240713f5f1 ]
 
-When netfslib is performing writeback (ie. ->writepages), it maintains two
-parallel streams of writes, one to the server and one to the cache, but it
-doesn't mark either stream of writes as active until it gets some data that
-needs to be written to that stream.
+Since commit 0108a4e9f358 ("bpf: ensure main program has an extable"),
+prog->aux->func[0]->kallsyms is left as uninitialized. For BPF programs
+with subprogs, the symbol for the main program is missing just as shown
+in the output of perf script below:
 
-This is done because some folios will only be written to the cache
-(e.g. copying to the cache on read is done by marking the folios and
-letting writeback do the actual work) and sometimes we'll only be writing
-to the server (e.g. if there's no cache).
+ ffffffff81284b69 qp_trie_lookup_elem+0xb9 ([kernel.kallsyms])
+ ffffffffc0011125 bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
+ ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
+ ffffffffc00110a1 +0x25 ()
+ ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
 
-Now, since we don't actually dispatch uploads and cache writes in parallel,
-but rather flip between the streams, depending on which has the lowest
-so-far-issued offset, and don't wait for the subreqs to finish before
-flipping, we can end up in a situation where, say, we issue a write to the
-server and this completes before we start the write to the cache.
+Fix it by always using prog instead prog->aux->func[0] to emit ksymbol
+event for the main program. After the fix, the output of perf script
+will be correct:
 
-But because we only activate a stream when we first add a subreq to it, the
-result collection code may run before we manage to activate the stream -
-resulting in the folio being cleaned and having the writeback-in-progress
-mark removed.  At this point, the folio no longer belongs to us.
+ ffffffff81284b96 qp_trie_lookup_elem+0xe6 ([kernel.kallsyms])
+ ffffffffc001382d bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
+ ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
+ ffffffffc0013779 bpf_prog_245c55ab25cfcf40_qp_trie_lookup+0x25 (bpf...)
+ ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
 
-This is only really a problem for folios that need to be written to both
-streams - and in that case, the upload to the server is started first,
-followed by the write to the cache - and the cache write may see a bad
-folio.
-
-Fix this by activating the cache stream up front if there's a cache
-available.  If there's a cache, then all data is going to be written to it.
-
-Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/1599053.1721398818@warthog.procyon.org.uk
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 0108a4e9f358 ("bpf: ensure main program has an extable")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Yonghong Song <yonghong.song@linux.dev>
+Reviewed-by: Krister Johansen <kjlx@templeofstupid.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20240714065533.1112616-1-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_issue.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/events/core.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index d7c971df88660..32bc88bee5d18 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -122,6 +122,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
- 	wreq->io_streams[1].transferred		= LONG_MAX;
- 	if (fscache_resources_valid(&wreq->cache_resources)) {
- 		wreq->io_streams[1].avail	= true;
-+		wreq->io_streams[1].active	= true;
- 		wreq->io_streams[1].prepare_write = wreq->cache_resources.ops->prepare_write_subreq;
- 		wreq->io_streams[1].issue_write = wreq->cache_resources.ops->issue_write;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index b8333b8e6a782..d92ee56a2a768 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9097,21 +9097,19 @@ static void perf_event_bpf_emit_ksymbols(struct bpf_prog *prog,
+ 	bool unregister = type == PERF_BPF_EVENT_PROG_UNLOAD;
+ 	int i;
+ 
+-	if (prog->aux->func_cnt == 0) {
+-		perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
+-				   (u64)(unsigned long)prog->bpf_func,
+-				   prog->jited_len, unregister,
+-				   prog->aux->ksym.name);
+-	} else {
+-		for (i = 0; i < prog->aux->func_cnt; i++) {
+-			struct bpf_prog *subprog = prog->aux->func[i];
+-
+-			perf_event_ksymbol(
+-				PERF_RECORD_KSYMBOL_TYPE_BPF,
+-				(u64)(unsigned long)subprog->bpf_func,
+-				subprog->jited_len, unregister,
+-				subprog->aux->ksym.name);
+-		}
++	perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
++			   (u64)(unsigned long)prog->bpf_func,
++			   prog->jited_len, unregister,
++			   prog->aux->ksym.name);
++
++	for (i = 1; i < prog->aux->func_cnt; i++) {
++		struct bpf_prog *subprog = prog->aux->func[i];
++
++		perf_event_ksymbol(
++			PERF_RECORD_KSYMBOL_TYPE_BPF,
++			(u64)(unsigned long)subprog->bpf_func,
++			subprog->jited_len, unregister,
++			subprog->aux->ksym.name);
  	}
+ }
+ 
 -- 
 2.43.0
 
