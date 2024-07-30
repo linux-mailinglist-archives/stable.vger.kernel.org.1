@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-64505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA71941E58
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 534D9941A5A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 539A0B23495
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80024B25682
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E091A76B6;
-	Tue, 30 Jul 2024 17:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5CB184535;
+	Tue, 30 Jul 2024 16:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wf4a5Km2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNemjpMf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800431A76A1;
-	Tue, 30 Jul 2024 17:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C971A6192;
+	Tue, 30 Jul 2024 16:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360346; cv=none; b=nJnsPv/opRutMbqjHXyWTbho6Y+G/WFtUHgeGjVQ7kj9je1xhyWWTfgztaokeqm+OJ/OfCiZ7Cf/bS87TOFhRmdqjYEt9QKUZRW5nYFgDwj6W3fycJ3+frQeAs2W5rzNk744QapP61kfe7Hxvgr+1iNUTCAq0i0SmnHGdPpI07I=
+	t=1722357668; cv=none; b=H+9JX5dOxOAJmqVh7yC28mYxMrn9nQFWW66/DkA9XwV/meIH70Zm/ZMazCwaaoAHp/eFw93wQ7MKxOmVs7kcpnDHwSKpRyjKZyoD3fv9hrwjJXbojv3uSSyep0lpkpAhyPR1AZs1dkmjVy404Fu4Cc2pwCyuJSvLLj0bENqHHqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360346; c=relaxed/simple;
-	bh=WY2HtPyGcDmSi5rQHvWJLpOeE7jvz6Jed9LOgO6nHV8=;
+	s=arc-20240116; t=1722357668; c=relaxed/simple;
+	bh=REUe+d+nsFVOK1M54qt+idNYA6RMTHSsuR660kw6Kcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VAVF7r4jljsXWofzmj1WZHFb10EnAMmeRvyKebczOxXmlDbxjxRi/d/ZNh2awEiBPGwmx6V71b1oTNPoZRSqKMwmtzzkRax5RPeIcfwO/sFtdP4AE8Xt9ygvB+WSB92kkvXe9W0aPFCwgL1SKVefAWEEYESmafdJ8w5Sn3LHvtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wf4a5Km2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A356EC4AF0C;
-	Tue, 30 Jul 2024 17:25:45 +0000 (UTC)
+	 MIME-Version; b=FzovzC24T0ZUGqfF6L6zZg5WY5Vmycar9d6aXoYXTDsyj2Sfn4n0hh8sw95Qb5yRDomSVxO4NvJQ4LUJUyhniFcdCUEZTlgLvqQy8kUY4goiJJbvplJXrwclAnVJZLjgE4SShBQp+wFI1JQmSaRxCDfuwBwbpzOL82K2UUn09uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNemjpMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC2DC32782;
+	Tue, 30 Jul 2024 16:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360346;
-	bh=WY2HtPyGcDmSi5rQHvWJLpOeE7jvz6Jed9LOgO6nHV8=;
+	s=korg; t=1722357668;
+	bh=REUe+d+nsFVOK1M54qt+idNYA6RMTHSsuR660kw6Kcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wf4a5Km2yl4eQfovEFRzqaOgFwHExVrZC21oc63qKZ+AJM0Hb5tYdacE0u21SEJno
-	 NsrMZg8Wc7Fqr7wOZjjrJ2qKwa5Lcog4K2yG65UxA8PLvFBA3lb6C/vJGsyG2pgMwx
-	 RoiyqDx5J+KPNXLAapvINjqScDCNNh0lCsvMNeMg=
+	b=rNemjpMfrSX8aTIaF0EiTuLf4gon3n/NSssj0u5BiBZgiocIAeHmWEcGGtIMRSq5d
+	 PhTiijJfWdMHFeKZh6hN/kr7FDEEmzmkSQgsal+gOSHP+qqzSpfpHYZ2JzqaW9Ymko
+	 Y0d4fbzWjRnRkrHNL7NN1Ait5mT5n9bnLFP+jLwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Lk Sii <lk_sii@163.com>
-Subject: [PATCH 6.10 671/809] kobject_uevent: Fix OOB access within zap_modalias_env()
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 314/440] KVM: VMX: Split out the non-virtualization part of vmx_interrupt_blocked()
 Date: Tue, 30 Jul 2024 17:49:07 +0200
-Message-ID: <20240730151751.405749744@linuxfoundation.org>
+Message-ID: <20240730151628.086979627@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit dd6e9894b451e7c85cceb8e9dc5432679a70e7dc upstream.
+commit 322a569c4b4188a0da2812f9e952780ce09b74ba upstream.
 
-zap_modalias_env() wrongly calculates size of memory block to move, so
-will cause OOB memory access issue if variable MODALIAS is not the last
-one within its @env parameter, fixed by correcting size to memmove.
+Move the non-VMX chunk of the "interrupt blocked" checks to a separate
+helper so that KVM can reuse the code to detect if interrupts are blocked
+for L2, e.g. to determine if a virtual interrupt _for L2_ is a valid wake
+event.  If L1 disables HLT-exiting for L2, nested APICv is enabled, and L2
+HLTs, then L2 virtual interrupts are valid wake events, but if and only if
+interrupts are unblocked for L2.
 
-Fixes: 9b3fa47d4a76 ("kobject: fix suppressing modalias in uevents delivered over netlink")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Reviewed-by: Lk Sii <lk_sii@163.com>
-Link: https://lore.kernel.org/r/1717074877-11352-1-git-send-email-quic_zijuhu@quicinc.com
+Link: https://lore.kernel.org/r/20240607172609.3205077-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/kobject_uevent.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/vmx.c |   11 ++++++++---
+ arch/x86/kvm/vmx/vmx.h |    1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/lib/kobject_uevent.c
-+++ b/lib/kobject_uevent.c
-@@ -433,8 +433,23 @@ static void zap_modalias_env(struct kobj
- 		len = strlen(env->envp[i]) + 1;
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4980,14 +4980,19 @@ static int vmx_nmi_allowed(struct kvm_vc
+ 	return !vmx_nmi_blocked(vcpu);
+ }
  
- 		if (i != env->envp_idx - 1) {
-+			/* @env->envp[] contains pointers to @env->buf[]
-+			 * with @env->buflen chars, and we are removing
-+			 * variable MODALIAS here pointed by @env->envp[i]
-+			 * with length @len as shown below:
-+			 *
-+			 * 0               @env->buf[]      @env->buflen
-+			 * ---------------------------------------------
-+			 * ^             ^              ^              ^
-+			 * |             |->   @len   <-| target block |
-+			 * @env->envp[0] @env->envp[i]  @env->envp[i + 1]
-+			 *
-+			 * so the "target block" indicated above is moved
-+			 * backward by @len, and its right size is
-+			 * @env->buflen - (@env->envp[i + 1] - @env->envp[0]).
-+			 */
- 			memmove(env->envp[i], env->envp[i + 1],
--				env->buflen - len);
-+				env->buflen - (env->envp[i + 1] - env->envp[0]));
++bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
++{
++	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
++	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
++		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
++}
++
+ bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
+ {
+ 	if (is_guest_mode(vcpu) && nested_exit_on_intr(vcpu))
+ 		return false;
  
- 			for (j = i; j < env->envp_idx - 1; j++)
- 				env->envp[j] = env->envp[j + 1] - len;
+-	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
+-	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
+-		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
++	return __vmx_interrupt_blocked(vcpu);
+ }
+ 
+ static int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -413,6 +413,7 @@ u64 construct_eptp(struct kvm_vcpu *vcpu
+ bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
+ void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
+ bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
++bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
+ bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
+ bool vmx_get_nmi_mask(struct kvm_vcpu *vcpu);
+ void vmx_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked);
 
 
 
