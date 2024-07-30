@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C969B941883
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDED941AE4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80DD31F237AA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8C111F2207E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64F71A618F;
-	Tue, 30 Jul 2024 16:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F86518455B;
+	Tue, 30 Jul 2024 16:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lb/CtrtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qke9QRFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732021A6161;
-	Tue, 30 Jul 2024 16:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C7C1A6166;
+	Tue, 30 Jul 2024 16:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356570; cv=none; b=ZftRZKzG+O4aeKfqEzSh2a2KCMBbtRycouTqcT7aG+5VhCqzponYbhXlvczdzwjEgaOyFY7NoW6Qkvb38lvjXpJmWych2gw7Yyzq/MsKOEgCmhoMuw7HPshHxX3rBELYrHoPelPvvzOjL5StHsaR2X2yfusnr6SwkZ/ABCwRTzA=
+	t=1722358116; cv=none; b=nnfTiLJK8XSI4AFHvKYAsrPAhyymMUKxQCpev8EOPlBR0x9pnFOIS0BlvLvvOALQmzt9vAE/xq7CLsyqv7BquoPyenqc7XhfLPThD43p51sC0QvSdMjBBGz3iCX2JSDYpp+ScStlFMmfDn0Kr6ep9CcF2ndws1Y0RQguCRlU8ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356570; c=relaxed/simple;
-	bh=HM3ys2qwrcdD42pdmkgRwpX6LNU5h8vZyeFwPKl42UA=;
+	s=arc-20240116; t=1722358116; c=relaxed/simple;
+	bh=EO1yovHpvI64se5kIS2FolspIMmEfT7Kmi4AxA4RfM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9Z4tPia15xNLip/kEsZYqbbsPx4MXrs+uZ36JFAKyEDNbjXlqqIQeubcODgHcQd3RLckSxygM/YuGJumqBlC4Lv8D96ctrr2uLpquwMeavSREz/7L+tq3TC5Zj/oip8ZustPtN1BibOedgbM+mvTSLpnnUEeaEMbnNNCcRkXcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lb/CtrtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA447C32782;
-	Tue, 30 Jul 2024 16:22:49 +0000 (UTC)
+	 MIME-Version; b=qO8rOXnfpeh7cB//yRN8Mc3053bB8041JcJOuR2grnv9FtnhNOIlkimG38lSCsymaCOYYAfHvN8drWko7XrAqgEDudetVd7preBJK1Fd1zoK+Pa/1zJYh7vDRA5+LfbNXzRSgFuvQXWY5234BJTlDWjtKXKtAwF9nqpbSvRqzNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qke9QRFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415ADC32782;
+	Tue, 30 Jul 2024 16:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356570;
-	bh=HM3ys2qwrcdD42pdmkgRwpX6LNU5h8vZyeFwPKl42UA=;
+	s=korg; t=1722358116;
+	bh=EO1yovHpvI64se5kIS2FolspIMmEfT7Kmi4AxA4RfM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lb/CtrtKs/IuEVVd0KW98rLsR2eqx+j+VIiUFaw5yaDqeuR7apru0awSUfHKCo1qb
-	 5JfYrK6SSYWh17j/MjWcV+QRfdP6URQp5lmuBpnxU3PIZeXtGa0NN3Dc0UIMelWF41
-	 CcexmqplNO4SgHdyYVT41udY3+NNsQY2UxHI2K/E=
+	b=Qke9QRFNmfzDdsR8qbc+xvLqjCJlAUincDVSP8Y53N2UyWiDb2UR3PDEnUsctg7f2
+	 ayVQy9vznqZksbdHI6VjWavQaXqbRplS+9XM3Ou5ORoeKH4tsxtgz0UKbekWNzddgU
+	 Rp/fPvbaKVzag0Sj+YipgRg7uvTRU3KS9TwBpH50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honggang LI <honggangli@163.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/440] RDMA/rxe: Dont set BTH_ACK_MASK for UC or UD QPs
+Subject: [PATCH 6.6 327/568] pinctrl: single: fix possible memory leak when pinctrl_enable() fails
 Date: Tue, 30 Jul 2024 17:47:14 +0200
-Message-ID: <20240730151623.722472230@linuxfoundation.org>
+Message-ID: <20240730151652.655504155@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 4adcaf969d77d3d3aa3871bbadc196258a38aec6 ]
+[ Upstream commit 8f773bfbdd428819328a2d185976cfc6ae811cd3 ]
 
-BTH_ACK_MASK bit is used to indicate that an acknowledge
-(for this packet) should be scheduled by the responder.
-Both UC and UD QPs are unacknowledged, so don't set
-BTH_ACK_MASK for UC or UD QPs.
+This driver calls pinctrl_register_and_init() which is not
+devm_ managed, it will leads memory leak if pinctrl_enable()
+fails. Replace it with devm_pinctrl_register_and_init().
+And call pcs_free_resources() if pinctrl_enable() fails.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://lore.kernel.org/r/20240624020348.494338-1-honggangli@163.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-3-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_req.c | 7 ++++---
+ drivers/pinctrl/pinctrl-single.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-index 2ace1007a4195..35768fdbd5b74 100644
---- a/drivers/infiniband/sw/rxe/rxe_req.c
-+++ b/drivers/infiniband/sw/rxe/rxe_req.c
-@@ -390,7 +390,7 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	int			paylen;
- 	int			solicited;
- 	u32			qp_num;
--	int			ack_req;
-+	int			ack_req = 0;
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 461a7c02d4a39..17e08f21756c3 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -1327,7 +1327,6 @@ static void pcs_irq_free(struct pcs_device *pcs)
+ static void pcs_free_resources(struct pcs_device *pcs)
+ {
+ 	pcs_irq_free(pcs);
+-	pinctrl_unregister(pcs->pctl);
  
- 	/* length from start of bth to end of icrc */
- 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
-@@ -411,8 +411,9 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	qp_num = (pkt->mask & RXE_DETH_MASK) ? ibwr->wr.ud.remote_qpn :
- 					 qp->attr.dest_qp_num;
+ #if IS_BUILTIN(CONFIG_PINCTRL_SINGLE)
+ 	if (pcs->missing_nr_pinctrl_cells)
+@@ -1884,7 +1883,7 @@ static int pcs_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		goto free;
  
--	ack_req = ((pkt->mask & RXE_END_MASK) ||
--		(qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
-+	if (qp_type(qp) != IB_QPT_UD && qp_type(qp) != IB_QPT_UC)
-+		ack_req = ((pkt->mask & RXE_END_MASK) ||
-+			   (qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
- 	if (ack_req)
- 		qp->req.noack_pkts = 0;
+-	ret = pinctrl_register_and_init(&pcs->desc, pcs->dev, pcs, &pcs->pctl);
++	ret = devm_pinctrl_register_and_init(pcs->dev, &pcs->desc, pcs, &pcs->pctl);
+ 	if (ret) {
+ 		dev_err(pcs->dev, "could not register single pinctrl driver\n");
+ 		goto free;
+@@ -1917,8 +1916,10 @@ static int pcs_probe(struct platform_device *pdev)
+ 
+ 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
+ 
+-	return pinctrl_enable(pcs->pctl);
++	if (pinctrl_enable(pcs->pctl))
++		goto free;
+ 
++	return 0;
+ free:
+ 	pcs_free_resources(pcs);
  
 -- 
 2.43.0
