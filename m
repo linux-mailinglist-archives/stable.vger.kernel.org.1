@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC31941D9E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DF5941EE1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1605028C8BB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51F2AB27944
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5101A76B1;
-	Tue, 30 Jul 2024 17:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94842189912;
+	Tue, 30 Jul 2024 17:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmeVVMnY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y24YsBpQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7071A76A4;
-	Tue, 30 Jul 2024 17:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C2A166315;
+	Tue, 30 Jul 2024 17:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359961; cv=none; b=vDuPuDiJfgVKqceS5pZsOViNInYtOz6W9Ki2ZluhgmcYkmtefe0XSEngDs90RmVya1xq52A/MHCyxH3RxERUdskCwySTt9NgnqinnPcKRetZVxg5HEtRfnnZIqk3munCV8tH7mhFPrrpjXH0VfHCiVG5mjeE96io4ZwmErQPWSc=
+	t=1722360821; cv=none; b=VZ6JqBoPD8uHmpJsg7siiq2CuwCIAyiz2YSWDq387TGlXUgnFexyf6cUfNMZ+tM9VZec9H7Xs7WzX+qDznKxZzh1FkBdSD1cMm7eAy/qw4eCPNNIMNzHpUHRvtOqaz5MaheCZjRpeyDPrfDOQ+s4a4Vj5icSpPUzLE0ZjzeqAYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359961; c=relaxed/simple;
-	bh=HRNuX7dyhhuYJQA7lDUNFppedP8tK17TdvOmqZhWVk4=;
+	s=arc-20240116; t=1722360821; c=relaxed/simple;
+	bh=Vasg8TcOHBaZVaw2oCHg2WTgTTtNksQtPzYfp0uCsOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5+zn91wPHh+B3aBb7ARSIk/Jwa0mZB0AtXaK9gZorW4od6hRQlaZiYHMW1tK5VH3z/E7I7p5deJ3biLx91t3dunhuqeZ0RUaqml505vcg6EHImck8vShbLK+rnNzJ69RcNftlCGXf3djenep7p36wbH1KV5Kx1oDBXNAXcwjz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmeVVMnY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EE6C32782;
-	Tue, 30 Jul 2024 17:19:20 +0000 (UTC)
+	 MIME-Version; b=U2cCY2DRtLGWH+Eq+OLVmNEyEYAvTma1TlulY+liU5/ISSp3Kd/VrrW6reFcpGglhhk6zEsTStbqkjvn9CHo63flQMz/AvsUIN4UgzTSKYVko8BMjAo7HorfG6tUC7u+FMsfTnrffVI3/1QvLGbCq4t/ypUgdTeZwN6XS5CR1/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y24YsBpQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903DDC32782;
+	Tue, 30 Jul 2024 17:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359961;
-	bh=HRNuX7dyhhuYJQA7lDUNFppedP8tK17TdvOmqZhWVk4=;
+	s=korg; t=1722360821;
+	bh=Vasg8TcOHBaZVaw2oCHg2WTgTTtNksQtPzYfp0uCsOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmeVVMnYYJJJvRucOuOFJfkmQ3P6ytyi8d4p32iIrnNSTntXVZYBiVN34mKKNW86m
-	 nBHJ7rpHQ9kYM5uSz9Gha5OqTn3u708PqF/mdee/xbR3E2zWwnBepK9Ykst4tD7E3M
-	 3Dd2lwHI4uLAZ9jAQvgK+LZXwoNZ1O1LQDCbSwtU=
+	b=y24YsBpQcygoTh3IryD04DWnrWAjjHxiOcVlnd5yNFYwFLowSUWV8MqS6vkWmTk41
+	 cpsWWZi+Q23iJhzFwimi5J7L4K/ZfswWF+CTOtGCtf9jzNC8X9n4EJSOgiK81WkG/C
+	 0ABEv1UH+/Qqh888Wp/+0LfG+Uyjgb47vNN3ZZ90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ethanwu <ethanwu@synology.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 561/568] ceph: fix incorrect kmalloc size of pagevec mempool
+Subject: [PATCH 6.10 792/809] ASoC: TAS2781: Fix tasdev_load_calibrated_data()
 Date: Tue, 30 Jul 2024 17:51:08 +0200
-Message-ID: <20240730151702.084099256@linuxfoundation.org>
+Message-ID: <20240730151756.251072824@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ethanwu <ethanwu@synology.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 03230edb0bd831662a7c08b6fef66b2a9a817774 ]
+[ Upstream commit 92c78222168e9035a9bfb8841c2e56ce23e51f73 ]
 
-The kmalloc size of pagevec mempool is incorrectly calculated.
-It misses the size of page pointer and only accounts the number for the array.
+This function has a reversed if statement so it's either a no-op or it
+leads to a NULL dereference.
 
-Fixes: a0102bda5bc0 ("ceph: move sb->wb_pagevec_pool to be a global mempool")
-Signed-off-by: ethanwu <ethanwu@synology.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: b195acf5266d ("ASoC: tas2781: Fix wrong loading calibrated data sequence")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/18a29b68-cc85-4139-b7c7-2514e8409a42@stanley.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/tas2781-fmwlib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-index 52af90beab000..ec51e398562c6 100644
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -958,7 +958,8 @@ static int __init init_caches(void)
- 	if (!ceph_mds_request_cachep)
- 		goto bad_mds_req;
+diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
+index 838d29fead961..08082806d5892 100644
+--- a/sound/soc/codecs/tas2781-fmwlib.c
++++ b/sound/soc/codecs/tas2781-fmwlib.c
+@@ -2163,7 +2163,7 @@ static void tasdev_load_calibrated_data(struct tasdevice_priv *priv, int i)
+ 		return;
  
--	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10, CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT);
-+	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10,
-+	    (CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT) * sizeof(struct page *));
- 	if (!ceph_wb_pagevec_pool)
- 		goto bad_pagevec_pool;
+ 	cal = cal_fmw->calibrations;
+-	if (cal)
++	if (!cal)
+ 		return;
  
+ 	load_calib_data(priv, &cal->dev_data);
 -- 
 2.43.0
 
