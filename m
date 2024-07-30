@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-63179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E769417CB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:16:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A30B941B00
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B704E1F23F6C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D342B1F218E3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CF81A302A;
-	Tue, 30 Jul 2024 16:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF6918801C;
+	Tue, 30 Jul 2024 16:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NInkhyZj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSzDWT0l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910A51A3024;
-	Tue, 30 Jul 2024 16:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1504C18455E;
+	Tue, 30 Jul 2024 16:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355926; cv=none; b=SVjwzjF24bS0njiH2n7lYRfO7yhp3cDuvtnKHVUNWXZ1LxWdj6jySgr6gFBqMynByuT5YINfuaTvI5x2d7xpZGaMwfdU0w9a4IQCKQ0PW2pihFJKH8OevkUf7OascWHfbAvtWSd1X5tMVl77uYhPCTafF8s6rqm682gkNgp27FI=
+	t=1722358201; cv=none; b=lNLWVMn6ZOmfrXJT3HLdK/08+jzA4G+SDFOKgfBBwZOZtTmjjvs9QDdgplpIJxgfSbtaGnnqeHdKieVocd1qZ+0z5zCZB+IAofxoLOkbtaj+Wgp+wU40FOzQ0gYllbPekUmOWentVhRR4mKPnqvh52cdtLsVB3uUVCKuAIMgto4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355926; c=relaxed/simple;
-	bh=VZGpgR/BqS7ZXsQDLOcR/0pxGt+vOsEVRrEa90KtyPk=;
+	s=arc-20240116; t=1722358201; c=relaxed/simple;
+	bh=Wn6m4c9XzqDJBw/AdorFUt44GQ4eoCAA9DA13BokzIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHoQPTvsb7HNrQVYSNyOs0q79wbZ9nClef+dqn5NBmbFvknXgFjSTZIPY5caMTxm4qOtBOHQ7HCkf/dx3t4ZJqMSoYXt6h9P/UVmlItfrWx4+8IGsq9MhhmeG9E5yDQ4L1CMVN67pP8sVe/VnYgjpGec4BV6bAz4hPAWRUfXRZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NInkhyZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6DAC32782;
-	Tue, 30 Jul 2024 16:12:05 +0000 (UTC)
+	 MIME-Version; b=Sxbs3qt+40Be0XPDSfEyUepJdbOE9r63VCNJEpPaSFRvpcrqA/aPI6ia1qFt80cP/tD9q91MhXV2zNtr8rRAILlj9Bvo0Q8Nz0MkCxajx6tZjdsV9/pgDwgaRuUcqAAA8OkrLepIKwCkKE43XySO2JKCv5PN+uI4c3LT07COa3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSzDWT0l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875F9C4AF10;
+	Tue, 30 Jul 2024 16:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355926;
-	bh=VZGpgR/BqS7ZXsQDLOcR/0pxGt+vOsEVRrEa90KtyPk=;
+	s=korg; t=1722358200;
+	bh=Wn6m4c9XzqDJBw/AdorFUt44GQ4eoCAA9DA13BokzIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NInkhyZjhae8DhpeYEwzNHwRafSShaef65tDkBSF0hsPeiCg1i1rM9OOcu7nI74f2
-	 nbcHd5+Jxt9SyTH2nrhxwmfpf3TseoeOMIt8ocfwwC1PRg8KjyHeL+N/ROov3Grq+m
-	 gHP838g1kN+ml8aQcGvopKKXKqHzsBnlVnjGPma4=
+	b=bSzDWT0lsMjI8FPpf8qdUyP7BTwTL4iQrWsQQnmZH0Hhrn7zzCG5O2zxBdIW4HGEq
+	 FI4nwdzHmQKf4n/8zApbtHakuKYCbkayLGxkamfGbb2sPbKljHVwoYTITnRQ0WNqi9
+	 HOcefb/hbbD/nGxFrFIb4OY1c6mRB41LSTXp7E/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Arcari <darcari@redhat.com>,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/568] cpufreq/amd-pstate: Fix the scaling_max_freq setting on shared memory CPPC systems
+Subject: [PATCH 6.10 334/809] drm/msm/a6xx: Fix A702 UBWC mode
 Date: Tue, 30 Jul 2024 17:43:30 +0200
-Message-ID: <20240730151643.901751962@linuxfoundation.org>
+Message-ID: <20240730151737.812322640@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 738d7d03571c7e38565bd245c0815a2c74665018 ]
+[ Upstream commit 593f1dd4c81f6932042508a80186dbdea90312a5 ]
 
-On shared memory CPPC systems, with amd_pstate=active mode, the change
-in scaling_max_freq doesn't get written to the shared memory
-region. Due to this, the writes to the scaling_max_freq sysfs file
-don't take effect. Fix this by propagating the scaling_max_freq
-changes to the shared memory region.
+UBWC_MODE is a one-bit-wide field, so a value of 2 is obviously bogus.
 
-Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
-Reported-by: David Arcari <darcari@redhat.com>
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20240702081413.5688-3-Dhananjay.Ugwekar@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Replace it with the correct value (0).
+
+Fixes: 18397519cb62 ("drm/msm/adreno: Add A702 support")
+Reported-by: Connor Abbott <cwabbott0@gmail.com>
+Closes: https://lore.kernel.org/linux-arm-msm/CACu1E7FTN=kwaDJMNiTmFspALzj2+Q-nvsN5ugi=vz4RdUGvGw@mail.gmail.com/
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/597359/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 43 +++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 3efc2aef31ce4..23c74e9f04c48 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -175,6 +175,26 @@ static int amd_pstate_get_energy_pref_index(struct amd_cpudata *cpudata)
- 	return index;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 973872ad0474e..5383aff848300 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1409,7 +1409,7 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
+ 	if (adreno_is_a702(gpu)) {
+ 		gpu->ubwc_config.highest_bank_bit = 14;
+ 		gpu->ubwc_config.min_acc_len = 1;
+-		gpu->ubwc_config.ubwc_mode = 2;
++		gpu->ubwc_config.ubwc_mode = 0;
+ 	}
  }
  
-+static void pstate_update_perf(struct amd_cpudata *cpudata, u32 min_perf,
-+			       u32 des_perf, u32 max_perf, bool fast_switch)
-+{
-+	if (fast_switch)
-+		wrmsrl(MSR_AMD_CPPC_REQ, READ_ONCE(cpudata->cppc_req_cached));
-+	else
-+		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ,
-+			      READ_ONCE(cpudata->cppc_req_cached));
-+}
-+
-+DEFINE_STATIC_CALL(amd_pstate_update_perf, pstate_update_perf);
-+
-+static inline void amd_pstate_update_perf(struct amd_cpudata *cpudata,
-+					  u32 min_perf, u32 des_perf,
-+					  u32 max_perf, bool fast_switch)
-+{
-+	static_call(amd_pstate_update_perf)(cpudata, min_perf, des_perf,
-+					    max_perf, fast_switch);
-+}
-+
- static int amd_pstate_set_epp(struct amd_cpudata *cpudata, u32 epp)
- {
- 	int ret;
-@@ -191,6 +211,9 @@ static int amd_pstate_set_epp(struct amd_cpudata *cpudata, u32 epp)
- 		if (!ret)
- 			cpudata->epp_cached = epp;
- 	} else {
-+		amd_pstate_update_perf(cpudata, cpudata->min_limit_perf, 0U,
-+					     cpudata->max_limit_perf, false);
-+
- 		perf_ctrls.energy_perf = epp;
- 		ret = cppc_set_epp_perf(cpudata->cpu, &perf_ctrls, 1);
- 		if (ret) {
-@@ -361,16 +384,6 @@ static inline int amd_pstate_init_perf(struct amd_cpudata *cpudata)
- 	return static_call(amd_pstate_init_perf)(cpudata);
- }
- 
--static void pstate_update_perf(struct amd_cpudata *cpudata, u32 min_perf,
--			       u32 des_perf, u32 max_perf, bool fast_switch)
--{
--	if (fast_switch)
--		wrmsrl(MSR_AMD_CPPC_REQ, READ_ONCE(cpudata->cppc_req_cached));
--	else
--		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ,
--			      READ_ONCE(cpudata->cppc_req_cached));
--}
--
- static void cppc_update_perf(struct amd_cpudata *cpudata,
- 			     u32 min_perf, u32 des_perf,
- 			     u32 max_perf, bool fast_switch)
-@@ -384,16 +397,6 @@ static void cppc_update_perf(struct amd_cpudata *cpudata,
- 	cppc_set_perf(cpudata->cpu, &perf_ctrls);
- }
- 
--DEFINE_STATIC_CALL(amd_pstate_update_perf, pstate_update_perf);
--
--static inline void amd_pstate_update_perf(struct amd_cpudata *cpudata,
--					  u32 min_perf, u32 des_perf,
--					  u32 max_perf, bool fast_switch)
--{
--	static_call(amd_pstate_update_perf)(cpudata, min_perf, des_perf,
--					    max_perf, fast_switch);
--}
--
- static inline bool amd_pstate_sample(struct amd_cpudata *cpudata)
- {
- 	u64 aperf, mperf, tsc;
 -- 
 2.43.0
 
