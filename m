@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67338941849
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B62C941B8E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 984011C23817
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB9E28328D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB4518455F;
-	Tue, 30 Jul 2024 16:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A900F18B46A;
+	Tue, 30 Jul 2024 16:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHNjQvAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdvY+7Ve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED81F1A617E;
-	Tue, 30 Jul 2024 16:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6059818B465;
+	Tue, 30 Jul 2024 16:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356382; cv=none; b=b80rIa4B4f5+23lpLeWQQE+F619jIzAD1BWJzVRlWQHhB/VYc4uIDVi5sEKArZ31gWV9lVMjAGLPikoZzs5gmetJ+uzWUdR6pK6sAM6TWE6R3GVQMKOogcT0LtyjdJLsNjkYQT2cZlHVp9qUtDkJ3zTQR1DUBRHQ0EbuAWNhbDg=
+	t=1722358577; cv=none; b=hCG9jFgn2Dv7GaPS1FaRFcjyHnxTlm3IWbUdsc1h555jtGOpUBK2t2n+QNiUdMSuEJLosinHXch86qPma143WVZ9FfBCr3zvMn6xPaqCKK++qYh4yWahG4aJfsrbqncDsEa4EeTB4iLrgQvK6lH5i1BPyK3VtUxoGFiHr7QOBWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356382; c=relaxed/simple;
-	bh=8s1sPz5DNIQp8JfCYQEpo2fqBKj+fvRCa9EcBnAqrKA=;
+	s=arc-20240116; t=1722358577; c=relaxed/simple;
+	bh=OfuwrVUlHmNooVNQclhNIxEywM9tfMHEoxZk/IXgM9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EezqnynI+XnX7sJj8Y2e0FJ7YMF64u4L15Qt1+Ib+lMQmGHtWW3EGhTSIZrRq2mUGrl2yggNq0dCMwyZR/ZzWC/9YVuBiddpMaM5lj0+mamQebV/G9uat7JgG04nlZGDMXjXjvfz4aeKud2ltLrB4K0Wf++VrSVVGn3w39Z767M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHNjQvAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC69C32782;
-	Tue, 30 Jul 2024 16:19:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t3Vk1DFVYyaKvaCnTHbBPE6d58s/XEzewRjEZjO0gE/AcQ+EU2NYQ0uwy0ZVlypQOk519pc0ITZbuCSM8j+bkEF+uCM9Iz+9PlpdcThE2LlKhW7XfBX/n92RMi+1VnCnmfCe/+sGKsGk3INHYrp/dorFbFCENf4JXSxzx7habyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdvY+7Ve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C409EC4AF0E;
+	Tue, 30 Jul 2024 16:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356381;
-	bh=8s1sPz5DNIQp8JfCYQEpo2fqBKj+fvRCa9EcBnAqrKA=;
+	s=korg; t=1722358577;
+	bh=OfuwrVUlHmNooVNQclhNIxEywM9tfMHEoxZk/IXgM9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHNjQvAqEQtWrRtdKCiyJU48tDvdiw169TYiVl+V5+eo4aszXcQ5Jw/3wtLV9NbzK
-	 +0pFClpHn57XfLpwdMqtB+kHpSve3CLHMi2DtbYc1EndhRaYdYRpuR4BJM0mS2CPQS
-	 xEn4JpaTugHF2kHkPXb3l2p51lnQP1NWiKT/kI4E=
+	b=sdvY+7VeL/qAiF4XVOEyTasQikZhYhLD7dXKPLu7O6KtWuIv7dVMUOOCgp8M4CZKz
+	 F0qnghfbdJFVHDRKEYQvjjZa3ZdVDfhW0cZAgj0Zu+vKDDVCfc+Jm8Px8wNwhY6m2n
+	 RN5PK0CSGJLUZ655vrPwtAEAhxizSvQ4aWjfOQq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Chung Chen <damon.chen@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/568] wifi: rtw89: 8852b: fix definition of KIP register number
-Date: Tue, 30 Jul 2024 17:44:10 +0200
-Message-ID: <20240730151645.467809506@linuxfoundation.org>
+Subject: [PATCH 6.10 375/809] sparc64: Fix incorrect function signature and add prototype for prom_cif_init
+Date: Tue, 30 Jul 2024 17:44:11 +0200
+Message-ID: <20240730151739.472489638@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+From: Andreas Larsson <andreas@gaisler.com>
 
-[ Upstream commit 2f35712ab82683554c660bc2456f05785835efbe ]
+[ Upstream commit a6c3ea1ec96307dbfbb2f16d96c674c5cc80f445 ]
 
-An incorrect definition caused DPK to fail to backup and
-restore a set of KIP registers. Fixing this will improve
-RX throughput from 902 to 997 Mbps.
+Remove the unused cif_stack argument and add a protype in oplib_64.h
+Commit ef3e035c3a9b ("sparc64: Fix register corruption in top-most
+kernel stack frame during boot.") removed the cif_stack argument to
+prom_cif init in the declaration at the caller site and the usage of it
+within prom_cif_init, but not in the function signature of the function
+itself.
 
-Fixes: 5b8471ace5b1 ("wifi: rtw89: 8852b: rfk: add DPK")
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240621123617.6687-2-pkshih@realtek.com
+This also fixes the following warning:
+arch/sparc/prom/p1275.c:52:6: warning: no previous prototype for ‘prom_cif_init’
+
+Fixes: ef3e035c3a9b ("sparc64: Fix register corruption in top-most kernel stack frame during boot.")
+Link: https://lore.kernel.org/r/20240710094155.458731-3-andreas@gaisler.com
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sparc/include/asm/oplib_64.h | 1 +
+ arch/sparc/prom/init_64.c         | 3 ---
+ arch/sparc/prom/p1275.c           | 2 +-
+ 3 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-index 259df67836a0e..a2fa1d339bc21 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-@@ -20,7 +20,7 @@
- #define RTW8852B_RF_REL_VERSION 34
- #define RTW8852B_DPK_VER 0x0d
- #define RTW8852B_DPK_RF_PATH 2
--#define RTW8852B_DPK_KIP_REG_NUM 2
-+#define RTW8852B_DPK_KIP_REG_NUM 3
+diff --git a/arch/sparc/include/asm/oplib_64.h b/arch/sparc/include/asm/oplib_64.h
+index a67abebd43592..1b86d02a84556 100644
+--- a/arch/sparc/include/asm/oplib_64.h
++++ b/arch/sparc/include/asm/oplib_64.h
+@@ -247,6 +247,7 @@ void prom_sun4v_guest_soft_state(void);
+ int prom_ihandle2path(int handle, char *buffer, int bufsize);
  
- #define _TSSI_DE_MASK GENMASK(21, 12)
- #define ADDC_T_AVG 100
+ /* Client interface level routines. */
++void prom_cif_init(void *cif_handler);
+ void p1275_cmd_direct(unsigned long *);
+ 
+ #endif /* !(__SPARC64_OPLIB_H) */
+diff --git a/arch/sparc/prom/init_64.c b/arch/sparc/prom/init_64.c
+index 103aa91043185..f7b8a1a865b8f 100644
+--- a/arch/sparc/prom/init_64.c
++++ b/arch/sparc/prom/init_64.c
+@@ -26,9 +26,6 @@ phandle prom_chosen_node;
+  * routines in the prom library.
+  * It gets passed the pointer to the PROM vector.
+  */
+-
+-extern void prom_cif_init(void *);
+-
+ void __init prom_init(void *cif_handler)
+ {
+ 	phandle node;
+diff --git a/arch/sparc/prom/p1275.c b/arch/sparc/prom/p1275.c
+index 889aa602f8d86..51c3f984bbf72 100644
+--- a/arch/sparc/prom/p1275.c
++++ b/arch/sparc/prom/p1275.c
+@@ -49,7 +49,7 @@ void p1275_cmd_direct(unsigned long *args)
+ 	local_irq_restore(flags);
+ }
+ 
+-void prom_cif_init(void *cif_handler, void *cif_stack)
++void prom_cif_init(void *cif_handler)
+ {
+ 	p1275buf.prom_cif_handler = (void (*)(long *))cif_handler;
+ }
 -- 
 2.43.0
 
