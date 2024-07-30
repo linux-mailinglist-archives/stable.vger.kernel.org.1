@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3FE940DC2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:34:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FF2940DC3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26EE41C246BB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:34:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBDFE1F25B8B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22262195807;
-	Tue, 30 Jul 2024 09:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B38197A8F;
+	Tue, 30 Jul 2024 09:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoEBoc8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkBIoqBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55BD194C92
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05961196D8E
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722331904; cv=none; b=e1FmqDNyU5KtviGjeXC/B0yJS2nbtC+4p76+V70hr6ImSPAcj6BzYAeNJ1+RXbMfDszwihoHsxprO1deMVyXKEIwmGHMdtN+o/Lx2HB8wvAWG1eM/6gWzMkny/RcHY6quFBL38OD5AB0NdeMqfmniiOC7A0R3AiYu2IxOSimRn8=
+	t=1722331914; cv=none; b=bghCA3r/22aqrVO2a+UcH1kGbgF6uO+vdAJDdKJ/hWWwg25dk64h9goo0aJCUMudiUSrP+f4emcCIdUg9yXlzE+nefY1tJQ3/2S9QFlncZ/fIR9F7vqquapZV03OZs+8SfUHI3DlibM7mjLFYXF4nWXUrT8gvS5pci/QoXi5Ryc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722331904; c=relaxed/simple;
-	bh=He+LDZF5ksjuGtd+CbmZBlJgA5igf16Ml6Y+w3ro36o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tyjLkUakSGUgU8TlEAMgnHCdUEkX37C7fkziYXOSjrg5pOyTTE/FMcWntEEC5j0NDQywNsw+OJ04BCvghScs0r4BJPj3bfNdfBAok9wc4IAuN5vWxZfqBOV9x8nhyOoY4R5dmYf2YEHic2V0Lg0Acs9rgyhdF4hhZzdzlsNh1ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoEBoc8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADB3C32782;
-	Tue, 30 Jul 2024 09:31:44 +0000 (UTC)
+	s=arc-20240116; t=1722331914; c=relaxed/simple;
+	bh=CieQSFHH4f7HP6Hn23oHjH8GFrNbkEDLOQdyMjORMRc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uhP3/G4MnHi1ojSR8jp6nSgntfu5le8tkNaOC/nJilQMjcAj2hr5mRP2QWTgMT510jR7bK92RpMd8W2DTytGXZSBmKGZzecuHba0VaaICQ1ouYz6qDhNIPJiFmmzZqA6AIuZN94uph8W6igrDQRPkke0zC4An/3eDLcymGxMQ7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkBIoqBF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68901C32782;
+	Tue, 30 Jul 2024 09:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722331904;
-	bh=He+LDZF5ksjuGtd+CbmZBlJgA5igf16Ml6Y+w3ro36o=;
+	s=korg; t=1722331913;
+	bh=CieQSFHH4f7HP6Hn23oHjH8GFrNbkEDLOQdyMjORMRc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RoEBoc8xMTT6dr00w7VnsXTDLLnVV2YnBEeFa8R7DXOPbKum8SfpGL0djTXBEcWzl
-	 Rz33TQ9Zn16VwBiTr5dptmTW0HwtfjqcOw4593iszaarPTzuqJq5TUgnbvL3S2iUIb
-	 1EaSsHBXEpspe/4nJdM2U151puI6Q1M7Dl6Gs/aE=
-Subject: FAILED: patch "[PATCH] drm/i915/dp: Don't switch the LTTPR mode on an active link" failed to apply to 6.1-stable tree
+	b=kkBIoqBFEieah+dQiMkfhOY3HveO17ZA/nyDw9+5UMlPDgsjSA5FIr6KBQddzTCxO
+	 PeB6BdLrsCz9YmEusvapDi99iBoJhm50VM/D9zDQeuqFp6JOn5x/pwPb1myM6+iDTB
+	 nX7XOHYBdhzs4LQnJbf5BHUCtJAMUPO7Ppb8FTIU=
+Subject: FAILED: patch "[PATCH] drm/i915/dp: Don't switch the LTTPR mode on an active link" failed to apply to 5.15-stable tree
 To: imre.deak@intel.com,ankit.k.nautiyal@intel.com,gareth.yu@intel.com,stable@vger.kernel.org,tursulin@ursulin.net,ville.syrjala@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:31:41 +0200
-Message-ID: <2024073041-suffocate-marrow-e9ec@gregkh>
+Date: Tue, 30 Jul 2024 11:31:42 +0200
+Message-ID: <2024073042-crux-ditch-2ce7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,37 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 509580fad7323b6a5da27e8365cd488f3b57210e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073041-suffocate-marrow-e9ec@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073042-crux-ditch-2ce7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 509580fad732 ("drm/i915/dp: Don't switch the LTTPR mode on an active link")
+657586e474bd ("drm/i915: Add a DP1.2 compatible way to read LTTPR capabilities")
+77f4ec2a4111 ("drm/i915/dp: remove accidental static on what should be a local variable")
+a421d8a99216 ("drm/i915/dp: rewrite DP 2.0 128b/132b link training based on errata")
+92e438619d16 ("drm/i915/dp: move intel_dp_prepare_link_train() call")
+6c4d46523bf3 ("drm/i915: Pimp link training debug prints")
+1f662675335b ("drm/i915: Print the DP vswing adjustment request")
+be1525048c58 ("drm/i915: Show LTTPR in the TPS debug print")
+c6921d484d3f ("drm/i915: Prepare link training for per-lane drive settings")
+e722ab8b6968 ("drm/i915: Generalize .set_signal_levels()")
+5bafd85dd770 ("drm/i915: Introduce has_buf_trans_select()")
+f820693bc238 ("drm/i915: Introduce has_iboost()")
+f6e3be98654e ("drm/i915: Fix DP clock recovery "voltage_tries" handling")
+3b4da8315add ("drm/i915/dg2: use existing mechanisms for SNPS PHY translations")
+0707570248b8 ("drm/i915/dp: pass crtc_state to intel_ddi_dp_level()")
 
 thanks,
 
