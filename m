@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E93941C0D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C18941911
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F624285215
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23DF828137D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1655189BB6;
-	Tue, 30 Jul 2024 17:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40941A616E;
+	Tue, 30 Jul 2024 16:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekmDgm0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzvtEMHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670F1189502;
-	Tue, 30 Jul 2024 17:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812141A6160;
+	Tue, 30 Jul 2024 16:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358941; cv=none; b=GqAMVSjej8FPJ5qFwRhGCScZx8yi/2xnnwLNen8E1OF3qQzsZnICA2s2JwefutHg5M1avCUKSmGnDYxFeeGE+v0MU9AkPU8BuIBB5Zkf00zU/MRIvCOQh1S5TOEK28welAAhrmp21xL+ow0DnLB6Uw3ZVuwCFSe5iQTYu6hOom8=
+	t=1722356925; cv=none; b=rSCM4gSUnETGSrHmz+FbjSkK5yQXLsH9FWXPdpFy5RmIJ7sYsDgQZUbT8HJa99eBfJ/xGyi7xHn6BXEMl9G/krvY7KYexVEJ/DOrk4B4mtx0sDtZsp2KLldUp3+ZreI4mVBcASJKdhfwXN+s8zMMYOrgWTa/w0jac15jTPmx8os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358941; c=relaxed/simple;
-	bh=sf0F9ahjHV2G2OPa/iSiHi9TNOnxsznECkFNM/YRbO8=;
+	s=arc-20240116; t=1722356925; c=relaxed/simple;
+	bh=7kzIYoBOl7dyB27txc+a+VMUI7nfWWjmP2wJQD1pz6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQUZHma6xM0wFIZhCvG4j2FcEEK91aWK+FqP30ktHwVq/xTtyFI/LPJ4SXcoskJblOc4qmxCml0Xg+MwZPrDHkMr2/JtDm7JuxYsd/luS3xa/EU07tnWVjStEWjMSZNXNx4vZav9LyDzTEBCz4ywNQ82wrvEadUB3nbiVJpgMc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekmDgm0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B43C32782;
-	Tue, 30 Jul 2024 17:02:20 +0000 (UTC)
+	 MIME-Version; b=XO748jbY+SGq3mk7cZ+cP56d4+UMJ848kK4ins3Jn2Evw5OKm2wWUmCuez+0Fh/O/t51wAYs9ciedWd2FnaOgdfnfS4ulvkDq9/onj7Lm7oVIx0fbR4PwKc6WnpHCC2uWHsvCc32BhS99KPHZPkCKRl212p188MbH0zEGW9yy3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzvtEMHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A8AC32782;
+	Tue, 30 Jul 2024 16:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358941;
-	bh=sf0F9ahjHV2G2OPa/iSiHi9TNOnxsznECkFNM/YRbO8=;
+	s=korg; t=1722356925;
+	bh=7kzIYoBOl7dyB27txc+a+VMUI7nfWWjmP2wJQD1pz6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekmDgm0k5ijT7yuRC2vW7nsn9ojQm0MzIgs81BdV8wMpzfDl+HzbNunKD4Ilgj4Ni
-	 JxW2P5SOyCvwF7/GOBooHz7fogi98AdOtF/iuPERF/b3EhHufR3J5rOk42KZe9xHNr
-	 uKcIY+F9orzsWs9hT8aM1ULsOwuzLQ6xr5liWMn0=
+	b=nzvtEMHK0HYHQu9ypI6FZp6lx+QrwuY/oAwfvxkaMs/1PAtKPNexjZFtDy6rjZDBn
+	 d8vh+YMt9wzmGGT+6Y0/sZMlWyr+SYO5jNMa+/P9L6g0Bn5UqxIfmyGgv8065Ty4Jg
+	 qZZs84tDg/a2Nu7QW63rXIqCkrkPo0bRF2NQizMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leon@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 410/809] RDMA/cache: Release GID table even if leak is detected
+Subject: [PATCH 6.6 179/568] drm/mipi-dsi: Fix theoretical int overflow in mipi_dsi_generic_write_seq()
 Date: Tue, 30 Jul 2024 17:44:46 +0200
-Message-ID: <20240730151740.883747285@linuxfoundation.org>
+Message-ID: <20240730151646.876830181@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit a92fbeac7e94a420b55570c10fe1b90e64da4025 ]
+[ Upstream commit 24acbcce5cc673886c2f4f9b3f6f89a9c6a53b7e ]
 
-When the table is released, we nullify pointer to GID table, it means
-that in case GID entry leak is detected, we will leak table too.
+The mipi_dsi_generic_write_seq() macro makes a call to
+mipi_dsi_generic_write() which returns a type ssize_t. The macro then
+stores it in an int and checks to see if it's negative. This could
+theoretically be a problem if "ssize_t" is larger than "int".
 
-Delete code that prevents table destruction.
+To see the issue, imagine that "ssize_t" is 32-bits and "int" is
+16-bits, you could see a problem if there was some code out there that
+looked like:
 
-Fixes: b150c3862d21 ("IB/core: Introduce GID entry reference counts")
-Link: https://lore.kernel.org/r/a62560af06ba82c88ef9194982bfa63d14768ff9.1716900410.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+  mipi_dsi_generic_write_seq(dsi, <32768 bytes as arguments>);
+
+...since we'd get back that 32768 bytes were transferred and 32768
+stored in a 16-bit int would look negative.
+
+Though there are no callsites where we'd actually hit this (even if
+"int" was only 16-bit), it's cleaner to make the types match so let's
+fix it.
+
+Fixes: a9015ce59320 ("drm/mipi-dsi: Add a mipi_dsi_dcs_write_seq() macro")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240514102056.v5.2.Iadb65b8add19ed3ae3ed6425011beb97e380a912@changeid
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240514102056.v5.2.Iadb65b8add19ed3ae3ed6425011beb97e380a912@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cache.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ include/drm/drm_mipi_dsi.h | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
-index c02a96d3572a8..6791df64a5fe0 100644
---- a/drivers/infiniband/core/cache.c
-+++ b/drivers/infiniband/core/cache.c
-@@ -794,7 +794,6 @@ static struct ib_gid_table *alloc_gid_table(int sz)
- static void release_gid_table(struct ib_device *device,
- 			      struct ib_gid_table *table)
- {
--	bool leak = false;
- 	int i;
+diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
+index e0e2c17832e89..900262f4c2349 100644
+--- a/include/drm/drm_mipi_dsi.h
++++ b/include/drm/drm_mipi_dsi.h
+@@ -305,17 +305,17 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
+  * @dsi: DSI peripheral device
+  * @seq: buffer containing the payload
+  */
+-#define mipi_dsi_generic_write_seq(dsi, seq...)                                \
+-	do {                                                                   \
+-		static const u8 d[] = { seq };                                 \
+-		struct device *dev = &dsi->dev;                                \
+-		int ret;                                                       \
+-		ret = mipi_dsi_generic_write(dsi, d, ARRAY_SIZE(d));           \
+-		if (ret < 0) {                                                 \
+-			dev_err_ratelimited(dev, "transmit data failed: %d\n", \
+-					    ret);                              \
+-			return ret;                                            \
+-		}                                                              \
++#define mipi_dsi_generic_write_seq(dsi, seq...)                                 \
++	do {                                                                    \
++		static const u8 d[] = { seq };                                  \
++		struct device *dev = &dsi->dev;                                 \
++		ssize_t ret;                                                    \
++		ret = mipi_dsi_generic_write(dsi, d, ARRAY_SIZE(d));            \
++		if (ret < 0) {                                                  \
++			dev_err_ratelimited(dev, "transmit data failed: %zd\n", \
++					    ret);                               \
++			return ret;                                             \
++		}                                                               \
+ 	} while (0)
  
- 	if (!table)
-@@ -803,15 +802,12 @@ static void release_gid_table(struct ib_device *device,
- 	for (i = 0; i < table->sz; i++) {
- 		if (is_gid_entry_free(table->data_vec[i]))
- 			continue;
--		if (kref_read(&table->data_vec[i]->kref) > 1) {
--			dev_err(&device->dev,
--				"GID entry ref leak for index %d ref=%u\n", i,
--				kref_read(&table->data_vec[i]->kref));
--			leak = true;
--		}
-+
-+		WARN_ONCE(true,
-+			  "GID entry ref leak for dev %s index %d ref=%u\n",
-+			  dev_name(&device->dev), i,
-+			  kref_read(&table->data_vec[i]->kref));
- 	}
--	if (leak)
--		return;
- 
- 	mutex_destroy(&table->lock);
- 	kfree(table->data_vec);
+ /**
 -- 
 2.43.0
 
