@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC42941CB9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99962941706
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0846E1C20B49
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 429611F254B2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C81718C905;
-	Tue, 30 Jul 2024 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB3118C90F;
+	Tue, 30 Jul 2024 16:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoLP55Ra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZw74ynr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F3218B495;
-	Tue, 30 Jul 2024 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AE818C90A;
+	Tue, 30 Jul 2024 16:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359250; cv=none; b=Hd84DRSIs28qMk2qd06r7+wiFSc3Ky0RZduE643fWDfY4CH7+vah9whMIQ/Rb8idGyRAW/Ga8SmnaU/gMxhv5kygSKynE3bKe9l58oeHL4n7VVADEz1PoSKHp9jkQcl5RWN82kVZfYOACB2qBI5iE5Dvi+yTWNBNda/2+mN3OUQ=
+	t=1722355511; cv=none; b=ec+68++CtL/pqLx7XUZPDdWMH+pJkG8J2eUwnViZwvrgttoUSf9ceeyaR+t3udRuOXBdoeLI8aKxWRC+XGc5TVLzddWlzd8KVUuVVBaO2PeUzmeJpXDozUO5CYgZRRlS9K0igWL4/aBqKaeHOu+locRX3rp93nr7etU66ZDNQ28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359250; c=relaxed/simple;
-	bh=q1GgclGHPF5MHEYHRDQMXlD6K7HMKZvoG6G8abfhtdg=;
+	s=arc-20240116; t=1722355511; c=relaxed/simple;
+	bh=uIiz5Dm3lYxkj5Z0cpw9gfZ4WrwAUG/7WB1qbqHy6rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmajPuAZW0Ul1sQs2MBJElkoASeUXTFL/xjIqX/oj4sJzyHZRxSPkH7vFg/jq5SooQTA5fn7n0w6YvHOVd6+5ps5Q7r4KNePcxmfavx1iJ9iAQ9XFKzoE+i3cIL0/T6j1CKZQfECrN9eI/cjLaH+VUx2KLqckOpb7BFUPDBDjTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoLP55Ra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FCDC4AF0F;
-	Tue, 30 Jul 2024 17:07:29 +0000 (UTC)
+	 MIME-Version; b=nh2UFpOvGYZJCKpatq0O4ocMgTIxyc7wvo4rq0D9uhIGD2OmirC+UeTZQbop7oTvqCDbl+RJrM2zeFMJkrWf9Nlp4HWwBTVF6ORXisTM0DV0peeBGbgRrXh/qsQQQ/a3hUTzzGdY7zOuT0glwCb9z/XbpIgJYZrIf+N+6mXP1KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZw74ynr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FAEC4AF0C;
+	Tue, 30 Jul 2024 16:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359250;
-	bh=q1GgclGHPF5MHEYHRDQMXlD6K7HMKZvoG6G8abfhtdg=;
+	s=korg; t=1722355510;
+	bh=uIiz5Dm3lYxkj5Z0cpw9gfZ4WrwAUG/7WB1qbqHy6rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EoLP55RafryjdTFmy2BGYSMtw9/kYcXZD4VpL8f535Z6Ylb95dHicQd2WFZ4PnL8J
-	 TUSNEUMT9POd1LW09CxFiFSnP1lWjMshrZ9ZqM1SoJ0CypPJ/GIR5vXRiM6EFzNave
-	 lEJKKKQM/Q91eQCwPOE8JY5ZuwI3OpKr2nK5W5dk=
+	b=BZw74ynrGRqPpbDWFJ96CxaK8HhKbFEOok28jdOyBVU7ubZXNh/1zGdsI2jXHI1MP
+	 qSYwPqf670B5N/VPADrs0yuLMKOGxFX8lvWZszmIdrGZQ9svRkKJxvkkfjz27/8lwv
+	 O9AutixzdYryJzOZ5tN8J1j6S5FNRqZM0L9ewkMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Will Deacon <will@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 457/809] iommu/vt-d: Fix aligned pages in calculate_psi_aligned_address()
-Date: Tue, 30 Jul 2024 17:45:33 +0200
-Message-ID: <20240730151742.778879931@linuxfoundation.org>
+Subject: [PATCH 6.1 101/440] wifi: cfg80211: fix typo in cfg80211_calculate_bitrate_he()
+Date: Tue, 30 Jul 2024 17:45:34 +0200
+Message-ID: <20240730151619.835540687@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 0a3f6b3463014b03f6ad10eacc4d1d9af75d54a1 ]
+[ Upstream commit 9ee0d44f055276fe2802b2f65058e920853f4f99 ]
 
-The helper calculate_psi_aligned_address() is used to convert an arbitrary
-range into a size-aligned one.
+rates_996 is mistakenly written as rates_969, fix it.
 
-The aligned_pages variable is calculated from input start and end, but is
-not adjusted when the start pfn is not aligned and the mask is adjusted,
-which results in an incorrect number of pages returned.
-
-The number of pages is used by qi_flush_piotlb() to flush caches for the
-first-stage translation. With the wrong number of pages, the cache is not
-synchronized, leading to inconsistencies in some cases.
-
-Fixes: c4d27ffaa8eb ("iommu/vt-d: Add cache tag invalidation helpers")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240709152643.28109-3-baolu.lu@linux.intel.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://msgid.link/20240606020653.33205-2-quic_bqiang@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/cache.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/util.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/intel/cache.c b/drivers/iommu/intel/cache.c
-index 0a3bb38a52890..44e92638c0cd1 100644
---- a/drivers/iommu/intel/cache.c
-+++ b/drivers/iommu/intel/cache.c
-@@ -246,6 +246,7 @@ static unsigned long calculate_psi_aligned_address(unsigned long start,
- 		 */
- 		shared_bits = ~(pfn ^ end_pfn) & ~bitmask;
- 		mask = shared_bits ? __ffs(shared_bits) : MAX_AGAW_PFN_WIDTH;
-+		aligned_pages = 1UL << mask;
- 	}
- 
- 	*_pages = aligned_pages;
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 73b3648e1b4c3..37ea62f83cb56 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1373,7 +1373,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
+ 		  5120, /*  0.833333... */
+ 	};
+ 	u32 rates_160M[3] = { 960777777, 907400000, 816666666 };
+-	u32 rates_969[3] =  { 480388888, 453700000, 408333333 };
++	u32 rates_996[3] =  { 480388888, 453700000, 408333333 };
+ 	u32 rates_484[3] =  { 229411111, 216666666, 195000000 };
+ 	u32 rates_242[3] =  { 114711111, 108333333,  97500000 };
+ 	u32 rates_106[3] =  {  40000000,  37777777,  34000000 };
+@@ -1398,7 +1398,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
+ 	else if (rate->bw == RATE_INFO_BW_80 ||
+ 		 (rate->bw == RATE_INFO_BW_HE_RU &&
+ 		  rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_996))
+-		result = rates_969[rate->he_gi];
++		result = rates_996[rate->he_gi];
+ 	else if (rate->bw == RATE_INFO_BW_40 ||
+ 		 (rate->bw == RATE_INFO_BW_HE_RU &&
+ 		  rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_484))
 -- 
 2.43.0
 
