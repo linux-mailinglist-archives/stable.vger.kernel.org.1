@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAD4941770
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7645C941CF5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757D4281F3E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B31B1F24870
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA801A302B;
-	Tue, 30 Jul 2024 16:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3061A0705;
+	Tue, 30 Jul 2024 17:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGM9POdG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gzxz6xZk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680111A4B2C;
-	Tue, 30 Jul 2024 16:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAE718A6DC;
+	Tue, 30 Jul 2024 17:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355731; cv=none; b=Jq3MeNFcRW2Rphc/au/qdlIa2l/ezxBUI8Qhj6pxFStL5Z/0PimZUDsYOuSgVqgEPBqMprEfkkfB+aOZ47oY6BYYksSydUSrPvEct0i56OWqX4igjvJe6oBzgbZJZQMti779HHtUCd3GATw85U7FZULDr+C990uB6dae9t4nebU=
+	t=1722359434; cv=none; b=QMCPX+0w4KhV3DCAP5aX774jW5qIK0rbhu6PASAc29W5EbA4zIr3yimQebWrenOZvyOHRxYOcYXHvJHHlzY2xLj7QGYJf4VZNvvqnUdiPuYeJfMH5ADSlQ5e2k74oilY8k2hQg29gSUyVnbkLaLvFvF4o1WB2eqldlSJj080VEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355731; c=relaxed/simple;
-	bh=+arpm3ShQR3X561bB8P4N52Kbb4gbwg7xVbrX9dsIt8=;
+	s=arc-20240116; t=1722359434; c=relaxed/simple;
+	bh=zDWvZXkjWAfTAYRTX+2fQoBfcg3BgTJ9GPdtkntOU4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPL3+M9rVmlsJWEBcWcvzQc917Tqy//2drSrQ2o8cArIHl0H07xtB6o5z63JyZAISk4/Pw9qGEGIXJloev4P/btYrOeueEBexKLsVjn/X74BYtT/uhb9A6AY1xESU/2EOY/x0E/FMmwFx55ICP5Tr7JfTMTpXtLQIfb02AxGIRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGM9POdG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A966EC32782;
-	Tue, 30 Jul 2024 16:08:50 +0000 (UTC)
+	 MIME-Version; b=hHLiLqzLCJerf0xe5QDrSs3d+JbFOVDA8EI0YvLO6BNPDteyBP+0u+HxUarTxtcaSYRvRCKppOHT5C6XWNOFDOrY57dWTp9URdTc2nma30GkSFqp+BsoZd6AFUYfrEiZ7l3pb9/rmx49LQezogZRp7IecrSYod65QbYSJ/Rrbl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gzxz6xZk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13288C32782;
+	Tue, 30 Jul 2024 17:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355731;
-	bh=+arpm3ShQR3X561bB8P4N52Kbb4gbwg7xVbrX9dsIt8=;
+	s=korg; t=1722359434;
+	bh=zDWvZXkjWAfTAYRTX+2fQoBfcg3BgTJ9GPdtkntOU4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGM9POdGZswMZ4saVAn76X16o4iq0tyHb7/v5+x9fJwSpfK8KHvv2FCklU/rJaCwB
-	 PRBpl6251CJwE3oPvg4mjB0tBdvZPGyA7Dr6wpI4Xt4PmMh1IXESpfxzSZ2rYPMhDM
-	 l8h0idLJsNGrd5spyZrbvnf4kdoCMuPCKzVp3b3Y=
+	b=Gzxz6xZk/Ngk9h448DC6tezMV4+tG5IFJ+rUuELEsDpuIKAN+g1YT63LEBIxk6TvJ
+	 LVZRYX8MsRinH0qs6sC8Wgow5NPog3U0dlSZ4dcGidngkQyFuO4KE7DaJ8RTON3ixh
+	 7lYmGi5irVSeAQfBCd7DNUqbmxT39vtg4RSbq4eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Martin Willi <martin@strongswan.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/440] selftests: forwarding: devlink_lib: Wait for udev events after reloading
-Date: Tue, 30 Jul 2024 17:45:58 +0200
-Message-ID: <20240730151620.769127691@linuxfoundation.org>
+Subject: [PATCH 6.10 483/809] net: dsa: b53: Limit chip-wide jumbo frame config to CPU ports
+Date: Tue, 30 Jul 2024 17:45:59 +0200
+Message-ID: <20240730151743.814833071@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Martin Willi <martin@strongswan.org>
 
-[ Upstream commit f67a90a0c8f5b3d0acc18f10650d90fec44775f9 ]
+[ Upstream commit c5118072e228e7e4385fc5ac46b2e31cf6c4f2d3 ]
 
-Lately, an additional locking was added by commit c0a40097f0bc
-("drivers: core: synchronize really_probe() and dev_uevent()"). The
-locking protects dev_uevent() calling. This function is used to send
-messages from the kernel to user space. Uevent messages notify user space
-about changes in device states, such as when a device is added, removed,
-or changed. These messages are used by udev (or other similar user-space
-tools) to apply device-specific rules.
+Broadcom switches supported by the b53 driver use a chip-wide jumbo frame
+configuration. In the commit referenced with the Fixes tag, the setting
+is applied just for the last port changing its MTU.
 
-After reloading devlink instance, udev events should be processed. This
-locking causes a short delay of udev events handling.
+While configuring CPU ports accounts for tagger overhead, user ports do
+not. When setting the MTU for a user port, the chip-wide setting is
+reduced to not include the tagger overhead, resulting in an potentially
+insufficient chip-wide maximum frame size for the CPU port.
 
-One example for useful udev rule is renaming ports. 'forwading.config'
-can be configured to use names after udev rules are applied. Some tests run
-devlink_reload() and immediately use the updated names. This worked before
-the above mentioned commit was pushed, but now the delay of uevent messages
-causes that devlink_reload() returns before udev events are handled and
-tests fail.
+As, by design, the CPU port MTU is adjusted for any user port change,
+apply the chip-wide setting only for CPU ports. This aligns the driver
+to the behavior of other switch drivers.
 
-Adjust devlink_reload() to not assume that udev events are already
-processed when devlink reload is done, instead, wait for udev events to
-ensure they are processed before returning from the function.
-
-Without this patch:
-TESTS='rif_mac_profile' ./resource_scale.sh
-TEST: 'rif_mac_profile' 4                                           [ OK ]
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
-Cannot find device "swp1"
-Cannot find device "swp2"
-TEST: setup_wait_dev (: Interface swp1 does not come up.) [FAIL]
-
-With this patch:
-$ TESTS='rif_mac_profile' ./resource_scale.sh
-TEST: 'rif_mac_profile' 4                                           [ OK ]
-TEST: 'rif_mac_profile' overflow 5                                  [ OK ]
-
-This is relevant not only for this test.
-
-Fixes: bc7cbb1e9f4c ("selftests: forwarding: Add devlink_lib.sh")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/89367666e04b38a8993027f1526801ca327ab96a.1720709333.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
+Suggested-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Martin Willi <martin@strongswan.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/devlink_lib.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/net/forwarding/devlink_lib.sh b/tools/testing/selftests/net/forwarding/devlink_lib.sh
-index 601990c6881bf..4c555fab9e755 100644
---- a/tools/testing/selftests/net/forwarding/devlink_lib.sh
-+++ b/tools/testing/selftests/net/forwarding/devlink_lib.sh
-@@ -122,6 +122,8 @@ devlink_reload()
- 	still_pending=$(devlink resource show "$DEVLINK_DEV" | \
- 			grep -c "size_new")
- 	check_err $still_pending "Failed reload - There are still unset sizes"
-+
-+	udevadm settle
- }
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 8f50abe739b71..0783fc121bbbf 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2256,6 +2256,9 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
+ 	if (is5325(dev) || is5365(dev))
+ 		return -EOPNOTSUPP;
  
- declare -A DEVLINK_ORIG
++	if (!dsa_is_cpu_port(ds, port))
++		return 0;
++
+ 	enable_jumbo = (mtu >= JMS_MIN_SIZE);
+ 	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
+ 
 -- 
 2.43.0
 
