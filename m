@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-63106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02140941751
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:10:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277D0941756
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 901EFB251F0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6411286E2B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C92C1898EB;
-	Tue, 30 Jul 2024 16:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B080218991E;
+	Tue, 30 Jul 2024 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzqVzMvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYuG3YxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2A81898E3;
-	Tue, 30 Jul 2024 16:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F0D18800D;
+	Tue, 30 Jul 2024 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355683; cv=none; b=kNdMQA+AGlf6qktD7bMM1H2yz2O8jpSkU0jCCiK9B44dDQLhtX/PgIwu09aCGbKJKeJxU2zh6nmf/fpWS5WGNojtxEXhIqYdEwuhdQakZeirS1ssydEd6aP+Sk8Heh4Tv+3Du0/fN5PwlSRx6H06QhyDJeAQMcXDx5xWNnzGAyQ=
+	t=1722355697; cv=none; b=NPgpxcidRPdN9dnWdsvSMPEAbt/PqFetJgybIa+YIvZaeO/xZoVLumiabd2UrdpixapD6xJCe2Nlfgz89L+ACAgyQ+YWbE7ic3/j1qfh/7jV3Z1qhzqH6Jh2Ff9OI2/I5DgK2rlU91t7LDMQIyr/QANVMF7rwzAcsVxnS+ENSSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355683; c=relaxed/simple;
-	bh=eghjfCctj3hWa044ERR+Vle6jjR/J65ZkxoLYEojkJI=;
+	s=arc-20240116; t=1722355697; c=relaxed/simple;
+	bh=GJK7Y57cVIZ6Q6vx6yXiIfnjeiZ7ecm0a5nvAOMsglc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P98Lh6rC0zrlMbNzN1Vd/vv7uLcIbcVEca6y1OZZ6IYv2LbnMFPA8Dvo+z8quACGijwvYFYO79Tj3amKBFlFNz/6oW6XozeB34MgPVkBPY9YoyYIVQGa31GCiKqe6gF7+9M+kAOzE3O5iZpLbMvWFyl4QW7mk8+zrmSHEgHDVsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzqVzMvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B321C4AF0A;
-	Tue, 30 Jul 2024 16:08:02 +0000 (UTC)
+	 MIME-Version; b=Ooka/9Pw70HzBlemOaGg8pKpOL1je5fWBDn9gVUegl8j3v0r2mxXUg+q1BlN1Cbprde5oDNRki36t/uV1GDGz6mV5ygLdOKAFeEN3fupNMOsQwG6YefKJqOPWOrMWebL62N/kDuU7pVm7jRdAqAosgqGBVSwZVfO/5clkCgTom8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYuG3YxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E41C32782;
+	Tue, 30 Jul 2024 16:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355683;
-	bh=eghjfCctj3hWa044ERR+Vle6jjR/J65ZkxoLYEojkJI=;
+	s=korg; t=1722355697;
+	bh=GJK7Y57cVIZ6Q6vx6yXiIfnjeiZ7ecm0a5nvAOMsglc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzqVzMvgKacp7Akgsx5P33mXTlqLxmQ3fcRQklVU8WJ5cyQBZU3rQY7ArNHK0wcGy
-	 OsoOPtWHbV5/6nIdtTrYiWENLjUuT4J6dwjRlBprsJuVxx+8asOYQPtF6eDr2+4/P7
-	 DvoKeRStSAgnhFQ5fJ5io0Qt76TkYXntfWfjNLrU=
+	b=tYuG3YxPLLKrNTLoHFiMbPQXiMFoC312kTdHv66IOXm34iyScwo+ao0lxlDryz8mn
+	 RRovbvFhecgi/lXc55n33Muk5nUOCXeefH901UuIjtbYKkli+1CPruD+jivWyhN91f
+	 NQCUtK6c7y8r9vxPawc7N/rGoFpD9Me6u9ZTWJps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Mirsad Todorovac <mtodorovac69@yahoo.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/440] bpf: annotate BTF show functions with __printf
-Date: Tue, 30 Jul 2024 17:45:54 +0200
-Message-ID: <20240730151620.614859754@linuxfoundation.org>
+Subject: [PATCH 6.1 122/440] bna: adjust name buf size of bna_tcb and bna_ccb structures
+Date: Tue, 30 Jul 2024 17:45:55 +0200
+Message-ID: <20240730151620.652858363@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -68,54 +67,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit b3470da314fd8018ee237e382000c4154a942420 ]
+[ Upstream commit c9741a03dc8e491e57b95fba0058ab46b7e506da ]
 
--Werror=suggest-attribute=format warns about two functions
-in kernel/bpf/btf.c [1]; add __printf() annotations to silence
-these warnings since for CONFIG_WERROR=y they will trigger
-build failures.
+To have enough space to write all possible sprintf() args. Currently
+'name' size is 16, but the first '%s' specifier may already need at
+least 16 characters, since 'bnad->netdev->name' is used there.
 
-[1] https://lore.kernel.org/bpf/a8b20c72-6631-4404-9e1f-0410642d7d20@gmail.com/
+For '%d' specifiers, assume that they require:
+ * 1 char for 'tx_id + tx_info->tcb[i]->id' sum, BNAD_MAX_TXQ_PER_TX is 8
+ * 2 chars for 'rx_id + rx_info->rx_ctrl[i].ccb->id', BNAD_MAX_RXP_PER_RX
+   is 16
 
-Fixes: 31d0bc81637d ("bpf: Move to generic BTF show support, apply it to seq files/strings")
-Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Tested-by: Mirsad Todorovac <mtodorovac69@yahoo.com>
-Link: https://lore.kernel.org/r/20240711182321.963667-1-alan.maguire@oracle.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+And replace sprintf with snprintf.
+
+Detected using the static analysis tool - Svace.
+
+Fixes: 8b230ed8ec96 ("bna: Brocade 10Gb Ethernet device driver")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/brocade/bna/bna_types.h |  2 +-
+ drivers/net/ethernet/brocade/bna/bnad.c      | 11 ++++++-----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 7582ec4fd4131..9d6524caf8ea9 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -6792,8 +6792,8 @@ static void btf_type_show(const struct btf *btf, u32 type_id, void *obj,
- 	btf_type_ops(t)->show(btf, t, type_id, obj, 0, show);
- }
+diff --git a/drivers/net/ethernet/brocade/bna/bna_types.h b/drivers/net/ethernet/brocade/bna/bna_types.h
+index 666b6922e24db..ebf54d74c2bbe 100644
+--- a/drivers/net/ethernet/brocade/bna/bna_types.h
++++ b/drivers/net/ethernet/brocade/bna/bna_types.h
+@@ -410,7 +410,7 @@ struct bna_ib {
+ /* Tx object */
  
--static void btf_seq_show(struct btf_show *show, const char *fmt,
--			 va_list args)
-+__printf(2, 0) static void btf_seq_show(struct btf_show *show, const char *fmt,
-+					va_list args)
- {
- 	seq_vprintf((struct seq_file *)show->target, fmt, args);
- }
-@@ -6826,8 +6826,8 @@ struct btf_show_snprintf {
- 	int len;		/* length we would have written */
- };
+ /* Tx datapath control structure */
+-#define BNA_Q_NAME_SIZE		16
++#define BNA_Q_NAME_SIZE		(IFNAMSIZ + 6)
+ struct bna_tcb {
+ 	/* Fast path */
+ 	void			**sw_qpt;
+diff --git a/drivers/net/ethernet/brocade/bna/bnad.c b/drivers/net/ethernet/brocade/bna/bnad.c
+index d6d90f9722a7e..aecdb98f8a9c1 100644
+--- a/drivers/net/ethernet/brocade/bna/bnad.c
++++ b/drivers/net/ethernet/brocade/bna/bnad.c
+@@ -1535,8 +1535,9 @@ bnad_tx_msix_register(struct bnad *bnad, struct bnad_tx_info *tx_info,
  
--static void btf_snprintf_show(struct btf_show *show, const char *fmt,
--			      va_list args)
-+__printf(2, 0) static void btf_snprintf_show(struct btf_show *show, const char *fmt,
-+					     va_list args)
- {
- 	struct btf_show_snprintf *ssnprintf = (struct btf_show_snprintf *)show;
- 	int len;
+ 	for (i = 0; i < num_txqs; i++) {
+ 		vector_num = tx_info->tcb[i]->intr_vector;
+-		sprintf(tx_info->tcb[i]->name, "%s TXQ %d", bnad->netdev->name,
+-				tx_id + tx_info->tcb[i]->id);
++		snprintf(tx_info->tcb[i]->name, BNA_Q_NAME_SIZE, "%s TXQ %d",
++			 bnad->netdev->name,
++			 tx_id + tx_info->tcb[i]->id);
+ 		err = request_irq(bnad->msix_table[vector_num].vector,
+ 				  (irq_handler_t)bnad_msix_tx, 0,
+ 				  tx_info->tcb[i]->name,
+@@ -1586,9 +1587,9 @@ bnad_rx_msix_register(struct bnad *bnad, struct bnad_rx_info *rx_info,
+ 
+ 	for (i = 0; i < num_rxps; i++) {
+ 		vector_num = rx_info->rx_ctrl[i].ccb->intr_vector;
+-		sprintf(rx_info->rx_ctrl[i].ccb->name, "%s CQ %d",
+-			bnad->netdev->name,
+-			rx_id + rx_info->rx_ctrl[i].ccb->id);
++		snprintf(rx_info->rx_ctrl[i].ccb->name, BNA_Q_NAME_SIZE,
++			 "%s CQ %d", bnad->netdev->name,
++			 rx_id + rx_info->rx_ctrl[i].ccb->id);
+ 		err = request_irq(bnad->msix_table[vector_num].vector,
+ 				  (irq_handler_t)bnad_msix_rx, 0,
+ 				  rx_info->rx_ctrl[i].ccb->name,
 -- 
 2.43.0
 
