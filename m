@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E41941988
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E975941A8D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79E0B1C23636
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDA9BB250A0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA41F1A6192;
-	Tue, 30 Jul 2024 16:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBBE1A619E;
+	Tue, 30 Jul 2024 16:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcRmzgS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6/jfG4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A15A8BE8;
-	Tue, 30 Jul 2024 16:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2838BE8;
+	Tue, 30 Jul 2024 16:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357213; cv=none; b=oRCq+ae7oUd5SRmGjr0+hJJCAYrwomoYdNfZnw0p/pnqy6BQ1rzygDzCGoT5/QJBlXWKkKN2G536A/t1dFyiq2mPKEoDwjZvlzRMwiPWCWenlVl9NZtbxSvYDMZQPfCVMO0+eLXwZXiK3GRS/y7oNseDJoXgaaZjeDpJbXYgAks=
+	t=1722357223; cv=none; b=rW5I9PQxw0rMucB73oF1vEWWebMYF1GdoOD9crHf2NVAmIGMlvIcvyngcS3iR3Rmm2BCtNtWCs0xIlkvYGHPkMQIK/ho/U7zz4rJyyk80B+YuS9IPPmU53pzeBKJ0TdpBKvXF9JJERnHhk6RSwRPxpvpxrx8K8uZX7ha1Ak7XJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357213; c=relaxed/simple;
-	bh=WcmXgu77wXyeAzaU+DxC/VvLpUJlDh9gneZfqccD7dI=;
+	s=arc-20240116; t=1722357223; c=relaxed/simple;
+	bh=3YSHMguzQGYKsTubLdw8933s1wuMJtPbKrHsUxaCsfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4Zu5t1SIpaS8SLhz4cX/HKcpmkD1J47Ki44UTNDd8wiJz5a38xeWj9vBCYwwD+XWanvFxCeMh89qPzeFxZCykcusJwctcVqofJWAzePGjUtuus/Ipr0L9cmkbc1p1T01BfQJ4yoB9lX/TwYI1V/9Wp391MtxYDag1fVVOOjf2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcRmzgS8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F729C32782;
-	Tue, 30 Jul 2024 16:33:32 +0000 (UTC)
+	 MIME-Version; b=SUfFvhLFXtQW5rCY3gFYAocHhVtc1ctopQb79/X9WiyAQpdB9zs12QyhmIKa6kwjrvd4xaDpBwLtOSyaMP4nDlJiipUL5x0S/r8psRqAISe5ATrIomgUCrndyAb8yTCD3av14QkxCShWWhZFOxdrYLFU/aNAnjASwEvoGSAkfnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6/jfG4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC5EC32782;
+	Tue, 30 Jul 2024 16:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357213;
-	bh=WcmXgu77wXyeAzaU+DxC/VvLpUJlDh9gneZfqccD7dI=;
+	s=korg; t=1722357222;
+	bh=3YSHMguzQGYKsTubLdw8933s1wuMJtPbKrHsUxaCsfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcRmzgS8ry0UvLQKVp08UwkrW8hUtqOupZ3xAZSzCeUiGvGcxT75/EJBDBdUVemBB
-	 1Rpb0jJK687xmh9Sz7TVXVBZQrlJessE4ASFlwKgE3MPVLovnPsJaDxS/2TPUY2iTQ
-	 BJ0sp9LOnhFfqQwKElgDilG8vF3YdBUd59bPcGAY=
+	b=K6/jfG4muwqbdm314w6I95b7sH2+djjm9M/8V0Oqu/f1041rnPffrNDFuFOEzPYrB
+	 imT2VMSN+8At1xH+sQXLmxrHO3Jq2sObs+cGXeJkEkNHcIXxY7ZpMAMiLW0GCvpHuY
+	 gO/HBO+AgO2a7gqRUSNa4JU79JCUvIJVLY8PZsf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 233/809] bpf: helpers: fix bpf_wq_set_callback_impl signature
-Date: Tue, 30 Jul 2024 17:41:49 +0200
-Message-ID: <20240730151733.810439456@linuxfoundation.org>
+Subject: [PATCH 6.10 234/809] NFSD: Fix nfsdcld warning
+Date: Tue, 30 Jul 2024 17:41:50 +0200
+Message-ID: <20240730151733.849096565@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,43 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit f56f4d541eab1ae060a46b56dd6ec9130d6e3a98 ]
+[ Upstream commit 18a5450684c312e98eb2253f0acf88b3f780af20 ]
 
-I realized this while having a map containing both a struct bpf_timer and
-a struct bpf_wq: the third argument provided to the bpf_wq callback is
-not the struct bpf_wq pointer itself, but the pointer to the value in
-the map.
+Since CONFIG_NFSD_LEGACY_CLIENT_TRACKING is a new config option, its
+initial default setting should have been Y (if we are to follow the
+common practice of "default Y, wait, default N, wait, remove code").
 
-Which means that the users need to double cast the provided "value" as
-this is not a struct bpf_wq *.
+Paul also suggested adding a clearer remedy action to the warning
+message.
 
-This is a change of API, but there doesn't seem to be much users of bpf_wq
-right now, so we should be able to go with this right now.
-
-Fixes: 81f1d7a583fa ("bpf: wq: add bpf_wq_set_callback_impl")
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Link: https://lore.kernel.org/r/20240708-fix-wq-v2-1-667e5c9fbd99@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Message-Id: <d2ab4ee7-ba0f-44ac-b921-90c8fa5a04d2@molgen.mpg.de>
+Fixes: 74fd48739d04 ("nfsd: new Kconfig option for legacy client tracking")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/Kconfig       | 2 +-
+ fs/nfsd/nfs4recover.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 3243c83ef3e39..7268370600f6e 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -2786,7 +2786,7 @@ __bpf_kfunc int bpf_wq_start(struct bpf_wq *wq, unsigned int flags)
- }
- 
- __bpf_kfunc int bpf_wq_set_callback_impl(struct bpf_wq *wq,
--					 int (callback_fn)(void *map, int *key, struct bpf_wq *wq),
-+					 int (callback_fn)(void *map, int *key, void *value),
- 					 unsigned int flags,
- 					 void *aux__ign)
- {
+diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
+index 272ab8d5c4d76..ec2ab6429e00b 100644
+--- a/fs/nfsd/Kconfig
++++ b/fs/nfsd/Kconfig
+@@ -162,7 +162,7 @@ config NFSD_V4_SECURITY_LABEL
+ config NFSD_LEGACY_CLIENT_TRACKING
+ 	bool "Support legacy NFSv4 client tracking methods (DEPRECATED)"
+ 	depends on NFSD_V4
+-	default n
++	default y
+ 	help
+ 	  The NFSv4 server needs to store a small amount of information on
+ 	  stable storage in order to handle state recovery after reboot. Most
+diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
+index 2c060e0b16048..67d8673a9391c 100644
+--- a/fs/nfsd/nfs4recover.c
++++ b/fs/nfsd/nfs4recover.c
+@@ -2086,8 +2086,8 @@ nfsd4_client_tracking_init(struct net *net)
+ 	status = nn->client_tracking_ops->init(net);
+ out:
+ 	if (status) {
+-		printk(KERN_WARNING "NFSD: Unable to initialize client "
+-				    "recovery tracking! (%d)\n", status);
++		pr_warn("NFSD: Unable to initialize client recovery tracking! (%d)\n", status);
++		pr_warn("NFSD: Is nfsdcld running? If not, enable CONFIG_NFSD_LEGACY_CLIENT_TRACKING.\n");
+ 		nn->client_tracking_ops = NULL;
+ 	}
+ 	return status;
 -- 
 2.43.0
 
