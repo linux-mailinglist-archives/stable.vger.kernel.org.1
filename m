@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-64427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F018A941DCF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B670941ED3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8E22287847
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC97D1C20A59
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9F318800A;
-	Tue, 30 Jul 2024 17:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26632166315;
+	Tue, 30 Jul 2024 17:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OC9x28PW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elUiutPQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F13184556;
-	Tue, 30 Jul 2024 17:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A3E1A76AD;
+	Tue, 30 Jul 2024 17:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360086; cv=none; b=YGogADgtkdpyB3ki4W0Cp77nO3XZ5VK7xF2NvQdQwJQfaQ6FIqT3C1furjSvfmwO/XMafejl7mXq2kwfYbFslH1wyvVNuwjB9C1T1l4IHDpohrXsr/FP0I2zXr09Hg/k7QKvmxrU+kIYhFN6fIt1q1h+7wq0zScIMRQD3nv0ptk=
+	t=1722360807; cv=none; b=Mt93vhH56cdn0XgDkXXYGgjMB30JeiWdUO8i0p7lTOTzsBgu1ByhezVjx6xpFkJTPRjjmc/qOdRI6v/TiObY1yoQ7fAucWJ0U9HLXkiCfjTA0eeTCoxLCyRKpsAJN69e2LBkpOcLaBPegK1AwnvJVK1KCj6munuyJu4kvfWdMKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360086; c=relaxed/simple;
-	bh=oxvlNXz5mLJpqEi/Df1NCC1mzd6TUjkWoHvq/113Qvc=;
+	s=arc-20240116; t=1722360807; c=relaxed/simple;
+	bh=eBiCIwa14yok1mNiSJM9KYcV7wX40Pm/4xlS0N0/hgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=taEPVSIWoSPiVxmaflgXnu7MaGXFKV2qTENjo/3+GO17e/HMBy9REIOsc2TEeWAJc6kquhI/t9ECaSvxEJXIUOp/LNeMQBwrI+1qXFe1aELRZ7ExrMe7CNI+Q9h5wTSJb7PuepJZ2ulZKufo3yWXpBSpWBRKG8piDgfHZ6Bk6Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OC9x28PW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54DFC32782;
-	Tue, 30 Jul 2024 17:21:25 +0000 (UTC)
+	 MIME-Version; b=H0fFgAUm1ClJmRMj2yV3aUYc/uG7E4rNujd3aMFKXtkKVNKzwuNUZvI53Mt6kbkmO1X8zAQjwgXNvs+Kjd7InceinRGvdPYjd7omO3Fy7+xRw2FYaq6d39uwXekXFpqR3QTfGdvNYOSdcZCIOiUx31/pji28r0/aU/R9RzKHxN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elUiutPQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFB2C4AF0A;
+	Tue, 30 Jul 2024 17:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360086;
-	bh=oxvlNXz5mLJpqEi/Df1NCC1mzd6TUjkWoHvq/113Qvc=;
+	s=korg; t=1722360807;
+	bh=eBiCIwa14yok1mNiSJM9KYcV7wX40Pm/4xlS0N0/hgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OC9x28PWmepn0smeTO2R5AcocC1ZXSpJxt1QJM+jG7AgvXsnJAnE15p3FfPDqesFh
-	 5JKaVC+XC3W7AojLkOvD0fdhRtGBeq6NaeqPIpfmh9bio/ZQnGWzPhjYJNY/w+P7qs
-	 bLQ5sdJaCaVPtYg1wV8ntQUuVhYG9GNFkC3EVd4Q=
+	b=elUiutPQ1/eHzLOUmHeg3Gtyq0ZTT/PVHCNjSuLlU3pJ0Jajj2dsGfo/87F4DxW+z
+	 ShLNSUWer6lAEs96OIQTnzZx2xhjzsxJGMwdZWwNyMqa9W4lIcDnZkB/Ouh4JKX70O
+	 M2klLT09lIaBE18Lmronv68wYkfvaMk22IQqvEcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Nitesh Shetty <nj.shetty@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 567/568] nvme-pci: add missing condition check for existence of mapped data
+Subject: [PATCH 6.10 798/809] s390/cpum_cf: Fix endless loop in CF_DIAG event stop
 Date: Tue, 30 Jul 2024 17:51:14 +0200
-Message-ID: <20240730151702.318956035@linuxfoundation.org>
+Message-ID: <20240730151756.498748638@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit c31fad1470389666ac7169fe43aa65bf5b7e2cfd ]
+[ Upstream commit e6ce1f12d777f6ee22b20e10ae6a771e7e6f44f5 ]
 
-nvme_map_data() is called when request has physical segments, hence
-the nvme_unmap_data() should have same condition to avoid dereference.
+Event CF_DIAG reads out complete counter sets using stcctm
+instruction. This is done at event start time when the process
+starts execution and at event stop time when the process is
+removed from the CPU. During removal the difference of each
+counter in the counter sets is calculated and saved as raw data
+in the ring buffer. This works fine unless the number of counters
+in a counter set is zero. This may happen for the extended counter
+set. This set is machine specific and the size of the counter
+set can be zero even when extended counter set is authorized for
+read access.
 
-Fixes: 4aedb705437f ("nvme-pci: split metadata handling from nvme_map_data / nvme_unmap_data")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This case is not handled. cfdiag_diffctr() checks authorization
+of the extended counter set. If true the functions assumes
+the extended counter set has been saved in a data buffer. However
+this is not the case, cfdiag_getctrset() does not save a counter
+set with counter set size of zero. This mismatch causes an endless
+loop in the counter set readout during event stop handling.
+
+The calculation of the difference of the counters in each counter
+now verifies the size of the counter set is non-zero. A counter set
+with size zero is skipped.
+
+Fixes: a029a4eab39e ("s390/cpumf: Allow concurrent access for CPU Measurement Counter Facility")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/kernel/perf_cpum_cf.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 7c71431dbd6cc..796c2a00fea4a 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -863,7 +863,8 @@ static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
- 	nvme_start_request(req);
- 	return BLK_STS_OK;
- out_unmap_data:
--	nvme_unmap_data(dev, req);
-+	if (blk_rq_nr_phys_segments(req))
-+		nvme_unmap_data(dev, req);
- out_free_cmd:
- 	nvme_cleanup_cmd(req);
- 	return ret;
+diff --git a/arch/s390/kernel/perf_cpum_cf.c b/arch/s390/kernel/perf_cpum_cf.c
+index 1434642e9cba0..6968be98af117 100644
+--- a/arch/s390/kernel/perf_cpum_cf.c
++++ b/arch/s390/kernel/perf_cpum_cf.c
+@@ -556,25 +556,31 @@ static int cfdiag_diffctr(struct cpu_cf_events *cpuhw, unsigned long auth)
+ 	struct cf_trailer_entry *trailer_start, *trailer_stop;
+ 	struct cf_ctrset_entry *ctrstart, *ctrstop;
+ 	size_t offset = 0;
++	int i;
+ 
+-	auth &= (1 << CPUMF_LCCTL_ENABLE_SHIFT) - 1;
+-	do {
++	for (i = CPUMF_CTR_SET_BASIC; i < CPUMF_CTR_SET_MAX; ++i) {
+ 		ctrstart = (struct cf_ctrset_entry *)(cpuhw->start + offset);
+ 		ctrstop = (struct cf_ctrset_entry *)(cpuhw->stop + offset);
+ 
++		/* Counter set not authorized */
++		if (!(auth & cpumf_ctr_ctl[i]))
++			continue;
++		/* Counter set size zero was not saved */
++		if (!cpum_cf_read_setsize(i))
++			continue;
++
+ 		if (memcmp(ctrstop, ctrstart, sizeof(*ctrstop))) {
+ 			pr_err_once("cpum_cf_diag counter set compare error "
+ 				    "in set %i\n", ctrstart->set);
+ 			return 0;
+ 		}
+-		auth &= ~cpumf_ctr_ctl[ctrstart->set];
+ 		if (ctrstart->def == CF_DIAG_CTRSET_DEF) {
+ 			cfdiag_diffctrset((u64 *)(ctrstart + 1),
+ 					  (u64 *)(ctrstop + 1), ctrstart->ctr);
+ 			offset += ctrstart->ctr * sizeof(u64) +
+ 							sizeof(*ctrstart);
+ 		}
+-	} while (ctrstart->def && auth);
++	}
+ 
+ 	/* Save time_stamp from start of event in stop's trailer */
+ 	trailer_start = (struct cf_trailer_entry *)(cpuhw->start + offset);
 -- 
 2.43.0
 
