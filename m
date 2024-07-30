@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EBB9417AB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A56A9417BB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C65DB1C235EE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E90C41F23608
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F03118C93A;
-	Tue, 30 Jul 2024 16:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84CF1A6170;
+	Tue, 30 Jul 2024 16:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dw7R3bgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fJVi0Ds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF1418E05E;
-	Tue, 30 Jul 2024 16:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C3A1A616E;
+	Tue, 30 Jul 2024 16:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355863; cv=none; b=JFXpfpjdgZo4CKpHp5ZVqWeSnZqADBMSCAXVQ5QIaKrDDj6ACxQVD1BCrYDyDcKMQ5NHdXFELX3w8+sb+kqLrzJpKza4Xx/vDlJNTli2aYA/3jyX5V4zwhClvppSA3p1IEFT6Jc7RA5naUL625Fw4wIMtLoKq7IB7Lnp1YsjOss=
+	t=1722355897; cv=none; b=EHyN6jXUmKawCZi6RA69tip8sxybkREfXx7klTiXX1vHvP9/kuug63NjZaCv0Ou9YDerHWZR6h8JUZA+3RZREeNc2zuXzPt6sDImRC7JQpS+S2ovG2pA/56OEizneepEzro03XKr+aVzi1Dp8nRic+273JOKBGVc5yA+KI84Rh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355863; c=relaxed/simple;
-	bh=+WnnGaBnhFlE7MpsbfgMpzxlf1Yc3vQ2UcuUf2K4mf0=;
+	s=arc-20240116; t=1722355897; c=relaxed/simple;
+	bh=jPhC5ffCH55ThZJ+o8B+6ZZnbYYf8sLFBnQTrYhNdjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwnXww9XR/wMVgQHx1WH1v8GHanyjK5o9ORuhzqo3TWDb9S/Jir+QtYwisTdZEEb0GsxajSwv8HB3tz0/pAtV0sKgtiYjmHYG3VnR1bgQ1TcNpHpgRoxmjysGAlCHsj6mkj3O9PcrDzEVEhCL/vPQy9dohjTW+fZpVKddwH0ogY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dw7R3bgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BB3C32782;
-	Tue, 30 Jul 2024 16:11:02 +0000 (UTC)
+	 MIME-Version; b=bTjYu/oZ+/o0G4n7hawPg0FK8CUclxK/bSJM1WEScYk0qq6F6ThEHEbLlYmL8PT9NpTbI5wUbnROeZW2udBgHU2e8zfnUBD3BuGEfxt4AYtnJ66vjrmY4LbDWc6en7Vsokl3lGx9myj00tnMclkobpp2i1k/pHT/Ije3qJAOEdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fJVi0Ds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E91C4AF0C;
+	Tue, 30 Jul 2024 16:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355863;
-	bh=+WnnGaBnhFlE7MpsbfgMpzxlf1Yc3vQ2UcuUf2K4mf0=;
+	s=korg; t=1722355897;
+	bh=jPhC5ffCH55ThZJ+o8B+6ZZnbYYf8sLFBnQTrYhNdjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dw7R3bgMa2x6GQFROW6IF2mEKkuau4Er3hAQRUIdtGi3z5WIC9dsiNwb6AKGoQOUU
-	 DYauG8cEX9gMZTANGbAW0rmS1jw/ZAPK31oVV9U6VAMQvk2O6//ukmx21++5qXBMU0
-	 0VCyVkbJgR9GDUzAXgD+htWihntaNY++TZ9wgCAY=
+	b=0fJVi0DsCngzkCt6G3ket9+AxwQjiyjpXhfJR8wd5X/DmV7c2uQnkfMsWPGWPGqOB
+	 x/WxloSxHdUbm1OJUQWIE+6IZkGSRUcGHYLw/5yCi5iVBL+9AzqIcF8vYcLIVzuSlM
+	 qu42c4WhV/9L5k1TyuKaB5h72WHSJHygJt/TVxhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Michael Walle <mwalle@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 095/809] ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset
-Date: Tue, 30 Jul 2024 17:39:31 +0200
-Message-ID: <20240730151728.388573950@linuxfoundation.org>
+Subject: [PATCH 6.10 096/809] ARM: dts: imx6qdl-kontron-samx6i: fix board reset
+Date: Tue, 30 Jul 2024 17:39:32 +0200
+Message-ID: <20240730151728.426850952@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,45 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit edfea889a049abe80f0d55c0365bf60fbade272f ]
+[ Upstream commit b972d6b3b46345023aee56a95df8e2c137aa4ee4 ]
 
-The PHY reset line is connected to both the SoC (GPIO1_25) and
-the CPLD. We must not use the GPIO1_25 as it will drive against
-the output buffer of the CPLD. Instead there is another GPIO
-(GPIO2_01), an input to the CPLD, which will tell the CPLD to
-assert the PHY reset line.
+On i.MX6 the board is reset by the watchdog. But in turn to do a
+complete board reset, we have to assert the WDOG_B output which is
+routed also to the CPLD which then do a complete power-cycle of the
+board.
 
-Fixes: 2a51f9dae13d ("ARM: dts: imx6qdl-kontron-samx6i: Add iMX6-based Kontron SMARC-sAMX6i module")
-Fixes: 5694eed98cca ("ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node")
+Fixes: 2125212785c9 ("ARM: dts: imx6qdl-kontron-samx6i: add Kontron SMARC SoM Support")
 Signed-off-by: Michael Walle <mwalle@kernel.org>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-index d8c1dfb8c9abb..d6c049b9a9c69 100644
+index d6c049b9a9c69..700780bf64f58 100644
 --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
 +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-@@ -269,7 +269,7 @@ mdio {
- 		ethphy: ethernet-phy@1 {
- 			compatible = "ethernet-phy-ieee802.3-c22";
- 			reg = <1>;
--			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
-+			reset-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
- 			reset-assert-us = <1000>;
- 		};
- 	};
-@@ -516,7 +516,7 @@ MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL 0x1b0b0
- 			MX6QDL_PAD_ENET_MDIO__ENET_MDIO       0x1b0b0
- 			MX6QDL_PAD_ENET_MDC__ENET_MDC         0x1b0b0
- 			MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK  0x1b0b0
--			MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25    0x1b0b0 /* RST_GBE0_PHY# */
-+			MX6QDL_PAD_NANDF_D1__GPIO2_IO01       0x1b0b0 /* RST_GBE0_PHY# */
- 		>;
- 	};
- 
+@@ -817,5 +817,6 @@ &wdog1 {
+ 	/* CPLD is feeded by watchdog (hardwired) */
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_wdog1>;
++	fsl,ext-reset-output;
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
