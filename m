@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B855694196A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB385941C59
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC010B22143
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 210BFB20CBD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91E0183CDA;
-	Tue, 30 Jul 2024 16:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A5B187FF6;
+	Tue, 30 Jul 2024 17:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlMwk3Xh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k72SQhMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A501A6169;
-	Tue, 30 Jul 2024 16:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD091A6192;
+	Tue, 30 Jul 2024 17:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357062; cv=none; b=seJxYulWleBQIncUvKLziExCIjeXb1gNNz/S6jdhLenC/GyjBUFlNdWeoQfWU/lcSfK4yMWbuv59KK3xRVc2uvG9hB5ZTU6Lter67CPOdWUbetufXcVda0dLOgMKKHWOoGQjda/bxIrFdrpO9yBBlvSPweJxXDdhdjqZxAr2k28=
+	t=1722359172; cv=none; b=if8SaCkEfYt1LsnkMKLQPl0f9P5Byc8ckXaumHS0qJpd0nq6kfampIqgvYHJHAZAb3hFCtSdQ3tI8EYqquyp2RtmPS3xHx9a5GoqzXXcCT3f/r7uWxTw8riJ8pXiXkznoHWoQwLwQqIgBvloMI5RpTr+mURTTcNFogQIrXA17zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357062; c=relaxed/simple;
-	bh=XPcws5S3cElPhUpNRqLMX91/O1sJw7YfedqdBmIquVk=;
+	s=arc-20240116; t=1722359172; c=relaxed/simple;
+	bh=5bhP6myE7wAJbfLDtQfuSRUWkICRFRhXztCD0Q3OOSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpumP1otKFztVRcMu495b9L0ZQGdgUIOQlmKbKsCw0dvoJ5LRsfgIc/+P1lH9xnw3v1P+zrcIuh6Pvs4jaXBpuXuuj5OqHrAlPC8yfnvm3cBiJeNIFOyXlsPurJMPdcVyfu/0LC2jx7beMEtGXDmT4CXCnbo8XPLj1lgN0lo6gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlMwk3Xh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2C7C32782;
-	Tue, 30 Jul 2024 16:31:01 +0000 (UTC)
+	 MIME-Version; b=FPyMEr2niqLcKI508pGx8z4u1uAQHcY8yBqc5e+F9j8IBJ9ItfDgbeu7tkUU6vS8SXe8/0KTTXmYsod3neRnxVoSVrDZQp15/KH83SzmK6DsLYG/jHfT1V8CIV26ObkdjnGPy+vm1hu37Mr3zzjM2H0Ld+lnHHxUM+knsCNDUzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k72SQhMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99087C4AF12;
+	Tue, 30 Jul 2024 17:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357062;
-	bh=XPcws5S3cElPhUpNRqLMX91/O1sJw7YfedqdBmIquVk=;
+	s=korg; t=1722359172;
+	bh=5bhP6myE7wAJbfLDtQfuSRUWkICRFRhXztCD0Q3OOSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlMwk3XhB0gsQ8bQnsKf+u1WaWJeXk1ny+UVu/mG7fz+7XnUSa/XWXFp9ESP6bDT8
-	 i7G8Nhz/XiP7qPnu6PKd5a7RpE6DS1Q/XzJ0uMbw7LZokO4FBcj/HTMurl9YrVzngb
-	 7jwHru8F+R3TTaenxBkzlY4aaYbYUc+67xw2/Nvc=
+	b=k72SQhMuE34t5MGM3hcuJFaHd66nwgP6VTHncGPNCCY8pYzHol3oN7VXuEbLwMEiM
+	 /8bXcsnesFEo51AYl47L8L8G+Wysscjvey9d1Aqa1hk+Lx3Y3GVR8Cc8u4fXQm4xO3
+	 bTs2laR2g7YEGCHcj2YtUgaJwu0Vbh8KC7L0UU9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 214/568] drm/mediatek: Use 8-bit alpha in ETHDR
-Date: Tue, 30 Jul 2024 17:45:21 +0200
-Message-ID: <20240730151648.236568911@linuxfoundation.org>
+Subject: [PATCH 6.10 446/809] scsi: lpfc: Revise lpfc_prep_embed_io routine with proper endian macro usages
+Date: Tue, 30 Jul 2024 17:45:22 +0200
+Message-ID: <20240730151742.321418670@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 231c020141cb150a59f5b28379cad82ff7bad899 ]
+[ Upstream commit 8bc7c617642db6d8d20ee671fb6c4513017e7a7e ]
 
-9-bit alpha (max=0x100) is designed for special HDR related
-calculation, which should be disabled by default.
-Change the alpha value from 0x100 to 0xff in 8-bit form.
+On big endian architectures, it is possible to run into a memory out of
+bounds pointer dereference when FCP targets are zoned.
 
-Fixes: d886c0009bd0 ("drm/mediatek: Add ETHDR support for MT8195")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-2-a9d62d2e2c7e@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+In lpfc_prep_embed_io, the memcpy(ptr, fcp_cmnd, sgl->sge_len) is
+referencing a little endian formatted sgl->sge_len value.  So, the memcpy
+can cause big endian systems to crash.
+
+Redefine the *sgl ptr as a struct sli4_sge_le to make it clear that we are
+referring to a little endian formatted data structure.  And, update the
+routine with proper le32_to_cpu macro usages.
+
+Fixes: af20bb73ac25 ("scsi: lpfc: Add support for 32 byte CDBs")
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240628172011.25921-8-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_ethdr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_sli.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_ethdr.c b/drivers/gpu/drm/mediatek/mtk_ethdr.c
-index db7ac666ec5e1..5b5a0e149e0a3 100644
---- a/drivers/gpu/drm/mediatek/mtk_ethdr.c
-+++ b/drivers/gpu/drm/mediatek/mtk_ethdr.c
-@@ -50,7 +50,6 @@
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index f475e7ece41a4..3e55d5edd60ab 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -10579,10 +10579,11 @@ lpfc_prep_embed_io(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
+ {
+ 	struct lpfc_iocbq *piocb = &lpfc_cmd->cur_iocbq;
+ 	union lpfc_wqe128 *wqe = &lpfc_cmd->cur_iocbq.wqe;
+-	struct sli4_sge *sgl;
++	struct sli4_sge_le *sgl;
++	u32 type_size;
  
- #define MIXER_INX_MODE_BYPASS			0
- #define MIXER_INX_MODE_EVEN_EXTEND		1
--#define DEFAULT_9BIT_ALPHA			0x100
- #define	MIXER_ALPHA_AEN				BIT(8)
- #define	MIXER_ALPHA				0xff
- #define ETHDR_CLK_NUM				13
-@@ -169,7 +168,7 @@ void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
- 		alpha_con = MIXER_ALPHA_AEN | MIXER_ALPHA;
+ 	/* 128 byte wqe support here */
+-	sgl = (struct sli4_sge *)lpfc_cmd->dma_sgl;
++	sgl = (struct sli4_sge_le *)lpfc_cmd->dma_sgl;
  
- 	mtk_mmsys_mixer_in_config(priv->mmsys_dev, idx + 1, alpha_con ? false : true,
--				  DEFAULT_9BIT_ALPHA,
-+				  MIXER_ALPHA,
- 				  pending->x & 1 ? MIXER_INX_MODE_EVEN_EXTEND :
- 				  MIXER_INX_MODE_BYPASS, align_width / 2 - 1, cmdq_pkt);
+ 	if (phba->fcp_embed_io) {
+ 		struct fcp_cmnd *fcp_cmnd;
+@@ -10591,9 +10592,9 @@ lpfc_prep_embed_io(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
+ 		fcp_cmnd = lpfc_cmd->fcp_cmnd;
  
+ 		/* Word 0-2 - FCP_CMND */
+-		wqe->generic.bde.tus.f.bdeFlags =
+-			BUFF_TYPE_BDE_IMMED;
+-		wqe->generic.bde.tus.f.bdeSize = sgl->sge_len;
++		type_size = le32_to_cpu(sgl->sge_len);
++		type_size |= ULP_BDE64_TYPE_BDE_IMMED;
++		wqe->generic.bde.tus.w = type_size;
+ 		wqe->generic.bde.addrHigh = 0;
+ 		wqe->generic.bde.addrLow =  72;  /* Word 18 */
+ 
+@@ -10602,13 +10603,13 @@ lpfc_prep_embed_io(struct lpfc_hba *phba, struct lpfc_io_buf *lpfc_cmd)
+ 
+ 		/* Word 18-29  FCP CMND Payload */
+ 		ptr = &wqe->words[18];
+-		memcpy(ptr, fcp_cmnd, sgl->sge_len);
++		lpfc_sli_pcimem_bcopy(fcp_cmnd, ptr, le32_to_cpu(sgl->sge_len));
+ 	} else {
+ 		/* Word 0-2 - Inline BDE */
+ 		wqe->generic.bde.tus.f.bdeFlags =  BUFF_TYPE_BDE_64;
+-		wqe->generic.bde.tus.f.bdeSize = sgl->sge_len;
+-		wqe->generic.bde.addrHigh = sgl->addr_hi;
+-		wqe->generic.bde.addrLow =  sgl->addr_lo;
++		wqe->generic.bde.tus.f.bdeSize = le32_to_cpu(sgl->sge_len);
++		wqe->generic.bde.addrHigh = le32_to_cpu(sgl->addr_hi);
++		wqe->generic.bde.addrLow = le32_to_cpu(sgl->addr_lo);
+ 
+ 		/* Word 10 */
+ 		bf_set(wqe_dbde, &wqe->generic.wqe_com, 1);
 -- 
 2.43.0
 
