@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF4F941778
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE26594177B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A11C71C23661
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 135C81C23734
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905A518B481;
-	Tue, 30 Jul 2024 16:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66B518801B;
+	Tue, 30 Jul 2024 16:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfCUCULS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBVuVl81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8E518B473;
-	Tue, 30 Jul 2024 16:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E55187FF2;
+	Tue, 30 Jul 2024 16:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355749; cv=none; b=rl8a5rk3pehwiTGItE45s5jgON/oHK9rQQJA96AhUfoJrg0wJL7DPuFxKlTm9xlBdC0IPzExYgpVH71P3/fwrmzTf+XzQpxyNq7fUIBfxC7Rerxt3WCXplSoNeGi9LaG+v82HVC3kXP0VRt4FIq6IoD5+8DplAivvJAmp7THjDI=
+	t=1722355759; cv=none; b=t+r66twXLLGoClQW+ZZoYfbffFzHQu9pG52Ps0wud/EJGQon0hA/wO0COHlYeLwDe4STv3gXH6uAqlgDpD91XxD6riq0tglOhXSjOqSNAlNl2KSBUx2Ek7A3YWFy/rQHhCc7TsMCGrc/T6ucKTWybcCufdw0CP2NkZbLTln4+TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355749; c=relaxed/simple;
-	bh=MFKUJgxe93hcvW5eVBQqopclHsGjjlgNpYo28Pxa8Xs=;
+	s=arc-20240116; t=1722355759; c=relaxed/simple;
+	bh=cXzr0t3WgYOfA/+Z/Q4IFfC4nnuyVckZYYhhGXJgHGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaOheWP+LHZDGH5hMV/hASK1rPdaYSXcriRP19Mr4olzkw7tlRf85/zjiHOo7G4nN+gK7gWsXdaJ2y66XL2sb7b8fuwvYackusCvmzBupVEB/bTuZ53tjRQ+/W4TbPpY/1A+Lupbt5oh+N8nnXE4r7BfXjTy3H+yR8Aq368t1JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfCUCULS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F21FC32782;
-	Tue, 30 Jul 2024 16:09:08 +0000 (UTC)
+	 MIME-Version; b=MaZ9mYIh8wr5zDxRdVCUPx0eXVe8+JT4I+UHq3TX10pC1hkFAk/ToIwUlB6ZAUjkLXhMJD1M3w2v8DRmzXTy1wYL5HNXePp1vphk3kaCZWu2AseeflqLa4aFJwpqk+w4+WgZN9zW8bKf8BDMtmCc4qOEbQ8hHrPolcSBCydkpHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBVuVl81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93834C32782;
+	Tue, 30 Jul 2024 16:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355748;
-	bh=MFKUJgxe93hcvW5eVBQqopclHsGjjlgNpYo28Pxa8Xs=;
+	s=korg; t=1722355759;
+	bh=cXzr0t3WgYOfA/+Z/Q4IFfC4nnuyVckZYYhhGXJgHGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfCUCULSHOpkkm83mNXXx3Fu33Twd3mQM2ofJVRGLHFGAA26Xg2AuG112FGVb0Vyn
-	 kFd/7KTyZLB7390E4eSwfZXfBLPtBAdVsAYO4c+eyd9TQ0yIF5qLXXXXE/wzLzmQYe
-	 tENJZWRgmOMEEcxkbcceH71nHemMWPFXnF9E7GHY=
+	b=vBVuVl81NerwUDF3KaBvvhqLzVg4e69NF6GW3I3Ia/KMtAqWmWwHj6y2dIzkCv7MM
+	 RrCu+YK+0v7soozBM0KYSbLHy6r5JPmxeStA+oCgY7R092Mqo8sXkQCbE9COTcxfYo
+	 7NhvYRRXWqnTE2rOaK8jRMBX79L9H1uC798NrqDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jai Luthra <j-luthra@ti.com>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 085/809] arm64: dts: ti: k3-am625-phyboard-lyra-rdk: Drop McASP AFIFOs
-Date: Tue, 30 Jul 2024 17:39:21 +0200
-Message-ID: <20240730151727.996216118@linuxfoundation.org>
+Subject: [PATCH 6.10 086/809] arm64: dts: ti: k3-am62p5-sk: Fix pinmux for McASP1 TX
+Date: Tue, 30 Jul 2024 17:39:22 +0200
+Message-ID: <20240730151728.034971188@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,33 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit 554dd562a5f2f5d7e838f7b229a1c612275678db ]
+[ Upstream commit e96e36ce1fdcf08a70e3f09cbe2da02b073c58ac ]
 
-McASP AFIFOs are not necessary with UDMA-P/BCDMA as there is buffering
-on the DMA IP. Drop these for better audio latency.
+On SK-AM62P, McASP1 uses two pins for communicating with the codec over
+I2S protocol. One of these pins (AXR0) is used for audio playback (TX)
+so the direction of the pin should be OUTPUT.
 
-Fixes: 28c0cf16b308 ("arm64: dts: ti: k3-am625-phyboard-lyra-rdk: Add Audio Codec")
+Fixes: c00504ea42c0 ("arm64: dts: ti: k3-am62p5-sk: Updates for SK EVM")
 Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240606-mcasp_fifo_drop-v2-6-8c317dabdd0a@ti.com
+Link: https://lore.kernel.org/r/20240606-mcasp_fifo_drop-v2-7-8c317dabdd0a@ti.com
 Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am625-phyboard-lyra-rdk.dts | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62p5-sk.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am625-phyboard-lyra-rdk.dts b/arch/arm64/boot/dts/ti/k3-am625-phyboard-lyra-rdk.dts
-index 50d2573c840ee..6c24e4d39ee80 100644
---- a/arch/arm64/boot/dts/ti/k3-am625-phyboard-lyra-rdk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am625-phyboard-lyra-rdk.dts
-@@ -441,8 +441,6 @@ &mcasp2 {
- 			0 0 0 0
- 			0 0 0 0
- 	>;
--	tx-num-evt = <32>;
--	rx-num-evt = <32>;
- 	status = "okay";
- };
- 
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+index 78d4d44e8bd4e..fb980d46e3041 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+@@ -207,7 +207,7 @@ main_mcasp1_pins_default: main-mcasp1-default-pins {
+ 		pinctrl-single,pins = <
+ 			AM62PX_IOPAD(0x0090, PIN_INPUT, 2) /* (U24) GPMC0_BE0n_CLE.MCASP1_ACLKX */
+ 			AM62PX_IOPAD(0x0098, PIN_INPUT, 2) /* (AA24) GPMC0_WAIT0.MCASP1_AFSX */
+-			AM62PX_IOPAD(0x008c, PIN_INPUT, 2) /* (T25) GPMC0_WEn.MCASP1_AXR0 */
++			AM62PX_IOPAD(0x008c, PIN_OUTPUT, 2) /* (T25) GPMC0_WEn.MCASP1_AXR0 */
+ 			AM62PX_IOPAD(0x0084, PIN_INPUT, 2) /* (R25) GPMC0_ADVn_ALE.MCASP1_AXR2 */
+ 		>;
+ 	};
 -- 
 2.43.0
 
