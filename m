@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5128594191F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D43941C44
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 088661F239F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791B62824B2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639351A6195;
-	Tue, 30 Jul 2024 16:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFE6188003;
+	Tue, 30 Jul 2024 17:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWYZmHM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liGIdMlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B11A1A6160;
-	Tue, 30 Jul 2024 16:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C581A6192;
+	Tue, 30 Jul 2024 17:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356954; cv=none; b=ka/EZZ7NpLtMPzVeQaGCXov41uBLQEQTvGP3anfBek3en9z8I4WlRSS4GyLSa3ErXbTtqzoJVqnMY/N+HXMqAyHXv42RcCTo0z+fTA38ZYJH9dBUUU7I6iPGq2Ib3t7zCpxaK71EFA8IZeWDz8QKt8QVxAidwpJslfC82lJXLLo=
+	t=1722359122; cv=none; b=TBaH7Ahdo6tO4dVwc26rLzA30uoIA/JmTD+lzIjvz9iPeuQzPkUgFznwPCaD9B5GHWbuJbo4CzWv6GdZcfQ8dfKYzrUaPqoipSMQAuicKKDlczZc6sxzlWafAjpKvwyyyyVx65YSca5AZEMZ1emt+IxSXjDUmLMtgmsFMyshWIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356954; c=relaxed/simple;
-	bh=qVeNAqc/4T7PhbP8FoIzg9WiwDJyCWxD9NCPpIZqGi8=;
+	s=arc-20240116; t=1722359122; c=relaxed/simple;
+	bh=0mMNhhV2yLkyB2d4n7+JLYQpxeuoEKypw5Sc30jSm/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NcT4i35N/wvwV08iAuQ/RwA2aCaEl+O3OLbpr9uGQn93AaTIbZKefbQDZ4KuYaWrayAEZtokyTIUHOYKPt7zSpWROGif6pTstUfeVWg9EYoOk+HVY98FpFUkhXx3h9dBfGmO3ev4lPTMAuB20zlGLKCG4tzendMED/24yWjX3+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWYZmHM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E79C32782;
-	Tue, 30 Jul 2024 16:29:13 +0000 (UTC)
+	 MIME-Version; b=fPBHjJiITadKrD5NLtbqBXOuNweSAWNZKVzidTd5yuwiyEmHgCnDLtHTxgQOeQj5IduV9ICCJzh4tpMrjImspPPE31EC3zDIn0vDcFat9XrUuXJdbOR0PUIk8qVKePLlO5rF9oQtu5/0m8ZHjEOiTuH9H8HnprMfh9xE+7Nkkxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liGIdMlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B285AC32782;
+	Tue, 30 Jul 2024 17:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356954;
-	bh=qVeNAqc/4T7PhbP8FoIzg9WiwDJyCWxD9NCPpIZqGi8=;
+	s=korg; t=1722359122;
+	bh=0mMNhhV2yLkyB2d4n7+JLYQpxeuoEKypw5Sc30jSm/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWYZmHM7eniBNFoj4RRB+7v33Lj3m5i9ZzohIJj1YNizmVtUUfMhmSIjnZlCUEZUW
-	 zUM+KtnFzySDlrFJTtzjbWpNHrzh4C8Iw4BckE4Uu479xIbJzEWWNnv+U6UH3yvyCg
-	 gc9M3Cx8032lB09O4xYZViNmq9/RYISR6eijwd/w=
+	b=liGIdMljXIMLFd1h4Szb7CPVHI48tJW/uJCYq0/PTRdOOieqF90hha/+4VrBlU4QT
+	 IJZYetdaSAkv+vDI0mn9V3DoVQvoNPxWZGm9CdVZBxG1Eci6sNhduK6gAPpzav1VXa
+	 yIOCYNhu9wcb/JEkj1MdrJfpn35ioNkKjjdwReTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Natalenko <oleksandr@natalenko.name>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/568] media: uvcvideo: Add quirk for invalid dev_sof in Logitech C920
-Date: Tue, 30 Jul 2024 17:45:11 +0200
-Message-ID: <20240730151647.848334411@linuxfoundation.org>
+Subject: [PATCH 6.10 436/809] clk: qcom: gcc-x1e80100: Fix halt_check for all pipe clocks
+Date: Tue, 30 Jul 2024 17:45:12 +0200
+Message-ID: <20240730151741.924118717@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,240 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 85fbe91a7c9210bb30638846b551fa5d3cb7bc4c ]
+[ Upstream commit f27e42c7d3ff8ddfc57273efd1e8642ea89bad90 ]
 
-Similarly to Logitech C922, C920 seems to also suffer from a firmware
-bug that breaks hardware timestamping.
+In case of all pipe clocks, there is a QMP PHY clock that is feeding them.
+If, for whatever reason, the clock from the PHY is not enabled, halt bit
+will not get set, and the clock controller driver will assume the clock
+is stuck in a specific state. The way this is supposed to be properly
+fixed is to defer the checking of the halt bit until after the PHY clock
+has been initialized, but doing so complicates the clock controller
+driver. In fact, since these pipe clocks are consumed by the PHY, while
+the PHY is also the one providing the source, if clock gets stuck, the PHY
+driver would be to blame. So instead of checking the halt bit in here,
+just skip it and assume the PHY driver is handling the source clock
+correctly.
 
-Add a quirk for this camera model too.
-
-Before applying the quirk:
-
-```
-100 (4) [-] none 100 200717 B 212.919114 213.079004 33.727 fps ts mono/SoE
-101 (5) [-] none 101 200889 B 213.003703 213.114996 11.822 fps ts mono/SoE
-102 (6) [-] none 102 200926 B 213.035571 213.146999 31.379 fps ts mono/SoE
-103 (7) [-] none 103 200839 B 213.067424 213.179003 31.394 fps ts mono/SoE
-104 (0) [-] none 104 200692 B 213.293180 213.214991 4.430 fps ts mono/SoE
-105 (1) [-] none 105 200937 B 213.322374 213.247001 34.254 fps ts mono/SoE
-106 (2) [-] none 106 201013 B 213.352228 213.279005 33.496 fps ts mono/SoE
-…
-```
-
-After applying the quirk:
-
-```
-154 (2) [-] none 154 192417 B 42.199823 42.207788 27.779 fps ts mono/SoE
-155 (3) [-] none 155 192040 B 42.231834 42.239791 31.239 fps ts mono/SoE
-156 (4) [-] none 156 192213 B 42.263823 42.271822 31.261 fps ts mono/SoE
-157 (5) [-] none 157 191981 B 42.299824 42.303827 27.777 fps ts mono/SoE
-158 (6) [-] none 158 191953 B 42.331835 42.339811 31.239 fps ts mono/SoE
-159 (7) [-] none 159 191904 B 42.363824 42.371813 31.261 fps ts mono/SoE
-160 (0) [-] none 160 192210 B 42.399834 42.407801 27.770 fps ts mono/SoE
-```
-
-Fixes: 5d0fd3c806b9 ("[media] uvcvideo: Disable hardware timestamps by default")
-Signed-off-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240325142611.15550-1-oleksandr@natalenko.name
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20240628-x1e80100-clk-gcc-fix-halt-check-for-usb-phy-pipe-clks-v2-1-db3be54b1143@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-x1e80100.c | 44 ++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 664a1b7314197..68bf41147a619 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2580,7 +2580,8 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceClass	= USB_CLASS_VIDEO,
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
--	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT
-+					       | UVC_QUIRK_INVALID_DEVICE_SOF) },
- 	/* Logitech HD Pro Webcam C922 */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
+index 1404017be9180..7b6c1eb6a61d4 100644
+--- a/drivers/clk/qcom/gcc-x1e80100.c
++++ b/drivers/clk/qcom/gcc-x1e80100.c
+@@ -2812,7 +2812,7 @@ static struct clk_branch gcc_pcie_0_mstr_axi_clk = {
+ 
+ static struct clk_branch gcc_pcie_0_pipe_clk = {
+ 	.halt_reg = 0xa0044,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52010,
+ 		.enable_mask = BIT(25),
+@@ -2901,7 +2901,7 @@ static struct clk_branch gcc_pcie_1_mstr_axi_clk = {
+ 
+ static struct clk_branch gcc_pcie_1_pipe_clk = {
+ 	.halt_reg = 0x2c044,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52020,
+ 		.enable_mask = BIT(30),
+@@ -2990,7 +2990,7 @@ static struct clk_branch gcc_pcie_2_mstr_axi_clk = {
+ 
+ static struct clk_branch gcc_pcie_2_pipe_clk = {
+ 	.halt_reg = 0x13044,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52020,
+ 		.enable_mask = BIT(23),
+@@ -3110,7 +3110,7 @@ static struct clk_branch gcc_pcie_3_phy_rchng_clk = {
+ 
+ static struct clk_branch gcc_pcie_3_pipe_clk = {
+ 	.halt_reg = 0x58050,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52020,
+ 		.enable_mask = BIT(3),
+@@ -3235,7 +3235,7 @@ static struct clk_branch gcc_pcie_4_phy_rchng_clk = {
+ 
+ static struct clk_branch gcc_pcie_4_pipe_clk = {
+ 	.halt_reg = 0x6b044,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52008,
+ 		.enable_mask = BIT(4),
+@@ -3360,7 +3360,7 @@ static struct clk_branch gcc_pcie_5_phy_rchng_clk = {
+ 
+ static struct clk_branch gcc_pcie_5_pipe_clk = {
+ 	.halt_reg = 0x2f044,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52018,
+ 		.enable_mask = BIT(17),
+@@ -3498,7 +3498,7 @@ static struct clk_branch gcc_pcie_6a_phy_rchng_clk = {
+ 
+ static struct clk_branch gcc_pcie_6a_pipe_clk = {
+ 	.halt_reg = 0x31050,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52018,
+ 		.enable_mask = BIT(26),
+@@ -3636,7 +3636,7 @@ static struct clk_branch gcc_pcie_6b_phy_rchng_clk = {
+ 
+ static struct clk_branch gcc_pcie_6b_pipe_clk = {
+ 	.halt_reg = 0x8d050,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52000,
+ 		.enable_mask = BIT(30),
+@@ -5109,7 +5109,7 @@ static struct clk_branch gcc_usb3_mp_phy_com_aux_clk = {
+ 
+ static struct clk_branch gcc_usb3_mp_phy_pipe_0_clk = {
+ 	.halt_reg = 0x17290,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x17290,
+ 		.enable_mask = BIT(0),
+@@ -5122,7 +5122,7 @@ static struct clk_branch gcc_usb3_mp_phy_pipe_0_clk = {
+ 
+ static struct clk_branch gcc_usb3_mp_phy_pipe_1_clk = {
+ 	.halt_reg = 0x17298,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x17298,
+ 		.enable_mask = BIT(0),
+@@ -5186,7 +5186,7 @@ static struct clk_regmap_mux gcc_usb3_prim_phy_pipe_clk_src = {
+ 
+ static struct clk_branch gcc_usb3_prim_phy_pipe_clk = {
+ 	.halt_reg = 0x39068,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0x39068,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -5257,7 +5257,7 @@ static struct clk_regmap_mux gcc_usb3_sec_phy_pipe_clk_src = {
+ 
+ static struct clk_branch gcc_usb3_sec_phy_pipe_clk = {
+ 	.halt_reg = 0xa1068,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0xa1068,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -5327,7 +5327,7 @@ static struct clk_regmap_mux gcc_usb3_tert_phy_pipe_clk_src = {
+ 
+ static struct clk_branch gcc_usb3_tert_phy_pipe_clk = {
+ 	.halt_reg = 0xa2068,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0xa2068,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -5405,7 +5405,7 @@ static struct clk_branch gcc_usb4_0_master_clk = {
+ 
+ static struct clk_branch gcc_usb4_0_phy_p2rr2p_pipe_clk = {
+ 	.halt_reg = 0x9f0d8,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x9f0d8,
+ 		.enable_mask = BIT(0),
+@@ -5418,7 +5418,7 @@ static struct clk_branch gcc_usb4_0_phy_p2rr2p_pipe_clk = {
+ 
+ static struct clk_branch gcc_usb4_0_phy_pcie_pipe_clk = {
+ 	.halt_reg = 0x9f048,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52010,
+ 		.enable_mask = BIT(19),
+@@ -5457,7 +5457,7 @@ static struct clk_branch gcc_usb4_0_phy_rx1_clk = {
+ 
+ static struct clk_branch gcc_usb4_0_phy_usb_pipe_clk = {
+ 	.halt_reg = 0x9f0a4,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0x9f0a4,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -5582,7 +5582,7 @@ static struct clk_branch gcc_usb4_1_master_clk = {
+ 
+ static struct clk_branch gcc_usb4_1_phy_p2rr2p_pipe_clk = {
+ 	.halt_reg = 0x2b0d8,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x2b0d8,
+ 		.enable_mask = BIT(0),
+@@ -5595,7 +5595,7 @@ static struct clk_branch gcc_usb4_1_phy_p2rr2p_pipe_clk = {
+ 
+ static struct clk_branch gcc_usb4_1_phy_pcie_pipe_clk = {
+ 	.halt_reg = 0x2b048,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52028,
+ 		.enable_mask = BIT(0),
+@@ -5634,7 +5634,7 @@ static struct clk_branch gcc_usb4_1_phy_rx1_clk = {
+ 
+ static struct clk_branch gcc_usb4_1_phy_usb_pipe_clk = {
+ 	.halt_reg = 0x2b0a4,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0x2b0a4,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -5759,7 +5759,7 @@ static struct clk_branch gcc_usb4_2_master_clk = {
+ 
+ static struct clk_branch gcc_usb4_2_phy_p2rr2p_pipe_clk = {
+ 	.halt_reg = 0x110d8,
+-	.halt_check = BRANCH_HALT,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x110d8,
+ 		.enable_mask = BIT(0),
+@@ -5772,7 +5772,7 @@ static struct clk_branch gcc_usb4_2_phy_p2rr2p_pipe_clk = {
+ 
+ static struct clk_branch gcc_usb4_2_phy_pcie_pipe_clk = {
+ 	.halt_reg = 0x11048,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x52028,
+ 		.enable_mask = BIT(1),
+@@ -5811,7 +5811,7 @@ static struct clk_branch gcc_usb4_2_phy_rx1_clk = {
+ 
+ static struct clk_branch gcc_usb4_2_phy_usb_pipe_clk = {
+ 	.halt_reg = 0x110a4,
+-	.halt_check = BRANCH_HALT_VOTED,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0x110a4,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
 -- 
 2.43.0
 
