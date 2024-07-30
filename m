@@ -1,174 +1,118 @@
-Return-Path: <stable+bounces-62721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48727940DEC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:38:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0458940DDD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21045B2829E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:36:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474511F2598A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C71419645E;
-	Tue, 30 Jul 2024 09:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CD31957E7;
+	Tue, 30 Jul 2024 09:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+jIbbAJ"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="dCKWbzjm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C206C195FE0
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD8D194A71;
+	Tue, 30 Jul 2024 09:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722332068; cv=none; b=kS5bmih8yKkLofcnomT22Hyz1T7ZcJX65evoqY67GB4pFkqkWs1z4euL/NAsd+lUYS2f+WiHQ7Cwsui2X0O0AkbOCAy+LVCVfe/Q6R7lFs/shfD7InA1grjze9qC8AfBRIDyw422FRPzjv9elL8l+bVkwkZ2KuZfZ4vbDAWKmZE=
+	t=1722332258; cv=none; b=V4r5lL6Qw9vMhZxbZQoS8GAenIoSZRWjUQPsdOfMSIQNfoM6guo0J6KFurDoyJ7OV5yB4azpOM9QgzVUyIQYfieO0zEOKfkIuaC6o8Uv3r9UrfKJt8Mxi/+JdBdPqcbehZh+YQOR9TUZkJUibReXmcg1yL471DIAUCbvcuvbi/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722332068; c=relaxed/simple;
-	bh=d/X0HWwdfyIboBTUANrwWKVa7+NQ5xbmNKAaNtVpW2g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=L/opQG40yaVcXde3pfCW532BFOKGRoYKr+Bpc/t0d96JoGt0D6ybZRmuTaTh7/LX3GqxFopZzAkySpD4Z8P0jDM7OCNpPH5FdxFcfShdIhcMJp3saKzU8IX9bSo4YQAEkaYoDfBgDaDcF6rkQtNUtIJcg94+BhVHJgaStdQczyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+jIbbAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15B4C4AF51;
-	Tue, 30 Jul 2024 09:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722332068;
-	bh=d/X0HWwdfyIboBTUANrwWKVa7+NQ5xbmNKAaNtVpW2g=;
-	h=Subject:To:Cc:From:Date:From;
-	b=i+jIbbAJTJmuu0JGNv+rtArNHUnXvW3jchoTPWqslbDBFI6mQ32kvsS6cUarPC1K7
-	 LTPMbegM9zReYNLMFDKARAm8aumnI1MrOrTDLbYAgxtIB6quAKAo+iNFp2tTZbIuG2
-	 CzqOyDyUUNHx9urRVamuulo1EBx6eqmRuUqDGIB8=
-Subject: FAILED: patch "[PATCH] bus: mhi: ep: Do not allocate memory for MHI objects from DMA" failed to apply to 6.6-stable tree
-To: manivannan.sadhasivam@linaro.org,quic_mrana@quicinc.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:34:24 +0200
-Message-ID: <2024073024-passable-cardigan-cd15@gregkh>
+	s=arc-20240116; t=1722332258; c=relaxed/simple;
+	bh=uAoCj342s28bN8WzPF4jxoxE/9JcpYsWneD9ocMbptg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XDwVNEHtKrG6Y5IL34sJrz4bg8aK13Ge0z4e6HqoCaQdEQqaw3EKmvNzJEQsf8MYZAHpY3Nq7GfRRs89+Bli7iwuLJMe0SfuyF4YwncAa5HbAaAIuw3yH1Drz4sPBrqTJux4oHZu49GE6RsrI3kOIJ4FNxcufXuaqGgS0WrTovY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=dCKWbzjm; arc=none smtp.client-ip=117.135.210.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=LI6OvfJ54Zf0AJX2niBwJqF6IGU6IH2SW6Hn7PnnAQE=;
+	b=dCKWbzjm4s/B0cn6vNywAOFNR/7BabeH/NUdh5xYJvm1H+lpmu3S7O+74OUiko
+	lLF426ZfHZpvtZXldAH+s94vZs9jsB29w/f6f6Zeha2wbycpgFThLv5xj95zU7Lm
+	DF0mFLsSJU/YWA7Z6tCWVtnVs07V/YHa2RpUwycE9DGqA=
+Received: from [172.21.22.210] (unknown [118.242.3.34])
+	by gzga-smtp-mta-g1-5 (Coremail) with SMTP id _____wD3HxIUtKhmLc8oAw--.11873S2;
+	Tue, 30 Jul 2024 17:36:21 +0800 (CST)
+Message-ID: <1c5f1582-d6ea-4e27-a966-e6e992cf7c22@126.com>
+Date: Tue, 30 Jul 2024 17:36:20 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
+ LRU batch
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
+References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
+ <3a2ab0ea-3a07-45a0-ae0e-b9d48bf409bd@redhat.com>
+ <79234eac-d7cc-424b-984d-b78861a5e862@126.com>
+ <9e018975-8a80-46a6-ab38-f3e2945c8878@redhat.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <9e018975-8a80-46a6-ab38-f3e2945c8878@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3HxIUtKhmLc8oAw--.11873S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtry5uFWfKFyfJr4DXrW5Wrg_yoWkZFX_Gr
+	48Zws5Gw4jg3ZrJ3Z0yry5JrWkXFWYkr18uFy8Jay3A347Aw48CFn2gr18ZFy7Jw1xAFs0
+	9F4DAF4Yvr9xZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8yrW5UUUUU==
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhksG2VEx2GucgAAsP
 
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+在 2024/7/30 15:45, David Hildenbrand 写道:
+>>> Looking at this in more detail, I wonder if we can turn that to
+>>>
+>>> if (!folio_test_clear_lru(folio))
+>>>       return;
+>>> folio_get(folio);
+>>>
+>>> In all cases? The caller must hold a reference, so this should be fine.
+>>>
+>>
+>> Seems the caller madvise_free_pte_range(...), calling
+>> folio_mark_lazyfree(...), doesn't hold a reference on folio.
+>>
+> 
+> If that would be the case and the folio could get freed concurrently, 
+> the folio_get(folio) would be completely broken.
+> 
+> In madvise_free_pte_range() we hold the PTL, so the folio cannot get 
+> freed concurrently.
+> 
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x c7d0b2db5bc5e8c0fdc67b3c8f463c3dfec92f77
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073024-passable-cardigan-cd15@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Right.
 
-Possible dependencies:
+> folio_get() is only allowed when we are sure the folio cannot get freed 
+> concurrently, because we know there is a reference that cannot go away.
+> 
+> 
 
-c7d0b2db5bc5 ("bus: mhi: ep: Do not allocate memory for MHI objects from DMA zone")
-2547beb00ddb ("bus: mhi: ep: Add support for async DMA read operation")
-ee08acb58fe4 ("bus: mhi: ep: Add support for async DMA write operation")
-8b786ed8fb08 ("bus: mhi: ep: Introduce async read/write callbacks")
-927105244f8b ("bus: mhi: ep: Rename read_from_host() and write_to_host() APIs")
-b08ded2ef2e9 ("bus: mhi: ep: Pass mhi_ep_buf_info struct to read/write APIs")
-62210a26cd4f ("bus: mhi: ep: Use slab allocator where applicable")
-987fdb5a43a6 ("bus: mhi: ep: Do not allocate event ring element on stack")
+When cpu0 runs folio_activate(), and cpu1 runs folio_put() concurrently, 
+a possible bad scenario would like:
 
-thanks,
+cpu0                                           cpu1
 
-greg k-h
+                                            folio_put_testzero(folio)
+if (!folio_test_clear_lru(folio))// Seems folio shouldn't be accessed 
 
------------------- original commit in Linus's tree ------------------
+        return;
+folio_get(folio);
+                                             __folio_put(folio)
+                                             __folio_clear_lru(folio)
 
-From c7d0b2db5bc5e8c0fdc67b3c8f463c3dfec92f77 Mon Sep 17 00:00:00 2001
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Mon, 3 Jun 2024 22:13:54 +0530
-Subject: [PATCH] bus: mhi: ep: Do not allocate memory for MHI objects from DMA
- zone
 
-MHI endpoint stack accidentally started allocating memory for objects from
-DMA zone since commit 62210a26cd4f ("bus: mhi: ep: Use slab allocator
-where applicable"). But there is no real need to allocate memory from this
-naturally limited DMA zone. This also causes the MHI endpoint stack to run
-out of memory while doing high bandwidth transfers.
+Seems we should use folio_try_get(folio) instead of folio_get(folio).
 
-So let's switch over to normal memory.
 
-Cc: <stable@vger.kernel.org> # 6.8
-Fixes: 62210a26cd4f ("bus: mhi: ep: Use slab allocator where applicable")
-Reviewed-by: Mayank Rana <quic_mrana@quicinc.com>
-Link: https://lore.kernel.org/r/20240603164354.79035-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
-index f8f674adf1d4..4acfac73ca9a 100644
---- a/drivers/bus/mhi/ep/main.c
-+++ b/drivers/bus/mhi/ep/main.c
-@@ -90,7 +90,7 @@ static int mhi_ep_send_completion_event(struct mhi_ep_cntrl *mhi_cntrl, struct m
- 	struct mhi_ring_element *event;
- 	int ret;
- 
--	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
-+	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
- 	if (!event)
- 		return -ENOMEM;
- 
-@@ -109,7 +109,7 @@ int mhi_ep_send_state_change_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_stat
- 	struct mhi_ring_element *event;
- 	int ret;
- 
--	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
-+	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
- 	if (!event)
- 		return -ENOMEM;
- 
-@@ -127,7 +127,7 @@ int mhi_ep_send_ee_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ee_type exec_e
- 	struct mhi_ring_element *event;
- 	int ret;
- 
--	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
-+	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
- 	if (!event)
- 		return -ENOMEM;
- 
-@@ -146,7 +146,7 @@ static int mhi_ep_send_cmd_comp_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_e
- 	struct mhi_ring_element *event;
- 	int ret;
- 
--	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
-+	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL);
- 	if (!event)
- 		return -ENOMEM;
- 
-@@ -438,7 +438,7 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
- 		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
- 		write_offset = len - buf_left;
- 
--		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL | GFP_DMA);
-+		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL);
- 		if (!buf_addr)
- 			return -ENOMEM;
- 
-@@ -1481,14 +1481,14 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
- 
- 	mhi_cntrl->ev_ring_el_cache = kmem_cache_create("mhi_ep_event_ring_el",
- 							sizeof(struct mhi_ring_element), 0,
--							SLAB_CACHE_DMA, NULL);
-+							0, NULL);
- 	if (!mhi_cntrl->ev_ring_el_cache) {
- 		ret = -ENOMEM;
- 		goto err_free_cmd;
- 	}
- 
- 	mhi_cntrl->tre_buf_cache = kmem_cache_create("mhi_ep_tre_buf", MHI_EP_DEFAULT_MTU, 0,
--						      SLAB_CACHE_DMA, NULL);
-+						      0, NULL);
- 	if (!mhi_cntrl->tre_buf_cache) {
- 		ret = -ENOMEM;
- 		goto err_destroy_ev_ring_el_cache;
 
 
