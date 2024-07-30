@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A257941921
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A6B941C1E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60915B27C6A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E6D828333E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428161A6196;
-	Tue, 30 Jul 2024 16:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43B5188017;
+	Tue, 30 Jul 2024 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3Wc7YCn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYH2y3w+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013DF1A616E;
-	Tue, 30 Jul 2024 16:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9701A6192;
+	Tue, 30 Jul 2024 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356828; cv=none; b=vDltLAhjEDyanA8YrO8oL60tDtvWiml4PaGdotMufROhhbk2Q7SF4uQAtLfLzKvkztR4pvAWN5b4nc/7Un2wyYYS3hg88CytA9ucrSaz94qR+M+YwDqEKdS1mZS1uyo1ADTkRctqXWs2duDGfXELORnoViGfErrkp30dKYgqDR8=
+	t=1722358996; cv=none; b=BcJinx7M/AC9mQAVn3vn6pJ2NtV5t6SiMYJQTX1nzULL5TjsqrFXJyluJ6mDwLifUW1aWonceEN2MSgoFRc/gbAm4ublg/bG4Fqz+KqV5G2lwf0Czjh90sQRh66L3kVHGLgSrXojTO9cHva1W/I5qABxbw91JWjWGgjuh3NxdGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356828; c=relaxed/simple;
-	bh=4CoCHLi9i6ufcYuA84GvHbpqN7Y7oWJgWZYP2CWA7wc=;
+	s=arc-20240116; t=1722358996; c=relaxed/simple;
+	bh=Kkwn3PfgHSwSKtau51PxWQu4wjVcbvkLJGGVFBSlZdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9SJDA+INxZeFb+KXPBmt3P284BcXlxl0oRklf8O2Mt7mSjrxgPBxftpTJjJLAP2rJ/R7csq6MZ7FzQsRGOcbPje8s1PwdfMR9BNEkGbCTr50UaQyn/pkQkH6um2rg7qSpkh/TddNuw83m+xNt9A8xYa00xCOigo2O550SdzEwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3Wc7YCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D709C32782;
-	Tue, 30 Jul 2024 16:27:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kb/Fos9v6hKTtsD8Jnd4KovL0WiRc2eWRMVvvyAndLau7iKs6nO+MakmVz/gDhzwDGa5kjcW1nd7YpW7s6qJ0xS73Cq5C6fy1txP6sp3bnWSBTNCnLRsKbW8GYj2zAJv9SuPyj/0qoYvX21WJzSd+ACObAcfL3hG7DpFc4oRdbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYH2y3w+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02149C32782;
+	Tue, 30 Jul 2024 17:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356827;
-	bh=4CoCHLi9i6ufcYuA84GvHbpqN7Y7oWJgWZYP2CWA7wc=;
+	s=korg; t=1722358996;
+	bh=Kkwn3PfgHSwSKtau51PxWQu4wjVcbvkLJGGVFBSlZdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3Wc7YCnj5pROOrLsDEWPGtsXhJBoKKjM+hE63wDZQ84aphYd8qdCpKL/0R8NpCO+
-	 JdGmRrK6dXuUuYGzaIsWpyPZziRdGpwcS6KBOI3/ti1CDTfuEVOc9y5uQ3KHRm/EVE
-	 rFACJ+UR7hPpzm/lJwmP3hVN11D9h+417OTf1sQI=
+	b=hYH2y3w+4NHlPI1Zhj6YlV/XFVCeoVL965AWD4Mb8TyZ4YxX2hJdYnBbHOFGvDC3X
+	 8LtHvQjcX+0sDCouBfUoxA+FbjLAjZXrtpkMym3gFiPY0sgxyrUJt9XTd1k82Xf2Xf
+	 ceqi6L5ZpwS5ZdgL8ZGmnfYeURSMz0K5EMY7wXoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuro Chung <kuro.chung@ite.com.tw>,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/568] drm/bridge: it6505: fix hibernate to resume no display issue
+Subject: [PATCH 6.10 419/809] RDMA/mlx4: Fix truncated output warning in mad.c
 Date: Tue, 30 Jul 2024 17:44:55 +0200
-Message-ID: <20240730151647.225523272@linuxfoundation.org>
+Message-ID: <20240730151741.245441995@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,166 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuro Chung <kuro.chung@ite.com.tw>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 484436ec5c2bffe8f346a09ae1cbc4cbf5e50005 ]
+[ Upstream commit 0d2e6992fc956e3308cd5376c18567def4cb3967 ]
 
-When the system power resumes, the TTL input of IT6505 may experience
-some noise before the video signal stabilizes, necessitating a video
-reset. This patch is implemented to prevent a loop of video error
-interrupts, which can occur when a video reset in the video FIFO error
-interrupt triggers another such interrupt. The patch processes the SCDT
-and FIFO error interrupts simultaneously and ignores any video FIFO
-error interrupts caused by a video reset.
+Increase size of the name array to avoid truncated output warning.
 
-Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
-Signed-off-by: Kuro Chung <kuro.chung@ite.com.tw>
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240522065528.1053439-1-kuro.chung@ite.com.tw
+drivers/infiniband/hw/mlx4/mad.c: In function ‘mlx4_ib_alloc_demux_ctx’:
+drivers/infiniband/hw/mlx4/mad.c:2197:47: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 4
+[-Werror=format-truncation=]
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |                                               ^~
+drivers/infiniband/hw/mlx4/mad.c:2197:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |                                      ^~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2197:9: note: ‘snprintf’ output between
+10 and 20 bytes into a destination of size 12
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2205:48: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |                                                ^~
+drivers/infiniband/hw/mlx4/mad.c:2205:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |                                      ^~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2205:9: note: ‘snprintf’ output between
+11 and 21 bytes into a destination of size 12
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2213:48: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |                                                ^~
+drivers/infiniband/hw/mlx4/mad.c:2213:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |                                      ^~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2213:9: note: ‘snprintf’ output between
+11 and 21 bytes into a destination of size 12
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/hw/mlx4/mad.o] Error 1
+
+Fixes: fc06573dfaf8 ("IB/mlx4: Initialize SR-IOV IB support for slaves in master context")
+Link: https://lore.kernel.org/r/f3798b3ce9a410257d7e1ec7c9e285f1352e256a.1718554569.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 73 +++++++++++++++++++----------
- 1 file changed, 49 insertions(+), 24 deletions(-)
+ drivers/infiniband/hw/mlx4/mad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index b589136ca6da9..4ad527fe04f27 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -1306,9 +1306,15 @@ static void it6505_video_reset(struct it6505 *it6505)
- 	it6505_link_reset_step_train(it6505);
- 	it6505_set_bits(it6505, REG_DATA_MUTE_CTRL, EN_VID_MUTE, EN_VID_MUTE);
- 	it6505_set_bits(it6505, REG_INFOFRAME_CTRL, EN_VID_CTRL_PKT, 0x00);
--	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, VIDEO_RESET);
-+
-+	it6505_set_bits(it6505, REG_VID_BUS_CTRL1, TX_FIFO_RESET, TX_FIFO_RESET);
-+	it6505_set_bits(it6505, REG_VID_BUS_CTRL1, TX_FIFO_RESET, 0x00);
-+
- 	it6505_set_bits(it6505, REG_501_FIFO_CTRL, RST_501_FIFO, RST_501_FIFO);
- 	it6505_set_bits(it6505, REG_501_FIFO_CTRL, RST_501_FIFO, 0x00);
-+
-+	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, VIDEO_RESET);
-+	usleep_range(1000, 2000);
- 	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, 0x00);
- }
- 
-@@ -2244,12 +2250,11 @@ static void it6505_link_training_work(struct work_struct *work)
- 	if (ret) {
- 		it6505->auto_train_retry = AUTO_TRAIN_RETRY;
- 		it6505_link_train_ok(it6505);
--		return;
- 	} else {
- 		it6505->auto_train_retry--;
-+		it6505_dump(it6505);
- 	}
- 
--	it6505_dump(it6505);
- }
- 
- static void it6505_plugged_status_to_codec(struct it6505 *it6505)
-@@ -2470,31 +2475,53 @@ static void it6505_irq_link_train_fail(struct it6505 *it6505)
- 	schedule_work(&it6505->link_works);
- }
- 
--static void it6505_irq_video_fifo_error(struct it6505 *it6505)
-+static bool it6505_test_bit(unsigned int bit, const unsigned int *addr)
+diff --git a/drivers/infiniband/hw/mlx4/mad.c b/drivers/infiniband/hw/mlx4/mad.c
+index a37cfac5e23f9..dc9cf45d2d320 100644
+--- a/drivers/infiniband/hw/mlx4/mad.c
++++ b/drivers/infiniband/hw/mlx4/mad.c
+@@ -2158,7 +2158,7 @@ static int mlx4_ib_alloc_demux_ctx(struct mlx4_ib_dev *dev,
+ 				       struct mlx4_ib_demux_ctx *ctx,
+ 				       int port)
  {
--	struct device *dev = it6505->dev;
--
--	DRM_DEV_DEBUG_DRIVER(dev, "video fifo overflow interrupt");
--	it6505->auto_train_retry = AUTO_TRAIN_RETRY;
--	flush_work(&it6505->link_works);
--	it6505_stop_hdcp(it6505);
--	it6505_video_reset(it6505);
-+	return 1 & (addr[bit / BITS_PER_BYTE] >> (bit % BITS_PER_BYTE));
- }
+-	char name[12];
++	char name[21];
+ 	int ret = 0;
+ 	int i;
  
--static void it6505_irq_io_latch_fifo_overflow(struct it6505 *it6505)
-+static void it6505_irq_video_handler(struct it6505 *it6505, const int *int_status)
- {
- 	struct device *dev = it6505->dev;
-+	int reg_0d, reg_int03;
- 
--	DRM_DEV_DEBUG_DRIVER(dev, "IO latch fifo overflow interrupt");
--	it6505->auto_train_retry = AUTO_TRAIN_RETRY;
--	flush_work(&it6505->link_works);
--	it6505_stop_hdcp(it6505);
--	it6505_video_reset(it6505);
--}
-+	/*
-+	 * When video SCDT change with video not stable,
-+	 * Or video FIFO error, need video reset
-+	 */
- 
--static bool it6505_test_bit(unsigned int bit, const unsigned int *addr)
--{
--	return 1 & (addr[bit / BITS_PER_BYTE] >> (bit % BITS_PER_BYTE));
-+	if ((!it6505_get_video_status(it6505) &&
-+	     (it6505_test_bit(INT_SCDT_CHANGE, (unsigned int *)int_status))) ||
-+	    (it6505_test_bit(BIT_INT_IO_FIFO_OVERFLOW,
-+			     (unsigned int *)int_status)) ||
-+	    (it6505_test_bit(BIT_INT_VID_FIFO_ERROR,
-+			     (unsigned int *)int_status))) {
-+		it6505->auto_train_retry = AUTO_TRAIN_RETRY;
-+		flush_work(&it6505->link_works);
-+		it6505_stop_hdcp(it6505);
-+		it6505_video_reset(it6505);
-+
-+		usleep_range(10000, 11000);
-+
-+		/*
-+		 * Clear FIFO error IRQ to prevent fifo error -> reset loop
-+		 * HW will trigger SCDT change IRQ again when video stable
-+		 */
-+
-+		reg_int03 = it6505_read(it6505, INT_STATUS_03);
-+		reg_0d = it6505_read(it6505, REG_SYSTEM_STS);
-+
-+		reg_int03 &= (BIT(INT_VID_FIFO_ERROR) | BIT(INT_IO_LATCH_FIFO_OVERFLOW));
-+		it6505_write(it6505, INT_STATUS_03, reg_int03);
-+
-+		DRM_DEV_DEBUG_DRIVER(dev, "reg08 = 0x%02x", reg_int03);
-+		DRM_DEV_DEBUG_DRIVER(dev, "reg0D = 0x%02x", reg_0d);
-+
-+		return;
-+	}
-+
-+	if (it6505_test_bit(INT_SCDT_CHANGE, (unsigned int *)int_status))
-+		it6505_irq_scdt(it6505);
- }
- 
- static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
-@@ -2507,15 +2534,12 @@ static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
- 	} irq_vec[] = {
- 		{ BIT_INT_HPD, it6505_irq_hpd },
- 		{ BIT_INT_HPD_IRQ, it6505_irq_hpd_irq },
--		{ BIT_INT_SCDT, it6505_irq_scdt },
- 		{ BIT_INT_HDCP_FAIL, it6505_irq_hdcp_fail },
- 		{ BIT_INT_HDCP_DONE, it6505_irq_hdcp_done },
- 		{ BIT_INT_AUX_CMD_FAIL, it6505_irq_aux_cmd_fail },
- 		{ BIT_INT_HDCP_KSV_CHECK, it6505_irq_hdcp_ksv_check },
- 		{ BIT_INT_AUDIO_FIFO_ERROR, it6505_irq_audio_fifo_error },
- 		{ BIT_INT_LINK_TRAIN_FAIL, it6505_irq_link_train_fail },
--		{ BIT_INT_VID_FIFO_ERROR, it6505_irq_video_fifo_error },
--		{ BIT_INT_IO_FIFO_OVERFLOW, it6505_irq_io_latch_fifo_overflow },
- 	};
- 	int int_status[3], i;
- 
-@@ -2545,6 +2569,7 @@ static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
- 			if (it6505_test_bit(irq_vec[i].bit, (unsigned int *)int_status))
- 				irq_vec[i].handler(it6505);
- 		}
-+		it6505_irq_video_handler(it6505, (unsigned int *)int_status);
- 	}
- 
- 	pm_runtime_put_sync(dev);
 -- 
 2.43.0
 
