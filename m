@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D02294174A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827D3941AA9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 423DD1F22206
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3C7E1C20E41
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EA6187FFB;
-	Tue, 30 Jul 2024 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21BB189514;
+	Tue, 30 Jul 2024 16:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JeWvnPuO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJsas22W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05786183CD5;
-	Tue, 30 Jul 2024 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6F01A6166;
+	Tue, 30 Jul 2024 16:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355667; cv=none; b=GdbDuA6R+NWGbqXWI0JqJEg7GUCACuHbzyagaZ6gbs30Txq9GT5Q0ez++P1TFj6DIethSVh4vxMnVO2IUEox3MODb5O6cS4aoEmJgkf7d1ko5CtJrNJiR8OhD9OWxjlV7ooV+ckf5oUvE8AsCd1yWdS7u9trQOgzxNFW+lmIGqw=
+	t=1722357966; cv=none; b=hTSjYrSuamzvgEY98BSDnBBv0uvElHHU2NUBWbfh9es/fYknlxV/m1uCLNu1/2yFCHXfnyCOgSH0bBtwfutbzj10v26KPaMZm7jtlnZvC7xJ4uKHixp4xryaFD9Fgw7VCbAIVXJ3yWj605pTl0FblT+0DjeEY/xq5VTaclSowuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355667; c=relaxed/simple;
-	bh=kDl+jRaJUSe3t746bjzJXRzDGxUHCeBlZEIPAMvL1UQ=;
+	s=arc-20240116; t=1722357966; c=relaxed/simple;
+	bh=MLRfugexmh8i5Go62UyfTKxqRCRi5XBMPaKTB0582LQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aj2IBbmW7++iCqGdl61CeTrEIPg7SEkgNsFibPrlt9yQy4y0rpDIC2Utdmo/ppqZRQxqYc7VA3kPoCaGriCgnOFtN6hsL9D9//8+mCO8t58Bx+veacHMWJoIF8cDcRSX3lt/9NNrpHO5E0CApy/5dKxFCBVS8hNd1HJvMV6olYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JeWvnPuO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD50C32782;
-	Tue, 30 Jul 2024 16:07:46 +0000 (UTC)
+	 MIME-Version; b=r/WbFDC0UKs6c1JD3Wo6gkpfbqNFU+TQgrf0g+TexXRodg5imtdh1zaUhu3gJJ934yq1KSWLVlA8WhX/KQwI9KXKk/omMLIxo0VgNW7QibE2nvMFXwlkrwVZgPUs7DYPmvEJ/GiEkj9n64FoR+b/Ly59zlMG2llEXQWgamRkTLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJsas22W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7568EC32782;
+	Tue, 30 Jul 2024 16:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355666;
-	bh=kDl+jRaJUSe3t746bjzJXRzDGxUHCeBlZEIPAMvL1UQ=;
+	s=korg; t=1722357965;
+	bh=MLRfugexmh8i5Go62UyfTKxqRCRi5XBMPaKTB0582LQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JeWvnPuOg8gM32WY+zzXtTOIrdNRfnqDgGIzW9uRvU/cZMGGfqKglX0Zg4vFDtVZl
-	 vrOsr3ImkUajBGqvGDDqHMdJPPC334P1uzVZgfkAsoz5s/1WDyUBJZGVDEnIRbrvxR
-	 yT3XpUAepcMP0aYWLYdTAASRU2GTurlAdLalHl1w=
+	b=WJsas22WPdoxPDRMKPWKfM9EgIqwpipHN/hw7Dgtw43IR3JvrRi5HJ7v4ZGikzmH4
+	 w/igig8vxz9zg5wyy0rDa9sxtbGyn15q89KPH4psjhCbHkBy0Cszgawt1YVMV3W0ND
+	 DhSj6QeAbAJAYiCatzqEw+dzkfGaxMszlD+HrRQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/568] arm64: dts: amlogic: setup hdmi system clock
+Subject: [PATCH 6.10 310/809] media: c8sectpfe: Add missing parameter names
 Date: Tue, 30 Jul 2024 17:43:06 +0200
-Message-ID: <20240730151642.949895254@linuxfoundation.org>
+Message-ID: <20240730151736.842271824@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 1443b6ea806dfcdcee6c894784332c9c947ac319 ]
+[ Upstream commit abb7a73b687dc82202f0203a112ef435fb598aa6 ]
 
-HDMI Tx needs the system clock set on the xtal rate.
-This clock is managed by the main clock controller of the related SoCs.
+clang 19 complains about the missing parameter name. Let's add it.
 
-Currently 2 part of the display drivers race to setup the HDMI system
-clock by directly poking the controller register. The clock API should
-be used to setup the rate instead.
+drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-debugfs.h:19:62: warning: omitting the parameter name in a function definition is a C23 extension [-Wc23-extensions]
 
-Use assigned-clock to setup the HDMI system clock.
-
-Fixes: 6939db7e0dbf ("ARM64: dts: meson-gx: Add support for HDMI output")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240626152733.1350376-3-jbrunet@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202406050908.1kL1C69p-lkp@intel.com/
+Fixes: e22b4973ee20 ("media: c8sectpfe: Do not depend on DEBUG_FS")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi | 5 +++++
- arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi       | 5 +++++
- arch/arm64/boot/dts/amlogic/meson-gxl.dtsi        | 5 +++++
- 3 files changed, 15 insertions(+)
+ drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-debugfs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi b/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-index ff68b911b7297..0ff0d090548d0 100644
---- a/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-g12-common.dtsi
-@@ -215,6 +215,11 @@ hdmi_tx: hdmi-tx@0 {
- 				#sound-dai-cells = <0>;
- 				status = "disabled";
+diff --git a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-debugfs.h b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-debugfs.h
+index 8e1bfd8605247..3fe177b59b16d 100644
+--- a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-debugfs.h
++++ b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-debugfs.h
+@@ -16,8 +16,8 @@
+ void c8sectpfe_debugfs_init(struct c8sectpfei *);
+ void c8sectpfe_debugfs_exit(struct c8sectpfei *);
+ #else
+-static inline void c8sectpfe_debugfs_init(struct c8sectpfei *) {};
+-static inline void c8sectpfe_debugfs_exit(struct c8sectpfei *) {};
++static inline void c8sectpfe_debugfs_init(struct c8sectpfei *fei) {};
++static inline void c8sectpfe_debugfs_exit(struct c8sectpfei *fei) {};
+ #endif
  
-+				assigned-clocks = <&clkc CLKID_HDMI_SEL>,
-+						  <&clkc CLKID_HDMI>;
-+				assigned-clock-parents = <&xtal>, <0>;
-+				assigned-clock-rates = <0>, <24000000>;
-+
- 				/* VPU VENC Input */
- 				hdmi_tx_venc_port: port@0 {
- 					reg = <0>;
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-index 041c37b809f27..ed00e67e6923a 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-@@ -316,6 +316,11 @@ &hdmi_tx {
- 		 <&clkc CLKID_GCLK_VENCI_INT0>;
- 	clock-names = "isfr", "iahb", "venci";
- 	power-domains = <&pwrc PWRC_GXBB_VPU_ID>;
-+
-+	assigned-clocks = <&clkc CLKID_HDMI_SEL>,
-+			  <&clkc CLKID_HDMI>;
-+	assigned-clock-parents = <&xtal>, <0>;
-+	assigned-clock-rates = <0>, <24000000>;
- };
- 
- &sysctrl {
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-index 067108800a58d..f58d1790de1cb 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-@@ -328,6 +328,11 @@ &hdmi_tx {
- 		 <&clkc CLKID_GCLK_VENCI_INT0>;
- 	clock-names = "isfr", "iahb", "venci";
- 	power-domains = <&pwrc PWRC_GXBB_VPU_ID>;
-+
-+	assigned-clocks = <&clkc CLKID_HDMI_SEL>,
-+			  <&clkc CLKID_HDMI>;
-+	assigned-clock-parents = <&xtal>, <0>;
-+	assigned-clock-rates = <0>, <24000000>;
- };
- 
- &sysctrl {
+ #endif /* __C8SECTPFE_DEBUG_H */
 -- 
 2.43.0
 
