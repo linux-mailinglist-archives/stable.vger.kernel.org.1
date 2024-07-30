@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-63144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21494941791
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175CC941ADF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1104287039
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C79CF2817DB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBD818452F;
-	Tue, 30 Jul 2024 16:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62620183CD5;
+	Tue, 30 Jul 2024 16:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETsr1xku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGLp50E+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484AB18952F;
-	Tue, 30 Jul 2024 16:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205531A6166;
+	Tue, 30 Jul 2024 16:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355813; cv=none; b=iWnH5ZlT8IVkWmR0Mtkb+htghYpkBMN+MI9yIgRiTV/c6YUztPvIWzOuG6q0boBMMc+Pn4/n7aBbU1Y0Q6y1rT4mrUHuucPTzE1gPYlB05rifEllfyUIdEQdUSVrXztGGGFBMvbZmFSgG8fAf23TPyz8uiSDCSygUAfTFDFFRZo=
+	t=1722358101; cv=none; b=kcf80aZpBze6c+YtGE5yHpOysIBvuBgGVHbTobu4S7K1zDYjGzrVbGxI40YY6+TSzE6mqWk8Yr+Nz3pKvs2t1aQY2kxEOp0PuJJ9kEcu8G+7I0Ocy4Npu256Ts1/T1Dsp+JzXcnLs79CF5kHR4DrMS6W3QMVgbWJreHP4drqGzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355813; c=relaxed/simple;
-	bh=DEtRfMD9O6vZ4enDT6htdfUA50TIk+m56Ysb4UPAjhs=;
+	s=arc-20240116; t=1722358101; c=relaxed/simple;
+	bh=K5Ur1T0smxztMsOXq1x08qTFNAqDIhQzSJriWyBNoEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJRFtNTuu6s5XDq40SXCpMEklkfiC8VyGZIgoT4XQIrN9mA6NmuLUWvHbAywQFCX6IssJQs7PhF4+OfqnW3u0osb7CKaizqvjUdbov5OtZzYWOT5WhzLk9JTfoKo3YmJpWIIpc6PIKnt/o+IGhfECYEFIc2E+731ApdzLSwe6RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETsr1xku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70014C32782;
-	Tue, 30 Jul 2024 16:10:12 +0000 (UTC)
+	 MIME-Version; b=tDlrhosMOpEGvpfqN3YyFRzdgxrLBZnGS7/StH88dksMHXqqAsH+mQKhP8y0ssbScR9Ob1qUbtM6xsk5zu/+AiPBgTTnNBmqkFYwd1B9rhDECgpIQWqUgzx5fkcOk6xYTa2eEnb5RNJmluDYCnGosFFDZ9qX5C65vIqDxqwRB/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGLp50E+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78509C4AF0E;
+	Tue, 30 Jul 2024 16:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355812;
-	bh=DEtRfMD9O6vZ4enDT6htdfUA50TIk+m56Ysb4UPAjhs=;
+	s=korg; t=1722358101;
+	bh=K5Ur1T0smxztMsOXq1x08qTFNAqDIhQzSJriWyBNoEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETsr1xkuFVlL53AEFefgR71EQ6MQxfj5AwkKs0oFP+OsWwjLDWaX5ni2P3UwJb/W8
-	 Z2genDpOlw8M37/geB7D5R9EMCfmgNMB8ZgWN1+t7oe+V3EdkrUD5ynwI2qw82tgbg
-	 VXw9Q7MM0dU9BEuWpy9b5puxVf8WCg0FHKWY3r+k=
+	b=TGLp50E+UyQK3VDgWM0rd0+4GmieYVQl1wEScDNN9k++2OPfeQ+Jsz/URvYtYyw7b
+	 drJP5+qFbwJaqqNB65O8A7BsDJi+5Kle5P2pixEBb8cWe0LBl8kuzAuisu+8qYqpEQ
+	 /DJoYPZnCn6Ivq/e1BdRBusqEog1WWyzIRcpjHUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Marek Vasut <marex@denx.de>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/568] arm64: dts: imx8mp: add HDMI power-domains
+Subject: [PATCH 6.10 323/809] drm/ttm/tests: Let ttm_bo_test consider different ww_mutex implementation.
 Date: Tue, 30 Jul 2024 17:43:19 +0200
-Message-ID: <20240730151643.468097779@linuxfoundation.org>
+Message-ID: <20240730151737.363816348@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit f6772c5882d2229b4e0d9aadbcac3eb922e822c0 ]
+[ Upstream commit f85376c890ef470b64a7fea22eea5af18822f05c ]
 
-This adds the PGC and HDMI blk-ctrl nodes providing power control for
-HDMI subsystem peripherals.
+PREEMPT_RT has a different locking implementation for ww_mutex. The
+base mutex of struct ww_mutex is declared as struct WW_MUTEX_BASE. The
+latter is defined as `mutex' for non-PREEMPT_RT builds and `rt_mutex'
+for PREEMPT_RT builds.
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Tested-by: Marek Vasut <marex@denx.de>
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Tommaso Merciai <tomm.merciai@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: 2f8405fb077b ("arm64: dts: imx8mp: Fix pgc vpu locations")
+Using mutex_lock() directly on the base mutex in
+ttm_bo_reserve_deadlock() leads to compile error on PREEMPT_RT.
+
+The locking-selftest has its own defines to deal with this and it is
+probably best to defines the needed one within the test program since
+their usefulness is limited outside of well known selftests.
+
+Provide ww_mutex_base_lock() which points to the correct function for
+PREEMPT_RT and non-PREEMPT_RT builds.
+
+Fixes: 995279d280d1e ("drm/ttm/tests: Add tests for ttm_bo functions")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240619144630.4DliKOmr@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 38 +++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ drivers/gpu/drm/ttm/tests/ttm_bo_test.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 0b824120d5488..2de16e3d21d24 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -849,6 +849,23 @@ pgc_mediamix: power-domain@10 {
- 							 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
- 					};
+diff --git a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
+index 1f8a4f8adc929..9cc367a795341 100644
+--- a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
++++ b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
+@@ -18,6 +18,12 @@
  
-+					pgc_hdmimix: power-domain@14 {
-+						#power-domain-cells = <0>;
-+						reg = <IMX8MP_POWER_DOMAIN_HDMIMIX>;
-+						clocks = <&clk IMX8MP_CLK_HDMI_ROOT>,
-+							 <&clk IMX8MP_CLK_HDMI_APB>;
-+						assigned-clocks = <&clk IMX8MP_CLK_HDMI_AXI>,
-+								  <&clk IMX8MP_CLK_HDMI_APB>;
-+						assigned-clock-parents = <&clk IMX8MP_SYS_PLL2_500M>,
-+									 <&clk IMX8MP_SYS_PLL1_133M>;
-+						assigned-clock-rates = <500000000>, <133000000>;
-+					};
-+
-+					pgc_hdmi_phy: power-domain@15 {
-+						#power-domain-cells = <0>;
-+						reg = <IMX8MP_POWER_DOMAIN_HDMI_PHY>;
-+					};
-+
- 					pgc_mipi_phy2: power-domain@16 {
- 						#power-domain-cells = <0>;
- 						reg = <IMX8MP_POWER_DOMAIN_MIPI_PHY2>;
-@@ -1840,6 +1857,27 @@ hsio_blk_ctrl: blk-ctrl@32f10000 {
- 				#power-domain-cells = <1>;
- 				#clock-cells = <0>;
- 			};
-+
-+			hdmi_blk_ctrl: blk-ctrl@32fc0000 {
-+				compatible = "fsl,imx8mp-hdmi-blk-ctrl", "syscon";
-+				reg = <0x32fc0000 0x1000>;
-+				clocks = <&clk IMX8MP_CLK_HDMI_APB>,
-+					 <&clk IMX8MP_CLK_HDMI_ROOT>,
-+					 <&clk IMX8MP_CLK_HDMI_REF_266M>,
-+					 <&clk IMX8MP_CLK_HDMI_24M>,
-+					 <&clk IMX8MP_CLK_HDMI_FDCC_TST>;
-+				clock-names = "apb", "axi", "ref_266m", "ref_24m", "fdcc";
-+				power-domains = <&pgc_hdmimix>, <&pgc_hdmimix>,
-+						<&pgc_hdmimix>, <&pgc_hdmimix>,
-+						<&pgc_hdmimix>, <&pgc_hdmimix>,
-+						<&pgc_hdmimix>, <&pgc_hdmi_phy>,
-+						<&pgc_hdmimix>, <&pgc_hdmimix>;
-+				power-domain-names = "bus", "irqsteer", "lcdif",
-+						     "pai", "pvi", "trng",
-+						     "hdmi-tx", "hdmi-tx-phy",
-+						     "hdcp", "hrv";
-+				#power-domain-cells = <1>;
-+			};
- 		};
+ #define BO_SIZE		SZ_8K
  
- 		pcie: pcie@33800000 {
++#ifdef CONFIG_PREEMPT_RT
++#define ww_mutex_base_lock(b)			rt_mutex_lock(b)
++#else
++#define ww_mutex_base_lock(b)			mutex_lock(b)
++#endif
++
+ struct ttm_bo_test_case {
+ 	const char *description;
+ 	bool interruptible;
+@@ -142,7 +148,7 @@ static void ttm_bo_reserve_deadlock(struct kunit *test)
+ 	bo2 = ttm_bo_kunit_init(test, test->priv, BO_SIZE);
+ 
+ 	ww_acquire_init(&ctx1, &reservation_ww_class);
+-	mutex_lock(&bo2->base.resv->lock.base);
++	ww_mutex_base_lock(&bo2->base.resv->lock.base);
+ 
+ 	/* The deadlock will be caught by WW mutex, don't warn about it */
+ 	lock_release(&bo2->base.resv->lock.base.dep_map, 1);
 -- 
 2.43.0
 
