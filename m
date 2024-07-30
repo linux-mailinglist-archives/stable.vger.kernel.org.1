@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868089416A5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7364E9416AA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7A9C1C23D17
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECDBDB23D7B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EA4188000;
-	Tue, 30 Jul 2024 16:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1853A188015;
+	Tue, 30 Jul 2024 16:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBitkGXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G102StLp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883BA187FEC;
-	Tue, 30 Jul 2024 16:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EE6188006;
+	Tue, 30 Jul 2024 16:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355333; cv=none; b=QsDiRy8cyebm2M4xYrnCUdyZZyBjQDehAmPUBr3ea2rU3i9Yp8H88m1tKNp1uWhAYbXOC0zwaNkA9yXKJDuW+8MgmBkj+A51UqrxJGWThyvrxAQnoLNA1dkdeP8sbs5GhKX2dU1atyTxcSdaF3eX2mfgkF1t2/a2alSAbzhdL3g=
+	t=1722355343; cv=none; b=DKwwqZb/JsLZ0jjqKhFt7bob1KaDlaer0ZPZYuFwd0VuEuE2yZ8rI3XJ0YrvYN5dy9XP+VeZfT9fUqywYe25WRUL16/JPHS8IwOTU+ok2JJcTZvwIuJDBeyZm12fVtADl86RoFmbfQJJhV9D4vr+F3A2YUkPj3fm4pQMnJCbgAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355333; c=relaxed/simple;
-	bh=MdZViQBFv2l9bmAH26x7kRk901pl8mRRWPFHBOOoUGQ=;
+	s=arc-20240116; t=1722355343; c=relaxed/simple;
+	bh=IQ3dUP+phDZmSWLv5o85+Xzl3HGtnh3Rc9rDLn4eurY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BK3sF8lqxjapK/IuXiPSG9vnWqWGXT2DcOIOIyBjLHT8qlWO2Fi8DtJ6fhr/ScQjQp843N46s2BR1v+4nJz+r5fFEVRp0Xckl/w50JopwNGWZRSOKo5L0EK6JUWtwkoqpGYDHeoKY0jxnjWyuJnXs2upVz6hPszmDSX/P9WKz+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBitkGXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB7CC32782;
-	Tue, 30 Jul 2024 16:02:12 +0000 (UTC)
+	 MIME-Version; b=eovaDdsxnzf3YH2bPDVE6PEiiDGkUP7pWuWiK1/MUjL4NDIwimE534e9EtqSFNwmh81szL70PrCL2vMD6MQBxOKSi025c19TRhboCBnGNe4zHpQMGTUDknvQx7YzpAVZ4GtuievnoEsRgDc7Nb4k/jJoWTK/oEbCuLZBY0YHwTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G102StLp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2543FC32782;
+	Tue, 30 Jul 2024 16:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355333;
-	bh=MdZViQBFv2l9bmAH26x7kRk901pl8mRRWPFHBOOoUGQ=;
+	s=korg; t=1722355343;
+	bh=IQ3dUP+phDZmSWLv5o85+Xzl3HGtnh3Rc9rDLn4eurY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBitkGXMAH6Z+GIOfhNVwDiZfhfUyxstjCjYK9IH6KOcYUTTA4olcJHoNxjEvbrlS
-	 5GErDFCmOiKaMFI6apjzXdjBjgOko4pgHN5293AgLyclpzivngK4b0COTidUZGNOOS
-	 I1JuQfHYUpS/zfhIGYsVX0GrwdQQR7DVz7x4DReo=
+	b=G102StLp6tf1f608eKqc139SUDj7csnMuNtaLX1YyfMcTF4Z3DcnhnJAyC53YtmNu
+	 AAfTxv7qi20yO5wypozie7XgRzhwBKZn5mlMp7Czaph1BrEo6xpMt9lzrlnLyfyXL1
+	 Vsn1r67vvUumclJDr0uqzLfz32zkNg2Vg9RoVn6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/440] selftests/bpf: Fix prog numbers in test_sockmap
-Date: Tue, 30 Jul 2024 17:45:17 +0200
-Message-ID: <20240730151619.041182233@linuxfoundation.org>
+Subject: [PATCH 6.1 085/440] net: esp: cleanup esp_output_tail_tcp() in case of unsupported ESPINTCP
+Date: Tue, 30 Jul 2024 17:45:18 +0200
+Message-ID: <20240730151619.079859099@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,76 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit 6c8d7598dfed759bf1d9d0322b4c2b42eb7252d8 ]
+[ Upstream commit 96f887a612e4cda89efc3f54bc10c1997e3ab0e9 ]
 
-bpf_prog5 and bpf_prog7 are removed from progs/test_sockmap_kern.h in
-commit d79a32129b21 ("bpf: Selftests, remove prints from sockmap tests"),
-now there are only 9 progs in it, not 11:
+xmit() functions should consume skb or return error codes in error
+paths.
+When the configuration "CONFIG_INET_ESPINTCP" is not set, the
+implementation of the function "esp_output_tail_tcp" violates this rule.
+The function frees the skb and returns the error code.
+This change removes the kfree_skb from both functions, for both
+esp4 and esp6.
+WARN_ON is added because esp_output_tail_tcp() should never be called if
+CONFIG_INET_ESPINTCP is not set.
 
-	SEC("sk_skb1")
-	int bpf_prog1(struct __sk_buff *skb)
-	SEC("sk_skb2")
-	int bpf_prog2(struct __sk_buff *skb)
-	SEC("sk_skb3")
-	int bpf_prog3(struct __sk_buff *skb)
-	SEC("sockops")
-	int bpf_sockmap(struct bpf_sock_ops *skops)
-	SEC("sk_msg1")
-	int bpf_prog4(struct sk_msg_md *msg)
-	SEC("sk_msg2")
-	int bpf_prog6(struct sk_msg_md *msg)
-	SEC("sk_msg3")
-	int bpf_prog8(struct sk_msg_md *msg)
-	SEC("sk_msg4")
-	int bpf_prog9(struct sk_msg_md *msg)
-	SEC("sk_msg5")
-	int bpf_prog10(struct sk_msg_md *msg)
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-This patch updates the array sizes of prog_fd[], prog_attach_type[] and
-prog_type[] from 11 to 9 accordingly.
-
-Fixes: d79a32129b21 ("bpf: Selftests, remove prints from sockmap tests")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/9c10d9f974f07fcb354a43a8eca67acb2fafc587.1715926605.git.tanggeliang@kylinos.cn
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/ipv4/esp4.c | 3 +--
+ net/ipv6/esp6.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index d56f521b8aaa2..2417300abf36c 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -63,7 +63,7 @@ int passed;
- int failed;
- int map_fd[9];
- struct bpf_map *maps[9];
--int prog_fd[11];
-+int prog_fd[9];
- 
- int txmsg_pass;
- int txmsg_redir;
-@@ -1775,8 +1775,6 @@ int prog_attach_type[] = {
- 	BPF_SK_MSG_VERDICT,
- 	BPF_SK_MSG_VERDICT,
- 	BPF_SK_MSG_VERDICT,
--	BPF_SK_MSG_VERDICT,
--	BPF_SK_MSG_VERDICT,
- };
- 
- int prog_type[] = {
-@@ -1789,8 +1787,6 @@ int prog_type[] = {
- 	BPF_PROG_TYPE_SK_MSG,
- 	BPF_PROG_TYPE_SK_MSG,
- 	BPF_PROG_TYPE_SK_MSG,
--	BPF_PROG_TYPE_SK_MSG,
--	BPF_PROG_TYPE_SK_MSG,
- };
- 
- static int populate_progs(char *bpf_file)
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index e2546961add3e..419969b268225 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -238,8 +238,7 @@ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
+ #else
+ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
+ {
+-	kfree_skb(skb);
+-
++	WARN_ON(1);
+ 	return -EOPNOTSUPP;
+ }
+ #endif
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index c2dcb5c613b6b..a021c88d3d9b8 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -255,8 +255,7 @@ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
+ #else
+ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
+ {
+-	kfree_skb(skb);
+-
++	WARN_ON(1);
+ 	return -EOPNOTSUPP;
+ }
+ #endif
 -- 
 2.43.0
 
