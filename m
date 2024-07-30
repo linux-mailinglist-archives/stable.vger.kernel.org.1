@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48784941B87
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67338941849
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D6F282C63
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 984011C23817
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A22189537;
-	Tue, 30 Jul 2024 16:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB4518455F;
+	Tue, 30 Jul 2024 16:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHCGBEBN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHNjQvAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BBA18801A;
-	Tue, 30 Jul 2024 16:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED81F1A617E;
+	Tue, 30 Jul 2024 16:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358567; cv=none; b=p2gOQBFmq/gYUWPfUOsAph8TbK1TlwdbZgx5ziIT3MqCAb3UW3CGyNSHhSN1wRzkN+WiR8OcHsDgve85/5EmfBCiregjo9j5AD3Sadqq5ZzSrDhlC4jHMXT2noFvBe4D1oyaHpgyO/wsmcxCxuH8vWirRjbGBMKp8opNWggIQXM=
+	t=1722356382; cv=none; b=b80rIa4B4f5+23lpLeWQQE+F619jIzAD1BWJzVRlWQHhB/VYc4uIDVi5sEKArZ31gWV9lVMjAGLPikoZzs5gmetJ+uzWUdR6pK6sAM6TWE6R3GVQMKOogcT0LtyjdJLsNjkYQT2cZlHVp9qUtDkJ3zTQR1DUBRHQ0EbuAWNhbDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358567; c=relaxed/simple;
-	bh=WNL24qwYSq4A0MhYoNJU0qQeLyN2SbsPSB/fE6CyY7Q=;
+	s=arc-20240116; t=1722356382; c=relaxed/simple;
+	bh=8s1sPz5DNIQp8JfCYQEpo2fqBKj+fvRCa9EcBnAqrKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BI22rLAmuH9YjmToPSHdfKH8Px2am9OrdHB5J3Y7haCiAlLV80nJHUzNcCwcuH+pkOetclr8HKQAN1KCX4EhdZnKBJ17KSSqtFyLzDMsuRbM6TqGS+V5ZL+35Xd2dtzF7vdHkcdacq+O/Txi2P9bd+JYDFzB8up6uMLCBDiBGq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHCGBEBN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8437EC32782;
-	Tue, 30 Jul 2024 16:56:06 +0000 (UTC)
+	 MIME-Version; b=EezqnynI+XnX7sJj8Y2e0FJ7YMF64u4L15Qt1+Ib+lMQmGHtWW3EGhTSIZrRq2mUGrl2yggNq0dCMwyZR/ZzWC/9YVuBiddpMaM5lj0+mamQebV/G9uat7JgG04nlZGDMXjXjvfz4aeKud2ltLrB4K0Wf++VrSVVGn3w39Z767M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHNjQvAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC69C32782;
+	Tue, 30 Jul 2024 16:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358567;
-	bh=WNL24qwYSq4A0MhYoNJU0qQeLyN2SbsPSB/fE6CyY7Q=;
+	s=korg; t=1722356381;
+	bh=8s1sPz5DNIQp8JfCYQEpo2fqBKj+fvRCa9EcBnAqrKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHCGBEBNLgpKWIgU+EN7IBXNIazvZzqy7I/wEo5SzACSXSi9RoeL9Z9V0Ctun0BU1
-	 K38tSjFoVEF8TmySwozk1J+4s6wP/YexvaVc3VioFGraygZxKJ0iIex5ufdsVosf+k
-	 muCrhssx/oK68lqLmnTkWdM3fUrccq0PEKJrKJMs=
+	b=fHNjQvAqEQtWrRtdKCiyJU48tDvdiw169TYiVl+V5+eo4aszXcQ5Jw/3wtLV9NbzK
+	 +0pFClpHn57XfLpwdMqtB+kHpSve3CLHMi2DtbYc1EndhRaYdYRpuR4BJM0mS2CPQS
+	 xEn4JpaTugHF2kHkPXb3l2p51lnQP1NWiKT/kI4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Kuan-Chung Chen <damon.chen@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 374/809] leds: flash: leds-qcom-flash: Test the correct variable in init
+Subject: [PATCH 6.6 143/568] wifi: rtw89: 8852b: fix definition of KIP register number
 Date: Tue, 30 Jul 2024 17:44:10 +0200
-Message-ID: <20240730151739.433120863@linuxfoundation.org>
+Message-ID: <20240730151645.467809506@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kuan-Chung Chen <damon.chen@realtek.com>
 
-[ Upstream commit 87e552ad654554be73e62dd43c923bcee215287d ]
+[ Upstream commit 2f35712ab82683554c660bc2456f05785835efbe ]
 
-This code was passing the incorrect pointer to PTR_ERR_OR_ZERO() so it
-always returned success.  It should have been checking the array element
-instead of the array itself.
+An incorrect definition caused DPK to fail to backup and
+restore a set of KIP registers. Fixing this will improve
+RX throughput from 902 to 997 Mbps.
 
-Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/ZoWJS_epjIMCYITg@stanley.mountain
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 5b8471ace5b1 ("wifi: rtw89: 8852b: rfk: add DPK")
+Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240621123617.6687-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/flash/leds-qcom-flash.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/flash/leds-qcom-flash.c b/drivers/leds/flash/leds-qcom-flash.c
-index 7c99a30391716..bf70bf6fb0d59 100644
---- a/drivers/leds/flash/leds-qcom-flash.c
-+++ b/drivers/leds/flash/leds-qcom-flash.c
-@@ -505,6 +505,7 @@ qcom_flash_v4l2_init(struct device *dev, struct qcom_flash_led *led, struct fwno
- 	struct qcom_flash_data *flash_data = led->flash_data;
- 	struct v4l2_flash_config v4l2_cfg = { 0 };
- 	struct led_flash_setting *intensity = &v4l2_cfg.intensity;
-+	struct v4l2_flash *v4l2_flash;
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+index 259df67836a0e..a2fa1d339bc21 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
+@@ -20,7 +20,7 @@
+ #define RTW8852B_RF_REL_VERSION 34
+ #define RTW8852B_DPK_VER 0x0d
+ #define RTW8852B_DPK_RF_PATH 2
+-#define RTW8852B_DPK_KIP_REG_NUM 2
++#define RTW8852B_DPK_KIP_REG_NUM 3
  
- 	if (!(led->flash.led_cdev.flags & LED_DEV_CAP_FLASH))
- 		return 0;
-@@ -523,9 +524,12 @@ qcom_flash_v4l2_init(struct device *dev, struct qcom_flash_led *led, struct fwno
- 				LED_FAULT_OVER_TEMPERATURE |
- 				LED_FAULT_TIMEOUT;
- 
--	flash_data->v4l2_flash[flash_data->leds_count] =
--		v4l2_flash_init(dev, fwnode, &led->flash, &qcom_v4l2_flash_ops, &v4l2_cfg);
--	return PTR_ERR_OR_ZERO(flash_data->v4l2_flash);
-+	v4l2_flash = v4l2_flash_init(dev, fwnode, &led->flash, &qcom_v4l2_flash_ops, &v4l2_cfg);
-+	if (IS_ERR(v4l2_flash))
-+		return PTR_ERR(v4l2_flash);
-+
-+	flash_data->v4l2_flash[flash_data->leds_count] = v4l2_flash;
-+	return 0;
- }
- # else
- static int
+ #define _TSSI_DE_MASK GENMASK(21, 12)
+ #define ADDC_T_AVG 100
 -- 
 2.43.0
 
