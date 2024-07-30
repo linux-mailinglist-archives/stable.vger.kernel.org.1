@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-63037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF279416D9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95579416DF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE1D71F23692
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B77286DB0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D8818800E;
-	Tue, 30 Jul 2024 16:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A9B188019;
+	Tue, 30 Jul 2024 16:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfxhLZFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zqlqd0jl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F36A187FF2;
-	Tue, 30 Jul 2024 16:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E49518801C;
+	Tue, 30 Jul 2024 16:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355455; cv=none; b=TBqE4D+k9mkDPZBmYE3i9RF8iDhcy6V6pJ2xpZ00/Vjj56CVGlkflFu5zrUKB30RQSgSRLYI1Sz6Dpf5OSX7WjpjdJnd2lAhbUFRxkDSBKf7c6KqrsKQH2ilCBYbvGit5TaiTYsDmcg2WCLosZ/Lku062yoCry/69pDKvJlEPOQ=
+	t=1722355465; cv=none; b=dgpzlXmpown/bE5Ha3YaJ5+0jhufQ+tGawQljwOge67gUtwH6YuPaGzHVZaJEzRdEZRDGj6/h/+h3oVB/HLmlFs2n+5GWmiqBbBaoKAXf0VX36pnMUlOdqd5Um7+qp41/KiWJP90OTw2Hcli1NRHWKzSeRpmeZo2K29crNP83ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355455; c=relaxed/simple;
-	bh=95ROEakC+WFYBkY5BAs8jue2KH+EyEA9FvMbEVrnVY4=;
+	s=arc-20240116; t=1722355465; c=relaxed/simple;
+	bh=k5BOQjM9IJ+ljKQETDty/Ji3BtwTfGkVQHytqECe0Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=es7uKbQfSG0TaroRHD231J5YbDVr62bRVXjnjGIfLVWNSU/bogJA1ZF7tQeDMyqsMvD+geyreCMcYUUbLtdD+0ri2KybMvTu4wD0V/g48UplTSLXPpHtEmBkdGCkkdvDX5eUvszH95iIj34CWkYRu7ZOi/74e2CyufuvwaahfuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfxhLZFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F07C4AF0C;
-	Tue, 30 Jul 2024 16:04:14 +0000 (UTC)
+	 MIME-Version; b=Tk2N2SyAsSEMG9qSfxg8z3JVXlJWAvB1JQbIobSntX29YtcA5qb3t1LaF93f2soUFBON5zenjDDa6Mt0tRwjupXEYpSuHfAJe42EGDzSq5fYGqlKfFiv0+FndickjDbL/f08P/o90mOSbEgZKW5AmCG/wOlu6Zu32zRIta4l+vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zqlqd0jl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6D6C4AF0A;
+	Tue, 30 Jul 2024 16:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355455;
-	bh=95ROEakC+WFYBkY5BAs8jue2KH+EyEA9FvMbEVrnVY4=;
+	s=korg; t=1722355465;
+	bh=k5BOQjM9IJ+ljKQETDty/Ji3BtwTfGkVQHytqECe0Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DfxhLZFmg8lBsaejKz3hW1bbRV8gG7Ssv+xn2JXiHKW6jxNGaYKQniSpw2+B5deVu
-	 0ZarnHgbWj27h9V0A3K0ViDUUN4rizVBfdSxuJZtLeNzDL5oIbBHk9u9VWmey8qVG6
-	 HACcwnPBSZl8+LzM6Zp8MSGwtJ5MBLfYG5PIOpoE=
+	b=Zqlqd0jlPmb/CTxaJd6LH4QtzS8x7yQ9GTHLhbUUua46oyNLXoxO4FODt7tDORjN6
+	 QGXPUGaoAW4Cb2nhY3revJUEqMUS2FAnFNJV+FVdsB9yWyJVBX5lJLwd6cLK4tfoEI
+	 7H4eb+rQ5XwflOZlXqrK1TXzrIUbg1RKoYfIx788=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Sun <samsun1006219@gmail.com>,
-	Xingwei Lee <xrivendell7@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Uros Bizjak <ubizjak@gmail.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/440] perf/x86: Serialize set_attr_rdpmc()
-Date: Tue, 30 Jul 2024 17:45:29 +0200
-Message-ID: <20240730151619.631290100@linuxfoundation.org>
+Subject: [PATCH 6.1 097/440] jump_label: Use atomic_try_cmpxchg() in static_key_slow_inc_cpuslocked()
+Date: Tue, 30 Jul 2024 17:45:30 +0200
+Message-ID: <20240730151619.674992121@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -68,68 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit bb9bb45f746b0f9457de9c3fc4da143a6351bdc9 ]
+[ Upstream commit d0c006402e7941558e5283ae434e2847c7999378 ]
 
-Yue and Xingwei reported a jump label failure. It's caused by the lack of
-serialization in set_attr_rdpmc():
+Use atomic_try_cmpxchg() instead of atomic_cmpxchg (*ptr, old, new) ==
+old in static_key_slow_inc_cpuslocked().  x86 CMPXCHG instruction
+returns success in ZF flag, so this change saves a compare after
+cmpxchg (and related move instruction in front of cmpxchg).
 
-CPU0                           CPU1
+Also, atomic_try_cmpxchg() implicitly assigns old *ptr value to "old" when
+cmpxchg fails, enabling further code simplifications.
 
-Assume: x86_pmu.attr_rdpmc == 0
+No functional change intended.
 
-if (val != x86_pmu.attr_rdpmc) {
-  if (val == 0)
-    ...
-  else if (x86_pmu.attr_rdpmc == 0)
-    static_branch_dec(&rdpmc_never_available_key);
-
-				if (val != x86_pmu.attr_rdpmc) {
-				   if (val == 0)
-				      ...
-				   else if (x86_pmu.attr_rdpmc == 0)
-     FAIL, due to imbalance --->      static_branch_dec(&rdpmc_never_available_key);
-
-The reported BUG() is a consequence of the above and of another bug in the
-jump label core code. The core code needs a separate fix, but that cannot
-prevent the imbalance problem caused by set_attr_rdpmc().
-
-Prevent this by serializing set_attr_rdpmc() locally.
-
-Fixes: a66734297f78 ("perf/x86: Add /sys/devices/cpu/rdpmc=2 to allow rdpmc for all tasks")
-Closes: https://lore.kernel.org/r/CAEkJfYNzfW1vG=ZTMdz_Weoo=RXY1NDunbxnDaLyj8R4kEoE_w@mail.gmail.com
-Reported-by: Yue Sun <samsun1006219@gmail.com>
-Reported-by: Xingwei Lee <xrivendell7@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240610124406.359476013@linutronix.de
+Link: https://lkml.kernel.org/r/20221019140850.3395-1-ubizjak@gmail.com
+Stable-dep-of: 83ab38ef0a0b ("jump_label: Fix concurrency issues in static_key_slow_dec()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/jump_label.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 1394312b732a3..2b2c9fd74ef90 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2573,6 +2573,7 @@ static ssize_t set_attr_rdpmc(struct device *cdev,
- 			      struct device_attribute *attr,
- 			      const char *buf, size_t count)
+diff --git a/kernel/jump_label.c b/kernel/jump_label.c
+index 714ac4c3b556d..4d6c6f5f60db8 100644
+--- a/kernel/jump_label.c
++++ b/kernel/jump_label.c
+@@ -115,8 +115,6 @@ EXPORT_SYMBOL_GPL(static_key_count);
+ 
+ void static_key_slow_inc_cpuslocked(struct static_key *key)
  {
-+	static DEFINE_MUTEX(rdpmc_mutex);
- 	unsigned long val;
- 	ssize_t ret;
+-	int v, v1;
+-
+ 	STATIC_KEY_CHECK_USE(key);
+ 	lockdep_assert_cpus_held();
  
-@@ -2586,6 +2587,8 @@ static ssize_t set_attr_rdpmc(struct device *cdev,
- 	if (x86_pmu.attr_rdpmc_broken)
- 		return -ENOTSUPP;
+@@ -132,11 +130,9 @@ void static_key_slow_inc_cpuslocked(struct static_key *key)
+ 	 * so it counts as "enabled" in jump_label_update().  Note that
+ 	 * atomic_inc_unless_negative() checks >= 0, so roll our own.
+ 	 */
+-	for (v = atomic_read(&key->enabled); v > 0; v = v1) {
+-		v1 = atomic_cmpxchg(&key->enabled, v, v + 1);
+-		if (likely(v1 == v))
++	for (int v = atomic_read(&key->enabled); v > 0; )
++		if (likely(atomic_try_cmpxchg(&key->enabled, &v, v + 1)))
+ 			return;
+-	}
  
-+	guard(mutex)(&rdpmc_mutex);
-+
- 	if (val != x86_pmu.attr_rdpmc) {
- 		/*
- 		 * Changing into or out of never available or always available,
+ 	jump_label_lock();
+ 	if (atomic_read(&key->enabled) == 0) {
 -- 
 2.43.0
 
