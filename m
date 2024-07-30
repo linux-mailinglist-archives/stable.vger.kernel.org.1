@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-64456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4083E941DE6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A927941977
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F329A2895DA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448B11F258D9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F571A76BD;
-	Tue, 30 Jul 2024 17:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5D7183CDB;
+	Tue, 30 Jul 2024 16:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAlopz+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPm6giEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E661A76A1;
-	Tue, 30 Jul 2024 17:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBDE1A6195;
+	Tue, 30 Jul 2024 16:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360182; cv=none; b=IROzayMom57bFEkcectSDF9MrXvvR1Wp2iLZxV9RYAJ2N3Muu22oKLdiaCIAW3R8K0Ou30kGcI8f7sUyWwiLYotzbmEMupCPx0qEBtS3eHAB1KRKJzult/NCSRLJp9CjlEEXJq8fAIqoWdZWwgcqA+WRUxZKpI+TtlaqaW/qvls=
+	t=1722357155; cv=none; b=SrMTDyX5R+Ebg8kNuoz/ZjN38BYs38uqb2nt9gwyygsEBLA31qpWQ0/53H1BwFJi1721vqDU6YsDi2vEZ2SqnkJcZoC+CraNIOmEx0SLfA87A7iNaktGCCokMSAACHMpLA7uCBMGI5sDqs33dR1d88gyAC+jcfXVOksG3DtwJ14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360182; c=relaxed/simple;
-	bh=SFmNJp3ug2FsIzR1B+DY7EIb++L4pLncWhMNGd+OQwQ=;
+	s=arc-20240116; t=1722357155; c=relaxed/simple;
+	bh=z58emz38b2+GinssG/KfUa9g4K0Cdp5qHIMcT2oBOqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oti2NbtmpO5sA8MxSyxrTx5h7fysidv3CoJrw1ARZ3pG5YPeT1/ESBrS2w9kK+1BqFh7FyhC7nIBlBPPYL5sZUyf1N7EyrY3LGRFrbLAXX+xh1L4uQi4l+trb09m5zWH8BIKr7RbaNPRtsCGmTb8MwMame1xJxZOCnUThAZ1g+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAlopz+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8815AC32782;
-	Tue, 30 Jul 2024 17:23:01 +0000 (UTC)
+	 MIME-Version; b=XgffmAYE8chmUYSjM+QER2lSErgSDkEf7w133HP1rxF4qs0esVrmoZZ4SCQ8Y6ww40tmVH49+dhG11UBUDB7J1g1OpytkX6kwL4cCRA+unOoc3RNaapeLbg7Jc3500y7grs3otVYT8pC460zTae1Evgpxkn5joMVvpf4K+gdt54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPm6giEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B78C32782;
+	Tue, 30 Jul 2024 16:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360182;
-	bh=SFmNJp3ug2FsIzR1B+DY7EIb++L4pLncWhMNGd+OQwQ=;
+	s=korg; t=1722357155;
+	bh=z58emz38b2+GinssG/KfUa9g4K0Cdp5qHIMcT2oBOqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAlopz+6tTQZ5w5/WKAj419G32EP50AbxDjH9hCPtjPmMETSK+6oXHkoKYG6yZd/u
-	 K13Leyspl//rSRxKU1N0wQbLlwqS76FWDf7PtPEhwBC6hlXGqAB41aYwDvY5YrnhsA
-	 edjbMKBSzFFL/vhY0HSPlwMMh8eOvTBVDKAW/+us=
+	b=dPm6giEnRntPVRd0YefiUps/x57TdFNWHJUd8VSo4xPP4CQQq0R2X7A79t7HUn4CZ
+	 PuVyADkDOKEZjN8La6gpG9fZuVEGLIBSv7Dq/8raSUt4B/TZZ9d7vLpODR65L/P36d
+	 /XO12MAhbuKU9ZrRImPQy31YvWKYFNO8zbKXsbRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.10 620/809] KVM: VMX: Split out the non-virtualization part of vmx_interrupt_blocked()
-Date: Tue, 30 Jul 2024 17:48:16 +0200
-Message-ID: <20240730151749.331261330@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 264/440] fs/ntfs3: Keep runs for $MFT::$ATTR_DATA and $MFT::$ATTR_BITMAP
+Date: Tue, 30 Jul 2024 17:48:17 +0200
+Message-ID: <20240730151626.152834453@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 322a569c4b4188a0da2812f9e952780ce09b74ba upstream.
+[ Upstream commit eb95678ee930d67d79fc83f0a700245ae7230455 ]
 
-Move the non-VMX chunk of the "interrupt blocked" checks to a separate
-helper so that KVM can reuse the code to detect if interrupts are blocked
-for L2, e.g. to determine if a virtual interrupt _for L2_ is a valid wake
-event.  If L1 disables HLT-exiting for L2, nested APICv is enabled, and L2
-HLTs, then L2 virtual interrupts are valid wake events, but if and only if
-interrupts are unblocked for L2.
+We skip the run_truncate_head call also for $MFT::$ATTR_BITMAP.
+Otherwise wnd_map()/run_lookup_entry will not find the disk position for the bitmap parts.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e5b044cbf3a ("fs/ntfs3: Refactoring attr_set_size to restore after errors")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c |   11 ++++++++---
- arch/x86/kvm/vmx/vmx.h |    1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ fs/ntfs3/attrib.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5052,14 +5052,19 @@ int vmx_nmi_allowed(struct kvm_vcpu *vcp
- 	return !vmx_nmi_blocked(vcpu);
- }
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 94b26c951752e..0388e6b42100f 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -681,7 +681,8 @@ int attr_set_size(struct ntfs_inode *ni, enum ATTR_TYPE type,
+ 			goto undo_2;
+ 		}
  
-+bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
-+{
-+	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
-+	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
-+		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
-+}
-+
- bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
- {
- 	if (is_guest_mode(vcpu) && nested_exit_on_intr(vcpu))
- 		return false;
+-		if (!is_mft)
++		/* keep runs for $MFT::$ATTR_DATA and $MFT::$ATTR_BITMAP. */
++		if (ni->mi.rno != MFT_REC_MFT)
+ 			run_truncate_head(run, evcn + 1);
  
--	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
--	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
--		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
-+	return __vmx_interrupt_blocked(vcpu);
- }
- 
- int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -406,6 +406,7 @@ u64 construct_eptp(struct kvm_vcpu *vcpu
- bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
- void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
- bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
-+bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
- bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
- bool vmx_get_nmi_mask(struct kvm_vcpu *vcpu);
- void vmx_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked);
+ 		svcn = le64_to_cpu(attr->nres.svcn);
+-- 
+2.43.0
+
 
 
 
