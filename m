@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-62972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285EB94167F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75870941684
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7AB31F22C87
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F0F11F24D0E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB081C8FAC;
-	Tue, 30 Jul 2024 16:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6681CB30B;
+	Tue, 30 Jul 2024 16:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUg6Xqwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUnW9mZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ED41C68BF;
-	Tue, 30 Jul 2024 16:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCBA1CB300;
+	Tue, 30 Jul 2024 16:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355242; cv=none; b=c97L6QOHGAKZoLs+5kbes2LqwNEvfjU8cE+7OAWHaLeiujR/x43EPMb2hDRjp0PJ6yg70K7UTJGCoLxUdkEQAeIoDovNql9TU9VsZg/7up0fUG0I3W4RBpYeNyCM4tew8Na7VjotuudN7pn3dibcdiYmWQe05C1Fdc5lpBg511c=
+	t=1722355251; cv=none; b=NkLA4weVomS5LTVuA7dIaqrzp6+1JQUjXGjSXNjR7ihugv6kbO/HEY/CzBCg6OpkAh6gLPKSmBUvjL88B+5d02BjMqNXdaakjNw+b9VGdJbq0G1sEihNcwt9O4isA9c6NLNHklPWy4eVqpWNMrG0KKAy5Yn/gMjVMll/wmlRWx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355242; c=relaxed/simple;
-	bh=DiOW71fzR4UvRwPhekKxIdCWrbVktcgE61R91f+9Uu4=;
+	s=arc-20240116; t=1722355251; c=relaxed/simple;
+	bh=0WsrI0B0XK0tvPhLXFoIPs/Gus6gZIeGtEnE6d8HT8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eO2vaRGxvbJlkvFxUmi+WhOQCO0tPVMMdfGvIUpETmlU4OQS8u20FQYqqXkczYUmD2WKLMJW5vvck3ZvSts5JTa7iV+IAQJfXbgGVhDUaBYrLuSrqAP49iJg3+DoipHnWD/YSlrlfvsGkCbP+Qt+9hbnehsGaD569yGMuik5GyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUg6Xqwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D77C32782;
-	Tue, 30 Jul 2024 16:00:41 +0000 (UTC)
+	 MIME-Version; b=G1CqLmNOupF2XoRi8++k4JpZjf/8iC8PAbQin+q9RxsQVbzPHQTK8LRfMvuXNBHPtEZ+CGO1eCjR+S8HqMYkCr9yEXq9nAZLs4mA7r0eVV8NDUTAtHK3x8l3v5KzBO11x6ZEI3+8FBWYTnB7+fIwIWbxhqMl+C/wkVrQHwe9LeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUnW9mZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E02C32782;
+	Tue, 30 Jul 2024 16:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355242;
-	bh=DiOW71fzR4UvRwPhekKxIdCWrbVktcgE61R91f+9Uu4=;
+	s=korg; t=1722355251;
+	bh=0WsrI0B0XK0tvPhLXFoIPs/Gus6gZIeGtEnE6d8HT8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUg6Xqwe0iGZ/+Al+uWJcOazKl9YTk6g9T1R2xfZL3TpQ26PsNml+3aHTXEQ8zsej
-	 e+OsseReaRmQv2GBOlItWZ0d2UEXnIJXWAX2cVv1OXwB4UlGySeJcdxD+RTKgOAa79
-	 M5zkJGtbqXbaByL/4cK2z21ZMcNMObzERX6mgrgg=
+	b=BUnW9mZi6Sb9kVhZIo0RkaY5yl1g8AC5kWYZdOb4HCfbt5A5yEtk/bsU1YkMwWqqu
+	 I53DrGm6U0cfLwdnPTRYLqAb0XO1zoKlXBNQGFWfGJgR80lCLcjNgE6jorEYvNnTyI
+	 Y1Ry/NCbK1yG2Supg7C1iLxdLZng323pE7zCp+PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Gonzalez <mgonzalez@freebox.fr>,
+	Chen Ni <nichen@iscas.ac.cn>,
 	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/568] arm64: dts: qcom: msm8998: enable adreno_smmu by default
-Date: Tue, 30 Jul 2024 17:42:27 +0200
-Message-ID: <20240730151641.405256541@linuxfoundation.org>
+Subject: [PATCH 6.6 041/568] soc: qcom: pmic_glink: Handle the return value of pmic_glink_init
+Date: Tue, 30 Jul 2024 17:42:28 +0200
+Message-ID: <20240730151641.443790207@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -69,46 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marc Gonzalez <mgonzalez@freebox.fr>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 98a0c4f2278b4d6c1c7722735c20b2247de6293f ]
+[ Upstream commit 0780c836673b25f5aad306630afcb1172d694cb4 ]
 
-15 qcom platform DTSI files define an adreno_smmu node.
-msm8998 is the only one with adreno_smmu disabled by default.
+As platform_driver_register() and register_rpmsg_driver() can return
+error numbers, it should be better to check the return value and deal
+with the exception.
 
-There's no reason why this SMMU should be disabled by default,
-it doesn't need any further configuration.
-
-Bring msm8998 in line with the 14 other platforms.
-
-This fixes GPU init failing with ENODEV:
-msm_dpu c901000.display-controller: failed to load adreno gpu
-msm_dpu c901000.display-controller: failed to bind 5000000.gpu (ops a3xx_ops): -19
-
-Fixes: 87cd46d68aeac8 ("Configure Adreno GPU and related IOMMU")
-Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK  driver")
 Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://lore.kernel.org/r/be51d1a4-e8fc-48d1-9afb-a42b1d6ca478@freebox.fr
+Link: https://lore.kernel.org/r/20240510083156.1996783-1-nichen@iscas.ac.cn
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/soc/qcom/pmic_glink.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index f91c58c844afd..9c072ce197358 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -1588,7 +1588,6 @@ adreno_smmu: iommu@5040000 {
- 			 * SoC VDDMX RPM Power Domain in the Adreno driver.
- 			 */
- 			power-domains = <&gpucc GPU_GX_GDSC>;
--			status = "disabled";
- 		};
+diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
+index 61a359938b6c4..71d261ac8aa45 100644
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -376,8 +376,17 @@ static struct platform_driver pmic_glink_driver = {
  
- 		gpucc: clock-controller@5065000 {
+ static int pmic_glink_init(void)
+ {
+-	platform_driver_register(&pmic_glink_driver);
+-	register_rpmsg_driver(&pmic_glink_rpmsg_driver);
++	int ret;
++
++	ret = platform_driver_register(&pmic_glink_driver);
++	if (ret < 0)
++		return ret;
++
++	ret = register_rpmsg_driver(&pmic_glink_rpmsg_driver);
++	if (ret < 0) {
++		platform_driver_unregister(&pmic_glink_driver);
++		return ret;
++	}
+ 
+ 	return 0;
+ };
 -- 
 2.43.0
 
