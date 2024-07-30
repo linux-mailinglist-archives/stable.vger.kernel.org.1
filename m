@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490D5941DE3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3AF0941974
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0224B2848DC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A329A286975
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6BB1A76CE;
-	Tue, 30 Jul 2024 17:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2DC1A617E;
+	Tue, 30 Jul 2024 16:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NaIRKdRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1D+ktn98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEF61A76C8;
-	Tue, 30 Jul 2024 17:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F1B15699E;
+	Tue, 30 Jul 2024 16:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360175; cv=none; b=EFJ79e6J7HkeuobqVeZVSZF+IGiaTqyMf3rHNW7axN0jaBwiehEZGLrRPLHga/EazFcICSkPrbb4bMJmTAk+Um0x17isIeU9HFF/yHmtOdOk6OptQ6R/X5yKBO2oP6pS2hCDgfGJzBT+HJ4578ifmSuQwM8DWFzwUqyAZoF0lWs=
+	t=1722357146; cv=none; b=tGgvhW5b/wqiiggjU0oGN+X9TOdLWLqjlESgvNCjP5WlzLLb/i8rGW2JcljjmuAuL3PVqPwmBs7AlRLjs3xP1k6uf1y423btmRqyyRq6S4CcQqJBctNuR/+xMSheOmK2mSgVurkTk8PH7CYnLqMoPapV0kQPy/szXY7rJywyW2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360175; c=relaxed/simple;
-	bh=7LJt7t0ceJn8UjT01S0CzWyYMfLn5yPRx76yka3pU2U=;
+	s=arc-20240116; t=1722357146; c=relaxed/simple;
+	bh=m4Bus4ct19wrqO3AwH5RFLlD1eV7IG0vqv48adPGy+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jbLxfBetYH29JociS+zHXWTG4ZT0prR3VGluYTh/M4D777A0a3BSpiMSlvQemz4XgHlpcATJIGZ++sXXhE/PavGsEpBJt5dkEynBUMCqlM0K2DdBtP+/6Cxy5ZMW9dnn4l/hEV7Jj5b74VQwXpuDQ61xtNi3iUQWwNBdP/kqkI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NaIRKdRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BF9C4AF0F;
-	Tue, 30 Jul 2024 17:22:54 +0000 (UTC)
+	 MIME-Version; b=ZRgtQS64PLKsbZLyk2WQALOsvYT/Be1Zuwp5+dAF68+OBuujnwx+DapmqG5CqYUpK5JZC1jtat/puG3R6fB6oX1jbUAFFqAzCglRLS6j7ajnutCH5yub/VZ5V3RhJ4BOBUFVSSx7HKItI9y0nRnYO86bEhY+2PDjLTVx13tbx70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1D+ktn98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8462BC4AF0A;
+	Tue, 30 Jul 2024 16:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360174;
-	bh=7LJt7t0ceJn8UjT01S0CzWyYMfLn5yPRx76yka3pU2U=;
+	s=korg; t=1722357145;
+	bh=m4Bus4ct19wrqO3AwH5RFLlD1eV7IG0vqv48adPGy+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NaIRKdRjqaXpMDH/wEtxx3Os19ko2QLvROln1LKQ3zmAhqgb6cZxcFWyC8tJ4mV3e
-	 7Lk21DZ7gxbUPPYLZIpnKy8zgBa4sNRoT0M34CbF7OpOJujO6JvzUrGltoUVBqZUym
-	 YkRezcoWFQ6JY4ESAAwNem26+bQvZLtQ7s93W9vI=
+	b=1D+ktn98QX06TTRDf0i4kR3t25GspvbU/GxxnBogrBL1hZTyvCG4g+f3dssKxGIHw
+	 HdFb2qC3TE4KRYT7TWkZAiBYFxXZqb2Ok/HRbAhUApliU6oDULYsmZawSTs8Ou22n0
+	 85774+SNpoFKA3yVBaTqSXhOptuwrPH6XWUXgvms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.10 619/809] KVM: PPC: Book3S HV nestedv2: Add DPDES support in helper library for Guest state buffer
-Date: Tue, 30 Jul 2024 17:48:15 +0200
-Message-ID: <20240730151749.290642012@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 263/440] fs/ntfs3: Missed error return
+Date: Tue, 30 Jul 2024 17:48:16 +0200
+Message-ID: <20240730151626.113650131@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 55dfb8bed6fe8bda390cc71cca878d11a9407099 upstream.
+[ Upstream commit 2cbbd96820255fff4f0ad1533197370c9ccc570b ]
 
-Add support for using DPDES in the library for using guest state
-buffers. DPDES support is needed for enabling usage of doorbells in a L2
-KVM on PAPR guest.
-
-Fixes: 6ccbbc33f06a ("KVM: PPC: Add helper library for Guest State Buffers")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240605113913.83715-2-gautam@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f3b442b5ad2 ("fs/ntfs3: Add bitmap")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arch/powerpc/kvm-nested.rst     |    4 +++-
- arch/powerpc/include/asm/guest-state-buffer.h |    3 ++-
- arch/powerpc/include/asm/kvm_book3s.h         |    1 +
- arch/powerpc/kvm/book3s_hv_nestedv2.c         |    7 +++++++
- arch/powerpc/kvm/test-guest-state-buffer.c    |    2 +-
- 5 files changed, 14 insertions(+), 3 deletions(-)
+ fs/ntfs3/bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/arch/powerpc/kvm-nested.rst
-+++ b/Documentation/arch/powerpc/kvm-nested.rst
-@@ -546,7 +546,9 @@ table information.
- +--------+-------+----+--------+----------------------------------+
- | 0x1052 | 0x08  | RW |   T    | CTRL                             |
- +--------+-------+----+--------+----------------------------------+
--| 0x1053-|       |    |        | Reserved                         |
-+| 0x1053 | 0x08  | RW |   T    | DPDES                            |
-++--------+-------+----+--------+----------------------------------+
-+| 0x1054-|       |    |        | Reserved                         |
- | 0x1FFF |       |    |        |                                  |
- +--------+-------+----+--------+----------------------------------+
- | 0x2000 | 0x04  | RW |   T    | CR                               |
---- a/arch/powerpc/include/asm/guest-state-buffer.h
-+++ b/arch/powerpc/include/asm/guest-state-buffer.h
-@@ -81,6 +81,7 @@
- #define KVMPPC_GSID_HASHKEYR			0x1050
- #define KVMPPC_GSID_HASHPKEYR			0x1051
- #define KVMPPC_GSID_CTRL			0x1052
-+#define KVMPPC_GSID_DPDES			0x1053
+diff --git a/fs/ntfs3/bitmap.c b/fs/ntfs3/bitmap.c
+index c055bbdfe0f7c..dfe4930ccec64 100644
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -1356,7 +1356,7 @@ int wnd_extend(struct wnd_bitmap *wnd, size_t new_bits)
  
- #define KVMPPC_GSID_CR				0x2000
- #define KVMPPC_GSID_PIDR			0x2001
-@@ -110,7 +111,7 @@
- #define KVMPPC_GSE_META_COUNT (KVMPPC_GSE_META_END - KVMPPC_GSE_META_START + 1)
+ 		err = ntfs_vbo_to_lbo(sbi, &wnd->run, vbo, &lbo, &bytes);
+ 		if (err)
+-			break;
++			return err;
  
- #define KVMPPC_GSE_DW_REGS_START KVMPPC_GSID_GPR(0)
--#define KVMPPC_GSE_DW_REGS_END KVMPPC_GSID_CTRL
-+#define KVMPPC_GSE_DW_REGS_END KVMPPC_GSID_DPDES
- #define KVMPPC_GSE_DW_REGS_COUNT \
- 	(KVMPPC_GSE_DW_REGS_END - KVMPPC_GSE_DW_REGS_START + 1)
- 
---- a/arch/powerpc/include/asm/kvm_book3s.h
-+++ b/arch/powerpc/include/asm/kvm_book3s.h
-@@ -594,6 +594,7 @@ static inline u##size kvmppc_get_##reg(s
- 
- 
- KVMPPC_BOOK3S_VCORE_ACCESSOR(vtb, 64, KVMPPC_GSID_VTB)
-+KVMPPC_BOOK3S_VCORE_ACCESSOR(dpdes, 64, KVMPPC_GSID_DPDES)
- KVMPPC_BOOK3S_VCORE_ACCESSOR_GET(arch_compat, 32, KVMPPC_GSID_LOGICAL_PVR)
- KVMPPC_BOOK3S_VCORE_ACCESSOR_GET(lpcr, 64, KVMPPC_GSID_LPCR)
- KVMPPC_BOOK3S_VCORE_ACCESSOR_SET(tb_offset, 64, KVMPPC_GSID_TB_OFFSET)
---- a/arch/powerpc/kvm/book3s_hv_nestedv2.c
-+++ b/arch/powerpc/kvm/book3s_hv_nestedv2.c
-@@ -311,6 +311,10 @@ static int gs_msg_ops_vcpu_fill_info(str
- 			rc = kvmppc_gse_put_u64(gsb, iden,
- 						vcpu->arch.vcore->vtb);
- 			break;
-+		case KVMPPC_GSID_DPDES:
-+			rc = kvmppc_gse_put_u64(gsb, iden,
-+						vcpu->arch.vcore->dpdes);
-+			break;
- 		case KVMPPC_GSID_LPCR:
- 			rc = kvmppc_gse_put_u64(gsb, iden,
- 						vcpu->arch.vcore->lpcr);
-@@ -543,6 +547,9 @@ static int gs_msg_ops_vcpu_refresh_info(
- 		case KVMPPC_GSID_VTB:
- 			vcpu->arch.vcore->vtb = kvmppc_gse_get_u64(gse);
- 			break;
-+		case KVMPPC_GSID_DPDES:
-+			vcpu->arch.vcore->dpdes = kvmppc_gse_get_u64(gse);
-+			break;
- 		case KVMPPC_GSID_LPCR:
- 			vcpu->arch.vcore->lpcr = kvmppc_gse_get_u64(gse);
- 			break;
---- a/arch/powerpc/kvm/test-guest-state-buffer.c
-+++ b/arch/powerpc/kvm/test-guest-state-buffer.c
-@@ -151,7 +151,7 @@ static void test_gs_bitmap(struct kunit
- 		i++;
- 	}
- 
--	for (u16 iden = KVMPPC_GSID_GPR(0); iden <= KVMPPC_GSID_CTRL; iden++) {
-+	for (u16 iden = KVMPPC_GSID_GPR(0); iden <= KVMPPC_GSE_DW_REGS_END; iden++) {
- 		kvmppc_gsbm_set(&gsbm, iden);
- 		kvmppc_gsbm_set(&gsbm1, iden);
- 		KUNIT_EXPECT_TRUE(test, kvmppc_gsbm_test(&gsbm, iden));
+ 		bh = ntfs_bread(sb, lbo >> sb->s_blocksize_bits);
+ 		if (!bh)
+-- 
+2.43.0
+
 
 
 
