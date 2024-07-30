@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-63542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16C2941979
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1794E941704
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A36A286A05
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBFBE286EE7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B438188014;
-	Tue, 30 Jul 2024 16:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A06189537;
+	Tue, 30 Jul 2024 16:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esjcqGxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCywfm+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC977188012;
-	Tue, 30 Jul 2024 16:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0229918B49E;
+	Tue, 30 Jul 2024 16:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357162; cv=none; b=du1ZZlqZi6zE9TSqgY+MlTAZ8Uta4q+f+/MpAU9YPlBNd439TrZY4vAEl0wSm6byq1qnsLrVQGaQ0fW/iEzCfvqvxE9tvxAOOuo8d6tZWA03vY4f8aT9NQ6+zOXRyuxFomOGiwybU52iokiJ64qspuyFef8Q4ayMCY6nglpywwE=
+	t=1722355501; cv=none; b=CFyjJplR7fPdAvDAeo04IPhSa3dYoUEx3VROAm5PSZUip3Rbfd6BFb22ECXcGPI8ZpVcF6vygvFpfcXSni03SgcXGWe32BDGA/Y8GYLAiECA1bfaGxqXI4OPVmlUwZpoFT86FPmxrB+QBJpHJ0TTxodn2DHyIZvBNyfmkLYxfm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357162; c=relaxed/simple;
-	bh=k+MPZvISK33eEfEnAyDAQiMSWgCq9VwvvA+EaA5iDb4=;
+	s=arc-20240116; t=1722355501; c=relaxed/simple;
+	bh=QNmGaE+PrfwA7TmuIlDEKQCtY9tvmRQECMFcrSgeJ0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KiBabxb5ox5DdL4+FlBfu7mfJRZprFLdY1n/JWYqWbG/ujxFHZ6j40cDMkAeL+04na4HokdtwgPz2VumTgNGrYK1P1WgorV8AYnj/FKFuGQchW3DigMUdQR1oQnizdxymVjOp18G8Yu5Sv+qZGoLtu27OgLKdqy8Ctypd0YOsTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esjcqGxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F74BC32782;
-	Tue, 30 Jul 2024 16:32:41 +0000 (UTC)
+	 MIME-Version; b=IWyAn08xvkUNUzBkM/nPqcrWcqcw1LibdjP8gKg7xZ5hAqQd3tBMwBGyEybMpp+UA6pFoPkRqwmQ2CWaT/VW68JCMe6fu20TR65GZ/pIXGrEmNo/qBTHYryV/UDEQBNcRghHgejgaElMgycJnSoBNAmemdK4Ld+N3tZddl1GCZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCywfm+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223D5C4AF0A;
+	Tue, 30 Jul 2024 16:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357161;
-	bh=k+MPZvISK33eEfEnAyDAQiMSWgCq9VwvvA+EaA5iDb4=;
+	s=korg; t=1722355500;
+	bh=QNmGaE+PrfwA7TmuIlDEKQCtY9tvmRQECMFcrSgeJ0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esjcqGxPizT1l+zJ1TaItlPGaH6dOvOaRZ8zyLdXesgRYACdwlVG7AS0P/74x0j1K
-	 Y9Xz2suy/DbPK/QpOhavjxlvrx6QflGmrJk1Q7fW+WpFHvqtGm1ZzutioDEOMbBKCR
-	 eRpwMI3MYrfjVG3n9NooS+CdONWQieCMGYNThsuM=
+	b=wCywfm+wNJykpgaPov/8fBUaeRxTB0O/B+FmBAsXW1PLdTnP2iZl2TktzRtH7EZ8h
+	 mCZJscUaZMEb/R5ePgFMQFfYS29MnE/yove/p7fh3jk7PlXCYwULAYwr6V3ZtlOEJl
+	 C6U86aYevxHa4hEwdN9E9CxXdXVHXgpmZ1xuKP1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	ravi.bangoria@amd.com,
-	james.clark@arm.com,
-	prime.zeng@hisilicon.com,
-	cuigaosheng1@huawei.com,
-	jonathan.cameron@huawei.com,
-	linuxarm@huawei.com,
-	yangyicong@huawei.com,
-	robh@kernel.org,
-	renyu.zj@linux.alibaba.com,
-	kjain@linux.ibm.com,
-	john.g.garry@oracle.com,
-	linux-arm-kernel@lists.infradead.org,
-	Namhyung Kim <namhyung@kernel.org>,
+	Yaroslav Isakov <yaroslav.isakov@gmail.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/568] perf pmus: Fixes always false when compare duplicates aliases
-Date: Tue, 30 Jul 2024 17:45:32 +0200
-Message-ID: <20240730151648.676260568@linuxfoundation.org>
+Subject: [PATCH 6.1 100/440] wifi: ath11k: fix wrong handling of CCMP256 and GCMP ciphers
+Date: Tue, 30 Jul 2024 17:45:33 +0200
+Message-ID: <20240730151619.791987075@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,82 +64,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit dd9a426eade634bf794c7e0f1b0c6659f556942f ]
+[ Upstream commit d2b0ca38d362ebf16ca79cd7f309d5bb8b581deb ]
 
-In the previous loop, all the members in the aliases[j-1] have been freed
-and set to NULL. But in this loop, the function pmu_alias_is_duplicate()
-compares the aliases[j] with the aliases[j-1] that has already been
-disposed, so the function will always return false and duplicate aliases
-will never be discarded.
+Currently for CCMP256, GCMP128 and GCMP256 ciphers, in ath11k_install_key()
+IEEE80211_KEY_FLAG_GENERATE_IV_MGMT is not set. And in ath11k_mac_mgmt_tx_wmi()
+a length of IEEE80211_CCMP_MIC_LEN is reserved for all ciphers.
 
-If we find duplicate aliases, it skips the zfree aliases[j], which is
-accompanied by a memory leak.
+This results in unexpected management frame drop in case either of above 3 ciphers
+is used. The reason is, without IEEE80211_KEY_FLAG_GENERATE_IV_MGMT set, mac80211
+will not generate CCMP/GCMP headers in frame for ath11k. Also MIC length reserved
+is wrong. Such frame is dropped later by hardware:
 
-We can use the next aliases[j+1] to theck for duplicate aliases to
-fixes the aliases NULL pointer dereference, then goto zfree code snippet
-to release it.
+ath11k_pci 0000:5a:00.0: mac tx mgmt frame, buf id 0
+ath11k_pci 0000:5a:00.0: mgmt tx compl ev pdev_id 1, desc_id 0, status 1
 
-After patch testing:
- $ perf list --unit=hisi_sicl,cpa pmu
+>From user point of view, we have observed very low throughput due to this issue:
+action frames are all dropped so ADDBA response from DUT never reaches AP. AP
+can not use aggregation thus throughput is low.
 
- uncore cpa:
-   cpa_p0_rd_dat_32b
-        [Number of read ops transmitted by the P0 port which size is 32 bytes.
-         Unit: hisi_sicl,cpa]
-   cpa_p0_rd_dat_64b
-        [Number of read ops transmitted by the P0 port which size is 64 bytes.
-         Unit: hisi_sicl,cpa]
+Fix this by setting IEEE80211_KEY_FLAG_GENERATE_IV_MGMT flag and by reserving proper
+MIC length for those ciphers.
 
-Fixes: c3245d2093c1 ("perf pmu: Abstract alias/event struct")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Cc: ravi.bangoria@amd.com
-Cc: james.clark@arm.com
-Cc: prime.zeng@hisilicon.com
-Cc: cuigaosheng1@huawei.com
-Cc: jonathan.cameron@huawei.com
-Cc: linuxarm@huawei.com
-Cc: yangyicong@huawei.com
-Cc: robh@kernel.org
-Cc: renyu.zj@linux.alibaba.com
-Cc: kjain@linux.ibm.com
-Cc: john.g.garry@oracle.com
-Cc: linux-arm-kernel@lists.infradead.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240614094318.11607-1-hejunhao3@huawei.com
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Reported-by: Yaroslav Isakov <yaroslav.isakov@gmail.com>
+Tested-by: Yaroslav Isakov <yaroslav.isakov@gmail.com>
+Closes: https://lore.kernel.org/all/CADS+iDX5=JtJr0apAtAQ02WWBxgOFEv8G063vuGYwDTC8AVZaw@mail.gmail.com
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240605014826.22498-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmus.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c |  3 +--
+ drivers/net/wireless/ath/ath11k/dp_rx.h |  3 +++
+ drivers/net/wireless/ath/ath11k/mac.c   | 15 +++++++++++----
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
-index cec869cbe163a..54a237b2b8538 100644
---- a/tools/perf/util/pmus.c
-+++ b/tools/perf/util/pmus.c
-@@ -470,8 +470,8 @@ void perf_pmus__print_pmu_events(const struct print_callbacks *print_cb, void *p
- 	qsort(aliases, len, sizeof(struct sevent), cmp_sevent);
- 	for (int j = 0; j < len; j++) {
- 		/* Skip duplicates */
--		if (j > 0 && pmu_alias_is_duplicate(&aliases[j], &aliases[j - 1]))
--			continue;
-+		if (j < len - 1 && pmu_alias_is_duplicate(&aliases[j], &aliases[j + 1]))
-+			goto free;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index b1067bcdf88a5..3746f9c956969 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1879,8 +1879,7 @@ static void ath11k_dp_rx_h_csum_offload(struct ath11k *ar, struct sk_buff *msdu)
+ 			  CHECKSUM_NONE : CHECKSUM_UNNECESSARY;
+ }
  
- 		print_cb->print_event(print_state,
- 				aliases[j].pmu_name,
-@@ -484,6 +484,7 @@ void perf_pmus__print_pmu_events(const struct print_callbacks *print_cb, void *p
- 				aliases[j].desc,
- 				aliases[j].long_desc,
- 				aliases[j].encoding_desc);
-+free:
- 		zfree(&aliases[j].name);
- 		zfree(&aliases[j].alias);
- 		zfree(&aliases[j].scale_unit);
+-static int ath11k_dp_rx_crypto_mic_len(struct ath11k *ar,
+-				       enum hal_encrypt_type enctype)
++int ath11k_dp_rx_crypto_mic_len(struct ath11k *ar, enum hal_encrypt_type enctype)
+ {
+ 	switch (enctype) {
+ 	case HAL_ENCRYPT_TYPE_OPEN:
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.h b/drivers/net/wireless/ath/ath11k/dp_rx.h
+index 623da3bf9dc81..c322e30caa968 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.h
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.h
+@@ -1,6 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ #ifndef ATH11K_DP_RX_H
+ #define ATH11K_DP_RX_H
+@@ -95,4 +96,6 @@ int ath11k_peer_rx_frag_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id
+ int ath11k_dp_rx_pktlog_start(struct ath11k_base *ab);
+ int ath11k_dp_rx_pktlog_stop(struct ath11k_base *ab, bool stop_timer);
+ 
++int ath11k_dp_rx_crypto_mic_len(struct ath11k *ar, enum hal_encrypt_type enctype);
++
+ #endif /* ATH11K_DP_RX_H */
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index b863ead198bda..8234e34269ed8 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -3748,6 +3748,7 @@ static int ath11k_install_key(struct ath11k_vif *arvif,
+ 
+ 	switch (key->cipher) {
+ 	case WLAN_CIPHER_SUITE_CCMP:
++	case WLAN_CIPHER_SUITE_CCMP_256:
+ 		arg.key_cipher = WMI_CIPHER_AES_CCM;
+ 		/* TODO: Re-check if flag is valid */
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV_MGMT;
+@@ -3757,12 +3758,10 @@ static int ath11k_install_key(struct ath11k_vif *arvif,
+ 		arg.key_txmic_len = 8;
+ 		arg.key_rxmic_len = 8;
+ 		break;
+-	case WLAN_CIPHER_SUITE_CCMP_256:
+-		arg.key_cipher = WMI_CIPHER_AES_CCM;
+-		break;
+ 	case WLAN_CIPHER_SUITE_GCMP:
+ 	case WLAN_CIPHER_SUITE_GCMP_256:
+ 		arg.key_cipher = WMI_CIPHER_AES_GCM;
++		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV_MGMT;
+ 		break;
+ 	default:
+ 		ath11k_warn(ar->ab, "cipher %d is not supported\n", key->cipher);
+@@ -5542,7 +5541,10 @@ static int ath11k_mac_mgmt_tx_wmi(struct ath11k *ar, struct ath11k_vif *arvif,
+ {
+ 	struct ath11k_base *ab = ar->ab;
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	struct ath11k_skb_cb *skb_cb = ATH11K_SKB_CB(skb);
+ 	struct ieee80211_tx_info *info;
++	enum hal_encrypt_type enctype;
++	unsigned int mic_len;
+ 	dma_addr_t paddr;
+ 	int buf_id;
+ 	int ret;
+@@ -5566,7 +5568,12 @@ static int ath11k_mac_mgmt_tx_wmi(struct ath11k *ar, struct ath11k_vif *arvif,
+ 		     ieee80211_is_deauth(hdr->frame_control) ||
+ 		     ieee80211_is_disassoc(hdr->frame_control)) &&
+ 		     ieee80211_has_protected(hdr->frame_control)) {
+-			skb_put(skb, IEEE80211_CCMP_MIC_LEN);
++			if (!(skb_cb->flags & ATH11K_SKB_CIPHER_SET))
++				ath11k_warn(ab, "WMI management tx frame without ATH11K_SKB_CIPHER_SET");
++
++			enctype = ath11k_dp_tx_get_encrypt_type(skb_cb->cipher);
++			mic_len = ath11k_dp_rx_crypto_mic_len(ar, enctype);
++			skb_put(skb, mic_len);
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
