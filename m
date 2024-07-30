@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71055941D25
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE03941787
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F02F2B29633
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 362ECB26335
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6781A3DA3;
-	Tue, 30 Jul 2024 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5AE18454A;
+	Tue, 30 Jul 2024 16:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2Q9gfAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGjaNNL4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CD6188003;
-	Tue, 30 Jul 2024 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1617D183CA0;
+	Tue, 30 Jul 2024 16:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359465; cv=none; b=Ke6tDUiCFnh1CAgRQL8ANvAhvb3zNwKU8a+2ZvalWm4PdVNv/icw3JqBcbAUYb+rvi43aFLH5tmAXrWdAapdVJG4ljQ5QGknBbtJbrM5C4PC3jyDmgWNfIEevCPPl5I+Clna4EpjTe7ovPk/32zQMXabnjg2chp/s50lc21Neak=
+	t=1722355787; cv=none; b=sK5oC176M9BiKHqHrdtMyQ4EXr3+qAgIYHDVywbSL6Pv7bt3B45c4G5cD2j2blYfgJbuP3IP/wmCcnYttd2TxA/kJTIAxpVAkMVtX/CmeJOfW+24o2x0bjiaXmtpmsCgjuZirshVcSK8UNLDm+uFDPib+bF30WyTKK+SHdMYeAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359465; c=relaxed/simple;
-	bh=pTkxb4xPxIAmr2PAH4e7sjKNtI7BHYgJCOjBg8/BCZQ=;
+	s=arc-20240116; t=1722355787; c=relaxed/simple;
+	bh=woFqQ4Ox2WkAe1/g6uhlAvSNr3xWH0MKeC/C7XBdaUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=af9gFBdNeOgEPTZy1NdnYZcsOdgjJ02v7xk+m0ETyWEmKbLgyti3AUkRO/Ol3Lb8ujoDbm8qWIHOGnsHXQl/ez//YtpN0i4zBGQ9qgT7OT0O1LjUBxDd4BUertmIyI0/2ubiqoBMEavK5xXxqBK+8FUVi67QOe3HLNiUq8E8yOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2Q9gfAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A505C4AF0F;
-	Tue, 30 Jul 2024 17:11:04 +0000 (UTC)
+	 MIME-Version; b=RSFVKEv6ErfsKX+fLCoBqqOD9fFXNPml0+iE9NHQmep8t7PVt1DBjPlHXvyhcdZ25rmtCJX5X8IoRZvSBDHUdNKfuB3ZvzfOK65td2M6xkMn6cH+qhkoDigChqzf68Ox0PYLWu53DjtMLk9aJtg8KpsYKZfjR1HOHDOZD5Sn26o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGjaNNL4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C33C4AF0A;
+	Tue, 30 Jul 2024 16:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359465;
-	bh=pTkxb4xPxIAmr2PAH4e7sjKNtI7BHYgJCOjBg8/BCZQ=;
+	s=korg; t=1722355786;
+	bh=woFqQ4Ox2WkAe1/g6uhlAvSNr3xWH0MKeC/C7XBdaUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2Q9gfALSUhuc9AnUuVoF8YCV8TkaMJzBL6iO6WCDJQyE7yCp4NR2BmvTTwbCYzF2
-	 Mpe9KBEOxVLcSfltthiHTcRkwfBWwsbwEbNwuMNVDiSU6VKUudoEIm72fMbCgYxqQS
-	 HCyt6xj/NnFfgkkJos9tij+2DWhMrR4VOjNz2k5c=
+	b=NGjaNNL4apVG2XJtKSM4iF0Cj8GNxZqFYa5xNYBO9Hz8+3/Ej2Ol3EU2vMOUW04wE
+	 qvnyr1V4k3zINptx0GwjzDp/siVnk79OuG25AQrBqPm/e9L5zlHWe4xeFtqV0XVki3
+	 wTv8M6dvW6MjH8cSs1LOBA0xq+4NLCLGyLHVBjmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 487/809] fs/ntfs3: Missed NI_FLAG_UPDATE_PARENT setting
+Subject: [PATCH 6.1 130/440] drm/mipi-dsi: Fix theoretical int overflow in mipi_dsi_dcs_write_seq()
 Date: Tue, 30 Jul 2024 17:46:03 +0200
-Message-ID: <20240730151743.973931194@linuxfoundation.org>
+Message-ID: <20240730151620.959807807@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,33 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 1c308ace1fd6de93bd0b7e1a5e8963ab27e2c016 ]
+[ Upstream commit 0b03829fdece47beba9ecb7dbcbde4585ee3663e ]
 
-Fixes: be71b5cba2e64 ("fs/ntfs3: Add attrib operations")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+The mipi_dsi_dcs_write_seq() macro makes a call to
+mipi_dsi_dcs_write_buffer() which returns a type ssize_t. The macro
+then stores it in an int and checks to see if it's negative. This
+could theoretically be a problem if "ssize_t" is larger than "int".
+
+To see the issue, imagine that "ssize_t" is 32-bits and "int" is
+16-bits, you could see a problem if there was some code out there that
+looked like:
+
+  mipi_dsi_dcs_write_seq(dsi, cmd, <32767 bytes as arguments>);
+
+...since we'd get back that 32768 bytes were transferred and 32768
+stored in a 16-bit int would look negative.
+
+Though there are no callsites where we'd actually hit this (even if
+"int" was only 16-bit), it's cleaner to make the types match so let's
+fix it.
+
+Fixes: 2a9e9daf7523 ("drm/mipi-dsi: Introduce mipi_dsi_dcs_write_seq macro")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240514102056.v5.1.I30fa4c8348ea316c886ef8a522a52fed617f930d@changeid
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240514102056.v5.1.I30fa4c8348ea316c886ef8a522a52fed617f930d@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/attrib.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/drm/drm_mipi_dsi.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 7918ab1a3f354..0d13da5523b1a 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -1738,6 +1738,7 @@ int attr_allocate_frame(struct ntfs_inode *ni, CLST frame, size_t compr_size,
+diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
+index 9dd1093b2dfa9..1a921e8943a03 100644
+--- a/include/drm/drm_mipi_dsi.h
++++ b/include/drm/drm_mipi_dsi.h
+@@ -309,18 +309,18 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
+  * @cmd: Command
+  * @seq: buffer containing data to be transmitted
+  */
+-#define mipi_dsi_dcs_write_seq(dsi, cmd, seq...)                           \
+-	do {                                                               \
+-		static const u8 d[] = { cmd, seq };                        \
+-		struct device *dev = &dsi->dev;                            \
+-		int ret;                                                   \
+-		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));    \
+-		if (ret < 0) {                                             \
+-			dev_err_ratelimited(                               \
+-				dev, "sending command %#02x failed: %d\n", \
+-				cmd, ret);                                 \
+-			return ret;                                        \
+-		}                                                          \
++#define mipi_dsi_dcs_write_seq(dsi, cmd, seq...)                            \
++	do {                                                                \
++		static const u8 d[] = { cmd, seq };                         \
++		struct device *dev = &dsi->dev;                             \
++		ssize_t ret;                                                \
++		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));     \
++		if (ret < 0) {                                              \
++			dev_err_ratelimited(                                \
++				dev, "sending command %#02x failed: %zd\n", \
++				cmd, ret);                                  \
++			return ret;                                         \
++		}                                                           \
+ 	} while (0)
  
- 	attr_b->nres.total_size = cpu_to_le64(total_size);
- 	inode_set_bytes(&ni->vfs_inode, total_size);
-+	ni->ni_flags |= NI_FLAG_UPDATE_PARENT;
- 
- 	mi_b->dirty = true;
- 	mark_inode_dirty(&ni->vfs_inode);
+ /**
 -- 
 2.43.0
 
