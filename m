@@ -1,93 +1,369 @@
-Return-Path: <stable+bounces-64658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2247194204D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 21:08:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B866D9420A6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 21:34:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE6261F24002
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:08:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C95E2848B1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D54B18A6AE;
-	Tue, 30 Jul 2024 19:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670AB18C936;
+	Tue, 30 Jul 2024 19:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=urja.dev header.i=@urja.dev header.b="aUFxCHV5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1KoW+2a"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4018.proton.ch (mail-4018.proton.ch [185.70.40.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BBA1AA3C3;
-	Tue, 30 Jul 2024 19:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33987149C41
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 19:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722366478; cv=none; b=C5TWEeL6z58zRH7aSUPgboEvJtbzR8DgvbxNW9KQZN2TP7BNaF776iq3z5ogIoINbr3VYMpRd957p5281IkIOCaPeWNQBGNaN2LU0ibvWxaAmLRkSC0It/lb+/Gbl0dWUH6Lfz3Crmsi4ksdCib1HFq/2+8qY/PX5hbcXObpfzU=
+	t=1722368056; cv=none; b=HGAzxLKTYRy7U7Y57FlqbvINH0TuCJn3stFHSgIq7KPRSISiIjeGCps3pG6UK2XrO2ChTyOXCjrLgUqi7VqJH3mCt99YAAVUsOPjUfqgUmCYE3g7ZR/y/2zH1E4suJXPYxy4gwnSywzRSFgoK4RJJP49agbimTsOTLjnO3Hm1Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722366478; c=relaxed/simple;
-	bh=saWhBVeizg0sVdQ6Vyt/B9QfErmZv7ysjEY0xq8TAOE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qdNU4G/7dL/zX4VH5coXlzz4Hp1nF1JhtTB/hpWHFl+zk06h2IbB9VmkXi+CU2wHq2PZB53m3GUiVmWL2jgfURhJk7CuntgU+pZp5vzUoSRHBiYpAK/pkfw7YdkLNcKwn24aiHwRxl0WdV+RttqaOtlnbVevbzLLNQMK9tL/QdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=urja.dev; spf=pass smtp.mailfrom=urja.dev; dkim=pass (2048-bit key) header.d=urja.dev header.i=@urja.dev header.b=aUFxCHV5; arc=none smtp.client-ip=185.70.40.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=urja.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=urja.dev
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=urja.dev;
-	s=protonmail2; t=1722366468; x=1722625668;
-	bh=saWhBVeizg0sVdQ6Vyt/B9QfErmZv7ysjEY0xq8TAOE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=aUFxCHV5ErqO3t7yUec1AfkzKBfaFOwLT82kEXZZrP7LeW8bxa6e0Sd/5pGIstwbp
-	 38uzczgEbnprMAOobCU8H16XypQucvojDavpe/Di2dVSsWbwrZWuNYbkC/nDmg4IVA
-	 DTHyAtNY4gisw7thO38HFgC92/taDGBZeXpWt/9ZUlZQCo8EB320A9kuyWeRMTNbjl
-	 GxRvPUlvjY7jFIBOrlMy85Ps/A2o+UTbGMR60qaCCpu/iRr8wh2hVBHCzsn9SkQwf6
-	 l96gFluuMUMEk8xOFbQpZXIIv9FveJ7ennssyZgZ+E1p9Rw0Rn6owlMDdGXtiGtICW
-	 bnZIbMi1ZEtjA==
-Date: Tue, 30 Jul 2024 19:07:44 +0000
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-From: Urja <urja@urja.dev>
-Cc: Lee Jones <lee@kernel.org>, Dmitrii Osipenko <dmitry.osipenko@collabora.com>, Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>, linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, kernel@collabora.com, stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] mfd: rk8xx: Fix shutdown handler
-Message-ID: <lJ87fvo0QzsVinjBdNVA7jnCEFm0-GBVJhFpFwKWCIS1M-kiuXP_mefSzm8G2Iplic1LlekmwUD6OODDJAtiDOPuDZ08HT965Tkmibgn6fE=@urja.dev>
-In-Reply-To: <20240730180903.81688-1-sebastian.reichel@collabora.com>
-References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
-Feedback-ID: 82529409:user:proton
-X-Pm-Message-ID: 6ad94b037d6329c541045aad68e64fee5a4c1d46
+	s=arc-20240116; t=1722368056; c=relaxed/simple;
+	bh=7feArLFKQuGoRb4rbNJaW7xsa9WJUqQavf7AgD6zf0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KeAWteeDTbUujmL23/LbaiMz1rN2s5JnXuJmHV/0FQcgV2x42mpQJ0X+V+RD3mlO4+0cdQVnUwWVU10CfnzXHCenxIUxDR0GSKSgSDtNkD/1OG9yUyDPj+/9xW8DgkdXdt63qnRil8KJYKksD9d0/gD4KWfUGqaa0bzFtFVcoG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1KoW+2a; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722368053;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IAWyxjmu60o0IDjwgOxU5hD2VD7s0KxptvOQg2mqPUs=;
+	b=L1KoW+2azZVbx5mxau8pq1r+90HjAyFX/JMsKjcLtZPkfyaBIBYh0uM8P6F8UETO5sMV13
+	2mdA1NZfPC2ZCnrUPM2c60KPigXF/6OIDd4PMliGJ3SxfMT1ApPcv9k1kweN6u76HE6Jve
+	R3h4eMDrHU1YC9XddyRAjqlcAV9SQ4I=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-489-ffndrUCOOESjrs6nIVADEw-1; Tue, 30 Jul 2024 15:34:11 -0400
+X-MC-Unique: ffndrUCOOESjrs6nIVADEw-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-530ad977c8eso564486e87.2
+        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 12:34:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722368050; x=1722972850;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IAWyxjmu60o0IDjwgOxU5hD2VD7s0KxptvOQg2mqPUs=;
+        b=oqjywmgStuxziLtNyiOC5snsEojFi1Q99r03oLvgxjSK9GQIqiZ54SwduO5KQDbyUr
+         MQ/Z1ITNGo8D1Nc6e5oeRLohFEJk0bKF/I2MpbxHXOtJzFtq4sUhr1UlW9RYkFL8AMJs
+         lyjQAUbwH7cdoVUwt0kuaiYXwLwTDEF3xR981PCUpI1m6Wz1k5rimeBg5cWKNG8l0ykH
+         rezmcKw978ECxq2BWnARNyZrbD+IvkDAQqikuyB7jyKetZ0tys5n6r9Lb/LYOBVr2iIN
+         ByYqp/0yoUhoH3NazdXzy9gbhN9NgRvhGuJugIYCxhabbRRUidnAQJLBmBkc0oaA6pJ8
+         W+0A==
+X-Gm-Message-State: AOJu0YwD2cIBOjVKjfYbTcVkYw/Nk/mOpUj8C+Pl3G4BIr4FnOeG4ikc
+	ryDXYUpKgW2nThuvNP8EWE4bYXZU93cgk+gumSDl+lqBbbip6y1hkuFHmKOcbp3WaideF2keNef
+	M4uMYXhC/tQ1Tmd3uusNOYWC3XKDk5wxsXQjuH9SIwoXIt/n9teuwyg==
+X-Received: by 2002:ac2:520c:0:b0:52f:341:6e16 with SMTP id 2adb3069b0e04-5309b2d7aa2mr6651297e87.46.1722368049809;
+        Tue, 30 Jul 2024 12:34:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG4LFKhE0WiB1xyyssr1gMPoi+f3nb7MyeDYIiIluMJ844eddXuwt10HTjV1fcUDxrL7mYFgw==
+X-Received: by 2002:ac2:520c:0:b0:52f:341:6e16 with SMTP id 2adb3069b0e04-5309b2d7aa2mr6651284e87.46.1722368048987;
+        Tue, 30 Jul 2024 12:34:08 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:176:ce53:abb9:7fe9:ef80:6a78])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acadb98dbsm681589566b.216.2024.07.30.12.33.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jul 2024 12:33:28 -0700 (PDT)
+Date: Tue, 30 Jul 2024 15:33:18 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.10 259/809] virtio_net: add support for Byte Queue
+ Limits
+Message-ID: <20240730153217-mutt-send-email-mst@kernel.org>
+References: <20240730151724.637682316@linuxfoundation.org>
+ <20240730151734.824711848@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240730151734.824711848@linuxfoundation.org>
 
-Hi,
+On Tue, Jul 30, 2024 at 05:42:15PM +0200, Greg Kroah-Hartman wrote:
+> 6.10-stable review patch.  If anyone has any objections, please let me know.
 
-On Tuesday, 30 July 2024 at 9:05 PM, Sebastian Reichel <sebastian.reichel@c=
-ollabora.com> wrote:
+Wow.
 
-> To avoid this we keep the SYS_OFF_MODE_POWER_OFF_PREPARE handler for the
-> SPI backend. This is not great, but at least avoids regressions and the
-> fix should be small enough to allow backporting.
->=20
-> As a side-effect this also works around a shutdown problem on the Asus
-> C201. For reasons unknown that skips calling the prepare handler and
-> directly calls the final shutdown handler.
+It's clearly a feature, not a bugfix. And a risky one, at that.
 
-I can clarify that bit a little - basically, when the handler is registered
-as a poweroff prepare handler, the kernel thinks that the C201 cannot power=
-off
-and converts the poweroff into a halt, so I assume the
-power_off_handler_list is empty - which makes sense, the C201 has no firmwa=
-re
-to call or other poweroff methods that I'd be aware of.
-(See kernel/reboot.c line 746 and 683.)=20
+Applies to any stable tree.
 
-Anyways, this patch works on the C201 (tested on top of 6.11-rc1).
-Tested-by: Urja <urja@urja.dev>
+> ------------------
+> 
+> From: Jiri Pirko <jiri@nvidia.com>
+> 
+> [ Upstream commit c8bd1f7f3e61fc6c562c806045f3ccd2cc819c01 ]
+> 
+> Add support for Byte Queue Limits (BQL).
+> 
+> Tested on qemu emulated virtio_net device with 1, 2 and 4 queues.
+> Tested with fq_codel and pfifo_fast. Super netperf with 50 threads is
+> running in background. Netperf TCP_RR results:
+> 
+> NOBQL FQC 1q:  159.56  159.33  158.50  154.31    agv: 157.925
+> NOBQL FQC 2q:  184.64  184.96  174.73  174.15    agv: 179.62
+> NOBQL FQC 4q:  994.46  441.96  416.50  499.56    agv: 588.12
+> NOBQL PFF 1q:  148.68  148.92  145.95  149.48    agv: 148.2575
+> NOBQL PFF 2q:  171.86  171.20  170.42  169.42    agv: 170.725
+> NOBQL PFF 4q: 1505.23 1137.23 2488.70 3507.99    agv: 2159.7875
+>   BQL FQC 1q: 1332.80 1297.97 1351.41 1147.57    agv: 1282.4375
+>   BQL FQC 2q:  768.30  817.72  864.43  974.40    agv: 856.2125
+>   BQL FQC 4q:  945.66  942.68  878.51  822.82    agv: 897.4175
+>   BQL PFF 1q:  149.69  151.49  149.40  147.47    agv: 149.5125
+>   BQL PFF 2q: 2059.32  798.74 1844.12  381.80    agv: 1270.995
+>   BQL PFF 4q: 1871.98 4420.02 4916.59 13268.16   agv: 6119.1875
+> 
+> Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Link: https://lore.kernel.org/r/20240618144456.1688998-1-jiri@resnulli.us
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Stable-dep-of: f8321fa75102 ("virtio_net: Fix napi_skb_cache_put warning")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/net/virtio_net.c | 81 ++++++++++++++++++++++++++++------------
+>  1 file changed, 57 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index ea10db9a09fa2..b1f8b720733e5 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -47,7 +47,8 @@ module_param(napi_tx, bool, 0644);
+>  #define VIRTIO_XDP_TX		BIT(0)
+>  #define VIRTIO_XDP_REDIR	BIT(1)
+>  
+> -#define VIRTIO_XDP_FLAG	BIT(0)
+> +#define VIRTIO_XDP_FLAG		BIT(0)
+> +#define VIRTIO_ORPHAN_FLAG	BIT(1)
+>  
+>  /* RX packet size EWMA. The average packet size is used to determine the packet
+>   * buffer size when refilling RX rings. As the entire RX ring may be refilled
+> @@ -85,6 +86,8 @@ struct virtnet_stat_desc {
+>  struct virtnet_sq_free_stats {
+>  	u64 packets;
+>  	u64 bytes;
+> +	u64 napi_packets;
+> +	u64 napi_bytes;
+>  };
+>  
+>  struct virtnet_sq_stats {
+> @@ -506,29 +509,50 @@ static struct xdp_frame *ptr_to_xdp(void *ptr)
+>  	return (struct xdp_frame *)((unsigned long)ptr & ~VIRTIO_XDP_FLAG);
+>  }
+>  
+> -static void __free_old_xmit(struct send_queue *sq, bool in_napi,
+> -			    struct virtnet_sq_free_stats *stats)
+> +static bool is_orphan_skb(void *ptr)
+> +{
+> +	return (unsigned long)ptr & VIRTIO_ORPHAN_FLAG;
+> +}
+> +
+> +static void *skb_to_ptr(struct sk_buff *skb, bool orphan)
+> +{
+> +	return (void *)((unsigned long)skb | (orphan ? VIRTIO_ORPHAN_FLAG : 0));
+> +}
+> +
+> +static struct sk_buff *ptr_to_skb(void *ptr)
+> +{
+> +	return (struct sk_buff *)((unsigned long)ptr & ~VIRTIO_ORPHAN_FLAG);
+> +}
+> +
+> +static void __free_old_xmit(struct send_queue *sq, struct netdev_queue *txq,
+> +			    bool in_napi, struct virtnet_sq_free_stats *stats)
+>  {
+>  	unsigned int len;
+>  	void *ptr;
+>  
+>  	while ((ptr = virtqueue_get_buf(sq->vq, &len)) != NULL) {
+> -		++stats->packets;
+> -
+>  		if (!is_xdp_frame(ptr)) {
+> -			struct sk_buff *skb = ptr;
+> +			struct sk_buff *skb = ptr_to_skb(ptr);
+>  
+>  			pr_debug("Sent skb %p\n", skb);
+>  
+> -			stats->bytes += skb->len;
+> +			if (is_orphan_skb(ptr)) {
+> +				stats->packets++;
+> +				stats->bytes += skb->len;
+> +			} else {
+> +				stats->napi_packets++;
+> +				stats->napi_bytes += skb->len;
+> +			}
+>  			napi_consume_skb(skb, in_napi);
+>  		} else {
+>  			struct xdp_frame *frame = ptr_to_xdp(ptr);
+>  
+> +			stats->packets++;
+>  			stats->bytes += xdp_get_frame_len(frame);
+>  			xdp_return_frame(frame);
+>  		}
+>  	}
+> +	netdev_tx_completed_queue(txq, stats->napi_packets, stats->napi_bytes);
+>  }
+>  
+>  /* Converting between virtqueue no. and kernel tx/rx queue no.
+> @@ -955,21 +979,22 @@ static void virtnet_rq_unmap_free_buf(struct virtqueue *vq, void *buf)
+>  	virtnet_rq_free_buf(vi, rq, buf);
+>  }
+>  
+> -static void free_old_xmit(struct send_queue *sq, bool in_napi)
+> +static void free_old_xmit(struct send_queue *sq, struct netdev_queue *txq,
+> +			  bool in_napi)
+>  {
+>  	struct virtnet_sq_free_stats stats = {0};
+>  
+> -	__free_old_xmit(sq, in_napi, &stats);
+> +	__free_old_xmit(sq, txq, in_napi, &stats);
+>  
+>  	/* Avoid overhead when no packets have been processed
+>  	 * happens when called speculatively from start_xmit.
+>  	 */
+> -	if (!stats.packets)
+> +	if (!stats.packets && !stats.napi_packets)
+>  		return;
+>  
+>  	u64_stats_update_begin(&sq->stats.syncp);
+> -	u64_stats_add(&sq->stats.bytes, stats.bytes);
+> -	u64_stats_add(&sq->stats.packets, stats.packets);
+> +	u64_stats_add(&sq->stats.bytes, stats.bytes + stats.napi_bytes);
+> +	u64_stats_add(&sq->stats.packets, stats.packets + stats.napi_packets);
+>  	u64_stats_update_end(&sq->stats.syncp);
+>  }
+>  
+> @@ -1003,7 +1028,9 @@ static void check_sq_full_and_disable(struct virtnet_info *vi,
+>  	 * early means 16 slots are typically wasted.
+>  	 */
+>  	if (sq->vq->num_free < 2+MAX_SKB_FRAGS) {
+> -		netif_stop_subqueue(dev, qnum);
+> +		struct netdev_queue *txq = netdev_get_tx_queue(dev, qnum);
+> +
+> +		netif_tx_stop_queue(txq);
+>  		u64_stats_update_begin(&sq->stats.syncp);
+>  		u64_stats_inc(&sq->stats.stop);
+>  		u64_stats_update_end(&sq->stats.syncp);
+> @@ -1012,7 +1039,7 @@ static void check_sq_full_and_disable(struct virtnet_info *vi,
+>  				virtqueue_napi_schedule(&sq->napi, sq->vq);
+>  		} else if (unlikely(!virtqueue_enable_cb_delayed(sq->vq))) {
+>  			/* More just got used, free them then recheck. */
+> -			free_old_xmit(sq, false);
+> +			free_old_xmit(sq, txq, false);
+>  			if (sq->vq->num_free >= 2+MAX_SKB_FRAGS) {
+>  				netif_start_subqueue(dev, qnum);
+>  				u64_stats_update_begin(&sq->stats.syncp);
+> @@ -1138,7 +1165,8 @@ static int virtnet_xdp_xmit(struct net_device *dev,
+>  	}
+>  
+>  	/* Free up any pending old buffers before queueing new ones. */
+> -	__free_old_xmit(sq, false, &stats);
+> +	__free_old_xmit(sq, netdev_get_tx_queue(dev, sq - vi->sq),
+> +			false, &stats);
+>  
+>  	for (i = 0; i < n; i++) {
+>  		struct xdp_frame *xdpf = frames[i];
+> @@ -2331,7 +2359,7 @@ static void virtnet_poll_cleantx(struct receive_queue *rq)
+>  
+>  		do {
+>  			virtqueue_disable_cb(sq->vq);
+> -			free_old_xmit(sq, true);
+> +			free_old_xmit(sq, txq, true);
+>  		} while (unlikely(!virtqueue_enable_cb_delayed(sq->vq)));
+>  
+>  		if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS) {
+> @@ -2430,6 +2458,7 @@ static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
+>  		goto err_xdp_reg_mem_model;
+>  
+>  	virtnet_napi_enable(vi->rq[qp_index].vq, &vi->rq[qp_index].napi);
+> +	netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, qp_index));
+>  	virtnet_napi_tx_enable(vi, vi->sq[qp_index].vq, &vi->sq[qp_index].napi);
+>  
+>  	return 0;
+> @@ -2489,7 +2518,7 @@ static int virtnet_poll_tx(struct napi_struct *napi, int budget)
+>  	txq = netdev_get_tx_queue(vi->dev, index);
+>  	__netif_tx_lock(txq, raw_smp_processor_id());
+>  	virtqueue_disable_cb(sq->vq);
+> -	free_old_xmit(sq, true);
+> +	free_old_xmit(sq, txq, true);
+>  
+>  	if (sq->vq->num_free >= 2 + MAX_SKB_FRAGS) {
+>  		if (netif_tx_queue_stopped(txq)) {
+> @@ -2523,7 +2552,7 @@ static int virtnet_poll_tx(struct napi_struct *napi, int budget)
+>  	return 0;
+>  }
+>  
+> -static int xmit_skb(struct send_queue *sq, struct sk_buff *skb)
+> +static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+>  {
+>  	struct virtio_net_hdr_mrg_rxbuf *hdr;
+>  	const unsigned char *dest = ((struct ethhdr *)skb->data)->h_dest;
+> @@ -2567,7 +2596,8 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb)
+>  			return num_sg;
+>  		num_sg++;
+>  	}
+> -	return virtqueue_add_outbuf(sq->vq, sq->sg, num_sg, skb, GFP_ATOMIC);
+> +	return virtqueue_add_outbuf(sq->vq, sq->sg, num_sg,
+> +				    skb_to_ptr(skb, orphan), GFP_ATOMIC);
+>  }
+>  
+>  static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
+> @@ -2577,24 +2607,25 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	struct send_queue *sq = &vi->sq[qnum];
+>  	int err;
+>  	struct netdev_queue *txq = netdev_get_tx_queue(dev, qnum);
+> -	bool kick = !netdev_xmit_more();
+> +	bool xmit_more = netdev_xmit_more();
+>  	bool use_napi = sq->napi.weight;
+> +	bool kick;
+>  
+>  	/* Free up any pending old buffers before queueing new ones. */
+>  	do {
+>  		if (use_napi)
+>  			virtqueue_disable_cb(sq->vq);
+>  
+> -		free_old_xmit(sq, false);
+> +		free_old_xmit(sq, txq, false);
+>  
+> -	} while (use_napi && kick &&
+> +	} while (use_napi && !xmit_more &&
+>  	       unlikely(!virtqueue_enable_cb_delayed(sq->vq)));
+>  
+>  	/* timestamp packet in software */
+>  	skb_tx_timestamp(skb);
+>  
+>  	/* Try to transmit */
+> -	err = xmit_skb(sq, skb);
+> +	err = xmit_skb(sq, skb, !use_napi);
+>  
+>  	/* This should not happen! */
+>  	if (unlikely(err)) {
+> @@ -2616,7 +2647,9 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  
+>  	check_sq_full_and_disable(vi, dev, sq);
+>  
+> -	if (kick || netif_xmit_stopped(txq)) {
+> +	kick = use_napi ? __netdev_tx_sent_queue(txq, skb->len, xmit_more) :
+> +			  !xmit_more || netif_xmit_stopped(txq);
+> +	if (kick) {
+>  		if (virtqueue_kick_prepare(sq->vq) && virtqueue_notify(sq->vq)) {
+>  			u64_stats_update_begin(&sq->stats.syncp);
+>  			u64_stats_inc(&sq->stats.kicks);
+> -- 
+> 2.43.0
+> 
+> 
 
-Thank you
---
-Urja Rannikko
 
