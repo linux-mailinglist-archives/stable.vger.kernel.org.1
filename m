@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD72941DA0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAFC941C13
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBF3728C8FF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 282F9285300
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5F91A76B2;
-	Tue, 30 Jul 2024 17:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D3B18454A;
+	Tue, 30 Jul 2024 17:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15id0w+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLw4Aqzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6811A76A4;
-	Tue, 30 Jul 2024 17:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609421A6192;
+	Tue, 30 Jul 2024 17:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359968; cv=none; b=GHRS8aqYkbeAyJr9VINTnrixmKYQvkhCNIbff/b/QnLCAPZVTxsn/Kai4/jgy1LNwtR6ojRVkHStQzzMSmH/ImHPcpA/xDi6EpsZOXL+CGCYVqIf28H+tYpYLP9BkCV3pnyTFSqu7zX/rrK0rwi5wI458shE7x+Hbfw3+f/27Vw=
+	t=1722358961; cv=none; b=MALtI514K/KiGLaDQMXpnnU2yiP5uIoIM5wWN2Zp5gtngaUqRH0RWTsoNs2mbZvPbs9lqZcEAzDahepF6RtLNcKwBI5mF/7htrtcN4kJ91TQ8gls12bFCzINB/NGCWIhLIbeLv7DcAuQqBMr25NiBi91xSjOOlk5UJCG92F9rHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359968; c=relaxed/simple;
-	bh=tKnQAozkZLsBawZ8aZZ6X/YgcWVZRxKHrmaDIUmbUNc=;
+	s=arc-20240116; t=1722358961; c=relaxed/simple;
+	bh=PUYqQU5oahFhp1AXNzebjxBEEp0f1X4Ncon1r41rn00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ime/SwO4O5U8AtNMxIRay4YDk+k2h1nhPhlttYxJlW3y/jVHLQ1fn7OqI9I+ISyR6DdHe0o6FnNoZj3RLlCcpVobLzqy+CYVqVr/C5qS1VehEXfasijqM04aRIF5LxoYUnLTdwa4xlht0M5F3r4wCROwD+kO6xm5P1FXkUVw8DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15id0w+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76755C4AF0C;
-	Tue, 30 Jul 2024 17:19:27 +0000 (UTC)
+	 MIME-Version; b=f9MC8nI0vkw0ZdzoiVQVs6qfO0/nIjV6o8PmRlLh/HxDg6UbKfv7s9/3mifVH/9y2BgLr/gScW3N3z78+TubnLmLjEiQk+DrghlCjFI96KydcRRMrFBLXlizwYIKcjcCdsdZdRTGsnPl3NkK8zu3MnFv7b2HIqWDEWnyBRzJSEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLw4Aqzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4453C32782;
+	Tue, 30 Jul 2024 17:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359967;
-	bh=tKnQAozkZLsBawZ8aZZ6X/YgcWVZRxKHrmaDIUmbUNc=;
+	s=korg; t=1722358961;
+	bh=PUYqQU5oahFhp1AXNzebjxBEEp0f1X4Ncon1r41rn00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15id0w+MtSfXGUbkQGhQvlbadkA/CQMDFcqgjDA7LmqorOr178eCX2jIN36aCyGdJ
-	 iXeFhscQwTdX5VGyXbWCgCmN/Fw39p/ZXU59q1kuKhzn/IFoa28/CR1/FMNhYtO2NR
-	 ucMS9wPau0jfxdrhajEI/GAkimWGsREulH5Z0PVk=
+	b=HLw4AqzouaZVv+w9UF16yyw8TX3APVPqHk3ZwpR5qucRlsTkm5FvOvpOFhalYiHKg
+	 mEiEVCqVT5PCm3DU90CEaC4zmbZR0YCiXDv5nLktVZAgbde8Tb0/6RH9cQRYvnW8ZB
+	 JxKuQIBhylR+ZUJI6O+7q7b29w65KyqyE7E6UiJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 562/568] s390/pci: Refactor arch_setup_msi_irqs()
-Date: Tue, 30 Jul 2024 17:51:09 +0200
-Message-ID: <20240730151702.123700123@linuxfoundation.org>
+Subject: [PATCH 6.1 437/440] iommu: sprd: Avoid NULL deref in sprd_iommu_hw_en
+Date: Tue, 30 Jul 2024 17:51:10 +0200
+Message-ID: <20240730151632.842020517@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit 5fd11b96b43708f2f6e3964412c301c1bd20ec0f ]
+[ Upstream commit 630482ee0653decf9e2482ac6181897eb6cde5b8 ]
 
-Factor out adapter interrupt allocation from arch_setup_msi_irqs() in
-preparation for enabling registration of multiple MSIs. Code movement
-only, no change of functionality intended.
+In sprd_iommu_cleanup() before calling function sprd_iommu_hw_en()
+dom->sdev is equal to NULL, which leads to null dereference.
 
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9afea57384d4 ("iommu/sprd: Release dma buffer to avoid memory leak")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Reviewed-by: Chunyan Zhang <zhang.lyra@gmail.com>
+Link: https://lore.kernel.org/r/20240716125522.3690358-1-artem.chernyshev@red-soft.ru
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 54 ++++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
+ drivers/iommu/sprd-iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 0ef83b6ac0db7..979f776b09b8d 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -268,33 +268,20 @@ static void zpci_floating_irq_handler(struct airq_struct *airq,
- 	}
+diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
+index e4358393fe378..71d22daaec2ed 100644
+--- a/drivers/iommu/sprd-iommu.c
++++ b/drivers/iommu/sprd-iommu.c
+@@ -234,8 +234,8 @@ static void sprd_iommu_cleanup(struct sprd_iommu_domain *dom)
+ 
+ 	pgt_size = sprd_iommu_pgt_size(&dom->domain);
+ 	dma_free_coherent(dom->sdev->dev, pgt_size, dom->pgt_va, dom->pgt_pa);
+-	dom->sdev = NULL;
+ 	sprd_iommu_hw_en(dom->sdev, false);
++	dom->sdev = NULL;
  }
  
--int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
-+			unsigned long *bit)
- {
--	struct zpci_dev *zdev = to_zpci(pdev);
--	unsigned int hwirq, msi_vecs, cpu;
--	unsigned long bit;
--	struct msi_desc *msi;
--	struct msi_msg msg;
--	int cpu_addr;
--	int rc, irq;
--
--	zdev->aisb = -1UL;
--	zdev->msi_first_bit = -1U;
--	if (type == PCI_CAP_ID_MSI && nvec > 1)
--		return 1;
--	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
--
- 	if (irq_delivery == DIRECTED) {
- 		/* Allocate cpu vector bits */
--		bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
-+		if (*bit == -1UL)
- 			return -EIO;
- 	} else {
- 		/* Allocate adapter summary indicator bit */
--		bit = airq_iv_alloc_bit(zpci_sbv);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc_bit(zpci_sbv);
-+		if (*bit == -1UL)
- 			return -EIO;
--		zdev->aisb = bit;
-+		zdev->aisb = *bit;
- 
- 		/* Create adapter interrupt vector */
- 		zdev->aibv = airq_iv_create(msi_vecs, AIRQ_IV_DATA | AIRQ_IV_BITLOCK, NULL);
-@@ -302,10 +289,33 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
- 			return -ENOMEM;
- 
- 		/* Wire up shortcut pointer */
--		zpci_ibv[bit] = zdev->aibv;
-+		zpci_ibv[*bit] = zdev->aibv;
- 		/* Each function has its own interrupt vector */
--		bit = 0;
-+		*bit = 0;
- 	}
-+	return 0;
-+}
-+
-+int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+{
-+	struct zpci_dev *zdev = to_zpci(pdev);
-+	unsigned int hwirq, msi_vecs, cpu;
-+	struct msi_desc *msi;
-+	struct msi_msg msg;
-+	unsigned long bit;
-+	int cpu_addr;
-+	int rc, irq;
-+
-+	zdev->aisb = -1UL;
-+	zdev->msi_first_bit = -1U;
-+
-+	if (type == PCI_CAP_ID_MSI && nvec > 1)
-+		return 1;
-+	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
-+
-+	rc = __alloc_airq(zdev, msi_vecs, &bit);
-+	if (rc < 0)
-+		return rc;
- 
- 	/* Request MSI interrupts */
- 	hwirq = bit;
+ static void sprd_iommu_domain_free(struct iommu_domain *domain)
 -- 
 2.43.0
 
