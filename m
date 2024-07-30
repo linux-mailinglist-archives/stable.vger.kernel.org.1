@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F229418C7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1947F9419A7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7F22883C5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB4B7B2B802
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4533018800D;
-	Tue, 30 Jul 2024 16:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB7F1A6196;
+	Tue, 30 Jul 2024 16:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLheFBN7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qw/5OXNa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038621A6186;
-	Tue, 30 Jul 2024 16:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7E01A6161;
+	Tue, 30 Jul 2024 16:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356696; cv=none; b=mPaXwOVmcwZAaujPpkXaibqA6gtltFkDOWdJf6SEOwFivgrYHXotn6MoLNpy2K0xbGglQ+6SDsdNlyYuoNr1e2i4YeuInLroVc3lrhudOwv/0AdzbZCzD6EArKY4McOSDRMmYsxP8Y8ZpTDCS/OGXXnKKCjA0gzaYgkGcLkdIII=
+	t=1722356705; cv=none; b=XMtU8II+damvoRlWSS/3nNfVg4BopM2QdQp/HY/5QBzV5W8xop0PZv9QxhrQzXhU33aqABMkafs5QhDO0WMyeCaCMUouqrh10zYL7DgbgD1+cOsmGRsOWBhsnq/quBr6CzsmYETbEU4uDAq3Tj3JgiWHipXL3/ZaNqVlNLzCNYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356696; c=relaxed/simple;
-	bh=zFipFErlequwiuGZfqOVDPnVyEBVg0wHPOfEx6VPFfE=;
+	s=arc-20240116; t=1722356705; c=relaxed/simple;
+	bh=EKsCygSF8isMd8M0uFj9e7l8HAi6lb+vfFKK23jZJpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suaXGSHYJC7NJNA1tgy0gxqeasagkCEAb/GNWNH42E5PZSUiJDEoWXG6naowFttF2Nhs01fiY0AomRiIDgF5o7CaZj2Zu4p2u89irLod7i+kJ/nAxzueZEoGyprNjO8B4igaWo5rOz3GYFXJiKTY7kUlMubFnXaBho1vBK8eVxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLheFBN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1916AC32782;
-	Tue, 30 Jul 2024 16:24:54 +0000 (UTC)
+	 MIME-Version; b=amtwknqA6r3Ze9C7x7I5w+3kQ24zcT3wYSVzDTLkaoG4JdVb4nuWB0DhKsxUmcZLUnZDsEk9Gtw+iNGr5qu9msQwclSdkIjyqrzhZXuYHJxsg+I8NNONqsHIzEbbwN9yDbSofO2912N5cgm/MLVmkAUbOOuvp9Hla/d5LNwzI4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qw/5OXNa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE718C4AF13;
+	Tue, 30 Jul 2024 16:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356695;
-	bh=zFipFErlequwiuGZfqOVDPnVyEBVg0wHPOfEx6VPFfE=;
+	s=korg; t=1722356705;
+	bh=EKsCygSF8isMd8M0uFj9e7l8HAi6lb+vfFKK23jZJpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLheFBN7Yom6teep1GWf6KrssohvXLqVqEXXjPX0iHAHR2WndUBMbVLPAYWTuExbB
-	 wS4KLqBvAeTkcd4TMD0CfN0sP9P/eKUmJD/BFXjPuGwAeyvEp0v+TikfMZ+JuCnE2y
-	 o0La0BnR0lPlBDgpSaweW9haY94UpYk5J3GAJdgo=
+	b=Qw/5OXNayi4C58bLkdwML+X3jhwDVGoSTFvT+TtwpgKOax5Phl6dvZk2+6Zh791Ym
+	 7OOXz2EKWHBDmgDCxptK9cvEgYRRCbv2igRobOlAVUqLvO1A+patA7G7CKWeSJGb14
+	 b0jhmBo9fsJGfpBwyITc0abxk5ff/tm2Ek4cLGNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/568] net: bridge: mst: Check vlan state for egress decision
-Date: Tue, 30 Jul 2024 17:44:41 +0200
-Message-ID: <20240730151646.682975564@linuxfoundation.org>
+Subject: [PATCH 6.6 175/568] drm/rockchip: vop2: Fix the port mux of VP2
+Date: Tue, 30 Jul 2024 17:44:42 +0200
+Message-ID: <20240730151646.721969027@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,42 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 0a1868b93fad5938dbcca77286b25bf211c49f7a ]
+[ Upstream commit 2bdb481bf7a93c22b9fea8daefa2834aab23a70f ]
 
-If a port is blocking in the common instance but forwarding in an MST
-instance, traffic egressing the bridge will be dropped because the
-state of the common instance is overriding that of the MST instance.
+The port mux of VP2 should be RK3568_OVL_PORT_SET__PORT2_MUX.
 
-Fix this by skipping the port state check in MST mode to allow
-checking the vlan state via br_allowed_egress(). This is similar to
-what happens in br_handle_frame_finish() when checking ingress
-traffic, which was introduced in the change below.
-
-Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
-Signed-off-by: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240422101905.32703-2-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_forward.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index d97064d460dc7..e19b583ff2c6d 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -25,8 +25,8 @@ static inline int should_deliver(const struct net_bridge_port *p,
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index c5ec4169616de..f2a956f973613 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1927,7 +1927,7 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
+ 		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX,
+ 			(vp2->nlayers + vp1->nlayers + vp0->nlayers - 1));
+ 	else
+-		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT1_MUX, 8);
++		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX, 8);
  
- 	vg = nbp_vlan_group_rcu(p);
- 	return ((p->flags & BR_HAIRPIN_MODE) || skb->dev != p->dev) &&
--		p->state == BR_STATE_FORWARDING && br_allowed_egress(vg, skb) &&
--		nbp_switchdev_allowed_egress(p, skb) &&
-+		(br_mst_is_enabled(p->br) || p->state == BR_STATE_FORWARDING) &&
-+		br_allowed_egress(vg, skb) && nbp_switchdev_allowed_egress(p, skb) &&
- 		!br_skb_isolated(p, skb);
- }
+ 	layer_sel = vop2_readl(vop2, RK3568_OVL_LAYER_SEL);
  
 -- 
 2.43.0
