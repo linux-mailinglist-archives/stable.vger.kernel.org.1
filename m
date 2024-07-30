@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-64383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFB4941DAF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF482941D99
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 138C0B2760E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98F1728C83E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1576F1A76C1;
-	Tue, 30 Jul 2024 17:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C071A76BE;
+	Tue, 30 Jul 2024 17:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhnXTZeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTr70+zW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C176F1A76B6;
-	Tue, 30 Jul 2024 17:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6991A76B5;
+	Tue, 30 Jul 2024 17:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359940; cv=none; b=ICIiOWvnzxDH/IWBGwRKF0Q3eP/C4ntwmcudir4P9xGysEcm3knnvjOqrg38T5EgoJosNSS9WJotn2YIOazEU52vS4CaYczkLEiEZo2gwOft39cALy/Q3tmlwQyHpfXLLaPuIcNdjqB384eE+T6zL7mmAgFcCLNDyoyYTO+rovY=
+	t=1722359947; cv=none; b=iD1pz9BFrtD6X4WFA9gArGAnlOBmaJX30vZooeQloWGRlw49v8xHTgyAxKC54MKPL6UCqvg2dQPfZYAZpis0mNbM/8qU7u4i05EeWZPdgoPbogiM0F3w/N92tKaDA8qwyQiLENFwMlQDSyU3Xn6/B4mq1Sge+9E5TgLpbElt9lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359940; c=relaxed/simple;
-	bh=P388MfMda3iM5b7sDWwAwddJdnWHMEPpY7eLe3rMYOQ=;
+	s=arc-20240116; t=1722359947; c=relaxed/simple;
+	bh=InCK6j8FR8x+hQI2J3P85YSpa8KAMxiR2FNECuNhTBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuNv7hfY674jByOwTSl3XCZvcnCCCHWG7MXKAeBBWKTtXxol7PBC+djJvlIXK03ConHjfAo/rsB3NGoYQxG59cVCFJ6HNPmFHL2F590mWjMj7NMpd9/k0ktjyeYC3bqBN+pYfVDcS6ITnNf2MwmaxmW/FUfNzdJr4JyC1kH5bLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhnXTZeS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC14DC32782;
-	Tue, 30 Jul 2024 17:18:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CC5eVEliskuPSu3ut7kjDSvHvPQcjuK5Vq4f1hW6SSJspiYF8XdDX7d3rHdXv7lQr06dPYKhBJT7ohTEneTd5ueRi5/noqDTTcr30oSYaaz/eMekOVr2fB0GiUPTiiHqmgB9qgbgR4Tu1tnYP4zfSVuzLlFqCsL0aohSBfxNt3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTr70+zW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EBCC32782;
+	Tue, 30 Jul 2024 17:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359940;
-	bh=P388MfMda3iM5b7sDWwAwddJdnWHMEPpY7eLe3rMYOQ=;
+	s=korg; t=1722359947;
+	bh=InCK6j8FR8x+hQI2J3P85YSpa8KAMxiR2FNECuNhTBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhnXTZeSJgirXTsI0roHbZd1YKTdQX9GUwyoiHOGnPHqE95+vXjXrbyV/evYzI6cH
-	 OEW59qKOmbOKYB3mht9F6bHTTdMwL+rY9xYLjUbOvS9S2vF5VvuUXH/AEjaiY6wgKS
-	 hn4Q6kjvhTACg1DVZqKHU6oA5L+DiD+dzTAm3/8w=
+	b=UTr70+zWP+bBtmyokk3yI6gK9ft4FzQsOtZi3KhCBQ8g0ZS9UHJxikJhc5yb/5TFK
+	 DNbT6nhB55ieDZAMzUfXqDecXsycN9A44P4GGmbZodPRQGs/A6eIdnZJHhU8yHcFzI
+	 GJ5SF0G2nY94eSq8zliNN5vrc2+LOu+ehxoAbhyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 558/568] spi: spidev: add correct compatible for Rohm BH2228FV
-Date: Tue, 30 Jul 2024 17:51:05 +0200
-Message-ID: <20240730151701.967205623@linuxfoundation.org>
+Subject: [PATCH 6.6 559/568] ASoC: Intel: use soc_intel_is_byt_cr() only when IOSF_MBI is reachable
+Date: Tue, 30 Jul 2024 17:51:06 +0200
+Message-ID: <20240730151702.005629386@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -61,45 +64,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit fc28d1c1fe3b3e2fbc50834c8f73dda72f6af9fc ]
+[ Upstream commit 9931f7d5d251882a147cc5811060097df43e79f5 ]
 
-When Maxime originally added the BH2228FV to the spidev driver, he spelt
-it incorrectly - the d should have been a b. Add the correctly spelt
-compatible to the driver. Although the majority of users of this
-compatible are abusers, there is at least one board that validly uses
-the incorrect spelt compatible, so keep it in the driver to avoid
-breaking the few real users it has.
+the Intel kbuild bot reports a link failure when IOSF_MBI is built-in
+but the Merrifield driver is configured as a module. The
+soc-intel-quirks.h is included for Merrifield platforms, but IOSF_MBI
+is not selected for that platform.
 
-Fixes: 8fad805bdc52 ("spi: spidev: Add Rohm DH2228FV DAC compatible string")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patch.msgid.link/20240717-ventricle-strewn-a7678c509e85@spud
+ld.lld: error: undefined symbol: iosf_mbi_read
+>>> referenced by atom.c
+>>>               sound/soc/sof/intel/atom.o:(atom_machine_select) in archive vmlinux.a
+
+This patch forces the use of the fallback static inline when IOSF_MBI is not reachable.
+
+Fixes: 536cfd2f375d ("ASoC: Intel: use common helpers to detect CPUs")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202407160704.zpdhJ8da-lkp@intel.com/
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20240722083002.10800-1-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/common/soc-intel-quirks.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index d13dc15cc1919..1a8dd10012448 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -738,6 +738,7 @@ static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
- 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
- 	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
-+	{ .compatible = "rohm,bh2228fv", .data = &spidev_of_check },
- 	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
- 	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
- 	{ .compatible = "silabs,em3581", .data = &spidev_of_check },
+diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
+index de4e550c5b34d..42bd51456b945 100644
+--- a/sound/soc/intel/common/soc-intel-quirks.h
++++ b/sound/soc/intel/common/soc-intel-quirks.h
+@@ -11,7 +11,7 @@
+ 
+ #include <linux/platform_data/x86/soc.h>
+ 
+-#if IS_ENABLED(CONFIG_X86)
++#if IS_REACHABLE(CONFIG_IOSF_MBI)
+ 
+ #include <linux/dmi.h>
+ #include <asm/iosf_mbi.h>
 -- 
 2.43.0
 
