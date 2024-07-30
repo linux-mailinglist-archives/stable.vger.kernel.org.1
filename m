@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-63216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9813D94182C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1379C941B99
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1445EB29403
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AC5AB2686C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A4918E036;
-	Tue, 30 Jul 2024 16:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96121898F8;
+	Tue, 30 Jul 2024 16:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1awzDeOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZCeQcQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F73B18C938;
-	Tue, 30 Jul 2024 16:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC841A6195;
+	Tue, 30 Jul 2024 16:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356101; cv=none; b=tKi+7fR9MdortfpHed091aT/s37jGuaEoUYZSXpCr3AxK76i+si+HXnhbsjjzSAqZOWnsh3EQJ018ivetfBcxgFh+bzuNwLnABuP5gnGumLY+vUkqsVA8rzeLb6+cVIEylV2aVMy5y59kotbDzTBTVnvGBWSZd4M8CktUIGIiCU=
+	t=1722358550; cv=none; b=gUmA9enTpT3gey/SQ+wLvo+7AuFqnvNdOcYZybK3dtb4AzctTY4YlS8NxXfiDytW6YTogBPvhU+G3rdlzeyKXz5zGZdP5KnJmJzRVsbqCglStRPiWZquMl1w8WJdJtCB9gtaoEa2cxtcq0AtkccfMgicycTAKkb+3Ts/ykb6jaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356101; c=relaxed/simple;
-	bh=VW32CNkkh6ajWDwoiFIfyqiwB4YIol/62vqWIGLR9dA=;
+	s=arc-20240116; t=1722358550; c=relaxed/simple;
+	bh=Ny9QKlxxydlA7elX9dnZeEETRH/WaqkUIsi3HQ0M/wY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdhBOgA5wJXcq6/PFHUQNi/aXfbOzUZaymda4p3A16TlWVs0LA2+G9gVjo5cz04gydlix5GUjSNAzbmjDpfaIdMRPPwnAwAbuYzwVl+hT/PDFiPS3/dEkWj58txQsqmskG3WnU5EIS/eiEtPNOTwq8FFT9hAW1anHST/nbnbUmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1awzDeOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C135C32782;
-	Tue, 30 Jul 2024 16:15:00 +0000 (UTC)
+	 MIME-Version; b=lPIQCoMsvpeNUgxvb8kb1cuJAcO2RZlw2zBZFRKTigsA6gySaub1+1hOKDRu5YvHnovDdi0sfG4cEuLDIoQejbZ16O+HrUSZTb95VtKOXnPqIPraCukm72ZDyP8yW9hTW4LLqtFXdms7FgRmC04KA4mDfjktL1y8+RtvP82Jvmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZCeQcQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7751C32782;
+	Tue, 30 Jul 2024 16:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356101;
-	bh=VW32CNkkh6ajWDwoiFIfyqiwB4YIol/62vqWIGLR9dA=;
+	s=korg; t=1722358550;
+	bh=Ny9QKlxxydlA7elX9dnZeEETRH/WaqkUIsi3HQ0M/wY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1awzDeOXHfj687uK9AD1mEDFCrBQEVD1Wou6zYiCNwik40jxENsWQWAXK21rwBSxY
-	 hcedDyq2XMNaln3sfvJaFQrcbLjpElC7Y8qJSLbh4IPqIPAQ9Q+ooQMJpOvnOn9qkk
-	 0SCnJJ1QByxwT1W9kBcbP+w94QmIpYI+hEqAG420=
+	b=QZCeQcQcIqb+Z9kMuQ0D5fq8wU8CKSOuWzzqF3t388BeU/5LRx6WUzwUXGRtFdirr
+	 BlswTcmCzZtARAjm1zMCr2WkPcfR337uwZb3AXYoL7KDrbxgYnxRCokiIgTqkZqWSi
+	 j4JRaezuNP/6p0qQP6KsJwSkxqlQJeVh+H6Gb65o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Junhao He <hejunhao3@huawei.com>,
+	ravi.bangoria@amd.com,
+	james.clark@arm.com,
+	prime.zeng@hisilicon.com,
+	cuigaosheng1@huawei.com,
+	jonathan.cameron@huawei.com,
+	linuxarm@huawei.com,
+	yangyicong@huawei.com,
+	robh@kernel.org,
+	renyu.zj@linux.alibaba.com,
+	kjain@linux.ibm.com,
+	john.g.garry@oracle.com,
+	linux-arm-kernel@lists.infradead.org,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/568] selftests/bpf: Fix prog numbers in test_sockmap
-Date: Tue, 30 Jul 2024 17:43:41 +0200
-Message-ID: <20240730151644.330357071@linuxfoundation.org>
+Subject: [PATCH 6.10 346/809] perf pmus: Fixes always false when compare duplicates aliases
+Date: Tue, 30 Jul 2024 17:43:42 +0200
+Message-ID: <20240730151738.300105397@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +74,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Junhao He <hejunhao3@huawei.com>
 
-[ Upstream commit 6c8d7598dfed759bf1d9d0322b4c2b42eb7252d8 ]
+[ Upstream commit dd9a426eade634bf794c7e0f1b0c6659f556942f ]
 
-bpf_prog5 and bpf_prog7 are removed from progs/test_sockmap_kern.h in
-commit d79a32129b21 ("bpf: Selftests, remove prints from sockmap tests"),
-now there are only 9 progs in it, not 11:
+In the previous loop, all the members in the aliases[j-1] have been freed
+and set to NULL. But in this loop, the function pmu_alias_is_duplicate()
+compares the aliases[j] with the aliases[j-1] that has already been
+disposed, so the function will always return false and duplicate aliases
+will never be discarded.
 
-	SEC("sk_skb1")
-	int bpf_prog1(struct __sk_buff *skb)
-	SEC("sk_skb2")
-	int bpf_prog2(struct __sk_buff *skb)
-	SEC("sk_skb3")
-	int bpf_prog3(struct __sk_buff *skb)
-	SEC("sockops")
-	int bpf_sockmap(struct bpf_sock_ops *skops)
-	SEC("sk_msg1")
-	int bpf_prog4(struct sk_msg_md *msg)
-	SEC("sk_msg2")
-	int bpf_prog6(struct sk_msg_md *msg)
-	SEC("sk_msg3")
-	int bpf_prog8(struct sk_msg_md *msg)
-	SEC("sk_msg4")
-	int bpf_prog9(struct sk_msg_md *msg)
-	SEC("sk_msg5")
-	int bpf_prog10(struct sk_msg_md *msg)
+If we find duplicate aliases, it skips the zfree aliases[j], which is
+accompanied by a memory leak.
 
-This patch updates the array sizes of prog_fd[], prog_attach_type[] and
-prog_type[] from 11 to 9 accordingly.
+We can use the next aliases[j+1] to theck for duplicate aliases to
+fixes the aliases NULL pointer dereference, then goto zfree code snippet
+to release it.
 
-Fixes: d79a32129b21 ("bpf: Selftests, remove prints from sockmap tests")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/9c10d9f974f07fcb354a43a8eca67acb2fafc587.1715926605.git.tanggeliang@kylinos.cn
+After patch testing:
+ $ perf list --unit=hisi_sicl,cpa pmu
+
+ uncore cpa:
+   cpa_p0_rd_dat_32b
+        [Number of read ops transmitted by the P0 port which size is 32 bytes.
+         Unit: hisi_sicl,cpa]
+   cpa_p0_rd_dat_64b
+        [Number of read ops transmitted by the P0 port which size is 64 bytes.
+         Unit: hisi_sicl,cpa]
+
+Fixes: c3245d2093c1 ("perf pmu: Abstract alias/event struct")
+Signed-off-by: Junhao He <hejunhao3@huawei.com>
+Cc: ravi.bangoria@amd.com
+Cc: james.clark@arm.com
+Cc: prime.zeng@hisilicon.com
+Cc: cuigaosheng1@huawei.com
+Cc: jonathan.cameron@huawei.com
+Cc: linuxarm@huawei.com
+Cc: yangyicong@huawei.com
+Cc: robh@kernel.org
+Cc: renyu.zj@linux.alibaba.com
+Cc: kjain@linux.ibm.com
+Cc: john.g.garry@oracle.com
+Cc: linux-arm-kernel@lists.infradead.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240614094318.11607-1-hejunhao3@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tools/perf/util/pmus.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 43612de44fbf5..e32e49a3eec2c 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -63,7 +63,7 @@ int passed;
- int failed;
- int map_fd[9];
- struct bpf_map *maps[9];
--int prog_fd[11];
-+int prog_fd[9];
+diff --git a/tools/perf/util/pmus.c b/tools/perf/util/pmus.c
+index b9b4c5eb50027..6907e3e7fbd16 100644
+--- a/tools/perf/util/pmus.c
++++ b/tools/perf/util/pmus.c
+@@ -477,8 +477,8 @@ void perf_pmus__print_pmu_events(const struct print_callbacks *print_cb, void *p
+ 	qsort(aliases, len, sizeof(struct sevent), cmp_sevent);
+ 	for (int j = 0; j < len; j++) {
+ 		/* Skip duplicates */
+-		if (j > 0 && pmu_alias_is_duplicate(&aliases[j], &aliases[j - 1]))
+-			continue;
++		if (j < len - 1 && pmu_alias_is_duplicate(&aliases[j], &aliases[j + 1]))
++			goto free;
  
- int txmsg_pass;
- int txmsg_redir;
-@@ -1793,8 +1793,6 @@ int prog_attach_type[] = {
- 	BPF_SK_MSG_VERDICT,
- 	BPF_SK_MSG_VERDICT,
- 	BPF_SK_MSG_VERDICT,
--	BPF_SK_MSG_VERDICT,
--	BPF_SK_MSG_VERDICT,
- };
- 
- int prog_type[] = {
-@@ -1807,8 +1805,6 @@ int prog_type[] = {
- 	BPF_PROG_TYPE_SK_MSG,
- 	BPF_PROG_TYPE_SK_MSG,
- 	BPF_PROG_TYPE_SK_MSG,
--	BPF_PROG_TYPE_SK_MSG,
--	BPF_PROG_TYPE_SK_MSG,
- };
- 
- static int populate_progs(char *bpf_file)
+ 		print_cb->print_event(print_state,
+ 				aliases[j].pmu_name,
+@@ -491,6 +491,7 @@ void perf_pmus__print_pmu_events(const struct print_callbacks *print_cb, void *p
+ 				aliases[j].desc,
+ 				aliases[j].long_desc,
+ 				aliases[j].encoding_desc);
++free:
+ 		zfree(&aliases[j].name);
+ 		zfree(&aliases[j].alias);
+ 		zfree(&aliases[j].scale_unit);
 -- 
 2.43.0
 
