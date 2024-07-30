@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7F394173C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121B5941740
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843E21F23231
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 448F01C22CA8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE4929A2;
-	Tue, 30 Jul 2024 16:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD8B18B49D;
+	Tue, 30 Jul 2024 16:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzC8mBd0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zp/hpuNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFEB8BE8;
-	Tue, 30 Jul 2024 16:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA3F18B48F;
+	Tue, 30 Jul 2024 16:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355624; cv=none; b=VcVrWVMcdx7tcKxFL2G3VHGl944RrCc3o2UoxaPTtotF0YkGcilR+p3IYPIl8wBtUlmM6RCK64jeQ21Sl0NEok6S1aNS3BEwA/bnUkGyfsoUbBycYYqq5saSSY5zg/4+jV6MGJACbVPGsweUqYv/1m53zWBuklSh1bOOmE6b8aE=
+	t=1722355637; cv=none; b=fn2PDUDUGFSE1HqOIOLOPXtCd0yD3iPC2Yrx8r01xyh5sxdl9p0yeOgZDcAggj23qn+GaTF1COArfX2K9xOS6IzybnUqjzD433znXCymK2rT8XV9hz25uc6cA4bdSuTGezVg+EzwJqqA7QiJFQgs5+sal/SBNipTFyBQlZJo2Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355624; c=relaxed/simple;
-	bh=yQqSf56tNLSEVP/UNK1Xh4K9nnB1qoLPclHS6EKP+Yg=;
+	s=arc-20240116; t=1722355637; c=relaxed/simple;
+	bh=KjMGADnrgfZMZjuTnQfsexNh8WK/iz5gRAQdrFur1ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErPvI3aKXfg7YRs1gM+DOFAI3/jQiphnQFCR7LjJXtgIAYVOTaAhzUgwQn01CPdNPReKSiil1uXXj+UwmH5Sb8ofmAGGdVbovDellJSdCVR5d3Bt2Mjr4wGmvlXILc+u7BzBrh4gE6i6kPq+pLy+JYoK3GsB2rylOnH/tGAyya0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzC8mBd0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE7DC32782;
-	Tue, 30 Jul 2024 16:07:03 +0000 (UTC)
+	 MIME-Version; b=hJ36rGmMw8osS27ch2+ATAjv5i5NMFO3QP3Xqfwt6W8UdpkUB6FE2rH6qIOiys9lzcPOUSXVqHETwE3gcTeL9rE7yit7AC9ZF7d9fSlWXVAcmt/Bn1kr43j0QFL/gYYmNRwHNZVLFM9WtnO8z3/OK0UQ0IduzJH5ndd+U4mfJ8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zp/hpuNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5733C32782;
+	Tue, 30 Jul 2024 16:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355624;
-	bh=yQqSf56tNLSEVP/UNK1Xh4K9nnB1qoLPclHS6EKP+Yg=;
+	s=korg; t=1722355637;
+	bh=KjMGADnrgfZMZjuTnQfsexNh8WK/iz5gRAQdrFur1ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzC8mBd0sN5GyBaOrX4nzE8mWtSdL09DHbNvchalMWEc5LJ/8FUiNHzWV/11ieiNT
-	 TMDaC/gbJ0RE6WHD6tz32SEMpLYs30Rm6Wvqag2sbgrso5GodHrdpiuLjqtczzV9x7
-	 k+s5T6+M2E7MO8CGnoumjjRHC+S4GdE+cBAXpa8s=
+	b=zp/hpuNA0XGjCsxJSXuwfR2B5M8C1iHpQ4oZhThAW1ecINnXjTHtzqz9IJw34GZwv
+	 mWZKu3dli4s4hc+4+aDBTbjY5nt2JMhhL44NKMD8EzOtJD38tbVOslHqN+MXJFZK4P
+	 50gmt3djOzrZDELzGkYYhmGgUZ5JefFRYS1ackME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/568] arm64: dts: mediatek: mt8183-kukui: Fix the value of `dlg,jack-det-rate` mismatch
-Date: Tue, 30 Jul 2024 17:43:02 +0200
-Message-ID: <20240730151642.792185832@linuxfoundation.org>
+Subject: [PATCH 6.6 076/568] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Add ports node for anx7625
+Date: Tue, 30 Jul 2024 17:43:03 +0200
+Message-ID: <20240730151642.832586747@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,36 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 95173af725e6f41eb470466a52ddf2054439409c ]
+[ Upstream commit 4055416e6c51347e7dd5784065263fe0ced0bb7d ]
 
-According to Documentation/devicetree/bindings/sound/dialog,da7219.yaml,
-the value of `dlg,jack-det-rate` property should be "32_64" instead of
-"32ms_64ms".
+The anx7625 binding requires a "ports" node as a container for the
+"port" nodes. The jacuzzi dtsi file is missing it.
 
-Fixes: dc0ff0fa3a9b ("ASoC: da7219: Add Jack insertion detection polarity")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://lore.kernel.org/r/20240613-jack-rate-v2-1-ebc5f9f37931@chromium.org
+Add a "ports" node under the anx7625 node, and move the port related
+nodes and properties under it.
+
+Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240131083931.3970388-1-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../dts/mediatek/mt8183-kukui-jacuzzi.dtsi    | 25 +++++++++++--------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
-index 2c69e7658dba6..b9a6fd4f86d4a 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
-@@ -28,7 +28,7 @@ da7219_aad {
- 			dlg,btn-cfg = <50>;
- 			dlg,mic-det-thr = <500>;
- 			dlg,jack-ins-deb = <20>;
--			dlg,jack-det-rate = "32ms_64ms";
-+			dlg,jack-det-rate = "32_64";
- 			dlg,jack-rem-deb = <1>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+index 820260348de9b..32f6899f885ef 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+@@ -156,21 +156,24 @@ anx_bridge: anx7625@58 {
+ 		vdd18-supply = <&pp1800_mipibrdg>;
+ 		vdd33-supply = <&vddio_mipibrdg>;
  
- 			dlg,a-d-btn-thr = <0xa>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		port@0 {
+-			reg = <0>;
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
+ 
+-			anx7625_in: endpoint {
+-				remote-endpoint = <&dsi_out>;
++			port@0 {
++				reg = <0>;
++
++				anx7625_in: endpoint {
++					remote-endpoint = <&dsi_out>;
++				};
+ 			};
+-		};
+ 
+-		port@1 {
+-			reg = <1>;
++			port@1 {
++				reg = <1>;
+ 
+-			anx7625_out: endpoint {
+-				remote-endpoint = <&panel_in>;
++				anx7625_out: endpoint {
++					remote-endpoint = <&panel_in>;
++				};
+ 			};
+ 		};
+ 
 -- 
 2.43.0
 
