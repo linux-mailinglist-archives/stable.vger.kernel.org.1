@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB4C9416E6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D119416F3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A836D286F44
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C55C1C22F4B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9461718801A;
-	Tue, 30 Jul 2024 16:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4785A3DABFB;
+	Tue, 30 Jul 2024 16:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WijdtRa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiQvdm2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A32187FF6;
-	Tue, 30 Jul 2024 16:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E8218951A;
+	Tue, 30 Jul 2024 16:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355479; cv=none; b=ldihNIsTYcjOzHV/k1Gg1TncVE1/Zh8Pz3PyB5AP2XIGnlwIRCdwxGVZ+wkvIXQRHypm7i2bvhskh7IUTFGf+tE2ajZVTk1Ok2DBsKabUIjp8wmLbEqIx5oZshAs8UkObljstMveamFY/0HBId8WP+uXQj/qb1VV+hiP09eoUrs=
+	t=1722355494; cv=none; b=dk49odgNNfebKktuavOWDzFHtjK8PLoT8NKYmgNuZxCo7CkEF78uAEIVxu9yIjI7WKv1FM/oRBXVklXT/G7gQKNrd5ccq4IjBR1H6Ts10eNMdzEFuLaNVE8kjkWqVm1ssEAtOysKc5yg+YMrFPAZwmqAgqv/bgDp62jicAZDWHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355479; c=relaxed/simple;
-	bh=frVpXnU3YNP6lwrMP2O/jjSaBvgBLkzKiaI1tBN47ko=;
+	s=arc-20240116; t=1722355494; c=relaxed/simple;
+	bh=+s0kxuUp9Uza4XCXJJLGQT9VnieUIXhBlZ/kDu73KMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xnk1HfpXV0DzHsmZRxqi08Jc0U/qGcA1siQF0FezrlIPbsrTzSU8twyiljZ6Q44QorPZXdbpS7rHBj6SzrHF6W/DmwwVSV38CzAa5IeucEU0zWSVknidI9UykbZg1qvfXjWm21bo1HPRFHNtna+/721EWVFZTqAd7EbfC7WXGlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WijdtRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BF1C4AF0F;
-	Tue, 30 Jul 2024 16:04:38 +0000 (UTC)
+	 MIME-Version; b=qF8Io5EYiRLJi/Xt3pTLBS3umfQw2pmF79PzEg93AoAVXAHt8FxUe5HTxEmzExKOm6IszAyu4d+YJOSiYaTNkkAjc4rJh5P3+r1/4x/Bq7SqabN/d+SNbN6BR86b6myXwirw5oT6qMHj1D1bm+l1If0uAVhTUUiFpD/T/WtPGt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiQvdm2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F164CC4AF17;
+	Tue, 30 Jul 2024 16:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355479;
-	bh=frVpXnU3YNP6lwrMP2O/jjSaBvgBLkzKiaI1tBN47ko=;
+	s=korg; t=1722355493;
+	bh=+s0kxuUp9Uza4XCXJJLGQT9VnieUIXhBlZ/kDu73KMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WijdtRaJoNzPHM4IGKiTBOpgdFOSTz4NORilgdmazSINw8JE6rNQTY3IPZJwMLsJ
-	 guYLuc7n32gqjciibD2qgwfW7233nyknl/C5iLjybCmz+ws5SfUNk6B4uEGzE6WN42
-	 mBRrTtXq0bzV0yfVMST2JWfsbBVItOMJDUNaUXrE=
+	b=YiQvdm2Y8ly/mDXQvGduZmyK6dD3ogkciVk5+1hD2Nu1OuRX8ETZqQ7nBANgxcFpE
+	 EwlC5r/HeO7R5ymjeyq1RHTx6jC6Bzjk+6JxfFulOdJ31KbYE2XP3WDuB921+Ruk+7
+	 ROG5zMGoHakh/z+/cdMjG8VYgWw8VA4XcAhTCwpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jonas Karlman <jonas@kwiboo.se>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 059/809] arm64: dts: rockchip: Add pinctrl for UART0 to rk3308-rock-pi-s
-Date: Tue, 30 Jul 2024 17:38:55 +0200
-Message-ID: <20240730151726.975559723@linuxfoundation.org>
+Subject: [PATCH 6.10 060/809] arm64: dts: rockchip: Add mdio and ethernet-phy nodes to rk3308-rock-pi-s
+Date: Tue, 30 Jul 2024 17:38:56 +0200
+Message-ID: <20240730151727.014648521@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,36 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 7affb86ef62581e3475ce3e0a7640da1f2ee29f8 ]
+[ Upstream commit 4b64ed510ed946a4e4ca6d51d6512bf5361f6a04 ]
 
-UAR0 CTS/RTS is not wired to any pin and is not used for the default
-serial console use of UART0 on ROCK Pi S.
+Be explicit about the Ethernet port and define mdio and ethernet-phy
+nodes in the device tree for ROCK Pi S.
 
-Override the SoC defined pinctrl props to limit configuration of the
-two xfer pins wired to one of the GPIO pin headers.
-
-Fixes: 2e04c25b1320 ("arm64: dts: rockchip: add ROCK Pi S DTS support")
+Fixes: bc3753aed81f ("arm64: dts: rockchip: rock-pi-s add more peripherals")
 Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240521211029.1236094-6-jonas@kwiboo.se
+Link: https://lore.kernel.org/r/20240521211029.1236094-8-jonas@kwiboo.se
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ .../boot/dts/rockchip/rk3308-rock-pi-s.dts    | 26 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-index 8ea9849064032..d4cf6026241c4 100644
+index d4cf6026241c4..f6fb90e13ad01 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-@@ -294,6 +294,8 @@ u2phy_otg: otg-port {
- };
+@@ -144,11 +144,25 @@ &emmc {
  
- &uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_xfer>;
+ &gmac {
+ 	clock_in_out = "output";
++	phy-handle = <&rtl8201f>;
+ 	phy-supply = <&vcc_io>;
+-	snps,reset-gpio = <&gpio0 RK_PA7 GPIO_ACTIVE_LOW>;
+-	snps,reset-active-low;
+-	snps,reset-delays-us = <0 50000 50000>;
  	status = "okay";
++
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		rtl8201f: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&mac_rst>;
++			reset-assert-us = <20000>;
++			reset-deassert-us = <50000>;
++			reset-gpios = <&gpio0 RK_PA7 GPIO_ACTIVE_LOW>;
++		};
++	};
  };
  
+ &gpio0 {
+@@ -221,6 +235,12 @@ &pinctrl {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&rtc_32k>;
+ 
++	gmac {
++		mac_rst: mac-rst {
++			rockchip,pins = <0 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
+ 	leds {
+ 		green_led: green-led {
+ 			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
 -- 
 2.43.0
 
