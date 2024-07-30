@@ -1,131 +1,179 @@
-Return-Path: <stable+bounces-62764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B26941015
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:58:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA85941018
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58CC21C22A44
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:58:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33C22283AA9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BAB53E3A;
-	Tue, 30 Jul 2024 10:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLepo4l/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5F4197555;
+	Tue, 30 Jul 2024 10:59:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E991DA32
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 10:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701301DA32;
+	Tue, 30 Jul 2024 10:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722337114; cv=none; b=ZgBsGIQhTeyGY9mTsyJMWQJ6Hn2+Rge8LGb/BB1I9XeRsewlxQWZg197EjferjjbQ3BRZD/4h41KtyJewEd+19GSc8j2I/cjh4kRop0XEsriM1w0IMKWY16xf1PyfB/lCiVRQO4+hGSjgNle7VYr42lUQqqfLUP7pqlkAQK5z9c=
+	t=1722337143; cv=none; b=PKdUG3tmWFRuY9CF6ebe/4/nWY0dysuHrRU49J4LcOfeDgaO/nbhiFLXFCyRUmzQtimiaq5/04NUd8XPJhBzw9HoTefP/aVFTecpNfJdO/HMYkB96Md9XHpro1eYgJKjQBWUnbGTSp4TkQF2FQAyP4+aO5AadbFEIAF8/PzIp4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722337114; c=relaxed/simple;
-	bh=Mdc1oF9k09u+TN72/KFl1wSlwcD4NTCa7FvUbvNw9H4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ayZy6Goojnc45yPN/yCBgweUJaii0MfyIeUeOCKd3WJlUsFM4Np6AkpKSBwl6pNnhH3vbGtjWWxCnDJciu1eUM4JT+YLLtD1hgCaAKCgz1MZuAjvpoyhlpm/fYnXGo9FEmzSh0lKHNh5GnmCJrpfi8HmXt5tJoV+5jUv+1f77vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLepo4l/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75717C32782;
-	Tue, 30 Jul 2024 10:58:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722337113;
-	bh=Mdc1oF9k09u+TN72/KFl1wSlwcD4NTCa7FvUbvNw9H4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HLepo4l/cYvb6bwkWoF16jXt2LmyvZsrbb66OYagAE++tVnmldjN2hHQYrvqZ9QsX
-	 7+S4iG9dk0TGQQXDSZgVOVl4emYs4jF9VdIKblDTohGV+cXMMN55mJMkshMWlzlzCI
-	 5eDWYrAjs4stNn8/OTNdmETMVPZTSsz230BMAQPg=
-Date: Tue, 30 Jul 2024 12:58:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ilya Dryomov <idryomov@gmail.com>
-Cc: dongsheng.yang@easystack.cn, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] rbd: don't assume RBD_LOCK_STATE_LOCKED
- for exclusive" failed to apply to 6.10-stable tree
-Message-ID: <2024073007-hatred-garland-cfa9@gregkh>
-References: <2024073021-strut-specimen-8aad@gregkh>
- <CAOi1vP_hPytqPrhgwL7Oig6wKLs0Z2qz3S5BV=VtepATGvvN5Q@mail.gmail.com>
+	s=arc-20240116; t=1722337143; c=relaxed/simple;
+	bh=Bhw2lI10PnuzWlB8lHFHTeH/r+O45N+/VNZ1JfjHtO8=;
+	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=Ku9B+bCfNBeHIZY3JhAoTpt7ntijBi83j3uluIlAwo8bSBpDgi/MD4D4crZB6K20VAIxBYQUxbc2PV8gkYq9E/AbDHLuJZNaPpyI9xOsjT7IDAoPhax1yYDwRB19zGuSbQo1nRKN85mZv4za7H+lNKM5JgBRtnB2DitpuqpRTrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout3.hostsharing.net (Postfix) with ESMTPS id 92F03101E6B67;
+	Tue, 30 Jul 2024 12:58:58 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 52696609C800;
+	Tue, 30 Jul 2024 12:58:58 +0200 (CEST)
+X-Mailbox-Line: From ecc9e4e0552069fb3cffb46a45e5430d88d71e80 Mon Sep 17 00:00:00 2001
+Message-ID: <ecc9e4e0552069fb3cffb46a45e5430d88d71e80.1722337010.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Tue, 30 Jul 2024 12:58:55 +0200
+Subject: [PATCH 5.15-stable] PCI/DPC: Fix use-after-free on concurrent DPC and
+ hot-removal
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOi1vP_hPytqPrhgwL7Oig6wKLs0Z2qz3S5BV=VtepATGvvN5Q@mail.gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, linux-pci@vger.kernel.org, Keith Busch <kbusch@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Bjorn Helgaas <helgaas@kernel.org>, Krzysztof Wilczynski <kwilczynski@kernel.org>
 
-On Tue, Jul 30, 2024 at 12:54:52PM +0200, Ilya Dryomov wrote:
-> On Tue, Jul 30, 2024 at 12:25 PM <gregkh@linuxfoundation.org> wrote:
-> >
-> >
-> > The patch below does not apply to the 6.10-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> >
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> >
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 2237ceb71f89837ac47c5dce2aaa2c2b3a337a3c
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073021-strut-specimen-8aad@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
-> >
-> > Possible dependencies:
-> >
-> > 2237ceb71f89 ("rbd: don't assume RBD_LOCK_STATE_LOCKED for exclusive mappings")
-> >
-> > thanks,
-> >
-> > greg k-h
-> >
-> > ------------------ original commit in Linus's tree ------------------
-> >
-> > From 2237ceb71f89837ac47c5dce2aaa2c2b3a337a3c Mon Sep 17 00:00:00 2001
-> > From: Ilya Dryomov <idryomov@gmail.com>
-> > Date: Tue, 23 Jul 2024 18:07:59 +0200
-> > Subject: [PATCH] rbd: don't assume RBD_LOCK_STATE_LOCKED for exclusive
-> >  mappings
-> >
-> > Every time a watch is reestablished after getting lost, we need to
-> > update the cookie which involves quiescing exclusive lock.  For this,
-> > we transition from RBD_LOCK_STATE_LOCKED to RBD_LOCK_STATE_QUIESCING
-> > roughly for the duration of rbd_reacquire_lock() call.  If the mapping
-> > is exclusive and I/O happens to arrive in this time window, it's failed
-> > with EROFS (later translated to EIO) based on the wrong assumption in
-> > rbd_img_exclusive_lock() -- "lock got released?" check there stopped
-> > making sense with commit a2b1da09793d ("rbd: lock should be quiesced on
-> > reacquire").
-> >
-> > To make it worse, any such I/O is added to the acquiring list before
-> > EROFS is returned and this sets up for violating rbd_lock_del_request()
-> > precondition that the request is either on the running list or not on
-> > any list at all -- see commit ded080c86b3f ("rbd: don't move requests
-> > to the running list on errors").  rbd_lock_del_request() ends up
-> > processing these requests as if they were on the running list which
-> > screws up quiescing_wait completion counter and ultimately leads to
-> >
-> >     rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
-> >
-> > being triggered on the next watch error.
-> >
-> > Cc: stable@vger.kernel.org # 06ef84c4e9c4: rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
-> 
-> Hi Greg,
-> 
-> Please grab commit f5c466a0fdb2 ("rbd: rename RBD_LOCK_STATE_RELEASING
-> and releasing_wait") as a prerequisite for this one.  I forgot to adjust
-> the SHA in the tag that specifies it after a rebase, sorry.
-> 
-> This applies to all stable kernels.
+commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
 
-Now done, thanks.  I was wondering about that invalid sha1, odd that the
-linux-next scripts didn't catch it :(
+Keith reports a use-after-free when a DPC event occurs concurrently to
+hot-removal of the same portion of the hierarchy:
 
-greg k-h
+The dpc_handler() awaits readiness of the secondary bus below the
+Downstream Port where the DPC event occurred.  To do so, it polls the
+config space of the first child device on the secondary bus.  If that
+child device is concurrently removed, accesses to its struct pci_dev
+cause the kernel to oops.
+
+That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
+reference on the child device.  Before v6.3, the function was only
+called on resume from system sleep or on runtime resume.  Holding a
+reference wasn't necessary back then because the pciehp IRQ thread
+could never run concurrently.  (On resume from system sleep, IRQs are
+not enabled until after the resume_noirq phase.  And runtime resume is
+always awaited before a PCI device is removed.)
+
+However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
+called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
+of secondary bus after reset"), which introduced that, failed to
+appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
+reference on the child device because dpc_handler() and pciehp may
+indeed run concurrently.  The commit was backported to v5.10+ stable
+kernels, so that's the oldest one affected.
+
+Add the missing reference acquisition.
+
+Abridged stack trace:
+
+  BUG: unable to handle page fault for address: 00000000091400c0
+  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
+  RIP: pci_bus_read_config_dword+0x17/0x50
+  pci_dev_wait()
+  pci_bridge_wait_for_secondary_bus()
+  dpc_reset_link()
+  pcie_do_recovery()
+  dpc_handler()
+
+Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
+Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
+Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
+Reported-by: Keith Busch <kbusch@kernel.org>
+Tested-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.10+
+---
+ drivers/pci/pci.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 67216f4ea215..a88909f2ae65 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4916,7 +4916,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 				      int timeout)
+ {
+ 	struct pci_dev *child;
+-	int delay;
++	int delay, ret = 0;
+ 
+ 	if (pci_dev_is_disconnected(dev))
+ 		return 0;
+@@ -4944,8 +4944,8 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 		return 0;
+ 	}
+ 
+-	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
+-				 bus_list);
++	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
++					     struct pci_dev, bus_list));
+ 	up_read(&pci_bus_sem);
+ 
+ 	/*
+@@ -4955,7 +4955,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 	if (!pci_is_pcie(dev)) {
+ 		pci_dbg(dev, "waiting %d ms for secondary bus\n", 1000 + delay);
+ 		msleep(1000 + delay);
+-		return 0;
++		goto put_child;
+ 	}
+ 
+ 	/*
+@@ -4976,7 +4976,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 	 * until the timeout expires.
+ 	 */
+ 	if (!pcie_downstream_port(dev))
+-		return 0;
++		goto put_child;
+ 
+ 	if (pcie_get_speed_cap(dev) <= PCIE_SPEED_5_0GT) {
+ 		pci_dbg(dev, "waiting %d ms for downstream link\n", delay);
+@@ -4987,11 +4987,16 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 		if (!pcie_wait_for_link_delay(dev, true, delay)) {
+ 			/* Did not train, no need to wait any further */
+ 			pci_info(dev, "Data Link Layer Link Active not set in 1000 msec\n");
+-			return -ENOTTY;
++			ret = -ENOTTY;
++			goto put_child;
+ 		}
+ 	}
+ 
+-	return pci_dev_wait(child, reset_type, timeout - delay);
++	ret = pci_dev_wait(child, reset_type, timeout - delay);
++
++put_child:
++	pci_dev_put(child);
++	return ret;
+ }
+ 
+ void pci_reset_secondary_bus(struct pci_dev *dev)
+-- 
+2.43.0
+
 
