@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0F394179B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778D8941AE7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8533E1C22A5E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31922281C6A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DC8189BB6;
-	Tue, 30 Jul 2024 16:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD89F183CD5;
+	Tue, 30 Jul 2024 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luRM6eHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns8irEWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2A5189B86;
-	Tue, 30 Jul 2024 16:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCFD1A6166;
+	Tue, 30 Jul 2024 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355833; cv=none; b=fNIyUgMBKSm9puvVFPIPj4qFt0uJ4F4bDzx+FxrfemM69Tkw28ZjQLpHoWpzd4LKhTxI0eOaSXuBdYDY41ho2C7t2UY1DYkf0KrG1bK5K4MaDIs2zpyo2B0v12RSc4iqACxsmITgCXTkqekuvW6wbspI21mJyk+fTY/HYQ3P2DU=
+	t=1722358123; cv=none; b=C0FwcfuUiZp1RRAOs5f0OvHWESCMeT7VBXl7yzi/u2SaBO/P/oQkAYolnmYx+bPeFVfkbF3/OfLmnpOyCX4SbIrO/VuY24yBY7Dlg9sw1mA1a5WTNqnqKPYUBlLuvaTx61jxh6BV12m7Kc6QarT3plxFdtIIWFJjK87r7J/Ql/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355833; c=relaxed/simple;
-	bh=8JdQDM5hYc4QvLRl6GM6AyzxQbK6ZwE19+39cAJUPss=;
+	s=arc-20240116; t=1722358123; c=relaxed/simple;
+	bh=fkU3gbX66wVHEkMgtsObgYFOETqeawzfdl/5c48QVOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKAjzCGZBzrTEZecuqYY4oErdEBqT65Q3ah1vzp++f3nBOZCK9iwSehDKpwaIy4lSZyvNgC8iArY566CljlnR0u7M4nHkSHB3E4zB9JbK8CA/NQOMLobn7PFmvFoosuFJRldXLnJpp2AAvhYDBNtFXXzPzc6wZZNtTSVHnLmbS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luRM6eHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4C0C4AF0A;
-	Tue, 30 Jul 2024 16:10:32 +0000 (UTC)
+	 MIME-Version; b=Hv9P/Yws7vlMSCanQzf2izldkI7q/XTEO72QC5i3YwO7n9RSDu4AJytZRAuF1NtBAnE9SG7P62xyeseVAjuUHxdEGH3qxc3LPzmbXqa4U7tsoayqlwNOk7L9j5a2No7BAW6fSa0oAhzie+QbvbWpdYW5t9nj9UKCAqfXzDBt/Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns8irEWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20C2C32782;
+	Tue, 30 Jul 2024 16:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355832;
-	bh=8JdQDM5hYc4QvLRl6GM6AyzxQbK6ZwE19+39cAJUPss=;
+	s=korg; t=1722358123;
+	bh=fkU3gbX66wVHEkMgtsObgYFOETqeawzfdl/5c48QVOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=luRM6eHBeXbyqe7KwjbrL9iz3AsNIMkN13lIxO/92nxkzWiafkA/ruW9EIbUfOhkN
-	 /Liyr0vm0db8Mye/XdbHlXC5dKujsgFziQ77lX3J3qGyCIu4dOZZYodnXWo5ekbiJR
-	 cZgv7XRETXrsXwwMfxcjzsuSMndeumY3qN3+6Mdk=
+	b=ns8irEWjJOcz9EuKOMQk36uE55RTXCfX/sJwfg2krq1kISsEmwKIQYz1fDVeVbFY5
+	 XU6RRVl6ht8RRtz+V+x40B5qwSUNq1cHrG0qhae3QIdMv+r5X+n9BYhgeN7agvp8WW
+	 k7oPg357rVpZdR485JLEiZSYYVv3jkbkGLleZolg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Juergen Gross <jgross@suse.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/568] x86/xen: Convert comma to semicolon
+Subject: [PATCH 6.10 325/809] drm/mediatek: Use 8-bit alpha in ETHDR
 Date: Tue, 30 Jul 2024 17:43:21 +0200
-Message-ID: <20240730151643.550022194@linuxfoundation.org>
+Message-ID: <20240730151737.441754233@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit 349d271416c61f82b853336509b1d0dc04c1fcbb ]
+[ Upstream commit 231c020141cb150a59f5b28379cad82ff7bad899 ]
 
-Replace a comma between expression statements by a semicolon.
+9-bit alpha (max=0x100) is designed for special HDR related
+calculation, which should be disabled by default.
+Change the alpha value from 0x100 to 0xff in 8-bit form.
 
-Fixes: 8310b77b48c5 ("Xen/gnttab: handle p2m update errors on a per-slot basis")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20240702031010.1411875-1-nichen@iscas.ac.cn
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: d886c0009bd0 ("drm/mediatek: Add ETHDR support for MT8195")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-2-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/p2m.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_ethdr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/xen/p2m.c b/arch/x86/xen/p2m.c
-index 9bdc3b656b2c4..4c2bf989edafc 100644
---- a/arch/x86/xen/p2m.c
-+++ b/arch/x86/xen/p2m.c
-@@ -731,7 +731,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
- 		 * immediate unmapping.
- 		 */
- 		map_ops[i].status = GNTST_general_error;
--		unmap[0].host_addr = map_ops[i].host_addr,
-+		unmap[0].host_addr = map_ops[i].host_addr;
- 		unmap[0].handle = map_ops[i].handle;
- 		map_ops[i].handle = INVALID_GRANT_HANDLE;
- 		if (map_ops[i].flags & GNTMAP_device_map)
-@@ -741,7 +741,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
+diff --git a/drivers/gpu/drm/mediatek/mtk_ethdr.c b/drivers/gpu/drm/mediatek/mtk_ethdr.c
+index 156c6ff547e86..d7d16482c9473 100644
+--- a/drivers/gpu/drm/mediatek/mtk_ethdr.c
++++ b/drivers/gpu/drm/mediatek/mtk_ethdr.c
+@@ -50,7 +50,6 @@
  
- 		if (kmap_ops) {
- 			kmap_ops[i].status = GNTST_general_error;
--			unmap[1].host_addr = kmap_ops[i].host_addr,
-+			unmap[1].host_addr = kmap_ops[i].host_addr;
- 			unmap[1].handle = kmap_ops[i].handle;
- 			kmap_ops[i].handle = INVALID_GRANT_HANDLE;
- 			if (kmap_ops[i].flags & GNTMAP_device_map)
+ #define MIXER_INX_MODE_BYPASS			0
+ #define MIXER_INX_MODE_EVEN_EXTEND		1
+-#define DEFAULT_9BIT_ALPHA			0x100
+ #define	MIXER_ALPHA_AEN				BIT(8)
+ #define	MIXER_ALPHA				0xff
+ #define ETHDR_CLK_NUM				13
+@@ -169,7 +168,7 @@ void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
+ 		alpha_con = MIXER_ALPHA_AEN | MIXER_ALPHA;
+ 
+ 	mtk_mmsys_mixer_in_config(priv->mmsys_dev, idx + 1, alpha_con ? false : true,
+-				  DEFAULT_9BIT_ALPHA,
++				  MIXER_ALPHA,
+ 				  pending->x & 1 ? MIXER_INX_MODE_EVEN_EXTEND :
+ 				  MIXER_INX_MODE_BYPASS, align_width / 2 - 1, cmdq_pkt);
+ 
 -- 
 2.43.0
 
