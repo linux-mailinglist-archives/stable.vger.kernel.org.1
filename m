@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3DD941B9F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B0A941951
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03BA628311D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 660CE1F240E8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FDC189903;
-	Tue, 30 Jul 2024 16:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAB5189907;
+	Tue, 30 Jul 2024 16:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqY1FH5v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSSIoM05"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C58218801A;
-	Tue, 30 Jul 2024 16:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6BC1898FF;
+	Tue, 30 Jul 2024 16:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358624; cv=none; b=jhF/aI2aeLg4lUtUw8U3c9NlfLMqmfKtzmxvJC3/TkBLaYS3tUa0a/Bt2Mm8nrXCzdtvv7yuHx5I2gLW4l4HbY/5OyhgNFzKNW2g0MM0cY37JcPUUguseUzY7ILTWXrSWACvVqRDntYTaRL3lldOLcYF39EPB+dGlrnzaP8hnLw=
+	t=1722357065; cv=none; b=BnJLxivfiMctrYzmaC9RQvku7udOvaAcvVhtN9mSSeJIY6DbUBO5amI7gJh7B+MlTT2TPtDASx32r7lurc+/8VuvPZmn+VQnql7IB1c1lKCHgKAtMKNFtYv+MEQL7UVqHnpt24LGmsT1k43Y34lLtBHRpzMNMGDOnEJaA4nzk48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358624; c=relaxed/simple;
-	bh=CaMx12kZ67kPQDcM3rPF3rSFblePkq05yfCziRXQ4uA=;
+	s=arc-20240116; t=1722357065; c=relaxed/simple;
+	bh=kUTU61OxKPGhan1Iba06JgRrat/0y+W6PNpt6D/3VaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RO42wN0PhRN0z+qF/IIPVmaJeRUHm7YD7DJQaSrDi1HVXaGilzUwNN2r/LcWgKryO1gd+/wVhssipyVBGViibIFMgtXE14ABl/H/fo6RGOtyOj+4SuN2kO3dhb4/kuPgjhDbAhv5JFoSC2mmNqXHWXYgjbrRo8hVN4rKFkVKuqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqY1FH5v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F011CC4AF0E;
-	Tue, 30 Jul 2024 16:57:03 +0000 (UTC)
+	 MIME-Version; b=S7WXFA8ShT3+t7fSlXjx07smBTiCQaY9AkVlfNvSRqQq/pN6lNQF+T3OM8s85kQm3NAeLb2ZcMFD9gqjWZUStFOZcEil3lvqy/3zkrnPq6KPN8gHkaX/2Qowyym6/Ob9R9Y/R1jLwL1vi2EwgiF2vLPCGYz3efWTLNZC/WbYjFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSSIoM05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F744C4AF0A;
+	Tue, 30 Jul 2024 16:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358624;
-	bh=CaMx12kZ67kPQDcM3rPF3rSFblePkq05yfCziRXQ4uA=;
+	s=korg; t=1722357065;
+	bh=kUTU61OxKPGhan1Iba06JgRrat/0y+W6PNpt6D/3VaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqY1FH5vGMkKHdVcK3DY4TjpT9eyqBgxGlUJTLIPEUJy80Gnb+T4PuKzYS3Duzeq+
-	 nv0XCLrsJLj7iX0m5ou0fwvo2n6f9N9T9fmrjbzyzBH6rbov+PzQVMgG01au6rR2ar
-	 N6VysQW0TF+14dPLJpyRE6O1R/rODKZTLI+iMwps=
+	b=vSSIoM05uc7r/oJqEpVdDPjhfqOyJQUb0XFcFNlTy8U1vpKVd0joBEVEOqm9/fAtl
+	 MO6KBxVo71+ac96tmstPxqQIdaiLWlAha59Nz2MQARxLSpdTAi4pomGT0AAIebcsCz
+	 SPPxOG+dUf8kAJ/+tXGwJwC6Y8le6hmzbX7yY+xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.6 380/568] ata: libata-scsi: Do not overwrite valid sense data when CK_COND=1
-Date: Tue, 30 Jul 2024 17:48:07 +0200
-Message-ID: <20240730151654.718522275@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 255/440] pinctrl: renesas: r8a779g0: Fix (H)SCIF3 suffixes
+Date: Tue, 30 Jul 2024 17:48:08 +0200
+Message-ID: <20240730151625.806195145@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,267 +61,365 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 97981926224afe17ba3e22e0c2b7dd8b516ee574 upstream.
+[ Upstream commit 5350f38150a171322b50c0a48efa671885f87050 ]
 
-Current ata_gen_passthru_sense() code performs two actions:
-1. Generates sense data based on the ATA 'status' and ATA 'error' fields.
-2. Populates "ATA Status Return sense data descriptor" / "Fixed format
-   sense data" with ATA taskfile fields.
+(H)SCIF instance 3 has two alternate pin groups: "hscif3" and
+"hscif3_a", resp. "scif3" and "scif3_a", but the actual meanings of the
+pins within the groups do not match.
 
-The problem is that #1 generates sense data even when a valid sense data
-is already present (ATA_QCFLAG_SENSE_VALID is set). Factoring out #2 into
-a separate function allows us to generate sense data only when there is
-no valid sense data (ATA_QCFLAG_SENSE_VALID is not set).
+Increase uniformity by adopting R-Car V4M naming:
+  - Rename "hscif3_a" to "hscif3_b",
+  - Rename "hscif3" to "hscif3_a",
+  - Rename "scif3" to "scif3_b".
 
-As a bonus, we can now delete a FIXME comment in atapi_qc_complete()
-which states that we don't want to translate taskfile registers into
-sense descriptors for ATAPI.
+While at it, remove unneeded separators.
 
-Additionally, always set SAM_STAT_CHECK_CONDITION when CK_COND=1 because
-SAT specification mandates that SATL shall return CHECK CONDITION if
-the CK_COND bit is set.
-
-The ATA PASS-THROUGH handling logic in ata_scsi_qc_complete() is hard
-to read/understand. Improve the readability of the code by moving checks
-into self-explanatory boolean variables.
-
-Cc: stable@vger.kernel.org # 4.19+
-Co-developed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Link: https://lore.kernel.org/r/20240702024735.1152293-3-ipylypiv@google.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
+Fixes: 050442ae4c74f830 ("pinctrl: renesas: r8a779g0: Add pins, groups and functions")
+Fixes: 213b713255defaa6 ("pinctrl: renesas: r8a779g0: Add missing HSCIF3_A")
+Fixes: 49e4697656bdd1cd ("pinctrl: renesas: r8a779g0: Add missing SCIF3")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/61fdde58e369e8070ffd3c5811c089e6219c7ecc.1717754960.git.geert+renesas@glider.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |  169 +++++++++++++++++++++++++---------------------
- 1 file changed, 92 insertions(+), 77 deletions(-)
+ drivers/pinctrl/renesas/pfc-r8a779g0.c | 192 ++++++++++++-------------
+ 1 file changed, 94 insertions(+), 98 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -230,6 +230,80 @@ void ata_scsi_set_sense_information(stru
- 				   SCSI_SENSE_BUFFERSIZE, information);
- }
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+index 36e043cff9441..b295b367f9b7f 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+@@ -71,11 +71,11 @@
+ #define GPSR0_0		F_(GP0_00,		IP0SR0_3_0)
  
-+/**
-+ *	ata_scsi_set_passthru_sense_fields - Set ATA fields in sense buffer
-+ *	@qc: ATA PASS-THROUGH command.
-+ *
-+ *	Populates "ATA Status Return sense data descriptor" / "Fixed format
-+ *	sense data" with ATA taskfile fields.
-+ *
-+ *	LOCKING:
-+ *	None.
-+ */
-+static void ata_scsi_set_passthru_sense_fields(struct ata_queued_cmd *qc)
-+{
-+	struct scsi_cmnd *cmd = qc->scsicmd;
-+	struct ata_taskfile *tf = &qc->result_tf;
-+	unsigned char *sb = cmd->sense_buffer;
-+
-+	if ((sb[0] & 0x7f) >= 0x72) {
-+		unsigned char *desc;
-+		u8 len;
-+
-+		/* descriptor format */
-+		len = sb[7];
-+		desc = (char *)scsi_sense_desc_find(sb, len + 8, 9);
-+		if (!desc) {
-+			if (SCSI_SENSE_BUFFERSIZE < len + 14)
-+				return;
-+			sb[7] = len + 14;
-+			desc = sb + 8 + len;
-+		}
-+		desc[0] = 9;
-+		desc[1] = 12;
-+		/*
-+		 * Copy registers into sense buffer.
-+		 */
-+		desc[2] = 0x00;
-+		desc[3] = tf->error;
-+		desc[5] = tf->nsect;
-+		desc[7] = tf->lbal;
-+		desc[9] = tf->lbam;
-+		desc[11] = tf->lbah;
-+		desc[12] = tf->device;
-+		desc[13] = tf->status;
-+
-+		/*
-+		 * Fill in Extend bit, and the high order bytes
-+		 * if applicable.
-+		 */
-+		if (tf->flags & ATA_TFLAG_LBA48) {
-+			desc[2] |= 0x01;
-+			desc[4] = tf->hob_nsect;
-+			desc[6] = tf->hob_lbal;
-+			desc[8] = tf->hob_lbam;
-+			desc[10] = tf->hob_lbah;
-+		}
-+	} else {
-+		/* Fixed sense format */
-+		sb[0] |= 0x80;
-+		sb[3] = tf->error;
-+		sb[4] = tf->status;
-+		sb[5] = tf->device;
-+		sb[6] = tf->nsect;
-+		if (tf->flags & ATA_TFLAG_LBA48)  {
-+			sb[8] |= 0x80;
-+			if (tf->hob_nsect)
-+				sb[8] |= 0x40;
-+			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
-+				sb[8] |= 0x20;
-+		}
-+		sb[9] = tf->lbal;
-+		sb[10] = tf->lbam;
-+		sb[11] = tf->lbah;
-+	}
-+}
-+
- static void ata_scsi_set_invalid_field(struct ata_device *dev,
- 				       struct scsi_cmnd *cmd, u16 field, u8 bit)
- {
-@@ -837,10 +911,8 @@ static void ata_to_sense_error(unsigned
-  *	ata_gen_passthru_sense - Generate check condition sense block.
-  *	@qc: Command that completed.
-  *
-- *	This function is specific to the ATA descriptor format sense
-- *	block specified for the ATA pass through commands.  Regardless
-- *	of whether the command errored or not, return a sense
-- *	block. Copy all controller registers into the sense
-+ *	This function is specific to the ATA pass through commands.
-+ *	Regardless of whether the command errored or not, return a sense
-  *	block. If there was no error, we get the request from an ATA
-  *	passthrough command, so we use the following sense data:
-  *	sk = RECOVERED ERROR
-@@ -875,63 +947,6 @@ static void ata_gen_passthru_sense(struc
- 		 */
- 		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
- 	}
+ /* GPSR1 */
+-#define GPSR1_28	F_(HTX3,		IP3SR1_19_16)
+-#define GPSR1_27	F_(HCTS3_N,		IP3SR1_15_12)
+-#define GPSR1_26	F_(HRTS3_N,		IP3SR1_11_8)
+-#define GPSR1_25	F_(HSCK3,		IP3SR1_7_4)
+-#define GPSR1_24	F_(HRX3,		IP3SR1_3_0)
++#define GPSR1_28	F_(HTX3_A,		IP3SR1_19_16)
++#define GPSR1_27	F_(HCTS3_N_A,		IP3SR1_15_12)
++#define GPSR1_26	F_(HRTS3_N_A,		IP3SR1_11_8)
++#define GPSR1_25	F_(HSCK3_A,		IP3SR1_7_4)
++#define GPSR1_24	F_(HRX3_A,		IP3SR1_3_0)
+ #define GPSR1_23	F_(GP1_23,		IP2SR1_31_28)
+ #define GPSR1_22	F_(AUDIO_CLKIN,		IP2SR1_27_24)
+ #define GPSR1_21	F_(AUDIO_CLKOUT,	IP2SR1_23_20)
+@@ -295,11 +295,11 @@
+ 
+ /* SR1 */
+ /* IP0SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+-#define IP0SR1_3_0	FM(MSIOF1_SS2)		FM(HTX3_A)		FM(TX3)			F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_7_4	FM(MSIOF1_SS1)		FM(HCTS3_N_A)		FM(RX3)			F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_11_8	FM(MSIOF1_SYNC)		FM(HRTS3_N_A)		FM(RTS3_N)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_15_12	FM(MSIOF1_SCK)		FM(HSCK3_A)		FM(CTS3_N)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_19_16	FM(MSIOF1_TXD)		FM(HRX3_A)		FM(SCK3)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_3_0	FM(MSIOF1_SS2)		FM(HTX3_B)		FM(TX3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_7_4	FM(MSIOF1_SS1)		FM(HCTS3_N_B)		FM(RX3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_11_8	FM(MSIOF1_SYNC)		FM(HRTS3_N_B)		FM(RTS3_N_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_15_12	FM(MSIOF1_SCK)		FM(HSCK3_B)		FM(CTS3_N_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_19_16	FM(MSIOF1_TXD)		FM(HRX3_B)		FM(SCK3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_23_20	FM(MSIOF1_RXD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_27_24	FM(MSIOF0_SS2)		FM(HTX1_B)		FM(TX1_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_31_28	FM(MSIOF0_SS1)		FM(HRX1_B)		FM(RX1_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+@@ -325,11 +325,11 @@
+ #define IP2SR1_31_28	F_(0, 0)		FM(TCLK2)		FM(MSIOF4_SS1)		FM(IRQ3_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ 
+ /* IP3SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+-#define IP3SR1_3_0	FM(HRX3)		FM(SCK3_A)		FM(MSIOF4_SS2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_7_4	FM(HSCK3)		FM(CTS3_N_A)		FM(MSIOF4_SCK)		FM(TPU0TO0_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_11_8	FM(HRTS3_N)		FM(RTS3_N_A)		FM(MSIOF4_TXD)		FM(TPU0TO1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_15_12	FM(HCTS3_N)		FM(RX3_A)		FM(MSIOF4_RXD)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_19_16	FM(HTX3)		FM(TX3_A)		FM(MSIOF4_SYNC)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_3_0	FM(HRX3_A)		FM(SCK3_A)		FM(MSIOF4_SS2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_7_4	FM(HSCK3_A)		FM(CTS3_N_A)		FM(MSIOF4_SCK)		FM(TPU0TO0_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_11_8	FM(HRTS3_N_A)		FM(RTS3_N_A)		FM(MSIOF4_TXD)		FM(TPU0TO1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_15_12	FM(HCTS3_N_A)		FM(RX3_A)		FM(MSIOF4_RXD)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_19_16	FM(HTX3_A)		FM(TX3_A)		FM(MSIOF4_SYNC)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ 
+ /* SR2 */
+ /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+@@ -770,24 +770,24 @@ static const u16 pinmux_data[] = {
+ 
+ 	/* IP0SR1 */
+ 	PINMUX_IPSR_GPSR(IP0SR1_3_0,	MSIOF1_SS2),
+-	PINMUX_IPSR_GPSR(IP0SR1_3_0,	HTX3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_3_0,	TX3),
++	PINMUX_IPSR_GPSR(IP0SR1_3_0,	HTX3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_3_0,	TX3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_7_4,	MSIOF1_SS1),
+-	PINMUX_IPSR_GPSR(IP0SR1_7_4,	HCTS3_N_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_7_4,	RX3),
++	PINMUX_IPSR_GPSR(IP0SR1_7_4,	HCTS3_N_B),
++	PINMUX_IPSR_GPSR(IP0SR1_7_4,	RX3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_11_8,	MSIOF1_SYNC),
+-	PINMUX_IPSR_GPSR(IP0SR1_11_8,	HRTS3_N_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_11_8,	RTS3_N),
++	PINMUX_IPSR_GPSR(IP0SR1_11_8,	HRTS3_N_B),
++	PINMUX_IPSR_GPSR(IP0SR1_11_8,	RTS3_N_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_15_12,	MSIOF1_SCK),
+-	PINMUX_IPSR_GPSR(IP0SR1_15_12,	HSCK3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_15_12,	CTS3_N),
++	PINMUX_IPSR_GPSR(IP0SR1_15_12,	HSCK3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_15_12,	CTS3_N_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_19_16,	MSIOF1_TXD),
+-	PINMUX_IPSR_GPSR(IP0SR1_19_16,	HRX3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_19_16,	SCK3),
++	PINMUX_IPSR_GPSR(IP0SR1_19_16,	HRX3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_19_16,	SCK3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_23_20,	MSIOF1_RXD),
+ 
+@@ -858,25 +858,25 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP2SR1_31_28,	IRQ3_B),
+ 
+ 	/* IP3SR1 */
+-	PINMUX_IPSR_GPSR(IP3SR1_3_0,	HRX3),
++	PINMUX_IPSR_GPSR(IP3SR1_3_0,	HRX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_3_0,	SCK3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_3_0,	MSIOF4_SS2),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_7_4,	HSCK3),
++	PINMUX_IPSR_GPSR(IP3SR1_7_4,	HSCK3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	CTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	MSIOF4_SCK),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	TPU0TO0_A),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_11_8,	HRTS3_N),
++	PINMUX_IPSR_GPSR(IP3SR1_11_8,	HRTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	RTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	MSIOF4_TXD),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	TPU0TO1_A),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_15_12,	HCTS3_N),
++	PINMUX_IPSR_GPSR(IP3SR1_15_12,	HCTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_15_12,	RX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_15_12,	MSIOF4_RXD),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_19_16,	HTX3),
++	PINMUX_IPSR_GPSR(IP3SR1_19_16,	HTX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_19_16,	TX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_19_16,	MSIOF4_SYNC),
+ 
+@@ -1642,49 +1642,48 @@ static const unsigned int hscif2_ctrl_mux[] = {
+ };
+ 
+ /* - HSCIF3 ----------------------------------------------------------------- */
+-static const unsigned int hscif3_data_pins[] = {
+-	/* HRX3, HTX3 */
++static const unsigned int hscif3_data_a_pins[] = {
++	/* HRX3_A, HTX3_A */
+ 	RCAR_GP_PIN(1, 24), RCAR_GP_PIN(1, 28),
+ };
+-static const unsigned int hscif3_data_mux[] = {
+-	HRX3_MARK, HTX3_MARK,
++static const unsigned int hscif3_data_a_mux[] = {
++	HRX3_A_MARK, HTX3_A_MARK,
+ };
+-static const unsigned int hscif3_clk_pins[] = {
+-	/* HSCK3 */
++static const unsigned int hscif3_clk_a_pins[] = {
++	/* HSCK3_A */
+ 	RCAR_GP_PIN(1, 25),
+ };
+-static const unsigned int hscif3_clk_mux[] = {
+-	HSCK3_MARK,
++static const unsigned int hscif3_clk_a_mux[] = {
++	HSCK3_A_MARK,
+ };
+-static const unsigned int hscif3_ctrl_pins[] = {
+-	/* HRTS3_N, HCTS3_N */
++static const unsigned int hscif3_ctrl_a_pins[] = {
++	/* HRTS3_N_A, HCTS3_N_A */
+ 	RCAR_GP_PIN(1, 26), RCAR_GP_PIN(1, 27),
+ };
+-static const unsigned int hscif3_ctrl_mux[] = {
+-	HRTS3_N_MARK, HCTS3_N_MARK,
++static const unsigned int hscif3_ctrl_a_mux[] = {
++	HRTS3_N_A_MARK, HCTS3_N_A_MARK,
+ };
+ 
+-/* - HSCIF3_A ----------------------------------------------------------------- */
+-static const unsigned int hscif3_data_a_pins[] = {
+-	/* HRX3_A, HTX3_A */
++static const unsigned int hscif3_data_b_pins[] = {
++	/* HRX3_B, HTX3_B */
+ 	RCAR_GP_PIN(1, 4), RCAR_GP_PIN(1, 0),
+ };
+-static const unsigned int hscif3_data_a_mux[] = {
+-	HRX3_A_MARK, HTX3_A_MARK,
++static const unsigned int hscif3_data_b_mux[] = {
++	HRX3_B_MARK, HTX3_B_MARK,
+ };
+-static const unsigned int hscif3_clk_a_pins[] = {
+-	/* HSCK3_A */
++static const unsigned int hscif3_clk_b_pins[] = {
++	/* HSCK3_B */
+ 	RCAR_GP_PIN(1, 3),
+ };
+-static const unsigned int hscif3_clk_a_mux[] = {
+-	HSCK3_A_MARK,
++static const unsigned int hscif3_clk_b_mux[] = {
++	HSCK3_B_MARK,
+ };
+-static const unsigned int hscif3_ctrl_a_pins[] = {
+-	/* HRTS3_N_A, HCTS3_N_A */
++static const unsigned int hscif3_ctrl_b_pins[] = {
++	/* HRTS3_N_B, HCTS3_N_B */
+ 	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 1),
+ };
+-static const unsigned int hscif3_ctrl_a_mux[] = {
+-	HRTS3_N_A_MARK, HCTS3_N_A_MARK,
++static const unsigned int hscif3_ctrl_b_mux[] = {
++	HRTS3_N_B_MARK, HCTS3_N_B_MARK,
+ };
+ 
+ /* - I2C0 ------------------------------------------------------------------- */
+@@ -2280,29 +2279,6 @@ static const unsigned int scif1_ctrl_b_mux[] = {
+ };
+ 
+ /* - SCIF3 ------------------------------------------------------------------ */
+-static const unsigned int scif3_data_pins[] = {
+-	/* RX3, TX3 */
+-	RCAR_GP_PIN(1, 1), RCAR_GP_PIN(1, 0),
+-};
+-static const unsigned int scif3_data_mux[] = {
+-	RX3_MARK, TX3_MARK,
+-};
+-static const unsigned int scif3_clk_pins[] = {
+-	/* SCK3 */
+-	RCAR_GP_PIN(1, 4),
+-};
+-static const unsigned int scif3_clk_mux[] = {
+-	SCK3_MARK,
+-};
+-static const unsigned int scif3_ctrl_pins[] = {
+-	/* RTS3_N, CTS3_N */
+-	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 3),
+-};
+-static const unsigned int scif3_ctrl_mux[] = {
+-	RTS3_N_MARK, CTS3_N_MARK,
+-};
 -
--	if ((sb[0] & 0x7f) >= 0x72) {
--		unsigned char *desc;
--		u8 len;
--
--		/* descriptor format */
--		len = sb[7];
--		desc = (char *)scsi_sense_desc_find(sb, len + 8, 9);
--		if (!desc) {
--			if (SCSI_SENSE_BUFFERSIZE < len + 14)
--				return;
--			sb[7] = len + 14;
--			desc = sb + 8 + len;
--		}
--		desc[0] = 9;
--		desc[1] = 12;
--		/*
--		 * Copy registers into sense buffer.
--		 */
--		desc[2] = 0x00;
--		desc[3] = tf->error;
--		desc[5] = tf->nsect;
--		desc[7] = tf->lbal;
--		desc[9] = tf->lbam;
--		desc[11] = tf->lbah;
--		desc[12] = tf->device;
--		desc[13] = tf->status;
--
--		/*
--		 * Fill in Extend bit, and the high order bytes
--		 * if applicable.
--		 */
--		if (tf->flags & ATA_TFLAG_LBA48) {
--			desc[2] |= 0x01;
--			desc[4] = tf->hob_nsect;
--			desc[6] = tf->hob_lbal;
--			desc[8] = tf->hob_lbam;
--			desc[10] = tf->hob_lbah;
--		}
--	} else {
--		/* Fixed sense format */
--		sb[0] |= 0x80;
--		sb[3] = tf->error;
--		sb[4] = tf->status;
--		sb[5] = tf->device;
--		sb[6] = tf->nsect;
--		if (tf->flags & ATA_TFLAG_LBA48)  {
--			sb[8] |= 0x80;
--			if (tf->hob_nsect)
--				sb[8] |= 0x40;
--			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
--				sb[8] |= 0x20;
--		}
--		sb[9] = tf->lbal;
--		sb[10] = tf->lbam;
--		sb[11] = tf->lbah;
--	}
- }
+-/* - SCIF3_A ------------------------------------------------------------------ */
+ static const unsigned int scif3_data_a_pins[] = {
+ 	/* RX3_A, TX3_A */
+ 	RCAR_GP_PIN(1, 27), RCAR_GP_PIN(1, 28),
+@@ -2325,6 +2301,28 @@ static const unsigned int scif3_ctrl_a_mux[] = {
+ 	RTS3_N_A_MARK, CTS3_N_A_MARK,
+ };
  
- /**
-@@ -1664,26 +1679,32 @@ static void ata_scsi_qc_complete(struct
- {
- 	struct scsi_cmnd *cmd = qc->scsicmd;
- 	u8 *cdb = cmd->cmnd;
--	int need_sense = (qc->err_mask != 0) &&
--		!(qc->flags & ATA_QCFLAG_SENSE_VALID);
-+	bool have_sense = qc->flags & ATA_QCFLAG_SENSE_VALID;
-+	bool is_ata_passthru = cdb[0] == ATA_16 || cdb[0] == ATA_12;
-+	bool is_ck_cond_request = cdb[2] & 0x20;
-+	bool is_error = qc->err_mask != 0;
++static const unsigned int scif3_data_b_pins[] = {
++	/* RX3_B, TX3_B */
++	RCAR_GP_PIN(1, 1), RCAR_GP_PIN(1, 0),
++};
++static const unsigned int scif3_data_b_mux[] = {
++	RX3_B_MARK, TX3_B_MARK,
++};
++static const unsigned int scif3_clk_b_pins[] = {
++	/* SCK3_B */
++	RCAR_GP_PIN(1, 4),
++};
++static const unsigned int scif3_clk_b_mux[] = {
++	SCK3_B_MARK,
++};
++static const unsigned int scif3_ctrl_b_pins[] = {
++	/* RTS3_N_B, CTS3_N_B */
++	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 3),
++};
++static const unsigned int scif3_ctrl_b_mux[] = {
++	RTS3_N_B_MARK, CTS3_N_B_MARK,
++};
++
+ /* - SCIF4 ------------------------------------------------------------------ */
+ static const unsigned int scif4_data_pins[] = {
+ 	/* RX4, TX4 */
+@@ -2566,12 +2564,12 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	SH_PFC_PIN_GROUP(hscif2_data),
+ 	SH_PFC_PIN_GROUP(hscif2_clk),
+ 	SH_PFC_PIN_GROUP(hscif2_ctrl),
+-	SH_PFC_PIN_GROUP(hscif3_data),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_clk),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_ctrl),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_data_a),	/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_clk_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_ctrl_a),	/* suffix might be updated */
++	SH_PFC_PIN_GROUP(hscif3_data_a),
++	SH_PFC_PIN_GROUP(hscif3_clk_a),
++	SH_PFC_PIN_GROUP(hscif3_ctrl_a),
++	SH_PFC_PIN_GROUP(hscif3_data_b),
++	SH_PFC_PIN_GROUP(hscif3_clk_b),
++	SH_PFC_PIN_GROUP(hscif3_ctrl_b),
  
- 	/* For ATA pass thru (SAT) commands, generate a sense block if
- 	 * user mandated it or if there's an error.  Note that if we
--	 * generate because the user forced us to [CK_COND =1], a check
-+	 * generate because the user forced us to [CK_COND=1], a check
- 	 * condition is generated and the ATA register values are returned
- 	 * whether the command completed successfully or not. If there
--	 * was no error, we use the following sense data:
-+	 * was no error, and CK_COND=1, we use the following sense data:
- 	 * sk = RECOVERED ERROR
- 	 * asc,ascq = ATA PASS-THROUGH INFORMATION AVAILABLE
- 	 */
--	if (((cdb[0] == ATA_16) || (cdb[0] == ATA_12)) &&
--	    ((cdb[2] & 0x20) || need_sense))
--		ata_gen_passthru_sense(qc);
--	else if (need_sense)
-+	if (is_ata_passthru && (is_ck_cond_request || is_error || have_sense)) {
-+		if (!have_sense)
-+			ata_gen_passthru_sense(qc);
-+		ata_scsi_set_passthru_sense_fields(qc);
-+		if (is_ck_cond_request)
-+			set_status_byte(qc->scsicmd, SAM_STAT_CHECK_CONDITION);
-+	} else if (is_error && !have_sense) {
- 		ata_gen_ata_sense(qc);
--	else
-+	} else {
- 		/* Keep the SCSI ML and status byte, clear host byte. */
- 		cmd->result &= 0x0000ffff;
-+	}
+ 	SH_PFC_PIN_GROUP(i2c0),
+ 	SH_PFC_PIN_GROUP(i2c1),
+@@ -2662,12 +2660,12 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	SH_PFC_PIN_GROUP(scif1_data_b),
+ 	SH_PFC_PIN_GROUP(scif1_clk_b),
+ 	SH_PFC_PIN_GROUP(scif1_ctrl_b),
+-	SH_PFC_PIN_GROUP(scif3_data),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_clk),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_ctrl),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_data_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_clk_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_ctrl_a),		/* suffix might be updated */
++	SH_PFC_PIN_GROUP(scif3_data_a),
++	SH_PFC_PIN_GROUP(scif3_clk_a),
++	SH_PFC_PIN_GROUP(scif3_ctrl_a),
++	SH_PFC_PIN_GROUP(scif3_data_b),
++	SH_PFC_PIN_GROUP(scif3_clk_b),
++	SH_PFC_PIN_GROUP(scif3_ctrl_b),
+ 	SH_PFC_PIN_GROUP(scif4_data),
+ 	SH_PFC_PIN_GROUP(scif4_clk),
+ 	SH_PFC_PIN_GROUP(scif4_ctrl),
+@@ -2791,13 +2789,12 @@ static const char * const hscif2_groups[] = {
+ };
  
- 	ata_qc_done(qc);
- }
-@@ -2622,14 +2643,8 @@ static void atapi_qc_complete(struct ata
- 	/* handle completion from EH */
- 	if (unlikely(err_mask || qc->flags & ATA_QCFLAG_SENSE_VALID)) {
+ static const char * const hscif3_groups[] = {
+-	/* suffix might be updated */
+-	"hscif3_data",
+-	"hscif3_clk",
+-	"hscif3_ctrl",
+ 	"hscif3_data_a",
+ 	"hscif3_clk_a",
+ 	"hscif3_ctrl_a",
++	"hscif3_data_b",
++	"hscif3_clk_b",
++	"hscif3_ctrl_b",
+ };
  
--		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID)) {
--			/* FIXME: not quite right; we don't want the
--			 * translation of taskfile registers into a
--			 * sense descriptors, since that's only
--			 * correct for ATA, not ATAPI
--			 */
-+		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID))
- 			ata_gen_passthru_sense(qc);
--		}
+ static const char * const i2c0_groups[] = {
+@@ -2967,13 +2964,12 @@ static const char * const scif1_groups[] = {
+ };
  
- 		/* SCSI EH automatically locks door if sdev->locked is
- 		 * set.  Sometimes door lock request continues to
+ static const char * const scif3_groups[] = {
+-	/* suffix might be updated */
+-	"scif3_data",
+-	"scif3_clk",
+-	"scif3_ctrl",
+ 	"scif3_data_a",
+ 	"scif3_clk_a",
+ 	"scif3_ctrl_a",
++	"scif3_data_b",
++	"scif3_clk_b",
++	"scif3_ctrl_b",
+ };
+ 
+ static const char * const scif4_groups[] = {
+-- 
+2.43.0
+
 
 
 
