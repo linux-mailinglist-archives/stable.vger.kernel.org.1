@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C298941DD6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B0094191D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DDC31C23A5F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB4501C235D5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34741A76AE;
-	Tue, 30 Jul 2024 17:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2F5183CBF;
+	Tue, 30 Jul 2024 16:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgahCJ+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKGrAa18"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724941A76D4;
-	Tue, 30 Jul 2024 17:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4111A619B;
+	Tue, 30 Jul 2024 16:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360112; cv=none; b=c91eWQkzgbte+YXz+6Afhqf50KcN9AfNIX8eTe464Xa7nBlqizvqr47+ZoUbek1QaK49yVkbc3mk6VFzy99ClLUranyXUxl6uHphmHE9sgihMdeVckfnyk5IkIYQQ2AIxehUIUwrJV3CK+ZOP7EB8U5wIr4Y4jaaMkQi2C+/8Fs=
+	t=1722356947; cv=none; b=neKmwffNDX8qX61QjgQMGIh0xEhcjemNrIVxftfsDu+YoCwDarAt8ml1CXFOF2ky7ovDtaPDINvM6aaG2RfF6eObXcF7rf6BtQXXzzn74LVC/h0JLrAEjORt5QHXJEUDJ+kxjlHculKP0L8C4vKjouJlZN4iTJ6ZSh0pPHluSWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360112; c=relaxed/simple;
-	bh=a90iyHd2Y/Tj6TripRpmu+LiwnXPsxdN2Rf1qD4XZ3o=;
+	s=arc-20240116; t=1722356947; c=relaxed/simple;
+	bh=X/4S1RI71JrcOKSz/u3PqqSLtkrH0+Mlo8zm0F/b3kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bu8bBnQMXnYzgVzjRZ/hziYzCOk+6jPUFNFYetVLLidvOfeHaFvzvuCVINm/OLDY47erz12hHUpKi9wkree9vvrCphfXYKLY1dfJ9jcjW751m4/V3GxmGVBzzp3WDJdM0LcpGyl/TAVLdKU/itoJMOzZm6CylQrTUy7Y+Jnzy7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgahCJ+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7D9C32782;
-	Tue, 30 Jul 2024 17:21:51 +0000 (UTC)
+	 MIME-Version; b=gtZJEOE9gaJRsA+gEVwN4Hql2PWdDJ7mT48yuwFUvi7GsNSHFHzLNChzrfiWWvsonxTnQG2tIwi4aoOoMe3zK3jjQe0MMx9JYvsC1dpakcVZ3oEn6K1dOFUG4BS6JWVSrNYlFPT7RUL3CY4P/D/VVJNwNRsG3cEyi1KhYKWPbzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKGrAa18; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F4BC32782;
+	Tue, 30 Jul 2024 16:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360112;
-	bh=a90iyHd2Y/Tj6TripRpmu+LiwnXPsxdN2Rf1qD4XZ3o=;
+	s=korg; t=1722356947;
+	bh=X/4S1RI71JrcOKSz/u3PqqSLtkrH0+Mlo8zm0F/b3kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgahCJ+yJKXl6CNYW0MHcaJrE9ihduHwWhmcgKdprXaWg4K0T1QQqmQkeHJwbH2SF
-	 PoWs4FEgK1j2ATtpatnDhivQlNigZj+lX2l8xxgxktgCHPhJE2nIW3JLOv7qfu90ey
-	 BoCqUqfLTixUYKdgN2IuOq6u2Gwiny0E1YdLZdKQ=
+	b=WKGrAa18HdLB84ZYuC47I0hh5VLkkKLWBu3BF0w0ZcBTUYQW1uy4PUYTKRGzx0xio
+	 VZzQPiL0LFWf1tDg5eJJRoda1NfGxjGbax0OYwg7raeIwYwQHCqkMocMNRTDPiDz5s
+	 Mr3SPqJ/9DPa3MDY8RFk4GMYyOJfvsBuI6SP31Nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.10 601/809] wifi: rtw88: usb: Fix disconnection after beacon loss
+	Dmitry Yashin <dmt.yashin@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 244/440] pinctrl: rockchip: update rk3308 iomux routes
 Date: Tue, 30 Jul 2024 17:47:57 +0200
-Message-ID: <20240730151748.569708321@linuxfoundation.org>
+Message-ID: <20240730151625.382517231@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Dmitry Yashin <dmt.yashin@gmail.com>
 
-commit 28818b4d871bc93cc4f5c7c7d7c526a6a096c09c upstream.
+[ Upstream commit a8f2548548584549ea29d43431781d67c4afa42b ]
 
-When there is beacon loss, for example due to unrelated Bluetooth
-devices transmitting music nearby, the wifi connection dies soon
-after the first beacon loss message:
+Some of the rk3308 iomux routes in rk3308_mux_route_data belong to
+the rk3308b SoC. Remove them and correct i2c3 routes.
 
-Apr 28 20:47:14 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-BEACON-LOSS
-Apr 28 20:47:15 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
-
-Apr 28 20:47:24 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-BEACON-LOSS
-Apr 28 20:47:25 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
-
-Apr 28 20:47:34 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-BEACON-LOSS
-Apr 28 20:47:35 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
-
-When the beacon loss happens, mac80211 makes rtw88 transmit a QOS
-NULL frame and asks to confirm the ACK status. Even though rtw88
-confirms to mac80211 that the QOS NULL was transmitted successfully,
-the connection still dies. This is because rtw88 is handing the QOS
-NULL back to mac80211 with skb->data pointing to the headroom (the
-TX descriptor) instead of ieee80211_hdr.
-
-Fix the disconnection by moving skb->data to the correct position
-before ieee80211_tx_status_irqsafe().
-
-The problem was observed with RTL8811AU (TP-Link Archer T2U Nano)
-and the potential future rtw88_8821au driver. Also tested with
-RTL8811CU (Tenda U9).
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/ecbf0601-810d-4609-b8fc-8b0e38d2948d@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7825aeb7b208 ("pinctrl: rockchip: add rk3308 SoC support")
+Signed-off-by: Dmitry Yashin <dmt.yashin@gmail.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20240515121634.23945-2-dmt.yashin@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/usb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/pinctrl-rockchip.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -273,6 +273,8 @@ static void rtw_usb_write_port_tx_comple
- 		info = IEEE80211_SKB_CB(skb);
- 		tx_data = rtw_usb_get_tx_data(skb);
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index d26682f21ad1e..6d140a60888c2 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -916,9 +916,8 @@ static struct rockchip_mux_route_data rk3308_mux_route_data[] = {
+ 	RK_MUXROUTE_SAME(0, RK_PC3, 1, 0x314, BIT(16 + 0) | BIT(0)), /* rtc_clk */
+ 	RK_MUXROUTE_SAME(1, RK_PC6, 2, 0x314, BIT(16 + 2) | BIT(16 + 3)), /* uart2_rxm0 */
+ 	RK_MUXROUTE_SAME(4, RK_PD2, 2, 0x314, BIT(16 + 2) | BIT(16 + 3) | BIT(2)), /* uart2_rxm1 */
+-	RK_MUXROUTE_SAME(0, RK_PB7, 2, 0x608, BIT(16 + 8) | BIT(16 + 9)), /* i2c3_sdam0 */
+-	RK_MUXROUTE_SAME(3, RK_PB4, 2, 0x608, BIT(16 + 8) | BIT(16 + 9) | BIT(8)), /* i2c3_sdam1 */
+-	RK_MUXROUTE_SAME(2, RK_PA0, 3, 0x608, BIT(16 + 8) | BIT(16 + 9) | BIT(9)), /* i2c3_sdam2 */
++	RK_MUXROUTE_SAME(0, RK_PB7, 2, 0x314, BIT(16 + 4)), /* i2c3_sdam0 */
++	RK_MUXROUTE_SAME(3, RK_PB4, 2, 0x314, BIT(16 + 4) | BIT(4)), /* i2c3_sdam1 */
+ 	RK_MUXROUTE_SAME(1, RK_PA3, 2, 0x308, BIT(16 + 3)), /* i2s-8ch-1-sclktxm0 */
+ 	RK_MUXROUTE_SAME(1, RK_PA4, 2, 0x308, BIT(16 + 3)), /* i2s-8ch-1-sclkrxm0 */
+ 	RK_MUXROUTE_SAME(1, RK_PB5, 2, 0x308, BIT(16 + 3) | BIT(3)), /* i2s-8ch-1-sclktxm1 */
+@@ -927,18 +926,6 @@ static struct rockchip_mux_route_data rk3308_mux_route_data[] = {
+ 	RK_MUXROUTE_SAME(1, RK_PB6, 4, 0x308, BIT(16 + 12) | BIT(16 + 13) | BIT(12)), /* pdm-clkm1 */
+ 	RK_MUXROUTE_SAME(2, RK_PA6, 2, 0x308, BIT(16 + 12) | BIT(16 + 13) | BIT(13)), /* pdm-clkm2 */
+ 	RK_MUXROUTE_SAME(2, RK_PA4, 3, 0x600, BIT(16 + 2) | BIT(2)), /* pdm-clkm-m2 */
+-	RK_MUXROUTE_SAME(3, RK_PB2, 3, 0x314, BIT(16 + 9)), /* spi1_miso */
+-	RK_MUXROUTE_SAME(2, RK_PA4, 2, 0x314, BIT(16 + 9) | BIT(9)), /* spi1_miso_m1 */
+-	RK_MUXROUTE_SAME(0, RK_PB3, 3, 0x314, BIT(16 + 10) | BIT(16 + 11)), /* owire_m0 */
+-	RK_MUXROUTE_SAME(1, RK_PC6, 7, 0x314, BIT(16 + 10) | BIT(16 + 11) | BIT(10)), /* owire_m1 */
+-	RK_MUXROUTE_SAME(2, RK_PA2, 5, 0x314, BIT(16 + 10) | BIT(16 + 11) | BIT(11)), /* owire_m2 */
+-	RK_MUXROUTE_SAME(0, RK_PB3, 2, 0x314, BIT(16 + 12) | BIT(16 + 13)), /* can_rxd_m0 */
+-	RK_MUXROUTE_SAME(1, RK_PC6, 5, 0x314, BIT(16 + 12) | BIT(16 + 13) | BIT(12)), /* can_rxd_m1 */
+-	RK_MUXROUTE_SAME(2, RK_PA2, 4, 0x314, BIT(16 + 12) | BIT(16 + 13) | BIT(13)), /* can_rxd_m2 */
+-	RK_MUXROUTE_SAME(1, RK_PC4, 3, 0x314, BIT(16 + 14)), /* mac_rxd0_m0 */
+-	RK_MUXROUTE_SAME(4, RK_PA2, 2, 0x314, BIT(16 + 14) | BIT(14)), /* mac_rxd0_m1 */
+-	RK_MUXROUTE_SAME(3, RK_PB4, 4, 0x314, BIT(16 + 15)), /* uart3_rx */
+-	RK_MUXROUTE_SAME(0, RK_PC1, 3, 0x314, BIT(16 + 15) | BIT(15)), /* uart3_rx_m1 */
+ };
  
-+		skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
-+
- 		/* enqueue to wait for tx report */
- 		if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
- 			rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
+ static struct rockchip_mux_route_data rk3328_mux_route_data[] = {
+-- 
+2.43.0
+
 
 
 
