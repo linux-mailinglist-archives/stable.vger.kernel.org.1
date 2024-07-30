@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7341F941C2B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 603FB941909
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 319A628499D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20E8028596D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71794188003;
-	Tue, 30 Jul 2024 17:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73CA1A618F;
+	Tue, 30 Jul 2024 16:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRIXVLc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gH5FR7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300521A6192;
-	Tue, 30 Jul 2024 17:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2A91A6160;
+	Tue, 30 Jul 2024 16:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359039; cv=none; b=qjZmtPgTtoMD1AOd15W9Zt7QjI+Rb+JGhH0Joou2VXCSXGP4yZXJcRlALKHH4rGXsG7fbZZCelvJcm5xW8VMQgR5otK0yhSpp4Imf6s/sNT4vgmhCkCaZMHd/RtTFBtsQ/YPmphTKPjX69KblGthlGS+nr0Xw/qqlmdod6URAkM=
+	t=1722356900; cv=none; b=VZHL91T1Dcg/8RG212NRgep5t+3E2cA5qM49nauHFgGvjRqyhOABzOwtxRQgfgBA/8jBPqr8/6CKEeFhHBdSXDNZoj+qlNgZ8aHNkSON+W6MIH/KLO5/uX+IHtmhuuCtak4Tb8JYOokCxJrTzrasZOwyK+5XZ3Pm3wfaCRLGLpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359039; c=relaxed/simple;
-	bh=rvkacaQj+hoLWNKJA1aRi4lSEqPtnUJ+jRM/AGUlc6A=;
+	s=arc-20240116; t=1722356900; c=relaxed/simple;
+	bh=p+U57iSCG7DfZ8G+pt/m4vYP3NKnmfMmPcW6qoSRAfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jsUvBMou08FxL/9sO40FEuZ8vI4E3r7VmHtHkQSMGeAh1kbDwKw077Dih3+uuXAh+AKnQH7HLEPyeRikaTM3T4eEPf7LPtq3WTuONzXmgnq0JJI5SFfpxu71dihIfhQAR+pA89zhJTW5BGzIpVf3YGbj3vH9pZZr1pV7+FW+UIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRIXVLc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946DAC32782;
-	Tue, 30 Jul 2024 17:03:58 +0000 (UTC)
+	 MIME-Version; b=mEsYfCz19/lvAlZUpU+VNe9zUk/JbF9ojjVcPKgPe0W9fY4PmI7IhPREl4W0fi3XDPOhKyNmVSC1NKH9uETpMM6FwC99gWUUxSBdetGTz8B1B5+Bi/nzk2ZYgp+ZNBWfzudBVlqfDzgIiVGmTGSDGnDiJWLheSHLH7/5s0w+LMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gH5FR7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07961C32782;
+	Tue, 30 Jul 2024 16:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359039;
-	bh=rvkacaQj+hoLWNKJA1aRi4lSEqPtnUJ+jRM/AGUlc6A=;
+	s=korg; t=1722356900;
+	bh=p+U57iSCG7DfZ8G+pt/m4vYP3NKnmfMmPcW6qoSRAfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRIXVLc3au3t34RPkmYzmLjnfE41ImKm2K4swE882lgaCZRRJc3jPDv7t1AT3vCt4
-	 hGA9eWDJPMtCwMlELoAkOuw3FxSyEQq5s1UsLelaSPyYKDwHOGna+T0WBNGdoMVGeN
-	 LgbGxLc4bxGJkXlsfc3s4HflX5tKAYikanpC6lI8=
+	b=2gH5FR7BMwvjBRe/KPE4C/Ps+tdvaOZtVMmbJgvwHAmBDxawMkYHRZNCbQEDzRBfO
+	 qNwmUm6QNyyKAmm1UJcgdjRZXcCpYcjgEWxgJ6jlPcIed9H0b4xRrgbDmZ/+vTHUF8
+	 GgZd7RLYXVoXkHzVZncuQ57DcCUMIpEg7qs7K8Dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Rund <Christian.Rund@de.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Harald Freudenberger <freude@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 425/809] hwrng: core - Fix wrong quality calculation at hw rng registration
-Date: Tue, 30 Jul 2024 17:45:01 +0200
-Message-ID: <20240730151741.482557593@linuxfoundation.org>
+Subject: [PATCH 6.6 195/568] s390/mm: Convert gmap_make_secure to use a folio
+Date: Tue, 30 Jul 2024 17:45:02 +0200
+Message-ID: <20240730151647.499682280@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 95c0f5c3b8bb7acdc5c4f04bc6a7d3f40d319e9e ]
+[ Upstream commit d35c34bb32f2cc4ec0b52e91ad7a8fcab55d7856 ]
 
-When there are rng sources registering at the hwrng core via
-hwrng_register() a struct hwrng is delivered. There is a quality
-field in there which is used to decide which of the registered
-hw rng sources will be used by the hwrng core.
+Remove uses of deprecated page APIs, and move the check for large
+folios to here to avoid taking the folio lock if the folio is too large.
+We could do better here by attempting to split the large folio, but I'll
+leave that improvement for someone who can test it.
 
-With commit 16bdbae39428 ("hwrng: core - treat default_quality as
-a maximum and default to 1024") there came in a new default of
-1024 in case this field is empty and all the known hw rng sources
-at that time had been reworked to not fill this field and thus
-use the default of 1024.
-
-The code choosing the 'better' hw rng source during registration
-of a new hw rng source has never been adapted to this and thus
-used 0 if the hw rng implementation does not fill the quality field.
-So when two rng sources register, one with 0 (meaning 1024) and
-the other one with 999, the 999 hw rng will be chosen.
-
-As the later invoked function hwrng_init() anyway adjusts the
-quality field of the hw rng source, this adjustment is now done
-during registration of this new hw rng source.
-
-Tested on s390 with two hardware rng sources: crypto cards and
-trng true random generator device driver.
-
-Fixes: 16bdbae39428 ("hwrng: core - treat default_quality as a maximum and default to 1024")
-Reported-by: Christian Rund <Christian.Rund@de.ibm.com>
-Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20240322161149.2327518-3-willy@infradead.org
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/s390/kernel/uv.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
-index 4084df65c9fa3..f6122a03ee37c 100644
---- a/drivers/char/hw_random/core.c
-+++ b/drivers/char/hw_random/core.c
-@@ -161,7 +161,6 @@ static int hwrng_init(struct hwrng *rng)
- 	reinit_completion(&rng->cleanup_done);
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 0634448698b03..2aed5af7c4e52 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -201,13 +201,10 @@ static int expected_folio_refs(struct folio *folio)
+ 	return res;
+ }
  
- skip_init:
--	rng->quality = min_t(u16, min_t(u16, default_quality, 1024), rng->quality ?: 1024);
- 	current_quality = rng->quality; /* obsolete */
+-static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
++static int make_folio_secure(struct folio *folio, struct uv_cb_header *uvcb)
+ {
+-	struct folio *folio = page_folio(page);
+ 	int expected, cc = 0;
  
- 	return 0;
-@@ -545,6 +544,9 @@ int hwrng_register(struct hwrng *rng)
- 	complete(&rng->cleanup_done);
- 	init_completion(&rng->dying);
+-	if (folio_test_large(folio))
+-		return -EINVAL;
+ 	if (folio_test_writeback(folio))
+ 		return -EAGAIN;
+ 	expected = expected_folio_refs(folio);
+@@ -280,7 +277,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 	bool local_drain = false;
+ 	spinlock_t *ptelock;
+ 	unsigned long uaddr;
+-	struct page *page;
++	struct folio *folio;
+ 	pte_t *ptep;
+ 	int rc;
  
-+	/* Adjust quality field to always have a proper value */
-+	rng->quality = min_t(u16, min_t(u16, default_quality, 1024), rng->quality ?: 1024);
-+
- 	if (!current_rng ||
- 	    (!cur_rng_set_by_user && rng->quality > current_rng->quality)) {
+@@ -309,15 +306,19 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 	if (!ptep)
+ 		goto out;
+ 	if (pte_present(*ptep) && !(pte_val(*ptep) & _PAGE_INVALID) && pte_write(*ptep)) {
+-		page = pte_page(*ptep);
++		folio = page_folio(pte_page(*ptep));
++		rc = -EINVAL;
++		if (folio_test_large(folio))
++			goto unlock;
+ 		rc = -EAGAIN;
+-		if (trylock_page(page)) {
++		if (folio_trylock(folio)) {
+ 			if (should_export_before_import(uvcb, gmap->mm))
+-				uv_convert_from_secure(page_to_phys(page));
+-			rc = make_page_secure(page, uvcb);
+-			unlock_page(page);
++				uv_convert_from_secure(PFN_PHYS(folio_pfn(folio)));
++			rc = make_folio_secure(folio, uvcb);
++			folio_unlock(folio);
+ 		}
+ 	}
++unlock:
+ 	pte_unmap_unlock(ptep, ptelock);
+ out:
+ 	mmap_read_unlock(gmap->mm);
+@@ -327,10 +328,10 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 		 * If we are here because the UVC returned busy or partial
+ 		 * completion, this is just a useless check, but it is safe.
+ 		 */
+-		wait_on_page_writeback(page);
++		folio_wait_writeback(folio);
+ 	} else if (rc == -EBUSY) {
  		/*
+-		 * If we have tried a local drain and the page refcount
++		 * If we have tried a local drain and the folio refcount
+ 		 * still does not match our expected safe value, try with a
+ 		 * system wide drain. This is needed if the pagevecs holding
+ 		 * the page are on a different CPU.
+@@ -341,7 +342,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 			return -EAGAIN;
+ 		}
+ 		/*
+-		 * We are here if the page refcount does not match the
++		 * We are here if the folio refcount does not match the
+ 		 * expected safe value. The main culprits are usually
+ 		 * pagevecs. With lru_add_drain() we drain the pagevecs
+ 		 * on the local CPU so that hopefully the refcount will
 -- 
 2.43.0
 
