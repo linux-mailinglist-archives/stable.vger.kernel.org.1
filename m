@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B23894195A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1231D94196E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B514A1C23045
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4426E1C22A15
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC69433A9;
-	Tue, 30 Jul 2024 16:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5231898ED;
+	Tue, 30 Jul 2024 16:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZpggBDl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrIbCp/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0B41A616E;
-	Tue, 30 Jul 2024 16:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDBB1A6192;
+	Tue, 30 Jul 2024 16:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357078; cv=none; b=qQ2oqYCr2PYarT0czoN81g0LqzVCovxpAfS1cE1o4lMDQIUmGqtKOO196EfuoDDkvqF4dlkI09lctIyxE1z6KVzi3jJlF51pGV+qjaa7g8+XWgohQ24PuumrtptsnyEvSfqea38/rmoiIf1ki2RWahckhMnOhF6hSUl7gDfzDeY=
+	t=1722357126; cv=none; b=YuC0XH21KKK222e+vsGQXpRHrHgO+oB1HA6498TSHR33QSJEFMeCc0KUy53ViT6B97QgfJLKxKv/WoH43ycFRMueKQfyGwOmlqIZ2aPIir3gQBjWeH7lMSmLqjcGpGA44fVpGLqCIhQIhUz9P1KYnXgNqCWH/RysMA/Md1uaZPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357078; c=relaxed/simple;
-	bh=z0MzwLgoY6ArNDYmX2pQa+bis3BOKbuvk1sHRISiyQs=;
+	s=arc-20240116; t=1722357126; c=relaxed/simple;
+	bh=LblBgt9YUkWIRuvOHPCGKjELgYPhSkY9Vk1PDlAyMTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D0qAFa9c5SsFEEFpJdTxPiOzntiBEPE/tKjl1SL6qE+YJTBgRnxrDmS0Bu7nkUi6dYcqasx6td9GA+tzTuoMfEaHcG4aCLh31x0otUXFWzEPHIsoBroHzetbQR1Tos2nXneACkgq9KbSKDJnR4FSLqRLlsCd/R96NrLZH39Uu2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZpggBDl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4624C32782;
-	Tue, 30 Jul 2024 16:31:17 +0000 (UTC)
+	 MIME-Version; b=SUzcQABTNJiV02yCYDfuEmqIY6MdUmJoGtHBlMtgNeGdJoHwlfehHFCIovE79U/WMenWdPz5j7P9uU+ziaIsLHs9GszyzYC3daaJF3c5Bo9hkR4BwXgMptuAg4uyFzhjthyKqgTBo45HXR5jxTinTfxstgMaDxIJGydh0Gi7Ieg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrIbCp/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C84BC32782;
+	Tue, 30 Jul 2024 16:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357078;
-	bh=z0MzwLgoY6ArNDYmX2pQa+bis3BOKbuvk1sHRISiyQs=;
+	s=korg; t=1722357126;
+	bh=LblBgt9YUkWIRuvOHPCGKjELgYPhSkY9Vk1PDlAyMTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZpggBDlwgZZi2NrkQfQKQuEjDjC8LTDWM5AQCDUD3hVXGi1nQCR16E5LH+RbDFjb
-	 IQI7cARBUzxKfmeEmBzekGNQEvktG4W0lsymgS+7GYYj69+q3VXp6v53dAOJjmqTGa
-	 8pxRFIkC7zyB/elHcKOT4Zjsi9JDhSUrQr82aGYo=
+	b=RrIbCp/wM9+idIqWv3P4HpYHgVLMqwKzHwOG3YwsjUKaH9MUtexx0T/vjdy8FNuMH
+	 kzk33vYsRUOK5+s+867SuYFeM/EfBv3tpu0bmgomhDwQ2dAQtnhznjxy0roN6mO4Xp
+	 vGobjefHTSKF7U1LOKvSi8vXJpirGVhXo1ZRTgNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Richard Cochran <richardcochran@gmail.com>,
+	patches@lists.linux.dev,
+	Lukasz Majewski <lukma@denx.de>,
 	Andrew Lunn <andrew@lunn.ch>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Wei Fang <wei.fang@nxp.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>, Csókás@web.codeaurora.org
-Subject: [PATCH 6.10 201/809] net: fec: Fix FEC_ECR_EN1588 being cleared on link-down
-Date: Tue, 30 Jul 2024 17:41:17 +0200
-Message-ID: <20240730151732.546312624@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 202/809] net: dsa: ksz_common: Allow only up to two HSR HW offloaded ports for KSZ9477
+Date: Tue, 30 Jul 2024 17:41:18 +0200
+Message-ID: <20240730151732.587137544@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -62,52 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Lukasz Majewski <lukma@denx.de>
 
-[ Upstream commit c32fe1986f27cac329767d3497986e306cad1d5e ]
+[ Upstream commit dcec8d291da8813b5e1c7c0967ae63463a8521f6 ]
 
-FEC_ECR_EN1588 bit gets cleared after MAC reset in `fec_stop()`, which
-makes all 1588 functionality shut down, and all the extended registers
-disappear, on link-down, making the adapter fall back to compatibility
-"dumb mode". However, some functionality needs to be retained (e.g. PPS)
-even without link.
+The KSZ9477 allows HSR in-HW offloading for any of two selected ports.
+This patch adds check if one tries to use more than two ports with
+HSR offloading enabled.
 
-Fixes: 6605b730c061 ("FEC: Add time stamping code and a PTP hardware clock")
-Cc: Richard Cochran <richardcochran@gmail.com>
+The problem is with RedBox configuration (HSR-SAN) - when configuring:
+ip link add name hsr0 type hsr slave1 lan1 slave2 lan2 interlink lan3 \
+	supervision 45 version 1
+
+The lan1 (port0) and lan2 (port1) are correctly configured as ports, which
+can use HSR offloading on ksz9477.
+
+However, when we do already have two bits set in hsr_ports, we need to
+return (-ENOTSUPP), so the interlink port (lan3) would be used with
+SW based HSR RedBox support.
+
+Otherwise, I do see some strange network behavior, as some HSR frames are
+visible on non-HSR network and vice versa.
+
+This causes the switch connected to interlink port (lan3) to drop frames
+and no communication is possible.
+
+Moreover, conceptually - the interlink (i.e. HSR-SAN port - lan3/port2)
+shall be only supported in software as it is also possible to use ksz9477
+with only SW based HSR (i.e. port0/1 -> hsr0 with offloading, port2 ->
+HSR-SAN/interlink, port4/5 -> hsr1 with SW based HSR).
+
+Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
+Signed-off-by: Lukasz Majewski <lukma@denx.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/netdev/5fa9fadc-a89d-467a-aae9-c65469ff5fe1@lunn.ch/
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/dsa/microchip/ksz_common.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 881ece735dcf1..fb19295529a21 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1361,6 +1361,12 @@ fec_stop(struct net_device *ndev)
- 		writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
- 		writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 0580b2fee21c3..baa1eeb9a1b04 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -3917,6 +3917,13 @@ static int ksz_hsr_join(struct dsa_switch *ds, int port, struct net_device *hsr,
+ 		return -EOPNOTSUPP;
  	}
-+
-+	if (fep->bufdesc_ex) {
-+		val = readl(fep->hwp + FEC_ECNTRL);
-+		val |= FEC_ECR_EN1588;
-+		writel(val, fep->hwp + FEC_ECNTRL);
-+	}
- }
  
- static void
++	/* KSZ9477 can only perform HSR offloading for up to two ports */
++	if (hweight8(dev->hsr_ports) >= 2) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Cannot offload more than two ports - using software HSR");
++		return -EOPNOTSUPP;
++	}
++
+ 	/* Self MAC address filtering, to avoid frames traversing
+ 	 * the HSR ring more than once.
+ 	 */
 -- 
 2.43.0
 
