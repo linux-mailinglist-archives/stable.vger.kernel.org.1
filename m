@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-62899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E028941621
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B1294167D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE1F1C20BCB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6C271C23231
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3799F1BA86F;
-	Tue, 30 Jul 2024 15:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADE11C688F;
+	Tue, 30 Jul 2024 16:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAXMQ1Fl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZnZGtX+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80171BA866;
-	Tue, 30 Jul 2024 15:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E0B1C233B;
+	Tue, 30 Jul 2024 16:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354995; cv=none; b=hYWnCklNEDwNePL4FMuZHRwR/4iE/GwXU1y4XpJw5GeyBO61uGTP7SZLoE+Lu1ZPrB+5QXhcwo6frjYJQQZacL4OYuJMU7HjyjSnM10mLri5tQcSQburjHK28y7bk4/LY3dPhzXALEWI1hbQ2J1QRS3URa1aBaaPMoTHlt7iRCU=
+	t=1722355235; cv=none; b=hlHvwz207Fb8u0nY1L69UL+CTituer128z+2npkPVMnhkII+yGxNMuM0dim6on8Dj0vU0TAYbruPh+1UkBbQsFtF1Ro/ipDkzCTxGuBIokjhvstlU4NiAGNONhDW1CYyyXxDbzt22ysIzeNRJ8zAlAhwyopP5iIMkpzGZH0ZqwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354995; c=relaxed/simple;
-	bh=kK+vfQNVdU4pqLr0Yo7w+nD2Yt14C0qG1TiWtC0JNfE=;
+	s=arc-20240116; t=1722355235; c=relaxed/simple;
+	bh=+rj99h8neC34Mpalh6QK7jZA18couID+aNCwWdGYiec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mkgSJYGhMDF1begcllCSFcUStThT5zZyQvwO3+mG1XpRC4LBQs0N7i0b/k75iFCWY83d6VB59tsRJLSHhJhvCz5al1fko2VFzcrdA11voy96GIrSJgiAAmE/TmgAafEoSBonxlyLzDO7BQd6JzsS9IQDk9FKYDdnYIKBNXEI5jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAXMQ1Fl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69808C4AF0A;
-	Tue, 30 Jul 2024 15:56:34 +0000 (UTC)
+	 MIME-Version; b=qFvwhXNrbQhgRYrQ5uNi9hui299wqCCNhhF5IQanyfCTaZK7qL4gX0xhEGJ25j59sgLw35Cu0B5Nj+9mtbU7nSQrWLkhfeTGLnWywBi32kLAcIVDEodZPkjodA3QBYOvRqR5HmpL8hQmXZ75443Pv3bkcKSgkxnpvZwB/TrDVw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZnZGtX+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0400C32782;
+	Tue, 30 Jul 2024 16:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354994;
-	bh=kK+vfQNVdU4pqLr0Yo7w+nD2Yt14C0qG1TiWtC0JNfE=;
+	s=korg; t=1722355235;
+	bh=+rj99h8neC34Mpalh6QK7jZA18couID+aNCwWdGYiec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAXMQ1FljHtNkBK51/E8q26hQUt/r/Qk75sk06OybKyu+dEYsRh+6JzWyl4oYKi4X
-	 8vFOJC6elYD+0uuzm2nBLJqrLkv+ojLSKFjGPzWjQmV4Fi0jsQWDJPCJMw2QrtcdZi
-	 TaGnbifn9pOcuQF0xGqWOdSJZQ2nOB+La1JskLrQ=
+	b=0ZnZGtX+imHb4DWhzivzqdSd5EQoKfaGTOgNhqg+h3ngPnh5I0sJbR6UKaAkxkAkH
+	 ki8OWBZGvAxDHnO43n0XNsUH1QCALyxwH8yG1pmY6no7SG3jeUnhPB54GeeeAyStI6
+	 XaGh9hBlQtlrMgIaOgDx94U3NYMAjzuMlgV8SeH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Primoz Fiser <primoz.fiser@norik.com>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/440] cpufreq: ti-cpufreq: Handle deferred probe with dev_err_probe()
-Date: Tue, 30 Jul 2024 17:44:38 +0200
-Message-ID: <20240730151617.522794336@linuxfoundation.org>
+Subject: [PATCH 6.1 046/440] OPP: ti: Fix ti_opp_supply_probe wrong return values
+Date: Tue, 30 Jul 2024 17:44:39 +0200
+Message-ID: <20240730151617.562469218@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -68,32 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Primoz Fiser <primoz.fiser@norik.com>
 
-[ Upstream commit 101388b8ef1027be72e399beeb97293cce67bb24 ]
+[ Upstream commit 3a1ac6b8f603a9310274990a0ad563a5fb709f59 ]
 
-Handle deferred probing gracefully by using dev_err_probe() to not
-spam console with unnecessary error messages.
+Function ti_opp_supply_probe() since commit 6baee034cb55 ("OPP: ti:
+Migrate to dev_pm_opp_set_config_regulators()") returns wrong values
+when all goes well and hence driver probing eventually fails.
 
-Fixes: f88d152dc739 ("cpufreq: ti: Migrate to dev_pm_opp_set_config()")
+Fixes: 6baee034cb55 ("OPP: ti: Migrate to dev_pm_opp_set_config_regulators()")
 Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/ti-cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/opp/ti-opp-supply.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/ti-cpufreq.c b/drivers/cpufreq/ti-cpufreq.c
-index 61ef653bcf56f..15e2ef8303508 100644
---- a/drivers/cpufreq/ti-cpufreq.c
-+++ b/drivers/cpufreq/ti-cpufreq.c
-@@ -381,7 +381,7 @@ static int ti_cpufreq_probe(struct platform_device *pdev)
- 
- 	ret = dev_pm_opp_set_config(opp_data->cpu_dev, &config);
- 	if (ret < 0) {
--		dev_err(opp_data->cpu_dev, "Failed to set OPP config\n");
-+		dev_err_probe(opp_data->cpu_dev, ret, "Failed to set OPP config\n");
- 		goto fail_put_node;
+diff --git a/drivers/opp/ti-opp-supply.c b/drivers/opp/ti-opp-supply.c
+index 8f3f13fbbb25a..a8a696d2e03ab 100644
+--- a/drivers/opp/ti-opp-supply.c
++++ b/drivers/opp/ti-opp-supply.c
+@@ -400,10 +400,12 @@ static int ti_opp_supply_probe(struct platform_device *pdev)
  	}
  
+ 	ret = dev_pm_opp_set_config_regulators(cpu_dev, ti_opp_config_regulators);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		_free_optimized_voltages(dev, &opp_data);
++		return ret;
++	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static struct platform_driver ti_opp_supply_driver = {
 -- 
 2.43.0
 
