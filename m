@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0EA941BF9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FEB941DF7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E0361C215B4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2911F252CB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F22E18801A;
-	Tue, 30 Jul 2024 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554111A76B4;
+	Tue, 30 Jul 2024 17:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfQu+Dmg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9+cse+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56200156F30;
-	Tue, 30 Jul 2024 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA521A76A1;
+	Tue, 30 Jul 2024 17:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358892; cv=none; b=c2leCcos5k7qQaiJGOheKX3C9oH6J459UybRgH+yPhcIjSSZIo32nyxoj40H7U/9AS2FO45ddoS93HXPM29y6TCz0sjlIYuvw3vs0P6343lE41EgmMBsowLepFu12/IhipPFzFQdoIsn+4mnlHfv8j902TI+oBufYB+LA//qC6k=
+	t=1722360231; cv=none; b=Ka6NTBken4LH45qk1Jq/Q3k35kXTdMb1N6z5j1hi7uk3IP47mVScFgf86/HTSoTWrzPYoeb78RL4I6DzOCJUP4r6qxTzqrhu0FNuTssy43nNb+zFA4b3TvV+1NQ4lXDPF0Lsr2hv6GldAxNc1wNUaqz1MbCemFiqLXp0l5dMn0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358892; c=relaxed/simple;
-	bh=8QvjdALhuOHdvXrsVZ5blaPz2kLwPlw/hlLjXvjrliM=;
+	s=arc-20240116; t=1722360231; c=relaxed/simple;
+	bh=3GuqdPMTXjSeF05eEsxUzJ2YH4IhSUbIt8HdNoO4nc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upoNJvqLXBqQKDf8ocD8CRpKeMNDmuedyyWAX/gmOE/nZdL83zds/oGjfHQuKiOwNUVC3kFFGi2/wTx9J3wZEag7a+40JwXcgUWRzI75rVUahTKVY8JGSVkGUDU2l29dDMvaXP0+PSfErA3pGsl5KvJFhnxD5YFY97/QTYXuv7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfQu+Dmg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12F0C32782;
-	Tue, 30 Jul 2024 17:01:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S6WJgGS5S7M6Ixh+Swl12kmUsfl8ViE7Y+qMSE2tX/rCynJM1lWGOac1uSM/dSfQ8FnaHOB4G2NFZ+8yE8IH+ImTlEdKQZgB/Qu+JIR/g2uXSscSPl11/PJ8KlFFutWP6NwoLEUdnQnzZVCrpbfx8WKhbSF/YE9v6cN9nrRhY+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9+cse+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC27C32782;
+	Tue, 30 Jul 2024 17:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358892;
-	bh=8QvjdALhuOHdvXrsVZ5blaPz2kLwPlw/hlLjXvjrliM=;
+	s=korg; t=1722360230;
+	bh=3GuqdPMTXjSeF05eEsxUzJ2YH4IhSUbIt8HdNoO4nc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfQu+Dmgg53PnWuO1An7HptV1g+u8SSIDRPncjmqWetqnn5Jbf3EBETvniVrOSq/E
-	 /26W4eRZ9bFTegsl7+eOrSNMUQJg0cTLtnIJW1nDAxce7feTkr4wo0iddS2u/fdXeE
-	 zC7sFVyC0b99m+/ZO4SvyTs2DmO2SIAlKJRhUVeQ=
+	b=q9+cse+ub+p07Wci+VMbb3QKDlzK+Bat/+MRP5M9NKizSYL+xpjrK+TT6JpXmZHST
+	 sbZ2hWiWC/5l2eTAo+YCfjJwq+mJ2HgeEDNmpS/AOBl7nPTc6I2NFmuWxH5qXKLBub
+	 0J/o9yFkD95qaII2aNerpOK8TqZazBaDXYK3u6F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ofir Gal <ofir.gal@volumez.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.6 406/568] md/md-bitmap: fix writing non bitmap pages
+	Keith Busch <kbusch@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.10 637/809] PCI/DPC: Fix use-after-free on concurrent DPC and hot-removal
 Date: Tue, 30 Jul 2024 17:48:33 +0200
-Message-ID: <20240730151655.738441011@linuxfoundation.org>
+Message-ID: <20240730151750.006343258@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ofir Gal <ofir.gal@volumez.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit ab99a87542f194f28e2364a42afbf9fb48b1c724 upstream.
+commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
 
-__write_sb_page() rounds up the io size to the optimal io size if it
-doesn't exceed the data offset, but it doesn't check the final size
-exceeds the bitmap length.
+Keith reports a use-after-free when a DPC event occurs concurrently to
+hot-removal of the same portion of the hierarchy:
 
-For example:
-page count      - 1
-page size       - 4K
-data offset     - 1M
-optimal io size - 256K
+The dpc_handler() awaits readiness of the secondary bus below the
+Downstream Port where the DPC event occurred.  To do so, it polls the
+config space of the first child device on the secondary bus.  If that
+child device is concurrently removed, accesses to its struct pci_dev
+cause the kernel to oops.
 
-The final io size would be 256K (64 pages) but md_bitmap_storage_alloc()
-allocated 1 page, the IO would write 1 valid page and 63 pages that
-happens to be allocated afterwards. This leaks memory to the raid device
-superblock.
+That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
+reference on the child device.  Before v6.3, the function was only
+called on resume from system sleep or on runtime resume.  Holding a
+reference wasn't necessary back then because the pciehp IRQ thread
+could never run concurrently.  (On resume from system sleep, IRQs are
+not enabled until after the resume_noirq phase.  And runtime resume is
+always awaited before a PCI device is removed.)
 
-This issue caused a data transfer failure in nvme-tcp. The network
-drivers checks the first page of an IO with sendpage_ok(), it returns
-true if the page isn't a slabpage and refcount >= 1. If the page
-!sendpage_ok() the network driver disables MSG_SPLICE_PAGES.
+However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
+called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
+of secondary bus after reset"), which introduced that, failed to
+appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
+reference on the child device because dpc_handler() and pciehp may
+indeed run concurrently.  The commit was backported to v5.10+ stable
+kernels, so that's the oldest one affected.
 
-As of now the network layer assumes all the pages of the IO are
-sendpage_ok() when MSG_SPLICE_PAGES is on.
+Add the missing reference acquisition.
 
-The bitmap pages aren't slab pages, the first page of the IO is
-sendpage_ok(), but the additional pages that happens to be allocated
-after the bitmap pages might be !sendpage_ok(). That cause
-skb_splice_from_iter() to stop the data transfer, in the case below it
-hangs 'mdadm --create'.
+Abridged stack trace:
 
-The bug is reproducible, in order to reproduce we need nvme-over-tcp
-controllers with optimal IO size bigger than PAGE_SIZE. Creating a raid
-with bitmap over those devices reproduces the bug.
+  BUG: unable to handle page fault for address: 00000000091400c0
+  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
+  RIP: pci_bus_read_config_dword+0x17/0x50
+  pci_dev_wait()
+  pci_bridge_wait_for_secondary_bus()
+  dpc_reset_link()
+  pcie_do_recovery()
+  dpc_handler()
 
-In order to simulate large optimal IO size you can use dm-stripe with a
-single device.
-Script to reproduce the issue on top of brd devices using dm-stripe is
-attached below (will be added to blktest).
-
-I have added some logs to test the theory:
-...
-md: created bitmap (1 pages) for device md127
-__write_sb_page before md_super_write offset: 16, size: 262144. pfn: 0x53ee
-=== __write_sb_page before md_super_write. logging pages ===
-pfn: 0x53ee, slab: 0 <-- the only page that allocated for the bitmap
-pfn: 0x53ef, slab: 1
-pfn: 0x53f0, slab: 0
-pfn: 0x53f1, slab: 0
-pfn: 0x53f2, slab: 0
-pfn: 0x53f3, slab: 1
-...
-nvme_tcp: sendpage_ok - pfn: 0x53ee, len: 262144, offset: 0
-skbuff: before sendpage_ok() - pfn: 0x53ee
-skbuff: before sendpage_ok() - pfn: 0x53ef
-WARNING at net/core/skbuff.c:6848 skb_splice_from_iter+0x142/0x450
-skbuff: !sendpage_ok - pfn: 0x53ef. is_slab: 1, page_count: 1
-...
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ofir Gal <ofir.gal@volumez.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240607072748.3182199-1-ofir.gal@volumez.com
+Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
+Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
+Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
+Reported-by: Keith Busch <kbusch@kernel.org>
+Tested-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.10+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md-bitmap.c |    6 +++---
+ drivers/pci/pci.c |    6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -227,6 +227,8 @@ static int __write_sb_page(struct md_rde
- 	struct block_device *bdev;
- 	struct mddev *mddev = bitmap->mddev;
- 	struct bitmap_storage *store = &bitmap->storage;
-+	unsigned int bitmap_limit = (bitmap->storage.file_pages - pg_index) <<
-+		PAGE_SHIFT;
- 	loff_t sboff, offset = mddev->bitmap_info.offset;
- 	sector_t ps = pg_index * PAGE_SIZE / SECTOR_SIZE;
- 	unsigned int size = PAGE_SIZE;
-@@ -269,11 +271,9 @@ static int __write_sb_page(struct md_rde
- 		if (size == 0)
- 			/* bitmap runs in to data */
- 			return -EINVAL;
--	} else {
--		/* DATA METADATA BITMAP - no problems */
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4753,7 +4753,7 @@ static int pci_bus_max_d3cold_delay(cons
+  */
+ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type)
+ {
+-	struct pci_dev *child;
++	struct pci_dev *child __free(pci_dev_put) = NULL;
+ 	int delay;
+ 
+ 	if (pci_dev_is_disconnected(dev))
+@@ -4782,8 +4782,8 @@ int pci_bridge_wait_for_secondary_bus(st
+ 		return 0;
  	}
  
--	md_super_write(mddev, rdev, sboff + ps, (int) size, page);
-+	md_super_write(mddev, rdev, sboff + ps, (int)min(size, bitmap_limit), page);
- 	return 0;
- }
+-	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
+-				 bus_list);
++	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
++					     struct pci_dev, bus_list));
+ 	up_read(&pci_bus_sem);
  
+ 	/*
 
 
 
