@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E98941DDB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DD8941B94
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DAE1C2363A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4EFD1F23E60
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2828E156F30;
-	Tue, 30 Jul 2024 17:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB76618991A;
+	Tue, 30 Jul 2024 16:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5DZa/go"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0kINkV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EE11A76AF;
-	Tue, 30 Jul 2024 17:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71ECC184549;
+	Tue, 30 Jul 2024 16:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360135; cv=none; b=IK9Db+B4/rvo4uAVUmLHEwCXdch0V40lhe5kprSB4DXebL9XMqcwuHjSbVmfG/1Fgtn6cjX2jPHHBdQK77EN+e/EtnHqX4Pvyc76+urCP1lKfEExBEMNi63wMOmg2jkTozFThGYFOAFpe6n8J4GeIko4rq9UeBuSCYJxqQ2EBH4=
+	t=1722358594; cv=none; b=pKJK0lJPXvCYLUACvI39t/Sfv6xBdHS/JhYZh+cBPZeS/jAOQ/XcXZiJnwliWJZpOgZnxDoXRfv47dHidOc5dJVvqcTpiWmh6wMeRChJ13hcCPgopPzTnx5MjCZ42dkPt0xjr/Rm3duZRVmJMymDxPjHYKOJiWcGjRRs23jJToI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360135; c=relaxed/simple;
-	bh=GRDaMpxBkVhkeIEHTJClpvmfPjcDPdYqnLDa+RzZ8iY=;
+	s=arc-20240116; t=1722358594; c=relaxed/simple;
+	bh=u3Xf2Fu0ExxZvvw4DIWcqx1qwUfvbAaNqaaCnFGdMMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAtftUbrz+wVNE26rOdTOQNbZ1Wml7D0ZXhmds4toGx97cLnHyrmM0feR3M5yL+ifOJwxPq0roqbEbbP8CoY8HcXQHcBOYSOCQ65k5M2GBNDIcQipxpaus7wzEqvmEHdGhcTFbQedUxGgwCProsYNXbGLDUycCYfRu8oJTRYFcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5DZa/go; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E307C32782;
-	Tue, 30 Jul 2024 17:22:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hMm4zquJgH3ym2b+1QpXNVjQa6kL6hg6YG05jX7eIYAQe5ngfnIBASZSdcu62XXSQL1Iq9hRYJvdLpf/GfDiXbJdUpiYSKfMWMb463U2C7yaWuLhwzGgnFAOIr3nH2/imzIkV3o/Kng03sliH5uzHu3iFo0HdnU9l0JIr6xDlWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0kINkV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F73AC4AF0C;
+	Tue, 30 Jul 2024 16:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360135;
-	bh=GRDaMpxBkVhkeIEHTJClpvmfPjcDPdYqnLDa+RzZ8iY=;
+	s=korg; t=1722358594;
+	bh=u3Xf2Fu0ExxZvvw4DIWcqx1qwUfvbAaNqaaCnFGdMMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5DZa/go66O7UgZS/trmBqyJyQabqZD1axkqMcFhUWtjfR0ehWqBXtQn490pbPSwB
-	 +dOOoO6Uz8Jwuri56qd0q1MOI+cY7HbcjHMPHs89VTSDWhSyye5xhKPWEJnu/JPq46
-	 MIolwjIurlKg3+XxoMX2OYFevkwVIZad7PK6g0yk=
+	b=C0kINkV2Nj3fqA7V5E6n/BPZJL/H401aTt+kFAdwvLdNCgrORTFLExoio3nszyneL
+	 G5+IqfJgvHUxNpNb3nbhPXfXrXiXV/Bx7SfGvBaqClpTzbzcdB/jckY/hXkBmk60Ml
+	 amqNE5KCpx4+TnFG8w5k403lbMlrJDkjESvzVCu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.10 608/809] leds: mt6360: Fix memory leak in mt6360_init_isnk_properties()
+	Akshat Jain <akshatzen@google.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>
+Subject: [PATCH 6.6 377/568] ata: libata-scsi: Fix offsets for the fixed format sense data
 Date: Tue, 30 Jul 2024 17:48:04 +0200
-Message-ID: <20240730151748.850363717@linuxfoundation.org>
+Message-ID: <20240730151654.600327197@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Igor Pylypiv <ipylypiv@google.com>
 
-commit e41d574b359ccd8d99be65c6f11502efa2b83136 upstream.
+commit 38dab832c3f4154968f95b267a3bb789e87554b0 upstream.
 
-The fwnode_for_each_child_node() loop requires manual intervention to
-decrement the child refcount in case of an early return.
+Correct the ATA PASS-THROUGH fixed format sense data offsets to conform
+to SPC-6 and SAT-5 specifications. Additionally, set the VALID bit to
+indicate that the INFORMATION field contains valid information.
 
-Add the missing calls to fwnode_handle_put(child) to avoid memory leaks
-in the error paths.
+INFORMATION
+===========
 
+SAT-5 Table 212 — "Fixed format sense data INFORMATION field for the ATA
+PASS-THROUGH commands" defines the following format:
+
++------+------------+
+| Byte |   Field    |
++------+------------+
+|    0 | ERROR      |
+|    1 | STATUS     |
+|    2 | DEVICE     |
+|    3 | COUNT(7:0) |
++------+------------+
+
+SPC-6 Table 48 - "Fixed format sense data" specifies that the INFORMATION
+field starts at byte 3 in sense buffer resulting in the following offsets
+for the ATA PASS-THROUGH commands:
+
++------------+-------------------------+
+|   Field    |  Offset in sense buffer |
++------------+-------------------------+
+| ERROR      |  3                      |
+| STATUS     |  4                      |
+| DEVICE     |  5                      |
+| COUNT(7:0) |  6                      |
++------------+-------------------------+
+
+COMMAND-SPECIFIC INFORMATION
+============================
+
+SAT-5 Table 213 - "Fixed format sense data COMMAND-SPECIFIC INFORMATION
+field for ATA PASS-THROUGH" defines the following format:
+
++------+-------------------+
+| Byte |        Field      |
++------+-------------------+
+|    0 | FLAGS | LOG INDEX |
+|    1 | LBA (7:0)         |
+|    2 | LBA (15:8)        |
+|    3 | LBA (23:16)       |
++------+-------------------+
+
+SPC-6 Table 48 - "Fixed format sense data" specifies that
+the COMMAND-SPECIFIC-INFORMATION field starts at byte 8
+in sense buffer resulting in the following offsets for
+the ATA PASS-THROUGH commands:
+
+Offsets of these fields in the fixed sense format are as follows:
+
++-------------------+-------------------------+
+|       Field       |  Offset in sense buffer |
++-------------------+-------------------------+
+| FLAGS | LOG INDEX |  8                      |
+| LBA (7:0)         |  9                      |
+| LBA (15:8)        |  10                     |
+| LBA (23:16)       |  11                     |
++-------------------+-------------------------+
+
+Reported-by: Akshat Jain <akshatzen@google.com>
+Fixes: 11093cb1ef56 ("libata-scsi: generate correct ATA pass-through sense")
 Cc: stable@vger.kernel.org
-Fixes: 679f8652064b ("leds: Add mt6360 driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Acked-by: Pavel Machek <pavel@ucw.cz>
-Link: https://lore.kernel.org/r/20240611-leds-mt6360-memleak-v1-1-93642eb5011e@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Link: https://lore.kernel.org/r/20240702024735.1152293-2-ipylypiv@google.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/flash/leds-mt6360.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/leds/flash/leds-mt6360.c
-+++ b/drivers/leds/flash/leds-mt6360.c
-@@ -643,14 +643,17 @@ static int mt6360_init_isnk_properties(s
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -855,7 +855,6 @@ static void ata_gen_passthru_sense(struc
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	struct ata_taskfile *tf = &qc->result_tf;
+ 	unsigned char *sb = cmd->sense_buffer;
+-	unsigned char *desc = sb + 8;
+ 	u8 sense_key, asc, ascq;
  
- 			ret = fwnode_property_read_u32(child, "reg", &reg);
- 			if (ret || reg > MT6360_LED_ISNK3 ||
--			    priv->leds_active & BIT(reg))
-+			    priv->leds_active & BIT(reg)) {
-+				fwnode_handle_put(child);
- 				return -EINVAL;
-+			}
+ 	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
+@@ -877,7 +876,8 @@ static void ata_gen_passthru_sense(struc
+ 		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
+ 	}
  
- 			ret = fwnode_property_read_u32(child, "color", &color);
- 			if (ret) {
- 				dev_err(priv->dev,
- 					"led %d, no color specified\n",
- 					led->led_no);
-+				fwnode_handle_put(child);
- 				return ret;
- 			}
+-	if ((cmd->sense_buffer[0] & 0x7f) >= 0x72) {
++	if ((sb[0] & 0x7f) >= 0x72) {
++		unsigned char *desc;
+ 		u8 len;
+ 
+ 		/* descriptor format */
+@@ -916,21 +916,21 @@ static void ata_gen_passthru_sense(struc
+ 		}
+ 	} else {
+ 		/* Fixed sense format */
+-		desc[0] = tf->error;
+-		desc[1] = tf->status;
+-		desc[2] = tf->device;
+-		desc[3] = tf->nsect;
+-		desc[7] = 0;
++		sb[0] |= 0x80;
++		sb[3] = tf->error;
++		sb[4] = tf->status;
++		sb[5] = tf->device;
++		sb[6] = tf->nsect;
+ 		if (tf->flags & ATA_TFLAG_LBA48)  {
+-			desc[8] |= 0x80;
++			sb[8] |= 0x80;
+ 			if (tf->hob_nsect)
+-				desc[8] |= 0x40;
++				sb[8] |= 0x40;
+ 			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
+-				desc[8] |= 0x20;
++				sb[8] |= 0x20;
+ 		}
+-		desc[9] = tf->lbal;
+-		desc[10] = tf->lbam;
+-		desc[11] = tf->lbah;
++		sb[9] = tf->lbal;
++		sb[10] = tf->lbam;
++		sb[11] = tf->lbah;
+ 	}
+ }
  
 
 
