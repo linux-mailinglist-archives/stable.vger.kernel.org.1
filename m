@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-62963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A35B941673
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9CE94167C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95FA3B217E2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 900131C23286
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9B11BE22A;
-	Tue, 30 Jul 2024 16:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868871C2320;
+	Tue, 30 Jul 2024 16:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYlUfNHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuZxdUf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A4A1BD027;
-	Tue, 30 Jul 2024 16:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3CD1C2324;
+	Tue, 30 Jul 2024 16:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355212; cv=none; b=JWP1GdJ1XBrZ0RD1M5QUe/t14YpLUyei1uBILHzp31H39jz/6GqxRhfE2F7ABMGoTmDygHd6ErbeAcGqIiDiNkz+NEuTIAijHgRxvASYig3T8i6X1O6B1M98sJRFcZvuRR31GLsVPt3w4+I36RMKsEqb3tvJzGaeORSZj0bK3UY=
+	t=1722355232; cv=none; b=LAe98kbfqGyCL2r4ZrSO6/X/jS8dPn5ZEEgFyUS8Ei/mh2IfXzqh6FFq9nToxG51VjBksZ4ciUuXx630hl5GcVoz88QPFIgWbBNTKun4ZwdioyE2l5im2o7txWasZFx0cF7Zk0uAP7a3fRS0CzuDeFI0VMJe9x6+5yJgQBO8alo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355212; c=relaxed/simple;
-	bh=r/F6xzZj2RfatddyzrVQnFgJJhkd72+qMWFcPeuYp44=;
+	s=arc-20240116; t=1722355232; c=relaxed/simple;
+	bh=3/F8P7hLPWkhl6tgX1PKq7keR+6dy9M5yXSggO1LEXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SeNKjDbn8tRnambruZiSt6yXEuQPMA1QnhBdKmzkTdnwPj4XV117x7DKw7md/lp6wmUqpCmkq/xDqnHK8D2Z8DmxI/D6bos6Ng7NmltD7XVYRHydZ3UdURmKtsM8m7dq59f1wNYWvPwGkm70qVG5DVEb0t0RL9cBPCVUP7sycJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYlUfNHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB96C32782;
-	Tue, 30 Jul 2024 16:00:11 +0000 (UTC)
+	 MIME-Version; b=Rld3v+Y3a8rkUqe9oUrKYNhF82RzS/yroBdjKmZ9oSqprgHvWbfAwRJgXkPGNNpvQwL774dEDm7eR8ik1eYnjy5syTVDroRuAuzcc7df67yp5UVtFiyMgcyJYEUispY7TiZxpZHMbnh2Vop5T9SzeweX9iv9bTnGLOL32puI+Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuZxdUf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D72EC4AF0C;
+	Tue, 30 Jul 2024 16:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355212;
-	bh=r/F6xzZj2RfatddyzrVQnFgJJhkd72+qMWFcPeuYp44=;
+	s=korg; t=1722355232;
+	bh=3/F8P7hLPWkhl6tgX1PKq7keR+6dy9M5yXSggO1LEXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kYlUfNHtH5eEpJ7XCnXLmxrlwpAAxw1os0AyMJOhXrUt//6Z2kEZco/yhaquYmdbF
-	 oSvX66hef/W0SR/VY3O9t6u/rnEq4ECdHlSexoXkTVFTPnhUX1fPJUeb9qIG+pzo4s
-	 AhW0mHKn8V4kgY3/Rio7yz/MTIRxwt/OvglkmCeI=
+	b=vuZxdUf847CqMn+BtKV8RY7f5BLqbeewJxqjPRxuVJxRq7KVVrbvFvDb4Hlf+fAwP
+	 RteBuEePDTdazT5p7egt/nzPBHOT6k5L71L3TFp6cak+5F5iuI4NoUiEPAEDIfiUm9
+	 CbciwRzpuh8y8OiCRLA9nptMzi3Kb3pMLYBqeTm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Mateusz Kusiak <mateusz.kusiak@linux.intel.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/568] block/mq-deadline: Fix the tag reservation code
-Date: Tue, 30 Jul 2024 17:42:07 +0200
-Message-ID: <20240730151640.621682706@linuxfoundation.org>
+Subject: [PATCH 6.6 021/568] md: Dont wait for MD_RECOVERY_NEEDED for HOT_REMOVE_DISK ioctl
+Date: Tue, 30 Jul 2024 17:42:08 +0200
+Message-ID: <20240730151640.661304354@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -69,81 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 39823b47bbd40502632ffba90ebb34fff7c8b5e8 ]
+[ Upstream commit a1fd37f97808db4fa1bf55da0275790c42521e45 ]
 
-The current tag reservation code is based on a misunderstanding of the
-meaning of data->shallow_depth. Fix the tag reservation code as follows:
-* By default, do not reserve any tags for synchronous requests because
-  for certain use cases reserving tags reduces performance. See also
-  Harshit Mogalapalli, [bug-report] Performance regression with fio
-  sequential-write on a multipath setup, 2024-03-07
-  (https://lore.kernel.org/linux-block/5ce2ae5d-61e2-4ede-ad55-551112602401@oracle.com/)
-* Reduce min_shallow_depth to one because min_shallow_depth must be less
-  than or equal any shallow_depth value.
-* Scale dd->async_depth from the range [1, nr_requests] to [1,
-  bits_per_sbitmap_word].
+Commit 90f5f7ad4f38 ("md: Wait for md_check_recovery before attempting
+device removal.") explained in the commit message that failed device
+must be reomoved from the personality first by md_check_recovery(),
+before it can be removed from the array. That's the reason the commit
+add the code to wait for MD_RECOVERY_NEEDED.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Fixes: 07757588e507 ("block/mq-deadline: Reserve 25% of scheduler tags for synchronous requests")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240509170149.7639-3-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+However, this is not the case now, because remove_and_add_spares() is
+called directly from hot_remove_disk() from ioctl path, hence failed
+device(marked faulty) can be removed from the personality by ioctl.
+
+On the other hand, the commit introduced a performance problem that
+if MD_RECOVERY_NEEDED is set and the array is not running, ioctl will
+wait for 5s before it can return failure to user.
+
+Since the waiting is not needed now, fix the problem by removing the
+waiting.
+
+Fixes: 90f5f7ad4f38 ("md: Wait for md_check_recovery before attempting device removal.")
+Reported-by: Mateusz Kusiak <mateusz.kusiak@linux.intel.com>
+Closes: https://lore.kernel.org/all/814ff6ee-47a2-4ba0-963e-cf256ee4ecfa@linux.intel.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240627112321.3044744-1-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/mq-deadline.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/md/md.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index 02a916ba62ee7..78a8aa204c156 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -621,6 +621,20 @@ static struct request *dd_dispatch_request(struct blk_mq_hw_ctx *hctx)
- 	return rq;
- }
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index ba732b1d00b5b..b5dea664f946d 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -7684,12 +7684,6 @@ static int md_ioctl(struct block_device *bdev, blk_mode_t mode,
  
-+/*
-+ * 'depth' is a number in the range 1..INT_MAX representing a number of
-+ * requests. Scale it with a factor (1 << bt->sb.shift) / q->nr_requests since
-+ * 1..(1 << bt->sb.shift) is the range expected by sbitmap_get_shallow().
-+ * Values larger than q->nr_requests have the same effect as q->nr_requests.
-+ */
-+static int dd_to_word_depth(struct blk_mq_hw_ctx *hctx, unsigned int qdepth)
-+{
-+	struct sbitmap_queue *bt = &hctx->sched_tags->bitmap_tags;
-+	const unsigned int nrr = hctx->queue->nr_requests;
-+
-+	return ((qdepth << bt->sb.shift) + nrr - 1) / nrr;
-+}
-+
- /*
-  * Called by __blk_mq_alloc_request(). The shallow_depth value set by this
-  * function is used by __blk_mq_get_tag().
-@@ -637,7 +651,7 @@ static void dd_limit_depth(blk_opf_t opf, struct blk_mq_alloc_data *data)
- 	 * Throttle asynchronous requests and writes such that these requests
- 	 * do not block the allocation of synchronous requests.
- 	 */
--	data->shallow_depth = dd->async_depth;
-+	data->shallow_depth = dd_to_word_depth(data->hctx, dd->async_depth);
- }
+ 	}
  
- /* Called by blk_mq_update_nr_requests(). */
-@@ -647,9 +661,9 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
- 	struct deadline_data *dd = q->elevator->elevator_data;
- 	struct blk_mq_tags *tags = hctx->sched_tags;
- 
--	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
-+	dd->async_depth = q->nr_requests;
- 
--	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
-+	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, 1);
- }
- 
- /* Called by blk_mq_init_hctx() and blk_mq_init_sched(). */
+-	if (cmd == HOT_REMOVE_DISK)
+-		/* need to ensure recovery thread has run */
+-		wait_event_interruptible_timeout(mddev->sb_wait,
+-						 !test_bit(MD_RECOVERY_NEEDED,
+-							   &mddev->recovery),
+-						 msecs_to_jiffies(5000));
+ 	if (cmd == STOP_ARRAY || cmd == STOP_ARRAY_RO) {
+ 		/* Need to flush page cache, and ensure no-one else opens
+ 		 * and writes
 -- 
 2.43.0
 
