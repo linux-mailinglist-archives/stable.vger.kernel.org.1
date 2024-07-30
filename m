@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAB0941928
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FE1941C4D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759151F21261
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CB222821B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BA41A619A;
-	Tue, 30 Jul 2024 16:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BC1188003;
+	Tue, 30 Jul 2024 17:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrICEk/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZalTZt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86E41A616E;
-	Tue, 30 Jul 2024 16:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10C81E86F;
+	Tue, 30 Jul 2024 17:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356978; cv=none; b=RSx5bcjLXy7n8g/RDyPLWixEWpGDNBIdtbnVqjqWD8VD/7N5VhqFv6rvkYFMLaU2EDQvZwZXGEE69DsjwvOsAoTKxfhMCzHShqGxZOCji3GhHwMKOQKg/4kD5RSpmIyj+zqjUzApsbHFfB3No0q4kZwW2Im4fa+iiVD4AV/a4f4=
+	t=1722359149; cv=none; b=kt3eoBDz0rX0PvRgrjBgYdGdQ6lEPwFIVgy0KXBtP2G2/5YaOI/8I0ZPN0TyMXKqqwY5swQQJFoiQaO+ZjuxZT4zwleqdp9M7o73BF9FMvOxFvNhaFHUCTLnS59SF02O5BKoq1jHLOlHQvbbD9MNkxKVaeHoVeclmp9gL3EZucU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356978; c=relaxed/simple;
-	bh=mWlqL2V0lev3yt8VPURIunx+Lz0G178hk6RtAhvKPkw=;
+	s=arc-20240116; t=1722359149; c=relaxed/simple;
+	bh=u8eip1vu2Qmx1B1m/hCFZlGdzvMOx073vLjpLDn72Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gR8T3hgW5Q1xmS9hfCdZWQhmi0mwIjN6oFCPindTAIUKuDoaCR9EEuZwtOMvW4AwXuO+uB+EE/ll/78CClXpzfjkYq64aJOLkCtRdlmIs/Og7EmKytgtqDxVcEZ+fBLQpTDwxzhKYGH6sHKWW5mNYlSy7BE/Mapvgsae8c9wvHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrICEk/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6D2C4AF0A;
-	Tue, 30 Jul 2024 16:29:36 +0000 (UTC)
+	 MIME-Version; b=TeD0149Nq9w1oqfZ8w4iuDCm9ZT8wFKDio91tQ5WHLd397FFGRo0F3JDnqLCC4WqTZfcFtTnjnvLXeOurXa2ayhcq8scMmR1cMMhcamiIvLQQCt7ZpnPlyd/iFvCIw6EZFzvyv/5iXIFT4vLFyVWZToy5mMmf9iJVCBcjh9OOWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZalTZt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3EFC4AF0E;
+	Tue, 30 Jul 2024 17:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356977;
-	bh=mWlqL2V0lev3yt8VPURIunx+Lz0G178hk6RtAhvKPkw=;
+	s=korg; t=1722359149;
+	bh=u8eip1vu2Qmx1B1m/hCFZlGdzvMOx073vLjpLDn72Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrICEk/zMw3Sb8fT+JgwuuVeNloG36fsc6aZA1DlXwSYXFLUkCYA9Sk5MFCuFg70j
-	 zN5NcIFDtlvcWK0rmZ2ioiqGCU0Skfq2IZSCfl5fSxNXD2zfzC4iUX1s9lTfp5ZMNZ
-	 LA7DGlE6bGbxNGTU3/EGpFnYFpUtMmcpb0J5XCRw=
+	b=kZalTZt67EDKj6cQHAWjGrwkMeIJM79hz5TdyuKdglTKKLOHFyfZWwQ90t6GPcve1
+	 I0D/yreHFBSy2H/FRyJGlOEin7d8AvrUS7luBQu8eaQZYKy2Txfbgeb7sAqN+Cng+X
+	 mzmkCJUEE9bpDsPHI8HtBmnhEoaB5oLmLUyve290=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Sean Anderson <sean.anderso@linux.dev>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Christoph Schlameuss <schlameuss@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 206/568] drm: zynqmp_dpsub: Fix an error handling path in zynqmp_dpsub_probe()
-Date: Tue, 30 Jul 2024 17:45:13 +0200
-Message-ID: <20240730151647.925225341@linuxfoundation.org>
+Subject: [PATCH 6.10 438/809] kvm: s390: Reject memory region operations for ucontrol VMs
+Date: Tue, 30 Jul 2024 17:45:14 +0200
+Message-ID: <20240730151742.002420210@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-[ Upstream commit 4ea3deda1341fef7b923ad9cfe5dd46b1b51bfa8 ]
+[ Upstream commit 7816e58967d0e6cadce05c8540b47ed027dc2499 ]
 
-If zynqmp_dpsub_drm_init() fails, we must undo the previous
-drm_bridge_add() call.
+This change rejects the KVM_SET_USER_MEMORY_REGION and
+KVM_SET_USER_MEMORY_REGION2 ioctls when called on a ucontrol VM.
+This is necessary since ucontrol VMs have kvm->arch.gmap set to 0 and
+would thus result in a null pointer dereference further in.
+Memory management needs to be performed in userspace and using the
+ioctls KVM_S390_UCAS_MAP and KVM_S390_UCAS_UNMAP.
 
-Fixes: be3f3042391d ("drm: zynqmp_dpsub: Always register bridge")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Sean Anderson <sean.anderso@linux.dev>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/974d1b062d7c61ee6db00d16fa7c69aa1218ee02.1716198025.git.christophe.jaillet@wanadoo.fr
+Also improve s390 specific documentation for KVM_SET_USER_MEMORY_REGION
+and KVM_SET_USER_MEMORY_REGION2.
+
+Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+Fixes: 27e0393f15fc ("KVM: s390: ucontrol: per vcpu address spaces")
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240624095902.29375-1-schlameuss@linux.ibm.com
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+[frankja@linux.ibm.com: commit message spelling fix, subject prefix fix]
+Message-ID: <20240624095902.29375-1-schlameuss@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xlnx/zynqmp_dpsub.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/virt/kvm/api.rst | 12 ++++++++++++
+ arch/s390/kvm/kvm-s390.c       |  3 +++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
-index face8d6b2a6fb..f5781939de9c3 100644
---- a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
-@@ -269,6 +269,7 @@ static int zynqmp_dpsub_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index a71d91978d9ef..eec8df1dde06a 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -1403,6 +1403,12 @@ Instead, an abort (data abort if the cause of the page-table update
+ was a load or a store, instruction abort if it was an instruction
+ fetch) is injected in the guest.
  
- err_disp:
-+	drm_bridge_remove(dpsub->bridge);
- 	zynqmp_disp_remove(dpsub);
- err_dp:
- 	zynqmp_dp_remove(dpsub);
++S390:
++^^^^^
++
++Returns -EINVAL if the VM has the KVM_VM_S390_UCONTROL flag set.
++Returns -EINVAL if called on a protected VM.
++
+ 4.36 KVM_SET_TSS_ADDR
+ ---------------------
+ 
+@@ -6273,6 +6279,12 @@ state.  At VM creation time, all memory is shared, i.e. the PRIVATE attribute
+ is '0' for all gfns.  Userspace can control whether memory is shared/private by
+ toggling KVM_MEMORY_ATTRIBUTE_PRIVATE via KVM_SET_MEMORY_ATTRIBUTES as needed.
+ 
++S390:
++^^^^^
++
++Returns -EINVAL if the VM has the KVM_VM_S390_UCONTROL flag set.
++Returns -EINVAL if called on a protected VM.
++
+ 4.141 KVM_SET_MEMORY_ATTRIBUTES
+ -------------------------------
+ 
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 54b5b2565df8d..4a74effe68704 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -5749,6 +5749,9 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+ {
+ 	gpa_t size;
+ 
++	if (kvm_is_ucontrol(kvm))
++		return -EINVAL;
++
+ 	/* When we are protected, we should not change the memory slots */
+ 	if (kvm_s390_pv_get_handle(kvm))
+ 		return -EINVAL;
 -- 
 2.43.0
 
