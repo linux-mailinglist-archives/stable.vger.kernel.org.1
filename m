@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191B7941BE6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1342C941D81
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2A01C22B00
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDFF528C070
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B125187FF6;
-	Tue, 30 Jul 2024 17:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322F81A76B5;
+	Tue, 30 Jul 2024 17:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWmtJJUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwbuz0IE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0185F1FBA;
-	Tue, 30 Jul 2024 17:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14621A76A9;
+	Tue, 30 Jul 2024 17:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358835; cv=none; b=T51OAt2Ykw0Rp3NbNCRwTKGmrOOS9c8a6ARPxnY9/nL8UIiCfgcdMoExYzn5s6PmVMunWkqnT6oh6j/K0g6EfNJUrX+shk9CcL0pEveZDOyxmRjQqmuEGsjr3AmEniUcWylsrbmb8rYven281MfGOo1U5aIrh3kEk4t5jP2F8uQ=
+	t=1722359893; cv=none; b=ZYfy5pRROBuhf0JGk1vBYFuN8cSLLWQ0QZNCD5Jq9X8CxJq5UnyVqRCGivNtbNwLL+i05duJqTooQa93i3cwoZYdvF+emX3989vn/3mRLGfoQnOX12xciApdxVWfyf5E4aiQH6Yl5kcwHJdx7rusmHiBI1FKSVagDzgL96Da6dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358835; c=relaxed/simple;
-	bh=pRFalLbTsRcTYPSA+9JV4ednTrFG0cSC0r79l9x3GeA=;
+	s=arc-20240116; t=1722359893; c=relaxed/simple;
+	bh=gVX3qinZyvg5YOv8ipDii20q32rPo6FTR4v5sh4dbGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvLdBe2XVyNN9TM06J80ARcFkfrSnGHvYC6fLtv7rKi9tZZV2I66fr+mFAKW9udlZWA+j2pyEub8gK+HjLbTJunRUh6MJ2rj15QIOYtYcFytz2O3Ux8wRYlM/G+7BYKcMFxd3I9ricmjGze9+LsH2Ra7mlRCS03pBz9QOJrIWpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWmtJJUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBC4C32782;
-	Tue, 30 Jul 2024 17:00:33 +0000 (UTC)
+	 MIME-Version; b=fPCG6HbmQCdzbluA6pUmUQx3jEHHdJSHQKUsXN05icWtjW3+CvgFwEFE9hhetWr0cWVerA5C+QEvX8dgm1vyxc4cf+Jz5N2R56A3bUumqrw2wfS37OSdi3YEK+sIaf8kTAD8ck0ZeMCm98F3H1S3t4fE2lboRPJOug4U1naWyRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwbuz0IE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB59C32782;
+	Tue, 30 Jul 2024 17:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358834;
-	bh=pRFalLbTsRcTYPSA+9JV4ednTrFG0cSC0r79l9x3GeA=;
+	s=korg; t=1722359892;
+	bh=gVX3qinZyvg5YOv8ipDii20q32rPo6FTR4v5sh4dbGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWmtJJUoIxbYLy2HgcdSbk61Ad/SyQGvF6pp2u1ekmj3rUZoZHJnGUHhaTL9iiX8x
-	 KU14P6AprCPWBH6LBJNwP1pfWDBLf0sw0z3/ngTHEag8T4aPIAHsSLCCZryZLDrbMO
-	 W1pRhOLizcvQL0kRkA5vCLgBgmVK+xVL2tmFC2U4=
+	b=jwbuz0IE8Npp7oP6skqtL/JtgN0DFNejFSGwLY8frImBJTCQhW9l8HuiiSPZWUax+
+	 gFXySn3GGqAqUuj4LRY6UuFMShLKUh68waCxkKdWztJaMhsvLokyX1Gt07QiEXIE7r
+	 pmvJrkw0MhCDY//uVvcxjKiY2IXLqU1OVl9yMN2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
+	Steve Wilkins <steve.wilkins@raymarine.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 426/440] spi: microchip-core: switch to use modern name
+Subject: [PATCH 6.6 552/568] spi: microchip-core: only disable SPI controller when register value change requires it
 Date: Tue, 30 Jul 2024 17:50:59 +0200
-Message-ID: <20240730151632.420261782@linuxfoundation.org>
+Message-ID: <20240730151701.735712876@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,239 +63,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Steve Wilkins <steve.wilkins@raymarine.com>
 
-[ Upstream commit 8f8bf52ed5b76fc7958b0fbe3131540aecdff8ac ]
+[ Upstream commit de9850b5c606b754dd7861678d6e2874b96b04f8 ]
 
-Change legacy name master/slave to modern name host/target or controller.
+Setting up many of the registers for a new SPI transfer involves
+unconditionally disabling the SPI controller, writing the register
+value and re-enabling the controller. This is being done for registers
+even when the value is unchanged and is also done for registers that
+don't require the controller to be disabled for the change to take
+effect. Make an effort to detect changes to the register values, and
+only disables the controller if the new register value is different
+and disabling the controller is required. This stops the controller
+being repeated disabled and the bus going tristate before every
+transfer.
 
-No functional changed.
-
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://lore.kernel.org/r/20230823033003.3407403-7-yangyingliang@huawei.com
+Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
+Signed-off-by: Steve Wilkins <steve.wilkins@raymarine.com>
+Co-developed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20240715-depict-twirl-7e592eeabaad@wendy
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 3a5e76283672 ("spi: microchip-core: fix init function not setting the master and motorola modes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-microchip-core.c | 74 ++++++++++++++++----------------
- 1 file changed, 37 insertions(+), 37 deletions(-)
+ drivers/spi/spi-microchip-core.c | 79 +++++++++++++++++---------------
+ 1 file changed, 41 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index 13de3095ef817..a5173d820ac2e 100644
+index b49843f0c2e8e..cd624872dafb8 100644
 --- a/drivers/spi/spi-microchip-core.c
 +++ b/drivers/spi/spi-microchip-core.c
-@@ -257,7 +257,7 @@ static inline void mchp_corespi_set_framesize(struct mchp_corespi *spi, int bt)
- static void mchp_corespi_set_cs(struct spi_device *spi, bool disable)
- {
- 	u32 reg;
--	struct mchp_corespi *corespi = spi_master_get_devdata(spi->master);
-+	struct mchp_corespi *corespi = spi_controller_get_devdata(spi->controller);
+@@ -75,6 +75,7 @@
  
- 	reg = mchp_corespi_read(corespi, REG_SLAVE_SELECT);
- 	reg &= ~BIT(spi->chip_select);
-@@ -268,11 +268,11 @@ static void mchp_corespi_set_cs(struct spi_device *spi, bool disable)
+ #define REG_CONTROL		(0x00)
+ #define REG_FRAME_SIZE		(0x04)
++#define  FRAME_SIZE_MASK	GENMASK(5, 0)
+ #define REG_STATUS		(0x08)
+ #define REG_INT_CLEAR		(0x0c)
+ #define REG_RX_DATA		(0x10)
+@@ -89,6 +90,7 @@
+ #define REG_RIS			(0x24)
+ #define REG_CONTROL2		(0x28)
+ #define REG_COMMAND		(0x2c)
++#define  COMMAND_CLRFRAMECNT	BIT(4)
+ #define REG_PKTSIZE		(0x30)
+ #define REG_CMD_SIZE		(0x34)
+ #define REG_HWSTATUS		(0x38)
+@@ -149,62 +151,59 @@ static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi)
  
- static int mchp_corespi_setup(struct spi_device *spi)
+ static void mchp_corespi_enable_ints(struct mchp_corespi *spi)
  {
--	struct mchp_corespi *corespi = spi_master_get_devdata(spi->master);
-+	struct mchp_corespi *corespi = spi_controller_get_devdata(spi->controller);
- 	u32 reg;
+-	u32 control, mask = INT_ENABLE_MASK;
+-
+-	mchp_corespi_disable(spi);
+-
+-	control = mchp_corespi_read(spi, REG_CONTROL);
+-
+-	control |= mask;
+-	mchp_corespi_write(spi, REG_CONTROL, control);
++	u32 control = mchp_corespi_read(spi, REG_CONTROL);
+ 
+-	control |= CONTROL_ENABLE;
++	control |= INT_ENABLE_MASK;
+ 	mchp_corespi_write(spi, REG_CONTROL, control);
+ }
+ 
+ static void mchp_corespi_disable_ints(struct mchp_corespi *spi)
+ {
+-	u32 control, mask = INT_ENABLE_MASK;
+-
+-	mchp_corespi_disable(spi);
+-
+-	control = mchp_corespi_read(spi, REG_CONTROL);
+-	control &= ~mask;
+-	mchp_corespi_write(spi, REG_CONTROL, control);
++	u32 control = mchp_corespi_read(spi, REG_CONTROL);
+ 
+-	control |= CONTROL_ENABLE;
++	control &= ~INT_ENABLE_MASK;
+ 	mchp_corespi_write(spi, REG_CONTROL, control);
+ }
+ 
+ static inline void mchp_corespi_set_xfer_size(struct mchp_corespi *spi, int len)
+ {
+ 	u32 control;
+-	u16 lenpart;
++	u32 lenpart;
++	u32 frames = mchp_corespi_read(spi, REG_FRAMESUP);
  
  	/*
--	 * Active high slaves need to be specifically set to their inactive
-+	 * Active high targets need to be specifically set to their inactive
- 	 * states during probe by adding them to the "control group" & thus
- 	 * driving their select line low.
+-	 * Disable the SPI controller. Writes to transfer length have
+-	 * no effect when the controller is enabled.
++	 * Writing to FRAMECNT in REG_CONTROL will reset the frame count, taking
++	 * a shortcut requires an explicit clear.
  	 */
-@@ -284,7 +284,7 @@ static int mchp_corespi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static void mchp_corespi_init(struct spi_master *master, struct mchp_corespi *spi)
-+static void mchp_corespi_init(struct spi_controller *host, struct mchp_corespi *spi)
- {
- 	unsigned long clk_hz;
- 	u32 control = mchp_corespi_read(spi, REG_CONTROL);
-@@ -298,7 +298,7 @@ static void mchp_corespi_init(struct spi_master *master, struct mchp_corespi *sp
- 
- 	/* max. possible spi clock rate is the apb clock rate */
- 	clk_hz = clk_get_rate(spi->clk);
--	master->max_speed_hz = clk_hz;
-+	host->max_speed_hz = clk_hz;
+-	mchp_corespi_disable(spi);
++	if (frames == len) {
++		mchp_corespi_write(spi, REG_COMMAND, COMMAND_CLRFRAMECNT);
++		return;
++	}
  
  	/*
- 	 * The controller must be configured so that it doesn't remove Chip
-@@ -318,7 +318,7 @@ static void mchp_corespi_init(struct spi_master *master, struct mchp_corespi *sp
- 	/*
- 	 * It is required to enable direct mode, otherwise control over the chip
- 	 * select is relinquished to the hardware. SSELOUT is enabled too so we
--	 * can deal with active high slaves.
-+	 * can deal with active high targets.
+ 	 * The lower 16 bits of the frame count are stored in the control reg
+ 	 * for legacy reasons, but the upper 16 written to a different register:
+ 	 * FRAMESUP. While both the upper and lower bits can be *READ* from the
+-	 * FRAMESUP register, writing to the lower 16 bits is a NOP
++	 * FRAMESUP register, writing to the lower 16 bits is (supposedly) a NOP.
++	 *
++	 * The driver used to disable the controller while modifying the frame
++	 * count, and mask off the lower 16 bits of len while writing to
++	 * FRAMES_UP. When the driver was changed to disable the controller as
++	 * infrequently as possible, it was discovered that the logic of
++	 * lenpart = len & 0xffff_0000
++	 * write(REG_FRAMESUP, lenpart)
++	 * would actually write zeros into the lower 16 bits on an mpfs250t-es,
++	 * despite documentation stating these bits were read-only.
++	 * Writing len unmasked into FRAMES_UP ensures those bits aren't zeroed
++	 * on an mpfs250t-es and will be a NOP for the lower 16 bits on hardware
++	 * that matches the documentation.
  	 */
- 	mchp_corespi_write(spi, REG_SLAVE_SELECT, SSELOUT | SSEL_DIRECT);
- 
-@@ -383,8 +383,8 @@ static inline void mchp_corespi_set_mode(struct mchp_corespi *spi, unsigned int
- 
- static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
- {
--	struct spi_master *master = dev_id;
--	struct mchp_corespi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_id;
-+	struct mchp_corespi *spi = spi_controller_get_devdata(host);
- 	u32 intfield = mchp_corespi_read(spi, REG_MIS) & 0xf;
- 	bool finalise = false;
- 
-@@ -408,7 +408,7 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
- 	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
- 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
- 		finalise = true;
--		dev_err(&master->dev,
-+		dev_err(&host->dev,
- 			"%s: RX OVERFLOW: rxlen: %d, txlen: %d\n", __func__,
- 			spi->rx_len, spi->tx_len);
- 	}
-@@ -416,13 +416,13 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
- 	if (intfield & INT_TX_CHANNEL_UNDERRUN) {
- 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_TX_CHANNEL_UNDERRUN);
- 		finalise = true;
--		dev_err(&master->dev,
-+		dev_err(&host->dev,
- 			"%s: TX UNDERFLOW: rxlen: %d, txlen: %d\n", __func__,
- 			spi->rx_len, spi->tx_len);
- 	}
- 
- 	if (finalise)
--		spi_finalize_current_transfer(master);
-+		spi_finalize_current_transfer(host);
- 
- 	return IRQ_HANDLED;
- }
-@@ -464,16 +464,16 @@ static int mchp_corespi_calculate_clkgen(struct mchp_corespi *spi,
- 	return 0;
+ 	lenpart = len & 0xffff;
+-
+ 	control = mchp_corespi_read(spi, REG_CONTROL);
+ 	control &= ~CONTROL_FRAMECNT_MASK;
+ 	control |= lenpart << CONTROL_FRAMECNT_SHIFT;
+ 	mchp_corespi_write(spi, REG_CONTROL, control);
+-
+-	lenpart = len & 0xffff0000;
+-	mchp_corespi_write(spi, REG_FRAMESUP, lenpart);
+-
+-	control |= CONTROL_ENABLE;
+-	mchp_corespi_write(spi, REG_CONTROL, control);
++	mchp_corespi_write(spi, REG_FRAMESUP, len);
  }
  
--static int mchp_corespi_transfer_one(struct spi_master *master,
-+static int mchp_corespi_transfer_one(struct spi_controller *host,
- 				     struct spi_device *spi_dev,
- 				     struct spi_transfer *xfer)
+ static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
+@@ -227,17 +226,22 @@ static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
+ 
+ static inline void mchp_corespi_set_framesize(struct mchp_corespi *spi, int bt)
  {
--	struct mchp_corespi *spi = spi_master_get_devdata(master);
-+	struct mchp_corespi *spi = spi_controller_get_devdata(host);
- 	int ret;
++	u32 frame_size = mchp_corespi_read(spi, REG_FRAME_SIZE);
+ 	u32 control;
  
- 	ret = mchp_corespi_calculate_clkgen(spi, (unsigned long)xfer->speed_hz);
- 	if (ret) {
--		dev_err(&master->dev, "failed to set clk_gen for target %u Hz\n", xfer->speed_hz);
-+		dev_err(&host->dev, "failed to set clk_gen for target %u Hz\n", xfer->speed_hz);
- 		return ret;
- 	}
++	if ((frame_size & FRAME_SIZE_MASK) == bt)
++		return;
++
+ 	/*
+ 	 * Disable the SPI controller. Writes to the frame size have
+ 	 * no effect when the controller is enabled.
+ 	 */
+-	mchp_corespi_disable(spi);
++	control = mchp_corespi_read(spi, REG_CONTROL);
++	control &= ~CONTROL_ENABLE;
++	mchp_corespi_write(spi, REG_CONTROL, control);
  
-@@ -494,11 +494,11 @@ static int mchp_corespi_transfer_one(struct spi_master *master,
- 	return 1;
+ 	mchp_corespi_write(spi, REG_FRAME_SIZE, bt);
+ 
+-	control = mchp_corespi_read(spi, REG_CONTROL);
+ 	control |= CONTROL_ENABLE;
+ 	mchp_corespi_write(spi, REG_CONTROL, control);
+ }
+@@ -334,8 +338,6 @@ static inline void mchp_corespi_set_clk_gen(struct mchp_corespi *spi)
+ {
+ 	u32 control;
+ 
+-	mchp_corespi_disable(spi);
+-
+ 	control = mchp_corespi_read(spi, REG_CONTROL);
+ 	if (spi->clk_mode)
+ 		control |= CONTROL_CLKMODE;
+@@ -344,12 +346,12 @@ static inline void mchp_corespi_set_clk_gen(struct mchp_corespi *spi)
+ 
+ 	mchp_corespi_write(spi, REG_CLK_GEN, spi->clk_gen);
+ 	mchp_corespi_write(spi, REG_CONTROL, control);
+-	mchp_corespi_write(spi, REG_CONTROL, control | CONTROL_ENABLE);
  }
  
--static int mchp_corespi_prepare_message(struct spi_master *master,
-+static int mchp_corespi_prepare_message(struct spi_controller *host,
- 					struct spi_message *msg)
+ static inline void mchp_corespi_set_mode(struct mchp_corespi *spi, unsigned int mode)
  {
- 	struct spi_device *spi_dev = msg->spi;
--	struct mchp_corespi *spi = spi_master_get_devdata(master);
-+	struct mchp_corespi *spi = spi_controller_get_devdata(host);
+-	u32 control, mode_val;
++	u32 mode_val;
++	u32 control = mchp_corespi_read(spi, REG_CONTROL);
  
- 	mchp_corespi_set_framesize(spi, DEFAULT_FRAMESIZE);
- 	mchp_corespi_set_mode(spi, spi_dev->mode);
-@@ -508,32 +508,32 @@ static int mchp_corespi_prepare_message(struct spi_master *master,
- 
- static int mchp_corespi_probe(struct platform_device *pdev)
- {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct mchp_corespi *spi;
- 	struct resource *res;
- 	u32 num_cs;
- 	int ret = 0;
- 
--	master = devm_spi_alloc_master(&pdev->dev, sizeof(*spi));
--	if (!master)
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi));
-+	if (!host)
- 		return dev_err_probe(&pdev->dev, -ENOMEM,
--				     "unable to allocate master for SPI controller\n");
-+				     "unable to allocate host for SPI controller\n");
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 
- 	if (of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs))
- 		num_cs = MAX_CS;
- 
--	master->num_chipselect = num_cs;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--	master->setup = mchp_corespi_setup;
--	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->transfer_one = mchp_corespi_transfer_one;
--	master->prepare_message = mchp_corespi_prepare_message;
--	master->set_cs = mchp_corespi_set_cs;
--	master->dev.of_node = pdev->dev.of_node;
-+	host->num_chipselect = num_cs;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	host->setup = mchp_corespi_setup;
-+	host->bits_per_word_mask = SPI_BPW_MASK(8);
-+	host->transfer_one = mchp_corespi_transfer_one;
-+	host->prepare_message = mchp_corespi_prepare_message;
-+	host->set_cs = mchp_corespi_set_cs;
-+	host->dev.of_node = pdev->dev.of_node;
- 
--	spi = spi_master_get_devdata(master);
-+	spi = spi_controller_get_devdata(host);
- 
- 	spi->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(spi->regs))
-@@ -546,7 +546,7 @@ static int mchp_corespi_probe(struct platform_device *pdev)
- 				     spi->irq);
- 
- 	ret = devm_request_irq(&pdev->dev, spi->irq, mchp_corespi_interrupt,
--			       IRQF_SHARED, dev_name(&pdev->dev), master);
-+			       IRQF_SHARED, dev_name(&pdev->dev), host);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "could not request irq\n");
-@@ -561,25 +561,25 @@ static int mchp_corespi_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "failed to enable clock\n");
- 
--	mchp_corespi_init(master, spi);
-+	mchp_corespi_init(host, spi);
- 
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret) {
- 		mchp_corespi_disable(spi);
- 		clk_disable_unprepare(spi->clk);
- 		return dev_err_probe(&pdev->dev, ret,
--				     "unable to register master for SPI controller\n");
-+				     "unable to register host for SPI controller\n");
+ 	switch (mode & SPI_MODE_X_MASK) {
+ 	case SPI_MODE_0:
+@@ -367,12 +369,13 @@ static inline void mchp_corespi_set_mode(struct mchp_corespi *spi, unsigned int
  	}
  
--	dev_info(&pdev->dev, "Registered SPI controller %d\n", master->bus_num);
-+	dev_info(&pdev->dev, "Registered SPI controller %d\n", host->bus_num);
+ 	/*
+-	 * Disable the SPI controller. Writes to the frame size have
++	 * Disable the SPI controller. Writes to the frame protocol have
+ 	 * no effect when the controller is enabled.
+ 	 */
+-	mchp_corespi_disable(spi);
  
- 	return 0;
- }
+-	control = mchp_corespi_read(spi, REG_CONTROL);
++	control &= ~CONTROL_ENABLE;
++	mchp_corespi_write(spi, REG_CONTROL, control);
++
+ 	control &= ~(SPI_MODE_X_MASK << MODE_X_MASK_SHIFT);
+ 	control |= mode_val;
  
- static int mchp_corespi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master  = platform_get_drvdata(pdev);
--	struct mchp_corespi *spi = spi_master_get_devdata(master);
-+	struct spi_controller *host  = platform_get_drvdata(pdev);
-+	struct mchp_corespi *spi = spi_controller_get_devdata(host);
- 
- 	mchp_corespi_disable_ints(spi);
- 	clk_disable_unprepare(spi->clk);
 -- 
 2.43.0
 
