@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01398941AF5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C171941D2F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2BF1F213C5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAB3C28B3D1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B0D188013;
-	Tue, 30 Jul 2024 16:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AF11A76AA;
+	Tue, 30 Jul 2024 17:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5KHk0MV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QiVw+LB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C5E14831F;
-	Tue, 30 Jul 2024 16:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA961A76A0;
+	Tue, 30 Jul 2024 17:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358171; cv=none; b=pjstRSAd5YQT3diI5839+5FLdi9ATJaWOiSpM+UvKh8ON9sFj2zfbreUjekbjDaZDR3iiEAL2E5vcyaMoGpdCAKSJj5TK67fN6BdGmfYkSth4Iu5eTJcBSs5ZSVCqrowWXGeRiq+kBgKR619j9c0BrKoouySwMXsbhplVQaEUJ8=
+	t=1722359641; cv=none; b=Loi0LdecvPLZddjd6Epqs7o7vvOUdvzECHxfFv8CSES8UKEj06PZwuAGzUIhDoibDgUa3pnD7Hq3c7uOVhACTPV1fliYoah9Q2WIONm1lJVUy73VnZuGHdTNS12N64rwFIh4xxSY9rI7Sn1qTedX2uQbKq4maGQg9beG559csNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358171; c=relaxed/simple;
-	bh=D79/18xN1/+6yjRbMI0CXX3Ehg0xuy+Nklc8EUNFvAk=;
+	s=arc-20240116; t=1722359641; c=relaxed/simple;
+	bh=K5KViGFPpT8zozcFrP0fHxm44FahVRRB6BCqNv5jxHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLQhixfASom6iaLH13InOvat1gstuo38zm47hiqyL6ILNK+fez4kzKL01jM3tPrUaIxdensV9xP8F2rz4Ft42Tx2iFrmyR7RccXnNBuOk2NlX3eTa/peCVhePZ4WgCnCnX4WEQQlNz+HRW0Zal29sQevokWutYHaTeBWLpVe2b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5KHk0MV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F429C32782;
-	Tue, 30 Jul 2024 16:49:31 +0000 (UTC)
+	 MIME-Version; b=FBag+wC14XIETs3Q3Sx79BPnk+L1/8stdugs/A3re7PDlPQV1D0R8ryjzLjvJj2B/QZRAv297QWM3rstpq/HbC0kcFdggjPbcYzp5WIFA9R1vEOFcWU8yI1KHWJ0Ll7ovdJp+DuT0EEheBQ+DpM8F4KCJq5yaqRn1Q2dzyhk11w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QiVw+LB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A13C32782;
+	Tue, 30 Jul 2024 17:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358171;
-	bh=D79/18xN1/+6yjRbMI0CXX3Ehg0xuy+Nklc8EUNFvAk=;
+	s=korg; t=1722359641;
+	bh=K5KViGFPpT8zozcFrP0fHxm44FahVRRB6BCqNv5jxHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5KHk0MV+l00gjXfsmcqeYCtvc3G/to6h5yFgTi6q0fWhezhSELJoDfaXJPbDB5im
-	 insJSFdLq8llcnu3asGSOU8wxuL+qXtUKj4qc7oKT/T351mSCLTgNXjGh56ZfoD2Ti
-	 ULwlBaydiV210Gtm+8a1tQG+rwAz1uUG/SLxf/5g=
+	b=0QiVw+LBslxKWhPf2W1Z9i5o0C3nN6e3WNI8Y8g30PGZDAYYBPbEAnJLYHYjnkL4z
+	 AYM4dUH8y9tHMTF4Emac3t7HxPn7NT4n9htnS0nrLY0EIdkxeK69tDF3Qm7LyefFwn
+	 ogfdssmFTl73fgJic3uJrd+uF8/Cch+aOrW1lc5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Arjan van de Ven <arjan@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 363/440] watchdog/perf: properly initialize the turbo mode timestamp and rearm counter
-Date: Tue, 30 Jul 2024 17:49:56 +0200
-Message-ID: <20240730151629.993252670@linuxfoundation.org>
+	Gwenael Treuveur <gwenael.treuveur@foss.st.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.6 490/568] remoteproc: stm32_rproc: Fix mailbox interrupts queuing
+Date: Tue, 30 Jul 2024 17:49:57 +0200
+Message-ID: <20240730151659.181965524@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Gwenael Treuveur <gwenael.treuveur@foss.st.com>
 
-commit f944ffcbc2e1c759764850261670586ddf3bdabb upstream.
+commit c3281abea67c9c0dc6219bbc41d1feae05a16da3 upstream.
 
-For systems on which the performance counter can expire early due to turbo
-modes the watchdog handler has a safety net in place which validates that
-since the last watchdog event there has at least 4/5th of the watchdog
-period elapsed.
+Manage interrupt coming from coprocessor also when state is
+ATTACHED.
 
-This works reliably only after the first watchdog event because the per
-CPU variable which holds the timestamp of the last event is never
-initialized.
-
-So a first spurious event will validate against a timestamp of 0 which
-results in a delta which is likely to be way over the 4/5 threshold of the
-period.  As this might happen before the first watchdog hrtimer event
-increments the watchdog counter, this can lead to false positives.
-
-Fix this by initializing the timestamp before enabling the hardware event.
-Reset the rearm counter as well, as that might be non zero after the
-watchdog was disabled and reenabled.
-
-Link: https://lkml.kernel.org/r/87frsfu15a.ffs@tglx
-Fixes: 7edaeb6841df ("kernel/watchdog: Prevent false positives with turbo modes")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Arjan van de Ven <arjan@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 35bdafda40cc ("remoteproc: stm32_rproc: Add mutex protection for workqueue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gwenael Treuveur <gwenael.treuveur@foss.st.com>
+Acked-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Link: https://lore.kernel.org/r/20240521162316.156259-1-gwenael.treuveur@foss.st.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/watchdog_hld.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/remoteproc/stm32_rproc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/watchdog_hld.c
-+++ b/kernel/watchdog_hld.c
-@@ -91,11 +91,15 @@ static bool watchdog_check_timestamp(voi
- 	__this_cpu_write(last_timestamp, now);
- 	return true;
- }
--#else
--static inline bool watchdog_check_timestamp(void)
-+
-+static void watchdog_init_timestamp(void)
- {
--	return true;
-+	__this_cpu_write(nmi_rearmed, 0);
-+	__this_cpu_write(last_timestamp, ktime_get_mono_fast_ns());
- }
-+#else
-+static inline bool watchdog_check_timestamp(void) { return true; }
-+static inline void watchdog_init_timestamp(void) { }
- #endif
+--- a/drivers/remoteproc/stm32_rproc.c
++++ b/drivers/remoteproc/stm32_rproc.c
+@@ -294,7 +294,7 @@ static void stm32_rproc_mb_vq_work(struc
  
- static struct perf_event_attr wd_hw_attr = {
-@@ -196,6 +200,7 @@ void hardlockup_detector_perf_enable(voi
- 	if (!atomic_fetch_inc(&watchdog_cpus))
- 		pr_info("Enabled. Permanently consumes one hw-PMU counter.\n");
+ 	mutex_lock(&rproc->lock);
  
-+	watchdog_init_timestamp();
- 	perf_event_enable(this_cpu_read(watchdog_ev));
- }
+-	if (rproc->state != RPROC_RUNNING)
++	if (rproc->state != RPROC_RUNNING && rproc->state != RPROC_ATTACHED)
+ 		goto unlock_mutex;
  
+ 	if (rproc_vq_interrupt(rproc, mb->vq_id) == IRQ_NONE)
 
 
 
