@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2291F94178B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E160D941AD7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA3CD1F24483
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EACF1C21CB0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0D41A304C;
-	Tue, 30 Jul 2024 16:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7063518990F;
+	Tue, 30 Jul 2024 16:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tx+JlHaD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypFiJC6o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC41418C91F;
-	Tue, 30 Jul 2024 16:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA1D14831F;
+	Tue, 30 Jul 2024 16:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355790; cv=none; b=qgmbzSfWU2tNZtM/wfDMkMM9oaPTvcOVUIkqhPGriaJoRKIppWPgZmQcNZj862ArniR4Y2bJDopNRJ7vFdZ8oZY7+9+8KOOlRoB0rQP8K7ebLF2W6WeO3Qu4qJqf739MBn61qz/lwIGslgb43EowYUB4sfow2vF3l862QyeAcsI=
+	t=1722358078; cv=none; b=dWNYXozTSGeRk6vSDpKW/LUwcy3wEFU2GlxfEgAytpvCyQZGDblE7tLdqakGUy2vSEZ0XGKW66s3LR8CXQVOmcwxPT1tuccN8pddzZJPDn9hzqCOfr9jPWHYXKkkeqWAiw96zaUt7PrtNlLAY0i8I0tDKtv3rFo9INTp6S+OSyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355790; c=relaxed/simple;
-	bh=z0FT26++zGwyniWONlbKTcK1RBlB/WK6A/QJwVYLeV8=;
+	s=arc-20240116; t=1722358078; c=relaxed/simple;
+	bh=h7e+B2TdG47QI8seh6eYIprEfrd2gIVRvVKNyet8IJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RU+ICDe8Bw3QKziNj+XcmaZ0KbPTSDH2RIicHM8nuoOZW8n730cszeJqIoAsUy7CHuc5gGd8bEDaI037COvm/dENUWwlwzJpc2qpNolKLBgAOfRFkulCA6FOTgD1hXNQE9oQoKbcG7+K69szwngJ5nSJB88VMHXIB/OaZ5TQyxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tx+JlHaD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBE3C32782;
-	Tue, 30 Jul 2024 16:09:49 +0000 (UTC)
+	 MIME-Version; b=bBzyRD1om6mUOxpTZNOGCSKxSQqmS8DSwkJIaoGAIflSwyqULfiChrs7wrq043wLfgHMSzhqMm11QmkrUujSKdRbYJRY7TUqqpOe89SMht/GUjcxU04KbT7aETIQUf1+j7MY9fdCBwMlXV5qvHdioAHQ8rS+ziHo6X9gRELNmTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypFiJC6o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3702C32782;
+	Tue, 30 Jul 2024 16:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355789;
-	bh=z0FT26++zGwyniWONlbKTcK1RBlB/WK6A/QJwVYLeV8=;
+	s=korg; t=1722358078;
+	bh=h7e+B2TdG47QI8seh6eYIprEfrd2gIVRvVKNyet8IJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tx+JlHaDRbLH7unh3CN6vehSMyGLGGB2RyU/1tD3mBl4HYoWO6CyrS5D/4JK9h0Ax
-	 N97Ru7K8CW5ApwHTC2YKTJCPdB92hd4Z9UNOkodTPlMkdEfhYPTzyiRjPEbfpFKhgU
-	 pgGEOaiBcKaPyjiH6m34hrUDjlis/PnFUwTgKh5I=
+	b=ypFiJC6o+vIDXr0x5pRa4W2KI0Za22urgwOzvO+c7i8DDwp11bNrNRG7Y6FaEORtq
+	 wsIEdPyCPui38Vwi2CjjA1uezoXgE0DX5E+QWSUtfY2kwxwc4rDyXqIpdC8+FsEqPZ
+	 zdyjM5eOGWl/8ka2shYFJ5Ill63BoHHapbuFQiBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/568] arm64: dts: imx8mp: Add NPU Node
+Subject: [PATCH 6.10 321/809] media: renesas: vsp1: Fix _irqsave and _irq mix
 Date: Tue, 30 Jul 2024 17:43:17 +0200
-Message-ID: <20240730151643.390591552@linuxfoundation.org>
+Message-ID: <20240730151737.285046306@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-[ Upstream commit 4bedc468b725d55655dc8c9f5528932f4d77ccb0 ]
+[ Upstream commit 57edbbcf5258c378a9b9d0c80d33b03a010b22c8 ]
 
-The NPU is based on the Vivante GC8000 and its power-domain
-is controlled my pgc_mlmix.  Since the power-domain uses
-some of these clocks, setup the clock parent and rates
-inside the power-domain, and add the NPU node.
+The histogram support mixes _irqsave and _irq, causing the following
+smatch warning:
 
-The data sheet states the CLK_ML_AHB should be 300MHz for
-nominal, but 800MHz clock will divide down to 266 instead.
-Boards which operate in over-drive mode should update the
-clocks on their boards accordingly.  When the driver loads,
-the NPU numerates as:
+     drivers/media/platform/renesas/vsp1/vsp1_histo.c:153 histo_stop_streaming()
+     warn: mixing irqsave and irq
 
- etnaviv-gpu 38500000.npu: model: GC8000, revision: 8002
+The histo_stop_streaming() calls spin_lock_irqsave() followed by
+wait_event_lock_irq(). The former hints that interrupts may be disabled
+by the caller, while the latter reenables interrupts unconditionally.
+This doesn't cause any real bug, as the function is always called with
+interrupts enabled, but the pattern is still incorrect.
 
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: 106f68fc9da3 ("arm64: dts: imx8mp: Fix pgc_mlmix location")
+Fix the problem by using spin_lock_irq() instead of spin_lock_irqsave()
+in histo_stop_streaming(). While at it, switch to spin_lock_irq() and
+spin_lock() as appropriate elsewhere.
+
+Fixes: 99362e32332b ("[media] v4l: vsp1: Add histogram support")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-renesas-soc/164d74ff-312c-468f-be64-afa7182cd2f4@moroto.mountain/
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ .../media/platform/renesas/vsp1/vsp1_histo.c  | 20 ++++++++-----------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 4b50920ac2049..56f72d264eee8 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -886,6 +886,15 @@ pgc_mlmix: power-domain@24 {
- 						clocks = <&clk IMX8MP_CLK_ML_AXI>,
- 							 <&clk IMX8MP_CLK_ML_AHB>,
- 							 <&clk IMX8MP_CLK_NPU_ROOT>;
-+						assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
-+								  <&clk IMX8MP_CLK_ML_AXI>,
-+								  <&clk IMX8MP_CLK_ML_AHB>;
-+						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
-+									 <&clk IMX8MP_SYS_PLL1_800M>,
-+									 <&clk IMX8MP_SYS_PLL1_800M>;
-+						assigned-clock-rates = <800000000>,
-+								       <800000000>,
-+								       <300000000>;
- 					};
- 				};
- 			};
-@@ -1970,6 +1979,18 @@ vpumix_blk_ctrl: blk-ctrl@38330000 {
- 			interconnect-names = "g1", "g2", "vc8000e";
- 		};
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_histo.c b/drivers/media/platform/renesas/vsp1/vsp1_histo.c
+index 71155282ca116..cd1c8778662e6 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_histo.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_histo.c
+@@ -36,9 +36,8 @@ struct vsp1_histogram_buffer *
+ vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
+ {
+ 	struct vsp1_histogram_buffer *buf = NULL;
+-	unsigned long flags;
  
-+		npu: npu@38500000 {
-+			compatible = "vivante,gc";
-+			reg = <0x38500000 0x200000>;
-+			interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clk IMX8MP_CLK_NPU_ROOT>,
-+				 <&clk IMX8MP_CLK_NPU_ROOT>,
-+				 <&clk IMX8MP_CLK_ML_AXI>,
-+				 <&clk IMX8MP_CLK_ML_AHB>;
-+			clock-names = "core", "shader", "bus", "reg";
-+			power-domains = <&pgc_mlmix>;
-+		};
-+
- 		gic: interrupt-controller@38800000 {
- 			compatible = "arm,gic-v3";
- 			reg = <0x38800000 0x10000>,
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock(&histo->irqlock);
+ 
+ 	if (list_empty(&histo->irqqueue))
+ 		goto done;
+@@ -49,7 +48,7 @@ vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
+ 	histo->readout = true;
+ 
+ done:
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock(&histo->irqlock);
+ 	return buf;
+ }
+ 
+@@ -58,7 +57,6 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
+ 				    size_t size)
+ {
+ 	struct vsp1_pipeline *pipe = histo->entity.pipe;
+-	unsigned long flags;
+ 
+ 	/*
+ 	 * The pipeline pointer is guaranteed to be valid as this function is
+@@ -70,10 +68,10 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
+ 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, size);
+ 	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
+ 
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock(&histo->irqlock);
+ 	histo->readout = false;
+ 	wake_up(&histo->wait_queue);
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock(&histo->irqlock);
+ }
+ 
+ /* -----------------------------------------------------------------------------
+@@ -124,11 +122,10 @@ static void histo_buffer_queue(struct vb2_buffer *vb)
+ 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
+ 	struct vsp1_histogram *histo = vb2_get_drv_priv(vb->vb2_queue);
+ 	struct vsp1_histogram_buffer *buf = to_vsp1_histogram_buffer(vbuf);
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock_irq(&histo->irqlock);
+ 	list_add_tail(&buf->queue, &histo->irqqueue);
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock_irq(&histo->irqlock);
+ }
+ 
+ static int histo_start_streaming(struct vb2_queue *vq, unsigned int count)
+@@ -140,9 +137,8 @@ static void histo_stop_streaming(struct vb2_queue *vq)
+ {
+ 	struct vsp1_histogram *histo = vb2_get_drv_priv(vq);
+ 	struct vsp1_histogram_buffer *buffer;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock_irq(&histo->irqlock);
+ 
+ 	/* Remove all buffers from the IRQ queue. */
+ 	list_for_each_entry(buffer, &histo->irqqueue, queue)
+@@ -152,7 +148,7 @@ static void histo_stop_streaming(struct vb2_queue *vq)
+ 	/* Wait for the buffer being read out (if any) to complete. */
+ 	wait_event_lock_irq(histo->wait_queue, !histo->readout, histo->irqlock);
+ 
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock_irq(&histo->irqlock);
+ }
+ 
+ static const struct vb2_ops histo_video_queue_qops = {
 -- 
 2.43.0
 
