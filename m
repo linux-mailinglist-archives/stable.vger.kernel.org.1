@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-62834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3989415BE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:52:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E379415D0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06478282DC4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:52:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBFFC1F2175D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25E91BA873;
-	Tue, 30 Jul 2024 15:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84481BA898;
+	Tue, 30 Jul 2024 15:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrRNyff3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItrwzzZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE671BA870;
-	Tue, 30 Jul 2024 15:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33AB1BA87E;
+	Tue, 30 Jul 2024 15:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354721; cv=none; b=kFGlHMwUfUyLwSUYjbJHTZDDtrM7XLvygNDbe+BbvxXQLPxa3FrCs5tvej6TUU+PEm5vi4xech/HV0v9uwEwf1bv0OZUwyOjnGfs5uotac+aV9+T5HJrIBcczy178al13AElYoWAsRzOoTOsbKPbvEM6yJtgz2NdrXLbADSn0r4=
+	t=1722354749; cv=none; b=KtPqegi2iSiDoxBQf3vr93OH5zUkMQbDfC37S5mFagdkDz6OyG4qoavYcmowX+gGgJObJZXgo22mCzMHZnxnQSv89xLTafGnewlqaIkwq0WsY+6u9BfXQYtRq5g/izfiAIZniUBM9xZEIegioyRj4rxAmICwrffyJ+uMCgQRBsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354721; c=relaxed/simple;
-	bh=z0xyBXh0MIc+IcFB0XMx638dl9tvXgwGLEcHNWp1luA=;
+	s=arc-20240116; t=1722354749; c=relaxed/simple;
+	bh=s8nRa/fx1ZzeyRCaz0Dgjuu+uAHYKCSQrBq8MKC19P0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooTGa46UXugVPnDGIT2m+3d1HXbny72EROK9d3nNXjbWloOpBui3bwWRossANeCr2gXneHZMIAbLf6x3zmamMTabPTi4F4hGIDdvNLFAmoQW4mPQianFtXg0MPXpdwOMIulc0XEL5LENhkCG1zwm2TaL5TnMRSeLc21E/LELs9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrRNyff3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B983CC32782;
-	Tue, 30 Jul 2024 15:52:00 +0000 (UTC)
+	 MIME-Version; b=inlPowXDetiWG90HI+QEZpFlRC6trKI6oh1nDlTgiouXVO/hwnqVoYZ9y2v5lkeW6faOzfKpbQCMTe/Vvi5R55fLYRKhgvIzWqyUpS94yJ34riXWLKU2oxzqgZSHkuzZWvu0TPZgjPuuF0RlKUUe9GgZ/O61dqsdiP14mW/ffjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItrwzzZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00E1C32782;
+	Tue, 30 Jul 2024 15:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354721;
-	bh=z0xyBXh0MIc+IcFB0XMx638dl9tvXgwGLEcHNWp1luA=;
+	s=korg; t=1722354749;
+	bh=s8nRa/fx1ZzeyRCaz0Dgjuu+uAHYKCSQrBq8MKC19P0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrRNyff3dgQZJ9AIpcTKxBAe4Ap9kCx1/apGBZcH5hDyvmvFekK+0I3gUCHQ0w90U
-	 +8TQpjFz8+ElH295ZdTOrT8e6KWBct2Z3LCx+s7WQUAH3hzhlrNRnZG6AUyF7y9s/Y
-	 Pwzsvcjqo0kLSRYNCgoNL0tcm6HOSXzBc03Ypnn4=
+	b=ItrwzzZs/rls2jzrnbUtn8s99OkJK12XRZblTFIX1WArt6GLomUyAMJpIhVWV+7Ri
+	 6gb+ZAre06+dZjyXp9DvarwEWYIBeMQr5kpq5M/r6ot2KV2kUzyrQbmbs7GMrCDM8N
+	 JPbbFwrlzT/5cDMh9TyAR0mewKYKjLrhdDlhKaN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 001/809] spi: spi-microchip-core: Fix the number of chip selects supported
-Date: Tue, 30 Jul 2024 17:37:57 +0200
-Message-ID: <20240730151724.707322827@linuxfoundation.org>
+Subject: [PATCH 6.10 002/809] spi: atmel-quadspi: Add missing check for clk_prepare
+Date: Tue, 30 Jul 2024 17:37:58 +0200
+Message-ID: <20240730151724.747077192@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,40 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit a7ed3a11202d90939a3d00ffcc8cf50703cb7b35 ]
+[ Upstream commit ef901b38d3a4610c4067cd306c1a209f32e7ca31 ]
 
-The SPI "hard" controller in PolarFire SoC has eight CS lines, but only
-one CS line is wired. When the 'num-cs' property is not specified in
-the device tree, the driver defaults to the MAX_CS value, which has
-been fixed to 1 to match the hardware configuration; however, when the
-'num-cs' property is explicitly defined in the device tree, it
-overrides the default value.
+Add check for the return value of clk_prepare() and return the error if
+it fails in order to catch the error.
 
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Signed-off-by: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://msgid.link/r/20240514104508.938448-3-prajna.rajendrakumar@microchip.com
+Fixes: 4a2f83b7f780 ("spi: atmel-quadspi: add runtime pm support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://msgid.link/r/20240515084028.3210406-1-nichen@iscas.ac.cn
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-microchip-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/atmel-quadspi.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index 634364c7cfe61..c10de45aa4729 100644
---- a/drivers/spi/spi-microchip-core.c
-+++ b/drivers/spi/spi-microchip-core.c
-@@ -21,7 +21,7 @@
- #include <linux/spi/spi.h>
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 370c4d1572ed0..5aaff3bee1b78 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -756,8 +756,15 @@ static int __maybe_unused atmel_qspi_resume(struct device *dev)
+ 	struct atmel_qspi *aq = spi_controller_get_devdata(ctrl);
+ 	int ret;
  
- #define MAX_LEN				(0xffff)
--#define MAX_CS				(8)
-+#define MAX_CS				(1)
- #define DEFAULT_FRAMESIZE		(8)
- #define FIFO_DEPTH			(32)
- #define CLK_GEN_MODE1_MAX		(255)
+-	clk_prepare(aq->pclk);
+-	clk_prepare(aq->qspick);
++	ret = clk_prepare(aq->pclk);
++	if (ret)
++		return ret;
++
++	ret = clk_prepare(aq->qspick);
++	if (ret) {
++		clk_unprepare(aq->pclk);
++		return ret;
++	}
+ 
+ 	ret = pm_runtime_force_resume(dev);
+ 	if (ret < 0)
 -- 
 2.43.0
 
