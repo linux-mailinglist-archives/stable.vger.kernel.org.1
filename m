@@ -1,81 +1,45 @@
-Return-Path: <stable+bounces-62732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63315940E6D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:58:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078DD940E8F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19489282D8A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:58:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395281C211EC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A3C197549;
-	Tue, 30 Jul 2024 09:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE08195F28;
+	Tue, 30 Jul 2024 10:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FCa6TXFl"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="hBWHkdiZ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2045919599C
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:58:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA97194A49;
+	Tue, 30 Jul 2024 10:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722333519; cv=none; b=H7ntvd+ytfH2VoOKva211UGkM8ws+yo1gbToUyfq1jCdEa+NJaaBSCa+BtMEoHQAnTcTqCKtKxITnOYjolld21O1cJF4KUfudKXUt5cRWiWBloVncL3oK9ZKhr7wU1M5RpzTQ5KD9HrOe/WqJdPloocLnAfSWySVOTEUs0HXddc=
+	t=1722333784; cv=none; b=B6wzvkhQ3daAptfl9H+Sglng13rgCuOhcP+1t3WF9B82SgI/ehsW8ukXuGmtuSDzqBZr/hknjeLXvTRVIyrrdEc+53o5v46bWNBFxVA1J5jWNf1cyHtmm/MNGYKxZp7THhx2LwaRbZe7lxaVcmkEWnUstgepZpVBVhgcQApNLKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722333519; c=relaxed/simple;
-	bh=JbxmviDN3q5fXCkPDjYhop6hI/tQ8luNTRkQe7Jirks=;
+	s=arc-20240116; t=1722333784; c=relaxed/simple;
+	bh=Sxj6T2e8H3iOl77/RRAmKUj8/cujWJb7+RDEKzzRT34=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FM7C5M17zRQVf3ukFACH0NbsvgIJe3fye78lu3rJ0wfHzqhbmJd8kkSrPRJIgke+mkdAvxi4MXc0ik4zmxhdhnn4Yoar1KGuHwo8YKFr5RTlJtv2kg2VnGgGBf45MHpMLls2o+lIkPX0sJePbl2R6Py4v6A/ncGv/O714VexkaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FCa6TXFl; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722333517;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=t03tmxSDfARU1oKw87lsNxFJz2231fG7AE9X11nUN7w=;
-	b=FCa6TXFlMEDltAbxxN2CwEzsXe/uD5tbBKbPZKxka8cIbCNV6/jtFXUYsJaaZL6Wmjhhgx
-	izQY5QraD44AcrpehqPCbmvTpFHw2CWjpDI3Zfi+5Jbf2FvSoizwR/RSrDYPf4gGKLFq40
-	nJJVI95o0iOVy543euf7wH+Qmy0b1CM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-W2PWUoqwNQmCkLDpl9SvgQ-1; Tue, 30 Jul 2024 05:58:34 -0400
-X-MC-Unique: W2PWUoqwNQmCkLDpl9SvgQ-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4280ec5200cso24235135e9.0
-        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 02:58:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722333513; x=1722938313;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=t03tmxSDfARU1oKw87lsNxFJz2231fG7AE9X11nUN7w=;
-        b=EbpZsrtsvQ+UF0HvxFPoonlVZt4q09PPrZl6DwxVTuUb+jLsOURVODZn2XismcEJ34
-         2yHdj8ukXerUYVo1qrC1b9nuzJpvO6FBJScf+cIz36i/8F+nWokTBhCUzPXH6dDqLAZB
-         b1+6Dw6n+nB8xyxusLLhvwGeplgT16J591JkgzF4VwV2L2Q1ee5Q6ATHtVVqeJN78YDD
-         IfowzTHEiNq4WsX5KsSd8nbyqehw6Y7Vz+GQp5zJexWG9neTzeyWR4RqV1ILNUZgQkjH
-         yR3a/mGR5ABtdb885Gurr4Zf+oWEcs2FB66sJ/HkvxW1r79mG/IhYyXr0j8OG7xrMUTn
-         w0ng==
-X-Forwarded-Encrypted: i=1; AJvYcCViKKhNbwweV1Lq6uj45CBv/YMrsFtpuiHohJB/s4WNPHtRFrET/ASIcERjDcPttDxy1z/y2P1+CvIsRjKPUd8YhXIlfQmt
-X-Gm-Message-State: AOJu0YzaNr4c+mAIeB9tSAdP9DKoTjc98iaHnU5G5NcMdmchmc1hIpjm
-	vm5imzOTdbV6Ur16gVbmvlolxOytqFATin2kU/Klq2h5qgYh3hpZye8zuhENLINMSkcO+m1GChJ
-	0DI9RWU16JiVwKeAmlHsQ/2Zu9tUYBP4LOKS2JWE373VR4B1CKv7Qfw==
-X-Received: by 2002:a05:600c:3ca9:b0:426:5b21:9801 with SMTP id 5b1f17b1804b1-42811dd104amr77482795e9.27.1722333513285;
-        Tue, 30 Jul 2024 02:58:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjHJhbMoUZVX7WBhr4ERqKfYO3F2LOMGgrJHWePKzPMYabknpM0fF/kysDXDazUXLiyLgDPg==
-X-Received: by 2002:a05:600c:3ca9:b0:426:5b21:9801 with SMTP id 5b1f17b1804b1-42811dd104amr77482675e9.27.1722333512798;
-        Tue, 30 Jul 2024 02:58:32 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c706:4e00:31ad:5274:e21c:b59? (p200300cbc7064e0031ad5274e21c0b59.dip0.t-ipconnect.de. [2003:cb:c706:4e00:31ad:5274:e21c:b59])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-428068cda0csm202163035e9.47.2024.07.30.02.58.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jul 2024 02:58:32 -0700 (PDT)
-Message-ID: <d41865b4-d6fa-49ba-890a-921eefad27dd@redhat.com>
-Date: Tue, 30 Jul 2024 11:58:31 +0200
+	 In-Reply-To:Content-Type; b=LwdgQZh+SxmnmrVjanKf+JrKGVl4A7r8ZGsm+NbsQd9VaGHApSFCP1wAN/8aWO3pCrrgtThcJ/+Y6cCpLApQM5s5uLrV8KqpX7WJ5JZBy3ZJN8h7vHX563ChhoEK/+lWSPDus18kEbQ21z/DB63nyK2rp+ZrOxc5yImLkj54ge4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=hBWHkdiZ; arc=none smtp.client-ip=117.135.210.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=ZLcbpVCULNRrBnozP+gUuxo88BIerhBLHccbm3mX2/o=;
+	b=hBWHkdiZY+IiOOhDa/TGrGVXw83g/Wp15tpiiYWaxcR40ci7D/x8/DKnUsJcFK
+	k3yfLqeLoFbCMrKs77Epe5RAQR3dH6oUAzak3OGx4/UWBSEmSor5b1ZkgQLVs2pW
+	Hi+4ankNvHGxT7eeC2IXEqkQya6YwgJyDwfV0E4L/rtM8=
+Received: from [172.21.22.210] (unknown [118.242.3.34])
+	by gzga-smtp-mta-g1-0 (Coremail) with SMTP id _____wDnr_kJuqhm1wPgAw--.37433S2;
+	Tue, 30 Jul 2024 18:01:46 +0800 (CST)
+Message-ID: <18cdbd92-81db-42be-a290-08462759ffe6@126.com>
+Date: Tue, 30 Jul 2024 18:01:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,7 +49,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
  LRU batch
-To: Ge Yang <yangge1116@126.com>, akpm@linux-foundation.org
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
  21cnbao@gmail.com, baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
 References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
@@ -95,122 +59,87 @@ References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
  <1c5f1582-d6ea-4e27-a966-e6e992cf7c22@126.com>
  <a8abf253-b1bb-422a-9d3f-d0dd24990617@redhat.com>
  <9f1b8c87-6ea4-4f88-9332-13ac4b1b35d9@126.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <9f1b8c87-6ea4-4f88-9332-13ac4b1b35d9@126.com>
+ <d41865b4-d6fa-49ba-890a-921eefad27dd@redhat.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <d41865b4-d6fa-49ba-890a-921eefad27dd@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnr_kJuqhm1wPgAw--.37433S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ur13Xr1DWrW7KFWUZrW8Zwb_yoW8Zry8pr
+	WxG3Wqqr4kJr9Fyr4qqr1UJFyUtry3Xa1UXF43GrnrCFn0yrn7Gr47C3yUCFy3Ar1DJF10
+	qa4Uta4xXa4UZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYOJ5UUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWQosG2VLbyXSowABsw
 
-On 30.07.24 11:56, Ge Yang wrote:
-> 
-> 
-> 在 2024/7/30 17:41, David Hildenbrand 写道:
->> On 30.07.24 11:36, Ge Yang wrote:
->>>
->>>
->>> 在 2024/7/30 15:45, David Hildenbrand 写道:
->>>>>> Looking at this in more detail, I wonder if we can turn that to
+
+
+在 2024/7/30 17:58, David Hildenbrand 写道:
+> On 30.07.24 11:56, Ge Yang wrote:
+>>
+>>
+>> 在 2024/7/30 17:41, David Hildenbrand 写道:
+>>> On 30.07.24 11:36, Ge Yang wrote:
+>>>>
+>>>>
+>>>> 在 2024/7/30 15:45, David Hildenbrand 写道:
+>>>>>>> Looking at this in more detail, I wonder if we can turn that to
+>>>>>>>
+>>>>>>> if (!folio_test_clear_lru(folio))
+>>>>>>>         return;
+>>>>>>> folio_get(folio);
+>>>>>>>
+>>>>>>> In all cases? The caller must hold a reference, so this should be
+>>>>>>> fine.
+>>>>>>>
 >>>>>>
->>>>>> if (!folio_test_clear_lru(folio))
->>>>>>         return;
->>>>>> folio_get(folio);
->>>>>>
->>>>>> In all cases? The caller must hold a reference, so this should be
->>>>>> fine.
+>>>>>> Seems the caller madvise_free_pte_range(...), calling
+>>>>>> folio_mark_lazyfree(...), doesn't hold a reference on folio.
 >>>>>>
 >>>>>
->>>>> Seems the caller madvise_free_pte_range(...), calling
->>>>> folio_mark_lazyfree(...), doesn't hold a reference on folio.
+>>>>> If that would be the case and the folio could get freed concurrently,
+>>>>> the folio_get(folio) would be completely broken.
+>>>>>
+>>>>> In madvise_free_pte_range() we hold the PTL, so the folio cannot get
+>>>>> freed concurrently.
 >>>>>
 >>>>
->>>> If that would be the case and the folio could get freed concurrently,
->>>> the folio_get(folio) would be completely broken.
+>>>> Right.
 >>>>
->>>> In madvise_free_pte_range() we hold the PTL, so the folio cannot get
->>>> freed concurrently.
+>>>>> folio_get() is only allowed when we are sure the folio cannot get 
+>>>>> freed
+>>>>> concurrently, because we know there is a reference that cannot go 
+>>>>> away.
+>>>>>
+>>>>>
 >>>>
->>>
->>> Right.
->>>
->>>> folio_get() is only allowed when we are sure the folio cannot get freed
->>>> concurrently, because we know there is a reference that cannot go away.
+>>>> When cpu0 runs folio_activate(), and cpu1 runs folio_put() 
+>>>> concurrently,
+>>>> a possible bad scenario would like:
+>>>>
+>>>> cpu0                                           cpu1
+>>>>
+>>>>                                               folio_put_testzero(folio)
+>>>> if (!folio_test_clear_lru(folio))// Seems folio shouldn't be accessed
+>>>>
+>>>>           return;
+>>>> folio_get(folio);
+>>>>                                                __folio_put(folio)
+>>>>                                                __folio_clear_lru(folio)
 >>>>
 >>>>
+>>>> Seems we should use folio_try_get(folio) instead of folio_get(folio).
 >>>
->>> When cpu0 runs folio_activate(), and cpu1 runs folio_put() concurrently,
->>> a possible bad scenario would like:
+>>> In which case is folio_activate() called without the PTL on a mapped
+>>> page or without a raised refcount?
 >>>
->>> cpu0                                           cpu1
->>>
->>>                                               folio_put_testzero(folio)
->>> if (!folio_test_clear_lru(folio))// Seems folio shouldn't be accessed
->>>
->>>           return;
->>> folio_get(folio);
->>>                                                __folio_put(folio)
->>>                                                __folio_clear_lru(folio)
->>>
->>>
->>> Seems we should use folio_try_get(folio) instead of folio_get(folio).
 >>
->> In which case is folio_activate() called without the PTL on a mapped
->> page or without a raised refcount?
->>
+>> No such case has been found. But, folio_put() can be run at anytime, so
+>> folio_activate() may access a folio with a reference count of 0.
 > 
-> No such case has been found. But, folio_put() can be run at anytime, so
-> folio_activate() may access a folio with a reference count of 0.
+> If you can't find such a case then nothing is broken and no switch to 
+> folio_try_get() is required.
+> 
 
-If you can't find such a case then nothing is broken and no switch to 
-folio_try_get() is required.
-
--- 
-Cheers,
-
-David / dhildenb
+Ok, thanks.
 
 
