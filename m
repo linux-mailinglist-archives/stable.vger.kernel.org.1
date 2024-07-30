@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8F9941AC6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 476C7941777
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B850A1F241CF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77A671C23841
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A167118455E;
-	Tue, 30 Jul 2024 16:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE001A3055;
+	Tue, 30 Jul 2024 16:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrZA09+p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdwyGPDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E92C14831F;
-	Tue, 30 Jul 2024 16:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56F01A3031;
+	Tue, 30 Jul 2024 16:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358037; cv=none; b=NHgRFi4ov642ErnjUbYlDU9rY6SG7t3oMnhVKayMvX2PJmOt88i/5yplu1/W8vjGvZmQEZLRn/r3ga21BnwtMPosoeign/i0OCLbbcKIc4SfBXMUb9bCW2cjGBtV1n3tSv/0mVxWvn5n0bwJpCDmgPtxSWOjOV+uMZTWfy1X9bc=
+	t=1722355745; cv=none; b=dTI8yWejx2LvxBItKwqY3wvylaZRVy2QgYrmJxJAmwb2y1DjS/UAjc7U8JIBcsR06v2ojjNE69K75Co0FQcQcjfVnLz2kkX0cPujMle/eNdl8Yzs6wvryPzm77g+8CDAZTNmjCvEKrVqOZ4Jes52r/T0jg/02juLWXKQZOHneaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358037; c=relaxed/simple;
-	bh=lOVYKuH9bd/3m4ODpKNsPS7VlQCQ6/6ymq6/SiPNK6o=;
+	s=arc-20240116; t=1722355745; c=relaxed/simple;
+	bh=+9BPq9QO8VO88mG4bB1lk0lWkFeEmZfU4hWGGKmXDWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QZnKWiku0XmvyYspffkASQTI2diXjOPxoVVjSUzufqvnYAJuNJHSwH+c/0gptedW7WJLVTGAlahpj9gmyAsL0ucRCbnQAW0bX3U/GTqJT8dYvJ9ewv9yt2E+73i+JqMgeBDpTGlYySkMhJZgV2jL26vhI0b4M6yZ1XsId2Vc8Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrZA09+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9854C4AF0C;
-	Tue, 30 Jul 2024 16:47:16 +0000 (UTC)
+	 MIME-Version; b=oSrwx9VOWyhDk0mWMNqPHNspv0LRbmDonDijQwl45FqINFQ1lqj+pyJulAJZbYSKhN08vJ83Ll6/rmiVDENFzMZVsyNgCmrEZkku5rjHX98JYi6T23hEUpwMxjuxbSs4f7Suio5I7ZFL7gYF+ylgRPwJ02qkojAdgigl5fGNFR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdwyGPDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1244AC4AF0A;
+	Tue, 30 Jul 2024 16:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358037;
-	bh=lOVYKuH9bd/3m4ODpKNsPS7VlQCQ6/6ymq6/SiPNK6o=;
+	s=korg; t=1722355745;
+	bh=+9BPq9QO8VO88mG4bB1lk0lWkFeEmZfU4hWGGKmXDWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IrZA09+pTFLHKCSIeqFsU+qSqXF5VgDirQpEvY0P79Ixe7kJQ4tE7/wRwkaRDtvc3
-	 nwitxUfhIKqUL8P6GS3f6Z2QQ5qZN9ZLtsSaKsOV4r9gqXyrcC0j6PA8p6hpnUXsTV
-	 hvy5q5HgVy+3YdqVMMQt5j81AKIw33gEseH0VirM=
+	b=CdwyGPDVJKkS4xDzETlDAhAnqt3A/TPW0iWgku2l1OFbmEzLhpOHD92d54539ALV0
+	 8AmUiYH+gs1+hOBwipsLbimbq9t4VxPYiltPdCGdmgKTS0MRcoqhvahHFysw5tuaon
+	 0EV0JEUK/EEDSTtalxa3te1la943uHga2egeMv0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 317/809] drm/i915/psr: Set SU area width as pipe src width
+Subject: [PATCH 6.6 086/568] arm64: dts: renesas: r9a07g043u: Add missing hypervisor virtual timer IRQ
 Date: Tue, 30 Jul 2024 17:43:13 +0200
-Message-ID: <20240730151737.125516434@linuxfoundation.org>
+Message-ID: <20240730151643.227515408@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 97db7348640ececd60a0bfd85b6c0a3a0f81459a ]
+[ Upstream commit 4036bae6dfd782d414040e7d714abc525b2e8792 ]
 
-Currently SU area width is set as MAX_INT. This is causing
-problems. Instead set it as pipe src width.
+Add the missing fifth interrupt to the device node that represents the
+ARM architected timer.  While at it, add an interrupt-names property for
+clarity,
 
-Fixes: 86b26b6aeac7 ("drm/i915/psr: Carry su area in crtc_state")
-
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240618053026.3268759-2-jouni.hogander@intel.com
+Fixes: cf40c9689e5109bf ("arm64: dts: renesas: Add initial DTSI for RZ/G2UL SoC")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/15cc7a7522b1658327a2bd0c4990d0131bbcb4d7.1718890849.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r9a07g043u.dtsi | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 2b4512bd5b595..3c7da862222bf 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -2484,7 +2484,7 @@ int intel_psr2_sel_fetch_update(struct intel_atomic_state *state,
+diff --git a/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi b/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
+index b3f83d0ebcbb5..4b72de43b71cc 100644
+--- a/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
+@@ -50,7 +50,10 @@ timer {
+ 		interrupts-extended = <&gic GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
+ 				      <&gic GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
+ 				      <&gic GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
+-				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
++				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>,
++				      <&gic GIC_PPI 12 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-names = "sec-phys", "phys", "virt", "hyp-phys",
++				  "hyp-virt";
+ 	};
+ };
  
- 	crtc_state->psr2_su_area.x1 = 0;
- 	crtc_state->psr2_su_area.y1 = -1;
--	crtc_state->psr2_su_area.x2 = INT_MAX;
-+	crtc_state->psr2_su_area.x2 = drm_rect_width(&crtc_state->pipe_src);
- 	crtc_state->psr2_su_area.y2 = -1;
- 
- 	/*
 -- 
 2.43.0
 
