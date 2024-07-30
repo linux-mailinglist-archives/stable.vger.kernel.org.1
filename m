@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45D4941D49
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3BD9419F3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38E7CB29A37
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 464011F214EC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA211A76B3;
-	Tue, 30 Jul 2024 17:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E4A1898EB;
+	Tue, 30 Jul 2024 16:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdeTSWfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwCZRDGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5171A76A2;
-	Tue, 30 Jul 2024 17:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B882A1A6169;
+	Tue, 30 Jul 2024 16:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359651; cv=none; b=jQHWjNF70F/GomZ4qOfrNQICuLCG1mWduyvvq152Mv6TM05RAqoPKZg1dheTrosyMcj+1+EwMYg5S+y31PYO87EKMvD4G9q/NNtIPC+J+JbDWk2kETE/tO3yCyOlKpgjnlQl0jK/Tn7qYfwzgvM9W0pYao/fo87n8qc5okCzKeY=
+	t=1722357492; cv=none; b=o17p+D4zEqKCu7+JVM3bCKSEOJ+TTGkSA+2REh9Fz/qmPEF9b58+1phoWLn2qeaPf8UZFjgA/Na4FlVLGKLKnBL7hDTuDilh7JexzggzQ4c9mYF3dwCTFP9+3VP7vVS1BNZw1KIOH/9oNPY7kF/yOdBEqD1WnivUzI/wcplP0as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359651; c=relaxed/simple;
-	bh=sFqNY+DBUb6Jx5X5F6f2j7ZqbxtfjPPBpM4+Ajazxlk=;
+	s=arc-20240116; t=1722357492; c=relaxed/simple;
+	bh=U++3a3RZ2N/f1tcplWDG/jNgUDca11VPWBXw9p5RSFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=calsaI7kRwMcdIyuyDq+DMy+BWHHbMp1Dm4ZPlZcJRoBdpMe/ooZNFCDt19GJ6Rhcgjt33cW/8Spf+CZKdUr1lwrSam/jUespS88bdeJN8YtKnzmqMdpgYqnbpnFzypREkEoqQ9iYQc1Sy0kIi78C2CbHtkFmF7KDQcTsSyZS0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdeTSWfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6F5C32782;
-	Tue, 30 Jul 2024 17:14:10 +0000 (UTC)
+	 MIME-Version; b=NAcMqdD7HsHlopbHGag/qEgKkTAbaveKhQ9gtWaduHvw4GJ3AGwYooE1ejPKcOWluDj/hNfn6y7SKsSRv8r7lZc1Li2NXEFRxH+v7qW6XTYrRLwoGpFYqC892m91joyfr7M+lD9PPu8Qo1+9avCErq+AF58d8wX0oJlaXCkm/Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwCZRDGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26E1C32782;
+	Tue, 30 Jul 2024 16:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359651;
-	bh=sFqNY+DBUb6Jx5X5F6f2j7ZqbxtfjPPBpM4+Ajazxlk=;
+	s=korg; t=1722357492;
+	bh=U++3a3RZ2N/f1tcplWDG/jNgUDca11VPWBXw9p5RSFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdeTSWfZ9G4uWBp/VPUNEbyxr2qQx/dHrgl2+pdlTFXcaJKi6HHyjEVrn7ZX49v9V
-	 SIUvkAek29WSju6TxV9/bK4BclXMNIzOdJNgZeNsQs+Vq7PtIF3pSDnSu2GVWzl+/3
-	 lfqmt52W3zU3M34pqKuZ07kZXDyJaZ2/8oInzLDU=
+	b=AwCZRDGjoBu/9d0/Kf3HZs9YnJcvJiLCe6TXuB599covYzfyH1hnCTbaCJtiTczjI
+	 7qVGOcmN5N/XU9gQRN/ymoUeXfXq1De++AHG3TkuS3m54V74JSC6lNNhK/ltvzlV/v
+	 clpAz4l7xz7AU3AIzplxZL85SxVT722sJnWaw/C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Chiara Meiohas <cmeiohas@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 491/809] pinctrl: core: fix possible memory leak when pinctrl_enable() fails
+Subject: [PATCH 6.6 260/568] RDMA/mlx5: Set mkeys for dmabuf at PAGE_SIZE
 Date: Tue, 30 Jul 2024 17:46:07 +0200
-Message-ID: <20240730151744.131121955@linuxfoundation.org>
+Message-ID: <20240730151650.039669073@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Chiara Meiohas <cmeiohas@nvidia.com>
 
-[ Upstream commit ae1cf4759972c5fe665ee4c5e0c29de66fe3cf4a ]
+[ Upstream commit a4e540119be565f47c305f295ed43f8e0bc3f5c3 ]
 
-In devm_pinctrl_register(), if pinctrl_enable() fails in pinctrl_register(),
-the "pctldev" has not been added to dev resources, so devm_pinctrl_dev_release()
-can not be called, it leads memory leak.
+Set the mkey for dmabuf at PAGE_SIZE to support any SGL
+after a move operation.
 
-Introduce pinctrl_uninit_controller(), call it in the error path to free memory.
+ib_umem_find_best_pgsz returns 0 on error, so it is
+incorrect to check the returned page_size against PAGE_SIZE
 
-Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240606023704.3931561-2-yangyingliang@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 90da7dc8206a ("RDMA/mlx5: Support dma-buf based userspace memory region")
+Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/1e2289b9133e89f273a4e68d459057d032cbc2ce.1718301631.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h | 13 +++++++++++++
+ drivers/infiniband/hw/mlx5/odp.c     |  6 ++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index f424a57f00136..4438f3b4b5ef9 100644
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -2080,6 +2080,14 @@ pinctrl_init_controller(struct pinctrl_desc *pctldesc, struct device *dev,
- 	return ERR_PTR(ret);
- }
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 6a57af8fa231b..43a963e205eb4 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -115,6 +115,19 @@ unsigned long __mlx5_umem_find_best_quantized_pgoff(
+ 		__mlx5_bit_sz(typ, page_offset_fld), 0, scale,                 \
+ 		page_offset_quantized)
  
-+static void pinctrl_uninit_controller(struct pinctrl_dev *pctldev, struct pinctrl_desc *pctldesc)
++static inline unsigned long
++mlx5_umem_dmabuf_find_best_pgsz(struct ib_umem_dmabuf *umem_dmabuf)
 +{
-+	pinctrl_free_pindescs(pctldev, pctldesc->pins,
-+			      pctldesc->npins);
-+	mutex_destroy(&pctldev->mutex);
-+	kfree(pctldev);
++	/*
++	 * mkeys used for dmabuf are fixed at PAGE_SIZE because we must be able
++	 * to hold any sgl after a move operation. Ideally the mkc page size
++	 * could be changed at runtime to be optimal, but right now the driver
++	 * cannot do that.
++	 */
++	return ib_umem_find_best_pgsz(&umem_dmabuf->umem, PAGE_SIZE,
++				      umem_dmabuf->umem.iova);
 +}
 +
- static int pinctrl_claim_hogs(struct pinctrl_dev *pctldev)
- {
- 	pctldev->p = create_pinctrl(pctldev->dev, pctldev);
-@@ -2160,8 +2168,10 @@ struct pinctrl_dev *pinctrl_register(struct pinctrl_desc *pctldesc,
- 		return pctldev;
+ enum {
+ 	MLX5_IB_MMAP_OFFSET_START = 9,
+ 	MLX5_IB_MMAP_OFFSET_END = 255,
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index 4a04cbc5b78a4..a524181f34df9 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -705,10 +705,8 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
+ 		return err;
+ 	}
  
- 	error = pinctrl_enable(pctldev);
--	if (error)
-+	if (error) {
-+		pinctrl_uninit_controller(pctldev, pctldesc);
- 		return ERR_PTR(error);
-+	}
- 
- 	return pctldev;
- }
+-	page_size = mlx5_umem_find_best_pgsz(&umem_dmabuf->umem, mkc,
+-					     log_page_size, 0,
+-					     umem_dmabuf->umem.iova);
+-	if (unlikely(page_size < PAGE_SIZE)) {
++	page_size = mlx5_umem_dmabuf_find_best_pgsz(umem_dmabuf);
++	if (!page_size) {
+ 		ib_umem_dmabuf_unmap_pages(umem_dmabuf);
+ 		err = -EINVAL;
+ 	} else {
 -- 
 2.43.0
 
