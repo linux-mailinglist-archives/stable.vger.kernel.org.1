@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-64680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D24942323
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 00:54:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF68094232F
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 01:03:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B28A1F2349C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 22:54:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6CF428503B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 23:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC26145A11;
-	Tue, 30 Jul 2024 22:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3159D1AA3E6;
+	Tue, 30 Jul 2024 23:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hdr9Zwjl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q6pih46e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD3618CC1E;
-	Tue, 30 Jul 2024 22:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860C818A6CE;
+	Tue, 30 Jul 2024 23:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722380075; cv=none; b=NftgLhGixRvk2rSFoEdX95OMtKn+oVqnPOHZbPEBdkwp5kDq6NTGLmIb+fZgMVtfClb4WpTQH+a9l3pcnIWyD1YqbEuw7VpJA6C0dFZV7l5WOTmn16Mz7GSv775ACW3dPEc1RCOZjU9VmtP8QpmmVZe7wI9ebRorat0Qi7KZ0nE=
+	t=1722380619; cv=none; b=omb21FJcijRDd2P2WXkpJ2/bggUpze4ri6rEAp8G06vrquJ6zBppZCPEYk/fw2hgt4HxHv1xomw5/YFiDP6eSPeaaXaa7zoWo9VACEhb2iG4l7ve7IQ652Y7dw+E5QuIvgcbmSFAQAhsyFCjMnfNaAFOPB3baF4NiprD1PSVXpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722380075; c=relaxed/simple;
-	bh=dwwEUbUzgWL5vS5biiRn9oO1+11MCQQo5aKWpvA6bqE=;
+	s=arc-20240116; t=1722380619; c=relaxed/simple;
+	bh=QEcnJYIGmyutkjt9sGE5RN3RMI3LLHOKxXqTrRav/R0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ge20kKwYmAKWV7m5cMBJqaJU738i/Q8U2nl9qBoe4SAML3ST2vAvFIO9CR9/Wf5wCIIJK1Mto+E767IsUkACUXBnAM8Jgqevqsds5IBasYK+Oc2wC3jydk9XHBxZJCvV13ZtnKmhNBAr+tk4/zoNG0MW2p1ftxyVplUbw8517gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hdr9Zwjl; arc=none smtp.client-ip=209.85.219.45
+	 In-Reply-To:Content-Type; b=UXFA30lzysAi3W8qquCz3gkBnZWkJzgH6Yy6ijYMZD7Zkm1rgtfa7nFvmoMJ5LjK3+ZFChYwn71+pgGQCA/dLsUNuv1DYkxysOC3zAhAPdm5CgFYyz7hkL7BrmOOco7ik9tzGJeBvMi4QjuDqt8TwYqmfXa+6D/oNDcsc56gytE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q6pih46e; arc=none smtp.client-ip=209.85.222.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6b5f46191b5so27499356d6.3;
-        Tue, 30 Jul 2024 15:54:33 -0700 (PDT)
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-79f19f19059so308613985a.0;
+        Tue, 30 Jul 2024 16:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722380072; x=1722984872; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722380616; x=1722985416; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=9tG4ibj1e6Js89Q0K69BYaWj3uwGB1GC2b5DG+Nb0V8=;
-        b=Hdr9ZwjliSL6cJ2hErZwTtS0u7HzD4uhahUX0CXL4av1IAiNrZSwT376bjJ/oNqH8z
-         J3Ufq8pP2jM9Tve+Sf+lUlNRFN0k+Bz+loUPw3A9p4xjq9kOVqbD3vas0KX0taz7GgJQ
-         L/Y9ca8hGgG0JqYGUcdvUyyhK59/i1vZrZ8UYd11rNN8Mp2khS4o9lqVLSX+dSVRSHp/
-         Y0mJYSivt9hCXj4YAC3hiZVnZ5HgZcOuuS7EgakqwzApJhRXuu+TaGzLjpJvbgRhN9zB
-         PrUi/4BFC0zvJP5ySzXz2lyXq6rJ7tVeN4vq+IO3zfzwPCUgsrcxzMQmr33EH7zU05P6
-         Rfcw==
+        bh=VcM0knhLOz1m9ZbRQY0EYzIe6XjeFf2X8aUPfEnckTQ=;
+        b=Q6pih46eN0r1gB3DjdCF11ZsEsD8+aiYP/sUqEYEm5OciCFLZ9ffAMxBW9ge/wS98F
+         at3NiqxTuJbg9ogOAt9A2ExM4jceF/w4WfVXmTYUN/T7oykztXbm6tJBqkETHNfd5fw9
+         Bc1ZwhXHWgNQBpGkjKbokPNVo7ivrf0GA7IB4V38+Vt4/nsu1Ckj5OkiXEa0NzhE99My
+         NUqzd0yEUHSvJLNMUdkyfsCL+9en5qaAzjGG4ivLcJLSZoug5Fa7JUAuXWTvv3z0wZMB
+         LjRaDqh33U3DgOiGQmSvVwKuiOFfgQpMnnR8mvCIhB2nk6sgKQ58rcDXOSL/cvE/bUeO
+         9lqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722380072; x=1722984872;
+        d=1e100.net; s=20230601; t=1722380616; x=1722985416;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9tG4ibj1e6Js89Q0K69BYaWj3uwGB1GC2b5DG+Nb0V8=;
-        b=xQ+MfL4Lyn1sNRq36rkGoFNs0HGCFZYn+F60s8GXZXpD81PTs/dDFupFlLgFVvQhtt
-         DiijyCJd7vKD6hOWHi9BaXYANjdWgvw3CaqGUEj8UD4xsgph3xYZq0O4cyxNI7nQik+I
-         j3H9JUcxOltqmn7AhbrYazZ7bDjbIurT27+9nMnt7M5yvmpCu7M3xyNmkLa/l60S8l8l
-         eqEJ0vBqpYq5Z56PwEkHMVNl9bNmB2FXv1yaA47KqBN7QF4XNazJP9y11keH6e+IMQis
-         pkZnRRio8f7oFyy2ZvQYE/Dx6MQGKOtdOjFYkQtz19zFy58n3XDpZiA5TOlH3VSx/zWT
-         KmFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGiClL6yejmTQTBafj8ax2KXRpIe9c+MXBvNbz+0QI87f3QkeCqtYKIKJ92TjmcMmBMpYuryZ0B5TR3s8aA0dV7fMx0DJrm0tGr7cpOIuU2ABhKPPDl6JpL3T+ddlIkZQJeI/n
-X-Gm-Message-State: AOJu0YzHRt4C5cbVTTDfAUh7G8SfAKCIPhRTtC30yZ+cthZabIGHpSXJ
-	M8rqFC4c3Ucyne1x80XHNOBnlHmpVCcLDJmcCH0zWD76inFPknP5
-X-Google-Smtp-Source: AGHT+IFGRAi4mVeDyJj/FKJYt1axQZPWTQGevsa8iIP75abxnaROHuKfpSs+p+ytCVHUtGmDutX88g==
-X-Received: by 2002:a05:6214:1307:b0:6b0:789f:9ce2 with SMTP id 6a1803df08f44-6bb5599f07fmr176892356d6.2.1722380072396;
-        Tue, 30 Jul 2024 15:54:32 -0700 (PDT)
+        bh=VcM0knhLOz1m9ZbRQY0EYzIe6XjeFf2X8aUPfEnckTQ=;
+        b=sJeT8xQZFvhhQrFkHInG5kFGvpPs4VMkiijmIlK+MTXoNw5TJHP1U8QVHYXNm+oMGP
+         VJTCDjzrijih5UoyspOWBw9q+zKekcsdjHNctPOhJoVidUeeZMtG5zafb9P36BJbCs76
+         2mO5tC74B3coraakQjpN07SFBCzfFZsIqvzrWUyMvjPKMAN1PXbyc8eQvIk47feRW8sL
+         tkvgipUvvhFirTVOUq3GV/IidXiP+OloHfhqJKxXYH8fMuDJApNguOOni7IL82oT3t5t
+         47gkVGKmpqTc3CdFaa/u6mpbJp2WMAzztIsWNEnpYzzxgsMYFRMSJLC81au5M16BiLJ0
+         swyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVvbx4sMz1c7ITvGst5VWdGaB6deBajv0K4GNxEEAs1VSMcsQ4tNA2zKn15owpOu98PBTiemEfATW9+k9VZ2ERVRNfPbZR7b/7HSFnj9Jfie25KnyFBzLuGelP3CPFF97sldJGc
+X-Gm-Message-State: AOJu0YyK48OZPUVz/wZB9VX/pF5S2ZmZZ38V0ckZPsHdu5jV/x/WKxxQ
+	ILzgVDkllJ/OX9u0FL6JqXsOc0eoenanjv48hf4TF1SmMwmuOhbj
+X-Google-Smtp-Source: AGHT+IGf+zgdI5tE488+z1wEmMsZ9oh3Tvc8N59XvRejpiLCz1NQQVLyjlm/+xBjXVrP6J+LjVjGeg==
+X-Received: by 2002:a05:620a:430a:b0:79f:d0f:2b19 with SMTP id af79cd13be357-7a1e52f20a7mr1422831585a.68.1722380616193;
+        Tue, 30 Jul 2024 16:03:36 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id 6a1803df08f44-6bb3fa94e70sm67155976d6.83.2024.07.30.15.54.27
+        by smtp.googlemail.com with ESMTPSA id af79cd13be357-7a1dcc43dacsm599684285a.126.2024.07.30.16.03.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jul 2024 15:54:31 -0700 (PDT)
-Message-ID: <10b0a584-e07d-4fb9-99a4-6359563c1e47@gmail.com>
-Date: Tue, 30 Jul 2024 15:54:26 -0700
+        Tue, 30 Jul 2024 16:03:35 -0700 (PDT)
+Message-ID: <86c0c9ee-f1f3-414a-bde3-c171bbce85c1@gmail.com>
+Date: Tue, 30 Jul 2024 16:03:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,7 +76,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/568] 6.6.44-rc1 review
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -84,16 +84,16 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
  sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
  conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 Content-Language: en-US
 From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 7/30/24 08:41, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.44 release.
-> There are 568 patches in this series, all will be posted as a response
+On 7/30/24 08:37, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.3 release.
+> There are 809 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -101,19 +101,36 @@ On 7/30/24 08:41, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.44-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.3-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
 > and the diffstat can be found below.
 > 
 > thanks,
 > 
 > greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+perf failed to build with the following error:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+In file included from tests/pmu.c:7:
+tests/pmu.c: In function 'test__name_len':
+tests/pmu.c:400:25: error: too few arguments to function 
+'pmu_name_len_no_suffix'
+   TEST_ASSERT_VAL("cpu", pmu_name_len_no_suffix("cpu") == strlen("cpu"));
+                          ^~~~~~~~~~~~~~~~~~~~~~
+tests/tests.h:15:8: note: in definition of macro 'TEST_ASSERT_VAL'
+   if (!(cond)) {        \
+         ^~~~
+In file included from util/evsel.h:13,
+                  from util/evlist.h:14,
+                  from tests/pmu.c:2:
+util/pmus.h:8:5: note: declared here
+  int pmu_name_len_no_suffix(const char *str, unsigned long *num);
+      ^~~~~~~~~~~~~~~~~~~~~~
+In file included from tests/pmu.c:7:
+
+this is caused by 958e16410f96ee72efc7a93e5d1774e8a236f2f5 ("perf tests: 
+Add some pmu core functionality tests")
 -- 
 Florian
 
