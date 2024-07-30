@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409C1941D54
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37843941814
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFB2E28B435
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 691051C22FC1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9633A1A76C4;
-	Tue, 30 Jul 2024 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C1B184535;
+	Tue, 30 Jul 2024 16:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibfWZQ6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4AW1HiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526D91A76BE;
-	Tue, 30 Jul 2024 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCDD1A6189;
+	Tue, 30 Jul 2024 16:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359740; cv=none; b=utFJvlBc+/6iW97mg9n8OoMFK7sPEAJqAWzBlcvPvoXKGyd73nnRKBji+fdhd/tMQJb7eFI1JbPHw7vq6W7OtmiUSSDeu0QO54tJ36Z5wfLpgsjHHjgynKRB2Ox5Egfehz6+H7erIcX6IMjL7aGHtLHslj8i92giqyC522Gncq0=
+	t=1722356224; cv=none; b=qYcSF93poc6kw7hkV94i9GA/Xteb7qeS0YvzMYwCJdI0qLUPc3hw2zQ6Y7Jy/6AjlXsnoxQCIJKrzns72SbhLvPNgmw112QlvTzFALSyhvhBs2VvhfL99KsTke+D4wY9XWM39MixVSBjDU/s3uXToecE5eTrWc1NuNWPH6Yj6jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359740; c=relaxed/simple;
-	bh=Kt+2C1Gu9NmoJJ8ZoNlTEfRwV8uu7lZ9/B9kty9xUuQ=;
+	s=arc-20240116; t=1722356224; c=relaxed/simple;
+	bh=V3InshDAA1+YvbJgV7xBnfSHdK7NdwGf6vqquoPp64E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EwxQFG3SKg650VExSBrJ+WE/73g+1/s7fy/dgbiuluKaLKfJHpikAznI7+ZmzHv/K2KB3CV1kodo8tmG2CXVe6L1zXcxXE20w5yK/vXacA0tLThSjorBYrAN77M15Op2k9ePa6+MFD+yvmpJml9u2hj4dluIVdaXcaWgc3MF4DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibfWZQ6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71FEC4AF0C;
-	Tue, 30 Jul 2024 17:15:39 +0000 (UTC)
+	 MIME-Version; b=eolTUgkzrLrppEWQey4v4gam0nQ2zH/U/XLSDdUyPmTdbzUcvEN/mytLwIrSD6zCqcMv0TuwSF/vmQoxxmfd9/BlVIiXECRIBBoLFhmDWNbp+oUjLuMmB8MsqdTMhonNjPOzXJYnwqFnP9f8/RnhK70+erHy4ZmUevIrvuRBG64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4AW1HiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAFBC32782;
+	Tue, 30 Jul 2024 16:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359740;
-	bh=Kt+2C1Gu9NmoJJ8ZoNlTEfRwV8uu7lZ9/B9kty9xUuQ=;
+	s=korg; t=1722356223;
+	bh=V3InshDAA1+YvbJgV7xBnfSHdK7NdwGf6vqquoPp64E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibfWZQ6Rwe6iFtoYxDpSHGggie1+caPDuO5eXmEdrjagDcGxES4Tz9lGtvWXXNOVY
-	 9PyBoMdSyVd3OxG5U6WLXo/vZqfPZOF67Q72CPzGHVfQqveyJGch/E/Tp9LwOjq9KC
-	 vQB84HPOYjtf3rX8REZYSLYdvf718UOMmh8yTb/o=
+	b=s4AW1HiYSkMRkSfHrX5PBQllB2/KyV3e+RKGo1SMvWtIivAa24bI7hU7M56AtvTDS
+	 +5pyW9U9S72iyeOqul1mN1I9i2QCfxECe8aGbM3p43xYLAeGvkMITJkceDt3QYkIDa
+	 jHqNF2TSWXfRP9TLvXrtySXNbpmB2enTce7ziUj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Artur Rojek <contact@artur-rojek.eu>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 526/809] power: supply: ingenic: Fix some error handling paths in ingenic_battery_get_property()
-Date: Tue, 30 Jul 2024 17:46:42 +0200
-Message-ID: <20240730151745.512615122@linuxfoundation.org>
+Subject: [PATCH 6.1 170/440] xprtrdma: Fix rpcrdma_reqs_reset()
+Date: Tue, 30 Jul 2024 17:46:43 +0200
+Message-ID: <20240730151622.509206283@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit f8b6c1eb76f73ed721facd58d0cfb08513aad34c ]
+[ Upstream commit acd9f2dd23c632568156217aac7a05f5a0313152 ]
 
-If iio_read_channel_processed() fails, 'val->intval' is not updated, but it
-is still *1000 just after. So, in case of error, the *1000 accumulate and
-'val->intval' becomes erroneous.
+Avoid FastReg operations getting MW_BIND_ERR after a reconnect.
 
-So instead of rescaling the value after the fact, use the dedicated scaling
-API. This way the result is updated only when needed. In case of error, the
-previous value is kept, unmodified.
+rpcrdma_reqs_reset() is called on transport tear-down to get each
+rpcrdma_req back into a clean state.
 
-This should also reduce any inaccuracies resulting from the scaling.
+MRs on req->rl_registered are waiting for a FastReg, are already
+registered, or are waiting for invalidation. If the transport is
+being torn down when reqs_reset() is called, the matching LocalInv
+might never be posted. That leaves these MR registered /and/ on
+req->rl_free_mrs, where they can be re-used for the next
+connection.
 
-Finally, this is also slightly more efficient as it saves a function call
-and a multiplication.
+Since xprtrdma does not keep specific track of the MR state, it's
+not possible to know what state these MRs are in, so the only safe
+thing to do is release them immediately.
 
-Fixes: fb24ccfbe1e0 ("power: supply: add Ingenic JZ47xx battery driver.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Artur Rojek <contact@artur-rojek.eu>
-Link: https://lore.kernel.org/r/51e49c18574003db1e20c9299061a5ecd1661a3c.1719121781.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 5de55ce951a1 ("xprtrdma: Release in-flight MRs on disconnect")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/ingenic-battery.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/sunrpc/xprtrdma/frwr_ops.c |  3 ++-
+ net/sunrpc/xprtrdma/verbs.c    | 16 +++++++++++++++-
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/ingenic-battery.c b/drivers/power/supply/ingenic-battery.c
-index 2e7fdfde47ece..0a40f425c2772 100644
---- a/drivers/power/supply/ingenic-battery.c
-+++ b/drivers/power/supply/ingenic-battery.c
-@@ -31,8 +31,9 @@ static int ingenic_battery_get_property(struct power_supply *psy,
+diff --git a/net/sunrpc/xprtrdma/frwr_ops.c b/net/sunrpc/xprtrdma/frwr_ops.c
+index ffbf99894970e..47f33bb7bff81 100644
+--- a/net/sunrpc/xprtrdma/frwr_ops.c
++++ b/net/sunrpc/xprtrdma/frwr_ops.c
+@@ -92,7 +92,8 @@ static void frwr_mr_put(struct rpcrdma_mr *mr)
+ 	rpcrdma_mr_push(mr, &mr->mr_req->rl_free_mrs);
+ }
  
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_HEALTH:
--		ret = iio_read_channel_processed(bat->channel, &val->intval);
--		val->intval *= 1000;
-+		ret = iio_read_channel_processed_scale(bat->channel,
-+						       &val->intval,
-+						       1000);
- 		if (val->intval < info->voltage_min_design_uv)
- 			val->intval = POWER_SUPPLY_HEALTH_DEAD;
- 		else if (val->intval > info->voltage_max_design_uv)
-@@ -41,8 +42,9 @@ static int ingenic_battery_get_property(struct power_supply *psy,
- 			val->intval = POWER_SUPPLY_HEALTH_GOOD;
- 		return ret;
- 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
--		ret = iio_read_channel_processed(bat->channel, &val->intval);
--		val->intval *= 1000;
-+		ret = iio_read_channel_processed_scale(bat->channel,
-+						       &val->intval,
-+						       1000);
- 		return ret;
- 	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
- 		val->intval = info->voltage_min_design_uv;
+-/* frwr_reset - Place MRs back on the free list
++/**
++ * frwr_reset - Place MRs back on @req's free list
+  * @req: request to reset
+  *
+  * Used after a failed marshal. For FRWR, this means the MRs
+diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
+index 4f71627ba39ce..cb909329a5039 100644
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -897,6 +897,8 @@ static int rpcrdma_reqs_setup(struct rpcrdma_xprt *r_xprt)
+ 
+ static void rpcrdma_req_reset(struct rpcrdma_req *req)
+ {
++	struct rpcrdma_mr *mr;
++
+ 	/* Credits are valid for only one connection */
+ 	req->rl_slot.rq_cong = 0;
+ 
+@@ -906,7 +908,19 @@ static void rpcrdma_req_reset(struct rpcrdma_req *req)
+ 	rpcrdma_regbuf_dma_unmap(req->rl_sendbuf);
+ 	rpcrdma_regbuf_dma_unmap(req->rl_recvbuf);
+ 
+-	frwr_reset(req);
++	/* The verbs consumer can't know the state of an MR on the
++	 * req->rl_registered list unless a successful completion
++	 * has occurred, so they cannot be re-used.
++	 */
++	while ((mr = rpcrdma_mr_pop(&req->rl_registered))) {
++		struct rpcrdma_buffer *buf = &mr->mr_xprt->rx_buf;
++
++		spin_lock(&buf->rb_lock);
++		list_del(&mr->mr_all);
++		spin_unlock(&buf->rb_lock);
++
++		frwr_mr_release(mr);
++	}
+ }
+ 
+ /* ASSUMPTION: the rb_allreqs list is stable for the duration,
 -- 
 2.43.0
 
