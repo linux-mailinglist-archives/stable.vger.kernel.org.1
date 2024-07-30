@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-62947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2692E941662
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A347941665
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C0E1C22EAB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A4631C2303D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C151BC088;
-	Tue, 30 Jul 2024 15:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4153A1BA885;
+	Tue, 30 Jul 2024 15:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oL7NlgAG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFmwHwRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2331BBBE5;
-	Tue, 30 Jul 2024 15:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52BC19F467;
+	Tue, 30 Jul 2024 15:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355157; cv=none; b=ct8vfu5w/PjQ5UKt/6E/ZU582ts1teKeVMcDs8hpAcHQ2b6QhrwcOdljNM1+XSkAcMLPr/nFHeO9iQTAjulBF+OZfNP4pNtbEPjc1HwgZpWH5lObjM6HlY+96RTETBj8hTLRWUGarJSk+4geb2ikd9GWs5/oqjlq7t+42crxK0Q=
+	t=1722355167; cv=none; b=Vqojlhwq1+/lOiNOvutVcbgj3GvF5MM1HPZj41mRGyl6Qmtpv+TPbP8sefrNXrtVE1rqPkrawsTlTdy8HjuEgZG1cgJ5ZGhTK2fvl/mSBjfGQ0C3k6FklTrH2FlWK1LWOzp/TehaXwZXM0x5lXrS1b+GG6NgSUPUp/Pe/ZUTtwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355157; c=relaxed/simple;
-	bh=+l1qB5LZ56181m4lfgWIJvGvC9ri9XAC1muRsr/ZeBE=;
+	s=arc-20240116; t=1722355167; c=relaxed/simple;
+	bh=n59/OwuGgk7L4WAw0NhWvmBMGrY1uYAWxj9XllhxDis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+GoVaQ5p2BAsH6ORGGb5YJTg838zlZt+3lsSdJa4nkfyTi6wM0Els66MyEhfIahgOaAfZPZ8gf7uQadO7Wcmh+NJbzsmDutvL8iPLBgK1G+IMxVgIDAZ2E6PS69XFWnTQQgVhET6vJJaKY6TlLUhBD26TX9lm08218it1IaGns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oL7NlgAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FFFC32782;
-	Tue, 30 Jul 2024 15:59:16 +0000 (UTC)
+	 MIME-Version; b=WsjNs/6YqRMdQicOXK8hdqJTqAzgb3jv8+sP8Fu+QFF5tDloYfVTP9XBHUOqoTEWmNZyXVbeZBeT2DKlhqWlGWbBWijohKP2nZ/mRTqLF/69Ptz/1rAO42LEzinz+oVNfMZ85ypOP0gIIT6u7u5NujjxWXB+bFizcU22XT/ZVRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFmwHwRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63886C32782;
+	Tue, 30 Jul 2024 15:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355156;
-	bh=+l1qB5LZ56181m4lfgWIJvGvC9ri9XAC1muRsr/ZeBE=;
+	s=korg; t=1722355166;
+	bh=n59/OwuGgk7L4WAw0NhWvmBMGrY1uYAWxj9XllhxDis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oL7NlgAGpCifg/7gQIpizROVyCqkx2p+5wRlbtIdq29WhFRuXSvvIpi1FC4xepA2C
-	 CkqJ8ulICpp2+L5Ika+tsMEIGiEqZsG2SM/Rfa/U2OVIH8i1t7yuZPuRyL3dYR3Fek
-	 WTCGBK64mmh2h5z5Oa+H4o7uX1hWCkCsfIgdmWtQ=
+	b=jFmwHwRj9nAJNERdA3vs5LjitbMcuxug9zK2vIkty3OlWzT4ZFmQ60xLfGE8vaCXR
+	 SGPpAzNMUS7C1m22H7+4UCTHnNAkV3ehbm/tVeHi8dZjlKDWR78MSeKq2Nun0Fdj44
+	 TWuEq67bJmk/LQBjkjQIPEp/crY7EYlwEavS6NNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/440] arm64: dts: renesas: r8a779g0: Add L3 cache controller
-Date: Tue, 30 Jul 2024 17:44:56 +0200
-Message-ID: <20240730151618.225964140@linuxfoundation.org>
+Subject: [PATCH 6.1 064/440] arm64: dts: renesas: r8a779g0: Add secondary CA76 CPU cores
+Date: Tue, 30 Jul 2024 17:44:57 +0200
+Message-ID: <20240730151618.264294548@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -67,40 +67,131 @@ Content-Transfer-Encoding: 8bit
 
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit f08407210db921a4c9eaeaa92d0c434858b9c6c4 ]
+[ Upstream commit 68c9c53d45fa9c48a89d8a9a4d1555b9e91add69 ]
 
-Describe the cache configuration for the first Cortex-A76 CPU core on
-the Renesas R-Car V4H (R8A779G0) SoC.
+Complete the description of the Cortex-A76 CPU cores and L3 cache
+controllers on the Renesas R-Car V4H (R8A779G0) SoC, including CPU
+topology and PSCI support for enabling CPU cores.
 
-Extracted from a larger patch in the BSP by Takeshi Kihara.
+R-Car V4H has 4 Cortex-A76 cores, grouped in 2 clusters.
+
+Based on a patch in the BSP by Takeshi Kihara.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/dfd743b32198295afb78bc0ac337ef283fa3879a.1668429870.git.geert+renesas@glider.be
+Link: https://lore.kernel.org/r/ccb55458bd87f8ba70d28c61bcc254f22184824c.1668429870.git.geert+renesas@glider.be
 Stable-dep-of: 6fca24a07e1d ("arm64: dts: renesas: r8a779a0: Add missing hypervisor virtual timer IRQ")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a779g0.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/renesas/r8a779g0.dtsi | 70 +++++++++++++++++++++--
+ 1 file changed, 65 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-index 868d1a3cbdf61..9f6a30cf315f2 100644
+index 9f6a30cf315f2..8aa3ea645668c 100644
 --- a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
 +++ b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-@@ -23,6 +23,14 @@ a76_0: cpu@0 {
+@@ -18,12 +18,60 @@ cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
++		cpu-map {
++			cluster0 {
++				core0 {
++					cpu = <&a76_0>;
++				};
++				core1 {
++					cpu = <&a76_1>;
++				};
++			};
++
++			cluster1 {
++				core0 {
++					cpu = <&a76_2>;
++				};
++				core1 {
++					cpu = <&a76_3>;
++				};
++			};
++		};
++
+ 		a76_0: cpu@0 {
+ 			compatible = "arm,cortex-a76";
  			reg = <0>;
  			device_type = "cpu";
  			power-domains = <&sysc R8A779G0_PD_A1E0D0C0>;
-+			next-level-cache = <&L3_CA76_0>;
+ 			next-level-cache = <&L3_CA76_0>;
++			enable-method = "psci";
 +		};
 +
-+		L3_CA76_0: cache-controller-0 {
++		a76_1: cpu@100 {
++			compatible = "arm,cortex-a76";
++			reg = <0x100>;
++			device_type = "cpu";
++			power-domains = <&sysc R8A779G0_PD_A1E0D0C1>;
++			next-level-cache = <&L3_CA76_0>;
++			enable-method = "psci";
++		};
++
++		a76_2: cpu@10000 {
++			compatible = "arm,cortex-a76";
++			reg = <0x10000>;
++			device_type = "cpu";
++			power-domains = <&sysc R8A779G0_PD_A1E0D1C0>;
++			next-level-cache = <&L3_CA76_1>;
++			enable-method = "psci";
++		};
++
++		a76_3: cpu@10100 {
++			compatible = "arm,cortex-a76";
++			reg = <0x10100>;
++			device_type = "cpu";
++			power-domains = <&sysc R8A779G0_PD_A1E0D1C1>;
++			next-level-cache = <&L3_CA76_1>;
++			enable-method = "psci";
+ 		};
+ 
+ 		L3_CA76_0: cache-controller-0 {
+@@ -32,6 +80,18 @@ L3_CA76_0: cache-controller-0 {
+ 			cache-unified;
+ 			cache-level = <3>;
+ 		};
++
++		L3_CA76_1: cache-controller-1 {
 +			compatible = "cache";
-+			power-domains = <&sysc R8A779G0_PD_A2E0D0>;
++			power-domains = <&sysc R8A779G0_PD_A2E0D1>;
 +			cache-unified;
 +			cache-level = <3>;
- 		};
++		};
++	};
++
++	psci {
++		compatible = "arm,psci-1.0", "arm,psci-0.2";
++		method = "smc";
  	};
  
+ 	extal_clk: extal {
+@@ -491,7 +551,7 @@ gic: interrupt-controller@f1000000 {
+ 			reg = <0x0 0xf1000000 0 0x20000>,
+ 			      <0x0 0xf1060000 0 0x110000>;
+ 			interrupts = <GIC_PPI 9
+-				      (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_HIGH)>;
++				      (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
+ 		};
+ 
+ 		prr: chipid@fff00044 {
+@@ -502,9 +562,9 @@ prr: chipid@fff00044 {
+ 
+ 	timer {
+ 		compatible = "arm,armv8-timer";
+-		interrupts-extended = <&gic GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
+-				      <&gic GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
+-				      <&gic GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
+-				      <&gic GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>;
++		interrupts-extended = <&gic GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
++				      <&gic GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
++				      <&gic GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
++				      <&gic GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
+ 	};
+ };
 -- 
 2.43.0
 
