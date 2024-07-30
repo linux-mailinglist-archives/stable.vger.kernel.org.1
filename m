@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-63611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F8F941A91
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18797941CF0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B607B28573
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 911D51F2459A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB01414D29B;
-	Tue, 30 Jul 2024 16:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996CC18E03C;
+	Tue, 30 Jul 2024 17:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHVZWt2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGxaNYqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B1D1A6192;
-	Tue, 30 Jul 2024 16:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B7618C919;
+	Tue, 30 Jul 2024 17:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357386; cv=none; b=AtcYjcwTpvj9BAnDVef+pyRY7eWQVIX9DdZ/tjPoVxPPvlELpPdFqftTy9kRIxaCGEyfZccdezkV6d2doC8ZS4Rk4RP0RaTOG2FlxQUAc4VyFGP1ps7EXR4mt05wXkUFn1l3HY39t8a8f2oppysjbf0sHDOgcSVF95Sv/91oNRE=
+	t=1722359418; cv=none; b=WWQGGzow53qDZ8iQ88z3NNyvMG0xm3TTUPeJxFUPf4MUUVnUE8AwA4MnjWpZO2cfi5HPVD/YdXrriWu5gcyRh3Pv7uOoTCinEXB6nIuHi4k0U+qCifVXjEHkEfgRJ+LskKCjWdNDUMvRYmcjypEustHh3Wwh+kGA7xPVo7hLqzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357386; c=relaxed/simple;
-	bh=vB4LXHlHoKtorESnJwxlaLxqx2ZSVZ+lSVwQ/4R8kZ4=;
+	s=arc-20240116; t=1722359418; c=relaxed/simple;
+	bh=+Q63Ak6IIuHZE9nXGqFfrqTO8zRTelX7my5NjfB67e8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o0+GWxqOveB06Jf1MiXeuAlY8zyEHDqqpKch/OB9hL4rJ/gR4J9m6LUsuMI4Chha4Mvznht20VebrHvmpISHEDqc4GfLGm8MhHElrf5AsjCayXAc9b4yM51YUuID4kaIdU8JCFnHCZ4zMwomMeI7bYNx0Xy4UkfqZElERkLWYpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHVZWt2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2F7C32782;
-	Tue, 30 Jul 2024 16:36:25 +0000 (UTC)
+	 MIME-Version; b=BuyPMwilaW7zLOBZMIfV36nBHLgs0bQaNmM9Neoqj0t5zIr1NMY2n/koi4lx+g5EMdCCKpbNjGTZUJrIJHxLJe6UuTYGDTJmNUVlh7gbOmWX0ckTHFxTgIMRCn4d7CPeh8dpFk4KzUMz/Qizilj7KxpzvmbviXqpcbG7T16cq30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGxaNYqB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A899AC32782;
+	Tue, 30 Jul 2024 17:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357386;
-	bh=vB4LXHlHoKtorESnJwxlaLxqx2ZSVZ+lSVwQ/4R8kZ4=;
+	s=korg; t=1722359418;
+	bh=+Q63Ak6IIuHZE9nXGqFfrqTO8zRTelX7my5NjfB67e8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHVZWt2iDQ6VTzvTclcpsM56hpgxWTj5VVeSwTAvh2QuQEezOQ5CR0qDJu/a8wxMH
-	 tX6KF2kFTEWCLqJtuNXPHCQEviOyxbWgDtfVDSgkWGZMZjFdal1FBVhBFyhEDpFbvr
-	 a+cR+EWgtKVlse/vMkbgKv+yjanjLWTLkHoh64T0=
+	b=KGxaNYqBlFtWD/LiE2pJzaUJrSwUl/Kr3J5mEza0xsa/Yp6k4hGt1TqjTIY4eOXxr
+	 MYXDhB+rLMAkhLRmSzD0j4pU+32SfyKF6f5Crje/pmEGPl7clzc8/k9ltpUfNGX5KD
+	 mHEWgOeBx2S65uQJ7FmhDBG+DaDguu9uS6udT1QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 250/568] PCI: keystone: Dont enable BAR 0 for AM654x
+Subject: [PATCH 6.10 481/809] ipv4: Fix incorrect TOS in fibmatch route get reply
 Date: Tue, 30 Jul 2024 17:45:57 +0200
-Message-ID: <20240730151649.651431205@linuxfoundation.org>
+Message-ID: <20240730151743.735613743@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +62,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 9ffa0e70b2daf9b0271e4960b7c8a2350e2cda08 ]
+[ Upstream commit f036e68212c11e5a7edbb59b5e25299341829485 ]
 
-After 6ab15b5e7057 ("PCI: dwc: keystone: Convert .scan_bus() callback to
-use add_bus"), ks_pcie_v3_65_add_bus() enabled BAR 0 for both v3.65a and
-v4.90a devices.  On the AM654x SoC, which uses v4.90a, enabling BAR 0
-causes Completion Timeouts when setting up MSI-X.  These timeouts delay
-boot of the AM654x by about 45 seconds.
+The TOS value that is returned to user space in the route get reply is
+the one with which the lookup was performed ('fl4->flowi4_tos'). This is
+fine when the matched route is configured with a TOS as it would not
+match if its TOS value did not match the one with which the lookup was
+performed.
 
-Move the BAR 0 initialization to ks_pcie_msi_host_init(), which is only
-used for v3.65a devices, and remove ks_pcie_v3_65_add_bus().
+However, matching on TOS is only performed when the route's TOS is not
+zero. It is therefore possible to have the kernel incorrectly return a
+non-zero TOS:
 
-[bhelgaas: commit log]
-Fixes: 6ab15b5e7057 ("PCI: dwc: keystone: Convert .scan_bus() callback to use add_bus")
-Link: https://lore.kernel.org/linux-pci/20240328085041.2916899-3-s-vadapalli@ti.com
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Suggested-by: Niklas Cassel <cassel@kernel.org>
-Suggested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+ # ip link add name dummy1 up type dummy
+ # ip address add 192.0.2.1/24 dev dummy1
+ # ip route get fibmatch 192.0.2.2 tos 0xfc
+ 192.0.2.0/24 tos 0x1c dev dummy1 proto kernel scope link src 192.0.2.1
+
+Fix by instead returning the DSCP field from the FIB result structure
+which was populated during the route lookup.
+
+Output after the patch:
+
+ # ip link add name dummy1 up type dummy
+ # ip address add 192.0.2.1/24 dev dummy1
+ # ip route get fibmatch 192.0.2.2 tos 0xfc
+ 192.0.2.0/24 dev dummy1 proto kernel scope link src 192.0.2.1
+
+Extend the existing selftests to not only verify that the correct route
+is returned, but that it is also returned with correct "tos" value (or
+without it).
+
+Fixes: b61798130f1b ("net: ipv4: RTM_GETROUTE: return matched fib result when requested")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 52 ++++++++---------------
- 1 file changed, 18 insertions(+), 34 deletions(-)
+ net/ipv4/route.c                         |  2 +-
+ tools/testing/selftests/net/fib_tests.sh | 24 ++++++++++++------------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index bf907c8ca25bb..9886fdd415039 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -290,6 +290,24 @@ static void ks_pcie_clear_dbi_mode(struct keystone_pcie *ks_pcie)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 7790a83474618..3473e0105e299 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -3332,7 +3332,7 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 		fri.tb_id = table_id;
+ 		fri.dst = res.prefix;
+ 		fri.dst_len = res.prefixlen;
+-		fri.dscp = inet_dsfield_to_dscp(fl4.flowi4_tos);
++		fri.dscp = res.dscp;
+ 		fri.type = rt->rt_type;
+ 		fri.offload = 0;
+ 		fri.trap = 0;
+diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
+index 73895711cdf42..5f3c28fc86249 100755
+--- a/tools/testing/selftests/net/fib_tests.sh
++++ b/tools/testing/selftests/net/fib_tests.sh
+@@ -1737,53 +1737,53 @@ ipv4_rt_dsfield()
  
- static int ks_pcie_msi_host_init(struct dw_pcie_rp *pp)
- {
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct keystone_pcie *ks_pcie = to_keystone_pcie(pci);
-+
-+	/* Configure and set up BAR0 */
-+	ks_pcie_set_dbi_mode(ks_pcie);
-+
-+	/* Enable BAR0 */
-+	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, 1);
-+	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, SZ_4K - 1);
-+
-+	ks_pcie_clear_dbi_mode(ks_pcie);
-+
-+	/*
-+	 * For BAR0, just setting bus address for inbound writes (MSI) should
-+	 * be sufficient.  Use physical address to avoid any conflicts.
-+	 */
-+	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, ks_pcie->app.start);
-+
- 	pp->msi_irq_chip = &ks_pcie_msi_irq_chip;
- 	return dw_pcie_allocate_domains(pp);
+ 	# DSCP 0x10 should match the specific route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x10 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:Not-ECT"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x11 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:ECT(1)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x12 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:ECT(0)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x13 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:CE"
+ 
+ 	# Unknown DSCP should match the generic route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x14 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:Not-ECT"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x15 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:ECT(1)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x16 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:ECT(0)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x17 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:CE"
+ 
+ 	# Null DSCP should match the generic route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x00 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:Not-ECT"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x01 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:ECT(1)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x02 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:ECT(0)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x03 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:CE"
  }
-@@ -447,44 +465,10 @@ static struct pci_ops ks_child_pcie_ops = {
- 	.write = pci_generic_config_write,
- };
  
--/**
-- * ks_pcie_v3_65_add_bus() - keystone add_bus post initialization
-- * @bus: A pointer to the PCI bus structure.
-- *
-- * This sets BAR0 to enable inbound access for MSI_IRQ register
-- */
--static int ks_pcie_v3_65_add_bus(struct pci_bus *bus)
--{
--	struct dw_pcie_rp *pp = bus->sysdata;
--	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
--	struct keystone_pcie *ks_pcie = to_keystone_pcie(pci);
--
--	if (!pci_is_root_bus(bus))
--		return 0;
--
--	/* Configure and set up BAR0 */
--	ks_pcie_set_dbi_mode(ks_pcie);
--
--	/* Enable BAR0 */
--	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, 1);
--	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, SZ_4K - 1);
--
--	ks_pcie_clear_dbi_mode(ks_pcie);
--
--	 /*
--	  * For BAR0, just setting bus address for inbound writes (MSI) should
--	  * be sufficient.  Use physical address to avoid any conflicts.
--	  */
--	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, ks_pcie->app.start);
--
--	return 0;
--}
--
- static struct pci_ops ks_pcie_ops = {
- 	.map_bus = dw_pcie_own_conf_map_bus,
- 	.read = pci_generic_config_read,
- 	.write = pci_generic_config_write,
--	.add_bus = ks_pcie_v3_65_add_bus,
- };
- 
- /**
 -- 
 2.43.0
 
