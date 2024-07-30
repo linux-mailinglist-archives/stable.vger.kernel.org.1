@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-64511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6C0941E2B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDC0941CA9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E5A71C236A3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9488C1F24190
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CE41A76C5;
-	Tue, 30 Jul 2024 17:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32DB1A76B1;
+	Tue, 30 Jul 2024 17:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MB9Fk682"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UHOSiOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664901A76BA;
-	Tue, 30 Jul 2024 17:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E45F1A76A8;
+	Tue, 30 Jul 2024 17:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360366; cv=none; b=IypgwZBvk8/UM//dI9vK0x9JdER5deRDFgn9qbtgUh/ene0l4wd5n75CW+86cnhSYn+70EcJ8LnSm/wD3XvFxdTJ5m8JPSDKT2oD2diz7FPGPJjVhBOfhGn4GiENlw9IYQtAlGeYSEQcYwY2ayanDvL9+iuH2xgnvPERjtMv7mk=
+	t=1722359204; cv=none; b=ug1l4nT56/6RfnNSTc5w5W8CWhsHYWsNApKmzMfO1LUbB+NvJ+uAUDn5pdhV2n5yNlkuA+GQBQxFlWChAfG/DE97hHy2hLfuCLasJPE54CEhW6nTUJDZQH7Qql7oZZuLmHPLrsm+ruzqPjyWRmKO8YyFrvWnCp/2fA+CCuh6O+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360366; c=relaxed/simple;
-	bh=WPKffu0ibB/7NUGxrEHGxwNdTiiQQZfVtgJzEIlrAAw=;
+	s=arc-20240116; t=1722359204; c=relaxed/simple;
+	bh=3a836nm7W/9w4RoseAtQoOxXM3478otoVt2RBIec1Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWdLmiBjikUCiG66Th7bKtQOa1koNtyNEZ5HH7S2j27Ou7JvA1Mfwnrj6yrV/PDEzjDU671EOdfTqHvmN39crSaeCf69L0nflpvJ4nrPZwA6sOOS9g6plSgmfQjY01RO+sgQ2yJ+zfq0zJdS9Wtf71p1zxeRtshahosa0oXqmi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MB9Fk682; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3694C32782;
-	Tue, 30 Jul 2024 17:26:05 +0000 (UTC)
+	 MIME-Version; b=baKDkwpmMZOxw+d/sCCHU6wVZYVbSeAas3BGiFv0byI7XxsbBQK7JrniCpt9f+OovQStTqYcC0VWP+v3yq1s65pnHvoWUU+kGnnXZhZqBeDZZM3vnQkelbomrmNTVt19VHpftde6EJsfxq9PbDi+uGLgRPM9Fn3E+OZxct5Pvos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UHOSiOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CFDC4AF0F;
+	Tue, 30 Jul 2024 17:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360366;
-	bh=WPKffu0ibB/7NUGxrEHGxwNdTiiQQZfVtgJzEIlrAAw=;
+	s=korg; t=1722359203;
+	bh=3a836nm7W/9w4RoseAtQoOxXM3478otoVt2RBIec1Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MB9Fk6821GO2WOb0h2RuaYHPtUZvjwXYr5gGYTaS/8N252sxF4cHd8jtq0Wa9A5wH
-	 57l2ErdO48+SoUqs3Qymo3HtXi99VFRQnWfktfr/Rvnuwcy60AS07oVw6G/EkzhMzv
-	 7vbaARU6XeasMXdIhC4JuUnd7l63nfjZRekDRnRU=
+	b=2UHOSiOK1izawapSRXdVasQQEOpiY8DR7OGt7jysOYWHFpZrhHP4E4fzyvm1FBh0R
+	 ffA36ZoPRrkT9Bjbwpi94gY2nyA6YXZGZOG+iwo3IZAbnWgx4JJktkqE84A3ZuRJ49
+	 azJxd0L3fVC4zsqsEAC0nc1v04TYwI94sksWpdXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.10 677/809] irqdomain: Fixed unbalanced fwnode get and put
-Date: Tue, 30 Jul 2024 17:49:13 +0200
-Message-ID: <20240730151751.643516823@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 447/568] ASoC: SOF: ipc4-topology: Preserve the DMA Link ID for ChainDMA on unprepare
+Date: Tue, 30 Jul 2024 17:49:14 +0200
+Message-ID: <20240730151657.479374188@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit 6ce3e98184b625d2870991880bf9586ded7ea7f9 upstream.
+commit e6fc5fcaeffa04a3fa1db8dfccdfd4b6001c0446 upstream.
 
-fwnode_handle_get(fwnode) is called when a domain is created with fwnode
-passed as a function parameter. fwnode_handle_put(domain->fwnode) is called
-when the domain is destroyed but during the creation a path exists that
-does not set domain->fwnode.
+The DMA Link ID is set to the IPC message's primary during dai_config,
+which is only during hw_params.
+During xrun handling the hw_params is not called and the DMA Link ID
+information will be lost.
 
-If this path is taken, the fwnode get will never be put.
+All other fields in the message expected to be 0 for re-configuration, only
+the DMA Link ID needs to be preserved and the in case of repeated
+dai_config, it is correctly updated (masked and then set).
 
-To avoid the unbalanced get and put, set domain->fwnode unconditionally.
-
-Fixes: d59f6617eef0 ("genirq: Allow fwnode to carry name information only")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240614173232.1184015-4-herve.codina@bootlin.com
+Fixes: ca5ce0caa67f ("ASoC: SOF: ipc4/intel: Add support for chained DMA")
+Link: https://github.com/thesofproject/linux/issues/5116
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240724081932.24542-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/irq/irqdomain.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ sound/soc/sof/ipc4-topology.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -155,7 +155,6 @@ static struct irq_domain *__irq_domain_c
- 		switch (fwid->type) {
- 		case IRQCHIP_FWNODE_NAMED:
- 		case IRQCHIP_FWNODE_NAMED_ID:
--			domain->fwnode = fwnode;
- 			domain->name = kstrdup(fwid->name, GFP_KERNEL);
- 			if (!domain->name) {
- 				kfree(domain);
-@@ -164,7 +163,6 @@ static struct irq_domain *__irq_domain_c
- 			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 			break;
- 		default:
--			domain->fwnode = fwnode;
- 			domain->name = fwid->name;
- 			break;
- 		}
-@@ -184,7 +182,6 @@ static struct irq_domain *__irq_domain_c
+--- a/sound/soc/sof/ipc4-topology.c
++++ b/sound/soc/sof/ipc4-topology.c
+@@ -1254,7 +1254,13 @@ static void sof_ipc4_unprepare_copier_mo
+ 		ipc4_copier = dai->private;
+ 
+ 		if (pipeline->use_chain_dma) {
+-			pipeline->msg.primary = 0;
++			/*
++			 * Preserve the DMA Link ID and clear other bits since
++			 * the DMA Link ID is only configured once during
++			 * dai_config, other fields are expected to be 0 for
++			 * re-configuration
++			 */
++			pipeline->msg.primary &= SOF_IPC4_GLB_CHAIN_DMA_LINK_ID_MASK;
+ 			pipeline->msg.extension = 0;
  		}
  
- 		domain->name = strreplace(name, '/', ':');
--		domain->fwnode = fwnode;
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
- 
-@@ -200,8 +197,8 @@ static struct irq_domain *__irq_domain_c
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
- 
--	fwnode_handle_get(fwnode);
--	fwnode_dev_initialized(fwnode, true);
-+	domain->fwnode = fwnode_handle_get(fwnode);
-+	fwnode_dev_initialized(domain->fwnode, true);
- 
- 	/* Fill structure */
- 	INIT_RADIX_TREE(&domain->revmap_tree, GFP_KERNEL);
 
 
 
