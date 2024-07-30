@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BD49416B1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199919416B6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:03:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A555286613
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4F121F22CF5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71231187FF2;
-	Tue, 30 Jul 2024 16:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC66C188002;
+	Tue, 30 Jul 2024 16:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xuQVFb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NM8GNOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279BE8BE8;
-	Tue, 30 Jul 2024 16:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89040187FF6;
+	Tue, 30 Jul 2024 16:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355374; cv=none; b=YDS8/P1OX+VzNssPjvBfq+54gcfbHse3M6zeKbWfvqItSXQhKBECcEcI3QaHPTTCOSPEAv68NCZPOAkUIlGO1TW4B3ogWHzlnrcKVGIYljd9DRT2KdM6X+QL38q64+C/5feKKS/QJbT/yFVOcd7HwZntMrZOHSmWM5xlx4aOa9M=
+	t=1722355387; cv=none; b=p9kLd1vq8UgfB19s8mwKlLh45pj+GKECJC3nMGmCS1IBKSIUHWvGzliJvt7KKXFVbI7EYn9n3wG9WvDQB7JBU+uqM9zzSgNN8Hbh8TzEeheLwR0DXgBPmoeSYujhSW6+Tb38jM9sAbCjXtoncgmn38FRbQLJZiVwdv+QtsEqMzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355374; c=relaxed/simple;
-	bh=f2I1MQSHOSFY5nz7bz8IgzP+/CmyIqRMikA99fskqpc=;
+	s=arc-20240116; t=1722355387; c=relaxed/simple;
+	bh=u6nbbH8ypNhDrsF9jfK1ISievzvKKwDNEqdyMq1lz1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLz1zrsyesYkFCaEA5nld+R/WolSf6M0Z5G78IpObt40FknGsxls7X0Ep3gxIxi6psWTMl1Nh5vGAFvI/QvzPD5psNtuaiguHoCGwJjgMg+VNEfrLW0aLcjKWRsgg/yQl7ZQIJ5tMx7xbV1yRJCH90u+68luXOG+mhYd8QZBXCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xuQVFb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897AAC32782;
-	Tue, 30 Jul 2024 16:02:53 +0000 (UTC)
+	 MIME-Version; b=F8+KbAhjjXW/wqdOYYG/apuNGjVRBE+kQTY0PaSJa9/TqXosr+UOmijmqIH+ytr5YdyyR8lmsPxfRmjWsyvNghjHp4GtdX3DOgMgdTxg/ESWsP/h5um1YLldzrObPrCyZqIussEGuwAQG0xVR9Ttnf2+9HHMmm2rESv5ytUwZsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NM8GNOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33D6C32782;
+	Tue, 30 Jul 2024 16:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355374;
-	bh=f2I1MQSHOSFY5nz7bz8IgzP+/CmyIqRMikA99fskqpc=;
+	s=korg; t=1722355387;
+	bh=u6nbbH8ypNhDrsF9jfK1ISievzvKKwDNEqdyMq1lz1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xuQVFb9upYr8pEUifMN3sdqFss5B/FYsM42LfZfqqtNA27lSjNmmuUqyuwKIDgtB
-	 sz7+m0SPQQvaDQfXCZ5P5R5A1YZ9PwsCrm3hHHs0BfOKNSmceNg8G1EK6/LsaRVeiB
-	 xKm/Atf08X5SH8jipwUNfR7E9NzDBsD21gy+LIFM=
+	b=2NM8GNOQR1jT5bc/slgpN/xb9yXj4a3LNq7Uq6JNtj6ML8jSxugUx1S+/xnGQ7z1f
+	 39YpQeloXctgWftViRKXlO53mbwoi6gwOovLRcptVZmncYHmsvSy+Kk+oUrIAIPDYF
+	 +AHYZYY3S3/W3Y3AS4G1cULYLxGGza44NCMbZmUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 045/809] arm64: dts: qcom: sc7180: drop extra UFS PHY compat
-Date: Tue, 30 Jul 2024 17:38:41 +0200
-Message-ID: <20240730151726.432086160@linuxfoundation.org>
+Subject: [PATCH 6.10 046/809] arm64: dts: qcom: sc8180x: add power-domain to UFS PHY
+Date: Tue, 30 Jul 2024 17:38:42 +0200
+Message-ID: <20240730151726.471621846@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,35 +69,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 48299f604d27dad1168cc90b89f33853162c6e33 ]
+[ Upstream commit 9a80ecce60bd4919019a3cdb64604c9b183a8518 ]
 
-The DT schema doesn't have a fallback compatible for
-qcom,sc7180-qmp-ufs-phy. Drop it from the dtsi too.
+The UFS PHY is powered on via the UFS_PHY_GDSC power domain. Add
+corresponding power-domain the the PHY node.
 
-Fixes: 858536d9dc94 ("arm64: dts: qcom: sc7180: Add UFS nodes")
+Fixes: 8575f197b077 ("arm64: dts: qcom: Introduce the SC8180x platform")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-4-f1fd15c33fb3@linaro.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-5-f1fd15c33fb3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index e9deffe3aaf6c..9ab0c98cac054 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -1582,8 +1582,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+index 456ec81327021..da69577b6f09b 100644
+--- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+@@ -2245,6 +2245,8 @@ ufs_mem_phy: phy-wrapper@1d87000 {
+ 			resets = <&ufs_mem_hc 0>;
+ 			reset-names = "ufsphy";
  
- 		ufs_mem_phy: phy@1d87000 {
--			compatible = "qcom,sc7180-qmp-ufs-phy",
--				     "qcom,sm7150-qmp-ufs-phy";
-+			compatible = "qcom,sc7180-qmp-ufs-phy";
- 			reg = <0 0x01d87000 0 0x1000>;
- 			clocks = <&rpmhcc RPMH_CXO_CLK>,
- 				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
++			power-domains = <&gcc UFS_PHY_GDSC>;
++
+ 			#phy-cells = <0>;
+ 
+ 			status = "disabled";
 -- 
 2.43.0
 
