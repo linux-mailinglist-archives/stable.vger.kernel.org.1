@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198F59416BA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB9B9416BE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:03:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B8D1F24DF3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:03:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8AF81F21257
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E4D188000;
-	Tue, 30 Jul 2024 16:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79688188019;
+	Tue, 30 Jul 2024 16:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBA3cKiL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="On/6A0hU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2537187FF2;
-	Tue, 30 Jul 2024 16:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C978187FFB;
+	Tue, 30 Jul 2024 16:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355401; cv=none; b=OKQmYUDXi1bQYdnSocWqJGYGODo/M3xsHwBTmxFszQq3biE7aTSyO+5l1XauswBt1t+2xG2rTnOJo9UKiY4iEENO+g741L/7U/fJ06D3QI/hRYbdUZ0lJDZpDVSCRcxCxVqEiQv22ER07KK0WeRfPA35mi0GFFN5BuAfrZswMOo=
+	t=1722355412; cv=none; b=CvgsYe850j9dAn7+1MoKgLvTQXUUSttlQt6a9jQNcx2VlAHoMB/5eEBV0kX2q1oAYUv1g8ofHD/kxO43tMmd0/5qE2In1UirggnA1cMmGCWS9EL0277ZUS5VDQyHgs2beBeub40ykqnSFBw6eMBRPg3/ZhEGl6E9LtRad3OXL80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355401; c=relaxed/simple;
-	bh=nHkUvoVkv2J1EI872uSSaeQ5HemuwbXWEci6GEt7Mg8=;
+	s=arc-20240116; t=1722355412; c=relaxed/simple;
+	bh=bfYFJsLEHotii6BkAZ6zE3suakjk8eXWtblhNLMLIvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/OK5ls2y4bY7qs9+eUEZ9qfs9rtDHLK2eD6l8QipLV+dfZNhNMJOku3tsrnCuRUm0ed94ToJUT04tdURgkye0cKKgZ+O9JIc8obsKGmajNWRP1hWwypVNiOJQJwv4yjA0mTwBV2CBiOV1wWE58W+CE1z9p+GhF/aEa1Wtui2Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBA3cKiL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D41C4AF0A;
-	Tue, 30 Jul 2024 16:03:20 +0000 (UTC)
+	 MIME-Version; b=PLWHGh83GOjbT9HUXuGVwR2LLwlzVsCUonOdLNb2zJ+3kGPVaRag/VxhK76nT5l8192Y8O4fMjbqCBlry666Z2SeU/hUVL32Ndvsfd7xVTDEIz6onCLNVpD1hLJwt4hHK79CeFWvy6iV81tqVRM+gpVG5MtRpg+WvnBDqxepZqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=On/6A0hU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8260FC4AF12;
+	Tue, 30 Jul 2024 16:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355400;
-	bh=nHkUvoVkv2J1EI872uSSaeQ5HemuwbXWEci6GEt7Mg8=;
+	s=korg; t=1722355412;
+	bh=bfYFJsLEHotii6BkAZ6zE3suakjk8eXWtblhNLMLIvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OBA3cKiLO2ytJmWvD8Xpmg/nRU/qhEOvOajH7fL93G1Ll8UOPU2iL60edoS6uKRWU
-	 fIrsdVEXftOmxDEdF7QEiuYkHRkM0RWKfiV3G9asC3UF65NvPRLeUUtkLY2sunnfhB
-	 rvCiZOJ6/6SIs4FSYmJj5/d7W8TCKrDDRvD4muk0=
+	b=On/6A0hUO4eV5txD7g4Ejd/XICgdAmprp8Vs3JZoypIWfu/703RIRlxDhEWfJ1Mjb
+	 yvorvDzh/Owc7cdKT7tkSr1ZAddJgAdAQLGh/bj8FrulgdIiBqr5sHb9Bp0u4/7yBX
+	 ieF6rnwBo/q1VYzxtf+w47rHSxyEJuTqE7A0TfrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/440] tcp: fix races in tcp_v[46]_err()
-Date: Tue, 30 Jul 2024 17:45:23 +0200
-Message-ID: <20240730151619.274604754@linuxfoundation.org>
+Subject: [PATCH 6.1 091/440] net/smc: set rmbs SG_MAX_SINGLE_ALLOC limitation only when CONFIG_ARCH_NO_SG_CHAIN is defined
+Date: Tue, 30 Jul 2024 17:45:24 +0200
+Message-ID: <20240730151619.313436260@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -67,81 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit fde6f897f2a184546bf5516ac736523ef24dc6a7 ]
+[ Upstream commit 3ac14b9dfbd345e891d48d89f6c2fa519848f0f4 ]
 
-These functions have races when they:
+SG_MAX_SINGLE_ALLOC is used to limit maximum number of entries that
+will be allocated in one piece of scatterlist. When the entries of
+scatterlist exceeds SG_MAX_SINGLE_ALLOC, sg chain will be used. From
+commit 7c703e54cc71 ("arch: switch the default on ARCH_HAS_SG_CHAIN"),
+we can know that the macro CONFIG_ARCH_NO_SG_CHAIN is used to identify
+whether sg chain is supported. So, SMC-R's rmb buffer should be limited
+by SG_MAX_SINGLE_ALLOC only when the macro CONFIG_ARCH_NO_SG_CHAIN is
+defined.
 
-1) Write sk->sk_err
-2) call sk_error_report(sk)
-3) call tcp_done(sk)
-
-As described in prior patches in this series:
-
-An smp_wmb() is missing.
-We should call tcp_done() before sk_error_report(sk)
-to have consistent tcp_poll() results on SMP hosts.
-
-Use tcp_done_with_error() where we centralized the
-correct sequence.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240528125253.1966136-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a3fe3d01bd0d ("net/smc: introduce sg-logic for RMBs")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Co-developed-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 11 +++--------
- net/ipv6/tcp_ipv6.c | 10 +++-------
- 2 files changed, 6 insertions(+), 15 deletions(-)
+ net/smc/smc_core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 16098fcafde2b..c64ba4f8ddaa9 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -602,15 +602,10 @@ int tcp_v4_err(struct sk_buff *skb, u32 info)
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index 64b6dd439938e..10d79cb55528d 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1959,7 +1959,6 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
+  */
+ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
+ {
+-	const unsigned int max_scat = SG_MAX_SINGLE_ALLOC * PAGE_SIZE;
+ 	u8 compressed;
  
- 		ip_icmp_error(sk, skb, err, th->dest, info, (u8 *)th);
+ 	if (size <= SMC_BUF_MIN_SIZE)
+@@ -1969,9 +1968,11 @@ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
+ 	compressed = min_t(u8, ilog2(size) + 1,
+ 			   is_smcd ? SMCD_DMBE_SIZES : SMCR_RMBE_SIZES);
  
--		if (!sock_owned_by_user(sk)) {
--			WRITE_ONCE(sk->sk_err, err);
--
--			sk_error_report(sk);
--
--			tcp_done(sk);
--		} else {
-+		if (!sock_owned_by_user(sk))
-+			tcp_done_with_error(sk, err);
-+		else
- 			WRITE_ONCE(sk->sk_err_soft, err);
--		}
- 		goto out;
- 	}
++#ifdef CONFIG_ARCH_NO_SG_CHAIN
+ 	if (!is_smcd && is_rmb)
+ 		/* RMBs are backed by & limited to max size of scatterlists */
+-		compressed = min_t(u8, compressed, ilog2(max_scat >> 14));
++		compressed = min_t(u8, compressed, ilog2((SG_MAX_SINGLE_ALLOC * PAGE_SIZE) >> 14));
++#endif
  
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 35bfca93af6ad..eb6fc0e2a4533 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -492,14 +492,10 @@ static int tcp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 
- 		ipv6_icmp_error(sk, skb, err, th->dest, ntohl(info), (u8 *)th);
- 
--		if (!sock_owned_by_user(sk)) {
--			WRITE_ONCE(sk->sk_err, err);
--			sk_error_report(sk);		/* Wake people up to see the error (see connect in sock.c) */
--
--			tcp_done(sk);
--		} else {
-+		if (!sock_owned_by_user(sk))
-+			tcp_done_with_error(sk, err);
-+		else
- 			WRITE_ONCE(sk->sk_err_soft, err);
--		}
- 		goto out;
- 	case TCP_LISTEN:
- 		break;
+ 	return compressed;
+ }
 -- 
 2.43.0
 
