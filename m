@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1CA941D24
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1421941B13
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1AC1B29925
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28166B25729
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D501A76DD;
-	Tue, 30 Jul 2024 17:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75567187FF9;
+	Tue, 30 Jul 2024 16:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPfGOjH9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qGPMHw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B741A76DA;
-	Tue, 30 Jul 2024 17:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318CA1A6192;
+	Tue, 30 Jul 2024 16:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359533; cv=none; b=h4j7Eyn2OEdVJAtC6I3o6iSMzfa91GTJCQEtyiIKn8b57g79Ig05qvsewHw3TqNqtHkTP1bGP3sqVJESNsS5mm+BizIgmF4q4K0sDXKN4eb9PYJ6Ty+F02jGNRl/J1cW/8YBSFL9EQ7rz8RWaWcAHrdRZL37z8GLqvWVGO5BJJA=
+	t=1722357683; cv=none; b=XL98k0BFkmmaOAA+vaNYhwvTp9qNtQZ7GGW0HvUZzFCdnr3qxqoP5eNFIi6/SlvVmNXx9/BIhqBC700TPcknDy6myJWEr2LLh5KQG1a4kiRs6+Xehpfgd0tnAB3R1Od+9RTdQtZLF6+/dsIN1T67VUqRjU8xV8fE9BQzBIWEC/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359533; c=relaxed/simple;
-	bh=JrHZQGDZjgQlZ3KXbE9XUCxB5BRRnzFOAxU5A+i4UwE=;
+	s=arc-20240116; t=1722357683; c=relaxed/simple;
+	bh=4qhnkMyQ2Ty1XZEItvlUcHfF/hgjNbZp+1aSqE0wvzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QDqnPkrtIgBNWNvZ10ej4nQ5SrOAbpcMRzFQerLPUBALtjoLz/EJfDmTnk2BBGZwqdSu3Zdj/j8tgPWOoabqiDlXMnwxJYUs+ag07e2fuotrl6Y/RG+WrnyfgH3zPrFQZs8NC9gKROhaqFHdBsbvFLVe4dIxN7ZllJDxEMTpCJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPfGOjH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1366BC4AF0A;
-	Tue, 30 Jul 2024 17:12:11 +0000 (UTC)
+	 MIME-Version; b=mbqPB+m6dYR3l3+2KK3ogE6LDip8oX3GOmf0g1QZVehF9ITf7SrJMlXQw5TZ3fl6XDb1ZEpXkuYWzLjNE7ViIQGmhlnbBUGj3GYV6v5mYm1arz0EC6I76sATM094geZc7dfwph1p5NTqOOyN21HoFsCXJJS79pMo7X1EV/tDJhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qGPMHw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC2DC4AF0E;
+	Tue, 30 Jul 2024 16:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359533;
-	bh=JrHZQGDZjgQlZ3KXbE9XUCxB5BRRnzFOAxU5A+i4UwE=;
+	s=korg; t=1722357683;
+	bh=4qhnkMyQ2Ty1XZEItvlUcHfF/hgjNbZp+1aSqE0wvzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPfGOjH9L2IhqPLnHWauaMU1N+w2VDkjiU2YaRBfTFEUrq+h/B6ajVD4+C0RVveZ2
-	 yX0RkqXhP4v86HHhDmRUg5AYbKXsHu6WmQ8kcvxndW5txtQIxgBc7oF0pKrlnAPMgl
-	 ZwQ56IYTeMbmLKM2ZfVk8EyHOGQ4nwfFhPKN9WaU=
+	b=1qGPMHw1i/pcgg4iroT7QTjDa3kmaV0/QT4twlPR88Eab6Rw6YTuxZUcWwLbA15r1
+	 0aUPqw/IdjnDfBg1sANQI0rbu4hQC7smZrZkkWTnDj+2jTEsirDGnHDXsTmyuuDkB4
+	 wtrq5x2ufxMwiA1o1zRjM+RuztsiilCn6Sh5itkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 497/809] fs/ntfs3: Drop stray \ (backslash) in formatting string
+Subject: [PATCH 6.6 266/568] clk: qcom: gcc-sa8775p: Update the GDSC wait_val fields and flags
 Date: Tue, 30 Jul 2024 17:46:13 +0200
-Message-ID: <20240730151744.367107046@linuxfoundation.org>
+Message-ID: <20240730151650.271847023@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit b366809dd151e8abb29decda02fd6a78b498831f ]
+[ Upstream commit be208c0ccf7d861fc6109ca06c1a773512739af9 ]
 
-CHECK   /home/andy/prj/linux-topic-uart/fs/ntfs3/super.c
-fs/ntfs3/super.c:471:23: warning: unknown escape sequence: '\%'
+Update the GDSC wait_val fields as per the default hardware values as
+otherwise they would lead to GDSC FSM state to be stuck and causing
+failures to power on/off. Also add the GDSC flags as applicable and
+add support to control PCIE GDSC's using collapse vote registers.
 
-Drop stray '\' (backslash) in formatting string.
-
-Fixes: d27e202b9ac4 ("fs/ntfs3: Add more info into /proc/fs/ntfs3/<dev>/volinfo")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 08c51ceb12f7 ("clk: qcom: add the GCC driver for sa8775p")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-2-adcc756a23df@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sa8775p.c | 40 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index 27fbde2701b63..24a134eeb45a2 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -468,7 +468,7 @@ static int ntfs3_volinfo(struct seq_file *m, void *o)
- 	struct super_block *sb = m->private;
- 	struct ntfs_sb_info *sbi = sb->s_fs_info;
+diff --git a/drivers/clk/qcom/gcc-sa8775p.c b/drivers/clk/qcom/gcc-sa8775p.c
+index 8171d23c96e64..a54438205698c 100644
+--- a/drivers/clk/qcom/gcc-sa8775p.c
++++ b/drivers/clk/qcom/gcc-sa8775p.c
+@@ -4305,74 +4305,114 @@ static struct clk_branch gcc_video_axi1_clk = {
  
--	seq_printf(m, "ntfs%d.%d\n%u\n%zu\n\%zu\n%zu\n%s\n%s\n",
-+	seq_printf(m, "ntfs%d.%d\n%u\n%zu\n%zu\n%zu\n%s\n%s\n",
- 		   sbi->volume.major_ver, sbi->volume.minor_ver,
- 		   sbi->cluster_size, sbi->used.bitmap.nbits,
- 		   sbi->mft.bitmap.nbits,
+ static struct gdsc pcie_0_gdsc = {
+ 	.gdscr = 0xa9004,
++	.collapse_ctrl = 0x4b104,
++	.collapse_mask = BIT(0),
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE | RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct gdsc pcie_1_gdsc = {
+ 	.gdscr = 0x77004,
++	.collapse_ctrl = 0x4b104,
++	.collapse_mask = BIT(1),
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE | RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct gdsc ufs_card_gdsc = {
+ 	.gdscr = 0x81004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "ufs_card_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct gdsc ufs_phy_gdsc = {
+ 	.gdscr = 0x83004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "ufs_phy_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct gdsc usb20_prim_gdsc = {
+ 	.gdscr = 0x1c004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "usb20_prim_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct gdsc usb30_prim_gdsc = {
+ 	.gdscr = 0x1b004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "usb30_prim_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct gdsc usb30_sec_gdsc = {
+ 	.gdscr = 0x2f004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "usb30_sec_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct gdsc emac0_gdsc = {
+ 	.gdscr = 0xb6004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "emac0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct gdsc emac1_gdsc = {
+ 	.gdscr = 0xb4004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "emac1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
+ };
+ 
+ static struct clk_regmap *gcc_sa8775p_clocks[] = {
 -- 
 2.43.0
 
