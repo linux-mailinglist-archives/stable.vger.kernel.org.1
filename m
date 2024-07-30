@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3C9E941A0D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BDE941A14
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D50C01C22DD6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84F6B1C23B4F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B606D184535;
-	Tue, 30 Jul 2024 16:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2988189903;
+	Tue, 30 Jul 2024 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvTxYnQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8XmW2Q/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6201A619B;
-	Tue, 30 Jul 2024 16:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FCA1898FF;
+	Tue, 30 Jul 2024 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357581; cv=none; b=NJ5FIWN7PeMPjhfBmutptpjPSOVxcDgmc4NvcsRURn2LsWMRqPhZB4gssD0uYPiNsu42hbDf4h21cb6muS4namsWxDnhwt2wNDiDbaCwfLOJpBd8GVVdcaLE2XQgftuPazX9Ny0kYI0g7L0aD2eynHdpESqyyq8QW4I+BOSgzDw=
+	t=1722357590; cv=none; b=dLyzkxrkjbdUX6muL/r+a1UhkUp1AGj4sy/y/5oj74dlPMSE2ljWwgvplGAKLq7L72aj3HrSHsQZlzx7dRr1RhjLcYKYzz/FlRVz6YB7u/0hWVBJ5K14+qwi3ic7S59Hui3+mdN7wqQcZXIqC0HB0mA5EsnOtXTB6IsbZSUwAkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357581; c=relaxed/simple;
-	bh=ivEZP8Pd5SojVjmY3AqlqA+00tt52+XQrbKgyMieF0E=;
+	s=arc-20240116; t=1722357590; c=relaxed/simple;
+	bh=Q2vQ6m0fCWgC23nz+HO3dM5gax88mM214JP0akfmSCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XWGtCdJ0+2+F9PXnBSCUeo6rIGyZ5KHw28/SW+jSSK95UI+QdG0JXih7box+2SyyIhnEfeTfEz45lUL2tZSPPyy4Y5rfitfnkf/5UrJG/UXsgo+aQH4E0feBqRVpDGarBCxqXI1ndYlWhsrnkTvV8wWAlMbLbWzYcAXq3BW2kCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvTxYnQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC391C4AF0A;
-	Tue, 30 Jul 2024 16:39:40 +0000 (UTC)
+	 MIME-Version; b=ZzeOEWA1ZtJgNIPbGDNIlMR08dXk2cq5l7thFMmMrWs8v0xy3dOdxBt8zNmA3ASm2gOtg6Sd74eaZRcswyH8imSXpZCrZC44WMk5mbiZdAVeO6yDmGKU/yVNfU0GUo2AT0Av2Y0Fw2EtTjRT/G0aHMAJ5PfBsonf5RqSZsshue0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8XmW2Q/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1E8C32782;
+	Tue, 30 Jul 2024 16:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357581;
-	bh=ivEZP8Pd5SojVjmY3AqlqA+00tt52+XQrbKgyMieF0E=;
+	s=korg; t=1722357590;
+	bh=Q2vQ6m0fCWgC23nz+HO3dM5gax88mM214JP0akfmSCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YvTxYnQVUfMniP1q/xoY8T/bMqHTJx3OWD4XD81EaNCl4DXVEa+hu0g8useX1R7rf
-	 1iKTmTb0h4ZCdDPm64oD9rcMLEcIUmamEciwM4bxv9GsrtyJFk8aI2cNCH2idQ/5HG
-	 yb9mahz7TB4wEJ9+1y0w3HCTd2so5qqwjFNh4uSI=
+	b=F8XmW2Q/s1U5KY5rMKLxs7UDpMQPIneAfwu4uIwIr1xie4j2bzx5mXVVePfdYKsuG
+	 Wgs5V8has76E1/t3LUdUzfMvz2bk4Aoga74ZH+7UbSZlRSE5gklAywqFupfMdwE2n4
+	 hgIdkUqPI068Z0tDPttSm9hrwjrIhZkvxf5qFslA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Animesh Manna <animesh.manna@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 269/809] drm/i915/display: Do not print "psr: enabled" for on Panel Replay
-Date: Tue, 30 Jul 2024 17:42:25 +0200
-Message-ID: <20240730151735.221122513@linuxfoundation.org>
+Subject: [PATCH 6.10 270/809] drm/mipi-dsi: Fix theoretical int overflow in mipi_dsi_dcs_write_seq()
+Date: Tue, 30 Jul 2024 17:42:26 +0200
+Message-ID: <20240730151735.259513384@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -60,44 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit d07a578703dbf839ea39bffc425fba2321f45543 ]
+[ Upstream commit 0b03829fdece47beba9ecb7dbcbde4585ee3663e ]
 
-After setting has_psr for panel replay as well crtc state dump is
-improperly printing "psr: enabled" for Panel Replay as well. Fix this by
-checking also has_panel_replay.
+The mipi_dsi_dcs_write_seq() macro makes a call to
+mipi_dsi_dcs_write_buffer() which returns a type ssize_t. The macro
+then stores it in an int and checks to see if it's negative. This
+could theoretically be a problem if "ssize_t" is larger than "int".
 
-Fixes: 5afa6e496098 ("drm/i915/psr: Set intel_crtc_state->has_psr on panel replay as well")
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Animesh Manna <animesh.manna@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240510093823.3146455-3-jouni.hogander@intel.com
+To see the issue, imagine that "ssize_t" is 32-bits and "int" is
+16-bits, you could see a problem if there was some code out there that
+looked like:
+
+  mipi_dsi_dcs_write_seq(dsi, cmd, <32767 bytes as arguments>);
+
+...since we'd get back that 32768 bytes were transferred and 32768
+stored in a 16-bit int would look negative.
+
+Though there are no callsites where we'd actually hit this (even if
+"int" was only 16-bit), it's cleaner to make the types match so let's
+fix it.
+
+Fixes: 2a9e9daf7523 ("drm/mipi-dsi: Introduce mipi_dsi_dcs_write_seq macro")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240514102056.v5.1.I30fa4c8348ea316c886ef8a522a52fed617f930d@changeid
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240514102056.v5.1.I30fa4c8348ea316c886ef8a522a52fed617f930d@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_crtc_state_dump.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/drm/drm_mipi_dsi.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_crtc_state_dump.c b/drivers/gpu/drm/i915/display/intel_crtc_state_dump.c
-index 1da4c122c52ec..bddcc9edeab42 100644
---- a/drivers/gpu/drm/i915/display/intel_crtc_state_dump.c
-+++ b/drivers/gpu/drm/i915/display/intel_crtc_state_dump.c
-@@ -252,7 +252,8 @@ void intel_crtc_state_dump(const struct intel_crtc_state *pipe_config,
- 			   str_enabled_disabled(pipe_config->sdp_split_enable));
+diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
+index 82b1cc434ea3f..70ce0b8cbc68e 100644
+--- a/include/drm/drm_mipi_dsi.h
++++ b/include/drm/drm_mipi_dsi.h
+@@ -333,18 +333,18 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
+  * @cmd: Command
+  * @seq: buffer containing data to be transmitted
+  */
+-#define mipi_dsi_dcs_write_seq(dsi, cmd, seq...)                           \
+-	do {                                                               \
+-		static const u8 d[] = { cmd, seq };                        \
+-		struct device *dev = &dsi->dev;                            \
+-		int ret;                                                   \
+-		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));    \
+-		if (ret < 0) {                                             \
+-			dev_err_ratelimited(                               \
+-				dev, "sending command %#02x failed: %d\n", \
+-				cmd, ret);                                 \
+-			return ret;                                        \
+-		}                                                          \
++#define mipi_dsi_dcs_write_seq(dsi, cmd, seq...)                            \
++	do {                                                                \
++		static const u8 d[] = { cmd, seq };                         \
++		struct device *dev = &dsi->dev;                             \
++		ssize_t ret;                                                \
++		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));     \
++		if (ret < 0) {                                              \
++			dev_err_ratelimited(                                \
++				dev, "sending command %#02x failed: %zd\n", \
++				cmd, ret);                                  \
++			return ret;                                         \
++		}                                                           \
+ 	} while (0)
  
- 		drm_printf(&p, "psr: %s, selective update: %s, panel replay: %s, selective fetch: %s\n",
--			   str_enabled_disabled(pipe_config->has_psr),
-+			   str_enabled_disabled(pipe_config->has_psr &&
-+						!pipe_config->has_panel_replay),
- 			   str_enabled_disabled(pipe_config->has_sel_update),
- 			   str_enabled_disabled(pipe_config->has_panel_replay),
- 			   str_enabled_disabled(pipe_config->enable_psr2_sel_fetch));
+ /**
 -- 
 2.43.0
 
