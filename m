@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF62941930
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C172941C5F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12FB42884F4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38111F24786
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C100F18452F;
-	Tue, 30 Jul 2024 16:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C4A189502;
+	Tue, 30 Jul 2024 17:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EcQkne7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiTOioP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0D11A6195;
-	Tue, 30 Jul 2024 16:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEE41A6192;
+	Tue, 30 Jul 2024 17:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356997; cv=none; b=ATFXCbbBGVs8gX9cjsMpsbONxSiaCuW76WVXzdNepW2I0nHy6g1m4BbaTxBS8uDO4dI60GquoMUUM5SMPhQvgZ5RFCyJxz/OyvnP3G5QY6oWesXcaMvL0XxjVrEqlQ3JYy3Dyp26TxNLOFtAbm3Wu3R4qJdVh9BRsk9c0vfX/lE=
+	t=1722359185; cv=none; b=YjbGwBtX7fDp6T48VeiCzfMIREkEyijOBGCuHdj41/h9alginM6cfAoZWlwndf2tKa6ea8oKrvrJqHRyb9BMP4dj9s4VggGbgbsGVtBHghrUw2VnTJtS7fHJyThbjNaWy4RK20dxfipbl7ZjdBYPyr48MYXadQQAwJxegK5NZYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356997; c=relaxed/simple;
-	bh=VIl6TUtuUGtG0nwfgtVz9BHq5hP8KztgM+/HUP2JaKU=;
+	s=arc-20240116; t=1722359185; c=relaxed/simple;
+	bh=+96flJv0J44mLervH6cz0kMzOMYqLOE3nptgu1oa+Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rfCQQs1rw8Cp+md70pgpdn0SGjbFOymcXd/QC+eh22CH4jMYyYMi89rs8IfhjBp5HI/J9rqzT4Ff6zjeccuqZm4RvhYEX4p60kg/Miu53ZYuhjI5gZtrfrDoEaIAK441iIG/uutf4R+Dwf37ls42pAKab3OnpeIE54sa/sew8s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EcQkne7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F26C32782;
-	Tue, 30 Jul 2024 16:29:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=trMuZudS+yOpTTIaR9WmOOJmFvikxqGqmqfzP63sGtFqYwbGa6FrptvYeZkqEegGGJPnMpsLhZ54NE6pcAxG7LqDVqhkg4uqI9ZWa5BvnSZ15xqhV5ItEXdZWiKgxjnuEeNoQBKUefPVCGnlhoo41bRkKrIkrD4qjWV8QgNAVDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiTOioP2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A62C32782;
+	Tue, 30 Jul 2024 17:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356997;
-	bh=VIl6TUtuUGtG0nwfgtVz9BHq5hP8KztgM+/HUP2JaKU=;
+	s=korg; t=1722359184;
+	bh=+96flJv0J44mLervH6cz0kMzOMYqLOE3nptgu1oa+Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EcQkne7KLN/0A1v+c3MW75Sj9g4ze9aEgdCFcMbVChS7PrUb3gvdlvyHof/eLVFz
-	 uUE/JRiW5wVPumGnKZEGrF7CTwyFlOSwjvX7PA0z6bDNz3g0Hl/rTYyHkuAjDRDgJa
-	 Tvd0o7PJYOMwilDa7KBYl0hdIR5bMtMvRELMHgCk=
+	b=TiTOioP2qRyJFs34/zF3os85L+tnYJXh8QInBOrqly7yTUlTglJB4igVmIL0VWYNj
+	 g5BbiOf9EqydOxfVpVfpSRowdgbbXDwqP0CpuJwqo555/DvIGARQgve0PbZvgFQsYB
+	 R7/SHbRdP4TOjsGnHKHBCMAff8GDnwqiL7gPTZVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 208/568] media: rcar-vin: Fix YUYV8_1X16 handling for CSI-2
+Subject: [PATCH 6.10 439/809] eeprom: ee1004: Call i2c_new_scanned_device to instantiate thermal sensor
 Date: Tue, 30 Jul 2024 17:45:15 +0200
-Message-ID: <20240730151648.005584873@linuxfoundation.org>
+Message-ID: <20240730151742.041311907@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +64,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 9caf253e8ad6f4c66f5591bac900f9f68b6b6620 ]
+[ Upstream commit 249b4deaff71cfc6ac9a8e436af876be6d84052b ]
 
-The YUYV8_1X16 and UYVY8_1X16 formats are treated as 'ITU-R
-BT.601/BT.1358 16-bit YCbCr-422 input' (YUV16 - 0x5) in the R-Car VIN
-driver and are thus disallowed when capturing frames from the R-Car
-CSI-2 interface according to the hardware manual.
+Instantiating a device by calling i2c_new_client_device() assumes that the
+device is not already instantiated. If that is not the case, it will return
+an error and generate a misleading kernel log message.
 
-As the 1X16 format variants are meant to be used with serial busses they
-have to be treated as 'YCbCr-422 8-bit data input' (0x1) when capturing
-from CSI-2, which is a valid setting for CSI-2.
+i2c i2c-0: Failed to register i2c client jc42 at 0x18 (-16)
 
-Commit 78b3f9d75a62 ("media: rcar-vin: Add check that input interface
-and format are valid") disallowed capturing YUV16 when using the CSI-2
-interface. Fix this by using YUV8_BT601 for YCbCr422 when CSI-2 is in
-use.
+This can be reproduced by unloading the ee1004 driver and loading it again.
 
-Fixes: 78b3f9d75a62 ("media: rcar-vin: Add check that input interface and format are valid")
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://lore.kernel.org/r/20240617161135.130719-2-jacopo.mondi@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Avoid this by calling i2c_new_scanned_device() instead, which returns
+silently if a device is already instantiated or does not exist.
+
+Fixes: 393bd1000f81 ("eeprom: ee1004: add support for temperature sensor")
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240629173716.20389-1-linux@roeck-us.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/renesas/rcar-vin/rcar-dma.c   | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/misc/eeprom/ee1004.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-index 2a77353f10b59..bb4774e2f335e 100644
---- a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-@@ -742,12 +742,22 @@ static int rvin_setup(struct rvin_dev *vin)
- 	 */
- 	switch (vin->mbus_code) {
- 	case MEDIA_BUS_FMT_YUYV8_1X16:
--		/* BT.601/BT.1358 16bit YCbCr422 */
--		vnmc |= VNMC_INF_YUV16;
-+		if (vin->is_csi)
-+			/* YCbCr422 8-bit */
-+			vnmc |= VNMC_INF_YUV8_BT601;
-+		else
-+			/* BT.601/BT.1358 16bit YCbCr422 */
-+			vnmc |= VNMC_INF_YUV16;
- 		input_is_yuv = true;
- 		break;
- 	case MEDIA_BUS_FMT_UYVY8_1X16:
--		vnmc |= VNMC_INF_YUV16 | VNMC_YCAL;
-+		if (vin->is_csi)
-+			/* YCbCr422 8-bit */
-+			vnmc |= VNMC_INF_YUV8_BT601;
-+		else
-+			/* BT.601/BT.1358 16bit YCbCr422 */
-+			vnmc |= VNMC_INF_YUV16;
-+		vnmc |= VNMC_YCAL;
- 		input_is_yuv = true;
- 		break;
- 	case MEDIA_BUS_FMT_UYVY8_2X8:
+diff --git a/drivers/misc/eeprom/ee1004.c b/drivers/misc/eeprom/ee1004.c
+index 21feebc3044c3..71ca66d1df82c 100644
+--- a/drivers/misc/eeprom/ee1004.c
++++ b/drivers/misc/eeprom/ee1004.c
+@@ -185,6 +185,8 @@ BIN_ATTRIBUTE_GROUPS(ee1004);
+ static void ee1004_probe_temp_sensor(struct i2c_client *client)
+ {
+ 	struct i2c_board_info info = { .type = "jc42" };
++	unsigned short addr = 0x18 | (client->addr & 7);
++	unsigned short addr_list[] = { addr, I2C_CLIENT_END };
+ 	u8 byte14;
+ 	int ret;
+ 
+@@ -193,9 +195,7 @@ static void ee1004_probe_temp_sensor(struct i2c_client *client)
+ 	if (ret != 1 || !(byte14 & BIT(7)))
+ 		return;
+ 
+-	info.addr = 0x18 | (client->addr & 7);
+-
+-	i2c_new_client_device(client->adapter, &info);
++	i2c_new_scanned_device(client->adapter, &info, addr_list, NULL);
+ }
+ 
+ static void ee1004_cleanup(int idx, struct ee1004_bus_data *bd)
 -- 
 2.43.0
 
