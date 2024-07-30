@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA42941CC3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F22A94198D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8B32890C0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A1D11F25E96
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEDF18C922;
-	Tue, 30 Jul 2024 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E854433A9;
+	Tue, 30 Jul 2024 16:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgwljqPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbhEHOKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9CC1898F2;
-	Tue, 30 Jul 2024 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA571A6192;
+	Tue, 30 Jul 2024 16:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359288; cv=none; b=Ntd5I6qsinsD8lwdDGHLd7QYpKjLB7thT8DMpXwg4bhVQKM5Lf2BPE2Z6uXogLbSdicKMBEudXS3h9ems6jJMCXno1os/Vf7Y/P8wyl4KqWQpxfqU5INXgCUIwlJtcoziTyiJP9YI3EkhU5WtUoUGS71Y3Rge3tYFNq+YnxuZUs=
+	t=1722357236; cv=none; b=Y1TtqbZA0PO6eLKlLd8+bZ8b2P9O/kBAaU7OHzxzKXcpTtXD7nNYwZqg+path75oO4KebCxo+Kb0QOGxRItiyXB36gFec8xZI66pVQuRosEhIJOD8mw83XabhqCP/ne0nDNjcr1pdwI92q8AoguEVXJuTItw/iuyvaKM6W0alX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359288; c=relaxed/simple;
-	bh=Rl+OIyM2Qi2HooBmpIeAfbaft/u9TA7vhivfn6pR6Tk=;
+	s=arc-20240116; t=1722357236; c=relaxed/simple;
+	bh=ECCxSbS0eXW1EwuYGuT5JMmr1IxOTA0jYP2TNCLWtLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFPj3TqJCjfjR86fRF7F8qzAz9Xu9SGI2F4dDo5l5Ceq9FY6GafMjhDHBwK1JmQ7mwP4AUnuQaVLEFn7nPJwxKOb2NpydHpUyfHP1Tml9Bb37SrA4M+I/GKkqtu8udqgHe4aLui6XLLgJZGy2Da+WE6DjY1e+OBpvP2Z2VJ0/yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgwljqPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC290C4AF0A;
-	Tue, 30 Jul 2024 17:08:07 +0000 (UTC)
+	 MIME-Version; b=pGxUfNYJ+sJKpPsgBLnwKr+GgKOLdn6MaBJK645x20idXHavqcUp+dY0iWgYf983A7vi6eBYNuOqYW8hU+pJZifK+wfG/VpCHssKimftKKGQmgS6IxH1CbY7tW95UF/Kgr7u/yozt/ci+Kp1Am64nQawwDhdF953pT4upq9ZvOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbhEHOKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E96C32782;
+	Tue, 30 Jul 2024 16:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359288;
-	bh=Rl+OIyM2Qi2HooBmpIeAfbaft/u9TA7vhivfn6pR6Tk=;
+	s=korg; t=1722357236;
+	bh=ECCxSbS0eXW1EwuYGuT5JMmr1IxOTA0jYP2TNCLWtLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgwljqPwH3b83ct6v3K0JpsTIscIrLnTqhGPR0qteOotbB968gvGFBOB+la4l3lzD
-	 HqoWh6W6QDVybysgZIswB0BV9IBTlh9s3NGx0EkkgScvmhyZImIxXiU+4F41pfpPuT
-	 Z7o+aSlVhcmu4H9z2T/nexTz/tAacYfJw1tcLOM4=
+	b=dbhEHOKVbY0UcsVniDMa6achWs/jW2s5WqMOF4z57E7iOVBCScZrvjHGpMM/VifBV
+	 LOw1aVsMDib8lddHnWMdipLH+CTXwmZJ2U63iAoZTwJcFVwAD0u/nRR8Z/S01i9r6i
+	 Q9/tJhrMYIiFloNPFe0oEUDRoZ25mPzhzB61nR5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 462/809] RDMA/hns: Fix unmatch exception handling when init eq table fails
-Date: Tue, 30 Jul 2024 17:45:38 +0200
-Message-ID: <20240730151742.976453023@linuxfoundation.org>
+Subject: [PATCH 6.6 232/568] drm/mediatek/dp: switch to ->edid_read callback
+Date: Tue, 30 Jul 2024 17:45:39 +0200
+Message-ID: <20240730151648.948528136@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 543fb987bd63ed27409b5dea3d3eec27b9c1eac9 ]
+[ Upstream commit 0c13bd9bf444b0dfb2e9ea0d26915f310cc8ad6a ]
 
-The hw ctx should be destroyed when init eq table fails.
+Prefer using the struct drm_edid based callback and functions.
 
-Fixes: a5073d6054f7 ("RDMA/hns: Add eq support of hip08")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240710133705.896445-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/3d783478e25e71f12f66c2caedb1f9205d4d8a44.1706038510.git.jani.nikula@intel.com
+Stable-dep-of: 8ad49a92cff4 ("drm/mediatek/dp: Fix spurious kfree()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 25 +++++++++++-----------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 2f16554c96bef..cbbc142afc1be 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -6368,9 +6368,16 @@ static void hns_roce_v2_int_mask_enable(struct hns_roce_dev *hr_dev,
- 	roce_write(hr_dev, ROCEE_VF_ABN_INT_CFG_REG, enable_flag);
- }
- 
--static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
-+static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
-+{
-+	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
-+}
-+
-+static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev,
-+				    struct hns_roce_eq *eq)
- {
- 	struct device *dev = hr_dev->dev;
-+	int eqn = eq->eqn;
- 	int ret;
- 	u8 cmd;
- 
-@@ -6381,12 +6388,9 @@ static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
- 
- 	ret = hns_roce_destroy_hw_ctx(hr_dev, cmd, eqn & HNS_ROCE_V2_EQN_M);
- 	if (ret)
--		dev_err(dev, "[mailbox cmd] destroy eqc(%u) failed.\n", eqn);
--}
-+		dev_err(dev, "[mailbox cmd] destroy eqc(%d) failed.\n", eqn);
- 
--static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
--{
--	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
-+	free_eq_buf(hr_dev, eq);
- }
- 
- static void init_eq_config(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
-@@ -6733,7 +6737,7 @@ static int hns_roce_v2_init_eq_table(struct hns_roce_dev *hr_dev)
- 
- err_create_eq_fail:
- 	for (i -= 1; i >= 0; i--)
--		free_eq_buf(hr_dev, &eq_table->eq[i]);
-+		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
- 	kfree(eq_table->eq);
- 
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index af03a22772fed..ff8436fb6e0d8 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -2027,12 +2027,12 @@ static enum drm_connector_status mtk_dp_bdg_detect(struct drm_bridge *bridge)
  	return ret;
-@@ -6753,11 +6757,8 @@ static void hns_roce_v2_cleanup_eq_table(struct hns_roce_dev *hr_dev)
- 	__hns_roce_free_irq(hr_dev);
- 	destroy_workqueue(hr_dev->irq_workq);
- 
--	for (i = 0; i < eq_num; i++) {
--		hns_roce_v2_destroy_eqc(hr_dev, i);
--
--		free_eq_buf(hr_dev, &eq_table->eq[i]);
--	}
-+	for (i = 0; i < eq_num; i++)
-+		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
- 
- 	kfree(eq_table->eq);
  }
+ 
+-static struct edid *mtk_dp_get_edid(struct drm_bridge *bridge,
+-				    struct drm_connector *connector)
++static const struct drm_edid *mtk_dp_edid_read(struct drm_bridge *bridge,
++					       struct drm_connector *connector)
+ {
+ 	struct mtk_dp *mtk_dp = mtk_dp_from_bridge(bridge);
+ 	bool enabled = mtk_dp->enabled;
+-	struct edid *new_edid = NULL;
++	const struct drm_edid *drm_edid;
+ 	struct mtk_dp_audio_cfg *audio_caps = &mtk_dp->info.audio_cur_cfg;
+ 
+ 	if (!enabled) {
+@@ -2040,7 +2040,7 @@ static struct edid *mtk_dp_get_edid(struct drm_bridge *bridge,
+ 		mtk_dp_aux_panel_poweron(mtk_dp, true);
+ 	}
+ 
+-	new_edid = drm_get_edid(connector, &mtk_dp->aux.ddc);
++	drm_edid = drm_edid_read_ddc(connector, &mtk_dp->aux.ddc);
+ 
+ 	/*
+ 	 * Parse capability here to let atomic_get_input_bus_fmts and
+@@ -2048,17 +2048,26 @@ static struct edid *mtk_dp_get_edid(struct drm_bridge *bridge,
+ 	 */
+ 	if (mtk_dp_parse_capabilities(mtk_dp)) {
+ 		drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
+-		kfree(new_edid);
+-		new_edid = NULL;
++		drm_edid_free(drm_edid);
++		drm_edid = NULL;
+ 	}
+ 
+-	if (new_edid) {
++	if (drm_edid) {
++		/*
++		 * FIXME: get rid of drm_edid_raw()
++		 */
++		const struct edid *edid = drm_edid_raw(drm_edid);
+ 		struct cea_sad *sads;
+ 
+-		audio_caps->sad_count = drm_edid_to_sad(new_edid, &sads);
++		audio_caps->sad_count = drm_edid_to_sad(edid, &sads);
+ 		kfree(sads);
+ 
+-		audio_caps->detect_monitor = drm_detect_monitor_audio(new_edid);
++		/*
++		 * FIXME: This should use connector->display_info.has_audio from
++		 * a path that has read the EDID and called
++		 * drm_edid_connector_update().
++		 */
++		audio_caps->detect_monitor = drm_detect_monitor_audio(edid);
+ 	}
+ 
+ 	if (!enabled) {
+@@ -2066,7 +2075,7 @@ static struct edid *mtk_dp_get_edid(struct drm_bridge *bridge,
+ 		drm_atomic_bridge_chain_post_disable(bridge, connector->state->state);
+ 	}
+ 
+-	return new_edid;
++	return drm_edid;
+ }
+ 
+ static ssize_t mtk_dp_aux_transfer(struct drm_dp_aux *mtk_aux,
+@@ -2418,7 +2427,7 @@ static const struct drm_bridge_funcs mtk_dp_bridge_funcs = {
+ 	.atomic_enable = mtk_dp_bridge_atomic_enable,
+ 	.atomic_disable = mtk_dp_bridge_atomic_disable,
+ 	.mode_valid = mtk_dp_bridge_mode_valid,
+-	.get_edid = mtk_dp_get_edid,
++	.edid_read = mtk_dp_edid_read,
+ 	.detect = mtk_dp_bdg_detect,
+ };
+ 
 -- 
 2.43.0
 
