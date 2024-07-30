@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A142941A27
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41FA941A2E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7A31C2373E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EEBC1F22B9F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B86E183CDB;
-	Tue, 30 Jul 2024 16:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3D718454A;
+	Tue, 30 Jul 2024 16:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIFJ3wzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9r3ZIcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F9C1A6192;
-	Tue, 30 Jul 2024 16:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF01B1A6192;
+	Tue, 30 Jul 2024 16:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357643; cv=none; b=GAjEw11rNXpl3jbZdpoIuADkUQZiEJOxaclO9dHN9t7slveTwkEVhWVc+3eLQ5LIvrASPzAsRqsD+BhqTEuKcL4rPcwmG9PONYA9bdUOexWgLnHP3pUj2T86bo3eWoVKRkwV1a9b22hpyZQ3Chjc4KTM9ywzu34oxu53ImSG+Fo=
+	t=1722357656; cv=none; b=YA1Vz7puN3bNMq6fzf02Vm2x67cfNfiSyPdF2trZbSZIE1/Ntv7Epk+rAw5y/G1qwggElSK4gcwqC6IRKNTzevQCUzbVjS9q2LipnMEWGBtOeHyHOh3dGuquEHKhWDrD/OeDjdXvgFAkfuRzBVbLTymQHm6d0Me1uhGs+TDJZkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357643; c=relaxed/simple;
-	bh=CrJ7qIzU+lRXvnfFYZahqfCk+no86Bne4/d9JR2WHMg=;
+	s=arc-20240116; t=1722357656; c=relaxed/simple;
+	bh=oRjM1XhENPjFU0LCSYqEVhTUEhuMN2YZOmKlo89GERc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PgWW+Q45uCp9hq+vy5knlFh72pt/h3tIrCz8MQaCNV+BPLrtmApghJ6KXvO27flKW5czdSST5Q6nrkA//9EqTQvtsW0vI11KvZCuurXPRQOe/rKANHmA4umqNJ1llRx/H0fMP80pKu3kmYZYgTwo+fj37n3SRJ5rFl0jkCFO1Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIFJ3wzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCFFC32782;
-	Tue, 30 Jul 2024 16:40:42 +0000 (UTC)
+	 MIME-Version; b=NgXTWI44rg/sNbwrC7Wh5zUjXTfukrZEdkyUE8tYwBTN1A7E1E+Vu5r6s5cMoQfSzfHixMhBkfkYl9c7gyytA2OhC8gaBMXfYLNgjYVWNcXtHm97kTbP1H3xiFgxN6UJQZ81uAbYT4GOekuOE4v38OYR3whvJbsDE3CyEtnztYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9r3ZIcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DF4C32782;
+	Tue, 30 Jul 2024 16:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357643;
-	bh=CrJ7qIzU+lRXvnfFYZahqfCk+no86Bne4/d9JR2WHMg=;
+	s=korg; t=1722357655;
+	bh=oRjM1XhENPjFU0LCSYqEVhTUEhuMN2YZOmKlo89GERc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIFJ3wztzkFJqSUvVyi6XfrQC2tAYoiiuNYz0Y5YNSgBkzeXsAE5XXTq1iGdLlIxZ
-	 cId7kCAk+b4pOlmDCWy3f0jpFhWOJ6SHdXGoEWdDBO6ZXL3ASTnxhUDwi+L96eMqaD
-	 t2DLCRCle8e02VELreXFN5lVQ5KUm7qrm4ydbvLQ=
+	b=a9r3ZIcZxzJo8037WZ2Utrs/OF5p2R1wR8XqDR+Qplug8JgpXjbeD9+0zIRxTsFjy
+	 xm0j5lC9c8jwPMlFEGqamGdgVxJfFkthNR98/regqpcitoLnLt1xocpZ5pXCNVlxfF
+	 PN+UrehN6mxgtkrmuyVvvaX7MWPnk1vjkZOGjNA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Friedrich Vock <friedrich.vock@gmx.de>,
+	Tim Van Patten <timvp@google.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 275/809] drm/amdgpu: Check if NBIO funcs are NULL in amdgpu_device_baco_exit
-Date: Tue, 30 Jul 2024 17:42:31 +0200
-Message-ID: <20240730151735.455268249@linuxfoundation.org>
+Subject: [PATCH 6.10 276/809] drm/amdgpu: Remove GC HW IP 9.3.0 from noretry=1
+Date: Tue, 30 Jul 2024 17:42:32 +0200
+Message-ID: <20240730151735.496143817@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -61,45 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Friedrich Vock <friedrich.vock@gmx.de>
+From: Tim Van Patten <timvp@google.com>
 
-[ Upstream commit 0cdb3f9740844b9d95ca413e3fcff11f81223ecf ]
+[ Upstream commit 1446226d32a45bb7c4f63195a59be8c08defe658 ]
 
-The special case for VM passthrough doesn't check adev->nbio.funcs
-before dereferencing it. If GPUs that don't have an NBIO block are
-passed through, this leads to a NULL pointer dereference on startup.
+The following commit updated gmc->noretry from 0 to 1 for GC HW IP
+9.3.0:
 
-Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
-Fixes: 1bece222eabe ("drm/amdgpu: Clear doorbell interrupt status for Sienna Cichlid")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
+    commit 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
+
+This causes the device to hang when a page fault occurs, until the
+device is rebooted. Instead, revert back to gmc->noretry=0 so the device
+is still responsive.
+
+Fixes: 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
+Signed-off-by: Tim Van Patten <timvp@google.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 33f791d92ddf3..ee7df1d84e028 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -6173,7 +6173,7 @@ int amdgpu_device_baco_exit(struct drm_device *dev)
- 	    adev->nbio.funcs->enable_doorbell_interrupt)
- 		adev->nbio.funcs->enable_doorbell_interrupt(adev, true);
- 
--	if (amdgpu_passthrough(adev) &&
-+	if (amdgpu_passthrough(adev) && adev->nbio.funcs &&
- 	    adev->nbio.funcs->clear_doorbell_interrupt)
- 		adev->nbio.funcs->clear_doorbell_interrupt(adev);
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index 08b9dfb653355..86b096ad0319c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -878,7 +878,6 @@ void amdgpu_gmc_noretry_set(struct amdgpu_device *adev)
+ 	struct amdgpu_gmc *gmc = &adev->gmc;
+ 	uint32_t gc_ver = amdgpu_ip_version(adev, GC_HWIP, 0);
+ 	bool noretry_default = (gc_ver == IP_VERSION(9, 0, 1) ||
+-				gc_ver == IP_VERSION(9, 3, 0) ||
+ 				gc_ver == IP_VERSION(9, 4, 0) ||
+ 				gc_ver == IP_VERSION(9, 4, 1) ||
+ 				gc_ver == IP_VERSION(9, 4, 2) ||
 -- 
 2.43.0
 
