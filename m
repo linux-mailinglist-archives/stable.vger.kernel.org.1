@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-63790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA44941AA6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2BF941848
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759A81F23C15
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:46:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 265F81F211B7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1023C17D8BB;
-	Tue, 30 Jul 2024 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF0618455C;
+	Tue, 30 Jul 2024 16:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLVsgC3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jO6iYgWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDF41448FA;
-	Tue, 30 Jul 2024 16:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFFA1A617E;
+	Tue, 30 Jul 2024 16:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357962; cv=none; b=eI7UnWOEZ+qzb6CYnmkj25vEyQJ+7WKDRBLZvqrUCoVWkraMbE0/3+fYKKn5LQ9egycZPni+bJj7l3KMzGlo2OerwWJk9y8unpSC6Nbsdq0bndhSQX2fybk7BBpRv7SHW169XJsIeawvoT5Xe085hWEiI7yJ+f4qjQxxjadheWU=
+	t=1722356378; cv=none; b=KAZA4LJIhytzVc7wA1EQc74/8U7kSVrgj0HTYBhbXnEEnOQDxnI6eziSSalCZJJfiZTyIdho+byEdOIwa8r10135CUZq6KbwZwiXdvYBy8N//U9aR0G4VDY4Em3qhfSFZxvZ6tRsPfQPD0kiLzehVowgdgvz58QQ9EpGgI5KVRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357962; c=relaxed/simple;
-	bh=BaOHbBPbA7qvskbYxpgnYssoHqis89wbXTrXSfubzz8=;
+	s=arc-20240116; t=1722356378; c=relaxed/simple;
+	bh=s+Pg4eub4TGFin7pM4uqTkPgu4JNtOAQOYV3n32vkQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXRRQYgczchFJovlAOKWNITsZXG7T7dWsGEkgGQJMw7bG+xb+ceey2c8/kQoVcHD5v6T8vTzyYiY9s8xcJ0v/J6mfM6TVoBjIFy0l0Tj+TldECfa5cWlK8tXi6X+DaM/0WmV6XcjZW4McV3C432Cu5TvyAuBe/CuFxTwGZdJVZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLVsgC3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAE4C32782;
-	Tue, 30 Jul 2024 16:46:02 +0000 (UTC)
+	 MIME-Version; b=YgmmwIaUg2nLmt+tMWi42NrURnGrzqIoDv9eC542y5j3NkgqpQBnXKBnvEB7u9xNloviPERFLs3zsF6x0clEgUoqCgIX21+ohKv9qV+qs7lYXpwdaSvrUTURoBwiME+dOxrBDxSvbauFRMKo/j80PjI58jha4o1TXrLN0LBvAsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jO6iYgWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71374C32782;
+	Tue, 30 Jul 2024 16:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357962;
-	bh=BaOHbBPbA7qvskbYxpgnYssoHqis89wbXTrXSfubzz8=;
+	s=korg; t=1722356378;
+	bh=s+Pg4eub4TGFin7pM4uqTkPgu4JNtOAQOYV3n32vkQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLVsgC3soFD3gsvDeGxsglKlGayMCqq9OQZCWZrZzr6+l4gkf6Kd/TfqRogwNRZfq
-	 nIJjJIBsvKroeeRLnY8+N4tEb3Nl+pI9+UNmY3x3W4mbfwvwRM28vbMZHVTIqQH3lL
-	 dMoYeVv9lxOX0kfZ6+LhPZKfS//PSDHyQyUS5zXo=
+	b=jO6iYgWKb9B925eV8WthmFElr3tB4objuKy8UIo7N7sw/o9Q+0ULLS5GABrUKeTrY
+	 Cjn42UPLSMriPQ0n6W37d0O7qmoalKEhqXI37RbiCBuAAqDk56fN0NZ0P8M+Yitv8S
+	 CbGLPwiLJpg4jFgkj9yLBJIGw0r3oBhVSXPH40Nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	James Clark <james.clark@arm.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 312/568] ipvs: properly dereference pe in ip_vs_add_service
+Subject: [PATCH 6.1 186/440] coresight: Fix ref leak when of_coresight_parse_endpoint() fails
 Date: Tue, 30 Jul 2024 17:46:59 +0200
-Message-ID: <20240730151652.066370342@linuxfoundation.org>
+Message-ID: <20240730151623.139918592@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
+[ Upstream commit 7fcb9cb2fe47294e16067c3cfd25332c8662a115 ]
 
-Use pe directly to resolve sparse warning:
+of_graph_get_next_endpoint() releases the reference to the previous
+endpoint on each iteration, but when parsing fails the loop exits
+early meaning the last reference is never dropped.
 
-  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+Fix it by dropping the refcount in the exit condition.
 
-Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: d375b356e687 ("coresight: Fix support for sparsely populated ports")
+Signed-off-by: James Clark <james.clark@arm.com>
+Reported-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20240529133626.90080-1-james.clark@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/hwtracing/coresight/coresight-platform.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 143a341bbc0a4..dec5309d9f1f5 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1459,18 +1459,18 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
- 	if (ret < 0)
- 		goto out_err;
+diff --git a/drivers/hwtracing/coresight/coresight-platform.c b/drivers/hwtracing/coresight/coresight-platform.c
+index 4758997141046..3f82ae07a18e5 100644
+--- a/drivers/hwtracing/coresight/coresight-platform.c
++++ b/drivers/hwtracing/coresight/coresight-platform.c
+@@ -323,8 +323,10 @@ static int of_get_coresight_platform_data(struct device *dev,
+ 			continue;
  
--	/* Bind the ct retriever */
--	RCU_INIT_POINTER(svc->pe, pe);
--	pe = NULL;
--
- 	/* Update the virtual service counters */
- 	if (svc->port == FTPPORT)
- 		atomic_inc(&ipvs->ftpsvc_counter);
- 	else if (svc->port == 0)
- 		atomic_inc(&ipvs->nullsvc_counter);
--	if (svc->pe && svc->pe->conn_out)
-+	if (pe && pe->conn_out)
- 		atomic_inc(&ipvs->conn_out_counter);
+ 		ret = of_coresight_parse_endpoint(dev, ep, pdata);
+-		if (ret)
++		if (ret) {
++			of_node_put(ep);
+ 			return ret;
++		}
+ 	}
  
-+	/* Bind the ct retriever */
-+	RCU_INIT_POINTER(svc->pe, pe);
-+	pe = NULL;
-+
- 	/* Count only IPv4 services for old get/setsockopt interface */
- 	if (svc->af == AF_INET)
- 		ipvs->num_services++;
+ 	return 0;
 -- 
 2.43.0
 
