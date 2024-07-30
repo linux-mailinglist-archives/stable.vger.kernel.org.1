@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C983941A6E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51926941C05
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A947B2620E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C5B284DA1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E921A619A;
-	Tue, 30 Jul 2024 16:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ACF11898EC;
+	Tue, 30 Jul 2024 17:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYnI+7Q1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rx/nn//i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730738BE8;
-	Tue, 30 Jul 2024 16:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C314B1FBA;
+	Tue, 30 Jul 2024 17:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357177; cv=none; b=N2Ko0F7vo+TP4iCoF9VCFyIpJNIjJmavJM8jiSXqtQBe/+6Jo84cm+BJjIEYAFtXTVMgfOQOsqrgcMxIIXMQxnDapgtdeuwQgdBzMb7+9ykO8Oc8yRb1JoScZNm1tQ4w+Vkfah3JPad8RwmLK66Aekp0vNsTu/UHNVGQLpqZN4Y=
+	t=1722358914; cv=none; b=LJjAD5dvFqkZFqyUJVdpWlQa5smiWYfHeyVcK0w4+8LbwKNxX/6N+c2AnVSDEz6TarJ9e2epoOOPBKuUDe70uKohvgN8c9dQRHuflHOOvSe7GVmhTY7jx+1NQN+auXPXh6tK9C4wxkfEkIB58ZzqH0BmoiJ+q1ApPFp1lhOox14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357177; c=relaxed/simple;
-	bh=UQ/sblWXFAAjbaiIILxHmlXhBov052se6edV5/DsQAY=;
+	s=arc-20240116; t=1722358914; c=relaxed/simple;
+	bh=/EhDP2IHIpAuFLojviOCPEXa+k9oTDAW3hCbxyeFGT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOw7PubU5LemKeJNLkHamArVPw/QfGgrZo8gAewG9z7K4JOKtyKQlK7sqeWkcJ8+gV3ELaIwlUDC3uFz5OqL+POuRWL5rCrtcLm53eQ1ZXgaCEbdJzirLrPG5v9zXnmJ/uLDJDUswABFR6b12Esf4FkOMsTMwENAxpWbRQgi1Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYnI+7Q1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBD1C32782;
-	Tue, 30 Jul 2024 16:32:56 +0000 (UTC)
+	 MIME-Version; b=K1Tc/AucPfx7XtEyId2RjsTIwc+c2i/sPt7uLnzNK2YegDXjWlUt5DMdrV/2ilB0yedyYhjM4EW8Y4Vs5ZfbtKlz0Wsijv36L+Y3BYvYLezQ9TGAwWL4IZEskoRHfXrg9xLLe9KYhBdHzldBi/cSWbjiEhrTnDR9iFXb94VDuBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rx/nn//i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B1AC32782;
+	Tue, 30 Jul 2024 17:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357177;
-	bh=UQ/sblWXFAAjbaiIILxHmlXhBov052se6edV5/DsQAY=;
+	s=korg; t=1722358914;
+	bh=/EhDP2IHIpAuFLojviOCPEXa+k9oTDAW3hCbxyeFGT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYnI+7Q13tNqIY7MN6kDvYrWdPL/b/M/aoLPEgHc/iwFT3XZ5zC5QoYxYMLo/chfm
-	 kQ24RVhvWjCMWfPzYZLQZWP8eUDxpE1wEhpFmSCHDYvXZdBByxL9J5o3wVG93/x72p
-	 HHdpx3iwOWRK5RYueQarJUw+X1vllloTme8ohbOM=
+	b=Rx/nn//ivp7gPkR5FmKdwJW5PQVlaFC9u7xj5KpvDwyYer8N90nfw/uuvcVurbUsI
+	 FRGOID0difqaXkhiyMgOIqHS193Q7r0k/xIz9/3/Ar9JtbfrNwxhuqH+XkW5geduoI
+	 umQ0EEHN3AG+jSGfz0FUqbhfz11MZjKKfCvCIIMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 266/440] sbitmap: remove unnecessary calculation of alloc_hint in __sbitmap_get_shallow
-Date: Tue, 30 Jul 2024 17:48:19 +0200
-Message-ID: <20240730151626.229436870@linuxfoundation.org>
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 393/568] task_work: s/task_work_cancel()/task_work_cancel_func()/
+Date: Tue, 30 Jul 2024 17:48:20 +0200
+Message-ID: <20240730151655.224117271@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit f1591a8bb3e02713f4ee2efe20df0d84ed80da48 ]
+commit 68cbd415dd4b9c5b9df69f0f091879e56bf5907a upstream.
 
-Updates to alloc_hint in the loop in __sbitmap_get_shallow() are mostly
-pointless and equivalent to setting alloc_hint to zero (because
-SB_NR_TO_BIT() considers only low sb->shift bits from alloc_hint). So
-simplify the logic.
+A proper task_work_cancel() API that actually cancels a callback and not
+*any* callback pointing to a given function is going to be needed for
+perf events event freeing. Do the appropriate rename to prepare for
+that.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://lore.kernel.org/r/20230116205059.3821738-2-shikemeng@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 72d04bdcf3f7 ("sbitmap: fix io hung due to race on sbitmap_word::cleared")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240621091601.18227-2-frederic@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/sbitmap.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ include/linux/task_work.h |    2 +-
+ kernel/irq/manage.c       |    2 +-
+ kernel/task_work.c        |   10 +++++-----
+ security/keys/keyctl.c    |    2 +-
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/lib/sbitmap.c b/lib/sbitmap.c
-index c515072eca296..b9dd0a0a28f89 100644
---- a/lib/sbitmap.c
-+++ b/lib/sbitmap.c
-@@ -243,6 +243,7 @@ static int __sbitmap_get_shallow(struct sbitmap *sb,
- 	int nr = -1;
+--- a/include/linux/task_work.h
++++ b/include/linux/task_work.h
+@@ -30,7 +30,7 @@ int task_work_add(struct task_struct *ta
  
- 	index = SB_NR_TO_INDEX(sb, alloc_hint);
-+	alloc_hint = SB_NR_TO_BIT(sb, alloc_hint);
+ struct callback_head *task_work_cancel_match(struct task_struct *task,
+ 	bool (*match)(struct callback_head *, void *data), void *data);
+-struct callback_head *task_work_cancel(struct task_struct *, task_work_func_t);
++struct callback_head *task_work_cancel_func(struct task_struct *, task_work_func_t);
+ void task_work_run(void);
  
- 	for (i = 0; i < sb->map_nr; i++) {
- again:
-@@ -250,7 +251,7 @@ static int __sbitmap_get_shallow(struct sbitmap *sb,
- 					min_t(unsigned int,
- 					      __map_depth(sb, index),
- 					      shallow_depth),
--					SB_NR_TO_BIT(sb, alloc_hint), true);
-+					alloc_hint, true);
- 		if (nr != -1) {
- 			nr += index << sb->shift;
+ static inline void exit_task_work(struct task_struct *task)
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1332,7 +1332,7 @@ static int irq_thread(void *data)
+ 	 * synchronize_hardirq(). So neither IRQTF_RUNTHREAD nor the
+ 	 * oneshot mask bit can be set.
+ 	 */
+-	task_work_cancel(current, irq_thread_dtor);
++	task_work_cancel_func(current, irq_thread_dtor);
+ 	return 0;
+ }
+ 
+--- a/kernel/task_work.c
++++ b/kernel/task_work.c
+@@ -120,9 +120,9 @@ static bool task_work_func_match(struct
+ }
+ 
+ /**
+- * task_work_cancel - cancel a pending work added by task_work_add()
+- * @task: the task which should execute the work
+- * @func: identifies the work to remove
++ * task_work_cancel_func - cancel a pending work matching a function added by task_work_add()
++ * @task: the task which should execute the func's work
++ * @func: identifies the func to match with a work to remove
+  *
+  * Find the last queued pending work with ->func == @func and remove
+  * it from queue.
+@@ -131,7 +131,7 @@ static bool task_work_func_match(struct
+  * The found work or NULL if not found.
+  */
+ struct callback_head *
+-task_work_cancel(struct task_struct *task, task_work_func_t func)
++task_work_cancel_func(struct task_struct *task, task_work_func_t func)
+ {
+ 	return task_work_cancel_match(task, task_work_func_match, func);
+ }
+@@ -168,7 +168,7 @@ void task_work_run(void)
+ 		if (!work)
  			break;
-@@ -260,13 +261,9 @@ static int __sbitmap_get_shallow(struct sbitmap *sb,
- 			goto again;
+ 		/*
+-		 * Synchronize with task_work_cancel(). It can not remove
++		 * Synchronize with task_work_cancel_match(). It can not remove
+ 		 * the first entry == work, cmpxchg(task_works) must fail.
+ 		 * But it can remove another entry from the ->next list.
+ 		 */
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -1694,7 +1694,7 @@ long keyctl_session_to_parent(void)
+ 		goto unlock;
  
- 		/* Jump to next index. */
--		index++;
--		alloc_hint = index << sb->shift;
--
--		if (index >= sb->map_nr) {
-+		alloc_hint = 0;
-+		if (++index >= sb->map_nr)
- 			index = 0;
--			alloc_hint = 0;
--		}
- 	}
+ 	/* cancel an already pending keyring replacement */
+-	oldwork = task_work_cancel(parent, key_change_session_keyring);
++	oldwork = task_work_cancel_func(parent, key_change_session_keyring);
  
- 	return nr;
--- 
-2.43.0
-
+ 	/* the replacement session keyring is applied just prior to userspace
+ 	 * restarting */
 
 
 
