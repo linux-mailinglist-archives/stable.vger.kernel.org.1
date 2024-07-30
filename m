@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-63221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B92D9417F7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16706941A40
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAAB3285AA7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9465282EC8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD681A6166;
-	Tue, 30 Jul 2024 16:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946D8183CD5;
+	Tue, 30 Jul 2024 16:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBHQlpfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihsDwMbc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833881A6161;
-	Tue, 30 Jul 2024 16:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544041A6192;
+	Tue, 30 Jul 2024 16:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356118; cv=none; b=UKNp1H6AaVfsYRNKT1yBOVYVBIU0h4M7yfhSvWOCZdZYHJAWx5g3HwqgWzzwJmu5TieZmHTDfY5gl3Tg+cUAOcpGQYhEk0XFZypYl6DnYjulDgtnZIWkawH1ynZTjsYUNYYenj1pnCtn7oVDNRbLWy6rM85N64O7Gj2cDX7R4M4=
+	t=1722357706; cv=none; b=JgoQoc84fhRE/rd/QR8+4HkW6KQ+CSoM9MKO98CSLdZTj6y+E5B44+Um7R41JJNXt4YZi0t5VXYM/NXHIZxH8XgIi4UGynhHZ4bilyl38dr0ET4JYPh78SOTK3jt6nR1jS5dlcGvHlhaibyah5amKk+HhAjneyyo2487qoEfOH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356118; c=relaxed/simple;
-	bh=Yc0i+YNDdSzDYuM3ZOr6qks0c9Mv4Z2i82DMrfdTSjw=;
+	s=arc-20240116; t=1722357706; c=relaxed/simple;
+	bh=/voysrC3ku3HIsd0OC48C2DPTkqOPMhHhFxgAEhbhms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RcShWh6l2P4lhVd5oxMia5BmVAcjX3WcjPavnA8azovoU9W06XU6lhIaS+G9txItHhUegC1/Qw7r+S4atKHpZhWPsnOBrDxDlhaXNEsczH3QDkAWJuqV9JmZ82PR5d+7cFK8DqlWoeZfLilz79mJHO0Glq/9fSTNY2Htjb9Lfnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBHQlpfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DC4C32782;
-	Tue, 30 Jul 2024 16:15:17 +0000 (UTC)
+	 MIME-Version; b=FDjpfPgo1IWrhbWWpoPhCEFddpp4LXcfg4i/vL7vA3tUGVnFP3vqN3ZcHTL5rik40N62KfI8dwx8jHjkWaawk0T0jck3QPlhQLwhJ2GpFmgtcMvE6qsMncrgsHwPZkAEo09380bxjZsxkcAtnhuwJyvDEeNZh4V+iWCrVd/FZLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihsDwMbc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA543C4AF0A;
+	Tue, 30 Jul 2024 16:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356118;
-	bh=Yc0i+YNDdSzDYuM3ZOr6qks0c9Mv4Z2i82DMrfdTSjw=;
+	s=korg; t=1722357706;
+	bh=/voysrC3ku3HIsd0OC48C2DPTkqOPMhHhFxgAEhbhms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBHQlpfenaQm1LioZNT+agGBfAPz5sL8+MSCDYFTVkHrkKLsb1B0J+CVhDC2JF4r0
-	 0u79u39V6X9dqj+n2QpXryZ4ReTB8gH9vEUzzjaZvvUwhC1KV0GYEup8CF1fNqvgmr
-	 mRQ/tPcqtwpOjc7M4Jpta9sneKo2TZlVOTl++mkE=
+	b=ihsDwMbcy83TeZ+0K62/hen5K/An5IriWlFci5wmqKGAWdUQY6USFM6vf+9Be0MqA
+	 skANXBGOtrDJy7t7aQj5EXpyKcl2+zh2Lbyjh8Zi2fNScW/SAUSTX6Rn2f9d+X1MyJ
+	 JOlur0PCiGY8e8NhNbp9GJ8NqS84YJto0LSKiuEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Spoorthy S <spoorts2@in.ibm.com>,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/440] perf tests arm_callgraph_fp: Address shellcheck warnings about signal names and adding double quotes for expression
+Subject: [PATCH 6.6 283/568] Input: elan_i2c - do not leave interrupt disabled on suspend failure
 Date: Tue, 30 Jul 2024 17:46:30 +0200
-Message-ID: <20240730151622.009115670@linuxfoundation.org>
+Message-ID: <20240730151650.936157438@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Spoorthy S <spoorts2@in.ibm.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 1bb17b4c6c91ad4d9468247cf5f5464fa6440668 ]
+[ Upstream commit 5f82c1e04721e7cd98e604eb4e58f0724d8e5a65 ]
 
-Running shellcheck -S on test_arm_calligraph_fp throws warnings SC2086 and SC3049,
+Make sure interrupts are not left disabled when we fail to suspend the
+touch controller.
 
-      $shellcheck -S warning tests/shell/test_arm_callgraph_fp.sh
-         rm -f $PERF_DATA
-            : Double quote to prevent globbing and word splitting.
-         trap cleanup_files exit term int
-                     : In POSIX sh, using lower/mixed case for signal names is undefined.
-
-After fixing the warnings,
-
-      $shellcheck tests/shell/test_arm_callgraph_fp.sh
-      $ echo $?
-      0
-
-To address the POSIX shell warnings added changes to convert Lowercase
-signal names to uppercase in the script and double quoted the
-command substitutions($fix to "$fix") to solve Globbing warnings.
-
-Signed-off-by: Spoorthy S<spoorts2@in.ibm.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20230613164145.50488-4-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: ff16aeb9b834 ("perf test: Make test_arm_callgraph_fp.sh more robust")
+Fixes: 6696777c6506 ("Input: add driver for Elan I2C/SMbus touchpad")
+Link: https://lore.kernel.org/r/ZmKiiL-1wzKrhqBj@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_arm_callgraph_fp.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/input/mouse/elan_i2c_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/tests/shell/test_arm_callgraph_fp.sh b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-index e61d8deaa0c41..1380e0d12dce3 100755
---- a/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-+++ b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-@@ -9,13 +9,13 @@ TEST_PROGRAM="perf test -w leafloop"
+diff --git a/drivers/input/mouse/elan_i2c_core.c b/drivers/input/mouse/elan_i2c_core.c
+index 148a601396f92..dc80e407fb860 100644
+--- a/drivers/input/mouse/elan_i2c_core.c
++++ b/drivers/input/mouse/elan_i2c_core.c
+@@ -1356,6 +1356,8 @@ static int elan_suspend(struct device *dev)
+ 	}
  
- cleanup_files()
- {
--	rm -f $PERF_DATA
-+	rm -f "$PERF_DATA"
+ err:
++	if (ret)
++		enable_irq(client->irq);
+ 	mutex_unlock(&data->sysfs_mutex);
+ 	return ret;
  }
- 
--trap cleanup_files exit term int
-+trap cleanup_files EXIT TERM INT
- 
- # Add a 1 second delay to skip samples that are not in the leaf() function
--perf record -o $PERF_DATA --call-graph fp -e cycles//u -D 1000 --user-callchains -- $TEST_PROGRAM 2> /dev/null &
-+perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- "$TEST_PROGRAM" 2> /dev/null &
- PID=$!
- 
- echo " + Recording (PID=$PID)..."
 -- 
 2.43.0
 
