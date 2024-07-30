@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-63601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3FE9419BD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02140941751
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D94252880AA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 901EFB251F0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CA514D29B;
-	Tue, 30 Jul 2024 16:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C92C1898EB;
+	Tue, 30 Jul 2024 16:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/ERzRuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzqVzMvg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30EC1A6192;
-	Tue, 30 Jul 2024 16:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2A81898E3;
+	Tue, 30 Jul 2024 16:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357354; cv=none; b=Ex2dCeeBJWQitUDOoo+QeEln4jI1im9LPZaKIxBysGtBcfXCODYsxC3ew9JOCIbYbuc1Gfb3Qr0/BmEge+KSQ+i/ODmGNSXc4R1BHP+RVX7yPCP2FmUcBhznGq5za45YDXnBYSXz220lD56ZudEGDYsmjHy6eP6SECMpMzQSKo4=
+	t=1722355683; cv=none; b=kNdMQA+AGlf6qktD7bMM1H2yz2O8jpSkU0jCCiK9B44dDQLhtX/PgIwu09aCGbKJKeJxU2zh6nmf/fpWS5WGNojtxEXhIqYdEwuhdQakZeirS1ssydEd6aP+Sk8Heh4Tv+3Du0/fN5PwlSRx6H06QhyDJeAQMcXDx5xWNnzGAyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357354; c=relaxed/simple;
-	bh=ADAoZnEj7i0vgUImVMjA0ntdmKAY6jYb1H+KP9z5CO0=;
+	s=arc-20240116; t=1722355683; c=relaxed/simple;
+	bh=eghjfCctj3hWa044ERR+Vle6jjR/J65ZkxoLYEojkJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACm5sn2hcV/cX7AhwVpsk5bVDT6yVhUkIiZ/0bKwJwR5SAAGk+DhbQWfcbvay2jAOJoGUb6eiIAasIwrGorfuGV0eRraC1KftIeFfk5QClkSKVlM8dNT6NjyWsKKb5SAJSuFSbt29zwtITFCrg3QvQ6BNuRu9Gk8mF++8/k1k78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/ERzRuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415E9C4AF0C;
-	Tue, 30 Jul 2024 16:35:53 +0000 (UTC)
+	 MIME-Version; b=P98Lh6rC0zrlMbNzN1Vd/vv7uLcIbcVEca6y1OZZ6IYv2LbnMFPA8Dvo+z8quACGijwvYFYO79Tj3amKBFlFNz/6oW6XozeB34MgPVkBPY9YoyYIVQGa31GCiKqe6gF7+9M+kAOzE3O5iZpLbMvWFyl4QW7mk8+zrmSHEgHDVsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzqVzMvg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B321C4AF0A;
+	Tue, 30 Jul 2024 16:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357353;
-	bh=ADAoZnEj7i0vgUImVMjA0ntdmKAY6jYb1H+KP9z5CO0=;
+	s=korg; t=1722355683;
+	bh=eghjfCctj3hWa044ERR+Vle6jjR/J65ZkxoLYEojkJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/ERzRuugRgtYJU13sSeGWTys20q4rcWh7eLZV5DjZJrjsIyBDPHSgrYHz5fGLUQQ
-	 nhRXtFfDZEWJ0+pT449+ckayRPTfBJn7ZBo3PT+SG+oCWDR44i2UOB5mHSsCWGcuiJ
-	 sOl7pevRslvqJD0XPTNogU45Kjud8cIyChBs37/c=
+	b=YzqVzMvgKacp7Akgsx5P33mXTlqLxmQ3fcRQklVU8WJ5cyQBZU3rQY7ArNHK0wcGy
+	 OsoOPtWHbV5/6nIdtTrYiWENLjUuT4J6dwjRlBprsJuVxx+8asOYQPtF6eDr2+4/P7
+	 DvoKeRStSAgnhFQ5fJ5io0Qt76TkYXntfWfjNLrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Mirsad Todorovac <mtodorovac69@yahoo.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/568] iio: Fix the sorting functionality in iio_gts_build_avail_time_table
+Subject: [PATCH 6.1 121/440] bpf: annotate BTF show functions with __printf
 Date: Tue, 30 Jul 2024 17:45:54 +0200
-Message-ID: <20240730151649.535632144@linuxfoundation.org>
+Message-ID: <20240730151620.614859754@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit 5acc3f971a01be48d5ff4252d8f9cdb87998cdfb ]
+[ Upstream commit b3470da314fd8018ee237e382000c4154a942420 ]
 
-The sorting in iio_gts_build_avail_time_table is not working as intended.
-It could result in an out-of-bounds access when the time is zero.
+-Werror=suggest-attribute=format warns about two functions
+in kernel/bpf/btf.c [1]; add __printf() annotations to silence
+these warnings since for CONFIG_WERROR=y they will trigger
+build failures.
 
-Here are more details:
+[1] https://lore.kernel.org/bpf/a8b20c72-6631-4404-9e1f-0410642d7d20@gmail.com/
 
-1. When the gts->itime_table[i].time_us is zero, e.g., the time
-sequence is `3, 0, 1`, the inner for-loop will not terminate and do
-out-of-bound writes. This is because once `times[j] > new`, the value
-`new` will be added in the current position and the `times[j]` will be
-moved to `j+1` position, which makes the if-condition always hold.
-Meanwhile, idx will be added one, making the loop keep running without
-termination and out-of-bound write.
-2. If none of the gts->itime_table[i].time_us is zero, the elements
-will just be copied without being sorted as described in the comment
-"Sort times from all tables to one and remove duplicates".
-
-For more details, please refer to
-https://lore.kernel.org/all/6dd0d822-046c-4dd2-9532-79d7ab96ec05@gmail.com.
-
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Suggested-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: 38416c28e168 ("iio: light: Add gain-time-scale helpers")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Co-developed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://lore.kernel.org/r/d501ade8c1f7b202d34c6404eda423489cab1df5.1714480171.git.mazziesaccount@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 31d0bc81637d ("bpf: Move to generic BTF show support, apply it to seq files/strings")
+Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Tested-by: Mirsad Todorovac <mtodorovac69@yahoo.com>
+Link: https://lore.kernel.org/r/20240711182321.963667-1-alan.maguire@oracle.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-gts-helper.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/bpf/btf.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-index b51eb6cb766f3..59d7615c0f565 100644
---- a/drivers/iio/industrialio-gts-helper.c
-+++ b/drivers/iio/industrialio-gts-helper.c
-@@ -362,17 +362,20 @@ static int iio_gts_build_avail_time_table(struct iio_gts *gts)
- 	for (i = gts->num_itime - 1; i >= 0; i--) {
- 		int new = gts->itime_table[i].time_us;
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 7582ec4fd4131..9d6524caf8ea9 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6792,8 +6792,8 @@ static void btf_type_show(const struct btf *btf, u32 type_id, void *obj,
+ 	btf_type_ops(t)->show(btf, t, type_id, obj, 0, show);
+ }
  
--		if (times[idx] < new) {
-+		if (idx == 0 || times[idx - 1] < new) {
- 			times[idx++] = new;
- 			continue;
- 		}
+-static void btf_seq_show(struct btf_show *show, const char *fmt,
+-			 va_list args)
++__printf(2, 0) static void btf_seq_show(struct btf_show *show, const char *fmt,
++					va_list args)
+ {
+ 	seq_vprintf((struct seq_file *)show->target, fmt, args);
+ }
+@@ -6826,8 +6826,8 @@ struct btf_show_snprintf {
+ 	int len;		/* length we would have written */
+ };
  
--		for (j = 0; j <= idx; j++) {
-+		for (j = 0; j < idx; j++) {
-+			if (times[j] == new)
-+				break;
- 			if (times[j] > new) {
- 				memmove(&times[j + 1], &times[j],
- 					(idx - j) * sizeof(int));
- 				times[j] = new;
- 				idx++;
-+				break;
- 			}
- 		}
- 	}
+-static void btf_snprintf_show(struct btf_show *show, const char *fmt,
+-			      va_list args)
++__printf(2, 0) static void btf_snprintf_show(struct btf_show *show, const char *fmt,
++					     va_list args)
+ {
+ 	struct btf_show_snprintf *ssnprintf = (struct btf_show_snprintf *)show;
+ 	int len;
 -- 
 2.43.0
 
