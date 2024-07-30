@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-64483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AB6941DFF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47799941C1C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2381F237ED
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C873B24DFD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5C91A76B6;
-	Tue, 30 Jul 2024 17:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7969C188003;
+	Tue, 30 Jul 2024 17:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbjNlOtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q17fObcy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7291A76A1;
-	Tue, 30 Jul 2024 17:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280391A6192;
+	Tue, 30 Jul 2024 17:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360271; cv=none; b=SC1NliF7p56bfKR8O4+I6rUrtMv2qg4oSWlmKlY8PBVrB5kQ6Nwldd6SZeQfF9yLAPoGB7z+Ni1w3V+jGUG43ayF4vIZ5xE6HHbPiDDWBwrqZLnQ2WJ8fxkTqBu9vr8miVEbcFED0KRKAam1K3vn4wgOcUCMGfuhusu0DIyBGT4=
+	t=1722358990; cv=none; b=cLoMyAIdV8J4c9ozXXDt3VW7Mxlf6YPL8LF6OiW5R1Yx0O0p1UOnvifA6/TcSNi1FXrBOBFVM4vSmahn39CASenbGwAH1WOiSHXJo9AMu3PfmA1maP+NJd5dZk7rtHdTxoh4Q9SQtu96HnQyN/pLlV07EQYKmH524idQHEZy6BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360271; c=relaxed/simple;
-	bh=vRfJ9OYSSWWq676kr3lTH57GYgCj0qGOVaSmdzzT0ok=;
+	s=arc-20240116; t=1722358990; c=relaxed/simple;
+	bh=bWkYDurPoOfcing75TzRMddvHxlK0uXNnEgOJe/rnf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k0ZSBR7SOtRaBK1WaaWUf9fth49SYDz0Zo+lA6SdTQwXTUcJKxhXo8XkO9PH57cxQO5o6oQ8mOa3HERYfYsnKZJihI30OxNEQX6N0E3oj41gZdHeOQlnYOP9WxZSEoOwRTFc/eJRFgM6FN/wjFYlNVje2tYwU7RQvyIwj3bS98M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbjNlOtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92688C32782;
-	Tue, 30 Jul 2024 17:24:30 +0000 (UTC)
+	 MIME-Version; b=kEDZ1VPB5Eq0mvThVlBFIhr0YzFBN2JQfP9lOuKPazNTeoiHhtLhZjDjq0zpTeHsMcgMDfQdt/6J6TjaG/RPB02rccfZidOIRprevBX/WTUbNRVv95gQUDftYcLFmYDYtFkcoJnsYAvJcDitEOEyGQJIXq+B6gcWk+jEg3WmoyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q17fObcy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970B8C32782;
+	Tue, 30 Jul 2024 17:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360271;
-	bh=vRfJ9OYSSWWq676kr3lTH57GYgCj0qGOVaSmdzzT0ok=;
+	s=korg; t=1722358990;
+	bh=bWkYDurPoOfcing75TzRMddvHxlK0uXNnEgOJe/rnf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbjNlOtEyLbv+DP/FGH+FJM88ZX4ypeOb2htBSNuG8dfn603n9uaK8o43Kayo75Lr
-	 EsEt/Sn6SswQ9xY7yBuCm0Y+aYDidOzWjAwXmHeyryvJ0zAN6954V/u4779Lq8Z9/Y
-	 bQmj4MJbyjHNmZhYgsOPCC06O5AOMghCkkpe7IJk=
+	b=Q17fObcyZ6EE8Urd33b9btYkisK1aDMByL4/WwfAR1zdXZOYW32PAwBmQc7bLx82y
+	 vzPX+Y1l6GFvCFDOJVjkzwAoXaLw+j7ZVC/JTCj3S9PKxPVfnJa3EFbhOWhAYqjs07
+	 djuSOsrEwkqAwonOFxdZOD8udLlou0WgcM64I6WU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Yao Xingtao <yaoxt.fnst@fujitsu.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 648/809] mm/page_alloc: fix pcp->count race between drain_pages_zone() vs __rmqueue_pcplist()
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 417/568] ALSA: ump: Dont update FB name for static blocks
 Date: Tue, 30 Jul 2024 17:48:44 +0200
-Message-ID: <20240730151750.467990238@linuxfoundation.org>
+Message-ID: <20240730151656.169711563@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 66eca1021a42856d6af2a9802c99e160278aed91 upstream.
+commit 9a4ab167cfb1dea1df0c0c948205a62c7eb3b85b upstream.
 
-It's expected that no page should be left in pcp_list after calling
-zone_pcp_disable() in offline_pages().  Previously, it's observed that
-offline_pages() gets stuck [1] due to some pages remaining in pcp_list.
+When a device tries to update the FB name string even if its Endpoint
+is declared as static, we should skip it, just already done for the FB
+info update reply.
 
-Cause:
-There is a race condition between drain_pages_zone() and __rmqueue_pcplist()
-involving the pcp->count variable. See below scenario:
-
-         CPU0                              CPU1
-    ----------------                    ---------------
-                                      spin_lock(&pcp->lock);
-                                      __rmqueue_pcplist() {
-zone_pcp_disable() {
-                                        /* list is empty */
-                                        if (list_empty(list)) {
-                                          /* add pages to pcp_list */
-                                          alloced = rmqueue_bulk()
-  mutex_lock(&pcp_batch_high_lock)
-  ...
-  __drain_all_pages() {
-    drain_pages_zone() {
-      /* read pcp->count, it's 0 here */
-      count = READ_ONCE(pcp->count)
-      /* 0 means nothing to drain */
-                                          /* update pcp->count */
-                                          pcp->count += alloced << order;
-      ...
-                                      ...
-                                      spin_unlock(&pcp->lock);
-
-In this case, after calling zone_pcp_disable() though, there are still some
-pages in pcp_list. And these pages in pcp_list are neither movable nor
-isolated, offline_pages() gets stuck as a result.
-
-Solution:
-Expand the scope of the pcp->lock to also protect pcp->count in
-drain_pages_zone(), to ensure no pages are left in the pcp list after
-zone_pcp_disable()
-
-[1] https://lore.kernel.org/linux-mm/6a07125f-e720-404c-b2f9-e55f3f166e85@fujitsu.com/
-
-Link: https://lkml.kernel.org/r/20240723064428.1179519-1-lizhijian@fujitsu.com
-Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reported-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
+Fixes: 37e0e14128e0 ("ALSA: ump: Support UMP Endpoint and Function Block parsing")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://patch.msgid.link/20240722135929.8612-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ sound/core/ump.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2323,16 +2323,20 @@ void drain_zone_pages(struct zone *zone,
- static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- {
- 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
--	int count = READ_ONCE(pcp->count);
--
--	while (count) {
--		int to_drain = min(count, pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
--		count -= to_drain;
-+	int count;
+diff --git a/sound/core/ump.c b/sound/core/ump.c
+index 3f61220c23b4..b325fcfa77d0 100644
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -806,6 +806,13 @@ static int ump_handle_fb_name_msg(struct snd_ump_endpoint *ump,
+ 	if (!fb)
+ 		return -ENODEV;
  
-+	do {
- 		spin_lock(&pcp->lock);
--		free_pcppages_bulk(zone, to_drain, pcp, 0);
-+		count = pcp->count;
-+		if (count) {
-+			int to_drain = min(count,
-+				pcp->batch << CONFIG_PCP_BATCH_SCALE_MAX);
++	if (ump->parsed &&
++	    (ump->info.flags & SNDRV_UMP_EP_INFO_STATIC_BLOCKS)) {
++		ump_dbg(ump, "Skipping static FB name update (blk#%d)\n",
++			fb->info.block_id);
++		return 0;
++	}
 +
-+			free_pcppages_bulk(zone, to_drain, pcp, 0);
-+			count -= to_drain;
-+		}
- 		spin_unlock(&pcp->lock);
--	}
-+	} while (count);
- }
- 
- /*
+ 	ret = ump_append_string(ump, fb->info.name, sizeof(fb->info.name),
+ 				buf->raw, 3);
+ 	/* notify the FB name update to sequencer, too */
+-- 
+2.45.2
+
 
 
 
