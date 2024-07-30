@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B41E941851
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BF2941B9A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567362856E2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A717283340
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF9C1898FE;
-	Tue, 30 Jul 2024 16:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A981C189537;
+	Tue, 30 Jul 2024 16:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jF2It86f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLF6Up24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD05B1A6186;
-	Tue, 30 Jul 2024 16:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEF5184549;
+	Tue, 30 Jul 2024 16:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356415; cv=none; b=NUIf2xgUHW36xUIeRWS7X7Mzp8zjSDhWkMIE2YRsBir1kupavFjsmaoX4MhyFwR9R2cBAbUvSGChSz/W4DvN6qdfqaSUH/AQMwiM6OCLG/oZ1AlUfQSD1xnwg565pYb8nAVxQ76J54eRbuJ0kINIopEyXFXE/MleQc0I1DTtAYg=
+	t=1722358611; cv=none; b=OLa0naWqK3r83ylqec8gmUsJtRADT/K+9rP1mIkov+ZOtFtgcCIP+JIPxU4YI0rLeWYVNVZunw4rgVTSxxFOOTDQgWp3kp/kTrywCe+NCOZ+UQ9dYyWH5eymyGIcbCbqR6DqEJsAmvz7cc7QQCt1V2P3YFb599Mt2JmWgSANgDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356415; c=relaxed/simple;
-	bh=ZV+PlKRw5noDHpOU4cjVcfoGeNHXlWKje1RYrWKCXuE=;
+	s=arc-20240116; t=1722358611; c=relaxed/simple;
+	bh=RD6meTdZbjgWpk4dep1K5uDoBiSI8bfOh6P/bAu0PlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXPfqm9eyGqtG05bOGS63et4SXEfh0fhu5bEUBXIQVhzPbs4ZHHp50TtjQs7Z5KXz9adEn/LUIiagSYJS6THGr1RF6fQCpZwobCfyIU4+Hq5lB63mZmtb/8kotw/270jNepHk1V59xWPyTOnxxVK8W/DlAIWXHir+HIg2xCAtL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jF2It86f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68833C32782;
-	Tue, 30 Jul 2024 16:20:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YcT669yVoTunR1dh7bJ/3obZ7tywqDI+VHIuwbg3LfpNeMPiYlu6e/bBxrS/kaCc8J705WuV9RbGMHwmVVvBwcEFUdSx2n0/gSDeNbeVp1uYOWTVuaP2be43UsEvAfiL/g6b+qTQuf/QWKrLrTYTglRK00YesqRya+3xbuREcp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLF6Up24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D79C32782;
+	Tue, 30 Jul 2024 16:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356414;
-	bh=ZV+PlKRw5noDHpOU4cjVcfoGeNHXlWKje1RYrWKCXuE=;
+	s=korg; t=1722358611;
+	bh=RD6meTdZbjgWpk4dep1K5uDoBiSI8bfOh6P/bAu0PlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jF2It86fLC2ZzCu4ZnKAc/+mzAFWM7qGQ4RZeQZxIhNNxfRAsArS2qKLKad9t57IN
-	 ToIqoP55UhejOSrAg5zXzwo9pt/9FMhhIq4o8sJHzypesJNnKf0m/9HcG3eaBDd84K
-	 MjOav6NhArxzU+Oce1Oz7B5Gzkslu1a0BaMPYCP4=
+	b=YLF6Up24Mx/3u0WGTu7Y6zU0TXebJ+oEiNwhiq2Z+BR9sId73EXi/3pNWOKEjMzwn
+	 DpCIJgZFFJdydHnM+f/YK3xKYxa2mQusR2NmXIE1vycxXDcu/6JnVv9MFvX4metoTr
+	 89iB51lNMp4dVKgpz+gJ6gVIFJWFOk4Ysuh1yzsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Quentin Monnet <qmo@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/568] bpftool: Mount bpffs when pinmaps path not under the bpffs
-Date: Tue, 30 Jul 2024 17:44:13 +0200
-Message-ID: <20240730151645.584658543@linuxfoundation.org>
+Subject: [PATCH 6.10 378/809] nfs: pass explicit offset/count to trace events
+Date: Tue, 30 Jul 2024 17:44:14 +0200
+Message-ID: <20240730151739.594648764@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,237 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit da5f8fd1f0d393d5eaaba9ad8c22d1c26bb2bf9b ]
+[ Upstream commit fada32ed6dbc748f447c8d050a961b75d946055a ]
 
-As Quentin said [0], BPF map pinning will fail if the pinmaps path is not
-under the bpffs, like:
+nfs_folio_length is unsafe to use without having the folio locked and a
+check for a NULL ->f_mapping that protects against truncations and can
+lead to kernel crashes.  E.g. when running xfstests generic/065 with
+all nfs trace points enabled.
 
-  libbpf: specified path /home/ubuntu/test/sock_ops_map is not on BPF FS
-  Error: failed to pin all maps
+Follow the model of the XFS trace points and pass in an explіcit offset
+and length.  This has the additional benefit that these values can
+be more accurate as some of the users touch partial folio ranges.
 
-  [0] https://github.com/libbpf/bpftool/issues/146
-
-Fixes: 3767a94b3253 ("bpftool: add pinmaps argument to the load/loadall")
-Signed-off-by: Tao Chen <chen.dylane@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Quentin Monnet <qmo@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20240702131150.15622-1-chen.dylane@gmail.com
+Fixes: eb5654b3b89d ("NFS: Enable tracing of nfs_invalidate_folio() and nfs_launder_folio()")
+Reported-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/prog.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfs/file.c     |  5 +++--
+ fs/nfs/nfstrace.h | 36 ++++++++++++++++++++----------------
+ fs/nfs/read.c     |  8 +++++---
+ fs/nfs/write.c    | 10 +++++-----
+ 4 files changed, 33 insertions(+), 26 deletions(-)
 
-diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-index 086b93939ce93..e5e0fe3854a35 100644
---- a/tools/bpf/bpftool/prog.c
-+++ b/tools/bpf/bpftool/prog.c
-@@ -1809,6 +1809,10 @@ static int load_with_options(int argc, char **argv, bool first_prog_only)
- 	}
+diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+index 6bd127e6683dc..445db17f1b6c1 100644
+--- a/fs/nfs/file.c
++++ b/fs/nfs/file.c
+@@ -434,7 +434,7 @@ static void nfs_invalidate_folio(struct folio *folio, size_t offset,
+ 	/* Cancel any unstarted writes on this page */
+ 	nfs_wb_folio_cancel(inode, folio);
+ 	folio_wait_private_2(folio); /* [DEPRECATED] */
+-	trace_nfs_invalidate_folio(inode, folio);
++	trace_nfs_invalidate_folio(inode, folio_pos(folio) + offset, length);
+ }
  
- 	if (pinmaps) {
-+		err = create_and_mount_bpffs_dir(pinmaps);
-+		if (err)
-+			goto err_unpin;
-+
- 		err = bpf_object__pin_maps(obj, pinmaps);
- 		if (err) {
- 			p_err("failed to pin all maps");
+ /*
+@@ -502,7 +502,8 @@ static int nfs_launder_folio(struct folio *folio)
+ 
+ 	folio_wait_private_2(folio); /* [DEPRECATED] */
+ 	ret = nfs_wb_folio(inode, folio);
+-	trace_nfs_launder_folio_done(inode, folio, ret);
++	trace_nfs_launder_folio_done(inode, folio_pos(folio),
++			folio_size(folio), ret);
+ 	return ret;
+ }
+ 
+diff --git a/fs/nfs/nfstrace.h b/fs/nfs/nfstrace.h
+index 1e710654af117..352fdaed40754 100644
+--- a/fs/nfs/nfstrace.h
++++ b/fs/nfs/nfstrace.h
+@@ -939,10 +939,11 @@ TRACE_EVENT(nfs_sillyrename_unlink,
+ DECLARE_EVENT_CLASS(nfs_folio_event,
+ 		TP_PROTO(
+ 			const struct inode *inode,
+-			struct folio *folio
++			loff_t offset,
++			size_t count
+ 		),
+ 
+-		TP_ARGS(inode, folio),
++		TP_ARGS(inode, offset, count),
+ 
+ 		TP_STRUCT__entry(
+ 			__field(dev_t, dev)
+@@ -950,7 +951,7 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
+ 			__field(u64, fileid)
+ 			__field(u64, version)
+ 			__field(loff_t, offset)
+-			__field(u32, count)
++			__field(size_t, count)
+ 		),
+ 
+ 		TP_fast_assign(
+@@ -960,13 +961,13 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
+ 			__entry->fileid = nfsi->fileid;
+ 			__entry->fhandle = nfs_fhandle_hash(&nfsi->fh);
+ 			__entry->version = inode_peek_iversion_raw(inode);
+-			__entry->offset = folio_file_pos(folio);
+-			__entry->count = nfs_folio_length(folio);
++			__entry->offset = offset,
++			__entry->count = count;
+ 		),
+ 
+ 		TP_printk(
+ 			"fileid=%02x:%02x:%llu fhandle=0x%08x version=%llu "
+-			"offset=%lld count=%u",
++			"offset=%lld count=%zu",
+ 			MAJOR(__entry->dev), MINOR(__entry->dev),
+ 			(unsigned long long)__entry->fileid,
+ 			__entry->fhandle, __entry->version,
+@@ -978,18 +979,20 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
+ 	DEFINE_EVENT(nfs_folio_event, name, \
+ 			TP_PROTO( \
+ 				const struct inode *inode, \
+-				struct folio *folio \
++				loff_t offset, \
++				size_t count \
+ 			), \
+-			TP_ARGS(inode, folio))
++			TP_ARGS(inode, offset, count))
+ 
+ DECLARE_EVENT_CLASS(nfs_folio_event_done,
+ 		TP_PROTO(
+ 			const struct inode *inode,
+-			struct folio *folio,
++			loff_t offset,
++			size_t count,
+ 			int ret
+ 		),
+ 
+-		TP_ARGS(inode, folio, ret),
++		TP_ARGS(inode, offset, count, ret),
+ 
+ 		TP_STRUCT__entry(
+ 			__field(dev_t, dev)
+@@ -998,7 +1001,7 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done,
+ 			__field(u64, fileid)
+ 			__field(u64, version)
+ 			__field(loff_t, offset)
+-			__field(u32, count)
++			__field(size_t, count)
+ 		),
+ 
+ 		TP_fast_assign(
+@@ -1008,14 +1011,14 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done,
+ 			__entry->fileid = nfsi->fileid;
+ 			__entry->fhandle = nfs_fhandle_hash(&nfsi->fh);
+ 			__entry->version = inode_peek_iversion_raw(inode);
+-			__entry->offset = folio_file_pos(folio);
+-			__entry->count = nfs_folio_length(folio);
++			__entry->offset = offset,
++			__entry->count = count,
+ 			__entry->ret = ret;
+ 		),
+ 
+ 		TP_printk(
+ 			"fileid=%02x:%02x:%llu fhandle=0x%08x version=%llu "
+-			"offset=%lld count=%u ret=%d",
++			"offset=%lld count=%zu ret=%d",
+ 			MAJOR(__entry->dev), MINOR(__entry->dev),
+ 			(unsigned long long)__entry->fileid,
+ 			__entry->fhandle, __entry->version,
+@@ -1027,10 +1030,11 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done,
+ 	DEFINE_EVENT(nfs_folio_event_done, name, \
+ 			TP_PROTO( \
+ 				const struct inode *inode, \
+-				struct folio *folio, \
++				loff_t offset, \
++				size_t count, \
+ 				int ret \
+ 			), \
+-			TP_ARGS(inode, folio, ret))
++			TP_ARGS(inode, offset, count, ret))
+ 
+ DEFINE_NFS_FOLIO_EVENT(nfs_aop_readpage);
+ DEFINE_NFS_FOLIO_EVENT_DONE(nfs_aop_readpage_done);
+diff --git a/fs/nfs/read.c b/fs/nfs/read.c
+index a142287d86f68..88e6a78d37fb3 100644
+--- a/fs/nfs/read.c
++++ b/fs/nfs/read.c
+@@ -332,13 +332,15 @@ int nfs_read_add_folio(struct nfs_pageio_descriptor *pgio,
+ int nfs_read_folio(struct file *file, struct folio *folio)
+ {
+ 	struct inode *inode = file_inode(file);
++	loff_t pos = folio_pos(folio);
++	size_t len = folio_size(folio);
+ 	struct nfs_pageio_descriptor pgio;
+ 	struct nfs_open_context *ctx;
+ 	int ret;
+ 
+-	trace_nfs_aop_readpage(inode, folio);
++	trace_nfs_aop_readpage(inode, pos, len);
+ 	nfs_inc_stats(inode, NFSIOS_VFSREADPAGE);
+-	task_io_account_read(folio_size(folio));
++	task_io_account_read(len);
+ 
+ 	/*
+ 	 * Try to flush any pending writes to the file..
+@@ -381,7 +383,7 @@ int nfs_read_folio(struct file *file, struct folio *folio)
+ out_put:
+ 	put_nfs_open_context(ctx);
+ out:
+-	trace_nfs_aop_readpage_done(inode, folio, ret);
++	trace_nfs_aop_readpage_done(inode, pos, len, ret);
+ 	return ret;
+ out_unlock:
+ 	folio_unlock(folio);
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 2329cbb0e446b..75c1b3c7faead 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -2073,17 +2073,17 @@ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio)
+  */
+ int nfs_wb_folio(struct inode *inode, struct folio *folio)
+ {
+-	loff_t range_start = folio_file_pos(folio);
+-	loff_t range_end = range_start + (loff_t)folio_size(folio) - 1;
++	loff_t range_start = folio_pos(folio);
++	size_t len = folio_size(folio);
+ 	struct writeback_control wbc = {
+ 		.sync_mode = WB_SYNC_ALL,
+ 		.nr_to_write = 0,
+ 		.range_start = range_start,
+-		.range_end = range_end,
++		.range_end = range_start + len - 1,
+ 	};
+ 	int ret;
+ 
+-	trace_nfs_writeback_folio(inode, folio);
++	trace_nfs_writeback_folio(inode, range_start, len);
+ 
+ 	for (;;) {
+ 		folio_wait_writeback(folio);
+@@ -2101,7 +2101,7 @@ int nfs_wb_folio(struct inode *inode, struct folio *folio)
+ 			goto out_error;
+ 	}
+ out_error:
+-	trace_nfs_writeback_folio_done(inode, folio, ret);
++	trace_nfs_writeback_folio_done(inode, range_start, len, ret);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
