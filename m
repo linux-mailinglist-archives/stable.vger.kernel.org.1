@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-63818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76558941ACF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7F394173C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3177A28228E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843E21F23231
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA09189914;
-	Tue, 30 Jul 2024 16:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE4929A2;
+	Tue, 30 Jul 2024 16:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8a1pxOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzC8mBd0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15371A6166;
-	Tue, 30 Jul 2024 16:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFEB8BE8;
+	Tue, 30 Jul 2024 16:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358049; cv=none; b=ExmfByyZDEOu2oRf4/CiBUU+INDeyyUYC/7qhR4ijvP6ZEtc/uFJqs1kjZNPog8jJhN2Jnuf04Vomzd46MdfK5osl4y+c2fAMeC90II7AEWIVKgoTyf6Sw8tNv7u35Xq7tUFn0MaJ+9LggUbJ2o+uRPkjRGCUSFSbZdDEpV3dfM=
+	t=1722355624; cv=none; b=VcVrWVMcdx7tcKxFL2G3VHGl944RrCc3o2UoxaPTtotF0YkGcilR+p3IYPIl8wBtUlmM6RCK64jeQ21Sl0NEok6S1aNS3BEwA/bnUkGyfsoUbBycYYqq5saSSY5zg/4+jV6MGJACbVPGsweUqYv/1m53zWBuklSh1bOOmE6b8aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358049; c=relaxed/simple;
-	bh=yxZ/QvOFh/EXWVikLmOyTtbzX48m+3KhMFjD0tR3cOg=;
+	s=arc-20240116; t=1722355624; c=relaxed/simple;
+	bh=yQqSf56tNLSEVP/UNK1Xh4K9nnB1qoLPclHS6EKP+Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7Ql4AMXPzRMBqPAey2uRpya+LZk0oZgapZrM4giC8a566OV2S4iTEi4hEbFAyp8WdSZA2/H2+iZSqv0ibeGJlXdWiBNqj1eoaaBqFxraPl1hZLuEu58HKbpNy6vYtDo5hDz6aDx9Rm25MXLHc9C81zuUEiBfOgFGSYPy2okyr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8a1pxOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468C6C32782;
-	Tue, 30 Jul 2024 16:47:29 +0000 (UTC)
+	 MIME-Version; b=ErPvI3aKXfg7YRs1gM+DOFAI3/jQiphnQFCR7LjJXtgIAYVOTaAhzUgwQn01CPdNPReKSiil1uXXj+UwmH5Sb8ofmAGGdVbovDellJSdCVR5d3Bt2Mjr4wGmvlXILc+u7BzBrh4gE6i6kPq+pLy+JYoK3GsB2rylOnH/tGAyya0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzC8mBd0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE7DC32782;
+	Tue, 30 Jul 2024 16:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358049;
-	bh=yxZ/QvOFh/EXWVikLmOyTtbzX48m+3KhMFjD0tR3cOg=;
+	s=korg; t=1722355624;
+	bh=yQqSf56tNLSEVP/UNK1Xh4K9nnB1qoLPclHS6EKP+Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8a1pxOPy3ZoJQFEnPovq6Lw2LqRy46u5VHplUdOaoFb0VEfQw0VPknNvXqpzcMJZ
-	 jb5x/9zTKyX/RntDWKHvcIGzHsKZeqEORRKjThoLPQ9jyzOEkImDnEPJA2E/TSHW8I
-	 VHY1wvyujsEXayikanyczou4b32kewpykEAj92cA=
+	b=GzC8mBd0sN5GyBaOrX4nzE8mWtSdL09DHbNvchalMWEc5LJ/8FUiNHzWV/11ieiNT
+	 TMDaC/gbJ0RE6WHD6tz32SEMpLYs30Rm6Wvqag2sbgrso5GodHrdpiuLjqtczzV9x7
+	 k+s5T6+M2E7MO8CGnoumjjRHC+S4GdE+cBAXpa8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 306/809] x86/shstk: Make return uprobe work with shadow stack
+Subject: [PATCH 6.6 075/568] arm64: dts: mediatek: mt8183-kukui: Fix the value of `dlg,jack-det-rate` mismatch
 Date: Tue, 30 Jul 2024 17:43:02 +0200
-Message-ID: <20240730151736.685236949@linuxfoundation.org>
+Message-ID: <20240730151642.792185832@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 1713b63a07a28a475de94664f783b4cfd2e4fa90 ]
+[ Upstream commit 95173af725e6f41eb470466a52ddf2054439409c ]
 
-Currently the application with enabled shadow stack will crash
-if it sets up return uprobe. The reason is the uretprobe kernel
-code changes the user space task's stack, but does not update
-shadow stack accordingly.
+According to Documentation/devicetree/bindings/sound/dialog,da7219.yaml,
+the value of `dlg,jack-det-rate` property should be "32_64" instead of
+"32ms_64ms".
 
-Adding new functions to update values on shadow stack and using
-them in uprobe code to keep shadow stack in sync with uretprobe
-changes to user stack.
-
-Link: https://lore.kernel.org/all/20240611112158.40795-2-jolsa@kernel.org/
-
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Fixes: 488af8ea7131 ("x86/shstk: Wire in shadow stack interface")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: dc0ff0fa3a9b ("ASoC: da7219: Add Jack insertion detection polarity")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://lore.kernel.org/r/20240613-jack-rate-v2-1-ebc5f9f37931@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/shstk.h |  2 ++
- arch/x86/kernel/shstk.c      | 11 +++++++++++
- arch/x86/kernel/uprobes.c    |  7 ++++++-
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/shstk.h b/arch/x86/include/asm/shstk.h
-index 42fee8959df7b..896909f306e30 100644
---- a/arch/x86/include/asm/shstk.h
-+++ b/arch/x86/include/asm/shstk.h
-@@ -21,6 +21,7 @@ unsigned long shstk_alloc_thread_stack(struct task_struct *p, unsigned long clon
- void shstk_free(struct task_struct *p);
- int setup_signal_shadow_stack(struct ksignal *ksig);
- int restore_signal_shadow_stack(void);
-+int shstk_update_last_frame(unsigned long val);
- #else
- static inline long shstk_prctl(struct task_struct *task, int option,
- 			       unsigned long arg2) { return -EINVAL; }
-@@ -31,6 +32,7 @@ static inline unsigned long shstk_alloc_thread_stack(struct task_struct *p,
- static inline void shstk_free(struct task_struct *p) {}
- static inline int setup_signal_shadow_stack(struct ksignal *ksig) { return 0; }
- static inline int restore_signal_shadow_stack(void) { return 0; }
-+static inline int shstk_update_last_frame(unsigned long val) { return 0; }
- #endif /* CONFIG_X86_USER_SHADOW_STACK */
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
+index 2c69e7658dba6..b9a6fd4f86d4a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
+@@ -28,7 +28,7 @@ da7219_aad {
+ 			dlg,btn-cfg = <50>;
+ 			dlg,mic-det-thr = <500>;
+ 			dlg,jack-ins-deb = <20>;
+-			dlg,jack-det-rate = "32ms_64ms";
++			dlg,jack-det-rate = "32_64";
+ 			dlg,jack-rem-deb = <1>;
  
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index 6f1e9883f0742..9797d4cdb78a2 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -577,3 +577,14 @@ long shstk_prctl(struct task_struct *task, int option, unsigned long arg2)
- 		return wrss_control(true);
- 	return -EINVAL;
- }
-+
-+int shstk_update_last_frame(unsigned long val)
-+{
-+	unsigned long ssp;
-+
-+	if (!features_enabled(ARCH_SHSTK_SHSTK))
-+		return 0;
-+
-+	ssp = get_user_shstk_addr();
-+	return write_user_shstk_64((u64 __user *)ssp, (u64)val);
-+}
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 6c07f6daaa227..6402fb3089d26 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1076,8 +1076,13 @@ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr, struct pt_regs
- 		return orig_ret_vaddr;
- 
- 	nleft = copy_to_user((void __user *)regs->sp, &trampoline_vaddr, rasize);
--	if (likely(!nleft))
-+	if (likely(!nleft)) {
-+		if (shstk_update_last_frame(trampoline_vaddr)) {
-+			force_sig(SIGSEGV);
-+			return -1;
-+		}
- 		return orig_ret_vaddr;
-+	}
- 
- 	if (nleft != rasize) {
- 		pr_err("return address clobbered: pid=%d, %%sp=%#lx, %%ip=%#lx\n",
+ 			dlg,a-d-btn-thr = <0xa>;
 -- 
 2.43.0
 
