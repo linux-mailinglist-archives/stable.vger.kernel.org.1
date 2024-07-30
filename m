@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B7DB941ADA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB86941CFA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D82FB1F21680
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF4ADB2665F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9076A189537;
-	Tue, 30 Jul 2024 16:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE58018B463;
+	Tue, 30 Jul 2024 17:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YORzIJ23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBs8z0+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0C114831F;
-	Tue, 30 Jul 2024 16:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6881D1A00FA;
+	Tue, 30 Jul 2024 17:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358081; cv=none; b=DLt0xi/PBEjlX5DM9XZVPD0N+jFj88x+x2VkbhxRAMXjvHv/V0F/DDt5xRs3N+Z8slw4tjDMELN3kQRUAP1K6QVz5Hgo4sqYHWLzV2mVi4I8ryoEnhLqzuOSlTXhBBjXHZ6mi9y+N8C8ZDQrGHQA/phFmAOiSEFY72pWG/hNCYk=
+	t=1722359431; cv=none; b=ktR8W/abtZsWf00rq6mixGIVqhgodq1784uflyuYi0Kb4kZMqeLVBVfygMsq8wAtN/PBFq9/6k1veZ74JojcwRfpx7d26lOlqz3Jg70cpBBzgc4QdONxFfphQkflruV4kRFEiXor9bYOs1Jb3PzQ4K9FrrBJAfnYnf0KT273QPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358081; c=relaxed/simple;
-	bh=1rG/vzCyR/Y1ycQEcPCi1+xG46yuWLpsPc0TMxj/HZU=;
+	s=arc-20240116; t=1722359431; c=relaxed/simple;
+	bh=adJNj8hwTqC/thknBDSRkhvaYVLY3VBCYQMdQWCNAFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTA4/dk4Sa/zIHfrpvykOVV3RGXP71E41es1VQ2rB9ahLR9CHi4r3v5VkfRYOf050JkUBgy83b7ZWzGomxqfDZWo4gSTJecXYL35ezv01vHqDaXDVhXT2/ceuIKINJ4r2WuD6Dw/JmcaNYsQbT7F5CYpl5Np3Shasm8RmO9VpV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YORzIJ23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43E8C32782;
-	Tue, 30 Jul 2024 16:48:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lMkTDj99njwEYRhi0X23tBWVU+m2lAEclmx885w/+O336hwRxuyC45KMlC5Jx1hkMZ+1BohOS+wSYoGsLkAtbR0jjOX8FBuV8iBc4vk/vM9wUeVURbuxSW9JH6Ukr3e6FbCKJHwg2l0eTzsDlufJI0seyWzHKShmvFK13Gke74E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBs8z0+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E35C32782;
+	Tue, 30 Jul 2024 17:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358081;
-	bh=1rG/vzCyR/Y1ycQEcPCi1+xG46yuWLpsPc0TMxj/HZU=;
+	s=korg; t=1722359431;
+	bh=adJNj8hwTqC/thknBDSRkhvaYVLY3VBCYQMdQWCNAFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YORzIJ23Kwrz2tX9Dax/2BE9oCqwYETDZiP08BxmahqZbcXtRPT1ysBFWylq+Akm8
-	 /0yrvqjauZYxOs1LhiOUVpP1Em/6uOYwiiDWDoMphzUNjF15GvZOT2DOinY9MOR6W9
-	 c/Nx3FBLnWkLyL0CQbuTrd0tHBzpWFF5oWz82Afw=
+	b=SBs8z0+nghy8YyIqDosYdv1nN16RM28I8DOGcnPTegiwMk4LxNOK570yFD72Y8+9Y
+	 sSs2//HAUJNerumGWNTo6brSdEBoguOpkZ8SvMRz5+RjdcrBOXCOxbDxIXWwzVvZyU
+	 KVRdCrcUxm2otow47w5oOBYeGj6SAIvBG0oWRFeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ian Rogers <irogers@google.com>
-Subject: [PATCH 6.1 355/440] perf/x86/intel/uncore: Fix the bits of the CHA extended umask for SPR
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Gareth Yu <gareth.yu@intel.com>
+Subject: [PATCH 6.6 481/568] drm/i915/dp: Dont switch the LTTPR mode on an active link
 Date: Tue, 30 Jul 2024 17:49:48 +0200
-Message-ID: <20240730151629.683522918@linuxfoundation.org>
+Message-ID: <20240730151658.826427668@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +62,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit a5a6ff3d639d088d4af7e2935e1ee0d8b4e817d4 upstream.
+commit 509580fad7323b6a5da27e8365cd488f3b57210e upstream.
 
-The perf stat errors out with UNC_CHA_TOR_INSERTS.IA_HIT_CXL_ACC_LOCAL
-event.
+Switching to transparent mode leads to a loss of link synchronization,
+so prevent doing this on an active link. This happened at least on an
+Intel N100 system / DELL UD22 dock, the LTTPR residing either on the
+host or the dock. To fix the issue, keep the current mode on an active
+link, adjusting the LTTPR count accordingly (resetting it to 0 in
+transparent mode).
 
- $perf stat -e uncore_cha_55/event=0x35,umask=0x10c0008101/ -a -- ls
-    event syntax error: '..0x35,umask=0x10c0008101/'
-                                      \___ Bad event or PMU
+v2: Adjust code comment during link training about reiniting the LTTPRs.
+   (Ville)
 
-The definition of the CHA umask is config:8-15,32-55, which is 32bit.
-However, the umask of the event is bigger than 32bit.
-This is an error in the original uncore spec.
-
-Add a new umask_ext5 for the new CHA umask range.
-
-Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
-Closes: https://lore.kernel.org/linux-perf-users/alpine.LRH.2.20.2401300733310.11354@Diego/
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240708185524.1185505-1-kan.liang@linux.intel.com
+Fixes: 7b2a4ab8b0ef ("drm/i915: Switch to LTTPR transparent mode link training")
+Reported-and-tested-by: Gareth Yu <gareth.yu@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10902
+Cc: <stable@vger.kernel.org> # v5.15+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240708190029.271247-3-imre.deak@intel.com
+(cherry picked from commit 211ad49cf8ccfdc798a719b4d1e000d0a8a9e588)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp_link_training.c |   55 +++++++++++++++---
+ 1 file changed, 48 insertions(+), 7 deletions(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -459,6 +459,7 @@
- #define SPR_RAW_EVENT_MASK_EXT			0xffffff
+--- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
+@@ -114,10 +114,24 @@ intel_dp_set_lttpr_transparent_mode(stru
+ 	return drm_dp_dpcd_write(&intel_dp->aux, DP_PHY_REPEATER_MODE, &val, 1) == 1;
+ }
  
- /* SPR CHA */
-+#define SPR_CHA_EVENT_MASK_EXT			0xffffffff
- #define SPR_CHA_PMON_CTL_TID_EN			(1 << 16)
- #define SPR_CHA_PMON_EVENT_MASK			(SNBEP_PMON_RAW_EVENT_MASK | \
- 						 SPR_CHA_PMON_CTL_TID_EN)
-@@ -475,6 +476,7 @@ DEFINE_UNCORE_FORMAT_ATTR(umask_ext, uma
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext2, umask, "config:8-15,32-57");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext3, umask, "config:8-15,32-39");
- DEFINE_UNCORE_FORMAT_ATTR(umask_ext4, umask, "config:8-15,32-55");
-+DEFINE_UNCORE_FORMAT_ATTR(umask_ext5, umask, "config:8-15,32-63");
- DEFINE_UNCORE_FORMAT_ATTR(qor, qor, "config:16");
- DEFINE_UNCORE_FORMAT_ATTR(edge, edge, "config:18");
- DEFINE_UNCORE_FORMAT_ATTR(tid_en, tid_en, "config:19");
-@@ -5648,7 +5650,7 @@ static struct intel_uncore_ops spr_uncor
+-static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
++static bool intel_dp_lttpr_transparent_mode_enabled(struct intel_dp *intel_dp)
++{
++	return intel_dp->lttpr_common_caps[DP_PHY_REPEATER_MODE -
++					   DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV] ==
++		DP_PHY_REPEATER_MODE_TRANSPARENT;
++}
++
++/*
++ * Read the LTTPR common capabilities and switch the LTTPR PHYs to
++ * non-transparent mode if this is supported. Preserve the
++ * transparent/non-transparent mode on an active link.
++ *
++ * Return the number of detected LTTPRs in non-transparent mode or 0 if the
++ * LTTPRs are in transparent mode or the detection failed.
++ */
++static int intel_dp_init_lttpr_phys(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
+ {
+ 	int lttpr_count;
+-	int i;
  
- static struct attribute *spr_uncore_cha_formats_attr[] = {
- 	&format_attr_event.attr,
--	&format_attr_umask_ext4.attr,
-+	&format_attr_umask_ext5.attr,
- 	&format_attr_tid_en2.attr,
- 	&format_attr_edge.attr,
- 	&format_attr_inv.attr,
-@@ -5684,7 +5686,7 @@ ATTRIBUTE_GROUPS(uncore_alias);
- static struct intel_uncore_type spr_uncore_chabox = {
- 	.name			= "cha",
- 	.event_mask		= SPR_CHA_PMON_EVENT_MASK,
--	.event_mask_ext		= SPR_RAW_EVENT_MASK_EXT,
-+	.event_mask_ext		= SPR_CHA_EVENT_MASK_EXT,
- 	.num_shared_regs	= 1,
- 	.constraints		= skx_uncore_chabox_constraints,
- 	.ops			= &spr_uncore_chabox_ops,
+ 	if (!intel_dp_read_lttpr_common_caps(intel_dp, dpcd))
+ 		return 0;
+@@ -132,6 +146,19 @@ static int intel_dp_init_lttpr(struct in
+ 		return 0;
+ 
+ 	/*
++	 * Don't change the mode on an active link, to prevent a loss of link
++	 * synchronization. See DP Standard v2.0 3.6.7. about the LTTPR
++	 * resetting its internal state when the mode is changed from
++	 * non-transparent to transparent.
++	 */
++	if (intel_dp->link_trained) {
++		if (lttpr_count < 0 || intel_dp_lttpr_transparent_mode_enabled(intel_dp))
++			goto out_reset_lttpr_count;
++
++		return lttpr_count;
++	}
++
++	/*
+ 	 * See DP Standard v2.0 3.6.6.1. about the explicit disabling of
+ 	 * non-transparent mode and the disable->enable non-transparent mode
+ 	 * sequence.
+@@ -151,11 +178,25 @@ static int intel_dp_init_lttpr(struct in
+ 		       "Switching to LTTPR non-transparent LT mode failed, fall-back to transparent mode\n");
+ 
+ 		intel_dp_set_lttpr_transparent_mode(intel_dp, true);
+-		intel_dp_reset_lttpr_count(intel_dp);
+ 
+-		return 0;
++		goto out_reset_lttpr_count;
+ 	}
+ 
++	return lttpr_count;
++
++out_reset_lttpr_count:
++	intel_dp_reset_lttpr_count(intel_dp);
++
++	return 0;
++}
++
++static int intel_dp_init_lttpr(struct intel_dp *intel_dp, const u8 dpcd[DP_RECEIVER_CAP_SIZE])
++{
++	int lttpr_count;
++	int i;
++
++	lttpr_count = intel_dp_init_lttpr_phys(intel_dp, dpcd);
++
+ 	for (i = 0; i < lttpr_count; i++)
+ 		intel_dp_read_lttpr_phy_caps(intel_dp, dpcd, DP_PHY_LTTPR(i));
+ 
+@@ -1353,10 +1394,10 @@ void intel_dp_start_link_train(struct in
+ {
+ 	struct drm_i915_private *i915 = dp_to_i915(intel_dp);
+ 	bool passed;
+-
+ 	/*
+-	 * TODO: Reiniting LTTPRs here won't be needed once proper connector
+-	 * HW state readout is added.
++	 * Reinit the LTTPRs here to ensure that they are switched to
++	 * non-transparent mode. During an earlier LTTPR detection this
++	 * could've been prevented by an active link.
+ 	 */
+ 	int lttpr_count = intel_dp_init_lttpr_and_dprx_caps(intel_dp);
+ 
 
 
 
