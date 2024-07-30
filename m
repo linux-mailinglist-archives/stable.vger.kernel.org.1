@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-63907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A2ED941B38
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2363941D33
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312B71F23601
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C2621F24DA5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FAB21898F7;
-	Tue, 30 Jul 2024 16:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FCB1A76B5;
+	Tue, 30 Jul 2024 17:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvugxLrp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Od1+MKag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288F31898EB;
-	Tue, 30 Jul 2024 16:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F4E1A76A0;
+	Tue, 30 Jul 2024 17:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358336; cv=none; b=iGHcTt688SvWLTDtCBv64pq4yiQGHuV51P2VvC7COs7oQ7FxlhS713Ckhr89GXIoWj8DFE21p3dqO7Jj9vQ7j5COluyGZbgQ9pCtJt6NWFwrPPrySvBHe1eo2S6E6kTMo2my+2mOHk+Xd4HCjtMY0OEHk+ABUAKXvqOar4eoFB4=
+	t=1722359654; cv=none; b=bEzp2y2MYdDwnq81BGZU5blQCKiiUIR31uMS4MkrTEMijEu6FNVJCFLb0Ua1lqrE8yNc0GEI6nj8DO3S5IQb+y0FkkkIJ4fqXnULZlttSDT63brfO9G1IAKTk8v8h+RwzwgTJ/6VKmeV+9gz/bd7yuLxVR3jFxqTeD3UavfvjpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358336; c=relaxed/simple;
-	bh=8irBEXBJcl3nr448p33z+2cIk7KFx7lCIxvtTPb60JY=;
+	s=arc-20240116; t=1722359654; c=relaxed/simple;
+	bh=aNRPv5pZJNi4HQUjGFbqNuf9bWCSECvC82yf9XLlmvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpqlIISS++//qtjpJ9WYIrn+sSxKkVNCg8lWMgN2ffQLmak4JoU0lxcBSpNDFdHZcnuQ7EydjDKhxt1rLELlGb/p59wl3LlbIQ28eLEM1UAuBiRotRORnNEtaOohvC/d2KYsc1t3QbpYRhIr/nsu87zvGYMDEqp9SwE4wZQmfDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvugxLrp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB31DC32782;
-	Tue, 30 Jul 2024 16:52:14 +0000 (UTC)
+	 MIME-Version; b=bYCD0z4VFLZCDDwe4CUnBW182wrxqQkfWzBp4w9ndgkYG4baOZsaLIvi0fj9QRtg8zxEJaKX1r0O/Onk7WjEubnHCD09fA2hMz0VJzF7XCiUOuNNHEzBGuZR2/viHt4hqwsvD9TD8uwDRRTrQ23GugZ0IC3KP+wj3aZp7JRvsDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Od1+MKag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24466C32782;
+	Tue, 30 Jul 2024 17:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358335;
-	bh=8irBEXBJcl3nr448p33z+2cIk7KFx7lCIxvtTPb60JY=;
+	s=korg; t=1722359654;
+	bh=aNRPv5pZJNi4HQUjGFbqNuf9bWCSECvC82yf9XLlmvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EvugxLrpXPx8GKlvvGB0c83HNy2Ou/vOMkoBd09225ITnUAHGS2G27UdBfQxHJxVA
-	 xPjbPxuglpYQW4/enlwdH14M1GhdhNLSE7yD7GhfcSWynJ06eyew7YWgJB8bRfSiTt
-	 ojOWheAv/GdwWKdx9RlFlx0q+zrraV9copjHUKRQ=
+	b=Od1+MKags5Ls94MkjOTMI0FttPIJN59a/of+JehRX2TqlRvVvoT0dzoG3Qs+oWN7J
+	 zEvLRSTuw3dYoQuyPcji1vsoDDq4AQdbl6uV7vdqz//bo+wBDmHTMbNtCRk/qaju2B
+	 ZJQ9S2K6kkwpStxW4hfjXCVmDbyj3/SreCLDtNnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Harry Wentland <hwentlan@amd.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Wayne Lin <Wayne.Lin@amd.com>
-Subject: [PATCH 6.1 360/440] drm/dp_mst: Fix all mstb marked as not probed after suspend/resume
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.6 486/568] RDMA/iwcm: Fix a use-after-free related to destroying CM IDs
 Date: Tue, 30 Jul 2024 17:49:53 +0200
-Message-ID: <20240730151629.876072220@linuxfoundation.org>
+Message-ID: <20240730151659.023535353@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit d63d81094d208abb20fc444514b2d9ec2f4b7c4e upstream.
+commit aee2424246f9f1dadc33faa78990c1e2eb7826e4 upstream.
 
-[Why]
-After supend/resume, with topology unchanged, observe that
-link_address_sent of all mstb are marked as false even the topology probing
-is done without any error.
+iw_conn_req_handler() associates a new struct rdma_id_private (conn_id) with
+an existing struct iw_cm_id (cm_id) as follows:
 
-It is caused by wrongly also include "ret == 0" case as a probing failure
-case.
+        conn_id->cm_id.iw = cm_id;
+        cm_id->context = conn_id;
+        cm_id->cm_handler = cma_iw_handler;
 
-[How]
-Remove inappropriate checking conditions.
+rdma_destroy_id() frees both the cm_id and the struct rdma_id_private. Make
+sure that cm_work_handler() does not trigger a use-after-free by only
+freeing of the struct rdma_id_private after all pending work has finished.
 
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Harry Wentland <hwentlan@amd.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
 Cc: stable@vger.kernel.org
-Fixes: 37dfdc55ffeb ("drm/dp_mst: Cleanup drm_dp_send_link_address() a bit")
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240626084825.878565-2-Wayne.Lin@amd.com
+Fixes: 59c68ac31e15 ("iw_cm: free cm_id resources on the last deref")
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240605145117.397751-6-bvanassche@acm.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/core/iwcm.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -2923,7 +2923,7 @@ static int drm_dp_send_link_address(stru
- 
- 	/* FIXME: Actually do some real error handling here */
- 	ret = drm_dp_mst_wait_tx_reply(mstb, txmsg);
--	if (ret <= 0) {
-+	if (ret < 0) {
- 		drm_err(mgr->dev, "Sending link address failed with %d\n", ret);
- 		goto out;
+--- a/drivers/infiniband/core/iwcm.c
++++ b/drivers/infiniband/core/iwcm.c
+@@ -369,8 +369,10 @@ EXPORT_SYMBOL(iw_cm_disconnect);
+  *
+  * Clean up all resources associated with the connection and release
+  * the initial reference taken by iw_create_cm_id.
++ *
++ * Returns true if and only if the last cm_id_priv reference has been dropped.
+  */
+-static void destroy_cm_id(struct iw_cm_id *cm_id)
++static bool destroy_cm_id(struct iw_cm_id *cm_id)
+ {
+ 	struct iwcm_id_private *cm_id_priv;
+ 	struct ib_qp *qp;
+@@ -440,7 +442,7 @@ static void destroy_cm_id(struct iw_cm_i
+ 		iwpm_remove_mapping(&cm_id->local_addr, RDMA_NL_IWCM);
  	}
-@@ -2975,7 +2975,7 @@ static int drm_dp_send_link_address(stru
- 	mutex_unlock(&mgr->lock);
  
- out:
--	if (ret <= 0)
-+	if (ret < 0)
- 		mstb->link_address_sent = false;
- 	kfree(txmsg);
- 	return ret < 0 ? ret : changed;
+-	(void)iwcm_deref_id(cm_id_priv);
++	return iwcm_deref_id(cm_id_priv);
+ }
+ 
+ /*
+@@ -451,7 +453,8 @@ static void destroy_cm_id(struct iw_cm_i
+  */
+ void iw_destroy_cm_id(struct iw_cm_id *cm_id)
+ {
+-	destroy_cm_id(cm_id);
++	if (!destroy_cm_id(cm_id))
++		flush_workqueue(iwcm_wq);
+ }
+ EXPORT_SYMBOL(iw_destroy_cm_id);
+ 
+@@ -1035,7 +1038,7 @@ static void cm_work_handler(struct work_
+ 		if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
+ 			ret = process_event(cm_id_priv, &levent);
+ 			if (ret)
+-				destroy_cm_id(&cm_id_priv->id);
++				WARN_ON_ONCE(destroy_cm_id(&cm_id_priv->id));
+ 		} else
+ 			pr_debug("dropping event %d\n", levent.event);
+ 		if (iwcm_deref_id(cm_id_priv))
 
 
 
