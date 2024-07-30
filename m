@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC31941BD1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3970941EA5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5399283853
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD941F231EF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D64189903;
-	Tue, 30 Jul 2024 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DF9189503;
+	Tue, 30 Jul 2024 17:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtfXLtf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnNXraUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7C518801A;
-	Tue, 30 Jul 2024 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7691A76A5;
+	Tue, 30 Jul 2024 17:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358769; cv=none; b=oah84gU1X8jAlzRk4L85iXZ74kWEy0ztWQmUOvrmYt2VITMtgNiX9Re12b1KnD0FBD2/yBDF8Jvf2KoNcxs/2argDhBsom3ueYwraUNy3Y3Pfi8AETocd5fCzrwltVggQENMtcCgSS/p/nA9+n1wIpd3cJRszGcwOe6d6U28FzI=
+	t=1722360687; cv=none; b=HFDteBiBbC9Bw9Ku7ZzujMee1gOosEN2Nkutgy4iuefClbpePasR88oP1kZ59b1cVWZNuo/QapxO/dEEJcdUNhcId5qKivxdTDl0OAjpA+Nt1Z0WxNPwYagx5AAXO7xFTFq5drLJdF2ZG0mOxyCFAC1sjcabi086K+pM+s4fcy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358769; c=relaxed/simple;
-	bh=cUpt7kxihs1o2i+tmiCFOL69wFQEvmItj7GDKIFmuIU=;
+	s=arc-20240116; t=1722360687; c=relaxed/simple;
+	bh=qBgbA8r32NE3Cm5M6Ckc/Qoce8+TQjnOfYiPngLtp+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MdpVj8Mh5/8wqh4P/CZDJIozQ1uNoJVndaWQ8H3icCjoYaZR2Mf1e8ydVpWWWidKSAawvh1rvN3kXxVS6SXppQZ49UVHqpuHRZDZB9AI3ZEtaHq3OB8P+pxy3eAGY4Os+9EChKdiFFE/PjndZEzQZ/63C/Ac5NmqWl/aSg1sLBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtfXLtf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0579C4AF0A;
-	Tue, 30 Jul 2024 16:59:28 +0000 (UTC)
+	 MIME-Version; b=lDsKsOFUkAlZPzaRtmX0qbSz7v3BAHF8Pg6oXXnoPewWA34CLgZSwEd/LxTpx/EX+s9gPCYYp+RwwoXYsaNCd4jLxVQgbW41eNyFKmwyJWtGkIrT0ClhukiriMo+7lXxBj8mvQ1O3zIoVi/8PPLxhoMM+oa2DYEXjn+aT+mVf8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnNXraUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23081C32782;
+	Tue, 30 Jul 2024 17:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358769;
-	bh=cUpt7kxihs1o2i+tmiCFOL69wFQEvmItj7GDKIFmuIU=;
+	s=korg; t=1722360687;
+	bh=qBgbA8r32NE3Cm5M6Ckc/Qoce8+TQjnOfYiPngLtp+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtfXLtf8m8JEabfPp8fnis+m4bAB7PriTEpQBoICMFZQqNSNenBzYLRd2pi5r56Za
-	 3/w0zeUzpfssQoIUEEyhJphUSOo3vGywawUe3NCvuGQ6cz64PIvAVwG6o9sPQ99RGN
-	 WOBGrffjxoyzaCtgOSuonJTV0BzMM/sScpLb3Ifs=
+	b=GnNXraUkamP1L1foMSuzJlEuH+ic8OqXu7nPjo+5fIt9UvtGxiSB5H5VbmcaoyRxj
+	 g3So3AZy/68aJbfw9/yvlETWjCJNoKqttBlnwtpzNtDSunFige5TVvDWgAOo6gZPAv
+	 J9otKydXrEg2JGhSrke9Ptf82t/2IJQJcAeg87Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 420/440] powerpc: fix a file leak in kvm_vcpu_ioctl_enable_cap()
+Subject: [PATCH 6.10 777/809] auxdisplay: ht16k33: Drop reference after LED registration
 Date: Tue, 30 Jul 2024 17:50:53 +0200
-Message-ID: <20240730151632.190022653@linuxfoundation.org>
+Message-ID: <20240730151755.656903981@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit b4cf5fc01ce83e5c0bcf3dbb9f929428646b9098 ]
+[ Upstream commit 2ccfe94bc3ac980d2d1df9f7a0b2c6d2137abe55 ]
 
-missing fdput() on one of the failure exits
+The reference count is bumped by device_get_named_child_node()
+and never dropped. Since LED APIs do not require it to be
+bumped by the user, drop the reference after LED registration.
 
-Fixes: eacc56bb9de3e # v5.2
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+[andy: rewritten the commit message and amended the change]
+
+Fixes: c223d9c636ed ("auxdisplay: ht16k33: Add LED support")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/powerpc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/auxdisplay/ht16k33.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index b850b0efa201a..98ac5d39ad9cf 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -1998,8 +1998,10 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
- 			break;
+diff --git a/drivers/auxdisplay/ht16k33.c b/drivers/auxdisplay/ht16k33.c
+index ce987944662c8..8a7034b41d50e 100644
+--- a/drivers/auxdisplay/ht16k33.c
++++ b/drivers/auxdisplay/ht16k33.c
+@@ -483,6 +483,7 @@ static int ht16k33_led_probe(struct device *dev, struct led_classdev *led,
+ 	led->max_brightness = MAX_BRIGHTNESS;
  
- 		r = -ENXIO;
--		if (!xive_enabled())
-+		if (!xive_enabled()) {
-+			fdput(f);
- 			break;
-+		}
+ 	err = devm_led_classdev_register_ext(dev, led, &init_data);
++	fwnode_handle_put(init_data.fwnode);
+ 	if (err)
+ 		dev_err(dev, "Failed to register LED\n");
  
- 		r = -EPERM;
- 		dev = kvm_device_from_filp(f.file);
 -- 
 2.43.0
 
