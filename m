@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-64173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CE8941CB4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF9C941E30
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 970921C20CE5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8639F1F21889
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E73218B481;
-	Tue, 30 Jul 2024 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B424E1A76C1;
+	Tue, 30 Jul 2024 17:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToRGMWiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFiTCP7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9CB1A76C5;
-	Tue, 30 Jul 2024 17:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A831A76B6;
+	Tue, 30 Jul 2024 17:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359233; cv=none; b=Wb59MC+CP8pkuZAfAq8woOKlLbpvhHt9dZFR8Asrd3gblmRZ2ETuM2pJ2qZoZkcFl6dY9zEEW4FzNjWJx0J/Ngt/Y6mfv1qXYRmrTWqbdyLZzexcRrD2WAiNsHyxuaRpiCaJWvJE8dqYFKFBnAJO31n+wOwbvPNdoFd3K4Di6cU=
+	t=1722360385; cv=none; b=i8M0KvR2hcOXI0fVqGv5B/SIswdx1Mbx1H9Z1dJa5Rme/WiztdGOGWQG8lfwKD/x53uzUJ0iN6vWULcNMDXELAobB2RYC2PUDUUfBMIrlb/gxXQVUd3Pta82xzMgpYWPeP8PB+GS/HaZxhBHZmp2SNyiFKg92UIoQmGZh/A4WAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359233; c=relaxed/simple;
-	bh=QWMgcWHb1PHTjH5quZDgYq9nfsGbBg5hquUQvoZchoQ=;
+	s=arc-20240116; t=1722360385; c=relaxed/simple;
+	bh=38h8FuPXnzYDs/GbhPSJhJoA9I22cMNUFi7u83gFmDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmS4avKWZxF41LXCrp2rixlvu2KSSacrUHEyIlUf/DuY6UXdBI77fw0nNVGjRq4Uug0K0mZaLrESNPQKz7KBnvF0x/eZvVlS7d2uArv4PNbizOA21iRmvng5LkfKGaAsHJICn2mLwSgNcFcf0ZXVxFQo9Ybe4wD1A5pSI5l+JYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToRGMWiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569F0C32782;
-	Tue, 30 Jul 2024 17:07:12 +0000 (UTC)
+	 MIME-Version; b=gJQ9/gsiMJlT3fhlwok97f1t+9JkwQSV7Hl8uUVaHTGMBshF+JN5kAySKVr/WyUiAWQq3Ceo2pcsmIOFq9LqDvUHQpA/fFvtt+gaT7R3Q//dVbyMbq4jsldJt32BURujRB5maQ6tJUlvicepyPX9LdIiMsBEK0Yfx8WPBz+Tkmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFiTCP7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CCBC32782;
+	Tue, 30 Jul 2024 17:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359232;
-	bh=QWMgcWHb1PHTjH5quZDgYq9nfsGbBg5hquUQvoZchoQ=;
+	s=korg; t=1722360385;
+	bh=38h8FuPXnzYDs/GbhPSJhJoA9I22cMNUFi7u83gFmDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToRGMWiIeEzlktZAJSIxhzJcv7mj7NpspxVafjn2qQtNayNSa+NW1hETMU3PE5U9T
-	 8tYpi/aBvORDon2nvdrjE8JrCXz0fwnbBSnCa4k6ashA2PpdRC/Jbk05AqzmHKB7VQ
-	 DqXnKORs0pLIhdH+VJjBIHpI3INX+3RrkdpagLU4=
+	b=DFiTCP7NprQnLLrk+rbdkkEndX3plBTabQWIYRl0Kiu7JJyHCrR6YBf9gq49NMm5W
+	 QBy7PKBRtpKXtJViJ8JQAxYkiJ4SBbcwxZs0F/ZW+vGd+pvLkt56J9ujr77QdodNfj
+	 ynAKjmfB08iKWJGJ2IPza/oBIDnKJJUoTvkwbAjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 451/568] ice: Add a per-VF limit on number of FDIR filters
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 682/809] scsi: lpfc: Allow DEVICE_RECOVERY mode after RSCN receipt if in PRLI_ISSUE state
 Date: Tue, 30 Jul 2024 17:49:18 +0200
-Message-ID: <20240730151657.640438637@linuxfoundation.org>
+Message-ID: <20240730151751.846214584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit 6ebbe97a488179f5dc85f2f1e0c89b486e99ee97 upstream.
+commit 9609385dd91b26751019b22ca9bfa4bec7602ae1 upstream.
 
-While the iavf driver adds a s/w limit (128) on the number of FDIR
-filters that the VF can request, a malicious VF driver can request more
-than that and exhaust the resources for other VFs.
+Certain vendor specific targets initially register with the fabric as an
+initiator function first and then re-register as a target function
+afterwards.
 
-Add a similar limit in ice.
+The timing of the target function re-registration can cause a race
+condition such that the driver is stuck assuming the remote port as an
+initiator function and never discovers the target's hosted LUNs.
 
-CC: stable@vger.kernel.org
-Fixes: 1f7ea1cd6a37 ("ice: Enable FDIR Configure for AVF")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Suggested-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Expand the nlp_state qualifier to also include NLP_STE_PRLI_ISSUE because
+the state means that PRLI was issued but we have not quite reached
+MAPPED_NODE state yet.  If we received an RSCN in the PRLI_ISSUE state,
+then we should restart discovery again by going into DEVICE_RECOVERY.
+
+Fixes: dded1dc31aa4 ("scsi: lpfc: Modify when a node should be put in device recovery mode during RSCN")
+Cc: <stable@vger.kernel.org> # v6.6+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240628172011.25921-3-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c  |    2 +-
- drivers/net/ethernet/intel/ice/ice_fdir.h          |    3 +++
- drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |   16 ++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h |    1 +
- 4 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-@@ -531,7 +531,7 @@ ice_parse_rx_flow_user_data(struct ethto
-  *
-  * Returns the number of available flow director filters to this VSI
-  */
--static int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
-+int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
- {
- 	u16 vsi_num = ice_get_hw_vsi_num(hw, vsi->idx);
- 	u16 num_guar;
---- a/drivers/net/ethernet/intel/ice/ice_fdir.h
-+++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
-@@ -202,6 +202,8 @@ struct ice_fdir_base_pkt {
- 	const u8 *tun_pkt;
- };
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5725,7 +5725,7 @@ lpfc_setup_disc_node(struct lpfc_vport *
+ 				return ndlp;
  
-+struct ice_vsi;
-+
- int ice_alloc_fd_res_cntr(struct ice_hw *hw, u16 *cntr_id);
- int ice_free_fd_res_cntr(struct ice_hw *hw, u16 cntr_id);
- int ice_alloc_fd_guar_item(struct ice_hw *hw, u16 *cntr_id, u16 num_fltr);
-@@ -213,6 +215,7 @@ int
- ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
- 			  u8 *pkt, bool frag, bool tun);
- int ice_get_fdir_cnt_all(struct ice_hw *hw);
-+int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi);
- bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
- bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
- struct ice_fdir_fltr *
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-@@ -551,6 +551,8 @@ static void ice_vc_fdir_reset_cnt_all(st
- 		fdir->fdir_fltr_cnt[flow][0] = 0;
- 		fdir->fdir_fltr_cnt[flow][1] = 0;
- 	}
-+
-+	fdir->fdir_fltr_cnt_total = 0;
- }
- 
- /**
-@@ -1567,6 +1569,7 @@ ice_vc_add_fdir_fltr_post(struct ice_vf
- 	resp->status = status;
- 	resp->flow_id = conf->flow_id;
- 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]++;
-+	vf->fdir.fdir_fltr_cnt_total++;
- 
- 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
- 				    (u8 *)resp, len);
-@@ -1631,6 +1634,7 @@ ice_vc_del_fdir_fltr_post(struct ice_vf
- 	resp->status = status;
- 	ice_vc_fdir_remove_entry(vf, conf, conf->flow_id);
- 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]--;
-+	vf->fdir.fdir_fltr_cnt_total--;
- 
- 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
- 				    (u8 *)resp, len);
-@@ -1797,6 +1801,7 @@ int ice_vc_add_fdir_fltr(struct ice_vf *
- 	struct virtchnl_fdir_add *stat = NULL;
- 	struct virtchnl_fdir_fltr_conf *conf;
- 	enum virtchnl_status_code v_ret;
-+	struct ice_vsi *vf_vsi;
- 	struct device *dev;
- 	struct ice_pf *pf;
- 	int is_tun = 0;
-@@ -1805,6 +1810,17 @@ int ice_vc_add_fdir_fltr(struct ice_vf *
- 
- 	pf = vf->pf;
- 	dev = ice_pf_to_dev(pf);
-+	vf_vsi = ice_get_vf_vsi(vf);
-+
-+#define ICE_VF_MAX_FDIR_FILTERS	128
-+	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
-+	    vf->fdir.fdir_fltr_cnt_total >= ICE_VF_MAX_FDIR_FILTERS) {
-+		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
-+		dev_err(dev, "Max number of FDIR filters for VF %d is reached\n",
-+			vf->vf_id);
-+		goto err_exit;
-+	}
-+
- 	ret = ice_vc_fdir_param_check(vf, fltr->vsi_id);
- 	if (ret) {
- 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
-@@ -29,6 +29,7 @@ struct ice_vf_fdir_ctx {
- struct ice_vf_fdir {
- 	u16 fdir_fltr_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
- 	int prof_entry_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
-+	u16 fdir_fltr_cnt_total;
- 	struct ice_fd_hw_prof **fdir_prof;
- 
- 	struct idr fdir_rule_idr;
+ 			if (ndlp->nlp_state > NLP_STE_UNUSED_NODE &&
+-			    ndlp->nlp_state < NLP_STE_PRLI_ISSUE) {
++			    ndlp->nlp_state <= NLP_STE_PRLI_ISSUE) {
+ 				lpfc_disc_state_machine(vport, ndlp, NULL,
+ 							NLP_EVT_DEVICE_RECOVERY);
+ 			}
 
 
 
