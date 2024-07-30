@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05FCC941DFA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A38C9419C6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8F11F25241
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 357602840DA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F341A76BA;
-	Tue, 30 Jul 2024 17:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0100189538;
+	Tue, 30 Jul 2024 16:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8i7+w0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaiplNYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36BE1A76A1;
-	Tue, 30 Jul 2024 17:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A365189504;
+	Tue, 30 Jul 2024 16:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360251; cv=none; b=ZiJksOgbaCKasQVmxN+fj8jTaKIly1ZO9x+A1tFLnYRmyxL+GXQxLMuSXCrwFZX5WNmPvaWg+l2n8Ia5114ngTjjOW+QpLP5yAzDNohBmvugIf7XL6c5XQy1PwZ7wvOT/bfArDlUCGnPxqLraqvO/HWJIob6l6Jn8BO20rtmtps=
+	t=1722357370; cv=none; b=mLC8+4Ae2W7MlMxb6y/Txn7279sQk5Zq9k5NS1eM4nor4T32/jDZh3tc4f+Gnu0UgvzFWHkLf9oV3pC+mNXNjS9VMxV1sMzsjtoOeSfQEDnzFd+d+TxBYxxzEF2/tFqgmpgpzKBHPirZzhu2iSs4cjkoDxDKCFBjXhPJy6ObbpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360251; c=relaxed/simple;
-	bh=PrixVi/FU+mOa3iMiqKid+ITNQg4j2dN37tFbtY5suU=;
+	s=arc-20240116; t=1722357370; c=relaxed/simple;
+	bh=QXBGMxcqU4AUbsY0Oz/wY5+nnTnLx5bG78reF3hkePQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjZMl3eG/d2wK+5kcm3uM2MQ4Wgikru3qfQZTuvY4V0eu14jKeK2Dv2JhPszYiwfyl6fNdEOIU/OOSMjuodRJvAbhCk9K3rS+vY7x5Cz5wwhcf98C2GmLxtPTSC/G0lWvfAWkRpbWtpAvzkdsmLxrEUkpImTRuNk+AC5eeM9TyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8i7+w0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6729EC32782;
-	Tue, 30 Jul 2024 17:24:10 +0000 (UTC)
+	 MIME-Version; b=OKsp9dH5u6yqcKqo78RvdMWzGwZXpEF+BPOYvce5m7tN113Uzt7gWdoJtn/kSnoVhz54OU150YE4QKwrwZEtqXXa2bWX52DXjiV7JlKtELl4XitpnweO7pzYX9jBflRr0fa1j2B7XBdb2DqLA0UdEu6S1LJvPth8mmgZ0o9TcPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaiplNYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB80C32782;
+	Tue, 30 Jul 2024 16:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360250;
-	bh=PrixVi/FU+mOa3iMiqKid+ITNQg4j2dN37tFbtY5suU=;
+	s=korg; t=1722357370;
+	bh=QXBGMxcqU4AUbsY0Oz/wY5+nnTnLx5bG78reF3hkePQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8i7+w0qGkHVf0EN5/Gb9bzdHuEZ/J5YyeM5GIxJBXDdqgSLEcu5RqiT0+PuxAEGO
-	 tBWFcaX1+EWnwhLG/1nY1ID1FELoCp/lEHOku58GEN8VR/jfwA4NaxJL+LxtmG++0Y
-	 U499eVi2pILIOUgd/4dI1/aym7ct8ovy7QxOfTRI=
+	b=QaiplNYaMQDfk67NfZRyQVF6LacX8sWS8zgfsJEPekAbhPtfe41+HNCQ8/JMoFeBH
+	 v6XdWtsXjo4EnPf8cUnDJMjgh5gVSQOYy+VRfx0Ilb5L4xVDWnBzYuGeO6W+aspx0p
+	 LRPZEoyzRlnEA2fCedm9ro35iRL90bwj8/vIKtaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reka Norman <rekanorman@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.10 643/809] xhci: Apply XHCI_RESET_TO_DEFAULT quirk to TGL
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 286/440] media: venus: fix use after free in vdec_close
 Date: Tue, 30 Jul 2024 17:48:39 +0200
-Message-ID: <20240730151750.262585841@linuxfoundation.org>
+Message-ID: <20240730151627.002479016@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reka Norman <rekanorman@chromium.org>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit b4c87bc5ce9292d494d9354e25cc8ea152fbcbbd upstream.
+commit a0157b5aa34eb43ec4c5510f9c260bbb03be937e upstream.
 
-TGL systems have the same issue as ADL, where a large boot firmware
-delay is seen if USB ports are left in U3 at shutdown. So apply the
-XHCI_RESET_TO_DEFAULT quirk to TGL as well.
+There appears to be a possible use after free with vdec_close().
+The firmware will add buffer release work to the work queue through
+HFI callbacks as a normal part of decoding. Randomly closing the
+decoder device from userspace during normal decoding can incur
+a read after free for inst.
 
-The issue it fixes is a ~20s boot time delay when booting from S5. It
-affects TGL devices, and TGL support was added starting from v5.3.
+Fix it by cancelling the work in vdec_close.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Reka Norman <rekanorman@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240626124835.1023046-21-mathias.nyman@linux.intel.com
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/vdec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -50,6 +50,7 @@
- #define PCI_DEVICE_ID_INTEL_DENVERTON_XHCI		0x19d0
- #define PCI_DEVICE_ID_INTEL_ICE_LAKE_XHCI		0x8a13
- #define PCI_DEVICE_ID_INTEL_TIGER_LAKE_XHCI		0x9a13
-+#define PCI_DEVICE_ID_INTEL_TIGER_LAKE_PCH_XHCI		0xa0ed
- #define PCI_DEVICE_ID_INTEL_COMET_LAKE_XHCI		0xa3af
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_PCH_XHCI		0x51ed
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_N_PCH_XHCI	0x54ed
-@@ -373,7 +374,8 @@ static void xhci_pci_quirks(struct devic
- 		xhci->quirks |= XHCI_MISSING_CAS;
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -1705,6 +1705,7 @@ static int vdec_close(struct file *file)
  
- 	if (pdev->vendor == PCI_VENDOR_ID_INTEL &&
--	    (pdev->device == PCI_DEVICE_ID_INTEL_ALDER_LAKE_PCH_XHCI ||
-+	    (pdev->device == PCI_DEVICE_ID_INTEL_TIGER_LAKE_PCH_XHCI ||
-+	     pdev->device == PCI_DEVICE_ID_INTEL_ALDER_LAKE_PCH_XHCI ||
- 	     pdev->device == PCI_DEVICE_ID_INTEL_ALDER_LAKE_N_PCH_XHCI))
- 		xhci->quirks |= XHCI_RESET_TO_DEFAULT;
+ 	vdec_pm_get(inst);
  
++	cancel_work_sync(&inst->delayed_process_work);
+ 	v4l2_m2m_ctx_release(inst->m2m_ctx);
+ 	v4l2_m2m_release(inst->m2m_dev);
+ 	vdec_ctrl_deinit(inst);
 
 
 
