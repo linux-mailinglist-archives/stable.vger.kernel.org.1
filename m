@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-62932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AD1941651
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FD4941655
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F04BEB2717F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EB8A283B8A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A951BC08F;
-	Tue, 30 Jul 2024 15:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64041BD4E2;
+	Tue, 30 Jul 2024 15:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQAqo/f8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Hd8iSvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED41BC07A;
-	Tue, 30 Jul 2024 15:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700741BA885;
+	Tue, 30 Jul 2024 15:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355107; cv=none; b=WjK56CTVzxrtpqFrsoSrSHd25/h0Fz846m1m5JWzAvnjIa6yjltaCRqVDr0MRnEoUyx67LtA8jQD0A+HAvb9y7OkRgEwpnVc1MJE6Z9kSJeKfEXwK6WSF219HjSIx3Q1fuI0SHBtAilV/BUS5TSX761/iN99eWFckFjVLcfUqtI=
+	t=1722355117; cv=none; b=DYp4bEbKpur/e9ggAZCIsoENZL0R8MQhQH9DEzbtVKCx7w4dOkjBNr2VASSONKIJQtwhLcWFFJU0vZwy9lmcgkddD3ROBqmFasMsU6bvVwd/4S/WMMaGtmcAfjYJxmtKNoZqtOWlEb/2Uw4Tf3Mmey1UKSQl40xWsGk9NKivlFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355107; c=relaxed/simple;
-	bh=68tWB734qiod7TeOYJ33vi7NrSooXIrVD3kau6SwDlY=;
+	s=arc-20240116; t=1722355117; c=relaxed/simple;
+	bh=rhBKG2lfOVi2aDgqSbNb65rGkolN7IH2btmmVka6RlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCV1/IjcbQa7aLivd9IDeX7mroMu+SQ2l2wB9KDIwsr8R54XHXWFoMBmpsJqebQDO/iJS6kSbTwHHnwwpudb64FMzcU0rgOBlHNib4Mf8w13IQDdZVbzjrobHJbj3EnFlAwuYYqRz5Fv4hvV8BAdDdHQn5TM0VyNflnozVNHgMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQAqo/f8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11967C32782;
-	Tue, 30 Jul 2024 15:58:25 +0000 (UTC)
+	 MIME-Version; b=k9hPThruxQ9GFXLVUG7H1GOIIoZD1ibGHyEscKPSuxjzzdeMMk1UZs/M2j4vE/OnvCzFD6jSDVoWDa8Wv9Z24YV4nMs6dPMnCMoX6YlldorRQl4LMJMA+sbE29zz6V8Fq48x5MTaUWotPfHxiHN/YhB2SyCIvpSa6Icm1Oaqq+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Hd8iSvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D276DC4AF0F;
+	Tue, 30 Jul 2024 15:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355106;
-	bh=68tWB734qiod7TeOYJ33vi7NrSooXIrVD3kau6SwDlY=;
+	s=korg; t=1722355117;
+	bh=rhBKG2lfOVi2aDgqSbNb65rGkolN7IH2btmmVka6RlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQAqo/f8v5RXOEHc/XFWL0elr02tztl4rWo1yH9KJYeiw3y9GAZfk17TzBDnGDzy2
-	 fEBA/zSs395QgKVzRQ0MqfCGrZg+ONuxFFfhHk22LPp8+IhunihGzlkzsej1mpn7tK
-	 zH4yoKF+eg7RofMtp7JzoAPaU8YjMbNWxFfbqdv4=
+	b=0Hd8iSvR+x9owvaLPEf5/hrHegL6fIBH9mxY4DLKJIHaM6DhGqmwHNM9ce5Kf1Uti
+	 s6auxV5peyKMt6SeLihYUYrZZ8Y6j4rI5kBOou2xI09YycuN5JVhFPuq2STcUfSLjo
+	 cmaEoiGLcrDM35MvOFERJgAyzBagDC0R/oNNCChw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/568] arm64: dts: qcom: sc8180x: Correct PCIe slave ports
-Date: Tue, 30 Jul 2024 17:42:15 +0200
-Message-ID: <20240730151640.938107005@linuxfoundation.org>
+Subject: [PATCH 6.6 029/568] arm64: dts: qcom: sc8180x: switch UFS QMP PHY to new style of bindings
+Date: Tue, 30 Jul 2024 17:42:16 +0200
+Message-ID: <20240730151640.977647845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,57 +67,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit dc402e084a9e0cc714ffd6008dce3c63281b8142 ]
+[ Upstream commit 916b5916f228a9f83a22ad91ad8c5bf788a456d7 ]
 
-The interconnects property was clearly copy-pasted between the 4 PCIe
-controllers, giving all four the cpu-pcie path destination of SLAVE_0.
+Change the UFS QMP PHY to use newer style of QMP PHY bindings (single
+resource region, no per-PHY subnodes).
 
-The four ports are all associated with CN0, but update the property for
-correctness sake.
-
-Fixes: d20b6c84f56a ("arm64: dts: qcom: sc8180x: Add PCIe instances")
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240525-sc8180x-pcie-interconnect-port-fix-v1-1-f86affa02392@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230731111158.3998107-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 9a80ecce60bd ("arm64: dts: qcom: sc8180x: add power-domain to UFS PHY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index dd207eb81360a..9163c1419cc12 100644
+index 9163c1419cc12..d310d4c4d0953 100644
 --- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -1853,7 +1853,7 @@ pcie3: pci@1c08000 {
- 			power-domains = <&gcc PCIE_3_GDSC>;
+@@ -2093,7 +2093,7 @@ ufs_mem_hc: ufshc@1d84000 {
+ 				     "jedec,ufs-2.0";
+ 			reg = <0 0x01d84000 0 0x2500>;
+ 			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
+-			phys = <&ufs_mem_phy_lanes>;
++			phys = <&ufs_mem_phy>;
+ 			phy-names = "ufsphy";
+ 			lanes-per-direction = <2>;
+ 			#reset-cells = <1>;
+@@ -2132,10 +2132,8 @@ ufs_mem_hc: ufshc@1d84000 {
  
- 			interconnects = <&aggre2_noc MASTER_PCIE_3 0 &mc_virt SLAVE_EBI_CH0 0>,
--					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
-+					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_3 0>;
- 			interconnect-names = "pcie-mem", "cpu-pcie";
+ 		ufs_mem_phy: phy-wrapper@1d87000 {
+ 			compatible = "qcom,sc8180x-qmp-ufs-phy";
+-			reg = <0 0x01d87000 0 0x1c0>;
+-			#address-cells = <2>;
+-			#size-cells = <2>;
+-			ranges;
++			reg = <0 0x01d87000 0 0x1000>;
++
+ 			clocks = <&rpmhcc RPMH_CXO_CLK>,
+ 				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>;
+ 			clock-names = "ref",
+@@ -2143,16 +2141,10 @@ ufs_mem_phy: phy-wrapper@1d87000 {
  
- 			phys = <&pcie3_phy>;
-@@ -1952,7 +1952,7 @@ pcie1: pci@1c10000 {
- 			power-domains = <&gcc PCIE_1_GDSC>;
+ 			resets = <&ufs_mem_hc 0>;
+ 			reset-names = "ufsphy";
+-			status = "disabled";
  
- 			interconnects = <&aggre2_noc MASTER_PCIE_1 0 &mc_virt SLAVE_EBI_CH0 0>,
--					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
-+					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_1 0>;
- 			interconnect-names = "pcie-mem", "cpu-pcie";
+-			ufs_mem_phy_lanes: phy@1d87400 {
+-				reg = <0 0x01d87400 0 0x108>,
+-				      <0 0x01d87600 0 0x1e0>,
+-				      <0 0x01d87c00 0 0x1dc>,
+-				      <0 0x01d87800 0 0x108>,
+-				      <0 0x01d87a00 0 0x1e0>;
+-				#phy-cells = <0>;
+-			};
++			#phy-cells = <0>;
++
++			status = "disabled";
+ 		};
  
- 			phys = <&pcie1_phy>;
-@@ -2051,7 +2051,7 @@ pcie2: pci@1c18000 {
- 			power-domains = <&gcc PCIE_2_GDSC>;
- 
- 			interconnects = <&aggre2_noc MASTER_PCIE_2 0 &mc_virt SLAVE_EBI_CH0 0>,
--					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
-+					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_2 0>;
- 			interconnect-names = "pcie-mem", "cpu-pcie";
- 
- 			phys = <&pcie2_phy>;
+ 		ipa_virt: interconnect@1e00000 {
 -- 
 2.43.0
 
