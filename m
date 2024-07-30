@@ -1,241 +1,94 @@
-Return-Path: <stable+bounces-64676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761E79422A4
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 00:18:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E759422AB
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 00:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02FCB1F250B8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 22:18:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A6C1B2416D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 22:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DEF18EFD2;
-	Tue, 30 Jul 2024 22:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB0F19149E;
+	Tue, 30 Jul 2024 22:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wJWBQZrY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZL9R2I6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C99518E02D;
-	Tue, 30 Jul 2024 22:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF3C18E030;
+	Tue, 30 Jul 2024 22:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722377846; cv=none; b=NZplUUDaWMPP/58Ug5B5w2baqIDL5uNmCr2biB5OEwbzY4De6dC1LHdVxY5kpvsWxEZQDR8MiAwTPVVDYIqXEUNy7PXzstPLmo0/Qzja2Im3pcDQLYC85l6eOYB3CR24AysdNQQGdb2lk5O4uBSIFyE11d/tZ6AOYaF0qdG7f7Q=
+	t=1722378032; cv=none; b=tqnA+cEVX9BI2Wp/yhG3gt3m3uVxKp2R7gxMmbnjvc00tP/1TKMnmE68F8P2jC48C9DMtb8ZnnoBtWjEw0Du7SQZNDrz5GCD/xbZ4aqSaUpbTRn07Z7STCxGfiK54Ya3vCu7lWC0+QqsfPhPYSw3PCRw+8ypXS1lkpsvnUK5q48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722377846; c=relaxed/simple;
-	bh=bDe4vErxzV1QP7Jt1Op5lBAScZ/aFP4wiBoMjqIICO0=;
-	h=Date:To:From:Subject:Message-Id; b=PsxrOu9CJtCx44tatKhkV0kk6Gs45/xSgxLYXm/NeLN4EJKfI3RcWrVSSGX5CoXd/eg3aYSBgLhvzT3viZV5wwWJyaBmRC2P+kZfC3OuaO2J1xPUmZZ41Kbs49flWXAdiCtgoiEpifdoPwtvkgZGdbgI/wsziJ2eDtQD+6H+37I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wJWBQZrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76E8C32782;
-	Tue, 30 Jul 2024 22:17:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1722377844;
-	bh=bDe4vErxzV1QP7Jt1Op5lBAScZ/aFP4wiBoMjqIICO0=;
-	h=Date:To:From:Subject:From;
-	b=wJWBQZrY0mCYBI9wpmRXV2OleCWRNxEggIU04WcVS0KZgXKk09vTS3MlhYwe3VXHE
-	 Ruzub5zGKHbwYx3WL3hzfu3Q+A9kpNMxwxSoz4oSjh+2SMfmiCNCityzDaifCqoxtk
-	 HJ7yFnEKnkaiDGQc5+H6f5gMTWeSyzh6mgyOUXIw=
-Date: Tue, 30 Jul 2024 15:17:24 -0700
-To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,stable@vger.kernel.org,peterx@redhat.com,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-let-pte_lockptr-consume-a-pte_t-pointer.patch removed from -mm tree
-Message-Id: <20240730221724.C76E8C32782@smtp.kernel.org>
+	s=arc-20240116; t=1722378032; c=relaxed/simple;
+	bh=NC39ToIiYStV2URdg0RupoAPdagiRdTNILO7HSacAmY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tq5qioJwuSdPIEG5WMtYnbprX3JvnYG+MSq6hkdenLraJvkAsSiot9CjjmHp/1nMKHNv0tX/C5rboNMHOpHm5KBZcWJgtF6HPCB+qC/tOXuRl1YM/ycJtWft4GibWP6UDAoLDGstdNf/L7DXH3RPcr5NJtNEwtjVmFXn+YhDPMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZL9R2I6t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CFE4CC4AF13;
+	Tue, 30 Jul 2024 22:20:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722378031;
+	bh=NC39ToIiYStV2URdg0RupoAPdagiRdTNILO7HSacAmY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ZL9R2I6tTZdY24ihOhPuVMhJYRpquPlgGiA00fCFS0jlMQcqtsn+iacUB3SF0RiTE
+	 2kcGigYMUIr+/3mSKa7XFytxY75wQ+rTmwRhYfwPaiyXOzbWN3yqY8uuI2pDn3XDdO
+	 x3+tpvwVxtXx2QE4AaykTEGz3WGKxCV2LVp88AjW5XkuEkBTcpLUleiO8D+gKIx+DO
+	 exzsdMOgIjkumR6FCIJ6zh8JWXpQwwbMxoEqJKWNKkRsJVfPhpz861ZqSe8n0Nj/Ia
+	 yoZ2lhJV4etjn5VHVpAy2N2t//JL7IWOpJ5fOhgwjD523ISSW/TihWtOcZtke9pUeO
+	 bAHH/ESCt9VTA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C1F3AC43140;
+	Tue, 30 Jul 2024 22:20:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net V1] net: phy: micrel: Fix the KSZ9131 MDI-X status issue
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172237803179.26065.6593267198901302690.git-patchwork-notify@kernel.org>
+Date: Tue, 30 Jul 2024 22:20:31 +0000
+References: <20240725071125.13960-1-Raju.Lakkaraju@microchip.com>
+In-Reply-To: <20240725071125.13960-1-Raju.Lakkaraju@microchip.com>
+To: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ edumazet@google.com, pabeni@redhat.com, horatiu.vultur@microchip.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ UNGLinuxDriver@microchip.com
 
+Hello:
 
-The quilt patch titled
-     Subject: mm: let pte_lockptr() consume a pte_t pointer
-has been removed from the -mm tree.  Its filename was
-     mm-let-pte_lockptr-consume-a-pte_t-pointer.patch
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This patch was dropped because an updated version will be issued
+On Thu, 25 Jul 2024 12:41:25 +0530 you wrote:
+> The MDIX status is not accurately reflecting the current state after the link
+> partner has manually altered its MDIX configuration while operating in forced
+> mode.
+> 
+> Access information about Auto mdix completion and pair selection from the
+> KSZ9131's Auto/MDI/MDI-X status register
+> 
+> [...]
 
-------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: mm: let pte_lockptr() consume a pte_t pointer
-Date: Thu, 25 Jul 2024 20:39:54 +0200
+Here is the summary with links:
+  - [net,V1] net: phy: micrel: Fix the KSZ9131 MDI-X status issue
+    https://git.kernel.org/netdev/net/c/84383b5ef4cd
 
-Patch series "mm/hugetlb: fix hugetlb vs. core-mm PT locking".
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Working on another generic page table walker that tries to avoid
-special-casing hugetlb, I found a page table locking issue with hugetlb
-folios that are not mapped using a single PMD/PUD.
-
-For some hugetlb folio sizes, GUP will take different page table locks
-when walking the page tables than hugetlb when modifying the page tables.
-
-I did not actually try reproducing an issue, but looking at
-follow_pmd_mask() where we might be rereading a PMD value multiple times
-it's rather clear that concurrent modifications are rather unpleasant.
-
-In follow_page_pte() we might be better in that regard -- ptep_get() does
-a READ_ONCE() -- but who knows what else could happen concurrently in some
-weird corner cases (e.g., hugetlb folio getting unmapped and freed).
-
-
-This patch (of 2):
-
-pte_lockptr() is the only *_lockptr() function that doesn't consume what
-would be expected: it consumes a pmd_t pointer instead of a pte_t pointer.
-
-Let's change that.  The two callers in pgtable-generic.c are easily
-adjusted.  Adjust khugepaged.c:retract_page_tables() to simply do a
-pte_offset_map_nolock() to obtain the lock, even though we won't actually
-be traversing the page table.
-
-This makes the code more similar to the other variants and avoids other
-hacks to make the new pte_lockptr() version happy.  pte_lockptr() users
-reside now only in pgtable-generic.c.
-
-Maybe, using pte_offset_map_nolock() is the right thing to do because the
-PTE table could have been removed in the meantime?  At least it sounds
-more future proof if we ever have other means of page table reclaim.
-
-It's not quite clear if holding the PTE table lock is really required:
-what if someone else obtains the lock just after we unlock it?  But we'll
-leave that as is for now, maybe there are good reasons.
-
-This is a preparation for adapting hugetlb page table locking logic to
-take the same locks as core-mm page table walkers would.
-
-Link: https://lkml.kernel.org/r/20240725183955.2268884-1-david@redhat.com
-Link: https://lkml.kernel.org/r/20240725183955.2268884-2-david@redhat.com
-Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic follow_page_mask code")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/mm.h   |    7 ++++---
- mm/khugepaged.c      |   21 +++++++++++++++------
- mm/pgtable-generic.c |    4 ++--
- 3 files changed, 21 insertions(+), 11 deletions(-)
-
---- a/include/linux/mm.h~mm-let-pte_lockptr-consume-a-pte_t-pointer
-+++ a/include/linux/mm.h
-@@ -2915,9 +2915,10 @@ static inline spinlock_t *ptlock_ptr(str
- }
- #endif /* ALLOC_SPLIT_PTLOCKS */
- 
--static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
-+static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pte_t *pte)
- {
--	return ptlock_ptr(page_ptdesc(pmd_page(*pmd)));
-+	/* PTE page tables don't currently exceed a single page. */
-+	return ptlock_ptr(virt_to_ptdesc(pte));
- }
- 
- static inline bool ptlock_init(struct ptdesc *ptdesc)
-@@ -2940,7 +2941,7 @@ static inline bool ptlock_init(struct pt
- /*
-  * We use mm->page_table_lock to guard all pagetable pages of the mm.
-  */
--static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
-+static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pte_t *pte)
- {
- 	return &mm->page_table_lock;
- }
---- a/mm/khugepaged.c~mm-let-pte_lockptr-consume-a-pte_t-pointer
-+++ a/mm/khugepaged.c
-@@ -1697,12 +1697,13 @@ static void retract_page_tables(struct a
- 	i_mmap_lock_read(mapping);
- 	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff) {
- 		struct mmu_notifier_range range;
-+		bool retracted = false;
- 		struct mm_struct *mm;
- 		unsigned long addr;
- 		pmd_t *pmd, pgt_pmd;
- 		spinlock_t *pml;
- 		spinlock_t *ptl;
--		bool skipped_uffd = false;
-+		pte_t *pte;
- 
- 		/*
- 		 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
-@@ -1739,9 +1740,17 @@ static void retract_page_tables(struct a
- 		mmu_notifier_invalidate_range_start(&range);
- 
- 		pml = pmd_lock(mm, pmd);
--		ptl = pte_lockptr(mm, pmd);
-+
-+		/*
-+		 * No need to check the PTE table content, but we'll grab the
-+		 * PTE table lock while we zap it.
-+		 */
-+		pte = pte_offset_map_nolock(mm, pmd, addr, &ptl);
-+		if (!pte)
-+			goto unlock_pmd;
- 		if (ptl != pml)
- 			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
-+		pte_unmap(pte);
- 
- 		/*
- 		 * Huge page lock is still held, so normally the page table
-@@ -1752,20 +1761,20 @@ static void retract_page_tables(struct a
- 		 * repeating the anon_vma check protects from one category,
- 		 * and repeating the userfaultfd_wp() check from another.
- 		 */
--		if (unlikely(vma->anon_vma || userfaultfd_wp(vma))) {
--			skipped_uffd = true;
--		} else {
-+		if (likely(!vma->anon_vma && !userfaultfd_wp(vma))) {
- 			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
- 			pmdp_get_lockless_sync();
-+			retracted = true;
- 		}
- 
- 		if (ptl != pml)
- 			spin_unlock(ptl);
-+unlock_pmd:
- 		spin_unlock(pml);
- 
- 		mmu_notifier_invalidate_range_end(&range);
- 
--		if (!skipped_uffd) {
-+		if (retracted) {
- 			mm_dec_nr_ptes(mm);
- 			page_table_check_pte_clear_range(mm, addr, pgt_pmd);
- 			pte_free_defer(mm, pmd_pgtable(pgt_pmd));
---- a/mm/pgtable-generic.c~mm-let-pte_lockptr-consume-a-pte_t-pointer
-+++ a/mm/pgtable-generic.c
-@@ -313,7 +313,7 @@ pte_t *pte_offset_map_nolock(struct mm_s
- 
- 	pte = __pte_offset_map(pmd, addr, &pmdval);
- 	if (likely(pte))
--		*ptlp = pte_lockptr(mm, &pmdval);
-+		*ptlp = pte_lockptr(mm, pte);
- 	return pte;
- }
- 
-@@ -371,7 +371,7 @@ again:
- 	pte = __pte_offset_map(pmd, addr, &pmdval);
- 	if (unlikely(!pte))
- 		return pte;
--	ptl = pte_lockptr(mm, &pmdval);
-+	ptl = pte_lockptr(mm, pte);
- 	spin_lock(ptl);
- 	if (likely(pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
- 		*ptlp = ptl;
-_
-
-Patches currently in -mm which might be from david@redhat.com are
-
-mm-let-pte_lockptr-consume-a-pte_t-pointer-fix.patch
-mm-hugetlb-fix-hugetlb-vs-core-mm-pt-locking.patch
-mm-turn-use_split_pte_ptlocks-use_split_pte_ptlocks-into-kconfig-options.patch
-mm-hugetlb-enforce-that-pmd-pt-sharing-has-split-pmd-pt-locks.patch
-powerpc-8xx-document-and-enforce-that-split-pt-locks-are-not-used.patch
-mm-simplify-arch_make_folio_accessible.patch
-mm-gup-convert-to-arch_make_folio_accessible.patch
-s390-uv-drop-arch_make_page_accessible.patch
 
 
