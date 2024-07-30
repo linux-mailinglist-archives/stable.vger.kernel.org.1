@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-64145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8527941C4B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 933E9941C1B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62E5E281774
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52DE0282482
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A26E188017;
-	Tue, 30 Jul 2024 17:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA1A187FF6;
+	Tue, 30 Jul 2024 17:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LobD7arE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmgxUdof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCD71E86F;
-	Tue, 30 Jul 2024 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F6B1A6192;
+	Tue, 30 Jul 2024 17:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359143; cv=none; b=bWQW5nTpYKImlYTzhKMMl7eLpbOgfe6gT4a01Gk+qr/mH8rAjnqtd4WW6i07QnOG+d5ZujEF5F58ly1hwrDk1DZRX7dftmLM2O7Ep7lZqUSFnBHAxX9h6S3X5n0JjgavD4YJVkMtTLp9CatxL74p2q6EvEkKFrIennjJpJDTUsI=
+	t=1722358987; cv=none; b=NyNKVGjle8YyWaZT8u+yauAWwOUgUSKK17Gk6nF77fgeSM19xDXAjuM6/mEtKzOpIu8A9aLo2NR9sSje2uGyWkhN5aBVQdBCFXAfWnB6ew7gW5vdfdLpCm4YTginBZU2jSgJiuBN9nPDIvLe3JKE+bfyRisWd6PFDNtWV2SENbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359143; c=relaxed/simple;
-	bh=Fm5NsUkbYtcVtH1C2B2zgKSC545EJro4SeJ+bkRyfxw=;
+	s=arc-20240116; t=1722358987; c=relaxed/simple;
+	bh=hYeKyI7U6wboGgU4c+9/H5T1beKJuAt4AHZr1oQjTXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MaorbZ/FrfWSR16CA65/UBSwiVBGBsZxIQZv7+kcwyQV3fJI/VJvfF2+Ou2LWaP75Ah4GUrRyAFcWOmCxqqQ7y7Kn9mqlcElCnBeA5ZKnzSvIqsovv9nfTUB3/q2cQIEcyZ/nKiiWTBo59dN95qM+3Y4UwVQR069+hkc/oL0lUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LobD7arE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304A8C32782;
-	Tue, 30 Jul 2024 17:05:41 +0000 (UTC)
+	 MIME-Version; b=PQvDwIat2tNdgKRZmR9Ky/qj7pw2DOc0IO0I+ezNnERGpD+SjL7LWMJ1pEuVe0jJao8hOFwrdV8L2hxmzcdDelO4OIky3g1INNRnrWxDEAqyIgBRby3+c9fvcTFbMl2WF6LLJwYR4LatssY2YGgEDv45Z7Hn5UKij2NOrNA1ar4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmgxUdof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D87AC32782;
+	Tue, 30 Jul 2024 17:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359142;
-	bh=Fm5NsUkbYtcVtH1C2B2zgKSC545EJro4SeJ+bkRyfxw=;
+	s=korg; t=1722358987;
+	bh=hYeKyI7U6wboGgU4c+9/H5T1beKJuAt4AHZr1oQjTXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LobD7arEx3WtrIN57b327LEW72iGPGEfREiO9ZOt6kfwIk0BvZHS/5c8Pk05Kwh29
-	 2VxcpnKhbN4zxrSkni8jmlRhGT89IUCCZYEGzmsYJoD5+Wr5VIoXQmXHV1C9vNWyFU
-	 x+YIi3GnFukBa+TErvbVS0iCun6D8BEuLHZnWnOI=
+	b=tmgxUdof+kSdCnEwctHtB/K5A0gaEqYyfAo/4D7K7ojm/IpwZnw6i4QcGwrfSPfWE
+	 xuaxbl6o6pVmjuJMDy4xVyF1C6tPVoYyQm7wyfDMzkacJ3yKI71BA/KNp5mp2uAMJ/
+	 0ClSK9UpdQjJOM0qId1vXYT5JEsA80AY4LJOni5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Georgi Djakov <djakov@kernel.org>,
+	Andrei Lalaev <andrei.lalaev@anton-paar.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 417/809] interconnect: qcom: qcm2290: Fix mas_snoc_bimc RPM master ID
-Date: Tue, 30 Jul 2024 17:44:53 +0200
-Message-ID: <20240730151741.166452356@linuxfoundation.org>
+Subject: [PATCH 6.10 418/809] Input: qt1050 - handle CHIP_ID reading error
+Date: Tue, 30 Jul 2024 17:44:54 +0200
+Message-ID: <20240730151741.206699587@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,37 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Andrei Lalaev <andrei.lalaev@anton-paar.com>
 
-[ Upstream commit cd5ce4589081190281cc2537301edd4275fe55eb ]
+[ Upstream commit 866a5c7e2781cf1b019072288f1f5c64186dcb63 ]
 
-The value was wrong, resulting in misprogramming of the hardware.
-Fix it.
+If the device is missing, we get the following error:
 
-Fixes: 1a14b1ac3935 ("interconnect: qcom: Add QCM2290 driver support")
-Reported-by: Stephan Gerhold <stephan@gerhold.net>
-Closes: https://lore.kernel.org/linux-arm-msm/ZgMs_xZVzWH5uK-v@gerhold.net/
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240618-topic-2290_icc_2-v1-1-64446888a133@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+  qt1050 3-0041: ID -1340767592 not supported
+
+Let's handle this situation and print more informative error
+when reading of CHIP_ID fails:
+
+  qt1050 3-0041: Failed to read chip ID: -6
+
+Fixes: cbebf5addec1 ("Input: qt1050 - add Microchip AT42QT1050 support")
+Signed-off-by: Andrei Lalaev <andrei.lalaev@anton-paar.com>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Link: https://lore.kernel.org/r/20240617183018.916234-1-andrey.lalaev@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/qcm2290.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/keyboard/qt1050.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/qcom/qcm2290.c b/drivers/interconnect/qcom/qcm2290.c
-index ba4cc08684d63..ccbdc6202c07a 100644
---- a/drivers/interconnect/qcom/qcm2290.c
-+++ b/drivers/interconnect/qcom/qcm2290.c
-@@ -166,7 +166,7 @@ static struct qcom_icc_node mas_snoc_bimc = {
- 	.qos.ap_owned = true,
- 	.qos.qos_port = 6,
- 	.qos.qos_mode = NOC_QOS_MODE_BYPASS,
--	.mas_rpm_id = 164,
-+	.mas_rpm_id = 3,
- 	.slv_rpm_id = -1,
- 	.num_links = ARRAY_SIZE(mas_snoc_bimc_links),
- 	.links = mas_snoc_bimc_links,
+diff --git a/drivers/input/keyboard/qt1050.c b/drivers/input/keyboard/qt1050.c
+index b51dfcd760386..056e9bc260262 100644
+--- a/drivers/input/keyboard/qt1050.c
++++ b/drivers/input/keyboard/qt1050.c
+@@ -226,7 +226,12 @@ static bool qt1050_identify(struct qt1050_priv *ts)
+ 	int err;
+ 
+ 	/* Read Chip ID */
+-	regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
++	err = regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
++	if (err) {
++		dev_err(&ts->client->dev, "Failed to read chip ID: %d\n", err);
++		return false;
++	}
++
+ 	if (val != QT1050_CHIP_ID_VER) {
+ 		dev_err(&ts->client->dev, "ID %d not supported\n", val);
+ 		return false;
 -- 
 2.43.0
 
