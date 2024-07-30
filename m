@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B470941970
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46F9941919
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D1171C23716
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59091C235D5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6F21898F7;
-	Tue, 30 Jul 2024 16:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E4418951A;
+	Tue, 30 Jul 2024 16:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+VADFPW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJJ3Ydk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0441A6192;
-	Tue, 30 Jul 2024 16:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42631078F;
+	Tue, 30 Jul 2024 16:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357133; cv=none; b=Wpyje2ydT5AX7fh4YTCQbZLt2Xxr6k502QXZo7wg4eDa9xZvS1P14WpR13JwEqIO3TTGE9VVeuV4e9DURnW4hsnc2Nr8taIcd+rbRkwUPPm3SXL50ea9RZecAUq8xJBO6LY9rsAyb2WLsUtp+Zhxc9rGIu/r+tAm4KJc1j/A7Zg=
+	t=1722356934; cv=none; b=JKePiKTV5Iu62csH/JL1q8kxqMfxGXI997PsDCfugpCuscsaj0axDhb2wRb/qA5Rq/LmokpUK8/ibCtgvlt8YEsvBuiLBbdQy8MKpzjKScfKflVR0xV6+ZpzvidF/0wE04J+QuaU/sS1xx5SIY0epJ6TIfDbYg6AD3mT8IQrOp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357133; c=relaxed/simple;
-	bh=XCRwtwoTz6MqeH0lfTg2JNY4iVtIvw9XrMRgAJLE9Bk=;
+	s=arc-20240116; t=1722356934; c=relaxed/simple;
+	bh=lRsxIDyJbqVyt40B57EtD5DTo38ZzqgiJNp5b/9nD04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJKPni9c3Zij4qZT2zo19G5beSelw9qcW+tVEuqKqX77P3TiUyQSmTaDyJeYVkyGdvHi+Ju754R7mS9CDSxRW2Q7EgSr5axgBK4KvIm6DAqrsmCTRr+hs43rI481gCcFbwlTNLkEkKt8fi1H1vQkCo3Qzf4vVHiT3Tj1MxKKg/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+VADFPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95611C4AF0C;
-	Tue, 30 Jul 2024 16:32:12 +0000 (UTC)
+	 MIME-Version; b=KCe6CAhU1ac7VupbjcbKXQCKC+nS3+/m5RyE/nEqOf0gMy644ZvGIB0Wn2WenrojCmUX5vSTZC1At7dq0JeG++n8gpcLNEsfPgsxyrF4FnIBXql38var2r1XhfpT0lucoeZ/3ZGOz4YqoJVq45j4DG5E62gnqz1ROz8/FO3bySw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJJ3Ydk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9BAC32782;
+	Tue, 30 Jul 2024 16:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357133;
-	bh=XCRwtwoTz6MqeH0lfTg2JNY4iVtIvw9XrMRgAJLE9Bk=;
+	s=korg; t=1722356934;
+	bh=lRsxIDyJbqVyt40B57EtD5DTo38ZzqgiJNp5b/9nD04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+VADFPWNosiH7ohpLDzaHsTbIoc/Ws79hIUN6hQHoDOhAw1devijAxzxAX7+tcfA
-	 mdr+SQSyT5Rto61/n8SftiQDWwPGyHh6YPHhdH1+xyTgRoe3KuCe1FRKzK6YH/BxjN
-	 tudFLf09EUDXCu9/UqzuK8rWieYaRcDfbtfW+e18=
+	b=WJJ3Ydk+du3bGGRosfEcumTzFJnvu6BjLZE9CluQ8EIrxTvjjkNABiUDXlGLqYTbv
+	 BG8QeSlMkHzAODFY9zcZyxaqT34iHRhAzo91B5IXSQ9HnsoiHznyCpmW52FJxoJOA9
+	 dnsuQwqYQzff0HtxiNKZU+XQqvJ5eWsC6yShiy9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Irui Wang <irui.wang@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/568] media: mediatek: vcodec: Handle invalid decoder vsi
-Date: Tue, 30 Jul 2024 17:45:04 +0200
-Message-ID: <20240730151647.578091383@linuxfoundation.org>
+Subject: [PATCH 6.6 198/568] x86/shstk: Make return uprobe work with shadow stack
+Date: Tue, 30 Jul 2024 17:45:05 +0200
+Message-ID: <20240730151647.616230949@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -68,41 +69,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Irui Wang <irui.wang@mediatek.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 59d438f8e02ca641c58d77e1feffa000ff809e9f ]
+[ Upstream commit 1713b63a07a28a475de94664f783b4cfd2e4fa90 ]
 
-Handle an invalid decoder vsi in vpu_dec_init to ensure the decoder vsi
-is valid for future use.
+Currently the application with enabled shadow stack will crash
+if it sets up return uprobe. The reason is the uretprobe kernel
+code changes the user space task's stack, but does not update
+shadow stack accordingly.
 
-Fixes: 590577a4e525 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Decoder Driver")
+Adding new functions to update values on shadow stack and using
+them in uprobe code to keep shadow stack in sync with uretprobe
+changes to user stack.
 
-Signed-off-by: Irui Wang <irui.wang@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Link: https://lore.kernel.org/all/20240611112158.40795-2-jolsa@kernel.org/
+
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Fixes: 488af8ea7131 ("x86/shstk: Wire in shadow stack interface")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c    | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/include/asm/shstk.h |  2 ++
+ arch/x86/kernel/shstk.c      | 11 +++++++++++
+ arch/x86/kernel/uprobes.c    |  7 ++++++-
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
-index da6be556727bb..145958206e38a 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
-@@ -233,6 +233,12 @@ int vpu_dec_init(struct vdec_vpu_inst *vpu)
- 	mtk_vdec_debug(vpu->ctx, "vdec_inst=%p", vpu);
+diff --git a/arch/x86/include/asm/shstk.h b/arch/x86/include/asm/shstk.h
+index 42fee8959df7b..896909f306e30 100644
+--- a/arch/x86/include/asm/shstk.h
++++ b/arch/x86/include/asm/shstk.h
+@@ -21,6 +21,7 @@ unsigned long shstk_alloc_thread_stack(struct task_struct *p, unsigned long clon
+ void shstk_free(struct task_struct *p);
+ int setup_signal_shadow_stack(struct ksignal *ksig);
+ int restore_signal_shadow_stack(void);
++int shstk_update_last_frame(unsigned long val);
+ #else
+ static inline long shstk_prctl(struct task_struct *task, int option,
+ 			       unsigned long arg2) { return -EINVAL; }
+@@ -31,6 +32,7 @@ static inline unsigned long shstk_alloc_thread_stack(struct task_struct *p,
+ static inline void shstk_free(struct task_struct *p) {}
+ static inline int setup_signal_shadow_stack(struct ksignal *ksig) { return 0; }
+ static inline int restore_signal_shadow_stack(void) { return 0; }
++static inline int shstk_update_last_frame(unsigned long val) { return 0; }
+ #endif /* CONFIG_X86_USER_SHADOW_STACK */
  
- 	err = vcodec_vpu_send_msg(vpu, (void *)&msg, sizeof(msg));
-+
-+	if (IS_ERR_OR_NULL(vpu->vsi)) {
-+		mtk_vdec_err(vpu->ctx, "invalid vdec vsi, status=%d", err);
-+		return -EINVAL;
-+	}
-+
- 	mtk_vdec_debug(vpu->ctx, "- ret=%d", err);
- 	return err;
+ #endif /* __ASSEMBLY__ */
+diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
+index 59e15dd8d0f86..19e4db582fb69 100644
+--- a/arch/x86/kernel/shstk.c
++++ b/arch/x86/kernel/shstk.c
+@@ -577,3 +577,14 @@ long shstk_prctl(struct task_struct *task, int option, unsigned long arg2)
+ 		return wrss_control(true);
+ 	return -EINVAL;
  }
++
++int shstk_update_last_frame(unsigned long val)
++{
++	unsigned long ssp;
++
++	if (!features_enabled(ARCH_SHSTK_SHSTK))
++		return 0;
++
++	ssp = get_user_shstk_addr();
++	return write_user_shstk_64((u64 __user *)ssp, (u64)val);
++}
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 6c07f6daaa227..6402fb3089d26 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1076,8 +1076,13 @@ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr, struct pt_regs
+ 		return orig_ret_vaddr;
+ 
+ 	nleft = copy_to_user((void __user *)regs->sp, &trampoline_vaddr, rasize);
+-	if (likely(!nleft))
++	if (likely(!nleft)) {
++		if (shstk_update_last_frame(trampoline_vaddr)) {
++			force_sig(SIGSEGV);
++			return -1;
++		}
+ 		return orig_ret_vaddr;
++	}
+ 
+ 	if (nleft != rasize) {
+ 		pr_err("return address clobbered: pid=%d, %%sp=%#lx, %%ip=%#lx\n",
 -- 
 2.43.0
 
