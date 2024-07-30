@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A5494180B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 530BA941B7C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A997D1F22CD9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2CCEB23E01
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832C81A6193;
-	Tue, 30 Jul 2024 16:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1743518801C;
+	Tue, 30 Jul 2024 16:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctb45qp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keKCLADk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401291A6185;
-	Tue, 30 Jul 2024 16:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C972D1A619E;
+	Tue, 30 Jul 2024 16:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356188; cv=none; b=kEeXq1VtJ/HJdEGSscHsrtiOFCAQWOL+9wq26IoY2IPUAo0s5t/cqyAjHp7dy9EHG6WQ0mHPJghfiYpnLUMMAsYPREEbNz4hxRLZ1yRwee7Vqn/gyjCHCqwYTzNuQE3JYcKXJuxAJO6MIBiv56YWjvQbQ0BTQJo8/PoQ9MuSA9o=
+	t=1722358370; cv=none; b=Zq00EJvF54HptvYjh3Lvb7syScNLHyjdq10WrclN+XoXzJyHamMU47fjp9NmRLoIvjSXer6W+1ZumZjkVJ9SHqAw0g6C1f8vPMRe4xKO3JSiXwrwI9uk8n9Dn8HQoZRVmUGbnprc88au4BEplj9gUVqvRPHdN6F2KrN4dcIhkpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356188; c=relaxed/simple;
-	bh=CcM5Vno4UcJ3bwjEPaEnUaKrSSV6zet93WHakwSo/8M=;
+	s=arc-20240116; t=1722358370; c=relaxed/simple;
+	bh=lqeyQi4DA7Lb9j75hvuSDSKSM94nCWvNA57peRDZvIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5HlECrTEVYr/odSMQDJIxUKCp/iweU39BZZwGlsTyHKoGkqQhncugDoaBVdU4yCOSyFm2VrJbKIjlGmzhSB9aOb1N78j0mAl66uJ73GfmTfcOaDdS4kmCtkV2hPhVMq3s3zfr7cSZCFn6gRT8eQRRkO8k/XtqZhFZ6sdvs58w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctb45qp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8554C32782;
-	Tue, 30 Jul 2024 16:16:27 +0000 (UTC)
+	 MIME-Version; b=ribAhs1LdGWPQbyCRIqfS/dcP3Mps4Wo5XFTsOMIH4PDyBQ8/gCV/HTS6wcrN8kph5tAr9yPkFUip7jvbuDLE7kmAGeaovRhKoktHkPRze9rHyz/qNG98BVvBaKoI5mNxYUP/GY0Fh3LtTVCne41qYNce5EqLo5zucgtz5gvQWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keKCLADk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B87C4AF0E;
+	Tue, 30 Jul 2024 16:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356188;
-	bh=CcM5Vno4UcJ3bwjEPaEnUaKrSSV6zet93WHakwSo/8M=;
+	s=korg; t=1722358370;
+	bh=lqeyQi4DA7Lb9j75hvuSDSKSM94nCWvNA57peRDZvIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctb45qp+TygUXiBh81D9/Rhs59edx+nI7ZJe+3Qt6RHrF/7r2dOIJMKDvdTmWpi+G
-	 QdP/cwMF2ICg20eeusAO+h865HAPawfoJ1YF8nxAcFGzwyNH/iby0k0na6z7L/MMo0
-	 p7Kklv437JP8asngUJ5AAO/812VDxDyzvCLufh1Q=
+	b=keKCLADkDqOTyTEGB5rg1bODramCc0dE+PVa6PT6YRhZFiCJUANrosnok4mE0g25q
+	 VSnvipkpw5WligCAngI2mHwHx05cb/bGVhfgZlBnVtImqI70swvBUD80VXinIsnjbt
+	 5rrfYEvT/J+7v2lYUlQConOP3tVfTJXyu17y2yiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/568] tcp: add tcp_done_with_error() helper
+Subject: [PATCH 6.10 353/809] drm/panic: Do not select DRM_KMS_HELPER
 Date: Tue, 30 Jul 2024 17:43:49 +0200
-Message-ID: <20240730151644.643289825@linuxfoundation.org>
+Message-ID: <20240730151738.579129208@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 5e514f1cba090e1c8fff03e92a175eccfe46305f ]
+[ Upstream commit e044e707fc97dac693691178cdf41fe1a8da928f ]
 
-tcp_reset() ends with a sequence that is carefuly ordered.
+DRM core code cannot call into DRM helper code, as this would lead to
+circular references in the modular case.  Hence drop the selection of
+DRM_KMS_HELPER.  It was unused anyway, as v10 switched from using
+the DRM format helpers to its own color format conversion, cfr. commit
+9544309775c3 ("drm/panic: Add support for color format conversion").
 
-We need to fix [e]poll bugs in the following patches,
-it makes sense to use a common helper.
+Remove the unneeded include of <drm/drm_format_helper.h>.
 
-Suggested-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240528125253.1966136-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 853c3bd7b791 ("tcp: fix race in tcp_write_err()")
+Fixes: bf9fb17c6672 ("drm/panic: Add a drm panic handler")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/60155f8c939ed286e324a7c12a1daa69fe49fcf6.1719391132.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h    |  1 +
- net/ipv4/tcp.c       |  2 +-
- net/ipv4/tcp_input.c | 32 +++++++++++++++++++++-----------
- 3 files changed, 23 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/Kconfig     | 1 -
+ drivers/gpu/drm/drm_panic.c | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 690770321a6e3..71af244104433 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -624,6 +624,7 @@ void tcp_skb_collapse_tstamp(struct sk_buff *skb,
- /* tcp_input.c */
- void tcp_rearm_rto(struct sock *sk);
- void tcp_synack_rtt_meas(struct sock *sk, struct request_sock *req);
-+void tcp_done_with_error(struct sock *sk, int err);
- void tcp_reset(struct sock *sk, struct sk_buff *skb);
- void tcp_fin(struct sock *sk);
- void tcp_check_space(struct sock *sk);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 2df05ea2e00fe..91c3d8264059d 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -591,7 +591,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 		 */
- 		mask |= EPOLLOUT | EPOLLWRNORM;
- 	}
--	/* This barrier is coupled with smp_wmb() in tcp_reset() */
-+	/* This barrier is coupled with smp_wmb() in tcp_done_with_error() */
- 	smp_rmb();
- 	if (READ_ONCE(sk->sk_err) ||
- 	    !skb_queue_empty_lockless(&sk->sk_error_queue))
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index b9133c0972d38..c2e4dac42453b 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4367,9 +4367,26 @@ static enum skb_drop_reason tcp_sequence(const struct tcp_sock *tp,
- 	return SKB_NOT_DROPPED_YET;
- }
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 3e286236aa430..359b68adafc1b 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -107,7 +107,6 @@ config DRM_KMS_HELPER
+ config DRM_PANIC
+ 	bool "Display a user-friendly message when a kernel panic occurs"
+ 	depends on DRM && !(FRAMEBUFFER_CONSOLE && VT_CONSOLE)
+-	select DRM_KMS_HELPER
+ 	select FONT_SUPPORT
+ 	help
+ 	  Enable a drm panic handler, which will display a user-friendly message
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index e1c4796685692..831b214975a51 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -15,7 +15,6 @@
+ #include <linux/types.h>
  
-+
-+void tcp_done_with_error(struct sock *sk, int err)
-+{
-+	/* This barrier is coupled with smp_rmb() in tcp_poll() */
-+	WRITE_ONCE(sk->sk_err, err);
-+	smp_wmb();
-+
-+	tcp_write_queue_purge(sk);
-+	tcp_done(sk);
-+
-+	if (!sock_flag(sk, SOCK_DEAD))
-+		sk_error_report(sk);
-+}
-+EXPORT_SYMBOL(tcp_done_with_error);
-+
- /* When we get a reset we do this. */
- void tcp_reset(struct sock *sk, struct sk_buff *skb)
- {
-+	int err;
-+
- 	trace_tcp_receive_reset(sk);
- 
- 	/* mptcp can't tell us to ignore reset pkts,
-@@ -4381,24 +4398,17 @@ void tcp_reset(struct sock *sk, struct sk_buff *skb)
- 	/* We want the right error as BSD sees it (and indeed as we do). */
- 	switch (sk->sk_state) {
- 	case TCP_SYN_SENT:
--		WRITE_ONCE(sk->sk_err, ECONNREFUSED);
-+		err = ECONNREFUSED;
- 		break;
- 	case TCP_CLOSE_WAIT:
--		WRITE_ONCE(sk->sk_err, EPIPE);
-+		err = EPIPE;
- 		break;
- 	case TCP_CLOSE:
- 		return;
- 	default:
--		WRITE_ONCE(sk->sk_err, ECONNRESET);
-+		err = ECONNRESET;
- 	}
--	/* This barrier is coupled with smp_rmb() in tcp_poll() */
--	smp_wmb();
--
--	tcp_write_queue_purge(sk);
--	tcp_done(sk);
--
--	if (!sock_flag(sk, SOCK_DEAD))
--		sk_error_report(sk);
-+	tcp_done_with_error(sk, err);
- }
- 
- /*
+ #include <drm/drm_drv.h>
+-#include <drm/drm_format_helper.h>
+ #include <drm/drm_fourcc.h>
+ #include <drm/drm_framebuffer.h>
+ #include <drm/drm_modeset_helper_vtables.h>
 -- 
 2.43.0
 
