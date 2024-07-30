@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52003941B09
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54926941DCE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A427281ECC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 866091C23376
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDB4189514;
-	Tue, 30 Jul 2024 16:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8702C183CBF;
+	Tue, 30 Jul 2024 17:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2kapwKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfL2Cf22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B94718455B;
-	Tue, 30 Jul 2024 16:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453531A76AE;
+	Tue, 30 Jul 2024 17:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358214; cv=none; b=pp84Q77CClIDvfAX8j3eMlC1dSvSya5LpOIK1U6/3ikTbF7G9d6FCsfmaLCqQMsMfGnLtdnSDHPJF2+cXRIyT2TAobBRNJpozH1rNY/MbEP/n1Pb+IP4ylmXZdkN7jPvOzo9VzNlpXrBlxsOpqq+uet87l3scb7r2RZNZ24jVok=
+	t=1722360083; cv=none; b=Q8dGmSkcMasd+k/gWrP6/qx2Od1wXL4fv1uQ0GkzB5/36HBoV0ksx1ybuNdK9maCswu2r+MPS1sA2h0auyfanlwrIJbmJ8x2ARuEbhP01La6VFMyvNPvm0iWzAfgOA6aYO6qxtrtjfM+3M9yFDTvBTIN72mhGRwjHUp92yZVGWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358214; c=relaxed/simple;
-	bh=Tm/jEqf71nQbmXHS3W/qm9luuOvkTMZ0sOG1w/vh/3A=;
+	s=arc-20240116; t=1722360083; c=relaxed/simple;
+	bh=EqppSayDNs6k9OhVIL780PFVfIGFNoNIkolzO+KweHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fsrn+ZfZ7Zi8PZG31LEnnd4/j3paPUcYi7HzCJPHqQJNaq5jFUx9zhbz9zCT7oOilJLCW/M60GUuHkM0n0XLAi8csQqZFnh+cPas/7as82WrtR4pEDv+tnQ7Go6w/Rv3excMZ5L0Gw4jyryUfOqy7fDK0YiMoSY2+8FHBmhETJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2kapwKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF59C32782;
-	Tue, 30 Jul 2024 16:50:13 +0000 (UTC)
+	 MIME-Version; b=nxQsRf3ZD2efbyH6NBQ1DY7oYRRGnJksRKs6dyu6axUTEGGJXKVmsqKIB5NnaOY+fng4PaD24/bWEdn8EpdunAioT2htVeYDVqlFYBIEYoRooG0kqGF0GGsN0XhcGPNxz7u4C16K4oWMP9iIQwOlgTzAEQKRsuMu1ItU/dZkcaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfL2Cf22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A39C4AF0F;
+	Tue, 30 Jul 2024 17:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358213;
-	bh=Tm/jEqf71nQbmXHS3W/qm9luuOvkTMZ0sOG1w/vh/3A=;
+	s=korg; t=1722360083;
+	bh=EqppSayDNs6k9OhVIL780PFVfIGFNoNIkolzO+KweHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2kapwKihDbSra4IhNYNyP6t5xFUa9GtacMNNFRstJ2B/XebuFv8Uy8TSv9tG0HiO
-	 zZVSXioFWbfKPLSfWfXQa2EnSkDw+Ps3HiIydsf1jgMEimUH4SYTEkPw9FhsJ0wx2b
-	 EQ0ZYLbi0mfDYge9VxcVxxwMPb2hph+0R/wuD+io=
+	b=zfL2Cf22onc8CM8AFkrufpGVoc89oTZbRajqlOgr36v9zI5ONovV88WFnmDbHgkhg
+	 in6vtleCpW0Fw+tnbJe5uFD+7+KWrW7HmCV7fxHKI99MSY+oN+Hp7ZU8LmuBB5o5FV
+	 W7b5zq90sIxee8htArTUqOKkQPxnhY8Q4gAmDZ/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 331/568] fs/ntfs3: Replace inode_trylock with inode_lock
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.10 562/809] md/raid5: fix spares errors about rcu usage
 Date: Tue, 30 Jul 2024 17:47:18 +0200
-Message-ID: <20240730151652.809308003@linuxfoundation.org>
+Message-ID: <20240730151746.960964067@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 69505fe98f198ee813898cbcaf6770949636430b ]
+commit 2314c2e3a70521f055dd011245dccf6fd97c7ee0 upstream.
 
-The issue was detected due to xfstest 465 failing.
+As commit ad8606702f26 ("md/raid5: remove rcu protection to access rdev
+from conf") explains, rcu protection can be removed, however, there are
+three places left, there won't be any real problems.
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+drivers/md/raid5.c:8071:24: error: incompatible types in comparison expression (different address spaces):
+drivers/md/raid5.c:8071:24:    struct md_rdev [noderef] __rcu *
+drivers/md/raid5.c:8071:24:    struct md_rdev *
+drivers/md/raid5.c:7569:25: error: incompatible types in comparison expression (different address spaces):
+drivers/md/raid5.c:7569:25:    struct md_rdev [noderef] __rcu *
+drivers/md/raid5.c:7569:25:    struct md_rdev *
+drivers/md/raid5.c:7573:25: error: incompatible types in comparison expression (different address spaces):
+drivers/md/raid5.c:7573:25:    struct md_rdev [noderef] __rcu *
+drivers/md/raid5.c:7573:25:    struct md_rdev *
+
+Fixes: ad8606702f26 ("md/raid5: remove rcu protection to access rdev from conf")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240615085143.1648223-1-yukuai1@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/file.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/md/raid5.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index dfd5402a42e44..cd69cbd0aaae7 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -299,10 +299,7 @@ static int ntfs_file_mmap(struct file *file, struct vm_area_struct *vma)
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -155,7 +155,7 @@ static int raid6_idx_to_slot(int idx, st
+ 	return slot;
+ }
+ 
+-static void print_raid5_conf (struct r5conf *conf);
++static void print_raid5_conf(struct r5conf *conf);
+ 
+ static int stripe_operations_active(struct stripe_head *sh)
+ {
+@@ -7580,11 +7580,11 @@ static struct r5conf *setup_conf(struct
+ 		if (test_bit(Replacement, &rdev->flags)) {
+ 			if (disk->replacement)
+ 				goto abort;
+-			RCU_INIT_POINTER(disk->replacement, rdev);
++			disk->replacement = rdev;
+ 		} else {
+ 			if (disk->rdev)
+ 				goto abort;
+-			RCU_INIT_POINTER(disk->rdev, rdev);
++			disk->rdev = rdev;
  		}
  
- 		if (ni->i_valid < to) {
--			if (!inode_trylock(inode)) {
--				err = -EAGAIN;
--				goto out;
--			}
-+			inode_lock(inode);
- 			err = ntfs_extend_initialized_size(file, ni,
- 							   ni->i_valid, to);
- 			inode_unlock(inode);
--- 
-2.43.0
-
+ 		if (test_bit(In_sync, &rdev->flags)) {
+@@ -8066,7 +8066,7 @@ static void raid5_status(struct seq_file
+ 	seq_printf (seq, "]");
+ }
+ 
+-static void print_raid5_conf (struct r5conf *conf)
++static void print_raid5_conf(struct r5conf *conf)
+ {
+ 	struct md_rdev *rdev;
+ 	int i;
+@@ -8080,15 +8080,13 @@ static void print_raid5_conf (struct r5c
+ 	       conf->raid_disks,
+ 	       conf->raid_disks - conf->mddev->degraded);
+ 
+-	rcu_read_lock();
+ 	for (i = 0; i < conf->raid_disks; i++) {
+-		rdev = rcu_dereference(conf->disks[i].rdev);
++		rdev = conf->disks[i].rdev;
+ 		if (rdev)
+ 			pr_debug(" disk %d, o:%d, dev:%pg\n",
+ 			       i, !test_bit(Faulty, &rdev->flags),
+ 			       rdev->bdev);
+ 	}
+-	rcu_read_unlock();
+ }
+ 
+ static int raid5_spare_active(struct mddev *mddev)
 
 
 
