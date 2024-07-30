@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9D4941E9D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87F4941D82
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B54A1C236A6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F8A51F26A80
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041DE166315;
-	Tue, 30 Jul 2024 17:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730181A76B8;
+	Tue, 30 Jul 2024 17:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzToabFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opICFZjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B726D1A76A5;
-	Tue, 30 Jul 2024 17:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3278E1A76B1;
+	Tue, 30 Jul 2024 17:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360662; cv=none; b=txa+9u39ATpjKh6xaabeLyBHnWQO3RGxXhdHxdmgrTYk5KgAhPOKRr6Jm0ULdG0Qup4yLCzUtZ8Woc8TAu8csXpJddqYKp7HuONrhD5DIgStaF9/9MiHdhwRF5zmTMehQoLI/rN1hwd0FCk4+RIOpr3h7UvJn12ruvvUwUho9ls=
+	t=1722359896; cv=none; b=DYbrLIHO2wqaM+ZzQz+tSx5NX2K/VIbSW+edLhL3UWjzWrtsefDPFjf4gvgk5zYw4GCWJemCSiWKdTaoFAIkShvLIR34aS4e/CTgdc9W23OcS3PsrqcqJ6nz6/ULwHHASMeeF/fKHIMHMKSfnezKa3LFp7jGUklHKyapr2xHH3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360662; c=relaxed/simple;
-	bh=cYS5dOs7NyhPfpXSn47fAIiFXSlv639fmw/BNv80JmU=;
+	s=arc-20240116; t=1722359896; c=relaxed/simple;
+	bh=MEBruco5mttoN0wX8N4f1CR6VG0kh91CtMH7uXy8gl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YnWWTpcsTZC22fB1BN6LHWQDT7l2SBx7cIfaONArX/e1u1NOwAjhRY7eXcFbL8EAMVbetp0IbMoNcKrHgNUjk0FkNPTPzh555DkoG5yt8TG0mUFNhwwLoeA3D1RkHPicpDR6WBX2yUbtceA3f+zzJtN0ah//c51XZeqTserEgoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzToabFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5CCC32782;
-	Tue, 30 Jul 2024 17:31:02 +0000 (UTC)
+	 MIME-Version; b=GQEdv28b+PBauMCbxF4Y0u5hBLT+AB0gvfuqSxcoP9MQKRUAwPPX/yTVnOQA+iDy4b0t5UAcPtMnGuG5wByIlajVkr7Bftii9S/oEjkClm39q14hLywK48WV3m3PsrwDVz1f1RsdxhDC3Uvf/i6/gmrN0YstSeYl5kLLR6CXQnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opICFZjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC6EC32782;
+	Tue, 30 Jul 2024 17:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360662;
-	bh=cYS5dOs7NyhPfpXSn47fAIiFXSlv639fmw/BNv80JmU=;
+	s=korg; t=1722359896;
+	bh=MEBruco5mttoN0wX8N4f1CR6VG0kh91CtMH7uXy8gl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzToabFxWCg0jbsapRqdI6554OoHV/dpBAmQM5/V+egD/uwwR7kYvlJHSsfwgUK2J
-	 u2ttp+RCERKt6aSKxECQ+WBTuuFwOU4S0HbLSOjBOldXxnS5IZCkmxUNBG0ztynzGX
-	 s2f/X5fXWJijSu6mJFWGhOwUGaOqgU89GKPWC7k8=
+	b=opICFZjj9N2lmzfVKhKJVGYm3kynoQQF6RpL1LEsMov2tNR0oSaykR9/YQM6oM3OP
+	 9pcLfwJoLdKNKdX3028eJYinLKZx8S464jMnwi466Ke0oqpfSU+49RwP5snGGNiZmZ
+	 5PQinxA0SKq6N4ZKSrSk2U8x5pg6023TuApfRrOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 769/809] net: nexthop: Initialize all fields in dumped nexthops
-Date: Tue, 30 Jul 2024 17:50:45 +0200
-Message-ID: <20240730151755.339330892@linuxfoundation.org>
+Subject: [PATCH 6.6 539/568] netfilter: nft_set_pipapo_avx2: disable softinterrupts
+Date: Tue, 30 Jul 2024 17:50:46 +0200
+Message-ID: <20240730151701.225497892@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 6d745cd0e9720282cd291d36b9db528aea18add2 ]
+[ Upstream commit a16909ae9982e931841c456061cb57fbaec9c59e ]
 
-struct nexthop_grp contains two reserved fields that are not initialized by
-nla_put_nh_group(), and carry garbage. This can be observed e.g. with
-strace (edited for clarity):
+We need to disable softinterrupts, else we get following problem:
 
-    # ip nexthop add id 1 dev lo
-    # ip nexthop add id 101 group 1
-    # strace -e recvmsg ip nexthop get id 101
-    ...
-    recvmsg(... [{nla_len=12, nla_type=NHA_GROUP},
-                 [{id=1, weight=0, resvd1=0x69, resvd2=0x67}]] ...) = 52
+1. pipapo_avx2 called from process context; fpu usable
+2. preempt_disable() called, pcpu scratchmap in use
+3. softirq handles rx or tx, we re-enter pipapo_avx2
+4. fpu busy, fallback to generic non-avx version
+5. fallback reuses scratch map and index, which are in use
+   by the preempted process
 
-The fields are reserved and therefore not currently used. But as they are, they
-leak kernel memory, and the fact they are not just zero complicates repurposing
-of the fields for new ends. Initialize the full structure.
+Handle this same way as generic version by first disabling
+softinterrupts while the scratchmap is in use.
 
-Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f0b3d338064e ("netfilter: nft_set_pipapo_avx2: Add irq_fpu_usable() check, fallback to non-AVX2 version")
+Cc: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/netfilter/nft_set_pipapo_avx2.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 535856b0f0edc..6b9787ee86017 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -888,9 +888,10 @@ static int nla_put_nh_group(struct sk_buff *skb, struct nexthop *nh,
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index 8910a5ac7ed12..b8d3c3213efee 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -1139,8 +1139,14 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	bool map_index;
+ 	int i, ret = 0;
  
- 	p = nla_data(nla);
- 	for (i = 0; i < nhg->num_nh; ++i) {
--		p->id = nhg->nh_entries[i].nh->id;
--		p->weight = nhg->nh_entries[i].weight - 1;
--		p += 1;
-+		*p++ = (struct nexthop_grp) {
-+			.id = nhg->nh_entries[i].nh->id,
-+			.weight = nhg->nh_entries[i].weight - 1,
-+		};
+-	if (unlikely(!irq_fpu_usable()))
+-		return nft_pipapo_lookup(net, set, key, ext);
++	local_bh_disable();
++
++	if (unlikely(!irq_fpu_usable())) {
++		bool fallback_res = nft_pipapo_lookup(net, set, key, ext);
++
++		local_bh_enable();
++		return fallback_res;
++	}
+ 
+ 	m = rcu_dereference(priv->match);
+ 
+@@ -1155,6 +1161,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	scratch = *raw_cpu_ptr(m->scratch);
+ 	if (unlikely(!scratch)) {
+ 		kernel_fpu_end();
++		local_bh_enable();
+ 		return false;
  	}
  
- 	if (nhg->resilient && nla_put_nh_group_res(skb, nhg))
+@@ -1235,6 +1242,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	if (i % 2)
+ 		scratch->map_index = !map_index;
+ 	kernel_fpu_end();
++	local_bh_enable();
+ 
+ 	return ret >= 0;
+ }
 -- 
 2.43.0
 
