@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7886941935
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FF2941940
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A090328862C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 545571F232B5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E4115699E;
-	Tue, 30 Jul 2024 16:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3D6183CDA;
+	Tue, 30 Jul 2024 16:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKgPAIjb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNpm2tOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19021A6195;
-	Tue, 30 Jul 2024 16:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B021A6161;
+	Tue, 30 Jul 2024 16:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357017; cv=none; b=in6t6WlRC8YqTBco9dbfo7YyJSp1PPJzX6vW7WQZli+b+McsHm5ZAcqF0d7AzoReLAcTtkpswTO1dzmNDGhHwvtEuGZowyuZvOa7BCusdL3zLGwFg+V6ZUEL2O3NyOdc3AHTUFvP8nEi95hGkwMl8WIiI1PZbcS3Brn6D2uAiCk=
+	t=1722357027; cv=none; b=MxfDlM3ZSIUSiEHC6wFNdCASPtu4n7DCcNvh5DUOWJ1j8eLJUfT7Df5jlzahWDCRvseKmtexPl5j9YQd+e1HnL+FbPKZZNRx8jO+YI2oZs+uDNlAku7NTQWEj1SDmthL8Z1FmKKz8kBYYpIlI466HJkNTgEQOUP8/FaQ6X+2Isc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357017; c=relaxed/simple;
-	bh=u11sX8BmBXa3YXMSxpfDmqrPZCfNGh2Yo7CbQXrbJVo=;
+	s=arc-20240116; t=1722357027; c=relaxed/simple;
+	bh=Ubp10UyruLnmI5cOFXpL9zvp6AjulhryhH8x3bl/AkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MGg2HHgnpYTFuk1rUfFjqzBGTCd7HHBGqTjUpGDTon9m3Twu35KKcsEBupwLdaup8DbDqJmA/6u9MpviJAw5Wsk0pW4hvxE7mevWPV7S2h/JbF8GK1B5w15HfoviSaT11ZSZtzg6zKEzevR1DOvCuNM4mb5d6Y2TokmxmbQaO+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKgPAIjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D90C32782;
-	Tue, 30 Jul 2024 16:30:16 +0000 (UTC)
+	 MIME-Version; b=gmd3H+mtjW5rva+dd2Uh+J1IrOsJ212zU/JKgiG8HhCy2cVI+kOCGtv/wbMbAU3choGrAqmfdi5fwR2/8giVAulnCXiJFBH907jRSYO5Nd+Twug9K/DKHA9XGJdwhV3RPBZEDjR4iAbppqPlJRhI19NuQhW8SM9xsGN1qcDyKUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNpm2tOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27B0C32782;
+	Tue, 30 Jul 2024 16:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357017;
-	bh=u11sX8BmBXa3YXMSxpfDmqrPZCfNGh2Yo7CbQXrbJVo=;
+	s=korg; t=1722357027;
+	bh=Ubp10UyruLnmI5cOFXpL9zvp6AjulhryhH8x3bl/AkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKgPAIjbP/iJhGxvG20t1Sc5cSmWmthwL7yoULSxGwv9qtDF9NQztym/7KOl6h7C5
-	 vltVh8rsb1BBp22VUpLdrpk1ZIAbpm/clDrQNLAfmHyc9llnt93yrTknmrHm2LQ75W
-	 AafponIaIlteMRc+BzkqN1FhKKv+V+MK0X4Jqr2g=
+	b=PNpm2tOoZt+e8bpt2ZXcDUrszdz8UNCN7plUis8s3Y2rzHF8SGXx5Y7MFcNJxJdZg
+	 o6aGnkDg9uzgKVYXMLTXkJ1WdMO986VfxXIqTUoT3cTR4PRLAo+BzIIWvSzEta34+h
+	 nh43gcQKUUhjBkQkp3Z7Tg7RAJbu0HYhhr+h+HZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 210/809] wifi: mac80211: correcty limit wider BW TDLS STAs
-Date: Tue, 30 Jul 2024 17:41:26 +0200
-Message-ID: <20240730151732.900814429@linuxfoundation.org>
+Subject: [PATCH 6.10 211/809] wifi: iwlwifi: fix iwl_mvm_get_valid_rx_ant()
+Date: Tue, 30 Jul 2024 17:41:27 +0200
+Message-ID: <20240730151732.939525558@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,57 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 0b2d9d9aec2be212a28b7d14b5462c56d9adc3a3 ]
+[ Upstream commit 0091eda01412805e0d2c8025638ac0992102a7fc ]
 
-When updating a channel context, the code can apply wider
-bandwidth TDLS STA channel definitions to each and every
-channel context used by the device, an approach that will
-surely lead to problems if there is ever more than one.
+Fix incorrect use of _tx_ valid ant data in the function.
 
-Restrict the wider BW TDLS STA consideration to only TDLS
-STAs that are actually related to links using the channel
-context being updated.
-
-Fixes: 0fabfaafec3a ("mac80211: upgrade BW of TDLS peers when possible")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240612143707.1ad989acecde.I5c75c94d95c3f4ea84f8ff4253189f4b13bad5c3@changeid
+Fixes: 4ea1ed1d14d8 ("wifi: iwlwifi: mvm: support set_antenna()")
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240618200104.b7c6a320c7dc.I3092eb5275056f2162b9694e583c310c38568b2a@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/chan.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 380695fdc32fa..e6a7ff6ca6797 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -775,13 +775,24 @@ void ieee80211_recalc_chanctx_chantype(struct ieee80211_local *local,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 6837d8afb9877..ded094b6b63df 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1863,10 +1863,10 @@ static inline u8 iwl_mvm_get_valid_tx_ant(struct iwl_mvm *mvm)
  
- 	/* TDLS peers can sometimes affect the chandef width */
- 	list_for_each_entry(sta, &local->sta_list, list) {
-+		struct ieee80211_sub_if_data *sdata = sta->sdata;
- 		struct ieee80211_chan_req tdls_chanreq = {};
-+		int tdls_link_id;
-+
- 		if (!sta->uploaded ||
- 		    !test_sta_flag(sta, WLAN_STA_TDLS_WIDER_BW) ||
- 		    !test_sta_flag(sta, WLAN_STA_AUTHORIZED) ||
- 		    !sta->tdls_chandef.chan)
- 			continue;
+ static inline u8 iwl_mvm_get_valid_rx_ant(struct iwl_mvm *mvm)
+ {
+-	u8 rx_ant = mvm->fw->valid_tx_ant;
++	u8 rx_ant = mvm->fw->valid_rx_ant;
  
-+		tdls_link_id = ieee80211_tdls_sta_link_id(sta);
-+		link = sdata_dereference(sdata->link[tdls_link_id], sdata);
-+		if (!link)
-+			continue;
-+
-+		if (rcu_access_pointer(link->conf->chanctx_conf) != conf)
-+			continue;
-+
- 		tdls_chanreq.oper = sta->tdls_chandef;
+ 	if (mvm->nvm_data && mvm->nvm_data->valid_rx_ant)
+-		rx_ant &= mvm->nvm_data->valid_tx_ant;
++		rx_ant &= mvm->nvm_data->valid_rx_ant;
  
- 		/* note this always fills and returns &tmp if compat */
+ 	if (mvm->set_rx_ant)
+ 		rx_ant &= mvm->set_rx_ant;
 -- 
 2.43.0
 
