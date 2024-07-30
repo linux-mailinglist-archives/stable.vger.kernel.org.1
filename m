@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC86941CF3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B31E941E6F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4970DB290B6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCB321C23D4D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8D118E027;
-	Tue, 30 Jul 2024 17:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DE91A76DE;
+	Tue, 30 Jul 2024 17:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpy2/tgU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7Vk/ZBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0B983A17;
-	Tue, 30 Jul 2024 17:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139461A76DD;
+	Tue, 30 Jul 2024 17:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359323; cv=none; b=d5VR8Uk6piWfjAPC6EOJ8oIQTaJbUpM1Vcg3NMp9WVZYT6W8YvhlrpnEMaUrc5+1Mvx/Vfyz+dTlih3xodafiIktzfmGQj+zLoDTZ+kvpvEEAnZV6+mh76HSKUfhFYmR/wq8tS9GkG5yq05rhLqzg6cGOuQcXU6/yHvcJV9WVIw=
+	t=1722360531; cv=none; b=OPGUwS436Fgj/6+qZLxH3RKlfIT+axiFh5qbehC76Keq+I63MbUgAF7lQwo1jcDs1F5VRxFTyze0LpmL7onZGSlH971Ui5cUl2ny8th27CoZMY2i8/dL5ACP1UhwVQd6r9tyjRvZaMBWOzGvjZVsUH3iKLj4D1x3QGKYL1DcE2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359323; c=relaxed/simple;
-	bh=3XUMiHaCYpuAi2tFfivY7zraGMPmQOMrZF4Ny5GirBk=;
+	s=arc-20240116; t=1722360531; c=relaxed/simple;
+	bh=OPbOpTt3i08z1MNUUACmNTjn423ZvuuaRXnJE6LalwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvFiaRKY9Z/smCz98r0JqO93WyOWyhNz7XFAOu2GPTQy+eXcqzeDMwgVkwADA/poD0FdyOD9cc0V6Y2HPl3ATyQLg3Spnhoyj0DoAWwzoYcOZBpvb76ZJSh31HjJmjUnsWWbF+ow/S2JUgwCwmUcCIqkXlU01tmqEg03XpQndYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpy2/tgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C9CC32782;
-	Tue, 30 Jul 2024 17:08:42 +0000 (UTC)
+	 MIME-Version; b=ssL7EEvtY9A0f0hM0zspo78rXxBNtUCEvQQUwiKRt9w5yQI6VmG1Bf7Z/tIsbFO3T4ZYw1X9ZY8i4UiMuT8ILONg3JIOqbWq85pF3eoVwObRW205v74cXqSUKtJuLk58PIttVT3X1J3GsLi0aHVzbiY3QVVO6saUKjOa5AXwFAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7Vk/ZBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78204C32782;
+	Tue, 30 Jul 2024 17:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359322;
-	bh=3XUMiHaCYpuAi2tFfivY7zraGMPmQOMrZF4Ny5GirBk=;
+	s=korg; t=1722360531;
+	bh=OPbOpTt3i08z1MNUUACmNTjn423ZvuuaRXnJE6LalwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpy2/tgU4pIEeyL8aupoKByWBFu8HR0lUxE/5oytq7EsK/96rYSZywwzU2y3vqvMA
-	 SgfHrXjERO3fhgp1C9NnDMJx9/NwQ99T8QXkxEIJVb9AqF2OAod3sXhcQxBADPMx+e
-	 QXWgOU26A14vGqYV0p5/yV1cH/6BwoC5XXHpnZPw=
+	b=w7Vk/ZBqdEm5eEAt+Y2LYBBU1w/DmIz+3baeampaYk0eqZJYQZTwFWo4mo4HiTdYL
+	 zpxxxXgb2TGzG+PF+3pwingG/0CFW1ku+MRNwXECWWiBrp6X6AAq7kYUtXoWtPgtsw
+	 kyDzKcnTExQlJMVTBx1VkTOJRh47qCwEquXn0P7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 466/568] scsi: qla2xxx: validate nvme_local_port correctly
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.10 697/809] perf/x86/intel/pt: Fix a topa_entry base address calculation
 Date: Tue, 30 Jul 2024 17:49:33 +0200
-Message-ID: <20240730151658.233934600@linuxfoundation.org>
+Message-ID: <20240730151752.449915332@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit eb1d4ce2609584eeb7694866f34d4b213caa3af9 upstream.
+commit ad97196379d0b8cb24ef3d5006978a6554e6467f upstream.
 
-The driver load failed with error message,
+topa_entry->base is a bit-field. Bit-fields are not promoted to a 64-bit
+type, even if the underlying type is 64-bit, and so, if necessary, must
+be cast to a larger type when calculations are done.
 
-qla2xxx [0000:04:00.0]-ffff:0: register_localport failed: ret=ffffffef
+Fix a topa_entry->base address calculation by adding a cast.
 
-and with a kernel crash,
+Without the cast, the address was limited to 36-bits i.e. 64GiB.
 
-	BUG: unable to handle kernel NULL pointer dereference at 0000000000000070
-	Workqueue: events_unbound qla_register_fcport_fn [qla2xxx]
-	RIP: 0010:nvme_fc_register_remoteport+0x16/0x430 [nvme_fc]
-	RSP: 0018:ffffaaa040eb3d98 EFLAGS: 00010282
-	RAX: 0000000000000000 RBX: ffff9dfb46b78c00 RCX: 0000000000000000
-	RDX: ffff9dfb46b78da8 RSI: ffffaaa040eb3e08 RDI: 0000000000000000
-	RBP: ffff9dfb612a0a58 R08: ffffffffaf1d6270 R09: 3a34303a30303030
-	R10: 34303a303030305b R11: 2078787832616c71 R12: ffff9dfb46b78dd4
-	R13: ffff9dfb46b78c24 R14: ffff9dfb41525300 R15: ffff9dfb46b78da8
-	FS:  0000000000000000(0000) GS:ffff9dfc67c00000(0000) knlGS:0000000000000000
-	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-	CR2: 0000000000000070 CR3: 000000018da10004 CR4: 00000000000206f0
-	Call Trace:
-	qla_nvme_register_remote+0xeb/0x1f0 [qla2xxx]
-	? qla2x00_dfs_create_rport+0x231/0x270 [qla2xxx]
-	qla2x00_update_fcport+0x2a1/0x3c0 [qla2xxx]
-	qla_register_fcport_fn+0x54/0xc0 [qla2xxx]
+The address calculation is used on systems that do not support Multiple
+Entry ToPA (only Broadwell), and affects physical addresses on or above
+64GiB. Instead of writing to the correct address, the address comprising
+the first 36 bits would be written to.
 
-Exit the qla_nvme_register_remote() function when qla_nvme_register_hba()
-fails and correctly validate nvme_local_port.
+Intel PT snapshot and sampling modes are not affected.
 
+Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
+Reported-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-3-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20240624201101.60186-3-adrian.hunter@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_nvme.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/pt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_nvme.c
-+++ b/drivers/scsi/qla2xxx/qla_nvme.c
-@@ -49,7 +49,10 @@ int qla_nvme_register_remote(struct scsi
- 		return 0;
- 	}
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -878,7 +878,7 @@ static void pt_update_head(struct pt *pt
+  */
+ static void *pt_buffer_region(struct pt_buffer *buf)
+ {
+-	return phys_to_virt(TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
++	return phys_to_virt((phys_addr_t)TOPA_ENTRY(buf->cur, buf->cur_idx)->base << TOPA_SHIFT);
+ }
  
--	if (!vha->nvme_local_port && qla_nvme_register_hba(vha))
-+	if (qla_nvme_register_hba(vha))
-+		return 0;
-+
-+	if (!vha->nvme_local_port)
- 		return 0;
- 
- 	if (!(fcport->nvme_prli_service_param &
+ /**
 
 
 
