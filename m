@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-64076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283A3941C04
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2D6941C08
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6FBC2829D6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE8CE1C224CC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228EE18454A;
-	Tue, 30 Jul 2024 17:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30903189537;
+	Tue, 30 Jul 2024 17:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnAZiLV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCetgRG9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA1283A17;
-	Tue, 30 Jul 2024 17:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B4318801A;
+	Tue, 30 Jul 2024 17:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358911; cv=none; b=AwR13BPDpMlxXrIIeZTbH6mxaHiC+UEqaZCZurnjfeTpO0xX6pS8z4pko5vR2QGjWOdMc0YhcWXEs2Ul40C3BV11oiBhqLD1fv2/MBlpsLKz2d3YJjY6A/M0ms8PE6hwE9tkp1tT07MQanmyC9V6fToSYb0TIU0uiQFYKAZQiLY=
+	t=1722358924; cv=none; b=cxDyaXxhdJ2RnHKO8kLx6dmhWYugGx1QJcb69L7fyanKRqcJ8hDOuB5UZwEwtI+UMUzZCtx64nr/LQkpxKSIqxtABmd7BH/RAVvAJPWL0746H0imbnNLzQ7uBltXyErLSrMeaxQUc0KhYgzNpl1IvktHu+SANMbnrHxNdO6s8Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358911; c=relaxed/simple;
-	bh=GvTEXq65clS9lLTpk9F/GN1dweZJSlZqE4DJ0JCx/XY=;
+	s=arc-20240116; t=1722358924; c=relaxed/simple;
+	bh=rLhkJrm5LU49SX6bM3Nx9X6Zj2bV7Dl1Y+vwbGRVQhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPV//quUUszIGpjLUwAH4FWAD+maremzkP0ji2ig29FvXqpSpYuS42VUGds+cA91cVh+xB2v2oyEuvvwjvJMHzNzqLd7vm3lCByvV3kRAPTwBLyZ3w80h9bm80P8lxR9/dtDljgFsxmssC+C4OP+0sZdoBdhvNChOFLnoMz8beQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnAZiLV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4C3C32782;
-	Tue, 30 Jul 2024 17:01:51 +0000 (UTC)
+	 MIME-Version; b=XluzJYi7rJRstPCzWqHCDB1Rl6OrJbexYTZB5EN4CiAj9WD+nKWEmoAuLEfeNFXPd3jtZwdjWQcvhJvPZI/rA6VMO08telzntZ1LJgU+isLmJPOPv3ARtoTsMaHEBzPgrzuMnQtUXd4OCmNYpeVbBQpHsVS1clUYVnCM7S/W6Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCetgRG9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC42C32782;
+	Tue, 30 Jul 2024 17:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358911;
-	bh=GvTEXq65clS9lLTpk9F/GN1dweZJSlZqE4DJ0JCx/XY=;
+	s=korg; t=1722358924;
+	bh=rLhkJrm5LU49SX6bM3Nx9X6Zj2bV7Dl1Y+vwbGRVQhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnAZiLV7KgrhZubIolX6QO+GT3PV9vI48n8BV4do8dbP+pUhnxBs5x4E6Y83R7zBA
-	 GrglSYE/mE0qj1dFkRWuh08G33Gdlz7B7JiVjlAdK8t84Vk2DAtGpwQh/BT18MH6np
-	 TCE94DUjMuXx0x0WAzr45oNgALavZEAefBy2m3MM=
+	b=rCetgRG9p8gXF3u1XBs0cV/ctP5ULnsOBNz5O2CZ/ogAP4488RZjOLpxnD0+KFGh+
+	 9/eJe3d9U9p6ufGsrnYhQhGimdHq3aJ/+Xq1i/g62Eb1kaQcB6Q2Bsa05wfvZBq6kW
+	 tJLkTA6u0qEUdTEyXPmjhesJeRAffpNaRJ7V0sRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Yao <hao.yao@intel.com>,
-	Wentong Wu <wentong.wu@intel.com>,
-	Jason Chen <jason.z.chen@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 408/568] media: ivsc: csi: add separate lock for v4l2 control handler
-Date: Tue, 30 Jul 2024 17:48:35 +0200
-Message-ID: <20240730151655.815500039@linuxfoundation.org>
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 6.6 409/568] media: imx-pxp: Fix ERR_PTR dereference in pxp_probe()
+Date: Tue, 30 Jul 2024 17:48:36 +0200
+Message-ID: <20240730151655.855368195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -68,70 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wentong Wu <wentong.wu@intel.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-commit c6be6471004e0e4d10d0514146d8c41550823d63 upstream.
+commit 57e9ce68ae98551da9c161aaab12b41fe8601856 upstream.
 
-There're possibilities that privacy status change notification happens
-in the middle of the ongoing mei command which already takes the command
-lock, but v4l2_ctrl_s_ctrl() would also need the same lock prior to this
-patch, so this may results in circular locking problem. This patch adds
-one dedicated lock for v4l2 control handler to avoid described issue.
+devm_regmap_init_mmio() can fail, add a check and bail out in case of
+error.
 
-Fixes: 29006e196a56 ("media: pci: intel: ivsc: Add CSI submodule")
-Cc: stable@vger.kernel.org # for 6.6 and later
-Reported-by: Hao Yao <hao.yao@intel.com>
-Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-Tested-by: Jason Chen <jason.z.chen@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 4e5bd3fdbeb3 ("media: imx-pxp: convert to regmap")
+Cc: stable@vger.kernel.org
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240514095038.3464191-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/intel/ivsc/mei_csi.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/platform/nxp/imx-pxp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/pci/intel/ivsc/mei_csi.c
-+++ b/drivers/media/pci/intel/ivsc/mei_csi.c
-@@ -124,6 +124,8 @@ struct mei_csi {
- 	struct v4l2_ctrl_handler ctrl_handler;
- 	struct v4l2_ctrl *freq_ctrl;
- 	struct v4l2_ctrl *privacy_ctrl;
-+	/* lock for v4l2 controls */
-+	struct mutex ctrl_lock;
- 	unsigned int remote_pad;
- 	/* start streaming or not */
- 	int streaming;
-@@ -609,11 +611,13 @@ static int mei_csi_init_controls(struct
- 	u32 max;
- 	int ret;
+--- a/drivers/media/platform/nxp/imx-pxp.c
++++ b/drivers/media/platform/nxp/imx-pxp.c
+@@ -1805,6 +1805,9 @@ static int pxp_probe(struct platform_dev
+ 		return PTR_ERR(mmio);
+ 	dev->regmap = devm_regmap_init_mmio(&pdev->dev, mmio,
+ 					    &pxp_regmap_config);
++	if (IS_ERR(dev->regmap))
++		return dev_err_probe(&pdev->dev, PTR_ERR(dev->regmap),
++				     "Failed to init regmap\n");
  
-+	mutex_init(&csi->ctrl_lock);
-+
- 	ret = v4l2_ctrl_handler_init(&csi->ctrl_handler, 2);
- 	if (ret)
- 		return ret;
- 
--	csi->ctrl_handler.lock = &csi->lock;
-+	csi->ctrl_handler.lock = &csi->ctrl_lock;
- 
- 	max = ARRAY_SIZE(link_freq_menu_items) - 1;
- 	csi->freq_ctrl = v4l2_ctrl_new_int_menu(&csi->ctrl_handler,
-@@ -772,6 +776,7 @@ err_entity:
- 
- err_ctrl_handler:
- 	v4l2_ctrl_handler_free(&csi->ctrl_handler);
-+	mutex_destroy(&csi->ctrl_lock);
- 	v4l2_async_nf_unregister(&csi->notifier);
- 	v4l2_async_nf_cleanup(&csi->notifier);
- 
-@@ -791,6 +796,7 @@ static void mei_csi_remove(struct mei_cl
- 	v4l2_async_nf_unregister(&csi->notifier);
- 	v4l2_async_nf_cleanup(&csi->notifier);
- 	v4l2_ctrl_handler_free(&csi->ctrl_handler);
-+	mutex_destroy(&csi->ctrl_lock);
- 	v4l2_async_unregister_subdev(&csi->subdev);
- 	v4l2_subdev_cleanup(&csi->subdev);
- 	media_entity_cleanup(&csi->subdev.entity);
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
 
 
 
