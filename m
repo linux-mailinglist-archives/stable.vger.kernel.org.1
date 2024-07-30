@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64528941DE0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 765A2941ACD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950DA1C23AD9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57EC0B2AB70
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C316C1A76B2;
-	Tue, 30 Jul 2024 17:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A70184553;
+	Tue, 30 Jul 2024 16:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDVCBgMt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoJ62hb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A621A76A9;
-	Tue, 30 Jul 2024 17:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F614831F;
+	Tue, 30 Jul 2024 16:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360171; cv=none; b=aL5KRrs8O+7faQLpVPaBJksvTPQhNkFIQ1dHc44tuLLxjEQasDRjoeDN/Cylux+HEjw6EeNktyJThon8NPnKPwQjYBXx7zfhbVZSowD9xLSsW/JqhWmKnP22vPkRAsihw02XV/3Hn6I0UHkPnnd8+IN1RVXZutAr+jDZ8oP0nyo=
+	t=1722357314; cv=none; b=pttYDC+McZdpClNiMICXsffzPXy0A+v3KREVdJFAu7KXjCcHvuiyami6Q23VilqMx2UqiAbF0Z2mbjrd10CM8WfYM8swgwdmhnyMMnFNG/wNQnOQYDKAOl2N6iynCnji675OqePJsXFtSAtSpKrfVikQLvGSWSLBm9IaRymADlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360171; c=relaxed/simple;
-	bh=df56HXy2M8cY18rj59i8gCvsr7ahf928b/sV+YxxnwM=;
+	s=arc-20240116; t=1722357314; c=relaxed/simple;
+	bh=Q8FAIPYxtRJFWH4eYCy1zlfiirqs8tgu2DgFS/TnE9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YHeRabHxw7LatFcRfyC3d3UzLAEP9Jx6F3IFNWWxY4synt8dAvPMZZLMVqPSmYp0gGJ/+UUibVv6Pp0kDHCk+IkHAeTZlPhZbw9o9/Cr9k9jx0pGQlugrNoluR2SL6JXP9lvg97FqEQcr3OOlGS4YVpgEfDZNUn/C2Zk0gdNJqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDVCBgMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82C1C4AF0E;
-	Tue, 30 Jul 2024 17:22:50 +0000 (UTC)
+	 MIME-Version; b=gM/8Q/HjpKl1K1KbItqcF2eXFEGwwgfHmaC/6sjQCN0oAioK/eu4J4LTex9Dm8dVHNuOUdRZg7TpEgEp7COpfnw8yeA8+FtToIYvGRi9pgn3T6EZWF4lz0WP8aeEg0UykcI7HswMqhuYf+Kan82hkHiaCEgEHkOZBA2vBnWuz1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoJ62hb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C9CC32782;
+	Tue, 30 Jul 2024 16:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360171;
-	bh=df56HXy2M8cY18rj59i8gCvsr7ahf928b/sV+YxxnwM=;
+	s=korg; t=1722357314;
+	bh=Q8FAIPYxtRJFWH4eYCy1zlfiirqs8tgu2DgFS/TnE9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDVCBgMtorGZ7xlC5R+h+plzoQoseQbWg9NxSSzBc7RggRL/okg0dDtF554dRppFq
-	 5IkdI9gDutcwkAp9D37CVuNDGlsNvCWluFIW/mYEapBm1LTCAaQ7dJqG65S/GyA/gl
-	 kCe07uOghVYKChEXqX7I1K1sfAwgMsfn0wLZKB6o=
+	b=CoJ62hb9SBsn+q3dTi9ZIsW0b4tDu7lHandNZFNGDO2DHGxkFuPDYlRVwVkmbvaHj
+	 bW/LTKS1mFMNXrBL0IjG8B2mCk2c9okpf3cpjcVvPQ/Mq+GqoudNJAEu0oyyQ+BQ1J
+	 FGYImwJNrzg2kRlMj0e27WsKNqtNVXFFENXgtjjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.10 618/809] KVM: PPC: Book3S HV nestedv2: Fix doorbell emulation
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 261/440] nilfs2: avoid undefined behavior in nilfs_cnt32_ge macro
 Date: Tue, 30 Jul 2024 17:48:14 +0200
-Message-ID: <20240730151749.249856693@linuxfoundation.org>
+Message-ID: <20240730151626.036550429@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 54ec2bd9e0173b75daf84675d07c56584f96564b upstream.
+[ Upstream commit 0f3819e8c483771a59cf9d3190cd68a7a990083c ]
 
-Doorbell emulation is broken for KVM on PAPR guests as support for DPDES
-was not added in the initial patch series. Due to this, a KVM on PAPR
-guest with SMT > 1 cannot be booted with the XICS interrupt controller
-as doorbells are setup in the initial probe path when using XICS
-(pSeries_smp_probe()).
+According to the C standard 3.4.3p3, the result of signed integer overflow
+is undefined.  The macro nilfs_cnt32_ge(), which compares two sequence
+numbers, uses signed integer subtraction that can overflow, and therefore
+the result of the calculation may differ from what is expected due to
+undefined behavior in different environments.
 
-Command to replicate the above bug:
+Similar to an earlier change to the jiffies-related comparison macros in
+commit 5a581b367b5d ("jiffies: Avoid undefined behavior from signed
+overflow"), avoid this potential issue by changing the definition of the
+macro to perform the subtraction as unsigned integers, then cast the
+result to a signed integer for comparison.
 
-qemu-system-ppc64 \
-	-drive file=rhel.qcow2,format=qcow2 \
-	-m 20G \
-	-smp 8,cores=1,threads=8 \
-	-cpu  host \
-	-nographic \
-	-machine pseries,ic-mode=xics -accel kvm
-
-Add doorbell state handling support in the host KVM code to fix doorbell
-emulation.
-
-Fixes: 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240605113913.83715-3-gautam@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20130727225828.GA11864@linux.vnet.ibm.com
+Link: https://lkml.kernel.org/r/20240702183512.6390-1-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nilfs2/segment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4116,6 +4116,11 @@ static int kvmhv_vcpu_entry_nestedv2(str
- 	int trap;
- 	long rc;
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 04943ab40a011..5110c50be2918 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -136,7 +136,7 @@ static void nilfs_dispose_list(struct the_nilfs *, struct list_head *, int);
  
-+	if (vcpu->arch.doorbell_request) {
-+		vcpu->arch.doorbell_request = 0;
-+		kvmppc_set_dpdes(vcpu, 1);
-+	}
-+
- 	io = &vcpu->arch.nestedv2_io;
+ #define nilfs_cnt32_ge(a, b)   \
+ 	(typecheck(__u32, a) && typecheck(__u32, b) && \
+-	 ((__s32)(a) - (__s32)(b) >= 0))
++	 ((__s32)((a) - (b)) >= 0))
  
- 	msr = mfmsr();
+ static int nilfs_prepare_segment_lock(struct super_block *sb,
+ 				      struct nilfs_transaction_info *ti)
+-- 
+2.43.0
+
 
 
 
