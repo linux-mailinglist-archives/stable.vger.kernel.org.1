@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF1D941B7A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27358941BCE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3BA02828E4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C47861F23463
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AB91898ED;
-	Tue, 30 Jul 2024 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DF51898E0;
+	Tue, 30 Jul 2024 16:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V602y7ay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfqgdQx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED51D1A6195;
-	Tue, 30 Jul 2024 16:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3F41898ED;
+	Tue, 30 Jul 2024 16:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358530; cv=none; b=bWDxyUhA+2aILuptR4gHF7bKj5+LOTkk2aGjWAN66VDW0Qg02tsvQPY0KS9XPjtE7BD+erJDdlD7mhGE8RI5ZOnKA5zioxl9L9fpP3o7+aMLyJ4cVThAc5k/mClsVkue2h1HfRw6aYx3M96mAGXPrVdvXzWe5fHOoyDkUjTkW6o=
+	t=1722358759; cv=none; b=CAFGVdrULoC+IzC2DNZFAgBCKXq1iDPDsKj1KSZRXgXiI1iqSbvB4+URzvtQmJW8JV9G1cE+9jbVtsZ68O8wggFQ/FQn1o9QqkNTEm3TyLBAy1QgqwJhQmQDusHdTJxQ24i/8TSrfs63ESv2QOgFntYajSwCxkcqmY8k29hnPvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358530; c=relaxed/simple;
-	bh=GjZfosucJwojO8kVMZcqns6pyXcBs2bMozZRus6QxmQ=;
+	s=arc-20240116; t=1722358759; c=relaxed/simple;
+	bh=5X4maXJGYAF+3HHNxZ4SWAhlXsrxrGu4oJYCuzBMlyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvAlL9d8zeGQLGOn6nHqeOKnTGV7IipW9lm4BsayL3qJT1HBtzUnu5lM/0JFiuGsqD/3MUUwZgM9KrA2q+ibrINyHZJZ8EEaakMZNJm0W2xiqrYvMYjumOkoeop5YIIrKnTpbgHs5emYf7TP0a0zAAxV0R+efdY0YTe0euvkQnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V602y7ay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E43C32782;
-	Tue, 30 Jul 2024 16:55:29 +0000 (UTC)
+	 MIME-Version; b=VKCi2lu/aNFhbUHoVgD+CagUf1BPAJxPBGaWPURxktiIIt50C+Yg4Vz4eDyYvR3rjNgBJbPL1l53NugqkxvBqeRHj+FqhMuwm7SKbtksPROlcOPPuRjcTyFUgsmTZ0cQP9kL2OpS2dVTSfODdVeDf07VvBznlLvgWgQTMXdasQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfqgdQx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAE9C32782;
+	Tue, 30 Jul 2024 16:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358529;
-	bh=GjZfosucJwojO8kVMZcqns6pyXcBs2bMozZRus6QxmQ=;
+	s=korg; t=1722358758;
+	bh=5X4maXJGYAF+3HHNxZ4SWAhlXsrxrGu4oJYCuzBMlyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V602y7ayOcvZK/jEg+rcv7eqMZnDAJKs4S2PaT1xtpxOrlTm+6+fjtAjAWKcGz8s2
-	 LdFZPEnNWh63o7Ut22v9BIrUnpqAnpD05DPeEh6U4yglHEPSdrGNDqEU7u46TzR2gF
-	 KcB7GjnU5kquzyAxg0RcHUSCdK9kLfytnpKE4JkY=
+	b=MfqgdQx8UAkJfeN0kbrEIOuChiSMToqeWtGZREUbCjPWUQFWztM9MoIHkl+PvhPQE
+	 tRd6ojgLlcJ6CLZMlTjclcmBpD03QYaF04uc5FPOskxnaUCGORD5yANwqFz0ftOIbD
+	 uYXJlNgjBduFgJRu1nBHOxUvs9kEcs0hT2LrrXfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 367/809] mfd: omap-usb-tll: Use struct_size to allocate tll
-Date: Tue, 30 Jul 2024 17:44:03 +0200
-Message-ID: <20240730151739.150569571@linuxfoundation.org>
+Subject: [PATCH 6.10 368/809] xprtrdma: Fix rpcrdma_reqs_reset()
+Date: Tue, 30 Jul 2024 17:44:04 +0200
+Message-ID: <20240730151739.190262375@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,67 +66,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 40176714c818b0b6a2ca8213cdb7654fbd49b742 ]
+[ Upstream commit acd9f2dd23c632568156217aac7a05f5a0313152 ]
 
-Commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-changed the memory allocation of 'tll' to consolidate it into a single
-allocation, introducing an incorrect size calculation.
+Avoid FastReg operations getting MW_BIND_ERR after a reconnect.
 
-In particular, the allocation for the array of pointers was converted
-into a single-pointer allocation.
+rpcrdma_reqs_reset() is called on transport tear-down to get each
+rpcrdma_req back into a clean state.
 
-The memory allocation used to occur in two steps:
+MRs on req->rl_registered are waiting for a FastReg, are already
+registered, or are waiting for invalidation. If the transport is
+being torn down when reqs_reset() is called, the matching LocalInv
+might never be posted. That leaves these MR registered /and/ on
+req->rl_free_mrs, where they can be re-used for the next
+connection.
 
-tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
-tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
-                           GFP_KERNEL);
+Since xprtrdma does not keep specific track of the MR state, it's
+not possible to know what state these MRs are in, so the only safe
+thing to do is release them immediately.
 
-And it turned that into the following allocation:
-
-tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
-                   GFP_KERNEL);
-
-sizeof(tll->ch_clk[nch]) returns the size of a single pointer instead of
-the expected nch pointers.
-
-This bug went unnoticed because the allocation size was small enough to
-fit within the minimum size of a memory allocation for this particular
-case [1].
-
-The complete allocation can still be done at once with the struct_size
-macro, which comes in handy for structures with a trailing flexible
-array.
-
-Fix the memory allocation to obtain the original size again.
-
-Link: https://lore.kernel.org/all/202406261121.2FFD65647@keescook/ [1]
-Fixes: 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Fixes: commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-Link: https://lore.kernel.org/r/20240626-omap-usb-tll-counted_by-v2-1-4bedf20d1b51@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 5de55ce951a1 ("xprtrdma: Release in-flight MRs on disconnect")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/omap-usb-tll.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sunrpc/xprtrdma/frwr_ops.c |  3 ++-
+ net/sunrpc/xprtrdma/verbs.c    | 16 +++++++++++++++-
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-index b6303ddb013b0..f68dd02814638 100644
---- a/drivers/mfd/omap-usb-tll.c
-+++ b/drivers/mfd/omap-usb-tll.c
-@@ -230,8 +230,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
- 		break;
- 	}
+diff --git a/net/sunrpc/xprtrdma/frwr_ops.c b/net/sunrpc/xprtrdma/frwr_ops.c
+index ffbf99894970e..47f33bb7bff81 100644
+--- a/net/sunrpc/xprtrdma/frwr_ops.c
++++ b/net/sunrpc/xprtrdma/frwr_ops.c
+@@ -92,7 +92,8 @@ static void frwr_mr_put(struct rpcrdma_mr *mr)
+ 	rpcrdma_mr_push(mr, &mr->mr_req->rl_free_mrs);
+ }
  
--	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
--			   GFP_KERNEL);
-+	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
- 	if (!tll) {
- 		pm_runtime_put_sync(dev);
- 		pm_runtime_disable(dev);
+-/* frwr_reset - Place MRs back on the free list
++/**
++ * frwr_reset - Place MRs back on @req's free list
+  * @req: request to reset
+  *
+  * Used after a failed marshal. For FRWR, this means the MRs
+diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
+index 432557a553e7e..a0b071089e159 100644
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -897,6 +897,8 @@ static int rpcrdma_reqs_setup(struct rpcrdma_xprt *r_xprt)
+ 
+ static void rpcrdma_req_reset(struct rpcrdma_req *req)
+ {
++	struct rpcrdma_mr *mr;
++
+ 	/* Credits are valid for only one connection */
+ 	req->rl_slot.rq_cong = 0;
+ 
+@@ -906,7 +908,19 @@ static void rpcrdma_req_reset(struct rpcrdma_req *req)
+ 	rpcrdma_regbuf_dma_unmap(req->rl_sendbuf);
+ 	rpcrdma_regbuf_dma_unmap(req->rl_recvbuf);
+ 
+-	frwr_reset(req);
++	/* The verbs consumer can't know the state of an MR on the
++	 * req->rl_registered list unless a successful completion
++	 * has occurred, so they cannot be re-used.
++	 */
++	while ((mr = rpcrdma_mr_pop(&req->rl_registered))) {
++		struct rpcrdma_buffer *buf = &mr->mr_xprt->rx_buf;
++
++		spin_lock(&buf->rb_lock);
++		list_del(&mr->mr_all);
++		spin_unlock(&buf->rb_lock);
++
++		frwr_mr_release(mr);
++	}
+ }
+ 
+ /* ASSUMPTION: the rb_allreqs list is stable for the duration,
 -- 
 2.43.0
 
