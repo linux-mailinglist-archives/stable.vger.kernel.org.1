@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0589419ED
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AE09419F1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E88DD285439
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8FD1C2390A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40505189513;
-	Tue, 30 Jul 2024 16:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D2E189535;
+	Tue, 30 Jul 2024 16:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZzT/5oT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLt7qw9E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23111A6192;
-	Tue, 30 Jul 2024 16:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143C71A6169;
+	Tue, 30 Jul 2024 16:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357473; cv=none; b=GmnCQ+cwkJMYvrkeqxPIgvZ0VKVI7tE1DcaBaSjGxeDEUaKpt/mOyDS5jprFiFHDm05rKv1Y9bf/8oHmtxgePDmOxZzGn8u16iVaP+ShmRzKUuEneLmR6ZlR2o9b3Dv6VGpDo65JBqpVVvyyiH3G/SKWzNe0PRT+HP0q1wfiV14=
+	t=1722357486; cv=none; b=SCZiaaj5uMlxyOdQ/kW51o+j1IsifIeLj/bUGjkav4KI3dlYYrTkVppYhyhwFPoT60O9YeHTHCaUFHrwWbGDBMVulPhWbPuvC4ED+BFCEU4nDUQTXxmH4Nogrts7q1esYnb9/21OOWq8bTEtyDQlMzizXC0A7a2URVaVdldfX4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357473; c=relaxed/simple;
-	bh=dXitW7tTj8bg0PZGXg7MuMzL6UD572CeB5juD0/vcC8=;
+	s=arc-20240116; t=1722357486; c=relaxed/simple;
+	bh=orxPFtQLiwdxOonatrzzIwZFzJkhzXfKz0AZDPK/TlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TbimEyoLJxfPzzd7aO3TfNcky0a1Ur479GpccZ0XgbkNHLiVMiJtNQi9Jsi/24rUgwpp4HHcB9dyQskOmmvkB0T0+a+FFM6Rxa+wm0jhV2yxp3y+iMLvlAojJUm87flD/5y7xHB1NUCpGiC6cr7WdGbyrv3rtrMeAaEmTan9z+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZzT/5oT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721F9C4AF0F;
-	Tue, 30 Jul 2024 16:37:52 +0000 (UTC)
+	 MIME-Version; b=LIwFYRZDxsA9RqtJxRZeMweSyjHOUXu91TIqjgwiECbeqYukQ5G9hXA1RbQvcsKmhJt5eJWyYD9UKRUwxhV7loWNIoIVN3/QyBBQxThAPOYdgQonrO/r+qg4WM5gpnaLENRJcf9geBkJdgAvm1I4877vQI8z2gZeZFbvaJR7Jek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLt7qw9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FECC32782;
+	Tue, 30 Jul 2024 16:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357472;
-	bh=dXitW7tTj8bg0PZGXg7MuMzL6UD572CeB5juD0/vcC8=;
+	s=korg; t=1722357485;
+	bh=orxPFtQLiwdxOonatrzzIwZFzJkhzXfKz0AZDPK/TlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZzT/5oTe1rn//YNbFPdAttifMEjvjAQmRAMdMHfpcjgNkiFV18Upt8Alr1WKxoJx
-	 twC8bELxx315tMYAV4G5rx9nfUHFoeMJI3dIckb9k8p/G1z0je244w2sMb5dl5nZHR
-	 AC96H1t7wOp3LSn9W3/h92lm6TBTlqWzL7pPozeM=
+	b=pLt7qw9E+32fcT5tGhvNR3W/vFhYfqvCZqHSJdxFwGsQviZms1kYOt58ppDH+rPqr
+	 WbEWvblRtu2VqQDD8JhSwITeblP1QFYNGcj5kaiDEtOLgCJZD2EWE+EluN0bqSFmkW
+	 stydU7A63cObfjnmFCziATlVE6qkuE+hFxZafd/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 257/809] Bluetooth: hci_event: Set QoS encryption from BIGInfo report
-Date: Tue, 30 Jul 2024 17:42:13 +0200
-Message-ID: <20240730151734.747299650@linuxfoundation.org>
+Subject: [PATCH 6.10 258/809] Bluetooth: hci_core, hci_sync: cleanup struct discovery_state
+Date: Tue, 30 Jul 2024 17:42:14 +0200
+Message-ID: <20240730151734.786639916@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,40 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 5a820b13db3988122080f8de2920721f770c37a0 ]
+[ Upstream commit da63f331353c9e1e6dc29e49e28f8f4fe5d642fd ]
 
-On a Broadcast Sink, after synchronizing to the PA transimitted by a
-Broadcast Source, the BIGInfo advertising reports emitted by the
-Controller hold the encryption field, which indicates whether the
-Broadcast Source is transmitting encrypted streams.
+After commit 78db544b5d27 ("Bluetooth: hci_core: Remove le_restart_scan
+work"), 'scan_start' and 'scan_duration' of 'struct discovery_state'
+are still initialized but actually unused. So remove the aforementioned
+fields and adjust 'hci_discovery_filter_clear()' and 'le_scan_disable()'
+accordingly. Compile tested only.
 
-This updates the PA sync hcon QoS with the encryption value reported
-in the BIGInfo report, so that this information is accurate if the
-userspace tries to access the QoS struct via getsockopt.
-
-Fixes: 1d11d70d1f6b ("Bluetooth: ISO: Pass BIG encryption info through QoS")
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Fixes: 78db544b5d27 ("Bluetooth: hci_core: Remove le_restart_scan work")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/net/bluetooth/hci_core.h | 4 ----
+ net/bluetooth/hci_sync.c         | 2 --
+ 2 files changed, 6 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 93f7ac905cece..4611a67d7dcc3 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6988,6 +6988,8 @@ static void hci_le_big_info_adv_report_evt(struct hci_dev *hdev, void *data,
- 	if (!pa_sync)
- 		goto unlock;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index c43716edf2056..b15f51ae3bfd9 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -91,8 +91,6 @@ struct discovery_state {
+ 	s8			rssi;
+ 	u16			uuid_count;
+ 	u8			(*uuids)[16];
+-	unsigned long		scan_start;
+-	unsigned long		scan_duration;
+ 	unsigned long		name_resolve_timeout;
+ };
  
-+	pa_sync->iso_qos.bcast.encryption = ev->encryption;
-+
- 	/* Notify iso layer */
- 	hci_connect_cfm(pa_sync, 0);
+@@ -890,8 +888,6 @@ static inline void hci_discovery_filter_clear(struct hci_dev *hdev)
+ 	hdev->discovery.uuid_count = 0;
+ 	kfree(hdev->discovery.uuids);
+ 	hdev->discovery.uuids = NULL;
+-	hdev->discovery.scan_start = 0;
+-	hdev->discovery.scan_duration = 0;
+ }
  
+ bool hci_discovery_active(struct hci_dev *hdev);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index eea34e6a236fd..bb704088559fb 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -371,8 +371,6 @@ static void le_scan_disable(struct work_struct *work)
+ 		goto _return;
+ 	}
+ 
+-	hdev->discovery.scan_start = 0;
+-
+ 	/* If we were running LE only scan, change discovery state. If
+ 	 * we were running both LE and BR/EDR inquiry simultaneously,
+ 	 * and BR/EDR inquiry is already finished, stop discovery,
 -- 
 2.43.0
 
