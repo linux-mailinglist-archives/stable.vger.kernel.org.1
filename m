@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-64321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FAC941D52
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FCB941810
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553FC1C20F9B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CD7C1F2422A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738C71A76BA;
-	Tue, 30 Jul 2024 17:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0A018B484;
+	Tue, 30 Jul 2024 16:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEgYu/6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvVi2iHZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300261A76B6;
-	Tue, 30 Jul 2024 17:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3FB18B483;
+	Tue, 30 Jul 2024 16:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359734; cv=none; b=gXOOnDsxODQh6XdoASehtbZRRFB6GVL7gElsu3/StBP48FBVWHwtr7K6E29fnh6yiZnC9YHEE9Lce6iAoPhcKG4iKr4n9JUMoxpj5JMJBm6xHKsaNzTn3QTK1WWkIULUwVrGHuF6C7dfMR/LBEN2QHTH63Rtyz5RKEGZ9VPxpcs=
+	t=1722356204; cv=none; b=pwvAeH/HtK30zKml24b5tFreVcWG/al8FOdEi8ZFFtm2g+nZV2ZVQwLxfTG3a84Aqu2pYdVXYVoM4y9XHEKVMyo3V4ob1uV1yKjtCZCrubcNNEj2cfZUhE6kmUsbcUfvmTjeCZaYvVmGpnrcDPqyFsIgNwZRGf3ouFrvTChj6LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359734; c=relaxed/simple;
-	bh=DkXrfa9Zh0gdQoZNSc6KhjjEK09XOVlZFSOqSNDAPcQ=;
+	s=arc-20240116; t=1722356204; c=relaxed/simple;
+	bh=uaxnvbV7kdVRZXKGniXv7A3bNJJ4/qRr3vGUX55MzA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmbOKEv3YfOcevtQNyjXv8tDab7HS0JH/OCUPjnpnatns5vuOJ1+o5cdWaDvct+XC6AHGYw8z04GtsXQgQ77ADrKEDw6RTkjfb1qU8Kc5PRAjfjCAhLNTkZK2hf4dUnJ2Dmar3yleQkseoSe4Evkc6G76xb8iGkjLzCMnB4QW04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEgYu/6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4863CC32782;
-	Tue, 30 Jul 2024 17:15:33 +0000 (UTC)
+	 MIME-Version; b=TuoNArM6Unrf5EX53HRwAHLZOBFpaP+1tA0mVVWageEQ1LzANnAB5jUY1zaz0pcg93Ja4BzeYiGRMNpWA9d435IMdImab2D+8uW6vBJPnyFstpdohTxWOGZJaMNLVM6ALgNMIKRQMsd9rdSIgGq99fljrGceN9dM4/DS0gF7ClU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvVi2iHZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E497CC32782;
+	Tue, 30 Jul 2024 16:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359733;
-	bh=DkXrfa9Zh0gdQoZNSc6KhjjEK09XOVlZFSOqSNDAPcQ=;
+	s=korg; t=1722356204;
+	bh=uaxnvbV7kdVRZXKGniXv7A3bNJJ4/qRr3vGUX55MzA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEgYu/6RUytAuKFRgyD33982oQVId8zYsn4aYE9YiUjEo/F1Q6mhfhJQD75tea6yG
-	 SiXbtA0WUkb2gpPaiiyEnAGusjV6c9wCb4rL2C7sFaOvz+nd0WCYYuKCZnzkPNDRc5
-	 7vq23McKcXpQdyJVLv1s5GBXtBZMODvZjE+BlejI=
+	b=AvVi2iHZtKkRD7+MAkq6HlowFFcBVNewxuYi4pN54XyHsOIvrXCaW4GsehgZ9COOB
+	 1yK9PtQAXrr1IyeTSoF1qpxGe5vJiZXFlz9r19trbPAswauaznGMRbSA5jyVRgMWs1
+	 wn3APrgI2tLvEM2EdXLkLYYLyE4kg4Cy2eoQr36Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 525/809] power: supply: ab8500: Fix error handling when calling iio_read_channel_processed()
+Subject: [PATCH 6.1 168/440] mfd: rsmu: Split core code into separate module
 Date: Tue, 30 Jul 2024 17:46:41 +0200
-Message-ID: <20240730151745.473998963@linuxfoundation.org>
+Message-ID: <20240730151622.431716063@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3288757087cbb93b91019ba6b7de53a1908c9d48 ]
+[ Upstream commit c879a8c39dd55e7fabdd8d13341f7bc5200db377 ]
 
-The ab8500_charger_get_[ac|vbus]_[current|voltage]() functions should
-return an error code on error.
+Linking a file into two modules can have unintended side-effects
+and produces a W=1 warning:
 
-Up to now, an un-initialized value is returned.
-This makes the error handling of the callers un-reliable.
+scripts/Makefile.build:236: drivers/mfd/Makefile: rsmu_core.o is added to multiple modules: rsmu-i2c rsmu-spi
 
-Return the error code instead, to fix the issue.
+Make this one a separate module instead.
 
-Fixes: 97ab78bac5d0 ("power: supply: ab8500_charger: Convert to IIO ADC")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/f9f65642331c9e40aaebb888589db043db80b7eb.1719037737.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: a1867f85e06e ("mfd: Add Renesas Synchronization Management Unit (SMU) support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240529094856.1869543-1-arnd@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/ab8500_charger.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/mfd/Makefile    | 6 ++----
+ drivers/mfd/rsmu_core.c | 2 ++
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/power/supply/ab8500_charger.c b/drivers/power/supply/ab8500_charger.c
-index 9b34d1a60f662..4b0ad1b4b4c9b 100644
---- a/drivers/power/supply/ab8500_charger.c
-+++ b/drivers/power/supply/ab8500_charger.c
-@@ -488,8 +488,10 @@ static int ab8500_charger_get_ac_voltage(struct ab8500_charger *di)
- 	/* Only measure voltage if the charger is connected */
- 	if (di->ac.charger_connected) {
- 		ret = iio_read_channel_processed(di->adc_main_charger_v, &vch);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
-+			return ret;
-+		}
- 	} else {
- 		vch = 0;
- 	}
-@@ -540,8 +542,10 @@ static int ab8500_charger_get_vbus_voltage(struct ab8500_charger *di)
- 	/* Only measure voltage if the charger is connected */
- 	if (di->usb.charger_connected) {
- 		ret = iio_read_channel_processed(di->adc_vbus_v, &vch);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
-+			return ret;
-+		}
- 	} else {
- 		vch = 0;
- 	}
-@@ -563,8 +567,10 @@ static int ab8500_charger_get_usb_current(struct ab8500_charger *di)
- 	/* Only measure current if the charger is online */
- 	if (di->usb.charger_online) {
- 		ret = iio_read_channel_processed(di->adc_usb_charger_c, &ich);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
-+			return ret;
-+		}
- 	} else {
- 		ich = 0;
- 	}
-@@ -586,8 +592,10 @@ static int ab8500_charger_get_ac_current(struct ab8500_charger *di)
- 	/* Only measure current if the charger is online */
- 	if (di->ac.charger_online) {
- 		ret = iio_read_channel_processed(di->adc_main_charger_c, &ich);
--		if (ret < 0)
-+		if (ret < 0) {
- 			dev_err(di->dev, "%s ADC conv failed,\n", __func__);
-+			return ret;
-+		}
- 	} else {
- 		ich = 0;
- 	}
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index 7ed3ef4a698cf..e26c64bf7cb77 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -276,7 +276,5 @@ obj-$(CONFIG_MFD_INTEL_M10_BMC)   += intel-m10-bmc.o
+ obj-$(CONFIG_MFD_ATC260X)	+= atc260x-core.o
+ obj-$(CONFIG_MFD_ATC260X_I2C)	+= atc260x-i2c.o
+ 
+-rsmu-i2c-objs			:= rsmu_core.o rsmu_i2c.o
+-rsmu-spi-objs			:= rsmu_core.o rsmu_spi.o
+-obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu-i2c.o
+-obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu-spi.o
++obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu_i2c.o rsmu_core.o
++obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu_spi.o rsmu_core.o
+diff --git a/drivers/mfd/rsmu_core.c b/drivers/mfd/rsmu_core.c
+index 29437fd0bd5bf..fd04a6e5dfa31 100644
+--- a/drivers/mfd/rsmu_core.c
++++ b/drivers/mfd/rsmu_core.c
+@@ -78,11 +78,13 @@ int rsmu_core_init(struct rsmu_ddata *rsmu)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(rsmu_core_init);
+ 
+ void rsmu_core_exit(struct rsmu_ddata *rsmu)
+ {
+ 	mutex_destroy(&rsmu->lock);
+ }
++EXPORT_SYMBOL_GPL(rsmu_core_exit);
+ 
+ MODULE_DESCRIPTION("Renesas SMU core driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
