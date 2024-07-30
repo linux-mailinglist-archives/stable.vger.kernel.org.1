@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-63734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A82B941A5C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F49941CB8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C44A21F24603
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97661C20B49
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563B9184535;
-	Tue, 30 Jul 2024 16:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2EA318C901;
+	Tue, 30 Jul 2024 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6C3yWS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zdzfnx3H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149EF1A619E;
-	Tue, 30 Jul 2024 16:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21ED18B495;
+	Tue, 30 Jul 2024 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357781; cv=none; b=OfXIQ4vAnPpZZMXv0M7KQR0U32fJ2uJYDjwx0FZbQ9BpG4VB7+CtjDvgxAfK6ptF0mlj1xuTiImbpgRotDOG+uGsRdE7u2u0ycRQyQ2QjNU0sZBFVYlDlyNpVExbRGTveyIBcj9i7Hh7aaQRzSgpkBVeJ40gMXHA0xlVmHJFsow=
+	t=1722359246; cv=none; b=os+xxxcvtTUAfUwS/SnVKhOnPHJ/y9rnm7luj0JBcjewE126Xo9TDUBio9qEVJm06d15ze3rfbKE+HuyF9jsnvm0R8Rm2rj9dag6KPo2dSuux+OTvwJvfn3zBII3hsW4WLooCa/XZcsnsdIXqQDXzb0PtE0kFbw/68RRHMjVJ+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357781; c=relaxed/simple;
-	bh=oyKW7o5EHzD8jP1rX041uVmjCtZFBuJGluI/5wJX+ms=;
+	s=arc-20240116; t=1722359246; c=relaxed/simple;
+	bh=I6gvBc1D9mF0gy4wnPiaTDvxcJSemGHeCq5KgwJLWMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P6N4A3s+WubdmRBS9WNSgWiGuw02kZ/3oR9lzRAtj4pt6SwVu7wJeKdVD0S8tMXAxbKwQw7ZzasrDvo5JfrSaBhpNpDZ73PGxrL9WLGbnx/pwy9Kje1olpT5rFefezyYHYinHM/ICc1/dLjULWkcYizv9lbNN5YnzqdJNzVXhBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6C3yWS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C83EC32782;
-	Tue, 30 Jul 2024 16:43:00 +0000 (UTC)
+	 MIME-Version; b=lXGf/7JIVkdq6ZEU/+ezA60Z2nELQUTD0Ocm0YjiqBkNJZmHkdGZg7qSoQdiEFMfxE34ZeUDfPsVoVxAZFXzbtULuu95v1F+HnpcXe9FACYulbGyQUMI/BKj2D4f1Kts8AkB4oFlbRlMmIWkAb2KD+ufWZ1qzdEGA4i4zYDmfhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zdzfnx3H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF87BC4AF10;
+	Tue, 30 Jul 2024 17:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357781;
-	bh=oyKW7o5EHzD8jP1rX041uVmjCtZFBuJGluI/5wJX+ms=;
+	s=korg; t=1722359246;
+	bh=I6gvBc1D9mF0gy4wnPiaTDvxcJSemGHeCq5KgwJLWMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6C3yWS7XYdPOYHxJbstQTuPbxTXqyh6VE+ZSeiWT5qhc0Xp8ANorSe9fzscnVXxV
-	 +P7XtbSTrLFfb5z+E2NwHnjMFAzuq/kTfGGfFkZTznyBJTct4t7D3xwPJPZOkOtVcS
-	 RdykYx04w1gOEqO0Bm+7ZOAgKmf2sMhCY2ue12GM=
+	b=Zdzfnx3HD7JTLS5zixOCqUxGc9TbLnZ+iAWkctH8qPPXk/dYhjPc5B7dFOrl/3VSs
+	 JDIonSRT3L2aJGl0XqsNkPWyKeSsHwH/CnUPKZ00/u7RdH/3bpL+KfFL5kPT0EXouH
+	 JM4VBwieOkI1AhjgYRGBSVXwNWZsWz3xnLeoUf30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martijn Coenen <maco@google.com>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.1 326/440] binder: fix hang of unregistered readers
-Date: Tue, 30 Jul 2024 17:49:19 +0200
-Message-ID: <20240730151628.553169073@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 6.6 453/568] devres: Fix memory leakage caused by driver API devm_free_percpu()
+Date: Tue, 30 Jul 2024 17:49:20 +0200
+Message-ID: <20240730151657.717185675@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 31643d84b8c3d9c846aa0e20bc033e46c68c7e7d upstream.
+commit bd50a974097bb82d52a458bd3ee39fb723129a0c upstream.
 
-With the introduction of binder_available_for_proc_work_ilocked() in
-commit 1b77e9dcc3da ("ANDROID: binder: remove proc waitqueue") a binder
-thread can only "wait_for_proc_work" after its thread->looper has been
-marked as BINDER_LOOPER_STATE_{ENTERED|REGISTERED}.
+It will cause memory leakage when use driver API devm_free_percpu()
+to free memory allocated by devm_alloc_percpu(), fixed by using
+devres_release() instead of devres_destroy() within devm_free_percpu().
 
-This means an unregistered reader risks waiting indefinitely for work
-since it never gets added to the proc->waiting_threads. If there are no
-further references to its waitqueue either the task will hang. The same
-applies to readers using the (e)poll interface.
-
-I couldn't find the rationale behind this restriction. So this patch
-restores the previous behavior of allowing unregistered threads to
-"wait_for_proc_work". Note that an error message for this scenario,
-which had previously become unreachable, is now re-enabled.
-
-Fixes: 1b77e9dcc3da ("ANDROID: binder: remove proc waitqueue")
+Fixes: ff86aae3b411 ("devres: add devm_alloc_percpu()")
 Cc: stable@vger.kernel.org
-Cc: Martijn Coenen <maco@google.com>
-Cc: Arve Hjønnevåg <arve@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20240711201452.2017543-1-cmllamas@google.com
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-3-git-send-email-quic_zijuhu@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/base/devres.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -569,9 +569,7 @@ static bool binder_has_work(struct binde
- static bool binder_available_for_proc_work_ilocked(struct binder_thread *thread)
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -1225,7 +1225,11 @@ EXPORT_SYMBOL_GPL(__devm_alloc_percpu);
+  */
+ void devm_free_percpu(struct device *dev, void __percpu *pdata)
  {
- 	return !thread->transaction_stack &&
--		binder_worklist_empty_ilocked(&thread->todo) &&
--		(thread->looper & (BINDER_LOOPER_STATE_ENTERED |
--				   BINDER_LOOPER_STATE_REGISTERED));
-+		binder_worklist_empty_ilocked(&thread->todo);
+-	WARN_ON(devres_destroy(dev, devm_percpu_release, devm_percpu_match,
++	/*
++	 * Use devres_release() to prevent memory leakage as
++	 * devm_free_pages() does.
++	 */
++	WARN_ON(devres_release(dev, devm_percpu_release, devm_percpu_match,
+ 			       (__force void *)pdata));
  }
- 
- static void binder_wakeup_poll_threads_ilocked(struct binder_proc *proc,
+ EXPORT_SYMBOL_GPL(devm_free_percpu);
 
 
 
