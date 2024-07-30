@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-63769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C54941A8A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838E6941A8E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F7F1C23732
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A546D1C23721
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F287018990C;
-	Tue, 30 Jul 2024 16:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAAD155CB3;
+	Tue, 30 Jul 2024 16:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dt65+sTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThRmito+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71C31898F7;
-	Tue, 30 Jul 2024 16:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9FE189907;
+	Tue, 30 Jul 2024 16:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357895; cv=none; b=lDcpVgGoDOy1ftPdNSdPViRtRbYx5ODw6JATE1NT1UT2Bf+7/qNTR7ToFQLRmGRgzl4OOxaxs9bMPqstc3v1095HH0mZj5ljPhbwZRCCGTDBmDtreLrBXlUO8Q91Cireh5xvNbp1pMKxPe5a8PoHc8lbGkDaLl9L17ZjZh4UZrA=
+	t=1722357905; cv=none; b=lg4v8brPDA5GrWHQnoVRoUuJUJ8LJ0FYCIrrf3JM7EVSZrvShph+kalXgnIis6kswIfKxz2jY8pIYrCm7mVMSVuUmtM4N4sFPmnsQklWhT3mfmGW5cfXBcTQnTXf0k32nRyzjzA8+x2Oiz2tBPB70+C05cPLcyX3gkY0JPCxaNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357895; c=relaxed/simple;
-	bh=ul0QVal0vhk0mydQTql5mLwWQ5yZsBEGWYDB2o9S9AE=;
+	s=arc-20240116; t=1722357905; c=relaxed/simple;
+	bh=1lN5SRC3VE74B2XgwLd1wDXBR4k2EB2B+A1KotlULto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAKedOeBNH50xuFfSG83tXY0LoYaunUJ1P9+qpELtAkhuJ0DA8JboqVRqsBoW1lAqYjnRg3aXmHkTF3WbWSLNFiphqlP3czZjLCcPXyT3x140cyDTaLpGG7QaQtmTNdqQhHf5U9iuZfHDqLUHgY8TIf8GxFOzFbVg4JbMqY77Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dt65+sTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242F5C32782;
-	Tue, 30 Jul 2024 16:44:54 +0000 (UTC)
+	 MIME-Version; b=Sty4C68V3rnBoqqEES9S5uF/wOCH2qz1hryLIQabX8RfGhf8XfEVkXsFEvJutWRUtVMrZpYLAZt5dh/m80IyjdcZ+Yk53Wnn13FMARaLDOb1t7UXo7EsFpED5kbT73M7wudufLRtmfUC13FreFYyHPiv7/dSEoDNJFJdstKmtHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThRmito+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCC2C32782;
+	Tue, 30 Jul 2024 16:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357895;
-	bh=ul0QVal0vhk0mydQTql5mLwWQ5yZsBEGWYDB2o9S9AE=;
+	s=korg; t=1722357905;
+	bh=1lN5SRC3VE74B2XgwLd1wDXBR4k2EB2B+A1KotlULto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dt65+sTJKoO5y/UPYRYGp3PaIEN3ROc4G5/xoIsCGgZ3F6If/RCgrtZhbD7DZNmYs
-	 bBZ2arL+l4LbzyO24l7Bas4/kniBMzwacLSO0ULYNLNu8AFwM79D230V31g0Pvz3Wt
-	 zE5clphKmfYIBRlesBSUJizGvllecfWqIisccv3E=
+	b=ThRmito+hGr4RW9mymmeM9xdORRlPiOiodPt4qhpGtE9hG8NfYv3PO1RW4ser6+/h
+	 5TgXzfJwSHFqbEOPY3b3tVwPQEgAQH7imWYXKOcoqPEYF/SLYp1Xp0gwahpANZ+/00
+	 nz4M0gUoMZ3naXwuT7Rb6sAIxcSUHhOpAJ8QFqeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Adam Ford <aford173@gmail.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Marek Vasut <marex@denx.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 302/809] media: mediatek: vcodec: Fix unreasonable data conversion
-Date: Tue, 30 Jul 2024 17:42:58 +0200
-Message-ID: <20240730151736.521906686@linuxfoundation.org>
+Subject: [PATCH 6.10 303/809] drm/bridge: samsung-dsim: Set P divider based on min/max of fin pll
+Date: Tue, 30 Jul 2024 17:42:59 +0200
+Message-ID: <20240730151736.560447186@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,36 +69,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 48d85de244047eabe07c5040af12dfa736d61d6c ]
+[ Upstream commit 78c4c0011bb577a29906d8ca135795af2293c49e ]
 
-Both 'bs_dma' and 'dma_addr' are integers. No need to convert the
-type from dma_addr_t to uint64_t again.
+The P divider should be set based on the min and max values of
+the fin pll which may vary between different platforms.
+These ranges are defined per platform, but hard-coded values
+were used instead which resulted in a smaller range available
+on the i.MX8M[MNP] than what was possible.
 
-Fixes: d353c3c34af0 ("media: mediatek: vcodec: support 36 bits physical address")
+As noted by Frieder, there are descripencies between the reference
+manuals of the Mini, Nano and Plus, so I reached out to my NXP
+rep and got the following response regarding the varing notes
+in the documentation.
 
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+"Yes it is definitely wrong, the one that is part of the NOTE in
+MIPI_DPHY_M_PLLPMS register table against PMS_P, PMS_M and PMS_S is
+not correct. I will report this to Doc team, the one customer should
+be take into account is the Table 13-40 DPHY PLL Parameters and the
+Note above."
+
+With this patch, the clock rates now match the values used in NXP's
+downstream kernel.
+
+Fixes: 846307185f0f ("drm/bridge: samsung-dsim: update PLL reference clock")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Tested-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240601144103.198299-1-aford173@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c   | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/samsung-dsim.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c
-index 4bc89c8644fec..5f848691cea44 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c
-@@ -449,7 +449,7 @@ static int vdec_vp8_decode(void *h_vdec, struct mtk_vcodec_mem *bs,
- 		       inst->frm_cnt, y_fb_dma, c_fb_dma, fb);
+diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
+index 95fedc68b0ae5..8476650c477c2 100644
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -574,8 +574,8 @@ static unsigned long samsung_dsim_pll_find_pms(struct samsung_dsim *dsi,
+ 	u16 _m, best_m;
+ 	u8 _s, best_s;
  
- 	inst->cur_fb = fb;
--	dec->bs_dma = (uint64_t)bs->dma_addr;
-+	dec->bs_dma = bs->dma_addr;
- 	dec->bs_sz = bs->size;
- 	dec->cur_y_fb_dma = y_fb_dma;
- 	dec->cur_c_fb_dma = c_fb_dma;
+-	p_min = DIV_ROUND_UP(fin, (12 * MHZ));
+-	p_max = fin / (6 * MHZ);
++	p_min = DIV_ROUND_UP(fin, (driver_data->pll_fin_max * MHZ));
++	p_max = fin / (driver_data->pll_fin_min * MHZ);
+ 
+ 	for (_p = p_min; _p <= p_max; ++_p) {
+ 		for (_s = 0; _s <= 5; ++_s) {
 -- 
 2.43.0
 
