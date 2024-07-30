@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-64240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA98941CFD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664B9941E61
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7689D28AA57
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07AA51F24B41
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82CB18B46D;
-	Tue, 30 Jul 2024 17:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6C5183CC3;
+	Tue, 30 Jul 2024 17:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+0dlOLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWySVfUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765CC188003;
-	Tue, 30 Jul 2024 17:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAC31A76B6;
+	Tue, 30 Jul 2024 17:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359462; cv=none; b=t6Qz7/CgqAocSib/TyLuYY2JWGghH2uyHfY5UIXRGW4EULyHv3GdPl/uOa5+t0ZXYYbarSNHzW3fy2GPt5l7e903zu/u0gY9KDjyXMTjvPhjYjRgE8jZetRHcZofaXuxM14ANNaJJ7y5Do4w0jNF9owDtd4cu1QoHcvx6A77tFA=
+	t=1722360496; cv=none; b=rgRqruvXQYO4JFxqscJI8HnrRslw8nswXxoaVtouUFdaxbcKCnkQNjb/Hrmrbn9qVW3EyaADuZZlfAHcrbJJDwqtGIw+lXSl7UhkXxhwm45XipGo6Mf6XjBX6PNICPg2/u9TB6t/uAcVHXsysLEcUj+0lnrqNzop+RuIuE5cqoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359462; c=relaxed/simple;
-	bh=C1mW+Lj/0+47EwnnyMJqTivBpjRLDuiNjXb9ySn0i+A=;
+	s=arc-20240116; t=1722360496; c=relaxed/simple;
+	bh=3hpi32gFloyuox/MaKoGRcaylG0DN8aV1l/iF1uvdc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvF69qSO9TlkcsKZodsfYyug6dAbm6/o+T19R2r4LXWHhkT3Hd4xiB3INHrhkHS0FT3xOU55WW9IbbI9shZZUu4YNIvZbjjVAMkcnSdyB8b1/RuoZIn4GlYnBa+UU+jItoMS16yreRELKhGMr/wC8QzuCgHmq/SsAcptKy+zS44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+0dlOLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A609C32782;
-	Tue, 30 Jul 2024 17:11:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NxpKsnkdQcJOAedMYqEjBuMafMMA9ZrWrU0gi2crqpVMMZ9FRwfh5nb4BwSxLM/fNy8/UgVNLh9mk2CuwygRn9Mv0hLE+LuAc2qLap6i/oJTAS1AiHSmBinUKNO5uaDTvkH1JK+MmYGkA3o1BH0VFpKtDSWi5rmU4q94KejhC9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWySVfUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CE0C4AF0C;
+	Tue, 30 Jul 2024 17:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359462;
-	bh=C1mW+Lj/0+47EwnnyMJqTivBpjRLDuiNjXb9ySn0i+A=;
+	s=korg; t=1722360495;
+	bh=3hpi32gFloyuox/MaKoGRcaylG0DN8aV1l/iF1uvdc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+0dlOLSGoRFvPj6Y4iRNpvgIfevkIm3wrUHzQRYnQBEdbfL+hFt181l0hHP5Tdjo
-	 CiqTro2jKPmRRFZJLrEXbOD3/IME1WwMZOuxI+76Ws3tAGDGUpW4z6xMwY5p8YcN18
-	 TEAqRuYcy8pUH48v8X54r2ZxiCpxK2GzL9eBXEsk=
+	b=MWySVfUveHwjrX/0jnKXBqQTn13KQO4uCDcTacxw2mpUss6DSh9MAh2/x4I/1WwpR
+	 9eYqIvQvpaMvCPOPy9Oi1dV/hirHAHlFucX1+DXiVj0dLUiBpYlP3llR4vroGOU+py
+	 +oWsXcP06/gCRl5d5wEkJv3/rZ8NaOmO3MH4YNnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 485/568] platform: mips: cpu_hwmon: Disable driver on unsupported hardware
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.10 716/809] selftests/sigaltstack: Fix ppc64 GCC build
 Date: Tue, 30 Jul 2024 17:49:52 +0200
-Message-ID: <20240730151658.984946079@linuxfoundation.org>
+Message-ID: <20240730151753.217238514@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit f4d430db17b4ef4e9c3c352a04b2fe3c93011978 upstream.
+commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
 
-cpu_hwmon is unsupported on CPUs without loongson_chiptemp
-register and csr.
+Building the sigaltstack test with GCC on 64-bit powerpc errors with:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
+  In file included from sas.c:23:
+  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
+     22 | #error "implement current_stack_pointer equivalent"
+        |  ^~~~~
+  sas.c: In function ‘my_usr1’:
+  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
+     50 |         if (sp < (unsigned long)sstack ||
+        |             ^~
+
+This happens because GCC doesn't define __ppc__ for 64-bit builds, only
+32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
+is defined by clang and GCC for 64-bit and 32-bit builds.
+
+Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
+Cc: stable@vger.kernel.org # v6.3+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mips/cpu_hwmon.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/mips/cpu_hwmon.c
-+++ b/drivers/platform/mips/cpu_hwmon.c
-@@ -139,6 +139,9 @@ static int __init loongson_hwmon_init(vo
- 		csr_temp_enable = csr_readl(LOONGSON_CSR_FEATURES) &
- 				  LOONGSON_CSRF_TEMP;
- 
-+	if (!csr_temp_enable && !loongson_chiptemp[0])
-+		return -ENODEV;
-+
- 	nr_packages = loongson_sysconf.nr_cpus /
- 		loongson_sysconf.cores_per_package;
- 
+--- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
++++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
+@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
+ register unsigned long sp asm("esp");
+ #elif __loongarch64
+ register unsigned long sp asm("$sp");
+-#elif __ppc__
++#elif __powerpc__
+ register unsigned long sp asm("r1");
+ #elif __s390x__
+ register unsigned long sp asm("%15");
 
 
 
