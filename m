@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5BB941A41
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F95941AB0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 060ED1F237DF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90586B2694C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFE1189504;
-	Tue, 30 Jul 2024 16:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9AE18455C;
+	Tue, 30 Jul 2024 16:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMPZsUg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haN4Erhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FF91A6192;
-	Tue, 30 Jul 2024 16:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4CB183CD5;
+	Tue, 30 Jul 2024 16:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357709; cv=none; b=oKpdJNubryd0oKOc3ASDu6Q8SgKrAQOShUanNwaYzLn04bsgqza6/Upnfze5luuEt9IlUDmljPHX+fcykLB04V0rk8mVtMrt1uP7CZmD+iGjN5i/knKEy+3zwqK15IqPUtxwqs5kPjqWtmmYT3wZOoLrS9CWCXfYyxPOfDvxEdM=
+	t=1722357721; cv=none; b=R40lbCuAvlf72dye6LXGHxMmb5csDKN4EAeJkVfS5qk0nBNVJK85m3KSPJ6FH7qY3pYELHPleik6Yq41lo1DOHLBDOK3EuGaYCY0Y/6v8DlpUM7dd4JgHsoILCM6iwjAI7JvVU+dtGO09q6MasVMnCmjgwmI7JxeS9AEn2g9FmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357709; c=relaxed/simple;
-	bh=5Gckq29uDa9Wx7PnryvNvf2sff0YSuU3IsFLVV31A8Q=;
+	s=arc-20240116; t=1722357721; c=relaxed/simple;
+	bh=o8fFX44203DWFfZfgKm2EuXpdWfEsJa7/TLRhLouZh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1EeCKqvFZzbE/h462gw5Mf+VwGi9g0aNUqGlx9kKioXdZOI+M+Z9jZ5XfpgeJLfBXQuhCr7ZXc578um2PgOtzVWiCAQmfHnfICsDiVz9gvEqlXdaUOcLKid4WU/tQqETafT33mA8Uw+yQmj3onfLRaOHs2Yev7aIglG2vTc4VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMPZsUg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10D2C32782;
-	Tue, 30 Jul 2024 16:41:48 +0000 (UTC)
+	 MIME-Version; b=Cqnz6HoATxXV8tJduldNqL96jpqqX5A/jHxy3TLxgmCdNTf6lo8cYB7BARZbqtplY/act5KXeEw+LgGI5h/mhjbeu29n7wqOAIcQL0mNuWg6J/+hqRY3poZNNsuV+/P+MQzBLUxRanx3Haqkv8q5G6cS/GhX0dCLaooR6YDJq74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haN4Erhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347CEC4AF0C;
+	Tue, 30 Jul 2024 16:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357709;
-	bh=5Gckq29uDa9Wx7PnryvNvf2sff0YSuU3IsFLVV31A8Q=;
+	s=korg; t=1722357721;
+	bh=o8fFX44203DWFfZfgKm2EuXpdWfEsJa7/TLRhLouZh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMPZsUg2SXHUWauvXFoa6b5HdpbMz+99cAWBHYBeJ7qZ6mTODiO2oeXeGJOKQhVD1
-	 RmYjECM1g9vptkheLbtFeCZJmTuV8rrJ0lFAA6s5YFVa62hW5oabxuVUyYmAgHiczy
-	 kxRWoPXQY0FebChVoDvFIY70hyBo5nuXyEva4WD8=
+	b=haN4ErhpMrf7H+CaIVQjTVsGPNUZaAQNB5rQlxfkDaaNprNl+xdws6mKu3iI2RZk/
+	 pKmVOEJxYe5hD5yHibb24CFjWpCCdHunDRjlfJo015hNeBh4tJTu23RL549Cspc9hs
+	 mu5wYA+5wwGcn5Xg0F9b+kS6GBZ37OWW5DrDhrkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kuro Chung <kuro.chung@ite.com.tw>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 281/809] drm/panel: ilitek-ili9882t: Check for errors on the NOP in prepare()
-Date: Tue, 30 Jul 2024 17:42:37 +0200
-Message-ID: <20240730151735.689867712@linuxfoundation.org>
+Subject: [PATCH 6.10 282/809] drm/bridge: it6505: fix hibernate to resume no display issue
+Date: Tue, 30 Jul 2024 17:42:38 +0200
+Message-ID: <20240730151735.728466292@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,46 +68,160 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Kuro Chung <kuro.chung@ite.com.tw>
 
-[ Upstream commit 6a7bd6cde73f0fb7e5faa964dbdeb45b55c64698 ]
+[ Upstream commit 484436ec5c2bffe8f346a09ae1cbc4cbf5e50005 ]
 
-The mipi_dsi_dcs_nop() function returns an error but we weren't
-checking it in ili9882t_prepare(). Add a check. This is highly
-unlikely to matter in practice. If the NOP failed then likely later
-MIPI commands would fail too.
+When the system power resumes, the TTL input of IT6505 may experience
+some noise before the video signal stabilizes, necessitating a video
+reset. This patch is implemented to prevent a loop of video error
+interrupts, which can occur when a video reset in the video FIFO error
+interrupt triggers another such interrupt. The patch processes the SCDT
+and FIFO error interrupts simultaneously and ignores any video FIFO
+error interrupts caused by a video reset.
 
-Found by code inspection.
-
-Fixes: e2450d32e5fb ("drm/panel: ili9882t: Break out as separate driver")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240517143643.5.I323476ba9fa8cc7a5adee4c1ec95202785cc5686@changeid
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.5.I323476ba9fa8cc7a5adee4c1ec95202785cc5686@changeid
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Signed-off-by: Kuro Chung <kuro.chung@ite.com.tw>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240522065528.1053439-1-kuro.chung@ite.com.tw
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-ilitek-ili9882t.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 73 +++++++++++++++++++----------
+ 1 file changed, 49 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-ilitek-ili9882t.c b/drivers/gpu/drm/panel/panel-ilitek-ili9882t.c
-index 5762eba73955c..35ea5494e0eb8 100644
---- a/drivers/gpu/drm/panel/panel-ilitek-ili9882t.c
-+++ b/drivers/gpu/drm/panel/panel-ilitek-ili9882t.c
-@@ -560,7 +560,11 @@ static int ili9882t_prepare(struct drm_panel *panel)
- 	usleep_range(10000, 11000);
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 3f68c82888c2c..cf59347d3d605 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -1307,9 +1307,15 @@ static void it6505_video_reset(struct it6505 *it6505)
+ 	it6505_link_reset_step_train(it6505);
+ 	it6505_set_bits(it6505, REG_DATA_MUTE_CTRL, EN_VID_MUTE, EN_VID_MUTE);
+ 	it6505_set_bits(it6505, REG_INFOFRAME_CTRL, EN_VID_CTRL_PKT, 0x00);
+-	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, VIDEO_RESET);
++
++	it6505_set_bits(it6505, REG_VID_BUS_CTRL1, TX_FIFO_RESET, TX_FIFO_RESET);
++	it6505_set_bits(it6505, REG_VID_BUS_CTRL1, TX_FIFO_RESET, 0x00);
++
+ 	it6505_set_bits(it6505, REG_501_FIFO_CTRL, RST_501_FIFO, RST_501_FIFO);
+ 	it6505_set_bits(it6505, REG_501_FIFO_CTRL, RST_501_FIFO, 0x00);
++
++	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, VIDEO_RESET);
++	usleep_range(1000, 2000);
+ 	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, 0x00);
+ }
  
- 	// MIPI needs to keep the LP11 state before the lcm_reset pin is pulled high
--	mipi_dsi_dcs_nop(ili->dsi);
-+	ret = mipi_dsi_dcs_nop(ili->dsi);
-+	if (ret < 0) {
-+		dev_err(&ili->dsi->dev, "Failed to send NOP: %d\n", ret);
-+		goto poweroff;
+@@ -2245,12 +2251,11 @@ static void it6505_link_training_work(struct work_struct *work)
+ 	if (ret) {
+ 		it6505->auto_train_retry = AUTO_TRAIN_RETRY;
+ 		it6505_link_train_ok(it6505);
+-		return;
+ 	} else {
+ 		it6505->auto_train_retry--;
++		it6505_dump(it6505);
+ 	}
+ 
+-	it6505_dump(it6505);
+ }
+ 
+ static void it6505_plugged_status_to_codec(struct it6505 *it6505)
+@@ -2471,31 +2476,53 @@ static void it6505_irq_link_train_fail(struct it6505 *it6505)
+ 	schedule_work(&it6505->link_works);
+ }
+ 
+-static void it6505_irq_video_fifo_error(struct it6505 *it6505)
++static bool it6505_test_bit(unsigned int bit, const unsigned int *addr)
+ {
+-	struct device *dev = it6505->dev;
+-
+-	DRM_DEV_DEBUG_DRIVER(dev, "video fifo overflow interrupt");
+-	it6505->auto_train_retry = AUTO_TRAIN_RETRY;
+-	flush_work(&it6505->link_works);
+-	it6505_stop_hdcp(it6505);
+-	it6505_video_reset(it6505);
++	return 1 & (addr[bit / BITS_PER_BYTE] >> (bit % BITS_PER_BYTE));
+ }
+ 
+-static void it6505_irq_io_latch_fifo_overflow(struct it6505 *it6505)
++static void it6505_irq_video_handler(struct it6505 *it6505, const int *int_status)
+ {
+ 	struct device *dev = it6505->dev;
++	int reg_0d, reg_int03;
+ 
+-	DRM_DEV_DEBUG_DRIVER(dev, "IO latch fifo overflow interrupt");
+-	it6505->auto_train_retry = AUTO_TRAIN_RETRY;
+-	flush_work(&it6505->link_works);
+-	it6505_stop_hdcp(it6505);
+-	it6505_video_reset(it6505);
+-}
++	/*
++	 * When video SCDT change with video not stable,
++	 * Or video FIFO error, need video reset
++	 */
+ 
+-static bool it6505_test_bit(unsigned int bit, const unsigned int *addr)
+-{
+-	return 1 & (addr[bit / BITS_PER_BYTE] >> (bit % BITS_PER_BYTE));
++	if ((!it6505_get_video_status(it6505) &&
++	     (it6505_test_bit(INT_SCDT_CHANGE, (unsigned int *)int_status))) ||
++	    (it6505_test_bit(BIT_INT_IO_FIFO_OVERFLOW,
++			     (unsigned int *)int_status)) ||
++	    (it6505_test_bit(BIT_INT_VID_FIFO_ERROR,
++			     (unsigned int *)int_status))) {
++		it6505->auto_train_retry = AUTO_TRAIN_RETRY;
++		flush_work(&it6505->link_works);
++		it6505_stop_hdcp(it6505);
++		it6505_video_reset(it6505);
++
++		usleep_range(10000, 11000);
++
++		/*
++		 * Clear FIFO error IRQ to prevent fifo error -> reset loop
++		 * HW will trigger SCDT change IRQ again when video stable
++		 */
++
++		reg_int03 = it6505_read(it6505, INT_STATUS_03);
++		reg_0d = it6505_read(it6505, REG_SYSTEM_STS);
++
++		reg_int03 &= (BIT(INT_VID_FIFO_ERROR) | BIT(INT_IO_LATCH_FIFO_OVERFLOW));
++		it6505_write(it6505, INT_STATUS_03, reg_int03);
++
++		DRM_DEV_DEBUG_DRIVER(dev, "reg08 = 0x%02x", reg_int03);
++		DRM_DEV_DEBUG_DRIVER(dev, "reg0D = 0x%02x", reg_0d);
++
++		return;
 +	}
- 	usleep_range(1000, 2000);
++
++	if (it6505_test_bit(INT_SCDT_CHANGE, (unsigned int *)int_status))
++		it6505_irq_scdt(it6505);
+ }
  
- 	gpiod_set_value(ili->enable_gpio, 1);
+ static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
+@@ -2508,15 +2535,12 @@ static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
+ 	} irq_vec[] = {
+ 		{ BIT_INT_HPD, it6505_irq_hpd },
+ 		{ BIT_INT_HPD_IRQ, it6505_irq_hpd_irq },
+-		{ BIT_INT_SCDT, it6505_irq_scdt },
+ 		{ BIT_INT_HDCP_FAIL, it6505_irq_hdcp_fail },
+ 		{ BIT_INT_HDCP_DONE, it6505_irq_hdcp_done },
+ 		{ BIT_INT_AUX_CMD_FAIL, it6505_irq_aux_cmd_fail },
+ 		{ BIT_INT_HDCP_KSV_CHECK, it6505_irq_hdcp_ksv_check },
+ 		{ BIT_INT_AUDIO_FIFO_ERROR, it6505_irq_audio_fifo_error },
+ 		{ BIT_INT_LINK_TRAIN_FAIL, it6505_irq_link_train_fail },
+-		{ BIT_INT_VID_FIFO_ERROR, it6505_irq_video_fifo_error },
+-		{ BIT_INT_IO_FIFO_OVERFLOW, it6505_irq_io_latch_fifo_overflow },
+ 	};
+ 	int int_status[3], i;
+ 
+@@ -2546,6 +2570,7 @@ static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
+ 			if (it6505_test_bit(irq_vec[i].bit, (unsigned int *)int_status))
+ 				irq_vec[i].handler(it6505);
+ 		}
++		it6505_irq_video_handler(it6505, (unsigned int *)int_status);
+ 	}
+ 
+ 	pm_runtime_put_sync(dev);
 -- 
 2.43.0
 
