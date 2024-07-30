@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-64408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D485A941DB4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C9E941A23
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11F801C23CC8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AADBAB2A4A6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6145D1A76B0;
-	Tue, 30 Jul 2024 17:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C8D187FF9;
+	Tue, 30 Jul 2024 16:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujulpPEi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDewoVnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3361A76A9;
-	Tue, 30 Jul 2024 17:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D539187FED;
+	Tue, 30 Jul 2024 16:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360026; cv=none; b=rRzGzR1mIxP0LZApJLOMh/Od3X78yJEBsJtwXqDGkvJem/l8D6pDCptGogxZs7r7XwTqnHf2hVsqiIoFU/7gVPHhNyHIWsyfnB7dloTNRgJRlNq6QFiojs3GtUbTke35YYI3L1PlI/t3A0+JHi5wyjcWEQnAz2WZ9ZrHN1XaE7E=
+	t=1722356666; cv=none; b=DrtYzEjsEq7jnOP1fXBc4EhMsiEr0pc0B/hR8UHNAvjw23Q2bbzrMRSMkIWgd7OupMhfZR5pWZYMzhrfc+0h+jdr8gAY+q6FlZ9P0SKbhtqQgbobXZJ2Vp2iQnUouCWtj2vRCj5EzD6TdjruRL5SOqWY7EAm7eEZQnlUdMlTytY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360026; c=relaxed/simple;
-	bh=5TNc0V/bjIuZM00WnpiHWlavJP4+jwHLL9iytUySZgg=;
+	s=arc-20240116; t=1722356666; c=relaxed/simple;
+	bh=o1GADJyBo0Z9lfEpgztHBP8GTA9ttMoZjBkEFuPSaww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scJOP1jGAfysFISwSTKzRj1Azfh3ru3wEYcC3AYvTe3554hXbsJn9FXszAqEoPnKavxLHaRn3yHqGNoH4/E2kHIzPl5OXv3ZxXH3zVbqEf+FQVPIdSzPE3GQQL1mf0xnHN1LQT5yVqqeYSMz4phRs8Tbd3NvZPv+FPximcorVXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujulpPEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548AEC32782;
-	Tue, 30 Jul 2024 17:20:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fEk1J5X2xhwZXP+gRote0DFpd9yb4tUOv88iHeBSH/5QVVG+59Y720+WDYbBEnv2ki45ClrueAPlc+qnXYvRHn0BHXIjJpcbEYtlT0Y9d8g3icu1HQe8uQ2yKXJB5frs3DoJVwEa5GukwPStQ3xCFv8QPm6kmwOa/t3ugvgIsh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDewoVnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59E8C4AF14;
+	Tue, 30 Jul 2024 16:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360025;
-	bh=5TNc0V/bjIuZM00WnpiHWlavJP4+jwHLL9iytUySZgg=;
+	s=korg; t=1722356666;
+	bh=o1GADJyBo0Z9lfEpgztHBP8GTA9ttMoZjBkEFuPSaww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujulpPEiH2/036LA04OZF3DPgECp5OhK589eKdXigSSzBL7KxkhQRjqsX+NbGJWja
-	 G/TdLOSMpRCNwqOy1hJHbOa3o9Z6eHA06av85IBbpY7RtMEEspX/cvpJIlEIdaDlaE
-	 tbrG3Lvfmp2RCLrWQxD7UeRBHBzYO0xN7q3bRL/w=
+	b=rDewoVnkyPhIsY41u2kdeWJyI1k2/zRQAzp42eu35/a9wDWGUWW7dzyXYx1AJn0hx
+	 wuZut9Qy8qxKy3DQY9sHr3AflFHDnbK9+6p6ufDAVo3o44joSDlOpe46CLhFOM0bgC
+	 GvL1z48YK23O2z5MOMdOyY32Av5ZO8C2A4QV1Uj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.10 574/809] ext2: Verify bitmap and itable block numbers before using them
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 217/440] PCI: qcom-ep: Disable resources unconditionally during PERST# assert
 Date: Tue, 30 Jul 2024 17:47:30 +0200
-Message-ID: <20240730151747.447234243@linuxfoundation.org>
+Message-ID: <20240730151624.337401186@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,64 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit 322a6aff03937aa1ece33b4e46c298eafaf9ac41 upstream.
+[ Upstream commit 912315715d7b74f7abdb6f063ebace44ee288af9 ]
 
-Verify bitmap block numbers and inode table blocks are sane before using
-them for checking bits in the block bitmap.
+All EP specific resources are enabled during PERST# deassert. As a counter
+operation, all resources should be disabled during PERST# assert. There is
+no point in skipping that if the link was not enabled.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This will also result in enablement of the resources twice if PERST# got
+deasserted again. So remove the check from qcom_pcie_perst_assert() and
+disable all the resources unconditionally.
+
+Fixes: f55fee56a631 ("PCI: qcom-ep: Add Qualcomm PCIe Endpoint controller driver")
+Link: https://lore.kernel.org/linux-pci/20240430-pci-epf-rework-v4-1-22832d0d456f@linaro.org
+Tested-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/balloc.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-qcom-ep.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/fs/ext2/balloc.c
-+++ b/fs/ext2/balloc.c
-@@ -77,26 +77,33 @@ static int ext2_valid_block_bitmap(struc
- 	ext2_grpblk_t next_zero_bit;
- 	ext2_fsblk_t bitmap_blk;
- 	ext2_fsblk_t group_first_block;
-+	ext2_grpblk_t max_bit;
+diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+index 1c7fd05ce0280..f2bf3eba2254e 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
++++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+@@ -446,12 +446,6 @@ static int qcom_pcie_perst_deassert(struct dw_pcie *pci)
+ static void qcom_pcie_perst_assert(struct dw_pcie *pci)
+ {
+ 	struct qcom_pcie_ep *pcie_ep = to_pcie_ep(pci);
+-	struct device *dev = pci->dev;
+-
+-	if (pcie_ep->link_status == QCOM_PCIE_EP_LINK_DISABLED) {
+-		dev_dbg(dev, "Link is already disabled\n");
+-		return;
+-	}
  
- 	group_first_block = ext2_group_first_block_no(sb, block_group);
-+	max_bit = ext2_group_last_block_no(sb, block_group) - group_first_block;
- 
- 	/* check whether block bitmap block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_block_bitmap);
- 	offset = bitmap_blk - group_first_block;
--	if (!ext2_test_bit(offset, bh->b_data))
-+	if (offset < 0 || offset > max_bit ||
-+	    !ext2_test_bit(offset, bh->b_data))
- 		/* bad block bitmap */
- 		goto err_out;
- 
- 	/* check whether the inode bitmap block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_inode_bitmap);
- 	offset = bitmap_blk - group_first_block;
--	if (!ext2_test_bit(offset, bh->b_data))
-+	if (offset < 0 || offset > max_bit ||
-+	    !ext2_test_bit(offset, bh->b_data))
- 		/* bad block bitmap */
- 		goto err_out;
- 
- 	/* check whether the inode table block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_inode_table);
- 	offset = bitmap_blk - group_first_block;
-+	if (offset < 0 || offset > max_bit ||
-+	    offset + EXT2_SB(sb)->s_itb_per_group - 1 > max_bit)
-+		goto err_out;
- 	next_zero_bit = ext2_find_next_zero_bit(bh->b_data,
- 				offset + EXT2_SB(sb)->s_itb_per_group,
- 				offset);
+ 	qcom_pcie_disable_resources(pcie_ep);
+ 	pcie_ep->link_status = QCOM_PCIE_EP_LINK_DISABLED;
+-- 
+2.43.0
+
 
 
 
