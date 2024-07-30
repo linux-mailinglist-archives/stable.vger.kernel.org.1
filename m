@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915BE9419AA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7897C941BEC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7951C23701
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB08E1C20CBD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7378218452F;
-	Tue, 30 Jul 2024 16:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A3A156F30;
+	Tue, 30 Jul 2024 17:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRCknLWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkhBfqHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3140E1A6192;
-	Tue, 30 Jul 2024 16:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6C2183CC3;
+	Tue, 30 Jul 2024 17:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357295; cv=none; b=hKkVuJHTViPdadnWw6JanN7jyuUw7YxOzrSat6xcYdM+0q9iQZxVXtAqMAqFTvcBHVhsi43go9SZWl45SIR2SDE/BtmHQU0zWh4HiPJd/Xg0zaRZ8Pu5u1F2yUxj1v5AccgtcmZtwBQVamoHPsUBAHQWybX5T3wwxgH356Ohyxw=
+	t=1722358853; cv=none; b=uXx5kJWua9AWnqa1FiogGMwqSw9wAUGLsKBUWWfONM9oZElTkcSXrRN8xFfmlTmNNd/iGGX0VEVhBH3pnbcrkUbCA2v5W4xiuSCzHWEifdPtmBJztfispJ+ePysxOM50bo0PvwYYuU0fjoKL12iETewd4Q/W1DiXGNNlxjtXXEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357295; c=relaxed/simple;
-	bh=GeZEigGxgcVVXlTj7Eq5m5hZHFMF7StxN3T/+z6Imwo=;
+	s=arc-20240116; t=1722358853; c=relaxed/simple;
+	bh=oYXTDAgXcWAynT89s4onkLbFPaCu5RnzPYBHueZXFbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMKooudBZSH8g85cu4pXOgmrjecVn/yb06uKmF6yvnM0P0dn0Ah1ZR+ga7s8MKyxIu52l94fVvPeNlz6nadO3Z0JYT3YioI4yOe0aHjohqz1d8rtTtdoHEgZQZM3/1ZlK5STSXl85yGTc/TstjaaFI3LqnugSPpuMHZGVxMSfi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRCknLWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965A6C32782;
-	Tue, 30 Jul 2024 16:34:54 +0000 (UTC)
+	 MIME-Version; b=OxtAOx4wz0HG6izb/YEwAG5gVUw97KFevbte/hvjcHKBPUS8JRNQnoiQBeJMcQLuA6Qmqt5aasSjCvnDwAaxQHli4jjbxjt9vmPJK1DV05L/ySjv2A8PLX5tasS2ALPZx5uFELdcv5/9PE7dy9zA26e1sPW3Xng2SBD5QgXWJoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkhBfqHx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304DBC32782;
+	Tue, 30 Jul 2024 17:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357295;
-	bh=GeZEigGxgcVVXlTj7Eq5m5hZHFMF7StxN3T/+z6Imwo=;
+	s=korg; t=1722358853;
+	bh=oYXTDAgXcWAynT89s4onkLbFPaCu5RnzPYBHueZXFbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nRCknLWLSx0mWyl4J+7mt7QHbp5EFFdxjfQHRCBP3/xp+AlbbfQGjFIL6yBAxkIOn
-	 fi6YFyIacha2bKBOWw1ekW1i6+Dmthq42B+QQmQtRkZQRciHKh9NYiD19kdK8iIH+w
-	 I+9RFj2Zadthc0WfkKLNJFDduIF4XzuwVJPONtSQ=
+	b=BkhBfqHx6JW9+mouCAGirBx7s8oHQMY3IoCxlLU9q/fblusL1xQhz1Mpc+NO0Lq63
+	 QPWONcnzMHW/nD2vTOCS/nQYE6Rsevv+/O6iJPEp03CP8yIL/Py+tOnemf8KzLCiVe
+	 +MhDrr92Y9UkyMq/d9cwm6oFnSP/jPSvg5JjwzF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Liao <liaoyu15@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 277/440] tick/broadcast: Make takeover of broadcast hrtimer reliable
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.6 403/568] wifi: rtw88: usb: Fix disconnection after beacon loss
 Date: Tue, 30 Jul 2024 17:48:30 +0200
-Message-ID: <20240730151626.652136396@linuxfoundation.org>
+Message-ID: <20240730151655.622112743@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Liao <liaoyu15@huawei.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit f7d43dd206e7e18c182f200e67a8db8c209907fa upstream.
+commit 28818b4d871bc93cc4f5c7c7d7c526a6a096c09c upstream.
 
-Running the LTP hotplug stress test on a aarch64 machine results in
-rcu_sched stall warnings when the broadcast hrtimer was owned by the
-un-plugged CPU. The issue is the following:
+When there is beacon loss, for example due to unrelated Bluetooth
+devices transmitting music nearby, the wifi connection dies soon
+after the first beacon loss message:
 
-CPU1 (owns the broadcast hrtimer)	CPU2
+Apr 28 20:47:14 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
+ CTRL-EVENT-BEACON-LOSS
+Apr 28 20:47:15 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
+ CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
 
-				tick_broadcast_enter()
-				  // shutdown local timer device
-				  broadcast_shutdown_local()
-				...
-				tick_broadcast_exit()
-				  clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT)
-				  // timer device is not programmed
-				  cpumask_set_cpu(cpu, tick_broadcast_force_mask)
+Apr 28 20:47:24 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
+ CTRL-EVENT-BEACON-LOSS
+Apr 28 20:47:25 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
+ CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
 
-				initiates offlining of CPU1
-take_cpu_down()
-/*
- * CPU1 shuts down and does not
- * send broadcast IPI anymore
- */
-				takedown_cpu()
-				  hotplug_cpu__broadcast_tick_pull()
-				    // move broadcast hrtimer to this CPU
-				    clockevents_program_event()
-				      bc_set_next()
-					hrtimer_start()
-					/*
-					 * timer device is not programmed
-					 * because only the first expiring
-					 * timer will trigger clockevent
-					 * device reprogramming
-					 */
+Apr 28 20:47:34 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
+ CTRL-EVENT-BEACON-LOSS
+Apr 28 20:47:35 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
+ CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
 
-What happens is that CPU2 exits broadcast mode with force bit set, then the
-local timer device is not reprogrammed and CPU2 expects to receive the
-expired event by the broadcast IPI. But this does not happen because CPU1
-is offlined by CPU2. CPU switches the clockevent device to ONESHOT state,
-but does not reprogram the device.
+When the beacon loss happens, mac80211 makes rtw88 transmit a QOS
+NULL frame and asks to confirm the ACK status. Even though rtw88
+confirms to mac80211 that the QOS NULL was transmitted successfully,
+the connection still dies. This is because rtw88 is handing the QOS
+NULL back to mac80211 with skb->data pointing to the headroom (the
+TX descriptor) instead of ieee80211_hdr.
 
-The subsequent reprogramming of the hrtimer broadcast device does not
-program the clockevent device of CPU2 either because the pending expiry
-time is already in the past and the CPU expects the event to be delivered.
-As a consequence all CPUs which wait for a broadcast event to be delivered
-are stuck forever.
+Fix the disconnection by moving skb->data to the correct position
+before ieee80211_tx_status_irqsafe().
 
-Fix this issue by reprogramming the local timer device if the broadcast
-force bit of the CPU is set so that the broadcast hrtimer is delivered.
+The problem was observed with RTL8811AU (TP-Link Archer T2U Nano)
+and the potential future rtw88_8821au driver. Also tested with
+RTL8811CU (Tenda U9).
 
-[ tglx: Massage comment and change log. Add Fixes tag ]
-
-Fixes: 989dcb645ca7 ("tick: Handle broadcast wakeup of multiple cpus")
-Signed-off-by: Yu Liao <liaoyu15@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240711124843.64167-1-liaoyu15@huawei.com
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/ecbf0601-810d-4609-b8fc-8b0e38d2948d@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/tick-broadcast.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/wireless/realtek/rtw88/usb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -1137,6 +1137,7 @@ void tick_broadcast_switch_to_oneshot(vo
- #ifdef CONFIG_HOTPLUG_CPU
- void hotplug_cpu__broadcast_tick_pull(int deadcpu)
- {
-+	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
- 	struct clock_event_device *bc;
- 	unsigned long flags;
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -273,6 +273,8 @@ static void rtw_usb_write_port_tx_comple
+ 		info = IEEE80211_SKB_CB(skb);
+ 		tx_data = rtw_usb_get_tx_data(skb);
  
-@@ -1144,6 +1145,28 @@ void hotplug_cpu__broadcast_tick_pull(in
- 	bc = tick_broadcast_device.evtdev;
- 
- 	if (bc && broadcast_needs_cpu(bc, deadcpu)) {
-+		/*
-+		 * If the broadcast force bit of the current CPU is set,
-+		 * then the current CPU has not yet reprogrammed the local
-+		 * timer device to avoid a ping-pong race. See
-+		 * ___tick_broadcast_oneshot_control().
-+		 *
-+		 * If the broadcast device is hrtimer based then
-+		 * programming the broadcast event below does not have any
-+		 * effect because the local clockevent device is not
-+		 * running and not programmed because the broadcast event
-+		 * is not earlier than the pending event of the local clock
-+		 * event device. As a consequence all CPUs waiting for a
-+		 * broadcast event are stuck forever.
-+		 *
-+		 * Detect this condition and reprogram the cpu local timer
-+		 * device to avoid the starvation.
-+		 */
-+		if (tick_check_broadcast_expired()) {
-+			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
-+			tick_program_event(td->evtdev->next_event, 1);
-+		}
++		skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
 +
- 		/* This moves the broadcast assignment to this CPU: */
- 		clockevents_program_event(bc, bc->next_event, 1);
- 	}
+ 		/* enqueue to wait for tx report */
+ 		if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
+ 			rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
 
 
 
