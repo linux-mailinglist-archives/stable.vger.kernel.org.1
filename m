@@ -1,113 +1,118 @@
-Return-Path: <stable+bounces-63469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B409E941913
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC7894195F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E63E81C231A7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8793E1F24826
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB501A6198;
-	Tue, 30 Jul 2024 16:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9740718801C;
+	Tue, 30 Jul 2024 16:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="HT0hz34A"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="QnvKyE+P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B941A6196
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 16:28:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822841898E4
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 16:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356931; cv=none; b=nkUfraARPw5nuTMbEoQP5h1jEwo+B5hYVw0Tei3LjUjjawl3930PnFKCrb7xvt5ImUYd7pb4Ds6UeJIl9BcaCR8L44CAg9ndv+3Z75vhW+n5aFKU+qjja58WhHtwX44uUHqJxAiHro8aShGUo2tKNTQKKxGEWkBtaWEXiSbcHWA=
+	t=1722357100; cv=none; b=s0faV6rzaAPp0RIXxW4vJ4VJwVlc4V8rXBhkQJrFf57tAHx90hFxzyo67QxfLtIjIzZ6mR+q/FnmFXUWPnUCIBuvqrSbss6fJCBTP5wC7DqBT43VZvKc5MwilXtmVPE4zq7uNaUdJa4wnA/pRm2MrPqLo6GmMCbUkrZ4ONOOj1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356931; c=relaxed/simple;
-	bh=/WrqX39V/EGZlU7gkM+jA9j7Jyn0OjEJ1Mehdy12oxs=;
+	s=arc-20240116; t=1722357100; c=relaxed/simple;
+	bh=nyrerJDyhxrjVhddkZkyuAsVrv4YgfVF935QAWq/eAk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LUw9lEXt3DjadspNYD9GtdHaBaQlasr+FpTjyZk/zvwBPirsExteCaaNclGyptIbrr0Juw8DQZOH0sww/K1HnoLioj6bKhGB3ATSG1sKMtXRYyeeJs0Fzu29UQ34nA3TUg+SH7F+cVA+ammA44pkxZeDMERStEuwKo/W+artd3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=HT0hz34A; arc=none smtp.client-ip=209.85.218.48
+	 To:Cc:Content-Type; b=jzZnduQZL013mo92OWJDfLFaMnsUFA+ykQGjobpPFVUOz6VwBb7KViyUJ8BmC2pSNG7QBXqpAhyAvyk1a/1PtefkyXt3Hl4oFI+3PQuHXdEkq9O7KAf5YzqkotBIxAe/fIZqjJZH0Q/jWi+vH9S26K4/i5vwbY57swnxuiBuOyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=QnvKyE+P; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a7d2a9a23d9so531566066b.3
-        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:28:49 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a7a8a4f21aeso627411766b.2
+        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:31:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1722356928; x=1722961728; darn=vger.kernel.org;
+        d=ionos.com; s=google; t=1722357097; x=1722961897; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IfuNs9RJBxSHtgXaAG8xtdh6dR8/ZJRWqaxb2ZGOGQw=;
-        b=HT0hz34AV6AQOhCDOqRoWZOg8kSqMBzmx3P6JlVSEUBoBqcFqHofONDiRu4Te+WWVq
-         p6Y9EKYcyc457hg/5hRi9b9iZ6xBfdo5bQRyEEIpwQ4XnSNZAaCzf7TltKeESxQMHeLe
-         mtVXoJQ+ti3kIitz3bRxYaMul+afdcJDVDujtjjkvBj08on3jxBFcipcMnjJ7H14hGg8
-         Y8le95YOsIFhqGJ4oaFJPfQpa8G+12t+p1KcxSwncNJeNzUv0YowLBg+rbE/srCOuhup
-         3wRKfhcWAskV8UVaHV+vaminX6hgYEY2F08gIfQIvJs4F2V8k/q6TGL7qR66XHH0RAQv
-         wwYw==
+        bh=E5cj6IhKT08G/JY9sA9ZAZBlaQGsxU+ED4GyGLcLHJ8=;
+        b=QnvKyE+P7ei24VE0NqPYK3qsHjeemZi0qale+y13a3WGNC/yFv3GBiAmw0By4yXeLq
+         chDpI2yu/44/lcwrtidEjFufcEWGYJlHMshTqSW9i6rgwXCrlWRB7w+MqhXKUCBB7Jc4
+         ltl1mSZgefuYvaX2j2xHBm9uvuMmqtYKVN/AcQuFqfmKs6iHzP7NFfMf2vjcD8XRM5Yp
+         9QnlC+TWA8R5mp46TPJvZpkYKEKcYXk2GSE5lyf3ICAG1tX6Rje3bqXUDzC1SmGjL4E3
+         lAohMo5bN7gi1XmciGbR2jjmW2w2u5sKJJB2ilmSYAGdEWxazHWfKAyr95t+bDoTfTXn
+         TERA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722356928; x=1722961728;
+        d=1e100.net; s=20230601; t=1722357097; x=1722961897;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IfuNs9RJBxSHtgXaAG8xtdh6dR8/ZJRWqaxb2ZGOGQw=;
-        b=jh9KlJYERBhlSXP0qMdu89RBUhLE8aynNWRx5nmDS+jhVBwjM+k4qJ44ivzWAY7Q7/
-         WHJapDEPO0dwbO4fdxRyyvjSv5pNk8hFULSa2DfdxwvuonQA/XQa1Zdbf1WUhB7ycuCo
-         aDhLnVObXYiNNA9eRdyOPWm9NN+3VpqZdOgEssPOn9kuYVTxsK4Jf6nrFFVEVPkztLRf
-         4wAR5dSoafQP7ErD+8uFPwrzl9oxRyE4JbnLC8MjfNdEuczMiRMV3fAvjTjcgWYUVFYK
-         Y+2IIuGOPJ1lBjLow88CF1tYA151zo8LkKRPbYsTp6M4HRpjPgy9Xx9LsC/JoO2WvvQm
-         pe6w==
-X-Forwarded-Encrypted: i=1; AJvYcCXQ+YoQcYa0oDUj44WAZ7rSVJDd+hig8zvxMxGd6TPhPl06o184rHh/yj9g+wBLkb1mM/+qMLErU09MQ/KZCa5uI0YLYt0e
-X-Gm-Message-State: AOJu0YySK2T1xPHGVYFQeVZJC6Q3vl0aX4i484hYm6ulSMWY6FEO9uV9
-	4tCHuum7z9MOGIS1F0fRqV3U6563CjzxHhH8WOZQvWn7qMjdxkhMtkLf3TdoivamBUWY7ntwjG2
-	qppEYql2nF3hpSGt9qKHOxq7rxsHendiMaXH5JA==
-X-Google-Smtp-Source: AGHT+IG1VcMHenRJE4OMv8Wdwm4JETBLEpAvJgISa1/m5vlwH5K/nlA4PdfCRxYRpOU0UfdTVOnSQCZN39wxbmaGSUY=
-X-Received: by 2002:a17:907:96a0:b0:a72:7da4:267c with SMTP id
- a640c23a62f3a-a7d3ffa612bmr940477966b.12.1722356927933; Tue, 30 Jul 2024
- 09:28:47 -0700 (PDT)
+        bh=E5cj6IhKT08G/JY9sA9ZAZBlaQGsxU+ED4GyGLcLHJ8=;
+        b=fmH84q2pq+ddaKQ8NyHc6wy0Me5mZoFhv9YJiACsysbZi93NRVtS4rjE1AZ7VhPvfo
+         m+pGMuvmxrTSqwKP8DMIzZRj5C2wZ9NZ79L9Sj5125CEMrZ9ReTBuma2uIj8bjFfjuAX
+         kiMRKUXKO/vcMiC9lQJJWKRgAFKEQ6pTbWipljFAiwnw033kCNoD7iO4WGnHT7HBINnV
+         PxmUyv2h+Lf34H04gBb4M9bmYy7REIEhNdYRCsqHBfIuJcQIYVHsP7dJsJHlCrKkQhZi
+         F3iJDw7y1xE9j4IWbJLxqZn9qaaVj+2a9DQQ+k/P3AxMXOkT1mauhPF/srEnOTajy03j
+         gTbw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6z0nXMoIE/n7IfL7fyvwbtk7V9P6ZWM9MK4+1ZNsBqgo+Ozl2JSwx5bUt6KEUYhJvTcnlAwF1NoYZmDWVzQvb9K1k2vpM
+X-Gm-Message-State: AOJu0Yybrf7tF3l+2lsx8CLNyAeVscbZGoEKhSK0sH0u62O/Kbu9DYgi
+	GxwHEmxq/NRFz73qkT+LKmx4R2FL7DwGkPhGj9oq2JKlx2jet2qLIcXFhicrYPQpgDs9idKHEiX
+	a6+8tTDDb68yEgrb2z2k3LM/i6rYV93DVg0n46g==
+X-Google-Smtp-Source: AGHT+IH7khnXrujEv1gKQnGzEfjEWyF4QEf2ukDbjiCueUR6RcV66FHsXp7NckoSkFnWoeFBMNqlnHILehdexStSq60=
+X-Received: by 2002:a17:907:7284:b0:a77:dd1c:6273 with SMTP id
+ a640c23a62f3a-a7d3ff7cb6fmr795199266b.12.1722357096904; Tue, 30 Jul 2024
+ 09:31:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240729091532.855688-1-max.kellermann@ionos.com> <3575457.1722355300@warthog.procyon.org.uk>
-In-Reply-To: <3575457.1722355300@warthog.procyon.org.uk>
+References: <20240729092828.857383-1-max.kellermann@ionos.com> <20240730-bogen-absuchen-8ab2d9ba0406@brauner>
+In-Reply-To: <20240730-bogen-absuchen-8ab2d9ba0406@brauner>
 From: Max Kellermann <max.kellermann@ionos.com>
-Date: Tue, 30 Jul 2024 18:28:36 +0200
-Message-ID: <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com>
-Subject: Re: [PATCH] netfs, ceph: Revert "netfs: Remove deprecated use of
- PG_private_2 as a second writeback flag"
-To: David Howells <dhowells@redhat.com>
-Cc: Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>, 
-	Jeff Layton <jlayton@kernel.org>, willy@infradead.org, ceph-devel@vger.kernel.org, 
-	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 30 Jul 2024 18:31:26 +0200
+Message-ID: <CAKPOu+9DPbtpDOtmLf=kSvK8Vw7OQfET4-Tn6bHAcXe90HFpKg@mail.gmail.com>
+Subject: Re: [PATCH v2] fs/netfs/fscache_io: remove the obsolete
+ "using_pgpriv2" flag
+To: Christian Brauner <brauner@kernel.org>
+Cc: dhowells@redhat.com, jlayton@kernel.org, willy@infradead.org, 
+	linux-cachefs@redhat.com, linux-fsdevel@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 30, 2024 at 6:01=E2=80=AFPM David Howells <dhowells@redhat.com>=
- wrote:
-> Can you try this patch instead of either of yours?
+On Tue, Jul 30, 2024 at 2:30=E2=80=AFPM Christian Brauner <brauner@kernel.o=
+rg> wrote:
+> Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+> Patches in the vfs.fixes branch should appear in linux-next soon.
+>
+> Please report any outstanding bugs that were missed during review in a
+> new review to the original patch series allowing us to drop it.
+>
+> It's encouraged to provide Acked-bys and Reviewed-bys even though the
+> patch has now been applied. If possible patch trailers will be updated.
+>
+> Note that commit hashes shown below are subject to change due to rebase,
+> trailer updates or similar. If in doubt, please check the listed branch.
+>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+> branch: vfs.fixes
+>
+> [1/1] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2" flag
+>       https://git.kernel.org/vfs/vfs/c/f7244a2b1d4c
 
-I booted it on one of the servers, and no problem so far. All tests
-complete successfully, even the one with copy_file_range that crashed
-with my patch. I'll let you know when problems occur later, but until
-then, I agree with merging your revert instead of my patches.
+Hi Christian,
 
-If I understand this correctly, my other problem (the
-folio_attach_private conflict between netfs and ceph) I posted in
-https://lore.kernel.org/ceph-devel/CAKPOu+8q_1rCnQndOj3KAitNY2scPQFuSS-AxeG=
-ru02nP9ZO0w@mail.gmail.com/
-was caused by my (bad) patch after all, wasn't it?
-
-> For the moment, ceph has to continue using PG_private_2.  It doesn't use
-> netfs_writepages().  I have mostly complete patches to fix that, but they=
- got
-> popped onto the back burner for a bit.
-
-When you're done with those patches, Cc me on those if you want me to
-help test them.
+thanks, but this patch turned out to be bad; see
+https://lore.kernel.org/linux-fsdevel/3575457.1722355300@warthog.procyon.or=
+g.uk/
+for a better candidate. I guess David will post it for merging soon.
+Please revert mine.
 
 Max
 
