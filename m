@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7599419B8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EF6941C0B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD84C1F268FA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17B78285135
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F277F8BE8;
-	Tue, 30 Jul 2024 16:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F999189B85;
+	Tue, 30 Jul 2024 17:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEpmFigY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpUQBfmm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05DA1A6195;
-	Tue, 30 Jul 2024 16:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D862E1A6192;
+	Tue, 30 Jul 2024 17:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357341; cv=none; b=euRaw89mitIrTMFUYNj+1CYBJVmkDUIja7GxoncDgSD9IaE6Vw1GdWPgcfmo2wnFM6+oZeG8992tfnbmueKqqP0xjpvnKWkzVSCeFXwvaq6QPjkycwYIaao7b+jPNjFJvrltAVWPz2BnXPfW/C9inOaBNRZR+7GATS/PztbvgPc=
+	t=1722358935; cv=none; b=Ag+zVswvAx+yil9CxpEBJmY3nB8ZVhmAF14DuVwrjKwdO8lMO12zuA8r6I8h58oQS1Eb1bCgcocU02ELBFitzS2gVVB60cSswGlo9aAQ0ERzCQEqXstXSt3zMy3A0uSf+wGR4+gwL0D5kS1cvLCgxw4pBvo4W9vOJSEu/Wv+Ej8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357341; c=relaxed/simple;
-	bh=3O/1j4lPRAA8b0Tb7XSCQxMMBMOopXnU1LuCnRmZNMo=;
+	s=arc-20240116; t=1722358935; c=relaxed/simple;
+	bh=gapk2KAPDzsiL9GLSsaTiL/qRTYMVLVWur4R4sXyI3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBHybNunDk72WbjgHNh36eF8zeqLndxKPWkLEW7k7D3CG1bzwWnKhBCV3llWCScjOaXqkyfwe2Aj+CSlDWlWZhYcwCDskmTZtt86NWD3nYmdKg2lItXecfRScEfBgyqDln5ck191uePBEWhT69k7FSajAAzgoxtI7+zchTCPXV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEpmFigY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0FBC32782;
-	Tue, 30 Jul 2024 16:35:40 +0000 (UTC)
+	 MIME-Version; b=XLIe9pqexIm7eIQpD5EaNhjNlJc1Dyqv9k7YHdtgQ2Tq8XAG1VlKbaffpyeDE/hjXoWuBq1TAz0hXU07pnSvY7ooZwdEK61OffTQWiUkITjp4OLSFiZGjO/fydQhqoPkQ1TXkaTJzypd63nQTL5rMKJY4AGg+Dn/8rq3I22RkWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpUQBfmm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59923C4AF0A;
+	Tue, 30 Jul 2024 17:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357341;
-	bh=3O/1j4lPRAA8b0Tb7XSCQxMMBMOopXnU1LuCnRmZNMo=;
+	s=korg; t=1722358934;
+	bh=gapk2KAPDzsiL9GLSsaTiL/qRTYMVLVWur4R4sXyI3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEpmFigYmwQfsAw1lPCCtoGJGBdQHaZplKDLGwvrLX4zRd9G8L9ouG9sp1BIxHqvC
-	 KFRgyK0dYTiOJGFo6doZbfJsKVLmyGwa40eGHvO3NAPSPZqxhs4QfTkiyvWkg3j7gd
-	 3xd6L7I0G0cyK/Tqr4UVVEYEKymozhWZ3pLq7nnI=
+	b=SpUQBfmm38qx2Ad/V3J7Fsp2KMnxxKjdYmfhIY8+vPlGTdA2jRCcmCfxu3wHGkj+D
+	 L7UxT4tfnsKT5t/5ULKHBsSv7UYkb9jvzW8IEohRiagFdnlL9hs3YfzYC//gRVeF3R
+	 TIHTMjFlzzl5Q2OqowlghnRPmFuH7vTkSlZNzBGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.1 283/440] sched/fair: set_load_weight() must also call reweight_task() for SCHED_IDLE tasks
-Date: Tue, 30 Jul 2024 17:48:36 +0200
-Message-ID: <20240730151626.881988562@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 410/568] jbd2: make jbd2_journal_get_max_txn_bufs() internal
+Date: Tue, 30 Jul 2024 17:48:37 +0200
+Message-ID: <20240730151655.894086398@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-commit d329605287020c3d1c3b0dadc63d8208e7251382 upstream.
+commit 4aa99c71e42ad60178c1154ec24e3df9c684fb67 upstream.
 
-When a task's weight is being changed, set_load_weight() is called with
-@update_load set. As weight changes aren't trivial for the fair class,
-set_load_weight() calls fair.c::reweight_task() for fair class tasks.
+There's no reason to have jbd2_journal_get_max_txn_bufs() public
+function. Currently all users are internal and can use
+journal->j_max_transaction_buffers instead. This saves some unnecessary
+recomputations of the limit as a bonus which becomes important as this
+function gets more complex in the following patch.
 
-However, set_load_weight() first tests task_has_idle_policy() on entry and
-skips calling reweight_task() for SCHED_IDLE tasks. This is buggy as
-SCHED_IDLE tasks are just fair tasks with a very low weight and they would
-incorrectly skip load, vlag and position updates.
-
-Fix it by updating reweight_task() to take struct load_weight as idle weight
-can't be expressed with prio and making set_load_weight() call
-reweight_task() for SCHED_IDLE tasks too when @update_load is set.
-
-Fixes: 9059393e4ec1 ("sched/fair: Use reweight_entity() for set_user_nice()")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org # v4.15+
-Link: http://lkml.kernel.org/r/20240624102331.GI31592@noisy.programming.kicks-ass.net
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20240624170127.3253-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c  |   23 ++++++++++-------------
- kernel/sched/fair.c  |    7 +++----
- kernel/sched/sched.h |    2 +-
- 3 files changed, 14 insertions(+), 18 deletions(-)
+ fs/jbd2/commit.c     |    2 +-
+ fs/jbd2/journal.c    |    5 +++++
+ include/linux/jbd2.h |    5 -----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1259,27 +1259,24 @@ int tg_nop(struct task_group *tg, void *
- static void set_load_weight(struct task_struct *p, bool update_load)
- {
- 	int prio = p->static_prio - MAX_RT_PRIO;
--	struct load_weight *load = &p->se.load;
-+	struct load_weight lw;
- 
--	/*
--	 * SCHED_IDLE tasks get minimal weight:
--	 */
- 	if (task_has_idle_policy(p)) {
--		load->weight = scale_load(WEIGHT_IDLEPRIO);
--		load->inv_weight = WMULT_IDLEPRIO;
--		return;
-+		lw.weight = scale_load(WEIGHT_IDLEPRIO);
-+		lw.inv_weight = WMULT_IDLEPRIO;
-+	} else {
-+		lw.weight = scale_load(sched_prio_to_weight[prio]);
-+		lw.inv_weight = sched_prio_to_wmult[prio];
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -767,7 +767,7 @@ start_journal_io:
+ 		if (first_block < journal->j_tail)
+ 			freed += journal->j_last - journal->j_first;
+ 		/* Update tail only if we free significant amount of space */
+-		if (freed < jbd2_journal_get_max_txn_bufs(journal))
++		if (freed < journal->j_max_transaction_buffers)
+ 			update_tail = 0;
  	}
- 
- 	/*
- 	 * SCHED_OTHER tasks have to update their load when changing their
- 	 * weight
- 	 */
--	if (update_load && p->sched_class == &fair_sched_class) {
--		reweight_task(p, prio);
--	} else {
--		load->weight = scale_load(sched_prio_to_weight[prio]);
--		load->inv_weight = sched_prio_to_wmult[prio];
--	}
-+	if (update_load && p->sched_class == &fair_sched_class)
-+		reweight_task(p, &lw);
-+	else
-+		p->se.load = lw;
+ 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1690,6 +1690,11 @@ journal_t *jbd2_journal_init_inode(struc
+ 	return journal;
  }
  
- #ifdef CONFIG_UCLAMP_TASK
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3330,15 +3330,14 @@ static void reweight_entity(struct cfs_r
++static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
++{
++	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
++}
++
+ /*
+  * Given a journal_t structure, initialise the various fields for
+  * startup of a new journaling session.  We use this both when creating
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1666,11 +1666,6 @@ int jbd2_wait_inode_data(journal_t *jour
+ int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
+ int jbd2_fc_release_bufs(journal_t *journal);
  
- }
- 
--void reweight_task(struct task_struct *p, int prio)
-+void reweight_task(struct task_struct *p, const struct load_weight *lw)
- {
- 	struct sched_entity *se = &p->se;
- 	struct cfs_rq *cfs_rq = cfs_rq_of(se);
- 	struct load_weight *load = &se->load;
--	unsigned long weight = scale_load(sched_prio_to_weight[prio]);
- 
--	reweight_entity(cfs_rq, se, weight);
--	load->inv_weight = sched_prio_to_wmult[prio];
-+	reweight_entity(cfs_rq, se, lw->weight);
-+	load->inv_weight = lw->inv_weight;
- }
- 
- static inline int throttled_hierarchy(struct cfs_rq *cfs_rq);
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2346,7 +2346,7 @@ extern void init_sched_dl_class(void);
- extern void init_sched_rt_class(void);
- extern void init_sched_fair_class(void);
- 
--extern void reweight_task(struct task_struct *p, int prio);
-+extern void reweight_task(struct task_struct *p, const struct load_weight *lw);
- 
- extern void resched_curr(struct rq *rq);
- extern void resched_cpu(int cpu);
+-static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
+-{
+-	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
+-}
+-
+ /*
+  * is_journal_abort
+  *
 
 
 
