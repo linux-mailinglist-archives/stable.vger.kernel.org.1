@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182C9941976
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E772941978
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B8D61C2368D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52C752849DF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F8D18452F;
-	Tue, 30 Jul 2024 16:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED5118454A;
+	Tue, 30 Jul 2024 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/XFwqX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0hZA5l4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557EC14D29B;
-	Tue, 30 Jul 2024 16:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF06A1A6195;
+	Tue, 30 Jul 2024 16:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357152; cv=none; b=mnF1fCoIvFaFS5TCo06LCB6FPxFXtT3/kciNhBB+ObGnujp6f9ahfydD1RQkDgWhV8J25C3XQCQ4FPmul/awfJyEucPehq05akSzSl6ha6uKBua/mx7CBMsKPfOxdAOK6c5MZaQyvAnicdl2gkbWwI0p58veI3tfqZe7WvUhAsQ=
+	t=1722357159; cv=none; b=gPGOMo3zQXCdD/IjnOVULjpwQzPUKpBVRhUB+/lUlnN2FDwsKqi4LtDQ/Vtq0C7tU7jaQCzOQHww8NnKRyDZNgfdex5VZKyiT6JBmQb5zLwLhneYHg0GVCcIoQuIWbHfeuf96bmESKZ9Ayxv/bd7ib/vESMRSycnWtpzNdR4jgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357152; c=relaxed/simple;
-	bh=2C+U7WxRt0rJQcwOk+jsEhkCm856GAZvMrVdL5olEsI=;
+	s=arc-20240116; t=1722357159; c=relaxed/simple;
+	bh=3vSH9DHGhVkz9eh/1uCrptbVbtAAaKK+tWU55HeFXjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZI2VJgdB/w3YobJgqkBLbMDnKW46L+r/FkgitQBcDYVuVuvVaNwOQ2Kwg/wuJ6fGbX0wAtWOm7afRMDsn/Qfvftaw9aeE1kzKfFwG1FU/3GiiPkiX0fFdk+7p4OF7++KNg1GN99811OVrIrbaFmqH7tljsYRMcdBw8/b4jrQE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/XFwqX1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50AFC32782;
-	Tue, 30 Jul 2024 16:32:31 +0000 (UTC)
+	 MIME-Version; b=lQyrUZOcUcciXZzR9VYHCgd8i3bl0+2JeNWR3iXU8lbr5LUE+TGOVHWDW16XyWF7swUn8+ccRd9fs/bNloNOI7c+rGwrh7XRFCQhUuEVIJCa5HSxo5u2UfgRUF+tR+aVHZFiu0KiOULX/E6a7Kqj5B6ZTlCyA/G64jnZJ2TPzfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0hZA5l4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6ADC32782;
+	Tue, 30 Jul 2024 16:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357152;
-	bh=2C+U7WxRt0rJQcwOk+jsEhkCm856GAZvMrVdL5olEsI=;
+	s=korg; t=1722357158;
+	bh=3vSH9DHGhVkz9eh/1uCrptbVbtAAaKK+tWU55HeFXjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/XFwqX1HUwSluvMstUhCjwuRV5qz1Vox8VDtfZNZOiW0lNO78K8WQyjfU+KWMmFM
-	 Jq6BVYZxiizC4tmuQPeEkYWBcJy8kWiWpyDOAg39IQjwTOZ4y0Au6H2j9U+8a66PAg
-	 YRCuvhAu+TzyZhQnZVV9HKXfzxLXRCS6s/Up5GgA=
+	b=R0hZA5l4j+ykQWc8WXJUHHJvSk6me2J48WDaxtR5lr5Ic3+e7HSwgGfk1AnGc1SQc
+	 EIYj0RGC/W51V2ITcM5xuzcD85PQuMcuKA1tkmWDBXwRBcP/5g0EYxd1HrRrdeLUc+
+	 RCSHIfvC1Xsl82BfiOPEeYwwOgMJKsqOO210+70E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sandipan Das <sandipan.das@amd.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 227/809] perf/x86/amd/uncore: Avoid PMU registration if counters are unavailable
-Date: Tue, 30 Jul 2024 17:41:43 +0200
-Message-ID: <20240730151733.572300700@linuxfoundation.org>
+Subject: [PATCH 6.10 228/809] perf/x86/amd/uncore: Fix DF and UMC domain identification
+Date: Tue, 30 Jul 2024 17:41:44 +0200
+Message-ID: <20240730151733.612977408@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,92 +68,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Sandipan Das <sandipan.das@amd.com>
 
-[ Upstream commit f997e208b6c96858a2f6c0855debfbdb9b52f131 ]
+[ Upstream commit 57e11990f45f89bc29d0f84dd7b13a4e4263eeb2 ]
 
-X86_FEATURE_PERFCTR_NB and X86_FEATURE_PERFCTR_LLC are derived from
-CPUID leaf 0x80000001 ECX bits 24 and 28 respectively and denote the
-availability of DF and L3 counters. When these bits are not set, the
-corresponding PMUs have no counters and hence, should not be registered.
+For uncore PMUs, a single context is shared across all CPUs in a domain.
+The domain can be a CCX, like in the case of the L3 PMU, or a socket,
+like in the case of DF and UMC PMUs. This information is available via
+the PMU's cpumask.
 
-Fixes: 07888daa056e ("perf/x86/amd/uncore: Move discovery and registration")
+For contexts shared across a socket, the domain is currently determined
+from topology_die_id() which is incorrect after the introduction of
+commit 63edbaa48a57 ("x86/cpu/topology: Add support for the AMD
+0x80000026 leaf") as it now returns a CCX identifier on Zen 4 and later
+systems which support CPUID leaf 0x80000026.
+
+Use topology_logical_package_id() instead as it always returns a socket
+identifier irrespective of the availability of CPUID leaf 0x80000026.
+
+Fixes: 63edbaa48a57 ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf")
 Signed-off-by: Sandipan Das <sandipan.das@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240626074404.1044230-1-sandipan.das@amd.com
+Link: https://lkml.kernel.org/r/20240626074942.1044818-1-sandipan.das@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/amd/uncore.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ arch/x86/events/amd/uncore.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
-index 4ccb8fa483e61..b78e05ab4a737 100644
+index b78e05ab4a737..5a4bfe9aea237 100644
 --- a/arch/x86/events/amd/uncore.c
 +++ b/arch/x86/events/amd/uncore.c
-@@ -654,17 +654,20 @@ int amd_uncore_df_ctx_init(struct amd_uncore *uncore, unsigned int cpu)
- {
- 	struct attribute **df_attr = amd_uncore_df_format_attr;
- 	struct amd_uncore_pmu *pmu;
-+	int num_counters;
+@@ -639,7 +639,7 @@ void amd_uncore_df_ctx_scan(struct amd_uncore *uncore, unsigned int cpu)
+ 	info.split.aux_data = 0;
+ 	info.split.num_pmcs = NUM_COUNTERS_NB;
+ 	info.split.gid = 0;
+-	info.split.cid = topology_die_id(cpu);
++	info.split.cid = topology_logical_package_id(cpu);
  
- 	/* Run just once */
- 	if (uncore->init_done)
- 		return amd_uncore_ctx_init(uncore, cpu);
+ 	if (pmu_version >= 2) {
+ 		ebx.full = cpuid_ebx(EXT_PERFMON_DEBUG_FEATURES);
+@@ -899,8 +899,8 @@ void amd_uncore_umc_ctx_scan(struct amd_uncore *uncore, unsigned int cpu)
+ 	cpuid(EXT_PERFMON_DEBUG_FEATURES, &eax, &ebx.full, &ecx, &edx);
+ 	info.split.aux_data = ecx;	/* stash active mask */
+ 	info.split.num_pmcs = ebx.split.num_umc_pmc;
+-	info.split.gid = topology_die_id(cpu);
+-	info.split.cid = topology_die_id(cpu);
++	info.split.gid = topology_logical_package_id(cpu);
++	info.split.cid = topology_logical_package_id(cpu);
+ 	*per_cpu_ptr(uncore->info, cpu) = info;
+ }
  
-+	num_counters = amd_uncore_ctx_num_pmcs(uncore, cpu);
-+	if (!num_counters)
-+		goto done;
-+
- 	/* No grouping, single instance for a system */
- 	uncore->pmus = kzalloc(sizeof(*uncore->pmus), GFP_KERNEL);
--	if (!uncore->pmus) {
--		uncore->num_pmus = 0;
-+	if (!uncore->pmus)
- 		goto done;
--	}
- 
- 	/*
- 	 * For Family 17h and above, the Northbridge counters are repurposed
-@@ -674,7 +677,7 @@ int amd_uncore_df_ctx_init(struct amd_uncore *uncore, unsigned int cpu)
- 	pmu = &uncore->pmus[0];
- 	strscpy(pmu->name, boot_cpu_data.x86 >= 0x17 ? "amd_df" : "amd_nb",
- 		sizeof(pmu->name));
--	pmu->num_counters = amd_uncore_ctx_num_pmcs(uncore, cpu);
-+	pmu->num_counters = num_counters;
- 	pmu->msr_base = MSR_F15H_NB_PERF_CTL;
- 	pmu->rdpmc_base = RDPMC_BASE_NB;
- 	pmu->group = amd_uncore_ctx_gid(uncore, cpu);
-@@ -785,17 +788,20 @@ int amd_uncore_l3_ctx_init(struct amd_uncore *uncore, unsigned int cpu)
- {
- 	struct attribute **l3_attr = amd_uncore_l3_format_attr;
- 	struct amd_uncore_pmu *pmu;
-+	int num_counters;
- 
- 	/* Run just once */
- 	if (uncore->init_done)
- 		return amd_uncore_ctx_init(uncore, cpu);
- 
-+	num_counters = amd_uncore_ctx_num_pmcs(uncore, cpu);
-+	if (!num_counters)
-+		goto done;
-+
- 	/* No grouping, single instance for a system */
- 	uncore->pmus = kzalloc(sizeof(*uncore->pmus), GFP_KERNEL);
--	if (!uncore->pmus) {
--		uncore->num_pmus = 0;
-+	if (!uncore->pmus)
- 		goto done;
--	}
- 
- 	/*
- 	 * For Family 17h and above, L3 cache counters are available instead
-@@ -805,7 +811,7 @@ int amd_uncore_l3_ctx_init(struct amd_uncore *uncore, unsigned int cpu)
- 	pmu = &uncore->pmus[0];
- 	strscpy(pmu->name, boot_cpu_data.x86 >= 0x17 ? "amd_l3" : "amd_l2",
- 		sizeof(pmu->name));
--	pmu->num_counters = amd_uncore_ctx_num_pmcs(uncore, cpu);
-+	pmu->num_counters = num_counters;
- 	pmu->msr_base = MSR_F16H_L2I_PERF_CTL;
- 	pmu->rdpmc_base = RDPMC_BASE_LLC;
- 	pmu->group = amd_uncore_ctx_gid(uncore, cpu);
 -- 
 2.43.0
 
