@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561779416D4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE959416EC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15319284249
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38BD81F2390B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA08D184556;
-	Tue, 30 Jul 2024 16:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D5B1A2C12;
+	Tue, 30 Jul 2024 16:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lbq15Iyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKECS88v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7934A188006;
-	Tue, 30 Jul 2024 16:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3728718455E;
+	Tue, 30 Jul 2024 16:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355445; cv=none; b=l+3CmD4G1JhNKtZvIOYJvuMPRsrwEyfpsVLro2gLHwIg/coEP2cHUPX0Oi7FirGNOkJGvk1rviF0delHTcYFi+dG2Ed1o78ZLO70tSvHfQCha4FtH9QUja4fFWmsLO2gf2xSTifLL0VX/m6IGftICjJ6uoR29rFodJTh4txyPH4=
+	t=1722355483; cv=none; b=kLHxcGUq1BaGlF3XIHU1XGH6rS7/YpyLpVgkWnX6PurP6nAkTKR8lzUzXJVxfC4yH+5iep7fZ0QaeNecNlCim4txf3jXqoZjRlf5l5b2dXKdvlm+tLO4sjl8z5WfV52sOH9N7NSuRUxFG+mF/zGXdTUJnNGDb/0/xxP1ha6LNMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355445; c=relaxed/simple;
-	bh=ojugEbsliIyTHj/w14j3pP8eH7Hg+azQZ33SzGJsnz0=;
+	s=arc-20240116; t=1722355483; c=relaxed/simple;
+	bh=0MPaMaAtxZx9Tf5zGeAhbn3ijfJPv75dFeSbHqm1HBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=msDxthySJVIWR/ATm3t62KtgX7VDFwrhP8oTd6XnOMNaIEwSY53AWNJANgpzEZriESWUDAGm/Cu96Z0HO9qjOEwVl9BfMy0gv5TKUNYBV0Akq5fxrwZREnoHcZqzOwfIqWapNsLgjiLoJohQsasHkq1yYwDiHe2iaekcMeSF6Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lbq15Iyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996FDC32782;
-	Tue, 30 Jul 2024 16:04:04 +0000 (UTC)
+	 MIME-Version; b=C5V/TSih253oGQyZWEpx5v0r7qR/q1UPA1pEGqkNIQBs/TewrMgsfOaDmWh8NgaPGofUYrWi5CkCnOLy6HdG1uBQqIxDI4n1hbCjvctRwzsygee7gSa+weeDrTA1fXEIkqvQ5ByJ0QEz9Ne0bqIcHUAs/Rdt9HeFzWYnX0Dp8Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKECS88v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98199C4AF0E;
+	Tue, 30 Jul 2024 16:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355445;
-	bh=ojugEbsliIyTHj/w14j3pP8eH7Hg+azQZ33SzGJsnz0=;
+	s=korg; t=1722355483;
+	bh=0MPaMaAtxZx9Tf5zGeAhbn3ijfJPv75dFeSbHqm1HBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lbq15IyrhB6G2iU2lRaqj5B3WhyIlIDiXw1XO8hCpg0jiOBUxQMINDivEIG+Mldx3
-	 JCj5AoALgWw5H8iwNNv0q1bgX2gHYxpEj8g/ThXzPLYMGTmtzSbtexwiZEi2orh1uo
-	 mFa6ffrJ6kiZkMDBpSIXlbcgvIWmEv2ji0A7A26Y=
+	b=WKECS88v1X3EmLC0ouZorsAfO2hlHOugX3+uMnoDTU7ge6vzsUzmHmjPbI4mljdX7
+	 B50ZjwvkzriU1yQikiXv32i80ow0C7G8cwUVG/G3PyQR5/0aAFIHmm2vPeL8RxBxMX
+	 VBezhzk+STKD9wtDzi8wnXoQ8GbfuNDtmZxm1YxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 051/809] arm64: dts: qcom: sm8350: add power-domain to UFS PHY
-Date: Tue, 30 Jul 2024 17:38:47 +0200
-Message-ID: <20240730151726.663839134@linuxfoundation.org>
+Subject: [PATCH 6.10 052/809] arm64: dts: qcom: sm8450: add power-domain to UFS PHY
+Date: Tue, 30 Jul 2024 17:38:48 +0200
+Message-ID: <20240730151726.703047991@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,28 +69,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 634acc8cea1584b507801315831a330443f819b4 ]
+[ Upstream commit 27d3f57cf5a71484ea38770d4bfd10f6ef035cf4 ]
 
 The UFS PHY is powered on via the UFS_PHY_GDSC power domain. Add
 corresponding power-domain the the PHY node.
 
-Fixes: 59c7cf814783 ("arm64: dts: qcom: sm8350: Add UFS nodes")
+Fixes: 07fa917a335e ("arm64: dts: qcom: sm8450: add ufs nodes")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-10-f1fd15c33fb3@linaro.org
+Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-11-f1fd15c33fb3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 2 ++
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index f7c4700f00c36..da936548c2ac3 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -1779,6 +1779,8 @@ ufs_mem_phy: phy@1d87000 {
- 				      "ref_aux",
- 				      "qref";
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index 616461fcbab99..59428d2ee1ad8 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -4429,6 +4429,8 @@ ufs_mem_phy: phy@1d87000 {
+ 				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
+ 				 <&gcc GCC_UFS_0_CLKREF_EN>;
  
 +			power-domains = <&gcc UFS_PHY_GDSC>;
 +
