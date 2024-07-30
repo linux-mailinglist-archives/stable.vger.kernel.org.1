@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-63898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2231941B2B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AC2941B33
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0801F21608
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCE9A282FF5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57831898E0;
-	Tue, 30 Jul 2024 16:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C26918B476;
+	Tue, 30 Jul 2024 16:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoe9Bkjp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6IjUfZl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7050B188013;
-	Tue, 30 Jul 2024 16:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1CC1898F8;
+	Tue, 30 Jul 2024 16:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358306; cv=none; b=uuwWTZdawp/qYLBoHv+G8ARL9t/YVcG08P342WQMQYMt9QvScOIbyyc1WW1nT7XonMXK3cUjsxUyoIi6PmbLrlLTGIpd+eLtM8kl9GWCtrzrYiwqvYLv0AnNiXEqwy4jVa4BI56Dr3lBDOxX1OZjrBYb56fItb8I/TnzSkEv5YI=
+	t=1722358316; cv=none; b=Oy+FlWZc5S5aOP50TVINEjdPBFQugX4OzrTc+qJ17sI3+Dmgr0FcgFGJbXkmxVs9G6HF05HdRO5Idb/lfDR4N6lp84eNU6tngM/p2wna/OKeV2T2QgVu5Jc6OQ7j7FGVor8DbemFFIzgLaASVGnYci3z84fnHOAEVnvUXxwUvyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358306; c=relaxed/simple;
-	bh=oPiDfVBpsK18ztKbSO78GGcuSm/Ffa1jT5GEvftHcJ0=;
+	s=arc-20240116; t=1722358316; c=relaxed/simple;
+	bh=BJV3QLEA/AdECFmss7esuyk98F2mBcMG847FAFHZzfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYXrlxbIJkbV40pFcXz1XxVnNKqu/YWurj/+yEbeGIZZlHj76cn748Fqt/ZDDIe1ORb97ZAmoztG6jJOLHkR4Xd5ZWDRInw2vREaAlyQlT/n26XLJ6nxbiSZ38OF6aAI4q7g6O1+WUYWiAgi7bQTyhkIoRZ7Eq2trTBJSgWM5q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoe9Bkjp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA77C4AF0A;
-	Tue, 30 Jul 2024 16:51:45 +0000 (UTC)
+	 MIME-Version; b=BBik8D+D1FreoX78q8mAbPRZO9kekRo73Uv6XKrdA/I8oqj+FOkZce/eo1B8/atXMG4JkmP0I8gagJJwdOGAiKlns62yWPSA3vEC00oZksvTuHxGJgeyipEMEQxZQzZ/ri73J1GtMqD/tTufuEo4J8zedCqjCeGcHXPdNn4cCKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6IjUfZl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EA4C32782;
+	Tue, 30 Jul 2024 16:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358306;
-	bh=oPiDfVBpsK18ztKbSO78GGcuSm/Ffa1jT5GEvftHcJ0=;
+	s=korg; t=1722358315;
+	bh=BJV3QLEA/AdECFmss7esuyk98F2mBcMG847FAFHZzfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xoe9Bkjpig9vUT+2u1q+dm1ikEJjo2tpSvR6nKj1HyBIZUIye2AtkI77ZgapwvOGB
-	 srTsKVUSbofAA3s4BCxQoS6kweIUPAobiUYoAkHdke8nlG0nKvL2RcxoENlMe8aU+f
-	 PUNus6KvBA86lggBnWRHt86S2byHRW/xTY23qPlA=
+	b=V6IjUfZlDopGwDRq8i/VaAzop/fQ0EwJatFPVGvMXc6U0/BHHN6tE6TYSWN/hZRg5
+	 kV2j+sxcUF8uH8DfYx+WyF2aiyDEYhrhubojWyp1MUh+SVVC+E5EFg8hosxT7Lb6Wt
+	 +vs2NOAVXWg8Y6oct6WA+n5bpmY8ZiLdthfvanV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	akanksha@linux.ibm.com,
+	kjain@linux.ibm.com,
+	maddy@linux.ibm.com,
+	disgoel@linux.vnet.ibm.com,
+	linuxppc-dev@lists.ozlabs.org,
 	Namhyung Kim <namhyung@kernel.org>,
-	German Gomez <german.gomez@arm.com>,
-	Spoorthy S <spoorts2@in.ibm.com>,
-	Kajol Jain <kjain@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 344/809] perf test: Make test_arm_callgraph_fp.sh more robust
-Date: Tue, 30 Jul 2024 17:43:40 +0200
-Message-ID: <20240730151738.220452901@linuxfoundation.org>
+Subject: [PATCH 6.10 345/809] tools/perf: Fix the string match for "/tmp/perf-$PID.map" files in dso__load
+Date: Tue, 30 Jul 2024 17:43:41 +0200
+Message-ID: <20240730151738.260500822@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,129 +73,143 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-[ Upstream commit ff16aeb9b83441b8458d4235496cf320189a0c60 ]
+[ Upstream commit b0979f008f1352a44cd3c8877e3eb8a1e3e1c6f3 ]
 
-The 2 second sleep can cause the test to fail on very slow network file
-systems because Perf ends up being killed before it finishes starting
-up.
+Perf test for perf probe of function from different CU fails
+as below:
 
-Fix it by making the leafloop workload end after a fixed time like the
-other workloads so there is no need to kill it after 2 seconds.
+	./perf test -vv "test perf probe of function from different CU"
+	116: test perf probe of function from different CU:
+	--- start ---
+	test child forked, pid 2679
+	Failed to find symbol foo in /tmp/perf-uprobe-different-cu-sh.Msa7iy89bx/testfile
+	  Error: Failed to add events.
+	--- Cleaning up ---
+	"foo" does not hit any event.
+	  Error: Failed to delete events.
+	---- end(-1) ----
+	116: test perf probe of function from different CU                   : FAILED!
 
-Also remove the 1 second start sampling delay because it is similarly
-fragile. Instead, search through all samples for a matching one, rather
-than just checking the first sample and hoping it's in the right place.
+The test does below to probe function "foo" :
 
-Fixes: cd6382d82752 ("perf test arm64: Test unwinding using fame-pointer (fp) mode")
-Signed-off-by: James Clark <james.clark@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: Spoorthy S <spoorts2@in.ibm.com>
-Cc: Kajol Jain <kjain@linux.ibm.com>
+	# gcc -g -Og -flto -c /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.c
+	-o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.o
+	# gcc -g -Og -c /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.c
+	-o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.o
+	# gcc -g -Og -o /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile
+	/tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-foo.o
+	/tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile-main.o
+
+	# ./perf probe -x /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile foo
+	Failed to find symbol foo in /tmp/perf-uprobe-different-cu-sh.XniNxNEVT7/testfile
+	   Error: Failed to add events.
+
+Perf probe fails to find symbol foo in the executable placed in
+/tmp/perf-uprobe-different-cu-sh.XniNxNEVT7
+
+Simple reproduce:
+
+ # mktemp -d /tmp/perf-checkXXXXXXXXXX
+   /tmp/perf-checkcWpuLRQI8j
+
+ # gcc -g -o test test.c
+ # cp test /tmp/perf-checkcWpuLRQI8j/
+ # nm /tmp/perf-checkcWpuLRQI8j/test | grep foo
+   00000000100006bc T foo
+
+ # ./perf probe -x /tmp/perf-checkcWpuLRQI8j/test foo
+   Failed to find symbol foo in /tmp/perf-checkcWpuLRQI8j/test
+      Error: Failed to add events.
+
+But it works with any files like /tmp/perf/test. Only for
+patterns with "/tmp/perf-", this fails.
+
+Further debugging, commit 80d496be89ed ("perf report: Add support
+for profiling JIT generated code") added support for profiling JIT
+generated code. This patch handles dso's of form
+"/tmp/perf-$PID.map" .
+
+The check used "if (strncmp(self->name, "/tmp/perf-", 10) == 0)"
+to match "/tmp/perf-$PID.map". With this commit, any dso in
+/tmp/perf- folder will be considered separately for processing
+(not only JIT created map files ). Fix this by changing the
+string pattern to check for "/tmp/perf-%d.map". Add a helper
+function is_perf_pid_map_name to do this check. In "struct dso",
+dso->long_name holds the long name of the dso file. Since the
+/tmp/perf-$PID.map check uses the complete name, use dso___long_name for
+the string name.
+
+With the fix,
+	# ./perf test "test perf probe of function from different CU"
+	117: test perf probe of function from different CU                   : Ok
+
+Fixes: 56cbeacf1435 ("perf probe: Add test for regression introduced by switch to die_get_decl_file()")
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Reviewed-by: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: akanksha@linux.ibm.com
+Cc: kjain@linux.ibm.com
+Cc: maddy@linux.ibm.com
+Cc: disgoel@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240612140316.3006660-1-james.clark@arm.com
+Link: https://lore.kernel.org/r/20240623064850.83720-1-atrajeev@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../perf/tests/shell/test_arm_callgraph_fp.sh | 27 +++++++------------
- tools/perf/tests/workloads/leafloop.c         | 20 +++++++++++---
- 2 files changed, 26 insertions(+), 21 deletions(-)
+ tools/perf/util/dso.c    | 12 ++++++++++++
+ tools/perf/util/dso.h    |  4 ++++
+ tools/perf/util/symbol.c |  3 ++-
+ 3 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/shell/test_arm_callgraph_fp.sh b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-index 61898e2566160..9caa361301759 100755
---- a/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-+++ b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-@@ -28,28 +28,21 @@ cleanup_files()
- 
- trap cleanup_files EXIT TERM INT
- 
--# Add a 1 second delay to skip samples that are not in the leaf() function
- # shellcheck disable=SC2086
--perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- $TEST_PROGRAM 2> /dev/null &
--PID=$!
-+perf record -o "$PERF_DATA" --call-graph fp -e cycles//u --user-callchains -- $TEST_PROGRAM
- 
--echo " + Recording (PID=$PID)..."
--sleep 2
--echo " + Stopping perf-record..."
--
--kill $PID
--wait $PID
-+# Try opening the file so any immediate errors are visible in the log
-+perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4
- 
--# expected perf-script output:
-+# expected perf-script output if 'leaf' has been inserted correctly:
- #
--# program
-+# perf
- # 	728 leaf
- # 	753 parent
- # 	76c leafloop
--# ...
-+# ... remaining stack to main() ...
- 
--perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4
--perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4 | \
--	awk '{ if ($2 != "") sym[i++] = $2 } END { if (sym[0] != "leaf" ||
--						       sym[1] != "parent" ||
--						       sym[2] != "leafloop") exit 1 }'
-+# Each frame is separated by a tab, some spaces and an address
-+SEP="[[:space:]]+ [[:xdigit:]]+"
-+perf script -i "$PERF_DATA" -F comm,ip,sym | tr '\n' ' ' | \
-+	grep -E -q "perf $SEP leaf $SEP parent $SEP leafloop"
-diff --git a/tools/perf/tests/workloads/leafloop.c b/tools/perf/tests/workloads/leafloop.c
-index 1bf5cc97649b0..f7561767e32cd 100644
---- a/tools/perf/tests/workloads/leafloop.c
-+++ b/tools/perf/tests/workloads/leafloop.c
-@@ -1,6 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0 */
-+#include <signal.h>
- #include <stdlib.h>
- #include <linux/compiler.h>
-+#include <unistd.h>
- #include "../tests.h"
- 
- /* We want to check these symbols in perf script */
-@@ -8,10 +10,16 @@ noinline void leaf(volatile int b);
- noinline void parent(volatile int b);
- 
- static volatile int a;
-+static volatile sig_atomic_t done;
-+
-+static void sighandler(int sig __maybe_unused)
-+{
-+	done = 1;
-+}
- 
- noinline void leaf(volatile int b)
- {
--	for (;;)
-+	while (!done)
- 		a += b;
- }
- 
-@@ -22,12 +30,16 @@ noinline void parent(volatile int b)
- 
- static int leafloop(int argc, const char **argv)
- {
--	int c = 1;
-+	int sec = 1;
- 
- 	if (argc > 0)
--		c = atoi(argv[0]);
-+		sec = atoi(argv[0]);
-+
-+	signal(SIGINT, sighandler);
-+	signal(SIGALRM, sighandler);
-+	alarm(sec);
- 
--	parent(c);
-+	parent(sec);
+diff --git a/tools/perf/util/dso.c b/tools/perf/util/dso.c
+index dde706b71da7b..2340c4f6d0c24 100644
+--- a/tools/perf/util/dso.c
++++ b/tools/perf/util/dso.c
+@@ -1652,3 +1652,15 @@ int dso__strerror_load(struct dso *dso, char *buf, size_t buflen)
+ 	scnprintf(buf, buflen, "%s", dso_load__error_str[idx]);
  	return 0;
  }
++
++bool perf_pid_map_tid(const char *dso_name, int *tid)
++{
++	return sscanf(dso_name, "/tmp/perf-%d.map", tid) == 1;
++}
++
++bool is_perf_pid_map_name(const char *dso_name)
++{
++	int tid;
++
++	return perf_pid_map_tid(dso_name, &tid);
++}
+diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
+index df2c98402af3e..d72f3b8c37f6a 100644
+--- a/tools/perf/util/dso.h
++++ b/tools/perf/util/dso.h
+@@ -809,4 +809,8 @@ void reset_fd_limit(void);
+ u64 dso__find_global_type(struct dso *dso, u64 addr);
+ u64 dso__findnew_global_type(struct dso *dso, u64 addr, u64 offset);
  
++/* Check if dso name is of format "/tmp/perf-%d.map" */
++bool perf_pid_map_tid(const char *dso_name, int *tid);
++bool is_perf_pid_map_name(const char *dso_name);
++
+ #endif /* __PERF_DSO */
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 9e5940b5bc591..aee0a4cfb3836 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -1799,7 +1799,8 @@ int dso__load(struct dso *dso, struct map *map)
+ 	const char *map_path = dso__long_name(dso);
+ 
+ 	mutex_lock(dso__lock(dso));
+-	perfmap = strncmp(dso__name(dso), "/tmp/perf-", 10) == 0;
++	perfmap = is_perf_pid_map_name(map_path);
++
+ 	if (perfmap) {
+ 		if (dso__nsinfo(dso) &&
+ 		    (dso__find_perf_map(newmapname, sizeof(newmapname),
 -- 
 2.43.0
 
