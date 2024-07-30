@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-62977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19462941687
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AFC941689
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57F66286C5D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE9531F24313
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788D91D362F;
-	Tue, 30 Jul 2024 16:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499661D47D9;
+	Tue, 30 Jul 2024 16:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkrMR6wW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IocC8/mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273681D3624;
-	Tue, 30 Jul 2024 16:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002BC1D47A8;
+	Tue, 30 Jul 2024 16:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355258; cv=none; b=pGF6DeiPv4bskW428ulM0CAn4jNYk/ad2JIZrDBk6xTL/8LkqNZCgz3niDM2lVcPb19y2KyueW2qY1eZ+w3SSdwnlTdiUNVv0a1Ux/vscvRE3O/X1/x1ajGs7qZXdbLIkQitGBHGgjnSPwisf/PglMnSSG+DVzGlU/5EFts8NBY=
+	t=1722355268; cv=none; b=dk95Dat+8zbMok7oSisaSwIxgubKV1wDj0714VmKjhwngCBZ+rZw+zuWC9OdGOTmI81TTSGVKaehdioxsC5fC1H30Y8U1YnBTuDfxy31Kqj1RJzwVYWHeyXPkg/61neqr9iEElj0VBkjNJAWhrtbArUWXb3M/gF6HQHDBJ+MyGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355258; c=relaxed/simple;
-	bh=y1M6lyF0Ih7dKUKHgLhEl1eFczDPKdA0CDsWDr1cKCA=;
+	s=arc-20240116; t=1722355268; c=relaxed/simple;
+	bh=0LLS7xzpY2ArlCQtYIFPkZ0PZ09cC/euwzuwzjhagDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHpEGF9hWLF7dgK0fOHjWYeVE5Bri/jlVGaMfsRzJ1aMpLMzbJKjYOBKfQYdFgfXXVd29ZUKZLu6zOJDbGRB/c/MDtswLgU6VL4WGjlXP5C7klzeGVzEt1jhRrL1T5dMDlCcmE3np3s3mAOPiQilv8OQkiYElkZAzP/kao3dDeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkrMR6wW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D68C4AF0A;
-	Tue, 30 Jul 2024 16:00:57 +0000 (UTC)
+	 MIME-Version; b=LaBoqXTHqWYbSYuiqEo4F1mImQZa2Gok/PBrXOgGN2q328u2PGcsIW7iku5c7xCXXkOO3VaEwIA+BdbnqzJ/xH1JxI4ptRFEJnYMDZF5RTRFoXhQFe15vUVrWGA58aGUFRkMe79txDLg3tERTzzDDHLALsmdes2TI3t+nRGPk8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IocC8/mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28096C4AF0E;
+	Tue, 30 Jul 2024 16:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355258;
-	bh=y1M6lyF0Ih7dKUKHgLhEl1eFczDPKdA0CDsWDr1cKCA=;
+	s=korg; t=1722355267;
+	bh=0LLS7xzpY2ArlCQtYIFPkZ0PZ09cC/euwzuwzjhagDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkrMR6wWSHOpAGVusXTKcImzyskIN8uFuV1jmSsD8tPGABjIsr2WKyaN31iLF3iWu
-	 k5NyUrlQ7A3NAoiL9J7r6NzYSWI8DQ5mv8Sz2eyoFWZ8aQrHX3yKKkj/O/H0exwq+5
-	 Moi+uGuUyUOsWKdHvC5HlR/JtrrFfoJrrD2vgb2A=
+	b=IocC8/mmpLh57WN5wTajz87OL+sfP17xcKIA7tvxFc1cfUasOzyPMc1SiuYw1TBtW
+	 fpaiWzlSXJcAnrZRTjek6QYxUxaNXvzfCzyCJknwNGNnTENtfJKYogWBEHguQdmwT6
+	 m0UrtiDYr+qM6aSxyIC+xGD/OLhNUzozH7pcSpX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	kernel test robot <lkp@intel.com>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/440] ARM: spitz: fix GPIO assignment for backlight
-Date: Tue, 30 Jul 2024 17:45:10 +0200
-Message-ID: <20240730151618.768701576@linuxfoundation.org>
+Subject: [PATCH 6.1 078/440] vmlinux.lds.h: catch .bss..L* sections into BSS")
+Date: Tue, 30 Jul 2024 17:45:11 +0200
+Message-ID: <20240730151618.807238573@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -67,89 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 78ab3d352f2982bf3f7e506bfbaba7afee1ed8a9 ]
+[ Upstream commit 1a7b7326d587c9a5e8ff067e70d6aaf0333f4bb3 ]
 
-GPIOs controlling backlight on Spitz and Akita are coming from GPIO
-expanders, not the pxa27xx-gpio block, correct it.
+Commit 9a427556fb8e ("vmlinux.lds.h: catch compound literals into
+data and BSS") added catches for .data..L* and .rodata..L* but missed
+.bss..L*
 
-Additionally GPIO lookup tables operate with pin numbers rather than
-legacy GPIO numbers, fix that as well. Use raw numbers instead of legacy
-GPIO names to avoid confusion.
+Since commit 5431fdd2c181 ("ptrace: Convert ptrace_attach() to use
+lock guards") the following appears at build:
 
-Fixes: ee0c8e494cc3 ("backlight: corgi: Convert to use GPIO descriptors")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20240628180852.1738922-2-dmitry.torokhov@gmail.com
+  LD      .tmp_vmlinux.kallsyms1
+powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
+  NM      .tmp_vmlinux.kallsyms1.syms
+  KSYMS   .tmp_vmlinux.kallsyms1.S
+  AS      .tmp_vmlinux.kallsyms1.S
+  LD      .tmp_vmlinux.kallsyms2
+powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
+  NM      .tmp_vmlinux.kallsyms2.syms
+  KSYMS   .tmp_vmlinux.kallsyms2.S
+  AS      .tmp_vmlinux.kallsyms2.S
+  LD      vmlinux
+powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
+
+Lets add .bss..L* to BSS_MAIN macro to catch those sections into BSS.
+
+Fixes: 9a427556fb8e ("vmlinux.lds.h: catch compound literals into data and BSS")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404031349.nmKhyuUG-lkp@intel.com/
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-pxa/spitz.c | 30 ++++++++++--------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ include/asm-generic/vmlinux.lds.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-pxa/spitz.c b/arch/arm/mach-pxa/spitz.c
-index 937f56bbaf6c6..effd28294da07 100644
---- a/arch/arm/mach-pxa/spitz.c
-+++ b/arch/arm/mach-pxa/spitz.c
-@@ -512,10 +512,8 @@ static struct ads7846_platform_data spitz_ads7846_info = {
- static struct gpiod_lookup_table spitz_lcdcon_gpio_table = {
- 	.dev_id = "spi2.1",
- 	.table = {
--		GPIO_LOOKUP("gpio-pxa", SPITZ_GPIO_BACKLIGHT_CONT,
--			    "BL_CONT", GPIO_ACTIVE_LOW),
--		GPIO_LOOKUP("gpio-pxa", SPITZ_GPIO_BACKLIGHT_ON,
--			    "BL_ON", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("sharp-scoop.1", 6, "BL_CONT", GPIO_ACTIVE_LOW),
-+		GPIO_LOOKUP("sharp-scoop.1", 7, "BL_ON", GPIO_ACTIVE_HIGH),
- 		{ },
- 	},
- };
-@@ -523,10 +521,8 @@ static struct gpiod_lookup_table spitz_lcdcon_gpio_table = {
- static struct gpiod_lookup_table akita_lcdcon_gpio_table = {
- 	.dev_id = "spi2.1",
- 	.table = {
--		GPIO_LOOKUP("gpio-pxa", AKITA_GPIO_BACKLIGHT_CONT,
--			    "BL_CONT", GPIO_ACTIVE_LOW),
--		GPIO_LOOKUP("gpio-pxa", AKITA_GPIO_BACKLIGHT_ON,
--			    "BL_ON", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("i2c-max7310", 3, "BL_ON", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("i2c-max7310", 4, "BL_CONT", GPIO_ACTIVE_LOW),
- 		{ },
- 	},
- };
-@@ -953,12 +949,9 @@ static inline void spitz_i2c_init(void) {}
- static struct gpiod_lookup_table spitz_audio_gpio_table = {
- 	.dev_id = "spitz-audio",
- 	.table = {
--		GPIO_LOOKUP("sharp-scoop.0", SPITZ_GPIO_MUTE_L - SPITZ_SCP_GPIO_BASE,
--			    "mute-l", GPIO_ACTIVE_HIGH),
--		GPIO_LOOKUP("sharp-scoop.0", SPITZ_GPIO_MUTE_R - SPITZ_SCP_GPIO_BASE,
--			    "mute-r", GPIO_ACTIVE_HIGH),
--		GPIO_LOOKUP("sharp-scoop.1", SPITZ_GPIO_MIC_BIAS - SPITZ_SCP2_GPIO_BASE,
--			    "mic", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("sharp-scoop.0", 3, "mute-l", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("sharp-scoop.0", 4, "mute-r", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("sharp-scoop.1", 8, "mic", GPIO_ACTIVE_HIGH),
- 		{ },
- 	},
- };
-@@ -966,12 +959,9 @@ static struct gpiod_lookup_table spitz_audio_gpio_table = {
- static struct gpiod_lookup_table akita_audio_gpio_table = {
- 	.dev_id = "spitz-audio",
- 	.table = {
--		GPIO_LOOKUP("sharp-scoop.0", SPITZ_GPIO_MUTE_L - SPITZ_SCP_GPIO_BASE,
--			    "mute-l", GPIO_ACTIVE_HIGH),
--		GPIO_LOOKUP("sharp-scoop.0", SPITZ_GPIO_MUTE_R - SPITZ_SCP_GPIO_BASE,
--			    "mute-r", GPIO_ACTIVE_HIGH),
--		GPIO_LOOKUP("i2c-max7310", AKITA_GPIO_MIC_BIAS - AKITA_IOEXP_GPIO_BASE,
--			    "mic", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("sharp-scoop.0", 3, "mute-l", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("sharp-scoop.0", 4, "mute-r", GPIO_ACTIVE_HIGH),
-+		GPIO_LOOKUP("i2c-max7310", 2, "mic", GPIO_ACTIVE_HIGH),
- 		{ },
- 	},
- };
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 1d1f480a5e9e4..e7539dc024981 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -101,7 +101,7 @@
+ #define DATA_MAIN .data .data.[0-9a-zA-Z_]* .data..L* .data..compoundliteral* .data.$__unnamed_* .data.$L*
+ #define SDATA_MAIN .sdata .sdata.[0-9a-zA-Z_]*
+ #define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]* .rodata..L*
+-#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..compoundliteral*
++#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..L* .bss..compoundliteral*
+ #define SBSS_MAIN .sbss .sbss.[0-9a-zA-Z_]*
+ #else
+ #define TEXT_MAIN .text
 -- 
 2.43.0
 
