@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BBB941BB8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D213941DA1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1F5A1C23065
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F87C1C23D4D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BFE1898E0;
-	Tue, 30 Jul 2024 16:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D341A76B5;
+	Tue, 30 Jul 2024 17:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHzrcMbr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWiL5dAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7EA17D8BB;
-	Tue, 30 Jul 2024 16:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456171A76A4;
+	Tue, 30 Jul 2024 17:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358696; cv=none; b=g7M0qbaZbKPY8iwWwEsf/jCcRCjkKlUAdKjogqYOV1E/912My6qv4e12ZMuSh25MA3y+faCUbNQO7O0zIDpLLz++LcvYXux5htzYx3j0BUuAXez9gLifASx/e6Jl7rdChpNx0IN3jHwLNm/hptyngrGf5M/jkXUmOXLDcc7Zy+k=
+	t=1722359971; cv=none; b=MrN3atnLzLi+a8eoMrmCVuxTo8vj7jXNDnpVZanZBSgjMUKfK+wuLpQznk2jGLlt3TIgXbHgiwQgBN9o5ySL29EFIkzDhCjJdsqeH2EtRHQq8le27wmhna/Mve7/IkYuWkF4iYfM4HOghMmNJgFLKOkXXCZ5UxkIxSs4icxfVls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358696; c=relaxed/simple;
-	bh=FyD7X8hBX0ceG1wPfYbyr8QYkqJ1oujULrbDyhRXnhs=;
+	s=arc-20240116; t=1722359971; c=relaxed/simple;
+	bh=pETnkoX4dt2Na8UbJqlXRmF2I7btzxm8xfSHTnMb47c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibvuua94hKaechJk/L5n6UTWxCMDyycfR8SHMmrzJoyhOFtzaKMULPqphEUayyUl/H8FpBevTGwaSfoOcCDmPINq3mhXWhMm20WlrTe7Sh61KV0KDYeTa9P7qdAMkzYsvKXL4479PQAr0qgiAdcPWr038L6ClUcVTuTuwvcoHCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHzrcMbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B17C32782;
-	Tue, 30 Jul 2024 16:58:15 +0000 (UTC)
+	 MIME-Version; b=q6jn5sW/bRBLes3pRPoStNEI1y5Gglxb3zsZN5hjImNrhyz7dIm2nas5tLLe/NeoTUgZ1ccqJ2C1abCyIZ16TzukMp5Gtb9GHw7OLKnyn314NV+67hOcIlt3WN0jvKumVZuR1geShgk7yHOGnHcOlUPsUR5N1p0yW3Q6AlqTbHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWiL5dAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D01C32782;
+	Tue, 30 Jul 2024 17:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358695;
-	bh=FyD7X8hBX0ceG1wPfYbyr8QYkqJ1oujULrbDyhRXnhs=;
+	s=korg; t=1722359970;
+	bh=pETnkoX4dt2Na8UbJqlXRmF2I7btzxm8xfSHTnMb47c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHzrcMbromsXwM8WSPOSylYT1qC9ib1Xhp6b0WBtVpzgmz3JvbmA4Pp++YCJjLbV1
-	 LSM9Vb+CpKRVA6gorFnNPxjz3lU0Z85DY54Kz2apvszi5fDYubjoMOQMsZDvs9YfiA
-	 VagS/ByJBAy5F8KEwQ77ajhicub8Qh6/eWMfNqxE=
+	b=AWiL5dAqCNy1seIgXl0ElZ+ZqaewQ8khKffsoOstlU5/nsgnIVLbJcP3k9+h2aSt1
+	 cIB6Lsu+i9vrhwB36zWrig4zIAru8iImFn4/b6OTjeMxqzyvMmSocpaWQaN+2VHOPH
+	 wKrnk0xU7KEjx4pfPa7Kvtz1hGF0WeHHuvSDcUUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tung Nguyen <tung.q.nguyen@endava.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 414/440] tipc: Return non-zero value from tipc_udp_addr2str() on error
+Subject: [PATCH 6.6 540/568] tipc: Return non-zero value from tipc_udp_addr2str() on error
 Date: Tue, 30 Jul 2024 17:50:47 +0200
-Message-ID: <20240730151631.960892526@linuxfoundation.org>
+Message-ID: <20240730151701.263642716@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 0a85244fd6188..73e461dc12d7b 100644
+index f892b0903dbaf..cdc8378261ec3 100644
 --- a/net/tipc/udp_media.c
 +++ b/net/tipc/udp_media.c
 @@ -135,8 +135,11 @@ static int tipc_udp_addr2str(struct tipc_media_addr *a, char *buf, int size)
