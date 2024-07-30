@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-64017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8749941BBC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19862941BC2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15ED01C2309B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35B81F210B2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3739E1898E0;
-	Tue, 30 Jul 2024 16:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A591A1898ED;
+	Tue, 30 Jul 2024 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZI6BDCM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGhgKgOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C3217D8BB;
-	Tue, 30 Jul 2024 16:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A87B17D8BB;
+	Tue, 30 Jul 2024 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358707; cv=none; b=KkxeE0FIUcLbY+hLVEPj1WQt2sdj1zLPQmJd2DIEh20Lk2z3PCng35BzkB5oEEofK1Gpq29dX2g3Sc0hjQDUGUlYcUUAfmlxFZ5BgyYA14yUfCmHNUgq7s1GoueMEUyChZ2fBi8b4s+0pVjUP+VzOroavQ+S5TS5s2MiVjyCg2U=
+	t=1722358717; cv=none; b=cbJ4Vra4+GW2fvnIyVyesrAF53Musn5DVhWw9z3BXvxtz4D3SoDgGt1lvqNmZjmh/fSRPC7XBQXzixR76zVr35avs0INkDGVmAOZ5xlsG2h+pwRixAvCimmA2DZ1sm9lTtpfzipa521AtbXaTNdl2pf6dDzejJ5BdC3aXhrHHFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358707; c=relaxed/simple;
-	bh=+c3KkB7aw7uscrd86xfwvdkxOTpcHnvRVlQfAAmNRmg=;
+	s=arc-20240116; t=1722358717; c=relaxed/simple;
+	bh=Fu4ZYTGsO1gsgCkevfo1irf1SDsShIjFP7TaiRAooHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/8IAL8pWxW/bhAZD1uaXi/rg8GdXMIlSIMDtDbDcLAQVx3ziboW5yBRLdlUKQuJyJ4B0euwLIGk8liFdNUDGtRnSU84Jzfty3VQaIcIm+RxTaRlGSOba2ZaCUtnWhIjz0wildcFit8jCo2loRvW26eVGNn9HMafooWPIO9ba5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZI6BDCM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D405C32782;
-	Tue, 30 Jul 2024 16:58:26 +0000 (UTC)
+	 MIME-Version; b=s5KJJeUYJIX4pF1jDgxxYn58GbelCPuTHpBqFpJiKQcNCP03VJADxiXJ8RqE4izB/k9i80iUNJ2zBCnBHRXafSU5bsK/w6rVuAQ/Fy5iuP0HQHpLlZ8Y2W7ZqkmtgQOUrBfAA9AguLxeQ+9O2eKwORjs8H+xf4aeXIHrYHLLNNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGhgKgOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA074C32782;
+	Tue, 30 Jul 2024 16:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358706;
-	bh=+c3KkB7aw7uscrd86xfwvdkxOTpcHnvRVlQfAAmNRmg=;
+	s=korg; t=1722358717;
+	bh=Fu4ZYTGsO1gsgCkevfo1irf1SDsShIjFP7TaiRAooHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZI6BDCM7JcbZ3Q+JjC2aEfHsju5iZsksJ0WGfGbZ1goMQSsIID3839s/h0c5waTcg
-	 D0LIbAdkeLzJ0+0rS9C+C/cvZacj19GQsRPDOwTjocpXXscoFZdq8QmIG+3pCBBZiZ
-	 fmX5g6wrOvKiPJ9FfUkPnlK5wI9vt8vJK8wbClb0=
+	b=cGhgKgOOwJtTpoe81Y8/3xdlw8zqeOm0SLi1YzUvqsnFUzUB2lx/QPA+G74F4bMkU
+	 8PcWiaEz6962sqPEudxjqbg0mMzMTD4ANiJtSnK4McBs+gCQejyku75zNmuMszNYdu
+	 vtscNwUH9wWLpFNWmtCL/Xm3Z3VcCZ2/G/MvTY3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shreyas Deodhar <sdeodhar@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 387/568] scsi: qla2xxx: Fix optrom version displayed in FDMI
-Date: Tue, 30 Jul 2024 17:48:14 +0200
-Message-ID: <20240730151654.991221106@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Xi (Alex) Liu" <xi.liu@amd.com>,
+	Sung Joon Kim <sungjoon.kim@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>
+Subject: [PATCH 6.6 388/568] drm/amd/display: Check for NULL pointer
+Date: Tue, 30 Jul 2024 17:48:15 +0200
+Message-ID: <20240730151655.029809380@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,36 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shreyas Deodhar <sdeodhar@marvell.com>
+From: Sung Joon Kim <sungjoon.kim@amd.com>
 
-commit 348744f27a35e087acc9378bf53537fbfb072775 upstream.
+commit 4ab68e168ae1695f7c04fae98930740aaf7c50fa upstream.
 
-Bios version was popluated for FDMI response. Systems with EFI would show
-optrom version as 0.  EFI version is populated here and BIOS version is
-already displayed under FDMI_HBA_BOOT_BIOS_NAME.
+[why & how]
+Need to make sure plane_state is initialized
+before accessing its members.
 
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-9-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Xi (Alex) Liu <xi.liu@amd.com>
+Signed-off-by: Sung Joon Kim <sungjoon.kim@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 295d91cbc700651782a60572f83c24861607b648)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_surface.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -1710,7 +1710,7 @@ qla2x00_hba_attributes(scsi_qla_host_t *
- 	eiter->type = cpu_to_be16(FDMI_HBA_OPTION_ROM_VERSION);
- 	alen = scnprintf(
- 		eiter->a.orom_version, sizeof(eiter->a.orom_version),
--		"%d.%02d", ha->bios_revision[1], ha->bios_revision[0]);
-+		"%d.%02d", ha->efi_revision[1], ha->efi_revision[0]);
- 	alen += FDMI_ATTR_ALIGNMENT(alen);
- 	alen += FDMI_ATTR_TYPELEN(eiter);
- 	eiter->len = cpu_to_be16(alen);
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
+@@ -154,7 +154,8 @@ const struct dc_plane_status *dc_plane_g
+ 		if (pipe_ctx->plane_state != plane_state)
+ 			continue;
+ 
+-		pipe_ctx->plane_state->status.is_flip_pending = false;
++		if (pipe_ctx->plane_state)
++			pipe_ctx->plane_state->status.is_flip_pending = false;
+ 
+ 		break;
+ 	}
 
 
 
