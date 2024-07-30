@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB69F9415F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:54:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5901F9415F4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:54:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9591C22678
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:54:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8521F2230F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B40629A2;
-	Tue, 30 Jul 2024 15:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680CD1B5831;
+	Tue, 30 Jul 2024 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1421JdFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPCJTyYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABFC145A18;
-	Tue, 30 Jul 2024 15:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C26229A2;
+	Tue, 30 Jul 2024 15:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354879; cv=none; b=iMQLtnMJuKm9o0sbeGYcZnCdB9Sr9GVhURPg2R9M/+gL5cz65nXU1gV02m8At/+QaOrmzAuccottkVhIp7b7+Z6VQ/5I3AS8loMIgwgo2f+yPt6gqTmalXUxwBakuupkxXTVlTx3dHikBsQ4NFGVHKEzRqfJ3F6GKcdjqhSZVP0=
+	t=1722354886; cv=none; b=M9TMwt54TowOLag87NE4wsEIwJ5Ziw1nl/LbehnliFP1qvMm01ozkXQeD+t5LNpzSiwEzTB0Yho1JhqSweb+5NYr8atxoD+StLROhcE1aUOW/7irt0jMDr76jJXT+2+JJKjixiPF9quFcZfO9XqLCDGCM2rPy8Q89HN5shESrD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354879; c=relaxed/simple;
-	bh=QTVxtnQLCnpPV4CsfhUKErtZKNrhX6h9lVWFiIaK9AM=;
+	s=arc-20240116; t=1722354886; c=relaxed/simple;
+	bh=6Qja3WzVJwDtFRE/HJhR2bBuFiMb94/8tBem6jQNHiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6VWnDrnu8IVbwPVRnYdGs+hPltfG3swMQUJ9oBqUFTwBFPIl6ruCIgqCsKa9yQ33ZhYbx0EBkXvF3CPQL7D+n6j5jcoD9YCwxqUswj3b2d3BArSnj75prtsxGeHjEJn5fMdkUTdOxPoBgcCthwGu65jLfK6RUk1fzzLq1Q1mt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1421JdFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0600AC32782;
-	Tue, 30 Jul 2024 15:54:37 +0000 (UTC)
+	 MIME-Version; b=A0efDFYlU7cSXJjk5l4NcZ3Cpc5n6IS7yRwAqdxiPBNUY613+/kuijrkhGYGqrQ8deK4wZdFx5SwYexQ3CaRO/v4SQIzA6v8MyvdiIUlcfCp01p2Dgx+N5Bl2sLSLi4ayY3SqvsuDIaKL3GuDXAdUu1+2GKoLYkUBkIJiQjMmnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPCJTyYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334BFC32782;
+	Tue, 30 Jul 2024 15:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354878;
-	bh=QTVxtnQLCnpPV4CsfhUKErtZKNrhX6h9lVWFiIaK9AM=;
+	s=korg; t=1722354885;
+	bh=6Qja3WzVJwDtFRE/HJhR2bBuFiMb94/8tBem6jQNHiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1421JdFPUlpkm0QtIlDRLLDTI2i1q68OnYnXFI0HaQsLqRYEVMIBeIA7d/aZ1oKOY
-	 R0ikcJ/elCNIaPkrjbC+lEvDvx5qEk81GijTjML+8cDapw3XIwlnaifRJnMIhBFg9K
-	 8gl6qqXkR0rgW8+GrSujXR7PHOV6VwUovAciMTGg=
+	b=NPCJTyYcWVedvNtdoVQ94KzWs6g/8xARQzQo6Ho0gKZRDl3fGuO6azULRWzP3zNUs
+	 K/E2BtMCtIooBHL3yNYGs51iNYyvcSL3ySuyJO/jn63gEB0TXFOkDWbuyuA8wm7dIM
+	 etF/e2/I4M05JkQPz3EemAC8pUk7rgtqXzStBpmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/568] md: fix deadlock between mddev_suspend and flush bio
-Date: Tue, 30 Jul 2024 17:41:52 +0200
-Message-ID: <20240730151640.019989388@linuxfoundation.org>
+Subject: [PATCH 6.6 006/568] platform/chrome: cros_ec_debugfs: fix wrong EC message version
+Date: Tue, 30 Jul 2024 17:41:53 +0200
+Message-ID: <20240730151640.065078880@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,142 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 611d5cbc0b35a752e657a83eebadf40d814d006b ]
+[ Upstream commit c2a28647bbb4e0894e8824362410f72b06ac57a4 ]
 
-Deadlock occurs when mddev is being suspended while some flush bio is in
-progress. It is a complex issue.
+ec_read_version_supported() uses ec_params_get_cmd_versions_v1 but it
+wrongly uses message version 0.
 
-T1. the first flush is at the ending stage, it clears 'mddev->flush_bio'
-    and tries to submit data, but is blocked because mddev is suspended
-    by T4.
-T2. the second flush sets 'mddev->flush_bio', and attempts to queue
-    md_submit_flush_data(), which is already running (T1) and won't
-    execute again if on the same CPU as T1.
-T3. the third flush inc active_io and tries to flush, but is blocked because
-    'mddev->flush_bio' is not NULL (set by T2).
-T4. mddev_suspend() is called and waits for active_io dec to 0 which is inc
-    by T3.
+Fix it.
 
-  T1		T2		T3		T4
-  (flush 1)	(flush 2)	(third 3)	(suspend)
-  md_submit_flush_data
-   mddev->flush_bio = NULL;
-   .
-   .	 	md_flush_request
-   .	  	 mddev->flush_bio = bio
-   .	  	 queue submit_flushes
-   .		 .
-   .		 .		md_handle_request
-   .		 .		 active_io + 1
-   .		 .		 md_flush_request
-   .		 .		  wait !mddev->flush_bio
-   .		 .
-   .		 .				mddev_suspend
-   .		 .				 wait !active_io
-   .		 .
-   .		 submit_flushes
-   .		 queue_work md_submit_flush_data
-   .		 //md_submit_flush_data is already running (T1)
-   .
-   md_handle_request
-    wait resume
-
-The root issue is non-atomic inc/dec of active_io during flush process.
-active_io is dec before md_submit_flush_data is queued, and inc soon
-after md_submit_flush_data() run.
-  md_flush_request
-    active_io + 1
-    submit_flushes
-      active_io - 1
-      md_submit_flush_data
-        md_handle_request
-        active_io + 1
-          make_request
-        active_io - 1
-
-If active_io is dec after md_handle_request() instead of within
-submit_flushes(), make_request() can be called directly intead of
-md_handle_request() in md_submit_flush_data(), and active_io will
-only inc and dec once in the whole flush process. Deadlock will be
-fixed.
-
-Additionally, the only difference between fixing the issue and before is
-that there is no return error handling of make_request(). But after
-previous patch cleaned md_write_start(), make_requst() only return error
-in raid5_make_request() by dm-raid, see commit 41425f96d7aa ("dm-raid456,
-md/raid456: fix a deadlock for dm-raid456 while io concurrent with
-reshape)". Since dm always splits data and flush operation into two
-separate io, io size of flush submitted by dm always is 0, make_request()
-will not be called in md_submit_flush_data(). To prevent future
-modifications from introducing issues, add WARN_ON to ensure
-make_request() no error is returned in this context.
-
-Fixes: fa2bbff7b0b4 ("md: synchronize flush io with array reconfiguration")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240525185257.3896201-3-linan666@huaweicloud.com
+Fixes: e86264595225 ("mfd: cros_ec: add debugfs, console log file")
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Link: https://lore.kernel.org/r/20240611113110.16955-1-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/platform/chrome/cros_ec_debugfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index e4d3741234d90..ba732b1d00b5b 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -493,13 +493,9 @@ static void md_end_flush(struct bio *bio)
+diff --git a/drivers/platform/chrome/cros_ec_debugfs.c b/drivers/platform/chrome/cros_ec_debugfs.c
+index c876120e0ebc9..793c8c4bf35ba 100644
+--- a/drivers/platform/chrome/cros_ec_debugfs.c
++++ b/drivers/platform/chrome/cros_ec_debugfs.c
+@@ -329,6 +329,7 @@ static int ec_read_version_supported(struct cros_ec_dev *ec)
+ 	if (!msg)
+ 		return 0;
  
- 	rdev_dec_pending(rdev, mddev);
- 
--	if (atomic_dec_and_test(&mddev->flush_pending)) {
--		/* The pair is percpu_ref_get() from md_flush_request() */
--		percpu_ref_put(&mddev->active_io);
--
-+	if (atomic_dec_and_test(&mddev->flush_pending))
- 		/* The pre-request flush has finished */
- 		queue_work(md_wq, &mddev->flush_work);
--	}
- }
- 
- static void md_submit_flush_data(struct work_struct *ws);
-@@ -530,12 +526,8 @@ static void submit_flushes(struct work_struct *ws)
- 			rcu_read_lock();
- 		}
- 	rcu_read_unlock();
--	if (atomic_dec_and_test(&mddev->flush_pending)) {
--		/* The pair is percpu_ref_get() from md_flush_request() */
--		percpu_ref_put(&mddev->active_io);
--
-+	if (atomic_dec_and_test(&mddev->flush_pending))
- 		queue_work(md_wq, &mddev->flush_work);
--	}
- }
- 
- static void md_submit_flush_data(struct work_struct *ws)
-@@ -560,8 +552,20 @@ static void md_submit_flush_data(struct work_struct *ws)
- 		bio_endio(bio);
- 	} else {
- 		bio->bi_opf &= ~REQ_PREFLUSH;
--		md_handle_request(mddev, bio);
-+
-+		/*
-+		 * make_requst() will never return error here, it only
-+		 * returns error in raid5_make_request() by dm-raid.
-+		 * Since dm always splits data and flush operation into
-+		 * two separate io, io size of flush submitted by dm
-+		 * always is 0, make_request() will not be called here.
-+		 */
-+		if (WARN_ON_ONCE(!mddev->pers->make_request(mddev, bio)))
-+			bio_io_error(bio);;
- 	}
-+
-+	/* The pair is percpu_ref_get() from md_flush_request() */
-+	percpu_ref_put(&mddev->active_io);
- }
- 
- /*
++	msg->version = 1;
+ 	msg->command = EC_CMD_GET_CMD_VERSIONS + ec->cmd_offset;
+ 	msg->outsize = sizeof(*params);
+ 	msg->insize = sizeof(*response);
 -- 
 2.43.0
 
