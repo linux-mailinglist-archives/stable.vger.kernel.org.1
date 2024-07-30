@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D6B941A68
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E5F941C93
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F9C281E2E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8CE11F237ED
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A3E18800D;
-	Tue, 30 Jul 2024 16:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDEF18C902;
+	Tue, 30 Jul 2024 17:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PF8uoWgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j13mdSQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05601552E7;
-	Tue, 30 Jul 2024 16:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09074189913;
+	Tue, 30 Jul 2024 17:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357812; cv=none; b=H22N8toLiD0QWndoVebTKWfFrd5i9VGbkuScSEx9cd477pThrL2WCCk9wFKW0UOLQVUyA+PU5XySGajAQnAppko+utMI/W2BW8BFxDP0E5m6IX/PFl8/4jIALT09epU7xIGpLc3SpjD96wuevCeEfpxRhanuTCBtdZAh07Xa5RE=
+	t=1722359198; cv=none; b=fSY75+N0/nn/Lm+feU/M7OzfBi73ZPcIsjXIn34XouHrlS7HdT3UE2skVgGJ7AT/0XYrqNcmoqu4VizB/1FVGPkxyGpgsAXlfolJ60HLApPRAO6i/tkheR1pWnK9lQeobzU17bzNV9kEwjckXs3nrE50GjWDPmwLqbZu5PteVqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357812; c=relaxed/simple;
-	bh=zmvU5tnUxy204EleOlGCEkI1rLhH0idM0ZozTBvnxb4=;
+	s=arc-20240116; t=1722359198; c=relaxed/simple;
+	bh=04UKq/saKLfE9W3b2kql/L9OROHFuhpix/7nfVcuVkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A9l/hnqtCsdBnQXwPaqpclaHONShtFp7sZGGXOSz1k3Bg1XwRSFjr4ZGI+SJk825GstjiRcXvab+BogblZcd/HkqWwrLyVZSiPksClzjJmdyt1npIAldfuqonSGmAslYzYvms/TlFPLSv4BPOpOAy1sTtzJ5XuzF8QSodjuPylk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PF8uoWgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C09C4AF0E;
-	Tue, 30 Jul 2024 16:43:31 +0000 (UTC)
+	 MIME-Version; b=K1m256BqiDckOBKzsPo4+RjkEtgPsLeNIKz/ul/DY57b4dvfhXpkTq5wbHBBXrC5IUPm0uRPZOtiaMHOQ4tzzky2DwciSjqWnb1/U15E6woIKvAVhjT/4KfgQlzzOWf+BB37TGOqevWi8SFc+jlNrPrZy1IzFMc4j1SpOcjWmWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j13mdSQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E13FC4AF10;
+	Tue, 30 Jul 2024 17:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357812;
-	bh=zmvU5tnUxy204EleOlGCEkI1rLhH0idM0ZozTBvnxb4=;
+	s=korg; t=1722359197;
+	bh=04UKq/saKLfE9W3b2kql/L9OROHFuhpix/7nfVcuVkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PF8uoWgo9w6lvmjKOdykkHZOoFpyvIGg4kPXWCbVNvZrNEX3LpFtZymBUraJK4j8h
-	 ibkfAcZGlrU4E/QY/HREARE3fM0tYB7kVciYq710FKS/YW3kznEBzch565Yc2Rdxdh
-	 Pd+EJNLDT69W5VlwLC4VjrAVenSKDMv2E2oDTkFs=
+	b=j13mdSQOwSN+ugO7MdZxLpiqS6HaQdgR3wAZL8aXEEYR651uRF/f5D7PIH7QoDLKx
+	 IaBnb91svTpIc3XWiPchRgDLSe5QbIMofBkh7jutH90Zwv7rns+JC2rZWNMydjWplD
+	 sedLKqUXkf/zQG8/RffkmqP5sZqbiUdPVFAgILHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 320/440] hwrng: amd - Convert PCIBIOS_* return codes to errnos
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.6 446/568] kbuild: Fix -S -c in x86 stack protector scripts
 Date: Tue, 30 Jul 2024 17:49:13 +0200
-Message-ID: <20240730151628.317699778@linuxfoundation.org>
+Message-ID: <20240730151657.305281956@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 14cba6ace79627a57fb9058582b03f0ed3832390 upstream.
+commit 3415b10a03945b0da4a635e146750dfe5ce0f448 upstream.
 
-amd_rng_mod_init() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is then returned as is but amd_rng_mod_init() is
-a module_init() function that should return normal errnos.
+After a recent change in clang to stop consuming all instances of '-S'
+and '-c' [1], the stack protector scripts break due to the kernel's use
+of -Werror=unused-command-line-argument to catch cases where flags are
+not being properly consumed by the compiler driver:
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it.
+  $ echo | clang -o - -x c - -S -c -Werror=unused-command-line-argument
+  clang: error: argument unused during compilation: '-c' [-Werror,-Wunused-command-line-argument]
 
-Fixes: 96d63c0297cc ("[PATCH] Add AMD HW RNG driver")
+This results in CONFIG_STACKPROTECTOR getting disabled because
+CONFIG_CC_HAS_SANE_STACKPROTECTOR is no longer set.
+
+'-c' and '-S' both instruct the compiler to stop at different stages of
+the pipeline ('-S' after compiling, '-c' after assembling), so having
+them present together in the same command makes little sense. In this
+case, the test wants to stop before assembling because it is looking at
+the textual assembly output of the compiler for either '%fs' or '%gs',
+so remove '-c' from the list of arguments to resolve the error.
+
+All versions of GCC continue to work after this change, along with
+versions of clang that do or do not contain the change mentioned above.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 4f7fd4d7a791 ("[PATCH] Add the -fstack-protector option to the CFLAGS")
+Fixes: 60a5317ff0f4 ("x86: implement x86_32 stack protector")
+Link: https://github.com/llvm/llvm-project/commit/6461e537815f7fa68cef06842505353cf5600e9c [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/hw_random/amd-rng.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/gcc-x86_32-has-stack-protector.sh |    2 +-
+ scripts/gcc-x86_64-has-stack-protector.sh |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/char/hw_random/amd-rng.c
-+++ b/drivers/char/hw_random/amd-rng.c
-@@ -142,8 +142,10 @@ static int __init amd_rng_mod_init(void)
+--- a/scripts/gcc-x86_32-has-stack-protector.sh
++++ b/scripts/gcc-x86_32-has-stack-protector.sh
+@@ -5,4 +5,4 @@
+ # -mstack-protector-guard-reg, added by
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81708
  
- found:
- 	err = pci_read_config_dword(pdev, 0x58, &pmbase);
--	if (err)
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
- 		goto put_dev;
-+	}
+-echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -m32 -O0 -fstack-protector -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard - -o - 2> /dev/null | grep -q "%fs"
++echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -m32 -O0 -fstack-protector -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard - -o - 2> /dev/null | grep -q "%fs"
+--- a/scripts/gcc-x86_64-has-stack-protector.sh
++++ b/scripts/gcc-x86_64-has-stack-protector.sh
+@@ -1,4 +1,4 @@
+ #!/bin/sh
+ # SPDX-License-Identifier: GPL-2.0
  
- 	pmbase &= 0x0000FF00;
- 	if (pmbase == 0) {
+-echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -m64 -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
++echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -m64 -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
 
 
 
