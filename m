@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC64A941630
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:57:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C967941633
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821E01F25540
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:57:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1863B254E6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF88F1BA862;
-	Tue, 30 Jul 2024 15:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B7A1BA879;
+	Tue, 30 Jul 2024 15:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOeaSXGD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDEKbTNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF211B583F;
-	Tue, 30 Jul 2024 15:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90121B5831;
+	Tue, 30 Jul 2024 15:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355031; cv=none; b=dcm92H0OC54m8q9/p39rsAmlldgiMAWcWqC0Qj8uSTRV1WoNQFPgQLBUFxclfeB2VADvdqrqi6SoidcrpVT0P37Yacgii98h3jO0v3A4rpWTU8OHOo7XD/fuCDjVk/Q1H4NxuZUY2dFA3QA4b1INTiN31nyeZPNMiu6r91HY4wY=
+	t=1722355041; cv=none; b=jdNgfpigDqqSaMBeh1KRFpUKa+Sse2rrtdzM1ev47zlLL2rDEnsev/tACltG5Im59mkxjK3SLjxEiZwxoQEu3iIbCPDDJWknMAH2oI8obSbDmzX7zzLe6njAvZCDIz0HbACpT7zlegk6xSn4ObP7U7U/wn1JPJdKEm6hBg6OhxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355031; c=relaxed/simple;
-	bh=PnjnShrL1rDisI8QQ+dVD9CPN0kaPXW7zKObTk6I7zc=;
+	s=arc-20240116; t=1722355041; c=relaxed/simple;
+	bh=Lx7Mpa9h1DnsYMwWsgpnun6UiW8wEt8Q2uRzTFmmgDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGRxhZh2sFmzIRrPrm/p3vTNFfEERZiMixTzQiggMsL4Ur+vKYWzZOUk4nCwoPDmOaExeo1nTYguFyv3DffX8hDjoxzsIbogI//HDkKsotG9FJUT/p/XW0DpUkHUNa1IBH9oA0q6Y1W4+PfZPXCbVHKsmrJsKbkPXQT3VsOHtms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOeaSXGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33669C4AF0F;
-	Tue, 30 Jul 2024 15:57:10 +0000 (UTC)
+	 MIME-Version; b=RUofJci8OXnyaaIFpn6UER+syg6RwshxWSoNs+tq7JdEsbpoEbcLbXfmK4LNtIL1qE0Z7t7uGyeGDUOnvXKp7TZRJb0Yys/tdOPsoaDlpg+8JymZ9dcWF2cc2j7GF1KebEy2oHG0p7Wq5Q/nfCGKPRP+Uo6kPLuio4SzlpvqdqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDEKbTNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72D1C32782;
+	Tue, 30 Jul 2024 15:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355031;
-	bh=PnjnShrL1rDisI8QQ+dVD9CPN0kaPXW7zKObTk6I7zc=;
+	s=korg; t=1722355041;
+	bh=Lx7Mpa9h1DnsYMwWsgpnun6UiW8wEt8Q2uRzTFmmgDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOeaSXGDzLTD41ezromRZllEUm4znDIRzBcuIfwaVwF6vjwIjA/3lkZ0vNOrbdlKJ
-	 DS/GvARx8E7KE3MsQ7TZGbyXqIgyqLffMyoWEHQPtLYHsQXEwZ+kvkLThy52wk5TRl
-	 XGVZ3bQswNy/vWzObdKV9j5R5qtU+wcp0WL5gTR8=
+	b=NDEKbTNJzRi9hmXokaY8H7ZKGTsjDMywOTmcdsKEifzHrODemdz+5JvlIRFDXsF0P
+	 87V1GWyiyUnGmBie/vuJCpLPXa3jB55aubIgK9bPeaGWike0ElAw8SY87+9Gk+DyN1
+	 +y9KeTZbNkgW2UCyGEOwkFLih6QPcWYnrwXs+Ay8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 013/809] io_uring: Fix probe of disabled operations
-Date: Tue, 30 Jul 2024 17:38:09 +0200
-Message-ID: <20240730151725.182900251@linuxfoundation.org>
+Subject: [PATCH 6.10 014/809] cgroup/cpuset: Optimize isolated partition only generate_sched_domains() calls
+Date: Tue, 30 Jul 2024 17:38:10 +0200
+Message-ID: <20240730151725.222060259@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,79 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 3e05b222382ec67dce7358d50b6006e91d028d8b ]
+[ Upstream commit 1805c1729f52edaa021288473b09f9c7f74fb1ca ]
 
-io_probe checks io_issue_def->not_supported, but we never really set
-that field, as we mark non-supported functions through a specific ->prep
-handler.  This means we end up returning IO_URING_OP_SUPPORTED, even for
-disabled operations.  Fix it by just checking the prep handler itself.
+If only isolated partitions are being created underneath the cgroup root,
+there will only be one sched domain with top_cpuset.effective_cpus. We can
+skip the unnecessary sched domains scanning code and save some cycles.
 
-Fixes: 66f4af93da57 ("io_uring: add support for probing opcodes")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Link: https://lore.kernel.org/r/20240619020620.5301-2-krisman@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Stable-dep-of: ccac8e8de99c ("cgroup/cpuset: Fix remote root partition creation problem")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/opdef.c    | 8 ++++++++
- io_uring/opdef.h    | 4 ++--
- io_uring/register.c | 2 +-
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ kernel/cgroup/cpuset.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/io_uring/opdef.c b/io_uring/opdef.c
-index 2e3b7b16effb3..760006ccc4083 100644
---- a/io_uring/opdef.c
-+++ b/io_uring/opdef.c
-@@ -725,6 +725,14 @@ const char *io_uring_get_opcode(u8 opcode)
- 	return "INVALID";
- }
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index c12b9fdb22a4e..73ab45b04c000 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -964,6 +964,7 @@ static int generate_sched_domains(cpumask_var_t **domains,
  
-+bool io_uring_op_supported(u8 opcode)
-+{
-+	if (opcode < IORING_OP_LAST &&
-+	    io_issue_defs[opcode].prep != io_eopnotsupp_prep)
-+		return true;
-+	return false;
-+}
-+
- void __init io_uring_optable_init(void)
- {
- 	int i;
-diff --git a/io_uring/opdef.h b/io_uring/opdef.h
-index 7ee6f5aa90aa3..14456436ff74a 100644
---- a/io_uring/opdef.h
-+++ b/io_uring/opdef.h
-@@ -17,8 +17,6 @@ struct io_issue_def {
- 	unsigned		poll_exclusive : 1;
- 	/* op supports buffer selection */
- 	unsigned		buffer_select : 1;
--	/* opcode is not supported by this kernel */
--	unsigned		not_supported : 1;
- 	/* skip auditing */
- 	unsigned		audit_skip : 1;
- 	/* supports ioprio */
-@@ -47,5 +45,7 @@ struct io_cold_def {
- extern const struct io_issue_def io_issue_defs[];
- extern const struct io_cold_def io_cold_defs[];
- 
-+bool io_uring_op_supported(u8 opcode);
-+
- void io_uring_optable_init(void);
- #endif
-diff --git a/io_uring/register.c b/io_uring/register.c
-index c0010a66a6f2c..11517b34cfc8f 100644
---- a/io_uring/register.c
-+++ b/io_uring/register.c
-@@ -113,7 +113,7 @@ static __cold int io_probe(struct io_ring_ctx *ctx, void __user *arg,
- 
- 	for (i = 0; i < nr_args; i++) {
- 		p->ops[i].op = i;
--		if (!io_issue_defs[i].not_supported)
-+		if (io_uring_op_supported(i))
- 			p->ops[i].flags = IO_URING_OP_SUPPORTED;
+ 	/* Special case for the 99% of systems with one, full, sched domain */
+ 	if (root_load_balance && !top_cpuset.nr_subparts) {
++single_root_domain:
+ 		ndoms = 1;
+ 		doms = alloc_sched_domains(ndoms);
+ 		if (!doms)
+@@ -1022,6 +1023,13 @@ static int generate_sched_domains(cpumask_var_t **domains,
  	}
- 	p->ops_len = i;
+ 	rcu_read_unlock();
+ 
++	/*
++	 * If there are only isolated partitions underneath the cgroup root,
++	 * we can optimize out unneeded sched domains scanning.
++	 */
++	if (root_load_balance && (csn == 1))
++		goto single_root_domain;
++
+ 	for (i = 0; i < csn; i++)
+ 		csa[i]->pn = i;
+ 	ndoms = csn;
 -- 
 2.43.0
 
