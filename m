@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-63616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0731941A39
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7192941DFD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08C8CB21B7B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24BE61C2362E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6387714831F;
-	Tue, 30 Jul 2024 16:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759F61A76BA;
+	Tue, 30 Jul 2024 17:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pvQ0+Bn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUMNCNqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C071A6192;
-	Tue, 30 Jul 2024 16:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336191A76A1;
+	Tue, 30 Jul 2024 17:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357402; cv=none; b=P975ctIIvg76F+PiC1lnMkgB0DL+eGVq/oiG3Y7HBGDB8Htatx7yvO9yUKQmSBbtSDMwWKpqJWD+NdoAk6u4Uc4QkEy5sACKQVybLVm5GJRP7XhMnAdIKNbBfthB8PxvZ9h5ctp9UC4iqq1xud6YcLxEK9zk9H3K7Z6i/WutTek=
+	t=1722360264; cv=none; b=aZhoBS4rc/0gnidK6okeAMk8xZwLxE6gtpsnTAQBHN1jUnjIuS7AfeZA+vPO/yljatMq5mfIi1RTZRrixaJTe8tjxZxRDKn9b8HyQHB9iHxXAQaY2fPeC30o2vgN9IG85GbpsLqPnVOF7M/UB2Mt89avmBHOF2Lvyhnjpiif2eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357402; c=relaxed/simple;
-	bh=ka4H7K3Y6pOsuPSHLdu3z6zWPCso6YNnSfsSFcyhBME=;
+	s=arc-20240116; t=1722360264; c=relaxed/simple;
+	bh=k2/DFrTjZJ+9DevCsAUufBiEwrvV8pgUyx0fmrSzrjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3nU8t/bBVfBMsaUXhBLWanax496XILZ9GAyU7TFh35DRp7G7OVKeGqhjCoA5EsMmz6Af3eTd7RKRoLHfLQPUCVCurGeomI90otXTlQaniNdwebmqSJiaRyLH9SFLTDGHIFQK8FQxHWvHGXb1uOTGzLrdCnHMO3bUiQ1EH7E3lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pvQ0+Bn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822A0C32782;
-	Tue, 30 Jul 2024 16:36:41 +0000 (UTC)
+	 MIME-Version; b=l9mMkZAdhTjXcozywFSBliCIB9mBDlPLtNkQhpt4gPZEiqophmuzgcv2k2GyLmP5utyZLlirba4ec0SBB4swnrzMd76KHlhusnLruOtdSUkxCxIhbk6EJutuXBIjriThJolatBkFQahmWqco6RrputfnmA/7Z6Ne7iR+KvuVTrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUMNCNqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF44C4AF0E;
+	Tue, 30 Jul 2024 17:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357402;
-	bh=ka4H7K3Y6pOsuPSHLdu3z6zWPCso6YNnSfsSFcyhBME=;
+	s=korg; t=1722360264;
+	bh=k2/DFrTjZJ+9DevCsAUufBiEwrvV8pgUyx0fmrSzrjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1pvQ0+BncD63vhVOUc4VuijgCIpv/GRa3zsZ4p9/LO4s3gihQ+HyFeKpibcvZOcII
-	 zudpFfUKocettfpXVe2BJIBft2ATWUKDgiHD9JPko/vf+fQDgC1Ju8PAEdJXPA5evk
-	 yq8DVkEl5vDPzEytiNt6abWFq/f1y7eftMkj1RuU=
+	b=PUMNCNqTj7Q+yOBwS3rQ7m0MmdoAom0pYf53N3cS6K1U/Y5g012cnbVwXrgzmjIt0
+	 b4s+QaT4MLKTYWsVHIN6NmEG77uY1ob9Ohw/R5tJJvWwHTCqG15a0IcuWrJ17GX6kz
+	 XQ2BnU0G0blqfuG+R8hdgRZG20daJY0VDsI4TiQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.1 289/440] ext2: Verify bitmap and itable block numbers before using them
+	Qiang Ma <maqianga@uniontech.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.10 646/809] efi/libstub: Zero initialize heap allocated struct screen_info
 Date: Tue, 30 Jul 2024 17:48:42 +0200
-Message-ID: <20240730151627.122166345@linuxfoundation.org>
+Message-ID: <20240730151750.385392390@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Qiang Ma <maqianga@uniontech.com>
 
-commit 322a6aff03937aa1ece33b4e46c298eafaf9ac41 upstream.
+commit ee8b8f5d83eb2c9caaebcf633310905ee76856e9 upstream.
 
-Verify bitmap block numbers and inode table blocks are sane before using
-them for checking bits in the block bitmap.
+After calling uefi interface allocate_pool to apply for memory, we
+should clear 0 to prevent the possibility of using random values.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+Cc: <stable@vger.kernel.org> # v6.6+
+Fixes: 732ea9db9d8a ("efi: libstub: Move screen_info handling to common code")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext2/balloc.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/libstub/screen_info.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext2/balloc.c
-+++ b/fs/ext2/balloc.c
-@@ -79,26 +79,33 @@ static int ext2_valid_block_bitmap(struc
- 	ext2_grpblk_t next_zero_bit;
- 	ext2_fsblk_t bitmap_blk;
- 	ext2_fsblk_t group_first_block;
-+	ext2_grpblk_t max_bit;
+--- a/drivers/firmware/efi/libstub/screen_info.c
++++ b/drivers/firmware/efi/libstub/screen_info.c
+@@ -32,6 +32,8 @@ struct screen_info *__alloc_screen_info(
+ 	if (status != EFI_SUCCESS)
+ 		return NULL;
  
- 	group_first_block = ext2_group_first_block_no(sb, block_group);
-+	max_bit = ext2_group_last_block_no(sb, block_group) - group_first_block;
- 
- 	/* check whether block bitmap block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_block_bitmap);
- 	offset = bitmap_blk - group_first_block;
--	if (!ext2_test_bit(offset, bh->b_data))
-+	if (offset < 0 || offset > max_bit ||
-+	    !ext2_test_bit(offset, bh->b_data))
- 		/* bad block bitmap */
- 		goto err_out;
- 
- 	/* check whether the inode bitmap block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_inode_bitmap);
- 	offset = bitmap_blk - group_first_block;
--	if (!ext2_test_bit(offset, bh->b_data))
-+	if (offset < 0 || offset > max_bit ||
-+	    !ext2_test_bit(offset, bh->b_data))
- 		/* bad block bitmap */
- 		goto err_out;
- 
- 	/* check whether the inode table block number is set */
- 	bitmap_blk = le32_to_cpu(desc->bg_inode_table);
- 	offset = bitmap_blk - group_first_block;
-+	if (offset < 0 || offset > max_bit ||
-+	    offset + EXT2_SB(sb)->s_itb_per_group - 1 > max_bit)
-+		goto err_out;
- 	next_zero_bit = ext2_find_next_zero_bit(bh->b_data,
- 				offset + EXT2_SB(sb)->s_itb_per_group,
- 				offset);
++	memset(si, 0, sizeof(*si));
++
+ 	status = efi_bs_call(install_configuration_table,
+ 			     &screen_info_guid, si);
+ 	if (status == EFI_SUCCESS)
 
 
 
