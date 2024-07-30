@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-63736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ECE8941A5F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3840C941A62
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 505151C22E46
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69E9F1C22560
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8D91A619E;
-	Tue, 30 Jul 2024 16:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE36183CD5;
+	Tue, 30 Jul 2024 16:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0nYS1t1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BUWyBZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C57214831F;
-	Tue, 30 Jul 2024 16:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C23D1A619E;
+	Tue, 30 Jul 2024 16:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357787; cv=none; b=KjkWVKfrIEFImUvFIvFmUwh19bFzmo7ZgIZkbw8KyCXi/J8QzTK8EdpuEfF+hQf58DlBJEtTYBIAPPtdlnPdBQQvmXF3O0Qxpj+2QKcLnSEiBo7VAWkpUe3kv5B08kwbwJx49nGM2RMhyfY6qoN0J93T5gQeoRjkPHK2EBUYBjg=
+	t=1722357797; cv=none; b=p9iKMdLg9z72zjpFwl3MCxfR+5YfEZ7oUQnqn5HChCpItfnz5NO1M0YA+hg7pcgZd/WjjvnFQaE+QqiEHJAjUzTM1A06U/54NZ/6aUBHCD/b/sSK1QNC5NTIcfZ5/rNKKgqJI5p4uAcR81qQ+D547mHEfYtJrXyh0qi/ItDDu7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357787; c=relaxed/simple;
-	bh=wQzA39+30kyPS4Sz7OhZhECIZ4hu2XYrlPt/CdJ+HBk=;
+	s=arc-20240116; t=1722357797; c=relaxed/simple;
+	bh=/vt93KaJL+UMPmTSx+ZNwTuw5IXgwl2WWJssgyEd2oM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uspyUQZpMjvNb4okjLgv3lw5OwVnMPbMY3AgPOtMcJVRQHCn4TAgjASMwE12u0dbFJhY1gh+nvtqm895s9ujxAW513p1n5psxyYvOTlxpsDeRs6e6XwINIE1trHpNSsfMvlmAPxZg0b6/bgZ66gmISQfGBhWfgPjCIawz3g4ghc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0nYS1t1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2455EC32782;
-	Tue, 30 Jul 2024 16:43:06 +0000 (UTC)
+	 MIME-Version; b=n5Pp7D3f2rworfxdCeurTOCO62C4zyEI8mrOrPfCZKrX6gQ7Cgzhl+SiUtYVZIC/Hh9qRJuF7PjvqYXZQ7pED4TgAN4DKHAts9GUXD2ncDLkfYxSKeTwbc6vZxG22UsN4CAe/SeTVsSB+76FxaJlwxYghF4bryxOK35Z9mp1jjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BUWyBZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6B0C32782;
+	Tue, 30 Jul 2024 16:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357787;
-	bh=wQzA39+30kyPS4Sz7OhZhECIZ4hu2XYrlPt/CdJ+HBk=;
+	s=korg; t=1722357797;
+	bh=/vt93KaJL+UMPmTSx+ZNwTuw5IXgwl2WWJssgyEd2oM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0nYS1t1TCHezW8UkcIdpVEeBtc+MInN2CzjiiM7bCxcIL3OqfaTIjgCgpcTbM92k
-	 L36/uq5L2/fKCK913zOAm4437ilky/Dn3gSSBdWt9yNiWtlzzvzj1o5qXoeI/uNXX0
-	 ePxsvP1lUKH5hUX0STiXyku05bPluR/dq1EfAIz4=
+	b=0BUWyBZctFYTB5uTUOQm6E2OrHcZYFUmgl6IEchkdJSCu1pbD1PEoD47eGff4aV2D
+	 utfsl4cyf13EOaRogzdtQQws+OdnBCj+7jedOkDeiL+hOyttpcE9bdS2gVb01GvYQ9
+	 td1tc9ZEGsR9sTekvwkyLXBFNKxEyX3SNsCi9p/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	ChiYuan Huang <cy_huang@richtek.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 292/809] media: i2c: hi846: Fix V4L2_SUBDEV_FORMAT_TRY get_selection()
-Date: Tue, 30 Jul 2024 17:42:48 +0200
-Message-ID: <20240730151736.124892796@linuxfoundation.org>
+Subject: [PATCH 6.10 293/809] media: v4l: async: Fix NULL pointer dereference in adding ancillary links
+Date: Tue, 30 Jul 2024 17:42:49 +0200
+Message-ID: <20240730151736.165510835@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,43 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-[ Upstream commit 984abe0b5794a2aca359bb61555351d2ec520d2a ]
+[ Upstream commit 9b4667ea67854f0b116fe22ad11ef5628c5b5b5f ]
 
-The current code does not return anything to the user.
+In v4l2_async_create_ancillary_links(), ancillary links are created for
+lens and flash sub-devices. These are sub-device to sub-device links and
+if the async notifier is related to a V4L2 device, the source sub-device
+of the ancillary link is NULL, leading to a NULL pointer dereference.
+Check the notifier's sd field is non-NULL in
+v4l2_async_create_ancillary_links().
 
-Although the code looks a bit dangerous (using a pointer without
-checking if it is valid), it should be fine. The core validates that
-sel->pad has a valid value.
-
-Fix the following smatch error:
-drivers/media/i2c/hi846.c:1854 hi846_get_selection() warn: statement has no effect 31
-
-Fixes: e8c0882685f9 ("media: i2c: add driver for the SK Hynix Hi-846 8M pixel camera")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-[Sakari Ailus: code -> core.]
+Fixes: aa4faf6eb271 ("media: v4l2-async: Create links during v4l2_async_match_notify()")
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+[Sakari Ailus: Reword the subject and commit messages slightly.]
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/hi846.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-async.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/i2c/hi846.c b/drivers/media/i2c/hi846.c
-index 9c565ec033d4e..52d9ca68a86c8 100644
---- a/drivers/media/i2c/hi846.c
-+++ b/drivers/media/i2c/hi846.c
-@@ -1851,7 +1851,7 @@ static int hi846_get_selection(struct v4l2_subdev *sd,
- 		mutex_lock(&hi846->mutex);
- 		switch (sel->which) {
- 		case V4L2_SUBDEV_FORMAT_TRY:
--			v4l2_subdev_state_get_crop(sd_state, sel->pad);
-+			sel->r = *v4l2_subdev_state_get_crop(sd_state, sel->pad);
- 			break;
- 		case V4L2_SUBDEV_FORMAT_ACTIVE:
- 			sel->r = hi846->cur_mode->crop;
+diff --git a/drivers/media/v4l2-core/v4l2-async.c b/drivers/media/v4l2-core/v4l2-async.c
+index 222f01665f7ce..c477723c07bf8 100644
+--- a/drivers/media/v4l2-core/v4l2-async.c
++++ b/drivers/media/v4l2-core/v4l2-async.c
+@@ -323,6 +323,9 @@ static int v4l2_async_create_ancillary_links(struct v4l2_async_notifier *n,
+ 	    sd->entity.function != MEDIA_ENT_F_FLASH)
+ 		return 0;
+ 
++	if (!n->sd)
++		return 0;
++
+ 	link = media_create_ancillary_link(&n->sd->entity, &sd->entity);
+ 
+ 	return IS_ERR(link) ? PTR_ERR(link) : 0;
 -- 
 2.43.0
 
