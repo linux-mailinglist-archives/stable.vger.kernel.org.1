@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30F594180A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC92094180E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 693841F20ACA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A15A11F2313A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC0A1917EC;
-	Tue, 30 Jul 2024 16:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970FD18B480;
+	Tue, 30 Jul 2024 16:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0JYl3GE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGH9sW3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B95F1A6193;
-	Tue, 30 Jul 2024 16:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFDC18B470;
+	Tue, 30 Jul 2024 16:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356185; cv=none; b=Pa+k4WzGwL/MuYNQJCaUtnMtoz6eGMTfI+EhwQVPiAAxmkYccYFSJisii6PUkzoLEyGhRPASAFfnaQovhvsqphGk66XFBDVSmD8XmO9adMFO61fsdWhAfzFSOHnLtAY88ZecPNw8VtfQzSMTkadcKF/D4ED12QfKyDF6VkT5MAc=
+	t=1722356198; cv=none; b=ZR6lhngvDlpqmgo5bt0lMih6c7Oodl6BamsczgtZOaZ4FNFpv/1e2rbYrsG6Fu8kr7iAsdosQJBEpXxvlwe19+tsAKsnX7pCeyF+tUkHI1AbGzjVGfqrfMbSQ6V0qPOIawRUWbIfWQlNsDR1iOe6+TbaaKW2Rs/uWxxFtkuL7Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356185; c=relaxed/simple;
-	bh=guowVK68/GYabnF2dt3i+PabfvSOYnnGf/hL+XBUWsY=;
+	s=arc-20240116; t=1722356198; c=relaxed/simple;
+	bh=AC6iZqGaLpbYIcWmB2L/NfqF6PBRU4awOZFLsW+Ng7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F28Po20+B2K/O4/+zoGauEuKvuQH/215N78aQWNU5PcZnV8dt9nEKEP21oxhuBvkjNbBxlSLd4b2rcugNCoywz/UwwYh12vMxYdk2WtzMwo998IXpM9SA+mHp5MP5YXKQucF1LpDlUtMUfla6Fz/Yr+mrnQkS2+mvS8lxgB68zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0JYl3GE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5FEC32782;
-	Tue, 30 Jul 2024 16:16:24 +0000 (UTC)
+	 MIME-Version; b=SPP5zQ7B6lZKhjGhj742IKntc4H2a9ubRZeDp2Y12TC8yWaMAsnjaKmt7rKs2m/C7cttECRMYzJNAxXAqvkg3eWS4YM9wLSuww/TXwSON+uEDArlSOV9XEL+vR6VwQWfV7XdwMnMnDEiAjoLlXqgOy+uPDBhWYUQnC5M3dMPiT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGH9sW3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD4BC32782;
+	Tue, 30 Jul 2024 16:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356185;
-	bh=guowVK68/GYabnF2dt3i+PabfvSOYnnGf/hL+XBUWsY=;
+	s=korg; t=1722356197;
+	bh=AC6iZqGaLpbYIcWmB2L/NfqF6PBRU4awOZFLsW+Ng7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0JYl3GEJy3r2gNTtnz12WczrB4enfbK1ZcSKcE+EeF+yLAHMuOwgBtp/amG1njfi
-	 oHS8k+grsG7lf9b8BFAa8arBcC+LTG6hU9TIAGdV/K/DvpdE1N3aA+27Xlkaue4Ols
-	 kHu6SffXC2muDn8VXd74y+B3b3vELFJAWLzAI3+k=
+	b=eGH9sW3V6DkkvXbFwqup9+ygeEDnyPprYVhOWDzpCK+NLvupxsETVtipb9z9OBCIV
+	 1FK0r+ei3aeI7XeaVK27DyfhgrK2RUqG+SD785hmVmaHf3ONqzMKBpjfQu9woE+g+n
+	 hUbGehuXwqfywiaK2T1aRrx3IAB9yMBm+LYywjqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 127/809] arm64: dts: qcom: x1e80100: Fix USB HS PHY 0.8V supply
-Date: Tue, 30 Jul 2024 17:40:03 +0200
-Message-ID: <20240730151729.634914085@linuxfoundation.org>
+Subject: [PATCH 6.10 128/809] x86/xen: Convert comma to semicolon
+Date: Tue, 30 Jul 2024 17:40:04 +0200
+Message-ID: <20240730151729.674160931@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,87 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 9c99c33a904c86d95ecf4e2690de6a826b88671c ]
+[ Upstream commit 349d271416c61f82b853336509b1d0dc04c1fcbb ]
 
-According to the power grid documentation, the 0.8v HS PHY shared
-regulator is actually LDO3 from PM8550ve id J. Fix both CRD and QCP
-boards.
+Replace a comma between expression statements by a semicolon.
 
-Fixes: d7e03cce0400 ("arm64: dts: qcom: x1e80100-crd: Enable more support")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240629-x1e80100-dts-fix-hsphy-0-8v-supplies-v1-1-de99ee030b27@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 8310b77b48c5 ("Xen/gnttab: handle p2m update errors on a per-slot basis")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240702031010.1411875-1-nichen@iscas.ac.cn
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-crd.dts | 6 +++---
- arch/arm64/boot/dts/qcom/x1e80100-qcp.dts | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/xen/p2m.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-index 7618ae1f8b1c9..b063dd28149e7 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-crd.dts
-@@ -840,7 +840,7 @@ &uart21 {
- };
+diff --git a/arch/x86/xen/p2m.c b/arch/x86/xen/p2m.c
+index 99918beccd80c..6bcbdf3b7999f 100644
+--- a/arch/x86/xen/p2m.c
++++ b/arch/x86/xen/p2m.c
+@@ -730,7 +730,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
+ 		 * immediate unmapping.
+ 		 */
+ 		map_ops[i].status = GNTST_general_error;
+-		unmap[0].host_addr = map_ops[i].host_addr,
++		unmap[0].host_addr = map_ops[i].host_addr;
+ 		unmap[0].handle = map_ops[i].handle;
+ 		map_ops[i].handle = INVALID_GRANT_HANDLE;
+ 		if (map_ops[i].flags & GNTMAP_device_map)
+@@ -740,7 +740,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
  
- &usb_1_ss0_hsphy {
--	vdd-supply = <&vreg_l2e_0p8>;
-+	vdd-supply = <&vreg_l3j_0p8>;
- 	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_0_eusb2_repeater>;
-@@ -865,7 +865,7 @@ &usb_1_ss0_dwc3 {
- };
- 
- &usb_1_ss1_hsphy {
--	vdd-supply = <&vreg_l2e_0p8>;
-+	vdd-supply = <&vreg_l3j_0p8>;
- 	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_1_eusb2_repeater>;
-@@ -890,7 +890,7 @@ &usb_1_ss1_dwc3 {
- };
- 
- &usb_1_ss2_hsphy {
--	vdd-supply = <&vreg_l2e_0p8>;
-+	vdd-supply = <&vreg_l3j_0p8>;
- 	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_2_eusb2_repeater>;
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-index 5567636c8b27f..df3577fcd93c9 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-@@ -536,7 +536,7 @@ &uart21 {
- };
- 
- &usb_1_ss0_hsphy {
--	vdd-supply = <&vreg_l2e_0p8>;
-+	vdd-supply = <&vreg_l3j_0p8>;
- 	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_0_eusb2_repeater>;
-@@ -561,7 +561,7 @@ &usb_1_ss0_dwc3 {
- };
- 
- &usb_1_ss1_hsphy {
--	vdd-supply = <&vreg_l2e_0p8>;
-+	vdd-supply = <&vreg_l3j_0p8>;
- 	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_1_eusb2_repeater>;
-@@ -586,7 +586,7 @@ &usb_1_ss1_dwc3 {
- };
- 
- &usb_1_ss2_hsphy {
--	vdd-supply = <&vreg_l2e_0p8>;
-+	vdd-supply = <&vreg_l3j_0p8>;
- 	vdda12-supply = <&vreg_l2j_1p2>;
- 
- 	phys = <&smb2360_2_eusb2_repeater>;
+ 		if (kmap_ops) {
+ 			kmap_ops[i].status = GNTST_general_error;
+-			unmap[1].host_addr = kmap_ops[i].host_addr,
++			unmap[1].host_addr = kmap_ops[i].host_addr;
+ 			unmap[1].handle = kmap_ops[i].handle;
+ 			kmap_ops[i].handle = INVALID_GRANT_HANDLE;
+ 			if (kmap_ops[i].flags & GNTMAP_device_map)
 -- 
 2.43.0
 
