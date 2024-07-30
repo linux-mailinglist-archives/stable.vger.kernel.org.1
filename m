@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277AF941B91
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAC9941D05
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 343EBB29250
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBEFC1F249D4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963281898ED;
-	Tue, 30 Jul 2024 16:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225691A76BE;
+	Tue, 30 Jul 2024 17:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIluZ3zM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmK7cCp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A1018455E;
-	Tue, 30 Jul 2024 16:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D563F1A76A1;
+	Tue, 30 Jul 2024 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358217; cv=none; b=Ns8eVwEh4bPk2hnno08+sEYJhWWvsl+UsoJGPsZPq7tnFZh0eOCw016TaKy8FeDQKA/nNYZAznoU18leyioyGCbjSxywluj5dZpmX/OwvsymwdV3X4lBHdAyK17Iw4k3E2zr2Mk5lgrjM2DEq7buUDPshAMP3xEU/qGW0iFNEU4=
+	t=1722359498; cv=none; b=O31KTHzft1RY8JUQ+nSPLG9yqdF3SH0pyn1X4aMWcTdxX5J6RCTXqaI+vtuOkRhweQBd08UA7XNsEts9T/V6u3MiRTqZEwUEfqwbkA3y1MvdxwA+m86xiPkcyyj/Gc8FLv/zPOjh3q7xSJHrb6qbVS8rr5rXzEkoJcgydZyhoag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358217; c=relaxed/simple;
-	bh=IcIu1KZGWa9DAOND940gRmFCHLm/+TU1QNCTBofMGik=;
+	s=arc-20240116; t=1722359498; c=relaxed/simple;
+	bh=E1EbSlK9ba+HJaUFCaSsD5kOK4s/oKgMg6gFy39E3vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Am6EWMI44x18d0m9+gXjlK0kN2sHpfrsMohcuMYC4NlJYS4OKjxELnwl9+S7xo4e9muGqaLSVD79Djvs/Lg7pEWQe6Y0PF8YRWZPEYySEo8dit87ohCgZVZMZzK+8BahNow8FXFxncCjnxE2x6Yd8Gi18Y8+bvM5xyZMRTrUQUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIluZ3zM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC487C32782;
-	Tue, 30 Jul 2024 16:50:16 +0000 (UTC)
+	 MIME-Version; b=QXr5cvSiSivvgWdeiJRvTaM5JbOTzkPcF0EF617FeAfe0kkmWADZrMJQokkx2cwVLhnjC5IGRPEgLtd96kLFrbF5/FGf+ZDIxVm7X0zrY3GbyLoP/i+Nrd0uRL+LCb2wCoglYUhEcLAuRono6+afj8tuZ5HSsviUgzeBFUxyT9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmK7cCp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F6EC32782;
+	Tue, 30 Jul 2024 17:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358217;
-	bh=IcIu1KZGWa9DAOND940gRmFCHLm/+TU1QNCTBofMGik=;
+	s=korg; t=1722359498;
+	bh=E1EbSlK9ba+HJaUFCaSsD5kOK4s/oKgMg6gFy39E3vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIluZ3zMaBjM3sHLRDXzfvXX2KWJkENbIAYJzZ/wgLXlqGyau69a7xM8ojktH4k32
-	 xIqI5Ro127rBXw7QMus/BgQ6vB5PzJLqjaCxNHktuwGjAsxHYo6F0U5qS5ThMT6dF1
-	 PoPnYdbrcjxKRseBvpkRXj4MRPeb2ZU9TSiuEdlM=
+	b=MmK7cCp/bdoyE2wz4gQRf2xHgiu2xpslUGNv2pZ6G+mR8TQYOxDzM8/xDOZulL21B
+	 7PXohw7Zc+zGSX3Bep4XFz0AvXCXmJNw9vmovUC4e5L3xQtE/fKKlO0YxvNtsUVnhP
+	 QAy/rN47c5Rwle5DoWL/sB5i13eJ+VtRIRRcW9IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Kees Cook <keescook@chromium.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 367/440] dm-verity: fix dm_is_verity_target() when dm-verity is builtin
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 493/568] MIPS: dts: loongson: Add ISA node
 Date: Tue, 30 Jul 2024 17:50:00 +0200
-Message-ID: <20240730151630.152620159@linuxfoundation.org>
+Message-ID: <20240730151659.298559739@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 3708c7269593b836b1d684214cd9f5d83e4ed3fd upstream.
+commit da3f62466e5afc752f8b72146bbc4700dbba5a9f upstream.
 
-When CONFIG_DM_VERITY=y, dm_is_verity_target() returned true for any
-builtin dm target, not just dm-verity.  Fix this by checking for
-verity_target instead of THIS_MODULE (which is NULL for builtin code).
+ISA node is required by Loongson64 platforms to initialize
+PIO support.
 
-Fixes: b6c1c5745ccc ("dm: Add verity helpers for LoadPin")
+Kernel will hang at boot without ISA node.
+
 Cc: stable@vger.kernel.org
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-target.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -1497,14 +1497,6 @@ bad:
- }
+--- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+@@ -52,6 +52,13 @@
+ 			0 0x40000000 0 0x40000000 0 0x40000000
+ 			0xfe 0x00000000 0xfe 0x00000000 0 0x40000000>;
  
- /*
-- * Check whether a DM target is a verity target.
-- */
--bool dm_is_verity_target(struct dm_target *ti)
--{
--	return ti->type->module == THIS_MODULE;
--}
--
--/*
-  * Get the verity mode (error behavior) of a verity target.
-  *
-  * Returns the verity mode of the target, or -EINVAL if 'ti' is not a verity
-@@ -1575,6 +1567,14 @@ static void __exit dm_verity_exit(void)
- module_init(dm_verity_init);
- module_exit(dm_verity_exit);
- 
-+/*
-+ * Check whether a DM target is a verity target.
-+ */
-+bool dm_is_verity_target(struct dm_target *ti)
-+{
-+	return ti->type == &verity_target;
-+}
++		isa@18000000 {
++			compatible = "isa";
++			#size-cells = <1>;
++			#address-cells = <2>;
++			ranges = <1 0x0 0x0 0x18000000 0x4000>;
++		};
 +
- MODULE_AUTHOR("Mikulas Patocka <mpatocka@redhat.com>");
- MODULE_AUTHOR("Mandeep Baines <msb@chromium.org>");
- MODULE_AUTHOR("Will Drewry <wad@chromium.org>");
+ 		pm: reset-controller@1fe07000 {
+ 			compatible = "loongson,ls2k-pm";
+ 			reg = <0 0x1fe07000 0 0x422>;
 
 
 
