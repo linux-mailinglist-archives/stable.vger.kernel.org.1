@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40C2941B2A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6975C941910
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2194D1C210B1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24D0E282C4D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8351F189514;
-	Tue, 30 Jul 2024 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952251A6195;
+	Tue, 30 Jul 2024 16:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7Zo8vrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxqHAIU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEB6188013;
-	Tue, 30 Jul 2024 16:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B5C1A6166;
+	Tue, 30 Jul 2024 16:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358303; cv=none; b=NuAcrqOHpHCUst7UPJSK8CaBt92rJB5leQ5sTRXfmB5JlMbjuaR0V2Y3fd6hFuj6dpzS9oKpc4HFFJrI4J6P/deJ0dtX+kjNv8yWRUQrlhM2n+NwQuI3aWQy/v1Y/lqNzD6S+iIyXMcmRtPUXcp9vPPr9A4gLNX/TK58iAsZreI=
+	t=1722356922; cv=none; b=K7GQh0Wwy/wM/KFPFKWWMAo7zbsv63a7h+JUwb3Wcksp2qJ313Sx4u4wX1nBLaNwy+Ag7DZM+WZBUBfl+0yJno2k/UTA/TggdUI8YlPJ1I+IvdQbcn9Ey1+dgckcslldQ9hxZX/ka/sXc/AQt3bP4WEJrF4e7zwj2VmEmoq132Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358303; c=relaxed/simple;
-	bh=XzMxX4KHPiKblPE1P5I5lvIrZ4c8y9B5CXp3XerSrxg=;
+	s=arc-20240116; t=1722356922; c=relaxed/simple;
+	bh=EDGpkh3TvDgQO8p/imNEgfDMr1eCUpyX2q4cAY1Xt2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEVhbrlNpMMXyB5ZMOB3iWgd/2EzYk5fIEioLesz3gMYs0eXvoM1wImlB92BA6InsONPBBuY1oJgD8P+sNrTiYczxStKmmaC4tfLWvRmDQLTMsg2BR2O5lkgX5qxSf2VOld+DkInZjO/RDE5jOKK5SrJxJBIEBOcsM4R6ACtxug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7Zo8vrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5318C32782;
-	Tue, 30 Jul 2024 16:51:42 +0000 (UTC)
+	 MIME-Version; b=oeBYfXie3l+2YrPx75R1zFxnrH/ZCORnMON/NFCxmk8kuzbiw2SUoBKdVkwSAq72uUgE6CGOJ2kPwmjJawUpTTIICmEEq7nEDV1X3OxQTG9P7/0gwZLvMBvdNBAgHDro2AjQxX6u1u68X6TG6d9RjWxHfnLcxnmKkQ7Rzg3RTnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxqHAIU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17DAC32782;
+	Tue, 30 Jul 2024 16:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358303;
-	bh=XzMxX4KHPiKblPE1P5I5lvIrZ4c8y9B5CXp3XerSrxg=;
+	s=korg; t=1722356922;
+	bh=EDGpkh3TvDgQO8p/imNEgfDMr1eCUpyX2q4cAY1Xt2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7Zo8vrN9tak+zFcaGqmnq9K4yxtxuHfx7nCQ5EXYHY2obmWhEe6UEgNrWeFsI9Vx
-	 qnXFa+Mp8jrG/R7ByLR3Bnkf1IdXR0nn5K5pgTso7gwrpx1h0bpZOEFJxAq2YRBCVv
-	 YoGXY45dkkV2K3du9pOWifq7bXwYWy+q+2ETAhj4=
+	b=hxqHAIU0Y4oXH1T7ZcyEXMY6NOPHgcE+GpvSFKVGGzwtZjhzQuXIClx7W0G3z8E5/
+	 Ed4Q064QPhFYsOcNxKQIMO+iceyJh9M2r5wj3QSat3stiXpsfi1lyNvwFulwmqN27S
+	 UecblPdi4kWdWl+AzJoIxqHF37xfryjpqlHDdguA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 349/568] fs/ntfs3: Fix the format of the "nocase" mount option
+Subject: [PATCH 6.1 223/440] RDMA/hns: Fix missing pagesize and alignment check in FRMR
 Date: Tue, 30 Jul 2024 17:47:36 +0200
-Message-ID: <20240730151653.510189557@linuxfoundation.org>
+Message-ID: <20240730151624.570451417@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit d392e85fd1e8d58e460c17ca7d0d5c157848d9c1 ]
+[ Upstream commit d387d4b54eb84208bd4ca13572e106851d0a0819 ]
 
-The 'nocase' option was mistakenly added as fsparam_flag_no
-with the 'no' prefix, causing the case-insensitive mode to require
-the 'nonocase' option to be enabled.
+The offset requires 128B alignment and the page size ranges from
+4K to 128M.
 
-Fixes: a3a956c78efa ("fs/ntfs3: Add option "nocase"")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_device.h | 4 ++++
+ drivers/infiniband/hw/hns/hns_roce_mr.c     | 5 +++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index 79ebe62f00017..d47cfa215a367 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -276,7 +276,7 @@ static const struct fs_parameter_spec ntfs_fs_parameters[] = {
- 	fsparam_flag_no("acl",			Opt_acl),
- 	fsparam_string("iocharset",		Opt_iocharset),
- 	fsparam_flag_no("prealloc",		Opt_prealloc),
--	fsparam_flag_no("nocase",		Opt_nocase),
-+	fsparam_flag_no("case",		Opt_nocase),
- 	{}
- };
- // clang-format on
+diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
+index 0a4c046cdfac4..a2bdfa026c560 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_device.h
++++ b/drivers/infiniband/hw/hns/hns_roce_device.h
+@@ -82,6 +82,7 @@
+ #define MR_TYPE_DMA				0x03
+ 
+ #define HNS_ROCE_FRMR_MAX_PA			512
++#define HNS_ROCE_FRMR_ALIGN_SIZE		128
+ 
+ #define PKEY_ID					0xffff
+ #define NODE_DESC_SIZE				64
+@@ -182,6 +183,9 @@ enum {
+ #define HNS_HW_PAGE_SHIFT			12
+ #define HNS_HW_PAGE_SIZE			(1 << HNS_HW_PAGE_SHIFT)
+ 
++#define HNS_HW_MAX_PAGE_SHIFT			27
++#define HNS_HW_MAX_PAGE_SIZE			(1 << HNS_HW_MAX_PAGE_SHIFT)
++
+ struct hns_roce_uar {
+ 	u64		pfn;
+ 	unsigned long	index;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 190e62da98e4b..980261969b0c0 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -423,6 +423,11 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+ 	int ret, sg_num = 0;
+ 
++	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
++	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
++	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
++		return sg_num;
++
+ 	mr->npages = 0;
+ 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
+ 				 sizeof(dma_addr_t), GFP_KERNEL);
 -- 
 2.43.0
 
