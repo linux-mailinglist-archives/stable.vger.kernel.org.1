@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-64040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF23941BD8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A2B94198B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 423B8283853
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14B401C236C8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCF918990A;
-	Tue, 30 Jul 2024 16:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763214EB2B;
+	Tue, 30 Jul 2024 16:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnKcg9CV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/O/6qi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1462B189537;
-	Tue, 30 Jul 2024 16:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3600C8BE8;
+	Tue, 30 Jul 2024 16:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358786; cv=none; b=lrj/28dNxLp5lYZGI5QmrXDGUmkR9aGvJFPS9L5fjdqHZtNI+II7cfKvm+/NKEedVvmW9iWrryey8ZZ/0sTlYDtyEfbZ8YFX4GSMBa74d78kXrx+5haeGuk18OdlFJ0VrBunMqaNJbSzY632LF0OYiPI9IUTeuE8ZrBkKSk1v/A=
+	t=1722357229; cv=none; b=ralpnhiHYDbBZIOktNhETNf+crtq72RQS+SF5j7F+6MYRSdCLrsZMjRx7eCmT+GTBvgcRDTMZWqwQvuJqv9Hf/A1XNyGSrJ56x5B4AJ1HFXNemoCKAuVs6tsodz33SYE5jdnBJm+YVdL+lQ0oOYYm7RC6MD2i5pvaRAo8pv+agQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358786; c=relaxed/simple;
-	bh=qDjaAQYtaaHX7RdcRaC+dj8AZDcq3cvdcc1Z3FRHExA=;
+	s=arc-20240116; t=1722357229; c=relaxed/simple;
+	bh=0YzfOoLZDF779MmXZaN89Io1AckgrD/Msz7+8pqj8lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzuowofFxSp0KAgcR4TwKDDjUxG2IDJONlWCzrroqzmxGwxzJWSMBH3rEF5NVtATRd6OQn5upWmJRtM63S8QTPXWu5EVIi/VDvLQq5Adv23i2gFy4y2zki4SYmFiiX+A/fjt/m99FAXWQ1kr4C7DT9SQvf7Yvn94E9TdPDRCGqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnKcg9CV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D68C32782;
-	Tue, 30 Jul 2024 16:59:45 +0000 (UTC)
+	 MIME-Version; b=GHnV2opIVxCQt3fx/TDoATR/lDKGEaOjlAt6Ud1YOxpupBK1sHMrQ8ugm2gxI6Wj8xYHzEF0nCIT6uctwTVcrbjkQ0UD0U58WpPk7p+cxQL7ydLpkofuJqeGMULEj9r3cC5+G3Eye8X7S2F5A9f/WhbNPNMkMuI7q/6AxLhj3j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/O/6qi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FB0C32782;
+	Tue, 30 Jul 2024 16:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358785;
-	bh=qDjaAQYtaaHX7RdcRaC+dj8AZDcq3cvdcc1Z3FRHExA=;
+	s=korg; t=1722357229;
+	bh=0YzfOoLZDF779MmXZaN89Io1AckgrD/Msz7+8pqj8lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnKcg9CV8pGxIO8I8ZeJSQTnuXXY9XmUwZyKndKvp1SyIav/Atd6hfGnzFnWX3KyP
-	 UYOJk7yZQ00hPDnEEOGP1bipKWQIXh+g5hBvykcq0vIASpA8ggVzYnJbx6vwfzgcdo
-	 84vES9wgBMLP/R6iZczYg5+El85WXZpH5+ZuVums=
+	b=1/O/6qi7iTULSLjy88slh/kSNK7yqD7TZIlNQurJO2t3jAD1avTRKPpi6/U4dpF7U
+	 uGKK1gwDoG6BAJgzBleMcjISE5Yx8OWESXSxRkz9cONIesYIeDmzZRMuLVzpfYcWIG
+	 HgAKrXfKeAw5Y3UF8erdYEU7sk/4nMr88mfFwfqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 397/568] ext4: check dot and dotdot of dx_root before making dir indexed
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 271/440] mm/hugetlb: fix possible recursive locking detected warning
 Date: Tue, 30 Jul 2024 17:48:24 +0200
-Message-ID: <20240730151655.388051946@linuxfoundation.org>
+Message-ID: <20240730151626.420247242@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-commit 50ea741def587a64e08879ce6c6a30131f7111e7 upstream.
+commit 667574e873b5f77a220b2a93329689f36fb56d5d upstream.
 
-Syzbot reports a issue as follows:
+When tries to demote 1G hugetlb folios, a lockdep warning is observed:
+
 ============================================
-BUG: unable to handle page fault for address: ffffed11022e24fe
-PGD 23ffee067 P4D 23ffee067 PUD 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 PID: 5079 Comm: syz-executor306 Not tainted 6.10.0-rc5-g55027e689933 #0
+WARNING: possible recursive locking detected
+6.10.0-rc6-00452-ga4d0275fa660-dirty #79 Not tainted
+--------------------------------------------
+bash/710 is trying to acquire lock:
+ffffffff8f0a7850 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0x244/0x460
+
+but task is already holding lock:
+ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&h->resize_lock);
+  lock(&h->resize_lock);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+4 locks held by bash/710:
+ #0: ffff8f118439c3f0 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x64/0xe0
+ #1: ffff8f11893b9e88 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0xf8/0x1d0
+ #2: ffff8f1183dc4428 (kn->active#98){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x100/0x1d0
+ #3: ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
+
+stack backtrace:
+CPU: 3 PID: 710 Comm: bash Not tainted 6.10.0-rc6-00452-ga4d0275fa660-dirty #79
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
 Call Trace:
  <TASK>
- make_indexed_dir+0xdaf/0x13c0 fs/ext4/namei.c:2341
- ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2451
- ext4_rename fs/ext4/namei.c:3936 [inline]
- ext4_rename2+0x26e5/0x4370 fs/ext4/namei.c:4214
-[...]
-============================================
+ dump_stack_lvl+0x68/0xa0
+ __lock_acquire+0x10f2/0x1ca0
+ lock_acquire+0xbe/0x2d0
+ __mutex_lock+0x6d/0x400
+ demote_store+0x244/0x460
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa61db14887
+RSP: 002b:00007ffc56c48358 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007fa61db14887
+RDX: 0000000000000002 RSI: 000055a030050220 RDI: 0000000000000001
+RBP: 000055a030050220 R08: 00007fa61dbd1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007fa61dc1b780 R14: 00007fa61dc17600 R15: 00007fa61dc16a00
+ </TASK>
 
-The immediate cause of this problem is that there is only one valid dentry
-for the block to be split during do_split, so split==0 results in out of
-bounds accesses to the map triggering the issue.
+Lockdep considers this an AA deadlock because the different resize_lock
+mutexes reside in the same lockdep class, but this is a false positive.
+Place them in distinct classes to avoid these warnings.
 
-    do_split
-      unsigned split
-      dx_make_map
-       count = 1
-      split = count/2 = 0;
-      continued = hash2 == map[split - 1].hash;
-       ---> map[4294967295]
-
-The maximum length of a filename is 255 and the minimum block size is 1024,
-so it is always guaranteed that the number of entries is greater than or
-equal to 2 when do_split() is called.
-
-But syzbot's crafted image has no dot and dotdot in dir, and the dentry
-distribution in dirblock is as follows:
-
-  bus     dentry1          hole           dentry2           free
-|xx--|xx-------------|...............|xx-------------|...............|
-0   12 (8+248)=256  268     256     524 (8+256)=264 788     236     1024
-
-So when renaming dentry1 increases its name_len length by 1, neither hole
-nor free is sufficient to hold the new dentry, and make_indexed_dir() is
-called.
-
-In make_indexed_dir() it is assumed that the first two entries of the
-dirblock must be dot and dotdot, so bus and dentry1 are left in dx_root
-because they are treated as dot and dotdot, and only dentry2 is moved
-to the new leaf block. That's why count is equal to 1.
-
-Therefore add the ext4_check_dx_root() helper function to add more sanity
-checks to dot and dotdot before starting the conversion to avoid the above
-issue.
-
-Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
-Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240702132349.2600605-2-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lkml.kernel.org/r/20240712031314.2570452-1-linmiaohe@huawei.com
+Fixes: 8531fc6f52f5 ("hugetlb: add hugetlb demote page support")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/namei.c |   56 +++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 51 insertions(+), 5 deletions(-)
+ include/linux/hugetlb.h |    1 +
+ mm/hugetlb.c            |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -2218,6 +2218,52 @@ static int add_dirent_to_buf(handle_t *h
- 	return err ? err : err2;
- }
- 
-+static bool ext4_check_dx_root(struct inode *dir, struct dx_root *root)
-+{
-+	struct fake_dirent *fde;
-+	const char *error_msg;
-+	unsigned int rlen;
-+	unsigned int blocksize = dir->i_sb->s_blocksize;
-+	char *blockend = (char *)root + dir->i_sb->s_blocksize;
-+
-+	fde = &root->dot;
-+	if (unlikely(fde->name_len != 1)) {
-+		error_msg = "invalid name_len for '.'";
-+		goto corrupted;
-+	}
-+	if (unlikely(strncmp(root->dot_name, ".", fde->name_len))) {
-+		error_msg = "invalid name for '.'";
-+		goto corrupted;
-+	}
-+	rlen = ext4_rec_len_from_disk(fde->rec_len, blocksize);
-+	if (unlikely((char *)fde + rlen >= blockend)) {
-+		error_msg = "invalid rec_len for '.'";
-+		goto corrupted;
-+	}
-+
-+	fde = &root->dotdot;
-+	if (unlikely(fde->name_len != 2)) {
-+		error_msg = "invalid name_len for '..'";
-+		goto corrupted;
-+	}
-+	if (unlikely(strncmp(root->dotdot_name, "..", fde->name_len))) {
-+		error_msg = "invalid name for '..'";
-+		goto corrupted;
-+	}
-+	rlen = ext4_rec_len_from_disk(fde->rec_len, blocksize);
-+	if (unlikely((char *)fde + rlen >= blockend)) {
-+		error_msg = "invalid rec_len for '..'";
-+		goto corrupted;
-+	}
-+
-+	return true;
-+
-+corrupted:
-+	EXT4_ERROR_INODE(dir, "Corrupt dir, %s, running e2fsck is recommended",
-+			 error_msg);
-+	return false;
-+}
-+
- /*
-  * This converts a one block unindexed directory to a 3 block indexed
-  * directory, and adds the dentry to the indexed directory.
-@@ -2252,17 +2298,17 @@ static int make_indexed_dir(handle_t *ha
- 		brelse(bh);
- 		return retval;
- 	}
-+
- 	root = (struct dx_root *) bh->b_data;
-+	if (!ext4_check_dx_root(dir, root)) {
-+		brelse(bh);
-+		return -EFSCORRUPTED;
-+	}
- 
- 	/* The 0th block becomes the root, move the dirents out */
- 	fde = &root->dotdot;
- 	de = (struct ext4_dir_entry_2 *)((char *)fde +
- 		ext4_rec_len_from_disk(fde->rec_len, blocksize));
--	if ((char *) de >= (((char *) root) + blocksize)) {
--		EXT4_ERROR_INODE(dir, "invalid rec_len for '..'");
--		brelse(bh);
--		return -EFSCORRUPTED;
--	}
- 	len = ((char *) root) + (blocksize - csum_size) - (char *) de;
- 
- 	/* Allocate new block for the 0th block's dirents */
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -694,6 +694,7 @@ HPAGEFLAG(RawHwpUnreliable, raw_hwp_unre
+ /* Defines one hugetlb page size */
+ struct hstate {
+ 	struct mutex resize_lock;
++	struct lock_class_key resize_key;
+ 	int next_nid_to_alloc;
+ 	int next_nid_to_free;
+ 	unsigned int order;
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4353,7 +4353,7 @@ void __init hugetlb_add_hstate(unsigned
+ 	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+ 	BUG_ON(order == 0);
+ 	h = &hstates[hugetlb_max_hstate++];
+-	mutex_init(&h->resize_lock);
++	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+ 	h->order = order;
+ 	h->mask = ~(huge_page_size(h) - 1);
+ 	for (i = 0; i < MAX_NUMNODES; ++i)
 
 
 
