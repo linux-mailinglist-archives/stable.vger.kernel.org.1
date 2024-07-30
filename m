@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-63043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71D519416E5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374649416ED
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9557B1C22F32
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E666A283F32
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971FB188012;
-	Tue, 30 Jul 2024 16:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A967183CA1;
+	Tue, 30 Jul 2024 16:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0S3b40d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVlR0bZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55669187FF6;
-	Tue, 30 Jul 2024 16:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B90187FFB;
+	Tue, 30 Jul 2024 16:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355476; cv=none; b=KZzUhjjbvAPTWymYheJ6DryaG5IJ9sugJY7+BojF4A4fN8H24GW04lfpooihulnfz5F4n7uaIKtbflNCFJOiVRq5YarCMdNKUZueQbkCcOt+GWAz0dwRMGjvnybohB/UDZNn9rdbccQBrh6IJKXczYvkgIO+7DHrhaestKgsenk=
+	t=1722355490; cv=none; b=rlvN+tMKpZNAYmfdOELxBaFPUcVxkP63lpKyipe+4+O7omppNR+45kqw+JLDZhAbDbX7277PB8fHuycfVpTwlgyMKnIyKbx64n/P2BbDjSjwaGeXwKx6C5dzHWqmnTRGh5bEGmUoYssOwITtGW58P3+SNt8g2BMQX94nPZWbY1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355476; c=relaxed/simple;
-	bh=DtxdF7PZxO+rbkza3fT8p4mzQrZ3n2MhfEPf6tB4yH0=;
+	s=arc-20240116; t=1722355490; c=relaxed/simple;
+	bh=ivRllV5663+MgRxBlNVeFwexOpt12L4Jl2ek9YEKYLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kEhh3uclKLegfpAzoFaCokHjehkQKLW7gfWuUbYkBTaQ9UZ2vBCCyQM18OConzsj23sTpskjFczmBQ7trII+Sc9sfCt6tJ9R4E+XBwv1RWAx4nHqiNuCdHwKN6LiPzsolFIhjeIaFeAce1cOPj5F6b0522FUmGnRSarxnVdUGNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0S3b40d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5547FC4AF0A;
-	Tue, 30 Jul 2024 16:04:35 +0000 (UTC)
+	 MIME-Version; b=ZKiRTdT654q1hu4NE4JlaFefKujw656DBTKWBHJyd4bU4+mT9UlbeH/sMOVdLEhjhBoLiTbPhqOjl5XJKrQoRa7BwChRfPHMDydlpG8eLN7OOdhYyLurZd0dWavETqsQVty/gozW+pOkSR0ITdUdRilAQ4TrhDsiLbIIE5vpUZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVlR0bZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA73C4AF0E;
+	Tue, 30 Jul 2024 16:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355475;
-	bh=DtxdF7PZxO+rbkza3fT8p4mzQrZ3n2MhfEPf6tB4yH0=;
+	s=korg; t=1722355490;
+	bh=ivRllV5663+MgRxBlNVeFwexOpt12L4Jl2ek9YEKYLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w0S3b40d8ORKPYOzmYEoWuKd6FsaaMq99Ye/10rFfutXrlkimmbKC3Ac0hxrel4qE
-	 3kZwLBgBk16kVJmVxrsGmC0K6zq8PIAmlGrdvxAFVHVGPLA5+gJkQDL/IUdIO6jmKB
-	 cJ8yZJMPgF6YymoZiS1+KEOcY35xZ4GJ4fRAKcfg=
+	b=dVlR0bZs8D2w9jcD9dINykIQqaa5NkzNstXW7EF/xtdhZvntuv7IeqnDOCsCxkyCN
+	 ljn9j8xrFEaw4M8ZQuBiUBFiBPO7U45Kxnk3q77A0+rQVNXLDD1jTWGzkxKiUNt7k8
+	 CXqoo67xoOfmtN82qGc9cI//jDhKHLS49mRx0SP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Safonov <dima@arista.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yue Sun <samsun1006219@gmail.com>,
+	Xingwei Lee <xrivendell7@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/440] jump_label: Prevent key->enabled int overflow
-Date: Tue, 30 Jul 2024 17:45:31 +0200
-Message-ID: <20240730151619.714219484@linuxfoundation.org>
+Subject: [PATCH 6.1 099/440] jump_label: Fix concurrency issues in static_key_slow_dec()
+Date: Tue, 30 Jul 2024 17:45:32 +0200
+Message-ID: <20240730151619.753507378@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -67,178 +68,141 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Safonov <dima@arista.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit eb8c507296f6038d46010396d91b42a05c3b64d9 ]
+[ Upstream commit 83ab38ef0a0b2407d43af9575bb32333fdd74fb2 ]
 
-1. With CONFIG_JUMP_LABEL=n static_key_slow_inc() doesn't have any
-   protection against key->enabled refcounter overflow.
-2. With CONFIG_JUMP_LABEL=y static_key_slow_inc_cpuslocked()
-   still may turn the refcounter negative as (v + 1) may overflow.
+The commit which tried to fix the concurrency issues of concurrent
+static_key_slow_inc() failed to fix the equivalent issues
+vs. static_key_slow_dec():
 
-key->enabled is indeed a ref-counter as it's documented in multiple
-places: top comment in jump_label.h, Documentation/staging/static-keys.rst,
-etc.
+CPU0                     CPU1
 
-As -1 is reserved for static key that's in process of being enabled,
-functions would break with negative key->enabled refcount:
-- for CONFIG_JUMP_LABEL=n negative return of static_key_count()
-  breaks static_key_false(), static_key_true()
-- the ref counter may become 0 from negative side by too many
-  static_key_slow_inc() calls and lead to use-after-free issues.
+static_key_slow_dec()
+  static_key_slow_try_dec()
 
-These flaws result in that some users have to introduce an additional
-mutex and prevent the reference counter from overflowing themselves,
-see bpf_enable_runtime_stats() checking the counter against INT_MAX / 2.
+	key->enabled == 1
+	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
+	if (val == 1)
+	     return false;
 
-Prevent the reference counter overflow by checking if (v + 1) > 0.
-Change functions API to return whether the increment was successful.
+  jump_label_lock();
+  if (atomic_dec_and_test(&key->enabled)) {
+     --> key->enabled == 0
+   __jump_label_update()
 
-Signed-off-by: Dmitry Safonov <dima@arista.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 83ab38ef0a0b ("jump_label: Fix concurrency issues in static_key_slow_dec()")
+			 static_key_slow_dec()
+			   static_key_slow_try_dec()
+
+			     key->enabled == 0
+			     val = atomic_fetch_add_unless(&key->enabled, -1, 1);
+
+			      --> key->enabled == -1 <- FAIL
+
+There is another bug in that code, when there is a concurrent
+static_key_slow_inc() which enables the key as that sets key->enabled to -1
+so on the other CPU
+
+	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
+
+will succeed and decrement to -2, which is invalid.
+
+Cure all of this by replacing the atomic_fetch_add_unless() with a
+atomic_try_cmpxchg() loop similar to static_key_fast_inc_not_disabled().
+
+[peterz: add WARN_ON_ONCE for the -1 race]
+Fixes: 4c5ea0a9cd02 ("locking/static_key: Fix concurrent static_key_slow_inc()")
+Reported-by: Yue Sun <samsun1006219@gmail.com>
+Reported-by: Xingwei Lee <xrivendell7@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20240610124406.422897838@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/jump_label.h | 21 +++++++++++---
- kernel/jump_label.c        | 56 ++++++++++++++++++++++++++++++--------
- 2 files changed, 61 insertions(+), 16 deletions(-)
+ kernel/jump_label.c | 45 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/jump_label.h b/include/linux/jump_label.h
-index 570831ca99518..4e968ebadce60 100644
---- a/include/linux/jump_label.h
-+++ b/include/linux/jump_label.h
-@@ -224,9 +224,10 @@ extern bool arch_jump_label_transform_queue(struct jump_entry *entry,
- 					    enum jump_label_type type);
- extern void arch_jump_label_transform_apply(void);
- extern int jump_label_text_reserved(void *start, void *end);
--extern void static_key_slow_inc(struct static_key *key);
-+extern bool static_key_slow_inc(struct static_key *key);
-+extern bool static_key_fast_inc_not_disabled(struct static_key *key);
- extern void static_key_slow_dec(struct static_key *key);
--extern void static_key_slow_inc_cpuslocked(struct static_key *key);
-+extern bool static_key_slow_inc_cpuslocked(struct static_key *key);
- extern void static_key_slow_dec_cpuslocked(struct static_key *key);
- extern int static_key_count(struct static_key *key);
- extern void static_key_enable(struct static_key *key);
-@@ -278,11 +279,23 @@ static __always_inline bool static_key_true(struct static_key *key)
- 	return false;
- }
- 
--static inline void static_key_slow_inc(struct static_key *key)
-+static inline bool static_key_fast_inc_not_disabled(struct static_key *key)
- {
-+	int v;
-+
- 	STATIC_KEY_CHECK_USE(key);
--	atomic_inc(&key->enabled);
-+	/*
-+	 * Prevent key->enabled getting negative to follow the same semantics
-+	 * as for CONFIG_JUMP_LABEL=y, see kernel/jump_label.c comment.
-+	 */
-+	v = atomic_read(&key->enabled);
-+	do {
-+		if (v < 0 || (v + 1) < 0)
-+			return false;
-+	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v + 1)));
-+	return true;
- }
-+#define static_key_slow_inc(key)	static_key_fast_inc_not_disabled(key)
- 
- static inline void static_key_slow_dec(struct static_key *key)
- {
 diff --git a/kernel/jump_label.c b/kernel/jump_label.c
-index 4d6c6f5f60db8..d9c822bbffb8d 100644
+index d9c822bbffb8d..eec802175ccc6 100644
 --- a/kernel/jump_label.c
 +++ b/kernel/jump_label.c
-@@ -113,9 +113,40 @@ int static_key_count(struct static_key *key)
- }
- EXPORT_SYMBOL_GPL(static_key_count);
- 
--void static_key_slow_inc_cpuslocked(struct static_key *key)
-+/*
-+ * static_key_fast_inc_not_disabled - adds a user for a static key
-+ * @key: static key that must be already enabled
-+ *
-+ * The caller must make sure that the static key can't get disabled while
-+ * in this function. It doesn't patch jump labels, only adds a user to
-+ * an already enabled static key.
-+ *
-+ * Returns true if the increment was done. Unlike refcount_t the ref counter
-+ * is not saturated, but will fail to increment on overflow.
-+ */
-+bool static_key_fast_inc_not_disabled(struct static_key *key)
- {
-+	int v;
-+
+@@ -131,7 +131,7 @@ bool static_key_fast_inc_not_disabled(struct static_key *key)
  	STATIC_KEY_CHECK_USE(key);
-+	/*
-+	 * Negative key->enabled has a special meaning: it sends
-+	 * static_key_slow_inc() down the slow path, and it is non-zero
-+	 * so it counts as "enabled" in jump_label_update().  Note that
-+	 * atomic_inc_unless_negative() checks >= 0, so roll our own.
-+	 */
-+	v = atomic_read(&key->enabled);
-+	do {
-+		if (v <= 0 || (v + 1) < 0)
-+			return false;
-+	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v + 1)));
-+
-+	return true;
-+}
-+EXPORT_SYMBOL_GPL(static_key_fast_inc_not_disabled);
-+
-+bool static_key_slow_inc_cpuslocked(struct static_key *key)
-+{
+ 	/*
+ 	 * Negative key->enabled has a special meaning: it sends
+-	 * static_key_slow_inc() down the slow path, and it is non-zero
++	 * static_key_slow_inc/dec() down the slow path, and it is non-zero
+ 	 * so it counts as "enabled" in jump_label_update().  Note that
+ 	 * atomic_inc_unless_negative() checks >= 0, so roll our own.
+ 	 */
+@@ -150,7 +150,7 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
  	lockdep_assert_cpus_held();
  
  	/*
-@@ -124,15 +155,9 @@ void static_key_slow_inc_cpuslocked(struct static_key *key)
+-	 * Careful if we get concurrent static_key_slow_inc() calls;
++	 * Careful if we get concurrent static_key_slow_inc/dec() calls;
+ 	 * later calls must wait for the first one to _finish_ the
  	 * jump_label_update() process.  At the same time, however,
  	 * the jump_label_update() call below wants to see
- 	 * static_key_enabled(&key) for jumps to be updated properly.
--	 *
--	 * So give a special meaning to negative key->enabled: it sends
--	 * static_key_slow_inc() down the slow path, and it is non-zero
--	 * so it counts as "enabled" in jump_label_update().  Note that
--	 * atomic_inc_unless_negative() checks >= 0, so roll our own.
- 	 */
--	for (int v = atomic_read(&key->enabled); v > 0; )
--		if (likely(atomic_try_cmpxchg(&key->enabled, &v, v + 1)))
--			return;
-+	if (static_key_fast_inc_not_disabled(key))
-+		return true;
+@@ -247,20 +247,32 @@ EXPORT_SYMBOL_GPL(static_key_disable);
  
- 	jump_label_lock();
- 	if (atomic_read(&key->enabled) == 0) {
-@@ -144,16 +169,23 @@ void static_key_slow_inc_cpuslocked(struct static_key *key)
- 		 */
- 		atomic_set_release(&key->enabled, 1);
- 	} else {
--		atomic_inc(&key->enabled);
-+		if (WARN_ON_ONCE(!static_key_fast_inc_not_disabled(key))) {
-+			jump_label_unlock();
-+			return false;
-+		}
- 	}
- 	jump_label_unlock();
-+	return true;
- }
- 
--void static_key_slow_inc(struct static_key *key)
-+bool static_key_slow_inc(struct static_key *key)
+ static bool static_key_slow_try_dec(struct static_key *key)
  {
-+	bool ret;
-+
- 	cpus_read_lock();
--	static_key_slow_inc_cpuslocked(key);
-+	ret = static_key_slow_inc_cpuslocked(key);
- 	cpus_read_unlock();
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(static_key_slow_inc);
+-	int val;
+-
+-	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
+-	if (val == 1)
+-		return false;
++	int v;
  
+ 	/*
+-	 * The negative count check is valid even when a negative
+-	 * key->enabled is in use by static_key_slow_inc(); a
+-	 * __static_key_slow_dec() before the first static_key_slow_inc()
+-	 * returns is unbalanced, because all other static_key_slow_inc()
+-	 * instances block while the update is in progress.
++	 * Go into the slow path if key::enabled is less than or equal than
++	 * one. One is valid to shut down the key, anything less than one
++	 * is an imbalance, which is handled at the call site.
++	 *
++	 * That includes the special case of '-1' which is set in
++	 * static_key_slow_inc_cpuslocked(), but that's harmless as it is
++	 * fully serialized in the slow path below. By the time this task
++	 * acquires the jump label lock the value is back to one and the
++	 * retry under the lock must succeed.
+ 	 */
+-	WARN(val < 0, "jump label: negative count!\n");
++	v = atomic_read(&key->enabled);
++	do {
++		/*
++		 * Warn about the '-1' case though; since that means a
++		 * decrement is concurrent with a first (0->1) increment. IOW
++		 * people are trying to disable something that wasn't yet fully
++		 * enabled. This suggests an ordering problem on the user side.
++		 */
++		WARN_ON_ONCE(v < 0);
++		if (v <= 1)
++			return false;
++	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v - 1)));
++
+ 	return true;
+ }
+ 
+@@ -271,10 +283,11 @@ static void __static_key_slow_dec_cpuslocked(struct static_key *key)
+ 	if (static_key_slow_try_dec(key))
+ 		return;
+ 
+-	jump_label_lock();
+-	if (atomic_dec_and_test(&key->enabled))
++	guard(mutex)(&jump_label_mutex);
++	if (atomic_cmpxchg(&key->enabled, 1, 0))
+ 		jump_label_update(key);
+-	jump_label_unlock();
++	else
++		WARN_ON_ONCE(!static_key_slow_try_dec(key));
+ }
+ 
+ static void __static_key_slow_dec(struct static_key *key)
 -- 
 2.43.0
 
