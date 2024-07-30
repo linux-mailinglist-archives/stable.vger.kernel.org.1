@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22522941BFB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A3B9419EF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA7D2280EBD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A02528253E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BC2156F30;
-	Tue, 30 Jul 2024 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FCF18454A;
+	Tue, 30 Jul 2024 16:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfvqR+Qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6lnMQRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB311FBA;
-	Tue, 30 Jul 2024 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658131A619B;
+	Tue, 30 Jul 2024 16:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358902; cv=none; b=F2HlgrvN2ov9EAGqTfDwAtt3KQhu9F17LEF2MccCkCxjiEY/EUJm2x0lVZ6jmHNejp1lmNBKkUSb9QHSn4qEbYcIWsT9z+hvpzULERsV8Tvg7oIOlDpE36BdyG324HwXBPnYmirXwJZfQHh16n+SdmTlLwauu+VoS6aEJ/VIlto=
+	t=1722357479; cv=none; b=eUnGIxxWwclzwksRCEH6kwbklcJYjl9kpp9iLeFwVsZJjy8w5XaImzw6lPLPJ1KGv/rfMSwsKwhA4+a+F+btr8l6Jau9j8YR0pz/vzcTeTcDz5vuMu+D2MgokoJT/VtmG5hNCrsI0v2wH+oNE79q23N3Z/8z/SGn/ZPNfgZFsqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358902; c=relaxed/simple;
-	bh=wv7wAN4E8/e/vLg5mHs2FmXZIkCjklEig1Glt16iWJc=;
+	s=arc-20240116; t=1722357479; c=relaxed/simple;
+	bh=IIugkNTzB83k9bPlnrIDN2yYTPSY/s+GfPkBX5gsieg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeX/PpIJS8HlgURH9fD9KAmSq3Dz+Wy1sXYPBcxSYctn91pQuVTa3ooKwKlomwRdkHR8x8PuO0MmZ9L29oLOJ4LxcrEJ9MgY4uLSqw44owE4HfUme9vpvD8qU0tAlHRTX70NzYgEWd2E74jVIi7e5x4MmidExpQHvRJELURjeuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfvqR+Qf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3E4C32782;
-	Tue, 30 Jul 2024 17:01:41 +0000 (UTC)
+	 MIME-Version; b=OaQLKEsZrdV+BiR3KqHGoCH5SOit2CBkkdYvjQFgZavNrCBtJ1oNwtVODyZZeAO3FUS6K20waSXh2d39NtFNkuObcEHK2hr/6ru3tb73bg/I+aHwY52OkZF6kOsFkWJ/pwzywoaRyXCwY/3YfoBFXLk0ZbJMtYsvwYNJwcm6Cps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6lnMQRX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3470C4AF0C;
+	Tue, 30 Jul 2024 16:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358902;
-	bh=wv7wAN4E8/e/vLg5mHs2FmXZIkCjklEig1Glt16iWJc=;
+	s=korg; t=1722357479;
+	bh=IIugkNTzB83k9bPlnrIDN2yYTPSY/s+GfPkBX5gsieg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfvqR+Qf2sZkGr73H8g4tEJvV93UTEdXq2G+Ikw1PI+OufVLpKBu0BNXm/OqBj8wP
-	 ryQrpSW0G0tweiwOvuZFC5kccGyN/7TQnJvcNY+K+o4fSyVAH1qNTz9o/ENgiO2oV8
-	 i3j3v+lTbdG/yn+mNf0UDbVdvC+uoiSj/LWoLNWY=
+	b=Q6lnMQRXynytY+T8S8sCZ3+NT1Kf/nmNCf5Vm48JtRo5g5KtRoeG7/ryc5AOnh5ss
+	 +VEsHvZvmntVwu/jymAmsd9xplEAtL/acPNeG1wPfe1XridgBAvUV6YzV9icW/h6rf
+	 HGbFs2zX9stHeBkWs06QxnlP2Mh0xOOaO4LV5KaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 407/568] leds: mt6360: Fix memory leak in mt6360_init_isnk_properties()
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 281/440] ipv4: fix source address selection with route leak
 Date: Tue, 30 Jul 2024 17:48:34 +0200
-Message-ID: <20240730151655.776754716@linuxfoundation.org>
+Message-ID: <20240730151626.805844724@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-commit e41d574b359ccd8d99be65c6f11502efa2b83136 upstream.
+commit 6807352353561187a718e87204458999dbcbba1b upstream.
 
-The fwnode_for_each_child_node() loop requires manual intervention to
-decrement the child refcount in case of an early return.
+By default, an address assigned to the output interface is selected when
+the source address is not specified. This is problematic when a route,
+configured in a vrf, uses an interface from another vrf (aka route leak).
+The original vrf does not own the selected source address.
 
-Add the missing calls to fwnode_handle_put(child) to avoid memory leaks
-in the error paths.
+Let's add a check against the output interface and call the appropriate
+function to select the source address.
 
-Cc: stable@vger.kernel.org
-Fixes: 679f8652064b ("leds: Add mt6360 driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Acked-by: Pavel Machek <pavel@ucw.cz>
-Link: https://lore.kernel.org/r/20240611-leds-mt6360-memleak-v1-1-93642eb5011e@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 8cbb512c923d ("net: Add source address lookup op for VRF")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240710081521.3809742-2-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/flash/leds-mt6360.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/fib_semantics.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/leds/flash/leds-mt6360.c
-+++ b/drivers/leds/flash/leds-mt6360.c
-@@ -633,14 +633,17 @@ static int mt6360_init_isnk_properties(s
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2270,6 +2270,15 @@ void fib_select_path(struct net *net, st
+ 		fib_select_default(fl4, res);
  
- 			ret = fwnode_property_read_u32(child, "reg", &reg);
- 			if (ret || reg > MT6360_LED_ISNK3 ||
--			    priv->leds_active & BIT(reg))
-+			    priv->leds_active & BIT(reg)) {
-+				fwnode_handle_put(child);
- 				return -EINVAL;
-+			}
- 
- 			ret = fwnode_property_read_u32(child, "color", &color);
- 			if (ret) {
- 				dev_err(priv->dev,
- 					"led %d, no color specified\n",
- 					led->led_no);
-+				fwnode_handle_put(child);
- 				return ret;
- 			}
- 
+ check_saddr:
+-	if (!fl4->saddr)
+-		fl4->saddr = fib_result_prefsrc(net, res);
++	if (!fl4->saddr) {
++		struct net_device *l3mdev;
++
++		l3mdev = dev_get_by_index_rcu(net, fl4->flowi4_l3mdev);
++
++		if (!l3mdev ||
++		    l3mdev_master_dev_rcu(FIB_RES_DEV(*res)) == l3mdev)
++			fl4->saddr = fib_result_prefsrc(net, res);
++		else
++			fl4->saddr = inet_select_addr(l3mdev, 0, RT_SCOPE_LINK);
++	}
+ }
 
 
 
