@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-64629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C589D941ED7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:33:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44601941D5A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70F9AB253B4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 751D21C23A02
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7814A187FEC;
-	Tue, 30 Jul 2024 17:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F47183A17;
+	Tue, 30 Jul 2024 17:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hN2kn/jn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAzvl5EW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370DE1A76A5;
-	Tue, 30 Jul 2024 17:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B191A76D4;
+	Tue, 30 Jul 2024 17:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360745; cv=none; b=dQQIUWMlJ707oudfEgxGqc9T+0eEBp3fNBDY3aNsE8bu4ANhOjb07XfUwgM7MNrXuMws8Azox6vPkXwqB4PTBd0TNJNpwUqhiDZae+BvUpIXA3vCFRXgyF4L/XvB67WZhFPdJO+NjaklEN3L1h+kTlhq2pHETJRQEVqfIIn4UEg=
+	t=1722359765; cv=none; b=GDzQ7md0JK5CRzqoYCCxZaG9XZn/ZknrQT81K8iCK/3Rc9teaUuLgV42k72Mmc5QzVlpBwUFauZ3D0KWck60Jery60G12/d3dxbdpAnZxljvWAcWqBfrZn0nnJrAOE7hz6DUDlnpZNK/V3TCrDCo2MDoiiLBgZvCObwO19FWSO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360745; c=relaxed/simple;
-	bh=czgMK5woNJP/ZHAARoL6XZLxoZYxsN93PycWJ9QQ6sU=;
+	s=arc-20240116; t=1722359765; c=relaxed/simple;
+	bh=HhWgQsg9uJpQsfycDU18WGuGyBUl5nO34UU/NaQd9L0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJofDtneDiotTrSTS7XXas18Dnv95tM5/p/PwhSQwy557yaRF08eOXaQUMcqOlqhRG+KUHOXBYI3saoDk4K+pJWSaTu6Qnuv+toPSOW7AEbR75gAcdyoKZKmuaKuAU56IOSHSC3kqjXSwOthnvw3j+0TIr4rAAD87aHq2pL6H+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hN2kn/jn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1D8C32782;
-	Tue, 30 Jul 2024 17:32:24 +0000 (UTC)
+	 MIME-Version; b=DXjJpvds7slr8IHOuw72lj99Ao0MwCR0Qv/peg9KnCdcKRJHUb34CglBLZvYdXkZBAEvmXzPpyfTzK6bZNd59Fr23YKX0v4hX62oOslou/buy/IB+mzdR0ubobI5HvBxGX30Wn4eQcoXSvzSlwfkbDYcCaQ0bMQk+7PfUkiPLMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAzvl5EW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51620C32782;
+	Tue, 30 Jul 2024 17:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360745;
-	bh=czgMK5woNJP/ZHAARoL6XZLxoZYxsN93PycWJ9QQ6sU=;
+	s=korg; t=1722359765;
+	bh=HhWgQsg9uJpQsfycDU18WGuGyBUl5nO34UU/NaQd9L0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hN2kn/jnNeNFcE4tjA8LBLISO+wTRFdIER5IHuL3Cd3p17lifMTMgP2eN+qiiDjq0
-	 /XxVUjNkYNuDAhM+zO/Kypt8iOU9BHXeFDbYFC/KxymCCidlOSE177MTeZUlMhjyGc
-	 i2AoclxlZuCOJnw1SxiOX56H5PV4RP8Mqzyzn3PQ=
+	b=TAzvl5EWvtAiERuhLmNkHnUtPOpp6yuDgAMm7At48T8H2duptvAuUAvaU5XdtZedT
+	 dqnDi+kqrmuHnoWLktqwRkEH/6z/IzMJm71/d0tkQAYRX5PEY2wDPFU/dkXJdSJ9MO
+	 u/rjEo6uq74EMVPdpe1qilCo25rGlNvsk0ghw98U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 763/809] ice: Fix recipe read procedure
-Date: Tue, 30 Jul 2024 17:50:39 +0200
-Message-ID: <20240730151755.100842630@linuxfoundation.org>
+Subject: [PATCH 6.6 533/568] bpf, events: Use prog to emit ksymbol event for main program
+Date: Tue, 30 Jul 2024 17:50:40 +0200
+Message-ID: <20240730151700.988381052@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Drewek <wojciech.drewek@intel.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 19abb9c2b900bad59e0a9818d6c83bb4cc875437 ]
+[ Upstream commit 0be9ae5486cd9e767138c13638820d240713f5f1 ]
 
-When ice driver reads recipes from firmware information about
-need_pass_l2 and allow_pass_l2 flags is not stored correctly.
-Those flags are stored as one bit each in ice_sw_recipe structure.
-Because of that, the result of checking a flag has to be casted to bool.
-Note that the need_pass_l2 flag currently works correctly, because
-it's stored in the first bit.
+Since commit 0108a4e9f358 ("bpf: ensure main program has an extable"),
+prog->aux->func[0]->kallsyms is left as uninitialized. For BPF programs
+with subprogs, the symbol for the main program is missing just as shown
+in the output of perf script below:
 
-Fixes: bccd9bce29e0 ("ice: Add guard rule when creating FDB in switchdev")
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+ ffffffff81284b69 qp_trie_lookup_elem+0xb9 ([kernel.kallsyms])
+ ffffffffc0011125 bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
+ ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
+ ffffffffc00110a1 +0x25 ()
+ ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
+
+Fix it by always using prog instead prog->aux->func[0] to emit ksymbol
+event for the main program. After the fix, the output of perf script
+will be correct:
+
+ ffffffff81284b96 qp_trie_lookup_elem+0xe6 ([kernel.kallsyms])
+ ffffffffc001382d bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
+ ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
+ ffffffffc0013779 bpf_prog_245c55ab25cfcf40_qp_trie_lookup+0x25 (bpf...)
+ ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
+
+Fixes: 0108a4e9f358 ("bpf: ensure main program has an extable")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Yonghong Song <yonghong.song@linux.dev>
+Reviewed-by: Krister Johansen <kjlx@templeofstupid.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20240714065533.1112616-1-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/events/core.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 1191031b2a43d..ffd6c42bda1ed 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -2413,10 +2413,10 @@ ice_get_recp_frm_fw(struct ice_hw *hw, struct ice_sw_recipe *recps, u8 rid,
- 		/* Propagate some data to the recipe database */
- 		recps[idx].is_root = !!is_root;
- 		recps[idx].priority = root_bufs.content.act_ctrl_fwd_priority;
--		recps[idx].need_pass_l2 = root_bufs.content.act_ctrl &
--					  ICE_AQ_RECIPE_ACT_NEED_PASS_L2;
--		recps[idx].allow_pass_l2 = root_bufs.content.act_ctrl &
--					   ICE_AQ_RECIPE_ACT_ALLOW_PASS_L2;
-+		recps[idx].need_pass_l2 = !!(root_bufs.content.act_ctrl &
-+					     ICE_AQ_RECIPE_ACT_NEED_PASS_L2);
-+		recps[idx].allow_pass_l2 = !!(root_bufs.content.act_ctrl &
-+					      ICE_AQ_RECIPE_ACT_ALLOW_PASS_L2);
- 		bitmap_zero(recps[idx].res_idxs, ICE_MAX_FV_WORDS);
- 		if (root_bufs.content.result_indx & ICE_AQ_RECIPE_RESULT_EN) {
- 			recps[idx].chain_idx = root_bufs.content.result_indx &
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 32723d53b970b..1b728f3f4b539 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -9273,21 +9273,19 @@ static void perf_event_bpf_emit_ksymbols(struct bpf_prog *prog,
+ 	bool unregister = type == PERF_BPF_EVENT_PROG_UNLOAD;
+ 	int i;
+ 
+-	if (prog->aux->func_cnt == 0) {
+-		perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
+-				   (u64)(unsigned long)prog->bpf_func,
+-				   prog->jited_len, unregister,
+-				   prog->aux->ksym.name);
+-	} else {
+-		for (i = 0; i < prog->aux->func_cnt; i++) {
+-			struct bpf_prog *subprog = prog->aux->func[i];
+-
+-			perf_event_ksymbol(
+-				PERF_RECORD_KSYMBOL_TYPE_BPF,
+-				(u64)(unsigned long)subprog->bpf_func,
+-				subprog->jited_len, unregister,
+-				subprog->aux->ksym.name);
+-		}
++	perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
++			   (u64)(unsigned long)prog->bpf_func,
++			   prog->jited_len, unregister,
++			   prog->aux->ksym.name);
++
++	for (i = 1; i < prog->aux->func_cnt; i++) {
++		struct bpf_prog *subprog = prog->aux->func[i];
++
++		perf_event_ksymbol(
++			PERF_RECORD_KSYMBOL_TYPE_BPF,
++			(u64)(unsigned long)subprog->bpf_func,
++			subprog->jited_len, unregister,
++			subprog->aux->ksym.name);
+ 	}
+ }
+ 
 -- 
 2.43.0
 
