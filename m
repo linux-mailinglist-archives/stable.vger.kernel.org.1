@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0CF941BCD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C09941D50
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CC91283F40
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C6C328B443
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FF1898F8;
-	Tue, 30 Jul 2024 16:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0B11A76B3;
+	Tue, 30 Jul 2024 17:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMlh/Fak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExYAuKKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A69117D8BB;
-	Tue, 30 Jul 2024 16:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2DD1A76A5;
+	Tue, 30 Jul 2024 17:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358755; cv=none; b=apo6slYEAqO3aIPknEizuNVLDdktOK6KT9C3LI/68bqb3l1UwUbxTmfuxn7yJUemK6PSYWtv5ivMl+wynLKXA0VZRZXQR7M4Udd2gdtVsCu1SZCdz6R8dHShZy+c4dyHDyxcwvKwUx/id8mD8EwGGSXFtTIun+7PEpDXRjC+mfA=
+	t=1722359727; cv=none; b=kwqUKsYUnn00MIG5nuT2HTg6jJgJyAKh2zezb5fb11m7ASmnBo/Ju98WiwK6TzXCzH7S5LvgaAjVRem8eBpk0ju9H4QgRIsSv9u1sNsmhiT4554faB5euI9dSY4CXwm9jk/CPeNu+yONA5sf/FL+R6nmbuoWAsB490aOUZgbN4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358755; c=relaxed/simple;
-	bh=meIyLOv+1pMvyRf+/eGdWUwjSz0iz86RqePRJfsJLGs=;
+	s=arc-20240116; t=1722359727; c=relaxed/simple;
+	bh=QmH7f82sVTl6RXgBmSLaQNNIUY09s089bw3i5DYjg8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aB75e4r73O/Ov5C+fkV4jBp8ofwhAYp+WvKU/kMv9V+KcBJAfECp9pQQDPwYvM/zm/I3jTYQyH5nQJ2Cm9zY/P7AbDekntwBn5Rh983XzJE0+u9KMAdBDRStSjKJgVVtQ/ZqY6L+S2fydz2hHyRhEEjTQGO3I+xFfvT1cqkcHiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMlh/Fak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DC0C32782;
-	Tue, 30 Jul 2024 16:59:14 +0000 (UTC)
+	 MIME-Version; b=IgSShfDw3piCCfM4uIHyQxN3oq1IaICbqDQoPKHJ1XqREXoMnU+cNZyeShY+Bz5OV1heqAL0YisMd06ubKz/ybDDeS7Fi2RM2jhnakaJ9NE4bo35pHO0HOHn/yXvL7JzVeA8UUT+2kPNpTctjLHDAqWWaLItSJgxamWJHu6lTl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExYAuKKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75CBC4AF0A;
+	Tue, 30 Jul 2024 17:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358755;
-	bh=meIyLOv+1pMvyRf+/eGdWUwjSz0iz86RqePRJfsJLGs=;
+	s=korg; t=1722359727;
+	bh=QmH7f82sVTl6RXgBmSLaQNNIUY09s089bw3i5DYjg8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMlh/FakmJOwcEY4/8f8XYxjIm8yZMscbwFy2pGLtNp6LslJ+CBzMwgXHI/CMoeUO
-	 +BKtENWpP2j+dzyCNlGZ3xl9uNMdhRThzSW4nXET4qFbHQsHx1+jKdveZiLdtCSauj
-	 9YpDj8RTt6EOwBsJ9Te8x8Vt6/w3/A3fi9+K7yN0=
+	b=ExYAuKKbbzVeNE1ivCKexEkRbuYPgjceh7o4rytPYgm/0/zGMEtIbzvNxbVB45DKp
+	 lymV7wt6h0ubopUm1u/SOWj17cqv0C5y3t0jwAxI4RaMvMkyjGbW0FaXTTMe8UXedA
+	 2fMudiboRJNiufUhkQVUKukDKU7vkXFY4PyOZdXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 401/440] watchdog: rzg2l_wdt: Use pm_runtime_resume_and_get()
-Date: Tue, 30 Jul 2024 17:50:34 +0200
-Message-ID: <20240730151631.462995463@linuxfoundation.org>
+Subject: [PATCH 6.6 528/568] kbuild: avoid build error when single DTB is turned into composite DTB
+Date: Tue, 30 Jul 2024 17:50:35 +0200
+Message-ID: <20240730151700.795259349@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit f0ba0fcdd19943809b1a7f760f77f6673c6aa7f7 ]
+[ Upstream commit 712aba5543b88996bc4682086471076fbf048927 ]
 
-pm_runtime_get_sync() may return with error. In case it returns with error
-dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
-takes care of this. Thus use it.
+As commit afa974b77128 ("kbuild: add real-prereqs shorthand for
+$(filter-out FORCE,$^)") explained, $(real-prereqs) is not just a list
+of objects when linking a multi-object module. If a single-object module
+is turned into a multi-object module, $^ (and therefore $(real-prereqs)
+as well) contains header files recorded in the *.cmd file. Such headers
+must be filtered out.
 
-Along with it the rzg2l_wdt_set_timeout() function was updated to
-propagate the result of rzg2l_wdt_start() to its caller.
+Now that a DTB can be built either from a single source or multiple
+source files, the same issue can occur.
 
-Fixes: 2cbc5cd0b55f ("watchdog: Add Watchdog Timer driver for RZ/G2L")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240531065723.1085423-4-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Consider the following scenario:
+
+First, foo.dtb is implemented as a single-blob device tree.
+
+The code looks something like this:
+
+[Sample Code 1]
+
+  Makefile:
+
+      dtb-y += foo.dtb
+
+  foo.dts:
+
+    #include <dt-bindings/gpio/gpio.h>
+    /dts-v1/;
+    / { };
+
+When it is compiled, .foo.dtb.cmd records that foo.dtb depends on
+scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h.
+
+Later, foo.dtb is split into a base and an overlay. The code looks
+something like this:
+
+[Sample Code 2]
+
+  Makefile:
+
+      dtb-y += foo.dtb
+      foo-dtbs := foo-base.dtb foo-addon.dtbo
+
+  foo-base.dts:
+
+    #include <dt-bindings/gpio/gpio.h>
+    /dts-v1/;
+    / { };
+
+  foo-addon.dtso:
+
+    /dts-v1/;
+    /plugin/;
+    / { };
+
+If you rebuild foo.dtb without 'make clean', you will get this error:
+
+    Overlay 'scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h' is incomplete
+
+$(real-prereqs) contains not only foo-base.dtb and foo-addon.dtbo but
+also scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h, which is
+passed to scripts/dtc/fdtoverlay.
+
+Fixes: 15d16d6dadf6 ("kbuild: Add generic rule to apply fdtoverlay")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rzg2l_wdt.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ scripts/Makefile.lib | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/rzg2l_wdt.c b/drivers/watchdog/rzg2l_wdt.c
-index d404953d0e0f4..78d904df5f1ea 100644
---- a/drivers/watchdog/rzg2l_wdt.c
-+++ b/drivers/watchdog/rzg2l_wdt.c
-@@ -123,8 +123,11 @@ static void rzg2l_wdt_init_timeout(struct watchdog_device *wdev)
- static int rzg2l_wdt_start(struct watchdog_device *wdev)
- {
- 	struct rzg2l_wdt_priv *priv = watchdog_get_drvdata(wdev);
-+	int ret;
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 68d0134bdbf9d..e702552fb131a 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -395,8 +395,12 @@ cmd_dtc = $(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ;
+ 		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
+ 	cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
  
--	pm_runtime_get_sync(wdev->parent);
-+	ret = pm_runtime_resume_and_get(wdev->parent);
-+	if (ret)
-+		return ret;
++# NOTE:
++# Do not replace $(filter %.dtb %.dtbo, $^) with $(real-prereqs). When a single
++# DTB is turned into a multi-blob DTB, $^ will contain header file dependencies
++# recorded in the .*.cmd file.
+ quiet_cmd_fdtoverlay = DTOVL   $@
+-      cmd_fdtoverlay = $(objtree)/scripts/dtc/fdtoverlay -o $@ -i $(real-prereqs)
++      cmd_fdtoverlay = $(objtree)/scripts/dtc/fdtoverlay -o $@ -i $(filter %.dtb %.dtbo, $^)
  
- 	/* Initialize time out */
- 	rzg2l_wdt_init_timeout(wdev);
-@@ -150,6 +153,8 @@ static int rzg2l_wdt_stop(struct watchdog_device *wdev)
- 
- static int rzg2l_wdt_set_timeout(struct watchdog_device *wdev, unsigned int timeout)
- {
-+	int ret = 0;
-+
- 	wdev->timeout = timeout;
- 
- 	/*
-@@ -159,10 +164,10 @@ static int rzg2l_wdt_set_timeout(struct watchdog_device *wdev, unsigned int time
- 	 */
- 	if (watchdog_active(wdev)) {
- 		rzg2l_wdt_stop(wdev);
--		rzg2l_wdt_start(wdev);
-+		ret = rzg2l_wdt_start(wdev);
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- static int rzg2l_wdt_restart(struct watchdog_device *wdev,
+ $(multi-dtb-y): FORCE
+ 	$(call if_changed,fdtoverlay)
 -- 
 2.43.0
 
