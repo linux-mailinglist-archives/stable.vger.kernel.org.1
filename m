@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402319419EE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AE9941E05
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71EB41C239E3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FBC31F2122F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A1B1A6192;
-	Tue, 30 Jul 2024 16:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EF41A76BA;
+	Tue, 30 Jul 2024 17:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pf1s42dd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtGLdaVy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224211A619B;
-	Tue, 30 Jul 2024 16:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA811A76A1;
+	Tue, 30 Jul 2024 17:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357476; cv=none; b=EMIGztQwn3XQSAAuQXK/wTNF6gGeVnsSOoqBllCLm4q7ylPRLxnqIhm/AHwcU2L+u/dTBjP7EzITyqK47vPwx6kCyWOCKca/S8Yq5RUFb4He4yVH/J7aeN/yXOqo1Qs9QbWov3ncAmNOEE0SZa9joJOE7h+UppmvWdtA54QW4H4=
+	t=1722360288; cv=none; b=iJSDSlUIn1Zjnqtoda+nxyXTWGdKz++aClUVvaOk8QttbmmvE2OJV13yeDWoOw6n0jPgjtwTkYe45t1WwWBWjwUvQaSwl+4mtiz2FpDMlGMIRa9VO97GRMMr7LAWpHH2VeQLSJfwrBg5hJPYCvaF0IC61zn1+KvxYmI55cW+JwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357476; c=relaxed/simple;
-	bh=kzby/A8tUOYuqTdPA+T8PxNPM5DMoNW+UagPD2nGw6A=;
+	s=arc-20240116; t=1722360288; c=relaxed/simple;
+	bh=wVLudJPZpQCFZpqcq3vacVJbMP5NFsW8pFYv1EaolbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiLnz5KuSelbA1tVAwY2sXqOzL6s6rfZbf3Jw+SAzDjzazxYzJYSa7Xezdp44eJZthb0aAsrn6UVRdBc/P+y8hug6lXyM+5zyQLsfsh+5sxCdEgrdEejSXCSYhCJMbgSKkytDCHGDoznCxsbukLRTecQW9xypmkF4RXviA0TXn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pf1s42dd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879A5C32782;
-	Tue, 30 Jul 2024 16:37:55 +0000 (UTC)
+	 MIME-Version; b=dJYndd3r21gDY6ZGiA6HmilSfawtutjXWjyMeNLRTdeL2V1Q3jacRfFRoE27eI7dwH0SzS1ElCg94Ot9zYk14f6JZ/OssC4WRpFBQL+r1ST//2AQYr6KJoASG4kgEvaKUDzXo6kalESYbRD2bkpmh1FnHeBP8QdvmQbRDQ73BBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtGLdaVy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB334C32782;
+	Tue, 30 Jul 2024 17:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357476;
-	bh=kzby/A8tUOYuqTdPA+T8PxNPM5DMoNW+UagPD2nGw6A=;
+	s=korg; t=1722360288;
+	bh=wVLudJPZpQCFZpqcq3vacVJbMP5NFsW8pFYv1EaolbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pf1s42ddAH1p/q9A162XAwObDh16eZyJnq4P+pEgWA/9BCZepRGtkesOMl5jCHiaC
-	 fxt4TIRgN17r8BYqrDPdnFAylsU4dcNdB7z33BxjEZkguTT6E7PvItRrFRhMJFn2Da
-	 xraVOzFcubAb331vOhNr+jTknjZV7AovZEnNs/XI=
+	b=VtGLdaVyW2pjCHSKMk1QkOx+0J643dhd3u9VYPrmShwcgF0u6mD3hZRULJYewgbFv
+	 FkvCN0tXFT97BPcYDNeMAg0euy03PFDQ5De+k86gRjXzMBDvza1FONHsYR1mUJWG/8
+	 OILUAmNrX6fHNxW2jugpOVPuww+/0biyncRncJt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ritvik Budhiraja <rbudhiraja@microsoft.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	David Howells <dhowell@redhat.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 296/440] cifs: fix potential null pointer use in destroy_workqueue in init_cifs error path
+	syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.10 653/809] f2fs: fix to dont dirty inode for readonly filesystem
 Date: Tue, 30 Jul 2024 17:48:49 +0200
-Message-ID: <20240730151627.391028245@linuxfoundation.org>
+Message-ID: <20240730151750.671340648@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 193cc89ea0ca1da311877d2b4bb5e9f03bcc82a2 upstream.
+commit 192b8fb8d1c8ca3c87366ebbef599fa80bb626b8 upstream.
 
-Dan Carpenter reported a Smack static checker warning:
-   fs/smb/client/cifsfs.c:1981 init_cifs()
-   error: we previously assumed 'serverclose_wq' could be null (see line 1895)
+syzbot reports f2fs bug as below:
 
-The patch which introduced the serverclose workqueue used the wrong
-oredering in error paths in init_cifs() for freeing it on errors.
+kernel BUG at fs/f2fs/inode.c:933!
+RIP: 0010:f2fs_evict_inode+0x1576/0x1590 fs/f2fs/inode.c:933
+Call Trace:
+ evict+0x2a4/0x620 fs/inode.c:664
+ dispose_list fs/inode.c:697 [inline]
+ evict_inodes+0x5f8/0x690 fs/inode.c:747
+ generic_shutdown_super+0x9d/0x2c0 fs/super.c:675
+ kill_block_super+0x44/0x90 fs/super.c:1667
+ kill_f2fs_super+0x303/0x3b0 fs/f2fs/super.c:4894
+ deactivate_locked_super+0xc1/0x130 fs/super.c:484
+ cleanup_mnt+0x426/0x4c0 fs/namespace.c:1256
+ task_work_run+0x24a/0x300 kernel/task_work.c:180
+ ptrace_notify+0x2cd/0x380 kernel/signal.c:2399
+ ptrace_report_syscall include/linux/ptrace.h:411 [inline]
+ ptrace_report_syscall_exit include/linux/ptrace.h:473 [inline]
+ syscall_exit_work kernel/entry/common.c:251 [inline]
+ syscall_exit_to_user_mode_prepare kernel/entry/common.c:278 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:283 [inline]
+ syscall_exit_to_user_mode+0x15c/0x280 kernel/entry/common.c:296
+ do_syscall_64+0x50/0x110 arch/x86/entry/common.c:88
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Fixes: 173217bd7336 ("smb3: retrying on failed server close")
+The root cause is:
+- do_sys_open
+ - f2fs_lookup
+  - __f2fs_find_entry
+   - f2fs_i_depth_write
+    - f2fs_mark_inode_dirty_sync
+     - f2fs_dirty_inode
+      - set_inode_flag(inode, FI_DIRTY_INODE)
+
+- umount
+ - kill_f2fs_super
+  - kill_block_super
+   - generic_shutdown_super
+    - sync_filesystem
+    : sb is readonly, skip sync_filesystem()
+    - evict_inodes
+     - iput
+      - f2fs_evict_inode
+       - f2fs_bug_on(sbi, is_inode_flag_set(inode, FI_DIRTY_INODE))
+       : trigger kernel panic
+
+When we try to repair i_current_depth in readonly filesystem, let's
+skip dirty inode to avoid panic in later f2fs_evict_inode().
+
 Cc: stable@vger.kernel.org
-Cc: Ritvik Budhiraja <rbudhiraja@microsoft.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: David Howells <dhowell@redhat.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000e890bc0609a55cff@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsfs.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/f2fs/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1872,12 +1872,12 @@ init_cifs(void)
- 					   WQ_FREEZABLE|WQ_MEM_RECLAIM, 0);
- 	if (!serverclose_wq) {
- 		rc = -ENOMEM;
--		goto out_destroy_serverclose_wq;
-+		goto out_destroy_deferredclose_wq;
- 	}
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -29,6 +29,9 @@ void f2fs_mark_inode_dirty_sync(struct i
+ 	if (is_inode_flag_set(inode, FI_NEW_INODE))
+ 		return;
  
- 	rc = cifs_init_inodecache();
- 	if (rc)
--		goto out_destroy_deferredclose_wq;
-+		goto out_destroy_serverclose_wq;
++	if (f2fs_readonly(F2FS_I_SB(inode)->sb))
++		return;
++
+ 	if (f2fs_inode_dirtied(inode, sync))
+ 		return;
  
- 	rc = init_mids();
- 	if (rc)
-@@ -1939,6 +1939,8 @@ out_destroy_mids:
- 	destroy_mids();
- out_destroy_inodecache:
- 	cifs_destroy_inodecache();
-+out_destroy_serverclose_wq:
-+	destroy_workqueue(serverclose_wq);
- out_destroy_deferredclose_wq:
- 	destroy_workqueue(deferredclose_wq);
- out_destroy_cifsoplockd_wq:
-@@ -1949,8 +1951,6 @@ out_destroy_decrypt_wq:
- 	destroy_workqueue(decrypt_wq);
- out_destroy_cifsiod_wq:
- 	destroy_workqueue(cifsiod_wq);
--out_destroy_serverclose_wq:
--	destroy_workqueue(serverclose_wq);
- out_clean_proc:
- 	cifs_proc_clean();
- 	return rc;
 
 
 
