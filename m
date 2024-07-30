@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B6F941857
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 409C1941D54
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B8CAB29DB5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFB2E28B435
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C39418C908;
-	Tue, 30 Jul 2024 16:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9633A1A76C4;
+	Tue, 30 Jul 2024 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0J1i5mC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibfWZQ6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FE918C902;
-	Tue, 30 Jul 2024 16:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526D91A76BE;
+	Tue, 30 Jul 2024 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356214; cv=none; b=GWDYD9bC/cYeFkEFAWzmP6IMmLSntyFSA122NHnWlKfRyE5GB/yNS9gFQHwQau9ebTGLl/FYicXrII/QXrk+oiy94oLpL0ZlFAQRdBPY3EcgsyjAuacHkVr1xQnV44NlzggJbPwISzrI+S8qqa1iI/1Yf203ntV0FLS9seNh3hM=
+	t=1722359740; cv=none; b=utFJvlBc+/6iW97mg9n8OoMFK7sPEAJqAWzBlcvPvoXKGyd73nnRKBji+fdhd/tMQJb7eFI1JbPHw7vq6W7OtmiUSSDeu0QO54tJ36Z5wfLpgsjHHjgynKRB2Ox5Egfehz6+H7erIcX6IMjL7aGHtLHslj8i92giqyC522Gncq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356214; c=relaxed/simple;
-	bh=olvWyX1yhu+T4ruoRTvZHDzjoT0cnzUeUDPVPJSJ/jk=;
+	s=arc-20240116; t=1722359740; c=relaxed/simple;
+	bh=Kt+2C1Gu9NmoJJ8ZoNlTEfRwV8uu7lZ9/B9kty9xUuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuyr/6rmQHD27uHh3NVYUH0ixSUTc5xd5TVC96F3IDx1TN8k4Sd4eGHZ6ps/d6h2zwGDWhznWM5MH504twMwLoIZir/rimN3yAj6TOFfb8xcxJoIKPi9jifGLfvBtDq/xAEfJFNJuNqYQ8sWhV6xBQcw1jEM1CiDMRQYpcazSCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0J1i5mC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA45FC32782;
-	Tue, 30 Jul 2024 16:16:53 +0000 (UTC)
+	 MIME-Version; b=EwxQFG3SKg650VExSBrJ+WE/73g+1/s7fy/dgbiuluKaLKfJHpikAznI7+ZmzHv/K2KB3CV1kodo8tmG2CXVe6L1zXcxXE20w5yK/vXacA0tLThSjorBYrAN77M15Op2k9ePa6+MFD+yvmpJml9u2hj4dluIVdaXcaWgc3MF4DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibfWZQ6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71FEC4AF0C;
+	Tue, 30 Jul 2024 17:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356214;
-	bh=olvWyX1yhu+T4ruoRTvZHDzjoT0cnzUeUDPVPJSJ/jk=;
+	s=korg; t=1722359740;
+	bh=Kt+2C1Gu9NmoJJ8ZoNlTEfRwV8uu7lZ9/B9kty9xUuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0J1i5mCKaDvx5M8isol15Fm6vLxidEZBbV3y0XbPnToUFVC63fzYkeuUriBqEqxt
-	 V7sdPIFJ2c2Vf9UJ0ltQc1Rp5WL9h2D8kM2pjpmRGCiOoe4FSRKuLb2Sf046U4hKpX
-	 zJuHayNEktgnsHVLvdDWL7JeuFaJDZFyMYqa+2R4=
+	b=ibfWZQ6Rwe6iFtoYxDpSHGggie1+caPDuO5eXmEdrjagDcGxES4Tz9lGtvWXXNOVY
+	 9PyBoMdSyVd3OxG5U6WLXo/vZqfPZOF67Q72CPzGHVfQqveyJGch/E/Tp9LwOjq9KC
+	 vQB84HPOYjtf3rX8REZYSLYdvf718UOMmh8yTb/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Artur Rojek <contact@artur-rojek.eu>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/440] mfd: omap-usb-tll: Use struct_size to allocate tll
+Subject: [PATCH 6.10 526/809] power: supply: ingenic: Fix some error handling paths in ingenic_battery_get_property()
 Date: Tue, 30 Jul 2024 17:46:42 +0200
-Message-ID: <20240730151622.470588326@linuxfoundation.org>
+Message-ID: <20240730151745.512615122@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 40176714c818b0b6a2ca8213cdb7654fbd49b742 ]
+[ Upstream commit f8b6c1eb76f73ed721facd58d0cfb08513aad34c ]
 
-Commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-changed the memory allocation of 'tll' to consolidate it into a single
-allocation, introducing an incorrect size calculation.
+If iio_read_channel_processed() fails, 'val->intval' is not updated, but it
+is still *1000 just after. So, in case of error, the *1000 accumulate and
+'val->intval' becomes erroneous.
 
-In particular, the allocation for the array of pointers was converted
-into a single-pointer allocation.
+So instead of rescaling the value after the fact, use the dedicated scaling
+API. This way the result is updated only when needed. In case of error, the
+previous value is kept, unmodified.
 
-The memory allocation used to occur in two steps:
+This should also reduce any inaccuracies resulting from the scaling.
 
-tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
-tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
-                           GFP_KERNEL);
+Finally, this is also slightly more efficient as it saves a function call
+and a multiplication.
 
-And it turned that into the following allocation:
-
-tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
-                   GFP_KERNEL);
-
-sizeof(tll->ch_clk[nch]) returns the size of a single pointer instead of
-the expected nch pointers.
-
-This bug went unnoticed because the allocation size was small enough to
-fit within the minimum size of a memory allocation for this particular
-case [1].
-
-The complete allocation can still be done at once with the struct_size
-macro, which comes in handy for structures with a trailing flexible
-array.
-
-Fix the memory allocation to obtain the original size again.
-
-Link: https://lore.kernel.org/all/202406261121.2FFD65647@keescook/ [1]
-Fixes: 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Fixes: commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
-Link: https://lore.kernel.org/r/20240626-omap-usb-tll-counted_by-v2-1-4bedf20d1b51@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: fb24ccfbe1e0 ("power: supply: add Ingenic JZ47xx battery driver.")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Artur Rojek <contact@artur-rojek.eu>
+Link: https://lore.kernel.org/r/51e49c18574003db1e20c9299061a5ecd1661a3c.1719121781.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/omap-usb-tll.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/power/supply/ingenic-battery.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
-index 080d7970a3774..5971b5cb290a1 100644
---- a/drivers/mfd/omap-usb-tll.c
-+++ b/drivers/mfd/omap-usb-tll.c
-@@ -237,8 +237,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
- 		break;
- 	}
+diff --git a/drivers/power/supply/ingenic-battery.c b/drivers/power/supply/ingenic-battery.c
+index 2e7fdfde47ece..0a40f425c2772 100644
+--- a/drivers/power/supply/ingenic-battery.c
++++ b/drivers/power/supply/ingenic-battery.c
+@@ -31,8 +31,9 @@ static int ingenic_battery_get_property(struct power_supply *psy,
  
--	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
--			   GFP_KERNEL);
-+	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
- 	if (!tll) {
- 		pm_runtime_put_sync(dev);
- 		pm_runtime_disable(dev);
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_HEALTH:
+-		ret = iio_read_channel_processed(bat->channel, &val->intval);
+-		val->intval *= 1000;
++		ret = iio_read_channel_processed_scale(bat->channel,
++						       &val->intval,
++						       1000);
+ 		if (val->intval < info->voltage_min_design_uv)
+ 			val->intval = POWER_SUPPLY_HEALTH_DEAD;
+ 		else if (val->intval > info->voltage_max_design_uv)
+@@ -41,8 +42,9 @@ static int ingenic_battery_get_property(struct power_supply *psy,
+ 			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+ 		return ret;
+ 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+-		ret = iio_read_channel_processed(bat->channel, &val->intval);
+-		val->intval *= 1000;
++		ret = iio_read_channel_processed_scale(bat->channel,
++						       &val->intval,
++						       1000);
+ 		return ret;
+ 	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+ 		val->intval = info->voltage_min_design_uv;
 -- 
 2.43.0
 
