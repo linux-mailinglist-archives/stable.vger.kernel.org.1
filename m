@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE821941AC3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F13941860
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B0B91C22910
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79C0E282AAE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAB018B468;
-	Tue, 30 Jul 2024 16:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0D3184556;
+	Tue, 30 Jul 2024 16:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3sdeh8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jdw05GgW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273DD18B465;
-	Tue, 30 Jul 2024 16:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F411078F;
+	Tue, 30 Jul 2024 16:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358025; cv=none; b=uK1w8eaSfwz/ojPF3mdad+9dOZZKaGRL6fWHeV0/mpk8hbVDLDXbaszXb8PdoJ7HgwNC5Pe3fip88HCp7NMkLyWE+ExMNnn7oN3DXXVc/UB0Ng9335tsNx1Y5rmdIQ+EvfzZBWUWYdeiSjnVnGbdepCJ1JJ2p3GCP5uNsBaCxto=
+	t=1722356455; cv=none; b=I1ej3KzdEnXt0twCYjhcnE8Wjx6Fd1cxtgvSKCaHJxZVEKz7yIBXRGohImM6V0mt9sq2VZcft3WtDv/HT5AXg80fGHudiX8YWcwZ7l6EloSyCNtxUlTOlsw6quOSqSHtogKt66nqKwNPAuLtWpT4wP838KVdeb2rGQapM8PWX4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358025; c=relaxed/simple;
-	bh=1HqYrBjpv6LjmK14oweDYJSDW+/pfnYVDsQMSTqOk7Y=;
+	s=arc-20240116; t=1722356455; c=relaxed/simple;
+	bh=sQTW3zME5rvavWF+szgR/ihuleU8q4Jzw17eBz4T6t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvz3kbJxykIFkBAs3ZSrJBYlQfAUOT9bCDAGhquDPkU3SDTKVAWo3JYUZQdEHxWIP0fMpPHwRKLm8nDXvED9wc0lj/5P1CRBHahk7srz8bFKbM+rLB0q3LsxOAUEFr09EN3bce930nB3oBmJ3hAKz6sKzhm3YSdiz5vz89Mt8YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3sdeh8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995ABC4AF1C;
-	Tue, 30 Jul 2024 16:47:04 +0000 (UTC)
+	 MIME-Version; b=VdAQWGmJfom5wxZmMARzp1SLQXwCeKytSgCilqQ6ceMqLmuoZOF7fi8Bv722gx3vm4IjPkL8GVGLIv8JRjRAEb2w6z7FiZaGxWapyeFxw46Kproo1uLEHWVF3i8Vn0cIUt994Vt5TYDt0dv0E+62ZEQhCcQXEL8ZLEpiQ8IBuQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jdw05GgW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52412C32782;
+	Tue, 30 Jul 2024 16:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358025;
-	bh=1HqYrBjpv6LjmK14oweDYJSDW+/pfnYVDsQMSTqOk7Y=;
+	s=korg; t=1722356455;
+	bh=sQTW3zME5rvavWF+szgR/ihuleU8q4Jzw17eBz4T6t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3sdeh8xWrKSO34+wLyk1qGf0kNcqtKNFUimcbIW7ZZMG3KIr/YysPvFcGy2PV8gQ
-	 osvsD+RaTGFtZ6zQ7XrK3JqJhoFg5NliMqoS50rflOxe4bDn7n13XToyFuvjM3oMtw
-	 ibLkQKhdoIXM9QhM9PbcTyMtGrtwuRfWIIgR0AAY=
+	b=Jdw05GgWvIeEVHPpD18TlR0L9ubHBqDWPDlqlprkZzJQgwqFMNvAduvl68wKVRqYJ
+	 XLqUIuDYkOGS58w4vN5rkggkcHSbbiXwBbiy6eSlMKOtzuopLPETqNGke68fVPMw5B
+	 2+4zaIw2MaPcGNbkWeTOPH6bdhaWUMJpS24qyxhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Martin Willi <martin@strongswan.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 318/568] net: dsa: b53: Limit chip-wide jumbo frame config to CPU ports
-Date: Tue, 30 Jul 2024 17:47:05 +0200
-Message-ID: <20240730151652.305711424@linuxfoundation.org>
+Subject: [PATCH 6.1 193/440] powerpc/kexec_file: fix cpus node update to FDT
+Date: Tue, 30 Jul 2024 17:47:06 +0200
+Message-ID: <20240730151623.408097627@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit c5118072e228e7e4385fc5ac46b2e31cf6c4f2d3 ]
+[ Upstream commit 932bed41217059638c78a75411b7893b121d2162 ]
 
-Broadcom switches supported by the b53 driver use a chip-wide jumbo frame
-configuration. In the commit referenced with the Fixes tag, the setting
-is applied just for the last port changing its MTU.
+While updating the cpus node, commit 40c753993e3a ("powerpc/kexec_file:
+ Use current CPU info while setting up FDT") first deletes all subnodes
+under the /cpus node. However, while adding sub-nodes back, it missed
+adding cpus subnodes whose device_type != "cpu", such as l2-cache*,
+l3-cache*, ibm,powerpc-cpu-features.
 
-While configuring CPU ports accounts for tagger overhead, user ports do
-not. When setting the MTU for a user port, the chip-wide setting is
-reduced to not include the tagger overhead, resulting in an potentially
-insufficient chip-wide maximum frame size for the CPU port.
+Fix this by only deleting cpus sub-nodes of device_type == "cpus" and
+then adding all available nodes with device_type == "cpu".
 
-As, by design, the CPU port MTU is adjusted for any user port change,
-apply the chip-wide setting only for CPU ports. This aligns the driver
-to the behavior of other switch drivers.
-
-Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
-Suggested-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 40c753993e3a ("powerpc/kexec_file: Use current CPU info while setting up FDT")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240510102235.2269496-3-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/kexec/core_64.c | 53 +++++++++++++++++++++++++-----------
+ 1 file changed, 37 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 4e27dc913cf71..ae1c4dc35fe33 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2265,6 +2265,9 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
- 	if (is5325(dev) || is5365(dev))
- 		return -EOPNOTSUPP;
+diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+index 8a33de499316e..653b3c8c6a530 100644
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -468,9 +468,15 @@ static int add_node_props(void *fdt, int node_offset, const struct device_node *
+  * @fdt:              Flattened device tree of the kernel.
+  *
+  * Returns 0 on success, negative errno on error.
++ *
++ * Note: expecting no subnodes under /cpus/<node> with device_type == "cpu".
++ * If this changes, update this function to include them.
+  */
+ int update_cpus_node(void *fdt)
+ {
++	int prev_node_offset;
++	const char *device_type;
++	const struct fdt_property *prop;
+ 	struct device_node *cpus_node, *dn;
+ 	int cpus_offset, cpus_subnode_offset, ret = 0;
  
-+	if (!dsa_is_cpu_port(ds, port))
-+		return 0;
+@@ -481,30 +487,44 @@ int update_cpus_node(void *fdt)
+ 		return cpus_offset;
+ 	}
+ 
+-	if (cpus_offset > 0) {
+-		ret = fdt_del_node(fdt, cpus_offset);
++	prev_node_offset = cpus_offset;
++	/* Delete sub-nodes of /cpus node with device_type == "cpu" */
++	for (cpus_subnode_offset = fdt_first_subnode(fdt, cpus_offset); cpus_subnode_offset >= 0;) {
++		/* Ignore nodes that do not have a device_type property or device_type != "cpu" */
++		prop = fdt_get_property(fdt, cpus_subnode_offset, "device_type", NULL);
++		if (!prop || strcmp(prop->data, "cpu")) {
++			prev_node_offset = cpus_subnode_offset;
++			goto next_node;
++		}
 +
- 	enable_jumbo = (mtu >= JMS_MIN_SIZE);
- 	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
++		ret = fdt_del_node(fdt, cpus_subnode_offset);
+ 		if (ret < 0) {
+-			pr_err("Error deleting /cpus node: %s\n", fdt_strerror(ret));
+-			return -EINVAL;
++			pr_err("Failed to delete a cpus sub-node: %s\n", fdt_strerror(ret));
++			return ret;
+ 		}
++next_node:
++		if (prev_node_offset == cpus_offset)
++			cpus_subnode_offset = fdt_first_subnode(fdt, cpus_offset);
++		else
++			cpus_subnode_offset = fdt_next_subnode(fdt, prev_node_offset);
+ 	}
  
+-	/* Add cpus node to fdt */
+-	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"), "cpus");
+-	if (cpus_offset < 0) {
+-		pr_err("Error creating /cpus node: %s\n", fdt_strerror(cpus_offset));
++	cpus_node = of_find_node_by_path("/cpus");
++	/* Fail here to avoid kexec/kdump kernel boot hung */
++	if (!cpus_node) {
++		pr_err("No /cpus node found\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Add cpus node properties */
+-	cpus_node = of_find_node_by_path("/cpus");
+-	ret = add_node_props(fdt, cpus_offset, cpus_node);
+-	of_node_put(cpus_node);
+-	if (ret < 0)
+-		return ret;
++	/* Add all /cpus sub-nodes of device_type == "cpu" to FDT */
++	for_each_child_of_node(cpus_node, dn) {
++		/* Ignore device nodes that do not have a device_type property
++		 * or device_type != "cpu".
++		 */
++		device_type = of_get_property(dn, "device_type", NULL);
++		if (!device_type || strcmp(device_type, "cpu"))
++			continue;
+ 
+-	/* Loop through all subnodes of cpus and add them to fdt */
+-	for_each_node_by_type(dn, "cpu") {
+ 		cpus_subnode_offset = fdt_add_subnode(fdt, cpus_offset, dn->full_name);
+ 		if (cpus_subnode_offset < 0) {
+ 			pr_err("Unable to add %s subnode: %s\n", dn->full_name,
+@@ -518,6 +538,7 @@ int update_cpus_node(void *fdt)
+ 			goto out;
+ 	}
+ out:
++	of_node_put(cpus_node);
+ 	of_node_put(dn);
+ 	return ret;
+ }
 -- 
 2.43.0
 
