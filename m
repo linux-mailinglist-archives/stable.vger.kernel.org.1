@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-63451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21FB7941962
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E3A941B60
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43C01B2C7B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13E40281897
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6851A618E;
-	Tue, 30 Jul 2024 16:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0310F1898EB;
+	Tue, 30 Jul 2024 16:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lR8qTH75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJmx8uOx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CE31A6160;
-	Tue, 30 Jul 2024 16:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAB31A6195;
+	Tue, 30 Jul 2024 16:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356874; cv=none; b=OKwYIrDzb2O/Iz6tOsSDpyoz0vgS4fhPp5QO2NK6XAmzx+1+qhPG+mZCKk7dlmQOfvGxsXQH7u2sphhdkASH6tkzSvyHg6K0GwR1l8SIHyGb7L4arW7B7Kiz03xoimUxPvKQejJjClhh00yvr6lCeseoSptPLavfbfjHeVMiV7Y=
+	t=1722358454; cv=none; b=tlBv5KI/lVTD7n37yIlrUK8QdqgiIIWXN9IyJAUgz/eg3Di7oUOaBW+3j20W/1WYTUjixSl8FwynewWS60gB+u1EXwA0watvGRzKRh+JhWuc108pji77ay6OabkaMglIa1kvKCKgvgciXY08YgH6TZuS18W1OWPl3OeyQflXuZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356874; c=relaxed/simple;
-	bh=RjavC9fklaraUhxUaV+J1UZ2MdFKuRTPEwllrWGr4uA=;
+	s=arc-20240116; t=1722358454; c=relaxed/simple;
+	bh=QVP1rGPeJ3TdujJAA66te517+Pp4Ql9n3UEoIgVqbcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLF5MjjFd4Kiz3sIAJmHq6TD/2FeC0kRLKuYBIk4j/VVeWp9f4PBhsFLvpTxKoo72jwlZT3qrHCOnkMGKF8l2/F4oPhXikTB2ubGFrog9gGkvprF7/2j0rgM+JQPZbyOfTFicA7TTDtVlbltqp/CrNFuB8eU4AauR3xAiGqhCGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lR8qTH75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B138C32782;
-	Tue, 30 Jul 2024 16:27:53 +0000 (UTC)
+	 MIME-Version; b=ehKU48O+s/HVO7LaF1ELBuJ5UFcZnnrSmIVS1BUEfgXthCClhBmEKLKS6HVgytVD7ijcd6aSnTe7aYHElBrXoqoNGaAbM5rTIScUxBMdzzuzHlYb7NHJP8O+iHK+qAXlOA/8Cp/kmwiFAUh3iSj9KyN1eU5BzgFmZftEfwlPE80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJmx8uOx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22638C32782;
+	Tue, 30 Jul 2024 16:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356874;
-	bh=RjavC9fklaraUhxUaV+J1UZ2MdFKuRTPEwllrWGr4uA=;
+	s=korg; t=1722358454;
+	bh=QVP1rGPeJ3TdujJAA66te517+Pp4Ql9n3UEoIgVqbcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lR8qTH75VoHgwxZTq+sAql2II44xZNXYhZArUDAuL4uIWlmeINfWbtP+bs7L1DZdV
-	 tRfBJmCHzB1qnE3OQo4zTNedbKO5firPmfsBtCg9ksWO5eLZ21JuG0LuTFUHiWLhAC
-	 Ok+cIcl2m0HBzo6sjob57u2WydcBYRFFyD4DXnTE=
+	b=HJmx8uOxweRcD06dJ7hxAMJKykfVKNFS7dwtqMKsJf8JwzB+Q6kBnLDYm8U4qUv/1
+	 lnxMsQvxa+KRb1fACy+XRRMesCncG0mBQryQVgilGJty8n1QUsXYidw4TONrIXQRnY
+	 OBDx6o0eZ0iwc+yT5OA4xcVHx3WlJcQ6pUc5AIuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Martin Willi <martin@strongswan.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 237/440] net: dsa: b53: Limit chip-wide jumbo frame config to CPU ports
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.6 363/568] x86/efistub: Avoid returning EFI_SUCCESS on error
 Date: Tue, 30 Jul 2024 17:47:50 +0200
-Message-ID: <20240730151625.111513722@linuxfoundation.org>
+Message-ID: <20240730151654.049948470@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit c5118072e228e7e4385fc5ac46b2e31cf6c4f2d3 ]
+commit fb318ca0a522295edd6d796fb987e99ec41f0ee5 upstream.
 
-Broadcom switches supported by the b53 driver use a chip-wide jumbo frame
-configuration. In the commit referenced with the Fixes tag, the setting
-is applied just for the last port changing its MTU.
+The fail label is only used in a situation where the previous EFI API
+call succeeded, and so status will be set to EFI_SUCCESS. Fix this, by
+dropping the goto entirely, and call efi_exit() with the correct error
+code.
 
-While configuring CPU ports accounts for tagger overhead, user ports do
-not. When setting the MTU for a user port, the chip-wide setting is
-reduced to not include the tagger overhead, resulting in an potentially
-insufficient chip-wide maximum frame size for the CPU port.
-
-As, by design, the CPU port MTU is adjusted for any user port change,
-apply the chip-wide setting only for CPU ports. This aligns the driver
-to the behavior of other switch drivers.
-
-Fixes: 6ae5834b983a ("net: dsa: b53: add MTU configuration support")
-Suggested-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/efi/libstub/x86-stub.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 59cdfc51ce06a..922e5934de733 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2221,6 +2221,9 @@ static int b53_change_mtu(struct dsa_switch *ds, int port, int mtu)
- 	if (is5325(dev) || is5365(dev))
- 		return -EOPNOTSUPP;
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -501,16 +501,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
+ 	/* Convert unicode cmdline to ascii */
+ 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
+ 	if (!cmdline_ptr)
+-		goto fail;
++		efi_exit(handle, EFI_OUT_OF_RESOURCES);
  
-+	if (!dsa_is_cpu_port(ds, port))
-+		return 0;
-+
- 	enable_jumbo = (mtu >= JMS_MIN_SIZE);
- 	allow_10_100 = (dev->chip_id == BCM583XX_DEVICE_ID);
+ 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
+ 			  &boot_params.ext_cmd_line_ptr);
  
--- 
-2.43.0
-
+ 	efi_stub_entry(handle, sys_table_arg, &boot_params);
+ 	/* not reached */
+-
+-fail:
+-	efi_exit(handle, status);
+ }
+ 
+ static void add_e820ext(struct boot_params *params,
 
 
 
