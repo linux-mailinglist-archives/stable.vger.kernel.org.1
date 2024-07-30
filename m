@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717C6941AFD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2507D9417C2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 271CD1F21B99
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2251C1C20B76
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A3618801A;
-	Tue, 30 Jul 2024 16:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A0B1A619B;
+	Tue, 30 Jul 2024 16:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/YVcd3L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEGadbWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AC614831F;
-	Tue, 30 Jul 2024 16:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0BA1A6177;
+	Tue, 30 Jul 2024 16:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358191; cv=none; b=aSr6aj9H4zlN1A+zT/KEJZAgtMeQs2nEjQdovGPy1w7UG9zTKUmkQVGtcp3jepLfxVKLZLSoJBjKL821m2sUwRpl1rCrSXhAaBu6V7Nod1fi+UCfDuxxcbXjj5EL7CYPAernrtbvREdcyRVrXl2Rd+1s05jXWIv/yQWmSpr1274=
+	t=1722355917; cv=none; b=a5NU55LPKYwuGG3dCHF9ll74ZMcLOEQBYCtQ74qWKTnkMoEr4YMWiuDgU8YKeSlS6ebq9JGsXL0lhmotm0cC3eLgEOtN3X0oi+koTXgW48jNEzgiWytBOuF2w0zHeN8Zt5gL2uQHlIxxaJXX8hzNPTL0O6nDu67w5gBXx2fhicE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358191; c=relaxed/simple;
-	bh=Y0DQsAzH8J1ebdW4QUzKPejjxye7LEG233zg6PFcWJs=;
+	s=arc-20240116; t=1722355917; c=relaxed/simple;
+	bh=jB6GSrEy34frvArCruNSODg0w4Tq/Ik8Kc8cuEnKyO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hhYk/iWT/ZdhRWbF7KC0eInyU1VsbbY/N0USLDvyo+k+jzdYUhpgs+zkuyE+UzcY+bKEtoqHKgnFJ4bqYdAXhBch3ZpJ/HU13kJC67VFuxrf0s5L9DioH+FaEH67NjM8ooJ1nN1jmkbEs3/dfxsMiKRdTpi95P5NG0nYk9h1g3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/YVcd3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC90C4AF0A;
-	Tue, 30 Jul 2024 16:49:50 +0000 (UTC)
+	 MIME-Version; b=L1/XPxsd87QIpJNcAKlRJz9oWAm/Mtm4mvKp0tt/CE3XhbvWKCVX4zyHOeJ8ZRCT56uuADl6Xu/EKRYkfPIfNIY6Q6+FKxMNBwOtIX1JW3hN36FMWY+lKthCYAUlBd6Ms62Uwcj3ermAjqAUuOaSRuwfZ0tc6UibkkDeMubfiDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEGadbWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628EEC4AF0C;
+	Tue, 30 Jul 2024 16:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358190;
-	bh=Y0DQsAzH8J1ebdW4QUzKPejjxye7LEG233zg6PFcWJs=;
+	s=korg; t=1722355916;
+	bh=jB6GSrEy34frvArCruNSODg0w4Tq/Ik8Kc8cuEnKyO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/YVcd3LwWP/o+TzqHRvVMNgkcAVHUWjCf0rdqurcNN4hpPvI7o5tkpmT6DKyUiTn
-	 CqChweqvPePVV1iAVql6JUmiXgE2OLS6pMFma8AvB3cBqmvCT1tUMiMX8nNtkXmR7E
-	 Oysm0wkfbchJgH5YHNiiLxpv0fH6zXCWvTayyduI=
+	b=FEGadbWgYC0JaWqxkKjMiLRaVoh4M5ee10KUNly3lSAU+9BkZJPd1C9DV4iOSIUJf
+	 zjhVI7r3OzYi3pspiIw0uZrVjMMCnxSqut1pH5Qi6aWXz92itYELsRpW3afoQeTES5
+	 zQH/publJkMk1qifcy5v6MSSQLzePxPeeh0fThLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 333/809] drm/msm/a6xx: use __unused__ to fix compiler warnings for gen7_* includes
+Subject: [PATCH 6.6 102/568] arm64: dts: qcom: sm6350: Add missing qcom,non-secure-domain property
 Date: Tue, 30 Jul 2024 17:43:29 +0200
-Message-ID: <20240730151737.772956104@linuxfoundation.org>
+Message-ID: <20240730151643.861246408@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 71d9b458b2bfe79197194d914aa9bada46fb9e14 ]
+[ Upstream commit 81008068ee4f2c4c26e97a0404405bb4b450241b ]
 
-GCC diagnostic pragma method throws below warnings in some of the versions
+By default the DSP domains are secure, add the missing
+qcom,non-secure-domain property to mark them as non-secure.
 
-drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c:16:9: warning: unknown
-option after '#pragma GCC diagnostic' kind [-Wpragmas]
-  #pragma GCC diagnostic ignored "-Wunused-const-variable"
-          ^
-In file included from drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c:18:0:
-drivers/gpu/drm/msm/adreno/adreno_gen7_0_0_snapshot.h:924:19: warning:
-'gen7_0_0_external_core_regs' defined but not used [-Wunused-variable]
-  static const u32 *gen7_0_0_external_core_regs[] = {
-                    ^
-In file included from drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c:19:0:
-drivers/gpu/drm/msm/adreno/adreno_gen7_2_0_snapshot.h:748:19: warning:
-'gen7_2_0_external_core_regs' defined but not used [-Wunused-variable]
-  static const u32 *gen7_2_0_external_core_regs[] = {
-                    ^
-In file included from drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c:20:0:
-drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h:1188:43: warning:
-'gen7_9_0_sptp_clusters' defined but not used [-Wunused-variable]
-  static struct gen7_sptp_cluster_registers gen7_9_0_sptp_clusters[] = {
-                                            ^
-drivers/gpu/drm/msm/adreno/adreno_gen7_9_0_snapshot.h:1438:19: warning:
-'gen7_9_0_external_core_regs' defined but not used [-Wunused-variable]
-  static const u32 *gen7_9_0_external_core_regs[] = {
-
-Remove GCC version dependency by using __unused__ for the unused gen7_* includes.
-
-Changes in v2:
-	- Fix the warnings in the commit text
-	- Use __attribute((__unused__)) instead of local assignment
-
-changes in v3:
-	- drop the Link from the auto add
-
-changes in v4:
-	- replace __attribute((__unused__)) with __always_unused
-
-Fixes: 64d6255650d4 ("drm/msm: More fully implement devcoredump for a7xx")
-Suggested-by: Rob Clark <robdclark@chromium.org>
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: efc33c969f23 ("arm64: dts: qcom: sm6350: Add ADSP nodes")
+Fixes: 8eb5287e8a42 ("arm64: dts: qcom: sm6350: Add CDSP nodes")
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/597265/
-[Add gen7_9_0_cx_debugbus_blocks as well]
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Link: https://lore.kernel.org/r/20240705-sm6350-fastrpc-fix-v2-1-89a43166c9bb@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index 0a7717a4fc2fd..789a11416f7a4 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -8,19 +8,16 @@
- #include "a6xx_gpu_state.h"
- #include "a6xx_gmu.xml.h"
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 7477bfbd20796..2efceb49a3218 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1299,6 +1299,7 @@ fastrpc {
+ 					compatible = "qcom,fastrpc";
+ 					qcom,glink-channels = "fastrpcglink-apps-dsp";
+ 					label = "adsp";
++					qcom,non-secure-domain;
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
  
--/* Ignore diagnostics about register tables that we aren't using yet. We don't
-- * want to modify these headers too much from their original source.
-- */
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wunused-variable"
--#pragma GCC diagnostic ignored "-Wunused-const-variable"
-+static const unsigned int *gen7_0_0_external_core_regs[] __always_unused;
-+static const unsigned int *gen7_2_0_external_core_regs[] __always_unused;
-+static const unsigned int *gen7_9_0_external_core_regs[] __always_unused;
-+static struct gen7_sptp_cluster_registers gen7_9_0_sptp_clusters[] __always_unused;
-+static const u32 gen7_9_0_cx_debugbus_blocks[] __always_unused;
+@@ -1559,6 +1560,7 @@ fastrpc {
+ 					compatible = "qcom,fastrpc";
+ 					qcom,glink-channels = "fastrpcglink-apps-dsp";
+ 					label = "cdsp";
++					qcom,non-secure-domain;
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
  
- #include "adreno_gen7_0_0_snapshot.h"
- #include "adreno_gen7_2_0_snapshot.h"
- #include "adreno_gen7_9_0_snapshot.h"
- 
--#pragma GCC diagnostic pop
--
- struct a6xx_gpu_state_obj {
- 	const void *handle;
- 	u32 *data;
 -- 
 2.43.0
 
