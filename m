@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B95394186F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE569418B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 174B3283171
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE2A6B2AC1D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D523189505;
-	Tue, 30 Jul 2024 16:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC8A1A6192;
+	Tue, 30 Jul 2024 16:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kigT9bXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0arnl+xv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B10D1A6164;
-	Tue, 30 Jul 2024 16:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1F11A6161;
+	Tue, 30 Jul 2024 16:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356499; cv=none; b=c3C/USYR4dInWZAJgb4/dqnXutxuvKiaiNzWKrlYbNWTevRseaI1m20E6zHVLk1FTEGq8YTBn2B4Dr2zXBdxOyoHoxFuBV/VE3MvUm+bo7FM1LV1SuIUKWYvE85T0NtBu3loZ2gLYyZHqnohcSbAvVt/s78HlTV+TUFARDgl28c=
+	t=1722356511; cv=none; b=OvKD7prkZeqdXxVSvvOvqqjx9EnqWflZ2PcDPz0NxbnjXvsbSQW4re7jlnq3spxrUmn506QN7ZhwxKjz2B7qJgtrvhmEcptcgs2eZyDK5pUE0EU/+MBDWOSNtIlIA8d076vGWux6n2/sDgomfq7LkEIu/+bRV3L4GQCcfzhOozE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356499; c=relaxed/simple;
-	bh=Iv4N6TNJdcYvYkFJbvkhxe1kc8xGBsOJ9Uu1/0c9IcQ=;
+	s=arc-20240116; t=1722356511; c=relaxed/simple;
+	bh=PT3paJKEaK8o+iUAE0luKaZpr3QKgQ4KZakUIlVlWCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXRIB2PHiLY4JoL+/oxYx0JzeObznH7tm5Ch1PFREPlpnZd6ivAzSfnY+AjcTCJGKc1Fb6kRL+ZOCpIvY/sG0k31ibMRSl5eZarShh8459eyR0SPNDUzextPRn5UlvYo46VGXNBSMsTfrlGTqrkfCx345YbSx96mZHNFLNDKdtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kigT9bXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84BDC32782;
-	Tue, 30 Jul 2024 16:21:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nugoq1oSJ+RZpf2blsAzCAgnNQ9gnyF/EvPpC4YQPjPlCrlBslxKsfLFedyKmHpBDJ0FgfiTBfGV7n/PtQ/gyfQ+gihHk9vNs4wuGmh70kE0ytF7+qVUCVGIel4Xj9aSuFtmuo8ePk5GZ7xB/rZB3Lu+UOpUGPPjGYojV4qzQQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0arnl+xv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A24C32782;
+	Tue, 30 Jul 2024 16:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356499;
-	bh=Iv4N6TNJdcYvYkFJbvkhxe1kc8xGBsOJ9Uu1/0c9IcQ=;
+	s=korg; t=1722356511;
+	bh=PT3paJKEaK8o+iUAE0luKaZpr3QKgQ4KZakUIlVlWCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kigT9bXlBfQaLBY6+Q4OmBtIy9NUI9OuXZSN7HwlrrtFmWWOjxUg6X7tEy/RRk3y1
-	 T4EpwiH4jziJ04z/8jV6Yn9NCi224P07I3L+Gn+nm3U4E1x0O5Vqw7pKtHxnz0OqsO
-	 wgUNNlXzmftdD+mpGaMPAOWoyUaHhnGJmLdnbzxE=
+	b=0arnl+xveAQfRkDc0Q1PAlYRrk5yYc8oZDv2TCQn4l3eDgU3NtdbOWEvL4IcOlJBF
+	 YJWCIAsgWeNWPTPmiHqpmGaSE7CTPK8HPKLNh2GHZRfcvFP0gZasKm9VQYYwwxHG67
+	 Bmv4ZGU+6NNkUQ+AG+ndd0PHE8GJhwJzTSjsMniA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Lalaev <andrei.lalaev@anton-paar.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 197/440] Input: qt1050 - handle CHIP_ID reading error
-Date: Tue, 30 Jul 2024 17:47:10 +0200
-Message-ID: <20240730151623.568447072@linuxfoundation.org>
+Subject: [PATCH 6.1 198/440] RDMA/mlx4: Fix truncated output warning in mad.c
+Date: Tue, 30 Jul 2024 17:47:11 +0200
+Message-ID: <20240730151623.606516362@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -61,53 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Lalaev <andrei.lalaev@anton-paar.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 866a5c7e2781cf1b019072288f1f5c64186dcb63 ]
+[ Upstream commit 0d2e6992fc956e3308cd5376c18567def4cb3967 ]
 
-If the device is missing, we get the following error:
+Increase size of the name array to avoid truncated output warning.
 
-  qt1050 3-0041: ID -1340767592 not supported
+drivers/infiniband/hw/mlx4/mad.c: In function ‘mlx4_ib_alloc_demux_ctx’:
+drivers/infiniband/hw/mlx4/mad.c:2197:47: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 4
+[-Werror=format-truncation=]
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |                                               ^~
+drivers/infiniband/hw/mlx4/mad.c:2197:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |                                      ^~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2197:9: note: ‘snprintf’ output between
+10 and 20 bytes into a destination of size 12
+ 2197 |         snprintf(name, sizeof(name), "mlx4_ibt%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2205:48: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |                                                ^~
+drivers/infiniband/hw/mlx4/mad.c:2205:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |                                      ^~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2205:9: note: ‘snprintf’ output between
+11 and 21 bytes into a destination of size 12
+ 2205 |         snprintf(name, sizeof(name), "mlx4_ibwi%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2213:48: error: ‘%d’ directive output
+may be truncated writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |                                                ^~
+drivers/infiniband/hw/mlx4/mad.c:2213:38: note: directive argument in
+the range [-2147483645, 2147483647]
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |                                      ^~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/mad.c:2213:9: note: ‘snprintf’ output between
+11 and 21 bytes into a destination of size 12
+ 2213 |         snprintf(name, sizeof(name), "mlx4_ibud%d", port);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:244: drivers/infiniband/hw/mlx4/mad.o] Error 1
 
-Let's handle this situation and print more informative error
-when reading of CHIP_ID fails:
-
-  qt1050 3-0041: Failed to read chip ID: -6
-
-Fixes: cbebf5addec1 ("Input: qt1050 - add Microchip AT42QT1050 support")
-Signed-off-by: Andrei Lalaev <andrei.lalaev@anton-paar.com>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.kernel.org/r/20240617183018.916234-1-andrey.lalaev@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: fc06573dfaf8 ("IB/mlx4: Initialize SR-IOV IB support for slaves in master context")
+Link: https://lore.kernel.org/r/f3798b3ce9a410257d7e1ec7c9e285f1352e256a.1718554569.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/qt1050.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx4/mad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/keyboard/qt1050.c b/drivers/input/keyboard/qt1050.c
-index 403060d05c3b3..7193a4198e214 100644
---- a/drivers/input/keyboard/qt1050.c
-+++ b/drivers/input/keyboard/qt1050.c
-@@ -226,7 +226,12 @@ static bool qt1050_identify(struct qt1050_priv *ts)
- 	int err;
+diff --git a/drivers/infiniband/hw/mlx4/mad.c b/drivers/infiniband/hw/mlx4/mad.c
+index a37cfac5e23f9..dc9cf45d2d320 100644
+--- a/drivers/infiniband/hw/mlx4/mad.c
++++ b/drivers/infiniband/hw/mlx4/mad.c
+@@ -2158,7 +2158,7 @@ static int mlx4_ib_alloc_demux_ctx(struct mlx4_ib_dev *dev,
+ 				       struct mlx4_ib_demux_ctx *ctx,
+ 				       int port)
+ {
+-	char name[12];
++	char name[21];
+ 	int ret = 0;
+ 	int i;
  
- 	/* Read Chip ID */
--	regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
-+	err = regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
-+	if (err) {
-+		dev_err(&ts->client->dev, "Failed to read chip ID: %d\n", err);
-+		return false;
-+	}
-+
- 	if (val != QT1050_CHIP_ID_VER) {
- 		dev_err(&ts->client->dev, "ID %d not supported\n", val);
- 		return false;
 -- 
 2.43.0
 
