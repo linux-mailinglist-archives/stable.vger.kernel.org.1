@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730DB9416A3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060099416A6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3F1C1C23663
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A520F1F252B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A748E18455B;
-	Tue, 30 Jul 2024 16:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629F58BE8;
+	Tue, 30 Jul 2024 16:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTNk4KrS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNXRTFSY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E303184551;
-	Tue, 30 Jul 2024 16:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1314F187FEC;
+	Tue, 30 Jul 2024 16:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355327; cv=none; b=JhJGhRrPWq8EwbwwceqgvG9bTadqkehPCd0gq0sx1aLrJqaK60A6q1z58/jeIO8+50QKbRbDVIJUg7mnLVNmaRtKgqdVCDWNNF9sbLUJzPp5uK2dFFgClM5tf4p02aeHkiwGQ/FWJEaWRcCjjGWK1TVjF2PkbLAq+36XE50dnA0=
+	t=1722355337; cv=none; b=TWjEZ9IimS1iwZaqtlD3akqmJDbKbOQgSX+ELUzub1ZD6xDoARvwVEMhUA8u++/foxBU6cAy8n+D600GZsprWIUU+I8wvs9yDhEsWl/hMa2CTghNrw1NrloaBAeu+TjJPsForKmQH1hBqmnO924AcGY6fJCK68Y+kOTHE8V5hrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355327; c=relaxed/simple;
-	bh=zFPjQIlTxEC9ZY6kXyrzK4IAaYOBsqsWZSTbl0oIn8w=;
+	s=arc-20240116; t=1722355337; c=relaxed/simple;
+	bh=oocCd/P5ukromBPGWa72hjSXMxJLx8zldo3UN0d5Rmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0OIxDsxbamZzc9cfiBrBLLx+lno1f7BIZGyjiCQQrO5V9+6gHKOnVS4WGqdFozhq+9oWD+vWUPYwZ6hIueN8rZxKUojLIAgbOBFWf/ZJqletotJhiPPGXzxMdJoKusvjA1qNolEpJcYqpeL+980eq8X9bMxaPh7pBCwNOx8w48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTNk4KrS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B037C4AF0C;
-	Tue, 30 Jul 2024 16:02:06 +0000 (UTC)
+	 MIME-Version; b=nDul7iW8uAVI7aOo8AVmkmQ9z0Qme3tZXg+XjrHv/rHE7xBmCTi34y3MGCvyN83E3FfWMWnsecGBIAon9nP/wtaeaDM3ClNz/f5XQA+as/sJsCThRMckKdeZ1o0veGiwaVQh7U8cEdrIVDjFUjOn58hXAU68+hwubJT5hxHbHNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNXRTFSY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45591C32782;
+	Tue, 30 Jul 2024 16:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355326;
-	bh=zFPjQIlTxEC9ZY6kXyrzK4IAaYOBsqsWZSTbl0oIn8w=;
+	s=korg; t=1722355336;
+	bh=oocCd/P5ukromBPGWa72hjSXMxJLx8zldo3UN0d5Rmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTNk4KrSmozNXhYGnM+H8T9uDKdwi8nR0sNJPhu1W0m/yT2hI23Z6+8/qDqBRmNDO
-	 dTAPaK1pgHiFJVR0m4pMW5mrsivHbSaovaGn3kHKhmN+aRJ+eI6nJ7wqnWxOxlbmr6
-	 t2r6PPO7z/i8p5DwjRTlIbn7jaWKkb/7eyGFVxOA=
+	b=HNXRTFSYbX42qGMps+35mku/M9mDg5+FKCvR8JhSOmE8OPeRK5Y84V7GTcLIiwlXb
+	 GIt1zDoK/K375BHtCHCETcvxjHxllftOmm8eaPt2bex6xbM1uPgaVk4zB3C+CUzPpO
+	 2qo6kyEeQh2AM8zkl7KmmKUgSQNhywlEqS08kpkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagar Cheluvegowda <quic_scheluve@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/568] arm64: dts: qcom: sa8775p: mark ethernet devices as DMA-coherent
-Date: Tue, 30 Jul 2024 17:42:35 +0200
-Message-ID: <20240730151641.716345168@linuxfoundation.org>
+Subject: [PATCH 6.6 049/568] soc: xilinx: rename cpu_number1 to dummy_cpu_number
+Date: Tue, 30 Jul 2024 17:42:36 +0200
+Message-ID: <20240730151641.755684818@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,42 +66,103 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
+From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
 
-[ Upstream commit 49cc31f8ab44e60d8109da7e18c0983a917d4d74 ]
+[ Upstream commit 4a95449dd975e2ea6629a034f3e74b46c9634916 ]
 
-Ethernet devices are cache coherent, mark it as such in the dtsi.
+The per cpu variable cpu_number1 is passed to xlnx_event_handler as
+argument "dev_id", but it is not used in this function. So drop the
+initialization of this variable and rename it to dummy_cpu_number.
+This patch is to fix the following call trace when the kernel option
+CONFIG_DEBUG_ATOMIC_SLEEP is enabled:
 
-Fixes: ff499a0fbb23 ("arm64: dts: qcom: sa8775p: add the first 1Gb ethernet interface")
-Fixes: e952348a7cc7 ("arm64: dts: qcom: sa8775p: add a node for EMAC1")
-Signed-off-by: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
-Link: https://lore.kernel.org/r/20240514-mark_ethernet_devices_dma_coherent-v4-1-04e1198858c5@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+BUG: sleeping function called from invalid context at include/linux/sched/mm.h:274
+    in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
+    preempt_count: 1, expected: 0
+    CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.0 #53
+    Hardware name: Xilinx Versal vmk180 Eval board rev1.1 (QSPI) (DT)
+    Call trace:
+     dump_backtrace+0xd0/0xe0
+     show_stack+0x18/0x40
+     dump_stack_lvl+0x7c/0xa0
+     dump_stack+0x18/0x34
+     __might_resched+0x10c/0x140
+     __might_sleep+0x4c/0xa0
+     __kmem_cache_alloc_node+0xf4/0x168
+     kmalloc_trace+0x28/0x38
+     __request_percpu_irq+0x74/0x138
+     xlnx_event_manager_probe+0xf8/0x298
+     platform_probe+0x68/0xd8
+
+Fixes: daed80ed0758 ("soc: xilinx: Fix for call trace due to the usage of smp_processor_id()")
+Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Link: https://lore.kernel.org/r/20240408110610.15676-1-jay.buddhabhatti@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/xilinx/xlnx_event_manager.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-index 88ef3b5d374b3..44bea063aedba 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -2350,6 +2350,7 @@ ethernet1: ethernet@23000000 {
- 			phy-names = "serdes";
+diff --git a/drivers/soc/xilinx/xlnx_event_manager.c b/drivers/soc/xilinx/xlnx_event_manager.c
+index 042553abe1bf8..098a2ecfd5c68 100644
+--- a/drivers/soc/xilinx/xlnx_event_manager.c
++++ b/drivers/soc/xilinx/xlnx_event_manager.c
+@@ -3,6 +3,7 @@
+  * Xilinx Event Management Driver
+  *
+  *  Copyright (C) 2021 Xilinx, Inc.
++ *  Copyright (C) 2024 Advanced Micro Devices, Inc.
+  *
+  *  Abhyuday Godhasara <abhyuday.godhasara@xilinx.com>
+  */
+@@ -19,7 +20,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
  
- 			iommus = <&apps_smmu 0x140 0xf>;
-+			dma-coherent;
+-static DEFINE_PER_CPU_READ_MOSTLY(int, cpu_number1);
++static DEFINE_PER_CPU_READ_MOSTLY(int, dummy_cpu_number);
  
- 			snps,tso;
- 			snps,pbl = <32>;
-@@ -2383,6 +2384,7 @@ ethernet0: ethernet@23040000 {
- 			phy-names = "serdes";
+ static int virq_sgi;
+ static int event_manager_availability = -EACCES;
+@@ -555,7 +556,6 @@ static void xlnx_disable_percpu_irq(void *data)
+ static int xlnx_event_init_sgi(struct platform_device *pdev)
+ {
+ 	int ret = 0;
+-	int cpu;
+ 	/*
+ 	 * IRQ related structures are used for the following:
+ 	 * for each SGI interrupt ensure its mapped by GIC IRQ domain
+@@ -592,11 +592,8 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
+ 	sgi_fwspec.param[0] = sgi_num;
+ 	virq_sgi = irq_create_fwspec_mapping(&sgi_fwspec);
  
- 			iommus = <&apps_smmu 0x120 0xf>;
-+			dma-coherent;
+-	cpu = get_cpu();
+-	per_cpu(cpu_number1, cpu) = cpu;
+ 	ret = request_percpu_irq(virq_sgi, xlnx_event_handler, "xlnx_event_mgmt",
+-				 &cpu_number1);
+-	put_cpu();
++				 &dummy_cpu_number);
  
- 			snps,tso;
- 			snps,pbl = <32>;
+ 	WARN_ON(ret);
+ 	if (ret) {
+@@ -612,16 +609,12 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
+ 
+ static void xlnx_event_cleanup_sgi(struct platform_device *pdev)
+ {
+-	int cpu = smp_processor_id();
+-
+-	per_cpu(cpu_number1, cpu) = cpu;
+-
+ 	cpuhp_remove_state(CPUHP_AP_ONLINE_DYN);
+ 
+ 	on_each_cpu(xlnx_disable_percpu_irq, NULL, 1);
+ 
+ 	irq_clear_status_flags(virq_sgi, IRQ_PER_CPU);
+-	free_percpu_irq(virq_sgi, &cpu_number1);
++	free_percpu_irq(virq_sgi, &dummy_cpu_number);
+ 	irq_dispose_mapping(virq_sgi);
+ }
+ 
 -- 
 2.43.0
 
