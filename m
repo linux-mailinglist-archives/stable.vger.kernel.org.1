@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF252941E13
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6F8941BB7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88514B246D2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF1721F24117
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2A91A76BE;
-	Tue, 30 Jul 2024 17:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B6B1898F8;
+	Tue, 30 Jul 2024 16:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR4C/JCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeXn2u/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8FF1A76A9;
-	Tue, 30 Jul 2024 17:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC1018801A;
+	Tue, 30 Jul 2024 16:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360168; cv=none; b=WBIcVeFFQQC79URk3vP0qm/v0TydoFrFeYH99OQPqRzoyFIZTwEZkhV3Zmr1uywUPfMrqPJHN5U1oE7I8isXwBFUeIMgh87IlmAe6owoYpBAml6R0KnwO3SdBfocYELP87xxgJ6GnhuaJT59856rikIvO9A4oC/32OGp/AbDCxU=
+	t=1722358692; cv=none; b=Chdox/5ewEZQI9kQX5bxXtWdlzhbfIP+HpptGnZtIBKw843QARz7/dgX0W4C0WVU+rm94oFg8tQPfuVFKBXpHDT0epplkM6+xWIWzAUgbtV+TQikUba3ERJloN/dw9Ppr/hm2cB7Z0OPgQ4eJoeVaBiQ7oEQLbNsB/WNDwtkIJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360168; c=relaxed/simple;
-	bh=gPztSG5j899hDQKRvN/pSUUyk0iWTzZQGlKThEafXss=;
+	s=arc-20240116; t=1722358692; c=relaxed/simple;
+	bh=TIKWnp+mX79eexpzDu2fsCUYyFqtX9WmjSJJYCkgqF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+J3GGo+Il96XHxbffUF7MRs23VNjk0L3Y4oYPbft3N3B+033am7ssV+0odfBmLE0pl9GYNoBG9efmX9jVx+Xium8bg0YIIgCDdLerE6w4TC3BJgbQ1wBDXbzNLH8nyZsJVwrPXLgYdkjOR59MANoMD622vFSrDqmy1i+/aaT9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QR4C/JCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FF9C32782;
-	Tue, 30 Jul 2024 17:22:47 +0000 (UTC)
+	 MIME-Version; b=VGUr0DiLcxb9PqiI73bm2krP8ap485X2nEEsGHhpBsldDdMggt05B3jP0bj98jsfitcKUYwEle1RgHvT2hIEK/Id5PxHCXiZjABp3vbZgTVUYcUa5ovnIUsd6kpAkogzuercvmJoLOFkaAj4o/s9BdRl6rPXQsiBAJ/ZBb+CsN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeXn2u/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A88C4AF0A;
+	Tue, 30 Jul 2024 16:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360168;
-	bh=gPztSG5j899hDQKRvN/pSUUyk0iWTzZQGlKThEafXss=;
+	s=korg; t=1722358692;
+	bh=TIKWnp+mX79eexpzDu2fsCUYyFqtX9WmjSJJYCkgqF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QR4C/JCcNUL70QZDUdWvOIadUcG0S2UwM6VLa/9qPMRrFqgfSyRmBccqQyaR4e9f1
-	 P2sdkvrK6sXmutr91Fil1IUo9zBpszY1RMqVfuw9W+1+fKh7LXesjHZSp3vu3MHI9f
-	 2F5n36/3VKhngfhOCs1qh6Vtae3O7wXek7ujIms8=
+	b=VeXn2u/o1aIShgUngKnVxa6H8QKI9CRFXOqQJG0723T+nAfdFEfSW1n7M6j7PsSdM
+	 6YEflbdC8XLay1+wTUz1QiMcKsdWxabOhhaYWtlV4awDtP2JdsPtvIUDnS03EDqXw/
+	 SS99sYSO3iXP5PZR9Qu17msyQ8fHbZAjbLRRK0ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Chen <Jason-ch.Chen@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.10 617/809] remoteproc: mediatek: Increase MT8188/MT8195 SCP core0 DRAM size
+	Ma Ke <make24@iscas.ac.cn>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 6.6 386/568] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
 Date: Tue, 30 Jul 2024 17:48:13 +0200
-Message-ID: <20240730151749.210137921@linuxfoundation.org>
+Message-ID: <20240730151654.953294221@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Chen <Jason-ch.Chen@mediatek.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 19cb6058620620e68f1a9aed99393be5c3629db4 upstream.
+commit 2df7aac81070987b0f052985856aa325a38debf6 upstream.
 
-The current DRAM size is insufficient for the HEVC feature, which
-requires more memory for proper functionality. This change ensures the
-feature has the necessary resources.
+In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Signed-off-by: Jason Chen <Jason-ch.Chen@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240703034409.698-1-Jason-ch.Chen@mediatek.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240709092011.3204970-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/mtk_scp.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/gma500/psb_intel_lvds.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -1388,7 +1388,7 @@ static const struct mtk_scp_sizes_data d
- };
- 
- static const struct mtk_scp_sizes_data mt8188_scp_sizes = {
--	.max_dram_size = 0x500000,
-+	.max_dram_size = 0x800000,
- 	.ipi_share_buffer_size = 600,
- };
- 
-@@ -1397,6 +1397,11 @@ static const struct mtk_scp_sizes_data m
- 	.ipi_share_buffer_size = 600,
- };
- 
-+static const struct mtk_scp_sizes_data mt8195_scp_sizes = {
-+	.max_dram_size = 0x800000,
-+	.ipi_share_buffer_size = 288,
-+};
+--- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
++++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
+@@ -504,6 +504,9 @@ static int psb_intel_lvds_get_modes(stru
+ 	if (mode_dev->panel_fixed_mode != NULL) {
+ 		struct drm_display_mode *mode =
+ 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
++		if (!mode)
++			return 0;
 +
- static const struct mtk_scp_of_data mt8183_of_data = {
- 	.scp_clk_get = mt8183_scp_clk_get,
- 	.scp_before_load = mt8183_scp_before_load,
-@@ -1474,7 +1479,7 @@ static const struct mtk_scp_of_data mt81
- 	.scp_da_to_va = mt8192_scp_da_to_va,
- 	.host_to_scp_reg = MT8192_GIPC_IN_SET,
- 	.host_to_scp_int_bit = MT8192_HOST_IPC_INT_BIT,
--	.scp_sizes = &default_scp_sizes,
-+	.scp_sizes = &mt8195_scp_sizes,
- };
- 
- static const struct mtk_scp_of_data mt8195_of_data_c1 = {
+ 		drm_mode_probed_add(connector, mode);
+ 		return 1;
+ 	}
 
 
 
