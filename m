@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-62925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414FB941646
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B19941648
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692081C20BCB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B09C01F25228
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F4D1BD4E0;
-	Tue, 30 Jul 2024 15:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF601BE22E;
+	Tue, 30 Jul 2024 15:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwSGKE+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMJCtzqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35DA1BD01E;
-	Tue, 30 Jul 2024 15:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B311BBBE6;
+	Tue, 30 Jul 2024 15:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355082; cv=none; b=Zy0l4D7oKWPFMBZrPw6LOmynq+nuJbUYthmyE0FtSB2mI7KSwtGrjoHcApK1RB2Hw2B0NEwr8zMDhX943g79mCpFLD3I076ahgWAodsKg7F6lrJBZ4XRXgF9x3mO35yAqaumlOzUUcJwBKLFSrMncq5MbYb2iO/zTO2p1CT1xBs=
+	t=1722355093; cv=none; b=tifby2FsaTpkUPNLEb88+LYjKdGUF82Q5n6TBqP6M4ny3EXk9sC5aEQKRoxv6tLXf3nsDDj3oaPRQvHm7aiz46hkEnDqQwOhXrxQf48imMwA4hg/m8JddPWqWXWfOWFH9dgJlQ7qsjYDfL2jB7HtDko6N31aQrJiXjXQVMf5p0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355082; c=relaxed/simple;
-	bh=VdaCktDo+E+dMu3sC9Ykmi4qMQqFWi63pnLMwmPNsjA=;
+	s=arc-20240116; t=1722355093; c=relaxed/simple;
+	bh=8A49cbA/l2RPLp/tlsQjbCRcLLX50Ynp1CjTHasxcIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSg58ZV3E4u8YXcDGF+1ZTw9OUM+q4f3PKlE/sMGQ5/yyviEwZrux396W1D7StsWxcmzfLPHcuz4mKrFtMBZwizA6BCdoOG8rdgRDIXzi860n3crumxolg22jMbakzH+tIYF67nK4EXwn967VWGXljFr4ESieYIiSegvWlpks8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwSGKE+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A19C4AF0A;
-	Tue, 30 Jul 2024 15:58:01 +0000 (UTC)
+	 MIME-Version; b=mwy4i944Ai9YO75XGzGtXMtcLMSo5Ix7v464av+udfPelH3ClsvEgAcu/deewJL8fwqSZCcUmxS2zON+nbckdJydkvfkLEZUHKx++gwvdq51accyxZHlPk+M4Ds1np1njeK17mKhh77U0ChoHhiA5ofZHuzO3n4ESt3DSXR++Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMJCtzqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06DBC32782;
+	Tue, 30 Jul 2024 15:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355081;
-	bh=VdaCktDo+E+dMu3sC9Ykmi4qMQqFWi63pnLMwmPNsjA=;
+	s=korg; t=1722355093;
+	bh=8A49cbA/l2RPLp/tlsQjbCRcLLX50Ynp1CjTHasxcIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwSGKE+lBtBaHdHbxgup1jKndKXBJy7u/LK4bUDQ0oQpQEokvp97tDfJ4f7QJsPFf
-	 5qJehyx01q/TiL23MlQ6oF4DaJdKoOAhh5pGjUQkpsWFMpfdHk3XoZ/BQWbtiJOIMm
-	 KldZqhLIdTwwtCmVDzFjoxVzKFoBdV6PhDnsm4fg=
+	b=rMJCtzqzoNOpTH7mbYUn300xQu7gJsfOb1OXWImjC0Azj6mBQ9otjToK7X+X4t7xW
+	 7qo5+pDUyceN6lcYDRzsuF0EW8Htlh/s39ohlbIEsmH7y1MYpIzsEgLBqj4SUzDDCi
+	 ncBcDJcZQx2JF2dukJkzFpJ/69/RtGp1EGknP7wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/568] hwmon: (max6697) Fix underflow when writing limit attributes
-Date: Tue, 30 Jul 2024 17:42:13 +0200
-Message-ID: <20240730151640.855723412@linuxfoundation.org>
+Subject: [PATCH 6.6 027/568] hwmon: (max6697) Fix swapped temp{1,8} critical alarms
+Date: Tue, 30 Jul 2024 17:42:14 +0200
+Message-ID: <20240730151640.894929983@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -68,36 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit cbf7467828cd4ec7ceac7a8b5b5ddb2f69f07b0e ]
+[ Upstream commit 1ea3fd1eb9869fcdcbc9c68f9728bfc47b9503f1 ]
 
-Using DIV_ROUND_CLOSEST() on an unbound value can result in underflows.
-Indeed, module test scripts report:
+The critical alarm bit for the local temperature sensor (temp1) is in
+bit 7 of register 0x45 (not bit 6), and the critical alarm bit for remote
+temperature sensor 7 (temp8) is in bit 6 (not bit 7).
 
-temp1_max: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
-temp1_crit: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
-
-Fix by introducing an extra set of clamping.
+This only affects MAX6581 since all other chips supported by this driver
+do not support those critical alarms.
 
 Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
 Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max6697.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/max6697.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
-index 7d10dd434f2e1..8a5a54d2b3d0e 100644
+index 8a5a54d2b3d0e..a338dd4e990d5 100644
 --- a/drivers/hwmon/max6697.c
 +++ b/drivers/hwmon/max6697.c
-@@ -311,6 +311,7 @@ static ssize_t temp_store(struct device *dev,
- 		return ret;
+@@ -429,14 +429,14 @@ static SENSOR_DEVICE_ATTR_RO(temp6_max_alarm, alarm, 20);
+ static SENSOR_DEVICE_ATTR_RO(temp7_max_alarm, alarm, 21);
+ static SENSOR_DEVICE_ATTR_RO(temp8_max_alarm, alarm, 23);
  
- 	mutex_lock(&data->update_lock);
-+	temp = clamp_val(temp, -1000000, 1000000);	/* prevent underflow */
- 	temp = DIV_ROUND_CLOSEST(temp, 1000) + data->temp_offset;
- 	temp = clamp_val(temp, 0, data->type == max6581 ? 255 : 127);
- 	data->temp[nr][index] = temp;
+-static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 14);
++static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 15);
+ static SENSOR_DEVICE_ATTR_RO(temp2_crit_alarm, alarm, 8);
+ static SENSOR_DEVICE_ATTR_RO(temp3_crit_alarm, alarm, 9);
+ static SENSOR_DEVICE_ATTR_RO(temp4_crit_alarm, alarm, 10);
+ static SENSOR_DEVICE_ATTR_RO(temp5_crit_alarm, alarm, 11);
+ static SENSOR_DEVICE_ATTR_RO(temp6_crit_alarm, alarm, 12);
+ static SENSOR_DEVICE_ATTR_RO(temp7_crit_alarm, alarm, 13);
+-static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 15);
++static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 14);
+ 
+ static SENSOR_DEVICE_ATTR_RO(temp2_fault, alarm, 1);
+ static SENSOR_DEVICE_ATTR_RO(temp3_fault, alarm, 2);
 -- 
 2.43.0
 
