@@ -1,120 +1,96 @@
-Return-Path: <stable+bounces-62674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD48B940D11
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:10:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835B5940D21
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E14161C23EFE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:10:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B48421C236B2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0B7194121;
-	Tue, 30 Jul 2024 09:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB7B19415C;
+	Tue, 30 Jul 2024 09:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="pl8/vXoP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiqYXjPS"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EC91940A9;
-	Tue, 30 Jul 2024 09:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE94194154;
+	Tue, 30 Jul 2024 09:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722330636; cv=none; b=uas93vsLfnd22LjShBduNE3ECX0VkUwziV38LULbyt4rCI/0wFhTgGpUh6A9UtGhtKz0Qx1Noy8GirbEGoDSFHfsjVlAJ27YcepAeOHRwB3wws/kLsWozsghEHDro/NIcElnK6LZvsFYdHZSRTXmVh4ecSgqJocOtsZF/XZhesE=
+	t=1722330709; cv=none; b=tMs4jiBCfTt95+V2p+wSgLptqxXH6MGZJ6+82g0RMFsbi3BnFME0bv8EdegV+lplFap/NJTsdH8JWX/2bJ7GfH9/i2eNla07vo975U9IFzURSb1Nr9gDSAlDa4ju0vaWcSpXKK/i1CcCuDjU6yzgFAYssfP5rT/BvEbgVz72qrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722330636; c=relaxed/simple;
-	bh=2NmCI2POzf0UE9zMycMrxntBDQRqkQhz4KvcbTOG+8I=;
+	s=arc-20240116; t=1722330709; c=relaxed/simple;
+	bh=OwiYcdxTSrCffCnuGSDj7ZNsbAxtXP8QO7bcFGAC/3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hxl8nKIkdCsFskOCs23DiG+9o980lXMW0gtd1JGWEGb1QF457nZF4SEeAlmUHfw+DO22BKzs4qK6NisEGaWUHIciF03Yv0+L6iBaO7rm+7qJ1XElKFtok2Rsa8hR1nUYdMORVvHvjod9+ojkxeY0Wu9+imF6NFQGPmIUdt5dySM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=pl8/vXoP; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C8DDE4C9;
-	Tue, 30 Jul 2024 11:09:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1722330585;
-	bh=2NmCI2POzf0UE9zMycMrxntBDQRqkQhz4KvcbTOG+8I=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=VGddm4ch/iEzenCwska5C+RMTCmwqGwjeLdJJWL2IkfFvbjQtKfHPdyi6SfW2LYKRGEAOaxL1WpjEw6Qdu5AEa8gif/NRBnT6oJUxwcJ90grUIZZnoRoDeO7nvxFrU+sE2l+Ukgi6P63BLHtv0dwj1DyV/4KzI6sQc39ZkDMudo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiqYXjPS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F869C32782;
+	Tue, 30 Jul 2024 09:11:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722330708;
+	bh=OwiYcdxTSrCffCnuGSDj7ZNsbAxtXP8QO7bcFGAC/3k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pl8/vXoPwF34TQrK0jGnM3eLmljyQ04EKmwJOvpJbaTEkpXblPQ9syG+Qn9PJK61o
-	 UO3+4w8y43Sxb3d9d7jZ4v2cG1XISBA5RQ9skdHutg8nPwBtT9cpcLVpEJnJB+BKEb
-	 M+Kf90LLKEG8do8GuxEoDXwnhsP8wy34PIdi8a5c=
-Date: Tue, 30 Jul 2024 12:10:11 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	linux-media@vger.kernel.org, stable@vger.kernel.org,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Subject: Re: [PATCH v2 2/2] media: imx335: Fix reset-gpio handling
-Message-ID: <20240730091011.GL300@pendragon.ideasonboard.com>
-References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
- <20240729110437.199428-3-umang.jain@ideasonboard.com>
- <ef05c39a-ad5c-4751-a758-f73a2d114823@kernel.org>
- <ZqijVf68ZQuFGKhU@kekkonen.localdomain>
- <729280cd-557f-43ba-b1a6-8d319977ca82@kernel.org>
+	b=HiqYXjPSJRF19w4HQfL1m/VS8x+MTCT0mGBUKZGTIIqi8FUr90sn9zhPC4N72SCw0
+	 qh33R2WlMOmoA5GURaAM6I0fywBWGgGgpoaodTKMMETKG75mV87MueZC0yr7vVdIZA
+	 IjsKvUaS4r0bzNizvHTltD64qJVpa6vvU8wPegH0=
+Date: Tue, 30 Jul 2024 11:11:45 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: wujing <realwujing@qq.com>
+Cc: peterz@infradead.org, dongml2@chinatelecom.cn,
+	linux-kernel@vger.kernel.org, mingo@redhat.com,
+	yuanql9@chinatelecom.cn, stable@vger.kernel.org,
+	mengong8.dong@gmail.com
+Subject: Re: Re: [PATCH] sched/fair: Correct CPU selection from isolated
+ domain
+Message-ID: <2024073032-ferret-obtrusive-3ce4@gregkh>
+References: <20240730082239.GF33588@noisy.programming.kicks-ass.net>
+ <tencent_0C989DE2631E74C23BA8B60EA234C4B2FA0A@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <729280cd-557f-43ba-b1a6-8d319977ca82@kernel.org>
+In-Reply-To: <tencent_0C989DE2631E74C23BA8B60EA234C4B2FA0A@qq.com>
 
-On Tue, Jul 30, 2024 at 10:42:01AM +0200, Krzysztof Kozlowski wrote:
-> On 30/07/2024 10:24, Sakari Ailus wrote:
-> > Hi Krzysztof,
-> > 
-> > On Mon, Jul 29, 2024 at 04:09:39PM +0200, Krzysztof Kozlowski wrote:
-> >> On 29/07/2024 13:04, Umang Jain wrote:
-> >>> Rectify the logical value of reset-gpio so that it is set to
-> >>> 0 (disabled) during power-on and to 1 (enabled) during power-off.
-> >>>
-> >>> Meanwhile at it, set the reset-gpio to GPIO_OUT_HIGH at initialization
-> >>> time to make sure it starts off in reset.
-> >>>
-> >>> Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
-> >>> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-> >>> ---
-> >>>  drivers/media/i2c/imx335.c | 8 ++++----
-> >>>  1 file changed, 4 insertions(+), 4 deletions(-)
-> >>>
-> >>
-> >> This will break all the users, so no. At least not without mentioning
-> >> ABI break and some sort of investigating how customers or users are
-> >> affected.
-> > 
-> > I know the original authors aren't using the driver anymore and it took
-> > quite a bit of time until others started to contribute to it so I suspect
-> > the driver hasn't been in use for that long. There are no instances of the
-> > device in the in-kernel DTS either.
-> > 
-> > Any DTS author should have also noticed the issue but of course there's a
-> > risk someone could have just changed the polarity and not bothered to chech
-> > what it was supposed to be.
-> > 
-> > I agree the commit message should be more vocal about the effects on
-> > existing DTS.
+On Tue, Jul 30, 2024 at 05:03:38PM +0800, wujing wrote:
+> > If you're trying to backport something, I think you forgot to Cc stable
+> > and provide the proper upstream commit.
+> >
+> > As is this isn't something I can do anything with. The patch does not
+> > apply to any recent kernel and AFAICT this issue has long since been
+> > fixed.
 > 
-> I can imagine that all users (out of tree, in this case) inverted
-> polarity in DTS based on what's implemented. You could go with some
-> trivial hack, like I did for one of codecs - see 738455858a2d ("ASoC:
-> codecs: wsa881x: Use proper shutdown GPIO polarity"), but I remember
-> Mark Brown rejected similar commit for newer drivers.
+> When fixing this bug, I didn't pay much attention to upstream changes.
+> Upon reviewing the history of relevant commits, I found that they have
+> been merged and reverted multiple times:
+> 
+> ```bash
+> git log -S 'cpumask_test_cpu(cpu, sched_domain_span(sd))' --oneline \
+> kernel/sched/fair.c
+> 
+> 8aeaffef8c6e sched/fair: Take the scheduling domain into account in select_idle_smt()
+> 3e6efe87cd5c sched/fair: Remove redundant check in select_idle_smt()
+> 3e8c6c9aac42 sched/fair: Remove task_util from effective utilization in feec()
+> c722f35b513f sched/fair: Bring back select_idle_smt(), but differently
+> 6cd56ef1df39 sched/fair: Remove select_idle_smt()
+> df3cb4ea1fb6 sched/fair: Fix wrong cpu selecting from isolated domain
+> ```
+> 
+> The latest upstream commit 8aeaffef8c6e is not applicable to linux-4.19.y.
+> The current patch has been tested on linux-4.19.y and I am looking forward
+> to its inclusion in the stable version.
 
-I don't think there's any out-of-tree user, because when we started
-using the recently driver, it required lots of fixes to even work at
-all. I'll let Kieran and Umang comment on that, I haven't follow the
-development in details.
+What "current patch"?
 
--- 
-Regards,
+confused,
 
-Laurent Pinchart
+greg k-h
 
