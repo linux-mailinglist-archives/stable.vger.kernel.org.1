@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD040941DED
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F134F941B86
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CE5AB2A62C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B70A1F239EA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F98E1A76D4;
-	Tue, 30 Jul 2024 17:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7A71898E0;
+	Tue, 30 Jul 2024 16:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/g2/jzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Immh9DmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF59F1A76A1;
-	Tue, 30 Jul 2024 17:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AA418801A;
+	Tue, 30 Jul 2024 16:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360125; cv=none; b=hK1L63WpwjxBugkna6TntMhT2sFbew7HuvESV23iMrQG/i/zrRgWv/qtuEG0NFhb9b+R3RdAlLzFquOKmd/C0NWyG8CEHgNAXnis+BXaJo2jL3OpLA6fXvyGsHDWHIV8QMO2HSWXG2p0LcUzgWHkNHi/rPNizXze++HWGoAW7LY=
+	t=1722358560; cv=none; b=XydTAPiV5mM/+cKRcqsSIa4IHOc7j3VmDPTPiCh/MZLtLokG5bJyjKrGSM22fMoojF3vHJXV8crCrVDU82qUbA/WAjKUBcSG2cVu9mFb+WMLW64FmpKG4yN9ym2hjyNhjeKitTi307QleVA5A2kH+C2W0eA3fMleEm3Gtvoag7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360125; c=relaxed/simple;
-	bh=U780ATpxarjH1s0v4f6n3B/YCTaLVWLiticoHLIHS4w=;
+	s=arc-20240116; t=1722358560; c=relaxed/simple;
+	bh=YI7uJTnh0/AL8lpHQTsvVHcU+dxYe0smywTHFuBFVb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WLBFAVZ2grD5j4Q49iRu6JUd1kHYeg5gD76rtB7A3ERVBn9axc8vdQQ6PdNBHic334bSsluM01DPWt/16QtUnAp60chtBbvY1zQXtEsIO2TPt8VgySqyzncwhwBHbw/6jqFM77QTVMTbR522mOPGIlOslPHrot70odPzrFnXddA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/g2/jzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F01C32782;
-	Tue, 30 Jul 2024 17:22:04 +0000 (UTC)
+	 MIME-Version; b=Pw1c8hmFmJ3uYiFHDDwbdzETBcKx1w8uf+gN2SNm5YqaDlO5e90C/CSZf6AFTPG8jvFJhZpbaHWHocUSgZ0OfO7PrrkW1aUOkges1rTrPgexQ/hx1VJ39rFs1IOPV6ivrfjShwLmQ/0iYocCDa/TVSNBK9FVO4CJUWi48ZhzLGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Immh9DmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53813C32782;
+	Tue, 30 Jul 2024 16:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360124;
-	bh=U780ATpxarjH1s0v4f6n3B/YCTaLVWLiticoHLIHS4w=;
+	s=korg; t=1722358559;
+	bh=YI7uJTnh0/AL8lpHQTsvVHcU+dxYe0smywTHFuBFVb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/g2/jzTTBm3NjRfnzMV1OWbZG5fAp2A1wxLlPQmUxUvs9NHhTzAnC4wQmiYBKr8D
-	 Ufb9g26R7Q1SW4gArfdxs/lLMiz5SX27jcN/CzjWLFE/sF159VakVmi1KIIzJ/ddwB
-	 Aqi7y3mLiar9wuF1Q1XKVlAyIy/bxkd2LDimf2eY=
+	b=Immh9DmRqxZC89IXk7r8G/TEde9wbvCMu82rn4x29hXy2cdLUqLTLz7v+AgREs6kQ
+	 ZVi+ZNNBbSl6N8XTGpJGre1hfLyL8q9pCOXgu4ENkWJnHDoMfW6fMlM9N7VlFtTXLR
+	 1AL/PQPcds5DmaN4oneyCZlBrKO1Oaiyv9Hkywp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.10 605/809] leds: ss4200: Convert PCIBIOS_* return codes to errnos
+	Christoph Hellwig <hch@lst.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 374/568] NFSD: Support write delegations in LAYOUTGET
 Date: Tue, 30 Jul 2024 17:48:01 +0200
-Message-ID: <20240730151748.731011930@linuxfoundation.org>
+Message-ID: <20240730151654.481413953@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit ce068e83976140badb19c7f1307926b4b562fac4 upstream.
+commit abc02e5602f7bf9bbae1e8999570a2ad5114578c upstream.
 
-ich7_lpc_probe() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The error handling code assumes incorrectly it's a normal errno
-and checks for < 0. The return code is returned from the probe function
-as is but probe functions should return normal errnos.
+I noticed LAYOUTGET(LAYOUTIOMODE4_RW) returning NFS4ERR_ACCESS
+unexpectedly. The NFS client had created a file with mode 0444, and
+the server had returned a write delegation on the OPEN(CREATE). The
+client was requesting a RW layout using the write delegation stateid
+so that it could flush file modifications.
 
-Remove < 0 from the check and convert PCIBIOS_* returns code using
-pcibios_err_to_errno() into normal errno before returning it.
+Creating a read-only file does not seem to be problematic for
+NFSv4.1 without pNFS, so I began looking at NFSD's implementation of
+LAYOUTGET.
 
-Fixes: a328e95b82c1 ("leds: LED driver for Intel NAS SS4200 series (v5)")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240527132700.14260-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+The failure was because fh_verify() was doing a permission check as
+part of verifying the FH presented during the LAYOUTGET. It uses the
+loga_iomode value to specify the @accmode argument to fh_verify().
+fh_verify(MAY_WRITE) on a file whose mode is 0444 fails with -EACCES.
+
+To permit LAYOUT* operations in this case, add OWNER_OVERRIDE when
+checking the access permission of the incoming file handle for
+LAYOUTGET and LAYOUTCOMMIT.
+
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org # v6.6+
+Message-Id: 4E9C0D74-A06D-4DC3-A48A-73034DC40395@oracle.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-ss4200.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4proc.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/leds/leds-ss4200.c
-+++ b/drivers/leds/leds-ss4200.c
-@@ -356,8 +356,10 @@ static int ich7_lpc_probe(struct pci_dev
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2218,7 +2218,7 @@ nfsd4_layoutget(struct svc_rqst *rqstp,
+ 	const struct nfsd4_layout_ops *ops;
+ 	struct nfs4_layout_stateid *ls;
+ 	__be32 nfserr;
+-	int accmode = NFSD_MAY_READ_IF_EXEC;
++	int accmode = NFSD_MAY_READ_IF_EXEC | NFSD_MAY_OWNER_OVERRIDE;
  
- 	nas_gpio_pci_dev = dev;
- 	status = pci_read_config_dword(dev, PMBASE, &g_pm_io_base);
--	if (status)
-+	if (status) {
-+		status = pcibios_err_to_errno(status);
+ 	switch (lgp->lg_seg.iomode) {
+ 	case IOMODE_READ:
+@@ -2308,7 +2308,8 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
+ 	struct nfs4_layout_stateid *ls;
+ 	__be32 nfserr;
+ 
+-	nfserr = fh_verify(rqstp, current_fh, 0, NFSD_MAY_WRITE);
++	nfserr = fh_verify(rqstp, current_fh, 0,
++			   NFSD_MAY_WRITE | NFSD_MAY_OWNER_OVERRIDE);
+ 	if (nfserr)
  		goto out;
-+	}
- 	g_pm_io_base &= 0x00000ff80;
  
- 	status = pci_read_config_dword(dev, GPIO_CTRL, &gc);
-@@ -369,8 +371,9 @@ static int ich7_lpc_probe(struct pci_dev
- 	}
- 
- 	status = pci_read_config_dword(dev, GPIO_BASE, &nas_gpio_io_base);
--	if (0 > status) {
-+	if (status) {
- 		dev_info(&dev->dev, "Unable to read GPIOBASE.\n");
-+		status = pcibios_err_to_errno(status);
- 		goto out;
- 	}
- 	dev_dbg(&dev->dev, ": GPIOBASE = 0x%08x\n", nas_gpio_io_base);
 
 
 
