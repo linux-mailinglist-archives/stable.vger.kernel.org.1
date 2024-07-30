@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C687941BB4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4CC941E9E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB7A62837C9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0337A1F20641
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA841898ED;
-	Tue, 30 Jul 2024 16:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177EE187FEC;
+	Tue, 30 Jul 2024 17:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5ZFGM/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQd8DLWS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E42518801A;
-	Tue, 30 Jul 2024 16:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91041A76A5;
+	Tue, 30 Jul 2024 17:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358685; cv=none; b=c29hXE0IToPTWPfHpa3KGCz0C8wzo/wTSMAb/yeW8H2DXKxJ4mHFXeav+lq1memRPhzATj/czMtRD9+BWi6e8JPiAX5/OgP4zuiqhzGwX90OZLDleD6o3XUpF1l+icttRR20YPB6DqR7xYyBjr3UL9/I3AyILoujrX5kUDbUXvs=
+	t=1722360665; cv=none; b=V7QqsipUfDkeQmey1uUPAVHcjJDEKl2oERHVJBy6sF4lq1pL8Wx/EDT3fY9zoVe5RH1VF5X9MjURQ5oLl+3dgqn37A3vEg7q7GsGedgLJfmIz+cN5mDwe4NGX2Lyx5O5HEr0kNVYL530hmwagSqz/bmAZ1z9CXXzAR261rjAI3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358685; c=relaxed/simple;
-	bh=+oHxzLGRHKtpxeEvQOT+hUvGXXytDM+aZ5uJifQG8YU=;
+	s=arc-20240116; t=1722360665; c=relaxed/simple;
+	bh=yf3E1id5Qyf0iOJSM0yLNd7IbbEPt/dpJC2RGR6mj74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIF2llETagR3Nf8jcEpKyHdOtven+AWapJBRuIwMCgv9Jio1owik25Avz0uSrju6xJNRtkTFoe87MI6PrP90qCNiKVA1msLfA6fwqA/AMSiVE5pmjpKYZETf+c18dzFTwYY+LnTNEh2JPXnw+2zXrP6lQZY+oLC2ZYRMqZsYimA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5ZFGM/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFFEC4AF0A;
-	Tue, 30 Jul 2024 16:58:04 +0000 (UTC)
+	 MIME-Version; b=sgEnvTrASpOZDu1J24DfO+blldqeu+aOt4n5ynqlMtLmPU4rs6TxzzvneOu0l+a+GEuQtujKQI6HB86yYwZydliS7YM8w2CbToIKJyca+DM2YJAEGTEVLBZWWCI0M9stYDylsaFunl8HWQW6LYlNW2IjToFtV2+EfauEnJnB0Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQd8DLWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C42DC4AF0C;
+	Tue, 30 Jul 2024 17:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358685;
-	bh=+oHxzLGRHKtpxeEvQOT+hUvGXXytDM+aZ5uJifQG8YU=;
+	s=korg; t=1722360665;
+	bh=yf3E1id5Qyf0iOJSM0yLNd7IbbEPt/dpJC2RGR6mj74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5ZFGM/AJ0vXPg4iBxUT3u5MEriXYLc0mqoV2+YApUW0W5msK8C6XWpopy3iaBt9X
-	 XaLGNgz/hZSDVyRXvTCX4Wzjd1TKVQL9wv5QkWoZ375jLIphRsReG/Q8ryXkEPaHv3
-	 sh3k+WnOsI1jeTZO1ElNdtuWj9fSMPVqi121NIew=
+	b=DQd8DLWSgSBsyGIlfCBbJAGQ2hvE5vYOudFvXWWUCv+jh4o9Vaw/SKPD6TJjVKp4r
+	 tqyntlGQ6ybDxOimT2DT94156eTc0/Nw+ZadatdZD+ca9GUCfKMN29E6NH8OG6EOoC
+	 JIRXZo/IYdqONdBsF7Dipz5jm3SJbzlbJ97FDO0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 413/440] netfilter: nft_set_pipapo_avx2: disable softinterrupts
+Subject: [PATCH 6.10 770/809] net: mediatek: Fix potential NULL pointer dereference in dummy net_device handling
 Date: Tue, 30 Jul 2024 17:50:46 +0200
-Message-ID: <20240730151631.922669378@linuxfoundation.org>
+Message-ID: <20240730151755.377799711@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit a16909ae9982e931841c456061cb57fbaec9c59e ]
+[ Upstream commit 16f3a28cf5f876a7f3550d8f4c870a7b41bcfaef ]
 
-We need to disable softinterrupts, else we get following problem:
+Move the freeing of the dummy net_device from mtk_free_dev() to
+mtk_remove().
 
-1. pipapo_avx2 called from process context; fpu usable
-2. preempt_disable() called, pcpu scratchmap in use
-3. softirq handles rx or tx, we re-enter pipapo_avx2
-4. fpu busy, fallback to generic non-avx version
-5. fallback reuses scratch map and index, which are in use
-   by the preempted process
+Previously, if alloc_netdev_dummy() failed in mtk_probe(),
+eth->dummy_dev would be NULL. The error path would then call
+mtk_free_dev(), which in turn called free_netdev() assuming dummy_dev
+was allocated (but it was not), potentially causing a NULL pointer
+dereference.
 
-Handle this same way as generic version by first disabling
-softinterrupts while the scratchmap is in use.
+By moving free_netdev() to mtk_remove(), we ensure it's only called when
+mtk_probe() has succeeded and dummy_dev is fully allocated. This
+addresses a potential NULL pointer dereference detected by Smatch[1].
 
-Fixes: f0b3d338064e ("netfilter: nft_set_pipapo_avx2: Add irq_fpu_usable() check, fallback to non-AVX2 version")
-Cc: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: b209bd6d0bff ("net: mediatek: mtk_eth_sock: allocate dummy net_device dynamically")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/4160f4e0-cbef-4a22-8b5d-42c4d399e1f7@stanley.mountain/ [1]
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240724080524.2734499-1-leitao@debian.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index 8910a5ac7ed12..b8d3c3213efee 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1139,8 +1139,14 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	bool map_index;
- 	int i, ret = 0;
- 
--	if (unlikely(!irq_fpu_usable()))
--		return nft_pipapo_lookup(net, set, key, ext);
-+	local_bh_disable();
-+
-+	if (unlikely(!irq_fpu_usable())) {
-+		bool fallback_res = nft_pipapo_lookup(net, set, key, ext);
-+
-+		local_bh_enable();
-+		return fallback_res;
-+	}
- 
- 	m = rcu_dereference(priv->match);
- 
-@@ -1155,6 +1161,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	scratch = *raw_cpu_ptr(m->scratch);
- 	if (unlikely(!scratch)) {
- 		kernel_fpu_end();
-+		local_bh_enable();
- 		return false;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index c84ce54a84a00..c11bb0f0b8c47 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -4198,8 +4198,6 @@ static int mtk_free_dev(struct mtk_eth *eth)
+ 		metadata_dst_free(eth->dsa_meta[i]);
  	}
  
-@@ -1235,6 +1242,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	if (i % 2)
- 		scratch->map_index = !map_index;
- 	kernel_fpu_end();
-+	local_bh_enable();
- 
- 	return ret >= 0;
+-	free_netdev(eth->dummy_dev);
+-
+ 	return 0;
  }
+ 
+@@ -5048,6 +5046,7 @@ static void mtk_remove(struct platform_device *pdev)
+ 	netif_napi_del(&eth->tx_napi);
+ 	netif_napi_del(&eth->rx_napi);
+ 	mtk_cleanup(eth);
++	free_netdev(eth->dummy_dev);
+ 	mtk_mdio_cleanup(eth);
+ }
+ 
 -- 
 2.43.0
 
