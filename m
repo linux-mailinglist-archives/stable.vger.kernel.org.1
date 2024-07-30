@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-63332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767C494186C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C320E941D8C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2165E1F23B57
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F41F81C23584
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC10D18953C;
-	Tue, 30 Jul 2024 16:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EC51A76BB;
+	Tue, 30 Jul 2024 17:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nz2QNrRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuc/03iH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9773189505;
-	Tue, 30 Jul 2024 16:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75EA1A76B4;
+	Tue, 30 Jul 2024 17:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356489; cv=none; b=QdczuhNHHwHpwSxXcFg/iBXyQbRV30hte3tDKOEHHgjDKrmKp9sUDOS1sU6wo03+mVCe42Y0lNwiTPXcAodtc2yQOPzniBPzAMGaGWBGMdWh2bt6KUj3h/m7HFjNV2AfcBRpAfCao/bhvlvPChhAH7mHxsTedgyglkWiZPbRMvM=
+	t=1722359913; cv=none; b=dyWVRv5PQQWmuCG0ZRNj/smuBO4UZQaUkvHcUHzLMu5mqticwyYp1BYdJhTAoR9E182Yu9O5Rht/uBaji5KSEvZ3nsYOinxjtPRE1FDysH1gLqUScCZ4MEx+jYFoo7hQsf/Hh4YD0Ouy55bP1ugaBayyiJhtbPNWoZJre3kSC7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356489; c=relaxed/simple;
-	bh=kNE1Ncy0zvQLXcjlBzsMTxOJe87Cl6pHZJE1sAYfZMQ=;
+	s=arc-20240116; t=1722359913; c=relaxed/simple;
+	bh=YhKxCORgQ8IWfbE2IWXqdoK59ruktKgk2+t2ALqt8qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaEQuB6FcFRxTqPKfvIsrr9SQc6HrptzyrhjVvgnM+dRpSK1zP7Rpi8AGJy4vz/RxQ7fJVj6GMIQC8Qq90HhTYYpH+Ek3EPI2uYHT/U/Whzb8LP/2ZBoaufUh/yiliuoj5XaDumUKa1xniv6bh4rl2w2nafpATc3ygyTlsv4YSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nz2QNrRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC39C4AF0F;
-	Tue, 30 Jul 2024 16:21:27 +0000 (UTC)
+	 MIME-Version; b=WBQSqjJmOQ4PeCJjZWbsZxx1A3adpOUoO4mKBh7RhTeLD9ArYodVMnIcWyODPYVo/Y7bP8wWcYAJowcNucQFc/g8iffXeS+ywUKMZtu+mjHMmJ1jU1vpJ4EBPWDiGqX4PmTt65YIykW7GykXNZ17OJ+DKtmKeUX8QTbKM7jZVko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuc/03iH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1C3C4AF0A;
+	Tue, 30 Jul 2024 17:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356489;
-	bh=kNE1Ncy0zvQLXcjlBzsMTxOJe87Cl6pHZJE1sAYfZMQ=;
+	s=korg; t=1722359913;
+	bh=YhKxCORgQ8IWfbE2IWXqdoK59ruktKgk2+t2ALqt8qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nz2QNrROpT2aJxhUChh8KL8ExldfA0bl6z/icTN4zWC5rsxrNbEfZTdnKXceJnKUY
-	 Z3MmixlDROr+CjsB/fqYdxZWhqMryEfvzlvIB3RQireI8IAL0dujreo+1//VKXUSOP
-	 nzHLVYvRHc4jH3is28U/8/ATpa200wETreGO4cSQ=
+	b=zuc/03iHb3wc7AJVe5VSZbjcyr+Y1M7GOTwJx/bZl6+UfSd8PHgGoohPSWAogM6j7
+	 pIhESMnxY+xadpqcZe4hlBxtCBO8g8Kt4RbvvSx8EqAWdHnoKXyh+zvCFwf0YVwMnb
+	 4F6rgItCVq/DvMW6+jYkQbrea7w0G9Iv22aIREH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Georgi Djakov <djakov@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/440] interconnect: qcom: qcm2290: Fix mas_snoc_bimc RPM master ID
+	Julian Orth <ju.orth@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 553/809] kernel: rerun task_work while freezing in get_signal()
 Date: Tue, 30 Jul 2024 17:47:09 +0200
-Message-ID: <20240730151623.528023286@linuxfoundation.org>
+Message-ID: <20240730151746.600516925@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit cd5ce4589081190281cc2537301edd4275fe55eb ]
+commit 943ad0b62e3c21f324c4884caa6cb4a871bca05c upstream.
 
-The value was wrong, resulting in misprogramming of the hardware.
-Fix it.
+io_uring can asynchronously add a task_work while the task is getting
+freezed. TIF_NOTIFY_SIGNAL will prevent the task from sleeping in
+do_freezer_trap(), and since the get_signal()'s relock loop doesn't
+retry task_work, the task will spin there not being able to sleep
+until the freezing is cancelled / the task is killed / etc.
 
-Fixes: 1a14b1ac3935 ("interconnect: qcom: Add QCM2290 driver support")
-Reported-by: Stephan Gerhold <stephan@gerhold.net>
-Closes: https://lore.kernel.org/linux-arm-msm/ZgMs_xZVzWH5uK-v@gerhold.net/
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240618-topic-2290_icc_2-v1-1-64446888a133@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Run task_works in the freezer path. Keep the patch small and simple
+so it can be easily back ported, but we might need to do some cleaning
+after and look if there are other places with similar problems.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/systemd/systemd/issues/33626
+Fixes: 12db8b690010c ("entry: Add support for TIF_NOTIFY_SIGNAL")
+Reported-by: Julian Orth <ju.orth@gmail.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/89ed3a52933370deaaf61a0a620a6ac91f1e754d.1720634146.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/qcom/qcm2290.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/signal.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/interconnect/qcom/qcm2290.c b/drivers/interconnect/qcom/qcm2290.c
-index ca7ad37ea6777..d75bb918e1bb7 100644
---- a/drivers/interconnect/qcom/qcm2290.c
-+++ b/drivers/interconnect/qcom/qcm2290.c
-@@ -166,7 +166,7 @@ static struct qcom_icc_node mas_snoc_bimc = {
- 	.qos.ap_owned = true,
- 	.qos.qos_port = 6,
- 	.qos.qos_mode = NOC_QOS_MODE_BYPASS,
--	.mas_rpm_id = 164,
-+	.mas_rpm_id = 3,
- 	.slv_rpm_id = -1,
- 	.num_links = ARRAY_SIZE(mas_snoc_bimc_links),
- 	.links = mas_snoc_bimc_links,
--- 
-2.43.0
-
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -2600,6 +2600,14 @@ static void do_freezer_trap(void)
+ 	spin_unlock_irq(&current->sighand->siglock);
+ 	cgroup_enter_frozen();
+ 	schedule();
++
++	/*
++	 * We could've been woken by task_work, run it to clear
++	 * TIF_NOTIFY_SIGNAL. The caller will retry if necessary.
++	 */
++	clear_notify_signal();
++	if (unlikely(task_work_pending(current)))
++		task_work_run();
+ }
+ 
+ static int ptrace_signal(int signr, kernel_siginfo_t *info, enum pid_type type)
 
 
 
