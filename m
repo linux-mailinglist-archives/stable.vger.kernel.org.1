@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF38194181E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91ACA941821
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64A361F25743
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D54B1F23DEC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B446018952B;
-	Tue, 30 Jul 2024 16:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5801C1898E3;
+	Tue, 30 Jul 2024 16:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbiARWno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGiqRmEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739481A616E;
-	Tue, 30 Jul 2024 16:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174AB1A616E;
+	Tue, 30 Jul 2024 16:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356249; cv=none; b=qlhDI5nxF1QD8vrpSnHm6Ru6Pon1D+hOL8+MRH3wStV3ZrxlJR9+S9TcCy4jCzPK/1IB9/SBdjIz3ctkBjy+VgRbstKKqvpELfxOxjOm/VVe5Hk8O1NrD8mHqia4FDGYQmimjd3556Xnkzl/DQeF45BGKaJh5lSu8ngr62EtPk0=
+	t=1722356259; cv=none; b=VKFgGdg7ZiMlsPV/am3Y6uJ2mgFsyANK38ZKBOaYv02l676wBcueOcjS0DHidWpEShCNcFkX3KWZWXOuVjntZwUPEiPrP3FRljSyLPy3w+lcUIE5+LAuzZ6uvXCQkyJm3vNMan2rDqhI8cZrZow1+u43EjOQ33oLqBk9kWBw3LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356249; c=relaxed/simple;
-	bh=VaYpcPmBKjAWYTq0hiU42527OuOwm3Nq9nkDRjB5fNw=;
+	s=arc-20240116; t=1722356259; c=relaxed/simple;
+	bh=ooB6tx2AYkrlMX5bR5AsRStDXGaXWgsvTkRq3UphsEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RI5gNz2ZO+lnzmKuJlQW2SppJwlzmqb8oOfYhxoDeNkModOdoP7QjtnJz0duAnMPxfKnBFHFZt2VtgFtZkloooOqpdd7C+j/cOhJ59/7E4X1bgpjvOKJeWQ1iqtXyJkBnrycTnC9fWqJFAGEnEij8M6BL7D+ZMgUbQTTMlwgfEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbiARWno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10C5C32782;
-	Tue, 30 Jul 2024 16:17:28 +0000 (UTC)
+	 MIME-Version; b=uz9AHwh2YGHUG4+5C8kBNMlcu5pkor0KsmeNDvof27UgndpdO5ffALyIEdKQGSbLyyAxnga8ZUDuw1eSSKxGn5cAOwR8Cn9iVfqHupRBLHlqnAquw/zRkZXPOrT+ZWst1ctbS6tBn1Y/a02Z8AnRByvjDFs7D1ZwLlqHuvEtS2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGiqRmEH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BCFC32782;
+	Tue, 30 Jul 2024 16:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356249;
-	bh=VaYpcPmBKjAWYTq0hiU42527OuOwm3Nq9nkDRjB5fNw=;
+	s=korg; t=1722356259;
+	bh=ooB6tx2AYkrlMX5bR5AsRStDXGaXWgsvTkRq3UphsEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TbiARWnoXgj2C3aGDfmmlhLeWj4sqQOsJESXIOtzcbFwkjfouVW1AJcE0hiNx/OJt
-	 dZhXXRzb5v8rV19SuhCbBEXL/N5p2agcsK8nlXhVOu03Lf5iOBvYkarpJ7k/22e1I7
-	 l2Zups9ooxwBsVn4G+bX78o4H381v344p8sO4Cbs=
+	b=xGiqRmEH377essHNwANVNxDon9gW3EZ7h5EXXbJyolTM8WabEmylgvHhzyKIGTYpP
+	 DI5glDC36UepFHGvrjRqYmgqdpvU3tfVsMaQ9LhKKpW9rU5/G/2CGLZsK5zjmonLBH
+	 YE3U7IXu+ORytOgPt/8Koiad4WoH9hJhbv5qsUSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chukun Pan <amadeus@jmu.edu.cn>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 133/809] arm64: dts: rockchip: fix pmu_io supply for Lunzn Fastrhino R6xS
-Date: Tue, 30 Jul 2024 17:40:09 +0200
-Message-ID: <20240730151729.869000714@linuxfoundation.org>
+Subject: [PATCH 6.10 134/809] arm64: dts: rockchip: remove unused usb2 nodes for Lunzn Fastrhino R6xS
+Date: Tue, 30 Jul 2024 17:40:10 +0200
+Message-ID: <20240730151729.907324935@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,70 +68,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit cfeac8e5d05815521f5c5568680735a92ee91fe4 ]
+[ Upstream commit cd77139a307fbabe75e6b5cb8a3753e3c700f394 ]
 
-Fixes pmu_io_domains supply according to the schematic. Among them,
-the vccio3 is responsible for the io voltage of sdcard. There is no
-sdcard slot on the R68S, and it's connected to vcc_3v3, so describe
-the supply of vccio3 separately.
+Fix the following error when booting:
+[   15.851853] platform fd800000.usb: deferred probe pending
+[   15.852384] platform fd840000.usb: deferred probe pending
+[   15.852881] platform fd880000.usb: deferred probe pending
+
+This is due to usb2phy1 is not enabled. There is no USB 2.0
+port on the board, just remove it.
 
 Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
-Fixes: b9f8ca655d80 ("arm64: dts: rockchip: Add Lunzn Fastrhino R68S")
 Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20240630150010.55729-4-amadeus@jmu.edu.cn
+Link: https://lore.kernel.org/r/20240630150010.55729-5-amadeus@jmu.edu.cn
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts  | 4 ++++
- arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 4 ++--
- arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts  | 4 ++++
- 3 files changed, 10 insertions(+), 2 deletions(-)
+ .../boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
-index 58ab7e9971dbc..b5e67990dd0f8 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
-@@ -11,6 +11,10 @@ aliases {
- 	};
- };
- 
-+&pmu_io_domains {
-+	vccio3-supply = <&vccio_sd>;
-+};
-+
- &sdmmc0 {
- 	bus-width = <4>;
- 	cap-mmc-highspeed;
 diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-index 8f587978fa3b6..82577eba31eb5 100644
+index 82577eba31eb5..e08c9eab6f170 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-@@ -397,8 +397,8 @@ vcc5v0_usb_otg_en: vcc5v0-usb-otg-en {
- &pmu_io_domains {
- 	pmuio1-supply = <&vcc3v3_pmu>;
- 	pmuio2-supply = <&vcc3v3_pmu>;
--	vccio1-supply = <&vccio_acodec>;
--	vccio3-supply = <&vccio_sd>;
-+	vccio1-supply = <&vcc_3v3>;
-+	vccio2-supply = <&vcc_1v8>;
- 	vccio4-supply = <&vcc_1v8>;
- 	vccio5-supply = <&vcc_3v3>;
- 	vccio6-supply = <&vcc_1v8>;
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-index e1fe5e442689a..a3339186e89c8 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-@@ -102,6 +102,10 @@ eth_phy1_reset_pin: eth-phy1-reset-pin {
- 	};
+@@ -421,28 +421,12 @@ &uart2 {
+ 	status = "okay";
  };
  
-+&pmu_io_domains {
-+	vccio3-supply = <&vcc_3v3>;
-+};
-+
- &sdhci {
- 	bus-width = <8>;
- 	max-frequency = <200000000>;
+-&usb_host0_ehci {
+-	status = "okay";
+-};
+-
+-&usb_host0_ohci {
+-	status = "okay";
+-};
+-
+ &usb_host0_xhci {
+ 	dr_mode = "host";
+ 	extcon = <&usb2phy0>;
+ 	status = "okay";
+ };
+ 
+-&usb_host1_ehci {
+-	status = "okay";
+-};
+-
+-&usb_host1_ohci {
+-	status = "okay";
+-};
+-
+ &usb_host1_xhci {
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
