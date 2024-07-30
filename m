@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-64312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6645C941D85
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BEAC941803
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2C04B29B90
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E2CE1C22D5A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1ED18A6DB;
-	Tue, 30 Jul 2024 17:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0698018E04F;
+	Tue, 30 Jul 2024 16:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9hYaYpG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEgxDexj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0B118B46A;
-	Tue, 30 Jul 2024 17:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16CE1A618F;
+	Tue, 30 Jul 2024 16:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359703; cv=none; b=I16J9Km0eW6ObqJ9tka6kJRxXvtFrhsr4aFTzxRx6f8hY1Es79PfUFSUxC1m2Yd+SbzFXTBlIft43dRDI5UPmaIYKya8GVE18bf0pa1yR4+Py1unbiweQNdy5vFdy/jqV/9u05d5suXxYlS4Fh6oBsvJO4Njc2/zLH5P1C6GGgk=
+	t=1722356161; cv=none; b=uE5ap/7iO9/j0tSe/Tv/69vtaMKsOq5N887D/az4sov8TsiuYKu8joz1CexgPuhIQRYssQCTYE1qUoXCUmSUYZi2tQFMi/z7o9UAtDT2bJ4mAKkq3kQdREdoGjYpIPEPHt1455GgZ7zFHZyyl3QwMeE5/2rPJvxumKpfExhwEcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359703; c=relaxed/simple;
-	bh=kxV+NtCvypYYexnGQq8FnrI+9OK+b1DHB58rtwROR7c=;
+	s=arc-20240116; t=1722356161; c=relaxed/simple;
+	bh=FX/0yMa8AkOGhfd7vaMw3oGxSkoDQLLyCOsrJ9ZVMJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+R1jph4hzbusshmf1SJS7xDdilWNhYLecw48DK+tYtvDm2rZS37zVVGD4wSujSr9W3nXI8pLn8q1tv503wNmJhmmDtt6LPxN69bT6EGEe5XO2yDqFzMFr4tGO6A5C7vPBZjVw4754e8YBZ37ZugZj42fkBLb0lPubv2yEBgXTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9hYaYpG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C7DC32782;
-	Tue, 30 Jul 2024 17:15:02 +0000 (UTC)
+	 MIME-Version; b=lXTqBu1Ro8+3KN1LnatHA1kVRUEOjoH3ubYj6dSN+lQNMGldy3RrEW7I0Y2GR1EG47EFrLCyocFHsR7BIa8V8YzHAeTEtP7I5ZZTRwC9rL3MpK9ydJnAJwwN3idRDjxVItzdHQ2qhVyqutytpC+lmMDtghnITR7Tza0UGnbAiqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEgxDexj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CABC32782;
+	Tue, 30 Jul 2024 16:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359703;
-	bh=kxV+NtCvypYYexnGQq8FnrI+9OK+b1DHB58rtwROR7c=;
+	s=korg; t=1722356161;
+	bh=FX/0yMa8AkOGhfd7vaMw3oGxSkoDQLLyCOsrJ9ZVMJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9hYaYpGwyIEfmq3m4dH4WbStrqTrIEgkxlokTh1O5LKL+n/jTiSLo3bKSTKN+KIU
-	 ZHdb2aEtiKmGsXttYuH1veVvicdyn3ej9KRzYhMohcRgOkxMXRJfGq4Tvxxd+AMHZ+
-	 XaaGcSJpcYi8vnokvzKjx0PobjQK4PrzdakXK/8o=
+	b=TEgxDexjXv7RJ3FMhuVCuuVFI6mpKR+auqiH8FP0MwYbfLuNrku/Q94KKsTyZLmw6
+	 Csn4/PjnWHr2FxsJfAKySS3aKSX5jlwXx8msoP0kvzn3kAqaQZrH6L8tUbvaT90lPt
+	 EBNLOsBEtENEhHRVeqaw+vgIUocC+uA4oIvqxEWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Sourav Panda <souravpanda@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 521/809] lib: reuse page_ext_data() to obtain codetag_ref
+Subject: [PATCH 6.1 164/440] ext4: fix infinite loop when replaying fast_commit
 Date: Tue, 30 Jul 2024 17:46:37 +0200
-Message-ID: <20240730151745.317188861@linuxfoundation.org>
+Message-ID: <20240730151622.276997607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,44 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-[ Upstream commit fd8acc0097b91fab3104fa8a66ce2fd9cf8b0c11 ]
+[ Upstream commit 907c3fe532253a6ef4eb9c4d67efb71fab58c706 ]
 
-codetag_ref_from_page_ext() reimplements the same calculation as
-page_ext_data().  Reuse existing function instead.
+When doing fast_commit replay an infinite loop may occur due to an
+uninitialized extent_status struct.  ext4_ext_determine_insert_hole() does
+not detect the replay and calls ext4_es_find_extent_range(), which will
+return immediately without initializing the 'es' variable.
 
-Link: https://lkml.kernel.org/r/20240711220457.1751071-2-surenb@google.com
-Fixes: dcfe378c81f7 ("lib: introduce support for page allocation tagging")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Because 'es' contains garbage, an integer overflow may happen causing an
+infinite loop in this function, easily reproducible using fstest generic/039.
+
+This commit fixes this issue by unconditionally initializing the structure
+in function ext4_es_find_extent_range().
+
+Thanks to Zhang Yi, for figuring out the real problem!
+
+Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20240515082857.32730-1-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pgalloc_tag.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/extents_status.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/pgalloc_tag.h b/include/linux/pgalloc_tag.h
-index 9cacadbd61f8c..acb1e9ce79815 100644
---- a/include/linux/pgalloc_tag.h
-+++ b/include/linux/pgalloc_tag.h
-@@ -15,7 +15,7 @@ extern struct page_ext_operations page_alloc_tagging_ops;
- 
- static inline union codetag_ref *codetag_ref_from_page_ext(struct page_ext *page_ext)
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 470d29fb407a5..9766d3b21ca2e 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -312,6 +312,8 @@ void ext4_es_find_extent_range(struct inode *inode,
+ 			       ext4_lblk_t lblk, ext4_lblk_t end,
+ 			       struct extent_status *es)
  {
--	return (void *)page_ext + page_alloc_tagging_ops.offset;
-+	return (union codetag_ref *)page_ext_data(page_ext, &page_alloc_tagging_ops);
- }
++	es->es_lblk = es->es_len = es->es_pblk = 0;
++
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+ 		return;
  
- static inline struct page_ext *page_ext_from_codetag_ref(union codetag_ref *ref)
 -- 
 2.43.0
 
