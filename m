@@ -1,179 +1,164 @@
-Return-Path: <stable+bounces-62765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA85941018
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:59:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D3A94118E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33C22283AA9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:59:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11A1C1F21BB5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5F4197555;
-	Tue, 30 Jul 2024 10:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D463C19DFA5;
+	Tue, 30 Jul 2024 12:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J/00lp7N"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701301DA32;
-	Tue, 30 Jul 2024 10:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A86C19AD8D;
+	Tue, 30 Jul 2024 12:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722337143; cv=none; b=PKdUG3tmWFRuY9CF6ebe/4/nWY0dysuHrRU49J4LcOfeDgaO/nbhiFLXFCyRUmzQtimiaq5/04NUd8XPJhBzw9HoTefP/aVFTecpNfJdO/HMYkB96Md9XHpro1eYgJKjQBWUnbGTSp4TkQF2FQAyP4+aO5AadbFEIAF8/PzIp4E=
+	t=1722341312; cv=none; b=lOdhkamUtwlxVspYrA70hufhESvOkztkxCJXLJzBRED3tvMMktQ80BtLfzaZGXMecFJ6cnibjoJ1DMXXVr6LhPiuCJvdXZ94bMZCQM72QRsCofwn+6BfoIGlSfzu0YHuByICrI08VoBD9LD8ZU4D6IofuDVTpwdeFUn0xjDpXzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722337143; c=relaxed/simple;
-	bh=Bhw2lI10PnuzWlB8lHFHTeH/r+O45N+/VNZ1JfjHtO8=;
-	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=Ku9B+bCfNBeHIZY3JhAoTpt7ntijBi83j3uluIlAwo8bSBpDgi/MD4D4crZB6K20VAIxBYQUxbc2PV8gkYq9E/AbDHLuJZNaPpyI9xOsjT7IDAoPhax1yYDwRB19zGuSbQo1nRKN85mZv4za7H+lNKM5JgBRtnB2DitpuqpRTrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout3.hostsharing.net (Postfix) with ESMTPS id 92F03101E6B67;
-	Tue, 30 Jul 2024 12:58:58 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id 52696609C800;
-	Tue, 30 Jul 2024 12:58:58 +0200 (CEST)
-X-Mailbox-Line: From ecc9e4e0552069fb3cffb46a45e5430d88d71e80 Mon Sep 17 00:00:00 2001
-Message-ID: <ecc9e4e0552069fb3cffb46a45e5430d88d71e80.1722337010.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Tue, 30 Jul 2024 12:58:55 +0200
-Subject: [PATCH 5.15-stable] PCI/DPC: Fix use-after-free on concurrent DPC and
- hot-removal
+	s=arc-20240116; t=1722341312; c=relaxed/simple;
+	bh=/sfpWWW8V+Cpbz4W8KtLY2uaeQ4/J756IydOKw4ia+g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ImmO1UdN03g0lk6BWQNgr9mCI7kDLGKxqHerDIrTxvbIxjQw9qBFupwfmjFOV/SjnzoPQTDLo3K1G9veWbFcSIHkAtzTAYZhRviLGMJjykGcdqJaxFSPZAnvAx3/JjpEQjY9P6X7ZIH+LQOyDr/7gYh4zF+VZ4lumAXlqjpsKBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J/00lp7N; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722341310; x=1753877310;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=/sfpWWW8V+Cpbz4W8KtLY2uaeQ4/J756IydOKw4ia+g=;
+  b=J/00lp7NvZu/0uJXn+nZ8hRO2t4Xd+6V2O9kG16mUqiiL2/vGdB6ImNd
+   66GSWSPi1BHAe46N4EYEgq49vBlIrHXuDyR5tTv0M0NW1hw0Ey+kL7SXg
+   WMok3qaqG/25pp0jTcEuhWmyGTaINKZeN7FzPwtvA28D4QVJRNbc/OBcN
+   rpEFwqHWs0XqWqzZ3VU5Ciw9+St3eO4RpaHLscmDp48ljJbF1o1LdH3xL
+   ahRYW+3fn/BrDPzf/qcPcU3+em09SGUFxHVcCyQoHjpaIcSkTjXPqwdLK
+   IAEW8wFv8C7WP+0wQtu0N0cOG3EFKSNJhPb37lIQhrGYQZyjKs2rYrPRj
+   g==;
+X-CSE-ConnectionGUID: RCaDpU81SU+FxEaFBpHYIQ==
+X-CSE-MsgGUID: Lw25jFzATcysyXQFnrNI3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="30779268"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; 
+   d="scan'208";a="30779268"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 05:08:29 -0700
+X-CSE-ConnectionGUID: AasE62mgQD6Ed+q30Inkxw==
+X-CSE-MsgGUID: p4irrj0DT/aQcMbXVuDN+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; 
+   d="scan'208";a="84965012"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.34])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 05:08:25 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>
+Cc: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, Daniel Vetter
+ <daniel@ffwll.ch>, Ville =?utf-8?B?U3lyasOkbMOk?=
+ <ville.syrjala@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/i915: Fix possible int overflow in
+ skl_ddi_calculate_wrpll()
+In-Reply-To: <20240729174035.25727-1-n.zhandarovich@fintech.ru>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240729174035.25727-1-n.zhandarovich@fintech.ru>
+Date: Tue, 30 Jul 2024 15:08:21 +0300
+Message-ID: <875xsnxetm.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, linux-pci@vger.kernel.org, Keith Busch <kbusch@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Bjorn Helgaas <helgaas@kernel.org>, Krzysztof Wilczynski <kwilczynski@kernel.org>
+Content-Type: text/plain
 
-commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
+On Mon, 29 Jul 2024, Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
+> On the off chance that clock value ends up being too high (by means
+> of skl_ddi_calculate_wrpll() having benn called with big enough
+> value of crtc_state->port_clock * 1000), one possible consequence
+> may be that the result will not be able to fit into signed int.
+>
+> Fix this issue by moving conversion of clock parameter from kHz to Hz
+> into the body of skl_ddi_calculate_wrpll(), as well as casting the
+> same parameter to u64 type while calculating the value for AFE clock.
+> This both mitigates the overflow problem and avoids possible erroneous
+> integer promotion mishaps.
+>
+> Found by Linux Verification Center (linuxtesting.org) with static
+> analysis tool SVACE.
+>
+> Fixes: fe70b262e781 ("drm/i915: Move a bunch of stuff into rodata from the stack")
 
-Keith reports a use-after-free when a DPC event occurs concurrently to
-hot-removal of the same portion of the hierarchy:
+I don't think that's right. The code was only shuffled around at that
+point. I think the bug's been there since the code was added in commit
+82d354370189 ("drm/i915/skl: Implementation of SKL DPLL programming").
 
-The dpc_handler() awaits readiness of the secondary bus below the
-Downstream Port where the DPC event occurred.  To do so, it polls the
-config space of the first child device on the secondary bus.  If that
-child device is concurrently removed, accesses to its struct pci_dev
-cause the kernel to oops.
+Fixed while applying to drm-intel-next, thanks for the patch.
 
-That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
-reference on the child device.  Before v6.3, the function was only
-called on resume from system sleep or on runtime resume.  Holding a
-reference wasn't necessary back then because the pciehp IRQ thread
-could never run concurrently.  (On resume from system sleep, IRQs are
-not enabled until after the resume_noirq phase.  And runtime resume is
-always awaited before a PCI device is removed.)
+BR,
+Jani.
 
-However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
-called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
-of secondary bus after reset"), which introduced that, failed to
-appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
-reference on the child device because dpc_handler() and pciehp may
-indeed run concurrently.  The commit was backported to v5.10+ stable
-kernels, so that's the oldest one affected.
 
-Add the missing reference acquisition.
 
-Abridged stack trace:
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+> ---
+> v2: instead of double casting of 'clock' with (u64)(u32), convert
+> 'clock' to Hz inside skl_ddi_calculate_wrpll() and cast it only
+> to u64 to mitigate the issue. Per Jani's <jani.nikula@linux.intel.com>
+> helpful suggestion made here:
+> https://lore.kernel.org/all/87ed7gzhin.fsf@intel.com/
+> Also, change commit description accordingly.
+>
+> v1: https://lore.kernel.org/all/20240724184911.12250-1-n.zhandarovich@fintech.ru/
+>
+>  drivers/gpu/drm/i915/display/intel_dpll_mgr.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+> index 90998b037349..292d163036b1 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+> +++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
+> @@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(struct skl_wrpll_params *params,
+>  }
+>  
+>  static int
+> -skl_ddi_calculate_wrpll(int clock /* in Hz */,
+> +skl_ddi_calculate_wrpll(int clock,
+>  			int ref_clock,
+>  			struct skl_wrpll_params *wrpll_params)
+>  {
+> @@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
+>  	};
+>  	unsigned int dco, d, i;
+>  	unsigned int p0, p1, p2;
+> -	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
+> +	u64 afe_clock = (u64)clock * 1000 * 5; /* AFE Clock is 5x Pixel clock, in Hz */
+>  
+>  	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
+>  		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
+> @@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(struct intel_crtc_state *crtc_state)
+>  	struct skl_wrpll_params wrpll_params = {};
+>  	int ret;
+>  
+> -	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
+> +	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock,
+>  				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
+>  	if (ret)
+>  		return ret;
 
-  BUG: unable to handle page fault for address: 00000000091400c0
-  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
-  RIP: pci_bus_read_config_dword+0x17/0x50
-  pci_dev_wait()
-  pci_bridge_wait_for_secondary_bus()
-  dpc_reset_link()
-  pcie_do_recovery()
-  dpc_handler()
-
-Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
-Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
-Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
-Reported-by: Keith Busch <kbusch@kernel.org>
-Tested-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.10+
----
- drivers/pci/pci.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 67216f4ea215..a88909f2ae65 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4916,7 +4916,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 				      int timeout)
- {
- 	struct pci_dev *child;
--	int delay;
-+	int delay, ret = 0;
- 
- 	if (pci_dev_is_disconnected(dev))
- 		return 0;
-@@ -4944,8 +4944,8 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 		return 0;
- 	}
- 
--	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
--				 bus_list);
-+	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
-+					     struct pci_dev, bus_list));
- 	up_read(&pci_bus_sem);
- 
- 	/*
-@@ -4955,7 +4955,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 	if (!pci_is_pcie(dev)) {
- 		pci_dbg(dev, "waiting %d ms for secondary bus\n", 1000 + delay);
- 		msleep(1000 + delay);
--		return 0;
-+		goto put_child;
- 	}
- 
- 	/*
-@@ -4976,7 +4976,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 	 * until the timeout expires.
- 	 */
- 	if (!pcie_downstream_port(dev))
--		return 0;
-+		goto put_child;
- 
- 	if (pcie_get_speed_cap(dev) <= PCIE_SPEED_5_0GT) {
- 		pci_dbg(dev, "waiting %d ms for downstream link\n", delay);
-@@ -4987,11 +4987,16 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 		if (!pcie_wait_for_link_delay(dev, true, delay)) {
- 			/* Did not train, no need to wait any further */
- 			pci_info(dev, "Data Link Layer Link Active not set in 1000 msec\n");
--			return -ENOTTY;
-+			ret = -ENOTTY;
-+			goto put_child;
- 		}
- 	}
- 
--	return pci_dev_wait(child, reset_type, timeout - delay);
-+	ret = pci_dev_wait(child, reset_type, timeout - delay);
-+
-+put_child:
-+	pci_dev_put(child);
-+	return ret;
- }
- 
- void pci_reset_secondary_bus(struct pci_dev *dev)
 -- 
-2.43.0
-
+Jani Nikula, Intel
 
