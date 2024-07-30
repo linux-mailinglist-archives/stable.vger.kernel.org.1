@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820889418B7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C63A941B0A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5271F2217E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16FFA282281
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37ADD1A619B;
-	Tue, 30 Jul 2024 16:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9411898F7;
+	Tue, 30 Jul 2024 16:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gV5NvUfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHYEUQlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98C61A618D;
-	Tue, 30 Jul 2024 16:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED5718455B;
+	Tue, 30 Jul 2024 16:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356646; cv=none; b=uFWR+I1SVihYPim/PNiCIfu9VJGf7pYl6T2Y66rxxrRFrl3PgGSIzBVLYu6oMvKKYFscwY1mLbZrmmCWqH+iHUKhd0/BXqFYNAFmUJAVnw+3++nhsQhmJ1vz+rYZ0N+Tz57P487izVaI50jyfhbgkJjwSrPKUmM6POKQDSXPkt8=
+	t=1722358220; cv=none; b=DQrnfTrPdsqTVODwHYn6QXrGz3n0/sIm6IoUI4KCQO/+AMRDJ3z2lEYcOiz2sUk0XFY+pdrkFeOvCi/v2IsyAtWPdoe6JFDd+kyM0s54maZtKBdFX5kos5o3XI4Zzimf3q73Td344TH+7IZLTzVEPiAg+SAlfJZjSm/+5MFB8KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356646; c=relaxed/simple;
-	bh=SryfaR+a20mjwJcHS2+s+/VbuOj6XuYKr4qpVg3s7eY=;
+	s=arc-20240116; t=1722358220; c=relaxed/simple;
+	bh=P0W2pbEGzRnWz3D5qfUdKNZ+cqJa9UJlC70Iv/jTtqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGc8x+Wz4qutBG7e9w6fxwvwXRpaCWwhkVDHpYi8XnG0bUTqRQIUPO+0rszcJaHKUgdhcnz1OSbU5BB7MPy3fj08YNq3Zm3pF27uJpeqDn4lYOzwktTscQBWl+XEquMSx0ouVljlzFcUt1g/Lw/IeHXKuDN+O4nG4XGTZ/apLD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gV5NvUfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5CBC32782;
-	Tue, 30 Jul 2024 16:24:04 +0000 (UTC)
+	 MIME-Version; b=ZcmwEqSlIM8iTYF8leH2Pl+ku1tVmBVIfdc230Pd22wsXC/AuaPjs/Dwi2arxRhOsTsAvJJRNbd+o5Jk+e4kupwU5PQLjRrwwKWW4JJEPCwqR0ESgq5YvNCSEIYhJSkVjy+IktpHIutSAMmbJH74R4sQPzIyRKsVKzXurCl7ySI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHYEUQlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDD2C32782;
+	Tue, 30 Jul 2024 16:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356645;
-	bh=SryfaR+a20mjwJcHS2+s+/VbuOj6XuYKr4qpVg3s7eY=;
+	s=korg; t=1722358220;
+	bh=P0W2pbEGzRnWz3D5qfUdKNZ+cqJa9UJlC70Iv/jTtqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gV5NvUfeGvj+M/mFu9eQjZTeNv/iXlddi2XCvjwuKRFIzj4U/0R5qStB4HQfOc2BA
-	 QEdtJvLmtWgGCNFYjZCxcadJff/mhJ2V5D0nQIa5HC/+hNiT8KVl7VCcI91J5kfA3C
-	 rs59aUEYXsph74f3uuR4SDLoLNYhhZqEEVHGJHpE=
+	b=JHYEUQlwkyUbrnm11XV+D94kInxFqut8CI8gwCza9Y1vHHPckJ3+M+nURfXA57Cg7
+	 h+ZjUwlMlyq+wuWgBYm2aWWvUKtwAmo+cuPKiabMUzjH0mOZlOoepqUj0h8I92c5rl
+	 UdTLXiVqgsH1X8odrCkPTbs6dWuplfOVCJFc/iLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/440] clk: en7523: fix rate divider for slic and spi clocks
+Subject: [PATCH 6.6 341/568] pinctrl: renesas: r8a779g0: Fix TCLK suffixes
 Date: Tue, 30 Jul 2024 17:47:28 +0200
-Message-ID: <20240730151624.260897659@linuxfoundation.org>
+Message-ID: <20240730151653.195998625@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +61,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 58c53d43142f222221e5a76a7016c4d8f3b84b97 ]
+[ Upstream commit bfd2428f3a80647af681df4793e473258aa755da ]
 
-Introduce div_offset field in en_clk_desc struct in order to fix rate
-divider estimation in en7523_get_div routine for slic and spi fixed
-rate clocks.
-Moreover, fix base_shift for crypto clock.
+The Pin Multiplex attachment in Rev.1.10 of the R-Car V4H Series
+Hardware User's Manual still has two alternate pins named both TCLK3
+and TCLK4.  To differentiate, the pin control driver uses "TCLK[34]" and
+"TCLK[34]_X".  In addition, there are alternate pins without suffix, and
+with an "_A" or "_B" suffix.
 
-Fixes: 1e6273179190 ("clk: en7523: Add clock driver for Airoha EN7523 SoC")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/c491bdea05d847f1f1294b94f14725d292eb95d0.1718615934.git.lorenzo@kernel.org
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Increase uniformity by adopting R-Car V4M naming:
+  - Rename "TCLK2_B" to "TCLK2_C",
+  - Rename "TCLK[12]_A" to "TCLK[12]_B",
+  - Rename "TCLK[12]" to "TCLK[12]_A",
+  - Rename "TCLK[34]_A" to "TCLK[34]_C",
+  - Rename "TCLK[34]_X" to "TCLK[34]_A",
+  - Rename "TCLK[34]" to "TCLK[34]_B".
+
+Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
+Fixes: 0df46188a58895e1 ("pinctrl: renesas: r8a779g0: Add missing TCLKx_A/TCLKx_B/TCLKx_X")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/2845ff1f8fe1fd8d23d2f307ad5e8eb8243da608.1717754960.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-en7523.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/pinctrl/renesas/pfc-r8a779g0.c | 44 +++++++++++++-------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
-index 29f0126cbd05b..d22fae24a3dab 100644
---- a/drivers/clk/clk-en7523.c
-+++ b/drivers/clk/clk-en7523.c
-@@ -41,6 +41,7 @@ struct en_clk_desc {
- 	u8 div_shift;
- 	u16 div_val0;
- 	u8 div_step;
-+	u8 div_offset;
- };
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+index 3228a61ea4098..8c19b892441a3 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+@@ -275,7 +275,7 @@
  
- struct en_clk_gate {
-@@ -68,6 +69,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
- 		.div_bits = 3,
- 		.div_shift = 0,
- 		.div_step = 1,
-+		.div_offset = 1,
- 	}, {
- 		.id = EN7523_CLK_EMI,
- 		.name = "emi",
-@@ -81,6 +83,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
- 		.div_bits = 3,
- 		.div_shift = 0,
- 		.div_step = 1,
-+		.div_offset = 1,
- 	}, {
- 		.id = EN7523_CLK_BUS,
- 		.name = "bus",
-@@ -94,6 +97,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
- 		.div_bits = 3,
- 		.div_shift = 0,
- 		.div_step = 1,
-+		.div_offset = 1,
- 	}, {
- 		.id = EN7523_CLK_SLIC,
- 		.name = "slic",
-@@ -134,13 +138,14 @@ static const struct en_clk_desc en7523_base_clks[] = {
- 		.div_bits = 3,
- 		.div_shift = 0,
- 		.div_step = 1,
-+		.div_offset = 1,
- 	}, {
- 		.id = EN7523_CLK_CRYPTO,
- 		.name = "crypto",
+ /* SR0 */
+ /* IP0SR0 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+-#define IP0SR0_3_0	F_(0, 0)		FM(ERROROUTC_N_B)	FM(TCLK2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR0_3_0	F_(0, 0)		FM(ERROROUTC_N_B)	FM(TCLK2_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR0_7_4	F_(0, 0)		FM(MSIOF3_SS1)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR0_11_8	F_(0, 0)		FM(MSIOF3_SS2)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR0_15_12	FM(IRQ3_A)		FM(MSIOF3_SCK)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+@@ -290,7 +290,7 @@
+ #define IP1SR0_11_8	FM(MSIOF5_TXD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR0_15_12	FM(MSIOF5_SCK)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR0_19_16	FM(MSIOF5_RXD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP1SR0_23_20	FM(MSIOF2_SS2)		FM(TCLK1)		FM(IRQ2_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP1SR0_23_20	FM(MSIOF2_SS2)		FM(TCLK1_A)		FM(IRQ2_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR0_27_24	FM(MSIOF2_SS1)		FM(HTX1_A)		FM(TX1_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR0_31_28	FM(MSIOF2_SYNC)		FM(HRX1_A)		FM(RX1_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
  
- 		.base_reg = REG_CRYPTO_CLKSRC,
- 		.base_bits = 1,
--		.base_shift = 8,
-+		.base_shift = 0,
- 		.base_values = emi_base,
- 		.n_base_values = ARRAY_SIZE(emi_base),
- 	}
-@@ -185,7 +190,7 @@ static u32 en7523_get_div(void __iomem *base, int i)
- 	if (!val && desc->div_val0)
- 		return desc->div_val0;
+@@ -323,12 +323,12 @@
+ /* IP2SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+ #define IP2SR1_3_0	FM(HRX0)		FM(RX0)			F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP2SR1_7_4	FM(SCIF_CLK)		FM(IRQ4_A)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP2SR1_11_8	FM(SSI_SCK)		FM(TCLK3)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP2SR1_15_12	FM(SSI_WS)		FM(TCLK4)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP2SR1_11_8	FM(SSI_SCK)		FM(TCLK3_B)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP2SR1_15_12	FM(SSI_WS)		FM(TCLK4_B)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP2SR1_19_16	FM(SSI_SD)		FM(IRQ0_B)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP2SR1_23_20	FM(AUDIO_CLKOUT)	FM(IRQ1_B)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP2SR1_27_24	FM(AUDIO_CLKIN)		FM(PWM3_A)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP2SR1_31_28	F_(0, 0)		FM(TCLK2)		FM(MSIOF4_SS1)		FM(IRQ3_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP2SR1_31_28	F_(0, 0)		FM(TCLK2_A)		FM(MSIOF4_SS1)		FM(IRQ3_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
  
--	return (val + 1) * desc->div_step;
-+	return (val + desc->div_offset) * desc->div_step;
- }
+ /* IP3SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+ #define IP3SR1_3_0	FM(HRX3_A)		FM(SCK3_A)		FM(MSIOF4_SS2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+@@ -346,15 +346,15 @@
+ #define IP0SR2_19_16	FM(RXDB_EXTFXR)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_23_20	FM(FXR_TXENB_N_A)	F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_27_24	FM(FXR_TXDB)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR2_31_28	FM(TPU0TO1)		FM(CANFD6_TX)		F_(0, 0)		FM(TCLK2_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR2_31_28	FM(TPU0TO1)		FM(CANFD6_TX)		F_(0, 0)		FM(TCLK2_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
  
- static int en7523_pci_is_enabled(struct clk_hw *hw)
+ /* IP1SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+-#define IP1SR2_3_0	FM(TPU0TO0)		FM(CANFD6_RX)		F_(0, 0)		FM(TCLK1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP1SR2_3_0	FM(TPU0TO0)		FM(CANFD6_RX)		F_(0, 0)		FM(TCLK1_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR2_7_4	FM(CAN_CLK)		FM(FXR_TXENA_N_B)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR2_11_8	FM(CANFD0_TX)		FM(FXR_TXENB_N_B)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR2_15_12	FM(CANFD0_RX)		FM(STPWT_EXTFXR)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP1SR2_19_16	FM(CANFD2_TX)		FM(TPU0TO2)		F_(0, 0)		FM(TCLK3_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP1SR2_23_20	FM(CANFD2_RX)		FM(TPU0TO3)		FM(PWM1_B)		FM(TCLK4_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP1SR2_19_16	FM(CANFD2_TX)		FM(TPU0TO2)		F_(0, 0)		FM(TCLK3_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP1SR2_23_20	FM(CANFD2_RX)		FM(TPU0TO3)		FM(PWM1_B)		FM(TCLK4_C)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR2_27_24	FM(CANFD3_TX)		F_(0, 0)		FM(PWM2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR2_31_28	FM(CANFD3_RX)		F_(0, 0)		FM(PWM3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ 
+@@ -381,8 +381,8 @@
+ #define IP1SR3_11_8	FM(MMC_SD_CMD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR3_15_12	FM(SD_CD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR3_19_16	FM(SD_WP)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP1SR3_23_20	FM(IPC_CLKIN)		FM(IPC_CLKEN_IN)	FM(PWM1_A)		FM(TCLK3_X)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP1SR3_27_24	FM(IPC_CLKOUT)		FM(IPC_CLKEN_OUT)	FM(ERROROUTC_N_A)	FM(TCLK4_X)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP1SR3_23_20	FM(IPC_CLKIN)		FM(IPC_CLKEN_IN)	FM(PWM1_A)		FM(TCLK3_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP1SR3_27_24	FM(IPC_CLKOUT)		FM(IPC_CLKEN_OUT)	FM(ERROROUTC_N_A)	FM(TCLK4_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR3_31_28	FM(QSPI0_SSL)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ 
+ /* IP2SR3 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+@@ -718,7 +718,7 @@ static const u16 pinmux_data[] = {
+ 
+ 	/* IP0SR0 */
+ 	PINMUX_IPSR_GPSR(IP0SR0_3_0,	ERROROUTC_N_B),
+-	PINMUX_IPSR_GPSR(IP0SR0_3_0,	TCLK2_A),
++	PINMUX_IPSR_GPSR(IP0SR0_3_0,	TCLK2_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR0_7_4,	MSIOF3_SS1),
+ 
+@@ -750,7 +750,7 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP1SR0_19_16,	MSIOF5_RXD),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR0_23_20,	MSIOF2_SS2),
+-	PINMUX_IPSR_GPSR(IP1SR0_23_20,	TCLK1),
++	PINMUX_IPSR_GPSR(IP1SR0_23_20,	TCLK1_A),
+ 	PINMUX_IPSR_GPSR(IP1SR0_23_20,	IRQ2_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR0_27_24,	MSIOF2_SS1),
+@@ -845,10 +845,10 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP2SR1_7_4,	IRQ4_A),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR1_11_8,	SSI_SCK),
+-	PINMUX_IPSR_GPSR(IP2SR1_11_8,	TCLK3),
++	PINMUX_IPSR_GPSR(IP2SR1_11_8,	TCLK3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR1_15_12,	SSI_WS),
+-	PINMUX_IPSR_GPSR(IP2SR1_15_12,	TCLK4),
++	PINMUX_IPSR_GPSR(IP2SR1_15_12,	TCLK4_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR1_19_16,	SSI_SD),
+ 	PINMUX_IPSR_GPSR(IP2SR1_19_16,	IRQ0_B),
+@@ -859,7 +859,7 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP2SR1_27_24,	AUDIO_CLKIN),
+ 	PINMUX_IPSR_GPSR(IP2SR1_27_24,	PWM3_A),
+ 
+-	PINMUX_IPSR_GPSR(IP2SR1_31_28,	TCLK2),
++	PINMUX_IPSR_GPSR(IP2SR1_31_28,	TCLK2_A),
+ 	PINMUX_IPSR_GPSR(IP2SR1_31_28,	MSIOF4_SS1),
+ 	PINMUX_IPSR_GPSR(IP2SR1_31_28,	IRQ3_B),
+ 
+@@ -911,12 +911,12 @@ static const u16 pinmux_data[] = {
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR2_31_28,	TPU0TO1),
+ 	PINMUX_IPSR_GPSR(IP0SR2_31_28,	CANFD6_TX),
+-	PINMUX_IPSR_GPSR(IP0SR2_31_28,	TCLK2_B),
++	PINMUX_IPSR_GPSR(IP0SR2_31_28,	TCLK2_C),
+ 
+ 	/* IP1SR2 */
+ 	PINMUX_IPSR_GPSR(IP1SR2_3_0,	TPU0TO0),
+ 	PINMUX_IPSR_GPSR(IP1SR2_3_0,	CANFD6_RX),
+-	PINMUX_IPSR_GPSR(IP1SR2_3_0,	TCLK1_A),
++	PINMUX_IPSR_GPSR(IP1SR2_3_0,	TCLK1_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR2_7_4,	CAN_CLK),
+ 	PINMUX_IPSR_GPSR(IP1SR2_7_4,	FXR_TXENA_N_B),
+@@ -929,12 +929,12 @@ static const u16 pinmux_data[] = {
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR2_19_16,	CANFD2_TX),
+ 	PINMUX_IPSR_GPSR(IP1SR2_19_16,	TPU0TO2),
+-	PINMUX_IPSR_GPSR(IP1SR2_19_16,	TCLK3_A),
++	PINMUX_IPSR_GPSR(IP1SR2_19_16,	TCLK3_C),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR2_23_20,	CANFD2_RX),
+ 	PINMUX_IPSR_GPSR(IP1SR2_23_20,	TPU0TO3),
+ 	PINMUX_IPSR_GPSR(IP1SR2_23_20,	PWM1_B),
+-	PINMUX_IPSR_GPSR(IP1SR2_23_20,	TCLK4_A),
++	PINMUX_IPSR_GPSR(IP1SR2_23_20,	TCLK4_C),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR2_27_24,	CANFD3_TX),
+ 	PINMUX_IPSR_GPSR(IP1SR2_27_24,	PWM2),
+@@ -979,12 +979,12 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP1SR3_23_20,	IPC_CLKIN),
+ 	PINMUX_IPSR_GPSR(IP1SR3_23_20,	IPC_CLKEN_IN),
+ 	PINMUX_IPSR_GPSR(IP1SR3_23_20,	PWM1_A),
+-	PINMUX_IPSR_GPSR(IP1SR3_23_20,	TCLK3_X),
++	PINMUX_IPSR_GPSR(IP1SR3_23_20,	TCLK3_A),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR3_27_24,	IPC_CLKOUT),
+ 	PINMUX_IPSR_GPSR(IP1SR3_27_24,	IPC_CLKEN_OUT),
+ 	PINMUX_IPSR_GPSR(IP1SR3_27_24,	ERROROUTC_N_A),
+-	PINMUX_IPSR_GPSR(IP1SR3_27_24,	TCLK4_X),
++	PINMUX_IPSR_GPSR(IP1SR3_27_24,	TCLK4_A),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR3_31_28,	QSPI0_SSL),
+ 
 -- 
 2.43.0
 
