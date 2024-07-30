@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-63262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186D894181F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E14941B5B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B76251F22C39
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7699A2828C6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C369E189522;
-	Tue, 30 Jul 2024 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3840189537;
+	Tue, 30 Jul 2024 16:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCR4R3jg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBVWyVjc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7B91A616E;
-	Tue, 30 Jul 2024 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DA618801A;
+	Tue, 30 Jul 2024 16:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356252; cv=none; b=mWI3ZogDmIFkIOscJCHP9IqzbANGrxFg/kkBMh8f+qmSiUsG0VnzCD4qWEc5yudtz1HklHCOwx9OuiuaxQe584Ber+X8Gch/fCsb1E0YRunhQPBafYj37ZzIDCvFdEVre4inuGYGYigsbB/Gk4LH+uTtZkS7HDjOcU+zjzu2Qns=
+	t=1722358437; cv=none; b=KIPXWQU8JlPohfx9l7ZLDL7qNgpMljzWzRvdiRf8ZYNm+JomFofoRN+EL4x8ltPE6YeLbs23U3mGWVrmuhXErlsSTb4CUMmMuWcRu/u2q6N+XFg5okEDfxPYEYcm+ybhpfyqCpUxdhR7E/Q6hBhqBa//B5zd41lCKSFYrJIojW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356252; c=relaxed/simple;
-	bh=kJv8hKUPVBgmnIbKIqEz8CGLzuQQj1Ec1UlBFCjW5sQ=;
+	s=arc-20240116; t=1722358437; c=relaxed/simple;
+	bh=U1t07AGAvMJW/BmWh+GdDKxUwer3oNOu6u930PbBFiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSKxO0/0bEqwaODqoXH/kUzSzfEvML0FZVXrKrRUBHLfJoHdO+NBqbOf1sBVMH2h+PdAju66EonUuaukEg+w1ennbQZgYvnctedMIgvm1a50puvRpsG+HWteRoJRLXNIu+8D2Rsw7SUkpf/VKP80O5Nozwc9Ch7oOcqwbVh5ZNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCR4R3jg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0917EC32782;
-	Tue, 30 Jul 2024 16:17:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bJOoEFJwFC5T9uIdDENKTBPvY8VLGnYe2unnlKHx48+8gwact6kOtmor5aXImlyl12cs652g9D7/P0YL6DhvTXtqFkCKnlWOzoQK8M7Rffhw85tXFdm3sJZtUD64cqGZioQQSIR8usjt2r0cl5O0H7Xg7zZHLnKQ9MePNm7eHI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBVWyVjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB516C32782;
+	Tue, 30 Jul 2024 16:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356252;
-	bh=kJv8hKUPVBgmnIbKIqEz8CGLzuQQj1Ec1UlBFCjW5sQ=;
+	s=korg; t=1722358437;
+	bh=U1t07AGAvMJW/BmWh+GdDKxUwer3oNOu6u930PbBFiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCR4R3jgGrJl6D1nL622UrOuVCrRKgBCEAEr/xXIgBNSH+1XFv3+agJduFbFwtcGX
-	 RMIhsE6Ts6tE/uDwLFUoOcIJzYXx74ofW55ZloBT76HRsNcGVb1aveukqcKDVT17gL
-	 NLllVf9RLOpBjAw+3iX6Sah9T4Rx43Ol/JqpUgSM=
+	b=xBVWyVjcmxU+plsp6fHlkx9WMkHbJQc/7ezk8VW+hqkgIQFw6YzZO0hgY+GPg1VaT
+	 LSMd6vsXoN9WnqQ8L+gM3Kf+/BbcVqWZoV2dBiRGGcQ0KZhegCyWecIMvDXbmJnWLC
+	 Lte/hnuk0j5c84+DwBJ4EF5UTzI3/DohpCt46d2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Zubkov <green@qrator.net>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/568] lib: objagg: Fix general protection fault
+Subject: [PATCH 6.10 359/809] drm/mediatek: dpi/dsi: Fix possible_crtcs calculation
 Date: Tue, 30 Jul 2024 17:43:55 +0200
-Message-ID: <20240730151644.874917222@linuxfoundation.org>
+Message-ID: <20240730151738.825282250@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +61,224 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit b4a3a89fffcdf09702b1f161b914e52abca1894d ]
+[ Upstream commit 9ff6df49e6cbcc9834865870d7c4f3059b0891d3 ]
 
-The library supports aggregation of objects into other objects only if
-the parent object does not have a parent itself. That is, nesting is not
-supported.
+mtk_find_possible_crtcs() assumes that the main path will always have
+the CRTC with id 0, the ext id 1 and the third id 2. This is only true
+if the paths are all available. But paths are optional (see also
+comment in mtk_drm_kms_init()), e.g. the main path might not be enabled
+or available at all. Then the CRTC IDs will shift one up, e.g. ext will
+be 0 and the third path will be 1.
 
-Aggregation happens in two cases: Without and with hints, where hints
-are a pre-computed recommendation on how to aggregate the provided
-objects.
+To fix that, dynamically calculate the IDs by the presence of the paths.
 
-Nesting is not possible in the first case due to a check that prevents
-it, but in the second case there is no check because the assumption is
-that nesting cannot happen when creating objects based on hints. The
-violation of this assumption leads to various warnings and eventually to
-a general protection fault [1].
+While at it, make the return code a signed one and return -ENODEV if no
+path is found and handle the error in the callers.
 
-Before fixing the root cause, error out when nesting happens and warn.
-
-[1]
-general protection fault, probably for non-canonical address 0xdead000000000d90: 0000 [#1] PREEMPT SMP PTI
-CPU: 1 PID: 1083 Comm: kworker/1:9 Tainted: G        W          6.9.0-rc6-custom-gd9b4f1cca7fb #7
-Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:mlxsw_sp_acl_erp_bf_insert+0x25/0x80
-[...]
-Call Trace:
- <TASK>
- mlxsw_sp_acl_atcam_entry_add+0x256/0x3c0
- mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
- mlxsw_sp_acl_tcam_vchunk_migrate_one+0x16b/0x270
- mlxsw_sp_acl_tcam_vregion_rehash_work+0xbe/0x510
- process_one_work+0x151/0x370
- worker_thread+0x2cb/0x3e0
- kthread+0xd0/0x100
- ret_from_fork+0x34/0x50
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Fixes: 9069a3817d82 ("lib: objagg: implement optimization hints assembly and use hints for object creation")
-Reported-by: Alexander Zubkov <green@qrator.net>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Amit Cohen <amcohen@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 5aa8e7647676 ("drm/mediatek: dpi/dsi: Change the getting possible_crtc way")
+Suggested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240606092122.2026313-1-mwalle@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/objagg.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_ddp_comp.c | 107 ++++++++++++++++--------
+ drivers/gpu/drm/mediatek/mtk_ddp_comp.h |   2 +-
+ drivers/gpu/drm/mediatek/mtk_dpi.c      |   5 +-
+ drivers/gpu/drm/mediatek/mtk_dsi.c      |   5 +-
+ 4 files changed, 80 insertions(+), 39 deletions(-)
 
-diff --git a/lib/objagg.c b/lib/objagg.c
-index 1e248629ed643..90f3aa68c30a0 100644
---- a/lib/objagg.c
-+++ b/lib/objagg.c
-@@ -167,6 +167,9 @@ static int objagg_obj_parent_assign(struct objagg *objagg,
- {
- 	void *delta_priv;
+diff --git a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
+index a66e46d0b45eb..be66d94be3613 100644
+--- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
++++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
+@@ -514,29 +514,42 @@ static bool mtk_ddp_comp_find(struct device *dev,
+ 	return false;
+ }
  
-+	if (WARN_ON(!objagg_obj_is_root(parent)))
+-static unsigned int mtk_ddp_comp_find_in_route(struct device *dev,
+-					       const struct mtk_drm_route *routes,
+-					       unsigned int num_routes,
+-					       struct mtk_ddp_comp *ddp_comp)
++static int mtk_ddp_comp_find_in_route(struct device *dev,
++				      const struct mtk_drm_route *routes,
++				      unsigned int num_routes,
++				      struct mtk_ddp_comp *ddp_comp)
+ {
+-	int ret;
+ 	unsigned int i;
+ 
+-	if (!routes) {
+-		ret = -EINVAL;
+-		goto err;
+-	}
++	if (!routes)
 +		return -EINVAL;
+ 
+ 	for (i = 0; i < num_routes; i++)
+ 		if (dev == ddp_comp[routes[i].route_ddp].dev)
+ 			return BIT(routes[i].crtc_id);
+ 
+-	ret = -ENODEV;
+-err:
++	return -ENODEV;
++}
+ 
+-	DRM_INFO("Failed to find comp in ddp table, ret = %d\n", ret);
++static bool mtk_ddp_path_available(const unsigned int *path,
++				   unsigned int path_len,
++				   struct device_node **comp_node)
++{
++	unsigned int i;
+ 
+-	return 0;
++	if (!path || !path_len)
++		return false;
 +
- 	delta_priv = objagg->ops->delta_create(objagg->priv, parent->obj,
- 					       objagg_obj->obj);
- 	if (IS_ERR(delta_priv))
++	for (i = 0U; i < path_len; i++) {
++		/* OVL_ADAPTOR doesn't have a device node */
++		if (path[i] == DDP_COMPONENT_DRM_OVL_ADAPTOR)
++			continue;
++
++		if (!comp_node[path[i]])
++			return false;
++	}
++
++	return true;
+ }
+ 
+ int mtk_ddp_comp_get_id(struct device_node *node,
+@@ -554,31 +567,53 @@ int mtk_ddp_comp_get_id(struct device_node *node,
+ 	return -EINVAL;
+ }
+ 
+-unsigned int mtk_find_possible_crtcs(struct drm_device *drm, struct device *dev)
++int mtk_find_possible_crtcs(struct drm_device *drm, struct device *dev)
+ {
+ 	struct mtk_drm_private *private = drm->dev_private;
+-	unsigned int ret = 0;
+-
+-	if (mtk_ddp_comp_find(dev,
+-			      private->data->main_path,
+-			      private->data->main_len,
+-			      private->ddp_comp))
+-		ret = BIT(0);
+-	else if (mtk_ddp_comp_find(dev,
+-				   private->data->ext_path,
+-				   private->data->ext_len,
+-				   private->ddp_comp))
+-		ret = BIT(1);
+-	else if (mtk_ddp_comp_find(dev,
+-				   private->data->third_path,
+-				   private->data->third_len,
+-				   private->ddp_comp))
+-		ret = BIT(2);
+-	else
+-		ret = mtk_ddp_comp_find_in_route(dev,
+-						 private->data->conn_routes,
+-						 private->data->num_conn_routes,
+-						 private->ddp_comp);
++	const struct mtk_mmsys_driver_data *data;
++	struct mtk_drm_private *priv_n;
++	int i = 0, j;
++	int ret;
++
++	for (j = 0; j < private->data->mmsys_dev_num; j++) {
++		priv_n = private->all_drm_private[j];
++		data = priv_n->data;
++
++		if (mtk_ddp_path_available(data->main_path, data->main_len,
++					   priv_n->comp_node)) {
++			if (mtk_ddp_comp_find(dev, data->main_path,
++					      data->main_len,
++					      priv_n->ddp_comp))
++				return BIT(i);
++			i++;
++		}
++
++		if (mtk_ddp_path_available(data->ext_path, data->ext_len,
++					   priv_n->comp_node)) {
++			if (mtk_ddp_comp_find(dev, data->ext_path,
++					      data->ext_len,
++					      priv_n->ddp_comp))
++				return BIT(i);
++			i++;
++		}
++
++		if (mtk_ddp_path_available(data->third_path, data->third_len,
++					   priv_n->comp_node)) {
++			if (mtk_ddp_comp_find(dev, data->third_path,
++					      data->third_len,
++					      priv_n->ddp_comp))
++				return BIT(i);
++			i++;
++		}
++	}
++
++	ret = mtk_ddp_comp_find_in_route(dev,
++					 private->data->conn_routes,
++					 private->data->num_conn_routes,
++					 private->ddp_comp);
++
++	if (ret < 0)
++		DRM_INFO("Failed to find comp in ddp table, ret = %d\n", ret);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/mediatek/mtk_ddp_comp.h b/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
+index f7fe2e08dc8e2..ecf6dc283cd7c 100644
+--- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
++++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
+@@ -330,7 +330,7 @@ static inline void mtk_ddp_comp_encoder_index_set(struct mtk_ddp_comp *comp)
+ 
+ int mtk_ddp_comp_get_id(struct device_node *node,
+ 			enum mtk_ddp_comp_type comp_type);
+-unsigned int mtk_find_possible_crtcs(struct drm_device *drm, struct device *dev);
++int mtk_find_possible_crtcs(struct drm_device *drm, struct device *dev);
+ int mtk_ddp_comp_init(struct device_node *comp_node, struct mtk_ddp_comp *comp,
+ 		      unsigned int comp_id);
+ enum mtk_ddp_comp_type mtk_ddp_comp_get_type(unsigned int comp_id);
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index bfe8653005dbf..a08d206549543 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -805,7 +805,10 @@ static int mtk_dpi_bind(struct device *dev, struct device *master, void *data)
+ 		return ret;
+ 	}
+ 
+-	dpi->encoder.possible_crtcs = mtk_find_possible_crtcs(drm_dev, dpi->dev);
++	ret = mtk_find_possible_crtcs(drm_dev, dpi->dev);
++	if (ret < 0)
++		goto err_cleanup;
++	dpi->encoder.possible_crtcs = ret;
+ 
+ 	ret = drm_bridge_attach(&dpi->encoder, &dpi->bridge, NULL,
+ 				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+diff --git a/drivers/gpu/drm/mediatek/mtk_dsi.c b/drivers/gpu/drm/mediatek/mtk_dsi.c
+index c255559cc56ed..b6e3c011a12d8 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dsi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
+@@ -837,7 +837,10 @@ static int mtk_dsi_encoder_init(struct drm_device *drm, struct mtk_dsi *dsi)
+ 		return ret;
+ 	}
+ 
+-	dsi->encoder.possible_crtcs = mtk_find_possible_crtcs(drm, dsi->host.dev);
++	ret = mtk_find_possible_crtcs(drm, dsi->host.dev);
++	if (ret < 0)
++		goto err_cleanup_encoder;
++	dsi->encoder.possible_crtcs = ret;
+ 
+ 	ret = drm_bridge_attach(&dsi->encoder, &dsi->bridge, NULL,
+ 				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
 -- 
 2.43.0
 
