@@ -1,94 +1,92 @@
-Return-Path: <stable+bounces-62723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4789B940DF4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:40:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE1C940DF7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0252A281F5B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:40:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBB6C1F244DC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6127B194C85;
-	Tue, 30 Jul 2024 09:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A67194C86;
+	Tue, 30 Jul 2024 09:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="dPtaesp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqnrwhtW"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C749B18EFE0;
-	Tue, 30 Jul 2024 09:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B1C18EFE0;
+	Tue, 30 Jul 2024 09:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722332426; cv=none; b=isfIPnI0zbKYFX73OHH7OASCxsUK4ozwnnVGYEvBqT2Uyv5ZKzp9svgml6FtaO5q70sehAMdj2+BMbzH2iS0kW5Xzw5FXShTm2prN71az5Q56saRmUoJHAbP1Yl8ZthFjAfT7P1cP/btk20hWzhwk/GcRR5XDMXY4ptnGNzshtc=
+	t=1722332432; cv=none; b=VcECSEUf/PKeFjwvkyhV1lm5QdYQaiARiVAS3cBjmOzWHLAw70KQaDUhuGtDCrG01Ikc3JpO3a3jEPv1OnVUvupuAYkEN8AGyUHOEhTHQSewgoxS22yblFgosyCRTp0pWRTYX28KzoQtEgA+oToPmvFwENdSVHSw9LcmeZJGQU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722332426; c=relaxed/simple;
-	bh=oVNeHZDvzBbCvsVn671kV8YJr1yVUslmJ7XFxgv/sNo=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=OQe16pk9NGjd89rW2UTa6IMy/bKtfBdgEbIx5/0vZuNeTJ4wNIYKhfnEs1Cfmzd5qrIPVVRtN8GEg5Zulox2M9KxFjHtCxEanJIky3u4XtZBtLe/n9NB9RCoFYl4TeZtUuktDdljonEP7hEpOOSwBAexKDlFOZvqPaaDnsRLp2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=dPtaesp5; arc=none smtp.client-ip=203.205.221.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1722332421; bh=oVNeHZDvzBbCvsVn671kV8YJr1yVUslmJ7XFxgv/sNo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dPtaesp5T6wMRTemmmSmugd/pjCYoyeyA3uStaGxygfgfXUwkSvF0mitcm/zsd3mF
-	 q5enJdedB/wMpCGbhigJMvPRrvXJWvvyvAkgQkcvjY2AlFwPzCmFjcU0Q/BF2nQaKv
-	 9Zz8Pi1qCOAGYpILPfZYw8BCfzCnVvo1ozQVGdwM=
-Received: from localhost.localdomain ([36.111.64.84])
-	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
-	id A11BDC01; Tue, 30 Jul 2024 17:40:17 +0800
-X-QQ-mid: xmsmtpt1722332417t59l2guzw
-Message-ID: <tencent_02C238CCB4CAA1D0C58AF9A89E8263AE740A@qq.com>
-X-QQ-XMAILINFO: MyIXMys/8kCtJSFYZFoLP8d12IVuQYRBXmnqwBMDgmsQhmNz7yCeIf1iwGzIWN
-	 Rnkxa83z486R2x7FB4+mBfOkldInFjNCO4zX1EBxKJM8yEDmmcs7NNAQtL3ffz5BFuyozc3XlD00
-	 WvT/SLb2FEzMSId/hDQ5M4n971lch9gYGT1cTLQ3MVpEj8aLcCtH91VAdjhzzswiMs+bllw2gpvq
-	 yeUC8GwbWrrfgYUnR2XBoROU4raewO8UeSmtCY7nTNekoXuLt9B5VSuSNS4FeHuvxaf/nG1r4Owj
-	 rNq0p5dt82r9U23qsgrxUaXaLs2T2ozCMlHy8bo3H/clQfHtKwQDn58MZjuF3BD8P7w+9BiQhi70
-	 OPnjwYw5FCIA+rNZH9dmC3Uiu2rV37vztxUIdranUAuj0gG5HddkuURMNy2Z8qeHKiMiUrR0S+Dw
-	 9imUhS2EdjhshDoisgIADA6s5A3lp9CzFCMVtIgNIOUD/gRFzbg9sxQthcqj36rRulHfL7sQfH2h
-	 av4YPbA7qI+DsU6MFm7BPuXARQ5RLqVqQqjbbzuEm/Y20QZGsXeOsqZQPRoZLe3zV7iFGaQMfiIY
-	 /AvSuHQ0fRmRtts7RuH9J4Jw8DQci4PFRJkVCy0TrjKp+IxFZWonOLC/hR8Ve3PWxCgaHkWaTCzD
-	 UQUQxRKmq3rbexUuuKo1fV81LgYPqYwNU+3w+1VysXw6wfvTflR7Fpc+JgiRA3J5Q8pDGDUzrjha
-	 00yyBTKoqqyqxxsZcHbb9s0womJnjWS0uavTsRA/6tQ7MAMnout+geoQG3dt+cET0bIUUEQR85DE
-	 Bz70VbpYFwdfJslopVKd81SJKddEwOcsuRtJx0HT0MYHCXnXJZkplviAWWFsmkuILtGpsTb+Wpng
-	 ACZPQaEMved2yUorXowsm4JvksDmTY1h1cCiO5dcCQ2/XjhQf/w1IoIN40eQIM6IXjcZy1ipwtFm
-	 dKepoUcz/qfoJgu6LFFkBJeFlEOO7MZTKhZIhaNFw4Yobec/jj3A==
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-From: wujing <realwujing@qq.com>
-To: gregkh@linuxfoundation.org
-Cc: dongml2@chinatelecom.cn,
-	linux-kernel@vger.kernel.org,
-	menglong8.dong@gmail.com,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	realwujing@qq.com,
-	stable@vger.kernel.org,
-	yuanql9@chinatelecom.cn
-Subject: Re: Re: [PATCH] sched/fair: Correct CPU selection from isolated domain
-Date: Tue, 30 Jul 2024 17:40:17 +0800
-X-OQ-MSGID: <20240730094017.44676-1-realwujing@qq.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024073032-ferret-obtrusive-3ce4@gregkh>
-References: <2024073032-ferret-obtrusive-3ce4@gregkh>
+	s=arc-20240116; t=1722332432; c=relaxed/simple;
+	bh=D5RnQCFJ217lJmZG+Sy/gnJt/5wrPqceaiX58e6Fw7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ts/J1IWf7883H8VVqRRf9DEhrLbxvmPDxjUcl80oIfeOA88C3v4wElnqTJyp6YHfGvrlRZXia5lZtrle5HLY4vsDgbkuRcAREm+RxKdRW3VlhGsZqucLw/m8luYDHI6qasQjRuTZBz6/KFjKFAh3LXWDsXx6+vZes0CjYqGlr9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqnrwhtW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43208C4AF0B;
+	Tue, 30 Jul 2024 09:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722332431;
+	bh=D5RnQCFJ217lJmZG+Sy/gnJt/5wrPqceaiX58e6Fw7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fqnrwhtW5PYpnknOyoZNJgTiZdciXkrkVBTl+Hve10Kv0x2Vb1yB12/bVigcqIfIt
+	 09q/yN7aUqNDDbPTALSD5ibN5EwSjyu1oHgoUvKrSCGMXyfvltKqjoVhHbuOvqB0HI
+	 Ce8BiyETtkMsqOkz4RByoxMY6HCElQZuvPyBCtwE=
+Date: Tue, 30 Jul 2024 11:40:28 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	linux-pci@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Krzysztof Wilczynski <kwilczynski@kernel.org>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 5.10-stable 1/3] locking: Introduce __cleanup() based
+ infrastructure
+Message-ID: <2024073039-palace-savings-1849@gregkh>
+References: <3c1751533b20c5ece6ff2296c1d79ac7580200a0.1722331565.git.lukas@wunner.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3c1751533b20c5ece6ff2296c1d79ac7580200a0.1722331565.git.lukas@wunner.de>
 
-> What "current patch"?
->
-> confused,
->
-> greg k-h
+On Tue, Jul 30, 2024 at 11:30:51AM +0200, Lukas Wunner wrote:
+> From: Peter Zijlstra <peterz@infradead.org>
+> 
+> commit 54da6a0924311c7cf5015533991e44fb8eb12773 upstream.
+> 
+> Use __attribute__((__cleanup__(func))) to build:
+> 
+>  - simple auto-release pointers using __free()
+> 
+>  - 'classes' with constructor and destructor semantics for
+>    scope-based resource management.
+> 
+>  - lock guards based on the above classes.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Link: https://lkml.kernel.org/r/20230612093537.614161713%40infradead.org
 
-The current patch is in my first email. Please ignore the previous two emails.
-The "current patch" mentioned in the earlier emails refers to the upstream
-status, but the latest upstream patch can no longer be applied to linux-4.19.y.
+Do we really want this in 5.10?  Are there any compiler versions that
+5.10 still has to support that will break with this?
 
+Same for 5.15.y, I'm loath to apply this to older kernels without loads
+of testing.
+
+thanks,
+
+greg k-h
 
