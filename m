@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AC7941735
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A519941D02
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A19FFB25068
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E900F1F24BA7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20D818B470;
-	Tue, 30 Jul 2024 16:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8711A76AF;
+	Tue, 30 Jul 2024 17:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="058U8msW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwMTewVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA2118B480;
-	Tue, 30 Jul 2024 16:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9811A76A5;
+	Tue, 30 Jul 2024 17:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355598; cv=none; b=juGF227LLNt8terpB3HqhNiE0MRwepy0xRTJ0bdQfgzad8vCp/hGlkbxB1et/RDEEuSQBk1OY2rV0dwOBi0sgIuc95KMqHNlQrWa0XOuGAhI8siNq+L9hb8CLua6LsyiozTQ5cY9CGOFqMzyXP24nhvWuMPZ+1XY00fm11hi8fs=
+	t=1722359483; cv=none; b=q1n/+SHDcOmOsiBRlsxD2b7+mXmouDHFotfjfpDHLRbnZP4qUsdsiVKJP7ogn/utSFQGeMTRmfjC1Gk8SwhHpSfVoeauU4Q6giFyXBMLj8ZFn6y8ZrPo/7xQvzYtkiYJnVBzdzQa3oC+JtVgjiux/5y4rt6bBofWsJFurJkbxw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355598; c=relaxed/simple;
-	bh=ZU2rEGjOYJLaNZC40oIZuEPH2JEvtAUNhTXhR4+/py0=;
+	s=arc-20240116; t=1722359483; c=relaxed/simple;
+	bh=ZDfKi6kLaSY1NRnxkHICKbDoNW/V5CGMFa3UG+yVPDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pw9Ra6dQDE5vtT7gHorcn/wyCKFoiYN4t+6J6Ll1bAR2R3LmmzCxf+8G6iB90NAcMsMwTOyS8CrZvWeMd48gyRTsUIERLuaCGFADg6Apl+LcUOemqztzNpZHvuy1q7zkmF0xzdFQ/zvc0SuKUr2m8IlWsd+NC8RDhVeJyKhryAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=058U8msW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE598C32782;
-	Tue, 30 Jul 2024 16:06:37 +0000 (UTC)
+	 MIME-Version; b=EHH8oJzuSGAErvdT/GvnvI5p8eB5eSsNcumx2qhC22+6G3pyhSkP30GYVEUNS2vTXuiTJVooYitpTiG5Q0iPRPmjU9zE9zbkXRrGJcZMKhYNNwkr5VoMDCtUwLiu93n9aW47y5Lgcm+7XMrgjyB9rMWubIJxPBbqJAp66cR3Y0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwMTewVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A01BC32782;
+	Tue, 30 Jul 2024 17:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355598;
-	bh=ZU2rEGjOYJLaNZC40oIZuEPH2JEvtAUNhTXhR4+/py0=;
+	s=korg; t=1722359482;
+	bh=ZDfKi6kLaSY1NRnxkHICKbDoNW/V5CGMFa3UG+yVPDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=058U8msWIZ8FmKCfL0/Pq5unibfkuE99ehBekyCHCWjGGGbbp0Dp/Nvp6pWeQx4YW
-	 bDBT95eqhcieLBlRL7hGs7Uyb7Rzn7ai6RBpoX1xP6Dk6b3ECSlSpmhOE6YpT2hTso
-	 dkx/ij5P1SMJQxo+PbmdHnngQaCrSePDPbKdkAEQ=
+	b=pwMTewVaGZNxPACw0zcGNElGdXboFBBdqN4df+p8uThhQltrE1BZ3ptw0Fpa0wcI7
+	 Jeu8v7KmrWV37GZuWyUO7uBwS6T+rBTFQLoP+7EID5z1JrF1ySc0jXAqdO69joeyEk
+	 GEAOOWsBBeHHQIZWax2QKNM1P2n1IUdeO4E5o2Tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/440] perf/x86/intel/pt: Fix pt_topa_entry_for_page() address calculation
-Date: Tue, 30 Jul 2024 17:45:42 +0200
-Message-ID: <20240730151620.151342484@linuxfoundation.org>
+Subject: [PATCH 6.10 467/809] RDMA/hns: Fix mbx timing out before CMD execution is completed
+Date: Tue, 30 Jul 2024 17:45:43 +0200
+Message-ID: <20240730151743.179473617@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 3520b251dcae2b4a27b95cd6f745c54fd658bda5 ]
+[ Upstream commit bbddfa2255dd0800209697fd12378e02ed05f833 ]
 
-Currently, perf allocates an array of page pointers which is limited in
-size by MAX_PAGE_ORDER. That in turn limits the maximum Intel PT buffer
-size to 2GiB. Should that limitation be lifted, the Intel PT driver can
-support larger sizes, except for one calculation in
-pt_topa_entry_for_page(), which is limited to 32-bits.
+When a large number of tasks are issued, the speed of HW processing
+mbx will slow down. The standard for judging mbx timeout in the current
+firmware is 30ms, and the current timeout standard for the driver is also
+30ms.
 
-Fix pt_topa_entry_for_page() address calculation by adding a cast.
+Considering that firmware scheduling in multi-function scenarios takes a
+certain amount of time, this will cause the driver to time out too early
+and report a failure before mbx execution times out.
 
-Fixes: 39152ee51b77 ("perf/x86/intel/pt: Get rid of reverse lookup table for ToPA")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-4-adrian.hunter@intel.com
+This patch introduces a new mechanism that can set different timeouts for
+different cmds and extends the timeout of mbx to 35ms.
+
+Fixes: a04ff739f2a9 ("RDMA/hns: Add command queue support for hip08 RoCE driver")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-9-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 35 +++++++++++++++++-----
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h |  6 ++++
+ 2 files changed, 34 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index 42a55794004a7..e347e56030fd9 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -989,7 +989,7 @@ pt_topa_entry_for_page(struct pt_buffer *buf, unsigned int pg)
- 	 * order allocations, there shouldn't be many of these.
- 	 */
- 	list_for_each_entry(topa, &buf->tables, list) {
--		if (topa->offset + topa->size > pg << PAGE_SHIFT)
-+		if (topa->offset + topa->size > (unsigned long)pg << PAGE_SHIFT)
- 			goto found;
- 	}
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index aecd137c1e605..621b057fb9daa 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -1275,12 +1275,38 @@ static int hns_roce_cmd_err_convert_errno(u16 desc_ret)
+ 	return -EIO;
+ }
  
++static u32 hns_roce_cmdq_tx_timeout(u16 opcode, u32 tx_timeout)
++{
++	static const struct hns_roce_cmdq_tx_timeout_map cmdq_tx_timeout[] = {
++		{HNS_ROCE_OPC_POST_MB, HNS_ROCE_OPC_POST_MB_TIMEOUT},
++	};
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(cmdq_tx_timeout); i++)
++		if (cmdq_tx_timeout[i].opcode == opcode)
++			return cmdq_tx_timeout[i].tx_timeout;
++
++	return tx_timeout;
++}
++
++static void hns_roce_wait_csq_done(struct hns_roce_dev *hr_dev, u16 opcode)
++{
++	struct hns_roce_v2_priv *priv = hr_dev->priv;
++	u32 tx_timeout = hns_roce_cmdq_tx_timeout(opcode, priv->cmq.tx_timeout);
++	u32 timeout = 0;
++
++	do {
++		if (hns_roce_cmq_csq_done(hr_dev))
++			break;
++		udelay(1);
++	} while (++timeout < tx_timeout);
++}
++
+ static int __hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+ 			       struct hns_roce_cmq_desc *desc, int num)
+ {
+ 	struct hns_roce_v2_priv *priv = hr_dev->priv;
+ 	struct hns_roce_v2_cmq_ring *csq = &priv->cmq.csq;
+-	u32 timeout = 0;
+ 	u16 desc_ret;
+ 	u32 tail;
+ 	int ret;
+@@ -1301,12 +1327,7 @@ static int __hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+ 
+ 	atomic64_inc(&hr_dev->dfx_cnt[HNS_ROCE_DFX_CMDS_CNT]);
+ 
+-	do {
+-		if (hns_roce_cmq_csq_done(hr_dev))
+-			break;
+-		udelay(1);
+-	} while (++timeout < priv->cmq.tx_timeout);
+-
++	hns_roce_wait_csq_done(hr_dev, le16_to_cpu(desc->opcode));
+ 	if (hns_roce_cmq_csq_done(hr_dev)) {
+ 		ret = 0;
+ 		for (i = 0; i < num; i++) {
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index def1d15a03c7e..c65f68a14a260 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -224,6 +224,12 @@ enum hns_roce_opcode_type {
+ 	HNS_SWITCH_PARAMETER_CFG			= 0x1033,
+ };
+ 
++#define HNS_ROCE_OPC_POST_MB_TIMEOUT 35000
++struct hns_roce_cmdq_tx_timeout_map {
++	u16 opcode;
++	u32 tx_timeout;
++};
++
+ enum {
+ 	TYPE_CRQ,
+ 	TYPE_CSQ,
 -- 
 2.43.0
 
