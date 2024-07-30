@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F95941AB0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C894C941A9E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90586B2694C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83385281FE3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9AE18455C;
-	Tue, 30 Jul 2024 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348B518455D;
+	Tue, 30 Jul 2024 16:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haN4Erhp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCJBEYoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4CB183CD5;
-	Tue, 30 Jul 2024 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E609878276;
+	Tue, 30 Jul 2024 16:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357721; cv=none; b=R40lbCuAvlf72dye6LXGHxMmb5csDKN4EAeJkVfS5qk0nBNVJK85m3KSPJ6FH7qY3pYELHPleik6Yq41lo1DOHLBDOK3EuGaYCY0Y/6v8DlpUM7dd4JgHsoILCM6iwjAI7JvVU+dtGO09q6MasVMnCmjgwmI7JxeS9AEn2g9FmM=
+	t=1722357944; cv=none; b=NuBrlqLzfgsvqVx1vRkNfwVOv8vHXJarjcggURhF950fOTVIMWkV5ftVwY9tXM3aAXNKQp5A13tqo1+fFsDc3245MMXrwdOg4Eks1K5B4kywISfaa+2LejKJfaWD5xr2yV+YtdtRqn9ZMgPMYNIBdjmXyKdtzoa1vTCfzRO+jbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357721; c=relaxed/simple;
-	bh=o8fFX44203DWFfZfgKm2EuXpdWfEsJa7/TLRhLouZh0=;
+	s=arc-20240116; t=1722357944; c=relaxed/simple;
+	bh=K0m91PcOlPg48vrlUsoLq0NUHMr2DNPYfeQsdPd83xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cqnz6HoATxXV8tJduldNqL96jpqqX5A/jHxy3TLxgmCdNTf6lo8cYB7BARZbqtplY/act5KXeEw+LgGI5h/mhjbeu29n7wqOAIcQL0mNuWg6J/+hqRY3poZNNsuV+/P+MQzBLUxRanx3Haqkv8q5G6cS/GhX0dCLaooR6YDJq74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haN4Erhp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347CEC4AF0C;
-	Tue, 30 Jul 2024 16:42:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tnNaCHcpe73XCsF+6lF0YchZ4se0PUYgc4jA3j7NkndWHCNOi6GdqiTtSaK1eFJJXrDN4ILmE93j5mx+bEhmbJDJ7p1jdPAPsLV6B7hS+3bTaf/XTij2EgYRPqFK3VGGSaUBs+RozWiSF82Lagt3aWgGIX/QMcE86x5lMQDHBfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCJBEYoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680C6C4AF0F;
+	Tue, 30 Jul 2024 16:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357721;
-	bh=o8fFX44203DWFfZfgKm2EuXpdWfEsJa7/TLRhLouZh0=;
+	s=korg; t=1722357943;
+	bh=K0m91PcOlPg48vrlUsoLq0NUHMr2DNPYfeQsdPd83xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=haN4ErhpMrf7H+CaIVQjTVsGPNUZaAQNB5rQlxfkDaaNprNl+xdws6mKu3iI2RZk/
-	 pKmVOEJxYe5hD5yHibb24CFjWpCCdHunDRjlfJo015hNeBh4tJTu23RL549Cspc9hs
-	 mu5wYA+5wwGcn5Xg0F9b+kS6GBZ37OWW5DrDhrkg=
+	b=LCJBEYoe0KEs5+QvrcDDUDoCaTvTWFkmLg9dp1m3DVOeoRnlvBufs5rrspu+AFzXO
+	 GWLFOGa4yAAEoC2AZfxq+beCAjE80SVGLvWS9qXbJasbPfXpNDQ0Js6zJIA4G6tzTZ
+	 F2HvYGvy2e+QPluJzImQ1/ID/zR4iXZcG/z0hNvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuro Chung <kuro.chung@ite.com.tw>,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 282/809] drm/bridge: it6505: fix hibernate to resume no display issue
-Date: Tue, 30 Jul 2024 17:42:38 +0200
-Message-ID: <20240730151735.728466292@linuxfoundation.org>
+Subject: [PATCH 6.10 283/809] drm/amdgpu: Fix snprintf usage in amdgpu_gfx_kiq_init_ring
+Date: Tue, 30 Jul 2024 17:42:39 +0200
+Message-ID: <20240730151735.766443575@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -62,166 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuro Chung <kuro.chung@ite.com.tw>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 484436ec5c2bffe8f346a09ae1cbc4cbf5e50005 ]
+[ Upstream commit 0ea55445554209913a72eab86b60f5788776c4d6 ]
 
-When the system power resumes, the TTL input of IT6505 may experience
-some noise before the video signal stabilizes, necessitating a video
-reset. This patch is implemented to prevent a loop of video error
-interrupts, which can occur when a video reset in the video FIFO error
-interrupt triggers another such interrupt. The patch processes the SCDT
-and FIFO error interrupts simultaneously and ignores any video FIFO
-error interrupts caused by a video reset.
+This commit fixes a format truncation issue arosed by the snprintf
+function potentially writing more characters into the ring->name buffer
+than it can hold, in the amdgpu_gfx_kiq_init_ring function
 
-Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
-Signed-off-by: Kuro Chung <kuro.chung@ite.com.tw>
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240522065528.1053439-1-kuro.chung@ite.com.tw
+The issue occurred because the '%d' format specifier could write between
+1 and 10 bytes into a region of size between 0 and 8, depending on the
+values of xcc_id, ring->me, ring->pipe, and ring->queue. The snprintf
+function could output between 12 and 41 bytes into a destination of size
+16, leading to potential truncation.
+
+To resolve this, the snprintf line was modified to use the '%hhu' format
+specifier for xcc_id, ring->me, ring->pipe, and ring->queue. The '%hhu'
+specifier is used for unsigned char variables and ensures that these
+values are printed as unsigned decimal integers.
+
+Fixes the below with gcc W=1:
+drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c: In function ‘amdgpu_gfx_kiq_init_ring’:
+drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c:332:61: warning: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size between 0 and 8 [-Wformat-truncation=]
+  332 |         snprintf(ring->name, sizeof(ring->name), "kiq_%d.%d.%d.%d",
+      |                                                             ^~
+drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c:332:50: note: directive argument in the range [0, 2147483647]
+  332 |         snprintf(ring->name, sizeof(ring->name), "kiq_%d.%d.%d.%d",
+      |                                                  ^~~~~~~~~~~~~~~~~
+drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c:332:9: note: ‘snprintf’ output between 12 and 41 bytes into a destination of size 16
+  332 |         snprintf(ring->name, sizeof(ring->name), "kiq_%d.%d.%d.%d",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  333 |                  xcc_id, ring->me, ring->pipe, ring->queue);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: 345a36c4f1ba ("drm/amdgpu: prefer snprintf over sprintf")
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 73 +++++++++++++++++++----------
- 1 file changed, 49 insertions(+), 24 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 3f68c82888c2c..cf59347d3d605 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -1307,9 +1307,15 @@ static void it6505_video_reset(struct it6505 *it6505)
- 	it6505_link_reset_step_train(it6505);
- 	it6505_set_bits(it6505, REG_DATA_MUTE_CTRL, EN_VID_MUTE, EN_VID_MUTE);
- 	it6505_set_bits(it6505, REG_INFOFRAME_CTRL, EN_VID_CTRL_PKT, 0x00);
--	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, VIDEO_RESET);
-+
-+	it6505_set_bits(it6505, REG_VID_BUS_CTRL1, TX_FIFO_RESET, TX_FIFO_RESET);
-+	it6505_set_bits(it6505, REG_VID_BUS_CTRL1, TX_FIFO_RESET, 0x00);
-+
- 	it6505_set_bits(it6505, REG_501_FIFO_CTRL, RST_501_FIFO, RST_501_FIFO);
- 	it6505_set_bits(it6505, REG_501_FIFO_CTRL, RST_501_FIFO, 0x00);
-+
-+	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, VIDEO_RESET);
-+	usleep_range(1000, 2000);
- 	it6505_set_bits(it6505, REG_RESET_CTRL, VIDEO_RESET, 0x00);
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index 1d955652f3ba6..2cb8ab86efae8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -329,7 +329,7 @@ int amdgpu_gfx_kiq_init_ring(struct amdgpu_device *adev, int xcc_id)
  
-@@ -2245,12 +2251,11 @@ static void it6505_link_training_work(struct work_struct *work)
- 	if (ret) {
- 		it6505->auto_train_retry = AUTO_TRAIN_RETRY;
- 		it6505_link_train_ok(it6505);
--		return;
- 	} else {
- 		it6505->auto_train_retry--;
-+		it6505_dump(it6505);
- 	}
- 
--	it6505_dump(it6505);
- }
- 
- static void it6505_plugged_status_to_codec(struct it6505 *it6505)
-@@ -2471,31 +2476,53 @@ static void it6505_irq_link_train_fail(struct it6505 *it6505)
- 	schedule_work(&it6505->link_works);
- }
- 
--static void it6505_irq_video_fifo_error(struct it6505 *it6505)
-+static bool it6505_test_bit(unsigned int bit, const unsigned int *addr)
- {
--	struct device *dev = it6505->dev;
--
--	DRM_DEV_DEBUG_DRIVER(dev, "video fifo overflow interrupt");
--	it6505->auto_train_retry = AUTO_TRAIN_RETRY;
--	flush_work(&it6505->link_works);
--	it6505_stop_hdcp(it6505);
--	it6505_video_reset(it6505);
-+	return 1 & (addr[bit / BITS_PER_BYTE] >> (bit % BITS_PER_BYTE));
- }
- 
--static void it6505_irq_io_latch_fifo_overflow(struct it6505 *it6505)
-+static void it6505_irq_video_handler(struct it6505 *it6505, const int *int_status)
- {
- 	struct device *dev = it6505->dev;
-+	int reg_0d, reg_int03;
- 
--	DRM_DEV_DEBUG_DRIVER(dev, "IO latch fifo overflow interrupt");
--	it6505->auto_train_retry = AUTO_TRAIN_RETRY;
--	flush_work(&it6505->link_works);
--	it6505_stop_hdcp(it6505);
--	it6505_video_reset(it6505);
--}
-+	/*
-+	 * When video SCDT change with video not stable,
-+	 * Or video FIFO error, need video reset
-+	 */
- 
--static bool it6505_test_bit(unsigned int bit, const unsigned int *addr)
--{
--	return 1 & (addr[bit / BITS_PER_BYTE] >> (bit % BITS_PER_BYTE));
-+	if ((!it6505_get_video_status(it6505) &&
-+	     (it6505_test_bit(INT_SCDT_CHANGE, (unsigned int *)int_status))) ||
-+	    (it6505_test_bit(BIT_INT_IO_FIFO_OVERFLOW,
-+			     (unsigned int *)int_status)) ||
-+	    (it6505_test_bit(BIT_INT_VID_FIFO_ERROR,
-+			     (unsigned int *)int_status))) {
-+		it6505->auto_train_retry = AUTO_TRAIN_RETRY;
-+		flush_work(&it6505->link_works);
-+		it6505_stop_hdcp(it6505);
-+		it6505_video_reset(it6505);
-+
-+		usleep_range(10000, 11000);
-+
-+		/*
-+		 * Clear FIFO error IRQ to prevent fifo error -> reset loop
-+		 * HW will trigger SCDT change IRQ again when video stable
-+		 */
-+
-+		reg_int03 = it6505_read(it6505, INT_STATUS_03);
-+		reg_0d = it6505_read(it6505, REG_SYSTEM_STS);
-+
-+		reg_int03 &= (BIT(INT_VID_FIFO_ERROR) | BIT(INT_IO_LATCH_FIFO_OVERFLOW));
-+		it6505_write(it6505, INT_STATUS_03, reg_int03);
-+
-+		DRM_DEV_DEBUG_DRIVER(dev, "reg08 = 0x%02x", reg_int03);
-+		DRM_DEV_DEBUG_DRIVER(dev, "reg0D = 0x%02x", reg_0d);
-+
-+		return;
-+	}
-+
-+	if (it6505_test_bit(INT_SCDT_CHANGE, (unsigned int *)int_status))
-+		it6505_irq_scdt(it6505);
- }
- 
- static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
-@@ -2508,15 +2535,12 @@ static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
- 	} irq_vec[] = {
- 		{ BIT_INT_HPD, it6505_irq_hpd },
- 		{ BIT_INT_HPD_IRQ, it6505_irq_hpd_irq },
--		{ BIT_INT_SCDT, it6505_irq_scdt },
- 		{ BIT_INT_HDCP_FAIL, it6505_irq_hdcp_fail },
- 		{ BIT_INT_HDCP_DONE, it6505_irq_hdcp_done },
- 		{ BIT_INT_AUX_CMD_FAIL, it6505_irq_aux_cmd_fail },
- 		{ BIT_INT_HDCP_KSV_CHECK, it6505_irq_hdcp_ksv_check },
- 		{ BIT_INT_AUDIO_FIFO_ERROR, it6505_irq_audio_fifo_error },
- 		{ BIT_INT_LINK_TRAIN_FAIL, it6505_irq_link_train_fail },
--		{ BIT_INT_VID_FIFO_ERROR, it6505_irq_video_fifo_error },
--		{ BIT_INT_IO_FIFO_OVERFLOW, it6505_irq_io_latch_fifo_overflow },
- 	};
- 	int int_status[3], i;
- 
-@@ -2546,6 +2570,7 @@ static irqreturn_t it6505_int_threaded_handler(int unused, void *data)
- 			if (it6505_test_bit(irq_vec[i].bit, (unsigned int *)int_status))
- 				irq_vec[i].handler(it6505);
- 		}
-+		it6505_irq_video_handler(it6505, (unsigned int *)int_status);
- 	}
- 
- 	pm_runtime_put_sync(dev);
+ 	ring->eop_gpu_addr = kiq->eop_gpu_addr;
+ 	ring->no_scheduler = true;
+-	snprintf(ring->name, sizeof(ring->name), "kiq_%d.%d.%d.%d",
++	snprintf(ring->name, sizeof(ring->name), "kiq_%hhu.%hhu.%hhu.%hhu",
+ 		 xcc_id, ring->me, ring->pipe, ring->queue);
+ 	r = amdgpu_ring_init(adev, ring, 1024, irq, AMDGPU_CP_KIQ_IRQ_DRIVER0,
+ 			     AMDGPU_RING_PRIO_DEFAULT, NULL);
 -- 
 2.43.0
 
