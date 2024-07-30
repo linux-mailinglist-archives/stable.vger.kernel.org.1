@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD73941816
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDF0941819
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9380287AE4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9A6F1F256C2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A92A18452F;
-	Tue, 30 Jul 2024 16:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B1518800A;
+	Tue, 30 Jul 2024 16:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSyUW4qZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yK1ZDR9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAADD1A6191;
-	Tue, 30 Jul 2024 16:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85C21A616E;
+	Tue, 30 Jul 2024 16:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356230; cv=none; b=smpUg/VutgRN69E54d045CYcxpe+OeT/WbC2yXWN9Qr9nycdXDHszH3PZvmE5S7Fo9aSIUNpOfvQuupMethPN+kTbYy/fAjRkJnNQdCpDm1QsAkhdPT+dtl5G/Ft62Fhfs+hwHhdwET+T4V3m55YR8IFAIT0Ckdmas17hdx6Xgg=
+	t=1722356239; cv=none; b=RtdUyeu9+iu4IwHuI/a44GOTPwYr4LdAwNqmisO16ye8iuG9zNEbGk8silYaHRjMAgal/beS60jOCgpqfQ5/U/NTm3RO9F5OMywBOtRAd/qakKqsZSoctYu1AOe+bTxjyzCkadcZWWtRiwYeqgxFYlD/NEW0X7dMNju0jaQySNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356230; c=relaxed/simple;
-	bh=K2o/ZHXy994IGLZq7/Pv+ojkyC1MEQ3Iw3D7oQVq3aQ=;
+	s=arc-20240116; t=1722356239; c=relaxed/simple;
+	bh=aYGLLEVU7xAWUsbM0uZG8w0CNiq5K0Cy312lxp/+VMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VMa3GvoyLFJxciQ2vev8W8Qid6hJkjcqK5Z0qcc6+PWNBrAEJWrhRpqHJQ+Jbu1JfgX+9DwWmL6/fEAhQk6ZgPIcBMMCb8om09ZHtdClvDXbRD1OtDcB64qBlxVPHycuGeLheMx5y0B6F+65dWQioLKNdHMNc/k0u0tpDh/vptQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSyUW4qZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D495C32782;
-	Tue, 30 Jul 2024 16:17:09 +0000 (UTC)
+	 MIME-Version; b=oCpGeoHaA5aAupPS30QGReuO5ncHzs4NDIc2FKZGkxK4zHCAEFO1LS74Adhquncm9c+/VEj7V9SndnLd+4WE87zxYhGKu+s62EINJ7aSmCdm3NfoCZ3ipiJHc8/94JaEe9VbyVcAj2ELcIZnoSsaz9qSLvJmX8VDNbMkWwPcyqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK1ZDR9q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2ABC4AF0A;
+	Tue, 30 Jul 2024 16:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356230;
-	bh=K2o/ZHXy994IGLZq7/Pv+ojkyC1MEQ3Iw3D7oQVq3aQ=;
+	s=korg; t=1722356239;
+	bh=aYGLLEVU7xAWUsbM0uZG8w0CNiq5K0Cy312lxp/+VMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSyUW4qZeZpDq3nmtmhX6610hO7tWG+qNoq48bgPL4t79YHHrQq0mCWTwQNQvDgSz
-	 1McpeEvy/oAHmxGgzoeZOLz6j+KvCfTOXu22wYuXg7izgik5OzEaf6kAZK5bGv590i
-	 ncL88EtbOd0zbO7fzKC5BHnnUGNFtzCkpXUHN49M=
+	b=yK1ZDR9qX7YTMRT9+oQcaJ9NC5UWFod77GrEaaR9vGujuJn2b7Chzg/13TlYxLcoV
+	 GAFiH3d0YAhtfB+OqAJO7mfPYT1ioop4Ms6vgoz5jSSLaV+RXxJ3CSxV9nJ8bsXq9x
+	 72Hc0xFQ86Zy2n+uRYzXsiZGSbIvvjm61FZn9Fkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chukun Pan <amadeus@jmu.edu.cn>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 131/809] arm64: dts: rockchip: fix regulator name for Lunzn Fastrhino R6xS
-Date: Tue, 30 Jul 2024 17:40:07 +0200
-Message-ID: <20240730151729.790299130@linuxfoundation.org>
+Subject: [PATCH 6.10 132/809] arm64: dts: rockchip: fix usb regulator for Lunzn Fastrhino R6xS
+Date: Tue, 30 Jul 2024 17:40:08 +0200
+Message-ID: <20240730151729.830191385@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,53 +68,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 2dad31528de9ea8b05245ce6ac4f76ebf8dae947 ]
+[ Upstream commit 9e823ba92118510c0d1c050b67bb000f9b9a73d7 ]
 
-Make the regulator name the same as those marked by schematics.
+Remove the non-existent usb_host regulator and fix the supply according
+to the schematic. Also remove the unnecessary always-on and boot-on for
+the usb_otg regulator.
 
 Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
 Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20240630150010.55729-2-amadeus@jmu.edu.cn
+Link: https://lore.kernel.org/r/20240701143028.1203997-2-amadeus@jmu.edu.cn
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-index 89e84e3a92629..93987c8740f7b 100644
+index 93987c8740f7b..8f587978fa3b6 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-@@ -39,9 +39,9 @@ status_led: led-status {
- 		};
+@@ -78,15 +78,6 @@ vcc5v0_sys: vcc5v0-sys-regulator {
+ 		vin-supply = <&vcc12v_dcin>;
  	};
  
--	dc_12v: dc-12v-regulator {
-+	vcc12v_dcin: vcc12v-dcin-regulator {
+-	vcc5v0_usb_host: vcc5v0-usb-host-regulator {
+-		compatible = "regulator-fixed";
+-		regulator-name = "vcc5v0_usb_host";
+-		regulator-always-on;
+-		regulator-boot-on;
+-		regulator-min-microvolt = <5000000>;
+-		regulator-max-microvolt = <5000000>;
+-	};
+-
+ 	vcc5v0_usb_otg: vcc5v0-usb-otg-regulator {
  		compatible = "regulator-fixed";
--		regulator-name = "dc_12v";
-+		regulator-name = "vcc12v_dcin";
- 		regulator-always-on;
- 		regulator-boot-on;
- 		regulator-min-microvolt = <12000000>;
-@@ -65,7 +65,7 @@ vcc3v3_sys: vcc3v3-sys-regulator {
- 		regulator-boot-on;
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
--		vin-supply = <&dc_12v>;
-+		vin-supply = <&vcc12v_dcin>;
+ 		enable-active-high;
+@@ -94,8 +85,9 @@ vcc5v0_usb_otg: vcc5v0-usb-otg-regulator {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&vcc5v0_usb_otg_en>;
+ 		regulator-name = "vcc5v0_usb_otg";
+-		regulator-always-on;
+-		regulator-boot-on;
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&vcc5v0_sys>;
  	};
+ };
  
- 	vcc5v0_sys: vcc5v0-sys-regulator {
-@@ -75,7 +75,7 @@ vcc5v0_sys: vcc5v0-sys-regulator {
- 		regulator-boot-on;
- 		regulator-min-microvolt = <5000000>;
- 		regulator-max-microvolt = <5000000>;
--		vin-supply = <&dc_12v>;
-+		vin-supply = <&vcc12v_dcin>;
- 	};
+@@ -460,7 +452,7 @@ &usb2phy0 {
+ };
  
- 	vcc5v0_usb_host: vcc5v0-usb-host-regulator {
+ &usb2phy0_host {
+-	phy-supply = <&vcc5v0_usb_host>;
++	phy-supply = <&vcc5v0_sys>;
+ 	status = "okay";
+ };
+ 
 -- 
 2.43.0
 
