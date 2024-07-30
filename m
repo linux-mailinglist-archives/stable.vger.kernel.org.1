@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B830941A76
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C1F941818
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 160B12845AD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65668287BFA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88587184553;
-	Tue, 30 Jul 2024 16:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E729187FF9;
+	Tue, 30 Jul 2024 16:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZhOT+H0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVN67I5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DBA1A6169;
-	Tue, 30 Jul 2024 16:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C41D1A616E;
+	Tue, 30 Jul 2024 16:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357845; cv=none; b=ELQWNmYxaDzMy7Kq2RD1v3l4rTxtLGRgv7FYvLtrE1AWftysYHG/zlryNsgvQsrNRC+4qTnb1dehOaNuJ3z28n717uxGMIDXir4Y9y6O4srnksvOk8mhpJVrZuIhtSLAdGghgaEqz6Ja/UvQmEi8eNFZvil/HqOUcfCvy+ah3oU=
+	t=1722356237; cv=none; b=eWtCOOL5lT6fGbAqJeP9fG+P7nSfzAnB5GBCiAaVi9kVRLfqPvTCAOrC12e/4MllgkpUW1+N9SkapOaOACZTz03rRNcMuLYTNs/1W2DLBGdLYJwEI0wGqexygcwDSgs+rBlQTIpv6E1fHlMHMWQGODOOXmDGGifagCDwLFmnSTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357845; c=relaxed/simple;
-	bh=IIQeoWypYnx0AFLQQfgmoxUTRz0ovfChcEZipfosB+A=;
+	s=arc-20240116; t=1722356237; c=relaxed/simple;
+	bh=pg554TLCTfrWxNUfw7a8F0sJVGGylGAIWNNXmapmY9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T5WDKVQP07o1Qmq6N1fXQrPyh6qN2Y+7jj43AFzQSgI6fUkxJd3gIM1caUAbreXYG+3cM+7V2D5QA1eTfdNnpW1GIVrthO9sX4tOO5+SxF0RdjsW5H0C73WueyWplsJvlKFhyLr8OhzlxxBUaOdu0PYTMn2Wqz3iZVpIkOQmh60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZhOT+H0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDBCC4AF0A;
-	Tue, 30 Jul 2024 16:44:04 +0000 (UTC)
+	 MIME-Version; b=XYnhjOufKXHsNN3IILt5d89J0gQYPWNMf3Jz/9IMwKv3PNnzqu0+0UBDeroDehic4u6W2sHfZ+z4KlwpNikJXzQ1VClvIKtl/yeENxxkZ7PEK9feI3nYw6hbIRwMavm2gcWsxWvkY9QrlWftT8b1AJR+kteAhn2uWaL6bLCLvz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVN67I5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E10C4AF0E;
+	Tue, 30 Jul 2024 16:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357845;
-	bh=IIQeoWypYnx0AFLQQfgmoxUTRz0ovfChcEZipfosB+A=;
+	s=korg; t=1722356236;
+	bh=pg554TLCTfrWxNUfw7a8F0sJVGGylGAIWNNXmapmY9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZhOT+H06Ot0sxBoZXcAjmOiOhnnePzhIcQt9YzOn/8IU+7La0gxU8as6T8yI+7jz
-	 nrVckP4C0VjTG5iAG4C/0t0vWv9MaDDF2qqc2w206ho3Rr5Y1ptm3wa14P6EeiLVGS
-	 UIoezEMRwSuZn0R06JdOpxnNh8yj3vkZx/RzPQ0M=
+	b=hVN67I5CR0aylRbkykC4gbP6+h5/mw7YkmQQ9+fp9KmxHyxZ5D5/F5+/PoZ6bsQa3
+	 s07f6LrlldqFsNtSmp6pjHb9NtG9lCpdTCWlheSQ+DarEJlxHtcaDl9s4GkDICw1au
+	 73QI+6dhsjQYC26urkjU7w4LQUmHXvcdZfWcFFyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	NeilBrown <neilb@suse.de>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 297/568] powerpc/xmon: Fix disassembly CPU feature checks
+Subject: [PATCH 6.1 171/440] SUNRPC: avoid soft lockup when transmitting UDP to reachable server.
 Date: Tue, 30 Jul 2024 17:46:44 +0200
-Message-ID: <20240730151651.485923393@linuxfoundation.org>
+Message-ID: <20240730151622.551857130@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 14196e47c5ffe32af7ed5a51c9e421c5ea5bccce ]
+[ Upstream commit 6258cf25d5e3155c3219ab5a79b970eef7996356 ]
 
-In the xmon disassembly code there are several CPU feature checks to
-determine what dialects should be passed to the disassembler. The
-dialect controls which instructions the disassembler will recognise.
+Prior to the commit identified below, call_transmit_status() would
+handle -EPERM and other errors related to an unreachable server by
+falling through to call_status() which added a 3-second delay and
+handled the failure as a timeout.
 
-Unfortunately the checks are incorrect, because instead of passing a
-single CPU feature they are passing a mask of feature bits.
+Since that commit, call_transmit_status() falls through to
+handle_bind().  For UDP this moves straight on to handle_connect() and
+handle_transmit() so we immediately retransmit - and likely get the same
+error.
 
-For example the code:
+This results in an indefinite loop in __rpc_execute() which triggers a
+soft-lockup warning.
 
-  if (cpu_has_feature(CPU_FTRS_POWER5))
-      dialect |= PPC_OPCODE_POWER5;
+For the errors that indicate an unreachable server,
+call_transmit_status() should fall back to call_status() as it did
+before.  This cannot cause the thundering herd that the previous patch
+was avoiding, as the call_status() will insert a delay.
 
-Is trying to check if the system is running on a Power5 CPU. But
-CPU_FTRS_POWER5 is a mask of *all* the feature bits that are enabled on
-a Power5.
-
-In practice the test will always return true for any 64-bit CPU, because
-at least one bit in the mask will be present in the CPU_FTRS_ALWAYS
-mask.
-
-Similarly for all the other checks against CPU_FTRS_xx masks.
-
-Rather than trying to match the disassembly behaviour exactly to the
-current CPU, just differentiate between 32-bit and 64-bit, and Altivec,
-VSX and HTM.
-
-That will cause some instructions to be shown in disassembly even
-on a CPU that doesn't support them, but that's OK, objdump -d output
-has the same behaviour, and if anything it's less confusing than some
-instructions not being disassembled.
-
-Fixes: 897f112bb42e ("[POWERPC] Import updated version of ppc disassembly code for xmon")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240509121248.270878-2-mpe@ellerman.id.au
+Fixes: ed7dc973bd91 ("SUNRPC: Prevent thundering herd when the socket is not connected")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/xmon/ppc-dis.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ net/sunrpc/clnt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/xmon/ppc-dis.c b/arch/powerpc/xmon/ppc-dis.c
-index 75fa98221d485..af105e1bc3fca 100644
---- a/arch/powerpc/xmon/ppc-dis.c
-+++ b/arch/powerpc/xmon/ppc-dis.c
-@@ -122,32 +122,21 @@ int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
-   bool insn_is_short;
-   ppc_cpu_t dialect;
- 
--  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON
--            | PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_ALTIVEC;
-+  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON;
- 
--  if (cpu_has_feature(CPU_FTRS_POWER5))
--    dialect |= PPC_OPCODE_POWER5;
-+  if (IS_ENABLED(CONFIG_PPC64))
-+    dialect |= PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_CELL |
-+	PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7 | PPC_OPCODE_POWER8 |
-+	PPC_OPCODE_POWER9;
- 
--  if (cpu_has_feature(CPU_FTRS_CELL))
--    dialect |= (PPC_OPCODE_CELL | PPC_OPCODE_ALTIVEC);
-+  if (cpu_has_feature(CPU_FTR_TM))
-+    dialect |= PPC_OPCODE_HTM;
- 
--  if (cpu_has_feature(CPU_FTRS_POWER6))
--    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_ALTIVEC);
-+  if (cpu_has_feature(CPU_FTR_ALTIVEC))
-+    dialect |= PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2;
- 
--  if (cpu_has_feature(CPU_FTRS_POWER7))
--    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
--                | PPC_OPCODE_ALTIVEC | PPC_OPCODE_VSX);
--
--  if (cpu_has_feature(CPU_FTRS_POWER8))
--    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
--		| PPC_OPCODE_POWER8 | PPC_OPCODE_HTM
--		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2 | PPC_OPCODE_VSX);
--
--  if (cpu_has_feature(CPU_FTRS_POWER9))
--    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
--		| PPC_OPCODE_POWER8 | PPC_OPCODE_POWER9 | PPC_OPCODE_HTM
--		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2
--		| PPC_OPCODE_VSX | PPC_OPCODE_VSX3);
-+  if (cpu_has_feature(CPU_FTR_VSX))
-+    dialect |= PPC_OPCODE_VSX | PPC_OPCODE_VSX3;
- 
-   /* Get the major opcode of the insn.  */
-   opcode = NULL;
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 1dbad41c46145..b6529a9d37d37 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2296,12 +2296,13 @@ call_transmit_status(struct rpc_task *task)
+ 		task->tk_action = call_transmit;
+ 		task->tk_status = 0;
+ 		break;
+-	case -ECONNREFUSED:
+ 	case -EHOSTDOWN:
+ 	case -ENETDOWN:
+ 	case -EHOSTUNREACH:
+ 	case -ENETUNREACH:
+ 	case -EPERM:
++		break;
++	case -ECONNREFUSED:
+ 		if (RPC_IS_SOFTCONN(task)) {
+ 			if (!task->tk_msg.rpc_proc->p_proc)
+ 				trace_xprt_ping(task->tk_xprt,
 -- 
 2.43.0
 
