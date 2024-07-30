@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623BA941A42
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A34941D38
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14BB3282154
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D97B128B3BC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C4A184553;
-	Tue, 30 Jul 2024 16:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720701A76CD;
+	Tue, 30 Jul 2024 17:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spVxkVyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlj8FlIK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86539183CD5;
-	Tue, 30 Jul 2024 16:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7F81A76C8;
+	Tue, 30 Jul 2024 17:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357715; cv=none; b=J/2Haj4xQ/45JuUVpglU5T/01s5eQzip9doCwKJJJxUnJ3yEtkkLEp5d7PmFm4+rviv5TJdVpJHQtRDyACOX5pX+AMjRCh1YLeqIEJc3TyH/PlQLIv1FJx88XYLo/d/5ZxlDWcDQ8RViCrES0MHVc3JxnLlF9ii2bS2N9cnHKkE=
+	t=1722359661; cv=none; b=dOxONsDF3ZXcT/Fj0O+XkIs1J8en/vFIvGW7LLzzLUuFUGlielxhrAuvQiJxlyL/WZlFvWM6cuqJFaQOZAHQCFGp0bzPDoEkzqvhlCzfr8vj3WB79x6h016F2lEkcvPXaY9XLXYKJcNK6SzxNeNJSotD4Thtnu8bkfWJoWq0xoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357715; c=relaxed/simple;
-	bh=VDnLcQzDmEU7cPA5HsUqkfJKgQW6wDS2y2A5FL61U+M=;
+	s=arc-20240116; t=1722359661; c=relaxed/simple;
+	bh=G8Xm7+z7RmuHDdcdbZjfI166bwfPpFC3Hd9cvWC2AiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVV5Bn8dmBeG0Cthl22x48Jc8VHgWG3K12hzTV0KmZ+KRq6Ti7Fe1sccxWDrnDc01wpJVwydfobuMLO2E3jMZORw6nIjrP+kr6OFa70NkPnY5mGo1WxvL09lkVw3D09Rq1KqH7ulPT7HfHfdtPhV7PZ6/Julf3V9udEJ2bP2e6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spVxkVyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A43C32782;
-	Tue, 30 Jul 2024 16:41:54 +0000 (UTC)
+	 MIME-Version; b=ECTtlpSvnj/EMg/XyYFPkfz99y272lZO7L4RAqk1Hif2Z0+pC31lLnSn7tlkpiuQDd2XiUukNP0lmZbOVKi+1T16umvjkIftDHF+lou+puyX9smyJAo8c/VwiuZMcDSng9AqUuSUQnZSoA2SVTfcZJ068ibEFLu482xG/fzGlMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlj8FlIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA447C4AF0F;
+	Tue, 30 Jul 2024 17:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357715;
-	bh=VDnLcQzDmEU7cPA5HsUqkfJKgQW6wDS2y2A5FL61U+M=;
+	s=korg; t=1722359661;
+	bh=G8Xm7+z7RmuHDdcdbZjfI166bwfPpFC3Hd9cvWC2AiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spVxkVywuG20LeZdhnvH6F2YGzViSXR3g+T+zNhO72Np3TC8v0uHU6uIL0jLxo4sE
-	 l6WPnjDsMOiOrLGkXuMlkaI/6H+nFRy+sbhyA3vD3TCOi4Bjs0SgUAtZ2VqCOkZDCB
-	 cqHe2lUORgO8mum10r4uazg5wRO7JNkjJjE9FWjI=
+	b=hlj8FlIKg1ULylvhOl1JcYYomEfo0ha++A73SjisswIGT+Wk3oNrLwAZzx8kvvGIU
+	 ubl+Fqylo4DLfhz+oESUIXl8l4r+nwNRaYV2DV2LYGn/g95K8DA2pLtLqNUMatEKUr
+	 21nN0Ieh4cjZVYaBTnrTQ86NPCbI7n+RTAOVL1Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Mark Brown <broonie@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/568] ASoC: amd: Adjust error handling in case of absent codec device
+Subject: [PATCH 6.10 515/809] fs/ntfs3: Missed error return
 Date: Tue, 30 Jul 2024 17:46:31 +0200
-Message-ID: <20240730151650.974501123@linuxfoundation.org>
+Message-ID: <20240730151745.078472073@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 5080808c3339de2220c602ab7c7fa23dc6c1a5a3 ]
+[ Upstream commit 2cbbd96820255fff4f0ad1533197370c9ccc570b ]
 
-acpi_get_first_physical_node() can return NULL in several cases (no such
-device, ACPI table error, reference count drop to 0, etc).
-Existing check just emit error message, but doesn't perform return.
-Then this NULL pointer is passed to devm_acpi_dev_add_driver_gpios()
-where it is dereferenced.
-
-Adjust this error handling by adding error code return.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 02527c3f2300 ("ASoC: amd: add Machine driver for Jadeite platform")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://patch.msgid.link/20240703191007.8524-1-amishin@t-argos.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3f3b442b5ad2 ("fs/ntfs3: Add bitmap")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp-es8336.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ntfs3/bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp-es8336.c b/sound/soc/amd/acp-es8336.c
-index 5e56d3a53be78..49bffc567e68d 100644
---- a/sound/soc/amd/acp-es8336.c
-+++ b/sound/soc/amd/acp-es8336.c
-@@ -203,8 +203,10 @@ static int st_es8336_late_probe(struct snd_soc_card *card)
+diff --git a/fs/ntfs3/bitmap.c b/fs/ntfs3/bitmap.c
+index c9eb01ccee51b..cf4fe21a50399 100644
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -1382,7 +1382,7 @@ int wnd_extend(struct wnd_bitmap *wnd, size_t new_bits)
  
- 	codec_dev = acpi_get_first_physical_node(adev);
- 	acpi_dev_put(adev);
--	if (!codec_dev)
-+	if (!codec_dev) {
- 		dev_err(card->dev, "can not find codec dev\n");
-+		return -ENODEV;
-+	}
+ 		err = ntfs_vbo_to_lbo(sbi, &wnd->run, vbo, &lbo, &bytes);
+ 		if (err)
+-			break;
++			return err;
  
- 	ret = devm_acpi_dev_add_driver_gpios(codec_dev, acpi_es8336_gpios);
- 	if (ret)
+ 		bh = ntfs_bread(sb, lbo >> sb->s_blocksize_bits);
+ 		if (!bh)
 -- 
 2.43.0
 
