@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561879416AE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BD49416B1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CF281F24DAD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A555286613
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0E5188002;
-	Tue, 30 Jul 2024 16:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71231187FF2;
+	Tue, 30 Jul 2024 16:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/t2LKyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xuQVFb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B02187FF2;
-	Tue, 30 Jul 2024 16:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279BE8BE8;
+	Tue, 30 Jul 2024 16:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355364; cv=none; b=SAcSTKiyzZsKeHJ48IQvDVqDDLjmJRzdlVcWr+zIunr6k1EeSWOh/TW8jgfhQwNsMntnuCmmHJ/QGA6ZjiXjHUrYhb6CaINSvPI/h3Ogh0YavE69DQtXo1HCIzHtLJhJVVktdp12EEEixRihaCKmFl6ci31TdASQHwMiw3QEOt8=
+	t=1722355374; cv=none; b=YDS8/P1OX+VzNssPjvBfq+54gcfbHse3M6zeKbWfvqItSXQhKBECcEcI3QaHPTTCOSPEAv68NCZPOAkUIlGO1TW4B3ogWHzlnrcKVGIYljd9DRT2KdM6X+QL38q64+C/5feKKS/QJbT/yFVOcd7HwZntMrZOHSmWM5xlx4aOa9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355364; c=relaxed/simple;
-	bh=hzVmCNDt94f4cm62y3G5oU87vKKnrqxFhLdyAEOgU7w=;
+	s=arc-20240116; t=1722355374; c=relaxed/simple;
+	bh=f2I1MQSHOSFY5nz7bz8IgzP+/CmyIqRMikA99fskqpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=and2P+f5cmN4xiMA5Dcv0QvSmrjFx1YNEnJF88z7cr1JGWAhvcucxqVh/EU/dErJYDaWGXDQWxDNzCFzd1GFtHvSXG6dCXzDhyKbqKEQWrO29Z9tDn9pDRFwdWIJ8BI/sEtNVJQe1nhmpy4ntOSQ7ciI+xmR8Drkv3IPnhnVd7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/t2LKyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DE0C32782;
-	Tue, 30 Jul 2024 16:02:43 +0000 (UTC)
+	 MIME-Version; b=KLz1zrsyesYkFCaEA5nld+R/WolSf6M0Z5G78IpObt40FknGsxls7X0Ep3gxIxi6psWTMl1Nh5vGAFvI/QvzPD5psNtuaiguHoCGwJjgMg+VNEfrLW0aLcjKWRsgg/yQl7ZQIJ5tMx7xbV1yRJCH90u+68luXOG+mhYd8QZBXCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xuQVFb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897AAC32782;
+	Tue, 30 Jul 2024 16:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355364;
-	bh=hzVmCNDt94f4cm62y3G5oU87vKKnrqxFhLdyAEOgU7w=;
+	s=korg; t=1722355374;
+	bh=f2I1MQSHOSFY5nz7bz8IgzP+/CmyIqRMikA99fskqpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/t2LKyU2zu5a3bg02KlxMtOj8qFqruIY4bXHM7I7ELBo9LAidI1cfFCsFVxz+N78
-	 mfYGklhT0DmHJ6hi0Be2Ko8MPdidKBf1cKZfCYEy7PPlANlK/PDcQBoza1RmKQZgha
-	 zKawoS5UvIRod/uAvyOkVqldcn55dhZtcMQclMQs=
+	b=1xuQVFb9upYr8pEUifMN3sdqFss5B/FYsM42LfZfqqtNA27lSjNmmuUqyuwKIDgtB
+	 sz7+m0SPQQvaDQfXCZ5P5R5A1YZ9PwsCrm3hHHs0BfOKNSmceNg8G1EK6/LsaRVeiB
+	 xKm/Atf08X5SH8jipwUNfR7E9NzDBsD21gy+LIFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rayyan Ansari <rayyan@ansari.sh>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 044/809] ARM: dts: qcom: msm8226-microsoft-common: Enable smbb explicitly
-Date: Tue, 30 Jul 2024 17:38:40 +0200
-Message-ID: <20240730151726.393141542@linuxfoundation.org>
+Subject: [PATCH 6.10 045/809] arm64: dts: qcom: sc7180: drop extra UFS PHY compat
+Date: Tue, 30 Jul 2024 17:38:41 +0200
+Message-ID: <20240730151726.432086160@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,41 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rayyan Ansari <rayyan@ansari.sh>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 81a0a21b6159c6a9ed1e39c23e755cd05a102ce3 ]
+[ Upstream commit 48299f604d27dad1168cc90b89f33853162c6e33 ]
 
-Enable the smbb node explicitly for MSM8x26 Lumia devices. These devices
-rely on the smbb driver in order to detect USB state.
+The DT schema doesn't have a fallback compatible for
+qcom,sc7180-qmp-ufs-phy. Drop it from the dtsi too.
 
-It seems that this was accidentally missed in the commit that this
-fixes.
-
-Fixes: c9c8179d0ccd ("ARM: dts: qcom: Disable pm8941 & pm8226 smbb charger by default")
-Signed-off-by: Rayyan Ansari <rayyan@ansari.sh>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240424174206.4220-1-rayyan@ansari.sh
+Fixes: 858536d9dc94 ("arm64: dts: qcom: sc7180: Add UFS nodes")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-4-f1fd15c33fb3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi
-index 525d8c608b06f..8839b23fc6936 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8226-microsoft-common.dtsi
-@@ -287,6 +287,10 @@ &sdhc_2 {
- 	status = "okay";
- };
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index e9deffe3aaf6c..9ab0c98cac054 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -1582,8 +1582,7 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+ 		};
  
-+&smbb {
-+	status = "okay";
-+};
-+
- &usb {
- 	extcon = <&smbb>;
- 	dr_mode = "peripheral";
+ 		ufs_mem_phy: phy@1d87000 {
+-			compatible = "qcom,sc7180-qmp-ufs-phy",
+-				     "qcom,sm7150-qmp-ufs-phy";
++			compatible = "qcom,sc7180-qmp-ufs-phy";
+ 			reg = <0 0x01d87000 0 0x1000>;
+ 			clocks = <&rpmhcc RPMH_CXO_CLK>,
+ 				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
 -- 
 2.43.0
 
