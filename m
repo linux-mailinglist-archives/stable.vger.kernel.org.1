@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7030941C45
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A998941B02
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72B96B20DF7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3D2CB2224F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E285C187FF6;
-	Tue, 30 Jul 2024 17:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F505189B97;
+	Tue, 30 Jul 2024 16:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vyurk4DA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7b6J4vD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDF41E86F;
-	Tue, 30 Jul 2024 17:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D224189513;
+	Tue, 30 Jul 2024 16:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359118; cv=none; b=bMOVnHUVGXP4mAgmsUvb7AohgQpXGk38/N7OH3szkVHyTpRHKGhpp6EikXw0aZVpITdQp75P+qKqH05e4RgT1RbUMcUT/II1qLCY14+unPWxUBuDqhyl6SmPAL0ILnxeMbjVKIKhq4DDKrJBnILxex+mxhsyoY/hBacLSc+E950=
+	t=1722357603; cv=none; b=PainxFZvPdL82mwPIaylWUsmgk8MofRcV95cMlmOdJOgSESO4CKFOB8QczolxYf2DnTOr+5z5R4Ak+t1IsAx49K3L+MdOgdg4zjeNJIpd/Z4myC4eNF9ZpuY6sIc1zduExiraPxfP+KAnoz4TetKIq0wvcS0VGx4KthacfF0R4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359118; c=relaxed/simple;
-	bh=t0jVXGLUxiynwLhfytpnKS6s47dyoC7ketMZZgyio9g=;
+	s=arc-20240116; t=1722357603; c=relaxed/simple;
+	bh=x+FeiTP98ITJBOiPfRVjZ5X+GfaGbvCWAjE9gJjrg8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArYmQO/2dtpU7Sy8yUJsO2ufxP4/ZMS60iZwf/DVkNvrAeaYMN6vPsByWs8nyHU2KuciYFk8n0Eb6gO9PZMoTX8lPqpj5YVlyTbVm5iJHgDFToRlgRNwwhIJ8iUej+l+LdRGeyBKDXVN/+Mq4QGAlRoGIEBFJN9VSangIiCe7cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vyurk4DA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28043C32782;
-	Tue, 30 Jul 2024 17:05:17 +0000 (UTC)
+	 MIME-Version; b=oOpQ2mQfuCAhoAiZnPKsBmMkW2vOh3hQQl7okiz0a/l5D93iSVlcPwIcnMlv68Z5VRuqbPdsS6D+lAbY7PueTtihqVYsw8+5ykRlM++x3eDJ5HOfA8eavQkUIADFaO4S2QgpKrMzMh+WaEzZtFtRy1nSktstR7JGLUFSn0eNzns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7b6J4vD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD3EC32782;
+	Tue, 30 Jul 2024 16:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359118;
-	bh=t0jVXGLUxiynwLhfytpnKS6s47dyoC7ketMZZgyio9g=;
+	s=korg; t=1722357603;
+	bh=x+FeiTP98ITJBOiPfRVjZ5X+GfaGbvCWAjE9gJjrg8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vyurk4DAvr/5ydDIyHyLPlG/caMJx5v2a3Pm+4uJWDXQY7YpNlqcrasyjZUYKlW22
-	 h8yQTxKfsPUKaSDI000zX78MlIn14eEEYev34LKG4PdovMA0OcpMNEzTvDw4VkdaCH
-	 J4gVhhu0i2L61U78N5BoZ7a+hvs0iVP8yaGtwEgo=
+	b=v7b6J4vDU07wuI1hvxJ5ArI+3l6swPeTFdglaJE2HvdtpIfGse6H5xZv1csA9DWod
+	 7EOm+8/t//2arQdrnotzqBQuySQMPOqmF1Pc/G4xArNlmvGFQ9w+iNEqCbBVNtbT6o
+	 v6BCZlpf6ZJuq6VZjlj88Y3dW9sGySqSNp8mrBSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 434/568] scsi: qla2xxx: Return ENOBUFS if sg_cnt is more than one for ELS cmds
+	Rafael Beims <rafael.beims@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.1 308/440] wifi: mwifiex: Fix interface type change
 Date: Tue, 30 Jul 2024 17:49:01 +0200
-Message-ID: <20240730151656.833039963@linuxfoundation.org>
+Message-ID: <20240730151627.852825154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Rafael Beims <rafael.beims@toradex.com>
 
-commit ce2065c4cc4f05635413f63f6dc038d7d4842e31 upstream.
+commit a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272 upstream.
 
-Firmware only supports single DSDs in ELS Pass-through IOCB (0x53h), sg cnt
-is decided by the SCSI ML. User is not aware of the cause of an acutal
-error.
+When changing the interface type we also need to update the bss_num, the
+driver private data is searched based on a unique (bss_type, bss_num)
+tuple, therefore every time bss_type changes, bss_num must also change.
 
-Return the appropriate return code that will be decoded by API and
-application and proper error message will be displayed to user.
+This fixes for example an issue in which, after the mode changed, a
+wireless scan on the changed interface would not finish, leading to
+repeated -EBUSY messages to userspace when other scan requests were
+sent.
 
-Fixes: 6e98016ca077 ("[SCSI] qla2xxx: Re-organized BSG interface specific code.")
+Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240510110458.15475-1-francesco@dolcini.it
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -324,7 +324,7 @@ qla2x00_process_els(struct bsg_job *bsg_
- 		    "request_sg_cnt=%x reply_sg_cnt=%x.\n",
- 		    bsg_job->request_payload.sg_cnt,
- 		    bsg_job->reply_payload.sg_cnt);
--		rval = -EPERM;
-+		rval = -ENOBUFS;
- 		goto done;
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -926,6 +926,8 @@ mwifiex_init_new_priv_params(struct mwif
+ 		return -EOPNOTSUPP;
  	}
  
++	priv->bss_num = mwifiex_get_unused_bss_num(adapter, priv->bss_type);
++
+ 	spin_lock_irqsave(&adapter->main_proc_lock, flags);
+ 	adapter->main_locked = false;
+ 	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
 
 
 
