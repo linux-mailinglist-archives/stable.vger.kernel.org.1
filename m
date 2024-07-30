@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C494C941926
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BA2941BBA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B35F1F22785
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63F641C22FB1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631F4189517;
-	Tue, 30 Jul 2024 16:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43061898ED;
+	Tue, 30 Jul 2024 16:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkwYM0na"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qG67M+PQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE4E189502;
-	Tue, 30 Jul 2024 16:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FDC17D8BB;
+	Tue, 30 Jul 2024 16:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356967; cv=none; b=hOl09YxmMrWcoiVnUazJAIhbwaZAdE4K5QjTtbiTYNBBjiEycWF4fqO1WF/vgli9cH/WTRpkny+EduNHcg2WcM9oCD6zA0QIm5sZAPZmCZ/Q9MeK9DSIns9lMPBXBwZKGfQwYFVSh7HvT35J/1WnPfbe0j5CJsPPNfBj3XnFx+g=
+	t=1722358703; cv=none; b=lUXKUHCHb77/WFVY96PJ2RTwv8F/LN9uq8vPnVhI9QJNaSRtjGUECE4AaJiO2cyDgPjuSRd/Yp9nAUCQm6k2LM17QTMY7eqPf9UZCrdPq0XubALpuhnk0OnCncsSdKPwXJdnvfu3WrN8IZdzR56gjTfOGP5zk+ZollZ7PuJcfNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356967; c=relaxed/simple;
-	bh=m6RGFLRZenry8iywf42LasaxQQ8H1vpNYIXI2N4JwE4=;
+	s=arc-20240116; t=1722358703; c=relaxed/simple;
+	bh=mmHIhGJIrsWAO89tpLavLAgWIB06/VTdCVf93O/9fAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n88bpNqBmFhdAisdFF94yrPfEzPjCypKYEdpWHp4vucVeX5VnCOp9kgWihiIPznbssEo1CoQHveNVVEU/BBEtqdHpVPgLQTjD/lCkYEiXkS+50tBtaymaHI+yAl0whb7wS42ggP3xEA11arI6JzQhKmIJm+LQNvHM/qGKbNqaQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkwYM0na; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E33BC4AF0A;
-	Tue, 30 Jul 2024 16:29:26 +0000 (UTC)
+	 MIME-Version; b=oMQBQJBGT1FJ5A0tQT/xIpKbE0mPdRDbWdv1bK9qheKAbw9tbiGW/n8/5LeUEM5LG94RQIKRNLwABGIukXRw6/NCKx8XAp4S2OxOSJn6CvdDILXeZ8fT9uIxfi1olyjNbuiWipSPCOKFVndDxXRD9c9FcRlHNb1E/3nKxoKByIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qG67M+PQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E6AC32782;
+	Tue, 30 Jul 2024 16:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356967;
-	bh=m6RGFLRZenry8iywf42LasaxQQ8H1vpNYIXI2N4JwE4=;
+	s=korg; t=1722358703;
+	bh=mmHIhGJIrsWAO89tpLavLAgWIB06/VTdCVf93O/9fAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkwYM0naB09RoRTxLFsdXqvw87HjlhEFkp5pUFRg1LZfFNGO9+Scd+EB56POqJO6l
-	 9GOc2ARbGiTkVRdKWyVBtV/Cjx61HObXONzu2wn4t/z+ZlCgmd5fo5xlBCX90poApz
-	 nHKPoxNZeKsJmDgbFUygQ/eASrOoORvee2IpQe4I=
+	b=qG67M+PQYhVRuW4bo3T5dj/OX2sA19XUKQbUWBcUUyozpMd/r1unDypL2umLb8Rdq
+	 ONIpOX3nlGkGEddAVA/YaZa90fKKV+tGUypjTATjSkVxN9Fr3Z0qw1PAXiXsf4fcWB
+	 jMaZmDGxBNAUbze4CaFxKF4ssIDZuYeDUj3bPBUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 246/440] pinctrl: single: fix possible memory leak when pinctrl_enable() fails
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 372/568] ipv4: fix source address selection with route leak
 Date: Tue, 30 Jul 2024 17:47:59 +0200
-Message-ID: <20240730151625.459281956@linuxfoundation.org>
+Message-ID: <20240730151654.403561529@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 8f773bfbdd428819328a2d185976cfc6ae811cd3 ]
+commit 6807352353561187a718e87204458999dbcbba1b upstream.
 
-This driver calls pinctrl_register_and_init() which is not
-devm_ managed, it will leads memory leak if pinctrl_enable()
-fails. Replace it with devm_pinctrl_register_and_init().
-And call pcs_free_resources() if pinctrl_enable() fails.
+By default, an address assigned to the output interface is selected when
+the source address is not specified. This is problematic when a route,
+configured in a vrf, uses an interface from another vrf (aka route leak).
+The original vrf does not own the selected source address.
 
-Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240606023704.3931561-3-yangyingliang@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's add a check against the output interface and call the appropriate
+function to select the source address.
+
+CC: stable@vger.kernel.org
+Fixes: 8cbb512c923d ("net: Add source address lookup op for VRF")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240710081521.3809742-2-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/ipv4/fib_semantics.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 9ad8f70206142..cd23479f352a2 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -1328,7 +1328,6 @@ static void pcs_irq_free(struct pcs_device *pcs)
- static void pcs_free_resources(struct pcs_device *pcs)
- {
- 	pcs_irq_free(pcs);
--	pinctrl_unregister(pcs->pctl);
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2270,6 +2270,15 @@ void fib_select_path(struct net *net, st
+ 		fib_select_default(fl4, res);
  
- #if IS_BUILTIN(CONFIG_PINCTRL_SINGLE)
- 	if (pcs->missing_nr_pinctrl_cells)
-@@ -1885,7 +1884,7 @@ static int pcs_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		goto free;
- 
--	ret = pinctrl_register_and_init(&pcs->desc, pcs->dev, pcs, &pcs->pctl);
-+	ret = devm_pinctrl_register_and_init(pcs->dev, &pcs->desc, pcs, &pcs->pctl);
- 	if (ret) {
- 		dev_err(pcs->dev, "could not register single pinctrl driver\n");
- 		goto free;
-@@ -1918,8 +1917,10 @@ static int pcs_probe(struct platform_device *pdev)
- 
- 	dev_info(pcs->dev, "%i pins, size %u\n", pcs->desc.npins, pcs->size);
- 
--	return pinctrl_enable(pcs->pctl);
-+	if (pinctrl_enable(pcs->pctl))
-+		goto free;
- 
-+	return 0;
- free:
- 	pcs_free_resources(pcs);
- 
--- 
-2.43.0
-
+ check_saddr:
+-	if (!fl4->saddr)
+-		fl4->saddr = fib_result_prefsrc(net, res);
++	if (!fl4->saddr) {
++		struct net_device *l3mdev;
++
++		l3mdev = dev_get_by_index_rcu(net, fl4->flowi4_l3mdev);
++
++		if (!l3mdev ||
++		    l3mdev_master_dev_rcu(FIB_RES_DEV(*res)) == l3mdev)
++			fl4->saddr = fib_result_prefsrc(net, res);
++		else
++			fl4->saddr = inet_select_addr(l3mdev, 0, RT_SCOPE_LINK);
++	}
+ }
 
 
 
