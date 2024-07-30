@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA78941E01
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A76D9419E3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBE15285DDB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2676F28254B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7619C1A76B6;
-	Tue, 30 Jul 2024 17:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A90189503;
+	Tue, 30 Jul 2024 16:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oF0nqBaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3WOPEoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F1F1A76A1;
-	Tue, 30 Jul 2024 17:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40443146D6B;
+	Tue, 30 Jul 2024 16:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360278; cv=none; b=QQXLw/SwJgsKZuJr/nZZuzRgBM30X3yYgkVvqHpSKXDZN+TBXvlm28rMIPNu0VwAm9z/yxg1Ota/QWRZwXEFgjdDCa50MxYY1kzi/ZNbm3BoSvvqDyUt6GMNpuEcaR1K5wCrUjUG0/tMyj229ZxT/WpUuMubdhpl6vQhwQXUd4A=
+	t=1722357447; cv=none; b=N1DIe794O5M8KY2sPtM/LAp9NqRjhy3QDhFBHPF8SMn2fVFUS7qWMGZ/OglIznrahW4CncK7RhqIi61y/E4LJnH7cK/szLAY+wW88wCyoaqTZWnrMbiPa3QE1Y6IVIL9+GUAF3VuiHn6eb9ouYd/iPUPy+nvmBuQdEexOUEPyoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360278; c=relaxed/simple;
-	bh=k/sUcE+YL36QDOoG5PPP2Ndi6j+y6XBUuFVH52kFMTI=;
+	s=arc-20240116; t=1722357447; c=relaxed/simple;
+	bh=5/GDnpXJ+kZ7xMBW4XcgjhWJ5rmJQp8moOikH9rVkMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ygv0PwSmpgztDIhQ82RPaEtwF4ZJz3rvh9JQHdWaeUDFpjpJq0BpMrzZdb/MHVFdfPfB46/4oXgzfH8wr4UOkt2oyJ5D5efLqyoukLYFRH28NzSpSIIijt2YXT6asqtE4WQ2K3UeCs6604uSU64Nlu3gr+d1G+HeT+4JGt+LeiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF0nqBaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C66C32782;
-	Tue, 30 Jul 2024 17:24:36 +0000 (UTC)
+	 MIME-Version; b=Mg3KRHiBWFlvyVBoxH9xqZHVfTNJkgfncdOecH3kADZtT56GRlrBA6LK2G/mn+kb35Pio0DY0jGnEqp0PUvUC8ygRhufqWXny2gVbLADYA5ptuDNgm8sMxWaRDpDnjrYNTkgZ8OB3ujtbTcGoojlUUHCbEUcWewcQyWXH9kwj0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3WOPEoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F9DC32782;
+	Tue, 30 Jul 2024 16:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360278;
-	bh=k/sUcE+YL36QDOoG5PPP2Ndi6j+y6XBUuFVH52kFMTI=;
+	s=korg; t=1722357447;
+	bh=5/GDnpXJ+kZ7xMBW4XcgjhWJ5rmJQp8moOikH9rVkMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oF0nqBaFjoEb6AFl1oebcYLVcBhbwtwa3flOtxCqpevP0sBorbPKRpu7Et3mAIOu8
-	 VhCjg4SCY0R/I8vttnEV49jAyZo12HoQmDHYTKNmBxvC6Yr2RXLN+HXC0GqBgciMA2
-	 kqJRHmwlmhcNYaTrmh99IhhFHiYewllZ7z17hUtw=
+	b=b3WOPEoyTRCEqA7WF1/xPQ+1VUfTdIc6XMv6yb1G2/+WBG+cIz4b+0m0oOX73gVHq
+	 6XFgBjHLE+DwO193HLC0BiTKVTn9E8ZzZygXGm3Em7t+Bvcpusx96p9WUsaS2MsOwa
+	 PHs3YkwLD4iU//Qhw72rj/dfKrMoOKRrxz2KIYY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.10 650/809] scsi: qla2xxx: Return ENOBUFS if sg_cnt is more than one for ELS cmds
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	"Xi (Alex) Liu" <xi.liu@amd.com>,
+	Sung Joon Kim <sungjoon.kim@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>
+Subject: [PATCH 6.1 293/440] drm/amd/display: Check for NULL pointer
 Date: Tue, 30 Jul 2024 17:48:46 +0200
-Message-ID: <20240730151750.550322429@linuxfoundation.org>
+Message-ID: <20240730151627.275124117@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Sung Joon Kim <sungjoon.kim@amd.com>
 
-commit ce2065c4cc4f05635413f63f6dc038d7d4842e31 upstream.
+commit 4ab68e168ae1695f7c04fae98930740aaf7c50fa upstream.
 
-Firmware only supports single DSDs in ELS Pass-through IOCB (0x53h), sg cnt
-is decided by the SCSI ML. User is not aware of the cause of an acutal
-error.
+[why & how]
+Need to make sure plane_state is initialized
+before accessing its members.
 
-Return the appropriate return code that will be decoded by API and
-application and proper error message will be displayed to user.
-
-Fixes: 6e98016ca077 ("[SCSI] qla2xxx: Re-organized BSG interface specific code.")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Xi (Alex) Liu <xi.liu@amd.com>
+Signed-off-by: Sung Joon Kim <sungjoon.kim@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 295d91cbc700651782a60572f83c24861607b648)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_surface.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -324,7 +324,7 @@ qla2x00_process_els(struct bsg_job *bsg_
- 		    "request_sg_cnt=%x reply_sg_cnt=%x.\n",
- 		    bsg_job->request_payload.sg_cnt,
- 		    bsg_job->reply_payload.sg_cnt);
--		rval = -EPERM;
-+		rval = -ENOBUFS;
- 		goto done;
- 	}
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
+@@ -154,7 +154,8 @@ const struct dc_plane_status *dc_plane_g
+ 		if (pipe_ctx->plane_state != plane_state)
+ 			continue;
  
+-		pipe_ctx->plane_state->status.is_flip_pending = false;
++		if (pipe_ctx->plane_state)
++			pipe_ctx->plane_state->status.is_flip_pending = false;
+ 
+ 		break;
+ 	}
 
 
 
