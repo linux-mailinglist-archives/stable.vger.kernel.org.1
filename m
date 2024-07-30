@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-63943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E3A941B60
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 931A1941E4E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13E40281897
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 113A6B27411
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0310F1898EB;
-	Tue, 30 Jul 2024 16:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F5D1A76BF;
+	Tue, 30 Jul 2024 17:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJmx8uOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJk18E4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAB31A6195;
-	Tue, 30 Jul 2024 16:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24581A76B2;
+	Tue, 30 Jul 2024 17:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358454; cv=none; b=tlBv5KI/lVTD7n37yIlrUK8QdqgiIIWXN9IyJAUgz/eg3Di7oUOaBW+3j20W/1WYTUjixSl8FwynewWS60gB+u1EXwA0watvGRzKRh+JhWuc108pji77ay6OabkaMglIa1kvKCKgvgciXY08YgH6TZuS18W1OWPl3OeyQflXuZs=
+	t=1722360195; cv=none; b=Nx9Zl0Ki/A5cgnQKchy9thVqq6MENLWfZfq6Qk512ooanD2sHX4xLCsiJA6FO74CU8Q7B0lUTm6+/Jd0UtcwSlS7kaDyIC/wXmuzmtkVJkFL2ltHMi4qZtRNBILGmtXGtRvES6INfc/FUBmg6pPU7bJ0uP1mKMKXXVxgKB3uISg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358454; c=relaxed/simple;
-	bh=QVP1rGPeJ3TdujJAA66te517+Pp4Ql9n3UEoIgVqbcI=;
+	s=arc-20240116; t=1722360195; c=relaxed/simple;
+	bh=0j9m+tp3qNEd13qkW6eTpPj19NK56NSApdQb16iReS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehKU48O+s/HVO7LaF1ELBuJ5UFcZnnrSmIVS1BUEfgXthCClhBmEKLKS6HVgytVD7ijcd6aSnTe7aYHElBrXoqoNGaAbM5rTIScUxBMdzzuzHlYb7NHJP8O+iHK+qAXlOA/8Cp/kmwiFAUh3iSj9KyN1eU5BzgFmZftEfwlPE80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJmx8uOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22638C32782;
-	Tue, 30 Jul 2024 16:54:13 +0000 (UTC)
+	 MIME-Version; b=YSTvK4TnR9INSVlLsSxLsqF3EAVcX+9bm7QEzGoS1rfvvZrrHMndN3n/MljJebTcVnGLompXYckGmXnJXyveZoiuDzR3cxT4s8x5U2hwDZNtHFTdwOlGkpIuDVhu8IGsxd25bGOhL1hSXpZ0AV73KbYV567stxvb5q9tjMWoqIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJk18E4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A82C32782;
+	Tue, 30 Jul 2024 17:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358454;
-	bh=QVP1rGPeJ3TdujJAA66te517+Pp4Ql9n3UEoIgVqbcI=;
+	s=korg; t=1722360194;
+	bh=0j9m+tp3qNEd13qkW6eTpPj19NK56NSApdQb16iReS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJmx8uOxweRcD06dJ7hxAMJKykfVKNFS7dwtqMKsJf8JwzB+Q6kBnLDYm8U4qUv/1
-	 lnxMsQvxa+KRb1fACy+XRRMesCncG0mBQryQVgilGJty8n1QUsXYidw4TONrIXQRnY
-	 OBDx6o0eZ0iwc+yT5OA4xcVHx3WlJcQ6pUc5AIuU=
+	b=lJk18E4S5I9zmfamFPDhglqDasDE/nipm1sFj2cFMqS/y9qxleZTX3Iz+qL+GfK7E
+	 2hq0W8cZa1t0yfvvXwfqObbf9JjPmnMr67cB21yHiIZEtGR7NJ+oo4ulo+wRt/+MbH
+	 A1INjm7gPGPQi81qpFoTQyyYwNUWMJ7QREkXmC5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 363/568] x86/efistub: Avoid returning EFI_SUCCESS on error
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 594/809] io_uring: fix lost getsockopt completions
 Date: Tue, 30 Jul 2024 17:47:50 +0200
-Message-ID: <20240730151654.049948470@linuxfoundation.org>
+Message-ID: <20240730151748.292162928@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit fb318ca0a522295edd6d796fb987e99ec41f0ee5 upstream.
+commit 24dce1c538a7ceac43f2f97aae8dfd4bb93ea9b9 upstream.
 
-The fail label is only used in a situation where the previous EFI API
-call succeeded, and so status will be set to EFI_SUCCESS. Fix this, by
-dropping the goto entirely, and call efi_exit() with the correct error
-code.
+There is a report that iowq executed getsockopt never completes. The
+reason being that io_uring_cmd_sock() can return a positive result, and
+io_uring_cmd() propagates it back to core io_uring, instead of IOU_OK.
+In case of io_wq_submit_work(), the request will be dropped without
+completing it.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+The offending code was introduced by a hack in
+a9c3eda7eada9 ("io_uring: fix submission-failure handling for uring-cmd"),
+however it was fine until getsockopt was introduced and started
+returning positive results.
+
+The right solution is to always return IOU_OK, since
+e0b23d9953b0c ("io_uring: optimise ltimeout for inline execution"),
+we should be able to do it without problems, however for the sake of
+backporting and minimising side effects, let's keep returning negative
+return codes and otherwise do IOU_OK.
+
+Link: https://github.com/axboe/liburing/issues/1181
+Cc: stable@vger.kernel.org
+Fixes: 8e9fad0e70b7b ("io_uring: Add io_uring command support for sockets")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/ff349cf0654018189b6077e85feed935f0f8839e.1721149870.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ io_uring/uring_cmd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -501,16 +501,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
- 	if (!cmdline_ptr)
--		goto fail;
-+		efi_exit(handle, EFI_OUT_OF_RESOURCES);
- 
- 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
- 			  &boot_params.ext_cmd_line_ptr);
- 
- 	efi_stub_entry(handle, sys_table_arg, &boot_params);
- 	/* not reached */
--
--fail:
--	efi_exit(handle, status);
+--- a/io_uring/uring_cmd.c
++++ b/io_uring/uring_cmd.c
+@@ -265,7 +265,7 @@ int io_uring_cmd(struct io_kiocb *req, u
+ 		req_set_fail(req);
+ 	io_req_uring_cleanup(req, issue_flags);
+ 	io_req_set_res(req, ret, 0);
+-	return ret;
++	return ret < 0 ? ret : IOU_OK;
  }
  
- static void add_e820ext(struct boot_params *params,
+ int io_uring_cmd_import_fixed(u64 ubuf, unsigned long len, int rw,
 
 
 
