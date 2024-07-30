@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF41F941A4D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467CC941D07
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA70A2816B4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0C5E1F24BEE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208B2189502;
-	Tue, 30 Jul 2024 16:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1562B1A76C8;
+	Tue, 30 Jul 2024 17:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvsJXnDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiXGT0io"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3ABC1A6169;
-	Tue, 30 Jul 2024 16:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C854C1A76A5;
+	Tue, 30 Jul 2024 17:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357740; cv=none; b=lEOpDVmG5ThnqGiVVRYUG/cNEHfzFXAFz233bO6fSqta/5dyr+4qa+XMP/ApDPte2DIlJoeFW9ndwxuyv9FqSTDS09SSCV1Vr2LEIbtXxJvpWbIFR2EUST8LNtuL3xyi52uTYxAyWcA212uyb6SComi04P5E17jkyckFPCWbrBM=
+	t=1722359508; cv=none; b=Go2kG/ZhPkOW68P32BgM8XDtegFdbOtXafbExuGXY93PQzMqr60vAicwVszm0v2OwLIHkuh6po0f4puO2y1z0H50MN3zaIvzewGozf71XxTn9Ae6/dWv33yzSE6w1E94uP99Jl9fVnb+nWXt1bitdR4M7mmBafvp9tevi2xcBd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357740; c=relaxed/simple;
-	bh=/RKHR3GcrgrZYyb1Z2ntPa1SzEYPY9xb8kR0IBgCJok=;
+	s=arc-20240116; t=1722359508; c=relaxed/simple;
+	bh=Hw2YM5c29vmFNx3+5r0KqHOsTdQ8ZgQ3yuknNG1F1Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjcY4cWr2wTQMBXC0JHotd+6zDcincBpZC3aBOHgDgwXVoDuNJDxNk40JSxD/GqgSqbK4GzbsBeQkoRLKl0VqZSITNCi8lY3rwRNNVMZsgbn1WC5ujaMOVxSNIpT4RG2OmDKd6ok/dbt7AtNvU3cje1XOH9wINjQDuKkXOnWG4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvsJXnDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E03C32782;
-	Tue, 30 Jul 2024 16:42:20 +0000 (UTC)
+	 MIME-Version; b=IFVDUQhrOChe28iVDZvtnARv1/0RpkxCS6zGyuWAJGncYa7zpnjS6+xzODgbhoy5j22NpqGNIe/N3UtQBoqChuPjXAIjsaBnwag0H3EFPoAu3IKXsfU9pD7nuilvyqWstILypRh0DqdO7V8fePSojOqXl2qUQP2w033OlhUFI/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiXGT0io; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F46EC4AF0F;
+	Tue, 30 Jul 2024 17:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357740;
-	bh=/RKHR3GcrgrZYyb1Z2ntPa1SzEYPY9xb8kR0IBgCJok=;
+	s=korg; t=1722359508;
+	bh=Hw2YM5c29vmFNx3+5r0KqHOsTdQ8ZgQ3yuknNG1F1Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvsJXnDGrkMMNQqZCvoRAwV09DADs/Fzy3Dc9U62J0Av1chURikay2ra1+J0J4Lrr
-	 LizlfcUOMIyjg9yhbD/8cToqktHMIFOXsyZSSE8i771YbcWTPtC5jFvCcR5wssLUSw
-	 /wOfv0KwBEdJLl5DQoVKRgdKE/Itg7IQU2swg/fA=
+	b=ZiXGT0ionF6faZ302oRxmhJWLrzgkX2tusHAVUNiQRvpaDqOiEw6iBrTPpDlMOWD8
+	 /sR4u8aK99iuhbuCy+ebIHV0mpd5lFoe+p91ncO6ZnLP3SSQ6sE4A8nt0ArHq+362g
+	 8vKmVR+12ai55mvQLkebznumPOOGePRefvln6VTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/568] usb: typec-mux: nb7vpq904m: unregister typec switch on probe error and remove
+Subject: [PATCH 6.10 494/809] pinctrl: freescale: mxs: Fix refcount of child
 Date: Tue, 30 Jul 2024 17:46:10 +0200
-Message-ID: <20240730151650.155815873@linuxfoundation.org>
+Message-ID: <20240730151744.250485813@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 74b64e760ee3433c0f8d95715038c869bcddacf7 ]
+[ Upstream commit 7f500f2011c0bbb6e1cacab74b4c99222e60248e ]
 
-Add the missing call to typec_switch_put() when probe fails and
-the nb7vpq904m_remove() call is called.
+of_get_next_child() will increase refcount of the returned node, need
+use of_node_put() on it when done.
 
-Fixes: 348359e7c232 ("usb: typec: nb7vpq904m: Add an error handling path in nb7vpq904m_probe()")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Fixes: 88d8f3ac9c67 ("usb: typec: add support for the nb7vpq904m Type-C Linear Redriver")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606-topic-sm8x50-upstream-retimer-broadcast-mode-v2-2-c6f6eae479c3@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Per current implementation, 'child' will be override by
+for_each_child_of_node(np, child), so use of_get_child_count to avoid
+refcount leakage.
+
+Fixes: 17723111e64f ("pinctrl: add pinctrl-mxs support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/20240504-pinctrl-cleanup-v2-18-26c5f2dc1181@nxp.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux/nb7vpq904m.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pinctrl/freescale/pinctrl-mxs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/typec/mux/nb7vpq904m.c b/drivers/usb/typec/mux/nb7vpq904m.c
-index cda206cf0c387..596639dad31d7 100644
---- a/drivers/usb/typec/mux/nb7vpq904m.c
-+++ b/drivers/usb/typec/mux/nb7vpq904m.c
-@@ -453,7 +453,7 @@ static int nb7vpq904m_probe(struct i2c_client *client)
+diff --git a/drivers/pinctrl/freescale/pinctrl-mxs.c b/drivers/pinctrl/freescale/pinctrl-mxs.c
+index e77311f26262a..4813a9e16cb3b 100644
+--- a/drivers/pinctrl/freescale/pinctrl-mxs.c
++++ b/drivers/pinctrl/freescale/pinctrl-mxs.c
+@@ -413,8 +413,8 @@ static int mxs_pinctrl_probe_dt(struct platform_device *pdev,
+ 	int ret;
+ 	u32 val;
  
- 	ret = nb7vpq904m_parse_data_lanes_mapping(nb7);
- 	if (ret)
--		return ret;
-+		goto err_switch_put;
- 
- 	ret = regulator_enable(nb7->vcc_supply);
- 	if (ret)
-@@ -496,6 +496,9 @@ static int nb7vpq904m_probe(struct i2c_client *client)
- 	gpiod_set_value(nb7->enable_gpio, 0);
- 	regulator_disable(nb7->vcc_supply);
- 
-+err_switch_put:
-+	typec_switch_put(nb7->typec_switch);
-+
- 	return ret;
- }
- 
-@@ -509,6 +512,8 @@ static void nb7vpq904m_remove(struct i2c_client *client)
- 	gpiod_set_value(nb7->enable_gpio, 0);
- 
- 	regulator_disable(nb7->vcc_supply);
-+
-+	typec_switch_put(nb7->typec_switch);
- }
- 
- static const struct i2c_device_id nb7vpq904m_table[] = {
+-	child = of_get_next_child(np, NULL);
+-	if (!child) {
++	val = of_get_child_count(np);
++	if (val == 0) {
+ 		dev_err(&pdev->dev, "no group is defined\n");
+ 		return -ENOENT;
+ 	}
 -- 
 2.43.0
 
