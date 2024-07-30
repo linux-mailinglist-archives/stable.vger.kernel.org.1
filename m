@@ -1,101 +1,121 @@
-Return-Path: <stable+bounces-62767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 859879411E4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92384941210
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6DCD1C23125
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:30:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41701C226C2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FA719EEBA;
-	Tue, 30 Jul 2024 12:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA08D19EECA;
+	Tue, 30 Jul 2024 12:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KkUnA/32"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iCi8btfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0445418F2FF;
-	Tue, 30 Jul 2024 12:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82641757FC;
+	Tue, 30 Jul 2024 12:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722342597; cv=none; b=KM/4N43sq2SHReYbLciNSuWemMTLKK1tNlnL5pHmEK4MyTD3zE0cV1unOlOqUpK5PfbpyziSOJQrWZPaGAH9sBYanYXccGc3PSw5iMg1GzoJryOJzAVSjZxLRYEwWNGQ9xGsRCqShNXzo4bv/BC2mBZP5gtkaA9h82Poz8eqzxA=
+	t=1722343346; cv=none; b=TefX+Kaw2uBc6WGSUyJO9v4k0yBhHSUgEzF13pkojLyjWOXBAc86XyjR7P1e/56QTcjb/Fh7KcgXQZm3qjDpPDp+dQcTNnHst1bpQFg1EReyjEhwcqGdgKQjaglSaSOONgpkEMKFLrJ7czpgcvUdza8QMOYP/xEFDCC8oBr8KQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722342597; c=relaxed/simple;
-	bh=VwgmwLcqB9ZFY4Gq8oFzw8DPmba5sKvUZygIQYJUFJ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CM1WGLJyTYIX5Op/EgFbtrhPHQNb0FbZB7aaw0GjKfGE/QE0FjzNKPfe6Q/nzBOZBttsNpnwM185Kd1QpvtbJ0S8PfqhU/juFdCcuuxtEADYYqgF7yk5elVWTHY5dxHyXmjjw9fAPXRTD/11CJH1a1OO2ufldv1iEaJ287fLoII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KkUnA/32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6B5C32782;
-	Tue, 30 Jul 2024 12:29:53 +0000 (UTC)
+	s=arc-20240116; t=1722343346; c=relaxed/simple;
+	bh=OX7gXcQNPCvmHTvgcG7NfG9PhoIqqO3oQ/laTGMlWFI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kDO2Uqj6eFd5wGRAnS2aclHV9chNVcA1qala+Abp+A+rU2l1OhfWEvC3w6wjE3fTA335iVrmHvwoqHNJoP57jz4yfZ56Qyw0Nbr+pVvvv4WgCEt0N85m+97l5SQkrkkVN5qQ8R2r+m6tk/k7/IA6hZXLWuTzRRwhQtgbLhyoClE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iCi8btfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0829AC32782;
+	Tue, 30 Jul 2024 12:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722342596;
-	bh=VwgmwLcqB9ZFY4Gq8oFzw8DPmba5sKvUZygIQYJUFJ8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkUnA/32/zuP2yfY+2BHZWzBcAP6eKFvYJzwWg50srUl6w+CFGAAsp0WSVoyBsClT
-	 RqacX6MYF5YOZXuFyCH1T+vUJ++Nz0X1eEHzYVtQCG70dV6lycBDRT1l0bC44Pawpd
-	 +iPYigs44yG43C7YtEGs+CmmNOd07N1gVv7oVL3sAsGWuDWypjD0wUHbrIyVdGM4TS
-	 vrI0xEOfD8OBBv8DrpRSzlAYcZ84bFwSacznjY87leU+5uoMBw6sHmr0W8MuWdQEGa
-	 PdIEIXWlUrWuRQDGAlE0qFxCsmO+XkMEeW2ssvA5Zhnhvuu4KAm3BW6AkdQu1fHQWH
-	 w+/JLXA6Quvug==
-From: Christian Brauner <brauner@kernel.org>
-To: dhowells@redhat.com,
-	jlayton@kernel.org,
-	Max Kellermann <max.kellermann@ionos.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	willy@infradead.org,
-	linux-cachefs@redhat.com,
-	linux-fsdevel@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=k20201202; t=1722343345;
+	bh=OX7gXcQNPCvmHTvgcG7NfG9PhoIqqO3oQ/laTGMlWFI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iCi8btfpZmMmoNrYlDrhSuGluxOfeClACuaAEioHJd07u4DcnQSLQxyGKGDzcmoob
+	 cSSRdLIJ9XrrrAcIJ38g5dXEHSUrtMHdD+KTDQpJFA9c279uvgghBezBlG5b+k9cWR
+	 QUhwsuVOxKQSC5xn32N+8kqoylRqv+QLaypFrwQVsI/ZlZaEvczptnFBQHgo4X8dLq
+	 eVF537Dvgpbqvs4EVFwHBBJlLXX1PKJeKqqVLSSXG04J1C1SsCUlWe7sc7/9/7pjcs
+	 afzX+3xWEkIOeg3XhkMDp7rHkakoqCk7V3p2xkB4VmrhJDezxCINatcN++q14xs36T
+	 GacQGIKC32K8A==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2" flag
-Date: Tue, 30 Jul 2024 14:29:46 +0200
-Message-ID: <20240730-bogen-absuchen-8ab2d9ba0406@brauner>
+Cc: Christoph Hellwig <hch@lst.de>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 1/3] block: don't call bio_uninit from bio_endio
+Date: Tue, 30 Jul 2024 08:42:19 -0400
+Message-ID: <20240730124222.3083443-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240729092828.857383-1-max.kellermann@ionos.com>
-References: <20240729092828.857383-1-max.kellermann@ionos.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1287; i=brauner@kernel.org; h=from:subject:message-id; bh=VwgmwLcqB9ZFY4Gq8oFzw8DPmba5sKvUZygIQYJUFJ8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaStuLPXbsNutWrb//0s9qtDC+4qLxCUPskaGWuox6y2J pWnfcXUjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIm0bWL4Z6Y6h3Vi5b6S3S8m Bl+YNE1i6+I5d4u91me4+v1Y+SriThTD/7znfiksf3dX7a+6M2XhuqRz75nya4/vVRJP31p8af4 DfQ4A
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-On Mon, 29 Jul 2024 11:28:28 +0200, Max Kellermann wrote:
-> This fixes a crash bug caused by commit ae678317b95e ("netfs: Remove
-> deprecated use of PG_private_2 as a second writeback flag") by
-> removing a leftover folio_end_private_2() call after all calls to
-> folio_start_private_2() had been removed by the commit.
-> 
-> By calling folio_end_private_2() without folio_start_private_2(), the
-> folio refcounter breaks and causes trouble like RCU stalls and general
-> protection faults.
-> 
-> [...]
+From: Christoph Hellwig <hch@lst.de>
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+[ Upstream commit bf4c89fc8797f5c0964a0c3d561fbe7e8483b62f ]
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Commit b222dd2fdd53 ("block: call bio_uninit in bio_endio") added a call
+to bio_uninit in bio_endio to work around callers that use bio_init but
+fail to call bio_uninit after they are done to release the resources.
+While this is an abuse of the bio_init API we still have quite a few of
+those left.  But this early uninit causes a problem for integrity data,
+as at least some users need the bio_integrity_payload.  Right now the
+only one is the NVMe passthrough which archives this by adding a special
+case to skip the freeing if the BIP_INTEGRITY_USER flag is set.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Sort this out by only putting bi_blkg in bio_endio as that is the cause
+of the actual leaks - the few users of the crypto context and integrity
+data all properly call bio_uninit, usually through bio_put for
+dynamically allocated bios.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20240702151047.1746127-4-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ block/bio.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
+diff --git a/block/bio.c b/block/bio.c
+index e9e809a63c597..c7a4bc05c43e7 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1630,8 +1630,18 @@ void bio_endio(struct bio *bio)
+ 		goto again;
+ 	}
+ 
+-	/* release cgroup info */
+-	bio_uninit(bio);
++#ifdef CONFIG_BLK_CGROUP
++	/*
++	 * Release cgroup info.  We shouldn't have to do this here, but quite
++	 * a few callers of bio_init fail to call bio_uninit, so we cover up
++	 * for that here at least for now.
++	 */
++	if (bio->bi_blkg) {
++		blkg_put(bio->bi_blkg);
++		bio->bi_blkg = NULL;
++	}
++#endif
++
+ 	if (bio->bi_end_io)
+ 		bio->bi_end_io(bio);
+ }
+-- 
+2.43.0
 
-[1/1] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2" flag
-      https://git.kernel.org/vfs/vfs/c/f7244a2b1d4c
 
