@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-63413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59509418D8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6549418DB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A125E283687
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2E101F24627
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACE21A619B;
-	Tue, 30 Jul 2024 16:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D94183CBF;
+	Tue, 30 Jul 2024 16:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLjjCrv3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8z/G3Xk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C4F1A6161;
-	Tue, 30 Jul 2024 16:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C848F1A6160;
+	Tue, 30 Jul 2024 16:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356755; cv=none; b=INKHCheBZqvfGcLQtD4gwuLgPYK1kxSvFz6tCn6W09KGZSy8EdAzoImdvvKOMixpaprQ3fagKSs4LVvq5XSoT3grML1hVjDu/3U07sCl+yF0my8loVlJj2Sc7jpGY5dyGZVM5MnuOD5qFjQ7Y9UE1shUwrKw8istmWlGV9zwJOk=
+	t=1722356764; cv=none; b=sGTmsjuavjfzghjz+7Q0a3ButtSVLQmozXaXhjojTXxvUC0XIz0YamUWUu5G50f4bfGlG0UODuOrzPudjWRDix1gQU/8zbzcUDKfaDO50UQuBbbrAmcSr8O7o4nMU+DD7aTQVc7imV8ehlH/wIe7Vu4/jjEdFo2rlhqedJuCxbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356755; c=relaxed/simple;
-	bh=J3METeKYaZjhVEP450cLX/xxm0868Tv8jVHVZ0wbLYo=;
+	s=arc-20240116; t=1722356764; c=relaxed/simple;
+	bh=qpBGTrT+zPIf4w2PvpiFYlhqPRrnCtJDrvFUwf0rh6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TFnU8O4c0bungH5iQY7i2JtpTAI4MSXmQpVBEaghIlU+iLZGWfNzFKGsAMdYHwetI7u8EMJep7akXDGX4Sb/UdO5VYjFHH+UhXiXP4dn2AURMHRfLJhz/xOwog+6QFLtx9k9RmVgBgqt437KpMSKYMYX9g7fvcIBNTzdjwbwQkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLjjCrv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08EDC4AF0A;
-	Tue, 30 Jul 2024 16:25:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=db5EU+PO1zsVgD3G/uXYD7kXpsAGz6hzqlvNTScOYVmJfdDzwv+qLG3mUTm7dOKz8hUuvaNBahEFMIhjOhcpIE5JctZZ2FnM1LI8d+TZjlpA96BfxJju6bXZCrFEtYiFd4GiCT35VDuClzC5z1DibkDq0YId7ZXr5deqTavOzFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8z/G3Xk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507B4C32782;
+	Tue, 30 Jul 2024 16:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356755;
-	bh=J3METeKYaZjhVEP450cLX/xxm0868Tv8jVHVZ0wbLYo=;
+	s=korg; t=1722356764;
+	bh=qpBGTrT+zPIf4w2PvpiFYlhqPRrnCtJDrvFUwf0rh6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLjjCrv33prsmamISWOW2chcJ7yPCiJdrNY05WvqaoBTg1ZY3P9aQYZQpgGQ+/vGB
-	 7HsYUobNPr1PBxMS4yXwzbczofk8/NZGFrZN9WNb6NWSnJfgWfvcrulgt2T+lQaSX7
-	 7YKunS0ji7Anc1P+1N+uWw1V/I8GJHDc9W/vDRyQ=
+	b=W8z/G3XkjnP+Mn/Ph/mGCAiWlY+C1q8o6sbYtge25ipe3fcnWtYYgN6V3X4f6IHUm
+	 3pnyNETzBdwxU9m3+keNil/4PPYmvZyLDxCvKNUbZc7LdgKdHvY1fn6Xa8G9+6j+M2
+	 fCgLnUzX9P5xKoK1gJIjcSXeGotkotGtREeLHMkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Le Ma <le.ma@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/568] drm/amdgpu: Fix memory range calculation
-Date: Tue, 30 Jul 2024 17:44:48 +0200
-Message-ID: <20240730151646.953185423@linuxfoundation.org>
+Subject: [PATCH 6.6 182/568] drm/amdgpu: Check if NBIO funcs are NULL in amdgpu_device_baco_exit
+Date: Tue, 30 Jul 2024 17:44:49 +0200
+Message-ID: <20240730151646.991895518@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -70,37 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Friedrich Vock <friedrich.vock@gmx.de>
 
-[ Upstream commit ce798376ef6764de51d8f4684ae525b55df295fa ]
+[ Upstream commit 0cdb3f9740844b9d95ca413e3fcff11f81223ecf ]
 
-Consider the 16M reserved region also before range calculation for GMC
-9.4.3 SOCs.
+The special case for VM passthrough doesn't check adev->nbio.funcs
+before dereferencing it. If GPUs that don't have an NBIO block are
+passed through, this leads to a NULL pointer dereference on startup.
 
-Fixes: a433f1f59484 ("drm/amdgpu: Initialize memory ranges for GC 9.4.3")
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
+Fixes: 1bece222eabe ("drm/amdgpu: Clear doorbell interrupt status for Sienna Cichlid")
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
 Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Le Ma <le.ma@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-index 8ace3f6210d37..6d2b9d260d92c 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -1949,7 +1949,7 @@ gmc_v9_0_init_sw_mem_ranges(struct amdgpu_device *adev,
- 		break;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index e1227b7c71b16..ea1bce13db941 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5645,7 +5645,7 @@ int amdgpu_device_baco_exit(struct drm_device *dev)
+ 	    adev->nbio.funcs->enable_doorbell_interrupt)
+ 		adev->nbio.funcs->enable_doorbell_interrupt(adev, true);
  
--	size = adev->gmc.real_vram_size >> AMDGPU_GPU_PAGE_SHIFT;
-+	size = (adev->gmc.real_vram_size + SZ_16M) >> AMDGPU_GPU_PAGE_SHIFT;
- 	size /= adev->gmc.num_mem_partitions;
+-	if (amdgpu_passthrough(adev) &&
++	if (amdgpu_passthrough(adev) && adev->nbio.funcs &&
+ 	    adev->nbio.funcs->clear_doorbell_interrupt)
+ 		adev->nbio.funcs->clear_doorbell_interrupt(adev);
  
- 	for (i = 0; i < adev->gmc.num_mem_partitions; ++i) {
 -- 
 2.43.0
 
