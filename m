@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-64481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7192941DFD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F11F941C49
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24BE61C2362E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC822280EBA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759F61A76BA;
-	Tue, 30 Jul 2024 17:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B403187FF6;
+	Tue, 30 Jul 2024 17:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUMNCNqT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPqB52kU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336191A76A1;
-	Tue, 30 Jul 2024 17:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588B51A6192;
+	Tue, 30 Jul 2024 17:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360264; cv=none; b=aZhoBS4rc/0gnidK6okeAMk8xZwLxE6gtpsnTAQBHN1jUnjIuS7AfeZA+vPO/yljatMq5mfIi1RTZRrixaJTe8tjxZxRDKn9b8HyQHB9iHxXAQaY2fPeC30o2vgN9IG85GbpsLqPnVOF7M/UB2Mt89avmBHOF2Lvyhnjpiif2eE=
+	t=1722359136; cv=none; b=LdRUMQyhN4yLgODq1CM5JioYGqf26s15/Q+c36nDiD7ChtdTCDzTUuFDviFwFvJgRulDP0S0AeGzKp6LphUo8kMzn7iUJZa5KufgzXko2I6tzFy18TDw8KYU/HNWHglFUkg2I9BxaVORMuA3PZPqLdfnZU7N2XPHt8//zxQw5r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360264; c=relaxed/simple;
-	bh=k2/DFrTjZJ+9DevCsAUufBiEwrvV8pgUyx0fmrSzrjc=;
+	s=arc-20240116; t=1722359136; c=relaxed/simple;
+	bh=coh/iGgDO0f/42m29oDdeuwmQHtACBWYiQgowOXfD84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9mMkZAdhTjXcozywFSBliCIB9mBDlPLtNkQhpt4gPZEiqophmuzgcv2k2GyLmP5utyZLlirba4ec0SBB4swnrzMd76KHlhusnLruOtdSUkxCxIhbk6EJutuXBIjriThJolatBkFQahmWqco6RrputfnmA/7Z6Ne7iR+KvuVTrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUMNCNqT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF44C4AF0E;
-	Tue, 30 Jul 2024 17:24:23 +0000 (UTC)
+	 MIME-Version; b=EPQZcWgc7rZWDl6zO+rbdcI5/0jixMhnH98ZaMcaMjB1mtpDWURMJ4D/uEPcDM+4y844RgnuxHfUL+G6yhTGXrxBEfdbuBGQ9sAX54mvYPRmw40lWD9hbfieGUPIPApONOV5IMlKsAjtQdj24EbXc8OZwiTGkLC3DD+CzPJMESc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPqB52kU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3A4C32782;
+	Tue, 30 Jul 2024 17:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360264;
-	bh=k2/DFrTjZJ+9DevCsAUufBiEwrvV8pgUyx0fmrSzrjc=;
+	s=korg; t=1722359136;
+	bh=coh/iGgDO0f/42m29oDdeuwmQHtACBWYiQgowOXfD84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUMNCNqTj7Q+yOBwS3rQ7m0MmdoAom0pYf53N3cS6K1U/Y5g012cnbVwXrgzmjIt0
-	 b4s+QaT4MLKTYWsVHIN6NmEG77uY1ob9Ohw/R5tJJvWwHTCqG15a0IcuWrJ17GX6kz
-	 XQ2BnU0G0blqfuG+R8hdgRZG20daJY0VDsI4TiQg=
+	b=mPqB52kUC43uEOf5ARgwoe+k9YYeOHke5jdMSpPhByN9XBaRegnp6upT32AIlNsDr
+	 yOToshxFhZJIaIhd4ZQXAuDjZeGjT5ds7DTyyrLNHFE3t3iIXwNhV7QUdnM+okJbcJ
+	 G1jPtbmG0Ajryx2Kv3HyvrTknxbmxN0EzpglN200=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Ma <maqianga@uniontech.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.10 646/809] efi/libstub: Zero initialize heap allocated struct screen_info
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 415/568] KVM: VMX: Split out the non-virtualization part of vmx_interrupt_blocked()
 Date: Tue, 30 Jul 2024 17:48:42 +0200
-Message-ID: <20240730151750.385392390@linuxfoundation.org>
+Message-ID: <20240730151656.093389952@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Ma <maqianga@uniontech.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit ee8b8f5d83eb2c9caaebcf633310905ee76856e9 upstream.
+commit 322a569c4b4188a0da2812f9e952780ce09b74ba upstream.
 
-After calling uefi interface allocate_pool to apply for memory, we
-should clear 0 to prevent the possibility of using random values.
+Move the non-VMX chunk of the "interrupt blocked" checks to a separate
+helper so that KVM can reuse the code to detect if interrupts are blocked
+for L2, e.g. to determine if a virtual interrupt _for L2_ is a valid wake
+event.  If L1 disables HLT-exiting for L2, nested APICv is enabled, and L2
+HLTs, then L2 virtual interrupts are valid wake events, but if and only if
+interrupts are unblocked for L2.
 
-Signed-off-by: Qiang Ma <maqianga@uniontech.com>
-Cc: <stable@vger.kernel.org> # v6.6+
-Fixes: 732ea9db9d8a ("efi: libstub: Move screen_info handling to common code")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240607172609.3205077-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/screen_info.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/vmx/vmx.c |   11 ++++++++---
+ arch/x86/kvm/vmx/vmx.h |    1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/firmware/efi/libstub/screen_info.c
-+++ b/drivers/firmware/efi/libstub/screen_info.c
-@@ -32,6 +32,8 @@ struct screen_info *__alloc_screen_info(
- 	if (status != EFI_SUCCESS)
- 		return NULL;
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5048,14 +5048,19 @@ static int vmx_nmi_allowed(struct kvm_vc
+ 	return !vmx_nmi_blocked(vcpu);
+ }
  
-+	memset(si, 0, sizeof(*si));
++bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
++{
++	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
++	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
++		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
++}
 +
- 	status = efi_bs_call(install_configuration_table,
- 			     &screen_info_guid, si);
- 	if (status == EFI_SUCCESS)
+ bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
+ {
+ 	if (is_guest_mode(vcpu) && nested_exit_on_intr(vcpu))
+ 		return false;
+ 
+-	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
+-	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
+-		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
++	return __vmx_interrupt_blocked(vcpu);
+ }
+ 
+ static int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -400,6 +400,7 @@ u64 construct_eptp(struct kvm_vcpu *vcpu
+ bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
+ void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
+ bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
++bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
+ bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
+ bool vmx_get_nmi_mask(struct kvm_vcpu *vcpu);
+ void vmx_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked);
 
 
 
