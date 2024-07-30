@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF36941DDA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A528941B8F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9541B28928E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEE6E282993
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB20918801C;
-	Tue, 30 Jul 2024 17:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C33318B475;
+	Tue, 30 Jul 2024 16:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1Ckj0UP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkKgoc8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65671A76AF;
-	Tue, 30 Jul 2024 17:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AB318990B;
+	Tue, 30 Jul 2024 16:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360132; cv=none; b=EaCTy4+kWDw8iez1JIfJThWNOWaSYWJc/CD7GVnZkkA+wbGxAjUs9cSAgrcN67p9siQDdBSyI9JF1YJEt3oVAJrlYDKCYK0E4pwFhmZq2ZVOXZhXkduH7HVK7RIiA8Ke2OJcL0c87K0ZMrsDUTaSliB23wsNefGkIsEF4BgbnvE=
+	t=1722358580; cv=none; b=TmkTcs0+o4wexA3S+PoRX0vaSrs50Iehwu7a17SoRLYtxBqwp2LHopz+LPTCeOYN7pziBL9krJqU/FHjq3eXsASEaSZp5aMYzhqH+W4/dSQGP5MTBwS7sS3oZ+h/J9s95Q14acd7JwIeacrqNo6Kx/z5JQZdkE1M34bo4DR0CWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360132; c=relaxed/simple;
-	bh=pCc+jRz0Fs/cF8m2sUZng7Xb/7btWKtFnLDTFFbou5g=;
+	s=arc-20240116; t=1722358580; c=relaxed/simple;
+	bh=BAGqH2SF3DRbAe4Zv0Zt2WM0DqhV+5z6lQaCRcAb6IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RNdJ9FSGyyDOG+07+iAkLzdHR6UgdRswq0OjpZ5r3YFOVfGwGd4B722UDKzbj71aadFhjCmEpa9iAUf95eidjpFCIIcxdkcqsUzab+TzPMMnNYTmuEmzITVG2RLdEr7u9VZlF5RPwkPnLcbP81k8CiX8Lm6voY1vOjYpKuzP/mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1Ckj0UP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D33C32782;
-	Tue, 30 Jul 2024 17:22:11 +0000 (UTC)
+	 MIME-Version; b=swZcYddLcoIl+unWuNqyNRwqVf6DsV9ABAesvUUrqQIBdDbCQjqk18cxmtP7O8sT9IZp5LjYgqaejvB7NzXUiMXcLFtTtlZKlPwtuC4mZtAbTMYaUwxqeyeALxFHIEJJylV4IN1Wl81MYsv8V8HVaAo/eXICnfjSR52vxc6vi4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkKgoc8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D3FC32782;
+	Tue, 30 Jul 2024 16:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360132;
-	bh=pCc+jRz0Fs/cF8m2sUZng7Xb/7btWKtFnLDTFFbou5g=;
+	s=korg; t=1722358580;
+	bh=BAGqH2SF3DRbAe4Zv0Zt2WM0DqhV+5z6lQaCRcAb6IY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1Ckj0UPH+j62j2bsM7LthZxSdg4/+9YUXApyon6e6aq2LtmZ+TKFCZ7a/zE2FZiY
-	 +uFg+JcOd2N0FiyRotjRmkZR0s0JZA/fGuvEy28dbVskvjFg7PISmlVvIo76yCfxLG
-	 /n/UFVb6U/7lYRmNfdpsHBiHUgR+v0jgU2RgH8sI=
+	b=QkKgoc8xv8BI5Yt7ShOEb7XmUREgx9LY+j00JApmSN84Cl0+BZKnpHXkdgpDkut96
+	 t5G9Hez5qd2tagFrK1lhByzXnUauIhBvjiOic627eNfiHJRwod8KzdQxCzXD24uCjr
+	 RHxAd3yj8KSCiTJ3rs0zuOZSAhxt+bJ+qrU5T/SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dustin L. Howett" <dustin@howett.net>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.10 607/809] leds: triggers: Flush pending brightness before activating trigger
+	Eric Sandeen <sandeen@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>
+Subject: [PATCH 6.6 376/568] fuse: verify {g,u}id mount options correctly
 Date: Tue, 30 Jul 2024 17:48:03 +0200
-Message-ID: <20240730151748.810030938@linuxfoundation.org>
+Message-ID: <20240730151654.559777043@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Eric Sandeen <sandeen@redhat.com>
 
-commit ab477b766edd3bfb6321a6e3df4c790612613fae upstream.
+commit 525bd65aa759ec320af1dc06e114ed69733e9e23 upstream.
 
-The race fixed in timer_trig_activate() between a blocking
-set_brightness() call and trigger->activate() can affect any trigger.
-So move the call to flush_work() into led_trigger_set() where it can
-avoid the race for all triggers.
+As was done in
+0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
+we need to validate that the requested uid and/or gid is representable in
+the filesystem's idmapping.
 
-Fixes: 0db37915d912 ("leds: avoid races with workqueue")
-Fixes: 8c0f693c6eff ("leds: avoid flush_work in atomic context")
-Cc: stable@vger.kernel.org
-Tested-by: Dustin L. Howett <dustin@howett.net>
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net
-Signed-off-by: Lee Jones <lee@kernel.org>
+Cribbing from the above commit log,
+
+The contract for {g,u}id mount options and {g,u}id values in general set
+from userspace has always been that they are translated according to the
+caller's idmapping. In so far, fuse has been doing the correct thing.
+But since fuse is mountable in unprivileged contexts it is also
+necessary to verify that the resulting {k,g}uid is representable in the
+namespace of the superblock.
+
+Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
+Cc: stable@vger.kernel.org # 5.4+
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Link: https://lore.kernel.org/r/8f07d45d-c806-484d-a2e3-7a2199df1cd2@redhat.com
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/led-triggers.c          |    6 ++++++
- drivers/leds/trigger/ledtrig-timer.c |    5 -----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ fs/fuse/inode.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -194,6 +194,12 @@ int led_trigger_set(struct led_classdev
- 		spin_unlock(&trig->leddev_list_lock);
- 		led_cdev->trigger = trig;
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -751,6 +751,8 @@ static int fuse_parse_param(struct fs_co
+ 	struct fs_parse_result result;
+ 	struct fuse_fs_context *ctx = fsc->fs_private;
+ 	int opt;
++	kuid_t kuid;
++	kgid_t kgid;
  
+ 	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
+ 		/*
+@@ -795,16 +797,30 @@ static int fuse_parse_param(struct fs_co
+ 		break;
+ 
+ 	case OPT_USER_ID:
+-		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
+-		if (!uid_valid(ctx->user_id))
++		kuid =  make_kuid(fsc->user_ns, result.uint_32);
++		if (!uid_valid(kuid))
+ 			return invalfc(fsc, "Invalid user_id");
 +		/*
-+		 * If "set brightness to 0" is pending in workqueue,
-+		 * we don't want that to be reordered after ->activate()
++		 * The requested uid must be representable in the
++		 * filesystem's idmapping.
 +		 */
-+		flush_work(&led_cdev->set_brightness_work);
-+
- 		ret = 0;
- 		if (trig->activate)
- 			ret = trig->activate(led_cdev);
---- a/drivers/leds/trigger/ledtrig-timer.c
-+++ b/drivers/leds/trigger/ledtrig-timer.c
-@@ -110,11 +110,6 @@ static int timer_trig_activate(struct le
- 		led_cdev->flags &= ~LED_INIT_DEFAULT_TRIGGER;
- 	}
++		if (!kuid_has_mapping(fsc->user_ns, kuid))
++			return invalfc(fsc, "Invalid user_id");
++		ctx->user_id = kuid;
+ 		ctx->user_id_present = true;
+ 		break;
  
--	/*
--	 * If "set brightness to 0" is pending in workqueue, we don't
--	 * want that to be reordered after blink_set()
--	 */
--	flush_work(&led_cdev->set_brightness_work);
- 	led_blink_set(led_cdev, &led_cdev->blink_delay_on,
- 		      &led_cdev->blink_delay_off);
+ 	case OPT_GROUP_ID:
+-		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
+-		if (!gid_valid(ctx->group_id))
++		kgid = make_kgid(fsc->user_ns, result.uint_32);;
++		if (!gid_valid(kgid))
++			return invalfc(fsc, "Invalid group_id");
++		/*
++		 * The requested gid must be representable in the
++		 * filesystem's idmapping.
++		 */
++		if (!kgid_has_mapping(fsc->user_ns, kgid))
+ 			return invalfc(fsc, "Invalid group_id");
++		ctx->group_id = kgid;
+ 		ctx->group_id_present = true;
+ 		break;
  
 
 
