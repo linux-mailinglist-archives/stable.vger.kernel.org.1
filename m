@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-64375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C320E941D8C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00429941AD4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F41F81C23584
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFAB7281E48
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EC51A76BB;
-	Tue, 30 Jul 2024 17:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2832E188013;
+	Tue, 30 Jul 2024 16:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuc/03iH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPmZ5/uC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75EA1A76B4;
-	Tue, 30 Jul 2024 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0C8155CB3;
+	Tue, 30 Jul 2024 16:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359913; cv=none; b=dyWVRv5PQQWmuCG0ZRNj/smuBO4UZQaUkvHcUHzLMu5mqticwyYp1BYdJhTAoR9E182Yu9O5Rht/uBaji5KSEvZ3nsYOinxjtPRE1FDysH1gLqUScCZ4MEx+jYFoo7hQsf/Hh4YD0Ouy55bP1ugaBayyiJhtbPNWoZJre3kSC7A=
+	t=1722358065; cv=none; b=EUKj134yCWdUio/WmlSIghstSRPEABc12KUpadWmU317zLeAkJJikq7SoyJN8C0657XFqPqr+0olRePX8r2+3bpHeqBRfZi2la2UQ5MTtLHJjzPnFh5bQykEdQ71s0lsGcZ4FA5gahntLbZPo0zWWTb/nFSUbErJOhWyyPVTdU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359913; c=relaxed/simple;
-	bh=YhKxCORgQ8IWfbE2IWXqdoK59ruktKgk2+t2ALqt8qo=;
+	s=arc-20240116; t=1722358065; c=relaxed/simple;
+	bh=phJEi1MDJ/Dsigt52c09WwZZOdsYgS+vJHy5FX/p6Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBQSqjJmOQ4PeCJjZWbsZxx1A3adpOUoO4mKBh7RhTeLD9ArYodVMnIcWyODPYVo/Y7bP8wWcYAJowcNucQFc/g8iffXeS+ywUKMZtu+mjHMmJ1jU1vpJ4EBPWDiGqX4PmTt65YIykW7GykXNZ17OJ+DKtmKeUX8QTbKM7jZVko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuc/03iH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1C3C4AF0A;
-	Tue, 30 Jul 2024 17:18:32 +0000 (UTC)
+	 MIME-Version; b=JQkSydv2dF0crVFmNQ9wqfuPqMWb1afvYUJi0VC7a+4wjy5DuBCWpwVoI4cDsktax2cxZvM9F9FX0w0Y8E2B0lkX2nQ2xDO5T3U3+3IFXYpadVhcI7fQ07VB6fK4HeQ00tEKcoKYBf8rh5eGDOR/mLAYhhOYN3sCIudZR6lxN8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPmZ5/uC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45436C32782;
+	Tue, 30 Jul 2024 16:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359913;
-	bh=YhKxCORgQ8IWfbE2IWXqdoK59ruktKgk2+t2ALqt8qo=;
+	s=korg; t=1722358065;
+	bh=phJEi1MDJ/Dsigt52c09WwZZOdsYgS+vJHy5FX/p6Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuc/03iHb3wc7AJVe5VSZbjcyr+Y1M7GOTwJx/bZl6+UfSd8PHgGoohPSWAogM6j7
-	 pIhESMnxY+xadpqcZe4hlBxtCBO8g8Kt4RbvvSx8EqAWdHnoKXyh+zvCFwf0YVwMnb
-	 4F6rgItCVq/DvMW6+jYkQbrea7w0G9Iv22aIREH4=
+	b=uPmZ5/uCMToYr9V53IFqJUcTCczKuIHjYo7iHIlaw03CHYqv5wy4dSrVGRSdEcMz9
+	 pjXtaZBLH2/3X/q+PCyWhYuhk6L8ccUaAXZK6+dvJGeS8UwbH0j+lmFJFYFR7S1IoQ
+	 l5b4Vnw3eI5EgiTOdzHIIc7kWqhjFxYmRVR+pls0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Orth <ju.orth@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 553/809] kernel: rerun task_work while freezing in get_signal()
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 322/568] fs/ntfs3: Missed NI_FLAG_UPDATE_PARENT setting
 Date: Tue, 30 Jul 2024 17:47:09 +0200
-Message-ID: <20240730151746.600516925@linuxfoundation.org>
+Message-ID: <20240730151652.462013899@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 943ad0b62e3c21f324c4884caa6cb4a871bca05c upstream.
+[ Upstream commit 1c308ace1fd6de93bd0b7e1a5e8963ab27e2c016 ]
 
-io_uring can asynchronously add a task_work while the task is getting
-freezed. TIF_NOTIFY_SIGNAL will prevent the task from sleeping in
-do_freezer_trap(), and since the get_signal()'s relock loop doesn't
-retry task_work, the task will spin there not being able to sleep
-until the freezing is cancelled / the task is killed / etc.
-
-Run task_works in the freezer path. Keep the patch small and simple
-so it can be easily back ported, but we might need to do some cleaning
-after and look if there are other places with similar problems.
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/systemd/systemd/issues/33626
-Fixes: 12db8b690010c ("entry: Add support for TIF_NOTIFY_SIGNAL")
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/89ed3a52933370deaaf61a0a620a6ac91f1e754d.1720634146.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be71b5cba2e64 ("fs/ntfs3: Add attrib operations")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/signal.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ntfs3/attrib.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -2600,6 +2600,14 @@ static void do_freezer_trap(void)
- 	spin_unlock_irq(&current->sighand->siglock);
- 	cgroup_enter_frozen();
- 	schedule();
-+
-+	/*
-+	 * We could've been woken by task_work, run it to clear
-+	 * TIF_NOTIFY_SIGNAL. The caller will retry if necessary.
-+	 */
-+	clear_notify_signal();
-+	if (unlikely(task_work_pending(current)))
-+		task_work_run();
- }
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 60a764ebaf570..f8cc49f14c7d3 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -1738,6 +1738,7 @@ int attr_allocate_frame(struct ntfs_inode *ni, CLST frame, size_t compr_size,
  
- static int ptrace_signal(int signr, kernel_siginfo_t *info, enum pid_type type)
+ 	attr_b->nres.total_size = cpu_to_le64(total_size);
+ 	inode_set_bytes(&ni->vfs_inode, total_size);
++	ni->ni_flags |= NI_FLAG_UPDATE_PARENT;
+ 
+ 	mi_b->dirty = true;
+ 	mark_inode_dirty(&ni->vfs_inode);
+-- 
+2.43.0
+
 
 
 
