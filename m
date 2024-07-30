@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-63927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662E9941B4F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B27941E83
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20059282333
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6F01F24F2B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1347818990B;
-	Tue, 30 Jul 2024 16:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5D41A76C9;
+	Tue, 30 Jul 2024 17:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4RMTyzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KSugPHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1A518801A;
-	Tue, 30 Jul 2024 16:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485F21A76C2;
+	Tue, 30 Jul 2024 17:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358400; cv=none; b=l98c3R4Zwy8lFouOUetwZMfUu8GcdfsQHJ0eIl6u49PLBr335q3mKWT3rDG/pF/1jio+hweQQEnP/8GE9gYvn99DCzdUG8ZFw357qknulnkuoSBxXN2OwDd9Crx4cNXXJMHwWKpszy3XqRlzHyjJ1vkgtqkGPR1f4vTI21FbBW4=
+	t=1722360586; cv=none; b=WxiLSQcM1ngd2RrqLT+pr6E9rJK5cx9MUx9KS5hJUjxP0NwFva2sWrVm0kJiT2lSkubfFbeG+4NWQLW5N1PWnkMDqH8uuZBA2HhqBtQOBt7qdGC62A5v01VMuo96Gxlp+lqcIdPV2uMvX+HHUzNXzRXvC6iazNtl69nqQR19umg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358400; c=relaxed/simple;
-	bh=E0w7jrUOgtiH77thYz280NFyfgAF85RK8cmPux/aMeU=;
+	s=arc-20240116; t=1722360586; c=relaxed/simple;
+	bh=RuMIp+c8pcrpxJf2L9HZPmUlpKJGmwHiO338x2Q94Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqid4/Voi2NHgn0zRoCnFtcYv4YPeUUWsBbQyFG1sS6HD4+gTgUybVZ/5NOscAk6YY2QM1BEy/jJOeYTcxn1Lj24dYuOJ5F4tB0A46HAZjhanRIxa+LSIZkdJzKuVsBhBMkQIpINj/sjyJvTY0JTrPbUipAkJZ1Qd/KbWlTydvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4RMTyzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9575C32782;
-	Tue, 30 Jul 2024 16:53:19 +0000 (UTC)
+	 MIME-Version; b=ofFl1lNe0sZnE37/RtAsVznccO0zSzpduvrBDKKld9LrH0E1wxhFWnM8ZvjAL7hr/JoKaGW6dnm/GKg0/51MjJWzNgmjiITfIBJf7xiNEqcqr/A5iAhRWKxdwT6OvasVvb51gCdHeBuymAA72wioBWjOt+3MFdMlPRvQcQOwlyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KSugPHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA039C4AF0E;
+	Tue, 30 Jul 2024 17:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358400;
-	bh=E0w7jrUOgtiH77thYz280NFyfgAF85RK8cmPux/aMeU=;
+	s=korg; t=1722360586;
+	bh=RuMIp+c8pcrpxJf2L9HZPmUlpKJGmwHiO338x2Q94Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4RMTyzrPmdYS6Wp9/8BU6T6jb6PKqzgeWe4G/5Uwyf26k4RIcXvhfw/7tmVLlZ6g
-	 Z3fDXydojcJ+YXOy0jpUBJXSFifYAxmuYTslRzClGBmJ+7oheHbWLRJZSG4p6+L9LC
-	 edtuADtAp4vHIsuRQ/Ud7xp9HinJ11NKkgkOzfhc=
+	b=2KSugPHPJ/1o03Hl6WVntOk8p9jWimDOCsFKIiLceA1vmrvpwtbfqLV6bKzB05wwx
+	 2yqMQzHCGWq4tIF1GsWGnxijpjx9r8lwiiZjGvYeh/cU1OdcL5oMyDjEv022SfMOKd
+	 M91FLJFgI7TR/tyf7hl8nVpV1cHAxkc3UUeNy3IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 6.1 387/440] PCI: Introduce cleanup helpers for device reference counts and locks
+	Sean Anderson <sean.anderson@linux.dev>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 744/809] phy: zynqmp: Enable reference clock correctly
 Date: Tue, 30 Jul 2024 17:50:20 +0200
-Message-ID: <20240730151630.920826862@linuxfoundation.org>
+Message-ID: <20240730151754.341720248@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ira Weiny <ira.weiny@intel.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit ced085ef369af7a2b6da962ec2fbd01339f60693 upstream.
+[ Upstream commit 687d6bccb28238fcfa65f7c1badfdfeac498c428 ]
 
-The "goto error" pattern is notorious for introducing subtle resource
-leaks. Use the new cleanup.h helpers for PCI device reference counts and
-locks.
+Lanes can use other lanes' reference clocks, as determined by refclk.
+Use refclk to determine the clock to enable/disable instead of always
+using the lane's own reference clock. This ensures the clock selected in
+xpsgtr_configure_pll is the one enabled.
 
-Similar to the new put_device() and device_lock() cleanup helpers,
-__free(put_device) and guard(device), define the same for PCI devices,
-__free(pci_dev_put) and guard(pci_dev).  These helpers eliminate the
-need for "goto free;" and "goto unlock;" patterns. For example, A
-'struct pci_dev *' instance declared as:
+For the other half of the equation, always program REF_CLK_SEL even when
+we are selecting the lane's own clock. This ensures that Linux's idea of
+the reference clock matches the hardware. We use the "local" clock mux
+for this instead of going through the ref clock network.
 
-    struct pci_dev *pdev __free(pci_dev_put) = NULL;
-
-...will automatically call pci_dev_put() if @pdev is non-NULL when @pdev
-goes out of scope (automatic variable scope). If a function wants to
-invoke pci_dev_put() on error, but return @pdev on success, it can do:
-
-    return no_free_ptr(pdev);
-
-...or:
-
-    return_ptr(pdev);
-
-For potential cleanup opportunity there are 587 open-coded calls to
-pci_dev_put() in the kernel with 65 instances within 10 lines of a goto
-statement with the CXL driver threatening to add another one.
-
-The guard() helper holds the associated lock for the remainder of the
-current scope in which it was invoked. So, for example:
-
-    func(...)
-    {
-        if (...) {
-            ...
-            guard(pci_dev); /* pci_dev_lock() invoked here */
-            ...
-        } /* <- implied pci_dev_unlock() triggered here */
-    }
-
-There are 15 invocations of pci_dev_unlock() in the kernel with 5
-instances within 10 lines of a goto statement. Again, the CXL driver is
-threatening to add another.
-
-Introduce these helpers to preclude the addition of new more error prone
-goto put; / goto unlock; sequences. For now, these helpers are used in
-drivers/cxl/pci.c to allow ACPI error reports to be fed back into the
-CXL driver associated with the PCI device identified in the report.
-
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://lore.kernel.org/r/20231220-cxl-cper-v5-8-1bb8a4ca2c7a@intel.com
-[djbw: rewrite changelog]
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25d700833513 ("phy: xilinx: phy-zynqmp: dynamic clock support for power-save")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://lore.kernel.org/r/20240628205540.3098010-2-sean.anderson@linux.dev
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/phy/xilinx/phy-zynqmp.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1138,6 +1138,7 @@ int pci_get_interrupt_pin(struct pci_dev
- u8 pci_common_swizzle(struct pci_dev *dev, u8 *pinp);
- struct pci_dev *pci_dev_get(struct pci_dev *dev);
- void pci_dev_put(struct pci_dev *dev);
-+DEFINE_FREE(pci_dev_put, struct pci_dev *, if (_T) pci_dev_put(_T))
- void pci_remove_bus(struct pci_bus *b);
- void pci_stop_and_remove_bus_device(struct pci_dev *dev);
- void pci_stop_and_remove_bus_device_locked(struct pci_dev *dev);
-@@ -1746,6 +1747,7 @@ void pci_cfg_access_unlock(struct pci_de
- void pci_dev_lock(struct pci_dev *dev);
- int pci_dev_trylock(struct pci_dev *dev);
- void pci_dev_unlock(struct pci_dev *dev);
-+DEFINE_GUARD(pci_dev, struct pci_dev *, pci_dev_lock(_T), pci_dev_unlock(_T))
+diff --git a/drivers/phy/xilinx/phy-zynqmp.c b/drivers/phy/xilinx/phy-zynqmp.c
+index dc8319bda43d7..f2bff7f25f05a 100644
+--- a/drivers/phy/xilinx/phy-zynqmp.c
++++ b/drivers/phy/xilinx/phy-zynqmp.c
+@@ -80,7 +80,8 @@
  
- /*
-  * PCI domain support.  Sometimes called PCI segment (eg by ACPI),
+ /* Reference clock selection parameters */
+ #define L0_Ln_REF_CLK_SEL(n)		(0x2860 + (n) * 4)
+-#define L0_REF_CLK_SEL_MASK		0x8f
++#define L0_REF_CLK_LCL_SEL		BIT(7)
++#define L0_REF_CLK_SEL_MASK		0x9f
+ 
+ /* Calibration digital logic parameters */
+ #define L3_TM_CALIB_DIG19		0xec4c
+@@ -349,11 +350,12 @@ static void xpsgtr_configure_pll(struct xpsgtr_phy *gtr_phy)
+ 		       PLL_FREQ_MASK, ssc->pll_ref_clk);
+ 
+ 	/* Enable lane clock sharing, if required */
+-	if (gtr_phy->refclk != gtr_phy->lane) {
+-		/* Lane3 Ref Clock Selection Register */
++	if (gtr_phy->refclk == gtr_phy->lane)
++		xpsgtr_clr_set(gtr_phy->dev, L0_Ln_REF_CLK_SEL(gtr_phy->lane),
++			       L0_REF_CLK_SEL_MASK, L0_REF_CLK_LCL_SEL);
++	else
+ 		xpsgtr_clr_set(gtr_phy->dev, L0_Ln_REF_CLK_SEL(gtr_phy->lane),
+ 			       L0_REF_CLK_SEL_MASK, 1 << gtr_phy->refclk);
+-	}
+ 
+ 	/* SSC step size [7:0] */
+ 	xpsgtr_clr_set_phy(gtr_phy, L0_PLL_SS_STEP_SIZE_0_LSB,
+@@ -573,7 +575,7 @@ static int xpsgtr_phy_init(struct phy *phy)
+ 	mutex_lock(&gtr_dev->gtr_mutex);
+ 
+ 	/* Configure and enable the clock when peripheral phy_init call */
+-	if (clk_prepare_enable(gtr_dev->clk[gtr_phy->lane]))
++	if (clk_prepare_enable(gtr_dev->clk[gtr_phy->refclk]))
+ 		goto out;
+ 
+ 	/* Skip initialization if not required. */
+@@ -625,7 +627,7 @@ static int xpsgtr_phy_exit(struct phy *phy)
+ 	gtr_phy->skip_phy_init = false;
+ 
+ 	/* Ensure that disable clock only, which configure for lane */
+-	clk_disable_unprepare(gtr_dev->clk[gtr_phy->lane]);
++	clk_disable_unprepare(gtr_dev->clk[gtr_phy->refclk]);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
