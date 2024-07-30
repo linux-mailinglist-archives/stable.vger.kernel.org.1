@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EE994164A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0577694164E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B42E9B259BC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA217283F8E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090881BA878;
-	Tue, 30 Jul 2024 15:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9B51BC081;
+	Tue, 30 Jul 2024 15:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6tQF6Kk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T20ajA1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C6B1BE221;
-	Tue, 30 Jul 2024 15:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675481BC063;
+	Tue, 30 Jul 2024 15:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355089; cv=none; b=E1XC0QxrMvKisdfDsOBUiHxYTjxygciG5qauCP0hfxggHmR5SKStInwvJAEmoRaHctPKffthV4nqGJrZn1QM/CRP2npc6LLuS1nAmNSh5AfOHBxxVFO8PubRTCv0oyCqOdygKnOGSxC+xy4uX2dd74SNBuKg7dFpgnnfthr6r4M=
+	t=1722355103; cv=none; b=A0niNLBvOu/Rq2NGaHFxbQztm91Gk9vAyZC83HK+u/aoBNZ48apk+GdqQoSQpiuWZTk4MYMsetFef9Gx1xP4vcfnXGT7Dd5wzlEu2+0iM4JH2RhxSijlSe3huUhScxhjPkufi6IQRHivGnxKCr3eKnMjZVyw3p2Jx5SdPT7MGxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355089; c=relaxed/simple;
-	bh=EwbYtVvpl7MeSZAJZcdatoQ/Ub4vWCNEeheB42ShC/c=;
+	s=arc-20240116; t=1722355103; c=relaxed/simple;
+	bh=LOSefknzvkzEgkp/zZ3DobxSkewelVeP9yW0kBmkjjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tiSatb1hSyeV5vh3cD9MaYRJtmBSF2KhNBq4fZZ2Pk+PIgwEGp6R5uUExCsUFqQ1ADnOuW4eU9iqiADDY0vIXT7IPhr0qs0kkpdAacF/LlRwcgdVHf+HXn78t6S0pvmDTuPHfvbtZU+rSrh+QMWRkLJHe+w28/0O9MimUhDuHJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6tQF6Kk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB74C32782;
-	Tue, 30 Jul 2024 15:58:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V0Ww3FAXI+yXWE7hjvHU9uhirT0A4DReHjJP5M8Bsvm6RPC07EhbAUYu37yjkTQr1rcbomH8FiUDB4lHMWIyLk3S5B4hluDEYvaePFAg1fYgP+eh7RugmKNULCTIThDilTunOtbdk4kISZ7xK8jMHfoN9AOEauajsDsScri/0sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T20ajA1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B9BC4AF0A;
+	Tue, 30 Jul 2024 15:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355089;
-	bh=EwbYtVvpl7MeSZAJZcdatoQ/Ub4vWCNEeheB42ShC/c=;
+	s=korg; t=1722355103;
+	bh=LOSefknzvkzEgkp/zZ3DobxSkewelVeP9yW0kBmkjjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6tQF6Kk852VQmHj8B5sppEHN4Jt/+BQ7jkkHJ5vFjEvNu9htRT0Ij1Mc9hhattUl
-	 mxj0vH4YrRNMO4kFj9svWdyYgjr/cYZK8iG/S52OQQ6z4oVabrCNJCpnlNXBhu0tHi
-	 EzEwbO6H4bhOxER5IQcu8nJK8zfPujLob9eGpGPc=
+	b=T20ajA1rVNX54pFsJh7J2sTMfOPBw4NdRJeDphqIhHlWHqsA9LiK1E9omt3zi4pk8
+	 e2ZpOmRf2izkxavVtowOVeNVdAMfSIgp3zIMNV/QjIpQB9jlLeHm3dtqt/knGYPWsU
+	 hnxyWz5CrUloYjSCkLvWqxaTVzSjucmYL/opsHjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/440] arm64: dts: mediatek: mt8183-kukui: Drop bogus output-enable property
-Date: Tue, 30 Jul 2024 17:44:50 +0200
-Message-ID: <20240730151617.994183929@linuxfoundation.org>
+Subject: [PATCH 6.1 058/440] arm64: dts: mediatek: mt7622: fix "emmc" pinctrl mux
+Date: Tue, 30 Jul 2024 17:44:51 +0200
+Message-ID: <20240730151618.032566098@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -60,55 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit e9a9055fdcdc1e5a27cef118c5b4f09cdd2fa28e ]
+[ Upstream commit aebba1030a5766cdf894ed4ab0cac7aed5aee9c1 ]
 
-The "output-enable" property is set on uart1's RTS pin. This is bogus
-because the hardware does not actually have a controllable output
-buffer. Secondly, the implementation incorrectly treats this property
-as a request to switch the pin to GPIO output. This does not fit the
-intended semantic of "output-enable" and it does not have any affect
-either because the pin is muxed to the UART function, not the GPIO
-function.
+Value "emmc_rst" is a group name and should be part of the "groups"
+property.
 
-Drop the property.
+This fixes:
+arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
+        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
+arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
+        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
 
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240412075613.1200048-1-wenst@chromium.org
+Fixes: 3725ba3f5574 ("arm64: dts: mt7622: add pinctrl related device nodes")
+Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240604074916.7929-1-zajec5@gmail.com
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts | 4 ++--
+ arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-index 1db97d94658b9..03ccdbb1c5edd 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -767,7 +767,6 @@ pins-tx {
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+index b1ddc491d2936..9c9431455f854 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+@@ -286,8 +286,8 @@ asm_sel {
+ 	/* eMMC is shared pin with parallel NAND */
+ 	emmc_pins_default: emmc-pins-default {
+ 		mux {
+-			function = "emmc", "emmc_rst";
+-			groups = "emmc";
++			function = "emmc";
++			groups = "emmc", "emmc_rst";
  		};
- 		pins-rts {
- 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
--			output-enable;
+ 
+ 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
+index 527dcb279ba52..f4bb9c6521c65 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
+@@ -244,8 +244,8 @@ &pio {
+ 	/* eMMC is shared pin with parallel NAND */
+ 	emmc_pins_default: emmc-pins-default {
+ 		mux {
+-			function = "emmc", "emmc_rst";
+-			groups = "emmc";
++			function = "emmc";
++			groups = "emmc", "emmc_rst";
  		};
- 		pins-cts {
- 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
-@@ -786,7 +785,6 @@ pins-tx {
- 		};
- 		pins-rts {
- 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
--			output-enable;
- 		};
- 		pins-cts {
- 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
+ 
+ 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
 -- 
 2.43.0
 
