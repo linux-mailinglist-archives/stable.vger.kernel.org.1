@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB05594173E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D81941CCF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 088D11C23249
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13AB61F2430C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE1C18B495;
-	Tue, 30 Jul 2024 16:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2984618E036;
+	Tue, 30 Jul 2024 17:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jawgDb5R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jE6lYHG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF89D18B48F;
-	Tue, 30 Jul 2024 16:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7E418E030;
+	Tue, 30 Jul 2024 17:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355631; cv=none; b=VeXhBQvB2Gqp8prplPEZtoVK4vLzc9kaV5c3FCZOQc4axzDBSbNA/brpmgBnacHxo03pEsPhkICUpQvx/0BPHSm2mRTl76r/4iwlxxYvFaFtBLn9hb6Z/FKikSKLZB3KePjZq62srR6dSUskdsrQF0W91cbpyrfhNyhZmpc4kIs=
+	t=1722359332; cv=none; b=nQDI9xzU0RpxzifUB7z/Hii3QrEllELBLKU+FS+X25drRuSn/FwatjShxUKDDHgDLmZifQAiFxuNLMS9ZluIGnXgM2OWz/6YJQeQDTZI/mEFUQqD/NL8VPz3IsUeBXrGuK1hm84AVjZmCJZ7rRSc46PPu4PccX38bBqqWpqf2QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355631; c=relaxed/simple;
-	bh=1DNhpFBa/GAudhC++w/xmVJFdDF+xUCuB9GQOF6mLP0=;
+	s=arc-20240116; t=1722359332; c=relaxed/simple;
+	bh=/Vzg5LQpu3Y9ucSe45krcwqiRT1Aayy7oc8KOdC5hNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rG0NgGXQbjjIyFDYQ3NLe3MiJMawzX09GqzRzLZkKaJvmoy0AbjdR3Usc/69HqdTwkp1XYhziuFP+5UbjxB8c0eIWd8vgF4lOu2LyVC4GyQ7yGe4JVpuHkem4PUnNadOR3eFQYhstxp/jXa/q6KsCKIPKLYMTbd67TPMRnGTJIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jawgDb5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F9DC32782;
-	Tue, 30 Jul 2024 16:07:10 +0000 (UTC)
+	 MIME-Version; b=FKGKdpHd4ihvvKMS8u2NpcItWGvblkBUgZTUOz6l3716gQPc2a4h4brR6e4mqwFhT6nTfXXxODOw/lMDS8rQo9E6Nz6wpKYd0TjKoK5jnt+vKYYPmFilboTmS7/wmxIRUDVAx+X0CL8Pgw7o7BNLwbQ+qZ/ToNHgCkyLk7QhXWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jE6lYHG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157ABC4AF11;
+	Tue, 30 Jul 2024 17:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355630;
-	bh=1DNhpFBa/GAudhC++w/xmVJFdDF+xUCuB9GQOF6mLP0=;
+	s=korg; t=1722359332;
+	bh=/Vzg5LQpu3Y9ucSe45krcwqiRT1Aayy7oc8KOdC5hNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jawgDb5RgFamG4eJGP3YofQX5wFduBaOyu9wdlXVuW65duRF9/nyfoa15cnu/drvc
-	 ZXuQcPEcTPU0omhbk2cIsvaOzF9oJPWxw1GEagW30f2xrh4krsEH+H0FSCkFafQPjv
-	 Y52Nr67zqvj+zvTWcLySmDXNhKACwRhzrGn6ZqX0=
+	b=jE6lYHG8ygKye9ZJ+00p9L4yQhi8wMuUZiotFYajWjdCU9lkAwLjQB1KzCb5u4i6z
+	 nIbHBi8c+2y6v7hZiCztBnysYIYqkCWG9BfBX0EoKCHEhJAtYNxNfjPwPevjvFE8ux
+	 STLZ3TTmFPP9INBsO7kTOT1I3XJ7nYJwXAV1WX3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	David Gstir <david@sigma-star.at>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/440] perf: Fix default aux_watermark calculation
+Subject: [PATCH 6.10 469/809] crypto: mxs-dcp - Ensure payload is zero when using key slot
 Date: Tue, 30 Jul 2024 17:45:45 +0200
-Message-ID: <20240730151620.266011900@linuxfoundation.org>
+Message-ID: <20240730151743.259428621@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: David Gstir <david@sigma-star.at>
 
-[ Upstream commit 43deb76b19663a96ec2189d8f4eb9a9dc2d7623f ]
+[ Upstream commit dd52b5eeb0f70893f762da7254e923fd23fd1379 ]
 
-The default aux_watermark is half the AUX area buffer size. In general,
-on a 64-bit architecture, the AUX area buffer size could be a bigger than
-fits in a 32-bit type, but the calculation does not allow for that
-possibility.
+We could leak stack memory through the payload field when running
+AES with a key from one of the hardware's key slots. Fix this by
+ensuring the payload field is set to 0 in such cases.
 
-However the aux_watermark value is recorded in a u32, so should not be
-more than U32_MAX either.
+This does not affect the common use case when the key is supplied
+from main memory via the descriptor payload.
 
-Fix by doing the calculation in a correctly sized type, and limiting the
-result to U32_MAX.
-
-Fixes: d68e6799a5c8 ("perf: Cap allocation order at aux_watermark")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-7-adrian.hunter@intel.com
+Signed-off-by: David Gstir <david@sigma-star.at>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202405270146.Y9tPoil8-lkp@intel.com/
+Fixes: 3d16af0b4cfa ("crypto: mxs-dcp: Add support for hardware-bound keys")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/ring_buffer.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/crypto/mxs-dcp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 45965f13757e4..f3a3c294ff2b3 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -683,7 +683,9 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
- 		 * max_order, to aid PMU drivers in double buffering.
- 		 */
- 		if (!watermark)
--			watermark = nr_pages << (PAGE_SHIFT - 1);
-+			watermark = min_t(unsigned long,
-+					  U32_MAX,
-+					  (unsigned long)nr_pages << (PAGE_SHIFT - 1));
- 
- 		/*
- 		 * Use aux_watermark as the basis for chunking to
+diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
+index 057d73c370b73..c82775dbb557a 100644
+--- a/drivers/crypto/mxs-dcp.c
++++ b/drivers/crypto/mxs-dcp.c
+@@ -225,7 +225,8 @@ static int mxs_dcp_start_dma(struct dcp_async_ctx *actx)
+ static int mxs_dcp_run_aes(struct dcp_async_ctx *actx,
+ 			   struct skcipher_request *req, int init)
+ {
+-	dma_addr_t key_phys, src_phys, dst_phys;
++	dma_addr_t key_phys = 0;
++	dma_addr_t src_phys, dst_phys;
+ 	struct dcp *sdcp = global_sdcp;
+ 	struct dcp_dma_desc *desc = &sdcp->coh->desc[actx->chan];
+ 	struct dcp_aes_req_ctx *rctx = skcipher_request_ctx(req);
 -- 
 2.43.0
 
