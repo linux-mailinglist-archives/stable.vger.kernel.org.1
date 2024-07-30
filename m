@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-63622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AB0941A36
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7DB9419DA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B495B21C38
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 433942839A8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514991A6195;
-	Tue, 30 Jul 2024 16:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F64183CDA;
+	Tue, 30 Jul 2024 16:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sKlxvwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vujOniPI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F06D1A6192;
-	Tue, 30 Jul 2024 16:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C101A6192;
+	Tue, 30 Jul 2024 16:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357421; cv=none; b=uthhekyHmqrzqSYDWa8r6RUD+CQHgJTxhJyHNXSc9jlZSGpnPBptomg+i5n2OLpsj/7q4V45tgWsEu6mzpHDJLwzB8UmcicQwaV3jYmh8hh9FFp8LjQ+9tEvUHTkji+4sQ9oX790eVeGzbqfE/NjNqtevOKN7dNUS4GLP6GY67U=
+	t=1722357431; cv=none; b=RtNbbV732rE5lFfJ1qv/n4Gk4HuEUu3s16/dqMXJv4jL6E3+9NQUWh6VggNhAhHVpJ2pzoXa5w8cdGU68zvOd3hnWtwhu+45SWzMmE4lkMnRe47OAW4K5lQpMDf9Ts2yy1yEd5jvxudvRFAMi0GoOiyGcNUQ+xuU1K9Ui0E6Jzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357421; c=relaxed/simple;
-	bh=hlk5dZfo8xFhztYgrLHBvJeZqYs/0tZS8d34Nhfiyig=;
+	s=arc-20240116; t=1722357431; c=relaxed/simple;
+	bh=sa/LX5/NAcEXx966baF2lS3j0ywpyLwOkFi1JhV6CKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wj8p8pkOkAzc4UqEBolzPKKhWJtesj8HpuPL2J+Tg2qzdUqkBc4dtGlMzm4jP8KwU/II+CjNLH6v+iczgXx/eoxy/sTSjF9VtXyaq+Jqi6fb/VtQLlEQeQF4gxxB9TOGxBqRq2dMgo/D+HjvgchsphJtnlI6EJPgYdEFYMEbDaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sKlxvwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899E7C32782;
-	Tue, 30 Jul 2024 16:37:00 +0000 (UTC)
+	 MIME-Version; b=BH/pjWFz+ZCpI+sdqLl4bO89NPtSYefozrbxwqz7Z+GllBeEAAfq0NHxGchGmT+dMwVwizykmKubWJlmaTFWkCaqd1T/b0Z2Md70bnVPciGjaEV+8B+MgYcIujDaqVfo7P9r8zVzqDlU8bWTfo0zNGm1v5zyFTtLKlXE3K3+0h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vujOniPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0203DC4AF0A;
+	Tue, 30 Jul 2024 16:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357420;
-	bh=hlk5dZfo8xFhztYgrLHBvJeZqYs/0tZS8d34Nhfiyig=;
+	s=korg; t=1722357431;
+	bh=sa/LX5/NAcEXx966baF2lS3j0ywpyLwOkFi1JhV6CKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2sKlxvwACFaTJSy8JHs1EUoZmmQxQm60LBb1foqkXSgPDghPwIOmLuoqGDg9//0ky
-	 iz6Ewc2g204+IrvbP1oiRBZSk5it3jYpjBi3ISPFFDFMuT0ECY3c0Al5TVUJnPePe7
-	 QEQsFNUjZRNTvsLCd3UY8gHJe7vTpRGAk8mv6IaY=
+	b=vujOniPICl7I/1FRvBIUvCjJX/lqs54zQ4kL4lOeBiiopy6nZbxJsC1v2vshLY9EB
+	 RgSWp7PY6HztFPC1ZWz0ITPvlkYH9iGwCUPZhds6g5TH0YMjkNo4i0LAlNmXRLIyyu
+	 mHoSgYhBsRIKhcXeE2O6Vxenz/R7Ai9EwLhDti/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sven Peter <sven@svenpeter.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 252/809] selftests: forwarding: devlink_lib: Wait for udev events after reloading
-Date: Tue, 30 Jul 2024 17:42:08 +0200
-Message-ID: <20240730151734.549511135@linuxfoundation.org>
+Subject: [PATCH 6.10 253/809] Bluetooth: hci_bcm4377: Use correct unit for timeouts
+Date: Tue, 30 Jul 2024 17:42:09 +0200
+Message-ID: <20240730151734.588412364@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,74 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Sven Peter <sven@svenpeter.dev>
 
-[ Upstream commit f67a90a0c8f5b3d0acc18f10650d90fec44775f9 ]
+[ Upstream commit 56c695a823e4ee1e5294a8340d5afe5de73828ec ]
 
-Lately, an additional locking was added by commit c0a40097f0bc
-("drivers: core: synchronize really_probe() and dev_uevent()"). The
-locking protects dev_uevent() calling. This function is used to send
-messages from the kernel to user space. Uevent messages notify user space
-about changes in device states, such as when a device is added, removed,
-or changed. These messages are used by udev (or other similar user-space
-tools) to apply device-specific rules.
+BCM4377_TIMEOUT is always used to wait for completitions and their API
+expects a timeout in jiffies instead of msecs.
 
-After reloading devlink instance, udev events should be processed. This
-locking causes a short delay of udev events handling.
-
-One example for useful udev rule is renaming ports. 'forwading.config'
-can be configured to use names after udev rules are applied. Some tests run
-devlink_reload() and immediately use the updated names. This worked before
-the above mentioned commit was pushed, but now the delay of uevent messages
-causes that devlink_reload() returns before udev events are handled and
-tests fail.
-
-Adjust devlink_reload() to not assume that udev events are already
-processed when devlink reload is done, instead, wait for udev events to
-ensure they are processed before returning from the function.
-
-Without this patch:
-TESTS='rif_mac_profile' ./resource_scale.sh
-TEST: 'rif_mac_profile' 4                                           [ OK ]
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
-sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
-Cannot find device "swp1"
-Cannot find device "swp2"
-TEST: setup_wait_dev (: Interface swp1 does not come up.) [FAIL]
-
-With this patch:
-$ TESTS='rif_mac_profile' ./resource_scale.sh
-TEST: 'rif_mac_profile' 4                                           [ OK ]
-TEST: 'rif_mac_profile' overflow 5                                  [ OK ]
-
-This is relevant not only for this test.
-
-Fixes: bc7cbb1e9f4c ("selftests: forwarding: Add devlink_lib.sh")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/89367666e04b38a8993027f1526801ca327ab96a.1720709333.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/devlink_lib.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/hci_bcm4377.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/devlink_lib.sh b/tools/testing/selftests/net/forwarding/devlink_lib.sh
-index f1de525cfa55b..62a05bca1e825 100644
---- a/tools/testing/selftests/net/forwarding/devlink_lib.sh
-+++ b/tools/testing/selftests/net/forwarding/devlink_lib.sh
-@@ -122,6 +122,8 @@ devlink_reload()
- 	still_pending=$(devlink resource show "$DEVLINK_DEV" | \
- 			grep -c "size_new")
- 	check_err $still_pending "Failed reload - There are still unset sizes"
-+
-+	udevadm settle
- }
+diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4377.c
+index d90858ea2fe59..a77a30fdc630e 100644
+--- a/drivers/bluetooth/hci_bcm4377.c
++++ b/drivers/bluetooth/hci_bcm4377.c
+@@ -32,7 +32,7 @@ enum bcm4377_chip {
+ #define BCM4378_DEVICE_ID 0x5f69
+ #define BCM4387_DEVICE_ID 0x5f71
  
- declare -A DEVLINK_ORIG
+-#define BCM4377_TIMEOUT 1000
++#define BCM4377_TIMEOUT msecs_to_jiffies(1000)
+ 
+ /*
+  * These devices only support DMA transactions inside a 32bit window
 -- 
 2.43.0
 
