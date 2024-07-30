@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC99941705
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2DD941708
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF6AC1C22CA8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:06:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EB771C22E0B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D772C188015;
-	Tue, 30 Jul 2024 16:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD56E18C911;
+	Tue, 30 Jul 2024 16:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJ+YtBLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxfuVSVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A08189B86;
-	Tue, 30 Jul 2024 16:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B78A29A2;
+	Tue, 30 Jul 2024 16:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355504; cv=none; b=sg2bM1HvbZn9qvzjIgW8VcZ68Bm1P3bDnXnet/lAFvE9JxtkMSe3FuIPCFF2oIisvwt2cktGX50N+FJgBy5kdWmSoGR3ElgeSsjtrF6++3LzdPbKTLM+Xcr32yYZH5J1Q/jjZBkS1pBo5k6b69Y/XKav7YRlmym7E70JHZlSw00=
+	t=1722355514; cv=none; b=mO4uJZLe4z44fev2zWTmqOOXvb4zTl1Ug/3BctvnXSkdW7njnQ9sk44oIIndh7XURHgJOp9VOttMWxN5NcBjcGZM8tA4L2GEjWyUNN6ILlPYto9p4Y3WSQwWuN204FTnN9ICHeR2qekvtCX4RljIuej8rphYhAH5GhRbSLrNm6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355504; c=relaxed/simple;
-	bh=KFGsXO+wRIFqgp3r4b1OUmMvc3MKiwkNmSd+aVZuKo0=;
+	s=arc-20240116; t=1722355514; c=relaxed/simple;
+	bh=XMvpMSUuv5o9EC/Pg1RPv0i72QU9hgf7Llw6DIW4P9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFH/CfMmXsJamFtbWk5XJ2cb8f9AtU/AE9krOzoS9sKP6vlZh/puh1q5pvRKejwdghAnNFNCCq4YEYl5ne+fBT+KKOnazO/8Q+usx/qwPAWvBoBcVkyePUP0I6DJcMlWzoqrsFbok6CUXzUdkkP7bMeJQhvFvAJfObihLYbbzEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJ+YtBLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF269C4AF0A;
-	Tue, 30 Jul 2024 16:05:03 +0000 (UTC)
+	 MIME-Version; b=XAuSBSYR82XR7cZgLpFnxSLfUvO8qyIz93fOVYQmvSonz72Z7wQ6z7DjudaQtVBrczr802aM/upwpXzgpOn/mQvY2MTyPg8eEwFJ4fmx2kdC6anLSJ+j3MhD/w6oKuSwul6BKNOux6wbQCcLc5hmI5Bkfq63fs7cI8e79ECa1IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxfuVSVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFED9C4AF0C;
+	Tue, 30 Jul 2024 16:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355504;
-	bh=KFGsXO+wRIFqgp3r4b1OUmMvc3MKiwkNmSd+aVZuKo0=;
+	s=korg; t=1722355514;
+	bh=XMvpMSUuv5o9EC/Pg1RPv0i72QU9hgf7Llw6DIW4P9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJ+YtBLf7w6al4nPfql1CWK7Yc/JKAGI1OnFBwh1kEgx5qWekWagMTfaK0vXgaG6Z
-	 7UsNI+WtfT/rtFaHhl8/+x4JMXbSfCX2hsDFWrVIfDAKmLa40gY8RIEmft6l95r/e7
-	 FKGug8Atow2acPC/VTwSEnV+G3oLgUawbr0CXwHA=
+	b=LxfuVSVjdEJ0+7CfhWYKsvrzYYtNCKGhD2Mqj0U/Jz+FQK+2Ra+0TCh6vCtqu6n8Y
+	 +Huz3mYMFXKtyfjan0a5DnG4O5e8nThAMi6l+vB43+MnuKZ/9so7wr9HbIks4/zahO
+	 dgh3SrwfiesCMSEYZPAoxap0CwzawkJNxfC1LnBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 061/809] arm64: dts: rockchip: Update WIFi/BT related nodes on rk3308-rock-pi-s
-Date: Tue, 30 Jul 2024 17:38:57 +0200
-Message-ID: <20240730151727.053761159@linuxfoundation.org>
+Subject: [PATCH 6.10 062/809] cpufreq: sun50i: fix memory leak in dt_has_supported_hw()
+Date: Tue, 30 Jul 2024 17:38:58 +0200
+Message-ID: <20240730151727.093480234@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,104 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 12c3ec878cbe3709782e85b88124abecc3bb8617 ]
+[ Upstream commit 6282fba6abd7c3c8896c239cc8aa9ec45edcb97b ]
 
-Update WiFi SDIO and BT UART related props to better reflect details
-about the optional onboard RTL8723DS WiFi/BT module.
+The for_each_child_of_node() loop does not decrement the child node
+refcount before the break instruction, even though the node is no
+longer required.
 
-Also correct the compatible used for bluetooth to match the WiFi/BT
-module used on the board.
+This can be avoided with the new for_each_child_of_node_scoped() macro
+that removes the need for any of_node_put().
 
-Fixes: bc3753aed81f ("arm64: dts: rockchip: rock-pi-s add more peripherals")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240521211029.1236094-14-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: fa5aec9561cf ("cpufreq: sun50i: Add support for opp_supported_hw")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3308-rock-pi-s.dts    | 40 +++++++++++++++++--
- 1 file changed, 36 insertions(+), 4 deletions(-)
+ drivers/cpufreq/sun50i-cpufreq-nvmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-index f6fb90e13ad01..f1d4118ffb7d6 100644
---- a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-@@ -17,6 +17,7 @@ aliases {
- 		ethernet0 = &gmac;
- 		mmc0 = &emmc;
- 		mmc1 = &sdmmc;
-+		mmc2 = &sdio;
- 	};
+diff --git a/drivers/cpufreq/sun50i-cpufreq-nvmem.c b/drivers/cpufreq/sun50i-cpufreq-nvmem.c
+index 0b882765cd66f..ef83e4bf26391 100644
+--- a/drivers/cpufreq/sun50i-cpufreq-nvmem.c
++++ b/drivers/cpufreq/sun50i-cpufreq-nvmem.c
+@@ -131,7 +131,7 @@ static const struct of_device_id cpu_opp_match_list[] = {
+ static bool dt_has_supported_hw(void)
+ {
+ 	bool has_opp_supported_hw = false;
+-	struct device_node *np, *opp;
++	struct device_node *np;
+ 	struct device *cpu_dev;
  
- 	chosen {
-@@ -235,6 +236,20 @@ &pinctrl {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&rtc_32k>;
+ 	cpu_dev = get_cpu_device(0);
+@@ -142,7 +142,7 @@ static bool dt_has_supported_hw(void)
+ 	if (!np)
+ 		return false;
  
-+	bluetooth {
-+		bt_reg_on: bt-reg-on {
-+			rockchip,pins = <4 RK_PB3 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+
-+		bt_wake_host: bt-wake-host {
-+			rockchip,pins = <4 RK_PB4 RK_FUNC_GPIO &pcfg_pull_down>;
-+		};
-+
-+		host_wake_bt: host-wake-bt {
-+			rockchip,pins = <4 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+	};
-+
- 	gmac {
- 		mac_rst: mac-rst {
- 			rockchip,pins = <0 RK_PA7 RK_FUNC_GPIO &pcfg_pull_none>;
-@@ -284,11 +299,24 @@ &sdio {
- 	cap-sd-highspeed;
- 	cap-sdio-irq;
- 	keep-power-in-suspend;
--	max-frequency = <1000000>;
-+	max-frequency = <100000000>;
- 	mmc-pwrseq = <&sdio_pwrseq>;
-+	no-mmc;
-+	no-sd;
- 	non-removable;
--	sd-uhs-sdr104;
-+	sd-uhs-sdr50;
-+	vmmc-supply = <&vcc_io>;
-+	vqmmc-supply = <&vcc_1v8>;
- 	status = "okay";
-+
-+	rtl8723ds: wifi@1 {
-+		reg = <1>;
-+		interrupt-parent = <&gpio0>;
-+		interrupts = <RK_PA0 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "host-wake";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&wifi_host_wake>;
-+	};
- };
- 
- &sdmmc {
-@@ -320,12 +348,16 @@ &uart0 {
- };
- 
- &uart4 {
-+	uart-has-rtscts;
- 	status = "okay";
- 
- 	bluetooth {
--		compatible = "realtek,rtl8723bs-bt";
--		device-wake-gpios = <&gpio4 RK_PB3 GPIO_ACTIVE_HIGH>;
-+		compatible = "realtek,rtl8723ds-bt";
-+		device-wake-gpios = <&gpio4 RK_PB2 GPIO_ACTIVE_HIGH>;
-+		enable-gpios = <&gpio4 RK_PB3 GPIO_ACTIVE_HIGH>;
- 		host-wake-gpios = <&gpio4 RK_PB4 GPIO_ACTIVE_HIGH>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&bt_reg_on &bt_wake_host &host_wake_bt>;
- 	};
- };
- 
+-	for_each_child_of_node(np, opp) {
++	for_each_child_of_node_scoped(np, opp) {
+ 		if (of_find_property(opp, "opp-supported-hw", NULL)) {
+ 			has_opp_supported_hw = true;
+ 			break;
 -- 
 2.43.0
 
