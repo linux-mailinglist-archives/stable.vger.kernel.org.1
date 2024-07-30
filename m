@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-64310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68C9941D43
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98168941A54
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7DBC1C23509
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8BBA1C22560
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB31818A6BA;
-	Tue, 30 Jul 2024 17:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D39183CDB;
+	Tue, 30 Jul 2024 16:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKIzCOSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXdfOwBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986EB18454A;
-	Tue, 30 Jul 2024 17:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79801A619E;
+	Tue, 30 Jul 2024 16:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359696; cv=none; b=ksmcsWt1Ylr4IsXnylqeCrlMouINavwdJXq1rQlyCvKfJrn87HWPSwG9lJNfYSSIQGWIMrU69EyAlv0YOTmjvb3roMSAtnpL9Wrf36oBYHqm7cGcDv+5BggHQwadEhR3veVllhQ0weO7W0HfYdlZnRvwGaOQfyNpHhpIvnH4BVo=
+	t=1722357763; cv=none; b=XQGGmNKIITc+OwQLM+P8tydPaiyI6LJwcZUvxosnEOaYhuoK7H2QEgIStcn3p1JL5Fa3DZfEsQF09Gf3vnZg3mNLjtcoautZQUqv/5DKUTYPN42rOQE8WyCGytElB75qJybS14Vd2t3msx76h7+a6Tmi4nUKqX2z3KzDLkKs0Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359696; c=relaxed/simple;
-	bh=QbehZqxMiyZ+4u6EQ5KtmcqhSIDXxpXXmeAySNc3zD8=;
+	s=arc-20240116; t=1722357763; c=relaxed/simple;
+	bh=XO7nPTokJ0lN/WkGf2o+5pmA+EXHvyj3qE+ILELifas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcMVACb1U8mM4W5srEmBsJBP/klGPOlfd8D9CQwdOAWG74KrdKXByuxPbsnrf0iMjiSmDmD0RicxLPr4LiJHfXY9pVLu1Dipte6G3W47IuDImk8IpwV4ncS6CnRFt+Mjzcef6Tw4MUlLNaqgVwAF1ypWjNHmDJpiOZB3S/fsAHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKIzCOSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDB3C32782;
-	Tue, 30 Jul 2024 17:14:55 +0000 (UTC)
+	 MIME-Version; b=RerSG1Vgkpgkz53NsOGMizXXKwtnoEqvYvSHW/PymPRIXy6/qYVbm9KRc++BneecIkR3WrFtWiVCEiNzi/sU0fMIJPeqKjthdfEzPKQ7EbRxzJQAcWXUIbBrfCkG1m5mKKyKwUKgEBC7z2hTu24Yc5eXrWbjdka+3OLt20P12Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXdfOwBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0F3C32782;
+	Tue, 30 Jul 2024 16:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359696;
-	bh=QbehZqxMiyZ+4u6EQ5KtmcqhSIDXxpXXmeAySNc3zD8=;
+	s=korg; t=1722357762;
+	bh=XO7nPTokJ0lN/WkGf2o+5pmA+EXHvyj3qE+ILELifas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKIzCOSJbqKAt0seujUkSS1ZvJ4q6zbresgKWnx5CmZJuzEeHVT+9Z8uEsvJSCUeI
-	 FKpBIteoaGBRFi4QY/TQOuDsQcwHSdl0G3SR4Hs6wi81XfuT/STJbJCpvU/DTFD+ab
-	 YDaPMkcNKgOP/pvWDqxG0LfqQkbC70sc7PMNkIDc=
+	b=WXdfOwBkBUeZtY6AlmNZYtxpi5t1zSMzWMGh+IgkT6d4laKzes2trlA0PKgtdvVb8
+	 TXUG88U3ICSGW+yNsUj7g78RbEsF4JCrG40uaAnyrfk9HG/DmvAPgJk0U55Ip2rl8R
+	 sYfWH4wtT62cuNmpE1uXyIh1THBK6Yb4gt6FhqRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Sourav Panda <souravpanda@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 520/809] lib: add missing newline character in the warning message
+Subject: [PATCH 6.6 289/568] nvmem: rockchip-otp: set add_legacy_fixed_of_cells config option
 Date: Tue, 30 Jul 2024 17:46:36 +0200
-Message-ID: <20240730151745.277909285@linuxfoundation.org>
+Message-ID: <20240730151651.168516436@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,41 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-[ Upstream commit 4810a82c8a8ae06fe6496a23fcb89a4952603e60 ]
+[ Upstream commit 2933e79db3c00a8cdc56f6bb050a857fec1875ad ]
 
-Link: https://lkml.kernel.org/r/20240711220457.1751071-1-surenb@google.com
-Fixes: 22d407b164ff ("lib: add allocation tagging support for memory allocation profiling")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The Rockchip OTP describes its layout via devicetree subnodes,
+so set the appropriate property.
+
+Fixes: 2cc3b37f5b6d ("nvmem: add explicit config option to read old syntax fixed OF cells")
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240705074852.423202-5-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/alloc_tag.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvmem/rockchip-otp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-index abd24016a900e..8c61ccd161ba3 100644
---- a/include/linux/alloc_tag.h
-+++ b/include/linux/alloc_tag.h
-@@ -122,7 +122,7 @@ static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag
- 		  "alloc_tag was not cleared (got tag for %s:%u)\n",
- 		  ref->ct->filename, ref->ct->lineno);
- 
--	WARN_ONCE(!tag, "current->alloc_tag not set");
-+	WARN_ONCE(!tag, "current->alloc_tag not set\n");
- }
- 
- static inline void alloc_tag_sub_check(union codetag_ref *ref)
+diff --git a/drivers/nvmem/rockchip-otp.c b/drivers/nvmem/rockchip-otp.c
+index cb9aa5428350a..7107d68a2f8c7 100644
+--- a/drivers/nvmem/rockchip-otp.c
++++ b/drivers/nvmem/rockchip-otp.c
+@@ -255,6 +255,7 @@ static int rockchip_otp_read(void *context, unsigned int offset,
+ static struct nvmem_config otp_config = {
+ 	.name = "rockchip-otp",
+ 	.owner = THIS_MODULE,
++	.add_legacy_fixed_of_cells = true,
+ 	.read_only = true,
+ 	.stride = 1,
+ 	.word_size = 1,
 -- 
 2.43.0
 
