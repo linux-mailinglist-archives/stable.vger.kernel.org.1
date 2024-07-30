@@ -1,179 +1,213 @@
-Return-Path: <stable+bounces-62672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37511940CF8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4621B940D08
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC73E2872CF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:08:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00A59281F5C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E8A194099;
-	Tue, 30 Jul 2024 09:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7142D1940A9;
+	Tue, 30 Jul 2024 09:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/w3Dt/H"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="onp9yJWq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2049.outbound.protection.outlook.com [40.107.93.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F07194A61
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722330419; cv=none; b=BFdAQJHXNdkR3zRwZ0UQqkG0GvspD4xggnZesONGcxyekWz9lJ5OwOeIzsuEYkKiuT2n6Rdqh2TX6rQsglZMgZFyM0a6Tmqp2TA09msQhIr7/pA3oC/7f40eieQnMXRvdLmVeapYb4z7sn2L/QpMz4pHg1SyBTGvDlrJxluvV08=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722330419; c=relaxed/simple;
-	bh=a7qMJWvbYO1/j/R8eYAhw8csTOGC1rVlxOqXUEDBRik=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=otERj/Yfq/0Zk9qwYvG59iiw7xxlmTE1rk7vsn7ZZP2fifr0by5dqtXDLbV1111Rm3yHkpWVA2i/BpLgbcnVCkA8BtCX+yaFUtmgnB1VWLCLkyyWKzhVp4g4KFSRDE2kZqWYP1Qz4iXZZxL0P9gNV6uiSERySniOuvURdNPJ7fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/w3Dt/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE402C4AF09;
-	Tue, 30 Jul 2024 09:06:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722330419;
-	bh=a7qMJWvbYO1/j/R8eYAhw8csTOGC1rVlxOqXUEDBRik=;
-	h=Subject:To:Cc:From:Date:From;
-	b=u/w3Dt/HJ1JuAbi1SzBIu0bNKaanDBdG4UUYyLA4EBvhOF4ajWO8Fc3D2Ot73GJe4
-	 qnXi2FfBXUWI3NwNc8uEa7PgJCewPALz/R+NdGHatwV8TRcMM40OiqHOfV0AeQjCJr
-	 Td4ao9cOufwiHARApophNd6IAxOAmscRAjPtWSCM=
-Subject: FAILED: patch "[PATCH] irqchip/imx-irqsteer: Handle runtime power management" failed to apply to 5.4-stable tree
-To: shenwei.wang@nxp.com,tglx@linutronix.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:06:45 +0200
-Message-ID: <2024073045-unsettled-food-6a9c@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7620C192B9B;
+	Tue, 30 Jul 2024 09:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722330561; cv=fail; b=rhfi0Zzx4AW+xee9Nkr3Y6VdOkocJWc7coQEyl0blPs/HyJu6RKVvhPQJ72McguDETKAAatDPRr2C8Jnyp4dMP+RZRaVhopjNDSMRJav+RvWXut9/YDj7jaEfkQwIrq27C6vkC2z/RP6dJKxCRhHixQTimSvLWOXQ70q9TyfDkQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722330561; c=relaxed/simple;
+	bh=llcP6j1ICewtPHZxpK6BGfgchW4KFGiQd2zfH+o4D1g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rvup+UVmoSjQnhYs21f7rUXgn/QWGR5RLflUewF5t6gX2ljn7YbmejvMo8KiuStBQN8J6C01KQMnYWpkUhG3sX/pyYbx11BF8h3bRDFfF4FtnNJ2cbbuO6ZaJqRd0zOmvSjATWtignr0onykG8D5hmQIadEYe1kFUDkwoCSga+8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=onp9yJWq; arc=fail smtp.client-ip=40.107.93.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G9B08nEoQ+NxUqC2awjz9mfY6vmWOJ+KgMFL0Z42EhYCkbQoLS5Qn6QgguflvjbGYM4VqVrZNXQ3eSsbPPGNszXC/xdA+Iq/SlNYjK5dNPxgk1XNVT2R0aD5FswCn2Mxfbs/cQEruP+b0FYpZp7ihBm0TRi5tFXJFT8u4+sBITW/RjtjNPPndifzue6qRppDrpzZg16xvOTSiX/o6vkkHho6DRc+kT58bCeDYieWh/q0V9BxfDiRooqnWrtf82cs23VKHNOV8Ms0zu2Nik5FjPtu72BMEj++cMJcAywwzTfNQyiQt/XDQof2BaWrAFtkSpJ+F9EL9khQu/l4iCS1Vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=llcP6j1ICewtPHZxpK6BGfgchW4KFGiQd2zfH+o4D1g=;
+ b=AlppTlle1o9NbXun0OJLkOpMAIKc6HxfqzsLHhNKrj0NP0ryR4EbsvTOGOKLCjTfkVWFsQJ++x4hS/4i25uH2zH+znC0jq05OQweciHDw7fl1rYvUgDE0R9ww0e9ierRWuiEz6M+0Cf7XeoXVYPSazUqR/Io+SzYttIBRrz//aDM9BERJBgxZ/U82PuMwPKPX9iwiAPoyLiWvzBIL96zW6QU7Zf65cOKE7aPb3FFYpUY5Kz6dPp+zq4f/CSMc0ZE4vwUjxyRg2wJte9zme7QJTN5++R0M6/bTROIEUJgMS8fnlkR8Af8hYz/p7z35wxO8a0cY7Z2wRjLKjjCKIWm7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=llcP6j1ICewtPHZxpK6BGfgchW4KFGiQd2zfH+o4D1g=;
+ b=onp9yJWqm2cCAxWt2e46EBy9RhNxdShW93fdf9fsbfFzwlJnuEv+afqEF4M8NJGoZ3ttNVMl9JveDunZFGKzO7k4yXfzmpzCE3E/miamkJCAKCJ/CaVZhtO7Rp0yLD6wfKPASfevOOeG5nUk7+Pqfzi4Y0+JjKZkkwFMIBP59lE=
+Received: from CO6PR12MB5489.namprd12.prod.outlook.com (2603:10b6:303:139::18)
+ by IA0PR12MB8840.namprd12.prod.outlook.com (2603:10b6:208:490::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
+ 2024 09:09:16 +0000
+Received: from CO6PR12MB5489.namprd12.prod.outlook.com
+ ([fe80::5f4:a2a9:3d28:3282]) by CO6PR12MB5489.namprd12.prod.outlook.com
+ ([fe80::5f4:a2a9:3d28:3282%4]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
+ 09:09:16 +0000
+From: "Lin, Wayne" <Wayne.Lin@amd.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: "kevin@holm.dev" <kevin@holm.dev>, Linux regressions mailing list
+	<regressions@lists.linux.dev>, "Deucher, Alexander"
+	<Alexander.Deucher@amd.com>, "Wu, Hersen" <hersenxs.wu@amd.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, ML dri-devel
+	<dri-devel@lists.freedesktop.org>, "amd-gfx@lists.freedesktop.org"
+	<amd-gfx@lists.freedesktop.org>
+Subject: RE: [REGRESSION] No image on 4k display port displays connected
+ through usb-c dock in kernel 6.10
+Thread-Topic: [REGRESSION] No image on 4k display port displays connected
+ through usb-c dock in kernel 6.10
+Thread-Index: AQHa4EIHlXNw8ZbqLEehA7MTA0aCA7IKx3CAgAQJXKSAAC5FQA==
+Date: Tue, 30 Jul 2024 09:09:16 +0000
+Message-ID:
+ <CO6PR12MB5489EB3B5EC32858DA763B59FCB02@CO6PR12MB5489.namprd12.prod.outlook.com>
+References: <d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev>
+ <9ca719e4-2790-4804-b2cb-4812899adfe8@leemhuis.info>
+ <fd8ece71459cd79f669efcfd25e4ce38b80d4164@holm.dev>
+ <CO6PR12MB54896312D4BEAE30963FDC5EFCB02@CO6PR12MB5489.namprd12.prod.outlook.com>
+ <2024073028-rectified-antler-a65b@gregkh>
+In-Reply-To: <2024073028-rectified-antler-a65b@gregkh>
+Accept-Language: en-US, zh-TW
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=dc916e15-4593-464c-8b3f-c2a4e40f7f48;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
+ Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2024-07-30T09:06:51Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO6PR12MB5489:EE_|IA0PR12MB8840:EE_
+x-ms-office365-filtering-correlation-id: b27b52b8-01a4-43aa-549e-08dcb07749a3
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?UV+ziW8JaR4ubYTMclX/WYFLtx0JFiocckMJh42eh7QTDJqsiV36+256pt7e?=
+ =?us-ascii?Q?aw82fiiaYmDrFzVaYqHjBN5GE6A3s98IbKmfZLnIKJ8xYcYNBSG10p9g6OU+?=
+ =?us-ascii?Q?EIQ33VMApMVCWgzMA8gncmeFvL0v0dF6Q7YZaO4LvNxg0GLjK2rGco46bxZ8?=
+ =?us-ascii?Q?MU+HRwTEOgJmEcpDvxyoy2xK19ETD5jaG1jjcBfa7uZDkgUXSpAQ31/1iQTx?=
+ =?us-ascii?Q?rvSa6FvwgGLZ3DFqSKFZNrstRZvwZmD+vBDCAHQbh9l+dj3NcnbBewEKF7FG?=
+ =?us-ascii?Q?UpgGJfC43GtKP/LObvj5EQURc47waHO/R9z8P11YI0ybNJHhddKGS+ETcGI/?=
+ =?us-ascii?Q?67tv9BeMwFv/B/xE6mhElBweoblad2ZuFiB4mdtGxp6twe4cvJIRLtN17MJ5?=
+ =?us-ascii?Q?6iIwVGzANGsKopXW2Z+pLJlchfvCexzLlkz2M91LkzgAoS8bIRx20muuxDGn?=
+ =?us-ascii?Q?0rQi92+osHBdmZ1rYEsXKlqYFRllUe0aQnllLTkR8Xx71XRC4NNfvEmfsVcY?=
+ =?us-ascii?Q?UbrcwWT6gLEgglQmcst/6gweMlPczkZt2ai9mfC9dddN1eGimO4HdzZTFXkW?=
+ =?us-ascii?Q?6Z7mCnCZ6hdf3MGzL+Q+3pKzhRfVkwCFwYD4gXMSCmEW0udII/fhl9ruolba?=
+ =?us-ascii?Q?LOigsO/yZI8qi3nt6fToDVlDK4MwXqT1z8/9cF89w9VLOyqF90X94zuN83Qq?=
+ =?us-ascii?Q?Ot8RfeYF23aP4fCPHZ9rXGx8LHqjrJYCRUvhDp9MiE22leNWGgih+cIn9Us5?=
+ =?us-ascii?Q?RH15noes+P9/hRdXZghVsKPqicmOf7exbX0598nAttwm0UVhLAZsoNzN4akD?=
+ =?us-ascii?Q?K1PzhceQbmh4CwmFGfxUzJxCoNSEgzwiUY6+F7wMTNCjRTyDddteZxDnaIqp?=
+ =?us-ascii?Q?yaPeJrHnEyTTOb6hmgAmImdHdUqZ8CgdB9MhH5oNsLB8THFUkGEOfCYbctzx?=
+ =?us-ascii?Q?FlRJHB95Ck4fKWtI+l/4wfkvufRSyawvdQJ82fBj9zOrMS3KjhTyoeAp5hXF?=
+ =?us-ascii?Q?lGCkJ63YdbNJgwmSZVi+eank33jm4c22iGTiEPqbDqWnHPtEJhtLWtBhKAGF?=
+ =?us-ascii?Q?spoUsaZ/OjcF3zSt68bM2cth2dQBrxGvxwK+BBKGSdK8o7OaeumH9XlVz9Cd?=
+ =?us-ascii?Q?hSpM3j5DNWykyBktUh1kFMG0A/BTBoNoChdX6DCqQlEcdJ1wHs3WOGUl8zKj?=
+ =?us-ascii?Q?X+UiXDGS/ThfJ6j5IVsZotR1rzV1zUUA3VgWXM2VwNBH310UiisEUj1WfCtG?=
+ =?us-ascii?Q?u/m80MvQVsZde58HhbqCfq4t47/wvk9MOOWjL3EwWVdJrMI8+VjbkX5I+SIq?=
+ =?us-ascii?Q?PBRlcruHfgx0pmJMTCTRGhEHQpmvyKJ9CjoycbnNuHDBnCm05F68d2tucjpg?=
+ =?us-ascii?Q?JncbpFvc3t2EZaFRzTCmwJvNWFQeBzzoN5YQzC64ZD+3VD3IDA=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5489.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?f7q7o3kwMpGX/dKBJL67iiHrNnU1KcEtzQPrUvkJDs3GRLD8uW+r7wthM9M1?=
+ =?us-ascii?Q?sH185R5MWgGTQfCTnRjCCqicAGgn7ffXzqdPtYtDha7H81pmpntqYtiXVOCC?=
+ =?us-ascii?Q?BYMWYOz7GxSYrnl145gqncJdd1TfY7ufFM4tP+Ufg5l/5GwsN2cC9S2/eDxm?=
+ =?us-ascii?Q?6RKgzl2ieDP6p4Vmyj23yHdJApqg96+gzXew8lMktuoSjIO+EaSZygGs2RF0?=
+ =?us-ascii?Q?ZtN8vxKfYm9Qa9AQCFq1uLQdD7Y6za49C4yuM4sP150jtZY13k1GIhzSv7cC?=
+ =?us-ascii?Q?bhjR+jgDKLNWfUpucnQg3PLaLauvIChU3fE82K4F/c1gwSlOiUmneoKdDKMd?=
+ =?us-ascii?Q?xN0Q1rwkNENozLnE4J1FE4oAWURBuUy1RtEXot1lCR1Rr0ITwO1/0HB2eWAA?=
+ =?us-ascii?Q?uqk+qZ8+9p432K9Yv6HRX+SThq4UJld8gnrCOM/WWmp9qSmhcyHaCr0QKx/1?=
+ =?us-ascii?Q?WHLwZ3lFiTYomhxErudOCxsK/rgEaEuQSiUXWir40l4fcAYGqmkj9bpe91T6?=
+ =?us-ascii?Q?FF44vgSfWaPg8fQ01Ir20WzQJL83bi5zwGeeYO8u1wkZp7rkjM0JU+kW9q8N?=
+ =?us-ascii?Q?Cf9ru5X8ISUNfef3ZZ5wy0tcDDRhmg1JR0Or8aBTkZnIl5uZrP9ZE1aZfNZ5?=
+ =?us-ascii?Q?iOBDtuEFT56iXzX1FwMssbpIp1y+vCamxDKcFE/ZXWBpfaDtw0bsyIOIP06M?=
+ =?us-ascii?Q?c+g8RtEqnVEHPtnNnVH+OoPTBtTfoSZLXVkqal15DbxS5b2Ezt0uUtV4U3Qi?=
+ =?us-ascii?Q?h8ey7wan7d+d8KBhAHvL+geGnFQ1jEiF+gO/0ae9Ehgp5W1cOlrY0VNywpl2?=
+ =?us-ascii?Q?SMXwmPeZyBu3n6n7EvQYO3xh9hYXvTXiHty7qvOLoJ3KwYJU+KFdqDgZvUMX?=
+ =?us-ascii?Q?E4k0S6ZVTFct9vzrGDmBQTs2EF/+ezgK3y615pCh6SIAEvQlGI0X9MPHNDMX?=
+ =?us-ascii?Q?z/F7P3i0uQmWz/BQE664PmZSWqWclsZ2TDqGoi4ig8g+BoMOnDT3Osx48alY?=
+ =?us-ascii?Q?xOQij/jk0rqWGBOBcfPlbVSdMwxfzjQHoAFybRgS8YWJhHdjh6qNtNvffyYq?=
+ =?us-ascii?Q?wUt48dkkl1bpO5iT6tdHhsxQ3qioxBC7e08Nf4XZNXWVMdwE8R4mwPiwviZG?=
+ =?us-ascii?Q?WLTU9TbIlOfeIJ11JlCZ9u5HwBvrr0pGuq0b/R2CPp3c7Y+QuTh7j91u8+Qu?=
+ =?us-ascii?Q?Z4vr5uDFviK6JThcoaqSgEsLFIWbxyY9R17HE5sJGxCtFw88FFgftlwBntAo?=
+ =?us-ascii?Q?YXXNQLTZk7LP69VTO8OIwvzmc6Tkq/mPz9Sboq0vzQPK2f5zikvyVMT+ACiH?=
+ =?us-ascii?Q?CxK5xQqEPkkBqaU6UFX5RMLXcMNmSQOvmAOVikLaL5nLZSLv9q20NkV9qCoD?=
+ =?us-ascii?Q?zqG9JlEZGLMTGLa9d7igEcVi2ACnu/DxA7LBzR4b/MRwnCl7mNvXwQ5qrJYh?=
+ =?us-ascii?Q?n1B9S+fRnTwa2YxF3A37vlJwwUm9NiC8gADgZgcfwFO/uIcZ6LfKjHo6aHGh?=
+ =?us-ascii?Q?sv4qWaB9HA88v4RJtO22nZUbsLlbY8U+0tGKdMXCLo7EdD+DIWf7zbzkMLP4?=
+ =?us-ascii?Q?6Ec5wC8OORgVoWej+eU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5489.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b27b52b8-01a4-43aa-549e-08dcb07749a3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2024 09:09:16.2510
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 140NUIpS+hg9N6MGusXyZzVpn1aOJtdupaR8wndQ+/y9429lJ9+c99ONrkMaLyYjt4yoSerCAQtP8nZh1J7ngA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8840
 
+[Public]
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Thanks, Greg.
+Will do.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Regards,
+Wayne Lin
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 33b1c47d1fc0b5f06a393bb915db85baacba18ea
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073045-unsettled-food-6a9c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-33b1c47d1fc0 ("irqchip/imx-irqsteer: Handle runtime power management correctly")
-e9a50f12e579 ("irqchip/imx-irqsteer: Constify irq_chip struct")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 33b1c47d1fc0b5f06a393bb915db85baacba18ea Mon Sep 17 00:00:00 2001
-From: Shenwei Wang <shenwei.wang@nxp.com>
-Date: Wed, 3 Jul 2024 11:32:50 -0500
-Subject: [PATCH] irqchip/imx-irqsteer: Handle runtime power management
- correctly
-
-The power domain is automatically activated from clk_prepare(). However, on
-certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
-sleeping functions, which triggers the 'scheduling while atomic' bug in the
-context switch path during device probing:
-
- BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
- Call trace:
-  __schedule_bug+0x54/0x6c
-  __schedule+0x7f0/0xa94
-  schedule+0x5c/0xc4
-  schedule_preempt_disabled+0x24/0x40
-  __mutex_lock.constprop.0+0x2c0/0x540
-  __mutex_lock_slowpath+0x14/0x20
-  mutex_lock+0x48/0x54
-  clk_prepare_lock+0x44/0xa0
-  clk_prepare+0x20/0x44
-  imx_irqsteer_resume+0x28/0xe0
-  pm_generic_runtime_resume+0x2c/0x44
-  __genpd_runtime_resume+0x30/0x80
-  genpd_runtime_resume+0xc8/0x2c0
-  __rpm_callback+0x48/0x1d8
-  rpm_callback+0x6c/0x78
-  rpm_resume+0x490/0x6b4
-  __pm_runtime_resume+0x50/0x94
-  irq_chip_pm_get+0x2c/0xa0
-  __irq_do_set_handler+0x178/0x24c
-  irq_set_chained_handler_and_data+0x60/0xa4
-  mxc_gpio_probe+0x160/0x4b0
-
-Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
-callbacks and handle power management in them as they are invoked from
-non-atomic context.
-
-[ tglx: Rewrote change log, added Fixes tag ]
-
-Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
-
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index 20cf7a9e9ece..75a0e980ff35 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -36,6 +36,7 @@ struct irqsteer_data {
- 	int			channel;
- 	struct irq_domain	*domain;
- 	u32			*saved_reg;
-+	struct device		*dev;
- };
- 
- static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
-@@ -72,10 +73,26 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
- 	raw_spin_unlock_irqrestore(&data->lock, flags);
- }
- 
-+static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
-+
-+	pm_runtime_get_sync(data->dev);
-+}
-+
-+static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
-+
-+	pm_runtime_put_autosuspend(data->dev);
-+}
-+
- static const struct irq_chip imx_irqsteer_irq_chip = {
--	.name		= "irqsteer",
--	.irq_mask	= imx_irqsteer_irq_mask,
--	.irq_unmask	= imx_irqsteer_irq_unmask,
-+	.name			= "irqsteer",
-+	.irq_mask		= imx_irqsteer_irq_mask,
-+	.irq_unmask		= imx_irqsteer_irq_unmask,
-+	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
-+	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
- };
- 
- static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
-@@ -150,6 +167,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 	if (!data)
- 		return -ENOMEM;
- 
-+	data->dev = &pdev->dev;
- 	data->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(data->regs)) {
- 		dev_err(&pdev->dev, "failed to initialize reg\n");
-
+> -----Original Message-----
+> From: Greg KH <gregkh@linuxfoundation.org>
+> Sent: Tuesday, July 30, 2024 2:21 PM
+> To: Lin, Wayne <Wayne.Lin@amd.com>
+> Cc: kevin@holm.dev; Linux regressions mailing list
+> <regressions@lists.linux.dev>; Deucher, Alexander
+> <Alexander.Deucher@amd.com>; Wu, Hersen <hersenxs.wu@amd.com>;
+> stable@vger.kernel.org; LKML <linux-kernel@vger.kernel.org>; ML dri-devel
+> <dri-devel@lists.freedesktop.org>; amd-gfx@lists.freedesktop.org
+> Subject: Re: [REGRESSION] No image on 4k display port displays connected
+> through usb-c dock in kernel 6.10
+>
+> On Tue, Jul 30, 2024 at 05:56:42AM +0000, Lin, Wayne wrote:
+> > [Public]
+> >
+> > Hi,
+> > Thanks for the report.
+> >
+> > Patch fa57924c76d995 ("drm/amd/display: Refactor function
+> > dm_dp_mst_is_port_support_mode()")
+> > is kind of correcting problems causing by commit:
+> > 4df96ba6676034 ("drm/amd/display: Add timing pixel encoding for mst
+> > mode validation")
+> >
+> > Sorry if it misses fixes tag and would suggest to backport to fix it. T=
+hanks!
+>
+> Please submit a backported version to the stable@vger.kernel.org list and=
+ we
+> will be glad to consider it.
+>
+> thanks,
+>
+> greg k-h
 
