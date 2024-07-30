@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-64473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E640941E5A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 283A3941C04
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1731B267A2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6FBC2829D6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294CC1A76BB;
-	Tue, 30 Jul 2024 17:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228EE18454A;
+	Tue, 30 Jul 2024 17:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVr8ajix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnAZiLV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2E31A76B1;
-	Tue, 30 Jul 2024 17:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA1283A17;
+	Tue, 30 Jul 2024 17:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360238; cv=none; b=RMJ5xyNbQPUQuNbjweATuHVJymb6pmqOSDMYRV6RyJK7KbeAUbpzDon/iE7i9dhMtkqWgg7KHJSCJmJhMamr67ukStzA2PiXZNGrkZBeHYOAAlYKBvb4AVnHViFGkUQA6vf70I8h3I0OWt9zKbLysVfsDvBF7ZspgQ39QoFsf/o=
+	t=1722358911; cv=none; b=AwR13BPDpMlxXrIIeZTbH6mxaHiC+UEqaZCZurnjfeTpO0xX6pS8z4pko5vR2QGjWOdMc0YhcWXEs2Ul40C3BV11oiBhqLD1fv2/MBlpsLKz2d3YJjY6A/M0ms8PE6hwE9tkp1tT07MQanmyC9V6fToSYb0TIU0uiQFYKAZQiLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360238; c=relaxed/simple;
-	bh=0SrDAYb4AIR6B3R5GsZVzVJoo2lbo8GtdIevzCeyuCU=;
+	s=arc-20240116; t=1722358911; c=relaxed/simple;
+	bh=GvTEXq65clS9lLTpk9F/GN1dweZJSlZqE4DJ0JCx/XY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rswcbtDFosxvB66zDAwI+o/x4lUcqYshlssqW4wBigcyrEKX7yDjxhpRA39WYVXqeu7xUL3+pKLZx4GvioqfdSSSMB3vcETdCLDbRZlQPjRfCpmahaz+sYyL2b0EoDINVs/uQg4BddwTVZyXt/FZMa+8I4N/hVvcrPCgVmjwkDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVr8ajix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D050C32782;
-	Tue, 30 Jul 2024 17:23:57 +0000 (UTC)
+	 MIME-Version; b=dPV//quUUszIGpjLUwAH4FWAD+maremzkP0ji2ig29FvXqpSpYuS42VUGds+cA91cVh+xB2v2oyEuvvwjvJMHzNzqLd7vm3lCByvV3kRAPTwBLyZ3w80h9bm80P8lxR9/dtDljgFsxmssC+C4OP+0sZdoBdhvNChOFLnoMz8beQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnAZiLV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4C3C32782;
+	Tue, 30 Jul 2024 17:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360237;
-	bh=0SrDAYb4AIR6B3R5GsZVzVJoo2lbo8GtdIevzCeyuCU=;
+	s=korg; t=1722358911;
+	bh=GvTEXq65clS9lLTpk9F/GN1dweZJSlZqE4DJ0JCx/XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVr8ajixKwVfmtDUowFxWfPNaeWQFkvBpaUg3RVDwHnCe+PXixSsJv6Zdz0J6DENM
-	 HLY3BM2IFsF15+HvIKGnlIv1jmCNtz/VVj6Egcukuj/hK1IOp5NoOQLmHXPcDuTFPt
-	 k5AdYs24OtC15r9pa2fUWQ2EStxec7aeITzb+p6g=
+	b=pnAZiLV7KgrhZubIolX6QO+GT3PV9vI48n8BV4do8dbP+pUhnxBs5x4E6Y83R7zBA
+	 GrglSYE/mE0qj1dFkRWuh08G33Gdlz7B7JiVjlAdK8t84Vk2DAtGpwQh/BT18MH6np
+	 TCE94DUjMuXx0x0WAzr45oNgALavZEAefBy2m3MM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jianfeng Liu <liujianfeng1994@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.10 639/809] PCI: dw-rockchip: Fix initial PERST# GPIO value
+	Hao Yao <hao.yao@intel.com>,
+	Wentong Wu <wentong.wu@intel.com>,
+	Jason Chen <jason.z.chen@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 408/568] media: ivsc: csi: add separate lock for v4l2 control handler
 Date: Tue, 30 Jul 2024 17:48:35 +0200
-Message-ID: <20240730151750.089056067@linuxfoundation.org>
+Message-ID: <20240730151655.815500039@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Wentong Wu <wentong.wu@intel.com>
 
-commit 28b8d7793b8573563b3d45321376f36168d77b1e upstream.
+commit c6be6471004e0e4d10d0514146d8c41550823d63 upstream.
 
-PERST# is active low according to the PCIe specification.
+There're possibilities that privacy status change notification happens
+in the middle of the ongoing mei command which already takes the command
+lock, but v4l2_ctrl_s_ctrl() would also need the same lock prior to this
+patch, so this may results in circular locking problem. This patch adds
+one dedicated lock for v4l2 control handler to avoid described issue.
 
-However, the existing pcie-dw-rockchip.c driver does:
-
-  gpiod_set_value(..., 0); msleep(100); gpiod_set_value(..., 1);
-
-when asserting + deasserting PERST#.
-
-This is of course wrong, but because all the device trees for this
-compatible string have also incorrectly marked this GPIO as ACTIVE_HIGH:
-
-  $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3568*
-  $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3588*
-
-The actual toggling of PERST# is correct, and we cannot change it anyway,
-since that would break device tree compatibility.
-
-However, this driver does request the GPIO to be initialized as
-GPIOD_OUT_HIGH, which does cause a silly sequence where PERST# gets
-toggled back and forth for no good reason.
-
-Fix this by requesting the GPIO to be initialized as GPIOD_OUT_LOW (which
-for this driver means PERST# asserted).
-
-This will avoid an unnecessary signal change where PERST# gets deasserted
-(by devm_gpiod_get_optional()) and then gets asserted (by
-rockchip_pcie_start_link()) just a few instructions later.
-
-Before patch, debug prints on EP side, when booting RC:
-
-  [  845.606810] pci: PERST# asserted by host!
-  [  852.483985] pci: PERST# de-asserted by host!
-  [  852.503041] pci: PERST# asserted by host!
-  [  852.610318] pci: PERST# de-asserted by host!
-
-After patch, debug prints on EP side, when booting RC:
-
-  [  125.107921] pci: PERST# asserted by host!
-  [  132.111429] pci: PERST# de-asserted by host!
-
-This extra, very short, PERST# assertion + deassertion has been reported to
-cause issues with certain WLAN controllers, e.g. RTL8822CE.
-
-Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
-Link: https://lore.kernel.org/linux-pci/20240417164227.398901-1-cassel@kernel.org
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: Jianfeng Liu <liujianfeng1994@gmail.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org	# v5.15+
+Fixes: 29006e196a56 ("media: pci: intel: ivsc: Add CSI submodule")
+Cc: stable@vger.kernel.org # for 6.6 and later
+Reported-by: Hao Yao <hao.yao@intel.com>
+Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+Tested-by: Jason Chen <jason.z.chen@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/intel/ivsc/mei_csi.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-+++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-@@ -240,7 +240,7 @@ static int rockchip_pcie_resource_get(st
- 		return PTR_ERR(rockchip->apb_base);
+--- a/drivers/media/pci/intel/ivsc/mei_csi.c
++++ b/drivers/media/pci/intel/ivsc/mei_csi.c
+@@ -124,6 +124,8 @@ struct mei_csi {
+ 	struct v4l2_ctrl_handler ctrl_handler;
+ 	struct v4l2_ctrl *freq_ctrl;
+ 	struct v4l2_ctrl *privacy_ctrl;
++	/* lock for v4l2 controls */
++	struct mutex ctrl_lock;
+ 	unsigned int remote_pad;
+ 	/* start streaming or not */
+ 	int streaming;
+@@ -609,11 +611,13 @@ static int mei_csi_init_controls(struct
+ 	u32 max;
+ 	int ret;
  
- 	rockchip->rst_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
--						     GPIOD_OUT_HIGH);
-+						     GPIOD_OUT_LOW);
- 	if (IS_ERR(rockchip->rst_gpio))
- 		return PTR_ERR(rockchip->rst_gpio);
++	mutex_init(&csi->ctrl_lock);
++
+ 	ret = v4l2_ctrl_handler_init(&csi->ctrl_handler, 2);
+ 	if (ret)
+ 		return ret;
  
+-	csi->ctrl_handler.lock = &csi->lock;
++	csi->ctrl_handler.lock = &csi->ctrl_lock;
+ 
+ 	max = ARRAY_SIZE(link_freq_menu_items) - 1;
+ 	csi->freq_ctrl = v4l2_ctrl_new_int_menu(&csi->ctrl_handler,
+@@ -772,6 +776,7 @@ err_entity:
+ 
+ err_ctrl_handler:
+ 	v4l2_ctrl_handler_free(&csi->ctrl_handler);
++	mutex_destroy(&csi->ctrl_lock);
+ 	v4l2_async_nf_unregister(&csi->notifier);
+ 	v4l2_async_nf_cleanup(&csi->notifier);
+ 
+@@ -791,6 +796,7 @@ static void mei_csi_remove(struct mei_cl
+ 	v4l2_async_nf_unregister(&csi->notifier);
+ 	v4l2_async_nf_cleanup(&csi->notifier);
+ 	v4l2_ctrl_handler_free(&csi->ctrl_handler);
++	mutex_destroy(&csi->ctrl_lock);
+ 	v4l2_async_unregister_subdev(&csi->subdev);
+ 	v4l2_subdev_cleanup(&csi->subdev);
+ 	media_entity_cleanup(&csi->subdev.entity);
 
 
 
