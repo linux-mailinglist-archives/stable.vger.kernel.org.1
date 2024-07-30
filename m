@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F47941B67
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D322941DEE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78971C20CB7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36B4C288FE9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E751898E0;
-	Tue, 30 Jul 2024 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDB51A76C5;
+	Tue, 30 Jul 2024 17:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgB1crV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLGbVbuc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D51A6195;
-	Tue, 30 Jul 2024 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6721A76DE;
+	Tue, 30 Jul 2024 17:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358474; cv=none; b=Dw18X1h5/RGVavAYUI0VvTATY70eImAx9HCZnyoA58xp2Z4dRWQ7aIfQifgbf44atfY+R16fC3Cm1N4pkPDXP+4N54iNo3tU19yAvxV7XtzGpkQYK4XnsUuiVNlixfMBPeI/qHLUXaeu2VOfLqHD2xsGJJsFlFlCmd3JZOkOg3I=
+	t=1722360202; cv=none; b=TI+loflRkZuLCIYZb+oSo+R4K+2YxztxX0FQT6ugwJfGb6u7ixxYdom0/OUVvZl6RJp45/r7vvPiKbUp4cu001Ys1FF5qteWn53rYjgEOqpIL0AERHaEJg7hWQtahgyG2TS8td4X/5LGDjx+Ou9EJ6wsrs2LWM98cdxjDBwJtSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358474; c=relaxed/simple;
-	bh=fuVksvIHhXtE3jbER/w6GXrHJaWrxlBvEUBQ39NBm9I=;
+	s=arc-20240116; t=1722360202; c=relaxed/simple;
+	bh=2MD5ujnXg0V6CNOYIjBfEYYjD8nMSXcDPBFW0P9hKF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=guC+T+gVP8Ft9lfhNvKlplC6TaAJZLdHUzW/CL4CvDiEVTpehjtLkwzcGLoGZ+Pgkkg2ZqeCjGL9uOiqfoTzscLboCqEPPCtUc5zo+aYprdXLW21vBMT4EqKMyj8ZYeSzj736gdVbkAKEphlSzlzoIw+VhkVOcMCBcokyptLrAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgB1crV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9D7C32782;
-	Tue, 30 Jul 2024 16:54:33 +0000 (UTC)
+	 MIME-Version; b=PPmKZndWa8iv1W4gpM1HKLBRxqToP//GMjzE5I4ReZ9M8ifljBPYsefQRFt9DrUZ4f0/mv+6s2Ul3prNxQdfgnMmfvoiHhnoakGJvfb4jZw0P94XhfnpRb0TT8q6t0HlTGsRsuWSSImBE8XltukEY40zXtjqRKATaZnY1JBlc34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLGbVbuc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC00C32782;
+	Tue, 30 Jul 2024 17:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358474;
-	bh=fuVksvIHhXtE3jbER/w6GXrHJaWrxlBvEUBQ39NBm9I=;
+	s=korg; t=1722360201;
+	bh=2MD5ujnXg0V6CNOYIjBfEYYjD8nMSXcDPBFW0P9hKF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgB1crV3pxKZg9dCsZ7x80coOYi8E10bRjrobPEj3i/4Vyd3tTM76ZGN1HGODuOOP
-	 xu1hfday56RTkTORoKiO/9+QaLxbgw3g8Q49YJXw8WM3EYYcVwk+2OLG8ajgSHtPR5
-	 j81Hoqtl9t+QItkikcgMGEOcUOhV/K9lYqxbFcys=
+	b=HLGbVbucg3noFpHCbxxQK7s2N2aOoK6e16QWUVFl4XwMFNrPse2A+EkBwIBcJukjh
+	 SoyLzuwAFx2ocpUiD+lfkyDL9aAmT5FPyWiBO/95z/Ip4P7rqfhi1k3tvzQDmWQAQP
+	 Z7GQ1BdA4MypgsZayuPbqbK5yknTIFea8x9zgU+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.6 365/568] exfat: fix potential deadlock on __exfat_get_dentry_set
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 596/809] io_uring: dont allow netpolling with SETUP_IOPOLL
 Date: Tue, 30 Jul 2024 17:47:52 +0200
-Message-ID: <20240730151654.127289235@linuxfoundation.org>
+Message-ID: <20240730151748.370787918@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungjong Seo <sj1557.seo@samsung.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 89fc548767a2155231128cb98726d6d2ea1256c9 upstream.
+commit bd44d7e902c2b34c217d3b48874b079760ca7b6e upstream.
 
-When accessing a file with more entries than ES_MAX_ENTRY_NUM, the bh-array
-is allocated in __exfat_get_entry_set. The problem is that the bh-array is
-allocated with GFP_KERNEL. It does not make sense. In the following cases,
-a deadlock for sbi->s_lock between the two processes may occur.
+IORING_SETUP_IOPOLL rings don't have any netpoll handling, let's fail
+attempts to register netpolling in this case, there might be people who
+will mix up IOPOLL and netpoll.
 
-       CPU0                CPU1
-       ----                ----
-  kswapd
-   balance_pgdat
-    lock(fs_reclaim)
-                      exfat_iterate
-                       lock(&sbi->s_lock)
-                       exfat_readdir
-                        exfat_get_uniname_from_ext_entry
-                         exfat_get_dentry_set
-                          __exfat_get_dentry_set
-                           kmalloc_array
-                            ...
-                            lock(fs_reclaim)
-    ...
-    evict
-     exfat_evict_inode
-      lock(&sbi->s_lock)
-
-To fix this, let's allocate bh-array with GFP_NOFS.
-
-Fixes: a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
-Cc: stable@vger.kernel.org # v6.2+
-Reported-by: syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/000000000000fef47e0618c0327f@google.com
-Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ef1186c1a875b ("io_uring: add register/unregister napi function")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/1e7553aee0a8ae4edec6742cd6dd0c1e6914fba8.1721819383.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/napi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -890,7 +890,7 @@ int exfat_get_dentry_set(struct exfat_en
+--- a/io_uring/napi.c
++++ b/io_uring/napi.c
+@@ -222,6 +222,8 @@ int io_register_napi(struct io_ring_ctx
+ 	};
+ 	struct io_uring_napi napi;
  
- 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
- 	if (num_bh > ARRAY_SIZE(es->__bh)) {
--		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
-+		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_NOFS);
- 		if (!es->bh) {
- 			brelse(bh);
- 			return -ENOMEM;
++	if (ctx->flags & IORING_SETUP_IOPOLL)
++		return -EINVAL;
+ 	if (copy_from_user(&napi, arg, sizeof(napi)))
+ 		return -EFAULT;
+ 	if (napi.pad[0] || napi.pad[1] || napi.pad[2] || napi.resv)
 
 
 
