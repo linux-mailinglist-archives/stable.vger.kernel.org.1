@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-64569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8878941E76
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D54941D58
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCC841C23DA1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A83F6B29A09
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8A11A76CD;
-	Tue, 30 Jul 2024 17:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0386189537;
+	Tue, 30 Jul 2024 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vh/MIlRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNScDlSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29C31A76BE;
-	Tue, 30 Jul 2024 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA961898E0;
+	Tue, 30 Jul 2024 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360554; cv=none; b=m/vDoH0xNDiPrJY5g1QFurb4CyBlRnAYslJKw6xTb0ZXnV4QYuEstaLvOFQVmAnkT8csYrN+vEQU1iRjAQ9FsOyMWi96PC79Dir5UOOZXgKgzAQP9k9KlJakLQY1SOSvHd7VQVFXw73JqDsEiq6I0dbiPFAeXNHyB/eX+j5n4r0=
+	t=1722359587; cv=none; b=epUZBoKeFwuCee3x7IO4YaPkvKI16HA5ZmSB+z6FLKY7/dtOhvyPelmB3t1l52uTVF7Lj+2GIvIh6ATok2hTesYvb2+OwJM8MAt++S0wEJXFg/6WHg2pRVtwwVengR/8BL6EjzdeNVXBeV4lt8sQ7zVaoue8s0vzFxDL6TatZuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360554; c=relaxed/simple;
-	bh=L8j5uBS4NksLtbFfDvWj+aSW1/3acTi7A5BjgwjA6To=;
+	s=arc-20240116; t=1722359587; c=relaxed/simple;
+	bh=qfxqXJ6FOtbg9NQY3D4HZbzdNH2LhIrj6YOLsZfgQN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEBBgheMHWIyTdMTwHyWt5Lq1DPDdV98bn9mj0fFF0p7lVwfWazmppe5i1ErmJzz5q+FG3i0ImwiA6XTRU4y5KVWjtIxpZzceSMzzb6/W6iizYu/Et4BnRMUeizIS7pGT+kzt99HNXpTS19kA8QlQeZNUoB4S5p3JBaBctuAxYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vh/MIlRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43019C32782;
-	Tue, 30 Jul 2024 17:29:12 +0000 (UTC)
+	 MIME-Version; b=n1ZthQ+RnSIvxfFU9LKpFC7ctAs8V6ALMxcOzyb1BrSOkQR1StA3oFiIJSKeX2+BWxhuzqifFrZMW4UBmY7lyhKZPxcq78j0W3Hyjv9qc+eUE5HAIiwLJS3t/tuaHhF8vR///v0cTy702FXZN/G2ghGev2B+kR3L/ZxgWbxHGxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNScDlSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DE8C32782;
+	Tue, 30 Jul 2024 17:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360553;
-	bh=L8j5uBS4NksLtbFfDvWj+aSW1/3acTi7A5BjgwjA6To=;
+	s=korg; t=1722359587;
+	bh=qfxqXJ6FOtbg9NQY3D4HZbzdNH2LhIrj6YOLsZfgQN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vh/MIlRr3HrHT8F5dWa9B0m46nhytnKWSwNVDUaJi4h432nBFrNfUBPoM92eOjupj
-	 1zn1IoaYGWIUJKKmlfjTQIFuyO7vAXIK0UWghPBF2C3X6PsLieI9X3tHaQcE3TcMi1
-	 gESsOKVLK16Hvs0wa3k9clDCMT4QGnCjMHLtEkhU=
+	b=WNScDlSrpomihb8HO+ftJsaCUJyrZuKG3ZqH3q+jbkgfGpm9M3Ec7LLEx9mwRLg1v
+	 zQImU/NJxIzl6eTqtrXAvJNlP7yHxAH777Y13kl2m4nt+MRhgZ4XVwypYf8jnEtO5T
+	 x4tKAw+Ji9Uem3BMdvOhkHs95/lhPO/GlhKK3ErY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: [PATCH 6.10 735/809] minmax: scsi: fix mis-use of clamp() in sr.c
-Date: Tue, 30 Jul 2024 17:50:11 +0200
-Message-ID: <20240730151753.978133858@linuxfoundation.org>
+	Lucas Stach <l.stach@pengutronix.de>,
+	Helge Deller <deller@gmx.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH 6.6 505/568] video: logo: Drop full path of the input filename in generated file
+Date: Tue, 30 Jul 2024 17:50:12 +0200
+Message-ID: <20240730151659.765766964@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-commit 9f499b8c791d2983c0a31a543c51d1b2f15e8755 upstream.
+commit fb3b9c2d217f1f51fffe19fc0f4eaf55e2d4ea4f upstream.
 
-While working on simplifying the minmax functions, and avoiding
-excessive macro expansion, it turns out that the sr.c use of the
-'clamp()' macro has the arguments the wrong way around.
+Avoid this Yocto build warning to make build reproducible:
 
-The clamp logic is
+    WARNING: linux-foo-6.8-r0 do_package_qa: QA Issue:
+    File /usr/src/debug/linux-foo/6.8-r0/drivers/video/logo/logo_linux_clut224.c
+    in package linux-foo-src contains reference to TMPDIR
 
-	val = clamp(in, low, high);
+Helge modified the patch to drop the whole line.
 
-and it returns the input clamped to the low/high limits. But sr.c ddid
-
-	speed = clamp(0, speed, 0xffff / 177);
-
-which clamps the value '0' to the range '[speed, 0xffff / 177]' and ends
-up being nonsensical.
-
-Happily, I don't think anybody ever cared.
-
-Fixes: 9fad9d560af5 ("scsi: sr: Fix unintentional arithmetic wraparound")
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: Fabio Estevam <festevam@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sr_ioctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/logo/pnmtologo.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/scsi/sr_ioctl.c
-+++ b/drivers/scsi/sr_ioctl.c
-@@ -431,7 +431,7 @@ int sr_select_speed(struct cdrom_device_
- 	struct packet_command cgc;
- 
- 	/* avoid exceeding the max speed or overflowing integer bounds */
--	speed = clamp(0, speed, 0xffff / 177);
-+	speed = clamp(speed, 0, 0xffff / 177);
- 
- 	if (speed == 0)
- 		speed = 0xffff;	/* set to max */
+--- a/drivers/video/logo/pnmtologo.c
++++ b/drivers/video/logo/pnmtologo.c
+@@ -235,8 +235,6 @@ static void write_header(void)
+ 	fputs("/*\n", out);
+ 	fputs(" *  DO NOT EDIT THIS FILE!\n", out);
+ 	fputs(" *\n", out);
+-	fprintf(out, " *  It was automatically generated from %s\n", filename);
+-	fputs(" *\n", out);
+ 	fprintf(out, " *  Linux logo %s\n", logoname);
+ 	fputs(" */\n\n", out);
+ 	fputs("#include <linux/linux_logo.h>\n\n", out);
 
 
 
