@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-63881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9193D941B19
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D58941DC9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51107282307
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 564FEB26F2C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E4C18991C;
-	Tue, 30 Jul 2024 16:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C69E1A76B5;
+	Tue, 30 Jul 2024 17:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdYsvoAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfPdVbSP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8571189537;
-	Tue, 30 Jul 2024 16:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5A91A76AE;
+	Tue, 30 Jul 2024 17:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358252; cv=none; b=porkitgK3ZIB684RjO1NyzAHQL7WFOie3kg8Ndav6bEbhRfdPAl5Ny8RBjYP4zgLnNymz+WyKO+OD7DyB2/jshp3eRHEoJKm2GwHEYkzEM5ffdvFd2lGyExKTP3ggIJxr7EUvFdjGu69shnomRIHVmYn6tcW9J58Z4R/R9UXdb0=
+	t=1722360029; cv=none; b=dr2xEudVW2qXqhFQJrQJqHcjLW21zCnu6FsH8gepsgFdaHMSoypkz3+Gen0WklUBaM/x9bN5fY6KajqYeqgvALQRrmYU0Wf4vqmKymyfQEq4Hw6/WzG8DV9yXQFM9ITP+CN7yVigQL97EeuVe6E2WG7K2T2vToN+U+ymwYh8qwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358252; c=relaxed/simple;
-	bh=19FQBswi54ayhvbM4aPGa98LT5XkLfEqnKTsZWCvqF8=;
+	s=arc-20240116; t=1722360029; c=relaxed/simple;
+	bh=+VkjFeIcX6uTiPm23um3mE94zcppg3BVMUQfAQgTpXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quD+vKdX6KQ0HKfNh2QROJETvh+dWryfupnutSm2voyE7pbhTI5ka18NyexbRJ5v1UwG+PuieL7RAvOcesjwCrzqpLWiwq9MMQt9WUjMWE4X/wWEb3iXbtwIbjXzAqUCAoOBAuYRWuAoXHmaIMOc1hXqq7fP+XMPJPenUp2bSkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdYsvoAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB6FC32782;
-	Tue, 30 Jul 2024 16:50:52 +0000 (UTC)
+	 MIME-Version; b=sgqFgY0xXKhrDt+f5BYzj4YF9VMpIWWgCNP/v68KUPf+zNKl9tf5qTxAHT4UQrWq4eR+9T54C5ZT2RBsoWR8p0uN/0frN4764KgOJyR0scQcw/6+cSMknP4skMD5sDOZVY0qVXgBEK+Ua7LuAF0hdT5WCf+dbmm5PO9dykQVkok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfPdVbSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D421C32782;
+	Tue, 30 Jul 2024 17:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358252;
-	bh=19FQBswi54ayhvbM4aPGa98LT5XkLfEqnKTsZWCvqF8=;
+	s=korg; t=1722360029;
+	bh=+VkjFeIcX6uTiPm23um3mE94zcppg3BVMUQfAQgTpXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdYsvoAN6ZYbi9X0Fi27ljPW8QBoFTwfhqSkc5t1W3gtKmxpO1duRLx6eqIaRplQM
-	 1KWx74ZJn3wF8D2/A3PkBs5YMP7VhTN8IQFC7LxpHNZVduLtZgWAhciBhBI1/TmThH
-	 SOnz1R1ZzDpgD3s8+bSSapUm44ziuPys2UyuvGcs=
+	b=wfPdVbSPX7kaa3fJad5VPj48rzLie5s2c0tOVOFNME98h8bpqRh813wEIeSrROEQW
+	 jsYKwXWYhCZOxrHGLzaavWk9wKbT5DvVmuVijCmlT13Krk2wUuwpp4gMWcbp9Ai1yu
+	 VHTZnuwygLjkYVOqP/ri/Wt7I7nqf0VlPa/mnc2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hui Zhu <teawater@antgroup.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrei Vagin <avagin@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 344/568] fs/proc/task_mmu.c: add_to_pagemap: remove useless parameter addr
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Paul Elder <paul.elder@ideasonboard.com>
+Subject: [PATCH 6.10 575/809] media: i2c: Kconfig: Fix missing firmware upload config select
 Date: Tue, 30 Jul 2024 17:47:31 +0200
-Message-ID: <20240730151653.316178434@linuxfoundation.org>
+Message-ID: <20240730151747.488785877@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,97 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Zhu <teawater@antgroup.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit cabbb6d51e2af4fc2f3c763f58a12c628f228987 ]
+commit fea074e97886b7ee2fe04a17bd60fd41723da1b7 upstream.
 
-Function parameter addr of add_to_pagemap() is useless.  Remove it.
+FW_LOADER config only selects the firmware loader API, but we also need
+the sysfs_upload symbols for firmware_upload_unregister() and
+firmware_upload_register() to function properly.
 
-Link: https://lkml.kernel.org/r/20240111084533.40038-1-teawaterz@linux.alibaba.com
-Signed-off-by: Hui Zhu <teawater@antgroup.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Andrei Vagin <avagin@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 2c1f057e5be6 ("fs/proc/task_mmu: properly detect PM_MMAP_EXCLUSIVE per page of PMD-mapped THPs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7a52ab415b43 ("media: i2c: Add driver for THine THP7312")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Paul Elder <paul.elder@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240620102544.1918105-1-kory.maincent@bootlin.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_mmu.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/media/i2c/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 0f5c06b8bb342..e327d1c77de88 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1358,8 +1358,7 @@ static inline pagemap_entry_t make_pme(u64 frame, u64 flags)
- 	return (pagemap_entry_t) { .pme = (frame & PM_PFRAME_MASK) | flags };
- }
- 
--static int add_to_pagemap(unsigned long addr, pagemap_entry_t *pme,
--			  struct pagemapread *pm)
-+static int add_to_pagemap(pagemap_entry_t *pme, struct pagemapread *pm)
- {
- 	pm->buffer[pm->pos++] = *pme;
- 	if (pm->pos >= pm->len)
-@@ -1386,7 +1385,7 @@ static int pagemap_pte_hole(unsigned long start, unsigned long end,
- 			hole_end = end;
- 
- 		for (; addr < hole_end; addr += PAGE_SIZE) {
--			err = add_to_pagemap(addr, &pme, pm);
-+			err = add_to_pagemap(&pme, pm);
- 			if (err)
- 				goto out;
- 		}
-@@ -1398,7 +1397,7 @@ static int pagemap_pte_hole(unsigned long start, unsigned long end,
- 		if (vma->vm_flags & VM_SOFTDIRTY)
- 			pme = make_pme(0, PM_SOFT_DIRTY);
- 		for (; addr < min(end, vma->vm_end); addr += PAGE_SIZE) {
--			err = add_to_pagemap(addr, &pme, pm);
-+			err = add_to_pagemap(&pme, pm);
- 			if (err)
- 				goto out;
- 		}
-@@ -1527,7 +1526,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 		for (; addr != end; addr += PAGE_SIZE) {
- 			pagemap_entry_t pme = make_pme(frame, flags);
- 
--			err = add_to_pagemap(addr, &pme, pm);
-+			err = add_to_pagemap(&pme, pm);
- 			if (err)
- 				break;
- 			if (pm->show_pfn) {
-@@ -1555,7 +1554,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 		pagemap_entry_t pme;
- 
- 		pme = pte_to_pagemap_entry(pm, vma, addr, ptep_get(pte));
--		err = add_to_pagemap(addr, &pme, pm);
-+		err = add_to_pagemap(&pme, pm);
- 		if (err)
- 			break;
- 	}
-@@ -1605,7 +1604,7 @@ static int pagemap_hugetlb_range(pte_t *ptep, unsigned long hmask,
- 	for (; addr != end; addr += PAGE_SIZE) {
- 		pagemap_entry_t pme = make_pme(frame, flags);
- 
--		err = add_to_pagemap(addr, &pme, pm);
-+		err = add_to_pagemap(&pme, pm);
- 		if (err)
- 			return err;
- 		if (pm->show_pfn && (flags & PM_PRESENT))
--- 
-2.43.0
-
+--- a/drivers/media/i2c/Kconfig
++++ b/drivers/media/i2c/Kconfig
+@@ -679,6 +679,7 @@ config VIDEO_THP7312
+ 	tristate "THine THP7312 support"
+ 	depends on I2C
+ 	select FW_LOADER
++	select FW_UPLOAD
+ 	select MEDIA_CONTROLLER
+ 	select V4L2_CCI_I2C
+ 	select V4L2_FWNODE
 
 
 
