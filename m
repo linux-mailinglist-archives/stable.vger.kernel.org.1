@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004369417A7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602FB941CE0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA15B1F233BF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20324289F45
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0D418E048;
-	Tue, 30 Jul 2024 16:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B346192B81;
+	Tue, 30 Jul 2024 17:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFcSsoa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FtZMTpy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4E518E044;
-	Tue, 30 Jul 2024 16:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4655C1917D9;
+	Tue, 30 Jul 2024 17:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355856; cv=none; b=B08rjTD2xQS9Mkcym9EI6rYYUmpQQAt4kUhIBMdPFmDQJlc8YDshAhNR3bQre/TgaWwaJWBzLe+XxvP6GHwa4DPNGQky6zuwIaelTT+WJePrSNVevYvOwwjHXkhdprMa2jPPqMp6kTzR2ymWJaI8+4fYyjeeOby8MSHrCXjQEnc=
+	t=1722359375; cv=none; b=sX/CU+zDw/rr/Nxhn5sjXXgLlzivw1Xy/ek1TSmKyoQyFyvshy0Qw5AYRhKozKlRP65ZmWqkKMvvdn7FboSbWHsCwsNTivuVsj7y7276PTY9yy8/AOsozNeljxYBrsA84HHpL5m/x9v2yjePS4/vCbXTlAroCUNhfSLNJhFepN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355856; c=relaxed/simple;
-	bh=YIIJK/2eRuXgpGQhOsVCXfsptjV/950vqufbaKioJmY=;
+	s=arc-20240116; t=1722359375; c=relaxed/simple;
+	bh=k2HhBaJUTjJM/aRn51bC1zabo1WE8YaKEcwS550rS9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aggiAmMQudXzNUDzQoEuQXC3dfNCWBlhvrkHrlQIBQyJVEiC7koSTOX7nVkjEBawNQo6r1RV0+tUtTtNZYYeNgfjonFDyQRN+gpxQzxbNm+2ovkmTkDCSKDUg6DEeP5zDTh7iBCE8GWgMq5g/pha0e2VjV1EKRuTbGiYL20pmBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFcSsoa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBD4C32782;
-	Tue, 30 Jul 2024 16:10:55 +0000 (UTC)
+	 MIME-Version; b=C9uVCl64Gk0q2YASpK3LpafPtr1ZsfsoGiOA4Bd7Mlyg5QmFAnDiYeGVA4Joc3oGxtu5srItrxgH6SCvPswAjOyiKrQ20CKQqPSv2newsm2NOd22OERXuzVIgjS/vPqh4+vzEmxL6nR3ILBN1TwMtg7HX6sIDuHY8cslhNjLSas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FtZMTpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1298C32782;
+	Tue, 30 Jul 2024 17:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355856;
-	bh=YIIJK/2eRuXgpGQhOsVCXfsptjV/950vqufbaKioJmY=;
+	s=korg; t=1722359375;
+	bh=k2HhBaJUTjJM/aRn51bC1zabo1WE8YaKEcwS550rS9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFcSsoa13DWTLyPDXaVovhnqaWfihyUY8ZQfHN+7fn+i62XAZ5GluokpQMpCur3wZ
-	 jAXh/UwIeflZfI2SeOkOjG1Tx6A1UVPbUXB6E4dqIJTUTps6u2JOBX8epBxn4MHPqD
-	 lIZ9/QRlPQfnEeqeR7N8+xRI5Z3MKu5eCSGzqg+4=
+	b=1FtZMTpyRlEqH9TY7YWOoJ7/599/LBW9leoL6kIrr43YOjn72J+zIf1hCUDbUdk24
+	 SmtCksD20khfrmKTTMGmk1D0ZYqpEqR9+xJd/fW/HU0+gMb2/zFWDOOsLDHMHR4VUt
+	 q3QCTO38qbPHgeM7jWy4TGs2PlxiIeXDOrQhOrJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Murray <timmurray@google.com>,
-	John Stultz <jstultz@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Waiman Long <longman@redhat.com>,
+	zdi-disclosures@trendmicro.com,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/440] locking/rwsem: Add __always_inline annotation to __down_write_common() and inlined callers
+Subject: [PATCH 6.10 475/809] netfilter: ctnetlink: use helper function to calculate expect ID
 Date: Tue, 30 Jul 2024 17:45:51 +0200
-Message-ID: <20240730151620.498552956@linuxfoundation.org>
+Message-ID: <20240730151743.496463907@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e81859fe64ad42dccefe134d1696e0635f78d763 ]
+[ Upstream commit 782161895eb4ac45cf7cfa8db375bd4766cb8299 ]
 
-Apparently despite it being marked inline, the compiler
-may not inline __down_write_common() which makes it difficult
-to identify the cause of lock contention, as the wchan of the
-blocked function will always be listed as __down_write_common().
+Delete expectation path is missing a call to the nf_expect_get_id()
+helper function to calculate the expectation ID, otherwise LSB of the
+expectation object address is leaked to userspace.
 
-So add __always_inline annotation to the common function (as
-well as the inlined helper callers) to force it to be inlined
-so a more useful blocking function will be listed (via wchan).
-
-This mirrors commit 92cc5d00a431 ("locking/rwsem: Add
-__always_inline annotation to __down_read_common() and inlined
-callers") which did the same for __down_read_common.
-
-I sort of worry that I'm playing wack-a-mole here, and talking
-with compiler people, they tell me inline means nothing, which
-makes me want to cry a little. So I'm wondering if we need to
-replace all the inlines with __always_inline, or remove them
-because either we mean something by it, or not.
-
-Fixes: c995e638ccbb ("locking/rwsem: Fold __down_{read,write}*()")
-Reported-by: Tim Murray <timmurray@google.com>
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Link: https://lkml.kernel.org/r/20240709060831.495366-1-jstultz@google.com
+Fixes: 3c79107631db ("netfilter: ctnetlink: don't use conntrack/expect object addresses as id")
+Reported-by: zdi-disclosures@trendmicro.com
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/rwsem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
-index 92d8e2c4edda0..ffc2bbe391879 100644
---- a/kernel/locking/rwsem.c
-+++ b/kernel/locking/rwsem.c
-@@ -1308,7 +1308,7 @@ static inline int __down_read_trylock(struct rw_semaphore *sem)
- /*
-  * lock for writing
-  */
--static inline int __down_write_common(struct rw_semaphore *sem, int state)
-+static __always_inline int __down_write_common(struct rw_semaphore *sem, int state)
- {
- 	if (unlikely(!rwsem_write_trylock(sem))) {
- 		if (IS_ERR(rwsem_down_write_slowpath(sem, state)))
-@@ -1318,12 +1318,12 @@ static inline int __down_write_common(struct rw_semaphore *sem, int state)
- 	return 0;
- }
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 3b846cbdc050d..4cbf71d0786b0 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3420,7 +3420,8 @@ static int ctnetlink_del_expect(struct sk_buff *skb,
  
--static inline void __down_write(struct rw_semaphore *sem)
-+static __always_inline void __down_write(struct rw_semaphore *sem)
- {
- 	__down_write_common(sem, TASK_UNINTERRUPTIBLE);
- }
- 
--static inline int __down_write_killable(struct rw_semaphore *sem)
-+static __always_inline int __down_write_killable(struct rw_semaphore *sem)
- {
- 	return __down_write_common(sem, TASK_KILLABLE);
- }
+ 		if (cda[CTA_EXPECT_ID]) {
+ 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+-			if (ntohl(id) != (u32)(unsigned long)exp) {
++
++			if (id != nf_expect_get_id(exp)) {
+ 				nf_ct_expect_put(exp);
+ 				return -ENOENT;
+ 			}
 -- 
 2.43.0
 
