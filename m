@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75BF941B89
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72825941931
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3173F1F21988
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1C928853C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34BD189514;
-	Tue, 30 Jul 2024 16:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A7A183CD5;
+	Tue, 30 Jul 2024 16:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHrdY3hv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISZYnQfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9D6184549;
-	Tue, 30 Jul 2024 16:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F81D1A6169;
+	Tue, 30 Jul 2024 16:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358570; cv=none; b=FdFCpdNX/0HNScjzl46J7o9xb5BfG4QJqBk4i1TBCt39zftBAtlA+x3VpG++j5l/7VehyY2JSKCZ830hAFclelPKQW5gHDqrGEZmRd6jFENw2o/7FScEe5IPZiWEumVsIfONmMfToL6G+f9f/br4Hso47NXKAMJDGTs+0caoE0U=
+	t=1722357001; cv=none; b=cy5Ka6OEkVaEPNjJyqe/0c8TEFuIbtaZhN0CTdfRH0E1Z7sXr+WT2+Dq1awYhaPXuRwfTe7iecTTOIth5StEABiFQGXiASPNikIm6BkfzeS//hy+YyQORlAp9gs5B5E+q9FzfrET/wmN9Qtc4AH1uUx6B5F+WOYxliymRBhoZUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358570; c=relaxed/simple;
-	bh=25Ie7mdrX1mE4IjC4Gd/yXeEl/qplN2rhRODNSMXeDY=;
+	s=arc-20240116; t=1722357001; c=relaxed/simple;
+	bh=IUVI1Empc8/zkiI21BhSU16Ff+RvpiH3UC+nkSRQSFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAw7IbOl7KasNnKHKBnorcRj5fQm5X4IPfAcdJiVoPchCl10squx4o4rXtLh46SzMoXTdlO+4PPcGC/OsPH9nWdrKcUZ8S7fNC6YsRgunHRy7ntBq1PTqaacpskcTREEo+nHMjfdnR20zEkyvheAAsI1ZbW0qQSukkgH12BIr+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHrdY3hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0546C32782;
-	Tue, 30 Jul 2024 16:56:09 +0000 (UTC)
+	 MIME-Version; b=a2RRbQxJ7AMRj3HtfGT3WzXU0qSRLYDY5C/8/dWI1A/lQpP3igppioz5fTOE1iGvxk0KWGqnmIatWLEj5qVO96xEO636/HcUYGvJMeaCs3B44caWtXJqabPIlNAvfzAvzvNDir03HJ7h68uYumUPi4Eqmj3/9PKAWiwT4bMt4OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISZYnQfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC6FC4AF0A;
+	Tue, 30 Jul 2024 16:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358570;
-	bh=25Ie7mdrX1mE4IjC4Gd/yXeEl/qplN2rhRODNSMXeDY=;
+	s=korg; t=1722357000;
+	bh=IUVI1Empc8/zkiI21BhSU16Ff+RvpiH3UC+nkSRQSFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHrdY3hvGRaU7/F2WSPVgNBpoLHsLLe4nLPZzA24pDITfyAuEpX5YUU8FiCoEt5sa
-	 YTs4dYpfJ5QmzT6apjIdesQ/X4UyxEKY15t6PaXP5IiR9Pne93hP2s97DSPLyeeLZB
-	 UbmhhL6Uty6zhK5SgHcnuehgPdP2SAvaz9u3VMTY=
+	b=ISZYnQfEXvv1qRb+yu9Y0//YyootADsLcfmGq3kw5lCHbWdFf38s2XdSHNmML2zaz
+	 lqQQTuApQ477usIWkNhnMFYfQYzaDb1dVD8PQfoIxsESJ68Vlj/KyDhGiydIXOdgOC
+	 R+8PTBapwWz8qQLO8Cvr5L6luAkvy7CRWMjDNpac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.6 375/568] sched/fair: set_load_weight() must also call reweight_task() for SCHED_IDLE tasks
+	Peng Fan <peng.fan@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 249/440] pinctrl: freescale: mxs: Fix refcount of child
 Date: Tue, 30 Jul 2024 17:48:02 +0200
-Message-ID: <20240730151654.520601922@linuxfoundation.org>
+Message-ID: <20240730151625.575941541@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit d329605287020c3d1c3b0dadc63d8208e7251382 upstream.
+[ Upstream commit 7f500f2011c0bbb6e1cacab74b4c99222e60248e ]
 
-When a task's weight is being changed, set_load_weight() is called with
-@update_load set. As weight changes aren't trivial for the fair class,
-set_load_weight() calls fair.c::reweight_task() for fair class tasks.
+of_get_next_child() will increase refcount of the returned node, need
+use of_node_put() on it when done.
 
-However, set_load_weight() first tests task_has_idle_policy() on entry and
-skips calling reweight_task() for SCHED_IDLE tasks. This is buggy as
-SCHED_IDLE tasks are just fair tasks with a very low weight and they would
-incorrectly skip load, vlag and position updates.
+Per current implementation, 'child' will be override by
+for_each_child_of_node(np, child), so use of_get_child_count to avoid
+refcount leakage.
 
-Fix it by updating reweight_task() to take struct load_weight as idle weight
-can't be expressed with prio and making set_load_weight() call
-reweight_task() for SCHED_IDLE tasks too when @update_load is set.
-
-Fixes: 9059393e4ec1 ("sched/fair: Use reweight_entity() for set_user_nice()")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org # v4.15+
-Link: http://lkml.kernel.org/r/20240624102331.GI31592@noisy.programming.kicks-ass.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 17723111e64f ("pinctrl: add pinctrl-mxs support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/20240504-pinctrl-cleanup-v2-18-26c5f2dc1181@nxp.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c  |   23 ++++++++++-------------
- kernel/sched/fair.c  |    7 +++----
- kernel/sched/sched.h |    2 +-
- 3 files changed, 14 insertions(+), 18 deletions(-)
+ drivers/pinctrl/freescale/pinctrl-mxs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1304,27 +1304,24 @@ int tg_nop(struct task_group *tg, void *
- static void set_load_weight(struct task_struct *p, bool update_load)
- {
- 	int prio = p->static_prio - MAX_RT_PRIO;
--	struct load_weight *load = &p->se.load;
-+	struct load_weight lw;
+diff --git a/drivers/pinctrl/freescale/pinctrl-mxs.c b/drivers/pinctrl/freescale/pinctrl-mxs.c
+index 735cedd0958a2..5b0fcf15f2804 100644
+--- a/drivers/pinctrl/freescale/pinctrl-mxs.c
++++ b/drivers/pinctrl/freescale/pinctrl-mxs.c
+@@ -405,8 +405,8 @@ static int mxs_pinctrl_probe_dt(struct platform_device *pdev,
+ 	int ret;
+ 	u32 val;
  
--	/*
--	 * SCHED_IDLE tasks get minimal weight:
--	 */
- 	if (task_has_idle_policy(p)) {
--		load->weight = scale_load(WEIGHT_IDLEPRIO);
--		load->inv_weight = WMULT_IDLEPRIO;
--		return;
-+		lw.weight = scale_load(WEIGHT_IDLEPRIO);
-+		lw.inv_weight = WMULT_IDLEPRIO;
-+	} else {
-+		lw.weight = scale_load(sched_prio_to_weight[prio]);
-+		lw.inv_weight = sched_prio_to_wmult[prio];
+-	child = of_get_next_child(np, NULL);
+-	if (!child) {
++	val = of_get_child_count(np);
++	if (val == 0) {
+ 		dev_err(&pdev->dev, "no group is defined\n");
+ 		return -ENOENT;
  	}
- 
- 	/*
- 	 * SCHED_OTHER tasks have to update their load when changing their
- 	 * weight
- 	 */
--	if (update_load && p->sched_class == &fair_sched_class) {
--		reweight_task(p, prio);
--	} else {
--		load->weight = scale_load(sched_prio_to_weight[prio]);
--		load->inv_weight = sched_prio_to_wmult[prio];
--	}
-+	if (update_load && p->sched_class == &fair_sched_class)
-+		reweight_task(p, &lw);
-+	else
-+		p->se.load = lw;
- }
- 
- #ifdef CONFIG_UCLAMP_TASK
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3791,15 +3791,14 @@ static void reweight_entity(struct cfs_r
- 	}
- }
- 
--void reweight_task(struct task_struct *p, int prio)
-+void reweight_task(struct task_struct *p, const struct load_weight *lw)
- {
- 	struct sched_entity *se = &p->se;
- 	struct cfs_rq *cfs_rq = cfs_rq_of(se);
- 	struct load_weight *load = &se->load;
--	unsigned long weight = scale_load(sched_prio_to_weight[prio]);
- 
--	reweight_entity(cfs_rq, se, weight);
--	load->inv_weight = sched_prio_to_wmult[prio];
-+	reweight_entity(cfs_rq, se, lw->weight);
-+	load->inv_weight = lw->inv_weight;
- }
- 
- static inline int throttled_hierarchy(struct cfs_rq *cfs_rq);
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2435,7 +2435,7 @@ extern void init_sched_dl_class(void);
- extern void init_sched_rt_class(void);
- extern void init_sched_fair_class(void);
- 
--extern void reweight_task(struct task_struct *p, int prio);
-+extern void reweight_task(struct task_struct *p, const struct load_weight *lw);
- 
- extern void resched_curr(struct rq *rq);
- extern void resched_cpu(int cpu);
+-- 
+2.43.0
+
 
 
 
