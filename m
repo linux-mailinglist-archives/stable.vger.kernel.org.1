@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602FB941CE0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16309419FA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20324289F45
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6A1E1F253C3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B346192B81;
-	Tue, 30 Jul 2024 17:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3280184553;
+	Tue, 30 Jul 2024 16:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FtZMTpy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnSOzODC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4655C1917D9;
-	Tue, 30 Jul 2024 17:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717DB1A619B;
+	Tue, 30 Jul 2024 16:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359375; cv=none; b=sX/CU+zDw/rr/Nxhn5sjXXgLlzivw1Xy/ek1TSmKyoQyFyvshy0Qw5AYRhKozKlRP65ZmWqkKMvvdn7FboSbWHsCwsNTivuVsj7y7276PTY9yy8/AOsozNeljxYBrsA84HHpL5m/x9v2yjePS4/vCbXTlAroCUNhfSLNJhFepN0=
+	t=1722357515; cv=none; b=oqE+32hpRcWcDMW2zQ73/Eg367AeFd/FpapgJh/YU1E0UUW7/pjdNG8b7iDkpzuo4sJcvHyGwRbQ0ieZpfAnPsDS962L+7JKoIn6wcM1iE5bIrzDKd/0hPM+JFQpY3ELCc2sD6K5PMpTLXQKJlI9r4ZTL1lQ78zOPbtldQjIhbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359375; c=relaxed/simple;
-	bh=k2HhBaJUTjJM/aRn51bC1zabo1WE8YaKEcwS550rS9k=;
+	s=arc-20240116; t=1722357515; c=relaxed/simple;
+	bh=0qL9rCfRUcS1PUDIvM1dOWGtMg4ZP1ny/denGQaR9dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9uVCl64Gk0q2YASpK3LpafPtr1ZsfsoGiOA4Bd7Mlyg5QmFAnDiYeGVA4Joc3oGxtu5srItrxgH6SCvPswAjOyiKrQ20CKQqPSv2newsm2NOd22OERXuzVIgjS/vPqh4+vzEmxL6nR3ILBN1TwMtg7HX6sIDuHY8cslhNjLSas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FtZMTpy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1298C32782;
-	Tue, 30 Jul 2024 17:09:34 +0000 (UTC)
+	 MIME-Version; b=Qg39QaZDlXzXw1idYj1q2ObLhF67eNLq2gu4Qamh6ypEpaXsLAhAS6gawugLyeB5Ef3SZl6IYKPa4K3dofczDEuyL2iIE0WWwzwAi1ijAuLX0Wk3AMck5+PSPoHjk8FaBB2I0r2FqN9SRUBzmkuzZSYEgWZzYorF1fnjumXAK4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnSOzODC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59A6C32782;
+	Tue, 30 Jul 2024 16:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359375;
-	bh=k2HhBaJUTjJM/aRn51bC1zabo1WE8YaKEcwS550rS9k=;
+	s=korg; t=1722357515;
+	bh=0qL9rCfRUcS1PUDIvM1dOWGtMg4ZP1ny/denGQaR9dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1FtZMTpyRlEqH9TY7YWOoJ7/599/LBW9leoL6kIrr43YOjn72J+zIf1hCUDbUdk24
-	 SmtCksD20khfrmKTTMGmk1D0ZYqpEqR9+xJd/fW/HU0+gMb2/zFWDOOsLDHMHR4VUt
-	 q3QCTO38qbPHgeM7jWy4TGs2PlxiIeXDOrQhOrJk=
+	b=TnSOzODCE+IXFvp2Iab3G4gXp/QEvOi6vWDh2bNhsGO1Gxs1LgEOayPawLMpXLXEC
+	 0ZzhAW64GSryyVgQI6V4vV6zLBSerfrjf2gR0nI+QXvKq89L45CkIEa9kCYwUNwx/m
+	 EQUAaPU2vsnVJK6Zeb9HAESHqNFy/ILmvMEl/qCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zdi-disclosures@trendmicro.com,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 475/809] netfilter: ctnetlink: use helper function to calculate expect ID
+Subject: [PATCH 6.6 244/568] leds: flash: leds-qcom-flash: Test the correct variable in init
 Date: Tue, 30 Jul 2024 17:45:51 +0200
-Message-ID: <20240730151743.496463907@linuxfoundation.org>
+Message-ID: <20240730151649.417546614@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 782161895eb4ac45cf7cfa8db375bd4766cb8299 ]
+[ Upstream commit 87e552ad654554be73e62dd43c923bcee215287d ]
 
-Delete expectation path is missing a call to the nf_expect_get_id()
-helper function to calculate the expectation ID, otherwise LSB of the
-expectation object address is leaked to userspace.
+This code was passing the incorrect pointer to PTR_ERR_OR_ZERO() so it
+always returned success.  It should have been checking the array element
+instead of the array itself.
 
-Fixes: 3c79107631db ("netfilter: ctnetlink: don't use conntrack/expect object addresses as id")
-Reported-by: zdi-disclosures@trendmicro.com
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/ZoWJS_epjIMCYITg@stanley.mountain
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/leds/flash/leds-qcom-flash.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 3b846cbdc050d..4cbf71d0786b0 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3420,7 +3420,8 @@ static int ctnetlink_del_expect(struct sk_buff *skb,
+diff --git a/drivers/leds/flash/leds-qcom-flash.c b/drivers/leds/flash/leds-qcom-flash.c
+index a73d3ea5c97a3..17391aefeb941 100644
+--- a/drivers/leds/flash/leds-qcom-flash.c
++++ b/drivers/leds/flash/leds-qcom-flash.c
+@@ -505,6 +505,7 @@ qcom_flash_v4l2_init(struct device *dev, struct qcom_flash_led *led, struct fwno
+ 	struct qcom_flash_data *flash_data = led->flash_data;
+ 	struct v4l2_flash_config v4l2_cfg = { 0 };
+ 	struct led_flash_setting *intensity = &v4l2_cfg.intensity;
++	struct v4l2_flash *v4l2_flash;
  
- 		if (cda[CTA_EXPECT_ID]) {
- 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
--			if (ntohl(id) != (u32)(unsigned long)exp) {
+ 	if (!(led->flash.led_cdev.flags & LED_DEV_CAP_FLASH))
+ 		return 0;
+@@ -523,9 +524,12 @@ qcom_flash_v4l2_init(struct device *dev, struct qcom_flash_led *led, struct fwno
+ 				LED_FAULT_OVER_TEMPERATURE |
+ 				LED_FAULT_TIMEOUT;
+ 
+-	flash_data->v4l2_flash[flash_data->leds_count] =
+-		v4l2_flash_init(dev, fwnode, &led->flash, &qcom_v4l2_flash_ops, &v4l2_cfg);
+-	return PTR_ERR_OR_ZERO(flash_data->v4l2_flash);
++	v4l2_flash = v4l2_flash_init(dev, fwnode, &led->flash, &qcom_v4l2_flash_ops, &v4l2_cfg);
++	if (IS_ERR(v4l2_flash))
++		return PTR_ERR(v4l2_flash);
 +
-+			if (id != nf_expect_get_id(exp)) {
- 				nf_ct_expect_put(exp);
- 				return -ENOENT;
- 			}
++	flash_data->v4l2_flash[flash_data->leds_count] = v4l2_flash;
++	return 0;
+ }
+ # else
+ static int
 -- 
 2.43.0
 
