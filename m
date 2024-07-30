@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA7B941BF2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 569DC94187B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A51A283D67
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8813D1C2310C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F391683A17;
-	Tue, 30 Jul 2024 17:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFC91A6192;
+	Tue, 30 Jul 2024 16:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qstPT9XZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzI/1bZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A842F156F30;
-	Tue, 30 Jul 2024 17:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB5E1A6162;
+	Tue, 30 Jul 2024 16:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358878; cv=none; b=uCqLknlVOUqoAq+CKOgONHx8wWXvkWuIQ4w8ykIADwg9zOzfJ8ItTYoCovzhmyxPNEqfNjD+p/B/EgQ2KBX562eBOEac7YN8N7EJmVNXHUPMPMCJE7osp8XAkV3o8RIisT5ntiRs9OS6M0RbwT3szkUkoh2hiJnlN8+GEY4Xu5c=
+	t=1722356554; cv=none; b=iUncY4srDF2JbYEJGTzbDpSuPRTFZyxw8eEV8/KSab1rEd1I2yenifEdw7Yi3Ee8oBbBcilEHFSus59AHbcjaLsFMjCmkfMuMvwOOEfUjwlPe8e9E15tKVHCv6mkaP3eo0vJvjpXpiipQgKuGw+AXSiNQ7KgdNKwl4QF+haNXFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358878; c=relaxed/simple;
-	bh=JeAJm6fMixA7OL6vNe8JUIWlG2WgBijHAcwhTjLBsIo=;
+	s=arc-20240116; t=1722356554; c=relaxed/simple;
+	bh=90/OZpVcFjV699giLMypkrWPYD095dirsOJum+aq3lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYg/uj+x+bZzkjdLW9aIeEDnP7hR0gAb5q7H7dIdY4uufT+2AOn99y7Vf/eUhqEgs2geFfsorrQ5NFfDvivoAXGF9b09WCIk0JEWGjPVrWaZCy0Rtqzq4W5Ol2+TgCVI8IDHK0C+2RcgG5txnvzP1PfosoSPPtNzrWGIE829Cmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qstPT9XZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A57FC32782;
-	Tue, 30 Jul 2024 17:01:17 +0000 (UTC)
+	 MIME-Version; b=Op7Ul8hn63Fbmm59ts7W3+/APuMkI0Zq8eVmmM9E6GRgTmgkGtXhsp84/rhHlpvJSg6Whum7o8wVq9+WerjaU9iFEtodjK86JqajsxmzZY2eQZ3qSqXTLJR0R0h4QcTcGjxYfrEvV6evVEuY+CVh8j3FnrUHMZ1B937Mda4ntk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzI/1bZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B27C32782;
+	Tue, 30 Jul 2024 16:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358878;
-	bh=JeAJm6fMixA7OL6vNe8JUIWlG2WgBijHAcwhTjLBsIo=;
+	s=korg; t=1722356554;
+	bh=90/OZpVcFjV699giLMypkrWPYD095dirsOJum+aq3lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qstPT9XZGeAxlKoX6huTkEARzLBDgTuOzIEoPFdgJ1pzARbhlJJ5JT/tA0LQcodxT
-	 ncS+V3EfjLLh3wqrYbwnSQeyVPXLfvPtkXS9ldqm9nUhIiTg/ke8eoCj0jfb3pDEiO
-	 /60U2242tKpm86JkdH3f0yfpIXzpB8WwMXhUfsEc=
+	b=WzI/1bZaOqa9UEuzW4awWai2/Z7pPQFZXEJTjS+FZXiFx56bT6KYAZUDkTNI8p4oJ
+	 uKXiUUgWbangWL6VLd4Tha33rKrDYps9zB7KF+RKwcOt1PXp/AVcfj0M8bG5ch9Xwa
+	 svetkL5oCy28yaOTxFNDi0ddPCtRbtm5Mnrsk80w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 392/809] clk: qcom: gcc-sc7280: Update force mem core bit for UFS ICE clock
+Subject: [PATCH 6.6 161/568] selftests/bpf: Close obj in error path in xdp_adjust_tail
 Date: Tue, 30 Jul 2024 17:44:28 +0200
-Message-ID: <20240730151740.163643738@linuxfoundation.org>
+Message-ID: <20240730151646.176202845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit f38467b5a920be1473710428a93c4e54b6f8a0c1 ]
+[ Upstream commit 52b49ec1b2c78deb258596c3b231201445ef5380 ]
 
-Update the force mem core bit for UFS ICE clock to force the core on signal
-to remain active during halt state of the clk. When retention bit of the
-clock is set the memories of the subsystem will retain the logic across
-power states.
+If bpf_object__load() fails in test_xdp_adjust_frags_tail_grow(), "obj"
+opened before this should be closed. So use "goto out" to close it instead
+of using "return" here.
 
-Fixes: a3cc092196ef ("clk: qcom: Add Global Clock controller (GCC) driver for SC7280")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240531095142.9688-3-quic_tdas@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 110221081aac ("bpf: selftests: update xdp_adjust_tail selftest to include xdp frags")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Link: https://lore.kernel.org/r/f282a1ed2d0e3fb38cceefec8e81cabb69cab260.1720615848.git.tanggeliang@kylinos.cn
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc7280.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc7280.c b/drivers/clk/qcom/gcc-sc7280.c
-index f45a8318900c5..67ea9cf5303fa 100644
---- a/drivers/clk/qcom/gcc-sc7280.c
-+++ b/drivers/clk/qcom/gcc-sc7280.c
-@@ -3463,6 +3463,9 @@ static int gcc_sc7280_probe(struct platform_device *pdev)
- 	qcom_branch_set_clk_en(regmap, 0x71004);/* GCC_GPU_CFG_AHB_CLK */
- 	regmap_update_bits(regmap, 0x7100C, BIT(13), BIT(13));
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c b/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
+index f09505f8b0386..53d6ad8c2257e 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
+@@ -222,7 +222,7 @@ static void test_xdp_adjust_frags_tail_grow(void)
  
-+	/* FORCE_MEM_CORE_ON for ufs phy ice core clocks */
-+	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_ice_core_clk, true);
-+
- 	ret = qcom_cc_register_rcg_dfs(regmap, gcc_dfs_clocks,
- 			ARRAY_SIZE(gcc_dfs_clocks));
- 	if (ret)
+ 	prog = bpf_object__next_program(obj, NULL);
+ 	if (bpf_object__load(obj))
+-		return;
++		goto out;
+ 
+ 	prog_fd = bpf_program__fd(prog);
+ 
 -- 
 2.43.0
 
