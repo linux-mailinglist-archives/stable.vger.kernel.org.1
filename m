@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16CFA941A5E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021D5941736
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00919B248C2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:34:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1582A1C229DE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410ED4EB2B;
-	Tue, 30 Jul 2024 16:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF1618B482;
+	Tue, 30 Jul 2024 16:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1zxtTYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbKXk542"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29CD1A6192;
-	Tue, 30 Jul 2024 16:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D323189537;
+	Tue, 30 Jul 2024 16:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357282; cv=none; b=RVs+KGPqgrswdeKdQLUIQPf7WsmpR3MZjrT68Pr6o2llHE2GIO5R1WOVgpnDN9jut0ezVc4uUkp9kmk0aE1yNkNL9y9pF+BT7Aj387nPCV7gPmiu9VtbWt4LW67bau0QVTUV0fZLxjrAQHUEQicJmSNNCSGzoLFfEJep/FpGpc0=
+	t=1722355609; cv=none; b=sj+EMzFZn4o3uklVe1V99LEK/s4j3FuH3/ZYIyfV4Us5OaprMpgULaweYpurBnOI05wq0ScPw4GURhgf/FN25hf1rwnT77NzzDnHFnx59paK/uQHB/N7kvHIA+YzC/SIkoS51DIzhzZPtMmrARepQZIYPYN41WqGgmsszz1ba30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357282; c=relaxed/simple;
-	bh=OsJEvKi60Yp2Y9olnG2BaO8B+/XpHOzztMnRCu5VTKg=;
+	s=arc-20240116; t=1722355609; c=relaxed/simple;
+	bh=mKhdRgUcUuft6fmIvcfHN9kbSxVWAVMG+HsGXFCN85s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTKLzkezMcb0Gd861r7YPitri9l3V1njz8IMNT4+I34ic4yQe7H3ExnRninilrThBigNY/rWtFAIXcUmyB2MxLn/KeoG9QhCnkL0LbBjOsbhBAoZBOdcy/h8nHjGSnM94KFA8zamb2fWTSni+hqG94nAyaxJxJ0bLYSoBOxi7tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1zxtTYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C00C4AF0C;
-	Tue, 30 Jul 2024 16:34:41 +0000 (UTC)
+	 MIME-Version; b=l6ywHJeITVg9GhVlKHJ9RueymSpobofsI/F4Y6ixzrA2Z5OYh+UzTsX+BVLP7M0+ytV2G42KZX6tJ5yErJ1BE32aZvIEPn5NxU87tW3WEkn7IhCFXCWujn9g9/8HxQ+5Zt2S00CrrI66Mv2AUnydImYxkELAgoKyRz6WJjhcAkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbKXk542; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D0DC32782;
+	Tue, 30 Jul 2024 16:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357281;
-	bh=OsJEvKi60Yp2Y9olnG2BaO8B+/XpHOzztMnRCu5VTKg=;
+	s=korg; t=1722355609;
+	bh=mKhdRgUcUuft6fmIvcfHN9kbSxVWAVMG+HsGXFCN85s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1zxtTYZC/z6GM0BN69/MmGRyrshwKUrEDoAU3VemllBLTk1KF6hfbhQVAL971POA
-	 bVkE7ioIBFfqk+TiJNK+xSmfCTPBFsw+MdYdJIwoWVSSSIRr6t2ZyrrDdNmAnXYfeC
-	 ST3NOftnZekgVptZainLBWF32bLOKAMT9RMy6Cas=
+	b=hbKXk542BsezTXXi7YNY7hwSTEyDXOD0toWXyQ2o89z8GY+vbaaE3zc82B4RPaWk1
+	 MStQBxjVQNJHeJhJoHN08/AHKu5w4GKsGQDkxz3DzASI5WgOtGOuyhCzMgrYZR5NvV
+	 yCfb64D7V9rln5jZOrnRexGPlxMUHVwqQltiwNx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Adrian Hunter <adrian.hunter@intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 236/568] perf intel-pt: Fix exclude_guest setting
+Subject: [PATCH 6.1 110/440] perf: Fix perf_aux_size() for greater-than 32-bit size
 Date: Tue, 30 Jul 2024 17:45:43 +0200
-Message-ID: <20240730151649.105734337@linuxfoundation.org>
+Message-ID: <20240730151620.189399424@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit b40934ae32232140e85dc7dc1c3ea0e296986723 ]
+[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
 
-In the past, the exclude_guest setting has had no effect on Intel PT
-tracing, but that may not be the case in the future.
+perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
+calculate a 64-bit size.
 
-Set the flag correctly based upon whether KVM is using Intel PT
-"Host/Guest" mode, which is determined by the kvm_intel module
-parameter pt_mode:
-
- pt_mode=0	System-wide mode : host and guest output to host buffer
- pt_mode=1	Host/Guest mode : host/guest output to host/guest
-                buffers respectively
-
-Fixes: 6e86bfdc4a60 ("perf intel-pt: Support decoding of guest kernel")
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240625104532.11990-3-adrian.hunter@intel.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/arch/x86/util/intel-pt.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/events/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/arch/x86/util/intel-pt.c b/tools/perf/arch/x86/util/intel-pt.c
-index 5161a9a6b853a..aaa2c641e7871 100644
---- a/tools/perf/arch/x86/util/intel-pt.c
-+++ b/tools/perf/arch/x86/util/intel-pt.c
-@@ -32,6 +32,7 @@
- #include "../../../util/tsc.h"
- #include <internal/lib.h> // page_size
- #include "../../../util/intel-pt.h"
-+#include <api/fs/fs.h>
+diff --git a/kernel/events/internal.h b/kernel/events/internal.h
+index 5150d5f84c033..386d21c7edfa0 100644
+--- a/kernel/events/internal.h
++++ b/kernel/events/internal.h
+@@ -128,7 +128,7 @@ static inline unsigned long perf_data_size(struct perf_buffer *rb)
  
- #define KiB(x) ((x) * 1024)
- #define MiB(x) ((x) * 1024 * 1024)
-@@ -436,6 +437,16 @@ static int intel_pt_track_switches(struct evlist *evlist)
- }
- #endif
- 
-+static bool intel_pt_exclude_guest(void)
-+{
-+	int pt_mode;
-+
-+	if (sysfs__read_int("module/kvm_intel/parameters/pt_mode", &pt_mode))
-+		pt_mode = 0;
-+
-+	return pt_mode == 1;
-+}
-+
- static void intel_pt_valid_str(char *str, size_t len, u64 valid)
+ static inline unsigned long perf_aux_size(struct perf_buffer *rb)
  {
- 	unsigned int val, last = 0, state = 1;
-@@ -628,6 +639,7 @@ static int intel_pt_recording_options(struct auxtrace_record *itr,
- 			}
- 			evsel->core.attr.freq = 0;
- 			evsel->core.attr.sample_period = 1;
-+			evsel->core.attr.exclude_guest = intel_pt_exclude_guest();
- 			evsel->no_aux_samples = true;
- 			evsel->needs_auxtrace_mmap = true;
- 			intel_pt_evsel = evsel;
+-	return rb->aux_nr_pages << PAGE_SHIFT;
++	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
+ }
+ 
+ #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
 -- 
 2.43.0
 
