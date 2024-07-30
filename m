@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-62872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535599415FE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:55:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03C79415FF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD5D5B20DA5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:55:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B4FF281550
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66781B5837;
-	Tue, 30 Jul 2024 15:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6081B5833;
+	Tue, 30 Jul 2024 15:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKh1mSD+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNaxW7s5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7617929A2;
-	Tue, 30 Jul 2024 15:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD0229A2;
+	Tue, 30 Jul 2024 15:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354911; cv=none; b=H+02l+/Sj/lluIGjDHa0Hi/W5+jT5+3P+aoQzN87MhJyWF/U5y3ylGWMbPUPZ1cd8J6NZCcZsKI3eSptky80pO2wMpWGgNWDIyLRXyxidonMyct/GTOTz29P7BT8Qj7nM29JFFuj9eE/hONacMdiL7PmOPQigm5BthtSJy4w+GE=
+	t=1722354917; cv=none; b=mpoLqS7K29eMxxDFjxB8fGSO5KLyrmQU4wR/T+v/VJuzvUoM1AbIz4t8BgC03eh++vdEo0tXJEcEdazyC9KeRh/rmzWEu8eB8Q/f82ksWC5+Q9bDEUeYVBfwqjGwWL90/4aXWN+S3Sce3k9QM1p4xJDpkcg2BdyFjEevNXvc3lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354911; c=relaxed/simple;
-	bh=3a0E9fgLxT72Kn35ryQRojh6UvnfxtvynYmsKLeAARY=;
+	s=arc-20240116; t=1722354917; c=relaxed/simple;
+	bh=nJ3yn5XugadMmhn2z5MJxx1HWS8eVPv9gnmxOM36KI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MiXL24rwMWMUwbJMDUjWJnXAhggGjDdkD5dc9FwanJ9/LIUwy05zvdktxeQ28e6OuJNyuWbbbdtWZn2uyk9bdho3ITitz8QZiIjoHudwLAks4bjE6FcpLUrvbXTcnZ8514sMrIQgn6xAyVM2nGoe8i8pwQsepTbuVImbU7PVb4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKh1mSD+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2506C32782;
-	Tue, 30 Jul 2024 15:55:10 +0000 (UTC)
+	 MIME-Version; b=Z2o2AIBgdb7UtRfkmPfkoFHUVkREOip3SRzs2FpDZCaL785JlePYEmcnnDAk1oLTSZf/E+IWcUcWuvCsIN7EOkiWVpTItraq6OCOjyvLZOBA5RjwdkSJKlbeJlzvIbWPF8ZzcC5FIG2DaCiCvZVuvi7CtwR78xCHek5ArY5ITC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNaxW7s5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DB0C32782;
+	Tue, 30 Jul 2024 15:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354911;
-	bh=3a0E9fgLxT72Kn35ryQRojh6UvnfxtvynYmsKLeAARY=;
+	s=korg; t=1722354917;
+	bh=nJ3yn5XugadMmhn2z5MJxx1HWS8eVPv9gnmxOM36KI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKh1mSD+5lU5Cp17fPHq2vwwVEB16PV2cubpdLIo0yBkrPbGGLOSDWz0KO/LGY1fU
-	 jq9u/Ik3cKOf937x2cCN4pHDFYfARABqVcsNuXuf98vjn4uvc3rckvUVUmG1zgh8sd
-	 2Ff6w8j7w9/HWU/KjRo2fCpzOtFZeRU8n1swkJoA=
+	b=gNaxW7s5dfhXcSHEt7LgUorsMhqm6MgQvks6/Dxo4yKrqJlKsdZH6KU4PEg6iL35A
+	 nWTPt5hYphG0DXeRgI3b6nphWBigKU0D5EjjbkXP9dipY6gRDjoZpnu/ku0Eh3YHKa
+	 gqm2O/WEjDtVZq38Gzn2sbTTmXb55O3hw+35Khh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Yassine Oudjana <y.oudjana@protonmail.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/440] arm64: dts: qcom: sm8450: add power-domain to UFS PHY
-Date: Tue, 30 Jul 2024 17:44:28 +0200
-Message-ID: <20240730151617.135530602@linuxfoundation.org>
+Subject: [PATCH 6.1 036/440] arm64: dts: qcom: msm8996-xiaomi-common: drop excton from the USB PHY
+Date: Tue, 30 Jul 2024 17:44:29 +0200
+Message-ID: <20240730151617.174369088@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -69,34 +70,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 27d3f57cf5a71484ea38770d4bfd10f6ef035cf4 ]
+[ Upstream commit c1aefeae8cb7b71c1bb6d33b1bda7fc322094e16 ]
 
-The UFS PHY is powered on via the UFS_PHY_GDSC power domain. Add
-corresponding power-domain the the PHY node.
+The USB PHYs don't use extcon connectors, drop the extcon property from
+the hsusb_phy1 node.
 
-Fixes: 07fa917a335e ("arm64: dts: qcom: sm8450: add ufs nodes")
+Fixes: 46680fe9ba61 ("arm64: dts: qcom: msm8996: Add support for the Xiaomi MSM8996 platform")
+Cc: Yassine Oudjana <y.oudjana@protonmail.com>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-11-f1fd15c33fb3@linaro.org
+Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-13-f1fd15c33fb3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index 128542582b3d8..aa0977af9411a 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -3153,6 +3153,8 @@ ufs_mem_phy: phy@1d87000 {
- 				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
- 				 <&gcc GCC_UFS_0_CLKREF_EN>;
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+index 77819186086ac..de320bebe4124 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+@@ -368,7 +368,6 @@ &usb3_dwc3 {
  
-+			power-domains = <&gcc UFS_PHY_GDSC>;
-+
- 			resets = <&ufs_mem_hc 0>;
- 			reset-names = "ufsphy";
- 			status = "disabled";
+ &hsusb_phy1 {
+ 	status = "okay";
+-	extcon = <&typec>;
+ 
+ 	vdda-pll-supply = <&vreg_l12a_1p8>;
+ 	vdda-phy-dpdm-supply = <&vreg_l24a_3p075>;
 -- 
 2.43.0
 
