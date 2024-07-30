@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59025941ECE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:33:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F0D941E00
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107301F24DD5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:33:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0789DB24831
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54036189902;
-	Tue, 30 Jul 2024 17:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A4D1A76C1;
+	Tue, 30 Jul 2024 17:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NImDgGuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+m8RKsK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115D81A76B3;
-	Tue, 30 Jul 2024 17:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D301A76AE;
+	Tue, 30 Jul 2024 17:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360795; cv=none; b=uyLAjDavDDHz4/HKZc5rBpTDOrrgeLHPyecFX9TdElEv1V1rTKlpWFz8gr0pjSoSgT81GoFVgaS1gJe48DKeldo/wDHZiI1vfn2uFdXsjR7SNLjmJpqY6+/Pv72ov5gbyn/77Gyxvt4p4R7YZkyaX60GGI0RDgqW1a/Cz0Mzwwk=
+	t=1722360102; cv=none; b=djm5CXKFHNBcDFtZ8doGx8Df+KNe/SZEgHxMfh9MnIvVhZeMED0Ki5jXMI9ui2bFpCSOiSlTiZ/jYDBWPAOWFmw3YWDXKZsFpmLEaUAk3FZp6xMmdwuELaOaratsbySK4L7hF77ECTzFBHYOdZdO/h3hVYExOeytzpZxMZc5HEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360795; c=relaxed/simple;
-	bh=xYSxt+3RFjTGmZX+MFjC9ZykXsDwko0qOQG4GAvXf1g=;
+	s=arc-20240116; t=1722360102; c=relaxed/simple;
+	bh=Jbu80bt96eU9/POuZHtutcAWgNLD8ZhpZxXDnEMWOXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6FAAzX6BE/9lUcBWQEN97O995Ei53CUyt90KXGSuYOKszPB5BppRAED1FnieBNK8++VhNdqrXPMShbhXu/3IuW7OpfrvUGrTP8U0TWyOzzDx0TOlKSkYNyJkHQr9DKLQEKG0iYp4lKs8092o4iFyap2vaCOnHb8b1ooc5IXfYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NImDgGuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26988C4AF0A;
-	Tue, 30 Jul 2024 17:33:13 +0000 (UTC)
+	 MIME-Version; b=OpGiNkDL4iXK4JGYIoByO6V0tpEG4N7GaT+h8FNWe6Bbi2iVkNVlwcIrWY4M463N0WTndVAhqEHO+eNAVBSAJci1yRvYjjJQE2sYyrEj3VbEbxS8e9Sh/mJCeILLypDtuJq0SpfrXz6Z1zLCQd+//w8JjTnOQb/KlnHBWX6Acow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+m8RKsK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3949AC4AF0C;
+	Tue, 30 Jul 2024 17:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360794;
-	bh=xYSxt+3RFjTGmZX+MFjC9ZykXsDwko0qOQG4GAvXf1g=;
+	s=korg; t=1722360102;
+	bh=Jbu80bt96eU9/POuZHtutcAWgNLD8ZhpZxXDnEMWOXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NImDgGuunSrExmX40caZzV8jrEFZWmfPMZYffizbK/mz1qmt9k9qk+S5QF3HfLfL4
-	 NGcSPkf+FgNYrUOujfD4KdjU2PJao+PPg6lQHoHCF+yzXJ4OsWgKNod/ogPvAnU7n1
-	 CKZnvAdpcvd1m2MXxkJM8HMToWhx567aHcwCcD4k=
+	b=c+m8RKsKHRiolPnxkfmeUqM7VuitIpc/xtnNQR2wmL2TwK0Q+8u1JVmrrxfT+deQp
+	 dcRyaYVL1ix/1nRcA9IepQRztptZ/8r0rZLRq0Km51y+SPGe9nXMFGlDJv0p1U6YUF
+	 xDciBOnfeyzOIs+G+93hq5Y5nbKcKgW48QcrsBPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ethanwu <ethanwu@synology.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 794/809] ceph: fix incorrect kmalloc size of pagevec mempool
+Subject: [PATCH 6.6 563/568] s390/pci: Allow allocation of more than 1 MSI interrupt
 Date: Tue, 30 Jul 2024 17:51:10 +0200
-Message-ID: <20240730151756.333319913@linuxfoundation.org>
+Message-ID: <20240730151702.162934433@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ethanwu <ethanwu@synology.com>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit 03230edb0bd831662a7c08b6fef66b2a9a817774 ]
+[ Upstream commit ab42fcb511fd9d241bbab7cc3ca04e34e9fc0666 ]
 
-The kmalloc size of pagevec mempool is incorrectly calculated.
-It misses the size of page pointer and only accounts the number for the array.
+On a PCI adapter that provides up to 8 MSI interrupt sources the s390
+implementation of PCI interrupts rejected to accommodate them, although
+the underlying hardware is able to support that.
 
-Fixes: a0102bda5bc0 ("ceph: move sb->wb_pagevec_pool to be a global mempool")
-Signed-off-by: ethanwu <ethanwu@synology.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+For MSI-X it is sufficient to allocate a single irq_desc per msi_desc,
+but for MSI multiple irq descriptors are attached to and controlled by
+a single msi descriptor. Add the appropriate loops to maintain multiple
+irq descriptors and tie/untie them to/from the appropriate AIBV bit, if
+a device driver allocates more than 1 MSI interrupt.
+
+Common PCI code passes on requests to allocate a number of interrupt
+vectors based on the device drivers' demand and the PCI functions'
+capabilities. However, the root-complex of s390 systems support just a
+limited number of interrupt vectors per PCI function.
+Produce a kernel log message to inform about any architecture-specific
+capping that might be done.
+
+With this change, we had a PCI adapter successfully raising
+interrupts to its device driver via all 8 sources.
+
+Fixes: a384c8924a8b ("s390/PCI: Fix single MSI only check")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/pci/pci_irq.c | 62 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 42 insertions(+), 20 deletions(-)
 
-diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-index 885cb5d4e771a..0cdf84cd17912 100644
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -961,7 +961,8 @@ static int __init init_caches(void)
- 	if (!ceph_mds_request_cachep)
- 		goto bad_mds_req;
+diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
+index 979f776b09b8d..84482a9213322 100644
+--- a/arch/s390/pci/pci_irq.c
++++ b/arch/s390/pci/pci_irq.c
+@@ -298,8 +298,8 @@ static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
  
--	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10, CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT);
-+	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10,
-+	    (CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT) * sizeof(struct page *));
- 	if (!ceph_wb_pagevec_pool)
- 		goto bad_pagevec_pool;
+ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ {
++	unsigned int hwirq, msi_vecs, irqs_per_msi, i, cpu;
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+-	unsigned int hwirq, msi_vecs, cpu;
+ 	struct msi_desc *msi;
+ 	struct msi_msg msg;
+ 	unsigned long bit;
+@@ -309,30 +309,46 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 	zdev->aisb = -1UL;
+ 	zdev->msi_first_bit = -1U;
  
+-	if (type == PCI_CAP_ID_MSI && nvec > 1)
+-		return 1;
+ 	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
++	if (msi_vecs < nvec) {
++		pr_info("%s requested %d irqs, allocate system limit of %d",
++			pci_name(pdev), nvec, zdev->max_msi);
++	}
+ 
+ 	rc = __alloc_airq(zdev, msi_vecs, &bit);
+ 	if (rc < 0)
+ 		return rc;
+ 
+-	/* Request MSI interrupts */
++	/*
++	 * Request MSI interrupts:
++	 * When using MSI, nvec_used interrupt sources and their irq
++	 * descriptors are controlled through one msi descriptor.
++	 * Thus the outer loop over msi descriptors shall run only once,
++	 * while two inner loops iterate over the interrupt vectors.
++	 * When using MSI-X, each interrupt vector/irq descriptor
++	 * is bound to exactly one msi descriptor (nvec_used is one).
++	 * So the inner loops are executed once, while the outer iterates
++	 * over the MSI-X descriptors.
++	 */
+ 	hwirq = bit;
+ 	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
+-		rc = -EIO;
+ 		if (hwirq - bit >= msi_vecs)
+ 			break;
+-		irq = __irq_alloc_descs(-1, 0, 1, 0, THIS_MODULE,
+-				(irq_delivery == DIRECTED) ?
+-				msi->affinity : NULL);
++		irqs_per_msi = min_t(unsigned int, msi_vecs, msi->nvec_used);
++		irq = __irq_alloc_descs(-1, 0, irqs_per_msi, 0, THIS_MODULE,
++					(irq_delivery == DIRECTED) ?
++					msi->affinity : NULL);
+ 		if (irq < 0)
+ 			return -ENOMEM;
+-		rc = irq_set_msi_desc(irq, msi);
+-		if (rc)
+-			return rc;
+-		irq_set_chip_and_handler(irq, &zpci_irq_chip,
+-					 handle_percpu_irq);
++
++		for (i = 0; i < irqs_per_msi; i++) {
++			rc = irq_set_msi_desc_off(irq, i, msi);
++			if (rc)
++				return rc;
++			irq_set_chip_and_handler(irq + i, &zpci_irq_chip,
++						 handle_percpu_irq);
++		}
++
+ 		msg.data = hwirq - bit;
+ 		if (irq_delivery == DIRECTED) {
+ 			if (msi->affinity)
+@@ -345,31 +361,35 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 			msg.address_lo |= (cpu_addr << 8);
+ 
+ 			for_each_possible_cpu(cpu) {
+-				airq_iv_set_data(zpci_ibv[cpu], hwirq, irq);
++				for (i = 0; i < irqs_per_msi; i++)
++					airq_iv_set_data(zpci_ibv[cpu],
++							 hwirq + i, irq + i);
+ 			}
+ 		} else {
+ 			msg.address_lo = zdev->msi_addr & 0xffffffff;
+-			airq_iv_set_data(zdev->aibv, hwirq, irq);
++			for (i = 0; i < irqs_per_msi; i++)
++				airq_iv_set_data(zdev->aibv, hwirq + i, irq + i);
+ 		}
+ 		msg.address_hi = zdev->msi_addr >> 32;
+ 		pci_write_msi_msg(irq, &msg);
+-		hwirq++;
++		hwirq += irqs_per_msi;
+ 	}
+ 
+ 	zdev->msi_first_bit = bit;
+-	zdev->msi_nr_irqs = msi_vecs;
++	zdev->msi_nr_irqs = hwirq - bit;
+ 
+ 	rc = zpci_set_irq(zdev);
+ 	if (rc)
+ 		return rc;
+ 
+-	return (msi_vecs == nvec) ? 0 : msi_vecs;
++	return (zdev->msi_nr_irqs == nvec) ? 0 : zdev->msi_nr_irqs;
+ }
+ 
+ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+ {
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 	struct msi_desc *msi;
++	unsigned int i;
+ 	int rc;
+ 
+ 	/* Disable interrupts */
+@@ -379,8 +399,10 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+ 
+ 	/* Release MSI interrupts */
+ 	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_ASSOCIATED) {
+-		irq_set_msi_desc(msi->irq, NULL);
+-		irq_free_desc(msi->irq);
++		for (i = 0; i < msi->nvec_used; i++) {
++			irq_set_msi_desc(msi->irq + i, NULL);
++			irq_free_desc(msi->irq + i);
++		}
+ 		msi->msg.address_lo = 0;
+ 		msi->msg.address_hi = 0;
+ 		msi->msg.data = 0;
 -- 
 2.43.0
 
