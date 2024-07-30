@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ABD8941929
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E73941DD8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABA651C2329E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C878289221
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233101A618F;
-	Tue, 30 Jul 2024 16:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D2E187FF6;
+	Tue, 30 Jul 2024 17:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HALg+WcI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdCzWl2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A0D18454F;
-	Tue, 30 Jul 2024 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F77D1A76A9;
+	Tue, 30 Jul 2024 17:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356980; cv=none; b=IHkS2gBCnu8uGqVzLhNVid0NcdfOHj67Y8XjuqmqsYLHas3Fo0B9F15pVVu9KfbRh3v7yEp0b6QUTRQETW97wLen7oNvatYnB7ghc5vhH+g3m2zacJEv999ZSKEZP1nHETBT4e+WOijXZILDem5lhvskByvAo1impsxmV/KAuA8=
+	t=1722360122; cv=none; b=NpQMpK8f1aDzDBDRhn7u1XQXSsG2+Psv1Yjg1vT4H+Uw9jGyljFVgcYtqqx12kUvEpYXl3RFTnMmC/a90uN9ktQci03lKphbNnLEobIrrAZEMP3esLN81mvKtY9yaHNd5/BqpYp5VmLlEa3IRZg8kdW3PN7wKuVnPacePMsmlUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356980; c=relaxed/simple;
-	bh=fLKmS5OdUYDRGkxHRX9Cv2YuzcQhOw85f43PB7GJHZo=;
+	s=arc-20240116; t=1722360122; c=relaxed/simple;
+	bh=0HiTSvT1hwY+Cwq0cfIj3qXIQzq8+V3iyKyRCiVTZvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C1u+voVI7MI9JqVcov2uMaMp5R6FxmQvdGmxZgxVdwYNyja5P7I3/MJy2f0RnMe24WQrNyDG7xWOiDbHh43FWWZjlqWEZgAVlc4oNcs282bYVtbvZIheCQjbwkwdwpNZo0N7exy+z/virsKnP4iQw04IUFNamoPbeB9uPH/HQuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HALg+WcI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF15C4AF10;
-	Tue, 30 Jul 2024 16:29:40 +0000 (UTC)
+	 MIME-Version; b=qUSnoyaQN+dfkmi0Z6hbCrue3Tzl4gzMvvXV0KOz1SqLzuzhys9Kc/1HWfDoqXqyRXlVCbxBaCi+Z7BtDzxQQxGH9lVM8hJR3xznmMivLm0IOqquimu8jY796rJzGANEsvlc876+VYdrvtKxirO7TGX+mF/zgM+dbMKpAq68yWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdCzWl2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA4FC32782;
+	Tue, 30 Jul 2024 17:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356980;
-	bh=fLKmS5OdUYDRGkxHRX9Cv2YuzcQhOw85f43PB7GJHZo=;
+	s=korg; t=1722360121;
+	bh=0HiTSvT1hwY+Cwq0cfIj3qXIQzq8+V3iyKyRCiVTZvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HALg+WcIT37VZ6igHYzxWPY4IUNm5rj3wtgdHxo0ajdkPAaCKtn/JcnjLs6/u++q4
-	 /PCIHWAHrC4udTBL71OPOwAjKppR7Zak+tQMsAN2mQwboHb+cRmjg1cH00NkuDGHGg
-	 rUrMNEABFXMyl8KHy+8Fy2FGRv09CkInPT5c1gqM=
+	b=wdCzWl2IwX5y3piwTPFxyCx6vmh/o7HLYAEYM7hFXlSXYxuw0VLhLVmnM1FMGE4pz
+	 994s0Heok/Ejti93b6BKWmZqxJjjRHUbYvIZpGJYv/ZR5wMR/Qk9wb9VXqACndrkyB
+	 suNYlPfWmuRHBt0a6p+IPxKW3IE+2AXp79taPnO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 247/440] pinctrl: ti: ti-iodelay: Drop if block with always false condition
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Michal Simek <michal.simek@amd.com>
+Subject: [PATCH 6.10 604/809] drivers: soc: xilinx: check return status of get_api_version()
 Date: Tue, 30 Jul 2024 17:48:00 +0200
-Message-ID: <20240730151625.497998871@linuxfoundation.org>
+Message-ID: <20240730151748.690527121@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
 
-[ Upstream commit 88b3f108502bc45e6ebd005702add46759f3f45a ]
+commit 9b003e14801cf85a8cebeddc87bc9fc77100fdce upstream.
 
-ti_iodelay_remove() is only called after ti_iodelay_probe() completed
-successfully. In this case platform_set_drvdata() was called with a
-non-NULL argument and so platform_get_drvdata() won't return NULL.
+Currently return status is not getting checked for get_api_version
+and because of that for x86 arch we are getting below smatch error.
 
-Simplify by removing the if block with the always false condition.
+    CC      drivers/soc/xilinx/zynqmp_power.o
+drivers/soc/xilinx/zynqmp_power.c: In function 'zynqmp_pm_probe':
+drivers/soc/xilinx/zynqmp_power.c:295:12: warning: 'pm_api_version' is
+used uninitialized [-Wuninitialized]
+    295 |         if (pm_api_version < ZYNQMP_PM_VERSION)
+        |            ^
+    CHECK   drivers/soc/xilinx/zynqmp_power.c
+drivers/soc/xilinx/zynqmp_power.c:295 zynqmp_pm_probe() error:
+uninitialized symbol 'pm_api_version'.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231009083856.222030-4-u.kleine-koenig@pengutronix.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: 9b401f4a7170 ("pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So, check return status of pm_get_api_version and return error in case
+of failure to avoid checking uninitialized pm_api_version variable.
+
+Fixes: b9b3a8be28b3 ("firmware: xilinx: Remove eemi ops for get_api_version")
+Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240515112345.24673-1-jay.buddhabhatti@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/soc/xilinx/zynqmp_power.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-index 4e2382778d38f..75a2243ee87cc 100644
---- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-+++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-@@ -908,9 +908,6 @@ static int ti_iodelay_remove(struct platform_device *pdev)
- {
- 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
+--- a/drivers/soc/xilinx/zynqmp_power.c
++++ b/drivers/soc/xilinx/zynqmp_power.c
+@@ -190,7 +190,9 @@ static int zynqmp_pm_probe(struct platfo
+ 	u32 pm_api_version;
+ 	struct mbox_client *client;
  
--	if (!iod)
--		return 0;
--
- 	if (iod->pctl)
- 		pinctrl_unregister(iod->pctl);
+-	zynqmp_pm_get_api_version(&pm_api_version);
++	ret = zynqmp_pm_get_api_version(&pm_api_version);
++	if (ret)
++		return ret;
  
--- 
-2.43.0
-
+ 	/* Check PM API version number */
+ 	if (pm_api_version < ZYNQMP_PM_VERSION)
 
 
 
