@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-63995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE26941BA3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F620941BA5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3072283D67
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 992E7281B2E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF04189903;
-	Tue, 30 Jul 2024 16:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60777189907;
+	Tue, 30 Jul 2024 16:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZq5DIo6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaLZZeY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71613184549;
-	Tue, 30 Jul 2024 16:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17136184549;
+	Tue, 30 Jul 2024 16:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358631; cv=none; b=j9pNRxBGbPAb0T1g9gWMBmE9t7hRiLuJqgOvigx+bAo1XXMb3Pnqm6Ebw3CXxBZaKJyuW8xJqFqIthp9nTWKQ+BSzu32YCL+PZzcD8B/G2nIYAvSeWOPB447WN2CK1Dk3GuaqUSBXliU4aF14gZqddU68TdH2Ltt9tXTgz7soL8=
+	t=1722358641; cv=none; b=ksVOJAG9kjRD7O2R+yQkPImVUaBoe4/lc+1uSZt4orTsqyRFk/jFrKIixm1J+7LTDk3UdMCjrqGDrmAT2rMke+va1PjftUtjn87SM8UXGWFGqhxLQTvJ8dZjHyvmb0ZFAc+hYA7om61EGU6qaZcUO86HmrIWgShQ0BK1aSCW+yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358631; c=relaxed/simple;
-	bh=Rvic1+ZSOSKOX0iZo5Aj1KVFve6F7xPV1dN5jbr0rX8=;
+	s=arc-20240116; t=1722358641; c=relaxed/simple;
+	bh=pqt+j/J5tngsqKhxnJwK01qtM1xmoBhfz3Niw7UqKuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyVWYpTeyM70VyEJJjIocwD0A3JcaFqBI5v23QBvvjiJWxMufysfmnB/RUgnrG408zAKaJISYMs6gxl48mTr1E6cEJo4HVyPKPIRV9uc6gKjLyUcyG7VO7/3XnvMnaHOBOYJ8OdfmDoJZdo0449jZgBPk2loa+jaV61MFE36dpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZq5DIo6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7F1C32782;
-	Tue, 30 Jul 2024 16:57:10 +0000 (UTC)
+	 MIME-Version; b=WfOxg8DTAWfHemFTdikCridB/cXBKfUB7VDIMcR2XHXe3ozuOzKawZDT3MPkKVGhD+3HulhCBRkvLS3umJeMoP9EFDJX9d82hOXPv7hX5YEDNGhjzYLEyck3/k10y+wYqVhmooB/30tzeeNNx3SJwcW+OD4UoqtI2lE3Mzv2l68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaLZZeY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB89C4AF0E;
+	Tue, 30 Jul 2024 16:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358631;
-	bh=Rvic1+ZSOSKOX0iZo5Aj1KVFve6F7xPV1dN5jbr0rX8=;
+	s=korg; t=1722358640;
+	bh=pqt+j/J5tngsqKhxnJwK01qtM1xmoBhfz3Niw7UqKuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZq5DIo6CrM/lsy0Kd3tLqTdkRjUOjVdJhmBpVjAgFkhs2lzfsTrBeKItY5PbtlX5
-	 RuWQx8q6p5VnPuINX9mcoMyaVLDLjRaIbXj5wZ1Bne1Ok3oeGe/eIGR0DLJnMnWG/n
-	 x8JlViSagrEhllGyluc7iMFtlVqDUkz/NbX1yi2M=
+	b=WaLZZeY8APZn1CgoClaeVJGvjmarsxcKK4EiaATaLfbmP8pwiv7bSG80hufmCzpDL
+	 fOLe/3/9bFq+9Njgw1lvTx86iNZGTi9Q1v6hBXFmgEOVDjejAcYtHPZ2vryNUJzWLe
+	 kWUdd3WC0EFmcBqZp0YG9LMuPiOK66nZjt3LyyjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
+	Liwei Song <liwei.song.lsong@gmail.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Krister Johansen <kjlx@templeofstupid.com>,
 	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 408/440] bpf, events: Use prog to emit ksymbol event for main program
-Date: Tue, 30 Jul 2024 17:50:41 +0200
-Message-ID: <20240730151631.731617291@linuxfoundation.org>
+Subject: [PATCH 6.1 409/440] tools/resolve_btfids: Fix comparison of distinct pointer types warning in resolve_btfids
+Date: Tue, 30 Jul 2024 17:50:42 +0200
+Message-ID: <20240730151631.769853678@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -69,82 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Liwei Song <liwei.song.lsong@gmail.com>
 
-[ Upstream commit 0be9ae5486cd9e767138c13638820d240713f5f1 ]
+[ Upstream commit 13c9b702e6cb8e406d5fa6b2dca422fa42d2f13e ]
 
-Since commit 0108a4e9f358 ("bpf: ensure main program has an extable"),
-prog->aux->func[0]->kallsyms is left as uninitialized. For BPF programs
-with subprogs, the symbol for the main program is missing just as shown
-in the output of perf script below:
+Add a type cast for set8->pairs to fix below compile warning:
 
- ffffffff81284b69 qp_trie_lookup_elem+0xb9 ([kernel.kallsyms])
- ffffffffc0011125 bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
- ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
- ffffffffc00110a1 +0x25 ()
- ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
+main.c: In function 'sets_patch':
+main.c:699:50: warning: comparison of distinct pointer types lacks a cast
+  699 |        BUILD_BUG_ON(set8->pairs != &set8->pairs[0].id);
+      |                                 ^~
 
-Fix it by always using prog instead prog->aux->func[0] to emit ksymbol
-event for the main program. After the fix, the output of perf script
-will be correct:
-
- ffffffff81284b96 qp_trie_lookup_elem+0xe6 ([kernel.kallsyms])
- ffffffffc001382d bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
- ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
- ffffffffc0013779 bpf_prog_245c55ab25cfcf40_qp_trie_lookup+0x25 (bpf...)
- ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
-
-Fixes: 0108a4e9f358 ("bpf: ensure main program has an extable")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
+Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with types from btf_ids.h")
+Signed-off-by: Liwei Song <liwei.song.lsong@gmail.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Yonghong Song <yonghong.song@linux.dev>
-Reviewed-by: Krister Johansen <kjlx@templeofstupid.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20240714065533.1112616-1-houtao@huaweicloud.com
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20240722083305.4009723-1-liwei.song.lsong@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ tools/bpf/resolve_btfids/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index b8333b8e6a782..d92ee56a2a768 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9097,21 +9097,19 @@ static void perf_event_bpf_emit_ksymbols(struct bpf_prog *prog,
- 	bool unregister = type == PERF_BPF_EVENT_PROG_UNLOAD;
- 	int i;
+diff --git a/tools/bpf/resolve_btfids/main.c b/tools/bpf/resolve_btfids/main.c
+index 82bffa7cf8659..7775040182e39 100644
+--- a/tools/bpf/resolve_btfids/main.c
++++ b/tools/bpf/resolve_btfids/main.c
+@@ -696,7 +696,7 @@ static int sets_patch(struct object *obj)
+ 			 * Make sure id is at the beginning of the pairs
+ 			 * struct, otherwise the below qsort would not work.
+ 			 */
+-			BUILD_BUG_ON(set8->pairs != &set8->pairs[0].id);
++			BUILD_BUG_ON((u32 *)set8->pairs != &set8->pairs[0].id);
+ 			qsort(set8->pairs, set8->cnt, sizeof(set8->pairs[0]), cmp_id);
  
--	if (prog->aux->func_cnt == 0) {
--		perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
--				   (u64)(unsigned long)prog->bpf_func,
--				   prog->jited_len, unregister,
--				   prog->aux->ksym.name);
--	} else {
--		for (i = 0; i < prog->aux->func_cnt; i++) {
--			struct bpf_prog *subprog = prog->aux->func[i];
--
--			perf_event_ksymbol(
--				PERF_RECORD_KSYMBOL_TYPE_BPF,
--				(u64)(unsigned long)subprog->bpf_func,
--				subprog->jited_len, unregister,
--				subprog->aux->ksym.name);
--		}
-+	perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
-+			   (u64)(unsigned long)prog->bpf_func,
-+			   prog->jited_len, unregister,
-+			   prog->aux->ksym.name);
-+
-+	for (i = 1; i < prog->aux->func_cnt; i++) {
-+		struct bpf_prog *subprog = prog->aux->func[i];
-+
-+		perf_event_ksymbol(
-+			PERF_RECORD_KSYMBOL_TYPE_BPF,
-+			(u64)(unsigned long)subprog->bpf_func,
-+			subprog->jited_len, unregister,
-+			subprog->aux->ksym.name);
- 	}
- }
- 
+ 			/*
 -- 
 2.43.0
 
