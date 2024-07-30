@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81655941D4C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 810B3941BCA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2ADF1C235C6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384FC1F2258F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2FA1A76AB;
-	Tue, 30 Jul 2024 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63990189918;
+	Tue, 30 Jul 2024 16:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLb4z/wu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8ip2RXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3141A76A4;
-	Tue, 30 Jul 2024 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1960717D8BB;
+	Tue, 30 Jul 2024 16:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359714; cv=none; b=NngFLpxiVTa9JETuMZixgj+f+8y7YdByRBo1GpUiZ2ERZPV+V6KJy9Cp++DkJjLZFN3qclGmeAOrFXvMyVH5fX7kD3TkTSMI0s8KAu0BeDIKlB234zU5culX/IYZCxI7pE7bPQoPy2A4vqDgqdU1VNgIjb/CK//plcwk4wCcWts=
+	t=1722358748; cv=none; b=Yv4jJFV4eBPm0aGfPA1csWZxNRrVdKyUZqHU96AQh+/Y1UFJV9HDWVbqMP5WOW/85xdVwKWL6F9mTw1yUdNXGeKkgRlSfw3w0xJL1ABabmcb+Jqlc6RpNCdQ3Ehu61nhsugk/IMq9nZRahkdN1vtFMd64vDdOeJ/t30TfdRED0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359714; c=relaxed/simple;
-	bh=urs2jCYTjVTHN2cwIpoevSjeJqJCgxot5Xwkeh6fE60=;
+	s=arc-20240116; t=1722358748; c=relaxed/simple;
+	bh=f06Xkzmeal5EvaiI34vuKSVZWzT1uNvb8nYmLbWlHfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIXV1W69V3a/DiEawXUThuTwj+GDo0sdnY4XXVr5pObmhbzd+UEe2rlTHBXKgxy9UUEZs8QOFEgrzJXhJPNi+sVYBUAAKro38YdtaMPDFilaoScuXGq0Ds9e4jPjIERE+s6zkXiJKs+YgwgZ9O+Ew0ve9soqZc0qAVEUG8AUk5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLb4z/wu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D77C4AF0A;
-	Tue, 30 Jul 2024 17:15:13 +0000 (UTC)
+	 MIME-Version; b=egt3l50dLR7Cl/7+DPF62PFyou1jZaLq8es3s9s3RRxTIGsE6PMKD49A7SkeAkMaQA9Ho07Jv49yuORhm4GJ2Zjinr8I8Uyp3aCXSHkas4rhek4oKZHuUjsTOCuLySvRPuyikkCop2Rpm66I681kvWfcvlv88+5bGJUAmnGwBW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8ip2RXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B9BC32782;
+	Tue, 30 Jul 2024 16:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359714;
-	bh=urs2jCYTjVTHN2cwIpoevSjeJqJCgxot5Xwkeh6fE60=;
+	s=korg; t=1722358747;
+	bh=f06Xkzmeal5EvaiI34vuKSVZWzT1uNvb8nYmLbWlHfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLb4z/wu8vQw1lC7WovZBAUluxsE2WKRunNrKCtM8TdSq3xpN6xU4TkOUG5uQISGI
-	 BhTxJCw6Rkj7M3rfJejFsPoQNa84+yuHqkHchb3gJm5wnPvTf8fTJFbUTyIsJrKY+y
-	 Mk6PoJJ/eBLvl8pYIjYxb20cX/ZaZPnvarpNbkJw=
+	b=f8ip2RXkW06dY/4Ntkje+WU8ZMLji7a2mlECNl3hFgPiwCjCa7hELfKJqexpYcQe4
+	 FZV3kkg/LE+GhpU72IjFJVl3eE5yuss7a/aNP9NMvP7sO/BAWatEDG6CnLY0uf96Xp
+	 0VyzX2sZZX7PGp9xRpeep12a489aDXDGdutagYuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sheng Yong <shengyong@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 526/568] watchdog: rzg2l_wdt: Check return status of pm_runtime_put()
+Subject: [PATCH 6.1 400/440] f2fs: fix start segno of large section
 Date: Tue, 30 Jul 2024 17:50:33 +0200
-Message-ID: <20240730151700.718407952@linuxfoundation.org>
+Message-ID: <20240730151631.424791626@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Sheng Yong <shengyong@oppo.com>
 
-[ Upstream commit 471e45a33302852bf79bc140fe418782f50734f6 ]
+[ Upstream commit 8c409989678e92e4a737e7cd2bb04f3efb81071a ]
 
-pm_runtime_put() may return an error code. Check its return status.
+get_ckpt_valid_blocks() checks valid ckpt blocks in current section.
+It counts all vblocks from the first to the last segment in the
+large section. However, START_SEGNO() is used to get the first segno
+in an SIT block. This patch fixes that to get the correct start segno.
 
-Along with it the rzg2l_wdt_set_timeout() function was updated to
-propagate the result of rzg2l_wdt_stop() to its caller.
-
-Fixes: 2cbc5cd0b55f ("watchdog: Add Watchdog Timer driver for RZ/G2L")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240531065723.1085423-5-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 61461fc921b7 ("f2fs: fix to avoid touching checkpointed data in get_victim()")
+Signed-off-by: Sheng Yong <shengyong@oppo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rzg2l_wdt.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/f2fs/segment.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/rzg2l_wdt.c b/drivers/watchdog/rzg2l_wdt.c
-index d87d4f50180c5..7bce093316c4d 100644
---- a/drivers/watchdog/rzg2l_wdt.c
-+++ b/drivers/watchdog/rzg2l_wdt.c
-@@ -144,9 +144,13 @@ static int rzg2l_wdt_start(struct watchdog_device *wdev)
- static int rzg2l_wdt_stop(struct watchdog_device *wdev)
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index aa9ad85e0901d..17d1723d98a0b 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -373,7 +373,8 @@ static inline unsigned int get_ckpt_valid_blocks(struct f2fs_sb_info *sbi,
+ 				unsigned int segno, bool use_section)
  {
- 	struct rzg2l_wdt_priv *priv = watchdog_get_drvdata(wdev);
-+	int ret;
- 
- 	rzg2l_wdt_reset(priv);
--	pm_runtime_put(wdev->parent);
-+
-+	ret = pm_runtime_put(wdev->parent);
-+	if (ret < 0)
-+		return ret;
- 
- 	return 0;
- }
-@@ -163,7 +167,10 @@ static int rzg2l_wdt_set_timeout(struct watchdog_device *wdev, unsigned int time
- 	 * to reset the module) so that it is updated with new timeout values.
- 	 */
- 	if (watchdog_active(wdev)) {
--		rzg2l_wdt_stop(wdev);
-+		ret = rzg2l_wdt_stop(wdev);
-+		if (ret)
-+			return ret;
-+
- 		ret = rzg2l_wdt_start(wdev);
- 	}
+ 	if (use_section && __is_large_section(sbi)) {
+-		unsigned int start_segno = START_SEGNO(segno);
++		unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
++		unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
+ 		unsigned int blocks = 0;
+ 		int i;
  
 -- 
 2.43.0
