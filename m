@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9025594194A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BCD941956
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3A311C23539
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8F6F1F24F93
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81BF189503;
-	Tue, 30 Jul 2024 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9110918452F;
+	Tue, 30 Jul 2024 16:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKQITE18"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtoQh4WS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747B5148848;
-	Tue, 30 Jul 2024 16:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBA58BE8;
+	Tue, 30 Jul 2024 16:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357059; cv=none; b=HwVebQER4VUaIUXwV52mBth+ZCZwvkdncgXANUDDZbeLIRtD08KFbVmwgv3iYfeeD7f/J0dsf324Q428RJWx58o9WkB7CuJ2Rma6gvlSlBtAWK47YiOZ9WrOkyBRwBDDM4yXDUn0TTYYCuuSFMK0Cyya2HPPl6I8p/fQNrPP5y4=
+	t=1722357069; cv=none; b=bOe6ZmjX/kJFvv91i6y3hJz0RHqxw8nDbVFp4wNRVmJAbrgk7QtkpF9HPMel0DvIa8ZfI7avpuvSYNsW66dfkkdf4HVHr84Dz2+3GatvXA3wJL8ZiFzKa3yNIF9Dh/RqO5MqzM9ho7ECxUyjnbikiMK54kiMXBjf+dPiPj6yPA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357059; c=relaxed/simple;
-	bh=bWxkTcqcdLgkgXbe6sZAKL1e92AURLQE1GhWshTE51c=;
+	s=arc-20240116; t=1722357069; c=relaxed/simple;
+	bh=jkeitPU/kqCdIw2RLI3r5d+bf84UBdjDFtHjEIzmzG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCD5SoeIdzPn0D3pMMI9GW5KfVeytbfTuHvMe7oNfMtWHdFXcbugfU6C2ZcMAOIkMieMw7FTMSOH8pdikyHsWndukIRbeuzozWC4UpaJtjBD8w2QfxE3LSf+u0GLMTqnk9Rj4Dv045RSTBHqz8DZcL0jd+L47zQaC+NVK2lylps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKQITE18; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99BAC4AF0C;
-	Tue, 30 Jul 2024 16:30:58 +0000 (UTC)
+	 MIME-Version; b=bkfDcvIpZnjpD3uWxLJo3P8QtU/evFOMzb1a2hkQ/5PX+5+pZHOXKMSo7AJqzf4FL5fl9WY891toJiet2W3tWNPTDroM5cNgflaU0+M08+8xxqtwdJWPKHA4kqZ3JHbZjQf3ledRYkKkSVp98T81+wLXJO0evd4d3FvJMB74wls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtoQh4WS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1CEC32782;
+	Tue, 30 Jul 2024 16:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357059;
-	bh=bWxkTcqcdLgkgXbe6sZAKL1e92AURLQE1GhWshTE51c=;
+	s=korg; t=1722357068;
+	bh=jkeitPU/kqCdIw2RLI3r5d+bf84UBdjDFtHjEIzmzG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKQITE18uI12HmBEmpUFcLzRHGNVyZxhW719rCVeRMdQ7FnosF0ngqDC+lomSj8Z5
-	 MlYy6YecYpDOdRr0tZihxkatn8gFoS4F1ljC+ncZkBZstvW+Rn3TCIKv7LX4IrooLe
-	 vgufevz4KLUEt2p27GZtahtRUhSdpaWJTRboPD2w=
+	b=qtoQh4WSKBwqKrxv7yAC1uOlwSTDyqDQKuT8WBzZvmEXReF6CGims16D0sHWL42oQ
+	 H8v+l2jGt16n1IIEE1UVraoyThYAlQ0iE4y1M5DDjQzL++lH5NLFyMfeFQkWjV2JhY
+	 hOSXxoaOwqIR0gGkMi4aZR0xuIKrsic2NnQyIEgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 214/809] wifi: ath12k: fix peer metadata parsing
-Date: Tue, 30 Jul 2024 17:41:30 +0200
-Message-ID: <20240730151733.056050265@linuxfoundation.org>
+Subject: [PATCH 6.10 215/809] wifi: rtw89: wow: fix GTK offload H2C skbuff issue
+Date: Tue, 30 Jul 2024 17:41:31 +0200
+Message-ID: <20240730151733.096312026@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -61,234 +60,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 1eeafd64c7b455381b77c546e41bc267e13e2809 ]
+[ Upstream commit dda364c345913fe03ddbe4d5ae14a2754c100296 ]
 
-Currently, the Rx data path only supports parsing peer metadata of version
-zero. However, the QCN9274 platform configures the peer metadata version
-as V1B. When V1B peer metadata is parsed using the version zero logic,
-invalid data is populated, causing valid packets to be dropped. To address
-this issue, refactor the peer metadata version and add the version based
-parsing to populate the data from peer metadata correctly.
+We mistakenly put skb too large and that may exceed skb->end.
+Therefore, we fix it.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+skbuff: skb_over_panic: text:ffffffffc09e9a9d len:416 put:204 head:ffff8fba=
+04eca780 data:ffff8fba04eca7e0 tail:0x200 end:0x140 dev:<NULL>
+------------[ cut here ]------------
+kernel BUG at net/core/skbuff.c:192!
+invalid opcode: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 4747 Comm: kworker/u4:44 Tainted: G           O       6.6.30-02=
+659-gc18865c4dfbd #1 86547039b47e46935493f615ee31d0b2d711d35e
+Hardware name: HP Meep/Meep, BIOS Google_Meep.11297.262.0 03/18/2021
+Workqueue: events_unbound async_run_entry_fn
+RIP: 0010:skb_panic+0x5d/0x60
+Code: c6 63 8b 8f bb 4c 0f 45 f6 48 c7 c7 4d 89 8b bb 48 89 ce 44 89 d1 41 =
+56 53 41 53 ff b0 c8 00 00 00 e8 27 5f 23 00 48 83 c4 20 <0f> 0b 90 90 90 9=
+0 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44
+RSP: 0018:ffffaa700144bad0 EFLAGS: 00010282
+RAX: 0000000000000089 RBX: 0000000000000140 RCX: 14432c5aad26c900
+RDX: 0000000000000000 RSI: 00000000ffffdfff RDI: 0000000000000001
+RBP: ffffaa700144bae0 R08: 0000000000000000 R09: ffffaa700144b920
+R10: 00000000ffffdfff R11: ffffffffbc28fbc0 R12: ffff8fba4e57a010
+R13: 0000000000000000 R14: ffffffffbb8f8b63 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff8fba7bd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007999c4ad1000 CR3: 000000015503a000 CR4: 0000000000350ee0
+Call Trace:
+ <TASK>
+ ? __die_body+0x1f/0x70
+ ? die+0x3d/0x60
+ ? do_trap+0xa4/0x110
+ ? skb_panic+0x5d/0x60
+ ? do_error_trap+0x6d/0x90
+ ? skb_panic+0x5d/0x60
+ ? handle_invalid_op+0x30/0x40
+ ? skb_panic+0x5d/0x60
+ ? exc_invalid_op+0x3c/0x50
+ ? asm_exc_invalid_op+0x16/0x20
+ ? skb_panic+0x5d/0x60
+ skb_put+0x49/0x50
+ rtw89_fw_h2c_wow_gtk_ofld+0xbd/0x220 [rtw89_core 778b32de31cd1f14df2d6721a=
+e99ba8a83636fa5]
+ rtw89_wow_resume+0x31f/0x540 [rtw89_core 778b32de31cd1f14df2d6721ae99ba8a8=
+3636fa5]
+ rtw89_ops_resume+0x2b/0xa0 [rtw89_core 778b32de31cd1f14df2d6721ae99ba8a836=
+36fa5]
+ ieee80211_reconfig+0x84/0x13e0 [mac80211 818a894e3b77da6298269c59ed7cdff06=
+5a4ed52]
+ ? __pfx_wiphy_resume+0x10/0x10 [cfg80211 1a793119e2aeb157c4ca4091ff8e1d9ae=
+233b59d]
+ ? dev_printk_emit+0x51/0x70
+ ? _dev_info+0x6e/0x90
+ ? __pfx_wiphy_resume+0x10/0x10 [cfg80211 1a793119e2aeb157c4ca4091ff8e1d9ae=
+233b59d]
+ wiphy_resume+0x89/0x180 [cfg80211 1a793119e2aeb157c4ca4091ff8e1d9ae233b59d]
+ ? __pfx_wiphy_resume+0x10/0x10 [cfg80211 1a793119e2aeb157c4ca4091ff8e1d9ae=
+233b59d]
+ dpm_run_callback+0x3c/0x140
+ device_resume+0x1f9/0x3c0
+ ? __pfx_dpm_watchdog_handler+0x10/0x10
+ async_resume+0x1d/0x30
+ async_run_entry_fn+0x29/0xd0
+ process_scheduled_works+0x1d8/0x3d0
+ worker_thread+0x1fc/0x2f0
+ kthread+0xed/0x110
+ ? __pfx_worker_thread+0x10/0x10
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x38/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+Modules linked in: ccm 8021q r8153_ecm cdc_ether usbnet r8152 mii dm_integr=
+ity async_xor xor async_tx lz4 lz4_compress zstd zstd_compress zram zsmallo=
+c uinput rfcomm cmac algif_hash rtw89_8922ae(O) algif_skcipher rtw89_8922a(=
+O) af_alg rtw89_pci(O) rtw89_core(O) btusb(O) snd_soc_sst_bxt_da7219_max983=
+57a btbcm(O) snd_soc_hdac_hdmi btintel(O) snd_soc_intel_hda_dsp_common snd_=
+sof_probes btrtl(O) btmtk(O) snd_hda_codec_hdmi snd_soc_dmic uvcvideo video=
+buf2_vmalloc uvc videobuf2_memops videobuf2_v4l2 videobuf2_common snd_sof_p=
+ci_intel_apl snd_sof_intel_hda_common snd_soc_hdac_hda snd_sof_intel_hda so=
+undwire_intel soundwire_generic_allocation snd_sof_intel_hda_mlink soundwir=
+e_cadence snd_sof_pci snd_sof_xtensa_dsp mac80211 snd_soc_acpi_intel_match =
+snd_soc_acpi snd_sof snd_sof_utils soundwire_bus snd_soc_max98357a snd_soc_=
+avs snd_soc_hda_codec snd_hda_ext_core snd_intel_dspcfg snd_intel_sdw_acpi =
+snd_soc_da7219 snd_hda_codec snd_hwdep snd_hda_core veth ip6table_nat xt_MA=
+SQUERADE xt_cgroup fuse bluetooth ecdh_generic
+ cfg80211 ecc
+gsmi: Log Shutdown Reason 0x03
+---[ end trace 0000000000000000 ]---
 
-Fixes: 287033810990 ("wifi: ath12k: add support for peer meta data version")
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240624145418.2043461-1-quic_periyasa@quicinc.com
+Fixes: ed9a3c0d4dd9 ("wifi: rtw89: wow: construct EAPoL packet for GTK reke=
+y offload")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240620055825.17592-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.h       |  1 +
- drivers/net/wireless/ath/ath12k/dp_rx.c    | 40 ++++++++++++++++++----
- drivers/net/wireless/ath/ath12k/hal_desc.h | 26 ++++++++++++--
- drivers/net/wireless/ath/ath12k/hw.h       |  2 --
- drivers/net/wireless/ath/ath12k/wmi.c      |  6 ++--
- drivers/net/wireless/ath/ath12k/wmi.h      | 11 ++++--
- 6 files changed, 72 insertions(+), 14 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index 5cf0d21ef184b..4dfbff326030e 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -334,6 +334,7 @@ struct ath12k_dp {
- 	struct dp_srng reo_except_ring;
- 	struct dp_srng reo_cmd_ring;
- 	struct dp_srng reo_status_ring;
-+	enum ath12k_peer_metadata_version peer_metadata_ver;
- 	struct dp_srng reo_dst_ring[DP_REO_DST_RING_MAX];
- 	struct dp_tx_ring tx_ring[DP_TCL_NUM_RING_MAX];
- 	struct hal_wbm_idle_scatter_list scatter_list[DP_IDLE_SCATTER_BUFS_MAX];
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 44e8d9d7834c4..121f27284be59 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2607,6 +2607,29 @@ static void ath12k_dp_rx_process_received_packets(struct ath12k_base *ab,
- 	rcu_read_unlock();
- }
- 
-+static u16 ath12k_dp_rx_get_peer_id(struct ath12k_base *ab,
-+				    enum ath12k_peer_metadata_version ver,
-+				    __le32 peer_metadata)
-+{
-+	switch (ver) {
-+	default:
-+		ath12k_warn(ab, "Unknown peer metadata version: %d", ver);
-+		fallthrough;
-+	case ATH12K_PEER_METADATA_V0:
-+		return le32_get_bits(peer_metadata,
-+				     RX_MPDU_DESC_META_DATA_V0_PEER_ID);
-+	case ATH12K_PEER_METADATA_V1:
-+		return le32_get_bits(peer_metadata,
-+				     RX_MPDU_DESC_META_DATA_V1_PEER_ID);
-+	case ATH12K_PEER_METADATA_V1A:
-+		return le32_get_bits(peer_metadata,
-+				     RX_MPDU_DESC_META_DATA_V1A_PEER_ID);
-+	case ATH12K_PEER_METADATA_V1B:
-+		return le32_get_bits(peer_metadata,
-+				     RX_MPDU_DESC_META_DATA_V1B_PEER_ID);
-+	}
-+}
-+
- int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
- 			 struct napi_struct *napi, int budget)
- {
-@@ -2635,6 +2658,8 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
- 	ath12k_hal_srng_access_begin(ab, srng);
- 
- 	while ((desc = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
-+		struct rx_mpdu_desc *mpdu_info;
-+		struct rx_msdu_desc *msdu_info;
- 		enum hal_reo_dest_ring_push_reason push_reason;
- 		u32 cookie;
- 
-@@ -2681,16 +2706,19 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
- 			continue;
- 		}
- 
--		rxcb->is_first_msdu = !!(le32_to_cpu(desc->rx_msdu_info.info0) &
-+		msdu_info = &desc->rx_msdu_info;
-+		mpdu_info = &desc->rx_mpdu_info;
-+
-+		rxcb->is_first_msdu = !!(le32_to_cpu(msdu_info->info0) &
- 					 RX_MSDU_DESC_INFO0_FIRST_MSDU_IN_MPDU);
--		rxcb->is_last_msdu = !!(le32_to_cpu(desc->rx_msdu_info.info0) &
-+		rxcb->is_last_msdu = !!(le32_to_cpu(msdu_info->info0) &
- 					RX_MSDU_DESC_INFO0_LAST_MSDU_IN_MPDU);
--		rxcb->is_continuation = !!(le32_to_cpu(desc->rx_msdu_info.info0) &
-+		rxcb->is_continuation = !!(le32_to_cpu(msdu_info->info0) &
- 					   RX_MSDU_DESC_INFO0_MSDU_CONTINUATION);
- 		rxcb->mac_id = mac_id;
--		rxcb->peer_id = le32_get_bits(desc->rx_mpdu_info.peer_meta_data,
--					      RX_MPDU_DESC_META_DATA_PEER_ID);
--		rxcb->tid = le32_get_bits(desc->rx_mpdu_info.info0,
-+		rxcb->peer_id = ath12k_dp_rx_get_peer_id(ab, dp->peer_metadata_ver,
-+							 mpdu_info->peer_meta_data);
-+		rxcb->tid = le32_get_bits(mpdu_info->info0,
- 					  RX_MPDU_DESC_INFO0_TID);
- 
- 		__skb_queue_tail(&msdu_list, msdu);
-diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
-index 814c02f876d64..072e36365808e 100644
---- a/drivers/net/wireless/ath/ath12k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
-@@ -597,8 +597,30 @@ struct hal_tlv_64_hdr {
- #define RX_MPDU_DESC_INFO0_MPDU_QOS_CTRL_VALID	BIT(27)
- #define RX_MPDU_DESC_INFO0_TID			GENMASK(31, 28)
- 
--/* TODO revisit after meta data is concluded */
--#define RX_MPDU_DESC_META_DATA_PEER_ID		GENMASK(15, 0)
-+/* Peer Metadata classification */
-+
-+/* Version 0 */
-+#define RX_MPDU_DESC_META_DATA_V0_PEER_ID	GENMASK(15, 0)
-+#define RX_MPDU_DESC_META_DATA_V0_VDEV_ID	GENMASK(23, 16)
-+
-+/* Version 1 */
-+#define RX_MPDU_DESC_META_DATA_V1_PEER_ID		GENMASK(13, 0)
-+#define RX_MPDU_DESC_META_DATA_V1_LOGICAL_LINK_ID	GENMASK(15, 14)
-+#define RX_MPDU_DESC_META_DATA_V1_VDEV_ID		GENMASK(23, 16)
-+#define RX_MPDU_DESC_META_DATA_V1_LMAC_ID		GENMASK(25, 24)
-+#define RX_MPDU_DESC_META_DATA_V1_DEVICE_ID		GENMASK(28, 26)
-+
-+/* Version 1A */
-+#define RX_MPDU_DESC_META_DATA_V1A_PEER_ID		GENMASK(13, 0)
-+#define RX_MPDU_DESC_META_DATA_V1A_VDEV_ID		GENMASK(21, 14)
-+#define RX_MPDU_DESC_META_DATA_V1A_LOGICAL_LINK_ID	GENMASK(25, 22)
-+#define RX_MPDU_DESC_META_DATA_V1A_DEVICE_ID		GENMASK(28, 26)
-+
-+/* Version 1B */
-+#define RX_MPDU_DESC_META_DATA_V1B_PEER_ID	GENMASK(13, 0)
-+#define RX_MPDU_DESC_META_DATA_V1B_VDEV_ID	GENMASK(21, 14)
-+#define RX_MPDU_DESC_META_DATA_V1B_HW_LINK_ID	GENMASK(25, 22)
-+#define RX_MPDU_DESC_META_DATA_V1B_DEVICE_ID	GENMASK(28, 26)
- 
- struct rx_mpdu_desc {
- 	__le32 info0; /* %RX_MPDU_DESC_INFO */
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index 2745bde0502c6..2a314cfc8cb84 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -78,8 +78,6 @@
- #define TARGET_NUM_WDS_ENTRIES		32
- #define TARGET_DMA_BURST_SIZE		1
- #define TARGET_RX_BATCHMODE		1
--#define TARGET_RX_PEER_METADATA_VER_V1A	2
--#define TARGET_RX_PEER_METADATA_VER_V1B	3
- #define TARGET_EMA_MAX_PROFILE_PERIOD	8
- 
- #define ATH12K_HW_DEFAULT_QUEUE		0
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index bf33767af2c87..ef775af25093c 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -233,7 +233,7 @@ void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
- 	config->beacon_tx_offload_max_vdev += config->ema_max_vap_cnt;
- 
- 	if (test_bit(WMI_TLV_SERVICE_PEER_METADATA_V1A_V1B_SUPPORT, ab->wmi_ab.svc_map))
--		config->dp_peer_meta_data_ver = TARGET_RX_PEER_METADATA_VER_V1B;
-+		config->peer_metadata_ver = ATH12K_PEER_METADATA_V1B;
- }
- 
- void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
-@@ -3476,7 +3476,7 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
- 	wmi_cfg->sched_params = cpu_to_le32(tg_cfg->sched_params);
- 	wmi_cfg->twt_ap_pdev_count = cpu_to_le32(tg_cfg->twt_ap_pdev_count);
- 	wmi_cfg->twt_ap_sta_count = cpu_to_le32(tg_cfg->twt_ap_sta_count);
--	wmi_cfg->flags2 = le32_encode_bits(tg_cfg->dp_peer_meta_data_ver,
-+	wmi_cfg->flags2 = le32_encode_bits(tg_cfg->peer_metadata_ver,
- 					   WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION);
- 	wmi_cfg->host_service_flags = cpu_to_le32(tg_cfg->is_reg_cc_ext_event_supported <<
- 				WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT);
-@@ -3706,6 +3706,8 @@ int ath12k_wmi_cmd_init(struct ath12k_base *ab)
- 	arg.num_band_to_mac = ab->num_radios;
- 	ath12k_fill_band_to_mac_param(ab, arg.band_to_mac);
- 
-+	ab->dp.peer_metadata_ver = arg.res_cfg.peer_metadata_ver;
-+
- 	return ath12k_init_cmd_send(&wmi_ab->wmi[0], &arg);
- }
- 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index e71e6c73f2495..742fe0b36cf20 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2292,6 +2292,13 @@ struct ath12k_wmi_host_mem_chunk_arg {
- 	u32 req_id;
- };
- 
-+enum ath12k_peer_metadata_version {
-+	ATH12K_PEER_METADATA_V0,
-+	ATH12K_PEER_METADATA_V1,
-+	ATH12K_PEER_METADATA_V1A,
-+	ATH12K_PEER_METADATA_V1B
-+};
-+
- struct ath12k_wmi_resource_config_arg {
- 	u32 num_vdevs;
- 	u32 num_peers;
-@@ -2354,10 +2361,10 @@ struct ath12k_wmi_resource_config_arg {
- 	u32 sched_params;
- 	u32 twt_ap_pdev_count;
- 	u32 twt_ap_sta_count;
--	bool is_reg_cc_ext_event_supported;
--	u8  dp_peer_meta_data_ver;
-+	enum ath12k_peer_metadata_version peer_metadata_ver;
- 	u32 ema_max_vap_cnt;
- 	u32 ema_max_profile_period;
-+	bool is_reg_cc_ext_event_supported;
- };
- 
- struct ath12k_wmi_init_cmd_arg {
--- 
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless=
+/realtek/rtw89/fw.c
+index 044a5b90c7f4e..0e32880e81166 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -6715,10 +6715,8 @@ int rtw89_fw_h2c_wow_gtk_ofld(struct rtw89_dev *rtwd=
+ev,
+ 	skb_put(skb, len);
+ 	h2c =3D (struct rtw89_h2c_wow_gtk_ofld *)skb->data;
+=20
+-	if (!enable) {
+-		skb_put_zero(skb, sizeof(*gtk_info));
++	if (!enable)
+ 		goto hdr;
+-	}
+=20
+ 	ret =3D rtw89_fw_h2c_add_general_pkt(rtwdev, rtwvif,
+ 					   RTW89_PKT_OFLD_TYPE_EAPOL_KEY,
+--=20
 2.43.0
 
 
