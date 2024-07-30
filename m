@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C95B941D12
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B75941E96
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46A701F24C59
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C044287463
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8667E18991F;
-	Tue, 30 Jul 2024 17:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B87318800B;
+	Tue, 30 Jul 2024 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUvyj8xb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6PdZVex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A77189522;
-	Tue, 30 Jul 2024 17:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375751A76AD;
+	Tue, 30 Jul 2024 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359550; cv=none; b=BsuItyrpVin4X74lMfNQvWW3RjS+aht4WMLxxf0z31VUTGenLL3DlbLsLOCBHc7+Tkv1OSHkvX0PzENLOIFkcFJZGFaATne8KerIlf8NuMvD9ODlVKpuLI1NLa0MCeqtFA0iLnS77AmXFENQK+N4ZRjuERWM3PWUiyRRB4VlOiE=
+	t=1722360644; cv=none; b=J4Q6RFDhvwMBtMreA5idNKyIPcmGG2CMT2XlElJ7OsHG63AYiBu6Zd6ZhsOokwXfJ3WDUCRFnsGNQcdb7szVfdKbXaEHQQB0PmunyZxB/lPwixWUDoqLo1tkxwEkKZYGmhWutiyLYjdHJLaeGG0IWKWCsNhADKsSYhLEZULd7oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359550; c=relaxed/simple;
-	bh=FnQZ0johRZ5uUntPPn7Bs9ufV0JKehBeVukCaZVl4QQ=;
+	s=arc-20240116; t=1722360644; c=relaxed/simple;
+	bh=iXLi/0cAm0ot0chLY+WboLREuG54Bso+TRUwtHSqze8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iu9rtOV00j4bWy9dssaAcPSWe4elynYMskDqFWC3P1rsr5MAcRazGdIbDI7lwB5ieDVWpjCTj5mCmp/nDJ8q+qMk3df5v73QWJI9RwD+u+21lxpBPExtFjsSQEPFxE92GhRnrxnNFjmHde/sL47PrHey/6tlRt48Gj7Ad9AZ1Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUvyj8xb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94CCC32782;
-	Tue, 30 Jul 2024 17:12:29 +0000 (UTC)
+	 MIME-Version; b=OpJiJ0/onrjKY3+u4NhYjLBHTCxgmpZegQqbMitjtB97qApIXHC/xKVyxOpr6UONAjTmuOb6EhoIt1uejP6n/NibkVAnNt+VU6sT69xWrY6NLgd8l3z+fo5+qXtfw1cZZzvS/eWy5fIjQOfXR+Dh7cN+JTKqaWQerOyfIh+x5qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6PdZVex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99624C32782;
+	Tue, 30 Jul 2024 17:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359550;
-	bh=FnQZ0johRZ5uUntPPn7Bs9ufV0JKehBeVukCaZVl4QQ=;
+	s=korg; t=1722360644;
+	bh=iXLi/0cAm0ot0chLY+WboLREuG54Bso+TRUwtHSqze8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUvyj8xbljXKm4rVMJaH0Mfspy7BQ0kEPuRCdvdqqqxzBAkbnr0200a7KDQ2dYxjB
-	 4yfVDcBbMgfTVrGwMrbSIRG3jZfCyjLKNP+Zwf9yLSjEZ6fHolJx+s7ajMfYtQ4LJ/
-	 DZ1QK+8ziE/9iZFVWJwFw7WlC+JtSvwSVsJfg8Xo=
+	b=m6PdZVexqN7rezLvFO586+UIeNXiCehqMR8uCsZO2rhLgmQffaZM0tvYppnek8iE1
+	 APS3VS0G7hx/F8gUFdLHZqcZWiMpdTzsQtylc/zrZG/jGVVpW2RvqRl6EXWk05R4Fz
+	 AvKFnx0HCmu0iV36XbAqRP9YzgBhES6WfZDCXuuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Christian Gmeiner <cgmeiner@igalia.com>
-Subject: [PATCH 6.6 500/568] drm/etnaviv: dont block scheduler when GPU is still active
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.10 731/809] rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
 Date: Tue, 30 Jul 2024 17:50:07 +0200
-Message-ID: <20240730151659.569640556@linuxfoundation.org>
+Message-ID: <20240730151753.816540682@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 704d3d60fec451f37706368d9d3e320322978986 upstream.
+commit f5c466a0fdb2d9f3650d2e3911b0735f17ba00cf upstream.
 
-Since 45ecaea73883 ("drm/sched: Partial revert of 'drm/sched: Keep
-s_fence->parent pointer'") still active jobs aren't put back in the
-pending list on drm_sched_start(), as they don't have a active
-parent fence anymore, so if the GPU is still working and the timeout
-is extended, all currently active jobs will be freed.
+... to RBD_LOCK_STATE_QUIESCING and quiescing_wait to recognize that
+this state and the associated completion are backing rbd_quiesce_lock(),
+which isn't specific to releasing the lock.
 
-To avoid prematurely freeing jobs that are still active on the GPU,
-don't block the scheduler until we are fully committed to actually
-reset the GPU.
+While exclusive lock does get quiesced before it's released, it also
+gets quiesced before an attempt to update the cookie is made and there
+the lock is not released as long as ceph_cls_set_cookie() succeeds.
 
-As the current job is already removed from the pending list and
-will not be put back when drm_sched_start() isn't called, we must
-make sure to put the job back on the pending list when extending
-the timeout.
-
-Cc: stable@vger.kernel.org #6.0
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_sched.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/block/rbd.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/etnaviv/etnaviv_sched.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_sched.c
-@@ -38,9 +38,6 @@ static enum drm_gpu_sched_stat etnaviv_s
- 	u32 dma_addr;
- 	int change;
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -362,7 +362,7 @@ enum rbd_watch_state {
+ enum rbd_lock_state {
+ 	RBD_LOCK_STATE_UNLOCKED,
+ 	RBD_LOCK_STATE_LOCKED,
+-	RBD_LOCK_STATE_RELEASING,
++	RBD_LOCK_STATE_QUIESCING,
+ };
  
--	/* block scheduler */
--	drm_sched_stop(&gpu->sched, sched_job);
--
- 	/*
- 	 * If the GPU managed to complete this jobs fence, the timout is
- 	 * spurious. Bail out.
-@@ -63,6 +60,9 @@ static enum drm_gpu_sched_stat etnaviv_s
- 		goto out_no_timeout;
- 	}
+ /* WatchNotify::ClientId */
+@@ -422,7 +422,7 @@ struct rbd_device {
+ 	struct list_head	running_list;
+ 	struct completion	acquire_wait;
+ 	int			acquire_err;
+-	struct completion	releasing_wait;
++	struct completion	quiescing_wait;
  
-+	/* block scheduler */
-+	drm_sched_stop(&gpu->sched, sched_job);
-+
- 	if(sched_job)
- 		drm_sched_increase_karma(sched_job);
+ 	spinlock_t		object_map_lock;
+ 	u8			*object_map;
+@@ -525,7 +525,7 @@ static bool __rbd_is_lock_owner(struct r
+ 	lockdep_assert_held(&rbd_dev->lock_rwsem);
  
-@@ -76,8 +76,7 @@ static enum drm_gpu_sched_stat etnaviv_s
- 	return DRM_GPU_SCHED_STAT_NOMINAL;
- 
- out_no_timeout:
--	/* restart scheduler after GPU is usable again */
--	drm_sched_start(&gpu->sched, true);
-+	list_add(&sched_job->list, &sched_job->sched->pending_list);
- 	return DRM_GPU_SCHED_STAT_NOMINAL;
+ 	return rbd_dev->lock_state == RBD_LOCK_STATE_LOCKED ||
+-	       rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING;
++	       rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING;
  }
+ 
+ static bool rbd_is_lock_owner(struct rbd_device *rbd_dev)
+@@ -3458,12 +3458,12 @@ static void rbd_lock_del_request(struct
+ 	spin_lock(&rbd_dev->lock_lists_lock);
+ 	if (!list_empty(&img_req->lock_item)) {
+ 		list_del_init(&img_req->lock_item);
+-		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING &&
++		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
+ 			       list_empty(&rbd_dev->running_list));
+ 	}
+ 	spin_unlock(&rbd_dev->lock_lists_lock);
+ 	if (need_wakeup)
+-		complete(&rbd_dev->releasing_wait);
++		complete(&rbd_dev->quiescing_wait);
+ }
+ 
+ static int rbd_img_exclusive_lock(struct rbd_img_request *img_req)
+@@ -4181,16 +4181,16 @@ static bool rbd_quiesce_lock(struct rbd_
+ 	/*
+ 	 * Ensure that all in-flight IO is flushed.
+ 	 */
+-	rbd_dev->lock_state = RBD_LOCK_STATE_RELEASING;
+-	rbd_assert(!completion_done(&rbd_dev->releasing_wait));
++	rbd_dev->lock_state = RBD_LOCK_STATE_QUIESCING;
++	rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
+ 	if (list_empty(&rbd_dev->running_list))
+ 		return true;
+ 
+ 	up_write(&rbd_dev->lock_rwsem);
+-	wait_for_completion(&rbd_dev->releasing_wait);
++	wait_for_completion(&rbd_dev->quiescing_wait);
+ 
+ 	down_write(&rbd_dev->lock_rwsem);
+-	if (rbd_dev->lock_state != RBD_LOCK_STATE_RELEASING)
++	if (rbd_dev->lock_state != RBD_LOCK_STATE_QUIESCING)
+ 		return false;
+ 
+ 	rbd_assert(list_empty(&rbd_dev->running_list));
+@@ -5383,7 +5383,7 @@ static struct rbd_device *__rbd_dev_crea
+ 	INIT_LIST_HEAD(&rbd_dev->acquiring_list);
+ 	INIT_LIST_HEAD(&rbd_dev->running_list);
+ 	init_completion(&rbd_dev->acquire_wait);
+-	init_completion(&rbd_dev->releasing_wait);
++	init_completion(&rbd_dev->quiescing_wait);
+ 
+ 	spin_lock_init(&rbd_dev->object_map_lock);
  
 
 
