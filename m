@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-64120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6775941C30
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6D2941C33
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A5581F23D4E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29C901F24371
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D185A188003;
-	Tue, 30 Jul 2024 17:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642CF18801A;
+	Tue, 30 Jul 2024 17:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chvJLGQs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJvrcHXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E99B1A6192;
-	Tue, 30 Jul 2024 17:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DF51A6192;
+	Tue, 30 Jul 2024 17:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359055; cv=none; b=lWkTDXvKv97EEPkSiBVekps/dfNvknEmaDG62iRWMbhzzX03VdtAtEQ6VTkGz9/l2YheCZdo7spdBxtBHemUrnip9r0vhslD94slpi9CtOZebsmDl3dZdird8EPhDjsjgny+JsrlXLm+HOSZexE5ZhpvbObKVFmANyFFsOUSC7k=
+	t=1722359062; cv=none; b=oC++6vDhvtJt4K/3KXxshSCrwC3ohc9IE4M72luhTl04ktOF84BS8y+Cw/yuOy2e3sc9FU+Fb3+263mKykc6w5sky1TikC9vFUecE57eXetQPM3Qb5xaQIbWpQrRSyB2YsfP9gYy2CxdBwl1bxGMe/jkT3881n3RWvPtO7NDfLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359055; c=relaxed/simple;
-	bh=MIKlL4lf35btrYaQ06hBu7hNMAJj+oIbvPf5qRUyhtY=;
+	s=arc-20240116; t=1722359062; c=relaxed/simple;
+	bh=ATp5fJ6a9wBXcUPnx9yfJQQCZ/TcFOlrzUe+ebXqagY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxPgt/1VTCIfVyyIF75V/2gGNqdQLC8pR0S8JxmCZVCxdg1cXMANjx8Cwn2kfva743Dx4qosR4HAAB/wjcF6FTUiuSe/7PjWe5ovDNAbBzwzojo+u3lUNcNwNXuASYzFUMNf2cxbiwgpdfLThhLtaGmJhwQU0lqur+4WsnIER9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chvJLGQs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05E3C32782;
-	Tue, 30 Jul 2024 17:04:14 +0000 (UTC)
+	 MIME-Version; b=meLP+VgWr7RajpiNuZGvUM2ib0of5n+y4rT+58cQB4xrg1gx9N1mm+9U94bgQ0Go/EvjOzzfuffIrNageJWngh6ZijkhHcvIqbee87eLGixtsIoL/1Jklp741vKG3GAkRtzbzyxidZfSdsFHOL858+LtGV7N1swd4TOXbr5Ffmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJvrcHXA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850F8C32782;
+	Tue, 30 Jul 2024 17:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359055;
-	bh=MIKlL4lf35btrYaQ06hBu7hNMAJj+oIbvPf5qRUyhtY=;
+	s=korg; t=1722359062;
+	bh=ATp5fJ6a9wBXcUPnx9yfJQQCZ/TcFOlrzUe+ebXqagY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chvJLGQs9YiWnuKeP+alqd/x9L0rYWX6NkT/ZakZOPIiYqlG6TNJ/85quXYa9/lxp
-	 Lr02pt+rhFGrCWcbUDKtL5JpxbgZiyUQz+wlCUwSf+GYfTSKoj29Vh3NgJX9bAZqyA
-	 NGXLVRh1iVXpIHI405XuGFfMXAqR4OroKz8AnkvY=
+	b=DJvrcHXAcy1apDPQd3jIHf9ah2pztW65EuB+GkWzMGfJ9jXBqxuxK/wrrLgrqSxO7
+	 iMV1CjA4ZuEMW1GjsPCWpefD4KqMGsSDDKm9W7ETCKvwgJS4CdaCF5IVlsjxp6wpys
+	 dMtsEZXfUySPrifZChDtH0CJ6XPn+dWBUMSCL1DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Matt Ochs <mochs@nvidia.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 427/809] ASoC: max98088: Check for clk_prepare_enable() error
-Date: Tue, 30 Jul 2024 17:45:03 +0200
-Message-ID: <20240730151741.563296542@linuxfoundation.org>
+Subject: [PATCH 6.10 428/809] iommufd/selftest: Fix dirty bitmap tests with u8 bitmaps
+Date: Tue, 30 Jul 2024 17:45:04 +0200
+Message-ID: <20240730151741.603431444@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,51 +68,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 1a70579723fde3624a72dfea6e79e55be6e36659 ]
+[ Upstream commit ec61f820a2ff07d1717583bd57d6ee45d2763a6e ]
 
-clk_prepare_enable() may fail, so we should better check its return
-value and propagate it in the case of error.
+With 64k base pages, the first 128k iova length test requires less than a
+byte for a bitmap, exposing a bug in the tests that assume that bitmaps are
+at least a byte.
 
-Fixes: 62a7fc32a628 ("ASoC: max98088: Add master clock handling")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://patch.msgid.link/20240628080534.843815-1-nichen@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Rather than dealing with bytes, have _test_mock_dirty_bitmaps() pass the
+number of bits. The caller functions are adjusted to also use bits as well,
+and converting to bytes when clearing, allocating and freeing the bitmap.
+
+Link: https://lore.kernel.org/r/20240627110105.62325-2-joao.m.martins@oracle.com
+Reported-by: Matt Ochs <mochs@nvidia.com>
+Fixes: a9af47e382a4 ("iommufd/selftest: Test IOMMU_HWPT_GET_DIRTY_BITMAP")
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Tested-by: Matt Ochs <mochs@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/max98088.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/testing/selftests/iommu/iommufd.c       | 10 +++++-----
+ tools/testing/selftests/iommu/iommufd_utils.h |  6 ++++--
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/codecs/max98088.c b/sound/soc/codecs/max98088.c
-index 8b56ee550c09e..8b0645c634620 100644
---- a/sound/soc/codecs/max98088.c
-+++ b/sound/soc/codecs/max98088.c
-@@ -1318,6 +1318,7 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
-                                   enum snd_soc_bias_level level)
+diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
+index edf1c99c9936c..0b04d782a19fc 100644
+--- a/tools/testing/selftests/iommu/iommufd.c
++++ b/tools/testing/selftests/iommu/iommufd.c
+@@ -1722,6 +1722,7 @@ FIXTURE_VARIANT(iommufd_dirty_tracking)
+ 
+ FIXTURE_SETUP(iommufd_dirty_tracking)
  {
- 	struct max98088_priv *max98088 = snd_soc_component_get_drvdata(component);
-+	int ret;
++	unsigned long size;
+ 	int mmap_flags;
+ 	void *vrc;
+ 	int rc;
+@@ -1749,12 +1750,11 @@ FIXTURE_SETUP(iommufd_dirty_tracking)
+ 	assert(vrc == self->buffer);
  
- 	switch (level) {
- 	case SND_SOC_BIAS_ON:
-@@ -1333,10 +1334,13 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
- 		 */
- 		if (!IS_ERR(max98088->mclk)) {
- 			if (snd_soc_component_get_bias_level(component) ==
--			    SND_SOC_BIAS_ON)
-+			    SND_SOC_BIAS_ON) {
- 				clk_disable_unprepare(max98088->mclk);
--			else
--				clk_prepare_enable(max98088->mclk);
-+			} else {
-+				ret = clk_prepare_enable(max98088->mclk);
-+				if (ret)
-+					return ret;
-+			}
- 		}
- 		break;
+ 	self->page_size = MOCK_PAGE_SIZE;
+-	self->bitmap_size =
+-		variant->buffer_size / self->page_size / BITS_PER_BYTE;
++	self->bitmap_size = variant->buffer_size / self->page_size;
  
+ 	/* Provision with an extra (PAGE_SIZE) for the unaligned case */
+-	rc = posix_memalign(&self->bitmap, PAGE_SIZE,
+-			    self->bitmap_size + PAGE_SIZE);
++	size = DIV_ROUND_UP(self->bitmap_size, BITS_PER_BYTE);
++	rc = posix_memalign(&self->bitmap, PAGE_SIZE, size + PAGE_SIZE);
+ 	assert(!rc);
+ 	assert(self->bitmap);
+ 	assert((uintptr_t)self->bitmap % PAGE_SIZE == 0);
+@@ -1775,7 +1775,7 @@ FIXTURE_SETUP(iommufd_dirty_tracking)
+ FIXTURE_TEARDOWN(iommufd_dirty_tracking)
+ {
+ 	munmap(self->buffer, variant->buffer_size);
+-	munmap(self->bitmap, self->bitmap_size);
++	munmap(self->bitmap, DIV_ROUND_UP(self->bitmap_size, BITS_PER_BYTE));
+ 	teardown_iommufd(self->fd, _metadata);
+ }
+ 
+diff --git a/tools/testing/selftests/iommu/iommufd_utils.h b/tools/testing/selftests/iommu/iommufd_utils.h
+index 8d2b46b2114da..c612fbf0195ba 100644
+--- a/tools/testing/selftests/iommu/iommufd_utils.h
++++ b/tools/testing/selftests/iommu/iommufd_utils.h
+@@ -22,6 +22,8 @@
+ #define BIT_MASK(nr) (1UL << ((nr) % __BITS_PER_LONG))
+ #define BIT_WORD(nr) ((nr) / __BITS_PER_LONG)
+ 
++#define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
++
+ static inline void set_bit(unsigned int nr, unsigned long *addr)
+ {
+ 	unsigned long mask = BIT_MASK(nr);
+@@ -346,12 +348,12 @@ static int _test_cmd_mock_domain_set_dirty(int fd, __u32 hwpt_id, size_t length,
+ static int _test_mock_dirty_bitmaps(int fd, __u32 hwpt_id, size_t length,
+ 				    __u64 iova, size_t page_size,
+ 				    size_t pte_page_size, __u64 *bitmap,
+-				    __u64 bitmap_size, __u32 flags,
++				    __u64 nbits, __u32 flags,
+ 				    struct __test_metadata *_metadata)
+ {
+ 	unsigned long npte = pte_page_size / page_size, pteset = 2 * npte;
+-	unsigned long nbits = bitmap_size * BITS_PER_BYTE;
+ 	unsigned long j, i, nr = nbits / pteset ?: 1;
++	unsigned long bitmap_size = DIV_ROUND_UP(nbits, BITS_PER_BYTE);
+ 	__u64 out_dirty = 0;
+ 
+ 	/* Mark all even bits as dirty in the mock domain */
 -- 
 2.43.0
 
