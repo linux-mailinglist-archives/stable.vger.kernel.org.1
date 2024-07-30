@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-63634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4C29419EA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4E194178D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 162B02852F5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EA561F23C09
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EDE18B480;
-	Tue, 30 Jul 2024 16:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276E9189503;
+	Tue, 30 Jul 2024 16:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihQQIvsM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgJDIHWC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AB61A619B;
-	Tue, 30 Jul 2024 16:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA02A184535;
+	Tue, 30 Jul 2024 16:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357460; cv=none; b=ohSe1hv2oLazFgEFD3n/16XYZaw9eQ5/3Sfvn6ptwbEU9GddlLjoce422df5UvJyayqYZPeje/TIVqLgnjCfw9a8FnwMKdL/BfJDsU4igc1JZO2A1GaE2mrX3wVUZdSBJqLUlI+wIhBYKYgGwfHyfTzLK+gBOW22q6x9ojTYhuQ=
+	t=1722355796; cv=none; b=qzuyzoyJRb3tJqZHHobq6UbNVvlwCG1Qer+Y41Yq06fhz1Gnv1VaJzsN/8Y395C37RnuEx7ND1sB1dNrXy95yvfv+kKpYjCHWgDGhrXUyZvvx86qP9Af6laZ1UlJ1yajk3BtD3pWJz5nuX8z3eiWTzD4ivO2V3PsQB0iQUUFEuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357460; c=relaxed/simple;
-	bh=0nMfxBHt9qclRKl97+ju7Z/KVMIcZ+CBjZXrQ68mHy8=;
+	s=arc-20240116; t=1722355796; c=relaxed/simple;
+	bh=dWYseY3WNzkrECzNEgextxUc/U7+6pUvSdF7Ar6hpSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3YTQ/+br+QbhPbHaAJw/27UeARLrlgJNMRy8N81X+PSQsLoaXtuii2P+DYYdvCaaEzP+70ydgjm/8b7o2EsbtSQY++4FBVfgOy7rzokPFV6eBCg0Vvuh+JYHWvvZiLlZ31KvnIxaooS7cwLs0MFPdVmNgNbuCin49oom9g6mos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihQQIvsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F7FC32782;
-	Tue, 30 Jul 2024 16:37:39 +0000 (UTC)
+	 MIME-Version; b=h7j9WhOnpL9hIQKmrQAbepmCR0LUvZ9kfXK5I6LQkfkI0wnDfPIBHT2aCZbuzyoKtZjXNY37OPszjpZevAdPvLge5Oz4ze+yCw0ATKRoFKfD68mAvBUgtVLTlJ2KmU/F5EyRoXHYlw25bdsvWjN2ELAB/codSok4ZevgXiJ/oko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgJDIHWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCB7C32782;
+	Tue, 30 Jul 2024 16:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357459;
-	bh=0nMfxBHt9qclRKl97+ju7Z/KVMIcZ+CBjZXrQ68mHy8=;
+	s=korg; t=1722355796;
+	bh=dWYseY3WNzkrECzNEgextxUc/U7+6pUvSdF7Ar6hpSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihQQIvsMTH2BYTANpU39O5+5AjhbtDkCq5iMyuRef1+/jM4aAWoYx4nZrLQ0oKctr
-	 IcWJDTmSgVZg6jwNTm9QL+fs6zBhzDLmCX7G3kYCq/p6fkGdCFivfPLDTwM9uNMLJG
-	 zEs/27lQJUSjtOATFTx1NmYeJ88HEOG6oOxK7DfE=
+	b=GgJDIHWCRb09/+GNTeRGELETMiQzrUoSac5Wgrs4yAR/NQcr+TCUQM6AyO8LPIBqv
+	 ahUbiYUlSvFuJUQH5lGesh+8+lM1kgGhRWnNk4GiDIkVlFRd9/ATYmyKiem3/9Y9Je
+	 w21O6LzmlK/Woy9VdhMofqp/Uqj/QB1mI0N6lgIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 257/568] KVM: PPC: Book3S HV: Fix the set_one_reg for MMCR3
+Subject: [PATCH 6.1 131/440] drm/amd/pm: Fix aldebaran pcie speed reporting
 Date: Tue, 30 Jul 2024 17:46:04 +0200
-Message-ID: <20240730151649.923093576@linuxfoundation.org>
+Message-ID: <20240730151620.998755282@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit f9ca6a10be20479d526f27316cc32cfd1785ed39 ]
+[ Upstream commit b6420021e17e262c57bb289d0556ee181b014f9c ]
 
-The kvmppc_set_one_reg_hv() wrongly get() the value
-instead of set() for MMCR3. Fix the same.
+Fix the field definitions for LC_CURRENT_DATA_RATE.
 
-Fixes: 5752fe0b811b ("KVM: PPC: Book3S HV: Save/restore new PMU registers")
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/171759276847.1480.16387950124201117847.stgit@linux.ibm.com
+Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 0429488ba170d..1e668e238a288 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -2484,7 +2484,7 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
- 		vcpu->arch.mmcrs = set_reg_val(id, *val);
- 		break;
- 	case KVM_REG_PPC_MMCR3:
--		*val = get_reg_val(id, vcpu->arch.mmcr[3]);
-+		kvmppc_set_mmcr_hv(vcpu, 3, set_reg_val(id, *val));
- 		break;
- 	case KVM_REG_PPC_PMC1 ... KVM_REG_PPC_PMC8:
- 		i = id - KVM_REG_PPC_PMC1;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index f3257cf4b06f2..3aab1caed2ac7 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -79,8 +79,8 @@ MODULE_FIRMWARE("amdgpu/smu_13_0_10.bin");
+ #define PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD_MASK 0x00000070L
+ #define PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD__SHIFT 0x4
+ #define smnPCIE_LC_SPEED_CNTL			0x11140290
+-#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE_MASK 0xC000
+-#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE__SHIFT 0xE
++#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE_MASK 0xE0
++#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE__SHIFT 0x5
+ 
+ static const int link_width[] = {0, 1, 2, 4, 8, 12, 16};
+ static const int link_speed[] = {25, 50, 80, 160};
 -- 
 2.43.0
 
