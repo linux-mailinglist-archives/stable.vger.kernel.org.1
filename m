@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060099416A6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E669416A9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A520F1F252B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B75A2286F01
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629F58BE8;
-	Tue, 30 Jul 2024 16:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100A018801C;
+	Tue, 30 Jul 2024 16:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNXRTFSY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4ECZZzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1314F187FEC;
-	Tue, 30 Jul 2024 16:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5F1188006;
+	Tue, 30 Jul 2024 16:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355337; cv=none; b=TWjEZ9IimS1iwZaqtlD3akqmJDbKbOQgSX+ELUzub1ZD6xDoARvwVEMhUA8u++/foxBU6cAy8n+D600GZsprWIUU+I8wvs9yDhEsWl/hMa2CTghNrw1NrloaBAeu+TjJPsForKmQH1hBqmnO924AcGY6fJCK68Y+kOTHE8V5hrc=
+	t=1722355350; cv=none; b=b/7B1nUm6X4OmUSZ6YCCZh4Hx2pCPJdnCctGfQxAX/ZGdGu6DcTZ27ZWzAPRz5vEG6D7nIfVfiGse+U0ReTVqo4ELo9ATzWyrWBG+wVHbyDR3t4tN9IUISSnnATNsEb+U71deLfxFOTEysYjl5dCUAIlazGfvt06A50WI90MhmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355337; c=relaxed/simple;
-	bh=oocCd/P5ukromBPGWa72hjSXMxJLx8zldo3UN0d5Rmo=;
+	s=arc-20240116; t=1722355350; c=relaxed/simple;
+	bh=5zKTWmcVlTla0EQRS51iX3kUj+tzKqvkI8byEy/wxZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDul7iW8uAVI7aOo8AVmkmQ9z0Qme3tZXg+XjrHv/rHE7xBmCTi34y3MGCvyN83E3FfWMWnsecGBIAon9nP/wtaeaDM3ClNz/f5XQA+as/sJsCThRMckKdeZ1o0veGiwaVQh7U8cEdrIVDjFUjOn58hXAU68+hwubJT5hxHbHNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNXRTFSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45591C32782;
-	Tue, 30 Jul 2024 16:02:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kTIAUqBEncq5nqiiOpb8CVS8xRm6M4d3IYNwnSH35URNz72S5Mgwad6y7u0ttSOT5/lRDemmB3GXNI1fExCe2aVjkGIGxdcCU35TTzy6e2sky3olkveVJwl4FkeR38fclxcrUetL3tKGORh5z78H0y+bV1ZwelYXZJbyx+DhcYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4ECZZzC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEECC4AF0C;
+	Tue, 30 Jul 2024 16:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355336;
-	bh=oocCd/P5ukromBPGWa72hjSXMxJLx8zldo3UN0d5Rmo=;
+	s=korg; t=1722355350;
+	bh=5zKTWmcVlTla0EQRS51iX3kUj+tzKqvkI8byEy/wxZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HNXRTFSYbX42qGMps+35mku/M9mDg5+FKCvR8JhSOmE8OPeRK5Y84V7GTcLIiwlXb
-	 GIt1zDoK/K375BHtCHCETcvxjHxllftOmm8eaPt2bex6xbM1uPgaVk4zB3C+CUzPpO
-	 2qo6kyEeQh2AM8zkl7KmmKUgSQNhywlEqS08kpkY=
+	b=N4ECZZzCGtkJ1miAbGVm8wVED1THyKkmzvhdbssaXEjop3jH82ax8nlv4tyqbG+KJ
+	 GiBNPDns0GDIT0lkoPNJbKU/rzMnBXqtCPCjTgjA8b1i6tVDzQNHOmfhlvGa4cEFgi
+	 Hsy69PwrvBOCXMk8RlNfNnbcOFvYdETmFuQ+LBGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
+	=?UTF-8?q?Pavel=20L=C3=B6bl?= <pavel@loebl.cz>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/568] soc: xilinx: rename cpu_number1 to dummy_cpu_number
-Date: Tue, 30 Jul 2024 17:42:36 +0200
-Message-ID: <20240730151641.755684818@linuxfoundation.org>
+Subject: [PATCH 6.6 050/568] ARM: dts: sunxi: remove duplicated entries in makefile
+Date: Tue, 30 Jul 2024 17:42:37 +0200
+Message-ID: <20240730151641.795642776@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -60,109 +62,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+From: Pavel Löbl <pavel@loebl.cz>
 
-[ Upstream commit 4a95449dd975e2ea6629a034f3e74b46c9634916 ]
+[ Upstream commit bba474656dd85b13e4c5d5bdb73ca08d9136df21 ]
 
-The per cpu variable cpu_number1 is passed to xlnx_event_handler as
-argument "dev_id", but it is not used in this function. So drop the
-initialization of this variable and rename it to dummy_cpu_number.
-This patch is to fix the following call trace when the kernel option
-CONFIG_DEBUG_ATOMIC_SLEEP is enabled:
+During introduction of DTS vendor subdirectories in 724ba6751532, sun8i
+section of the makefile got duplicated. Clean that up.
 
-BUG: sleeping function called from invalid context at include/linux/sched/mm.h:274
-    in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
-    preempt_count: 1, expected: 0
-    CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.0 #53
-    Hardware name: Xilinx Versal vmk180 Eval board rev1.1 (QSPI) (DT)
-    Call trace:
-     dump_backtrace+0xd0/0xe0
-     show_stack+0x18/0x40
-     dump_stack_lvl+0x7c/0xa0
-     dump_stack+0x18/0x34
-     __might_resched+0x10c/0x140
-     __might_sleep+0x4c/0xa0
-     __kmem_cache_alloc_node+0xf4/0x168
-     kmalloc_trace+0x28/0x38
-     __request_percpu_irq+0x74/0x138
-     xlnx_event_manager_probe+0xf8/0x298
-     platform_probe+0x68/0xd8
-
-Fixes: daed80ed0758 ("soc: xilinx: Fix for call trace due to the usage of smp_processor_id()")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Link: https://lore.kernel.org/r/20240408110610.15676-1-jay.buddhabhatti@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Fixes: 724ba6751532 ("ARM: dts: Move .dts files to vendor sub-directories")
+Signed-off-by: Pavel Löbl <pavel@loebl.cz>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Link: https://lore.kernel.org/r/20240320061027.4078852-1-pavel@loebl.cz
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/xilinx/xlnx_event_manager.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ arch/arm/boot/dts/allwinner/Makefile | 62 ----------------------------
+ 1 file changed, 62 deletions(-)
 
-diff --git a/drivers/soc/xilinx/xlnx_event_manager.c b/drivers/soc/xilinx/xlnx_event_manager.c
-index 042553abe1bf8..098a2ecfd5c68 100644
---- a/drivers/soc/xilinx/xlnx_event_manager.c
-+++ b/drivers/soc/xilinx/xlnx_event_manager.c
-@@ -3,6 +3,7 @@
-  * Xilinx Event Management Driver
-  *
-  *  Copyright (C) 2021 Xilinx, Inc.
-+ *  Copyright (C) 2024 Advanced Micro Devices, Inc.
-  *
-  *  Abhyuday Godhasara <abhyuday.godhasara@xilinx.com>
-  */
-@@ -19,7 +20,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- 
--static DEFINE_PER_CPU_READ_MOSTLY(int, cpu_number1);
-+static DEFINE_PER_CPU_READ_MOSTLY(int, dummy_cpu_number);
- 
- static int virq_sgi;
- static int event_manager_availability = -EACCES;
-@@ -555,7 +556,6 @@ static void xlnx_disable_percpu_irq(void *data)
- static int xlnx_event_init_sgi(struct platform_device *pdev)
- {
- 	int ret = 0;
--	int cpu;
- 	/*
- 	 * IRQ related structures are used for the following:
- 	 * for each SGI interrupt ensure its mapped by GIC IRQ domain
-@@ -592,11 +592,8 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
- 	sgi_fwspec.param[0] = sgi_num;
- 	virq_sgi = irq_create_fwspec_mapping(&sgi_fwspec);
- 
--	cpu = get_cpu();
--	per_cpu(cpu_number1, cpu) = cpu;
- 	ret = request_percpu_irq(virq_sgi, xlnx_event_handler, "xlnx_event_mgmt",
--				 &cpu_number1);
--	put_cpu();
-+				 &dummy_cpu_number);
- 
- 	WARN_ON(ret);
- 	if (ret) {
-@@ -612,16 +609,12 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
- 
- static void xlnx_event_cleanup_sgi(struct platform_device *pdev)
- {
--	int cpu = smp_processor_id();
--
--	per_cpu(cpu_number1, cpu) = cpu;
--
- 	cpuhp_remove_state(CPUHP_AP_ONLINE_DYN);
- 
- 	on_each_cpu(xlnx_disable_percpu_irq, NULL, 1);
- 
- 	irq_clear_status_flags(virq_sgi, IRQ_PER_CPU);
--	free_percpu_irq(virq_sgi, &cpu_number1);
-+	free_percpu_irq(virq_sgi, &dummy_cpu_number);
- 	irq_dispose_mapping(virq_sgi);
- }
- 
+diff --git a/arch/arm/boot/dts/allwinner/Makefile b/arch/arm/boot/dts/allwinner/Makefile
+index eebb5a0c873ad..296be33ec9346 100644
+--- a/arch/arm/boot/dts/allwinner/Makefile
++++ b/arch/arm/boot/dts/allwinner/Makefile
+@@ -259,68 +259,6 @@ dtb-$(CONFIG_MACH_SUN8I) += \
+ 	sun8i-v3s-licheepi-zero.dtb \
+ 	sun8i-v3s-licheepi-zero-dock.dtb \
+ 	sun8i-v40-bananapi-m2-berry.dtb
+-dtb-$(CONFIG_MACH_SUN8I) += \
+-	sun8i-a23-evb.dtb \
+-	sun8i-a23-gt90h-v4.dtb \
+-	sun8i-a23-inet86dz.dtb \
+-	sun8i-a23-ippo-q8h-v5.dtb \
+-	sun8i-a23-ippo-q8h-v1.2.dtb \
+-	sun8i-a23-polaroid-mid2407pxe03.dtb \
+-	sun8i-a23-polaroid-mid2809pxe04.dtb \
+-	sun8i-a23-q8-tablet.dtb \
+-	sun8i-a33-et-q8-v1.6.dtb \
+-	sun8i-a33-ga10h-v1.1.dtb \
+-	sun8i-a33-inet-d978-rev2.dtb \
+-	sun8i-a33-ippo-q8h-v1.2.dtb \
+-	sun8i-a33-olinuxino.dtb \
+-	sun8i-a33-q8-tablet.dtb \
+-	sun8i-a33-sinlinx-sina33.dtb \
+-	sun8i-a83t-allwinner-h8homlet-v2.dtb \
+-	sun8i-a83t-bananapi-m3.dtb \
+-	sun8i-a83t-cubietruck-plus.dtb \
+-	sun8i-a83t-tbs-a711.dtb \
+-	sun8i-h2-plus-bananapi-m2-zero.dtb \
+-	sun8i-h2-plus-libretech-all-h3-cc.dtb \
+-	sun8i-h2-plus-orangepi-r1.dtb \
+-	sun8i-h2-plus-orangepi-zero.dtb \
+-	sun8i-h3-bananapi-m2-plus.dtb \
+-	sun8i-h3-bananapi-m2-plus-v1.2.dtb \
+-	sun8i-h3-beelink-x2.dtb \
+-	sun8i-h3-libretech-all-h3-cc.dtb \
+-	sun8i-h3-mapleboard-mp130.dtb \
+-	sun8i-h3-nanopi-duo2.dtb \
+-	sun8i-h3-nanopi-m1.dtb\
+-	\
+-	sun8i-h3-nanopi-m1-plus.dtb \
+-	sun8i-h3-nanopi-neo.dtb \
+-	sun8i-h3-nanopi-neo-air.dtb \
+-	sun8i-h3-nanopi-r1.dtb \
+-	sun8i-h3-orangepi-2.dtb \
+-	sun8i-h3-orangepi-lite.dtb \
+-	sun8i-h3-orangepi-one.dtb \
+-	sun8i-h3-orangepi-pc.dtb \
+-	sun8i-h3-orangepi-pc-plus.dtb \
+-	sun8i-h3-orangepi-plus.dtb \
+-	sun8i-h3-orangepi-plus2e.dtb \
+-	sun8i-h3-orangepi-zero-plus2.dtb \
+-	sun8i-h3-rervision-dvk.dtb \
+-	sun8i-h3-zeropi.dtb \
+-	sun8i-h3-emlid-neutis-n5h3-devboard.dtb \
+-	sun8i-r16-bananapi-m2m.dtb \
+-	sun8i-r16-nintendo-nes-classic.dtb \
+-	sun8i-r16-nintendo-super-nes-classic.dtb \
+-	sun8i-r16-parrot.dtb \
+-	sun8i-r40-bananapi-m2-ultra.dtb \
+-	sun8i-r40-oka40i-c.dtb \
+-	sun8i-s3-elimo-initium.dtb \
+-	sun8i-s3-lichee-zero-plus.dtb \
+-	sun8i-s3-pinecube.dtb \
+-	sun8i-t113s-mangopi-mq-r-t113.dtb \
+-	sun8i-t3-cqa3t-bv3.dtb \
+-	sun8i-v3-sl631-imx179.dtb \
+-	sun8i-v3s-licheepi-zero.dtb \
+-	sun8i-v3s-licheepi-zero-dock.dtb \
+-	sun8i-v40-bananapi-m2-berry.dtb
+ dtb-$(CONFIG_MACH_SUN9I) += \
+ 	sun9i-a80-optimus.dtb \
+ 	sun9i-a80-cubieboard4.dtb
 -- 
 2.43.0
 
