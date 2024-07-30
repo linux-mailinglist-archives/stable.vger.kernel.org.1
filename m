@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-62953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AECD941668
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0487994166B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF3F282EB8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 361131C23065
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701DA1BA885;
-	Tue, 30 Jul 2024 15:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F271BBBDB;
+	Tue, 30 Jul 2024 15:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1DOyWeg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icOb0SE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274D419F467;
-	Tue, 30 Jul 2024 15:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479B41BA87E;
+	Tue, 30 Jul 2024 15:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355177; cv=none; b=SYOJ3ExhWj9pJt7P0My8HcEo1rcTD6vk1KAX+pmJ5sPLg0wC7w3sh58BN2TENxT+sQZwdjQ8TKfea2YKE77AwCCsLgO8zC/Ph+6qVD42XJLvt8Vs3xW0pQQMiLZ2wIz8Pg1DoC85bBEbnhRvgpIR2tXeyABgaQvq29fYwBooVbc=
+	t=1722355188; cv=none; b=CF7ZQGaEhIY68c3Qw21KbXTPb28l8YOgZnADEohwZF68V9JjIVbtEBEc97ZHTa0DuWAyY2qL7AWHVJpd+gFqVyTJn+KwY7wMN5I/8IfvC0PERWluBmr305GzRXKu61uZNZPWRaPIvws90L80gy14wHvh1kWL1ENp7Rhh5aZJjJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355177; c=relaxed/simple;
-	bh=WKOmBUgaqXoY9toGD60tyKeWPqY7Z7Ff3qiyRabJCAk=;
+	s=arc-20240116; t=1722355188; c=relaxed/simple;
+	bh=PhXW4m3m8wTrxWINJD6Y0dzs5PxhB9EG+4aXmibQ7xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqZoMyHyg4ILfQ3fk/e8xKwtXzBgYnKfOJ0LJYafeYT0OhV+M5AW6xe/ENA0Vhfir9idW54LMb8vzxENqIw00k0eeoJ/2TvGoXz0hp9JiepphwJmjS0iA+OFRIzbG69Vk6kUEpzaHe6LTHroCtS4hy7n04rKrL856M9C6b+YJR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1DOyWeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E817C4AF0A;
-	Tue, 30 Jul 2024 15:59:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Sb9ovfMDP6RoYzBNIcpp38AyVvMYZAfIEa5cCiJUkSX5c+b6fbPHsX83NM1Mq23eRg017/7TD3Tnk0ZUEgVECxqC0rWjPLwA4UFMRw+zzHD6p3LDYDaQYEVcsy+ikXVmQO22UduyFGAa1jIAIwj5KQX6yxcLMTCKKLcwlNVlVjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icOb0SE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA33C32782;
+	Tue, 30 Jul 2024 15:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355176;
-	bh=WKOmBUgaqXoY9toGD60tyKeWPqY7Z7Ff3qiyRabJCAk=;
+	s=korg; t=1722355188;
+	bh=PhXW4m3m8wTrxWINJD6Y0dzs5PxhB9EG+4aXmibQ7xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1DOyWeg3pLLPsFrjX2KvpJZyXmkC6Cz9l9LGg8hkbXeMmA72RvgIcWtbr+V+F194
-	 e/pSY9SI6PepS2IhedhGQ1jTr2ncojZz4OMxsKBHnguOm2MPe7Si6FgRfSnPjTt51a
-	 QMVuK7z/+aBniHsfN5Xm+vWd3ZKy+RzKCWCHmuVc=
+	b=icOb0SE2UKRlqiN6AM1F/3nGeYArrQooYj8KOcf7EaxS5WyhxCr1S9xhKr98PKaL7
+	 e0Bq5WIdghA6n6ERRdjciuPjLz1S3cXmOldG5l2n16oTxdlCR/qdM8VqTiGYS8XyZS
+	 wqwCGr2VqCnTVE2pz0lXS1/3mgjxzwQuAgLBmdfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Rusty Bird <rustybird@net-c.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 026/809] block/mq-deadline: Fix the tag reservation code
-Date: Tue, 30 Jul 2024 17:38:22 +0200
-Message-ID: <20240730151725.690864238@linuxfoundation.org>
+Subject: [PATCH 6.10 027/809] xen-blkfront: fix sector_size propagation to the block layer
+Date: Tue, 30 Jul 2024 17:38:23 +0200
+Message-ID: <20240730151725.729423470@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -63,87 +62,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 39823b47bbd40502632ffba90ebb34fff7c8b5e8 ]
+[ Upstream commit 98d34c087249d39838874b83e17671e7d5eb1ca7 ]
 
-The current tag reservation code is based on a misunderstanding of the
-meaning of data->shallow_depth. Fix the tag reservation code as follows:
-* By default, do not reserve any tags for synchronous requests because
-  for certain use cases reserving tags reduces performance. See also
-  Harshit Mogalapalli, [bug-report] Performance regression with fio
-  sequential-write on a multipath setup, 2024-03-07
-  (https://lore.kernel.org/linux-block/5ce2ae5d-61e2-4ede-ad55-551112602401@oracle.com/)
-* Reduce min_shallow_depth to one because min_shallow_depth must be less
-  than or equal any shallow_depth value.
-* Scale dd->async_depth from the range [1, nr_requests] to [1,
-  bits_per_sbitmap_word].
+Ensure that info->sector_size and info->physical_sector_size are set
+before the call to blkif_set_queue_limits by doing away with the
+local variables and arguments that propagate them.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Fixes: 07757588e507 ("block/mq-deadline: Reserve 25% of scheduler tags for synchronous requests")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240509170149.7639-3-bvanassche@acm.org
+Thanks to Marek Marczykowski-Górecki and Jürgen Groß for root causing
+the issue.
+
+Fixes: ba3f67c11638 ("xen-blkfront: atomically update queue limits")
+Reported-by: Rusty Bird <rustybird@net-c.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Roger Pau Monné <roger.pau@citrix.com>
+Link: https://lore.kernel.org/r/20240625055238.7934-1-hch@lst.de
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/mq-deadline.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/block/xen-blkfront.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index 94eede4fb9ebe..acdc28756d9d7 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -487,6 +487,20 @@ static struct request *dd_dispatch_request(struct blk_mq_hw_ctx *hctx)
- 	return rq;
+diff --git a/drivers/block/xen-blkfront.c b/drivers/block/xen-blkfront.c
+index fd7c0ff2139ce..67aa63dabcff1 100644
+--- a/drivers/block/xen-blkfront.c
++++ b/drivers/block/xen-blkfront.c
+@@ -1063,8 +1063,7 @@ static char *encode_disk_name(char *ptr, unsigned int n)
  }
  
-+/*
-+ * 'depth' is a number in the range 1..INT_MAX representing a number of
-+ * requests. Scale it with a factor (1 << bt->sb.shift) / q->nr_requests since
-+ * 1..(1 << bt->sb.shift) is the range expected by sbitmap_get_shallow().
-+ * Values larger than q->nr_requests have the same effect as q->nr_requests.
-+ */
-+static int dd_to_word_depth(struct blk_mq_hw_ctx *hctx, unsigned int qdepth)
-+{
-+	struct sbitmap_queue *bt = &hctx->sched_tags->bitmap_tags;
-+	const unsigned int nrr = hctx->queue->nr_requests;
-+
-+	return ((qdepth << bt->sb.shift) + nrr - 1) / nrr;
-+}
-+
- /*
-  * Called by __blk_mq_alloc_request(). The shallow_depth value set by this
-  * function is used by __blk_mq_get_tag().
-@@ -503,7 +517,7 @@ static void dd_limit_depth(blk_opf_t opf, struct blk_mq_alloc_data *data)
- 	 * Throttle asynchronous requests and writes such that these requests
- 	 * do not block the allocation of synchronous requests.
+ static int xlvbd_alloc_gendisk(blkif_sector_t capacity,
+-		struct blkfront_info *info, u16 sector_size,
+-		unsigned int physical_sector_size)
++		struct blkfront_info *info)
+ {
+ 	struct queue_limits lim = {};
+ 	struct gendisk *gd;
+@@ -1159,8 +1158,6 @@ static int xlvbd_alloc_gendisk(blkif_sector_t capacity,
+ 
+ 	info->rq = gd->queue;
+ 	info->gd = gd;
+-	info->sector_size = sector_size;
+-	info->physical_sector_size = physical_sector_size;
+ 
+ 	xlvbd_flush(info);
+ 
+@@ -2315,8 +2312,6 @@ static void blkfront_gather_backend_features(struct blkfront_info *info)
+ static void blkfront_connect(struct blkfront_info *info)
+ {
+ 	unsigned long long sectors;
+-	unsigned long sector_size;
+-	unsigned int physical_sector_size;
+ 	int err, i;
+ 	struct blkfront_ring_info *rinfo;
+ 
+@@ -2355,7 +2350,7 @@ static void blkfront_connect(struct blkfront_info *info)
+ 	err = xenbus_gather(XBT_NIL, info->xbdev->otherend,
+ 			    "sectors", "%llu", &sectors,
+ 			    "info", "%u", &info->vdisk_info,
+-			    "sector-size", "%lu", &sector_size,
++			    "sector-size", "%lu", &info->sector_size,
+ 			    NULL);
+ 	if (err) {
+ 		xenbus_dev_fatal(info->xbdev, err,
+@@ -2369,9 +2364,9 @@ static void blkfront_connect(struct blkfront_info *info)
+ 	 * provide this. Assume physical sector size to be the same as
+ 	 * sector_size in that case.
  	 */
--	data->shallow_depth = dd->async_depth;
-+	data->shallow_depth = dd_to_word_depth(data->hctx, dd->async_depth);
- }
+-	physical_sector_size = xenbus_read_unsigned(info->xbdev->otherend,
++	info->physical_sector_size = xenbus_read_unsigned(info->xbdev->otherend,
+ 						    "physical-sector-size",
+-						    sector_size);
++						    info->sector_size);
+ 	blkfront_gather_backend_features(info);
+ 	for_each_rinfo(info, rinfo, i) {
+ 		err = blkfront_setup_indirect(rinfo);
+@@ -2383,8 +2378,7 @@ static void blkfront_connect(struct blkfront_info *info)
+ 		}
+ 	}
  
- /* Called by blk_mq_update_nr_requests(). */
-@@ -513,9 +527,9 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
- 	struct deadline_data *dd = q->elevator->elevator_data;
- 	struct blk_mq_tags *tags = hctx->sched_tags;
- 
--	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
-+	dd->async_depth = q->nr_requests;
- 
--	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
-+	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, 1);
- }
- 
- /* Called by blk_mq_init_hctx() and blk_mq_init_sched(). */
+-	err = xlvbd_alloc_gendisk(sectors, info, sector_size,
+-				  physical_sector_size);
++	err = xlvbd_alloc_gendisk(sectors, info);
+ 	if (err) {
+ 		xenbus_dev_fatal(info->xbdev, err, "xlvbd_add at %s",
+ 				 info->xbdev->otherend);
 -- 
 2.43.0
 
