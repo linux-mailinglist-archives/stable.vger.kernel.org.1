@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AED1941B96
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B41E941851
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CD501C231E9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567362856E2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893621898EB;
-	Tue, 30 Jul 2024 16:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF9C1898FE;
+	Tue, 30 Jul 2024 16:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K10ltQCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jF2It86f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F98F184549;
-	Tue, 30 Jul 2024 16:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD05B1A6186;
+	Tue, 30 Jul 2024 16:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358601; cv=none; b=hUp+HV5+pD7tUTMDtejAL023de42E70jrf/EIdLZrO80CDisS3Nm0PXuee19x/71SNZfaaIZJTGtJl348/jew1rI3wbgicjPhYRtC7UD1bxJWtVXLT+R7Otd81ke8k4D3XOssdbMsjPuw+j44LwvX6ohkVjb7Om4nckuY+g1qh4=
+	t=1722356415; cv=none; b=NUIf2xgUHW36xUIeRWS7X7Mzp8zjSDhWkMIE2YRsBir1kupavFjsmaoX4MhyFwR9R2cBAbUvSGChSz/W4DvN6qdfqaSUH/AQMwiM6OCLG/oZ1AlUfQSD1xnwg565pYb8nAVxQ76J54eRbuJ0kINIopEyXFXE/MleQc0I1DTtAYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358601; c=relaxed/simple;
-	bh=HvllZ+pJQ+1UfBQEoIrU7FoNIEVc4HQFTLMeNgNYnhk=;
+	s=arc-20240116; t=1722356415; c=relaxed/simple;
+	bh=ZV+PlKRw5noDHpOU4cjVcfoGeNHXlWKje1RYrWKCXuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dg1UfBrlyaNk7RzH6KcVw5vNt0cmC6pNR9DyH37v+TxbUO6STBo7GTweJ3gXN9AGaCO/XhRNDbgyY5pSTt3dp6u1AeGCpbdKGIhroX/iapaRwmqunteinO4/wmxae6MN3Q+uV4MyDQETTqNeqvFiXEpLwkXYPzAWwHzvP+fJaso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K10ltQCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B314C32782;
-	Tue, 30 Jul 2024 16:56:40 +0000 (UTC)
+	 MIME-Version; b=oXPfqm9eyGqtG05bOGS63et4SXEfh0fhu5bEUBXIQVhzPbs4ZHHp50TtjQs7Z5KXz9adEn/LUIiagSYJS6THGr1RF6fQCpZwobCfyIU4+Hq5lB63mZmtb/8kotw/270jNepHk1V59xWPyTOnxxVK8W/DlAIWXHir+HIg2xCAtL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jF2It86f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68833C32782;
+	Tue, 30 Jul 2024 16:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358601;
-	bh=HvllZ+pJQ+1UfBQEoIrU7FoNIEVc4HQFTLMeNgNYnhk=;
+	s=korg; t=1722356414;
+	bh=ZV+PlKRw5noDHpOU4cjVcfoGeNHXlWKje1RYrWKCXuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K10ltQCh5zMYFEySEQ/gZZ40QFSReXXjejtlyORV13oSn/nC86yWCLp/T/nxRYV20
-	 dtWVkwTuCGePwuM+WQWjPiEYZEkZYLn77h2KvPrlL3o5O2k8W6sceMKpPZWhgKENvJ
-	 meZzhppkHeSHKgpnXzjv8c7S/hoZuM2vMdMeJF8Q=
+	b=jF2It86fLC2ZzCu4ZnKAc/+mzAFWM7qGQ4RZeQZxIhNNxfRAsArS2qKLKad9t57IN
+	 ToIqoP55UhejOSrAg5zXzwo9pt/9FMhhIq4o8sJHzypesJNnKf0m/9HcG3eaBDd84K
+	 MjOav6NhArxzU+Oce1Oz7B5Gzkslu1a0BaMPYCP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <benato.denis96@gmail.com>,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Tao Chen <chen.dylane@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 377/809] platform/x86: asus-wmi: fix TUF laptop RGB variant
+Subject: [PATCH 6.6 146/568] bpftool: Mount bpffs when pinmaps path not under the bpffs
 Date: Tue, 30 Jul 2024 17:44:13 +0200
-Message-ID: <20240730151739.552097065@linuxfoundation.org>
+Message-ID: <20240730151645.584658543@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Tao Chen <chen.dylane@gmail.com>
 
-[ Upstream commit d8b17a364ec48239fccb65efe74bb485e79e6743 ]
+[ Upstream commit da5f8fd1f0d393d5eaaba9ad8c22d1c26bb2bf9b ]
 
-In kbd_rgb_mode_store the dev_get_drvdata() call was assuming the device
-data was asus_wmi when it was actually led_classdev.
+As Quentin said [0], BPF map pinning will fail if the pinmaps path is not
+under the bpffs, like:
 
-This patch corrects this by making the correct chain of calls to get the
-asus_wmi driver data.
+  libbpf: specified path /home/ubuntu/test/sock_ops_map is not on BPF FS
+  Error: failed to pin all maps
 
-Fixes: ae834a549ec1 ("platform/x86: asus-wmi: add support variant of TUF RGB")
-Tested-by: Denis Benato <benato.denis96@gmail.com>
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240716011130.17464-2-luke@ljones.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+  [0] https://github.com/libbpf/bpftool/issues/146
+
+Fixes: 3767a94b3253 ("bpftool: add pinmaps argument to the load/loadall")
+Signed-off-by: Tao Chen <chen.dylane@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Quentin Monnet <qmo@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20240702131150.15622-1-chen.dylane@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/bpf/bpftool/prog.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 3f9b6285c9a66..bc9c5db383244 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -879,10 +879,14 @@ static ssize_t kbd_rgb_mode_store(struct device *dev,
- 				 struct device_attribute *attr,
- 				 const char *buf, size_t count)
- {
--	struct asus_wmi *asus = dev_get_drvdata(dev);
- 	u32 cmd, mode, r, g, b, speed;
-+	struct led_classdev *led;
-+	struct asus_wmi *asus;
- 	int err;
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 086b93939ce93..e5e0fe3854a35 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -1809,6 +1809,10 @@ static int load_with_options(int argc, char **argv, bool first_prog_only)
+ 	}
  
-+	led = dev_get_drvdata(dev);
-+	asus = container_of(led, struct asus_wmi, kbd_led);
+ 	if (pinmaps) {
++		err = create_and_mount_bpffs_dir(pinmaps);
++		if (err)
++			goto err_unpin;
 +
- 	if (sscanf(buf, "%d %d %d %d %d %d", &cmd, &mode, &r, &g, &b, &speed) != 6)
- 		return -EINVAL;
- 
+ 		err = bpf_object__pin_maps(obj, pinmaps);
+ 		if (err) {
+ 			p_err("failed to pin all maps");
 -- 
 2.43.0
 
