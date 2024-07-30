@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-63779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD86941A97
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76558941ACF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACBFB1F25FF6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3177A28228E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B14E1448FA;
-	Tue, 30 Jul 2024 16:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA09189914;
+	Tue, 30 Jul 2024 16:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpPPqJJo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8a1pxOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F641A618F;
-	Tue, 30 Jul 2024 16:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15371A6166;
+	Tue, 30 Jul 2024 16:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357928; cv=none; b=R907ohne/De258Y5t9p9cO/SZ2RS9Ewq45GYBtRvQUsdfIjLWEJkuVHUEFQhkyMeZzaO1+QMutiuA0DpPr6Gv+P8hK8LnwTZ+9dSN3VWbj3/oJfZ550/toiZ8Y0W6UhoyPwma/t7ubwjt0zYUnjXSWrxzWpB8wNmG/4bbICDcTY=
+	t=1722358049; cv=none; b=ExmfByyZDEOu2oRf4/CiBUU+INDeyyUYC/7qhR4ijvP6ZEtc/uFJqs1kjZNPog8jJhN2Jnuf04Vomzd46MdfK5osl4y+c2fAMeC90II7AEWIVKgoTyf6Sw8tNv7u35Xq7tUFn0MaJ+9LggUbJ2o+uRPkjRGCUSFSbZdDEpV3dfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357928; c=relaxed/simple;
-	bh=M6oewx1rLCoECeCGCs1N1JLMZKuib6heUU1ZVRkxWBA=;
+	s=arc-20240116; t=1722358049; c=relaxed/simple;
+	bh=yxZ/QvOFh/EXWVikLmOyTtbzX48m+3KhMFjD0tR3cOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QpgYNix45oKbhT7pvegMnjC1zKvXKQl/dMuy49JSSPF97E+7aAZirallNlR87IrlvCD37mflQOiMDYbIFKM/l+7UMkElr4vNJvHnICE94KAPioMo0SMA1cRFze5rQLQtYySX6J5OU1TRVPnv37nI/F0f4REI8UJ4tqle2EL1veg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpPPqJJo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECA3C32782;
-	Tue, 30 Jul 2024 16:45:27 +0000 (UTC)
+	 MIME-Version; b=k7Ql4AMXPzRMBqPAey2uRpya+LZk0oZgapZrM4giC8a566OV2S4iTEi4hEbFAyp8WdSZA2/H2+iZSqv0ibeGJlXdWiBNqj1eoaaBqFxraPl1hZLuEu58HKbpNy6vYtDo5hDz6aDx9Rm25MXLHc9C81zuUEiBfOgFGSYPy2okyr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8a1pxOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468C6C32782;
+	Tue, 30 Jul 2024 16:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357927;
-	bh=M6oewx1rLCoECeCGCs1N1JLMZKuib6heUU1ZVRkxWBA=;
+	s=korg; t=1722358049;
+	bh=yxZ/QvOFh/EXWVikLmOyTtbzX48m+3KhMFjD0tR3cOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpPPqJJoVqOc/zC92NTAxq5J/KYXYPheHXqTkyKyWTgsnNjn8XGgzWQ92SRMA50gb
-	 NPDSoduiXcayqNE1QnRzyYxRgmWmI8UgZ63IY0oHNDEL3amD/nZIiATK0AhpT5y98A
-	 S+U5WnsC390w1hskaX8hYZQAB4KlQSr/32iwCwdM=
+	b=f8a1pxOPy3ZoJQFEnPovq6Lw2LqRy46u5VHplUdOaoFb0VEfQw0VPknNvXqpzcMJZ
+	 jb5x/9zTKyX/RntDWKHvcIGzHsKZeqEORRKjThoLPQ9jyzOEkImDnEPJA2E/TSHW8I
+	 VHY1wvyujsEXayikanyczou4b32kewpykEAj92cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Animesh Manna <animesh.manna@intel.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 305/809] drm/i915/psr: Print Panel Replay status instead of frame lock status
-Date: Tue, 30 Jul 2024 17:43:01 +0200
-Message-ID: <20240730151736.638217913@linuxfoundation.org>
+Subject: [PATCH 6.10 306/809] x86/shstk: Make return uprobe work with shadow stack
+Date: Tue, 30 Jul 2024 17:43:02 +0200
+Message-ID: <20240730151736.685236949@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -60,73 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 51ee1f29a9aceb8a52037ba4759d44c70e966fe5 ]
+[ Upstream commit 1713b63a07a28a475de94664f783b4cfd2e4fa90 ]
 
-Currently Panel Replay status printout is printing frame lock status. It
-should print Panel Replay status instead. Panel Replay status register
-field follows PSR status register field. Use existing PSR code for that.
+Currently the application with enabled shadow stack will crash
+if it sets up return uprobe. The reason is the uretprobe kernel
+code changes the user space task's stack, but does not update
+shadow stack accordingly.
 
-Fixes: ef75c25e8fed ("drm/i915/panelreplay: Debugfs support for panel replay")
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Animesh Manna <animesh.manna@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240607134917.1327574-10-jouni.hogander@intel.com
+Adding new functions to update values on shadow stack and using
+them in uprobe code to keep shadow stack in sync with uretprobe
+changes to user stack.
+
+Link: https://lore.kernel.org/all/20240611112158.40795-2-jolsa@kernel.org/
+
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Fixes: 488af8ea7131 ("x86/shstk: Wire in shadow stack interface")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 22 +++++-----------------
- 1 file changed, 5 insertions(+), 17 deletions(-)
+ arch/x86/include/asm/shstk.h |  2 ++
+ arch/x86/kernel/shstk.c      | 11 +++++++++++
+ arch/x86/kernel/uprobes.c    |  7 ++++++-
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 58769197a1277..2b4512bd5b595 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -3694,16 +3694,9 @@ static int i915_psr_sink_status_show(struct seq_file *m, void *data)
- 		"reserved",
- 		"sink internal error",
- 	};
--	static const char * const panel_replay_status[] = {
--		"Sink device frame is locked to the Source device",
--		"Sink device is coasting, using the VTotal target",
--		"Sink device is governing the frame rate (frame rate unlock is granted)",
--		"Sink device in the process of re-locking with the Source device",
--	};
- 	const char *str;
- 	int ret;
- 	u8 status, error_status;
--	u32 idx;
+diff --git a/arch/x86/include/asm/shstk.h b/arch/x86/include/asm/shstk.h
+index 42fee8959df7b..896909f306e30 100644
+--- a/arch/x86/include/asm/shstk.h
++++ b/arch/x86/include/asm/shstk.h
+@@ -21,6 +21,7 @@ unsigned long shstk_alloc_thread_stack(struct task_struct *p, unsigned long clon
+ void shstk_free(struct task_struct *p);
+ int setup_signal_shadow_stack(struct ksignal *ksig);
+ int restore_signal_shadow_stack(void);
++int shstk_update_last_frame(unsigned long val);
+ #else
+ static inline long shstk_prctl(struct task_struct *task, int option,
+ 			       unsigned long arg2) { return -EINVAL; }
+@@ -31,6 +32,7 @@ static inline unsigned long shstk_alloc_thread_stack(struct task_struct *p,
+ static inline void shstk_free(struct task_struct *p) {}
+ static inline int setup_signal_shadow_stack(struct ksignal *ksig) { return 0; }
+ static inline int restore_signal_shadow_stack(void) { return 0; }
++static inline int shstk_update_last_frame(unsigned long val) { return 0; }
+ #endif /* CONFIG_X86_USER_SHADOW_STACK */
  
- 	if (!(CAN_PSR(intel_dp) || CAN_PANEL_REPLAY(intel_dp))) {
- 		seq_puts(m, "PSR/Panel-Replay Unsupported\n");
-@@ -3717,16 +3710,11 @@ static int i915_psr_sink_status_show(struct seq_file *m, void *data)
- 	if (ret)
- 		return ret;
+ #endif /* __ASSEMBLY__ */
+diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
+index 6f1e9883f0742..9797d4cdb78a2 100644
+--- a/arch/x86/kernel/shstk.c
++++ b/arch/x86/kernel/shstk.c
+@@ -577,3 +577,14 @@ long shstk_prctl(struct task_struct *task, int option, unsigned long arg2)
+ 		return wrss_control(true);
+ 	return -EINVAL;
+ }
++
++int shstk_update_last_frame(unsigned long val)
++{
++	unsigned long ssp;
++
++	if (!features_enabled(ARCH_SHSTK_SHSTK))
++		return 0;
++
++	ssp = get_user_shstk_addr();
++	return write_user_shstk_64((u64 __user *)ssp, (u64)val);
++}
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 6c07f6daaa227..6402fb3089d26 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1076,8 +1076,13 @@ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr, struct pt_regs
+ 		return orig_ret_vaddr;
  
--	str = "unknown";
--	if (intel_dp->psr.panel_replay_enabled) {
--		idx = (status & DP_SINK_FRAME_LOCKED_MASK) >> DP_SINK_FRAME_LOCKED_SHIFT;
--		if (idx < ARRAY_SIZE(panel_replay_status))
--			str = panel_replay_status[idx];
--	} else if (intel_dp->psr.enabled) {
--		idx = status & DP_PSR_SINK_STATE_MASK;
--		if (idx < ARRAY_SIZE(sink_status))
--			str = sink_status[idx];
--	}
-+	status &= DP_PSR_SINK_STATE_MASK;
-+	if (status < ARRAY_SIZE(sink_status))
-+		str = sink_status[status];
-+	else
-+		str = "unknown";
+ 	nleft = copy_to_user((void __user *)regs->sp, &trampoline_vaddr, rasize);
+-	if (likely(!nleft))
++	if (likely(!nleft)) {
++		if (shstk_update_last_frame(trampoline_vaddr)) {
++			force_sig(SIGSEGV);
++			return -1;
++		}
+ 		return orig_ret_vaddr;
++	}
  
- 	seq_printf(m, "Sink %s status: 0x%x [%s]\n", psr_mode_str(intel_dp), status, str);
- 
+ 	if (nleft != rasize) {
+ 		pr_err("return address clobbered: pid=%d, %%sp=%#lx, %%ip=%#lx\n",
 -- 
 2.43.0
 
