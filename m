@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-63334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E46794186E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB919941871
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7A811F2191C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC0821C213D4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F2A1898F8;
-	Tue, 30 Jul 2024 16:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4DF1A6166;
+	Tue, 30 Jul 2024 16:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pw6UJYGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbdztDhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2784D1A6166;
-	Tue, 30 Jul 2024 16:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFCA1A6161;
+	Tue, 30 Jul 2024 16:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356496; cv=none; b=AoaZHpsbB5HMXVFmPHEyj8NI/+AndSEv9O/BrUMINOyOrTIhF7mYR1rvA7D+BeWFa4kjx2Y/lnP5z8HVXHrQVujJj+EKUoJW5vIGb92RHBwfZS51KPDg8EsN0R855HXlsf81pCwAiWzPHtP5LtO3g3JUW1T+gZCw9294MEgcxTw=
+	t=1722356505; cv=none; b=pLhaLLBNkcIvpRyIEMaloJVuodxOVBfb0vTBYZw8T0u2SGDKVg4jEFIULDJ7xmFOuV+oKG32FlS43vKTOiNlvG0vlb8nYuQhs4TWQNtzyZeHQ0P+4ZgNTfbZjHucD85pDZxL3OygAEUVm11jhxr7e0HfAwiCz3UvBjdtj8UGRxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356496; c=relaxed/simple;
-	bh=o0lZO/wSj+KrUHL5fRidoUhoaSdFzFbYBSEWDabBJkY=;
+	s=arc-20240116; t=1722356505; c=relaxed/simple;
+	bh=Kb3Aks5rAV02CK9/4Fgc0S7/rE7V2h2fO1UHRU/iS1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMcSFi0Td3+IgehKhvEAueqLDSmBnbA1sdb1zIH0FmcHoHHOEbJ/X2U49Etjv1qUg6wMNlocP7ELQAycIARTMqk2e1UCFe7W46uCKik4lgea3/ZAe8qvtfNSm5o2Ds1pngYJM9OUB5/Z+9z9NEtMkpuJRPPqPpxUQl4X5hwt+YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pw6UJYGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5368C32782;
-	Tue, 30 Jul 2024 16:21:35 +0000 (UTC)
+	 MIME-Version; b=CVQRDbW2RQMCHw80BNJF62Bb2wgJ52cxC0wk8Shp5cJNvDv1YfqqYfhoWJzdCTwFbepmrI+COuhfJfJJIecbIMFQku9/7jaVa8tknfHUimlpdlOgX8V9XwD9K4HCeFqOzIw1j54W3MMih6mHwzdASJTbWLPQpJDAi3x/pT3f4Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbdztDhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9844C32782;
+	Tue, 30 Jul 2024 16:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356496;
-	bh=o0lZO/wSj+KrUHL5fRidoUhoaSdFzFbYBSEWDabBJkY=;
+	s=korg; t=1722356505;
+	bh=Kb3Aks5rAV02CK9/4Fgc0S7/rE7V2h2fO1UHRU/iS1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pw6UJYGNE8iXH1oqlBX2LHZJHpkL92zO02RkKK3mTZbEPJshv8xfV651BkVKQJx9C
-	 hYbh9vQ1NP0h4isFKuKBLZKyGp4xptpTZC8vS2NOLBQsXv1a8qGEel4Xag7jK6dWJv
-	 Qxnxd9OcQvg/ckdXFL6BIZpJh/v27sSBHkYIKf1g=
+	b=GbdztDhXVqlW+WWaZOgZ14Vwa2ZOHp38RdDpc9qetnEEkUOpaYrO+IQO2EsWjqCqm
+	 /3W04qU1gmgyXya1E+OF351CO0d9eKyx/9NzFZVxJ/qA4B5hHVexY5Kr8qZcoW3uPo
+	 Kc7Yr+TmSry81FCzBQZ4m0w8S7ibX/KGPOB7KcE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Babrou <ivan@cloudflare.com>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
 	Andrii Nakryiko <andrii@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 155/809] bpftool: Un-const bpf_func_info to fix it for llvm 17 and newer
-Date: Tue, 30 Jul 2024 17:40:31 +0200
-Message-ID: <20240730151730.725952610@linuxfoundation.org>
+Subject: [PATCH 6.10 156/809] selftests/bpf: Fix prog numbers in test_sockmap
+Date: Tue, 30 Jul 2024 17:40:32 +0200
+Message-ID: <20240730151730.764663289@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,56 +66,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Babrou <ivan@cloudflare.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit f4aba3471cfb9ccf69b476463f19b4c50fef6b14 ]
+[ Upstream commit 6c8d7598dfed759bf1d9d0322b4c2b42eb7252d8 ]
 
-LLVM 17 started treating const structs as constants:
+bpf_prog5 and bpf_prog7 are removed from progs/test_sockmap_kern.h in
+commit d79a32129b21 ("bpf: Selftests, remove prints from sockmap tests"),
+now there are only 9 progs in it, not 11:
 
-* https://github.com/llvm/llvm-project/commit/0b2d5b967d98
+	SEC("sk_skb1")
+	int bpf_prog1(struct __sk_buff *skb)
+	SEC("sk_skb2")
+	int bpf_prog2(struct __sk_buff *skb)
+	SEC("sk_skb3")
+	int bpf_prog3(struct __sk_buff *skb)
+	SEC("sockops")
+	int bpf_sockmap(struct bpf_sock_ops *skops)
+	SEC("sk_msg1")
+	int bpf_prog4(struct sk_msg_md *msg)
+	SEC("sk_msg2")
+	int bpf_prog6(struct sk_msg_md *msg)
+	SEC("sk_msg3")
+	int bpf_prog8(struct sk_msg_md *msg)
+	SEC("sk_msg4")
+	int bpf_prog9(struct sk_msg_md *msg)
+	SEC("sk_msg5")
+	int bpf_prog10(struct sk_msg_md *msg)
 
-Combined with pointer laundering via ptr_to_u64, which takes a const ptr,
-but in reality treats the underlying memory as mutable, this makes clang
-always pass zero to btf__type_by_id, which breaks full name resolution.
+This patch updates the array sizes of prog_fd[], prog_attach_type[] and
+prog_type[] from 11 to 9 accordingly.
 
-Disassembly before (LLVM 16) and after (LLVM 17):
-
-    -    8b 75 cc                 mov    -0x34(%rbp),%esi
-    -    e8 47 8d 02 00           call   3f5b0 <btf__type_by_id>
-    +    31 f6                    xor    %esi,%esi
-    +    e8 a9 8c 02 00           call   3f510 <btf__type_by_id>
-
-It's a bigger project to fix this properly (and a question whether LLVM
-itself should detect this), but for right now let's just fix bpftool.
-
-For more information, see this thread in bpf mailing list:
-
-* https://lore.kernel.org/bpf/CABWYdi0ymezpYsQsPv7qzpx2fWuTkoD1-wG1eT-9x-TSREFrQg@mail.gmail.com/T/
-
-Fixes: b662000aff84 ("bpftool: Adding support for BTF program names")
-Signed-off-by: Ivan Babrou <ivan@cloudflare.com>
+Fixes: d79a32129b21 ("bpf: Selftests, remove prints from sockmap tests")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20240520225149.5517-1-ivan@cloudflare.com
+Link: https://lore.kernel.org/bpf/9c10d9f974f07fcb354a43a8eca67acb2fafc587.1715926605.git.tanggeliang@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index 958e92acca8e2..9b75639434b81 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -410,7 +410,7 @@ void get_prog_full_name(const struct bpf_prog_info *prog_info, int prog_fd,
- {
- 	const char *prog_name = prog_info->name;
- 	const struct btf_type *func_type;
--	const struct bpf_func_info finfo = {};
-+	struct bpf_func_info finfo = {};
- 	struct bpf_prog_info info = {};
- 	__u32 info_len = sizeof(info);
- 	struct btf *prog_btf = NULL;
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 92752f5eededf..4499b3cfc3a68 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -63,7 +63,7 @@ int passed;
+ int failed;
+ int map_fd[9];
+ struct bpf_map *maps[9];
+-int prog_fd[11];
++int prog_fd[9];
+ 
+ int txmsg_pass;
+ int txmsg_redir;
+@@ -1793,8 +1793,6 @@ int prog_attach_type[] = {
+ 	BPF_SK_MSG_VERDICT,
+ 	BPF_SK_MSG_VERDICT,
+ 	BPF_SK_MSG_VERDICT,
+-	BPF_SK_MSG_VERDICT,
+-	BPF_SK_MSG_VERDICT,
+ };
+ 
+ int prog_type[] = {
+@@ -1807,8 +1805,6 @@ int prog_type[] = {
+ 	BPF_PROG_TYPE_SK_MSG,
+ 	BPF_PROG_TYPE_SK_MSG,
+ 	BPF_PROG_TYPE_SK_MSG,
+-	BPF_PROG_TYPE_SK_MSG,
+-	BPF_PROG_TYPE_SK_MSG,
+ };
+ 
+ static int populate_progs(char *bpf_file)
 -- 
 2.43.0
 
