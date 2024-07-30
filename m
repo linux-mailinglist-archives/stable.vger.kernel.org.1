@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BD594190E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2255A941933
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D691E1C22FD7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2D8C1F222FC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440431A616E;
-	Tue, 30 Jul 2024 16:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCDE184553;
+	Tue, 30 Jul 2024 16:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6uow78y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s72Zreew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B931A6160;
-	Tue, 30 Jul 2024 16:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1CB1552FE;
+	Tue, 30 Jul 2024 16:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356916; cv=none; b=jnHK2k73YY8+mYvtP8VaXiQ8iZGeOmyot2yQT6Db+ZC9IuBkW6A/w5iC2VbP+fNzl86vT4CrO9ge8eYiyL4aiu/Q2KacrqcyeePiaP0VvaEEiEoNxtgXt7yH3l0qtwV6WOJHH/M5L4SI3DdkNtXTBOmA0HziwqUPeqapcMX9520=
+	t=1722357007; cv=none; b=iAR9/WGObYWv/TuumNmJmZCI6HRKhYK4bIFIW4Ro/VJcPuRzdq5ZTOzKmBnXSpKDW+2OwsR/yCtzy3wjejOSzaGPDupdxX7nAnjC1ESYv0DTpYVKqYIe5A2Vt/b1F0yCpsinF2wDhHn3cxVMLHUS6NB60YRbiRIYlPgH8m5KiVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356916; c=relaxed/simple;
-	bh=3Aut4sUtkT+gZAxB2MUqhKGCXq9tdYwVfZ5uG1VP29U=;
+	s=arc-20240116; t=1722357007; c=relaxed/simple;
+	bh=lWgh1GMR2TBsHM6JKgTtZQwFTurpjaS5KPJKyH7fLug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GL01lqDCoNmvKQ1B2acG8effEYOBKFt2PtiGoUohfcmhwimEFJj3WlVPEGcdh/jjtYqg4m2O46gJVu9fsZn8CnwMvmIk1Xt3E4jlghv5ROhWnh5yPb8OA69D/HrlTjUiJ4gOI9hulc33O7QPfgX2EvavSzIJQCqnxmhSFcvb5RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6uow78y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E77C32782;
-	Tue, 30 Jul 2024 16:28:35 +0000 (UTC)
+	 MIME-Version; b=E2RUtexcd2s0+l0nhHXCQNTUtGXHjpRhA0noYwTxJdndjSy+gAXjhl7360cVGfQjtMPMyVm4Z4mDvVCtY8Exue/JzYJgfaPf7Fg9SynBSjuEryM5eu+aYE8kW8xz8AG/rA0kk3dfBD6T5wkXY49qUAUpxpyCZBvRPjcHHWLTSB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s72Zreew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8FCC32782;
+	Tue, 30 Jul 2024 16:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356915;
-	bh=3Aut4sUtkT+gZAxB2MUqhKGCXq9tdYwVfZ5uG1VP29U=;
+	s=korg; t=1722357007;
+	bh=lWgh1GMR2TBsHM6JKgTtZQwFTurpjaS5KPJKyH7fLug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6uow78y0VIhdzIhyYQIVxnHZAs0Z6LBIqesOfYbsBHsRSR8HnI40WV5o3ucGlDax
-	 Rkno4zoz3AKrYxI2n9laQjjPagV/ARdmKebJi4oUKi9aIDKePDmjLuitDaIN2bicDo
-	 NSZdYl51AgMPbj15J6K1CVOikh7ETSLFvvoREp2w=
+	b=s72Zreewwm6KpFCwmjXvegdfGizzRq0/c7fuYG51HM3W73/sAm/4gHviazeZc6aaF
+	 1Jeyscoremq/TyD6TlyKiTUTQQ08reIYJVAdIE/t820CjqKLKbv/0NmR31IfIy6JEc
+	 ILZ8H5OYRvJPv1X2+ijxhKfA4CgCouQhThqvbM24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antony Antony <antony.antony@secunet.com>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	syzbot+d31185aa54170f7fc1f5@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 199/809] xfrm: Log input direction mismatch error in one place
-Date: Tue, 30 Jul 2024 17:41:15 +0200
-Message-ID: <20240730151732.468122490@linuxfoundation.org>
+Subject: [PATCH 6.10 200/809] udf: Fix bogus checksum computation in udf_rename()
+Date: Tue, 30 Jul 2024 17:41:16 +0200
+Message-ID: <20240730151732.506313272@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,85 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Antony Antony <antony.antony@secunet.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 15f5fe9e84839dcc9eaa69b08ced9d24cb464369 ]
+[ Upstream commit 27ab33854873e6fb958cb074681a0107cc2ecc4c ]
 
-Previously, the offload data path decrypted the packet before checking
-the direction, leading to error logging and packet dropping. However,
-dropped packets wouldn't be visible in tcpdump or audit log.
+Syzbot reports uninitialized memory access in udf_rename() when updating
+checksum of '..' directory entry of a moved directory. This is indeed
+true as we pass on-stack diriter.fi to the udf_update_tag() and because
+that has only struct fileIdentDesc included in it and not the impUse or
+name fields, the checksumming function is going to checksum random stack
+contents beyond the end of the structure. This is actually harmless
+because the following udf_fiiter_write_fi() will recompute the checksum
+from on-disk buffers where everything is properly included. So all that
+is needed is just removing the bogus calculation.
 
-With this fix, the offload path, upon noticing SA direction mismatch,
-will pass the packet to the stack without decrypting it. The L3 layer
-will then log the error, audit, and drop ESP without decrypting or
-decapsulating it.
-
-This also ensures that the slow path records the error and audit log,
-making dropped packets visible in tcpdump.
-
-Fixes: 304b44f0d5a4 ("xfrm: Add dir validation to "in" data path lookup")
-Signed-off-by: Antony Antony <antony.antony@secunet.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: e9109a92d2a9 ("udf: Convert udf_rename() to new directory iteration code")
+Link: https://lore.kernel.org/all/000000000000cf405f060d8f75a9@google.com/T/
+Link: https://patch.msgid.link/20240617154201.29512-1-jack@suse.cz
+Reported-by: syzbot+d31185aa54170f7fc1f5@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4_offload.c | 7 +++++++
- net/ipv6/esp6_offload.c | 7 +++++++
- net/xfrm/xfrm_input.c   | 5 -----
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ fs/udf/namei.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
-index b3271957ad9a0..3f28ecbdcaef1 100644
---- a/net/ipv4/esp4_offload.c
-+++ b/net/ipv4/esp4_offload.c
-@@ -56,6 +56,13 @@ static struct sk_buff *esp4_gro_receive(struct list_head *head,
- 		x = xfrm_state_lookup(dev_net(skb->dev), skb->mark,
- 				      (xfrm_address_t *)&ip_hdr(skb)->daddr,
- 				      spi, IPPROTO_ESP, AF_INET);
-+
-+		if (unlikely(x && x->dir && x->dir != XFRM_SA_DIR_IN)) {
-+			/* non-offload path will record the error and audit log */
-+			xfrm_state_put(x);
-+			x = NULL;
-+		}
-+
- 		if (!x)
- 			goto out_reset;
- 
-diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
-index 527b7caddbc68..919ebfabbe4ee 100644
---- a/net/ipv6/esp6_offload.c
-+++ b/net/ipv6/esp6_offload.c
-@@ -83,6 +83,13 @@ static struct sk_buff *esp6_gro_receive(struct list_head *head,
- 		x = xfrm_state_lookup(dev_net(skb->dev), skb->mark,
- 				      (xfrm_address_t *)&ipv6_hdr(skb)->daddr,
- 				      spi, IPPROTO_ESP, AF_INET6);
-+
-+		if (unlikely(x && x->dir && x->dir != XFRM_SA_DIR_IN)) {
-+			/* non-offload path will record the error and audit log */
-+			xfrm_state_put(x);
-+			x = NULL;
-+		}
-+
- 		if (!x)
- 			goto out_reset;
- 
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index 63c0041039120..e95462b982b0f 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -474,11 +474,6 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 	if (encap_type < 0 || (xo && xo->flags & XFRM_GRO)) {
- 		x = xfrm_input_state(skb);
- 
--		if (unlikely(x->dir && x->dir != XFRM_SA_DIR_IN)) {
--			XFRM_INC_STATS(net, LINUX_MIB_XFRMINSTATEDIRERROR);
--			goto drop;
--		}
--
- 		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
- 			if (x->km.state == XFRM_STATE_ACQ)
- 				XFRM_INC_STATS(net, LINUX_MIB_XFRMACQUIREERROR);
+diff --git a/fs/udf/namei.c b/fs/udf/namei.c
+index 1308109fd42d9..78a603129dd58 100644
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -876,8 +876,6 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	if (has_diriter) {
+ 		diriter.fi.icb.extLocation =
+ 					cpu_to_lelb(UDF_I(new_dir)->i_location);
+-		udf_update_tag((char *)&diriter.fi,
+-			       udf_dir_entry_len(&diriter.fi));
+ 		udf_fiiter_write_fi(&diriter, NULL);
+ 		udf_fiiter_release(&diriter);
+ 	}
 -- 
 2.43.0
 
