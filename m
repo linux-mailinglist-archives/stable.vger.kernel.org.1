@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0C9941A69
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D39C9419B2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4A7CB22767
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2132CB26723
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8473E4EB2B;
-	Tue, 30 Jul 2024 16:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE7C1A619E;
+	Tue, 30 Jul 2024 16:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaCdq1eu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pN44LNCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FB41A6195;
-	Tue, 30 Jul 2024 16:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0A91A6192;
+	Tue, 30 Jul 2024 16:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357187; cv=none; b=Peru6hVZPhXF+9jQ8KfMr8mUysuTNYMsZove7SLRujbJPLuwIiv0pmCviTwo1+aF8hEvzhtgv8+wA1LQ3oVx5EoIjQZrJC1TI33s/XWcFtvNIHatNloTPpIpA2didm7OzQAb71VhUruVanpDtH+l8MFk/Dz3TRjFZYa3YQIaZTY=
+	t=1722357196; cv=none; b=eSp7IRO9vxl4IqU19RdS/rxMi90dZlha2LiuQKXndYDszjeYEKe6hfM7OsVfHqt5Z1EXTHLL74rr0vz5ldMOY7h+GnKUUVQ6NhfeOomDNTXiRqeFUbGtQPow+rvlTJ2N7YVVToRuPlTkZxWlB1eO89FSzEyvQK6SfByZl3i0tU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357187; c=relaxed/simple;
-	bh=ibVCS+aHQZzIehd3HxS4C3XV2htWSV4Nn6fUEa9jhTc=;
+	s=arc-20240116; t=1722357196; c=relaxed/simple;
+	bh=D57W64CB1oznOWpaj7Qjpp1eCbW8XhQWLjrpl2p9Rdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpVaUXeN8VZA+/WbG7Td0+9N2u7hw3ZPbK+fbIQ4khHQS48iyJMUwrLl49FOMhPorV3gHSD8Yb8etEJegSSdnbKLjQ+tMLNENCxtL24/sdzO2dOFZvLzp4yB1/N+BHAgsRV9JRMmc+PU26/QEeSGgZzqew7+HTLqRORXXPbTQa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaCdq1eu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62D3C32782;
-	Tue, 30 Jul 2024 16:33:06 +0000 (UTC)
+	 MIME-Version; b=uGHm/C7LvcElziB26QEw6mUbEUYaM3MpOP5IInUKkowRXYO5fc3JbV50a/6zvbkgE0IX/wQQ3V+l5TOHq9dl4vMdT5mUfPbpncwEldu+DDy/oBsanj4pDXl1VVbUAZ0fuvuAJaX+547wy01gNxDpYWIk6q89VGqecIdwTWTW1VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pN44LNCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C10FC32782;
+	Tue, 30 Jul 2024 16:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357187;
-	bh=ibVCS+aHQZzIehd3HxS4C3XV2htWSV4Nn6fUEa9jhTc=;
+	s=korg; t=1722357196;
+	bh=D57W64CB1oznOWpaj7Qjpp1eCbW8XhQWLjrpl2p9Rdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vaCdq1eukNwKwJTdiRo5GJIq7ulOU4Enq76TubuDVTKIaBwHGrDfT2BH8j674dqCD
-	 ZZYO3ikFFooZ0aHDWvFR7gVDk1VrrAsOcidrH1r3QQ76zpv/xO+Ca1lZ5cd8EcyVsI
-	 Oo15BbGHoI/QMST+MyeeA8WpSamDXYAW3azGDOFo=
+	b=pN44LNCc/CvKnOo78fD9q6YlGiByHhq014kRqAEHYf6KhlWGr2NuTRBqE/QsKd8jV
+	 odPtt1zWbShmhvZ/yyd8cNJnd7iP3ZqluFlDQPygla/+hYOQiVl21/99iLxzj8NWZa
+	 ExuO/z5sTFk4v67XdU75zzXYsbZlnZbs7e8Z2PLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
+	linke li <lilinke99@qq.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 267/440] sbitmap: rewrite sbitmap_find_bit_in_index to reduce repeat code
-Date: Tue, 30 Jul 2024 17:48:20 +0200
-Message-ID: <20240730151626.267645157@linuxfoundation.org>
+Subject: [PATCH 6.1 268/440] sbitmap: use READ_ONCE to access map->word
+Date: Tue, 30 Jul 2024 17:48:21 +0200
+Message-ID: <20240730151626.306632582@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -67,94 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: linke li <lilinke99@qq.com>
 
-[ Upstream commit 08470a98a7d7e32c787b23b87353f13b03c23195 ]
+[ Upstream commit 6ad0d7e0f4b68f87a98ea2b239123b7d865df86b ]
 
-Rewrite sbitmap_find_bit_in_index as following:
-1. Rename sbitmap_find_bit_in_index to sbitmap_find_bit_in_word
-2. Accept "struct sbitmap_word *" directly instead of accepting
-"struct sbitmap *" and "int index" to get "struct sbitmap_word *".
-3. Accept depth/shallow_depth and wrap for __sbitmap_get_word from caller
-to support need of both __sbitmap_get_shallow and __sbitmap_get.
+In __sbitmap_queue_get_batch(), map->word is read several times, and
+update atomically using atomic_long_try_cmpxchg(). But the first two read
+of map->word is not protected.
 
-With helper function sbitmap_find_bit_in_word, we can remove repeat
-code in __sbitmap_get_shallow to find bit considring deferred clear.
+This patch moves the statement val = READ_ONCE(map->word) forward,
+eliminating unprotected accesses to map->word within the function.
+It is aimed at reducing the number of benign races reported by KCSAN in
+order to focus future debugging effort on harmful races.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://lore.kernel.org/r/20230116205059.3821738-4-shikemeng@huaweicloud.com
+Signed-off-by: linke li <lilinke99@qq.com>
+Link: https://lore.kernel.org/r/tencent_0B517C25E519D3D002194E8445E86C04AD0A@qq.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Stable-dep-of: 72d04bdcf3f7 ("sbitmap: fix io hung due to race on sbitmap_word::cleared")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/sbitmap.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ lib/sbitmap.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/lib/sbitmap.c b/lib/sbitmap.c
-index b9dd0a0a28f89..b942f2ba9a415 100644
+index b942f2ba9a415..a727d0b12763a 100644
 --- a/lib/sbitmap.c
 +++ b/lib/sbitmap.c
-@@ -167,15 +167,16 @@ static int __sbitmap_get_word(unsigned long *word, unsigned long depth,
- 	return nr;
- }
+@@ -503,18 +503,18 @@ unsigned long __sbitmap_queue_get_batch(struct sbitmap_queue *sbq, int nr_tags,
+ 		struct sbitmap_word *map = &sb->map[index];
+ 		unsigned long get_mask;
+ 		unsigned int map_depth = __map_depth(sb, index);
++		unsigned long val;
  
--static int sbitmap_find_bit_in_index(struct sbitmap *sb, int index,
--				     unsigned int alloc_hint)
-+static int sbitmap_find_bit_in_word(struct sbitmap_word *map,
-+				    unsigned int depth,
-+				    unsigned int alloc_hint,
-+				    bool wrap)
- {
--	struct sbitmap_word *map = &sb->map[index];
- 	int nr;
+ 		sbitmap_deferred_clear(map);
+-		if (map->word == (1UL << (map_depth - 1)) - 1)
++		val = READ_ONCE(map->word);
++		if (val == (1UL << (map_depth - 1)) - 1)
+ 			goto next;
  
- 	do {
--		nr = __sbitmap_get_word(&map->word, __map_depth(sb, index),
--					alloc_hint, !sb->round_robin);
-+		nr = __sbitmap_get_word(&map->word, depth,
-+					alloc_hint, wrap);
- 		if (nr != -1)
- 			break;
- 		if (!sbitmap_deferred_clear(map))
-@@ -203,7 +204,9 @@ static int __sbitmap_get(struct sbitmap *sb, unsigned int alloc_hint)
- 		alloc_hint = 0;
+-		nr = find_first_zero_bit(&map->word, map_depth);
++		nr = find_first_zero_bit(&val, map_depth);
+ 		if (nr + nr_tags <= map_depth) {
+ 			atomic_long_t *ptr = (atomic_long_t *) &map->word;
+-			unsigned long val;
  
- 	for (i = 0; i < sb->map_nr; i++) {
--		nr = sbitmap_find_bit_in_index(sb, index, alloc_hint);
-+		nr = sbitmap_find_bit_in_word(&sb->map[index],
-+					      __map_depth(sb, index),
-+					      alloc_hint, !sb->round_robin);
- 		if (nr != -1) {
- 			nr += index << sb->shift;
- 			break;
-@@ -246,20 +249,17 @@ static int __sbitmap_get_shallow(struct sbitmap *sb,
- 	alloc_hint = SB_NR_TO_BIT(sb, alloc_hint);
- 
- 	for (i = 0; i < sb->map_nr; i++) {
--again:
--		nr = __sbitmap_get_word(&sb->map[index].word,
--					min_t(unsigned int,
--					      __map_depth(sb, index),
--					      shallow_depth),
--					alloc_hint, true);
-+		nr = sbitmap_find_bit_in_word(&sb->map[index],
-+					      min_t(unsigned int,
-+						    __map_depth(sb, index),
-+						    shallow_depth),
-+					      alloc_hint, true);
-+
- 		if (nr != -1) {
- 			nr += index << sb->shift;
- 			break;
- 		}
- 
--		if (sbitmap_deferred_clear(&sb->map[index]))
--			goto again;
--
- 		/* Jump to next index. */
- 		alloc_hint = 0;
- 		if (++index >= sb->map_nr)
+ 			get_mask = ((1UL << nr_tags) - 1) << nr;
+-			val = READ_ONCE(map->word);
+ 			while (!atomic_long_try_cmpxchg(ptr, &val,
+ 							  get_mask | val))
+ 				;
 -- 
 2.43.0
 
