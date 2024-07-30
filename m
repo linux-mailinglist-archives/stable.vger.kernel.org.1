@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6914B941ED2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:33:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED75F941C1D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A3CD1C23E06
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:33:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FCF9B21F55
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E670618A6A8;
-	Tue, 30 Jul 2024 17:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DED6187FF6;
+	Tue, 30 Jul 2024 17:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y78uWCXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fr8DWNLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BC61A76C6;
-	Tue, 30 Jul 2024 17:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DA21A6192;
+	Tue, 30 Jul 2024 17:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360804; cv=none; b=Y8rgSvua8WoO51dQGRNqB+Ju/J/GnROUPr/dywP6WLk4IfpeUP64YYBjkAqL/f0FGORySj6LaD2LCUM1aJG2RRgds6pSRLaWXTmKg6TnQ9fXoi7RjtZu0OMmQnN4FcGBKeNGEs/q4dGNqkg3bPs6HLyGu0ozjD6DSs0oYOvqDQA=
+	t=1722358993; cv=none; b=RqAtEBpFvN9wF58hHbuHZBTWqKGctH9m6eVYPTelRWcTdzg4F6uOUSM7cNwh7Y1fMzIW1qBnRZl/8WApvpY4ak1LRUFrOfsFBtCe8AMaodltsQsddUBFMQqwS2CQVtDNRYipslvWI6iOHxTCBs+KH53LYY+0fq0KeywKqXxlGT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360804; c=relaxed/simple;
-	bh=PRWXPzEY+xWErpeFmqbCYEqppCFnI+76ejb0vZ3KnJQ=;
+	s=arc-20240116; t=1722358993; c=relaxed/simple;
+	bh=IIeKwlUXm+4S/Q9gswJgQl9zsDpaNey5nEHcPWOtVCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JcdWNIv5RHjF2jTuN2Q+iOVMb3ZfIFLejn5OlaMyFDUQdFAM2vwt+xsKswr09RS/8IpGifSG4UoYLPVBQL0Fr/9LzNnRna3fAByw2X8xHXFhXTeXrbJD4KBKgG+IQMbbup4o0Psi1rXHD5PIm7vQGNwnALMfZYNFzKUKqY8uDaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y78uWCXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17D4C32782;
-	Tue, 30 Jul 2024 17:33:23 +0000 (UTC)
+	 MIME-Version; b=cEJvpv+Ceph4ymXs7oKz0RRR4heejZdB69NAIFAO+qPxwBOUogBesnQGf9BHrP2U4fdJnKjcP9COsGePgFoVUqvuunAbLjrocbfLDr0ePz53XDg0NFgLrumYvclnDS6MqXEuIJ5FIAVYtn/RQ1U7ENWGYQcuexkQPwNIezxarBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fr8DWNLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F6FC32782;
+	Tue, 30 Jul 2024 17:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360804;
-	bh=PRWXPzEY+xWErpeFmqbCYEqppCFnI+76ejb0vZ3KnJQ=;
+	s=korg; t=1722358993;
+	bh=IIeKwlUXm+4S/Q9gswJgQl9zsDpaNey5nEHcPWOtVCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y78uWCXKW/7vu9vwcMEo0NsDrDsTRG7slE7D+4m6LhuvmKX7cJQ3y1En614Zlw5l5
-	 SRzTME7zP7vxVT8iaICSKYURlk/E1gIsxchbSgcG6J7i353tHYeAAiXYaoLcKZV+mk
-	 Z+dve+0zeNr+4IUxmoC/eGzq3AkDuUqExcHjJhXQ=
+	b=Fr8DWNLeoT05FTlnwSLCqt3NqAsxd5YdZuk9QJhBzSsvIlqoTBgEPB2n6ja48Y1pB
+	 yWe7xWdalcPEE9oSP5ukLsbPTIEq3NCjQW1NNrt2FGlZplDV0a6XCV2pacVst1xMS9
+	 JZMLF3DsEY7hS92n/8S/lFWiV2A5WnxPsds2sB9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Seth Forshee (DigitalOcean)" <sforshee@kernel.org>,
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 797/809] s390/setup: Fix __pa/__va for modules under non-GPL licenses
+Subject: [PATCH 6.1 440/440] fs: dont allow non-init s_user_ns for filesystems without FS_USERNS_MOUNT
 Date: Tue, 30 Jul 2024 17:51:13 +0200
-Message-ID: <20240730151756.457621434@linuxfoundation.org>
+Message-ID: <20240730151632.958183363@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Seth Forshee (DigitalOcean) <sforshee@kernel.org>
 
-[ Upstream commit e188e5d5ffd01d484b5255b88739fcf67b300223 ]
+[ Upstream commit e1c5ae59c0f22f7fe5c07fb5513a29e4aad868c9 ]
 
-The struct vm_layout contains fields used in __pa/__va calculations. Such
-fundamental things have to be exported with EXPORT_SYMBOL to avoid
-breakages of out-of-tree modules under non-GPL licenses.
+Christian noticed that it is possible for a privileged user to mount
+most filesystems with a non-initial user namespace in sb->s_user_ns.
+When fsopen() is called in a non-init namespace the caller's namespace
+is recorded in fs_context->user_ns. If the returned file descriptor is
+then passed to a process priviliged in init_user_ns, that process can
+call fsconfig(fd_fs, FSCONFIG_CMD_CREATE), creating a new superblock
+with sb->s_user_ns set to the namespace of the process which called
+fsopen().
 
-Fixes: 7de0446f0b26 ("s390/boot: Make identity mapping base address explicit")
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+This is problematic. We cannot assume that any filesystem which does not
+set FS_USERNS_MOUNT has been written with a non-initial s_user_ns in
+mind, increasing the risk for bugs and security issues.
+
+Prevent this by returning EPERM from sget_fc() when FS_USERNS_MOUNT is
+not set for the filesystem and a non-initial user namespace will be
+used. sget() does not need to be updated as it always uses the user
+namespace of the current context, or the initial user namespace if
+SB_SUBMOUNT is set.
+
+Fixes: cb50b348c71f ("convenience helpers: vfs_get_super() and sget_fc()")
+Reported-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Seth Forshee (DigitalOcean) <sforshee@kernel.org>
+Link: https://lore.kernel.org/r/20240724-s_user_ns-fix-v1-1-895d07c94701@kernel.org
+Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/setup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/super.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
-index 90c2c786bb355..610e6f794511a 100644
---- a/arch/s390/kernel/setup.c
-+++ b/arch/s390/kernel/setup.c
-@@ -149,7 +149,7 @@ unsigned long __bootdata_preserved(max_mappable);
- struct physmem_info __bootdata(physmem_info);
+diff --git a/fs/super.c b/fs/super.c
+index d138332e57a94..b116f72cd122a 100644
+--- a/fs/super.c
++++ b/fs/super.c
+@@ -569,6 +569,17 @@ struct super_block *sget_fc(struct fs_context *fc,
+ 	struct user_namespace *user_ns = fc->global ? &init_user_ns : fc->user_ns;
+ 	int err;
  
- struct vm_layout __bootdata_preserved(vm_layout);
--EXPORT_SYMBOL_GPL(vm_layout);
-+EXPORT_SYMBOL(vm_layout);
- int __bootdata_preserved(__kaslr_enabled);
- unsigned int __bootdata_preserved(zlib_dfltcc_support);
- EXPORT_SYMBOL(zlib_dfltcc_support);
++	/*
++	 * Never allow s_user_ns != &init_user_ns when FS_USERNS_MOUNT is
++	 * not set, as the filesystem is likely unprepared to handle it.
++	 * This can happen when fsconfig() is called from init_user_ns with
++	 * an fs_fd opened in another user namespace.
++	 */
++	if (user_ns != &init_user_ns && !(fc->fs_type->fs_flags & FS_USERNS_MOUNT)) {
++		errorfc(fc, "VFS: Mounting from non-initial user namespace is not allowed");
++		return ERR_PTR(-EPERM);
++	}
++
+ retry:
+ 	spin_lock(&sb_lock);
+ 	if (test) {
 -- 
 2.43.0
 
