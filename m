@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70515941B29
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729E2941D19
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19F781F230F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A90228AF27
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7DC18455E;
-	Tue, 30 Jul 2024 16:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C6718B478;
+	Tue, 30 Jul 2024 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upDEO7sj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8pvq6Gm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29029188018;
-	Tue, 30 Jul 2024 16:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75C01898E0;
+	Tue, 30 Jul 2024 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358300; cv=none; b=fud9bhs0Dm3QYyihjSHT1KYcJYlXrlKPJxRor6djC1iTdyi6K0yqjBt6SZ7388/36qdQ+AcXb5adaWAF3FepBUXIl9OGh5A6FKHT7vdu/m5fnTeD9KyMcgTGHt2eTInJs2LUFP7e8HH2X0fK10NrIeEWRRZ/OBPAVrNGZOkVzu8=
+	t=1722359567; cv=none; b=hx4PB66qS1NhBIx6dPk8KUm+dz15tGSIltMURbgnBwD0K8Mh4Mtw6kdbfPh4OaOizpECq3HHFHfV7RGLcuCB6idptnFdSKh3cmI6leXysJiA4c6+lmUCdwCjaCmF4g6lIWcuRCbGvjTZTt6KHyFOh9oJMKn8Yvd6GyIWOGaTlCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358300; c=relaxed/simple;
-	bh=+iJOcnB+Zofj1WXR1MNbMVwuCZBHLWnvl3Rg/JHRsro=;
+	s=arc-20240116; t=1722359567; c=relaxed/simple;
+	bh=gZyhuLlzHbsg1AGbuEr5LmHsGmmiqYpkUautUhpzRG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LF4GZcoKNk0AcExxAmvwWpI93Otzzdn2mYbV4wCnQakgnXIgVC3DWK4w57YVWVCBMNEmcPvotlgkuTXvyrbfzW6DLQ0HUi6SZ/Uwf9kL5SnCpLm9XSA5dUK8xAIIOZUfPZT4UBRaxOvAksYCFmxpDGSx7IeJK0kAKU+DrMZygAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upDEO7sj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B567C32782;
-	Tue, 30 Jul 2024 16:51:39 +0000 (UTC)
+	 MIME-Version; b=so1Lsl/m4hHSsYpD+YtmBo3HTQAq6zcLcw+fTDO6z6BIK6jjJpDKK1jZd0BcYV6SYxgRoALYAdw6+H2DBLaiSyDS7v+okDmp4ShlxaacRTtG4Jn0x15lFb8JoO5KborPjWv7mZLrLB/op3VqF2S9XX9Zt2uYv2ajrl1OxGOMMnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8pvq6Gm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6F6C32782;
+	Tue, 30 Jul 2024 17:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358300;
-	bh=+iJOcnB+Zofj1WXR1MNbMVwuCZBHLWnvl3Rg/JHRsro=;
+	s=korg; t=1722359567;
+	bh=gZyhuLlzHbsg1AGbuEr5LmHsGmmiqYpkUautUhpzRG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=upDEO7sjV4ntGpFrLZjT7iQC5cwZtf/RJnRPRwO4rvXTuUSGRKXexlB/REIcEePaq
-	 jiaGVuWdgSLWDazKoBTt4QBZ8zdNnIvrs+t3BXIg2lXkVtwuo8yX7mrlqN2P5f6FIq
-	 cdQ+YnACOKObuWOxrDpKuuSZn5yfY2uJvwxszpHU=
+	b=O8pvq6Gm2OBk9scPV8uJDcjuDtFMoNnfKEax8oa+IkC/Xi8yHsoaKyuVVPnCwqY/O
+	 8m3ovXZHM1kPkTQtOP2NA1byO8ZpkQNBZQc1fFHLqWGSJNmZaY8Pz6uH9Yqso78ebG
+	 NMmNQiEJuIRpsIF3NWuhyU3tE32NWgmF1RNseGtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 375/440] MIPS: Loongson64: env: Hook up Loongsson-2K
-Date: Tue, 30 Jul 2024 17:50:08 +0200
-Message-ID: <20240730151630.459871732@linuxfoundation.org>
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.6 502/568] rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
+Date: Tue, 30 Jul 2024 17:50:09 +0200
+Message-ID: <20240730151659.648144045@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 77543269ff23c75bebfb8e6e9a1177b350908ea7 upstream.
+commit f5c466a0fdb2d9f3650d2e3911b0735f17ba00cf upstream.
 
-Somehow those enablement bits were left over when we were
-adding initial Loongson-2K support.
+... to RBD_LOCK_STATE_QUIESCING and quiescing_wait to recognize that
+this state and the associated completion are backing rbd_quiesce_lock(),
+which isn't specific to releasing the lock.
 
-Set up basic information and select proper builtin DTB for
-Loongson-2K.
+While exclusive lock does get quiesced before it's released, it also
+gets quiesced before an attempt to update the cookie is made and there
+the lock is not released as long as ceph_cls_set_cookie() succeeds.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/mach-loongson64/boot_param.h |    2 ++
- arch/mips/loongson64/env.c                         |    8 ++++++++
- 2 files changed, 10 insertions(+)
+ drivers/block/rbd.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -42,12 +42,14 @@ enum loongson_cpu_type {
- 	Legacy_1B = 0x5,
- 	Legacy_2G = 0x6,
- 	Legacy_2H = 0x7,
-+	Legacy_2K = 0x8,
- 	Loongson_1A = 0x100,
- 	Loongson_1B = 0x101,
- 	Loongson_2E = 0x200,
- 	Loongson_2F = 0x201,
- 	Loongson_2G = 0x202,
- 	Loongson_2H = 0x203,
-+	Loongson_2K = 0x204,
- 	Loongson_3A = 0x300,
- 	Loongson_3B = 0x301
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -362,7 +362,7 @@ enum rbd_watch_state {
+ enum rbd_lock_state {
+ 	RBD_LOCK_STATE_UNLOCKED,
+ 	RBD_LOCK_STATE_LOCKED,
+-	RBD_LOCK_STATE_RELEASING,
++	RBD_LOCK_STATE_QUIESCING,
  };
---- a/arch/mips/loongson64/env.c
-+++ b/arch/mips/loongson64/env.c
-@@ -88,6 +88,12 @@ void __init prom_lefi_init_env(void)
- 	cpu_clock_freq = ecpu->cpu_clock_freq;
- 	loongson_sysconf.cputype = ecpu->cputype;
- 	switch (ecpu->cputype) {
-+	case Legacy_2K:
-+	case Loongson_2K:
-+		smp_group[0] = 0x900000001fe11000;
-+		loongson_sysconf.cores_per_node = 2;
-+		loongson_sysconf.cores_per_package = 2;
-+		break;
- 	case Legacy_3A:
- 	case Loongson_3A:
- 		loongson_sysconf.cores_per_node = 4;
-@@ -221,6 +227,8 @@ void __init prom_lefi_init_env(void)
- 		default:
- 			break;
- 		}
-+	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64R) {
-+		loongson_fdt_blob = __dtb_loongson64_2core_2k1000_begin;
- 	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64G) {
- 		if (loongson_sysconf.bridgetype == LS7A)
- 			loongson_fdt_blob = __dtb_loongson64g_4core_ls7a_begin;
+ 
+ /* WatchNotify::ClientId */
+@@ -422,7 +422,7 @@ struct rbd_device {
+ 	struct list_head	running_list;
+ 	struct completion	acquire_wait;
+ 	int			acquire_err;
+-	struct completion	releasing_wait;
++	struct completion	quiescing_wait;
+ 
+ 	spinlock_t		object_map_lock;
+ 	u8			*object_map;
+@@ -525,7 +525,7 @@ static bool __rbd_is_lock_owner(struct r
+ 	lockdep_assert_held(&rbd_dev->lock_rwsem);
+ 
+ 	return rbd_dev->lock_state == RBD_LOCK_STATE_LOCKED ||
+-	       rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING;
++	       rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING;
+ }
+ 
+ static bool rbd_is_lock_owner(struct rbd_device *rbd_dev)
+@@ -3458,12 +3458,12 @@ static void rbd_lock_del_request(struct
+ 	spin_lock(&rbd_dev->lock_lists_lock);
+ 	if (!list_empty(&img_req->lock_item)) {
+ 		list_del_init(&img_req->lock_item);
+-		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING &&
++		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
+ 			       list_empty(&rbd_dev->running_list));
+ 	}
+ 	spin_unlock(&rbd_dev->lock_lists_lock);
+ 	if (need_wakeup)
+-		complete(&rbd_dev->releasing_wait);
++		complete(&rbd_dev->quiescing_wait);
+ }
+ 
+ static int rbd_img_exclusive_lock(struct rbd_img_request *img_req)
+@@ -4181,16 +4181,16 @@ static bool rbd_quiesce_lock(struct rbd_
+ 	/*
+ 	 * Ensure that all in-flight IO is flushed.
+ 	 */
+-	rbd_dev->lock_state = RBD_LOCK_STATE_RELEASING;
+-	rbd_assert(!completion_done(&rbd_dev->releasing_wait));
++	rbd_dev->lock_state = RBD_LOCK_STATE_QUIESCING;
++	rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
+ 	if (list_empty(&rbd_dev->running_list))
+ 		return true;
+ 
+ 	up_write(&rbd_dev->lock_rwsem);
+-	wait_for_completion(&rbd_dev->releasing_wait);
++	wait_for_completion(&rbd_dev->quiescing_wait);
+ 
+ 	down_write(&rbd_dev->lock_rwsem);
+-	if (rbd_dev->lock_state != RBD_LOCK_STATE_RELEASING)
++	if (rbd_dev->lock_state != RBD_LOCK_STATE_QUIESCING)
+ 		return false;
+ 
+ 	rbd_assert(list_empty(&rbd_dev->running_list));
+@@ -5382,7 +5382,7 @@ static struct rbd_device *__rbd_dev_crea
+ 	INIT_LIST_HEAD(&rbd_dev->acquiring_list);
+ 	INIT_LIST_HEAD(&rbd_dev->running_list);
+ 	init_completion(&rbd_dev->acquire_wait);
+-	init_completion(&rbd_dev->releasing_wait);
++	init_completion(&rbd_dev->quiescing_wait);
+ 
+ 	spin_lock_init(&rbd_dev->object_map_lock);
+ 
 
 
 
