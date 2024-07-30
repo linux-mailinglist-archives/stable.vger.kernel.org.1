@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-62979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA7A941688
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D736094168D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C11CE1C23D65
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9099C28703B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA561D47A2;
-	Tue, 30 Jul 2024 16:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65EA20127B;
+	Tue, 30 Jul 2024 16:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vz2XLS7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0ZgzU/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B161D47B5;
-	Tue, 30 Jul 2024 16:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1F0201270;
+	Tue, 30 Jul 2024 16:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355264; cv=none; b=fM/xCdG+BhRfp94HSV3zg+6wiGfIRNQAY3PGmbGFvZdhLl9zT/fp8E5NBAXv7iweXkRwP5ZZ68WC+zOU9boxPg6G/kdGx9yHSrZCPGNDBKQJAODpaN3GutNA7740JQS9J1joAnV32Eh2P8go4JmHQJtXoZRtea0MW79EKN59KTw=
+	t=1722355277; cv=none; b=HUlidI+rAH0wsMmOBjtFe7ntQ2OybFqg9YOREWhNrFAiYR/OQ+6F1ukMTF6CnROOm7yr4lca6+KrVkWJFRH9B+Ga/3bT9+wrR+b1JjMq5Dhg5MfErzKmi9RdZQM95dcga8O6VdZLsCaoxj7fqjelC6hEO7NYF6Z08+Js5XDhuvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355264; c=relaxed/simple;
-	bh=85oQ8eM+XxZcofLKmTPKx0YizaxquY4fjkaCl8vfu/s=;
+	s=arc-20240116; t=1722355277; c=relaxed/simple;
+	bh=jWAsxuvkehLTmPohvWkaFpQ958o2FlDJHal2HTYsc14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnjqkOLE30LEETRI7KOy08CHkv99EaZmzTTfCP4Iv/uWxKtnLv6ziTabvaMOMPeeqi/OmDTwXIGCSYBSMgk1IEsD58ic8VOvrOo8RDyDUMQCS9ErxdZgGAWymqfdEAiaskZHAaYMk28mYvAN55XARSrRHZtYuZrZLK1sZBmR+Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vz2XLS7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01350C32782;
-	Tue, 30 Jul 2024 16:01:03 +0000 (UTC)
+	 MIME-Version; b=k9vz68IYj9KJ4AdS35v7KT8mBCUf3ofOe7WQm1xAeZr7tS4j3n4Y27MjsaKHWuk5vY6q+wC3CrEuGIt5QQ0vtSiju/CyEPbSdIER0aOhjeN4KphZeU0OF0OR3lnr3o0dlzdYzyDbFvTRYN1WGH+7x6kZITyGFSlcG58ZeG2sG2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0ZgzU/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6702C32782;
+	Tue, 30 Jul 2024 16:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355264;
-	bh=85oQ8eM+XxZcofLKmTPKx0YizaxquY4fjkaCl8vfu/s=;
+	s=korg; t=1722355277;
+	bh=jWAsxuvkehLTmPohvWkaFpQ958o2FlDJHal2HTYsc14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vz2XLS7tOXVce1X3mKW+cC8RhA9nE/72O487FgqxmfN9ampEGe6HRxN6fa7fXKQac
-	 zSakO2wsAqc7jWv4FnrMH4q+SzPexN8/jrEOfKgt5sLOu2E1KZJQ6oZGgFC8mKWDIq
-	 e3j6VUkOHdHUr3VRaX/dqk9tISaqQultBL+CxGLQ=
+	b=Z0ZgzU/oXXI7cGQX87Pl9wY/weC3DBWtrbmdFebo6pHTzCzq6D+Kv7hYCdiu6yEDx
+	 NdtACLqkH26NXzNevvHgIcLMpWjc1pYWqbjNNK1wTYvsnAa7wGMPDrSGhkXRvTKtH7
+	 xDEnv6kRlN6wymMyKq2m15j9+r0n0IGEgggCDtGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Yao Zi <ziyao@disroot.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 035/809] nvmet-auth: fix nvmet_auth hash error handling
-Date: Tue, 30 Jul 2024 17:38:31 +0200
-Message-ID: <20240730151726.039906476@linuxfoundation.org>
+Subject: [PATCH 6.10 036/809] drm/meson: fix canvas release in bind function
+Date: Tue, 30 Jul 2024 17:38:32 +0200
+Message-ID: <20240730151726.078226629@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,87 +66,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit 89f58f96d1e2357601c092d85b40a2109cf25ef3 ]
+[ Upstream commit a695949b2e9bb6b6700a764c704731a306c4bebf ]
 
-If we fail to call nvme_auth_augmented_challenge, or fail to kmalloc
-for shash, we should free the memory allocation for challenge, so add
-err path out_free_challenge to fix the memory leak.
+Allocated canvases may not be released on the error exit path of
+meson_drv_bind_master(), leading to resource leaking. Rewrite exit path
+to release canvases on error.
 
-Fixes: 7a277c37d352 ("nvmet-auth: Diffie-Hellman key exchange support")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 2bf6b5b0e374 ("drm/meson: exclusively use the canvas provider module")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240703155826.10385-2-ziyao@disroot.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240703155826.10385-2-ziyao@disroot.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/auth.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/meson/meson_drv.c | 37 +++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
-index 7d2633940f9b8..8bc3f431c77f6 100644
---- a/drivers/nvme/target/auth.c
-+++ b/drivers/nvme/target/auth.c
-@@ -314,7 +314,7 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
- 						    req->sq->dhchap_c1,
- 						    challenge, shash_len);
+diff --git a/drivers/gpu/drm/meson/meson_drv.c b/drivers/gpu/drm/meson/meson_drv.c
+index 17a5cca007e29..4bd0baa2a4f55 100644
+--- a/drivers/gpu/drm/meson/meson_drv.c
++++ b/drivers/gpu/drm/meson/meson_drv.c
+@@ -250,29 +250,20 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
+ 	if (ret)
+ 		goto free_drm;
+ 	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_0);
+-	if (ret) {
+-		meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
+-		goto free_drm;
+-	}
++	if (ret)
++		goto free_canvas_osd1;
+ 	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_1);
+-	if (ret) {
+-		meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
+-		meson_canvas_free(priv->canvas, priv->canvas_id_vd1_0);
+-		goto free_drm;
+-	}
++	if (ret)
++		goto free_canvas_vd1_0;
+ 	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_2);
+-	if (ret) {
+-		meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
+-		meson_canvas_free(priv->canvas, priv->canvas_id_vd1_0);
+-		meson_canvas_free(priv->canvas, priv->canvas_id_vd1_1);
+-		goto free_drm;
+-	}
++	if (ret)
++		goto free_canvas_vd1_1;
+ 
+ 	priv->vsync_irq = platform_get_irq(pdev, 0);
+ 
+ 	ret = drm_vblank_init(drm, 1);
+ 	if (ret)
+-		goto free_drm;
++		goto free_canvas_vd1_2;
+ 
+ 	/* Assign limits per soc revision/package */
+ 	for (i = 0 ; i < ARRAY_SIZE(meson_drm_soc_attrs) ; ++i) {
+@@ -288,11 +279,11 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
+ 	 */
+ 	ret = drm_aperture_remove_framebuffers(&meson_driver);
+ 	if (ret)
+-		goto free_drm;
++		goto free_canvas_vd1_2;
+ 
+ 	ret = drmm_mode_config_init(drm);
+ 	if (ret)
+-		goto free_drm;
++		goto free_canvas_vd1_2;
+ 	drm->mode_config.max_width = 3840;
+ 	drm->mode_config.max_height = 2160;
+ 	drm->mode_config.funcs = &meson_mode_config_funcs;
+@@ -307,7 +298,7 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
+ 	if (priv->afbcd.ops) {
+ 		ret = priv->afbcd.ops->init(priv);
  		if (ret)
--			goto out_free_response;
-+			goto out_free_challenge;
+-			goto free_drm;
++			goto free_canvas_vd1_2;
  	}
  
- 	pr_debug("ctrl %d qid %d host response seq %u transaction %d\n",
-@@ -325,7 +325,7 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
- 			GFP_KERNEL);
- 	if (!shash) {
- 		ret = -ENOMEM;
--		goto out_free_response;
-+		goto out_free_challenge;
- 	}
- 	shash->tfm = shash_tfm;
- 	ret = crypto_shash_init(shash);
-@@ -361,9 +361,10 @@ int nvmet_auth_host_hash(struct nvmet_req *req, u8 *response,
- 		goto out;
- 	ret = crypto_shash_final(shash, response);
- out:
-+	kfree(shash);
-+out_free_challenge:
- 	if (challenge != req->sq->dhchap_c1)
- 		kfree(challenge);
--	kfree(shash);
- out_free_response:
- 	nvme_auth_free_key(transformed_key);
- out_free_tfm:
-@@ -427,14 +428,14 @@ int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
- 						    req->sq->dhchap_c2,
- 						    challenge, shash_len);
- 		if (ret)
--			goto out_free_response;
-+			goto out_free_challenge;
- 	}
+ 	/* Encoder Initialization */
+@@ -371,6 +362,14 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
+ exit_afbcd:
+ 	if (priv->afbcd.ops)
+ 		priv->afbcd.ops->exit(priv);
++free_canvas_vd1_2:
++	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_2);
++free_canvas_vd1_1:
++	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_1);
++free_canvas_vd1_0:
++	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_0);
++free_canvas_osd1:
++	meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
+ free_drm:
+ 	drm_dev_put(drm);
  
- 	shash = kzalloc(sizeof(*shash) + crypto_shash_descsize(shash_tfm),
- 			GFP_KERNEL);
- 	if (!shash) {
- 		ret = -ENOMEM;
--		goto out_free_response;
-+		goto out_free_challenge;
- 	}
- 	shash->tfm = shash_tfm;
- 
-@@ -471,9 +472,10 @@ int nvmet_auth_ctrl_hash(struct nvmet_req *req, u8 *response,
- 		goto out;
- 	ret = crypto_shash_final(shash, response);
- out:
-+	kfree(shash);
-+out_free_challenge:
- 	if (challenge != req->sq->dhchap_c2)
- 		kfree(challenge);
--	kfree(shash);
- out_free_response:
- 	nvme_auth_free_key(transformed_key);
- out_free_tfm:
 -- 
 2.43.0
 
