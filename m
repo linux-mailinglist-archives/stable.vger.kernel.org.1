@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C38941A3A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41F2941D66
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E031C22AD3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DE31284A47
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDCA183CDB;
-	Tue, 30 Jul 2024 16:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A4A1A76BE;
+	Tue, 30 Jul 2024 17:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJ//xtWL"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j24jsTYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBEE1A6192;
-	Tue, 30 Jul 2024 16:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85B21A76A4;
+	Tue, 30 Jul 2024 17:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357686; cv=none; b=MKY++1rhI9uOR9VPiJ2f1T9cq9+MYQQEVaBQiYwzLlRz3hjzRpXe+/HDHtHKwwLKqTanEwgmIx5cW1VX3tr740hSCa2g261RbBYnnGmvOqPWnLrYqmAT1egeUOUFIxx0HExJZTRnQa43eXkwWH041LooszkF9QlTviOZ9/8r9zw=
+	t=1722359809; cv=none; b=Ob9uudv19oB7WeeVxVyvJuaUVSKCtbWGg4PGm6BzuXDUKs0KQb6AT/o/TqfXdkq1spEj978FtuFG5V9dg+WMOBmwEQM0aajXzvCjcVGMbSPTFhVW4Ega7UCpRidmUVSfQroOnfUv7ITW8Bzj6xJjjFrR+1eMOAfO2SMKE5TDA0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357686; c=relaxed/simple;
-	bh=OLuDiMZDrbBtj2/U5Fmzk0dcyO3E7S0rRIsBMJEW+Qg=;
+	s=arc-20240116; t=1722359809; c=relaxed/simple;
+	bh=pGbBrexbyea6SbFFQFvw+5MtneppeL60d4/2gIeP2A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuVHEGBikWou1x8v8+ENWN2PmGZ/Lyo3fKFiGMQ5nWXugExQVH7nxg/jAi4GkLFI+J+Wl4hANGjdwXkj8tjO7gCkRFx8cvgYKP/OgopXUv5QJtISSYoRIzoB2U360tXXwqjIIV2aVlST17JgaKQS4LKi5GcYtM2Gq42gY6LV2QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJ//xtWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF39EC32782;
-	Tue, 30 Jul 2024 16:41:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RM7hPsdyoUaJ6vK145mXApGzPzQMqoAHDwWWz0BoqZiAhpbARaQhCcyrwWIW9fyOrLZkabTuCDURHtYghZ0F+hfrW2jJ5+da6In0iZVD8no7N/c45Rn+QmrAO9YJdcSL/v8+Ur8d0thT8XmdWAEuH4iGxgzpGBsPNXyGS5nPsW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j24jsTYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70269C32782;
+	Tue, 30 Jul 2024 17:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357686;
-	bh=OLuDiMZDrbBtj2/U5Fmzk0dcyO3E7S0rRIsBMJEW+Qg=;
+	s=korg; t=1722359808;
+	bh=pGbBrexbyea6SbFFQFvw+5MtneppeL60d4/2gIeP2A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJ//xtWLDRcpVefhPnIoFKH+kaM4ZpO7+1vWbHi2sMFB2rAUegi0qnLh4n28UiLDR
-	 NvKTMt3XYG6vENTqYDMCqUkjzaoYFN27lHXuRUceklTERJQkNjmD7M8gl6y445rmmZ
-	 UQRIwww9P6Wm+dfOQdQ+ai1gg6hFqCfrBkHEJnQ4=
+	b=j24jsTYE+3h9QSFVMzHKuIXjxAlv/W3pwy1n6jrY9eRlhtJvGUaWaPTCxdE01ClnX
+	 UjWDYdSY06bzmcdMO6g1PBJy/yCx0fXLi6Bkr3ScGwh8ICQ/gYJ2HR1p7nBc3hr97T
+	 CIIfW+vPVhnd9QpIz9EqVynijZkPc65bACtuouKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 281/568] mtd: make mtd_test.c a separate module
-Date: Tue, 30 Jul 2024 17:46:28 +0200
-Message-ID: <20240730151650.857775187@linuxfoundation.org>
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>, Csókás@web.codeaurora.org
+Subject: [PATCH 6.10 513/809] rtc: interface: Add RTC offset to alarm after fix-up
+Date: Tue, 30 Jul 2024 17:46:29 +0200
+Message-ID: <20240730151744.997765883@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,118 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit a5cf054d325e6f362e82fe6d124a1871a4af8174 ]
+[ Upstream commit 463927a8902a9f22c3633960119410f57d4c8920 ]
 
-This file gets linked into nine different modules, which causes a warning:
+`rtc_add_offset()` is called by `__rtc_read_time()`
+and `__rtc_read_alarm()` to add the RTC's offset to
+the raw read-outs from the device drivers. However,
+in the latter case, a fix-up algorithm is run if
+the RTC device does not report a full `struct rtc_time`
+alarm value. In that case, the offset was forgot to be
+added.
 
-scripts/Makefile.build:236: drivers/mtd/tests/Makefile: mtd_test.o is added to multiple modules: mtd_nandbiterrs mtd_oobtest mtd_pagetest mtd_readtest mtd_speedtest mtd_stresstest mtd_subpagetest mtd_torturetest
+Fixes: fd6792bb022e ("rtc: fix alarm read and set offset")
 
-Make it a separate module instead.
-
-Fixes: a995c792280d ("mtd: tests: rename sources in order to link a helper object")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240529095049.1915393-1-arnd@kernel.org
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Link: https://lore.kernel.org/r/20240619140451.2800578-1-csokas.bence@prolan.hu
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/tests/Makefile   | 34 +++++++++++++++++-----------------
- drivers/mtd/tests/mtd_test.c |  9 +++++++++
- 2 files changed, 26 insertions(+), 17 deletions(-)
+ drivers/rtc/interface.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/tests/Makefile b/drivers/mtd/tests/Makefile
-index 5de0378f90dbd..7dae831ee8b6b 100644
---- a/drivers/mtd/tests/Makefile
-+++ b/drivers/mtd/tests/Makefile
-@@ -1,19 +1,19 @@
- # SPDX-License-Identifier: GPL-2.0
--obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o mtd_test.o
+diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+index 5faafb4aa55cc..cca650b2e0b94 100644
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -274,10 +274,9 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 			return err;
  
--mtd_oobtest-objs := oobtest.o mtd_test.o
--mtd_pagetest-objs := pagetest.o mtd_test.o
--mtd_readtest-objs := readtest.o mtd_test.o
--mtd_speedtest-objs := speedtest.o mtd_test.o
--mtd_stresstest-objs := stresstest.o mtd_test.o
--mtd_subpagetest-objs := subpagetest.o mtd_test.o
--mtd_torturetest-objs := torturetest.o mtd_test.o
--mtd_nandbiterrs-objs := nandbiterrs.o mtd_test.o
-+mtd_oobtest-objs := oobtest.o
-+mtd_pagetest-objs := pagetest.o
-+mtd_readtest-objs := readtest.o
-+mtd_speedtest-objs := speedtest.o
-+mtd_stresstest-objs := stresstest.o
-+mtd_subpagetest-objs := subpagetest.o
-+mtd_torturetest-objs := torturetest.o
-+mtd_nandbiterrs-objs := nandbiterrs.o
-diff --git a/drivers/mtd/tests/mtd_test.c b/drivers/mtd/tests/mtd_test.c
-index c84250beffdc9..f391e0300cdc9 100644
---- a/drivers/mtd/tests/mtd_test.c
-+++ b/drivers/mtd/tests/mtd_test.c
-@@ -25,6 +25,7 @@ int mtdtest_erase_eraseblock(struct mtd_info *mtd, unsigned int ebnum)
+ 		/* full-function RTCs won't have such missing fields */
+-		if (rtc_valid_tm(&alarm->time) == 0) {
+-			rtc_add_offset(rtc, &alarm->time);
+-			return 0;
+-		}
++		err = rtc_valid_tm(&alarm->time);
++		if (!err)
++			goto done;
  
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mtdtest_erase_eraseblock);
- 
- static int is_block_bad(struct mtd_info *mtd, unsigned int ebnum)
- {
-@@ -57,6 +58,7 @@ int mtdtest_scan_for_bad_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mtdtest_scan_for_bad_eraseblocks);
- 
- int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
- 				unsigned int eb, int ebcnt)
-@@ -75,6 +77,7 @@ int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mtdtest_erase_good_eraseblocks);
- 
- int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
- {
-@@ -92,6 +95,7 @@ int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
+ 		/* get the "after" timestamp, to detect wrapped fields */
+ 		err = rtc_read_time(rtc, &now);
+@@ -379,6 +378,8 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 	if (err && alarm->enabled)
+ 		dev_warn(&rtc->dev, "invalid alarm value: %ptR\n",
+ 			 &alarm->time);
++	else
++		rtc_add_offset(rtc, &alarm->time);
  
  	return err;
  }
-+EXPORT_SYMBOL_GPL(mtdtest_read);
- 
- int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
- 		const void *buf)
-@@ -107,3 +111,8 @@ int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
- 
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(mtdtest_write);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("MTD function test helpers");
-+MODULE_AUTHOR("Akinobu Mita");
 -- 
 2.43.0
 
