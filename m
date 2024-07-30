@@ -1,81 +1,91 @@
-Return-Path: <stable+bounces-62822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823E69413BD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F55941439
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B6AE283DF2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 13:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E52B8287FFD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E58B1A08B0;
-	Tue, 30 Jul 2024 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655F41A2551;
+	Tue, 30 Jul 2024 14:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4VbyxtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvbBtKND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7761A08A2;
-	Tue, 30 Jul 2024 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198B5522F;
+	Tue, 30 Jul 2024 14:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722347915; cv=none; b=V6muXu0+ZcZNzAkskwve8AJRdNkuq8Yz7LzAdP39DhLzIWD7JN4mkpySen2Kbbu31SwTo0Oa7Ohz31sp1zDXLVRTt2dw3OC3XefhObtq/nV7tksVlRP3FemcHXyEw+TAc01sW57HWZZhAUkDk9/2Jw2rF2RCmc/nu8JDVZBRvt4=
+	t=1722349409; cv=none; b=uj5zYPV4G2t/USFctbqBAnMp9GqVbsH/h93ZLP32BTk6Qikn0AzmD6bknHFmLzEtDXI8gQ+pjQsfftWWozRI5sjb6Sg1r7YXFoEazV0BfyttZScLuHcTLE1UAoqnUIFLp2aKaj8LvOGeqVos7Na75JL3wrr7NDxwN963mtUwQjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722347915; c=relaxed/simple;
-	bh=9EO7TUH4/VTKpZhDgd/3YXj2w5rnSczeLLp/LyDG7eY=;
+	s=arc-20240116; t=1722349409; c=relaxed/simple;
+	bh=i0ER6Tvx6ftHCDdpxoVZ7IFUk+d001vA/10jeF9Jez4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i9v9Vo3TMd5x4yaXWaOM7FId9Dpz6eyA994VayqJaBe/IzXsoYUJdHSCLfP2O2A0CXb+lDjN037CbHWl9wvh7FWLJKQfSFyq7LT2yZjzan6L+3jzq3kHRufjohFSA32/TQiHVNIAuUWQprp4cWPZrZpfjG5f6XTqgPS1hQeD14g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4VbyxtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99D3C4AF0A;
-	Tue, 30 Jul 2024 13:58:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722347915;
-	bh=9EO7TUH4/VTKpZhDgd/3YXj2w5rnSczeLLp/LyDG7eY=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=YQswvFiOuAeXS6ckBzvtaIJ3rTmSay6glp+J9EJ87cVmWIe+q6fkIC8GuzqJa8tz9nptkf/unxJKVe4m7BqMPU/ZQKizzTGVhSw/yjd02dRII5XjxePZSB68/AZ1QhpXa9ffNMwYdZypPpbGpJ2yHnqbHVeivSy2yFBh3fHuRH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvbBtKND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113F7C4AF0C;
+	Tue, 30 Jul 2024 14:23:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722349408;
+	bh=i0ER6Tvx6ftHCDdpxoVZ7IFUk+d001vA/10jeF9Jez4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C4VbyxtDGRowP/v5PLTeChQGb74svdLb9Vl71UdrnNjZYi6o5n+6XAaktPoXAUfrk
-	 mSZWrFsYqZ/KrftRhv/rrEFl+bngpNHOsst5pYcObrQ799olMmm6NjfOZxlThZ8UbX
-	 +v45cx4IznLrzIZhxheZWF9N6VQFAX//7j8T3/plw7IYY7nLmGaHCRXa+URvKoZqXV
-	 0pxjAQgES1neFQbw/PBRQ2y9Q7ygrlOQS5H4hgaZJ+rMwkFPFbrOTz/uy4JT/M+L12
-	 8GVo8SfQgofXr3q9famSBB7kIGnC0PLpcON5LMrFW7B2CKxxoemWKfLskzNhF8OGtf
-	 Jwe4rOeYrEdgg==
-Date: Tue, 30 Jul 2024 09:58:33 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Huang Rui <ray.huang@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: Re: Patch "cpufreq/amd-pstate-ut: Convert nominal_freq to khz during
- comparisons" has been added to the 6.6-stable tree
-Message-ID: <ZqjxiW_Q5WLkEHOB@sashalap>
-References: <20240727143801.959573-1-sashal@kernel.org>
- <dc46a633-f19b-4216-8747-e0511e7d8503@amd.com>
+	b=NvbBtKND9TY0/CkXohua22qv/7FyqryOimZS3JShkq0xtU8zwqgRXGSOUEiFRMGcC
+	 GbA8FaZ/zYSw3JycfhyvqJVZW5KIqvczEjIfwcnhzx1Av8VXU2x7koyvSK8eXtLUVr
+	 BM5sM31ujzRvHfJb7szLeshP5SZnkw6uZROJ36NQ=
+Date: Tue, 30 Jul 2024 16:23:25 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+Cc: johannes@sipsolutions.net, sashal@kernel.org,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	javier.carrasco.cruz@gmail.com, skhan@linuxfoundation.org,
+	stable@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
+	syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+Subject: Re: [PATCH] wifi: mac80211: check basic rates validity
+Message-ID: <2024073014-borrowing-justifier-18c8@gregkh>
+References: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dc46a633-f19b-4216-8747-e0511e7d8503@amd.com>
+In-Reply-To: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
 
-On Sat, Jul 27, 2024 at 08:25:53PM +0530, Dhananjay Ugwekar wrote:
->Hello,
->
->Please note that, this specific commit causes a regression in kernels older than 6.9.y,
->it is only needed after "cpufreq: amd-pstate: Unify computation of {max,min,nominal,lowest_nonlinear}_freq"
->got merged, so please do not port it back to kernels older than that.
+On Mon, Jul 29, 2024 at 03:43:18PM +0200, Vincenzo Mezzela wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
+> 
+> When userspace sets basic rates, it might send us some rates
+> list that's empty or consists of invalid values only. We're
+> currently ignoring invalid values and then may end up with a
+> rates bitmap that's empty, which later results in a warning.
+> 
+> Reject the call if there were no valid rates.
+> 
+> [ Conflict resolution involved adjusting the patch to accommodate
+> changes in the function signature of ieee80211_parse_bitrates and
+> ieee80211_check_rate_mask ]
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Reported-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+> Tested-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
+> Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+> ---
+> Hi,
+> please note that a backport of the same patch for v5.15 is available at
+> [1].
 
-I'll drop it from <6.10. Thanks!
+Please resend [1] as it's gone from my queue.
 
--- 
-Thanks,
-Sasha
+greg k-h
 
