@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AC8941C47
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834FE941B15
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2AB282249
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A32DB21C04
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF089188003;
-	Tue, 30 Jul 2024 17:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31BB183CDB;
+	Tue, 30 Jul 2024 16:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCzdo72Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnqttdW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC441A6192;
-	Tue, 30 Jul 2024 17:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEB71A6192;
+	Tue, 30 Jul 2024 16:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359129; cv=none; b=qHWtUdPNEx113romNu0EyvxN+fGHbP+5658tqwj6DTnhstLn6K4ujglnXmnSgRJv3KEbilJEz3u0BYHfLFu420CdWz0q23mSuSpyYTCsmaS0cR5EFJylB1K4NxvTa0zOPt2NnQBSdM+lzsrN/H/lkD4dobZoVlJMKVofXaUGK/g=
+	t=1722357617; cv=none; b=BWyYnRbc45dRC94eGYfYQb8YGFiSWU90yITFXB7mcWvBC+v3P3csBF9F6Im9dVBG1iDvz608W2Y9m3OlnmTpgl7T6l1LNQhO1nsv4tDA/XfiMJtZpzY/3+LpgRBDUcRRZM++xmHKhS1MYQV7/bQ9j6yIo2AlHj7pakvvXujA4U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359129; c=relaxed/simple;
-	bh=Fx+Mq7pl3sUIwLA12lVQpVPXeAdHhbNJ99pJi3V0IsQ=;
+	s=arc-20240116; t=1722357617; c=relaxed/simple;
+	bh=u9SmFqfJ5OxDBeGI3SaypfMZXiZeLphbZuhdderBdcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKORA3D6Bd5/8ENPkRhrnn6aAJYp3QNxrUP08vkNYdO/luzZNcJG/7U3jw/UqchfmqSvGpQ4RH6LtbxLN7D7Kgv/9bHHdw4u8fbHM2odFIQS2ldqn4l6hyuqHOXYy4sgiaZKdkoYfyrxrgFMpbBK8SITEOS0uY3HKUXQ4T2Fy04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCzdo72Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DB9C32782;
-	Tue, 30 Jul 2024 17:05:29 +0000 (UTC)
+	 MIME-Version; b=aFOpSEOjDU9VNLQQ2h0FHa3En9TmYKBAhKq8d28E9p5Dd4Ru85aAfjQwW8jJIwRieq7n22lXoWi9KlfdZhR8zaexRMu/bQWvaoJuLPBYJJJCVr0+cM42ZoKfA0RlrAcJnlAkMD44Y5T64hOkdsjt+bKcDhOmHH2NhSQ41JL419Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnqttdW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D037AC32782;
+	Tue, 30 Jul 2024 16:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359129;
-	bh=Fx+Mq7pl3sUIwLA12lVQpVPXeAdHhbNJ99pJi3V0IsQ=;
+	s=korg; t=1722357617;
+	bh=u9SmFqfJ5OxDBeGI3SaypfMZXiZeLphbZuhdderBdcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oCzdo72ZM7fsf+cJTrKab7Bs+HERCrkd8z+3HDMkc3pvQfu7Nq/aGMncX5xXcEVv7
-	 mjK5EVTV2QkRykulwBja9B2Rham6syrqvW3jyR+W2NJehKVyVyZmpd4kyP4Yj66vlb
-	 OfT7fAim/TOh9zNMALEkwv2+DrP9QjbJnnqJTs1k=
+	b=OnqttdW9n++878O/0zBvrLmx/hgbTYFirDMJ8M0442pGOm+eC4L8TlNp2rqvA1Nh8
+	 skJ3XWMf1KsOHvmSzxUhsZLIEhPweh/H0vEFPgI58Ck5BaFU5DK65Av2WXPMRSJQot
+	 fmF65Q3Qt2ihJ7Jp61GGqzWJcVBNZQNUnNKlFu6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 435/568] ASoC: fsl: fsl_qmc_audio: Check devm_kasprintf() returned value
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Michal Simek <michal.simek@amd.com>
+Subject: [PATCH 6.1 309/440] drivers: soc: xilinx: check return status of get_api_version()
 Date: Tue, 30 Jul 2024 17:49:02 +0200
-Message-ID: <20240730151656.872637842@linuxfoundation.org>
+Message-ID: <20240730151627.895468889@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
 
-commit e62599902327d27687693f6e5253a5d56583db58 upstream.
+commit 9b003e14801cf85a8cebeddc87bc9fc77100fdce upstream.
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked.
+Currently return status is not getting checked for get_api_version
+and because of that for x86 arch we are getting below smatch error.
 
-Fix this lack and check the returned value.
+    CC      drivers/soc/xilinx/zynqmp_power.o
+drivers/soc/xilinx/zynqmp_power.c: In function 'zynqmp_pm_probe':
+drivers/soc/xilinx/zynqmp_power.c:295:12: warning: 'pm_api_version' is
+used uninitialized [-Wuninitialized]
+    295 |         if (pm_api_version < ZYNQMP_PM_VERSION)
+        |            ^
+    CHECK   drivers/soc/xilinx/zynqmp_power.c
+drivers/soc/xilinx/zynqmp_power.c:295 zynqmp_pm_probe() error:
+uninitialized symbol 'pm_api_version'.
 
-Fixes: 075c7125b11c ("ASoC: fsl: Add support for QMC audio")
+So, check return status of pm_get_api_version and return error in case
+of failure to avoid checking uninitialized pm_api_version variable.
+
+Fixes: b9b3a8be28b3 ("firmware: xilinx: Remove eemi ops for get_api_version")
+Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://patch.msgid.link/20240701113038.55144-2-herve.codina@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240515112345.24673-1-jay.buddhabhatti@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_qmc_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/xilinx/zynqmp_power.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
-index bfaaa451735b..dd90ef16fa97 100644
---- a/sound/soc/fsl/fsl_qmc_audio.c
-+++ b/sound/soc/fsl/fsl_qmc_audio.c
-@@ -604,6 +604,8 @@ static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *
+--- a/drivers/soc/xilinx/zynqmp_power.c
++++ b/drivers/soc/xilinx/zynqmp_power.c
+@@ -187,7 +187,9 @@ static int zynqmp_pm_probe(struct platfo
+ 	u32 pm_api_version;
+ 	struct mbox_client *client;
  
- 	qmc_dai->name = devm_kasprintf(qmc_audio->dev, GFP_KERNEL, "%s.%d",
- 				       np->parent->name, qmc_dai->id);
-+	if (!qmc_dai->name)
-+		return -ENOMEM;
+-	zynqmp_pm_get_api_version(&pm_api_version);
++	ret = zynqmp_pm_get_api_version(&pm_api_version);
++	if (ret)
++		return ret;
  
- 	qmc_dai->qmc_chan = devm_qmc_chan_get_byphandle(qmc_audio->dev, np,
- 							"fsl,qmc-chan");
--- 
-2.45.2
-
+ 	/* Check PM API version number */
+ 	if (pm_api_version < ZYNQMP_PM_VERSION)
 
 
 
