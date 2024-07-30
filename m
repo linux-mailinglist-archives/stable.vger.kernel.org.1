@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F6A94162F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:57:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966E6941632
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F459285FA8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:57:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F47D1F25520
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2F41BA86C;
-	Tue, 30 Jul 2024 15:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F9E1BA874;
+	Tue, 30 Jul 2024 15:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2Y5i/2W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TehkgvqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6981B1B583F;
-	Tue, 30 Jul 2024 15:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFDE1B583F;
+	Tue, 30 Jul 2024 15:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355027; cv=none; b=pgzqtOuWwkamPGvW644JtH5aHAu6YaKDB12BK8F006sge5JS2276CrVqAmzA/NViUPSAp0wqgTA3MFxSCrv97xRtlzkOgUkKAgL9xRdUjEtTNJYTOFB4e93txFnn8Ujo9JeRdMl1bSqtyLnzUYPoEXA5QD/PkbTcaQpH8FavCvI=
+	t=1722355038; cv=none; b=VGWi8LAi7PJufi7ZxJj8Lx3n9hwgKZilhGkyMj1domh/GJW4OQmFcThEksZorIb4i0zWXpOxj4WgpHG5XkyX3o9a0YMYyCmeXMH375Ami3huhtNWatWfS+/i7mo/8AlLW+RT7vUPVFNyOproZ+iAlziEJuHMEZRsB6mF7I97IQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355027; c=relaxed/simple;
-	bh=a1QqjPIujQUT2ZOSoWVi3uE1ZejXXWyACIKSiU7UN34=;
+	s=arc-20240116; t=1722355038; c=relaxed/simple;
+	bh=+ylN1wZzQSWllbQU2q1hzPfuAXhJobeuZngNpsnBHts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2DfwCHjjlFgfzODSxr8yUuhkCcTbGl/43h1iBK2JOXOHcOUL2sL+eCPGS403+CRKyrr3MeaDyWbD8rTLRRk1uf5hSUI3hq2Z0FhdoZFSpew5D1S4FHYz8lI4kxHG96NDJI+IxjLrssReae7D6bt/+MQACgFDNvbb03/of43Jb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2Y5i/2W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB36BC32782;
-	Tue, 30 Jul 2024 15:57:06 +0000 (UTC)
+	 MIME-Version; b=TkygjQvbfLqAvbGujPQ0rC2HhCAeLGmVryhA1/X25rXuQ0ynq0z0W7S0fS9R6b6qzqQfZpZ3nuUdVd26RPRR+FnOz1MkLGuj5RxLn/+Qjp8bc6CkdagikkOHyut971Yil2laQboP2R6n1wCE/fEf7Q8GJqHpn6vQowNs1xjGe4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TehkgvqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCE0C4AF0A;
+	Tue, 30 Jul 2024 15:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355027;
-	bh=a1QqjPIujQUT2ZOSoWVi3uE1ZejXXWyACIKSiU7UN34=;
+	s=korg; t=1722355037;
+	bh=+ylN1wZzQSWllbQU2q1hzPfuAXhJobeuZngNpsnBHts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2Y5i/2WJIvb7Y9LVNBkDjXOnMB+dc84AduHwzZgLFK2E9gWPS1VLy7zC2K481l+R
-	 oKEfw22CMnj1jfY6MlS7TE1tgOUzCpSfbLqNvRekLQ2WOiRmtMtHjZo6eGjx5s3RNB
-	 YFyvOVXgJQWPYJaTK/x9cEBWJmbHpe/ypsdoecgw=
+	b=TehkgvqK37IhlTdS+btUvk1im8euX5Nmgl3h4OnAz+rHVqGdeom4EtGSFRnrsd4PT
+	 tiZyg3MQ0AxwJXqhNZazfSewjFY4Zd6Id07LKj7QUazpGXIX2r7LKZezmp4UF4Gl5V
+	 ZvnvKe/BQ+YrfoIYf3pujF5ni6G72vL4w9/pBwzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/440] arm64: dts: amlogic: sm1: fix spdif compatibles
-Date: Tue, 30 Jul 2024 17:44:44 +0200
-Message-ID: <20240730151617.757087575@linuxfoundation.org>
+Subject: [PATCH 6.1 052/440] ARM: dts: imx6qdl-kontron-samx6i: fix phy-mode
+Date: Tue, 30 Jul 2024 17:44:45 +0200
+Message-ID: <20240730151617.795163074@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,44 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit b0aba467c329a89e8b325eda0cf60776958353fe ]
+[ Upstream commit 0df3c7d7a73d75153090637392c0b73a63cdc24a ]
 
-The spdif input and output of g12 and sm1 are compatible but
-sm1 should use the related compatible since it exists.
+The i.MX6 cannot add any RGMII delays. The PHY has to add both the RX
+and TX delays on the RGMII interface. Fix the interface mode. While at
+it, use the new phy-connection-type property name.
 
-Fixes: 86f2159468d5 ("arm64: dts: meson-sm1: add spdifin and pdifout nodes")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240625111845.928192-1-jbrunet@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 5694eed98cca ("ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-sm1.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi b/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
-index 80737731af3fe..8bc4ef9d8a61a 100644
---- a/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-sm1.dtsi
-@@ -337,7 +337,7 @@ tdmin_lb: audio-controller@3c0 {
- 		};
+diff --git a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
+index 85aeebc9485dd..d8c1dfb8c9abb 100644
+--- a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
+@@ -259,7 +259,7 @@ smarc_flash: flash@0 {
+ &fec {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet>;
+-	phy-mode = "rgmii";
++	phy-connection-type = "rgmii-id";
+ 	phy-handle = <&ethphy>;
  
- 		spdifin: audio-controller@400 {
--			compatible = "amlogic,g12a-spdifin",
-+			compatible = "amlogic,sm1-spdifin",
- 				     "amlogic,axg-spdifin";
- 			reg = <0x0 0x400 0x0 0x30>;
- 			#sound-dai-cells = <0>;
-@@ -351,7 +351,7 @@ spdifin: audio-controller@400 {
- 		};
- 
- 		spdifout_a: audio-controller@480 {
--			compatible = "amlogic,g12a-spdifout",
-+			compatible = "amlogic,sm1-spdifout",
- 				     "amlogic,axg-spdifout";
- 			reg = <0x0 0x480 0x0 0x50>;
- 			#sound-dai-cells = <0>;
+ 	mdio {
 -- 
 2.43.0
 
