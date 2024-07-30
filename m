@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E43941A2A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FE59419AC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86926B2629C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AB63283681
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED2A1A6195;
-	Tue, 30 Jul 2024 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE08918800D;
+	Tue, 30 Jul 2024 16:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqI08FGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvRG51cO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B321A6192;
-	Tue, 30 Jul 2024 16:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4CA8BE8;
+	Tue, 30 Jul 2024 16:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357292; cv=none; b=rnffh2jCFFJNGfrhF7xV4mh7AQLcmA0Q4hDZTXjOyxbhMdU2bWYjwtc1LX55dyIgbQhjoSTtuLc3rIPqnkkUuxfcqp96wqiqDo0/dBPsIv6Jswbnwu02fJnl0vZguGTBaSF23wz6Y1G3YyGzpxWXYR7Gn5RgYguBCELAw/Pc3EU=
+	t=1722357301; cv=none; b=DunHJcgeYnegd7MgIhgAbxMcokiXK4MYatx8dAJqbV2a3G7d9GWMo8Vy7Gde7J4TzCTlkUviLBZ4AzXekNlijz7TNuSW1EeD4vxjFU9aDcdUdwfJF18TrKBgmeufJdLUV9gfUu0uM4SfpZWZLNCf8zKBwFMsdWSuk4gi8rUg7k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357292; c=relaxed/simple;
-	bh=zbSvtKyvEYYNdRuNgifNq/tLsthosQOB/rdp+2ZTt+s=;
+	s=arc-20240116; t=1722357301; c=relaxed/simple;
+	bh=D6U9LjK+3ObLEljYwknACM18TF7ONF5c+rfGEiE/Tms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqAhfT7fQp251GK5FeatdIH+mdbczojNFw/1xgZ0DlJX1ylMo1drZNu/EPLeLkRBuUrzcrtEmQYtXwxNnwqrn/edz2Sr/esHSg1GbKKEcLZuRZGSIqfM2v5GKG918yL757Y7rU6wlBGt8lazv66drMWwR49Qj5W4959RgGK7mzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqI08FGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688AEC4AF0C;
-	Tue, 30 Jul 2024 16:34:51 +0000 (UTC)
+	 MIME-Version; b=XPmFxmyA42L/r32g06bz3Igb0/RFzqERUB9hC7gTo6s62s0TUxmz+PvhI1l6bkjTj5avegktuv0e7yCYrvPIfwxOQZkOV8Jc4sxdwKgp7GY2tpG8piZ0Wvc7jYXaiJqFhfpsO7fwZMjmzPvCU+bOWTiaZ7lrqUlbcrVXKsJyGYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvRG51cO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236C7C32782;
+	Tue, 30 Jul 2024 16:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357291;
-	bh=zbSvtKyvEYYNdRuNgifNq/tLsthosQOB/rdp+2ZTt+s=;
+	s=korg; t=1722357301;
+	bh=D6U9LjK+3ObLEljYwknACM18TF7ONF5c+rfGEiE/Tms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MqI08FGxDuNnVM/dF/5fh9P+FFvLGkuGemMt+rJ2b2Qoj7f71yR0e4JzONQhtRTHv
-	 SdNtAeigxyq8zAv/d+22WRIdcKaD6r9sNLuyaFurElH15yrAEiF8zhxlAs5/apIMny
-	 VqNmxej/auND8z1xbF3kOFzZYnad44rarAFxi1Bs=
+	b=NvRG51cOSAvSP5adT5jmp6T0vxoR1/TUuDb5ggBgUh03LXlqUma1j4FQcqKf6yCg3
+	 V4TobZoXtYVT37vxNvt1Pi0vWmvTZNoEn0YyQ1+CRcAXl/SQxF7bim0l3G/7cKaj86
+	 1g1uxlzjVlNaUMlFmlgF4HNaPQozWePVKktRbhbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
+	Kees Cook <kees@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/568] mfd: rsmu: Split core code into separate module
-Date: Tue, 30 Jul 2024 17:45:44 +0200
-Message-ID: <20240730151649.144754549@linuxfoundation.org>
+Subject: [PATCH 6.6 238/568] mfd: omap-usb-tll: Use struct_size to allocate tll
+Date: Tue, 30 Jul 2024 17:45:45 +0200
+Message-ID: <20240730151649.184230059@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,59 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit c879a8c39dd55e7fabdd8d13341f7bc5200db377 ]
+[ Upstream commit 40176714c818b0b6a2ca8213cdb7654fbd49b742 ]
 
-Linking a file into two modules can have unintended side-effects
-and produces a W=1 warning:
+Commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+changed the memory allocation of 'tll' to consolidate it into a single
+allocation, introducing an incorrect size calculation.
 
-scripts/Makefile.build:236: drivers/mfd/Makefile: rsmu_core.o is added to multiple modules: rsmu-i2c rsmu-spi
+In particular, the allocation for the array of pointers was converted
+into a single-pointer allocation.
 
-Make this one a separate module instead.
+The memory allocation used to occur in two steps:
 
-Fixes: a1867f85e06e ("mfd: Add Renesas Synchronization Management Unit (SMU) support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240529094856.1869543-1-arnd@kernel.org
+tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
+tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
+                           GFP_KERNEL);
+
+And it turned that into the following allocation:
+
+tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
+                   GFP_KERNEL);
+
+sizeof(tll->ch_clk[nch]) returns the size of a single pointer instead of
+the expected nch pointers.
+
+This bug went unnoticed because the allocation size was small enough to
+fit within the minimum size of a memory allocation for this particular
+case [1].
+
+The complete allocation can still be done at once with the struct_size
+macro, which comes in handy for structures with a trailing flexible
+array.
+
+Fix the memory allocation to obtain the original size again.
+
+Link: https://lore.kernel.org/all/202406261121.2FFD65647@keescook/ [1]
+Fixes: 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+Reviewed-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Fixes: commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+Link: https://lore.kernel.org/r/20240626-omap-usb-tll-counted_by-v2-1-4bedf20d1b51@gmail.com
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/Makefile    | 6 ++----
- drivers/mfd/rsmu_core.c | 2 ++
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/omap-usb-tll.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index c66f07edcd0e6..db1ba39de3b59 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -280,7 +280,5 @@ obj-$(CONFIG_MFD_INTEL_M10_BMC_PMCI)   += intel-m10-bmc-pmci.o
- obj-$(CONFIG_MFD_ATC260X)	+= atc260x-core.o
- obj-$(CONFIG_MFD_ATC260X_I2C)	+= atc260x-i2c.o
+diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+index 906353735c782..5ba2b2352749d 100644
+--- a/drivers/mfd/omap-usb-tll.c
++++ b/drivers/mfd/omap-usb-tll.c
+@@ -230,8 +230,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+ 		break;
+ 	}
  
--rsmu-i2c-objs			:= rsmu_core.o rsmu_i2c.o
--rsmu-spi-objs			:= rsmu_core.o rsmu_spi.o
--obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu-i2c.o
--obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu-spi.o
-+obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu_i2c.o rsmu_core.o
-+obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu_spi.o rsmu_core.o
-diff --git a/drivers/mfd/rsmu_core.c b/drivers/mfd/rsmu_core.c
-index 29437fd0bd5bf..fd04a6e5dfa31 100644
---- a/drivers/mfd/rsmu_core.c
-+++ b/drivers/mfd/rsmu_core.c
-@@ -78,11 +78,13 @@ int rsmu_core_init(struct rsmu_ddata *rsmu)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(rsmu_core_init);
- 
- void rsmu_core_exit(struct rsmu_ddata *rsmu)
- {
- 	mutex_destroy(&rsmu->lock);
- }
-+EXPORT_SYMBOL_GPL(rsmu_core_exit);
- 
- MODULE_DESCRIPTION("Renesas SMU core driver");
- MODULE_LICENSE("GPL");
+-	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
+-			   GFP_KERNEL);
++	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
+ 	if (!tll) {
+ 		pm_runtime_put_sync(dev);
+ 		pm_runtime_disable(dev);
 -- 
 2.43.0
 
