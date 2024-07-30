@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-64443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909B1941DDC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43FE9941B97
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B6ED289292
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 756B01C231E0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C1A1A76DC;
-	Tue, 30 Jul 2024 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1A5189537;
+	Tue, 30 Jul 2024 16:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pbf0Vc58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfAfpNja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169601A76CB;
-	Tue, 30 Jul 2024 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31562184549;
+	Tue, 30 Jul 2024 16:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360139; cv=none; b=qDU8lXeRa9THRuxFTA0j3GUVcsshZV7AoO+s9NyNFh93ngbWlwOErLlv8uHtkJaaPxJUljpC7g05xd35DXKfErq6P0sq+UNO2/Sk2lYZkEAIvPNrmf+n5BidYmoo8gi0jrB5g5THrehl8CpvowkpMGUrYd03NQD7WpRpPDd8olc=
+	t=1722358605; cv=none; b=UqKPdEFZ+QCLfGxCxOIHvHuoyK9iX+eI7blUqzMzcFgWYxy9fXy5oc8AxhcvxFMkmmE/bE1Vl9GKoCwMs3cBw26GORMMdpTwm9qoBOofeqJvhKBqMkFEg06PriQEXBD6i2/bYx46Ox2FVjbn9Ztu8r3Hlnh/aAaPMYd3OanufDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360139; c=relaxed/simple;
-	bh=vaAwIRjFm5fRsTmWch3dd5P0AXwvvqfDSW/02FY7AVM=;
+	s=arc-20240116; t=1722358605; c=relaxed/simple;
+	bh=U81QzIDRW9gJ1TrbbYApO5o5FlYW1ThMCA0Ekltb0Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tC+0ON+oSn0LLg4iqnSCjExq4+uHReaUlPqOL4B1scocCzFryQf9v95t2FyRMcVti3j7Z+Kfyaq6+05Kea8bnYMGdpptRUexIb3LoRH7209ryV2/MjCyxBUpkWA1C2IHJE6rhEuqlI6x/B9IbR7cq4nJMLwe8A7AhCl8rXtJMrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pbf0Vc58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0E2C32782;
-	Tue, 30 Jul 2024 17:22:18 +0000 (UTC)
+	 MIME-Version; b=Ri3N62cQ/7u946JTfhEQMSFYUtdqYOG0pIIOCTHzGaZVzDkK4iAXGWJrdhJAIxEeCsY74ipxPhwTg6Cei+/q+MCxBk37Mhl+FZBUejr79eFOcA14mk6eqDRPq/CIUavNjJIXrRHmtqhrhfsXbzIUkFa1npmti3b2OtQPAdwisis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfAfpNja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF431C32782;
+	Tue, 30 Jul 2024 16:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360139;
-	bh=vaAwIRjFm5fRsTmWch3dd5P0AXwvvqfDSW/02FY7AVM=;
+	s=korg; t=1722358605;
+	bh=U81QzIDRW9gJ1TrbbYApO5o5FlYW1ThMCA0Ekltb0Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pbf0Vc582xHX3SrZHpgh8NAmK0mni0xqGBffVuSVS7QUbjza5aTQTef1/JOA8MI/Y
-	 ia8K85+2CaQkfuxTv/MAS7iCXz05hrbHSrXrVd/NZ2RJB1+/BtZ7XI6OlplPaGgghZ
-	 mzwSjgUrPX93ftXoxofhbBVB+L7Ai0Cw0G1Xzqmc=
+	b=xfAfpNjaGJuSPIhOWm/BYdIlD8IS7UHJcJir8xWoUoZfBCJSUJhrC78btVe/ZLwuj
+	 IHFh39Sq4YJx4v5OLPObXexaCaFTn51P5m4ZqJlwhmrt3IFM36AlGPNvTb3fzwu8Lq
+	 ekb1KGzhIf2ztoSVtmAsueXfrAtTkfJQ+TO6rueY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Yao <hao.yao@intel.com>,
-	Wentong Wu <wentong.wu@intel.com>,
-	Jason Chen <jason.z.chen@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.10 609/809] media: ivsc: csi: add separate lock for v4l2 control handler
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.6 378/568] char: tpm: Fix possible memory leak in tpm_bios_measurements_open()
 Date: Tue, 30 Jul 2024 17:48:05 +0200
-Message-ID: <20240730151748.890384190@linuxfoundation.org>
+Message-ID: <20240730151654.639188160@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentong Wu <wentong.wu@intel.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit c6be6471004e0e4d10d0514146d8c41550823d63 upstream.
+commit 5d8e2971e817bb64225fc0b6327a78752f58a9aa upstream.
 
-There're possibilities that privacy status change notification happens
-in the middle of the ongoing mei command which already takes the command
-lock, but v4l2_ctrl_s_ctrl() would also need the same lock prior to this
-patch, so this may results in circular locking problem. This patch adds
-one dedicated lock for v4l2 control handler to avoid described issue.
+In tpm_bios_measurements_open(), get_device() is called on the device
+embedded in struct tpm_chip. In the error path, however, put_device() is
+not called. This results in a reference count leak, which prevents the
+device from being properly released. This commit makes sure to call
+put_device() when the seq_open() call fails.
 
-Fixes: 29006e196a56 ("media: pci: intel: ivsc: Add CSI submodule")
-Cc: stable@vger.kernel.org # for 6.6 and later
-Reported-by: Hao Yao <hao.yao@intel.com>
-Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-Tested-by: Jason Chen <jason.z.chen@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: stable@vger.kernel.org # +v4.18
+Fixes: 9b01b5356629 ("tpm: Move shared eventlog functions to common.c")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/intel/ivsc/mei_csi.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/char/tpm/eventlog/common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/pci/intel/ivsc/mei_csi.c
-+++ b/drivers/media/pci/intel/ivsc/mei_csi.c
-@@ -126,6 +126,8 @@ struct mei_csi {
- 	struct v4l2_ctrl_handler ctrl_handler;
- 	struct v4l2_ctrl *freq_ctrl;
- 	struct v4l2_ctrl *privacy_ctrl;
-+	/* lock for v4l2 controls */
-+	struct mutex ctrl_lock;
- 	unsigned int remote_pad;
- 	/* start streaming or not */
- 	int streaming;
-@@ -559,11 +561,13 @@ static int mei_csi_init_controls(struct
- 	u32 max;
- 	int ret;
+--- a/drivers/char/tpm/eventlog/common.c
++++ b/drivers/char/tpm/eventlog/common.c
+@@ -47,6 +47,8 @@ static int tpm_bios_measurements_open(st
+ 	if (!err) {
+ 		seq = file->private_data;
+ 		seq->private = chip;
++	} else {
++		put_device(&chip->dev);
+ 	}
  
-+	mutex_init(&csi->ctrl_lock);
-+
- 	ret = v4l2_ctrl_handler_init(&csi->ctrl_handler, 2);
- 	if (ret)
- 		return ret;
- 
--	csi->ctrl_handler.lock = &csi->lock;
-+	csi->ctrl_handler.lock = &csi->ctrl_lock;
- 
- 	max = ARRAY_SIZE(link_freq_menu_items) - 1;
- 	csi->freq_ctrl = v4l2_ctrl_new_int_menu(&csi->ctrl_handler,
-@@ -755,6 +759,7 @@ err_entity:
- 
- err_ctrl_handler:
- 	v4l2_ctrl_handler_free(&csi->ctrl_handler);
-+	mutex_destroy(&csi->ctrl_lock);
- 	v4l2_async_nf_unregister(&csi->notifier);
- 	v4l2_async_nf_cleanup(&csi->notifier);
- 
-@@ -774,6 +779,7 @@ static void mei_csi_remove(struct mei_cl
- 	v4l2_async_nf_unregister(&csi->notifier);
- 	v4l2_async_nf_cleanup(&csi->notifier);
- 	v4l2_ctrl_handler_free(&csi->ctrl_handler);
-+	mutex_destroy(&csi->ctrl_lock);
- 	v4l2_async_unregister_subdev(&csi->subdev);
- 	v4l2_subdev_cleanup(&csi->subdev);
- 	media_entity_cleanup(&csi->subdev.entity);
+ 	return err;
 
 
 
