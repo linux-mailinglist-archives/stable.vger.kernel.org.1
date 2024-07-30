@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B06C9416A7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECAE9416AB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B69E286E41
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C05B928720D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60275187FFB;
-	Tue, 30 Jul 2024 16:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C962187FEC;
+	Tue, 30 Jul 2024 16:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDcbNTjP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaxUJudF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E8C188003;
-	Tue, 30 Jul 2024 16:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199AF183CA0;
+	Tue, 30 Jul 2024 16:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355340; cv=none; b=N+IDpZ4zSmZ/cDt0G0BynEHIYpFotqKmfTNQBIh7BophG9beoTZ2EPgIRdljpavDKdV8NNaL4s8WRTRYd+mWNEmVWjbZ9X39XU1iwlNxppGU6NoL+Lz0RSzX5b/eW8n28W4ZgFtV5PWBREa5SwbhTE2y2sKR/8mj32FOYatQ1EU=
+	t=1722355354; cv=none; b=XP6NBYzkJevXhOh6TxD00+91QXuEJl/PjKUA/ByEDpbkpWDRppZ7lrDykMZ9HBo/uFHMY3Ohbfo2uFbHC/OYwPKGTIHZbbbwDlKLt/YJFZfvNaA6SzF6s6OKSYE7/8xMFiAVT2Ugn88mF6e6G+dA+TOByUk0pfo3Cot3TrwinL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355340; c=relaxed/simple;
-	bh=68slAEprQ+S4Bvmm4ZtZ8yhZj62sYEYC+YybOuhbwKE=;
+	s=arc-20240116; t=1722355354; c=relaxed/simple;
+	bh=fmFKTtRRieYv5TJm1WDbHCZCHQvmsaoiVHo92bxXIuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmjjKX4kekMGtsE+V6HpAdgouqN8niFPE8sFS5FsHK+jsKYCQm5nkiJQdQ1sNnV6RX6Ic27iBafXsXM2OFae+oMJ91JyxSkHg68XNHi8nIGUTR8EtF8IUnh1lSbLaAsuD+RlNkFSkDeCMz/eag2PKJtv9yPT3IfJ2ajQcTYzfhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDcbNTjP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF9AC32782;
-	Tue, 30 Jul 2024 16:02:19 +0000 (UTC)
+	 MIME-Version; b=RcQNWOnIreyMrGANEGpAlzOJrWhXVijse022bDIxOvECmsm5EL7aR38AYWtJRoOdU3Q2NmCadIqmMUoYirTdNIchmXWUUPeZ2jHFyq3P7lLN80pYIJWBcQictNPk2kIc0XmuTlzmYgMk2Vk5DTcGieZoUpH2aGrfg2vKU29nzNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaxUJudF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78075C32782;
+	Tue, 30 Jul 2024 16:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355339;
-	bh=68slAEprQ+S4Bvmm4ZtZ8yhZj62sYEYC+YybOuhbwKE=;
+	s=korg; t=1722355354;
+	bh=fmFKTtRRieYv5TJm1WDbHCZCHQvmsaoiVHo92bxXIuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDcbNTjP11ZkenCjmJf6e2cbchzLkf81CeTbjl1NFNuLDrYPj9hkYhxZUYzOeAXyr
-	 +8XnUZF6qoRMI2hZYc3QcwRPxIJp3yBjxdV/XZcxdoHM7V4WoG/vLxThuRuFK0iuUq
-	 9YUlHj+7+7w7ayrgshhDxCUSkZrrGam7E/IhCzLc=
+	b=PaxUJudFvFpPNg0mzRFf99Kh06tONEWzT+KFkyfkrUFvKf77KseU4kDtJgg/BmDbI
+	 z+7S7IYM51vPY9TMHRn7c5j798ONKkwsQ1ZIUExOJXb6IlrWq3HpF3lGWED5Qr6964
+	 kGg/YWs+GopPLvqScHl5QJBDCsdtDtEUk3eV1/Cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 042/809] arm64: dts: qcom: sc8180x: Correct PCIe slave ports
-Date: Tue, 30 Jul 2024 17:38:38 +0200
-Message-ID: <20240730151726.311228495@linuxfoundation.org>
+Subject: [PATCH 6.10 043/809] arm64: dts: qcom: sc7280: Remove CTS/RTS configuration
+Date: Tue, 30 Jul 2024 17:38:39 +0200
+Message-ID: <20240730151726.353815935@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,57 +66,134 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Viken Dadhaniya <quic_vdadhani@quicinc.com>
 
-[ Upstream commit dc402e084a9e0cc714ffd6008dce3c63281b8142 ]
+[ Upstream commit 2b96407b8f10f1d71b58cb35704eb91b8ea78db1 ]
 
-The interconnects property was clearly copy-pasted between the 4 PCIe
-controllers, giving all four the cpu-pcie path destination of SLAVE_0.
+For IDP variant, GPIO 20/21 is used by camera use case and camera
+driver is not able acquire these GPIOs as it is acquired by UART5
+driver as RTS/CTS pin.
 
-The four ports are all associated with CN0, but update the property for
-correctness sake.
+UART5 is designed for debug UART for all the board variants of the
+sc7280 chipset and RTS/CTS configuration is not required for debug
+uart usecase.
 
-Fixes: d20b6c84f56a ("arm64: dts: qcom: sc8180x: Add PCIe instances")
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240525-sc8180x-pcie-interconnect-port-fix-v1-1-f86affa02392@quicinc.com
+Remove CTS/RTS configuration for UART5 instance and change compatible
+string to debug UART.
+
+Remove overwriting compatible property from individual target specific
+file as it is not required.
+
+Fixes: 38cd93f413fd ("arm64: dts: qcom: sc7280: Update QUPv3 UART5 DT node")
+Signed-off-by: Viken Dadhaniya <quic_vdadhani@quicinc.com>
+Link: https://lore.kernel.org/r/20240424075853.11445-1-quic_vdadhani@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts |  1 -
+ arch/arm64/boot/dts/qcom/qcm6490-idp.dts           |  1 -
+ arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts       |  1 -
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi           |  1 -
+ arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi         |  1 -
+ arch/arm64/boot/dts/qcom/sc7280.dtsi               | 14 ++------------
+ 6 files changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index 581a70c34fd29..456ec81327021 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -1890,7 +1890,7 @@ pcie3: pcie@1c08000 {
- 			power-domains = <&gcc PCIE_3_GDSC>;
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index f3432701945f7..8cd2fe80dbb2c 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -864,7 +864,6 @@ sw_ctrl_default: sw-ctrl-default-state {
+ };
  
- 			interconnects = <&aggre2_noc MASTER_PCIE_3 0 &mc_virt SLAVE_EBI_CH0 0>,
--					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
-+					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_3 0>;
- 			interconnect-names = "pcie-mem", "cpu-pcie";
+ &uart5 {
+-	compatible = "qcom,geni-debug-uart";
+ 	status = "okay";
+ };
  
- 			phys = <&pcie3_phy>;
-@@ -2012,7 +2012,7 @@ pcie1: pcie@1c10000 {
- 			power-domains = <&gcc PCIE_1_GDSC>;
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-idp.dts b/arch/arm64/boot/dts/qcom/qcm6490-idp.dts
+index 47ca2d0003414..107302680f562 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-idp.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-idp.dts
+@@ -658,7 +658,6 @@ &tlmm {
+ };
  
- 			interconnects = <&aggre2_noc MASTER_PCIE_1 0 &mc_virt SLAVE_EBI_CH0 0>,
--					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
-+					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_1 0>;
- 			interconnect-names = "pcie-mem", "cpu-pcie";
+ &uart5 {
+-	compatible = "qcom,geni-debug-uart";
+ 	status = "okay";
+ };
  
- 			phys = <&pcie1_phy>;
-@@ -2134,7 +2134,7 @@ pcie2: pcie@1c18000 {
- 			power-domains = <&gcc PCIE_2_GDSC>;
+diff --git a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
+index a085ff5b5fb21..7256b51eb08f9 100644
+--- a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
++++ b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
+@@ -632,7 +632,6 @@ &tlmm {
+ };
  
- 			interconnects = <&aggre2_noc MASTER_PCIE_2 0 &mc_virt SLAVE_EBI_CH0 0>,
--					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_0 0>;
-+					<&gem_noc MASTER_AMPSS_M0 0 &config_noc SLAVE_PCIE_2 0>;
- 			interconnect-names = "pcie-mem", "cpu-pcie";
+ &uart5 {
+-	compatible = "qcom,geni-debug-uart";
+ 	status = "okay";
+ };
  
- 			phys = <&pcie2_phy>;
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi b/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
+index a0059527d9e48..7370aa0dbf0e3 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-idp.dtsi
+@@ -495,7 +495,6 @@ wcd_tx: codec@0,3 {
+ };
+ 
+ &uart5 {
+-	compatible = "qcom,geni-debug-uart";
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi b/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
+index f9b96bd2477ea..7d1d5bbbbbd95 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi
+@@ -427,7 +427,6 @@ wcd_tx: codec@0,3 {
+ };
+ 
+ uart_dbg: &uart5 {
+-	compatible = "qcom,geni-debug-uart";
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 2f7780f629ac5..c4a05d7b7ce65 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -1440,12 +1440,12 @@ spi5: spi@994000 {
+ 			};
+ 
+ 			uart5: serial@994000 {
+-				compatible = "qcom,geni-uart";
++				compatible = "qcom,geni-debug-uart";
+ 				reg = <0 0x00994000 0 0x4000>;
+ 				clocks = <&gcc GCC_QUPV3_WRAP0_S5_CLK>;
+ 				clock-names = "se";
+ 				pinctrl-names = "default";
+-				pinctrl-0 = <&qup_uart5_cts>, <&qup_uart5_rts>, <&qup_uart5_tx>, <&qup_uart5_rx>;
++				pinctrl-0 = <&qup_uart5_tx>, <&qup_uart5_rx>;
+ 				interrupts = <GIC_SPI 606 IRQ_TYPE_LEVEL_HIGH>;
+ 				power-domains = <&rpmhpd SC7280_CX>;
+ 				operating-points-v2 = <&qup_opp_table>;
+@@ -5408,16 +5408,6 @@ qup_uart4_rx: qup-uart4-rx-state {
+ 				function = "qup04";
+ 			};
+ 
+-			qup_uart5_cts: qup-uart5-cts-state {
+-				pins = "gpio20";
+-				function = "qup05";
+-			};
+-
+-			qup_uart5_rts: qup-uart5-rts-state {
+-				pins = "gpio21";
+-				function = "qup05";
+-			};
+-
+ 			qup_uart5_tx: qup-uart5-tx-state {
+ 				pins = "gpio22";
+ 				function = "qup05";
 -- 
 2.43.0
 
