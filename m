@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-64326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640FD941D7F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1876941EB8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BAF7B29BDE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C2641F23D01
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0741A76C3;
-	Tue, 30 Jul 2024 17:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B854166315;
+	Tue, 30 Jul 2024 17:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N38a3GL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtKDzHQ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C171A76A2;
-	Tue, 30 Jul 2024 17:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7551A76A5;
+	Tue, 30 Jul 2024 17:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359749; cv=none; b=BhU/LBMGXvhsAK0YT0Uz89NEHZowzz62FssjiJKyTsjAXUQzXmNPDR8CJaS71q8PIYr1BNtpD/d1T94QscggQLtdfGi99LrxxIavnS5x8E6uYijLeueuCu08pVpgl2sn+yuBq+h2abxRoJku40jPnG1NaLNGzo4pd/VRWr9hfbM=
+	t=1722360742; cv=none; b=pqkqZyIxfPyztWuhEqZom5XpNfyN7l8cgt/OdVbychBChQYw9yXADkEnZIdMYeV5OofWg/Bkxb3GblK22urIbC5TRHLKiXphI+bjsQDKh7kqarTy5/BGZ55bztbfQb8ItrXgeHlf1Ba1dM+HWOa6cvPlCUukpivBrac2WPot2TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359749; c=relaxed/simple;
-	bh=ubgpjZGd6IqG6YR2ZMqDe1y3pyPFDQIyt7qCwJglV8A=;
+	s=arc-20240116; t=1722360742; c=relaxed/simple;
+	bh=k/qQGen56E0Tv6t+JRI1/QRFeVvTHn6BHEco+PqueM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJLoShBVtTJxxw0rzQ5SaokTmD0dtCWuBPyu2Pmg0KfKBpV0R2BZM+aDgHAyAytE1iKAYCeKxQMv4qX2ReCjxYr81hRf/OSlAwU+CeLzRSk5kH4gjLBE7R4UGwjjfhjCCt3+lM5MgtXq61klCJNiU3gXScEAQTg+fYawbre6Xm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N38a3GL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2072CC32782;
-	Tue, 30 Jul 2024 17:15:48 +0000 (UTC)
+	 MIME-Version; b=jdSWvoCp72PI5E3No5n15n8JkitDjZ44aclBz7pNSvBhWIYB85JVUK1LGm0h29OAr/gkfCK/kTmi3hO5hbtj1mQ8GftyxmdnKk0IJ+KqjJAYIfEOwEu4WYFwCuwmB5RTbod4B9GH6fmaDhLoUyfyG+tjMyrHZcTAobilY6sPAHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtKDzHQ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5258DC32782;
+	Tue, 30 Jul 2024 17:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359749;
-	bh=ubgpjZGd6IqG6YR2ZMqDe1y3pyPFDQIyt7qCwJglV8A=;
+	s=korg; t=1722360741;
+	bh=k/qQGen56E0Tv6t+JRI1/QRFeVvTHn6BHEco+PqueM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N38a3GL1TFiXsFnTnq2K6IDeWHGvzqrk9MgbjCoKA/7YDCZT7gzymYkQ4vfpWfoyx
-	 WprTbtxyexfCn71ywj8Er5HuaZF+dIqJgBWWX0tUaI2CJVssFK9eSbhmWfEHqjkuZm
-	 fisNaC93mYQeDUtIVbYVy3C6uAJMYShhF+rf32YU=
+	b=VtKDzHQ32DIhauQ2Mu/r5gSNVj1n71i+ysgDcN1dCES3XrlEUEA6S6UnooAM7xjav
+	 2cX9Ix/9xSIlx963eoa7+uWRHGQERSnks/YY09XlCzxxGuUu/5nea28VAL2HTjfKGi
+	 o4sJ7S+tIuD7h33Iy4Mf16uv9MrmVZUt45gSPSsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 531/568] af_unix: Disable MSG_OOB handling for sockets in sockmap/sockhash
+Subject: [PATCH 6.10 762/809] net: bonding: correctly annotate RCU in bond_should_notify_peers()
 Date: Tue, 30 Jul 2024 17:50:38 +0200
-Message-ID: <20240730151700.910318052@linuxfoundation.org>
+Message-ID: <20240730151755.060728009@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 638f32604385fd23059985da8de918e9c18f0b98 ]
+[ Upstream commit 3ba359c0cd6eb5ea772125a7aededb4a2d516684 ]
 
-AF_UNIX socket tracks the most recent OOB packet (in its receive queue)
-with an `oob_skb` pointer. BPF redirecting does not account for that: when
-an OOB packet is moved between sockets, `oob_skb` is left outdated. This
-results in a single skb that may be accessed from two different sockets.
+RCU use in bond_should_notify_peers() looks wrong, since it does
+rcu_dereference(), leaves the critical section, and uses the
+pointer after that.
 
-Take the easy way out: silently drop MSG_OOB data targeting any socket that
-is in a sockmap or a sockhash. Note that such silent drop is akin to the
-fate of redirected skb's scm_fp_list (SCM_RIGHTS, SCM_CREDENTIALS).
+Luckily, it's called either inside a nested RCU critical section
+or with the RTNL held.
 
-For symmetry, forbid MSG_OOB in unix_bpf_recvmsg().
+Annotate it with rcu_dereference_rtnl() instead, and remove the
+inner RCU critical section.
 
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20240713200218.2140950-2-mhal@rbox.co
+Fixes: 4cb4f97b7e36 ("bonding: rebuild the lock use for bond_mii_monitor()")
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20240719094119.35c62455087d.I68eb9c0f02545b364b79a59f2110f2cf5682a8e2@changeid
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c  | 41 ++++++++++++++++++++++++++++++++++++++++-
- net/unix/unix_bpf.c |  3 +++
- 2 files changed, 43 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 5a26e785ce70d..a551be47cb6c6 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2624,10 +2624,49 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 
- static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- {
-+	struct unix_sock *u = unix_sk(sk);
-+	struct sk_buff *skb;
-+	int err;
-+
- 	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED))
- 		return -ENOTCONN;
- 
--	return unix_read_skb(sk, recv_actor);
-+	mutex_lock(&u->iolock);
-+	skb = skb_recv_datagram(sk, MSG_DONTWAIT, &err);
-+	mutex_unlock(&u->iolock);
-+	if (!skb)
-+		return err;
-+
-+#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-+	if (unlikely(skb == READ_ONCE(u->oob_skb))) {
-+		bool drop = false;
-+
-+		unix_state_lock(sk);
-+
-+		if (sock_flag(sk, SOCK_DEAD)) {
-+			unix_state_unlock(sk);
-+			kfree_skb(skb);
-+			return -ECONNRESET;
-+		}
-+
-+		spin_lock(&sk->sk_receive_queue.lock);
-+		if (likely(skb == u->oob_skb)) {
-+			WRITE_ONCE(u->oob_skb, NULL);
-+			drop = true;
-+		}
-+		spin_unlock(&sk->sk_receive_queue.lock);
-+
-+		unix_state_unlock(sk);
-+
-+		if (drop) {
-+			WARN_ON_ONCE(skb_unref(skb));
-+			kfree_skb(skb);
-+			return -EAGAIN;
-+		}
-+	}
-+#endif
-+
-+	return recv_actor(sk, skb);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index d19aabf5d4fba..2ed0da0684906 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1121,13 +1121,10 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
+ 	return bestslave;
  }
  
- static int unix_stream_read_generic(struct unix_stream_read_state *state,
-diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
-index bd84785bf8d6c..bca2d86ba97d8 100644
---- a/net/unix/unix_bpf.c
-+++ b/net/unix/unix_bpf.c
-@@ -54,6 +54,9 @@ static int unix_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	struct sk_psock *psock;
- 	int copied;
++/* must be called in RCU critical section or with RTNL held */
+ static bool bond_should_notify_peers(struct bonding *bond)
+ {
+-	struct slave *slave;
+-
+-	rcu_read_lock();
+-	slave = rcu_dereference(bond->curr_active_slave);
+-	rcu_read_unlock();
++	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
  
-+	if (flags & MSG_OOB)
-+		return -EOPNOTSUPP;
-+
- 	if (!len)
- 		return 0;
- 
+ 	if (!slave || !bond->send_peer_notif ||
+ 	    bond->send_peer_notif %
 -- 
 2.43.0
 
