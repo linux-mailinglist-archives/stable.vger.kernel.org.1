@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD3B94183A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67ED8941B77
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE8251F212E6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF731F236A7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E361B1A6166;
-	Tue, 30 Jul 2024 16:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCC618990C;
+	Tue, 30 Jul 2024 16:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Of5zWIgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVUtkc/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12CF1A6160;
-	Tue, 30 Jul 2024 16:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87A21A6195;
+	Tue, 30 Jul 2024 16:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356325; cv=none; b=fEf161nL0grtALZWmdTOGa535OKHo0yJ3XqB7IcpG/wJ6wEkbha5hopz6rbnYoN4NEhh4SURM/hU/DTWI+Lgj+ZIqoKOF0mW3Rjw1P7Q3/+PvJ4vfAnUH60leEQgXL+WRU60vs8VKGhhnx5asPr1VXvAW2N4nhKJqhxTmK0mJDQ=
+	t=1722358515; cv=none; b=Hxv4Z9EMf3hjGhkoXIw8Q5ru2TonFaNFpcJQQoisK6M1WdPCGhyPYysEYSBp3hVewlIfLbiauvFx5NoRuVBxO1TJfPfXjS0J6YuTvtNlQPpYPReNE4esCKK0KvMxZRdAJfY+JEJ4g1P17zoOItk+Q29pT6pGtG59x/U0eqjf7ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356325; c=relaxed/simple;
-	bh=QixTVG/27NqhSMoQ0Onhc69TzxyCcX+ipDuB4uUKBTM=;
+	s=arc-20240116; t=1722358515; c=relaxed/simple;
+	bh=xMe9p67AR7S/q+0h/BuL1kkEd8CJYTQDkzUClpl9Lig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gy1zYt6TWX6dBd8TRC4mSK3TwmiLoqhtzm8vkVXxx6pC/tQBnT/xu9XIjzZC1OciQ+WjxGQdLrYITzBhX01tXN9sSMsUvWCk8VMUw3925Rissr7bdGG829hQHh+++5+fWV7zizd+iFw5oG/3Kn33Ajw+/4eN0WLMg3i1pWm9huY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Of5zWIgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B795C32782;
-	Tue, 30 Jul 2024 16:18:44 +0000 (UTC)
+	 MIME-Version; b=rYjMBTBAth8nMW8o+LJts3WIEc8IxVqMHD0/7rgVK39dLv5SLY37DXdps4F+/42YILXrzE6asVqZ97C2qjhDNmwSoyHmq/bewOpYggjq402NbWDd66eJTvqRkbvK+dtUYZBHi/NJKcTdMUrQFrQ3hSE2Yfg0wP8MHNcr82P5/5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVUtkc/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241ACC32782;
+	Tue, 30 Jul 2024 16:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356325;
-	bh=QixTVG/27NqhSMoQ0Onhc69TzxyCcX+ipDuB4uUKBTM=;
+	s=korg; t=1722358515;
+	bh=xMe9p67AR7S/q+0h/BuL1kkEd8CJYTQDkzUClpl9Lig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Of5zWIgLpaqJxtTLbq8jm6vg1/NaYw33ZkSmZnHw22G/Ey19Z2ljbSj5i/SRFlcsu
-	 HDQxEY/fUfju0WM1YNbPajhew3nY6CpgExR4NYBUYh7HdSNGVt+fk8TfyFwpYFNsUO
-	 048rGYA8Jcx5yALc8lJz44t5MEOTMdsqOicWIo50=
+	b=SVUtkc/ceEJDiAxDoW9wMILnrgyIqByQupsqTBf9aLRoeEYIQBIvpRqPG38Z04MWA
+	 ruxRT6vZYeCkK/vKPKpiyAWope46eEK5/tBeFV91bLH31njGCuMB8ToOch4bmIa7a8
+	 rKBi7MDu4Fly45YT32ElesJT5o4FNWD8YUptdPN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/568] wifi: cfg80211: fix typo in cfg80211_calculate_bitrate_he()
-Date: Tue, 30 Jul 2024 17:44:01 +0200
-Message-ID: <20240730151645.109771012@linuxfoundation.org>
+Subject: [PATCH 6.10 366/809] mfd: rsmu: Split core code into separate module
+Date: Tue, 30 Jul 2024 17:44:02 +0200
+Message-ID: <20240730151739.110065231@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 9ee0d44f055276fe2802b2f65058e920853f4f99 ]
+[ Upstream commit c879a8c39dd55e7fabdd8d13341f7bc5200db377 ]
 
-rates_996 is mistakenly written as rates_969, fix it.
+Linking a file into two modules can have unintended side-effects
+and produces a W=1 warning:
 
-Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://msgid.link/20240606020653.33205-2-quic_bqiang@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+scripts/Makefile.build:236: drivers/mfd/Makefile: rsmu_core.o is added to multiple modules: rsmu-i2c rsmu-spi
+
+Make this one a separate module instead.
+
+Fixes: a1867f85e06e ("mfd: Add Renesas Synchronization Management Unit (SMU) support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240529094856.1869543-1-arnd@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/Makefile    | 6 ++----
+ drivers/mfd/rsmu_core.c | 2 ++
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 57ea6d5b092d4..187e29a30c2af 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1460,7 +1460,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 		  5120, /*  0.833333... */
- 	};
- 	u32 rates_160M[3] = { 960777777, 907400000, 816666666 };
--	u32 rates_969[3] =  { 480388888, 453700000, 408333333 };
-+	u32 rates_996[3] =  { 480388888, 453700000, 408333333 };
- 	u32 rates_484[3] =  { 229411111, 216666666, 195000000 };
- 	u32 rates_242[3] =  { 114711111, 108333333,  97500000 };
- 	u32 rates_106[3] =  {  40000000,  37777777,  34000000 };
-@@ -1485,7 +1485,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 	else if (rate->bw == RATE_INFO_BW_80 ||
- 		 (rate->bw == RATE_INFO_BW_HE_RU &&
- 		  rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_996))
--		result = rates_969[rate->he_gi];
-+		result = rates_996[rate->he_gi];
- 	else if (rate->bw == RATE_INFO_BW_40 ||
- 		 (rate->bw == RATE_INFO_BW_HE_RU &&
- 		  rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_484))
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index c66f07edcd0e6..db1ba39de3b59 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -280,7 +280,5 @@ obj-$(CONFIG_MFD_INTEL_M10_BMC_PMCI)   += intel-m10-bmc-pmci.o
+ obj-$(CONFIG_MFD_ATC260X)	+= atc260x-core.o
+ obj-$(CONFIG_MFD_ATC260X_I2C)	+= atc260x-i2c.o
+ 
+-rsmu-i2c-objs			:= rsmu_core.o rsmu_i2c.o
+-rsmu-spi-objs			:= rsmu_core.o rsmu_spi.o
+-obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu-i2c.o
+-obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu-spi.o
++obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu_i2c.o rsmu_core.o
++obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu_spi.o rsmu_core.o
+diff --git a/drivers/mfd/rsmu_core.c b/drivers/mfd/rsmu_core.c
+index 29437fd0bd5bf..fd04a6e5dfa31 100644
+--- a/drivers/mfd/rsmu_core.c
++++ b/drivers/mfd/rsmu_core.c
+@@ -78,11 +78,13 @@ int rsmu_core_init(struct rsmu_ddata *rsmu)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(rsmu_core_init);
+ 
+ void rsmu_core_exit(struct rsmu_ddata *rsmu)
+ {
+ 	mutex_destroy(&rsmu->lock);
+ }
++EXPORT_SYMBOL_GPL(rsmu_core_exit);
+ 
+ MODULE_DESCRIPTION("Renesas SMU core driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
