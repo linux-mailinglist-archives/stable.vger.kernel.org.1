@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3F89417A6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2D0941748
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E4A11C23336
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C902F286657
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA98D18E03E;
-	Tue, 30 Jul 2024 16:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCEE18455B;
+	Tue, 30 Jul 2024 16:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7VbWuEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9d43bnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801D618E03C;
-	Tue, 30 Jul 2024 16:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABD1183CDB;
+	Tue, 30 Jul 2024 16:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355853; cv=none; b=klCM/nhUp4DD2pyFuqinT37+xUnkjmkZVXgbdB1e9/yg+9jMNTK6L86mOzTcYD6ADVKxjMtQiJPkgsOAhzPZic5YBPU5AhujRQWBiLObw2Ug9rX5GpeN3Vzx7pRMhcUia4mICb/vkZBt8A4LadWC1dVQ1+FuiOSJCvxglkL5HZU=
+	t=1722355660; cv=none; b=Kow0dJibnqpYtY3T2IAB4Cnipn7S4+vA2RWWbTo520xhacQGVqELCzUQ2NejNhSb4hYQ37yeH8iDQZu41qmFdm2A5YWKFtLA3SXScbAk84hd1A2U5yPoY8cYGdqbQbswZ/XvTruLZX5JaQqy7IldjouRxP5s1rV1qhBYS4LRpik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355853; c=relaxed/simple;
-	bh=R3k1l+tsUV4WmNYRcXSpYI/tE2uHmJczTCgSqXAqp4w=;
+	s=arc-20240116; t=1722355660; c=relaxed/simple;
+	bh=lcn9rCqHhypVgfwgA4HnUnDrJcYZrdhAD1lsZ8TeZJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWm3KhJZtg4UVUGHDkh6JZDCdAQB3HtbNVVn0yi51iCfuvg6EkEXG3Xp8jDR34lhyaxfOq+hjmdXbT3TwUFk/9CcmdDU78YLAX+J5CrcPamDDuz/YXeTrrblbmLiaONaOZGlvZUgIBlbs6fBJejOZlp9ZCkDTla+cpQxfp7BKS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7VbWuEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00132C32782;
-	Tue, 30 Jul 2024 16:10:52 +0000 (UTC)
+	 MIME-Version; b=c1ffZ3FuPL9GHS1H/dAFtaCWU5OspjFngbKhcL6KndQQsHOhuY1aQwfWi8zLpEvv/hJnDXBToCXxoudNmfJ/epYquoLbpVjYYZkC8iGN5qDwsv2gz7Uy1JEOhv0yLcJAJvi/O3Jx5Vbdmrwj4vXhUCPJUCoTk9z6WZW6nl5j6ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9d43bnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF6EC32782;
+	Tue, 30 Jul 2024 16:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355853;
-	bh=R3k1l+tsUV4WmNYRcXSpYI/tE2uHmJczTCgSqXAqp4w=;
+	s=korg; t=1722355659;
+	bh=lcn9rCqHhypVgfwgA4HnUnDrJcYZrdhAD1lsZ8TeZJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7VbWuEPGe5wRavH8q9asPYgIdVqUg0BG6W3Kzb/El0s8DVw9rhtybkypnoXDip/l
-	 cCYOJQGcu1Gw0SlI1aCL9/EHbp44b53LlT4k2QHOewjjJi6pNrLV0iGV56aLIKwsI0
-	 IQ9Vo5RliM1AY5KMb6lReSKpfqxqxBRXVwipNiKk=
+	b=p9d43bnIHBfJ/ls6G6n4DPToBV98sz+yP4k6/AjREf6TX0d3OKNqdXNHpE/vpH/tc
+	 FiHAZ0Q3RknHfuYnSWNEu5sbzcCh5jPOb0T3UYPtkyiV73Yk/5lszaCCwrWd/Vq+nK
+	 DKaSrxigDKd40GMa0S0mxu+i0UaFXwlQ4RHRwPsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Udit Kumar <u-kumar1@ti.com>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 076/809] arm64: dts: ti: k3-am62a-main: Fix the reg-range for main_pktdma
-Date: Tue, 30 Jul 2024 17:39:12 +0200
-Message-ID: <20240730151727.641230513@linuxfoundation.org>
+Subject: [PATCH 6.10 077/809] arm64: dts: ti: k3-am62p-main: Fix the reg-range for main_pktdma
+Date: Tue, 30 Jul 2024 17:39:13 +0200
+Message-ID: <20240730151727.682601219@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,30 +69,30 @@ Content-Transfer-Encoding: 8bit
 
 From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit d007a883a61f55b9b195c4c18bbe29de5b802822 ]
+[ Upstream commit a6e6604c600aeedf9700de4a55255850391bc3fc ]
 
 For main_pktdma node, the TX Channel Realtime Register region 'tchanrt'
 is 128KB and Ring Realtime Register region 'ringrt' is 2MB as shown in
 memory map in the TRM[0] (Table 2-1).
 So fix ranges for those register regions.
 
-[0]: <https://www.ti.com/lit/pdf/spruj16>
+[0]: <https://www.ti.com/lit/pdf/spruj83>
 
-Fixes: 3dad70def7ff ("arm64: dts: ti: k3-am62a-main: Add more peripheral nodes")
+Fixes: b5080c7c1f7e ("arm64: dts: ti: k3-am62p: Add nodes for more IPs")
 Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
 Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20240430105253.203750-3-j-choudhary@ti.com
+Link: https://lore.kernel.org/r/20240430105253.203750-4-j-choudhary@ti.com
 Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 4 ++--
+ arch/arm64/boot/dts/ti/k3-am62p-main.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-index bf9c2d9c6439a..ce4a2f1056300 100644
---- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-@@ -120,8 +120,8 @@ main_pktdma: dma-controller@485c0000 {
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
+index 900d1f9530a2a..2b9bc77a05404 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62p-main.dtsi
+@@ -123,8 +123,8 @@ main_pktdma: dma-controller@485c0000 {
  			compatible = "ti,am64-dmss-pktdma";
  			reg = <0x00 0x485c0000 0x00 0x100>,
  			      <0x00 0x4a800000 0x00 0x20000>,
