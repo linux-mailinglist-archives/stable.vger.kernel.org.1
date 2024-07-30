@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D1794183C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C07941840
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EF3F1C20C7C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8721F22F37
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C731A6177;
-	Tue, 30 Jul 2024 16:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200471A618F;
+	Tue, 30 Jul 2024 16:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pl94/Qgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1+dWrhh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886681A6161;
-	Tue, 30 Jul 2024 16:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10CF1A6161;
+	Tue, 30 Jul 2024 16:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356332; cv=none; b=dUkbWRktOzRR5vrcgEWrwcTJVp5kwXESY/elNTw6Ee+mo7hC48jIl4b+k2Dt8S8foSfL8dZvKgbzLgzz3DNjW+uK9KdDCE4AWVDigr7MRofj6KSRUsmcfI56AM4zY7MnrrImwVWI1BKacgvpowJ9nOfW63RU5NlqKM4Z1gZ3lr0=
+	t=1722356341; cv=none; b=UrAkJBtA0ZMpxszk/tD+J6fXzTUe3pUki3JlIxVF9xcy7GpAV5F1/q/ouiThCk7q9gxhprqokHvKLj5r82au1MSnpK7h86SLP5SbI2GXFT0ClBjC7TN1w/EnaqO47vtJCd66K/tr7uTVQ5GSdMQyiS6FPWs27kfPLN2pEIEthx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356332; c=relaxed/simple;
-	bh=70cgeueA2Vs9ZopmZvpafSR2HStbNJcEPI5b16NkqZ4=;
+	s=arc-20240116; t=1722356341; c=relaxed/simple;
+	bh=Xq7CxNTylS3hLvF6G7y7X2Pw0oqC0HCJ44eygxQqO5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL7k0OAltmIBCQqD30l6SkfdmwQT8vQdzRQB0RYJW8cS64vXdFcr3PfBl7I6HrSFON9KR3+eUrnug61LcoX7HXaG5w7x8IUAJCCf4i1A6p1dhuP+sGLUcEkg3qIeyEo1QOyDzkjPonP5fVy/tda7hSH3+e0y2pmgEqe7+U2MhBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pl94/Qgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEADC32782;
-	Tue, 30 Jul 2024 16:18:51 +0000 (UTC)
+	 MIME-Version; b=NK8EJ6Iije9anb2WmckAT+cGakdP1554aur+NXjSNSye5zwHOigEeqmxwXPbTfyQdy7CiHR9hM+RpqFi6dJcvgoM4kVMnQnotL0iTjOINj/20vkqbZXRU67bTUu+Z6kvSeU6OpMYeIUFmnABi5Zd/t8D5wnyTbb4sms099KskcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1+dWrhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5779FC32782;
+	Tue, 30 Jul 2024 16:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356332;
-	bh=70cgeueA2Vs9ZopmZvpafSR2HStbNJcEPI5b16NkqZ4=;
+	s=korg; t=1722356341;
+	bh=Xq7CxNTylS3hLvF6G7y7X2Pw0oqC0HCJ44eygxQqO5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pl94/QgvxP8h79NoCphPRteg+/W5GNyctdlpUnWUwRZGDRYsOp2uTlJqcBmsFw7yR
-	 FNygbvOgz7dsivRPhMjKlHiJbtjqli1fbA+gc+1d37Kz/F2ky3Ix7hCItFGdiOgz0X
-	 zq5fcjTARLI/5aQCzfJ+mvzsx4V2xcuSnPaKJZm4=
+	b=C1+dWrhhiA7+npnuzJ6wJ8jEhNgrzrtNKKmvpPUWcpe9IGOms0PUQSjEh4+aqf0jX
+	 ah4ngoCa+73iA/s8557z4pIO08zrn0yWfxI3yF+Vrxn/+6lBTH4r024dakl2mDnK7e
+	 CkgNSgNilLk5F1OVajx5wSO7wUL7kchR10R6N6/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 140/809] m68k: cmpxchg: Fix return value for default case in __arch_xchg()
-Date: Tue, 30 Jul 2024 17:40:16 +0200
-Message-ID: <20240730151730.140194251@linuxfoundation.org>
+Subject: [PATCH 6.10 141/809] ARM: spitz: fix GPIO assignment for backlight
+Date: Tue, 30 Jul 2024 17:40:17 +0200
+Message-ID: <20240730151730.179047239@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,36 +67,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 21b9e722ad28c19c2bc83f18f540b3dbd89bf762 ]
+[ Upstream commit 78ab3d352f2982bf3f7e506bfbaba7afee1ed8a9 ]
 
-The return value of __invalid_xchg_size() is assigned to tmp instead of
-the return variable x. Assign it to x instead.
+GPIOs controlling backlight on Spitz and Akita are coming from GPIO
+expanders, not the pxa27xx-gpio block, correct it.
 
-Fixes: 2501cf768e4009a0 ("m68k: Fix xchg/cmpxchg to fail to link if given an inappropriate pointer")
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/20240702034116.140234-2-thorsten.blum@toblux.com
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Additionally GPIO lookup tables operate with pin numbers rather than
+legacy GPIO numbers, fix that as well. Use raw numbers instead of legacy
+GPIO names to avoid confusion.
+
+Fixes: ee0c8e494cc3 ("backlight: corgi: Convert to use GPIO descriptors")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20240628180852.1738922-2-dmitry.torokhov@gmail.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/include/asm/cmpxchg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-pxa/spitz.c | 30 ++++++++++--------------------
+ 1 file changed, 10 insertions(+), 20 deletions(-)
 
-diff --git a/arch/m68k/include/asm/cmpxchg.h b/arch/m68k/include/asm/cmpxchg.h
-index d7f3de9c5d6f7..4ba14f3535fcb 100644
---- a/arch/m68k/include/asm/cmpxchg.h
-+++ b/arch/m68k/include/asm/cmpxchg.h
-@@ -32,7 +32,7 @@ static inline unsigned long __arch_xchg(unsigned long x, volatile void * ptr, in
- 		x = tmp;
- 		break;
- 	default:
--		tmp = __invalid_xchg_size(x, ptr, size);
-+		x = __invalid_xchg_size(x, ptr, size);
- 		break;
- 	}
- 
+diff --git a/arch/arm/mach-pxa/spitz.c b/arch/arm/mach-pxa/spitz.c
+index 3c5f5a3cb480c..10ab16dcd8276 100644
+--- a/arch/arm/mach-pxa/spitz.c
++++ b/arch/arm/mach-pxa/spitz.c
+@@ -520,10 +520,8 @@ static struct gpiod_lookup_table spitz_ads7846_gpio_table = {
+ static struct gpiod_lookup_table spitz_lcdcon_gpio_table = {
+ 	.dev_id = "spi2.1",
+ 	.table = {
+-		GPIO_LOOKUP("gpio-pxa", SPITZ_GPIO_BACKLIGHT_CONT,
+-			    "BL_CONT", GPIO_ACTIVE_LOW),
+-		GPIO_LOOKUP("gpio-pxa", SPITZ_GPIO_BACKLIGHT_ON,
+-			    "BL_ON", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("sharp-scoop.1", 6, "BL_CONT", GPIO_ACTIVE_LOW),
++		GPIO_LOOKUP("sharp-scoop.1", 7, "BL_ON", GPIO_ACTIVE_HIGH),
+ 		{ },
+ 	},
+ };
+@@ -531,10 +529,8 @@ static struct gpiod_lookup_table spitz_lcdcon_gpio_table = {
+ static struct gpiod_lookup_table akita_lcdcon_gpio_table = {
+ 	.dev_id = "spi2.1",
+ 	.table = {
+-		GPIO_LOOKUP("gpio-pxa", AKITA_GPIO_BACKLIGHT_CONT,
+-			    "BL_CONT", GPIO_ACTIVE_LOW),
+-		GPIO_LOOKUP("gpio-pxa", AKITA_GPIO_BACKLIGHT_ON,
+-			    "BL_ON", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("i2c-max7310", 3, "BL_ON", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("i2c-max7310", 4, "BL_CONT", GPIO_ACTIVE_LOW),
+ 		{ },
+ 	},
+ };
+@@ -964,12 +960,9 @@ static inline void spitz_i2c_init(void) {}
+ static struct gpiod_lookup_table spitz_audio_gpio_table = {
+ 	.dev_id = "spitz-audio",
+ 	.table = {
+-		GPIO_LOOKUP("sharp-scoop.0", SPITZ_GPIO_MUTE_L - SPITZ_SCP_GPIO_BASE,
+-			    "mute-l", GPIO_ACTIVE_HIGH),
+-		GPIO_LOOKUP("sharp-scoop.0", SPITZ_GPIO_MUTE_R - SPITZ_SCP_GPIO_BASE,
+-			    "mute-r", GPIO_ACTIVE_HIGH),
+-		GPIO_LOOKUP("sharp-scoop.1", SPITZ_GPIO_MIC_BIAS - SPITZ_SCP2_GPIO_BASE,
+-			    "mic", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("sharp-scoop.0", 3, "mute-l", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("sharp-scoop.0", 4, "mute-r", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("sharp-scoop.1", 8, "mic", GPIO_ACTIVE_HIGH),
+ 		{ },
+ 	},
+ };
+@@ -977,12 +970,9 @@ static struct gpiod_lookup_table spitz_audio_gpio_table = {
+ static struct gpiod_lookup_table akita_audio_gpio_table = {
+ 	.dev_id = "spitz-audio",
+ 	.table = {
+-		GPIO_LOOKUP("sharp-scoop.0", SPITZ_GPIO_MUTE_L - SPITZ_SCP_GPIO_BASE,
+-			    "mute-l", GPIO_ACTIVE_HIGH),
+-		GPIO_LOOKUP("sharp-scoop.0", SPITZ_GPIO_MUTE_R - SPITZ_SCP_GPIO_BASE,
+-			    "mute-r", GPIO_ACTIVE_HIGH),
+-		GPIO_LOOKUP("i2c-max7310", AKITA_GPIO_MIC_BIAS - AKITA_IOEXP_GPIO_BASE,
+-			    "mic", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("sharp-scoop.0", 3, "mute-l", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("sharp-scoop.0", 4, "mute-r", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("i2c-max7310", 2, "mic", GPIO_ACTIVE_HIGH),
+ 		{ },
+ 	},
+ };
 -- 
 2.43.0
 
