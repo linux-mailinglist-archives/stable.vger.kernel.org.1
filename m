@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-64235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19909941CF7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A1A9419D5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7EB71F2262E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C492528386F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A905818B467;
-	Tue, 30 Jul 2024 17:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B375184535;
+	Tue, 30 Jul 2024 16:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLV2Q7Mp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJCQyKTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6765B1FBA;
-	Tue, 30 Jul 2024 17:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8A21A6192;
+	Tue, 30 Jul 2024 16:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359441; cv=none; b=M69UHho7LDgU0CAxKqlDILmIYywm59NJYpFVAFY6hu+eU8qK9hRNqnMSkJLEcDIUqlFpPjHfYRMjxpzyJdy/7E+zfXtiewdlkY9brcphwJU2M9amGip4K/NKpTZ3KQlwaY2e5xKEDMyRdaCqZ1dY3/BiElhSXxDS6NQm4naoD4Q=
+	t=1722357418; cv=none; b=Pzs8z5qTkduCVnF94gXikH1bHsFL/6QNqASzsY3H3DqBdYPOfTGqEZ9jmvjiwgi4MBBvwAEEfeTV5LMOuAKo9Z6M5c8ZzFmlNgKLlDkV9A5g3NWNnsgSp5FMAdfSMQeN9+PEV4JwucQDnjFPhC83GccvSRJV83eNLEgtfRvWTrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359441; c=relaxed/simple;
-	bh=KuqWbI0wG8itLnzn/7VDKu35ZuoENrfVdKBSKZQtnfI=;
+	s=arc-20240116; t=1722357418; c=relaxed/simple;
+	bh=3wZIDg2WfY8ePF0xx2wFgRGmUfIr0nlUVWybplN+Y3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HNigkCc3yoUzCOZTTiS3XuwvwpiiwYOu5xWlvVUcohk8WN6YBwJUHQQOOC0gRPqgxmOmS3MKxZkR98KdikehlKInK9ssBIMX+6CTm4Ezaphtnl+6KCY38+9uzRnVCkw6KcK2+JY+n+xCIUYyB1+lR0U5+lDWq//DbSv0RWaFBFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLV2Q7Mp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB864C32782;
-	Tue, 30 Jul 2024 17:10:40 +0000 (UTC)
+	 MIME-Version; b=drhU2XedL7/3nnDGItyowpuZB93iCL1ohacDdh157Pnqf0ILS9eBj7Qboan+Cc3ppx/l4+55Uz0N14Asb7aOGZL8VtjV2vop047lFY007Q6+RAPBC+KCg0Zvz6LAiiZAJ3MdHoUGZnnEB+ttyFMlQAYfU2SJ3bJO/exMJFo0IG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJCQyKTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCD6C32782;
+	Tue, 30 Jul 2024 16:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359441;
-	bh=KuqWbI0wG8itLnzn/7VDKu35ZuoENrfVdKBSKZQtnfI=;
+	s=korg; t=1722357417;
+	bh=3wZIDg2WfY8ePF0xx2wFgRGmUfIr0nlUVWybplN+Y3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLV2Q7MpXEfMSHn05+8qQXa4jinz+B0THAUTt8S3gTDLl0Dq7t/jMy++PPR6MaDby
-	 In2lK9turVjK/5/5mrDjQxjMWjbLTth4T/EYLzipOiE2riMSQUGrWjwAEC0euGYXpe
-	 Q9yKFSp5p3yDa1iGILQCwvGIazF5qxWzqU7UnJX8=
+	b=EJCQyKTMyCbrfc5JGnry2MhFTsOiP/yfKb42X0WWv1vlj8Cd3s47lanqWM6O/qtV5
+	 TrT9CDcXnlmmvyotIzF1agwKT84grsaysWlGGMcloiZzSoCgs46NHRQRK92k4Z/1Jy
+	 QY7GZWoRAikp9UIGOM4VDad+/C+6WQnHK9JVamq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Asutosh Das <quic_asutoshd@quicinc.com>,
+	Minwoo Im <minwoo.im@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 484/809] fs/ntfs3: Merge synonym COMPRESSION_UNIT and NTFS_LZNT_CUNIT
+Subject: [PATCH 6.6 253/568] scsi: ufs: mcq: Fix missing argument hba in MCQ_OPR_OFFSET_n
 Date: Tue, 30 Jul 2024 17:46:00 +0200
-Message-ID: <20240730151743.854134867@linuxfoundation.org>
+Message-ID: <20240730151649.769202278@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Minwoo Im <minwoo.im@samsung.com>
 
-[ Upstream commit 487f8d482a7e51a640b8f955a398f906a4f83951 ]
+[ Upstream commit 2fc39848952dfb91a9233563cc1444669b8e79c3 ]
 
-COMPRESSION_UNIT and NTFS_LZNT_CUNIT mean the same thing
-(1u<<NTFS_LZNT_CUNIT) determines the size for compression (in clusters).
+The MCQ_OPR_OFFSET_n macro takes 'hba' in the caller context without
+receiving 'hba' instance as an argument.  To prevent potential bugs in
+future use cases, add an argument 'hba'.
 
-COMPRESS_MAX_CLUSTER is not used in the code.
-
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Stable-dep-of: 25610ff98d4a ("fs/ntfs3: Fix transform resident to nonresident for compressed files")
+Fixes: 2468da61ea09 ("scsi: ufs: core: mcq: Configure operation and runtime interface")
+Cc: Asutosh Das <quic_asutoshd@quicinc.com>
+Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
+Link: https://lore.kernel.org/r/20240519221457.772346-2-minwoo.im@samsung.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/attrib.c  | 2 +-
- fs/ntfs3/frecord.c | 2 +-
- fs/ntfs3/fslog.c   | 2 +-
- fs/ntfs3/inode.c   | 2 +-
- fs/ntfs3/ntfs.h    | 3 ---
- 5 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/ufs/core/ufs-mcq.c | 10 ++++------
+ include/ufs/ufshcd.h       |  6 ++++++
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 8e6bcdf99770f..9ccec45190749 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -254,7 +254,7 @@ int attr_make_nonresident(struct ntfs_inode *ni, struct ATTRIB *attr,
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index a10fc7a697109..af5ce45315b3c 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -230,8 +230,6 @@ int ufshcd_mcq_memory_alloc(struct ufs_hba *hba)
  
- 	align = sbi->cluster_size;
- 	if (is_attr_compressed(attr))
--		align <<= COMPRESSION_UNIT;
-+		align <<= NTFS_LZNT_CUNIT;
- 	len = (rsize + align - 1) >> sbi->cluster_bits;
+ /* Operation and runtime registers configuration */
+ #define MCQ_CFG_n(r, i)	((r) + MCQ_QCFG_SIZE * (i))
+-#define MCQ_OPR_OFFSET_n(p, i) \
+-	(hba->mcq_opr[(p)].offset + hba->mcq_opr[(p)].stride * (i))
  
- 	run_init(run);
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 0008670939a4a..4822cfd6351c2 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -1501,7 +1501,7 @@ int ni_insert_nonresident(struct ntfs_inode *ni, enum ATTR_TYPE type,
+ static void __iomem *mcq_opr_base(struct ufs_hba *hba,
+ 					 enum ufshcd_mcq_opr n, int i)
+@@ -344,10 +342,10 @@ void ufshcd_mcq_make_queues_operational(struct ufs_hba *hba)
+ 		ufsmcq_writelx(hba, upper_32_bits(hwq->sqe_dma_addr),
+ 			      MCQ_CFG_n(REG_SQUBA, i));
+ 		/* Submission Queue Doorbell Address Offset */
+-		ufsmcq_writelx(hba, MCQ_OPR_OFFSET_n(OPR_SQD, i),
++		ufsmcq_writelx(hba, ufshcd_mcq_opr_offset(hba, OPR_SQD, i),
+ 			      MCQ_CFG_n(REG_SQDAO, i));
+ 		/* Submission Queue Interrupt Status Address Offset */
+-		ufsmcq_writelx(hba, MCQ_OPR_OFFSET_n(OPR_SQIS, i),
++		ufsmcq_writelx(hba, ufshcd_mcq_opr_offset(hba, OPR_SQIS, i),
+ 			      MCQ_CFG_n(REG_SQISAO, i));
  
- 	if (is_ext) {
- 		if (flags & ATTR_FLAG_COMPRESSED)
--			attr->nres.c_unit = COMPRESSION_UNIT;
-+			attr->nres.c_unit = NTFS_LZNT_CUNIT;
- 		attr->nres.total_size = attr->nres.alloc_size;
- 	}
+ 		/* Completion Queue Lower Base Address */
+@@ -357,10 +355,10 @@ void ufshcd_mcq_make_queues_operational(struct ufs_hba *hba)
+ 		ufsmcq_writelx(hba, upper_32_bits(hwq->cqe_dma_addr),
+ 			      MCQ_CFG_n(REG_CQUBA, i));
+ 		/* Completion Queue Doorbell Address Offset */
+-		ufsmcq_writelx(hba, MCQ_OPR_OFFSET_n(OPR_CQD, i),
++		ufsmcq_writelx(hba, ufshcd_mcq_opr_offset(hba, OPR_CQD, i),
+ 			      MCQ_CFG_n(REG_CQDAO, i));
+ 		/* Completion Queue Interrupt Status Address Offset */
+-		ufsmcq_writelx(hba, MCQ_OPR_OFFSET_n(OPR_CQIS, i),
++		ufsmcq_writelx(hba, ufshcd_mcq_opr_offset(hba, OPR_CQIS, i),
+ 			      MCQ_CFG_n(REG_CQISAO, i));
  
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 40926bf392d28..e47c2105a24e9 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -2996,7 +2996,7 @@ static struct ATTRIB *attr_create_nonres_log(struct ntfs_sb_info *sbi,
- 	if (is_ext) {
- 		attr->name_off = SIZEOF_NONRESIDENT_EX_LE;
- 		if (is_attr_compressed(attr))
--			attr->nres.c_unit = COMPRESSION_UNIT;
-+			attr->nres.c_unit = NTFS_LZNT_CUNIT;
+ 		/* Save the base addresses for quicker access */
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index 7d07b256e906b..e4da397360682 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -1117,6 +1117,12 @@ static inline bool is_mcq_enabled(struct ufs_hba *hba)
+ 	return hba->mcq_enabled;
+ }
  
- 		attr->nres.run_off =
- 			cpu_to_le16(SIZEOF_NONRESIDENT_EX + name_size);
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 0f1664db94ad9..8521238f5448e 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1508,7 +1508,7 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
- 			attr->size = cpu_to_le32(SIZEOF_NONRESIDENT_EX + 8);
- 			attr->name_off = SIZEOF_NONRESIDENT_EX_LE;
- 			attr->flags = ATTR_FLAG_COMPRESSED;
--			attr->nres.c_unit = COMPRESSION_UNIT;
-+			attr->nres.c_unit = NTFS_LZNT_CUNIT;
- 			asize = SIZEOF_NONRESIDENT_EX + 8;
- 		} else {
- 			attr->size = cpu_to_le32(SIZEOF_NONRESIDENT + 8);
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 3d6143c7abc03..1f2cdb0dbbe1d 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -82,9 +82,6 @@ typedef u32 CLST;
- #define RESIDENT_LCN   ((CLST)-2)
- #define COMPRESSED_LCN ((CLST)-3)
- 
--#define COMPRESSION_UNIT     4
--#define COMPRESS_MAX_CLUSTER 0x1000
--
- enum RECORD_NUM {
- 	MFT_REC_MFT		= 0,
- 	MFT_REC_MIRR		= 1,
++static inline unsigned int ufshcd_mcq_opr_offset(struct ufs_hba *hba,
++		enum ufshcd_mcq_opr opr, int idx)
++{
++	return hba->mcq_opr[opr].offset + hba->mcq_opr[opr].stride * idx;
++}
++
+ #ifdef CONFIG_SCSI_UFS_VARIABLE_SG_ENTRY_SIZE
+ static inline size_t ufshcd_sg_entry_size(const struct ufs_hba *hba)
+ {
 -- 
 2.43.0
 
