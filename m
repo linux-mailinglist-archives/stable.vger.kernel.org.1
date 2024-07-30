@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1040494185A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F7F94185F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 420EE1C236B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BB13281E6D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B021A6195;
-	Tue, 30 Jul 2024 16:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0B6184535;
+	Tue, 30 Jul 2024 16:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfmvN9bC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V00qzvLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82951078F;
-	Tue, 30 Jul 2024 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CECB1A6193;
+	Tue, 30 Jul 2024 16:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356442; cv=none; b=PTA66VwvbHtfxNHgY41P33xhlmqf08CuVOH1Ag+DC9ZfF5VNyB7yD7nDeCfb2r+loBdU+Gw9pCgd/aQgB3ykk+4FEuU6+/y/XR3HnvFQB84v1oxikmd4WA+AWZbUMccPfjBCXyaqCAc+iWHeaUbVl8b+ArplIJDPkiWBD1D2SGI=
+	t=1722356452; cv=none; b=lV93KhuI7XMPFEspmGxPtFadD0yTbbm70GVltY+arXlESNjQmENEY5YWJbpyTHcmGx5frELpt6ABBDCBk4340xwNWVfyHZW8C84hBBqWkoIaNDeSi/iy9BJkf4+al+/xSJdme0vhf/LJ8GPm6QBE/Fsf6CgzcHYDsUAvs2pcoYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356442; c=relaxed/simple;
-	bh=h9h2//KZL6ze7uETSv7ve//h34lZ6OEXrb1gYeUBlng=;
+	s=arc-20240116; t=1722356452; c=relaxed/simple;
+	bh=n769Ex+m99MeL5jPai4A3chGXA8wzZG6q7U97KBK71U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUT16iRO92i4X5UgMfew5QXzkbs1prgncItazBdcA5/vwyHjPeJvlTQMqRkjrQDICYgfSdDhS+2rkt3dvQjfrfifwzNsj36F2tILowKHvB0eY3vcRnTeOoVRkUPpbO/dfJy0NTPt95VzWXr/uPwmu1NiHDsolek5dDwxAhgLn4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfmvN9bC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D962C32782;
-	Tue, 30 Jul 2024 16:20:41 +0000 (UTC)
+	 MIME-Version; b=j7n1nnRW+OemleTcKPloc0aNFBXFD9mquWuS+kZFiid00ccz+cbE2VA6MXF0BlGHWYW7ExOa6GOCT4A0fGr6hvfLCzqh+6LcKv415nKnKbJYkcHYRBqN4AM8Wn8MgZUmaQEZuivmZankSuLF/1wvpH5+iFWUVaohHJEfJxDBWgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V00qzvLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC84C32782;
+	Tue, 30 Jul 2024 16:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356442;
-	bh=h9h2//KZL6ze7uETSv7ve//h34lZ6OEXrb1gYeUBlng=;
+	s=korg; t=1722356452;
+	bh=n769Ex+m99MeL5jPai4A3chGXA8wzZG6q7U97KBK71U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TfmvN9bC9XTh0pseVXLyKT4qrGIlc3xczqG2FAsolHj+w7YvgNpvWikBXVsNg3RsF
-	 CsiGKHuktka35rbnsMNIpsRMvCAZ3xShIapbrLS/tu5TlgHPvvTPn3h1jU4ollgpUd
-	 b3O24jYRBYjhMfrT3fs3EhG49dl5QBgWCMPL0IkI=
+	b=V00qzvLCZEShFfC+qraQHTf7t1NEQdtIRVruDa+0BvhUWd55S4G5H4uf4VaRv4S7N
+	 jhn+a+QDM3JHg9AozbvUy0vLXFWG8uNHF8DmRgCxgWjoXTd7QnAFDXxhOH6IkBueux
+	 u9KsinS1OXsi15oYvhLjxqtJ9KmbEI7HU7EfyXdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <quic_kangyang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 150/809] wifi: ath12k: avoid duplicated vdev stop
-Date: Tue, 30 Jul 2024 17:40:26 +0200
-Message-ID: <20240730151730.530800849@linuxfoundation.org>
+Subject: [PATCH 6.10 151/809] wifi: brcmsmac: LCN PHY code is used for BCM4313 2G-only device
+Date: Tue, 30 Jul 2024 17:40:27 +0200
+Message-ID: <20240730151730.569832877@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,42 +67,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 3b0989e925f38df733a03ff5a320d6841006b3f9 ]
+[ Upstream commit c636fa85feb450ca414a10010ed05361a73c93a6 ]
 
-ath12k_mac_op_unassign_vif_chanctx() will do vdev stop in
-ath12k_mac_monitor_stop(). This ath12k_mac_vdev_stop() will do vdev stop
-again, then might trigger firmware crash.
+The band_idx variable in the function wlc_lcnphy_tx_iqlo_cal() will
+never be set to 1 as BCM4313 is the only device for which the LCN PHY
+code is used. This is a 2G-only device.
 
-So add judgement to avoid duplicated vdev stop.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: c9e4e41e71ff ("wifi: ath12k: move peer delete after vdev stop of station for WCN7850")
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240429081525.983-3-quic_kangyang@quicinc.com
+Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240509231037.2014109-1-samasth.norway.ananda@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c  | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 805cb084484a4..b3530d1dd728b 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -7386,7 +7386,8 @@ ath12k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 		arvif->is_started = false;
- 	}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+index aae2cf95fe958..e472591f321bd 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
+@@ -2567,7 +2567,6 @@ wlc_lcnphy_tx_iqlo_cal(struct brcms_phy *pi,
  
--	if (arvif->vdev_type != WMI_VDEV_TYPE_STA) {
-+	if (arvif->vdev_type != WMI_VDEV_TYPE_STA &&
-+	    arvif->vdev_type != WMI_VDEV_TYPE_MONITOR) {
- 		ath12k_bss_disassoc(ar, arvif);
- 		ret = ath12k_mac_vdev_stop(arvif);
- 		if (ret)
+ 	struct lcnphy_txgains cal_gains, temp_gains;
+ 	u16 hash;
+-	u8 band_idx;
+ 	int j;
+ 	u16 ncorr_override[5];
+ 	u16 syst_coeffs[] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
+@@ -2599,6 +2598,9 @@ wlc_lcnphy_tx_iqlo_cal(struct brcms_phy *pi,
+ 	u16 *values_to_save;
+ 	struct brcms_phy_lcnphy *pi_lcn = pi->u.pi_lcnphy;
+ 
++	if (WARN_ON(CHSPEC_IS5G(pi->radio_chanspec)))
++		return;
++
+ 	values_to_save = kmalloc_array(20, sizeof(u16), GFP_ATOMIC);
+ 	if (NULL == values_to_save)
+ 		return;
+@@ -2662,20 +2664,18 @@ wlc_lcnphy_tx_iqlo_cal(struct brcms_phy *pi,
+ 	hash = (target_gains->gm_gain << 8) |
+ 	       (target_gains->pga_gain << 4) | (target_gains->pad_gain);
+ 
+-	band_idx = (CHSPEC_IS5G(pi->radio_chanspec) ? 1 : 0);
+-
+ 	cal_gains = *target_gains;
+ 	memset(ncorr_override, 0, sizeof(ncorr_override));
+-	for (j = 0; j < iqcal_gainparams_numgains_lcnphy[band_idx]; j++) {
+-		if (hash == tbl_iqcal_gainparams_lcnphy[band_idx][j][0]) {
++	for (j = 0; j < iqcal_gainparams_numgains_lcnphy[0]; j++) {
++		if (hash == tbl_iqcal_gainparams_lcnphy[0][j][0]) {
+ 			cal_gains.gm_gain =
+-				tbl_iqcal_gainparams_lcnphy[band_idx][j][1];
++				tbl_iqcal_gainparams_lcnphy[0][j][1];
+ 			cal_gains.pga_gain =
+-				tbl_iqcal_gainparams_lcnphy[band_idx][j][2];
++				tbl_iqcal_gainparams_lcnphy[0][j][2];
+ 			cal_gains.pad_gain =
+-				tbl_iqcal_gainparams_lcnphy[band_idx][j][3];
++				tbl_iqcal_gainparams_lcnphy[0][j][3];
+ 			memcpy(ncorr_override,
+-			       &tbl_iqcal_gainparams_lcnphy[band_idx][j][3],
++			       &tbl_iqcal_gainparams_lcnphy[0][j][3],
+ 			       sizeof(ncorr_override));
+ 			break;
+ 		}
 -- 
 2.43.0
 
