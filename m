@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8891E941BDC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C93941D7B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91D51C234DB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BF461F26910
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB066189B85;
-	Tue, 30 Jul 2024 17:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8A41A76B2;
+	Tue, 30 Jul 2024 17:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FotIc2Yd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCeSpqmC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F665166316;
-	Tue, 30 Jul 2024 17:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B27D1A76B3;
+	Tue, 30 Jul 2024 17:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358803; cv=none; b=e7K/Hon1BFxUqx9boUaoKwPImp/Oi78EFT/Nlm9dUSbzmfSShwBWNky8AyoKPx+IJMYqQLaQnONEg+hS2wwSQ83UuP/pPtTlTxh2pw/22nXqXp8kl5bLfq+D/dyAS2rKagiA7+d7l5P48HVe9Ra0Ownsat3J+1KakDnDhSr72XE=
+	t=1722359873; cv=none; b=E4UX8gW6B3R2XcXdTaiySf41/CY6MANX2nQhwI6/Qx4Awt0qESVDJVipKbRFnyhNLX9ibnyPyfMbwW6EypEHNG6YxdSpdplFl1qmQELIO0Px5W7XZQSWKaOfVpEaOJkoK3HRlOueuI9oixJaAhg32tLA+jwFTdQ3YYNNpxQYv/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358803; c=relaxed/simple;
-	bh=/HIW6jBV73qAFgbTMJosHWFs4l0HIRh1QneHChcicmA=;
+	s=arc-20240116; t=1722359873; c=relaxed/simple;
+	bh=Larc2o8tF49U2YvkTY1beXt8aeLZiGkcVraLxiCSLBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5FLUAtlyZ2MGmNNxzyauZ117xmxjZ85VgcJIl0su53t8FWWkM0eI5PZ2lahTBztWt/60LHXoyMVc58oe7NWmFNW+ED43mu6lMhh2S8KbgMlMVzOQzC2EMglQd6tTNtJ96sUw42OVhYiV0f8xOg0kZIezXlLuxbGZl0ePMsPgm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FotIc2Yd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB83C32782;
-	Tue, 30 Jul 2024 17:00:02 +0000 (UTC)
+	 MIME-Version; b=fQEE7JM5ZqeMCIiowJjxgwzBfl04C5LU3soqXBSqsCjX2a9Qw0yM4XZfAWAWVl0gcwzIRAspuHJCiwCRbOx+g1gnEvfGzITgNgPLtEgJXY/FC1gY2PgeykhwSUarEfay5qB2acFBcKRSWqx2JFYysvvEh+7kFYHCgou6PoU8woE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCeSpqmC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706E4C32782;
+	Tue, 30 Jul 2024 17:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358803;
-	bh=/HIW6jBV73qAFgbTMJosHWFs4l0HIRh1QneHChcicmA=;
+	s=korg; t=1722359872;
+	bh=Larc2o8tF49U2YvkTY1beXt8aeLZiGkcVraLxiCSLBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FotIc2Ydi3SSf3n70CprnGlABT505wUOnv2NZXydNuulwqlAmDgdAYYes+3O/zOya
-	 tL7JEq9WZIrGgbyqYMMOFo5X9eR1W0hOU03/FVyWy4zqFkeZ5N7BMTE5hM0a3V621r
-	 OGWGX9OI4rpWb4fjEfRKR6Xnpp4+pvViPWgfEXu4=
+	b=PCeSpqmCKOdZMD12bDAgBDgZINZxNkxznu/nz6Cv1XztGNvVOulBf5w0I/0aYDe69
+	 DDGz3GsnF1kPP8srG6gliC41V1bKW4s7WYsoB/cp3uxKZyLPLKFBpROM/ihfvMBGT0
+	 aM4Kf53C40xbaDN76d8coIHZj7wCEmu5UVUHpPbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Daniel Baluta <daniel.baluta@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 423/440] ASoC: SOF: imx8m: Fix DSP control regmap retrieval
+Subject: [PATCH 6.6 549/568] ASoC: SOF: imx8m: Fix DSP control regmap retrieval
 Date: Tue, 30 Jul 2024 17:50:56 +0200
-Message-ID: <20240730151632.305391470@linuxfoundation.org>
+Message-ID: <20240730151701.620115816@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
