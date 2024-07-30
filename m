@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-62964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0CC941674
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1861E9416D3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D8781C23167
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB860286B58
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3001BE25A;
-	Tue, 30 Jul 2024 16:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC76184553;
+	Tue, 30 Jul 2024 16:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEFSJNTV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gghLdWIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F4D1BD4E0;
-	Tue, 30 Jul 2024 16:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086BB188006;
+	Tue, 30 Jul 2024 16:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355216; cv=none; b=PCOyFG9bWKBkJnUlTBXfiP2gGTcygIcjKOURLOID2TnfYDZk6nyb5MdH5s1qK96Rt7W9wdStKQKXYectz4spbD25iXzs369A9iGat+fkgb7re6fpORUCuZlsVQ4ah/cgnCQClxINHAjemhtjdLefoEch0kPR0f+Z4YbEyiKZIow=
+	t=1722355442; cv=none; b=J4d8EybG4Oo1zyjDkO9lig25dt/IjZS50cDsOAX6pZVdVme32eIvoFr7z7Q1x3ubOK35PeNAsSrtQc11y0ZJwPz8IZuKFxtEUrzyIOP4hOGrtdJFtp4QwR4WkKcr3KDJXbMiwYEbX7vty1ihylnIVjGKIe7iSqByGw9vLPkkZNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355216; c=relaxed/simple;
-	bh=s9PApbZb8URqwGDkcWJvL6i0eZMlrVr9urPM6xOFi7s=;
+	s=arc-20240116; t=1722355442; c=relaxed/simple;
+	bh=OXj9XmOEUHjam04WHPEFIVywM70TsfQ6IQYwYkc4rOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGKnjBVbNJkATRIdaI5zdiYAn7scEU6sXUiJ80fwsRH386sttZwSCYIFe/SLZPmajzlS7LkkxAKRcq8O1vMcxKlywTixJDzGUHXNBN0wUsKtkgitFPhtspBPneojU2CvfY6i9L/js4mudQTvMJK0ljLXXTL/7NicMonLUuPHBj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEFSJNTV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547F1C32782;
-	Tue, 30 Jul 2024 16:00:15 +0000 (UTC)
+	 MIME-Version; b=skaQMCbwWm9m3ORegZVGe+T3jSLqOkmuGR2Z0Eyc4GtfQuE7hcH5b0Pup6ThwFdV+JxjAIgdb1L5sHrLShPQTo8f4ysPhqUq+vJTSmpLOzumXWzT/VVD2NKenNk4wug+47cwnS7ra4rIaOt6ETDfIAbe9Nnf/wcEeq3DtoPEcCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gghLdWIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7015DC32782;
+	Tue, 30 Jul 2024 16:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355215;
-	bh=s9PApbZb8URqwGDkcWJvL6i0eZMlrVr9urPM6xOFi7s=;
+	s=korg; t=1722355441;
+	bh=OXj9XmOEUHjam04WHPEFIVywM70TsfQ6IQYwYkc4rOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEFSJNTVii/RR879N/iV0yygjf1uU2mDBEi/x5CEQZJ1JuExgieNpcqlviYrXeuJc
-	 A0h8yOJDcnCBoLx+s2UWBYsG8UEYfx3ely5Kzu3+O2gXg4sL83jFfZxZDoxSFzs4c5
-	 LF24pS/wbo7USYCfey/vvAdXO+vu/QGGnNE9mfA0=
+	b=gghLdWIkXSL4A0tCNkkoQKM7dx0KKIRtEAz5+Eh3QpJAVdyKAIiYJvYYX+IK3S8Lu
+	 cKZDnJs0SQErtYnFC7UoBCmib/Xdc6QcSFzcKlRbslJDO4YPcPNlC6eQFeCNkZfCnB
+	 rqmbCOYSzdaRon7Eze5Q+u0FNwC1lSUYWS/IWnUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/440] arm64: dts: renesas: r8a779g0: Add missing hypervisor virtual timer IRQ
-Date: Tue, 30 Jul 2024 17:45:01 +0200
-Message-ID: <20240730151618.419095804@linuxfoundation.org>
+Subject: [PATCH 6.1 069/440] arm64: dts: renesas: r9a07g043u: Add missing hypervisor virtual timer IRQ
+Date: Tue, 30 Jul 2024 17:45:02 +0200
+Message-ID: <20240730151618.460023600@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -67,25 +68,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 6775165fc95052a03acc91e25bc20fcf286910a7 ]
+[ Upstream commit 4036bae6dfd782d414040e7d714abc525b2e8792 ]
 
 Add the missing fifth interrupt to the device node that represents the
 ARM architected timer.  While at it, add an interrupt-names property for
 clarity,
 
-Fixes: 987da486d84a5643 ("arm64: dts: renesas: Add Renesas R8A779G0 SoC support")
+Fixes: cf40c9689e5109bf ("arm64: dts: renesas: Add initial DTSI for RZ/G2UL SoC")
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/5eeabbeaea1c5fd518a608f2e8013d260b00fd7e.1718890849.git.geert+renesas@glider.be
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/15cc7a7522b1658327a2bd0c4990d0131bbcb4d7.1718890849.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a779g0.dtsi | 5 ++++-
+ arch/arm64/boot/dts/renesas/r9a07g043u.dtsi | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-index 369370c0a61e3..3de3ea0073c3e 100644
---- a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-@@ -564,6 +564,9 @@ timer {
+diff --git a/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi b/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
+index beab2bfd253b8..2e7db48462e1f 100644
+--- a/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
+@@ -44,7 +44,10 @@ timer {
  		interrupts-extended = <&gic GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
  				      <&gic GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
  				      <&gic GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
@@ -96,6 +98,7 @@ index 369370c0a61e3..3de3ea0073c3e 100644
 +				  "hyp-virt";
  	};
  };
+ 
 -- 
 2.43.0
 
