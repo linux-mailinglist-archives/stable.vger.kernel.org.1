@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 509F9941BBE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F9A941EA1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 741BF1C23156
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C6D61F21158
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935521898F8;
-	Tue, 30 Jul 2024 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613FC18455C;
+	Tue, 30 Jul 2024 17:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCIabnXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CK9qqvat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2F617D8BB;
-	Tue, 30 Jul 2024 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA881A76A5;
+	Tue, 30 Jul 2024 17:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358710; cv=none; b=YMqaQVTHippcTiStUu7X8UpgGLuwnHJ6SmVYIWqCPsB+nWGwtwtFsYicoxoA1SH5Giw6TvIqo2I+eZIjMpM1EopwF+MhGOfxGv1xn65OzoTtB8rb6mb9aJynX68LyyUWv5Ln4kgFu84QVgEwFrBb/IbADllUtXAGXVxs6CoXvdE=
+	t=1722360672; cv=none; b=lfj4Q7h6fizvtSZVesIcy2CujQFUS65r/756mgLZoo67qHktEWoblwoNpN/G+rFBW1zp6W7dxHxSKYap4vcf5cHN0d//PzwBBA6WLWOAuEZTOJJbpz7cyuVrvCk/YrmUwOCwVMRO5ugXo4t4BaCOu7XneG0rImAcwq7vUfBgoA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358710; c=relaxed/simple;
-	bh=3Y5vZ2yIYs/m/Nb/x+nOAWh3P70V4cD4Xje0tKmC7K0=;
+	s=arc-20240116; t=1722360672; c=relaxed/simple;
+	bh=ZwUqdnhGuaM0RMZ0wDU5po8he5SH3ZdN96ocPz++W/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FleFuScRsRpDZd4ZGhg95N+w0t+xuv62OoR13zvCmRCjT9tD+GtcmEIg1jIwCBp6hdiFnumZxTzOUS6+6zGFik8N3mJvcZI+y62Um62NCx5Ll6NGS6BH7K088s2gUtefWG67+o6lFvdwvJBzebCLSZLfcMqBCY+y6ATcwyLVYus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCIabnXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9823C32782;
-	Tue, 30 Jul 2024 16:58:29 +0000 (UTC)
+	 MIME-Version; b=ksQEwlHIcQhugtLTqllJ12eta9mujo9iSrNYeSiBuXQ0T2e0FxxZaZbU8ZTwHs759yuVWjbjkU9vUegWchJJ/Jf5ug+McPNV75PCwozTSNxssgWBlqcBc87v8AWST7EeFa633kB+I1wniSKX5UEuwp7t3EFSntYFVxReLDBXBWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CK9qqvat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A801C32782;
+	Tue, 30 Jul 2024 17:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358710;
-	bh=3Y5vZ2yIYs/m/Nb/x+nOAWh3P70V4cD4Xje0tKmC7K0=;
+	s=korg; t=1722360672;
+	bh=ZwUqdnhGuaM0RMZ0wDU5po8he5SH3ZdN96ocPz++W/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WCIabnXNQ4OixxVX8crcTAkmxAsmlvbe2+Kp15Nso6rQQDiRcHgd/+mbK3oRj+p02
-	 sy46MrIIP26YxOO4+EjZReYtX2Hmhv4EXQ8BgElM05tII2Wg0n0p49rc5g0S7dUyc5
-	 o+bGTX9+PDHFxdqHJLPWe+eCedvUkFCsHJNycyJQ=
+	b=CK9qqvat5OVFwCdUOUxsdfPdyOWcZ+hREzkJFQf32JHkSlgvmiXh2oGXZqKo18wDH
+	 MettctjIUqLlmdMKOQO895t+vPYQadKXs4QcLii9Mmzv6MWk8eUg4lu7+b1HzYx18R
+	 t8DEiQGTsr58OYjIuWDxuiQfnMUUlIx5UdgjKXak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Julian Schindel <mail@arctic-alpaca.de>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 415/440] net: stmmac: Correct byte order of perfect_match
+Subject: [PATCH 6.10 772/809] xsk: Require XDP_UMEM_TX_METADATA_LEN to actuate tx_metadata_len
 Date: Tue, 30 Jul 2024 17:50:48 +0200
-Message-ID: <20240730151631.998937855@linuxfoundation.org>
+Message-ID: <20240730151755.459830192@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit e9dbebae2e3c338122716914fe105458f41e3a4a ]
+[ Upstream commit d5e726d9143c5624135f5dc9e4069799adeef734 ]
 
-The perfect_match parameter of the update_vlan_hash operation is __le16,
-and is correctly converted from host byte-order in the lone caller,
-stmmac_vlan_update().
+Julian reports that commit 341ac980eab9 ("xsk: Support tx_metadata_len")
+can break existing use cases which don't zero-initialize xdp_umem_reg
+padding. Introduce new XDP_UMEM_TX_METADATA_LEN to make sure we
+interpret the padding as tx_metadata_len only when being explicitly
+asked.
 
-However, the implementations of this caller, dwxgmac2_update_vlan_hash()
-and dwxgmac2_update_vlan_hash(), both treat this parameter as host byte
-order, using the following pattern:
-
-	u32 value = ...
-	...
-	writel(value | perfect_match, ...);
-
-This is not correct because both:
-1) value is host byte order; and
-2) writel expects a host byte order value as it's first argument
-
-I believe that this will break on big endian systems. And I expect it
-has gone unnoticed by only being exercised on little endian systems.
-
-The approach taken by this patch is to update the callback, and it's
-caller to simply use a host byte order value.
-
-Flagged by Sparse.
-Compile tested only.
-
-Fixes: c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if HASH is not available")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 341ac980eab9 ("xsk: Support tx_metadata_len")
+Reported-by: Julian Schindel <mail@arctic-alpaca.de>
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/bpf/20240713015253.121248-2-sdf@fomichev.me
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c | 2 +-
- drivers/net/ethernet/stmicro/stmmac/hwif.h          | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c   | 4 ++--
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ Documentation/networking/xsk-tx-metadata.rst | 16 ++++++++++------
+ include/uapi/linux/if_xdp.h                  |  4 ++++
+ net/xdp/xdp_umem.c                           |  9 ++++++---
+ 3 files changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index 39112d5cb5b80..687eb17e41c6e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -971,7 +971,7 @@ static void dwmac4_set_mac_loopback(void __iomem *ioaddr, bool enable)
- }
+diff --git a/Documentation/networking/xsk-tx-metadata.rst b/Documentation/networking/xsk-tx-metadata.rst
+index bd033fe95cca5..e76b0cfc32f7d 100644
+--- a/Documentation/networking/xsk-tx-metadata.rst
++++ b/Documentation/networking/xsk-tx-metadata.rst
+@@ -11,12 +11,16 @@ metadata on the receive side.
+ General Design
+ ==============
  
- static void dwmac4_update_vlan_hash(struct mac_device_info *hw, u32 hash,
--				    __le16 perfect_match, bool is_double)
-+				    u16 perfect_match, bool is_double)
- {
- 	void __iomem *ioaddr = hw->pcsr;
- 	u32 value;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index dd73f38ec08d8..813327d04c56f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -582,7 +582,7 @@ static int dwxgmac2_rss_configure(struct mac_device_info *hw,
- }
+-The headroom for the metadata is reserved via ``tx_metadata_len`` in
+-``struct xdp_umem_reg``. The metadata length is therefore the same for
+-every socket that shares the same umem. The metadata layout is a fixed UAPI,
+-refer to ``union xsk_tx_metadata`` in ``include/uapi/linux/if_xdp.h``.
+-Thus, generally, the ``tx_metadata_len`` field above should contain
+-``sizeof(union xsk_tx_metadata)``.
++The headroom for the metadata is reserved via ``tx_metadata_len`` and
++``XDP_UMEM_TX_METADATA_LEN`` flag in ``struct xdp_umem_reg``. The metadata
++length is therefore the same for every socket that shares the same umem.
++The metadata layout is a fixed UAPI, refer to ``union xsk_tx_metadata`` in
++``include/uapi/linux/if_xdp.h``. Thus, generally, the ``tx_metadata_len``
++field above should contain ``sizeof(union xsk_tx_metadata)``.
++
++Note that in the original implementation the ``XDP_UMEM_TX_METADATA_LEN``
++flag was not required. Applications might attempt to create a umem
++with a flag first and if it fails, do another attempt without a flag.
  
- static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
--				      __le16 perfect_match, bool is_double)
-+				      u16 perfect_match, bool is_double)
- {
- 	void __iomem *ioaddr = hw->pcsr;
+ The headroom and the metadata itself should be located right before
+ ``xdp_desc->addr`` in the umem frame. Within a frame, the metadata
+diff --git a/include/uapi/linux/if_xdp.h b/include/uapi/linux/if_xdp.h
+index d316984104107..42ec5ddaab8dc 100644
+--- a/include/uapi/linux/if_xdp.h
++++ b/include/uapi/linux/if_xdp.h
+@@ -41,6 +41,10 @@
+  */
+ #define XDP_UMEM_TX_SW_CSUM		(1 << 1)
  
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index b2b9cf04bc726..820e2251b7c88 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -366,7 +366,7 @@ struct stmmac_ops {
- 			     struct stmmac_rss *cfg, u32 num_rxq);
- 	/* VLAN */
- 	void (*update_vlan_hash)(struct mac_device_info *hw, u32 hash,
--				 __le16 perfect_match, bool is_double);
-+				 u16 perfect_match, bool is_double);
- 	void (*enable_vlan)(struct mac_device_info *hw, u32 type);
- 	int (*add_hw_vlan_rx_fltr)(struct net_device *dev,
- 				   struct mac_device_info *hw,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index e2d51014ab4bc..93630840309e7 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6311,7 +6311,7 @@ static u32 stmmac_vid_crc32_le(__le16 vid_le)
- static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double)
- {
- 	u32 crc, hash = 0;
--	__le16 pmatch = 0;
-+	u16 pmatch = 0;
- 	int count = 0;
- 	u16 vid = 0;
++/* Request to reserve tx_metadata_len bytes of per-chunk metadata.
++ */
++#define XDP_UMEM_TX_METADATA_LEN	(1 << 2)
++
+ struct sockaddr_xdp {
+ 	__u16 sxdp_family;
+ 	__u16 sxdp_flags;
+diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
+index caa340134b0e1..9f76ca591d54f 100644
+--- a/net/xdp/xdp_umem.c
++++ b/net/xdp/xdp_umem.c
+@@ -151,6 +151,7 @@ static int xdp_umem_account_pages(struct xdp_umem *umem)
+ #define XDP_UMEM_FLAGS_VALID ( \
+ 		XDP_UMEM_UNALIGNED_CHUNK_FLAG | \
+ 		XDP_UMEM_TX_SW_CSUM | \
++		XDP_UMEM_TX_METADATA_LEN | \
+ 	0)
  
-@@ -6326,7 +6326,7 @@ static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double)
- 		if (count > 2) /* VID = 0 always passes filter */
- 			return -EOPNOTSUPP;
+ static int xdp_umem_reg(struct xdp_umem *umem, struct xdp_umem_reg *mr)
+@@ -204,8 +205,11 @@ static int xdp_umem_reg(struct xdp_umem *umem, struct xdp_umem_reg *mr)
+ 	if (headroom >= chunk_size - XDP_PACKET_HEADROOM)
+ 		return -EINVAL;
  
--		pmatch = cpu_to_le16(vid);
-+		pmatch = vid;
- 		hash = 0;
- 	}
+-	if (mr->tx_metadata_len >= 256 || mr->tx_metadata_len % 8)
+-		return -EINVAL;
++	if (mr->flags & XDP_UMEM_TX_METADATA_LEN) {
++		if (mr->tx_metadata_len >= 256 || mr->tx_metadata_len % 8)
++			return -EINVAL;
++		umem->tx_metadata_len = mr->tx_metadata_len;
++	}
  
+ 	umem->size = size;
+ 	umem->headroom = headroom;
+@@ -215,7 +219,6 @@ static int xdp_umem_reg(struct xdp_umem *umem, struct xdp_umem_reg *mr)
+ 	umem->pgs = NULL;
+ 	umem->user = NULL;
+ 	umem->flags = mr->flags;
+-	umem->tx_metadata_len = mr->tx_metadata_len;
+ 
+ 	INIT_LIST_HEAD(&umem->xsk_dma_list);
+ 	refcount_set(&umem->users, 1);
 -- 
 2.43.0
 
