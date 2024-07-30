@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-64183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650F9941CBD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778D7941CBF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F6241F2451C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E061288FA3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E93C18C911;
-	Tue, 30 Jul 2024 17:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0271D18C903;
+	Tue, 30 Jul 2024 17:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cID5nqga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9KyIHzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA3518C909;
-	Tue, 30 Jul 2024 17:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E2018C915;
+	Tue, 30 Jul 2024 17:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359267; cv=none; b=a9ZWY04Pukr/TdhAiL1aI/2G1VTcz8fjae1CXufZxY9fKKG/gtY/G5w0FRITsc3GqOrGmhP1F6xhybce637Pf2ruohH398/xOsDGlVVu9xv3w0iTjVcbvyAKefns9IpAMDaYRzO298TIo3q5wwE/L95XwDDOxYq8YQJ9rSdFN3Q=
+	t=1722359274; cv=none; b=WlwaTHAhlLx9WgU6PkkRSZsfR+ZiZ5FGSjNbafXrXvUdYxSaFkPBrOIjm6n3CLYTPVo/lzH8V81Xs8rCHLVrZYn6Q+d9kkE0n8AVo2mrBf2Eb45tlxkszJli++KR+ce3DCnrH7ctiL26ERQAft0DrLuC0t5hFCC7/9nyPMYX+8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359267; c=relaxed/simple;
-	bh=CX6txlQYiDeM8G+MJlMIvV23Jpa9zeq4BYqnxL3QU0Y=;
+	s=arc-20240116; t=1722359274; c=relaxed/simple;
+	bh=mX1DGJyqyNxB+1yQ5qvyBqlPs+5OczgPIQJP9v4RFqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZdRmHMlWbJVtr/1O7mLBSCBCUb5dlLMrO95oqZy2858aRXBC96Eb8t5plGDF6F8l/ZDTI3vDoXFt7AVh9CRl82P9Dg1UMOrZaeuWSAvd3zRgU74eDc4hl/80MF9YC5oMBAbg7QDdtajLff/KAEcB9oOoBaOrH8j/I+j8bllcQDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cID5nqga; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57567C32782;
-	Tue, 30 Jul 2024 17:07:46 +0000 (UTC)
+	 MIME-Version; b=Ey9ILJKzkmDOp5D2TvCVa7Ou401Utx+PljaETNhVRSyhxyaY5xQOP/PjF3mrNMB7jW6CdB0r0ygcf+xLfLzBWc+XewSX01IdnaBm4LGz153VdLh+PZbtW58lq3EhHB4Y8EBLqEdiDtn2ZE4oQVWp8oXNVLJyBzXg4hQ0cVQwqpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9KyIHzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24314C32782;
+	Tue, 30 Jul 2024 17:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359266;
-	bh=CX6txlQYiDeM8G+MJlMIvV23Jpa9zeq4BYqnxL3QU0Y=;
+	s=korg; t=1722359274;
+	bh=mX1DGJyqyNxB+1yQ5qvyBqlPs+5OczgPIQJP9v4RFqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cID5nqgaDcPVAm2OKMytPLJLIPKYbZhiU2YWzxX39uojb9w3jumEm/hQfabTCTfZq
-	 5WbDuPu5CVfrk0477YwE9TiACayaVX6yP+g79XN+b30Mf5rivwcIc8wPKeF33q+jnP
-	 logEdgnQq+91FFxF1KGwCn8i4l5boixj25PVPvcM=
+	b=g9KyIHzgpoxdtzHkBosPym4s+GMgo63o+3pz4WiR21zOpHY1A7CRQgbVoR2kx8LNH
+	 /wQ8wA8jR5SQj95TwFnpF6Zs2eI9fqIGhL/XG6jOxZ+rvbUGt4Un/mWFcNVHWHi1zW
+	 Raz/uFfLcLnFGO/pS8wDdP8kn99urvANOzCz3vAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Bowler <nbowler@draconx.ca>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 459/809] macintosh/therm_windtunnel: fix module unload.
-Date: Tue, 30 Jul 2024 17:45:35 +0200
-Message-ID: <20240730151742.856545157@linuxfoundation.org>
+Subject: [PATCH 6.10 460/809] RDMA/hns: Check atomic wr length
+Date: Tue, 30 Jul 2024 17:45:36 +0200
+Message-ID: <20240730151742.895393425@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,46 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nick Bowler <nbowler@draconx.ca>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit fd748e177194ebcbbaf98df75152a30e08230cc6 ]
+[ Upstream commit 6afa2c0bfb8ef69f65715ae059e5bd5f9bbaf03b ]
 
-The of_device_unregister call in therm_windtunnel's module_exit procedure
-does not fully reverse the effects of of_platform_device_create in the
-module_init prodedure.  Once you unload this module, it is impossible
-to load it ever again since only the first of_platform_device_create
-call on the fan node succeeds.
+8 bytes is the only supported length of atomic. Add this check in
+set_rc_wqe(). Besides, stop processing WQEs and return from
+set_rc_wqe() if there is any error.
 
-This driver predates first git commit, and it turns out back then
-of_platform_device_create worked differently than it does today.
-So this is actually an old regression.
-
-The appropriate function to undo of_platform_device_create now appears
-to be of_platform_device_destroy, and switching to use this makes it
-possible to unload and load the module as expected.
-
-Signed-off-by: Nick Bowler <nbowler@draconx.ca>
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240711035428.16696-1-nbowler@draconx.ca
+Fixes: 384f88185112 ("RDMA/hns: Add atomic support")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-2-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/macintosh/therm_windtunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_device.h | 2 ++
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c  | 9 +++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
-index 37cdc6931f6d0..2576a53f247ea 100644
---- a/drivers/macintosh/therm_windtunnel.c
-+++ b/drivers/macintosh/therm_windtunnel.c
-@@ -549,7 +549,7 @@ g4fan_exit( void )
- 	platform_driver_unregister( &therm_of_driver );
+diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
+index ff0b3f68ee3a4..05005079258cf 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_device.h
++++ b/drivers/infiniband/hw/hns/hns_roce_device.h
+@@ -91,6 +91,8 @@
+ /* Configure to HW for PAGE_SIZE larger than 4KB */
+ #define PG_SHIFT_OFFSET				(PAGE_SHIFT - 12)
  
- 	if( x.of_dev )
--		of_device_unregister( x.of_dev );
-+		of_platform_device_destroy(&x.of_dev->dev, NULL);
- }
++#define ATOMIC_WR_LEN				8
++
+ #define HNS_ROCE_IDX_QUE_ENTRY_SZ		4
+ #define SRQ_DB_REG				0x230
  
- module_init(g4fan_init);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 4287818a737f9..eb6052ee89383 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -591,11 +591,16 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
+ 		     (wr->send_flags & IB_SEND_SIGNALED) ? 1 : 0);
+ 
+ 	if (wr->opcode == IB_WR_ATOMIC_CMP_AND_SWP ||
+-	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD)
++	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD) {
++		if (msg_len != ATOMIC_WR_LEN)
++			return -EINVAL;
+ 		set_atomic_seg(wr, rc_sq_wqe, valid_num_sge);
+-	else if (wr->opcode != IB_WR_REG_MR)
++	} else if (wr->opcode != IB_WR_REG_MR) {
+ 		ret = set_rwqe_data_seg(&qp->ibqp, wr, rc_sq_wqe,
+ 					&curr_idx, valid_num_sge);
++		if (ret)
++			return ret;
++	}
+ 
+ 	/*
+ 	 * The pipeline can sequentially post all valid WQEs into WQ buffer,
 -- 
 2.43.0
 
