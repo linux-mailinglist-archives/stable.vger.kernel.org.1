@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-64386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1293B941D9A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C969B941883
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE4B28C880
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80DD31F237AA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6821A76B0;
-	Tue, 30 Jul 2024 17:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64F71A618F;
+	Tue, 30 Jul 2024 16:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlovGSNY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lb/CtrtK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8081A76A4;
-	Tue, 30 Jul 2024 17:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732021A6161;
+	Tue, 30 Jul 2024 16:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359951; cv=none; b=YvDtkqtURWMe5rVU+/1ZAp6Jb+0ZM1MvogBjZc5urxtMdivHE53vUdEX2iWP1XFc02awuFG3CX/HKERoKwX7vUFI6ClrHcJyYYDo8V7+MrRbqKhHnfho6WlXG4wD8k+DvTFbHw9SY3NgyLbUe5tmLtdMB4AMRTWz23XsX95MAI8=
+	t=1722356570; cv=none; b=ZftRZKzG+O4aeKfqEzSh2a2KCMBbtRycouTqcT7aG+5VhCqzponYbhXlvczdzwjEgaOyFY7NoW6Qkvb38lvjXpJmWych2gw7Yyzq/MsKOEgCmhoMuw7HPshHxX3rBELYrHoPelPvvzOjL5StHsaR2X2yfusnr6SwkZ/ABCwRTzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359951; c=relaxed/simple;
-	bh=uUshivuwMt2u8I85yYt8Ra5W/1CzlGGXeQbZYslywd0=;
+	s=arc-20240116; t=1722356570; c=relaxed/simple;
+	bh=HM3ys2qwrcdD42pdmkgRwpX6LNU5h8vZyeFwPKl42UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRduDqflNkH6dgnWfSG5WZ7p6uClH/iUFbF2+3M/cX9vQQBfmIAjUnWkxqsfIUB9ZFo+nMUNVf8vuAlhz49WOpWtDeKB+K7bRNzBUlsDg3lMS/U+CoCSnqsa/OctD7RsfeI8QgS2fOCadw8YaQyll6ekjVBstsd/yc3t9PtjlN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlovGSNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCA8C32782;
-	Tue, 30 Jul 2024 17:19:09 +0000 (UTC)
+	 MIME-Version; b=Q9Z4tPia15xNLip/kEsZYqbbsPx4MXrs+uZ36JFAKyEDNbjXlqqIQeubcODgHcQd3RLckSxygM/YuGJumqBlC4Lv8D96ctrr2uLpquwMeavSREz/7L+tq3TC5Zj/oip8ZustPtN1BibOedgbM+mvTSLpnnUEeaEMbnNNCcRkXcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lb/CtrtK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA447C32782;
+	Tue, 30 Jul 2024 16:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359950;
-	bh=uUshivuwMt2u8I85yYt8Ra5W/1CzlGGXeQbZYslywd0=;
+	s=korg; t=1722356570;
+	bh=HM3ys2qwrcdD42pdmkgRwpX6LNU5h8vZyeFwPKl42UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlovGSNY55ycFxrXHtaLLQT47nCd2twDtAfiudXEPTcTWhq43KqRyZHgvQA1ojJzf
-	 IppF/OYvJraCNFO3cGpI4/HAm0rPcLihuAJbAq5eoo8010LjMwwB+80YaYBfkTm7+S
-	 fECirqr7WAJpv3SfrGC7epFxor2cTybiiuOAR7Y4=
+	b=Lb/CtrtKs/IuEVVd0KW98rLsR2eqx+j+VIiUFaw5yaDqeuR7apru0awSUfHKCo1qb
+	 5JfYrK6SSYWh17j/MjWcV+QRfdP6URQp5lmuBpnxU3PIZeXtGa0NN3Dc0UIMelWF41
+	 CcexmqplNO4SgHdyYVT41udY3+NNsQY2UxHI2K/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.10 558/809] NFSD: Support write delegations in LAYOUTGET
+	Honggang LI <honggangli@163.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 201/440] RDMA/rxe: Dont set BTH_ACK_MASK for UC or UD QPs
 Date: Tue, 30 Jul 2024 17:47:14 +0200
-Message-ID: <20240730151746.800250245@linuxfoundation.org>
+Message-ID: <20240730151623.722472230@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Honggang LI <honggangli@163.com>
 
-commit abc02e5602f7bf9bbae1e8999570a2ad5114578c upstream.
+[ Upstream commit 4adcaf969d77d3d3aa3871bbadc196258a38aec6 ]
 
-I noticed LAYOUTGET(LAYOUTIOMODE4_RW) returning NFS4ERR_ACCESS
-unexpectedly. The NFS client had created a file with mode 0444, and
-the server had returned a write delegation on the OPEN(CREATE). The
-client was requesting a RW layout using the write delegation stateid
-so that it could flush file modifications.
+BTH_ACK_MASK bit is used to indicate that an acknowledge
+(for this packet) should be scheduled by the responder.
+Both UC and UD QPs are unacknowledged, so don't set
+BTH_ACK_MASK for UC or UD QPs.
 
-Creating a read-only file does not seem to be problematic for
-NFSv4.1 without pNFS, so I began looking at NFSD's implementation of
-LAYOUTGET.
-
-The failure was because fh_verify() was doing a permission check as
-part of verifying the FH presented during the LAYOUTGET. It uses the
-loga_iomode value to specify the @accmode argument to fh_verify().
-fh_verify(MAY_WRITE) on a file whose mode is 0444 fails with -EACCES.
-
-To permit LAYOUT* operations in this case, add OWNER_OVERRIDE when
-checking the access permission of the incoming file handle for
-LAYOUTGET and LAYOUTCOMMIT.
-
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org # v6.6+
-Message-Id: 4E9C0D74-A06D-4DC3-A48A-73034DC40395@oracle.com
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://lore.kernel.org/r/20240624020348.494338-1-honggangli@163.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_req.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -2269,7 +2269,7 @@ nfsd4_layoutget(struct svc_rqst *rqstp,
- 	const struct nfsd4_layout_ops *ops;
- 	struct nfs4_layout_stateid *ls;
- 	__be32 nfserr;
--	int accmode = NFSD_MAY_READ_IF_EXEC;
-+	int accmode = NFSD_MAY_READ_IF_EXEC | NFSD_MAY_OWNER_OVERRIDE;
+diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
+index 2ace1007a4195..35768fdbd5b74 100644
+--- a/drivers/infiniband/sw/rxe/rxe_req.c
++++ b/drivers/infiniband/sw/rxe/rxe_req.c
+@@ -390,7 +390,7 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
+ 	int			paylen;
+ 	int			solicited;
+ 	u32			qp_num;
+-	int			ack_req;
++	int			ack_req = 0;
  
- 	switch (lgp->lg_seg.iomode) {
- 	case IOMODE_READ:
-@@ -2359,7 +2359,8 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
- 	struct nfs4_layout_stateid *ls;
- 	__be32 nfserr;
+ 	/* length from start of bth to end of icrc */
+ 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
+@@ -411,8 +411,9 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
+ 	qp_num = (pkt->mask & RXE_DETH_MASK) ? ibwr->wr.ud.remote_qpn :
+ 					 qp->attr.dest_qp_num;
  
--	nfserr = fh_verify(rqstp, current_fh, 0, NFSD_MAY_WRITE);
-+	nfserr = fh_verify(rqstp, current_fh, 0,
-+			   NFSD_MAY_WRITE | NFSD_MAY_OWNER_OVERRIDE);
- 	if (nfserr)
- 		goto out;
+-	ack_req = ((pkt->mask & RXE_END_MASK) ||
+-		(qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
++	if (qp_type(qp) != IB_QPT_UD && qp_type(qp) != IB_QPT_UC)
++		ack_req = ((pkt->mask & RXE_END_MASK) ||
++			   (qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
+ 	if (ack_req)
+ 		qp->req.noack_pkts = 0;
  
+-- 
+2.43.0
+
 
 
 
