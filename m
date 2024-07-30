@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A69A94161C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E028941621
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FD34B24F3E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE1F1C20BCB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0241B5833;
-	Tue, 30 Jul 2024 15:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3799F1BA86F;
+	Tue, 30 Jul 2024 15:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3PkMeJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAXMQ1Fl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9974729A2;
-	Tue, 30 Jul 2024 15:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80171BA866;
+	Tue, 30 Jul 2024 15:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354985; cv=none; b=k2/aGzbYvb7Y2DunEVox+XClV1IMhwxfQBJg1RdZb9+iIrqIhq8Kk8gJRuvh64Yacwnb32+AhHM2jG7LwTawKFxcumA4WpJxTpfecLJDykVwEoYM59kZuUYyAgmkFz9gxYfQzKHaIr/CsYGFTfc1rQ1Y3K036TAWn1mSQ1V7YZ0=
+	t=1722354995; cv=none; b=hYWnCklNEDwNePL4FMuZHRwR/4iE/GwXU1y4XpJw5GeyBO61uGTP7SZLoE+Lu1ZPrB+5QXhcwo6frjYJQQZacL4OYuJMU7HjyjSnM10mLri5tQcSQburjHK28y7bk4/LY3dPhzXALEWI1hbQ2J1QRS3URa1aBaaPMoTHlt7iRCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354985; c=relaxed/simple;
-	bh=JfdRxxe2GGqQen7YpzpFiwMOvRabbsCWRWs6dh6VDbE=;
+	s=arc-20240116; t=1722354995; c=relaxed/simple;
+	bh=kK+vfQNVdU4pqLr0Yo7w+nD2Yt14C0qG1TiWtC0JNfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgbTfGwjfjKrcu/TmQdQA9hWSdNzRlPgREUAU9ENhSsh9vFMxx4vG1REqcugsvFMHpIshO7/y37f/RYLxshTdtojntPqb+HPfEwiUfeYVoFQuIPiMIDSL10k17gjSTljpG1kTuPx2cRt2e3J2OwR8MwNp6JbYigSI/HczazOi+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3PkMeJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5CFC32782;
-	Tue, 30 Jul 2024 15:56:24 +0000 (UTC)
+	 MIME-Version; b=mkgSJYGhMDF1begcllCSFcUStThT5zZyQvwO3+mG1XpRC4LBQs0N7i0b/k75iFCWY83d6VB59tsRJLSHhJhvCz5al1fko2VFzcrdA11voy96GIrSJgiAAmE/TmgAafEoSBonxlyLzDO7BQd6JzsS9IQDk9FKYDdnYIKBNXEI5jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAXMQ1Fl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69808C4AF0A;
+	Tue, 30 Jul 2024 15:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354985;
-	bh=JfdRxxe2GGqQen7YpzpFiwMOvRabbsCWRWs6dh6VDbE=;
+	s=korg; t=1722354994;
+	bh=kK+vfQNVdU4pqLr0Yo7w+nD2Yt14C0qG1TiWtC0JNfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3PkMeJg+EV58TqavGMfFjcq3HTNKvSOLDunjUDXRuRvFYFPFAt+Kt3nLLo9bVCmm
-	 A9wuWyAPFtCXoRgpgB5u8Kq0u7ZjnrY9VrJTmyEwpec4oIwqPCQXnRPEjsmeptuzX5
-	 GF+8ELOV88cOzcjUN3RPJOD2+1oHk1fBmaW5WLWw=
+	b=jAXMQ1FljHtNkBK51/E8q26hQUt/r/Qk75sk06OybKyu+dEYsRh+6JzWyl4oYKi4X
+	 8vFOJC6elYD+0uuzm2nBLJqrLkv+ojLSKFjGPzWjQmV4Fi0jsQWDJPCJMw2QrtcdZi
+	 TaGnbifn9pOcuQF0xGqWOdSJZQ2nOB+La1JskLrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/440] soc: xilinx: rename cpu_number1 to dummy_cpu_number
-Date: Tue, 30 Jul 2024 17:44:37 +0200
-Message-ID: <20240730151617.483645032@linuxfoundation.org>
+Subject: [PATCH 6.1 045/440] cpufreq: ti-cpufreq: Handle deferred probe with dev_err_probe()
+Date: Tue, 30 Jul 2024 17:44:38 +0200
+Message-ID: <20240730151617.522794336@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,102 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
 
-[ Upstream commit 4a95449dd975e2ea6629a034f3e74b46c9634916 ]
+[ Upstream commit 101388b8ef1027be72e399beeb97293cce67bb24 ]
 
-The per cpu variable cpu_number1 is passed to xlnx_event_handler as
-argument "dev_id", but it is not used in this function. So drop the
-initialization of this variable and rename it to dummy_cpu_number.
-This patch is to fix the following call trace when the kernel option
-CONFIG_DEBUG_ATOMIC_SLEEP is enabled:
+Handle deferred probing gracefully by using dev_err_probe() to not
+spam console with unnecessary error messages.
 
-BUG: sleeping function called from invalid context at include/linux/sched/mm.h:274
-    in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1, name: swapper/0
-    preempt_count: 1, expected: 0
-    CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.1.0 #53
-    Hardware name: Xilinx Versal vmk180 Eval board rev1.1 (QSPI) (DT)
-    Call trace:
-     dump_backtrace+0xd0/0xe0
-     show_stack+0x18/0x40
-     dump_stack_lvl+0x7c/0xa0
-     dump_stack+0x18/0x34
-     __might_resched+0x10c/0x140
-     __might_sleep+0x4c/0xa0
-     __kmem_cache_alloc_node+0xf4/0x168
-     kmalloc_trace+0x28/0x38
-     __request_percpu_irq+0x74/0x138
-     xlnx_event_manager_probe+0xf8/0x298
-     platform_probe+0x68/0xd8
-
-Fixes: daed80ed0758 ("soc: xilinx: Fix for call trace due to the usage of smp_processor_id()")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Link: https://lore.kernel.org/r/20240408110610.15676-1-jay.buddhabhatti@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Fixes: f88d152dc739 ("cpufreq: ti: Migrate to dev_pm_opp_set_config()")
+Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/xilinx/xlnx_event_manager.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/cpufreq/ti-cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/xilinx/xlnx_event_manager.c b/drivers/soc/xilinx/xlnx_event_manager.c
-index 8293cc40047fa..82e3174740238 100644
---- a/drivers/soc/xilinx/xlnx_event_manager.c
-+++ b/drivers/soc/xilinx/xlnx_event_manager.c
-@@ -3,6 +3,7 @@
-  * Xilinx Event Management Driver
-  *
-  *  Copyright (C) 2021 Xilinx, Inc.
-+ *  Copyright (C) 2024 Advanced Micro Devices, Inc.
-  *
-  *  Abhyuday Godhasara <abhyuday.godhasara@xilinx.com>
-  */
-@@ -19,7 +20,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
+diff --git a/drivers/cpufreq/ti-cpufreq.c b/drivers/cpufreq/ti-cpufreq.c
+index 61ef653bcf56f..15e2ef8303508 100644
+--- a/drivers/cpufreq/ti-cpufreq.c
++++ b/drivers/cpufreq/ti-cpufreq.c
+@@ -381,7 +381,7 @@ static int ti_cpufreq_probe(struct platform_device *pdev)
  
--static DEFINE_PER_CPU_READ_MOSTLY(int, cpu_number1);
-+static DEFINE_PER_CPU_READ_MOSTLY(int, dummy_cpu_number);
- 
- static int virq_sgi;
- static int event_manager_availability = -EACCES;
-@@ -555,7 +556,6 @@ static void xlnx_disable_percpu_irq(void *data)
- static int xlnx_event_init_sgi(struct platform_device *pdev)
- {
- 	int ret = 0;
--	int cpu;
- 	/*
- 	 * IRQ related structures are used for the following:
- 	 * for each SGI interrupt ensure its mapped by GIC IRQ domain
-@@ -592,11 +592,8 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
- 	sgi_fwspec.param[0] = sgi_num;
- 	virq_sgi = irq_create_fwspec_mapping(&sgi_fwspec);
- 
--	cpu = get_cpu();
--	per_cpu(cpu_number1, cpu) = cpu;
- 	ret = request_percpu_irq(virq_sgi, xlnx_event_handler, "xlnx_event_mgmt",
--				 &cpu_number1);
--	put_cpu();
-+				 &dummy_cpu_number);
- 
- 	WARN_ON(ret);
- 	if (ret) {
-@@ -612,16 +609,12 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
- 
- static void xlnx_event_cleanup_sgi(struct platform_device *pdev)
- {
--	int cpu = smp_processor_id();
--
--	per_cpu(cpu_number1, cpu) = cpu;
--
- 	cpuhp_remove_state(CPUHP_AP_ONLINE_DYN);
- 
- 	on_each_cpu(xlnx_disable_percpu_irq, NULL, 1);
- 
- 	irq_clear_status_flags(virq_sgi, IRQ_PER_CPU);
--	free_percpu_irq(virq_sgi, &cpu_number1);
-+	free_percpu_irq(virq_sgi, &dummy_cpu_number);
- 	irq_dispose_mapping(virq_sgi);
- }
+ 	ret = dev_pm_opp_set_config(opp_data->cpu_dev, &config);
+ 	if (ret < 0) {
+-		dev_err(opp_data->cpu_dev, "Failed to set OPP config\n");
++		dev_err_probe(opp_data->cpu_dev, ret, "Failed to set OPP config\n");
+ 		goto fail_put_node;
+ 	}
  
 -- 
 2.43.0
