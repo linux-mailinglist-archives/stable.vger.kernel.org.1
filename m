@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-63706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EC8941A3C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69778941E1D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C903A1C22836
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C0F41C22D29
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4B818454A;
-	Tue, 30 Jul 2024 16:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7828F1A76BB;
+	Tue, 30 Jul 2024 17:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyR1Thve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ho7X7a6J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEB4183CD5;
-	Tue, 30 Jul 2024 16:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F801A76A1;
+	Tue, 30 Jul 2024 17:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357693; cv=none; b=HUAUR5TNq5cT4wSmoYDCrb7iroXjNcQYf0PbqEalFyqUlH6YMPwVC/BKia0zNYWXwl/yXiM8qMyTqKhKNQ93n+Vg9YiPbx3VcVLEAaIVPgWc/TxVI1zblxPmYkvGzCpfKo+Fhm+SyRENFkhZmPOg6iAe48ADnVYw67sQjf+eCLU=
+	t=1722360353; cv=none; b=hjwbV/jnG/UsnubHnyWOYqv4j89YFqdbVBpaFqSABwHZiogVP/EkzZVAgY4Ey/MrBxbJThd1f4WpoMADGF/UQyyzNtvQHFOskPUvjFVMe3SvMzBvefyHbcbXGtW10XNhYDJsCpDO2zVsgNZaeQ7zr0v22KJ3bWF7Jly+fO8B8Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357693; c=relaxed/simple;
-	bh=825mCaYCsKoXh82061W8wRJeydpZfcDt6830TTPy4LI=;
+	s=arc-20240116; t=1722360353; c=relaxed/simple;
+	bh=GG1dQKaN/51jz4exOxsbiMzyVghKRHuw+0Z/5SuSeXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r42p0cUBVnIIHxhp7YO/XursCB/MQNUyCbaafCRURHIvYDuOlpXNccfDcbnkkTcyljC08tZBX7Rk5X7y9XsXdNeyR4fKGQX15qyQEsbOBkhKya+eLdTBATDarBnMkcAcr14qoohkbvmepboR/s9mYQbpTJ45+ocoN7ncd/+FcAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyR1Thve; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC7BC32782;
-	Tue, 30 Jul 2024 16:41:32 +0000 (UTC)
+	 MIME-Version; b=pgm9Sw1MAPhoExFL71BhIhqq1Akb54VAsmEWStrPq84eKEIfKxX6QMTaMtqNT77vMBjelyYUaO66c+X0c3KraJQ2WIJIaRxLjI3+0cH1ugNdXP0uQiv8t7XFFOfub2nFjbCBgGoGqOjJyiPl9PMFOs/nvGivnRkUnmLNu+UdNBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ho7X7a6J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08FEC32782;
+	Tue, 30 Jul 2024 17:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357692;
-	bh=825mCaYCsKoXh82061W8wRJeydpZfcDt6830TTPy4LI=;
+	s=korg; t=1722360353;
+	bh=GG1dQKaN/51jz4exOxsbiMzyVghKRHuw+0Z/5SuSeXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyR1ThvejosqfyjmVXJnXEiT1tb/84yYXciWWMvoizXUSkIf7vy9j+v0eki1W/P2e
-	 9EEFgqqaZyFH7aCs5VI5anRbVDY05hKIXzJGHrPKl22YwkvGzoYa0LYW8jfuj6++kT
-	 aA/xU1EDzdJliTvI8PuuZDDdQsWTuKHl7hzoU5ig=
+	b=ho7X7a6J/ScZdvh6MT6TfVyJlIJZUvDeG6rAMxvt+W7E6GkADKNlLi3zPMc1rjNci
+	 n2b+GO6QwalYmaR/ENB5pgOVhZ9k4HGBp0h8vxJhtrM4MijWgC8qCA+f64uh3ZSPmf
+	 zzhzCEgL4tZwWN2zKs/ZUrfPlAmiVzOFTWAZj4a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 316/440] ALSA: usb-audio: Fix microphone sound on HD webcam.
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.10 673/809] ice: Add a per-VF limit on number of FDIR filters
 Date: Tue, 30 Jul 2024 17:49:09 +0200
-Message-ID: <20240730151628.164019080@linuxfoundation.org>
+Message-ID: <20240730151751.484852531@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,141 +65,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-commit 74dba240881820b46b9b1c62ef4de3bfff47fbd4 upstream.
+commit 6ebbe97a488179f5dc85f2f1e0c89b486e99ee97 upstream.
 
-I own an external usb Webcam, HD webcam, which had low mic volume and
-inconsistent sound quality. Video works as expected.
+While the iavf driver adds a s/w limit (128) on the number of FDIR
+filters that the VF can request, a malicious VF driver can request more
+than that and exhaust the resources for other VFs.
 
-(snip)
-[   95.473820][ 1] [   T73] usb 5-2.2: new high-speed USB device number 7 using xhci_hcd
-[   95.773974][ 1] [   T73] usb 5-2.2: New USB device found, idVendor=1bcf, idProduct=2281, bcdDevice= 0.05
-[   95.783445][ 1] [   T73] usb 5-2.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[   95.791872][ 1] [   T73] usb 5-2.2: Product: HD webcam
-[   95.797001][ 1] [   T73] usb 5-2.2: Manufacturer: Sunplus IT Co
-[   95.802996][ 1] [   T73] usb 5-2.2: SerialNumber: 20200513
-[   96.092610][ 2] [ T3680] usb 5-2.2: Warning! Unlikely big volume range (=4096), cval->res is probably wrong.
-[   96.102436][ 2] [ T3680] usb 5-2.2: [5] FU [Mic Capture Volume] ch = 1, val = 0/4096/1
+Add a similar limit in ice.
 
-Set up quirk cval->res to 16 for 256 levels,
-Set GET_SAMPLE_RATE quirk flag to stop trying to get the sample rate.
-Confirmed that happened anyway later due to the backoff mechanism,
-After 3 failures.
-
-All audio stream on device interfaces share the same values,
-apart from wMaxPacketSize and tSamFreq :
-
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        3
-      bAlternateSetting       4
-      bNumEndpoints           1
-      bInterfaceClass         1 Audio
-
-Interface Descriptor:
-  bLength                 9
-  bDescriptorType         4
-  bInterfaceNumber        3
-  bAlternateSetting       4
-  bNumEndpoints           1
-  bInterfaceClass         1 Audio
-  bInterfaceSubClass      2 Streaming
-  bInterfaceProtocol      0
-  iInterface              0
-  AudioStreaming Interface Descriptor:
-    bLength                 7
-    bDescriptorType        36
-    bDescriptorSubtype      1 (AS_GENERAL)
-    bTerminalLink           3
-    bDelay                  1 frames
-    wFormatTag         0x0001 PCM
-  AudioStreaming Interface Descriptor:
-    bLength                11
-    bDescriptorType        36
-    bDescriptorSubtype      2 (FORMAT_TYPE)
-    bFormatType             1 (FORMAT_TYPE_I)
-    bNrChannels             1
-    bSubframeSize           2
-    bBitResolution         16
-    bSamFreqType            1 Discrete
-    tSamFreq[ 0]        48000
-  Endpoint Descriptor:
-    bLength                 9
-    bDescriptorType         5
-    bEndpointAddress     0x86  EP 6 IN
-    bmAttributes            5
-      Transfer Type            Isochronous
-      Synch Type               Asynchronous
-      Usage Type               Data
-    wMaxPacketSize     0x0064  1x 100 bytes
-    bInterval               4
-    bRefresh                0
-    bSynchAddress           0
-    AudioStreaming Endpoint Descriptor:
-      bLength                 7
-      bDescriptorType        37
-      bDescriptorSubtype      1 (EP_GENERAL)
-      bmAttributes         0x01
-        Sampling Frequency
-      bLockDelayUnits         0 Undefined
-      wLockDelay         0x0000
-(snip)
-
-Testing patch provides consistent good sound recording quality and volume range.
-
-(snip)
-[   95.473820][ 1] [   T73] usb 5-2.2: new high-speed USB device number 7 using xhci_hcd
-[   95.773974][ 1] [   T73] usb 5-2.2: New USB device found, idVendor=1bcf, idProduct=2281, bcdDevice= 0.05
-[   95.783445][ 1] [   T73] usb 5-2.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[   95.791872][ 1] [   T73] usb 5-2.2: Product: HD webcam
-[   95.797001][ 1] [   T73] usb 5-2.2: Manufacturer: Sunplus IT Co
-[   95.802996][ 1] [   T73] usb 5-2.2: SerialNumber: 20200513
-[   96.110630][ 3] [ T3680] usbcore: registered new interface driver snd-usb-audio
-[   96.114329][ 7] [ T3677] usb 5-2.2: Found UVC 1.00 device HD webcam (1bcf:2281)
-[   96.167555][ 7] [ T3677] usbcore: registered new interface driver uvcvideo
-
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240719020906.8078-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+CC: stable@vger.kernel.org
+Fixes: 1f7ea1cd6a37 ("ice: Enable FDIR Configure for AVF")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Suggested-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c  |    7 +++++++
- sound/usb/quirks.c |    2 ++
- 2 files changed, 9 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c  |    2 +-
+ drivers/net/ethernet/intel/ice/ice_fdir.h          |    3 +++
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |   16 ++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h |    1 +
+ 4 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1211,6 +1211,13 @@ static void volume_control_quirks(struct
- 			cval->res = 16;
- 		}
- 		break;
-+	case USB_ID(0x1bcf, 0x2281): /* HD Webcam */
-+		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
-+			usb_audio_info(chip,
-+				"set resolution quirk: cval->res = 16\n");
-+			cval->res = 16;
-+		}
-+		break;
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+@@ -534,7 +534,7 @@ ice_parse_rx_flow_user_data(struct ethto
+  *
+  * Returns the number of available flow director filters to this VSI
+  */
+-static int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
++int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
+ {
+ 	u16 vsi_num = ice_get_hw_vsi_num(hw, vsi->idx);
+ 	u16 num_guar;
+--- a/drivers/net/ethernet/intel/ice/ice_fdir.h
++++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
+@@ -207,6 +207,8 @@ struct ice_fdir_base_pkt {
+ 	const u8 *tun_pkt;
+ };
+ 
++struct ice_vsi;
++
+ int ice_alloc_fd_res_cntr(struct ice_hw *hw, u16 *cntr_id);
+ int ice_free_fd_res_cntr(struct ice_hw *hw, u16 cntr_id);
+ int ice_alloc_fd_guar_item(struct ice_hw *hw, u16 *cntr_id, u16 num_fltr);
+@@ -218,6 +220,7 @@ int
+ ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
+ 			  u8 *pkt, bool frag, bool tun);
+ int ice_get_fdir_cnt_all(struct ice_hw *hw);
++int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi);
+ bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
+ bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
+ struct ice_fdir_fltr *
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+@@ -536,6 +536,8 @@ static void ice_vc_fdir_reset_cnt_all(st
+ 		fdir->fdir_fltr_cnt[flow][0] = 0;
+ 		fdir->fdir_fltr_cnt[flow][1] = 0;
  	}
++
++	fdir->fdir_fltr_cnt_total = 0;
  }
  
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2183,6 +2183,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_ALIGN_TRANSFER),
- 	DEVICE_FLG(0x534d, 0x2109, /* MacroSilicon MS2109 */
- 		   QUIRK_FLAG_ALIGN_TRANSFER),
-+	DEVICE_FLG(0x1bcf, 0x2281, /* HD Webcam */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ /**
+@@ -1560,6 +1562,7 @@ ice_vc_add_fdir_fltr_post(struct ice_vf
+ 	resp->status = status;
+ 	resp->flow_id = conf->flow_id;
+ 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]++;
++	vf->fdir.fdir_fltr_cnt_total++;
  
- 	/* Vendor matches */
- 	VENDOR_FLG(0x045e, /* MS Lifecam */
+ 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
+ 				    (u8 *)resp, len);
+@@ -1624,6 +1627,7 @@ ice_vc_del_fdir_fltr_post(struct ice_vf
+ 	resp->status = status;
+ 	ice_vc_fdir_remove_entry(vf, conf, conf->flow_id);
+ 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]--;
++	vf->fdir.fdir_fltr_cnt_total--;
+ 
+ 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
+ 				    (u8 *)resp, len);
+@@ -1790,6 +1794,7 @@ int ice_vc_add_fdir_fltr(struct ice_vf *
+ 	struct virtchnl_fdir_add *stat = NULL;
+ 	struct virtchnl_fdir_fltr_conf *conf;
+ 	enum virtchnl_status_code v_ret;
++	struct ice_vsi *vf_vsi;
+ 	struct device *dev;
+ 	struct ice_pf *pf;
+ 	int is_tun = 0;
+@@ -1798,6 +1803,17 @@ int ice_vc_add_fdir_fltr(struct ice_vf *
+ 
+ 	pf = vf->pf;
+ 	dev = ice_pf_to_dev(pf);
++	vf_vsi = ice_get_vf_vsi(vf);
++
++#define ICE_VF_MAX_FDIR_FILTERS	128
++	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
++	    vf->fdir.fdir_fltr_cnt_total >= ICE_VF_MAX_FDIR_FILTERS) {
++		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++		dev_err(dev, "Max number of FDIR filters for VF %d is reached\n",
++			vf->vf_id);
++		goto err_exit;
++	}
++
+ 	ret = ice_vc_fdir_param_check(vf, fltr->vsi_id);
+ 	if (ret) {
+ 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
+@@ -29,6 +29,7 @@ struct ice_vf_fdir_ctx {
+ struct ice_vf_fdir {
+ 	u16 fdir_fltr_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
+ 	int prof_entry_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
++	u16 fdir_fltr_cnt_total;
+ 	struct ice_fd_hw_prof **fdir_prof;
+ 
+ 	struct idr fdir_rule_idr;
 
 
 
