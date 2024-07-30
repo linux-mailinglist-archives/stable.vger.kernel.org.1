@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-62906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16C894162C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:57:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D539F9415E8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E2551C22F33
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:57:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BEBB1F21173
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139B71BA891;
-	Tue, 30 Jul 2024 15:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF591B5833;
+	Tue, 30 Jul 2024 15:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0C5ginx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFNNSAWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B991B5835;
-	Tue, 30 Jul 2024 15:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB2A29A2;
+	Tue, 30 Jul 2024 15:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355017; cv=none; b=n4cWnOAjjSM3Ni7srHJFVy4Q0UxBeT9xqUrV/b84iHb2sxklN4x0VRb3KL3oJROg+Ga8D84MTPIyVaGI1luxN6xiGRG1n47GjTQRTkOUUwd0Toc/Z1QxUDf9hfknPVQ4H/4vmSlKAk5WeSyvFjwRmkQCepqaRJck0WLDDqlK8JA=
+	t=1722354859; cv=none; b=Q2+EQ5HbR9PczTjL0IaB4kIuQuP0Y65YmaG2Dhwsk1CFjxuhdtzEhfFuCpGUbQl6PEqB0yZpe8qnjHaM4xpo3qyREpWltDRNp8aLcCfzbezzLCC6OYKj8j/8ImRkpYPDEA9HT2lIsyOOb9We8KC3IQN8kZK3NynHBhM/lc6gcCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355017; c=relaxed/simple;
-	bh=0xTt3XS6FaeYXepTvvdTfLKBKAYEH8NvzvNyM8xqvzE=;
+	s=arc-20240116; t=1722354859; c=relaxed/simple;
+	bh=RenEk+FRNzjq/PmzDY2nZPKlgNXGkROhOHxu+kqzuqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sM5dteijHgbhHUwX4kjpxyOtmK14rjpmgG9GTkllTYiP+oqk9BXEORgt3ZBJACOknL5NAbz+Q1qz4rapsAFvNqRpvYAKTM9Rh3v+MOeCSiNMbZnFB1dnFtWdFxN/BbnSFeONfQUDw3o7PvrLQM/6XlcPNzaO+XF/Zm0ssQaMZz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0C5ginx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476ABC32782;
-	Tue, 30 Jul 2024 15:56:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IVepG+xzQVNYVLn1XrUzwBD74FhK+HrLe5t1ACp5rYOjAnOD4axpjNMbjQeDgSa6yZAXdBeHNZxzdR8JgqvKx4lcTPxERi57DQnnFCIlH8f3jTn0aIP1QYBZWbbw+j2ltDc+jfr80hoxwsQizXS/8bybSb57aY/OL6looSW3EOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFNNSAWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D69C32782;
+	Tue, 30 Jul 2024 15:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355017;
-	bh=0xTt3XS6FaeYXepTvvdTfLKBKAYEH8NvzvNyM8xqvzE=;
+	s=korg; t=1722354858;
+	bh=RenEk+FRNzjq/PmzDY2nZPKlgNXGkROhOHxu+kqzuqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h0C5ginxiv2fEXptzULbem7YgZuq8ogItEc1e7/6+yEzR6aNJE9RfYvHrmI0HUdAw
-	 wLHaHFgI4aVOWEGirXwfGgrKtZ6gkcJX/Pudgk/nwF+b9aZlrAALxulpaFjVlg7eTN
-	 hqbUswhcmKXkh0zrJNqMaAPib7cvEnzfQ0ionAKE=
+	b=AFNNSAWQTMgIuY1q5nR6hUx08/W9GhyoaIv5YtIkvJJPqBTlZeS8g1WZqv2LDjIJu
+	 gV1EBcXkX931nAyl48WFH4kNoPc0qq2jz+G+la/ivuCAtHHL6nQHFgF7+pwGMLt1Nm
+	 JDxQxNjMBjCNmaUPR9Ddp1hwi6rpivx45sBCZ7zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Thierry Reding <thierry.reding@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/440] pwm: atmel-tcb: Put per-channel data into driver data
-Date: Tue, 30 Jul 2024 17:44:18 +0200
-Message-ID: <20240730151616.748716656@linuxfoundation.org>
+Subject: [PATCH 6.1 026/440] pwm: atmel-tcb: Unroll atmel_tcb_pwm_set_polarity() into only caller
+Date: Tue, 30 Jul 2024 17:44:19 +0200
+Message-ID: <20240730151616.788408987@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -70,10 +70,11 @@ Content-Transfer-Encoding: 8bit
 
 From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 78dca23bd6706dd6a3cdb5c0052f48794b4d2bed ]
+[ Upstream commit 9a6ac822a2153d583b0da95b8693e954b5f4203a ]
 
-This simplifies the code, reduces the number of memory allocations and
-pointer dereferences.
+atmel_tcb_pwm_set_polarity() is only called once and effectively wraps
+an assignment only. Replace the function call by the respective
+assignment.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
@@ -81,110 +82,47 @@ Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Stable-dep-of: 37f7707077f5 ("pwm: atmel-tcb: Fix race condition and convert to guards")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-atmel-tcb.c | 29 +++++++++--------------------
- 1 file changed, 9 insertions(+), 20 deletions(-)
+ drivers/pwm/pwm-atmel-tcb.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
-index 2826fc216d291..ae274bd7907dd 100644
+index ae274bd7907dd..32a60d7f8ed2e 100644
 --- a/drivers/pwm/pwm-atmel-tcb.c
 +++ b/drivers/pwm/pwm-atmel-tcb.c
-@@ -57,7 +57,7 @@ struct atmel_tcb_pwm_chip {
- 	struct clk *clk;
- 	struct clk *gclk;
- 	struct clk *slow_clk;
--	struct atmel_tcb_pwm_device *pwms[NPWM];
-+	struct atmel_tcb_pwm_device pwms[NPWM];
- 	struct atmel_tcb_channel bkup;
- };
+@@ -68,18 +68,6 @@ static inline struct atmel_tcb_pwm_chip *to_tcb_chip(struct pwm_chip *chip)
+ 	return container_of(chip, struct atmel_tcb_pwm_chip, chip);
+ }
  
-@@ -73,7 +73,7 @@ static int atmel_tcb_pwm_set_polarity(struct pwm_chip *chip,
- 				      enum pwm_polarity polarity)
- {
- 	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
--	struct atmel_tcb_pwm_device *tcbpwm = tcbpwmc->pwms[pwm->hwpwm];
-+	struct atmel_tcb_pwm_device *tcbpwm = &tcbpwmc->pwms[pwm->hwpwm];
- 
- 	tcbpwm->polarity = polarity;
- 
-@@ -84,19 +84,13 @@ static int atmel_tcb_pwm_request(struct pwm_chip *chip,
+-static int atmel_tcb_pwm_set_polarity(struct pwm_chip *chip,
+-				      struct pwm_device *pwm,
+-				      enum pwm_polarity polarity)
+-{
+-	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
+-	struct atmel_tcb_pwm_device *tcbpwm = &tcbpwmc->pwms[pwm->hwpwm];
+-
+-	tcbpwm->polarity = polarity;
+-
+-	return 0;
+-}
+-
+ static int atmel_tcb_pwm_request(struct pwm_chip *chip,
  				 struct pwm_device *pwm)
  {
- 	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
--	struct atmel_tcb_pwm_device *tcbpwm;
+@@ -357,11 +345,12 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ static int atmel_tcb_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			       const struct pwm_state *state)
+ {
++	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
 +	struct atmel_tcb_pwm_device *tcbpwm = &tcbpwmc->pwms[pwm->hwpwm];
- 	unsigned cmr;
+ 	int duty_cycle, period;
  	int ret;
  
--	tcbpwm = devm_kzalloc(chip->dev, sizeof(*tcbpwm), GFP_KERNEL);
--	if (!tcbpwm)
--		return -ENOMEM;
--
- 	ret = clk_prepare_enable(tcbpwmc->clk);
--	if (ret) {
--		devm_kfree(chip->dev, tcbpwm);
-+	if (ret)
- 		return ret;
--	}
+-	/* This function only sets a flag in driver data */
+-	atmel_tcb_pwm_set_polarity(chip, pwm, state->polarity);
++	tcbpwm->polarity = state->polarity;
  
- 	tcbpwm->polarity = PWM_POLARITY_NORMAL;
- 	tcbpwm->duty = 0;
-@@ -131,25 +125,20 @@ static int atmel_tcb_pwm_request(struct pwm_chip *chip,
- 	regmap_write(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), cmr);
- 	spin_unlock(&tcbpwmc->lock);
- 
--	tcbpwmc->pwms[pwm->hwpwm] = tcbpwm;
--
- 	return 0;
- }
- 
- static void atmel_tcb_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
- {
- 	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
--	struct atmel_tcb_pwm_device *tcbpwm = tcbpwmc->pwms[pwm->hwpwm];
- 
- 	clk_disable_unprepare(tcbpwmc->clk);
--	tcbpwmc->pwms[pwm->hwpwm] = NULL;
--	devm_kfree(chip->dev, tcbpwm);
- }
- 
- static void atmel_tcb_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
- {
- 	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
--	struct atmel_tcb_pwm_device *tcbpwm = tcbpwmc->pwms[pwm->hwpwm];
-+	struct atmel_tcb_pwm_device *tcbpwm = &tcbpwmc->pwms[pwm->hwpwm];
- 	unsigned cmr;
- 	enum pwm_polarity polarity = tcbpwm->polarity;
- 
-@@ -206,7 +195,7 @@ static void atmel_tcb_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
- static int atmel_tcb_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
- {
- 	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
--	struct atmel_tcb_pwm_device *tcbpwm = tcbpwmc->pwms[pwm->hwpwm];
-+	struct atmel_tcb_pwm_device *tcbpwm = &tcbpwmc->pwms[pwm->hwpwm];
- 	u32 cmr;
- 	enum pwm_polarity polarity = tcbpwm->polarity;
- 
-@@ -291,7 +280,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 				int duty_ns, int period_ns)
- {
- 	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
--	struct atmel_tcb_pwm_device *tcbpwm = tcbpwmc->pwms[pwm->hwpwm];
-+	struct atmel_tcb_pwm_device *tcbpwm = &tcbpwmc->pwms[pwm->hwpwm];
- 	struct atmel_tcb_pwm_device *atcbpwm = NULL;
- 	int i = 0;
- 	int slowclk = 0;
-@@ -338,9 +327,9 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	period = div_u64(period_ns, min);
- 
- 	if (pwm->hwpwm == 0)
--		atcbpwm = tcbpwmc->pwms[1];
-+		atcbpwm = &tcbpwmc->pwms[1];
- 	else
--		atcbpwm = tcbpwmc->pwms[0];
-+		atcbpwm = &tcbpwmc->pwms[0];
- 
- 	/*
- 	 * PWM devices provided by the TCB driver are grouped by 2.
+ 	if (!state->enabled) {
+ 		atmel_tcb_pwm_disable(chip, pwm);
 -- 
 2.43.0
 
