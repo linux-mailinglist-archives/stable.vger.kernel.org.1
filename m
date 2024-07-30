@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-64298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF58F941D35
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81682941D42
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89EBC28B3DA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B38501C210F2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451F81A76BA;
-	Tue, 30 Jul 2024 17:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E5518A6A7;
+	Tue, 30 Jul 2024 17:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjk3fUSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+pBsjCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031071A76A2;
-	Tue, 30 Jul 2024 17:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7108218A6BC;
+	Tue, 30 Jul 2024 17:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359658; cv=none; b=YUkq2Qe3zlzB2mE1Iy7DrBFwi8E1XA90Tx61usecnyGh3aKaxb2tsXRbkLw32AKxz1lorjz+yGGIv2KqBW2AIrpczZ9PHefDgVk5TxifwpHBgO55dNBGO6HIwVn/K1EuU7G4Oo6TcWV6tGi7cbX4F8Kb8oU645qrypA6CYsuFog=
+	t=1722359693; cv=none; b=bgrT+V+u+ntwvF+Dv2D7JG5gHOeTfE4bw16EF7n2fLmSSYsnfRNoGOoWGDLva/px5uVcNu9pWeQW9An6yDg6rKBKar9wDyBDcWwfrW0x66ZRZMHIsVUnK9ouG2zPkK3GwnwpljS//ZWnRPf+nu2jPGZfGOSCSNsfYp6y/sxenTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359658; c=relaxed/simple;
-	bh=qirtiAbOtOn2glX0HEhrrXETy/mlVVFiM4Rrv/qFW4Q=;
+	s=arc-20240116; t=1722359693; c=relaxed/simple;
+	bh=lQbPPyugxsi3iO2gXGDFZZL9m+7DVzSN4SQXSviOW90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D4eX0NtxZanRkGmyY65jT9l4vTI3CNvUfFThoEye+udH9Hw9qTiZxHoOfMI7+S/d+yRNw1Os9DSlmQHt1qlzYse+Bsce14mTqdPr8XyuJNXlwROigKgm9UR1DBlmTLKa+VWhgMma03d+46Gx7EsB7qkLyFGkMwEGi0NgGUwWvEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjk3fUSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66431C32782;
-	Tue, 30 Jul 2024 17:14:17 +0000 (UTC)
+	 MIME-Version; b=Oifm+7DochaxmQC0la59nPm/bPv4Jq0ni914sLGMLsi0DoJJ98AJ4vFst5ZRz65wLhb0NJdMchgYk36MkNF3NcWREQWXsrmxpZdchS/xdtAPurVpc/3uo0lrAb6Hk+s+ooCZOYGX2JptIi01ok//xWnXv7x5nBTIgVBQm0BjzXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+pBsjCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9309C4AF0F;
+	Tue, 30 Jul 2024 17:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359657;
-	bh=qirtiAbOtOn2glX0HEhrrXETy/mlVVFiM4Rrv/qFW4Q=;
+	s=korg; t=1722359693;
+	bh=lQbPPyugxsi3iO2gXGDFZZL9m+7DVzSN4SQXSviOW90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjk3fUSqEKR9CjSgFOj/YksbTCSjy4yhXmxanI8QjPPsY/dqcXP4Lxr1p1B7TXcd1
-	 qt73r4rOy13nKrx/RDq9e5oVGQnWnnsvkuhbawOXs17z6kggK3cHOwu1r6YBASNLEK
-	 tYQDOUCWw8RFE1hQCi53x8WZmW5qwdo/oMZ/Dmhs=
+	b=1+pBsjCIEQfMGS697hVeMSIngBCluRpZr7mOOedbJd5JSUUIQznaw1x1yPYqzgHpi
+	 5Ytk/cdibLnQeBb5qx3kk+8TGBpJuM673xXibub8yaMkw91b7/AoAoFFUKhQiDqwHN
+	 a+2Oc770wmSmn9FifYzzyVPFPBWlc4MubXpvx8NM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 513/568] PCI/DPC: Fix use-after-free on concurrent DPC and hot-removal
-Date: Tue, 30 Jul 2024 17:50:20 +0200
-Message-ID: <20240730151700.073384565@linuxfoundation.org>
+	Yunseong Kim <yskelg@gmail.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.6 514/568] s390/mm: Fix VM_FAULT_HWPOISON handling in do_exception()
+Date: Tue, 30 Jul 2024 17:50:21 +0200
+Message-ID: <20240730151700.113056142@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -61,92 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
 
-commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
+commit df39038cd89525d465c2c8827eb64116873f141a upstream.
 
-Keith reports a use-after-free when a DPC event occurs concurrently to
-hot-removal of the same portion of the hierarchy:
+There is no support for HWPOISON, MEMORY_FAILURE, or ARCH_HAS_COPY_MC on
+s390. Therefore we do not expect to see VM_FAULT_HWPOISON in
+do_exception().
 
-The dpc_handler() awaits readiness of the secondary bus below the
-Downstream Port where the DPC event occurred.  To do so, it polls the
-config space of the first child device on the secondary bus.  If that
-child device is concurrently removed, accesses to its struct pci_dev
-cause the kernel to oops.
+However, since commit af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more
+general"), it is possible to see VM_FAULT_HWPOISON in combination with
+PTE_MARKER_POISONED, even on architectures that do not support HWPOISON
+otherwise. In this case, we will end up on the BUG() in do_exception().
 
-That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
-reference on the child device.  Before v6.3, the function was only
-called on resume from system sleep or on runtime resume.  Holding a
-reference wasn't necessary back then because the pciehp IRQ thread
-could never run concurrently.  (On resume from system sleep, IRQs are
-not enabled until after the resume_noirq phase.  And runtime resume is
-always awaited before a PCI device is removed.)
+Fix this by treating VM_FAULT_HWPOISON the same as VM_FAULT_SIGBUS, similar
+to x86 when MEMORY_FAILURE is not configured. Also print unexpected fault
+flags, for easier debugging.
 
-However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
-called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
-of secondary bus after reset"), which introduced that, failed to
-appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
-reference on the child device because dpc_handler() and pciehp may
-indeed run concurrently.  The commit was backported to v5.10+ stable
-kernels, so that's the oldest one affected.
+Note that VM_FAULT_HWPOISON_LARGE is not expected, because s390 cannot
+support swap entries on other levels than PTE level.
 
-Add the missing reference acquisition.
-
-Abridged stack trace:
-
-  BUG: unable to handle page fault for address: 00000000091400c0
-  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
-  RIP: pci_bus_read_config_dword+0x17/0x50
-  pci_dev_wait()
-  pci_bridge_wait_for_secondary_bus()
-  dpc_reset_link()
-  pcie_do_recovery()
-  dpc_handler()
-
-Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
-Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
-Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
-Reported-by: Keith Busch <kbusch@kernel.org>
-Tested-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.10+
+Cc: stable@vger.kernel.org # 6.6+
+Fixes: af19487f00f3 ("mm: make PTE_MARKER_SWAPIN_ERROR more general")
+Reported-by: Yunseong Kim <yskelg@gmail.com>
+Tested-by: Yunseong Kim <yskelg@gmail.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Message-ID: <20240715180416.3632453-1-gerald.schaefer@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Yunseong Kim <yskelg@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/s390/mm/fault.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5123,7 +5123,7 @@ static int pci_bus_max_d3cold_delay(cons
-  */
- int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type)
- {
--	struct pci_dev *child;
-+	struct pci_dev *child __free(pci_dev_put) = NULL;
- 	int delay;
- 
- 	if (pci_dev_is_disconnected(dev))
-@@ -5152,8 +5152,8 @@ int pci_bridge_wait_for_secondary_bus(st
- 		return 0;
+--- a/arch/s390/mm/fault.c
++++ b/arch/s390/mm/fault.c
+@@ -331,14 +331,16 @@ static noinline void do_fault_error(stru
+ 				do_no_context(regs, fault);
+ 			else
+ 				do_sigsegv(regs, SEGV_MAPERR);
+-		} else if (fault & VM_FAULT_SIGBUS) {
++		} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON)) {
+ 			/* Kernel mode? Handle exceptions or die */
+ 			if (!user_mode(regs))
+ 				do_no_context(regs, fault);
+ 			else
+ 				do_sigbus(regs);
+-		} else
++		} else {
++			pr_emerg("Unexpected fault flags: %08x\n", fault);
+ 			BUG();
++		}
+ 		break;
  	}
- 
--	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
--				 bus_list);
-+	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
-+					     struct pci_dev, bus_list));
- 	up_read(&pci_bus_sem);
- 
- 	/*
+ }
 
 
 
