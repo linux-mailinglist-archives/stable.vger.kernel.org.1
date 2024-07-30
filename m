@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDDC9417BF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:15:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C177941AF8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 796BE286E13
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:15:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E0141C222FF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA1D1A618D;
-	Tue, 30 Jul 2024 16:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99FD188013;
+	Tue, 30 Jul 2024 16:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmgVP4bJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcIWflva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8B41A616E;
-	Tue, 30 Jul 2024 16:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C3D14831F;
+	Tue, 30 Jul 2024 16:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355906; cv=none; b=m37q9k1S6AtdzIGBnHUO7dEpmjYojzhrCTqK16w6IKc0B5IVUEO4gHhp6zu7FAu22MO5SNMBdevEuAYgRGSzF2YNTZwmQYsE3++g6oZWyCkS4oaEYcQpSFBErDVJRSPj7LlSehKzG9os2T9A6eChVd51jeqjrd3o4JgAxK+H5lE=
+	t=1722358181; cv=none; b=SONVZJtAIJQMl7ttwl1TYSQFMbMWaF0zd7DuUstce9plj+k3jvJPn6EubaES5TQ5Z99p7BM63VA26wUityO/339v8eggKapBp+e35/jaJrHZ93kfJCfgXcY15NisEJLjlu6fre7VUZ0wJcp80jK3LfrAOOVN93XxS/pLVI72jOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355906; c=relaxed/simple;
-	bh=SOmeLuxaucqjj4qKPPIXd4OLAKwTyrGAjnL1zl1HJKc=;
+	s=arc-20240116; t=1722358181; c=relaxed/simple;
+	bh=/MWMT0ZGKhzbiCLQCGT8PCVGgMkg2nmEssHXn1lBic0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5BDHwzOJNW/icK0AJacvI0T2oLMxy3wqC+3kyDBgVg4A1+mI50AZYdU2tnBmMQNbfUQgFn6lSt6b44hL3GzdT3RTleiIjJpp60hRGbPUZ9rk0ZJ3X/nIbOncTnG/rBDP0g1gX5F7Pb4udYH0AsgpHHUSFaydrIkud1i6smoqeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmgVP4bJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50896C4AF0C;
-	Tue, 30 Jul 2024 16:11:46 +0000 (UTC)
+	 MIME-Version; b=THY0/4suPGAfws5jOQK76n9ik4ktJ3fV74h9tIQk7r5c1vTeprV9vpExX6ffkcqHtFMdiAlZADzkfYRhYrfgP5U8ObsB0yCA4ta1RqY0DQOyrLvHMiO3R3uY22NvQZzBA2q0TQIUMv2/v0ZOY0XRAjQmUG3Q84PVxMDtMXfloVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcIWflva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18735C32782;
+	Tue, 30 Jul 2024 16:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355906;
-	bh=SOmeLuxaucqjj4qKPPIXd4OLAKwTyrGAjnL1zl1HJKc=;
+	s=korg; t=1722358181;
+	bh=/MWMT0ZGKhzbiCLQCGT8PCVGgMkg2nmEssHXn1lBic0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmgVP4bJT32q5o1UrkgluiMng9nBIc1wJS7egjvA4KMOTlSehBvWDGSRna9DKHnAN
-	 RPraL6xfTWNXLAIjN9yBn0ZiRjI5m/p7bRGt8SBh/3zYq9CdwHE3Sf18/WVkuX78MZ
-	 UrxDOTu7w2E9rbvqYK0gDJ2Alsm5lz0LGmbkhflc=
+	b=mcIWflvaijINOL/LddjzpiPKUPowau6OjuBmwR1yaIT8hWSGb5NTjZvEbKj34iutV
+	 GRgFj2Z38SK6X4FqZ4JXjVdAHYoloa8I5rSicgG/6aeY56WlPu1SL14t7nrAhYrr4o
+	 pOT41X1zef6gtushjbOEiG43x5ahE8dh8fV2zjlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Heiko Stuebner <heiko@sntech.de>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/568] arm64: dts: rockchip: fixes PHY reset for Lunzn Fastrhino R68S
+Subject: [PATCH 6.10 332/809] drm/mediatek: Set DRM mode configs accordingly
 Date: Tue, 30 Jul 2024 17:43:28 +0200
-Message-ID: <20240730151643.823006741@linuxfoundation.org>
+Message-ID: <20240730151737.729006342@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +64,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit e261bd74000ca80e5483ba8a8bda509de8cbe7fd ]
+[ Upstream commit a4c9410b31cac463599898edb5111ca9bc0810bd ]
 
-Fixed the PHY address and reset GPIOs (does not match the corresponding
-pinctrl) for gmac0 and gmac1.
+Set DRM mode configs limitation according to the hardware capabilities
+and pass the IGT checks as below:
 
-Fixes: b9f8ca655d80 ("arm64: dts: rockchip: Add Lunzn Fastrhino R68S")
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20240630150010.55729-7-amadeus@jmu.edu.cn
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+- The test "graphics.IgtKms.kms_plane" requires a frame buffer with
+  width of 4512 pixels (> 4096).
+- The test "graphics.IgtKms.kms_cursor_crc" checks if the cursor size is
+  defined, and run the test with cursor size from 1x1 to 512x512.
+
+Please notice that the test conditions may change as IGT is updated.
+
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-10-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3568-fastrhino-r68s.dts      | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 22 ++++++++++++++++++++++
+ drivers/gpu/drm/mediatek/mtk_drm_drv.h |  4 ++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-index a3339186e89c8..ce2a5e1ccefc3 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-@@ -39,7 +39,7 @@ &gmac0_tx_bus2
- 		     &gmac0_rx_bus2
- 		     &gmac0_rgmii_clk
- 		     &gmac0_rgmii_bus>;
--	snps,reset-gpio = <&gpio0 RK_PB0 GPIO_ACTIVE_LOW>;
-+	snps,reset-gpio = <&gpio1 RK_PB0 GPIO_ACTIVE_LOW>;
- 	snps,reset-active-low;
- 	/* Reset time is 15ms, 50ms for rtl8211f */
- 	snps,reset-delays-us = <0 15000 50000>;
-@@ -61,7 +61,7 @@ &gmac1m1_tx_bus2
- 		     &gmac1m1_rx_bus2
- 		     &gmac1m1_rgmii_clk
- 		     &gmac1m1_rgmii_bus>;
--	snps,reset-gpio = <&gpio0 RK_PB1 GPIO_ACTIVE_LOW>;
-+	snps,reset-gpio = <&gpio1 RK_PB1 GPIO_ACTIVE_LOW>;
- 	snps,reset-active-low;
- 	/* Reset time is 15ms, 50ms for rtl8211f */
- 	snps,reset-delays-us = <0 15000 50000>;
-@@ -71,18 +71,18 @@ &gmac1m1_rgmii_clk
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 8c403bf566856..56f409ad7f390 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -294,6 +294,9 @@ static const struct mtk_mmsys_driver_data mt8188_vdosys0_driver_data = {
+ 	.conn_routes = mt8188_mtk_ddp_main_routes,
+ 	.num_conn_routes = ARRAY_SIZE(mt8188_mtk_ddp_main_routes),
+ 	.mmsys_dev_num = 2,
++	.max_width = 8191,
++	.min_width = 1,
++	.min_height = 1,
  };
  
- &mdio0 {
--	rgmii_phy0: ethernet-phy@0 {
-+	rgmii_phy0: ethernet-phy@1 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
--		reg = <0>;
-+		reg = <0x1>;
- 		pinctrl-0 = <&eth_phy0_reset_pin>;
- 		pinctrl-names = "default";
- 	};
+ static const struct mtk_mmsys_driver_data mt8192_mmsys_driver_data = {
+@@ -308,6 +311,9 @@ static const struct mtk_mmsys_driver_data mt8195_vdosys0_driver_data = {
+ 	.main_path = mt8195_mtk_ddp_main,
+ 	.main_len = ARRAY_SIZE(mt8195_mtk_ddp_main),
+ 	.mmsys_dev_num = 2,
++	.max_width = 8191,
++	.min_width = 1,
++	.min_height = 1,
  };
  
- &mdio1 {
--	rgmii_phy1: ethernet-phy@0 {
-+	rgmii_phy1: ethernet-phy@1 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
--		reg = <0>;
-+		reg = <0x1>;
- 		pinctrl-0 = <&eth_phy1_reset_pin>;
- 		pinctrl-names = "default";
- 	};
+ static const struct mtk_mmsys_driver_data mt8195_vdosys1_driver_data = {
+@@ -315,6 +321,9 @@ static const struct mtk_mmsys_driver_data mt8195_vdosys1_driver_data = {
+ 	.ext_len = ARRAY_SIZE(mt8195_mtk_ddp_ext),
+ 	.mmsys_id = 1,
+ 	.mmsys_dev_num = 2,
++	.max_width = 8191,
++	.min_width = 2, /* 2-pixel align when ethdr is bypassed */
++	.min_height = 1,
+ };
+ 
+ static const struct of_device_id mtk_drm_of_ids[] = {
+@@ -493,6 +502,15 @@ static int mtk_drm_kms_init(struct drm_device *drm)
+ 		for (j = 0; j < private->data->mmsys_dev_num; j++) {
+ 			priv_n = private->all_drm_private[j];
+ 
++			if (priv_n->data->max_width)
++				drm->mode_config.max_width = priv_n->data->max_width;
++
++			if (priv_n->data->min_width)
++				drm->mode_config.min_width = priv_n->data->min_width;
++
++			if (priv_n->data->min_height)
++				drm->mode_config.min_height = priv_n->data->min_height;
++
+ 			if (i == CRTC_MAIN && priv_n->data->main_len) {
+ 				ret = mtk_crtc_create(drm, priv_n->data->main_path,
+ 						      priv_n->data->main_len, j,
+@@ -520,6 +538,10 @@ static int mtk_drm_kms_init(struct drm_device *drm)
+ 		}
+ 	}
+ 
++	/* IGT will check if the cursor size is configured */
++	drm->mode_config.cursor_width = drm->mode_config.max_width;
++	drm->mode_config.cursor_height = drm->mode_config.max_height;
++
+ 	/* Use OVL device for all DMA memory allocations */
+ 	crtc = drm_crtc_from_index(drm, 0);
+ 	if (crtc)
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.h b/drivers/gpu/drm/mediatek/mtk_drm_drv.h
+index 78d698ede1bf8..ce897984de51e 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.h
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.h
+@@ -46,6 +46,10 @@ struct mtk_mmsys_driver_data {
+ 	bool shadow_register;
+ 	unsigned int mmsys_id;
+ 	unsigned int mmsys_dev_num;
++
++	u16 max_width;
++	u16 min_width;
++	u16 min_height;
+ };
+ 
+ struct mtk_drm_private {
 -- 
 2.43.0
 
