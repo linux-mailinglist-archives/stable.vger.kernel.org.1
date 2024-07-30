@@ -1,164 +1,101 @@
-Return-Path: <stable+bounces-62766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D3A94118E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:08:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859879411E4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11A1C1F21BB5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:08:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6DCD1C23125
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D463C19DFA5;
-	Tue, 30 Jul 2024 12:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FA719EEBA;
+	Tue, 30 Jul 2024 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J/00lp7N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KkUnA/32"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A86C19AD8D;
-	Tue, 30 Jul 2024 12:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0445418F2FF;
+	Tue, 30 Jul 2024 12:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722341312; cv=none; b=lOdhkamUtwlxVspYrA70hufhESvOkztkxCJXLJzBRED3tvMMktQ80BtLfzaZGXMecFJ6cnibjoJ1DMXXVr6LhPiuCJvdXZ94bMZCQM72QRsCofwn+6BfoIGlSfzu0YHuByICrI08VoBD9LD8ZU4D6IofuDVTpwdeFUn0xjDpXzo=
+	t=1722342597; cv=none; b=KM/4N43sq2SHReYbLciNSuWemMTLKK1tNlnL5pHmEK4MyTD3zE0cV1unOlOqUpK5PfbpyziSOJQrWZPaGAH9sBYanYXccGc3PSw5iMg1GzoJryOJzAVSjZxLRYEwWNGQ9xGsRCqShNXzo4bv/BC2mBZP5gtkaA9h82Poz8eqzxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722341312; c=relaxed/simple;
-	bh=/sfpWWW8V+Cpbz4W8KtLY2uaeQ4/J756IydOKw4ia+g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ImmO1UdN03g0lk6BWQNgr9mCI7kDLGKxqHerDIrTxvbIxjQw9qBFupwfmjFOV/SjnzoPQTDLo3K1G9veWbFcSIHkAtzTAYZhRviLGMJjykGcdqJaxFSPZAnvAx3/JjpEQjY9P6X7ZIH+LQOyDr/7gYh4zF+VZ4lumAXlqjpsKBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J/00lp7N; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722341310; x=1753877310;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=/sfpWWW8V+Cpbz4W8KtLY2uaeQ4/J756IydOKw4ia+g=;
-  b=J/00lp7NvZu/0uJXn+nZ8hRO2t4Xd+6V2O9kG16mUqiiL2/vGdB6ImNd
-   66GSWSPi1BHAe46N4EYEgq49vBlIrHXuDyR5tTv0M0NW1hw0Ey+kL7SXg
-   WMok3qaqG/25pp0jTcEuhWmyGTaINKZeN7FzPwtvA28D4QVJRNbc/OBcN
-   rpEFwqHWs0XqWqzZ3VU5Ciw9+St3eO4RpaHLscmDp48ljJbF1o1LdH3xL
-   ahRYW+3fn/BrDPzf/qcPcU3+em09SGUFxHVcCyQoHjpaIcSkTjXPqwdLK
-   IAEW8wFv8C7WP+0wQtu0N0cOG3EFKSNJhPb37lIQhrGYQZyjKs2rYrPRj
-   g==;
-X-CSE-ConnectionGUID: RCaDpU81SU+FxEaFBpHYIQ==
-X-CSE-MsgGUID: Lw25jFzATcysyXQFnrNI3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="30779268"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; 
-   d="scan'208";a="30779268"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 05:08:29 -0700
-X-CSE-ConnectionGUID: AasE62mgQD6Ed+q30Inkxw==
-X-CSE-MsgGUID: p4irrj0DT/aQcMbXVuDN+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; 
-   d="scan'208";a="84965012"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.34])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 05:08:25 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>
-Cc: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, Daniel Vetter
- <daniel@ffwll.ch>, Ville =?utf-8?B?U3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/i915: Fix possible int overflow in
- skl_ddi_calculate_wrpll()
-In-Reply-To: <20240729174035.25727-1-n.zhandarovich@fintech.ru>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240729174035.25727-1-n.zhandarovich@fintech.ru>
-Date: Tue, 30 Jul 2024 15:08:21 +0300
-Message-ID: <875xsnxetm.fsf@intel.com>
+	s=arc-20240116; t=1722342597; c=relaxed/simple;
+	bh=VwgmwLcqB9ZFY4Gq8oFzw8DPmba5sKvUZygIQYJUFJ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CM1WGLJyTYIX5Op/EgFbtrhPHQNb0FbZB7aaw0GjKfGE/QE0FjzNKPfe6Q/nzBOZBttsNpnwM185Kd1QpvtbJ0S8PfqhU/juFdCcuuxtEADYYqgF7yk5elVWTHY5dxHyXmjjw9fAPXRTD/11CJH1a1OO2ufldv1iEaJ287fLoII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KkUnA/32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6B5C32782;
+	Tue, 30 Jul 2024 12:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722342596;
+	bh=VwgmwLcqB9ZFY4Gq8oFzw8DPmba5sKvUZygIQYJUFJ8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KkUnA/32/zuP2yfY+2BHZWzBcAP6eKFvYJzwWg50srUl6w+CFGAAsp0WSVoyBsClT
+	 RqacX6MYF5YOZXuFyCH1T+vUJ++Nz0X1eEHzYVtQCG70dV6lycBDRT1l0bC44Pawpd
+	 +iPYigs44yG43C7YtEGs+CmmNOd07N1gVv7oVL3sAsGWuDWypjD0wUHbrIyVdGM4TS
+	 vrI0xEOfD8OBBv8DrpRSzlAYcZ84bFwSacznjY87leU+5uoMBw6sHmr0W8MuWdQEGa
+	 PdIEIXWlUrWuRQDGAlE0qFxCsmO+XkMEeW2ssvA5Zhnhvuu4KAm3BW6AkdQu1fHQWH
+	 w+/JLXA6Quvug==
+From: Christian Brauner <brauner@kernel.org>
+To: dhowells@redhat.com,
+	jlayton@kernel.org,
+	Max Kellermann <max.kellermann@ionos.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	willy@infradead.org,
+	linux-cachefs@redhat.com,
+	linux-fsdevel@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2" flag
+Date: Tue, 30 Jul 2024 14:29:46 +0200
+Message-ID: <20240730-bogen-absuchen-8ab2d9ba0406@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240729092828.857383-1-max.kellermann@ionos.com>
+References: <20240729092828.857383-1-max.kellermann@ionos.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1287; i=brauner@kernel.org; h=from:subject:message-id; bh=VwgmwLcqB9ZFY4Gq8oFzw8DPmba5sKvUZygIQYJUFJ8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaStuLPXbsNutWrb//0s9qtDC+4qLxCUPskaGWuox6y2J pWnfcXUjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIm0bWL4Z6Y6h3Vi5b6S3S8m Bl+YNE1i6+I5d4u91me4+v1Y+SriThTD/7znfiksf3dX7a+6M2XhuqRz75nya4/vVRJP31p8af4 DfQ4A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Mon, 29 Jul 2024, Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
-> On the off chance that clock value ends up being too high (by means
-> of skl_ddi_calculate_wrpll() having benn called with big enough
-> value of crtc_state->port_clock * 1000), one possible consequence
-> may be that the result will not be able to fit into signed int.
->
-> Fix this issue by moving conversion of clock parameter from kHz to Hz
-> into the body of skl_ddi_calculate_wrpll(), as well as casting the
-> same parameter to u64 type while calculating the value for AFE clock.
-> This both mitigates the overflow problem and avoids possible erroneous
-> integer promotion mishaps.
->
-> Found by Linux Verification Center (linuxtesting.org) with static
-> analysis tool SVACE.
->
-> Fixes: fe70b262e781 ("drm/i915: Move a bunch of stuff into rodata from the stack")
+On Mon, 29 Jul 2024 11:28:28 +0200, Max Kellermann wrote:
+> This fixes a crash bug caused by commit ae678317b95e ("netfs: Remove
+> deprecated use of PG_private_2 as a second writeback flag") by
+> removing a leftover folio_end_private_2() call after all calls to
+> folio_start_private_2() had been removed by the commit.
+> 
+> By calling folio_end_private_2() without folio_start_private_2(), the
+> folio refcounter breaks and causes trouble like RCU stalls and general
+> protection faults.
+> 
+> [...]
 
-I don't think that's right. The code was only shuffled around at that
-point. I think the bug's been there since the code was added in commit
-82d354370189 ("drm/i915/skl: Implementation of SKL DPLL programming").
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Fixed while applying to drm-intel-next, thanks for the patch.
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-BR,
-Jani.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-> ---
-> v2: instead of double casting of 'clock' with (u64)(u32), convert
-> 'clock' to Hz inside skl_ddi_calculate_wrpll() and cast it only
-> to u64 to mitigate the issue. Per Jani's <jani.nikula@linux.intel.com>
-> helpful suggestion made here:
-> https://lore.kernel.org/all/87ed7gzhin.fsf@intel.com/
-> Also, change commit description accordingly.
->
-> v1: https://lore.kernel.org/all/20240724184911.12250-1-n.zhandarovich@fintech.ru/
->
->  drivers/gpu/drm/i915/display/intel_dpll_mgr.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-> index 90998b037349..292d163036b1 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dpll_mgr.c
-> @@ -1658,7 +1658,7 @@ static void skl_wrpll_params_populate(struct skl_wrpll_params *params,
->  }
->  
->  static int
-> -skl_ddi_calculate_wrpll(int clock /* in Hz */,
-> +skl_ddi_calculate_wrpll(int clock,
->  			int ref_clock,
->  			struct skl_wrpll_params *wrpll_params)
->  {
-> @@ -1683,7 +1683,7 @@ skl_ddi_calculate_wrpll(int clock /* in Hz */,
->  	};
->  	unsigned int dco, d, i;
->  	unsigned int p0, p1, p2;
-> -	u64 afe_clock = clock * 5; /* AFE Clock is 5x Pixel clock */
-> +	u64 afe_clock = (u64)clock * 1000 * 5; /* AFE Clock is 5x Pixel clock, in Hz */
->  
->  	for (d = 0; d < ARRAY_SIZE(dividers); d++) {
->  		for (dco = 0; dco < ARRAY_SIZE(dco_central_freq); dco++) {
-> @@ -1808,7 +1808,7 @@ static int skl_ddi_hdmi_pll_dividers(struct intel_crtc_state *crtc_state)
->  	struct skl_wrpll_params wrpll_params = {};
->  	int ret;
->  
-> -	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock * 1000,
-> +	ret = skl_ddi_calculate_wrpll(crtc_state->port_clock,
->  				      i915->display.dpll.ref_clks.nssc, &wrpll_params);
->  	if (ret)
->  		return ret;
-
--- 
-Jani Nikula, Intel
+[1/1] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2" flag
+      https://git.kernel.org/vfs/vfs/c/f7244a2b1d4c
 
