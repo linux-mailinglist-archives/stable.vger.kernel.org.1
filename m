@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F280B9417B8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:15:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD57A941A49
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803FE1F20356
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:15:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0C191C22B91
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D82C1A6169;
-	Tue, 30 Jul 2024 16:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831D218801C;
+	Tue, 30 Jul 2024 16:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnQ8QQ/0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adKRXAY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A661A616F;
-	Tue, 30 Jul 2024 16:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F080183CDB;
+	Tue, 30 Jul 2024 16:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355888; cv=none; b=j5r6/AMTRkD4BEYvnZsG4HNP5AnhreyYozfSc5Ey3YfRdZYhmDZwtMqF/h0zHLcYM2M4uwj/eRPQia1Rna34tvXT+SQ22fmyDGumaNQnIbfOHddpQSBi6x6G4hys0+WNSUbPRj3m2eKROCsP0ZwxqEULSPc4dAS/M2hR5o0+Eps=
+	t=1722357734; cv=none; b=O9mdb+ByLqS2wqVcGRHdh7ZEvFZMFJqBxjIdlEyTr5C0X+iz3aRc8w+07tJY/WSFr7zxwIUqVXrDupt9iGgEF6LkXyKH15fDnYH/4gzlUVrpgXuTf/dF4y/8NWs/3czIBrki56bNvUs2CrtjPPW/6fx+I5mXjdZi7CJZWjsWDrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355888; c=relaxed/simple;
-	bh=3pH6TOmSfD2ZJlLVWpUvHoFLVa78o5//kxJkBDrYjCs=;
+	s=arc-20240116; t=1722357734; c=relaxed/simple;
+	bh=jEs40l/hcbPsS4mJGKxhLj/m4+GSYOR+W4B1KxzCgbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkiKOEg+J3gXw7ftZuySRQ2tHVXlhmPp0UNdwE6OfMHep/DdHyGV4/7U8dsvAEY5zwwYWbmDm/d0TByyka/IzKCn3p0emUbOVF4GDZL/KiMmfIp2LYqAA+rL8H9wIE9IDFhpqhCmNgP/9QwYs271VpgDogdXtU5Jia1KjbD/vxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnQ8QQ/0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF11C4AF0A;
-	Tue, 30 Jul 2024 16:11:27 +0000 (UTC)
+	 MIME-Version; b=fUV/VAo2YpDBsgQIhI+te5zuZXhruIK1VjpDs+B14l3U+bS2nLsRVI1YI7OMi8klKC5UHYk/xYk+S0vWmGX847uZyVHyQ1uQ7Xs6v/RKbOqps6b6A+OdVV6lrS3vCQF/S3s379OV27N5OynM9AByCM6yjetANiGemjUjubGgzNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adKRXAY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4E9C4AF0A;
+	Tue, 30 Jul 2024 16:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355888;
-	bh=3pH6TOmSfD2ZJlLVWpUvHoFLVa78o5//kxJkBDrYjCs=;
+	s=korg; t=1722357734;
+	bh=jEs40l/hcbPsS4mJGKxhLj/m4+GSYOR+W4B1KxzCgbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XnQ8QQ/044LGbsc6vFAbeljMHrlM2goo+JG5glwu5ntdeQDM9/mhVsAzEiL4JTWrw
-	 lIfoIet1Mb4NWJiZvz2fwAzUQf21ZAvV45ILX0CrWHqkZ2RdSzROAKYprbaIAAOcrQ
-	 VSoLBp6+iHG6vViIPcBf8vg3e6yNJw9PXj5pwsFc=
+	b=adKRXAY0E9rbwSw/0QIc10F1LsSyA96T/jCIMFGGgI6jCPDCE4PzS7B/v5oKpl5PV
+	 XgaHODzxmPWJMJWg0nEX/AhoezBZnSFELT9DsjTJ4OqsldGE17wkDFgtZq8L11fu6U
+	 mkaN3bDKz+YtDHodP3vU64obuQjdqekaHfgr/Mek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/440] s390/mm: Convert make_page_secure to use a folio
+Subject: [PATCH 6.6 267/568] clk: qcom: gpucc-sa8775p: Remove the CLK_IS_CRITICAL and ALWAYS_ON flags
 Date: Tue, 30 Jul 2024 17:46:14 +0200
-Message-ID: <20240730151621.390672438@linuxfoundation.org>
+Message-ID: <20240730151650.316511167@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 259e660d91d0e7261ae0ee37bb37266d6006a546 ]
+[ Upstream commit e69386d4a42afa5da6bfdcd4ac5ec61e1db04c61 ]
 
-These page APIs are deprecated, so convert the incoming page to a folio
-and use the folio APIs instead.  The ultravisor API cannot handle large
-folios, so return -EINVAL if one has slipped through.
+The GPU clocks/GDSCs have been marked critical from the clock driver
+but the GPU driver votes on these resources as per the HW requirement.
+In the case where these clocks & GDSCs are left enabled, would have
+power impact and also cause GPU stability/corruptions.
+Fix the same by removing the CLK_IS_CRITICAL for clocks and ALWAYS_ON
+flags for the GPU GDSCs.
 
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20240322161149.2327518-2-willy@infradead.org
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
+Fixes: 0afa16afc36d ("clk: qcom: add the GPUCC driver for sa8775p")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-4-adcc756a23df@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/uv.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ drivers/clk/qcom/gpucc-sa8775p.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index 5caa0ed2b594a..97567fb8936c7 100644
---- a/arch/s390/kernel/uv.c
-+++ b/arch/s390/kernel/uv.c
-@@ -172,21 +172,21 @@ int uv_convert_owned_from_secure(unsigned long paddr)
- }
- 
+diff --git a/drivers/clk/qcom/gpucc-sa8775p.c b/drivers/clk/qcom/gpucc-sa8775p.c
+index 26ecfa63be193..3f05b44c13c53 100644
+--- a/drivers/clk/qcom/gpucc-sa8775p.c
++++ b/drivers/clk/qcom/gpucc-sa8775p.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  /*
-- * Calculate the expected ref_count for a page that would otherwise have no
-+ * Calculate the expected ref_count for a folio that would otherwise have no
-  * further pins. This was cribbed from similar functions in other places in
-  * the kernel, but with some slight modifications. We know that a secure
-- * page can not be a huge page for example.
-+ * folio can not be a large folio, for example.
+- * Copyright (c) 2021-2022, Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024, Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2023, Linaro Limited
   */
--static int expected_page_refs(struct page *page)
-+static int expected_folio_refs(struct folio *folio)
- {
- 	int res;
  
--	res = page_mapcount(page);
--	if (PageSwapCache(page)) {
-+	res = folio_mapcount(folio);
-+	if (folio_test_swapcache(folio)) {
- 		res++;
--	} else if (page_mapping(page)) {
-+	} else if (folio_mapping(folio)) {
- 		res++;
--		if (page_has_private(page))
-+		if (folio->private)
- 			res++;
- 	}
- 	return res;
-@@ -194,14 +194,17 @@ static int expected_page_refs(struct page *page)
+@@ -280,7 +280,7 @@ static struct clk_branch gpu_cc_ahb_clk = {
+ 				&gpu_cc_hub_ahb_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -294,7 +294,6 @@ static struct clk_branch gpu_cc_cb_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_cb_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -312,7 +311,7 @@ static struct clk_branch gpu_cc_crc_ahb_clk = {
+ 				&gpu_cc_hub_ahb_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -330,7 +329,7 @@ static struct clk_branch gpu_cc_cx_ff_clk = {
+ 				&gpu_cc_ff_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -348,7 +347,7 @@ static struct clk_branch gpu_cc_cx_gmu_clk = {
+ 				&gpu_cc_gmu_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags =  CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags =  CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+@@ -362,7 +361,6 @@ static struct clk_branch gpu_cc_cx_snoc_dvm_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_cx_snoc_dvm_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -380,7 +378,7 @@ static struct clk_branch gpu_cc_cxo_aon_clk = {
+ 				&gpu_cc_xo_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -398,7 +396,7 @@ static struct clk_branch gpu_cc_cxo_clk = {
+ 				&gpu_cc_xo_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags =  CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags =  CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -416,7 +414,7 @@ static struct clk_branch gpu_cc_demet_clk = {
+ 				&gpu_cc_demet_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+@@ -430,7 +428,6 @@ static struct clk_branch gpu_cc_hlos1_vote_gpu_smmu_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_hlos1_vote_gpu_smmu_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -448,7 +445,7 @@ static struct clk_branch gpu_cc_hub_aon_clk = {
+ 				&gpu_cc_hub_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+@@ -466,7 +463,7 @@ static struct clk_branch gpu_cc_hub_cx_int_clk = {
+ 				&gpu_cc_hub_cx_int_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags =  CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags =  CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+@@ -480,7 +477,6 @@ static struct clk_branch gpu_cc_memnoc_gfx_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_memnoc_gfx_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -494,7 +490,6 @@ static struct clk_branch gpu_cc_sleep_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_sleep_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -533,7 +528,7 @@ static struct gdsc cx_gdsc = {
+ 		.name = "cx_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
++	.flags = VOTABLE | RETAIN_FF_ENABLE,
+ };
  
- static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
- {
-+	struct folio *folio = page_folio(page);
- 	int expected, cc = 0;
- 
--	if (PageWriteback(page))
-+	if (folio_test_large(folio))
-+		return -EINVAL;
-+	if (folio_test_writeback(folio))
- 		return -EAGAIN;
--	expected = expected_page_refs(page);
--	if (!page_ref_freeze(page, expected))
-+	expected = expected_folio_refs(folio);
-+	if (!folio_ref_freeze(folio, expected))
- 		return -EBUSY;
--	set_bit(PG_arch_1, &page->flags);
-+	set_bit(PG_arch_1, &folio->flags);
- 	/*
- 	 * If the UVC does not succeed or fail immediately, we don't want to
- 	 * loop for long, or we might get stall notifications.
-@@ -211,9 +214,9 @@ static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
- 	 * -EAGAIN and we let the callers deal with it.
- 	 */
- 	cc = __uv_call(0, (u64)uvcb);
--	page_ref_unfreeze(page, expected);
-+	folio_ref_unfreeze(folio, expected);
- 	/*
--	 * Return -ENXIO if the page was not mapped, -EINVAL for other errors.
-+	 * Return -ENXIO if the folio was not mapped, -EINVAL for other errors.
- 	 * If busy or partially completed, return -EAGAIN.
- 	 */
- 	if (cc == UVC_CC_OK)
+ static struct gdsc gx_gdsc = {
 -- 
 2.43.0
 
