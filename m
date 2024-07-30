@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC3A941A63
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10892941E35
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 391401F23E8D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF883280EC6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BDD18454A;
-	Tue, 30 Jul 2024 16:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8376B1A76C1;
+	Tue, 30 Jul 2024 17:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMNKztRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdMWMiMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDD51A619E;
-	Tue, 30 Jul 2024 16:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4350D1A76B3;
+	Tue, 30 Jul 2024 17:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357800; cv=none; b=aoIv4s0mQoFYOoZ6PnxMfx45dYIR0nxdtAtaybXV2UXfRRKhd8J50Z9bnhgAOEuLDELTbXZ1MtSs4cH/OKCRHhPhQJ8k8McmvDjdRJkTMVAoB3zOkjfCMVa20tYbnJ4jiCbUXErlbi2dM9YqQm/sOHVJpxUtP9ixEQExweJW8s4=
+	t=1722360395; cv=none; b=snfts4rLaekHmyCaazeo1H/e/AbiV8/dHsqvtqaGL3lu3Q7UcQLuXzTXt6tX5xPy3ZFRJ2kgajPHdXg6huKOsmssgU8yE+1Ri31dggGtHMe9UK3XZoKwtA7w+xYccYXlxG5BT92N9uYTeLMZb5q1qULqDaD457U3W6u7Zp5Faak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357800; c=relaxed/simple;
-	bh=vm/cD6TNWb83mYv31uq1EAnW1WR94auFi/u+bZZiYi8=;
+	s=arc-20240116; t=1722360395; c=relaxed/simple;
+	bh=fZbmYiIEqKgDQNW+T687awpaeIB7nWoErv1xV0hcYrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGEvdO28sL0YlrPOxy43qEyr8+YaxkUDvwKoJv86tjvRwGvRCBDiU7uofUwFr2nQzkcJ0q28eD3DYjTDbXUJuZ5B2a2x5QAV35/hoSw5+zPBaN8s9kZA1qquiDV8N1mrhKvkEdgtpTFYoNDffr3QF+99KmcA9vKtlD3yyG2crIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMNKztRf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9BEC4AF0A;
-	Tue, 30 Jul 2024 16:43:19 +0000 (UTC)
+	 MIME-Version; b=DEqblysk5CBH5NxHIxFS5oHsgJvDo5wpQbCLygyUCqRsiZiXm5O9FQcl3Ij0jWxYngEC2q4bXbBXnxgepO96S9nScw8/fph7y/mYPoGR4/49xcI9nXj86sMzy6LU3jUSMKVSgAn95SbQsmwqYpH2VN3gt3yCvreMZKp3OSGvTY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdMWMiMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF256C32782;
+	Tue, 30 Jul 2024 17:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357800;
-	bh=vm/cD6TNWb83mYv31uq1EAnW1WR94auFi/u+bZZiYi8=;
+	s=korg; t=1722360395;
+	bh=fZbmYiIEqKgDQNW+T687awpaeIB7nWoErv1xV0hcYrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMNKztRf9nG0iNwg3VxxYvUtlHuLAFmXKZq21t/hPjvIaYtkaZBjhIJF9sEtL1sgh
-	 NqTai15vJJnbMHtTsjGzN1TEz3f+heQyxZyZGsjZJpJgQs1uKChpvpi2ZwZwO/azO3
-	 l69bwFiNvn9t3p22WPKtl1yu4Zki6B4igcsBGcS4=
+	b=YdMWMiMRV0eSCBzDvvuWL0mCBSnrXiLUfNGthl74RetbvMJgpEFJQFJ3IFU4Pdqdp
+	 XVC5aiGBRUXV3MvLTzZ3S1f9TxgfX/s/LW/PNhzCWMesQdK2RvrhchfJDR0rmq3B+h
+	 DxXizZxU8Z7CKABNoeJh0o7soyiBrgC5FzBWMyIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.1 328/440] fs/ntfs3: Update log->page_{mask,bits} if log->page_size changed
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 685/809] scsi: qla2xxx: Fix for possible memory corruption
 Date: Tue, 30 Jul 2024 17:49:21 +0200
-Message-ID: <20240730151628.630119976@linuxfoundation.org>
+Message-ID: <20240730151751.967719780@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-commit 2fef55d8f78383c8e6d6d4c014b9597375132696 upstream.
+commit c03d740152f78e86945a75b2ad541bf972fab92a upstream.
 
-If an NTFS file system is mounted to another system with different
-PAGE_SIZE from the original system, log->page_size will change in
-log_replay(), but log->page_{mask,bits} don't change correspondingly.
-This will cause a panic because "u32 bytes = log->page_size - page_off"
-will get a negative value in the later read_log_page().
+Init Control Block is dereferenced incorrectly.  Correctly dereference ICB
 
 Cc: stable@vger.kernel.org
-Fixes: b46acd6a6a627d876898e ("fs/ntfs3: Add NTFS journal")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-4-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fslog.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -3937,6 +3937,9 @@ init_log_instance:
- 		goto out;
- 	}
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -4689,7 +4689,7 @@ static void
+ qla2x00_number_of_exch(scsi_qla_host_t *vha, u32 *ret_cnt, u16 max_cnt)
+ {
+ 	u32 temp;
+-	struct init_cb_81xx *icb = (struct init_cb_81xx *)&vha->hw->init_cb;
++	struct init_cb_81xx *icb = (struct init_cb_81xx *)vha->hw->init_cb;
+ 	*ret_cnt = FW_DEF_EXCHANGES_CNT;
  
-+	log->page_mask = log->page_size - 1;
-+	log->page_bits = blksize_bits(log->page_size);
-+
- 	/* If the file size has shrunk then we won't mount it. */
- 	if (l_size < le64_to_cpu(ra2->l_size)) {
- 		err = -EINVAL;
+ 	if (max_cnt > vha->hw->max_exchg)
 
 
 
