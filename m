@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-63350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD599418D6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136B694187F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9E6BB2AF19
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440471C22AC5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FEC1A618E;
-	Tue, 30 Jul 2024 16:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0D3183CD5;
+	Tue, 30 Jul 2024 16:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JX+z1RKW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSzb7PdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722E81A616B;
-	Tue, 30 Jul 2024 16:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4761A6161;
+	Tue, 30 Jul 2024 16:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356547; cv=none; b=imkPcgVHIx0iMNJ9xrjBspn/feVvPM4JAqiaJqpDmwLhc9s5Wev8XVbEKjd/QRZNXlXK2jCyaMhL7NTAqcseXhh/Rk27oSib1U1CpA7U1s3M+TZxqPl8UJGv9IK8OD2IcfWg4jbY+jJaMprnqqLptfBFfKspWlQk7gE4Djguz5I=
+	t=1722356558; cv=none; b=ZawZpbcTVQjBYCBgXiv379fSWqnEG5CXUga3jZy8qlaP3xS3swMxwPo4DdD4vsnEcpfbVCq0xC2kiuw0nXA19kcig30dkN1C+nZ6ofkrbCmeviaP8SfdJX3JYSI4aaPk/AzyX5srPVXkO5gwBJWdARAizS8RTgvsOccYoFVRJjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356547; c=relaxed/simple;
-	bh=CPnnry+PswEsrwadX4iRz20QvZKXLtQFw3srJymms8M=;
+	s=arc-20240116; t=1722356558; c=relaxed/simple;
+	bh=qf8AOlsqAb6zK++T16IOr+90Ae1uEZgVroWjFmKyHP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIXY+AjHmfC6Vy13j4dtBxtjX5RjTjG/mdcSHjSfTdHMrHk1heEebcy7PS0kiKDXc6+yhzytkHMPVa5Jia96yUZMLkLxd56fnGAQ+0hB1e55eTinj7T7Xy4TxtAhGaF2orPPZl3zHtwJi3XzLKrYb6FyBiS7JG+wrsA7Oj8F1go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JX+z1RKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0916C32782;
-	Tue, 30 Jul 2024 16:22:26 +0000 (UTC)
+	 MIME-Version; b=FE7GQBRJOV/Y0plaxkWdgj5K61oS08UdwToB+sfEcO/DDYV/GNd16LNUU7EdvvqLkJPRy3+BH3AnSTwtIMYGse4xx1xyLIwaFdRRp0sOBCuDfza5aoJXzvGTZoxSdlgDa6PRTfd6EhFQbm6sBV1oJ4QMHZkKCWFi4YtfM2fmBWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSzb7PdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67350C32782;
+	Tue, 30 Jul 2024 16:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356547;
-	bh=CPnnry+PswEsrwadX4iRz20QvZKXLtQFw3srJymms8M=;
+	s=korg; t=1722356557;
+	bh=qf8AOlsqAb6zK++T16IOr+90Ae1uEZgVroWjFmKyHP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JX+z1RKWQ3sYKHv9C0KMaxLCHIaM4bPuUg7QCITVeVDw99Kac50VHZor2wyyzF09J
-	 /GjnDh+OaMAG5dl+rXGiOAYzqi6Xndb1SsGFLqzKA506WHlqgs947TYA/0WGbUDlbi
-	 uGDkwBKD5tfin1zxyllqYTG8gstm4puQDSW0DfII=
+	b=YSzb7PdHooJPFXh33B+an7M5Gq7fVdJYwx8eopYQOWKw0yS8GGTE0pE9StXHucTg1
+	 2nidgePy2en0uWG+xh8Qv/Eq8p8+uU4XzMtUHszC9jPfJNBkJXJsoxDAjm8+DtDL+X
+	 6zaRZTKPTtBdinn7Jja3RXfm0Ih5G8NaC06XaZ/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 206/440] RDMA/device: Return error earlier if port in not valid
-Date: Tue, 30 Jul 2024 17:47:19 +0200
-Message-ID: <20240730151623.915675711@linuxfoundation.org>
+Subject: [PATCH 6.1 207/440] Input: elan_i2c - do not leave interrupt disabled on suspend failure
+Date: Tue, 30 Jul 2024 17:47:20 +0200
+Message-ID: <20240730151623.953787930@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -65,44 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 917918f57a7b139c043e78c502876f2c286f4f0a ]
+[ Upstream commit 5f82c1e04721e7cd98e604eb4e58f0724d8e5a65 ]
 
-There is no need to allocate port data if port provided is not valid.
+Make sure interrupts are not left disabled when we fail to suspend the
+touch controller.
 
-Fixes: c2261dd76b54 ("RDMA/device: Add ib_device_set_netdev() as an alternative to get_netdev")
-Link: https://lore.kernel.org/r/022047a8b16988fc88d4426da50bf60a4833311b.1719235449.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: 6696777c6506 ("Input: add driver for Elan I2C/SMbus touchpad")
+Link: https://lore.kernel.org/r/ZmKiiL-1wzKrhqBj@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/device.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/input/mouse/elan_i2c_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index 453188db39d83..291ded20934c8 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -2146,6 +2146,9 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
- 	unsigned long flags;
- 	int ret;
+diff --git a/drivers/input/mouse/elan_i2c_core.c b/drivers/input/mouse/elan_i2c_core.c
+index d4eb59b55bf1f..5fa0d6ef627bc 100644
+--- a/drivers/input/mouse/elan_i2c_core.c
++++ b/drivers/input/mouse/elan_i2c_core.c
+@@ -1372,6 +1372,8 @@ static int __maybe_unused elan_suspend(struct device *dev)
+ 	}
  
-+	if (!rdma_is_port_valid(ib_dev, port))
-+		return -EINVAL;
-+
- 	/*
- 	 * Drivers wish to call this before ib_register_driver, so we have to
- 	 * setup the port data early.
-@@ -2154,9 +2157,6 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
- 	if (ret)
- 		return ret;
- 
--	if (!rdma_is_port_valid(ib_dev, port))
--		return -EINVAL;
--
- 	pdata = &ib_dev->port_data[port];
- 	spin_lock_irqsave(&pdata->netdev_lock, flags);
- 	old_ndev = rcu_dereference_protected(
+ err:
++	if (ret)
++		enable_irq(client->irq);
+ 	mutex_unlock(&data->sysfs_mutex);
+ 	return ret;
+ }
 -- 
 2.43.0
 
