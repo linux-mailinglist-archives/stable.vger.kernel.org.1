@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5C9941AD8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84573941B54
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C871DB2720A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58537B28028
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E95D18454A;
-	Tue, 30 Jul 2024 16:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51E518991A;
+	Tue, 30 Jul 2024 16:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zt/7Wkub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyntujTy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E091F1A619E;
-	Tue, 30 Jul 2024 16:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7382D189905;
+	Tue, 30 Jul 2024 16:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357778; cv=none; b=FdmRKVvdlBjAthThHry1pCacP3pT+7QYZnZfDvl419cSPtfVHTDDIgvZy6L+Iy4AA7KfRIfiN47Ldj3EnUxX0PRTh8CQVVNzwu0z9CvwEWm/elb2ZM2mR+9tTga6JT41DbzR6Uhsw2IUKIw6Lop6Hp/0xkvqb+PXaoqMrNf+zIQ=
+	t=1722357848; cv=none; b=hth/OCvXVizedQMgjye5Hk5HguC/29qHVGQpGVjHHrpQLDYVoFvvAGkvIdYoHy7DqUa0hGlqDkm6cMpFkCRklMyHqGXKnbwvI6OkxV6q5T9GzkdJ5f8kK052MYsJOVeOpYS3iz2ODT4BZrRpx3pLDCMo17Cvg/w013f1dBChAEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357778; c=relaxed/simple;
-	bh=aQArY0RncdJr4OEubjT+de6TKETpmRWcE4q0/gtRXwU=;
+	s=arc-20240116; t=1722357848; c=relaxed/simple;
+	bh=UHirgUxdaxF+3DOMl54AKD2U+3d0fDVjOicHHBY2osI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkp4oQo+hQCJeFudAnG/T08Jms4uzbiNbb2aiEOZslT4TInumEk9KFO9YU/PG1Vnsv4jgD5KfqTzw6OaHP8ZpU07y5J+GtYGJFCbZIGAo2sEa36zNdaNM6Z1dUScMwD8uyDe1+hMJQrPjDxCuEoZi1tQVNQuE/kna+c/V7KauIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zt/7Wkub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0BFC32782;
-	Tue, 30 Jul 2024 16:42:57 +0000 (UTC)
+	 MIME-Version; b=HKHix6y//ldbTmIIeZK1u7ANKAOe9nVVpueiTLAM0YV7Yec5bi19Lntc6Jhd5dsuPTQ8bfr9PcW25WmlxoiXjwSnH1utlL/HmwuuUpKw96G3T2J+bD0C6Tro3NYXQ7r1P+jithni13BH9kHiCraFOvnvS92ZcKFvnyVj24ry1cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyntujTy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D955BC4AF0C;
+	Tue, 30 Jul 2024 16:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357777;
-	bh=aQArY0RncdJr4OEubjT+de6TKETpmRWcE4q0/gtRXwU=;
+	s=korg; t=1722357848;
+	bh=UHirgUxdaxF+3DOMl54AKD2U+3d0fDVjOicHHBY2osI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zt/7WkubuqPRG6kjfw5OMxZ2bxREvdZWoCo2ANO3Dlend+auhbLb6tQP+rClB7Xzu
-	 IisVGtTTXSowIndyF7scpsJ8p4YB2kn6pjxMklLyDq1NjP7ZPL1FK/+jrQNtEqaJRp
-	 zBSZ2F3cj4JJb+FKqaKp+yCOSFRfCW+6DNTC/9w4=
+	b=NyntujTyLZeriHDPBRaoOJeC3q2PQQMWqzjjUjJE0Y+wlWhslzOT9mkd5C+cYxz6Y
+	 kEmsnyD93g0xhp5luZnDGZM0tAPXaT6Tqcak2MXwppiVmz+M8DcATrSwVM7OHTBEZ/
+	 04KhJT2yZpz5L9zEpXlmMwJnFY7YQVdRjiu7Rj24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 285/809] drm/amd/display: fix graphics_object_id size
-Date: Tue, 30 Jul 2024 17:42:41 +0200
-Message-ID: <20240730151735.850121182@linuxfoundation.org>
+Subject: [PATCH 6.10 286/809] drm/amd/display: Move struct scaler_data off stack
+Date: Tue, 30 Jul 2024 17:42:42 +0200
+Message-ID: <20240730151735.890911730@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,42 +68,140 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 6d438caaeaa1a7fae7b523e7bc4cee262b9f101a ]
+[ Upstream commit f8718c482572181ca364ffca3c27365cc83cfe9e ]
 
-The graphics_object_id structure is meant to fit into 32 bits, as it's
-passed by value in and out of functions. A recent change increased
-the size to 128 bits, so it's now always passed by reference, which
-is clearly not intended and ends up producing a compile-time warning:
+The scaler_data structure is implicitly copied onto the stack twice by
+being returned from a function. This is usually a bad idea, but it
+was not flagged by the compiler until a recent addition that pushed
+it over the 1024 byte function stack limit:
 
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_factory.c: In function 'construct_phy':
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_factory.c:743:1: error: the frame size of 1040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml2_translation_helper.c: In function 'populate_dml_plane_cfg_from_plane_state':
+drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml2_translation_helper.c:1075:1: error: the frame size of 1032 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
 
-Add back the bitfields to revert to the original size, while keeping
-the 'enum' type change.
+Use an explicit kzalloc() and memcpy() instead here to keep it off the
+stack.
 
-Fixes: fec85f995a4b ("drm/amd/display: Fix compiler redefinition warnings for certain configs")
+Fixes: 00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
+Fixes: 7966f319c66d ("drm/amd/display: Introduce DML2")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/include/grph_object_id.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../display/dc/dml2/dml2_translation_helper.c | 56 ++++++++++---------
+ 1 file changed, 31 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/include/grph_object_id.h b/drivers/gpu/drm/amd/display/include/grph_object_id.h
-index 08ee0350b31fb..54e33062b3c02 100644
---- a/drivers/gpu/drm/amd/display/include/grph_object_id.h
-+++ b/drivers/gpu/drm/amd/display/include/grph_object_id.h
-@@ -226,8 +226,8 @@ enum dp_alt_mode {
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+index 8ecc972dbffde..edff6b447680c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -804,7 +804,7 @@ static void populate_dml_surface_cfg_from_plane_state(enum dml_project_id dml2_p
+ 	}
+ }
  
- struct graphics_object_id {
- 	uint32_t  id:8;
--	enum object_enum_id  enum_id;
--	enum object_type  type;
-+	enum object_enum_id  enum_id :4;
-+	enum object_type  type :4;
- 	uint32_t  reserved:16; /* for padding. total size should be u32 */
- };
+-static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state *in, struct dc_state *context)
++static void get_scaler_data_for_plane(const struct dc_plane_state *in, struct dc_state *context, struct scaler_data *out)
+ {
+ 	int i;
+ 	struct pipe_ctx *temp_pipe = &context->res_ctx.temp_pipe;
+@@ -825,7 +825,7 @@ static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state
+ 	}
  
+ 	ASSERT(i < MAX_PIPES);
+-	return temp_pipe->plane_res.scl_data;
++	memcpy(out, &temp_pipe->plane_res.scl_data, sizeof(*out));
+ }
+ 
+ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_stream_state *in)
+@@ -884,27 +884,31 @@ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned
+ 
+ static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_plane_state *in, struct dc_state *context)
+ {
+-	const struct scaler_data scaler_data = get_scaler_data_for_plane(in, context);
++	struct scaler_data *scaler_data = kzalloc(sizeof(*scaler_data), GFP_KERNEL);
++	if (!scaler_data)
++		return;
++
++	get_scaler_data_for_plane(in, context, scaler_data);
+ 
+ 	out->CursorBPP[location] = dml_cur_32bit;
+ 	out->CursorWidth[location] = 256;
+ 
+ 	out->GPUVMMinPageSizeKBytes[location] = 256;
+ 
+-	out->ViewportWidth[location] = scaler_data.viewport.width;
+-	out->ViewportHeight[location] = scaler_data.viewport.height;
+-	out->ViewportWidthChroma[location] = scaler_data.viewport_c.width;
+-	out->ViewportHeightChroma[location] = scaler_data.viewport_c.height;
+-	out->ViewportXStart[location] = scaler_data.viewport.x;
+-	out->ViewportYStart[location] = scaler_data.viewport.y;
+-	out->ViewportXStartC[location] = scaler_data.viewport_c.x;
+-	out->ViewportYStartC[location] = scaler_data.viewport_c.y;
++	out->ViewportWidth[location] = scaler_data->viewport.width;
++	out->ViewportHeight[location] = scaler_data->viewport.height;
++	out->ViewportWidthChroma[location] = scaler_data->viewport_c.width;
++	out->ViewportHeightChroma[location] = scaler_data->viewport_c.height;
++	out->ViewportXStart[location] = scaler_data->viewport.x;
++	out->ViewportYStart[location] = scaler_data->viewport.y;
++	out->ViewportXStartC[location] = scaler_data->viewport_c.x;
++	out->ViewportYStartC[location] = scaler_data->viewport_c.y;
+ 	out->ViewportStationary[location] = false;
+ 
+-	out->ScalerEnabled[location] = scaler_data.ratios.horz.value != dc_fixpt_one.value ||
+-				scaler_data.ratios.horz_c.value != dc_fixpt_one.value ||
+-				scaler_data.ratios.vert.value != dc_fixpt_one.value ||
+-				scaler_data.ratios.vert_c.value != dc_fixpt_one.value;
++	out->ScalerEnabled[location] = scaler_data->ratios.horz.value != dc_fixpt_one.value ||
++				scaler_data->ratios.horz_c.value != dc_fixpt_one.value ||
++				scaler_data->ratios.vert.value != dc_fixpt_one.value ||
++				scaler_data->ratios.vert_c.value != dc_fixpt_one.value;
+ 
+ 	/* Current driver code base uses LBBitPerPixel as 57. There is a discrepancy
+ 	 * from the HW/DML teams about this value. Initialize LBBitPerPixel with the
+@@ -920,25 +924,25 @@ static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out
+ 		out->VRatioChroma[location] = 1;
+ 	} else {
+ 		/* Follow the original dml_wrapper.c code direction to fix scaling issues */
+-		out->HRatio[location] = (dml_float_t)scaler_data.ratios.horz.value / (1ULL << 32);
+-		out->HRatioChroma[location] = (dml_float_t)scaler_data.ratios.horz_c.value / (1ULL << 32);
+-		out->VRatio[location] = (dml_float_t)scaler_data.ratios.vert.value / (1ULL << 32);
+-		out->VRatioChroma[location] = (dml_float_t)scaler_data.ratios.vert_c.value / (1ULL << 32);
++		out->HRatio[location] = (dml_float_t)scaler_data->ratios.horz.value / (1ULL << 32);
++		out->HRatioChroma[location] = (dml_float_t)scaler_data->ratios.horz_c.value / (1ULL << 32);
++		out->VRatio[location] = (dml_float_t)scaler_data->ratios.vert.value / (1ULL << 32);
++		out->VRatioChroma[location] = (dml_float_t)scaler_data->ratios.vert_c.value / (1ULL << 32);
+ 	}
+ 
+-	if (!scaler_data.taps.h_taps) {
++	if (!scaler_data->taps.h_taps) {
+ 		out->HTaps[location] = 1;
+ 		out->HTapsChroma[location] = 1;
+ 	} else {
+-		out->HTaps[location] = scaler_data.taps.h_taps;
+-		out->HTapsChroma[location] = scaler_data.taps.h_taps_c;
++		out->HTaps[location] = scaler_data->taps.h_taps;
++		out->HTapsChroma[location] = scaler_data->taps.h_taps_c;
+ 	}
+-	if (!scaler_data.taps.v_taps) {
++	if (!scaler_data->taps.v_taps) {
+ 		out->VTaps[location] = 1;
+ 		out->VTapsChroma[location] = 1;
+ 	} else {
+-		out->VTaps[location] = scaler_data.taps.v_taps;
+-		out->VTapsChroma[location] = scaler_data.taps.v_taps_c;
++		out->VTaps[location] = scaler_data->taps.v_taps;
++		out->VTapsChroma[location] = scaler_data->taps.v_taps_c;
+ 	}
+ 
+ 	out->SourceScan[location] = (enum dml_rotation_angle)in->rotation;
+@@ -949,6 +953,8 @@ static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out
+ 	out->DynamicMetadataTransmittedBytes[location] = 0;
+ 
+ 	out->NumberOfCursors[location] = 1;
++
++	kfree(scaler_data);
+ }
+ 
+ static unsigned int map_stream_to_dml_display_cfg(const struct dml2_context *dml2,
 -- 
 2.43.0
 
