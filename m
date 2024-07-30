@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-64500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFD2941E0F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0C9941A69
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9134E1C2371B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4A7CB22767
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010DE1A76BB;
-	Tue, 30 Jul 2024 17:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8473E4EB2B;
+	Tue, 30 Jul 2024 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9BzZBkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaCdq1eu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33D81A76A1;
-	Tue, 30 Jul 2024 17:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FB41A6195;
+	Tue, 30 Jul 2024 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360328; cv=none; b=miQdxu8pxr2MpksL3XMVaPkZ0vV9q9wIX4RIng3Sz4JNf6wzCWqN/2OSIKFlTV6RiLrCU1efv4c9S6KxVhDSyLDaTD6ZPkCdEJeH7aQU9yvzCRXzr3kHro4sneozyuh9yvN2sSFa3rqzT0Oau8KRAQYDdT3DOCMn8AnRehQfTkI=
+	t=1722357187; cv=none; b=Peru6hVZPhXF+9jQ8KfMr8mUysuTNYMsZove7SLRujbJPLuwIiv0pmCviTwo1+aF8hEvzhtgv8+wA1LQ3oVx5EoIjQZrJC1TI33s/XWcFtvNIHatNloTPpIpA2didm7OzQAb71VhUruVanpDtH+l8MFk/Dz3TRjFZYa3YQIaZTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360328; c=relaxed/simple;
-	bh=EtmjBassc0WXEX5pnEMnbHFFFFAotejW/FJwdvJA3jM=;
+	s=arc-20240116; t=1722357187; c=relaxed/simple;
+	bh=ibVCS+aHQZzIehd3HxS4C3XV2htWSV4Nn6fUEa9jhTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MlVQvBSxZnmooDn1/fgdm0uiOZFpg8RmAred5gMGFyuVv/78gn1YHX3WehTvfJ9oj75pO+XTL7OX52DGsbUOqnsX64PE6iMaA+hBs2WFMzr8XzWuKR3OzFNNLjOTYu/o7T9n6I+4PKJ2Lnu190T0568kwD0+N35nYZlZc1YvpHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9BzZBkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239F3C32782;
-	Tue, 30 Jul 2024 17:25:27 +0000 (UTC)
+	 MIME-Version; b=JpVaUXeN8VZA+/WbG7Td0+9N2u7hw3ZPbK+fbIQ4khHQS48iyJMUwrLl49FOMhPorV3gHSD8Yb8etEJegSSdnbKLjQ+tMLNENCxtL24/sdzO2dOFZvLzp4yB1/N+BHAgsRV9JRMmc+PU26/QEeSGgZzqew7+HTLqRORXXPbTQa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaCdq1eu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62D3C32782;
+	Tue, 30 Jul 2024 16:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360328;
-	bh=EtmjBassc0WXEX5pnEMnbHFFFFAotejW/FJwdvJA3jM=;
+	s=korg; t=1722357187;
+	bh=ibVCS+aHQZzIehd3HxS4C3XV2htWSV4Nn6fUEa9jhTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9BzZBkHSzhodCVP6wYZ0bGHKIFHBU3xInb97F1DcGM0YVYFP211HJ5mbFLd2Uw7O
-	 ZQ/XqoDVdlpFeQ5MAaAkdVyq2otT/DByhE47vignwIs0Ifkuphh/5ah+z+XKSx8z17
-	 zZEAGw1uaWR0o0AcWhLa6lce6oWmsKpaQty2u8sU=
+	b=vaCdq1eukNwKwJTdiRo5GJIq7ulOU4Enq76TubuDVTKIaBwHGrDfT2BH8j674dqCD
+	 ZZYO3ikFFooZ0aHDWvFR7gVDk1VrrAsOcidrH1r3QQ76zpv/xO+Ca1lZ5cd8EcyVsI
+	 Oo15BbGHoI/QMST+MyeeA8WpSamDXYAW3azGDOFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.10 624/809] KVM: nVMX: Fold requested virtual interrupt check into has_nested_events()
+	Jan Kara <jack@suse.cz>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 267/440] sbitmap: rewrite sbitmap_find_bit_in_index to reduce repeat code
 Date: Tue, 30 Jul 2024 17:48:20 +0200
-Message-ID: <20240730151749.486701829@linuxfoundation.org>
+Message-ID: <20240730151626.267645157@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,147 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-commit 321ef62b0c5f6f57bb8500a2ca5986052675abbf upstream.
+[ Upstream commit 08470a98a7d7e32c787b23b87353f13b03c23195 ]
 
-Check for a Requested Virtual Interrupt, i.e. a virtual interrupt that is
-pending delivery, in vmx_has_nested_events() and drop the one-off
-kvm_x86_ops.guest_apic_has_interrupt() hook.
+Rewrite sbitmap_find_bit_in_index as following:
+1. Rename sbitmap_find_bit_in_index to sbitmap_find_bit_in_word
+2. Accept "struct sbitmap_word *" directly instead of accepting
+"struct sbitmap *" and "int index" to get "struct sbitmap_word *".
+3. Accept depth/shallow_depth and wrap for __sbitmap_get_word from caller
+to support need of both __sbitmap_get_shallow and __sbitmap_get.
 
-In addition to dropping a superfluous hook, this fixes a bug where KVM
-would incorrectly treat virtual interrupts _for L2_ as always enabled due
-to kvm_arch_interrupt_allowed(), by way of vmx_interrupt_blocked(),
-treating IRQs as enabled if L2 is active and vmcs12 is configured to exit
-on IRQs, i.e. KVM would treat a virtual interrupt for L2 as a valid wake
-event based on L1's IRQ blocking status.
+With helper function sbitmap_find_bit_in_word, we can remove repeat
+code in __sbitmap_get_shallow to find bit considring deferred clear.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://lore.kernel.org/r/20230116205059.3821738-4-shikemeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 72d04bdcf3f7 ("sbitmap: fix io hung due to race on sbitmap_word::cleared")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |    1 -
- arch/x86/include/asm/kvm_host.h    |    1 -
- arch/x86/kvm/vmx/main.c            |    1 -
- arch/x86/kvm/vmx/nested.c          |    4 ++++
- arch/x86/kvm/vmx/vmx.c             |   20 --------------------
- arch/x86/kvm/vmx/x86_ops.h         |    1 -
- arch/x86/kvm/x86.c                 |   10 +---------
- 7 files changed, 5 insertions(+), 33 deletions(-)
+ lib/sbitmap.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -85,7 +85,6 @@ KVM_X86_OP_OPTIONAL(update_cr8_intercept
- KVM_X86_OP(refresh_apicv_exec_ctrl)
- KVM_X86_OP_OPTIONAL(hwapic_irr_update)
- KVM_X86_OP_OPTIONAL(hwapic_isr_update)
--KVM_X86_OP_OPTIONAL_RET0(guest_apic_has_interrupt)
- KVM_X86_OP_OPTIONAL(load_eoi_exitmap)
- KVM_X86_OP_OPTIONAL(set_virtual_apic_mode)
- KVM_X86_OP_OPTIONAL(set_apic_access_page_addr)
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1714,7 +1714,6 @@ struct kvm_x86_ops {
- 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
- 	void (*hwapic_irr_update)(struct kvm_vcpu *vcpu, int max_irr);
- 	void (*hwapic_isr_update)(int isr);
--	bool (*guest_apic_has_interrupt)(struct kvm_vcpu *vcpu);
- 	void (*load_eoi_exitmap)(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
- 	void (*set_virtual_apic_mode)(struct kvm_vcpu *vcpu);
- 	void (*set_apic_access_page_addr)(struct kvm_vcpu *vcpu);
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -97,7 +97,6 @@ struct kvm_x86_ops vt_x86_ops __initdata
- 	.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
- 	.hwapic_irr_update = vmx_hwapic_irr_update,
- 	.hwapic_isr_update = vmx_hwapic_isr_update,
--	.guest_apic_has_interrupt = vmx_guest_apic_has_interrupt,
- 	.sync_pir_to_irr = vmx_sync_pir_to_irr,
- 	.deliver_interrupt = vmx_deliver_interrupt,
- 	.dy_apicv_has_pending_interrupt = pi_has_pending_interrupt,
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4060,6 +4060,10 @@ static bool vmx_has_nested_events(struct
+diff --git a/lib/sbitmap.c b/lib/sbitmap.c
+index b9dd0a0a28f89..b942f2ba9a415 100644
+--- a/lib/sbitmap.c
++++ b/lib/sbitmap.c
+@@ -167,15 +167,16 @@ static int __sbitmap_get_word(unsigned long *word, unsigned long depth,
+ 	return nr;
+ }
  
- 	vppr = *((u32 *)(vapic + APIC_PROCPRI));
+-static int sbitmap_find_bit_in_index(struct sbitmap *sb, int index,
+-				     unsigned int alloc_hint)
++static int sbitmap_find_bit_in_word(struct sbitmap_word *map,
++				    unsigned int depth,
++				    unsigned int alloc_hint,
++				    bool wrap)
+ {
+-	struct sbitmap_word *map = &sb->map[index];
+ 	int nr;
  
-+	max_irr = vmx_get_rvi();
-+	if ((max_irr & 0xf0) > (vppr & 0xf0))
-+		return true;
+ 	do {
+-		nr = __sbitmap_get_word(&map->word, __map_depth(sb, index),
+-					alloc_hint, !sb->round_robin);
++		nr = __sbitmap_get_word(&map->word, depth,
++					alloc_hint, wrap);
+ 		if (nr != -1)
+ 			break;
+ 		if (!sbitmap_deferred_clear(map))
+@@ -203,7 +204,9 @@ static int __sbitmap_get(struct sbitmap *sb, unsigned int alloc_hint)
+ 		alloc_hint = 0;
+ 
+ 	for (i = 0; i < sb->map_nr; i++) {
+-		nr = sbitmap_find_bit_in_index(sb, index, alloc_hint);
++		nr = sbitmap_find_bit_in_word(&sb->map[index],
++					      __map_depth(sb, index),
++					      alloc_hint, !sb->round_robin);
+ 		if (nr != -1) {
+ 			nr += index << sb->shift;
+ 			break;
+@@ -246,20 +249,17 @@ static int __sbitmap_get_shallow(struct sbitmap *sb,
+ 	alloc_hint = SB_NR_TO_BIT(sb, alloc_hint);
+ 
+ 	for (i = 0; i < sb->map_nr; i++) {
+-again:
+-		nr = __sbitmap_get_word(&sb->map[index].word,
+-					min_t(unsigned int,
+-					      __map_depth(sb, index),
+-					      shallow_depth),
+-					alloc_hint, true);
++		nr = sbitmap_find_bit_in_word(&sb->map[index],
++					      min_t(unsigned int,
++						    __map_depth(sb, index),
++						    shallow_depth),
++					      alloc_hint, true);
 +
- 	if (vmx->nested.pi_pending && vmx->nested.pi_desc &&
- 	    pi_test_on(vmx->nested.pi_desc)) {
- 		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4108,26 +4108,6 @@ void pt_update_intercept_for_msr(struct
- 	}
- }
+ 		if (nr != -1) {
+ 			nr += index << sb->shift;
+ 			break;
+ 		}
  
--bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
--{
--	struct vcpu_vmx *vmx = to_vmx(vcpu);
--	void *vapic_page;
--	u32 vppr;
--	int rvi;
+-		if (sbitmap_deferred_clear(&sb->map[index]))
+-			goto again;
 -
--	if (WARN_ON_ONCE(!is_guest_mode(vcpu)) ||
--		!nested_cpu_has_vid(get_vmcs12(vcpu)) ||
--		WARN_ON_ONCE(!vmx->nested.virtual_apic_map.gfn))
--		return false;
--
--	rvi = vmx_get_rvi();
--
--	vapic_page = vmx->nested.virtual_apic_map.hva;
--	vppr = *((u32 *)(vapic_page + APIC_PROCPRI));
--
--	return ((rvi & 0xf0) > (vppr & 0xf0));
--}
--
- void vmx_msr_filter_changed(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -49,7 +49,6 @@ void vmx_apicv_pre_state_restore(struct
- bool vmx_check_apicv_inhibit_reasons(enum kvm_apicv_inhibit reason);
- void vmx_hwapic_irr_update(struct kvm_vcpu *vcpu, int max_irr);
- void vmx_hwapic_isr_update(int max_isr);
--bool vmx_guest_apic_has_interrupt(struct kvm_vcpu *vcpu);
- int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu);
- void vmx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
- 			   int trig_mode, int vector);
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13100,12 +13100,6 @@ void kvm_arch_commit_memory_region(struc
- 		kvm_arch_free_memslot(kvm, old);
- }
- 
--static inline bool kvm_guest_apic_has_interrupt(struct kvm_vcpu *vcpu)
--{
--	return (is_guest_mode(vcpu) &&
--		static_call(kvm_x86_guest_apic_has_interrupt)(vcpu));
--}
--
- static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
- {
- 	if (!list_empty_careful(&vcpu->async_pf.done))
-@@ -13136,9 +13130,7 @@ static inline bool kvm_vcpu_has_events(s
- 	if (kvm_test_request(KVM_REQ_PMI, vcpu))
- 		return true;
- 
--	if (kvm_arch_interrupt_allowed(vcpu) &&
--	    (kvm_cpu_has_interrupt(vcpu) ||
--	    kvm_guest_apic_has_interrupt(vcpu)))
-+	if (kvm_arch_interrupt_allowed(vcpu) && kvm_cpu_has_interrupt(vcpu))
- 		return true;
- 
- 	if (kvm_hv_has_stimer_pending(vcpu))
+ 		/* Jump to next index. */
+ 		alloc_hint = 0;
+ 		if (++index >= sb->map_nr)
+-- 
+2.43.0
+
 
 
 
