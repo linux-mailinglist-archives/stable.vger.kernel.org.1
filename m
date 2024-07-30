@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C4B941BFC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1114C941EB3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C41AB26743
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAD3D1F23A20
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4447189901;
-	Tue, 30 Jul 2024 17:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479F6189522;
+	Tue, 30 Jul 2024 17:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btWLi9kl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpyDbUiA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B65C1FBA;
-	Tue, 30 Jul 2024 17:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043BC1A76A5;
+	Tue, 30 Jul 2024 17:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358895; cv=none; b=mLXKp56nnD7ZOGq8nzO/0sAxOis65+yncgkaUeoBgSk5OT78I8naVWuLS3OuF33+LQO9ale928WVB1lm+9DD3yoej5Z58NTyBR6xMJxVBGQ1h0vlbX2v/j0Ow0WyN6TlmdO904vZ1+XKQZ17mroXQvCJOdaoftkAloh7RAbrACo=
+	t=1722360729; cv=none; b=i7tIfsDb+EB4A4dIA2MucME9xb9mVB4K0s8/gwcD7lpb3+QBGFxh7xmelurfuuVJoxymJ8Hr1lkugxAk0FO69d2qMy55xoWWmZx2gBMHdNCltBELTg3KrAnGImjTnIJhjJoAgq62eAeJaD9XsytbJGXHnTDXHTacsCW0hzmXNio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358895; c=relaxed/simple;
-	bh=vqSfzYhpPWoR0OBz4dHtmJsL/f6yxSavefuFcx5EM1w=;
+	s=arc-20240116; t=1722360729; c=relaxed/simple;
+	bh=1J7T12y/X5A8g5pOYaL5B5kXaEJKClGQw7R48KT7MDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHG1WJB/xn4EBT1sahOuxuAPleCpcie0i4iK5Jc9pHrx0wvgBIcyKI5TJKg2HN0PTJOcV5yXYD7ukPQEEdYTScznOYfsFk1F2v8aanEM2iE3xJOCfHyZX82LnfhifpyDckVYyZCAjHaqFY9Q1PY1Y7+zFVP88k18quNuUT7qaa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btWLi9kl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F6FC4AF0A;
-	Tue, 30 Jul 2024 17:01:34 +0000 (UTC)
+	 MIME-Version; b=A4u93UFGHwtRxCQzDHUMRDc0OzYq6v6SzK+Z7hFoS+XrOVpDXkez5JxGPJ6/zYnn5tEBc8BcMrDAZ58ycmlL74q1FNf2Yp8PxX5+YUWMDfLUbHCXmBUgJAixa9PnyCj7nTQMtQfekLfpROTPOamDNiHfunnaBThd8Okvdax4RY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpyDbUiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6595CC32782;
+	Tue, 30 Jul 2024 17:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358895;
-	bh=vqSfzYhpPWoR0OBz4dHtmJsL/f6yxSavefuFcx5EM1w=;
+	s=korg; t=1722360728;
+	bh=1J7T12y/X5A8g5pOYaL5B5kXaEJKClGQw7R48KT7MDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btWLi9klLyfanN5opby0ntx3S9RWhfiUvHJ/sOOKMZ8wNPgObSRhOV6IieZuIVaiJ
-	 Dm+E9TAcGoTNq4hHP/XfDUcv7jJW/3O4Z1w4jxUay0F5In34HoOtB7DeuJUXm4n5xG
-	 4AdxLv2Q8e41k07R7+7DB4wzcFrcvaiMj105mX9Y=
+	b=tpyDbUiAekxn6HgeG9FHicZSzDWYiB0dxJGa6NKPbannrb+lzM2PnagMOGmLLL5uC
+	 UUR6+qq1HXs0HzMq1wORSvxj0X4ckh+/fp+YR5PNRAaj9ijP/CWDRvTG7UP3DNuvcS
+	 cpHHUgyz2BvhcnaaBKtMU334MEpQWkcRSr1MgF1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Maxime Ripard <mripard@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 431/440] spi: spidev: add correct compatible for Rohm BH2228FV
+Subject: [PATCH 6.10 788/809] spi: spidev: add correct compatible for Rohm BH2228FV
 Date: Tue, 30 Jul 2024 17:51:04 +0200
-Message-ID: <20240730151632.611325680@linuxfoundation.org>
+Message-ID: <20240730151756.091105441@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -89,10 +89,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 5241785266153..00612efc2277f 100644
+index 95fb5f1c91c17..05e6d007f9a7f 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -725,6 +725,7 @@ static const struct of_device_id spidev_dt_ids[] = {
+@@ -734,6 +734,7 @@ static const struct of_device_id spidev_dt_ids[] = {
  	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
  	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
  	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
