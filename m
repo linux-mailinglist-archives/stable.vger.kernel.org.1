@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1947F9419A7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139E5941BFA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB4B7B2B802
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1C671F240ED
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB7F1A6196;
-	Tue, 30 Jul 2024 16:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6746718990F;
+	Tue, 30 Jul 2024 17:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qw/5OXNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/li+IRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7E01A6161;
-	Tue, 30 Jul 2024 16:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5611FBA;
+	Tue, 30 Jul 2024 17:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356705; cv=none; b=XMtU8II+damvoRlWSS/3nNfVg4BopM2QdQp/HY/5QBzV5W8xop0PZv9QxhrQzXhU33aqABMkafs5QhDO0WMyeCaCMUouqrh10zYL7DgbgD1+cOsmGRsOWBhsnq/quBr6CzsmYETbEU4uDAq3Tj3JgiWHipXL3/ZaNqVlNLzCNYQ=
+	t=1722358899; cv=none; b=XI50lX9p+Jp6+1oNjB48zkA7eZ0R8Apu2QIrkIi1hYOdVk5rt5pMRrWYpS7T8RKol97Za4v7HNsCCKQ8I1lA5M6HMu9yMSOJPE3f1/Dhk2XoVHi5mjZGDZIfth1zWfx8vg/LgkrOUoWLYtcz/lcZC0zy33/HWXOOK+Mew+MB4So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356705; c=relaxed/simple;
-	bh=EKsCygSF8isMd8M0uFj9e7l8HAi6lb+vfFKK23jZJpA=;
+	s=arc-20240116; t=1722358899; c=relaxed/simple;
+	bh=15v6Fi9+rb7//beacaS6f+aNalro3IaoX5NTigCl5JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amtwknqA6r3Ze9C7x7I5w+3kQ24zcT3wYSVzDTLkaoG4JdVb4nuWB0DhKsxUmcZLUnZDsEk9Gtw+iNGr5qu9msQwclSdkIjyqrzhZXuYHJxsg+I8NNONqsHIzEbbwN9yDbSofO2912N5cgm/MLVmkAUbOOuvp9Hla/d5LNwzI4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qw/5OXNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE718C4AF13;
-	Tue, 30 Jul 2024 16:25:04 +0000 (UTC)
+	 MIME-Version; b=ORnF6g/9WhZswJkZG57ObyCoTp7BNgey4tDdGxhMEJTxWpIj43pI3PRsfXUNAsLIeSX/WZnkb4EVy+hiGl7JI7S8gaPfEgoxcatlEOw01/kB3J+nTDjulDuxUNvYQTWcmDLf5LpRrnalIoOdDSNWOqLaGiYbhbBLP/ZGOCRANQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/li+IRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F6FC32782;
+	Tue, 30 Jul 2024 17:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356705;
-	bh=EKsCygSF8isMd8M0uFj9e7l8HAi6lb+vfFKK23jZJpA=;
+	s=korg; t=1722358899;
+	bh=15v6Fi9+rb7//beacaS6f+aNalro3IaoX5NTigCl5JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qw/5OXNayi4C58bLkdwML+X3jhwDVGoSTFvT+TtwpgKOax5Phl6dvZk2+6Zh791Ym
-	 7OOXz2EKWHBDmgDCxptK9cvEgYRRCbv2igRobOlAVUqLvO1A+patA7G7CKWeSJGb14
-	 b0jhmBo9fsJGfpBwyITc0abxk5ff/tm2Ek4cLGNI=
+	b=Q/li+IRYjlXn2kplKgFdUwk1Az3O6az6f7gLaV6Mf4SxkXn0OUnQwKuQkiZa3mC6k
+	 3l3rPvoauw3cA5UKUfCKKIxFZa7PsgFqw++o4LfPILxKpKMjMJlP0JdR+VkWL0yWUU
+	 PnhGLJWJIo8jx+M/yp4LfKs3akRXrNJMHegx59lU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/568] drm/rockchip: vop2: Fix the port mux of VP2
+Subject: [PATCH 6.10 406/809] ASoC: cs35l56: Accept values greater than 0 as IRQ numbers
 Date: Tue, 30 Jul 2024 17:44:42 +0200
-Message-ID: <20240730151646.721969027@linuxfoundation.org>
+Message-ID: <20240730151740.724859211@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit 2bdb481bf7a93c22b9fea8daefa2834aab23a70f ]
+[ Upstream commit 3ec1428d7b7c519d757a013cef908d7e33dee882 ]
 
-The port mux of VP2 should be RK3568_OVL_PORT_SET__PORT2_MUX.
+IRQ lookup functions such as those in ACPI can return error values when
+an IRQ is not defined. The i2c core driver converts the error codes to a
+value of 0 and the SPI bus driver passes them unaltered to client device
+drivers.
 
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240422101905.32703-2-andyshrk@163.com
+The cs35l56 driver should only accept positive non-zero values as IRQ
+numbers.
+
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Fixes: 8a731fd37f8b ("ASoC: cs35l56: Move utility functions to shared file")
+Link: https://msgid.link/r/20240617135338.82006-1-simont@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 2 +-
+ sound/soc/codecs/cs35l56-shared.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index c5ec4169616de..f2a956f973613 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1927,7 +1927,7 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
- 		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX,
- 			(vp2->nlayers + vp1->nlayers + vp0->nlayers - 1));
- 	else
--		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT1_MUX, 8);
-+		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX, 8);
+diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
+index 30497152e02a7..f609cade805d7 100644
+--- a/sound/soc/codecs/cs35l56-shared.c
++++ b/sound/soc/codecs/cs35l56-shared.c
+@@ -397,7 +397,7 @@ int cs35l56_irq_request(struct cs35l56_base *cs35l56_base, int irq)
+ {
+ 	int ret;
  
- 	layer_sel = vop2_readl(vop2, RK3568_OVL_LAYER_SEL);
+-	if (!irq)
++	if (irq < 1)
+ 		return 0;
  
+ 	ret = devm_request_threaded_irq(cs35l56_base->dev, irq, NULL, cs35l56_irq,
 -- 
 2.43.0
 
