@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6975C941910
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C398A941DBF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24D0E282C4D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 789611F279D7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952251A6195;
-	Tue, 30 Jul 2024 16:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644C11A76DD;
+	Tue, 30 Jul 2024 17:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxqHAIU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXKnpI5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B5C1A6166;
-	Tue, 30 Jul 2024 16:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2166C1A76D4;
+	Tue, 30 Jul 2024 17:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356922; cv=none; b=K7GQh0Wwy/wM/KFPFKWWMAo7zbsv63a7h+JUwb3Wcksp2qJ313Sx4u4wX1nBLaNwy+Ag7DZM+WZBUBfl+0yJno2k/UTA/TggdUI8YlPJ1I+IvdQbcn9Ey1+dgckcslldQ9hxZX/ka/sXc/AQt3bP4WEJrF4e7zwj2VmEmoq132Q=
+	t=1722360048; cv=none; b=Ubu5zskwipJ704CmF+COdkY2ZWwDGIH4mT1AJDTdZRKrgYAkZKVPGmrEw3Cj+3UmX3ess8t3Nf/BKxdQFIY3P/Kxiqqy7UNkuCzmO+2dSwcFL/506JqGCd3cjcljVspX6eYG/ikIS/vJGzGu8/lecCmvGVEsmvMFMtbfSojoRjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356922; c=relaxed/simple;
-	bh=EDGpkh3TvDgQO8p/imNEgfDMr1eCUpyX2q4cAY1Xt2s=;
+	s=arc-20240116; t=1722360048; c=relaxed/simple;
+	bh=WDqI3JGUIyi1x6wvoHl6x/AmS5nOgxWWTCXaV0LQ5sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oeBYfXie3l+2YrPx75R1zFxnrH/ZCORnMON/NFCxmk8kuzbiw2SUoBKdVkwSAq72uUgE6CGOJ2kPwmjJawUpTTIICmEEq7nEDV1X3OxQTG9P7/0gwZLvMBvdNBAgHDro2AjQxX6u1u68X6TG6d9RjWxHfnLcxnmKkQ7Rzg3RTnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxqHAIU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17DAC32782;
-	Tue, 30 Jul 2024 16:28:41 +0000 (UTC)
+	 MIME-Version; b=mj6XlZglQ3+HibBTQCcMfUTJXCg+qcnnMme359jWnnc+ByE0cssdn5phk+gnrf2ggOay7zXqH6WZ13V64a4Iq0JrHmiv8cUqDoD4v8iIfYNAj89gQ4O7elh+PRGxUEvXFFTHj6+1mVK+4nB+Btz+5pFjZfgo8iODEDv+9yhFBLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXKnpI5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D384C4AF13;
+	Tue, 30 Jul 2024 17:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356922;
-	bh=EDGpkh3TvDgQO8p/imNEgfDMr1eCUpyX2q4cAY1Xt2s=;
+	s=korg; t=1722360048;
+	bh=WDqI3JGUIyi1x6wvoHl6x/AmS5nOgxWWTCXaV0LQ5sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxqHAIU0Y4oXH1T7ZcyEXMY6NOPHgcE+GpvSFKVGGzwtZjhzQuXIClx7W0G3z8E5/
-	 Ed4Q064QPhFYsOcNxKQIMO+iceyJh9M2r5wj3QSat3stiXpsfi1lyNvwFulwmqN27S
-	 UecblPdi4kWdWl+AzJoIxqHF37xfryjpqlHDdguA=
+	b=zXKnpI5OLEBJZABRupCrbF4JqaF9QxhwXUwvxrSkYb1wgsmjumK1/XoSPKbm2aBae
+	 C0piKl6qV30/w/UgVnu7gqbcqdoKqKIHJOL8KiM3Bj0Uyu9+3yUT3OshTKYwWqH+oC
+	 jTRjsfEALRmQiMRwRKyw5EkmYznijtsZFtB9lPbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/440] RDMA/hns: Fix missing pagesize and alignment check in FRMR
+	mikhail.v.gavrilov@gmail.com,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 580/809] drm/amd/display: fix corruption with high refresh rates on DCN 3.0
 Date: Tue, 30 Jul 2024 17:47:36 +0200
-Message-ID: <20240730151624.570451417@linuxfoundation.org>
+Message-ID: <20240730151747.689088773@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit d387d4b54eb84208bd4ca13572e106851d0a0819 ]
+commit e3615bd198289f319172c428f20857accb46b830 upstream.
 
-The offset requires 128B alignment and the page size ranges from
-4K to 128M.
+This reverts commit bc87d666c05a13e6d4ae1ddce41fc43d2567b9a2 and the
+register changes from commit 6d4279cb99ac4f51d10409501d29969f687ac8dc.
 
-Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240710133705.896445-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3412
+Cc: mikhail.v.gavrilov@gmail.com
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Tested-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.10.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h | 4 ++++
- drivers/infiniband/hw/hns/hns_roce_mr.c     | 5 +++++
- 2 files changed, 9 insertions(+)
+ drivers/gpu/drm/amd/display/dc/optc/dcn10/dcn10_optc.c |   15 +++------------
+ drivers/gpu/drm/amd/display/dc/optc/dcn20/dcn20_optc.c |   10 ++++++++++
+ 2 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
-index 0a4c046cdfac4..a2bdfa026c560 100644
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -82,6 +82,7 @@
- #define MR_TYPE_DMA				0x03
- 
- #define HNS_ROCE_FRMR_MAX_PA			512
-+#define HNS_ROCE_FRMR_ALIGN_SIZE		128
- 
- #define PKEY_ID					0xffff
- #define NODE_DESC_SIZE				64
-@@ -182,6 +183,9 @@ enum {
- #define HNS_HW_PAGE_SHIFT			12
- #define HNS_HW_PAGE_SIZE			(1 << HNS_HW_PAGE_SHIFT)
- 
-+#define HNS_HW_MAX_PAGE_SHIFT			27
-+#define HNS_HW_MAX_PAGE_SIZE			(1 << HNS_HW_MAX_PAGE_SHIFT)
+--- a/drivers/gpu/drm/amd/display/dc/optc/dcn10/dcn10_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/optc/dcn10/dcn10_optc.c
+@@ -945,19 +945,10 @@ void optc1_set_drr(
+ 				OTG_FORCE_LOCK_ON_EVENT, 0,
+ 				OTG_SET_V_TOTAL_MIN_MASK_EN, 0,
+ 				OTG_SET_V_TOTAL_MIN_MASK, 0);
+-
+-		// Setup manual flow control for EOF via TRIG_A
+-		optc->funcs->setup_manual_trigger(optc);
+-
+-	} else {
+-		REG_UPDATE_4(OTG_V_TOTAL_CONTROL,
+-				OTG_SET_V_TOTAL_MIN_MASK, 0,
+-				OTG_V_TOTAL_MIN_SEL, 0,
+-				OTG_V_TOTAL_MAX_SEL, 0,
+-				OTG_FORCE_LOCK_ON_EVENT, 0);
+-
+-		optc->funcs->set_vtotal_min_max(optc, 0, 0);
+ 	}
 +
- struct hns_roce_uar {
- 	u64		pfn;
- 	unsigned long	index;
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index 190e62da98e4b..980261969b0c0 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -423,6 +423,11 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
- 	int ret, sg_num = 0;
++	// Setup manual flow control for EOF via TRIG_A
++	optc->funcs->setup_manual_trigger(optc);
+ }
  
-+	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
-+	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
-+	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
-+		return sg_num;
+ void optc1_set_vtotal_min_max(struct timing_generator *optc, int vtotal_min, int vtotal_max)
+--- a/drivers/gpu/drm/amd/display/dc/optc/dcn20/dcn20_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/optc/dcn20/dcn20_optc.c
+@@ -462,6 +462,16 @@ void optc2_setup_manual_trigger(struct t
+ {
+ 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
+ 
++	/* Set the min/max selectors unconditionally so that
++	 * DMCUB fw may change OTG timings when necessary
++	 * TODO: Remove the w/a after fixing the issue in DMCUB firmware
++	 */
++	REG_UPDATE_4(OTG_V_TOTAL_CONTROL,
++				 OTG_V_TOTAL_MIN_SEL, 1,
++				 OTG_V_TOTAL_MAX_SEL, 1,
++				 OTG_FORCE_LOCK_ON_EVENT, 0,
++				 OTG_SET_V_TOTAL_MIN_MASK, (1 << 1)); /* TRIGA */
 +
- 	mr->npages = 0;
- 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
- 				 sizeof(dma_addr_t), GFP_KERNEL);
--- 
-2.43.0
-
+ 	REG_SET_8(OTG_TRIGA_CNTL, 0,
+ 			OTG_TRIGA_SOURCE_SELECT, 21,
+ 			OTG_TRIGA_SOURCE_PIPE_SELECT, optc->inst,
 
 
 
