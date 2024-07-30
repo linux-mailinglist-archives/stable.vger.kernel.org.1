@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B96B9418D3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5B1941878
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE1D1F245B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 157F41C230D4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC84E18953A;
-	Tue, 30 Jul 2024 16:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A317A18800A;
+	Tue, 30 Jul 2024 16:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCafPPeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1y7BvF7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794A9189522;
-	Tue, 30 Jul 2024 16:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288518455B;
+	Tue, 30 Jul 2024 16:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356732; cv=none; b=ngsQEq7TaAZWTvTbAfQPfdqURFb9OzUP5CPDNR38hDboTALc9lHtGERhipI/iraJpmcJo9YiJM1wyVs2XJoO+5vCJ7OZDKZxF/BW8GswVyiyaVc3EK63ML5UGDPlwgX6Q/qfLlIeVDjnuKl4SkKDmhJbEVZI1TXuXH4Ytf4euvE=
+	t=1722356541; cv=none; b=G/QdAAk2kNzLh61WLKBAnWa5V9o7fU/HMVnhaEu9sNbulbcONlJG3uJJKr/Zm5qrCBMIuSc2ZCODa+xl/xh8nL9t4LKskiIyCm39NsDXYJh1kFhuVOJU43wNG7BXMs3P7oZ+uCLBp1sOOo2A3slQ0u3yWC4lSlmx+DH6CzDMbJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356732; c=relaxed/simple;
-	bh=GEmpZ40ureNYtdLPEV/UDNCB7/UJv7Y3+9j/ZiRB3z8=;
+	s=arc-20240116; t=1722356541; c=relaxed/simple;
+	bh=+XEQh5ySgIOxV/y5agGG7fxhQtBmOLJ3FSniNp8cGpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVJKtjNRruQStdlb0mXXVXsF8lhHw06WpRnbsRLXyUrZRfRUvI2eJIyqPzQoIXHcwI130P2M5M2ZKC8lF71n/UBmOwz1RpKlYB8VizHo5+zYQqp30AijwhgdRIAGoEKnjKFYhkiRqLdotKpOyhgSJah+a2jsu5T2ooXoF8KqBSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCafPPeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAC3C4AF0A;
-	Tue, 30 Jul 2024 16:25:31 +0000 (UTC)
+	 MIME-Version; b=acUgOGWVsO3R7t+ZMyPDwRcR7FvAo2+5NhHCxJmIuET16+OP74xLDevNmZOtPDv5J3LpuLoDoMzX2BYxdYXrkhFP4F8rFy4ouZfyR4BCM6o4ihQ/jd4b8qcS+RJh9FZOZPhnc7UsRM3zhSoBUghwN1xQk9RupWL+AyspKOMtx8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1y7BvF7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D458AC32782;
+	Tue, 30 Jul 2024 16:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356732;
-	bh=GEmpZ40ureNYtdLPEV/UDNCB7/UJv7Y3+9j/ZiRB3z8=;
+	s=korg; t=1722356541;
+	bh=+XEQh5ySgIOxV/y5agGG7fxhQtBmOLJ3FSniNp8cGpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCafPPehQ0SunxQgliqH/oVafawnJn5FxDLlsIn38kFbq1LyVSaqo2nAqPkx95cSc
-	 66B75IVCf1lRtlzlXlM40WPTezMjMixSJIlUYZqRpk4XYq9iIuxKN5nzGrt5FyKMDs
-	 Y4e+ru6nhH9LScCIYe8alp/Pd+93KKQEU7PEaaBA=
+	b=1y7BvF7ysVIyR/bmPoAIAU2GX5LmJg9P1geFlOMZO8JgaJUQz66nIPdIk8RIllfLo
+	 pEI6wkB90vxwICH4Ql+2TPNQLZ4GGJUBy4PyDsEV905b9IIZ+a9e1s/Pegl2KfnBZj
+	 stXXqLb/TTGAdYztJ79z81U0jmxtPgmABDctMYQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 159/809] wifi: iwlwifi: mvm: dont skip link selection
-Date: Tue, 30 Jul 2024 17:40:35 +0200
-Message-ID: <20240730151730.883358705@linuxfoundation.org>
+Subject: [PATCH 6.10 160/809] wifi: mac80211: fix TTLM teardown work
+Date: Tue, 30 Jul 2024 17:40:36 +0200
+Message-ID: <20240730151730.922247523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,45 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 46144103ace2863e26f4e911aa45200753b7dbca ]
+[ Upstream commit 2fe0a605d083b884490ee4de02be071b5b4291b1 ]
 
-If we exit EMLSR due to a IWL_MVM_ESR_EXIT*, a MLO scan followed by a
-link selection is scheduled with a delay of 30 seconds.
-If during that 30 seconds EMLSR was blocked and unblocked
-(IWL_MVM_ESR_BLOCKED*), we would still want to get the needed data from
-the MLO scan and select link accordingly, and not return immediately to
-EMLSR.
+The worker calculates the wrong sdata pointer, so if it ever
+runs, it'll crash. Fix that.
 
-Fixes: 2f33561ea8f9 ("wifi: iwlwifi: mvm: trigger link selection after exiting EMLSR")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240512152312.caab27a8dd8f.I63f67e213d5e05416f71513a8d914917d59aa44f@changeid
+Fixes: a17a58ad2ff2 ("wifi: mac80211: add support for tearing down negotiated TTLM")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240506211853.e6471800c76d.I8b7c2d6984c89a11cd33d1a610e9645fa965f6e1@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/mac80211/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index 6ec9a8e21a34e..b4a4d25b31cd2 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -1082,6 +1082,13 @@ static void iwl_mvm_esr_unblocked(struct iwl_mvm *mvm,
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index a5f2d3cfe60d2..edac1578d425c 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -6834,7 +6834,7 @@ static void ieee80211_teardown_ttlm_work(struct wiphy *wiphy,
+ 	u16 new_dormant_links;
+ 	struct ieee80211_sub_if_data *sdata =
+ 		container_of(work, struct ieee80211_sub_if_data,
+-			     u.mgd.neg_ttlm_timeout_work.work);
++			     u.mgd.teardown_ttlm_work);
  
- 	IWL_DEBUG_INFO(mvm, "EMLSR is unblocked\n");
- 
-+	/* We exited due to an EXIT reason, so MLO scan was scheduled already */
-+	if (mvmvif->last_esr_exit.reason &&
-+	    !(mvmvif->last_esr_exit.reason & IWL_MVM_BLOCK_ESR_REASONS)) {
-+		IWL_DEBUG_INFO(mvm, "Wait for MLO scan\n");
-+		return;
-+	}
-+
- 	/*
- 	 * If EMLSR was blocked for more than 30 seconds, or the last link
- 	 * selection decided to not enter EMLSR, trigger a new scan.
+ 	if (!sdata->vif.neg_ttlm.valid)
+ 		return;
 -- 
 2.43.0
 
