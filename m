@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC62941733
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF13C941734
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11A45B26A6B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F05751C232AF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB071A305A;
-	Tue, 30 Jul 2024 16:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3AC18B489;
+	Tue, 30 Jul 2024 16:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0o6/jj1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cj5OW+qy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CE01A3053;
-	Tue, 30 Jul 2024 16:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3973818B482;
+	Tue, 30 Jul 2024 16:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355595; cv=none; b=a7Ns97j8jgOpnCdS2mu3WN44Zzvcj3i0RvRqUOxFEXXr0loEgvES2L56Lb4oB9VTDRCmCbFzQRsYFeAKvpTdFzUmVcxKHyrOIGp9UWf3pz1IbUw29TEezbx9Yb/9hdQlxISrPWXncxe804e4xG6xPWVVM6uCuAY7DLiS82QycKs=
+	t=1722355606; cv=none; b=k3bzKa5/FBJa+UgiVJdz4waDha//Ms7FpukWzD+HM2IU68BZHt+B0WPGbDkTJ6Rqu6tjQWwzQ49IDih8ci91jP9At+w5GCTpP3cFN7ggm0p/6lIDlB4kvIuDEF+4RzM8vKyxzzMz4lPBe1nbXjst14EgwLadge0b80GEiEXeZx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355595; c=relaxed/simple;
-	bh=3UoIHgLPFT5Ncwbcwg/qw5Uay7vUcpPqc+c35Z1okhU=;
+	s=arc-20240116; t=1722355606; c=relaxed/simple;
+	bh=BYgRjivsXBWxinTUa5Q6gDa8Nfwl6R+JNBXkfkAqYSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMbBoUfm1kb6gZg12qPPvkbIiMhPp9Z1/wDTgoEfrJwJozsLo8ak3R5FjWvaeVOEV129eACmH9xesBoR8BTV7WRGx0M2sXGPDxxUc4F9698yD27eDDx9GArBZuTK2qYVj+rpLKjgt6VvbXtk+BVUv0IxCR4MkpNHFstHPwTp+hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0o6/jj1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851CEC4AF0C;
-	Tue, 30 Jul 2024 16:06:34 +0000 (UTC)
+	 MIME-Version; b=mlHvs56Azgbn5Rz43EK4kUKYaISQMgLeuM7wclwnnqrLHFdWb225iqHaV+pflPMgsOKSWxhgCPLljkrmvw4rKzLuOn/MsCVKJCpwYmamiiR1LN3i7cux9ckt2lLbosDBqpWANaFsO+NifpIk0mHneRzDE5mVBRB1k0u4xavao4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cj5OW+qy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC989C32782;
+	Tue, 30 Jul 2024 16:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355594;
-	bh=3UoIHgLPFT5Ncwbcwg/qw5Uay7vUcpPqc+c35Z1okhU=;
+	s=korg; t=1722355606;
+	bh=BYgRjivsXBWxinTUa5Q6gDa8Nfwl6R+JNBXkfkAqYSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D0o6/jj1vYUTw1HRCrJsx0XJMRvlSBsSIDP4lMnLv32keOkwqE+aWdDMVeZj+G80e
-	 hNZKN03WB/6SR6IXAa1lYy0DumrEAm1dANoaFBvyXZMQeWczb+eRd7sFiJEeuwDvnj
-	 GC5xHKAKvOkBhzB5pJ/w796uGrCUu1DwUtoAGNkE=
+	b=cj5OW+qywJ2raq17aZ2vdcsCsuIyHvfphTk4Mu5Auip9a15aiDLunZTLg/w7udeHp
+	 P6Qftvgu9SRQyZFT7KeYDomvMitW6JUKlEfEIfICwp60V/j0BhWL5zQIFj9/n0xlBx
+	 xgeFWySB5rea6YoRxs0cfp2NXMU96CD7p9XCTkhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
+	Pin-yen Lin <treapking@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/568] arm64: dts: mediatek: mt8183-kukui: Drop bogus output-enable property
-Date: Tue, 30 Jul 2024 17:42:59 +0200
-Message-ID: <20240730151642.674925055@linuxfoundation.org>
+Subject: [PATCH 6.6 073/568] arm64: dts: mediatek: mt8192-asurada: Add off-on-delay-us for pp3300_mipibrdg
+Date: Tue, 30 Jul 2024 17:43:00 +0200
+Message-ID: <20240730151642.713247762@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,49 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit e9a9055fdcdc1e5a27cef118c5b4f09cdd2fa28e ]
+[ Upstream commit 897a7edba9330974726c564dfdbf4fb5e203b9ac ]
 
-The "output-enable" property is set on uart1's RTS pin. This is bogus
-because the hardware does not actually have a controllable output
-buffer. Secondly, the implementation incorrectly treats this property
-as a request to switch the pin to GPIO output. This does not fit the
-intended semantic of "output-enable" and it does not have any affect
-either because the pin is muxed to the UART function, not the GPIO
-function.
+Set off-on-delay-us to 500000 us for pp3300_mipibrdg to make sure it
+complies with the panel's unprepare delay (the time to power down
+completely) of the power sequence. Explicit configuration on the
+regulator node is required because mt8192-asurada uses the same power
+supply for the panel and the anx7625 DP bridge.
 
-Drop the property.
+For example, the power sequence could be violated in this sequence:
+1. Bridge on: panel goes off, but regulator doesn't turn off (refcount=1).
+2. Bridge off: regulator turns off (refcount=0).
+3. Bridge resume -> regulator turns on but the bridge driver doesn't
+   check the delay.
 
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20240412075613.1200048-1-wenst@chromium.org
+Or in this sequence:
+1. Bridge on: panel goes off. The regulator doesn't turn off (refcount=1),
+   but the .unprepared_time in panel_edp is still updated.
+2. Bridge off, regulator goes off (refcount=0).
+3. Panel on, but the panel driver uses the wrong .unprepared_time to check
+   the unprepare delay.
+
+Fixes: f9f00b1f6b9b ("arm64: dts: mediatek: asurada: Add display regulators")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240502154455.3427793-1-treapking@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-index d846342c1d3b2..2c6587f260f82 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -775,7 +775,6 @@ pins-tx {
- 		};
- 		pins-rts {
- 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
--			output-enable;
- 		};
- 		pins-cts {
- 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
-@@ -794,7 +793,6 @@ pins-tx {
- 		};
- 		pins-rts {
- 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
--			output-enable;
- 		};
- 		pins-cts {
- 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+index dc39ebd1bbfc8..6b4b7a7cd35ef 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+@@ -147,6 +147,7 @@ pp3300_mipibrdg: regulator-3v3-mipibrdg {
+ 		regulator-boot-on;
+ 		gpio = <&pio 127 GPIO_ACTIVE_HIGH>;
+ 		vin-supply = <&pp3300_g>;
++		off-on-delay-us = <500000>;
+ 	};
+ 
+ 	/* separately switched 3.3V power rail */
 -- 
 2.43.0
 
