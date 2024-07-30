@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF89940CF7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:08:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE5D940CED
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1C1EB2C9E9
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD84F2860F7
 	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7071946B3;
-	Tue, 30 Jul 2024 09:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5306A1946AB;
+	Tue, 30 Jul 2024 09:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RO4fGDos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNSK3eSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7AC188CAD
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1304A188CAD
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722330392; cv=none; b=ESKFDi5WYXQpPAxa9evb9c32CYKwuUE5B+YxUdkSmwirlGHlVGkfOs9R3o/7nRAdEpuCafv+6ahjE81083MICUq/gOsYM19PCOepa6f6ZuSecSYvZtwzD4nRBqvym/d+9pBk4MO4hp55Xs4a76AMzitrzs0Cc2tJssWGgDhnHxQ=
+	t=1722330395; cv=none; b=ijDm4dD/ImyZqvR+zijPrJp9rG/EAXAoFmFe5IE5gy5FJ+1W1tkDPC6qozH/JctEEKzva6ma/5X03nx9tEvEn0nDQ3NrQmOXjcapiSKwhOSfdxRf6PibD/ZhhD5ebGMRL0P2HmcmnJeIsjyofqi4M/ZiOhqVy/Tjr/ioijKT2NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722330392; c=relaxed/simple;
-	bh=8aj1X0ulOYhmU3Vswa99oAihCwZN8obFhjmiZbNtbqw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LcfqIa2Wbhg3KsHhdGJ2XCI+693xvZG9Ot9AJU6dSFpK74XKIP0uaBq4mi6+uzoj+29zECslToCFqM87JBVxgLsryIKf1j6gxImzoRTu0JfoKxHcZahhuVnVcv/a8SAUOq8hqf6RNG38h2dCCpMQmINpjn+X7Yz0jare3E9A7As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RO4fGDos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E9AC4AF0C;
-	Tue, 30 Jul 2024 09:06:30 +0000 (UTC)
+	s=arc-20240116; t=1722330395; c=relaxed/simple;
+	bh=z8TB2wQ+yDt4vAP0ovrPkl2hNknT5M8Sy2RUXuo1QRQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qV7N3uZ6sESi49+dbufYIFXgfNB7Ob+lKR7Y+fA8od2QG1zVBvsbJA3hHUSboCrriwhSu2P/Wu3UjZZZp7DUTSuBWnvoyQjgnmUVOpAqHmI9LDmMWCLCwG8BEmElWbZ7OjCTURJP8jqSIa5YWUUCgN+ZxiyFthU3XLpwjzbLxZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNSK3eSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CA2C4AF0B;
+	Tue, 30 Jul 2024 09:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722330390;
-	bh=8aj1X0ulOYhmU3Vswa99oAihCwZN8obFhjmiZbNtbqw=;
+	s=korg; t=1722330394;
+	bh=z8TB2wQ+yDt4vAP0ovrPkl2hNknT5M8Sy2RUXuo1QRQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RO4fGDosQjl3iBXJeWoEKTq5bmANJs5J5n2XTpSmBf+SYHzkReckI/sFwCe+nysuU
-	 dSe7OXQbULA+AIqluBfUeQEXVk6RsZeoFGeWSECb2R9B44nGwTlZ5I0Bso93N1yAdt
-	 iw+HHNYwO53FcuErjShmxOF2J/6Gndi7fmN2Hi4c=
-Subject: FAILED: patch "[PATCH] irqdomain: Fixed unbalanced fwnode get and put" failed to apply to 5.15-stable tree
+	b=PNSK3eSdBThScbgjRM59PRvYfeoYVaEn9OS8UTF8UUhUzy7fJtjtaFKbymxtzUSqU
+	 MatimsvtpQpyxiNtETx1vU7QWHsOyHm1GApXZ+2GhKclgXIj1XkgxfZ2lzf1/MPQsy
+	 NiC0qFig/KA0KCOm/JWOWHh6v5mHIuLyOuA58BGA=
+Subject: FAILED: patch "[PATCH] irqdomain: Fixed unbalanced fwnode get and put" failed to apply to 5.10-stable tree
 To: herve.codina@bootlin.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:06:22 +0200
-Message-ID: <2024073022-onshore-evaluator-a043@gregkh>
+Date: Tue, 30 Jul 2024 11:06:28 +0200
+Message-ID: <2024073028-suffix-spoiler-8263@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6ce3e98184b625d2870991880bf9586ded7ea7f9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073022-onshore-evaluator-a043@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073028-suffix-spoiler-8263@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 6ce3e98184b6 ("irqdomain: Fixed unbalanced fwnode get and put")
 67a4e1a3bf7c ("irqdomain: Use return value of strreplace()")
+ed1054a02aa2 ("irqdomain: Mark fwnodes when their irqdomain is added/removed")
 
 thanks,
 
