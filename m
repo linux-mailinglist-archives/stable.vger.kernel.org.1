@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-63905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72604941B37
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4F6941AEC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8291F23126
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 710F11F21BD9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD9A18990C;
-	Tue, 30 Jul 2024 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB04618455E;
+	Tue, 30 Jul 2024 16:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwXcMeGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+e4tYCA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6EF189502;
-	Tue, 30 Jul 2024 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A76714831F;
+	Tue, 30 Jul 2024 16:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358328; cv=none; b=NDOGF5gwKf4qByD4or4h5uKWX5c8MxpaHa7q3Kiev7g/RCt9HHgcvyRUqT9nKTTUkfa9F5skSSc4aZekz4cfZ0DLyMGmLymTIl8p6WMuAw409qP3quz9tJ3aFS9p3xqGOzMJjiAfmmMx6RrolMBlU5Ht8lRMpEmIo9uU3Rp8bqc=
+	t=1722358145; cv=none; b=gNAHOcIFiIseRq2wKKGAmeuSiSdAAZktx2TuPGq/PdEpXbGHlooZlYv8Yx4nXD9ecIY6NXVe7nl+LrTH/wQLPLBswWV54U1KEVsH9vaI9i/FsFoHSNMDEIv/fg0Q0vtd/nx7ORZkkIiKva0iiTraeITePfVAFOmR2wf9g2HMHQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358328; c=relaxed/simple;
-	bh=wuhInRNvmZhob7vemhY8TyUCL0Hr7yN/EwCBGi17SGw=;
+	s=arc-20240116; t=1722358145; c=relaxed/simple;
+	bh=HhUhEhRPV/UHlE8Nl9wBYQPbncGItYcValGboxrW5p8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzMhVnIrxAm9KfOfW/fo3NXIhmhfwyxGt0kK/YG/exUg4hvz0SmOKk5chCyzw8A9lGTYSwkkRjPnZqC56p8DePbUkqVUjsdBLajD47WhSMxz1T3xIhFkHtE6LdbVCMkULRbs+oUkxdUr2bf1Yp6NgAomdiA5/DyxE6O2TY3LBBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwXcMeGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7D8C32782;
-	Tue, 30 Jul 2024 16:52:07 +0000 (UTC)
+	 MIME-Version; b=AAwXb1PaRq18bhWCWDc1A+umnKTbZvZZzxP38ZSbReS7TLNgnwlLDFivEzOB5Q1eg2eGmPh8zmKrjiQjA/sslgXBzRT+O/knuLnIkgjneyi4tdBmpgqqrlGLF533b9PL95lUxB/EbtxP7V8F3vTNarKp0Wd4EehZRbboLdr7nZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+e4tYCA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99536C32782;
+	Tue, 30 Jul 2024 16:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358328;
-	bh=wuhInRNvmZhob7vemhY8TyUCL0Hr7yN/EwCBGi17SGw=;
+	s=korg; t=1722358145;
+	bh=HhUhEhRPV/UHlE8Nl9wBYQPbncGItYcValGboxrW5p8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AwXcMeGA9q9NSUbTRU/3VoH3WH6jYQZIeBYz7cDZrY9yw7INIDvBOkWXF2lBuw/Y/
-	 HdNNNCkCqD2Z/CLfAc/oGu+UOefviSEo4TNpKXIZvajNaS5ve1+EJ+15ZzWlJuimdy
-	 V/EZr7sT9gL0mUCfPlTB2ZTbHfp0tUi7fN2Xnw+c=
+	b=F+e4tYCA9Vff7ghY5HtjhDdIkgxAZKVzWqVzk8PoJ4Mj51nMe1BNyzyEJ7vcN8ovy
+	 2bmkrOWpOtiKRKmZzSScyaKp1GXqEw4v0cu4Dk/v3H8kG8+ePyuoYpgmHCKjPanQ2+
+	 Eb8HN3WDLJpDIDN6JSp7xTYFT7hT/Vr0K0rmwb3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 333/568] fs/ntfs3: Drop stray \ (backslash) in formatting string
-Date: Tue, 30 Jul 2024 17:47:20 +0200
-Message-ID: <20240730151652.886463910@linuxfoundation.org>
+Subject: [PATCH 6.6 334/568] fs/ntfs3: Fix field-spanning write in INDEX_HDR
+Date: Tue, 30 Jul 2024 17:47:21 +0200
+Message-ID: <20240730151652.924867964@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,36 +65,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit b366809dd151e8abb29decda02fd6a78b498831f ]
+[ Upstream commit 2f3e176fee66ac86ae387787bf06457b101d9f7a ]
 
-CHECK   /home/andy/prj/linux-topic-uart/fs/ntfs3/super.c
-fs/ntfs3/super.c:471:23: warning: unknown escape sequence: '\%'
+Fields flags and res[3] replaced with one 4 byte flags.
 
-Drop stray '\' (backslash) in formatting string.
-
-Fixes: d27e202b9ac4 ("fs/ntfs3: Add more info into /proc/fs/ntfs3/<dev>/volinfo")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: 4534a70b7056 ("fs/ntfs3: Add headers and misc files")
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/index.c | 4 ++--
+ fs/ntfs3/ntfs.h  | 9 +++++----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index 10659817f98c7..79ebe62f00017 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -463,7 +463,7 @@ static int ntfs3_volinfo(struct seq_file *m, void *o)
- 	struct super_block *sb = m->private;
- 	struct ntfs_sb_info *sbi = sb->s_fs_info;
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 14284f0ed46aa..0d8a96136b084 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -978,7 +978,7 @@ static struct indx_node *indx_new(struct ntfs_index *indx,
+ 		hdr->used =
+ 			cpu_to_le32(eo + sizeof(struct NTFS_DE) + sizeof(u64));
+ 		de_set_vbn_le(e, *sub_vbn);
+-		hdr->flags = 1;
++		hdr->flags = NTFS_INDEX_HDR_HAS_SUBNODES;
+ 	} else {
+ 		e->size = cpu_to_le16(sizeof(struct NTFS_DE));
+ 		hdr->used = cpu_to_le32(eo + sizeof(struct NTFS_DE));
+@@ -1682,7 +1682,7 @@ static int indx_insert_into_root(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 	e->size = cpu_to_le16(sizeof(struct NTFS_DE) + sizeof(u64));
+ 	e->flags = NTFS_IE_HAS_SUBNODES | NTFS_IE_LAST;
  
--	seq_printf(m, "ntfs%d.%d\n%u\n%zu\n\%zu\n%zu\n%s\n%s\n",
-+	seq_printf(m, "ntfs%d.%d\n%u\n%zu\n%zu\n%zu\n%s\n%s\n",
- 		   sbi->volume.major_ver, sbi->volume.minor_ver,
- 		   sbi->cluster_size, sbi->used.bitmap.nbits,
- 		   sbi->mft.bitmap.nbits,
+-	hdr->flags = 1;
++	hdr->flags = NTFS_INDEX_HDR_HAS_SUBNODES;
+ 	hdr->used = hdr->total =
+ 		cpu_to_le32(new_root_size - offsetof(struct INDEX_ROOT, ihdr));
+ 
+diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
+index 5bd69049227bf..964e27c7b9016 100644
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -693,14 +693,15 @@ static inline bool de_has_vcn_ex(const struct NTFS_DE *e)
+ 	      offsetof(struct ATTR_FILE_NAME, name) + \
+ 	      NTFS_NAME_LEN * sizeof(short), 8)
+ 
++#define NTFS_INDEX_HDR_HAS_SUBNODES cpu_to_le32(1)
++
+ struct INDEX_HDR {
+ 	__le32 de_off;	// 0x00: The offset from the start of this structure
+ 			// to the first NTFS_DE.
+ 	__le32 used;	// 0x04: The size of this structure plus all
+ 			// entries (quad-word aligned).
+ 	__le32 total;	// 0x08: The allocated size of for this structure plus all entries.
+-	u8 flags;	// 0x0C: 0x00 = Small directory, 0x01 = Large directory.
+-	u8 res[3];
++	__le32 flags;	// 0x0C: 0x00 = Small directory, 0x01 = Large directory.
+ 
+ 	//
+ 	// de_off + used <= total
+@@ -748,7 +749,7 @@ static inline struct NTFS_DE *hdr_next_de(const struct INDEX_HDR *hdr,
+ 
+ static inline bool hdr_has_subnode(const struct INDEX_HDR *hdr)
+ {
+-	return hdr->flags & 1;
++	return hdr->flags & NTFS_INDEX_HDR_HAS_SUBNODES;
+ }
+ 
+ struct INDEX_BUFFER {
+@@ -768,7 +769,7 @@ static inline bool ib_is_empty(const struct INDEX_BUFFER *ib)
+ 
+ static inline bool ib_is_leaf(const struct INDEX_BUFFER *ib)
+ {
+-	return !(ib->ihdr.flags & 1);
++	return !(ib->ihdr.flags & NTFS_INDEX_HDR_HAS_SUBNODES);
+ }
+ 
+ /* Index root structure ( 0x90 ). */
 -- 
 2.43.0
 
