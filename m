@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB00941EC7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:33:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CCF941D5D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48576B256C4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F36628B56E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBF2166315;
-	Tue, 30 Jul 2024 17:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D54188017;
+	Tue, 30 Jul 2024 17:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtueXpm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uxj8dA5H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4F01A76A5;
-	Tue, 30 Jul 2024 17:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923871A76D4;
+	Tue, 30 Jul 2024 17:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360748; cv=none; b=YEfAOXuYLYy5xGlG0e/AJ0yFWR2ItdvXuodwqlUVpJoo1+c+5mMWibSxj8sXH58sDG64Pp/hMnjKl3XaXmMrgH7MPrgbLPdCcSGa4WSwp8v+yLkQhDUvU6uMqnKOL2P9ZEY/8LJfHTzwTJuW1jC1awTNWfAxtxAhIu7f8mZAkaE=
+	t=1722359775; cv=none; b=etcRwWsYkiEHwB31VIVc8myhEGdjGHPngjOOnsG4sf7lGku/mpyEdtfuY89MjV/Ey2t5+GZCcVvE0wnLlA6O/a23IQ0cdK11Fx2qcjeUa9L1o6adFLZoQbPdpO038mOFoltKI8sVjcqYDI7DurzaOXl7lWT2janjY6migJEygyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360748; c=relaxed/simple;
-	bh=bmRJCgoFci8G+Dnr5/Jb94HaEfRD9m4AeB/j/1LMoOM=;
+	s=arc-20240116; t=1722359775; c=relaxed/simple;
+	bh=/x/Kvkgp8Wqh+XekbydRsEj5vn9Yx0mN+ja2riPtxdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yq3BGgC5vD6zMAUUnaK9k7kdHpwBTt5H5gsh6zpcNmZ/CByxQXijF2GS2JXC5TRD8eOxZApnJRIJP/hJKluFsdJJKzSpAhY2YycnpC4s+zdOu+C34zYaq4UWQB3Rs5k/33MGHvrl1okDAuOz+GjI4jdiatg7mLLtvJK2ePwU3cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtueXpm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6019C32782;
-	Tue, 30 Jul 2024 17:32:27 +0000 (UTC)
+	 MIME-Version; b=rC4HYvCCq/u0A1hZ2Id0BG1e1Tfyxa0fwBroMrUHurSiX+w9HdOhaVHM3TkMVEznjF6E+kGYHIy06Fy9akSUGb/WJL1B+mYdDXnk7hSUCojyDr5JnyYNWo7kSd4T3ECg58mssAPu4L9QH2dOANglfjL2aKVhQ0/rshPmPD4cUag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uxj8dA5H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EBEC32782;
+	Tue, 30 Jul 2024 17:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360748;
-	bh=bmRJCgoFci8G+Dnr5/Jb94HaEfRD9m4AeB/j/1LMoOM=;
+	s=korg; t=1722359775;
+	bh=/x/Kvkgp8Wqh+XekbydRsEj5vn9Yx0mN+ja2riPtxdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XtueXpm0j5+B2xawNKXBQzoL354VNWWyq5Q1svraWSgoC7Ef+hph9dvbceamZCo3d
-	 JO4ldPO+CSQltGCcSLgMeThvy8KKtDXKVmNFADPlJm5gF7DYSMv6XJwsqPWknkEzqi
-	 NIcWTsF0UIGYln/Uq9UlDtR9EcLLyRhJeM+sl3Co=
+	b=Uxj8dA5HoqmvZzzp9b2yRjt+3jHEYebpJyuQjVI24BAKG3hrXPpgt19PET4FvUdrd
+	 qCv5SuucOQRRXQDrOU6AfX9H5ovF5u7R3S37ag67rTw2jFikFJmjlU4NSE5b/056Qt
+	 x1yB3dwCr1OA8lRUsLS/Rl/ogGO3h8J5sepO/CDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Liwei Song <liwei.song.lsong@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 764/809] netfilter: nft_set_pipapo_avx2: disable softinterrupts
-Date: Tue, 30 Jul 2024 17:50:40 +0200
-Message-ID: <20240730151755.140875869@linuxfoundation.org>
+Subject: [PATCH 6.6 534/568] tools/resolve_btfids: Fix comparison of distinct pointer types warning in resolve_btfids
+Date: Tue, 30 Jul 2024 17:50:41 +0200
+Message-ID: <20240730151701.026804097@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Liwei Song <liwei.song.lsong@gmail.com>
 
-[ Upstream commit a16909ae9982e931841c456061cb57fbaec9c59e ]
+[ Upstream commit 13c9b702e6cb8e406d5fa6b2dca422fa42d2f13e ]
 
-We need to disable softinterrupts, else we get following problem:
+Add a type cast for set8->pairs to fix below compile warning:
 
-1. pipapo_avx2 called from process context; fpu usable
-2. preempt_disable() called, pcpu scratchmap in use
-3. softirq handles rx or tx, we re-enter pipapo_avx2
-4. fpu busy, fallback to generic non-avx version
-5. fallback reuses scratch map and index, which are in use
-   by the preempted process
+main.c: In function 'sets_patch':
+main.c:699:50: warning: comparison of distinct pointer types lacks a cast
+  699 |        BUILD_BUG_ON(set8->pairs != &set8->pairs[0].id);
+      |                                 ^~
 
-Handle this same way as generic version by first disabling
-softinterrupts while the scratchmap is in use.
-
-Fixes: f0b3d338064e ("netfilter: nft_set_pipapo_avx2: Add irq_fpu_usable() check, fallback to non-AVX2 version")
-Cc: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with types from btf_ids.h")
+Signed-off-by: Liwei Song <liwei.song.lsong@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20240722083305.4009723-1-liwei.song.lsong@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ tools/bpf/resolve_btfids/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index 8910a5ac7ed12..b8d3c3213efee 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1139,8 +1139,14 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	bool map_index;
- 	int i, ret = 0;
+diff --git a/tools/bpf/resolve_btfids/main.c b/tools/bpf/resolve_btfids/main.c
+index af393c7dee1f1..b3edc239fe562 100644
+--- a/tools/bpf/resolve_btfids/main.c
++++ b/tools/bpf/resolve_btfids/main.c
+@@ -696,7 +696,7 @@ static int sets_patch(struct object *obj)
+ 			 * Make sure id is at the beginning of the pairs
+ 			 * struct, otherwise the below qsort would not work.
+ 			 */
+-			BUILD_BUG_ON(set8->pairs != &set8->pairs[0].id);
++			BUILD_BUG_ON((u32 *)set8->pairs != &set8->pairs[0].id);
+ 			qsort(set8->pairs, set8->cnt, sizeof(set8->pairs[0]), cmp_id);
  
--	if (unlikely(!irq_fpu_usable()))
--		return nft_pipapo_lookup(net, set, key, ext);
-+	local_bh_disable();
-+
-+	if (unlikely(!irq_fpu_usable())) {
-+		bool fallback_res = nft_pipapo_lookup(net, set, key, ext);
-+
-+		local_bh_enable();
-+		return fallback_res;
-+	}
- 
- 	m = rcu_dereference(priv->match);
- 
-@@ -1155,6 +1161,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	scratch = *raw_cpu_ptr(m->scratch);
- 	if (unlikely(!scratch)) {
- 		kernel_fpu_end();
-+		local_bh_enable();
- 		return false;
- 	}
- 
-@@ -1235,6 +1242,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	if (i % 2)
- 		scratch->map_index = !map_index;
- 	kernel_fpu_end();
-+	local_bh_enable();
- 
- 	return ret >= 0;
- }
+ 			/*
 -- 
 2.43.0
 
