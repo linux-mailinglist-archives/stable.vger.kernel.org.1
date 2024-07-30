@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-64043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F415941BDD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F808941E0B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A56BB250AC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0874128728B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9E018990B;
-	Tue, 30 Jul 2024 16:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F7A1A76B6;
+	Tue, 30 Jul 2024 17:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzTaS3Zc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CD4NHPML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D4617D8BB;
-	Tue, 30 Jul 2024 16:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D37A1A76A1;
+	Tue, 30 Jul 2024 17:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358796; cv=none; b=b5tDhaVOy/oE3x/m//gqdEPClLVZ4ysUeAyRHmVLYWBIXeyb2/JnMf99fbjEN+KznhnyO2Mz+Xcd7bG514vXePA4FSf6s+w2BthnRaNpH6LJHkNp2IbOnQx6qlRnyf3FVAnn+lQl24VQLbcjBCp/+93NbHAIbfveXsya2GSd+KM=
+	t=1722360315; cv=none; b=BnPcJ/jqYCzQuQRhp1AHeJOEjpJlJPbbf7E4Z5sf4UnOKiUD2QCFka9M2QX6/b3Tv9/vSnREvyqs5L3OAMybVeR4wpVdAiJgKWx+J+YwenKAlteJ1hTVO5qQ0DkjGYxGbyCVmTzEqn4tYR2Yf3Mc7bazdsjX7EcG5IfaXxJcIGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358796; c=relaxed/simple;
-	bh=NsjOeyudyYcZYDMwDDsVaXY8yIdZ4GbhzSN2xkDX7Q4=;
+	s=arc-20240116; t=1722360315; c=relaxed/simple;
+	bh=c/5BlpkKVM2WQ28IABw+bi2dOkCqYF5G9bAZM9EDfjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hckz5iueVgfWi7vZU1arfX9v9VEDYZMGeqeLogaVnWCUtTm46Ty827X/QzQg++ExIBGzFkKrJKh2oy0A/h53pR6rmUPPccEqXzuGyULG6bi5NEZvR3Cw4h057CVKtWf7bizCvRheBEw8AEoVe2k0lPRAPPFRBZFH703gagvMzfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzTaS3Zc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9490AC32782;
-	Tue, 30 Jul 2024 16:59:55 +0000 (UTC)
+	 MIME-Version; b=qk4o414Qc2kUettRgLy38M0DtnFJrWadztjcrYo1Hu/dj7CczHbLyYlYq3StM4GNtUJyQNY7xV9dJ8w2QW9SumBBXfSS4CBICz9Jq5m5s1kSQn+IDTCSpG/6vGe1W+8m4/1PPR/4ZNo4ds8KjoTNCRzSTNHVIAkvTMr6RV41LC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CD4NHPML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E365AC32782;
+	Tue, 30 Jul 2024 17:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358796;
-	bh=NsjOeyudyYcZYDMwDDsVaXY8yIdZ4GbhzSN2xkDX7Q4=;
+	s=korg; t=1722360315;
+	bh=c/5BlpkKVM2WQ28IABw+bi2dOkCqYF5G9bAZM9EDfjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzTaS3Zcm+kQTb6TBNZJf4SP2XRBXG/LemwQnzYO/hY9/xqRcpsWBkGxo/k5cEWqx
-	 kvfiHRtSxf2Y/uLSOTIuUU2wfBEEZa4eOCk/qS6KHOnuQMpsfAazb6R6CR0sfNmylE
-	 qTeZgiP/fbCypXcPcbOVsXscdySVaFDXwK7xTiIc=
+	b=CD4NHPMLhNOGEimMoKZlNZViYHCyLKGX/PWK3bAI3FEgr+sB5XBq7hNAMURLqr1eH
+	 PubldixxA1Cf9tGrjHHzUDS/D9ibqZWOtIqv15KorRfFlpjCVjFZrQcdMSymcDFTkU
+	 nK9bOqDJj59SQgwKj3wOEoHv+IdlvuU4cjFU7O/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 398/568] ext4: make sure the first directory block is not a hole
-Date: Tue, 30 Jul 2024 17:48:25 +0200
-Message-ID: <20240730151655.426728219@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 630/809] ALSA: usb-audio: Move HD Webcam quirk to the right place
+Date: Tue, 30 Jul 2024 17:48:26 +0200
+Message-ID: <20240730151749.725273594@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit f9ca51596bbfd0f9c386dd1c613c394c78d9e5e6 upstream.
+commit 7010d9464f7ca3ee2d75095ea2e642a9009a41ff upstream.
 
-The syzbot constructs a directory that has no dirblock but is non-inline,
-i.e. the first directory block is a hole. And no errors are reported when
-creating files in this directory in the following flow.
+The quirk_flags_table[] is sorted in the USB ID order, while the last
+fix was put at a wrong position.  Adjust the entry at the right
+position.
 
-    ext4_mknod
-     ...
-      ext4_add_entry
-        // Read block 0
-        ext4_read_dirblock(dir, block, DIRENT)
-          bh = ext4_bread(NULL, inode, block, 0)
-          if (!bh && (type == INDEX || type == DIRENT_HTREE))
-          // The first directory block is a hole
-          // But type == DIRENT, so no error is reported.
-
-After that, we get a directory block without '.' and '..' but with a valid
-dentry. This may cause some code that relies on dot or dotdot (such as
-make_indexed_dir()) to crash.
-
-Therefore when ext4_read_dirblock() finds that the first directory block
-is a hole report that the filesystem is corrupted and return an error to
-avoid loading corrupted data from disk causing something bad.
-
-Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
-Fixes: 4e19d6b65fb4 ("ext4: allow directory holes")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240702132349.2600605-3-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 74dba2408818 ("ALSA: usb-audio: Fix microphone sound on HD webcam.")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240722080605.23481-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/namei.c |   17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ sound/usb/quirks.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -151,10 +151,11 @@ static struct buffer_head *__ext4_read_d
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2167,6 +2167,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x19f7, 0x0035, /* RODE NT-USB+ */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
++	DEVICE_FLG(0x1bcf, 0x2281, /* HD Webcam */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x1bcf, 0x2283, /* NexiGo N930AF FHD Webcam */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x2040, 0x7200, /* Hauppauge HVR-950Q */
+@@ -2225,8 +2227,6 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x534d, 0x2109, /* MacroSilicon MS2109 */
+ 		   QUIRK_FLAG_ALIGN_TRANSFER),
+-	DEVICE_FLG(0x1bcf, 0x2281, /* HD Webcam */
+-		   QUIRK_FLAG_GET_SAMPLE_RATE),
  
- 		return bh;
- 	}
--	if (!bh && (type == INDEX || type == DIRENT_HTREE)) {
-+	/* The first directory block must not be a hole. */
-+	if (!bh && (type == INDEX || type == DIRENT_HTREE || block == 0)) {
- 		ext4_error_inode(inode, func, line, block,
--				 "Directory hole found for htree %s block",
--				 (type == INDEX) ? "index" : "leaf");
-+				 "Directory hole found for htree %s block %u",
-+				 (type == INDEX) ? "index" : "leaf", block);
- 		return ERR_PTR(-EFSCORRUPTED);
- 	}
- 	if (!bh)
-@@ -3133,10 +3134,7 @@ bool ext4_empty_dir(struct inode *inode)
- 		EXT4_ERROR_INODE(inode, "invalid size");
- 		return false;
- 	}
--	/* The first directory block must not be a hole,
--	 * so treat it as DIRENT_HTREE
--	 */
--	bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
-+	bh = ext4_read_dirblock(inode, 0, EITHER);
- 	if (IS_ERR(bh))
- 		return false;
- 
-@@ -3581,10 +3579,7 @@ static struct buffer_head *ext4_get_firs
- 		struct ext4_dir_entry_2 *de;
- 		unsigned int offset;
- 
--		/* The first directory block must not be a hole, so
--		 * treat it as DIRENT_HTREE
--		 */
--		bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
-+		bh = ext4_read_dirblock(inode, 0, EITHER);
- 		if (IS_ERR(bh)) {
- 			*retval = PTR_ERR(bh);
- 			return NULL;
+ 	/* Vendor matches */
+ 	VENDOR_FLG(0x045e, /* MS Lifecam */
 
 
 
