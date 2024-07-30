@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-63418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE9F9418DC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284D29418E3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 721981C229D7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7795284D00
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7521A6195;
-	Tue, 30 Jul 2024 16:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5431A618F;
+	Tue, 30 Jul 2024 16:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04ZY/o1c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJ/g09Iq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7581A6160;
-	Tue, 30 Jul 2024 16:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC511A6166;
+	Tue, 30 Jul 2024 16:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356771; cv=none; b=i9NvII7iX9pd1NFSVg79iyN5TR6r4bfN/2XwG6qNovmb+fFZBrKsWHQ+k68ModA0z8UtbbiWuCzZDabz6VtFIF2DKbwlG90w1thBX8zlo9b1V8nrLJkiJ8tvJlqnmoppJTQPcmtNP+wBRZ7jiIQXMgmO6TYhNI+HMqK/uzoMVQQ=
+	t=1722356783; cv=none; b=mlOvUKO2TDfqaLgeC/goQIcAbH0tiACzcTRnkz2FI0uU9HUPiC9+hwC7cBxBFxKLRs75rdhe56gbiXf5sfWM0Ma12iuxsTPC42ZQ6+ai5hyQe2MUk5hSUBb9PD8s6kZQ/1ZcB03JLGYQL5H1HRycwoHzYEw6nxrBlC4gAQHg+oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356771; c=relaxed/simple;
-	bh=5kwgm8QScgqpeqP7V57XwufKlCv0V2YMgwChYI13K8Q=;
+	s=arc-20240116; t=1722356783; c=relaxed/simple;
+	bh=wKYghqB33WCKCBrekGvJFnHumSjwRsmY9u5+zhdYnn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSIBDlOa6Pt42ogeBa9O2xReyOKWvADgkSATx0QycostGmPqHYcF4gJ2eHfOnUMJyGc6PwMnVaQi34xPdAC+FW9B0Mk1uMsoje8UMeDNI+/3JXFL8Gs/n7oH6sN3JSUxhSdfkyTfU2gJnCYVWtlK1WBRdMX22twW7744DRRnFMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04ZY/o1c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F737C4AF0C;
-	Tue, 30 Jul 2024 16:26:10 +0000 (UTC)
+	 MIME-Version; b=YxdHpUy0QL849w+C5BtThW7WYyYrHkbMp/DhDJBq6ScbTdzfLPGXb7QJOgWMZ4PS8AzkG9UW2KvjRTMtBIY4TSxAdSxEoz4tn5UjmcQ6o9HDERnn6yOtS1v1T9Kl+A02DmZrq5JQNFAjmkiJhi3mK1Upk6nI/ag8ZnF28/XQ470=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJ/g09Iq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08717C4AF0C;
+	Tue, 30 Jul 2024 16:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356771;
-	bh=5kwgm8QScgqpeqP7V57XwufKlCv0V2YMgwChYI13K8Q=;
+	s=korg; t=1722356783;
+	bh=wKYghqB33WCKCBrekGvJFnHumSjwRsmY9u5+zhdYnn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04ZY/o1cLY/HvbXnc9JE0/hv3mFEAhR1QiMCd9V/U5Q+kXvFxcj+e8SoS78mcly0K
-	 464fSIi5kMi9ft6xiwA8T6XRreAwliXE6Qj6La0VwtAqsdkeA0+f5zfrzYV98xAJHd
-	 fn5Zdf76rK/W7lduQ2UIe8XVxyFD8cOSTesqbivY=
+	b=nJ/g09IqBSaHRkf4qjicauj68/STXu6IOLovyTnLcXpTJkgQV9/0HQNb9tTJIH+bA
+	 maX5jaVsM2/Zz/lRMsn8FliQw3S8MP7SlzyMtkHImtBHCEPMa3qNMf9hXR0nqNDehh
+	 jJKSVsaJnzBVP/7D6Ruan07ORu7tXEO3u3XaEg0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanfei Xu <yanfei.xu@intel.com>,
+	Jon Pan-Doh <pandoh@google.com>,
+	Sudheer Dantuluri <dantuluris@google.com>,
+	Gary Zibrat <gzibrat@google.com>,
 	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 227/440] iommu/vt-d: Fix to convert mm pfn to dma pfn
-Date: Tue, 30 Jul 2024 17:47:40 +0200
-Message-ID: <20240730151624.725021111@linuxfoundation.org>
+Subject: [PATCH 6.1 228/440] iommu/vt-d: Fix identity map bounds in si_domain_init()
+Date: Tue, 30 Jul 2024 17:47:41 +0200
+Message-ID: <20240730151624.763631078@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -67,95 +70,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yanfei Xu <yanfei.xu@intel.com>
+From: Jon Pan-Doh <pandoh@google.com>
 
-[ Upstream commit fb5f50a43d9fd44fd6bc4f4dbcf9d3ec5b556558 ]
+[ Upstream commit 31000732d56b43765d51e08cccb68818fbc0032c ]
 
-For the case that VT-d page is smaller than mm page, converting dma pfn
-should be handled in two cases which are for start pfn and for end pfn.
-Currently the calculation of end dma pfn is incorrect and the result is
-less than real page frame number which is causing the mapping of iova
-always misses some page frames.
+Intel IOMMU operates on inclusive bounds (both generally aas well as
+iommu_domain_identity_map()). Meanwhile, for_each_mem_pfn_range() uses
+exclusive bounds for end_pfn. This creates an off-by-one error when
+switching between the two.
 
-Rename the mm_to_dma_pfn() to mm_to_dma_pfn_start() and add a new helper
-for converting end dma pfn named mm_to_dma_pfn_end().
-
-Signed-off-by: Yanfei Xu <yanfei.xu@intel.com>
-Link: https://lore.kernel.org/r/20230625082046.979742-1-yanfei.xu@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 31000732d56b ("iommu/vt-d: Fix identity map bounds in si_domain_init()")
+Fixes: c5395d5c4a82 ("intel-iommu: Clean up iommu_domain_identity_map()")
+Signed-off-by: Jon Pan-Doh <pandoh@google.com>
+Tested-by: Sudheer Dantuluri <dantuluris@google.com>
+Suggested-by: Gary Zibrat <gzibrat@google.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20240709234913.2749386-1-pandoh@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/iommu/intel/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index e111b35a7aff2..e3a95a347c3b9 100644
+index e3a95a347c3b9..7b9502c30fe94 100644
 --- a/drivers/iommu/intel/iommu.c
 +++ b/drivers/iommu/intel/iommu.c
-@@ -113,13 +113,17 @@ static inline unsigned long lvl_to_nr_pages(unsigned int lvl)
- 
- /* VT-d pages must always be _smaller_ than MM pages. Otherwise things
-    are never going to work. */
--static inline unsigned long mm_to_dma_pfn(unsigned long mm_pfn)
-+static inline unsigned long mm_to_dma_pfn_start(unsigned long mm_pfn)
- {
- 	return mm_pfn << (PAGE_SHIFT - VTD_PAGE_SHIFT);
- }
-+static inline unsigned long mm_to_dma_pfn_end(unsigned long mm_pfn)
-+{
-+	return ((mm_pfn + 1) << (PAGE_SHIFT - VTD_PAGE_SHIFT)) - 1;
-+}
- static inline unsigned long page_to_dma_pfn(struct page *pg)
- {
--	return mm_to_dma_pfn(page_to_pfn(pg));
-+	return mm_to_dma_pfn_start(page_to_pfn(pg));
- }
- static inline unsigned long virt_to_dma_pfn(void *p)
- {
-@@ -2439,8 +2443,8 @@ static int __init si_domain_init(int hw)
- 
+@@ -2444,7 +2444,7 @@ static int __init si_domain_init(int hw)
  		for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
  			ret = iommu_domain_identity_map(si_domain,
--					mm_to_dma_pfn(start_pfn),
--					mm_to_dma_pfn(end_pfn));
-+					mm_to_dma_pfn_start(start_pfn),
-+					mm_to_dma_pfn_end(end_pfn));
+ 					mm_to_dma_pfn_start(start_pfn),
+-					mm_to_dma_pfn_end(end_pfn));
++					mm_to_dma_pfn_end(end_pfn-1));
  			if (ret)
  				return ret;
  		}
-@@ -2461,8 +2465,8 @@ static int __init si_domain_init(int hw)
- 				continue;
- 
- 			ret = iommu_domain_identity_map(si_domain,
--					mm_to_dma_pfn(start >> PAGE_SHIFT),
--					mm_to_dma_pfn(end >> PAGE_SHIFT));
-+					mm_to_dma_pfn_start(start >> PAGE_SHIFT),
-+					mm_to_dma_pfn_end(end >> PAGE_SHIFT));
- 			if (ret)
- 				return ret;
- 		}
-@@ -3698,8 +3702,8 @@ static int intel_iommu_memory_notifier(struct notifier_block *nb,
- 				       unsigned long val, void *v)
- {
- 	struct memory_notify *mhp = v;
--	unsigned long start_vpfn = mm_to_dma_pfn(mhp->start_pfn);
--	unsigned long last_vpfn = mm_to_dma_pfn(mhp->start_pfn +
-+	unsigned long start_vpfn = mm_to_dma_pfn_start(mhp->start_pfn);
-+	unsigned long last_vpfn = mm_to_dma_pfn_end(mhp->start_pfn +
- 			mhp->nr_pages - 1);
- 
- 	switch (val) {
-@@ -4401,7 +4405,7 @@ static void intel_iommu_tlb_sync(struct iommu_domain *domain,
- 	unsigned long i;
- 
- 	nrpages = aligned_nrpages(gather->start, size);
--	start_pfn = mm_to_dma_pfn(iova_pfn);
-+	start_pfn = mm_to_dma_pfn_start(iova_pfn);
- 
- 	xa_for_each(&dmar_domain->iommu_array, i, info)
- 		iommu_flush_iotlb_psi(info->iommu, dmar_domain,
 -- 
 2.43.0
 
