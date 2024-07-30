@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891D79419D0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF15941779
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33F401F26E81
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FE9F28425E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3A714D29B;
-	Tue, 30 Jul 2024 16:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946A218B486;
+	Tue, 30 Jul 2024 16:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hkd/XlyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6qhN0ff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7231A6192;
-	Tue, 30 Jul 2024 16:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B9A189538;
+	Tue, 30 Jul 2024 16:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357405; cv=none; b=C8RvPhvU7YThY3yfkLqHvd7M6MtPmgYEDyUW2XxdPBjmBKa5SXhzbMkUQeJ2C9h7f8xrR6+1KaKnRaBa0NKYzTYbSvYMnM1Nf29wz0LzkQRbuXTO7V1hmZg9EhAxvvp8fZCtvkxTvLBrj0Uo0Db9i4SO+KlC6x7yei9JM42FiA4=
+	t=1722355752; cv=none; b=BitGeQS+AQ6F12wGA3ZTUX4zLUItU8jWwm/TJH6MV6RtfCmwY3dcxAvDdpgo11OPxeiQTjz62kWAJNXF7ND7S4zDUND0/wUhUREmJ8zGxxxQ4BPccoCWi2Hn7zDQqw1H/Zp9UaUkB6v2a1w/RL5A6yD9HiaPxn3UxSDnF3YQwWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357405; c=relaxed/simple;
-	bh=V5I5X6jbEaUn3R1irngVxjnPtlOfAqpCWtpe27M5tek=;
+	s=arc-20240116; t=1722355752; c=relaxed/simple;
+	bh=lZTdkFnDiKqI4ywVyRj2/oELBuspEj9/DOxLAWCQo7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qha1nXGsvrG8H08DpPgyX/AYz/NQci2fQsbKS73C4TQCmY9mWaeqNUKYh5ZA5ui1ac+QMvE6N0UJhj31pIRfoGa5pT81mnrVV1iB0i61Mu7STOGVhJ+c8e8UJTiz2ySSLDGE1mqmxKbmdj6YEhw88QtXYsuLO2YVwP3151Tbzyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hkd/XlyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C219AC32782;
-	Tue, 30 Jul 2024 16:36:44 +0000 (UTC)
+	 MIME-Version; b=XiO1oPCaQSgpC1Gxp5aeZMM9r1/nFoI+0lxyVu2vBJhfi5+QtJ0kq5qpSnzM4LYC8hvadO3uzRVu1NnqiRgeh12alMpkCgxZei89FTq9BC+LrBoVUQ+hhe84V9vUARBtaViioxIkd/N9eJUg2B47jp8aeRR9FEoij5CVd7P9BqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6qhN0ff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C99C32782;
+	Tue, 30 Jul 2024 16:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357405;
-	bh=V5I5X6jbEaUn3R1irngVxjnPtlOfAqpCWtpe27M5tek=;
+	s=korg; t=1722355752;
+	bh=lZTdkFnDiKqI4ywVyRj2/oELBuspEj9/DOxLAWCQo7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hkd/XlyUx6j9Kt47aANfvockGOYn2lkvk58xqeMZJ5WZeJ5rjnKGSmsnRLU+lbXjy
-	 dOMQ9w8NT+5TgvpOyT60aWQ0F2jvsFnAPbP4ZYZ5ApjCgowgNWsmcJBnymjjX37vvd
-	 NQox7zXRR8X4aJeOO5UFVq6eaPNTsc7SXkaD9OsE=
+	b=K6qhN0ffPgRUeSl8BR72l/+Qu0XihTYBfL0guAmpZsXMVevK3ljU7TYd0nlwYmO8v
+	 dPQtIEvdTpSVUROxWJHK4FitsGSnbeqfomSk8exIsegt9h4lSZW8doNd/ID/FX7bQC
+	 WRIL9HPkC7+akeHJcCByKUuktrq9I58eu9A1CFnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 252/568] PCI: rcar: Demote WARN() to dev_warn_ratelimited() in rcar_pcie_wakeup()
-Date: Tue, 30 Jul 2024 17:45:59 +0200
-Message-ID: <20240730151649.730616704@linuxfoundation.org>
+Subject: [PATCH 6.1 127/440] net: bridge: mst: Check vlan state for egress decision
+Date: Tue, 30 Jul 2024 17:46:00 +0200
+Message-ID: <20240730151620.846195535@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+From: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
 
-[ Upstream commit c93637e6a4c4e1d0e85ef7efac78d066bbb24d96 ]
+[ Upstream commit 0a1868b93fad5938dbcca77286b25bf211c49f7a ]
 
-Avoid large backtrace, it is sufficient to warn the user that there has
-been a link problem. Either the link has failed and the system is in need
-of maintenance, or the link continues to work and user has been informed.
-The message from the warning can be looked up in the sources.
+If a port is blocking in the common instance but forwarding in an MST
+instance, traffic egressing the bridge will be dropped because the
+state of the common instance is overriding that of the MST instance.
 
-This makes an actual link issue less verbose.
+Fix this by skipping the port state check in MST mode to allow
+checking the vlan state via br_allowed_egress(). This is similar to
+what happens in br_handle_frame_finish() when checking ingress
+traffic, which was introduced in the change below.
 
-First of all, this controller has a limitation in that the controller
-driver has to assist the hardware with transition to L1 link state by
-writing L1IATN to PMCTRL register, the L1 and L0 link state switching
-is not fully automatic on this controller.
-
-In case of an ASMedia ASM1062 PCIe SATA controller which does not support
-ASPM, on entry to suspend or during platform pm_test, the SATA controller
-enters D3hot state and the link enters L1 state. If the SATA controller
-wakes up before rcar_pcie_wakeup() was called and returns to D0, the link
-returns to L0 before the controller driver even started its transition to
-L1 link state. At this point, the SATA controller did send an PM_ENTER_L1
-DLLP to the PCIe controller and the PCIe controller received it, and the
-PCIe controller did set PMSR PMEL1RX bit.
-
-Once rcar_pcie_wakeup() is called, if the link is already back in L0 state
-and PMEL1RX bit is set, the controller driver has no way to determine if
-it should perform the link transition to L1 state, or treat the link as if
-it is in L0 state. Currently the driver attempts to perform the transition
-to L1 link state unconditionally, which in this specific case fails with a
-PMSR L1FAEG poll timeout, however the link still works as it is already
-back in L0 state.
-
-Reduce this warning verbosity. In case the link is really broken, the
-rcar_pcie_config_access() would fail, otherwise it will succeed and any
-system with this controller and ASM1062 can suspend without generating
-a backtrace.
-
-Fixes: 84b576146294 ("PCI: rcar: Finish transition to L1 state in rcar_pcie_config_access()")
-Link: https://lore.kernel.org/linux-pci/20240511235513.77301-1-marek.vasut+renesas@mailbox.org
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
+Signed-off-by: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rcar-host.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/bridge/br_forward.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-rcar-host.c b/drivers/pci/controller/pcie-rcar-host.c
-index 88975e40ee2fb..704ab5d723a95 100644
---- a/drivers/pci/controller/pcie-rcar-host.c
-+++ b/drivers/pci/controller/pcie-rcar-host.c
-@@ -77,7 +77,11 @@ static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
- 		writel(L1IATN, pcie_base + PMCTLR);
- 		ret = readl_poll_timeout_atomic(pcie_base + PMSR, val,
- 						val & L1FAEG, 10, 1000);
--		WARN(ret, "Timeout waiting for L1 link state, ret=%d\n", ret);
-+		if (ret) {
-+			dev_warn_ratelimited(pcie_dev,
-+					     "Timeout waiting for L1 link state, ret=%d\n",
-+					     ret);
-+		}
- 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
- 	}
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index 9661698e86e40..a32d73f381558 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -25,8 +25,8 @@ static inline int should_deliver(const struct net_bridge_port *p,
+ 
+ 	vg = nbp_vlan_group_rcu(p);
+ 	return ((p->flags & BR_HAIRPIN_MODE) || skb->dev != p->dev) &&
+-		p->state == BR_STATE_FORWARDING && br_allowed_egress(vg, skb) &&
+-		nbp_switchdev_allowed_egress(p, skb) &&
++		(br_mst_is_enabled(p->br) || p->state == BR_STATE_FORWARDING) &&
++		br_allowed_egress(vg, skb) && nbp_switchdev_allowed_egress(p, skb) &&
+ 		!br_skb_isolated(p, skb);
+ }
  
 -- 
 2.43.0
