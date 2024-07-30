@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F5A941A53
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC76941A55
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A6751F21EE7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8741428332C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F823183CDB;
-	Tue, 30 Jul 2024 16:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A81183CD5;
+	Tue, 30 Jul 2024 16:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbVMCICL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="habBpcpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C961A619E;
-	Tue, 30 Jul 2024 16:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8021A619E;
+	Tue, 30 Jul 2024 16:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357757; cv=none; b=BpqyA0mcp/kKGpzbp3xbvGpUl087nClwhRkVSQBoUoQjI5F/wXjKnwGSrGQPjRdX0APsDM1L/0VVRcQXFVr/5O3PxVaF64xui8J55aaLSUxM76gJWiJtP7S60+K2QZt8ihfhpyK/LYv/vVMxQJXmlC8iLoVVds5wl78fjtPL8yA=
+	t=1722357766; cv=none; b=guXd8o1ywmM4RSXU5Av6IR8/aO+60qn/fpxuXbwQ43KIIuwIwvjw/6yDu+nYhykX4buVKSVV8pA8UIsE81vhG7dBaC4Sqvap6GtN/t6goeIyOxxQqBhPhYurBQCSbYIUhCr1ii6K9B4hp8SRKq4uDVAXX9PMrXqO20DKAUoA0cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357757; c=relaxed/simple;
-	bh=cicX+gRhW8ZyJdNlu4vVr1n3KtiKd7Qlj7jTT7Ez334=;
+	s=arc-20240116; t=1722357766; c=relaxed/simple;
+	bh=ArQGZF2tc+bjuPtZ4NIHhCsjPPJxmO177d1xyAcS/dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMcNHCllJV+V64n7cExlpjCwj5UZv6jLP9rkOixdqfECCgTaGnXNXV3s8D7kQtFXOX3BciHaE8viiaxRcMiMh23bO+jTkJQyU5SwJ3fVnQK0Xig/LgrnDOcnUMbLGDfACYuVMjUccsVK7gORMdSYXR4uzgrQYy8+f9sF23D4qN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbVMCICL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C9CC32782;
-	Tue, 30 Jul 2024 16:42:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vA5LFwXGo/+oOm7vK3n2LpTsUsw0cG3stbIpuCd/ACKM/n+wuxNa0mWuee3uN+RV9bz6wpFoteg2tt5DGNjGYAzEHAAMykhi70ufD2bvF4fHsErlpcEMbJzpn3xXuuwQkSRkXtwMaFmuMsD3kzRzepdqjHwV0Sw3GRbme/zGueI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=habBpcpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703F8C32782;
+	Tue, 30 Jul 2024 16:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357756;
-	bh=cicX+gRhW8ZyJdNlu4vVr1n3KtiKd7Qlj7jTT7Ez334=;
+	s=korg; t=1722357765;
+	bh=ArQGZF2tc+bjuPtZ4NIHhCsjPPJxmO177d1xyAcS/dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tbVMCICLTApcKS/YNvFWRx/TT8cXD98N3qJl7BFYmTUBmXBMeCGjCH2cc9ShbMRby
-	 bn851Bp7uvg+Xpac2Hm9m6n1j9UNAx/Y5B9eKQgBU8jHerMVBERlLIq50uuZyt+yk9
-	 aGAB5nQa9KsB0Reea1NZw95zyCS0bEdlQGrsaY84=
+	b=habBpcpzNqvHAQffvNARg0WiaddfrSVFGn96987zarlBCr/ogW8GhYUI998luR4CN
+	 CiS9zc2u0KUMYkqKtkU/g7CDGxGFiPh4wLFwzVXRhJXbeAtS1ElgcKXN0FswIgHgi1
+	 j664VE/P2pKf+TUObWaUA+dZfI0Wv6MGeQAb7ZnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Animesh Manna <animesh.manna@intel.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 289/809] media: imon: Fix race getting ictx->lock
-Date: Tue, 30 Jul 2024 17:42:45 +0200
-Message-ID: <20240730151736.006923969@linuxfoundation.org>
+Subject: [PATCH 6.10 290/809] drm/i915/psr: Use enable boolean from intel_crtc_state for Early Transport
+Date: Tue, 30 Jul 2024 17:42:46 +0200
+Message-ID: <20240730151736.046660552@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -61,55 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit 24147897507cd3a7d63745d1518a638bf4132238 ]
+[ Upstream commit 0a8c581ce01c84214b8221fcc5d52b45c09d0007 ]
 
-Lets fix a race between mutex_is_lock() and mutex_lock().
+When enabling Early Transport use
+intel_crtc_state->enable_psr2_su_region_et instead of
+psr2_su_region_et_valid.
 
-<-mutex is not locked
-if (!mutex_is_locked(&ictx->lock)) {
-	unlock = true; <- mutex is locked externaly
-	mutex_lock(&ictx->lock);
-}
-
-Let's use mutex_trylock() that does mutex_is_lock() and mutex_lock()
-atomically.
-
-Fix the following cocci warning:
-drivers/media/rc/imon.c:1167:1-7: preceding lock on line 1153
-
-Fixes: 23ef710e1a6c ("[media] imon: add conditional locking in change_protocol")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+Fixes: 467e4e061c44 ("drm/i915/psr: Enable psr2 early transport as possible")
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240529093849.1016172-4-jouni.hogander@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/imon.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
-index 0b55314a80827..8f1361bcce3a6 100644
---- a/drivers/media/rc/imon.c
-+++ b/drivers/media/rc/imon.c
-@@ -1148,10 +1148,7 @@ static int imon_ir_change_protocol(struct rc_dev *rc, u64 *rc_proto)
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index a2f7d998d3420..58769197a1277 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -659,7 +659,7 @@ void intel_psr_enable_sink(struct intel_dp *intel_dp,
+ 					   DP_ALPM_ENABLE |
+ 					   DP_ALPM_LOCK_ERROR_IRQ_HPD_ENABLE);
  
- 	memcpy(ictx->usb_tx_buf, &ir_proto_packet, sizeof(ir_proto_packet));
+-			if (psr2_su_region_et_valid(intel_dp))
++			if (crtc_state->enable_psr2_su_region_et)
+ 				dpcd_val |= DP_PSR_ENABLE_SU_REGION_ET;
+ 		}
  
--	if (!mutex_is_locked(&ictx->lock)) {
--		unlock = true;
--		mutex_lock(&ictx->lock);
--	}
-+	unlock = mutex_trylock(&ictx->lock);
- 
- 	retval = send_packet(ictx);
- 	if (retval)
 -- 
 2.43.0
 
