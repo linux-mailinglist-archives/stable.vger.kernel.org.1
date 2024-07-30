@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-62900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994EE941623
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D34941626
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EEFA28194D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B64D028303E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6204F1B583E;
-	Tue, 30 Jul 2024 15:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DEA1BA869;
+	Tue, 30 Jul 2024 15:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bx93eETE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkDp9YB7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEAB29A2;
-	Tue, 30 Jul 2024 15:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C8F29A2;
+	Tue, 30 Jul 2024 15:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354998; cv=none; b=HtLgSma1oKrG3xKZmaQqup4SBF7Idnbo5wlq7B+56JYQwCRDWvC1VeqKoe11weV+F/7Y4lg011jsxYO5qikILyE1JTNqQ9ysVAQUZD01i4Dev4REpswqFFUmbST3lv0a3zm3GGtz1cdUZDtJDGLKB/JHrBVP0pTemxHBx8YAmUc=
+	t=1722355008; cv=none; b=l2v+eCG8JCqvJZFHUo3pg0yDOZRZGx3IjRwM95+f1pV7oQxeuJrkaKN33AGugW/D1RwA7zVANPhoORbsQ143QjMCtP332vkU60c7/Vo9AQeScfDo2+zB5Uk6HO+rkzqOAGlQOpY451/7EA9HAgApp6+zs8Z83J0wDk0+20S9Dno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354998; c=relaxed/simple;
-	bh=W7OcL6UpgiX7WEq9uuv3xGcOBxc/nkb0HmVr39aznQE=;
+	s=arc-20240116; t=1722355008; c=relaxed/simple;
+	bh=EDrzYtPAihkmbKQ8HViqnRjaCCinFdcZPfPDNVuINr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVxtA0nlRnNFehRzUOWS9qhdUwK/27MLYc6aLQS/btLBIw4F4V5txSOjfOD6VwnjzYGARRD7x7+VCipwGoelVvSKDw1P6QT4IJcbYbLM33C2op28QR3Qg3+fXk2IVfuNUcH5KpdJRESUqCVCS2Ti7v3t7iQ5nwKnApBsG0kzXZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bx93eETE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85160C4AF0A;
-	Tue, 30 Jul 2024 15:56:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zc4WF/OPx89lpPf8aHsupFRSOn545EvzA/YNDMEucb+KLWTWLf0fAt59NbkiYl0lLBfiQBGpUmxTgcunQgHgjFXL0fEpWXz9jb4tuf4kgcwKXFwPePERhFPSPis2MjzqbJXIA+jgPlymA+rYXYFx0Bb9oNL6dhjx2oMdBWP1PiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkDp9YB7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BE3C32782;
+	Tue, 30 Jul 2024 15:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354998;
-	bh=W7OcL6UpgiX7WEq9uuv3xGcOBxc/nkb0HmVr39aznQE=;
+	s=korg; t=1722355007;
+	bh=EDrzYtPAihkmbKQ8HViqnRjaCCinFdcZPfPDNVuINr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bx93eETER7zo7k1QrkjKYgXEAjWsFhJVFBPDSmuTEU+quhWrVnX4lcHG+HZVNfBW9
-	 GDKFnTk6aiLHbmh8RY3nR11slSmcPsg7COM5bfG037PTLgNHlNF54SvmI4pM9x6mS7
-	 mtRv0UN6T93EBJrFzzaN6elRL/jVxlUOXcgEZHOI=
+	b=xkDp9YB7o1+koI5cysXOU5gq0VpP7laqm5orl+XpXTKzMIuZZlFL9B1lJr7wHuFhg
+	 ctXM62K03AVk0tyXvDsINI6VQv+hdT3XTZHhJtz9NAqeqsW2O3elwRpgwmtUFzIUVn
+	 wOOVDxhTqP0MrxofmBF2sf1K6SS5ofcew+cvx4cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/440] block/mq-deadline: Fix the tag reservation code
-Date: Tue, 30 Jul 2024 17:44:14 +0200
-Message-ID: <20240730151616.594006759@linuxfoundation.org>
+Subject: [PATCH 6.1 022/440] pwm: stm32: Always do lazy disabling
+Date: Tue, 30 Jul 2024 17:44:15 +0200
+Message-ID: <20240730151616.632418257@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -63,87 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 39823b47bbd40502632ffba90ebb34fff7c8b5e8 ]
+[ Upstream commit 7346e7a058a2c9aa9ff1cc699c7bf18a402d9f84 ]
 
-The current tag reservation code is based on a misunderstanding of the
-meaning of data->shallow_depth. Fix the tag reservation code as follows:
-* By default, do not reserve any tags for synchronous requests because
-  for certain use cases reserving tags reduces performance. See also
-  Harshit Mogalapalli, [bug-report] Performance regression with fio
-  sequential-write on a multipath setup, 2024-03-07
-  (https://lore.kernel.org/linux-block/5ce2ae5d-61e2-4ede-ad55-551112602401@oracle.com/)
-* Reduce min_shallow_depth to one because min_shallow_depth must be less
-  than or equal any shallow_depth value.
-* Scale dd->async_depth from the range [1, nr_requests] to [1,
-  bits_per_sbitmap_word].
+When the state changes from enabled to disabled, polarity, duty_cycle
+and period are not configured in hardware and TIM_CCER_CCxE is just
+cleared. However if the state changes from one disabled state to
+another, all parameters are written to hardware because the early exit
+from stm32_pwm_apply() is only taken if the pwm is currently enabled.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Fixes: 07757588e507 ("block/mq-deadline: Reserve 25% of scheduler tags for synchronous requests")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240509170149.7639-3-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This yields surprises like: Applying
+
+	{ .period = 1, .duty_cycle = 0, .enabled = false }
+
+succeeds if the pwm is initially on, but fails if it's already off
+because 1 is a too small period.
+
+Update the check for lazy disable to always exit early if the target
+state is disabled, no matter what is currently configured.
+
+Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20240703110010.672654-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/mq-deadline.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/pwm/pwm-stm32.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/block/mq-deadline.c b/block/mq-deadline.c
-index f10c2a0d18d41..ff029e1acc4d5 100644
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -597,6 +597,20 @@ static struct request *dd_dispatch_request(struct blk_mq_hw_ctx *hctx)
- 	return rq;
- }
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index c40a6548ce7d4..2070d107c6328 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -452,8 +452,9 @@ static int stm32_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
  
-+/*
-+ * 'depth' is a number in the range 1..INT_MAX representing a number of
-+ * requests. Scale it with a factor (1 << bt->sb.shift) / q->nr_requests since
-+ * 1..(1 << bt->sb.shift) is the range expected by sbitmap_get_shallow().
-+ * Values larger than q->nr_requests have the same effect as q->nr_requests.
-+ */
-+static int dd_to_word_depth(struct blk_mq_hw_ctx *hctx, unsigned int qdepth)
-+{
-+	struct sbitmap_queue *bt = &hctx->sched_tags->bitmap_tags;
-+	const unsigned int nrr = hctx->queue->nr_requests;
-+
-+	return ((qdepth << bt->sb.shift) + nrr - 1) / nrr;
-+}
-+
- /*
-  * Called by __blk_mq_alloc_request(). The shallow_depth value set by this
-  * function is used by __blk_mq_get_tag().
-@@ -613,7 +627,7 @@ static void dd_limit_depth(blk_opf_t opf, struct blk_mq_alloc_data *data)
- 	 * Throttle asynchronous requests and writes such that these requests
- 	 * do not block the allocation of synchronous requests.
- 	 */
--	data->shallow_depth = dd->async_depth;
-+	data->shallow_depth = dd_to_word_depth(data->hctx, dd->async_depth);
- }
+ 	enabled = pwm->state.enabled;
  
- /* Called by blk_mq_update_nr_requests(). */
-@@ -623,9 +637,9 @@ static void dd_depth_updated(struct blk_mq_hw_ctx *hctx)
- 	struct deadline_data *dd = q->elevator->elevator_data;
- 	struct blk_mq_tags *tags = hctx->sched_tags;
+-	if (enabled && !state->enabled) {
+-		stm32_pwm_disable(priv, pwm->hwpwm);
++	if (!state->enabled) {
++		if (enabled)
++			stm32_pwm_disable(priv, pwm->hwpwm);
+ 		return 0;
+ 	}
  
--	dd->async_depth = max(1UL, 3 * q->nr_requests / 4);
-+	dd->async_depth = q->nr_requests;
- 
--	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, dd->async_depth);
-+	sbitmap_queue_min_shallow_depth(&tags->bitmap_tags, 1);
- }
- 
- /* Called by blk_mq_init_hctx() and blk_mq_init_sched(). */
 -- 
 2.43.0
 
