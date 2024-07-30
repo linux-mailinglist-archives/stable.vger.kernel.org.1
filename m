@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08972941A1A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 288C2941A1E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 392311C23B9F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A55E1C23BF1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE947189915;
-	Tue, 30 Jul 2024 16:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEFA18455C;
+	Tue, 30 Jul 2024 16:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLmU/3L2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCiA+mhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFCD18990B;
-	Tue, 30 Jul 2024 16:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D771A619B;
+	Tue, 30 Jul 2024 16:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357600; cv=none; b=oOUljXrsGjkPybpyokInXQejL7IRmp5YNI+m/TsFp8QgQa5LWwAyT7F8klQou6a5X6ftU5hRbmuCiW1nFBOYXKfk59HtN2glD1JkGN+hKMPSo6Px64rlbLWrHgbqFiX6SMh6fbLuGSqkrKMO1fCrkr9O6BYfjHvW/SiDbpogp7k=
+	t=1722357613; cv=none; b=EYRWLKR8+mfFu7V4NmlhZydjOcGQaUiAZRAqN6EidL1fj+ipTwfGIolcRsUW8v9i+8cPTimrEmA1t7rNIqnBiLUZY+Z8QTDHW9r2OQJ/NWAdL/zpNIwBgg43SjKhlZlO92Ifbfxg3NdnN62+ZB+u+5Pm9E+VlVDFw32QMppp6QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357600; c=relaxed/simple;
-	bh=5kJzp9dD0/Yy6tU9IunpKd9UHMpk3SAjqqfaswpGza0=;
+	s=arc-20240116; t=1722357613; c=relaxed/simple;
+	bh=tnmeEL9dn9JFMariPTOYyI39NiPBlxbcw+JawAP1fXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bE6scmS3Xfq0/Ig6cgarm+3WC8/xXg/mscqMCncNgvFTtLz0QZUvfX0riw8oVYJ+Elyp6BGdm0PH3ysO4kiGoWenDe+MkhdjSWoQBeQbHTA6MATvfAhviEQlNvbhBPpHXwec9MXB9adXjU5elvml0OgiF1VND5jManAeEW6KO3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLmU/3L2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EF2C4AF14;
-	Tue, 30 Jul 2024 16:39:59 +0000 (UTC)
+	 MIME-Version; b=ijUYZi2fmt9UzCNB9LU2kJUDVgN8GXWHSSbUxpEKxiLWMny5HM5uVjqKkbI+2gRNN7dnbUA8VlicHuGDWti42/LgPNcBVph1bo/XgblbZMX4sbLR8Zs+2ae3BKb2d0VpGuS0i1VhYVAsUQ9YhppxEg3XH5X1HOpYvhJmReHB0eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCiA+mhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE226C32782;
+	Tue, 30 Jul 2024 16:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357600;
-	bh=5kJzp9dD0/Yy6tU9IunpKd9UHMpk3SAjqqfaswpGza0=;
+	s=korg; t=1722357613;
+	bh=tnmeEL9dn9JFMariPTOYyI39NiPBlxbcw+JawAP1fXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLmU/3L2T3J5W6I1k0BpptZOwyAEAx9Gnj+HEqCY3X6gn6vHcC17/lA9j+wZYbHJP
-	 TKruSh586l8+7cEjsYkRiD3D3358W7rIF6x0MC/U6+5yjm688ne3U23gN4d4YHRWiC
-	 RidrwOsRQbzKTwu18eJOCeQDQ0C9MnY3+Up1syXc=
+	b=nCiA+mhXnCq3CiiP/oNbSwpiLkwsP+brih/ci7FlHLyfgFOYH26s0cWxPXdCWsIFG
+	 aL+txQ758VnvE8D7g0+STDWF6BDkGNeTY00+GCiChhW9IeYtrHf464coA77T5Y9ifn
+	 hnAhkHPjrUYMOa3gy2c1hPhQdjsJQy2qGAio0J+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
 	Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 271/809] drm/mipi-dsi: Fix theoretical int overflow in mipi_dsi_generic_write_seq()
-Date: Tue, 30 Jul 2024 17:42:27 +0200
-Message-ID: <20240730151735.298062674@linuxfoundation.org>
+Subject: [PATCH 6.10 272/809] drm/panel: lg-sw43408: add missing error handling
+Date: Tue, 30 Jul 2024 17:42:28 +0200
+Message-ID: <20240730151735.336316166@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,73 +67,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 24acbcce5cc673886c2f4f9b3f6f89a9c6a53b7e ]
+[ Upstream commit 51f9183e4af8c7f00e81180cbb9ee4a98a0f0aa1 ]
 
-The mipi_dsi_generic_write_seq() macro makes a call to
-mipi_dsi_generic_write() which returns a type ssize_t. The macro then
-stores it in an int and checks to see if it's negative. This could
-theoretically be a problem if "ssize_t" is larger than "int".
+Add missing error handling for the mipi_dsi_ functions that actually
+return error code instead of silently ignoring it.
 
-To see the issue, imagine that "ssize_t" is 32-bits and "int" is
-16-bits, you could see a problem if there was some code out there that
-looked like:
-
-  mipi_dsi_generic_write_seq(dsi, <32768 bytes as arguments>);
-
-...since we'd get back that 32768 bytes were transferred and 32768
-stored in a 16-bit int would look negative.
-
-Though there are no callsites where we'd actually hit this (even if
-"int" was only 16-bit), it's cleaner to make the types match so let's
-fix it.
-
-Fixes: a9015ce59320 ("drm/mipi-dsi: Add a mipi_dsi_dcs_write_seq() macro")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240514102056.v5.2.Iadb65b8add19ed3ae3ed6425011beb97e380a912@changeid
+Fixes: 069a6c0e94f9 ("drm: panel: Add LG sw43408 panel driver")
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240512-dsi-panels-upd-api-v2-1-e31ca14d102e@linaro.org
 Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240514102056.v5.2.Iadb65b8add19ed3ae3ed6425011beb97e380a912@changeid
+Link: https://patchwork.freedesktop.org/patch/msgid/20240512-dsi-panels-upd-api-v2-1-e31ca14d102e@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_mipi_dsi.h | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/panel/panel-lg-sw43408.c | 33 +++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index 70ce0b8cbc68e..e0f56564bf975 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -314,17 +314,17 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
-  * @dsi: DSI peripheral device
-  * @seq: buffer containing the payload
-  */
--#define mipi_dsi_generic_write_seq(dsi, seq...)                                \
--	do {                                                                   \
--		static const u8 d[] = { seq };                                 \
--		struct device *dev = &dsi->dev;                                \
--		int ret;                                                       \
--		ret = mipi_dsi_generic_write(dsi, d, ARRAY_SIZE(d));           \
--		if (ret < 0) {                                                 \
--			dev_err_ratelimited(dev, "transmit data failed: %d\n", \
--					    ret);                              \
--			return ret;                                            \
--		}                                                              \
-+#define mipi_dsi_generic_write_seq(dsi, seq...)                                 \
-+	do {                                                                    \
-+		static const u8 d[] = { seq };                                  \
-+		struct device *dev = &dsi->dev;                                 \
-+		ssize_t ret;                                                    \
-+		ret = mipi_dsi_generic_write(dsi, d, ARRAY_SIZE(d));            \
-+		if (ret < 0) {                                                  \
-+			dev_err_ratelimited(dev, "transmit data failed: %zd\n", \
-+					    ret);                               \
-+			return ret;                                             \
-+		}                                                               \
- 	} while (0)
+diff --git a/drivers/gpu/drm/panel/panel-lg-sw43408.c b/drivers/gpu/drm/panel/panel-lg-sw43408.c
+index 2b3a73696dcec..67a98ac508f87 100644
+--- a/drivers/gpu/drm/panel/panel-lg-sw43408.c
++++ b/drivers/gpu/drm/panel/panel-lg-sw43408.c
+@@ -62,16 +62,25 @@ static int sw43408_program(struct drm_panel *panel)
+ {
+ 	struct sw43408_panel *ctx = to_panel_info(panel);
+ 	struct drm_dsc_picture_parameter_set pps;
++	int ret;
  
- /**
+ 	mipi_dsi_dcs_write_seq(ctx->link, MIPI_DCS_SET_GAMMA_CURVE, 0x02);
+ 
+-	mipi_dsi_dcs_set_tear_on(ctx->link, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
++	ret = mipi_dsi_dcs_set_tear_on(ctx->link, MIPI_DSI_DCS_TEAR_MODE_VBLANK);
++	if (ret < 0) {
++		dev_err(panel->dev, "Failed to set tearing: %d\n", ret);
++		return ret;
++	}
+ 
+ 	mipi_dsi_dcs_write_seq(ctx->link, 0x53, 0x0c, 0x30);
+ 	mipi_dsi_dcs_write_seq(ctx->link, 0x55, 0x00, 0x70, 0xdf, 0x00, 0x70, 0xdf);
+ 	mipi_dsi_dcs_write_seq(ctx->link, 0xf7, 0x01, 0x49, 0x0c);
+ 
+-	mipi_dsi_dcs_exit_sleep_mode(ctx->link);
++	ret = mipi_dsi_dcs_exit_sleep_mode(ctx->link);
++	if (ret < 0) {
++		dev_err(panel->dev, "Failed to exit sleep mode: %d\n", ret);
++		return ret;
++	}
+ 
+ 	msleep(135);
+ 
+@@ -97,14 +106,22 @@ static int sw43408_program(struct drm_panel *panel)
+ 	mipi_dsi_dcs_write_seq(ctx->link, 0x55, 0x04, 0x61, 0xdb, 0x04, 0x70, 0xdb);
+ 	mipi_dsi_dcs_write_seq(ctx->link, 0xb0, 0xca);
+ 
+-	mipi_dsi_dcs_set_display_on(ctx->link);
++	ret = mipi_dsi_dcs_set_display_on(ctx->link);
++	if (ret < 0) {
++		dev_err(panel->dev, "Failed to set display on: %d\n", ret);
++		return ret;
++	}
+ 
+ 	msleep(50);
+ 
+ 	ctx->link->mode_flags &= ~MIPI_DSI_MODE_LPM;
+ 
+ 	drm_dsc_pps_payload_pack(&pps, ctx->link->dsc);
+-	mipi_dsi_picture_parameter_set(ctx->link, &pps);
++	ret = mipi_dsi_picture_parameter_set(ctx->link, &pps);
++	if (ret < 0) {
++		dev_err(panel->dev, "Failed to set PPS: %d\n", ret);
++		return ret;
++	}
+ 
+ 	ctx->link->mode_flags |= MIPI_DSI_MODE_LPM;
+ 
+@@ -113,8 +130,12 @@ static int sw43408_program(struct drm_panel *panel)
+ 	 * PPS 1 if pps_identifier is 0
+ 	 * PPS 2 if pps_identifier is 1
+ 	 */
+-	mipi_dsi_compression_mode_ext(ctx->link, true,
+-				      MIPI_DSI_COMPRESSION_DSC, 1);
++	ret = mipi_dsi_compression_mode_ext(ctx->link, true,
++					    MIPI_DSI_COMPRESSION_DSC, 1);
++	if (ret < 0) {
++		dev_err(panel->dev, "Failed to set compression mode: %d\n", ret);
++		return ret;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
