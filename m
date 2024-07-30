@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-63560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273DD94198A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 486D9941E23
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEB211F25CE8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83416B23C5A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6449B146D6B;
-	Tue, 30 Jul 2024 16:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07551A76B6;
+	Tue, 30 Jul 2024 17:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4BUdzDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha4xp7y2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227D68BE8;
-	Tue, 30 Jul 2024 16:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCCB1A76A1;
+	Tue, 30 Jul 2024 17:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357220; cv=none; b=kZdwf31iFuvmkaZGIyKPmZU4JXRhn1pPE3O+pYCqRFtMVLpgH8udHS6lC2PqTgPBXL4V3cVcvwixTB3ym5UQxXfIcgf3O9dufxN11D94VW+PYR/M5yUFjydha0AYYJAkbAshLmQUSphuHMYkZqELwYkXThLa8vQlYFnUay5GSP0=
+	t=1722360308; cv=none; b=MY+lNU9516wmQJoEK+6LK75zQymEtQT09DPEItq/XnYVrg2VLoRBzWfNB2KZNo2HFYdpPfMCbwXchLP6ToSrKyQCLwMzfPmLjt5lvxYb1jo98V3iRIUUOGOm6D3y9eMRwEEHaI1lFEzvYg7A+JQkqiSPf9u1R7Z6+yUl8zgbIM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357220; c=relaxed/simple;
-	bh=/LhNFdoBIyvrwIGlWTQtWFelxL/Kr+rYmUKmUlrOEao=;
+	s=arc-20240116; t=1722360308; c=relaxed/simple;
+	bh=mVZM4FU0g0slzbK+0cBwkQ+ntw2uFRBqUAYVPOoB6Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SlLk5hxdwEGg+a5Z7nbS7dUANav0HBePfDYmQA0Fhlnw9OZCJjDS+LowFMB5S4JcCL/el/3g2AaVM2NFLzRcxd5wSL2usx+iwLZZbh1gcpcchB65naMqvnPSGXo+qD7jS7vo7Hl+3o/cHQZix7FJ1Pebh5zha2itpGt4s3xAQmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4BUdzDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA96C32782;
-	Tue, 30 Jul 2024 16:33:39 +0000 (UTC)
+	 MIME-Version; b=P5i9b6TUVqUkOVbq/YPtbkQYZPzYtiEdiGnpIjz+5V1hEeYwAtCY/ap1XvJE0fpdl+n9WVpQkqI2YiLaOsd8yWM9G2XsQDcmFIYbEj08brvcFWk5T+ET5T0+pyI+tUGuJ7LRmn4Kg3iiYpZXV7R3IcoY8QrwvM+pV3g6NHLD2G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha4xp7y2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8D5C4AF0F;
+	Tue, 30 Jul 2024 17:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357219;
-	bh=/LhNFdoBIyvrwIGlWTQtWFelxL/Kr+rYmUKmUlrOEao=;
+	s=korg; t=1722360308;
+	bh=mVZM4FU0g0slzbK+0cBwkQ+ntw2uFRBqUAYVPOoB6Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4BUdzDSUVH0PFgUQUKZc88zSSP8Z/9IqmnSFwdkEYWg16iKn0a/wWdPvaqW84wlL
-	 CVi4fNIM7/FPzY/wJcqQ/ufD0V6DUDLJD74osFBTXCyQK6AULVMJnjRIWKThPYWBEu
-	 6Iq62mp3Rtwq+pHM6gEQ7q81E5vuJrf+pzTDDZqM=
+	b=ha4xp7y2r08V7wnjJAtVhZl+H6O7NRZwhSx6QzpDDhpJ0UKtOPry3DP/bvWDjCZf1
+	 vOFu95NS3UYChH3q+N15Hf0VGvKYXLx3brTQoWMt7l/2vHrCsVJ5eAlZUwwUvUyCVq
+	 mCxoGzBDyTd26cPsctj3v7cd451Qiwt9rs+heRvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.1 270/440] landlock: Dont lose track of restrictions on cred_transfer
-Date: Tue, 30 Jul 2024 17:48:23 +0200
-Message-ID: <20240730151626.382438441@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 628/809] ALSA: ump: Force 1 Group for MIDI1 FBs
+Date: Tue, 30 Jul 2024 17:48:24 +0200
+Message-ID: <20240730151749.647812168@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 39705a6c29f8a2b93cf5b99528a55366c50014d1 upstream.
+commit ac29d8ae05b770ed3f52d7a60908ab9b126f69d7 upstream.
 
-When a process' cred struct is replaced, this _almost_ always invokes
-the cred_prepare LSM hook; but in one special case (when
-KEYCTL_SESSION_TO_PARENT updates the parent's credentials), the
-cred_transfer LSM hook is used instead.  Landlock only implements the
-cred_prepare hook, not cred_transfer, so KEYCTL_SESSION_TO_PARENT causes
-all information on Landlock restrictions to be lost.
+When a Function Block declares it being a legacy MIDI1 device, it has
+to be only with a single UMP Group.  Correct the attribute when a
+device declares it wrongly.
 
-This basically means that a process with the ability to use the fork()
-and keyctl() syscalls can get rid of all Landlock restrictions on
-itself.
-
-Fix it by adding a cred_transfer hook that does the same thing as the
-existing cred_prepare hook. (Implemented by having hook_cred_prepare()
-call hook_cred_transfer() so that the two functions are less likely to
-accidentally diverge in the future.)
-
-Cc: stable@kernel.org
-Fixes: 385975dca53e ("landlock: Set up the security framework and manage credentials")
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240724-landlock-houdini-fix-v1-1-df89a4560ca3@google.com
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Fixes: 37e0e14128e0 ("ALSA: ump: Support UMP Endpoint and Function Block parsing")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240722140610.10845-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/landlock/cred.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ sound/core/ump.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/security/landlock/cred.c
-+++ b/security/landlock/cred.c
-@@ -14,8 +14,8 @@
- #include "ruleset.h"
- #include "setup.h"
- 
--static int hook_cred_prepare(struct cred *const new,
--			     const struct cred *const old, const gfp_t gfp)
-+static void hook_cred_transfer(struct cred *const new,
-+			       const struct cred *const old)
- {
- 	struct landlock_ruleset *const old_dom = landlock_cred(old)->domain;
- 
-@@ -23,6 +23,12 @@ static int hook_cred_prepare(struct cred
- 		landlock_get_ruleset(old_dom);
- 		landlock_cred(new)->domain = old_dom;
- 	}
-+}
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -733,6 +733,12 @@ static void fill_fb_info(struct snd_ump_
+ 		info->block_id, info->direction, info->active,
+ 		info->first_group, info->num_groups, info->midi_ci_version,
+ 		info->sysex8_streams, info->flags);
 +
-+static int hook_cred_prepare(struct cred *const new,
-+			     const struct cred *const old, const gfp_t gfp)
-+{
-+	hook_cred_transfer(new, old);
- 	return 0;
++	if ((info->flags & SNDRV_UMP_BLOCK_IS_MIDI1) && info->num_groups != 1) {
++		info->num_groups = 1;
++		ump_dbg(ump, "FB %d: corrected groups to 1 for MIDI1\n",
++			info->block_id);
++	}
  }
  
-@@ -36,6 +42,7 @@ static void hook_cred_free(struct cred *
- 
- static struct security_hook_list landlock_hooks[] __lsm_ro_after_init = {
- 	LSM_HOOK_INIT(cred_prepare, hook_cred_prepare),
-+	LSM_HOOK_INIT(cred_transfer, hook_cred_transfer),
- 	LSM_HOOK_INIT(cred_free, hook_cred_free),
- };
- 
+ /* check whether the FB info gets updated by the current message */
 
 
 
