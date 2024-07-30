@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA979941CC2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116C2941E3A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 856D01F23E38
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34FCB1C23318
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFF518C920;
-	Tue, 30 Jul 2024 17:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836901A76C5;
+	Tue, 30 Jul 2024 17:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEoGWovt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytu0ozUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4444518C914;
-	Tue, 30 Jul 2024 17:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C6C1A76B6;
+	Tue, 30 Jul 2024 17:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359285; cv=none; b=BzvV5YQKURadl6Xkrnd6y68ybPi6w/1kzUxLHwA8hZmtOGh0v8IkH4DgDRljBUgDtCs6j4r4ynn1x1lVXjc6bADhaxnZ8mron0VutHKMtSohY4ROgQn459r+eFhc48bKY7Nze1Z6bx8jgEDXT9O7xqCjlAsgC1wZvCks1/GR5b8=
+	t=1722360411; cv=none; b=o0WpLokWAiZJtuhaPOi1b3+Vq623Muuq1X6x6K7LodioGmNnhfog/Z7+iY/QNkqUEDLhAO3rZvE+VRnhN6JeaN5+l+bgBRkFo5KmRuP+IpWEPh4p/CFczEIrDYcGJ05vQy66vH1pNrstzRCch5TrWH+74w49ck4Yi5Aj+L5mlII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359285; c=relaxed/simple;
-	bh=lDW/eR9ymchpCx8KdiaqXGqz5dOJk1Jhrkzlay0PiVI=;
+	s=arc-20240116; t=1722360411; c=relaxed/simple;
+	bh=vHzrtudlTvahlyahUl5qSTN/O0E2vO1J2EQ3rVKe/cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgoCjGSj2zYAoR+VzKeqj7si6X/C794In+710AFz2DVebGXC8LADxDFnXCqGv1Jz2nfoDlvixZRMUijG3FevmKAPVEJQxLoVERWZOQ4xqAWGfGWW/zhpamw+lIEAPCcmMleBXaXtRsm6pnAqU1Ggs8dY5eJ/kWc5/TxMYMjHi4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEoGWovt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4822C4AF0F;
-	Tue, 30 Jul 2024 17:08:04 +0000 (UTC)
+	 MIME-Version; b=ElWc+WN6NgMVpqt/Yq56oxwamHRL3/NLXg3zqxmf64mV0A6pF8waeufrKNoc79WGNkmSvnakfnNi91Thi+PXW/myiRdO0EJleP5RtI3NY0ZHmmPluOZijeY1IBGw5tLzPLaVBZ6Z0WcTr3U9kK4lwP5gJG1rgEaPeMpgF5qO60w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytu0ozUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7406C32782;
+	Tue, 30 Jul 2024 17:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359285;
-	bh=lDW/eR9ymchpCx8KdiaqXGqz5dOJk1Jhrkzlay0PiVI=;
+	s=korg; t=1722360411;
+	bh=vHzrtudlTvahlyahUl5qSTN/O0E2vO1J2EQ3rVKe/cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEoGWovtBHD7JDhr3nt7PiTy7f+Es3BXo1a0NZgWhpn1dhPPBNI1fOl9yeoaBTtOP
-	 zavriqPFyjRcbYkNcG4DGxbChDFJj9zHvJZIEnKPiezN1abIqrC0NOdJnXD984fJnn
-	 G4Iz6frndQGJtaUKrF/T9YgwpjR+w4tBXOXwGzaA=
+	b=ytu0ozUWm1t2xXZLeTmo6vSU7SsBaSk58dZl5hS3aMogdPYJgMPJYlluFOx/DTJ/q
+	 PnROOG7YNPqXT8jdDLX1hVfJFT9bMBtgd9UVyya/kyyzFK1TLiqODLTV44ttgAJPow
+	 JPMR9v7vpW8rFIQBvg0ueqdMknuZdCMg/exzmnYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 458/568] scsi: lpfc: Allow DEVICE_RECOVERY mode after RSCN receipt if in PRLI_ISSUE state
+Subject: [PATCH 6.10 689/809] scsi: qla2xxx: Complete command early within lock
 Date: Tue, 30 Jul 2024 17:49:25 +0200
-Message-ID: <20240730151657.920851707@linuxfoundation.org>
+Message-ID: <20240730151752.126846679@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-commit 9609385dd91b26751019b22ca9bfa4bec7602ae1 upstream.
+commit 4475afa2646d3fec176fc4d011d3879b26cb26e3 upstream.
 
-Certain vendor specific targets initially register with the fabric as an
-initiator function first and then re-register as a target function
-afterwards.
+A crash was observed while performing NPIV and FW reset,
 
-The timing of the target function re-registration can cause a race
-condition such that the driver is stuck assuming the remote port as an
-initiator function and never discovers the target's hosted LUNs.
+ BUG: kernel NULL pointer dereference, address: 000000000000001c
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: 0000 1 PREEMPT_RT SMP NOPTI
+ RIP: 0010:dma_direct_unmap_sg+0x51/0x1e0
+ RSP: 0018:ffffc90026f47b88 EFLAGS: 00010246
+ RAX: 0000000000000000 RBX: 0000000000000021 RCX: 0000000000000002
+ RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff8881041130d0
+ RBP: ffff8881041130d0 R08: 0000000000000000 R09: 0000000000000034
+ R10: ffffc90026f47c48 R11: 0000000000000031 R12: 0000000000000000
+ R13: 0000000000000000 R14: ffff8881565e4a20 R15: 0000000000000000
+ FS: 00007f4c69ed3d00(0000) GS:ffff889faac80000(0000) knlGS:0000000000000000
+ CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000000000001c CR3: 0000000288a50002 CR4: 00000000007706e0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+ <TASK>
+ ? __die_body+0x1a/0x60
+ ? page_fault_oops+0x16f/0x4a0
+ ? do_user_addr_fault+0x174/0x7f0
+ ? exc_page_fault+0x69/0x1a0
+ ? asm_exc_page_fault+0x22/0x30
+ ? dma_direct_unmap_sg+0x51/0x1e0
+ ? preempt_count_sub+0x96/0xe0
+ qla2xxx_qpair_sp_free_dma+0x29f/0x3b0 [qla2xxx]
+ qla2xxx_qpair_sp_compl+0x60/0x80 [qla2xxx]
+ __qla2x00_abort_all_cmds+0xa2/0x450 [qla2xxx]
 
-Expand the nlp_state qualifier to also include NLP_STE_PRLI_ISSUE because
-the state means that PRLI was issued but we have not quite reached
-MAPPED_NODE state yet.  If we received an RSCN in the PRLI_ISSUE state,
-then we should restart discovery again by going into DEVICE_RECOVERY.
+The command completion was done early while aborting the commands in driver
+unload path but outside lock to avoid the WARN_ON condition of performing
+dma_free_attr within the lock. However this caused race condition while
+command completion via multiple paths causing system crash.
 
-Fixes: dded1dc31aa4 ("scsi: lpfc: Modify when a node should be put in device recovery mode during RSCN")
-Cc: <stable@vger.kernel.org> # v6.6+
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240628172011.25921-3-justintee8345@gmail.com
+Hence complete the command early in unload path but within the lock to
+avoid race condition.
+
+Fixes: 0367076b0817 ("scsi: qla2xxx: Perform lockless command completion in abort path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_os.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5782,7 +5782,7 @@ lpfc_setup_disc_node(struct lpfc_vport *
- 				return NULL;
- 
- 			if (ndlp->nlp_state > NLP_STE_UNUSED_NODE &&
--			    ndlp->nlp_state < NLP_STE_PRLI_ISSUE) {
-+			    ndlp->nlp_state <= NLP_STE_PRLI_ISSUE) {
- 				lpfc_disc_state_machine(vport, ndlp, NULL,
- 							NLP_EVT_DEVICE_RECOVERY);
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1875,14 +1875,9 @@ __qla2x00_abort_all_cmds(struct qla_qpai
+ 	for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
+ 		sp = req->outstanding_cmds[cnt];
+ 		if (sp) {
+-			/*
+-			 * perform lockless completion during driver unload
+-			 */
+ 			if (qla2x00_chip_is_down(vha)) {
+ 				req->outstanding_cmds[cnt] = NULL;
+-				spin_unlock_irqrestore(qp->qp_lock_ptr, flags);
+ 				sp->done(sp, res);
+-				spin_lock_irqsave(qp->qp_lock_ptr, flags);
+ 				continue;
  			}
+ 
 
 
 
