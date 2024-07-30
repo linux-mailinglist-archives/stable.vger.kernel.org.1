@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A050941873
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F4E941BB9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 049831F23608
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B13F1F2431B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0B01A6196;
-	Tue, 30 Jul 2024 16:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD8B189903;
+	Tue, 30 Jul 2024 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2nLb3jT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAc6r4ox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6F61A6160;
-	Tue, 30 Jul 2024 16:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CFE17D8BB;
+	Tue, 30 Jul 2024 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356515; cv=none; b=og9LhOjexOYrjXMzLqUEf5X/eqK+LyPdFuyexdsWQar4V5UUU7dR9MhQm8mtQB/mZZlAk22Ek1Y8SmtsClk/ADsg16AftBqr53m3UwkI3JIqfzzYnufvsMhPyl+tkZHBEnZoXBs8Adz2noP52kT67fE2YlLyOh37KOZe5cZ8UWo=
+	t=1722358699; cv=none; b=rsbV241wYHjV4GkY87oSdcT6IFxHGWrcFR8LmVl7WyDOgWvmAi1vJCzW6fF6rgrdVcYLdXBkPi+OMKSUCeG78xHvEr6+tsxqZpjRkV/dm6CWCqwkUHjl9H05fo7f1yTPLgPj8is5ZTO+zs1JiSrNGa1oTUGuGceDg4EEyKVyUFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356515; c=relaxed/simple;
-	bh=RScQ9zlMTGJ0xm8w58stedzJh+d5bluF0wqHFWHCLxI=;
+	s=arc-20240116; t=1722358699; c=relaxed/simple;
+	bh=YAo7b+fRwhWm51AydGnoaIRkM0kPPQ/1eiTLv8wmq/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJnca/qTkCDJgDI+VqVi2/VY+nxbzb1klaCMeJZNQDcWzSFk1YgjATk3coiIGDST+/5B36te7IZ48XsyMvXY7+pSp6m4tlPoeBbS3P8uJsDCmB5jKZ5nA4EUh6twFmNUGdmgwpOUr5eMUjno+/JE0UTjLzMRtYSES8WaWLCBOjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2nLb3jT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441DBC32782;
-	Tue, 30 Jul 2024 16:21:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rRMw0K8saA5+Y3NT3BOd40+oZJJUqlGXs7+PpRdLAKvWUF8ARy5F6qdWlkAlM2y5QrOvRsCqWWWjKSftLtUYhEgpHzNO0odHlRHxgvxttGGmaIqQ6O4IiimXMkM//JjM1h8Tg4TGhcJbC3Uo9Mm1VrgObqooJ1pYt+tC+iPsHUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAc6r4ox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7C7C32782;
+	Tue, 30 Jul 2024 16:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356515;
-	bh=RScQ9zlMTGJ0xm8w58stedzJh+d5bluF0wqHFWHCLxI=;
+	s=korg; t=1722358699;
+	bh=YAo7b+fRwhWm51AydGnoaIRkM0kPPQ/1eiTLv8wmq/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2nLb3jTaJCJVFWIUvkXs28FRbKpYtR7El9fDorY6aBe42JcAB6g5J0gIxdfIxtGh
-	 75xU/N1By2mqrXqZfwfS9XigMlaohRMMjg8halBsY7Ze5u3ZeLigt2+y5XR4Kr55oV
-	 wlZuR5MZr/XIkOk7oKoF7XS38q5XOQE9pD89SzEg=
+	b=WAc6r4ox8Frpee/AJfqkdX11ltOUYcjwPSV3Dko9OTBeqhE4R/wy30sWWIUA6DBCE
+	 9sd0OAOU6TRuRf5TDYGWRR6eZnbUaDuTJa0mddAr17q1KaKoAx9U0RJqk9iIYAOZqZ
+	 8CW0c4+ZCAFLHxolxY96NyWhK6v9CK3wv0BP3iQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/568] wifi: virt_wifi: avoid reporting connection success with wrong SSID
+Subject: [PATCH 6.10 386/809] PCI: rcar: Demote WARN() to dev_warn_ratelimited() in rcar_pcie_wakeup()
 Date: Tue, 30 Jul 2024 17:44:22 +0200
-Message-ID: <20240730151645.933288287@linuxfoundation.org>
+Message-ID: <20240730151739.916269693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit b5d14b0c6716fad7f0c94ac6e1d6f60a49f985c7 ]
+[ Upstream commit c93637e6a4c4e1d0e85ef7efac78d066bbb24d96 ]
 
-When user issues a connection with a different SSID than the one
-virt_wifi has advertised, the __cfg80211_connect_result() will
-trigger the warning: WARN_ON(bss_not_found).
+Avoid large backtrace, it is sufficient to warn the user that there has
+been a link problem. Either the link has failed and the system is in need
+of maintenance, or the link continues to work and user has been informed.
+The message from the warning can be looked up in the sources.
 
-The issue is because the connection code in virt_wifi does not
-check the SSID from user space (it only checks the BSSID), and
-virt_wifi will call cfg80211_connect_result() with WLAN_STATUS_SUCCESS
-even if the SSID is different from the one virt_wifi has advertised.
-Eventually cfg80211 won't be able to find the cfg80211_bss and generate
-the warning.
+This makes an actual link issue less verbose.
 
-Fixed it by checking the SSID (from user space) in the connection code.
+First of all, this controller has a limitation in that the controller
+driver has to assist the hardware with transition to L1 link state by
+writing L1IATN to PMCTRL register, the L1 and L0 link state switching
+is not fully automatic on this controller.
 
-Fixes: c7cdba31ed8b ("mac80211-next: rtnetlink wifi simulation device")
-Reported-by: syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Link: https://patch.msgid.link/20240705023756.10954-1-en-wei.wu@canonical.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In case of an ASMedia ASM1062 PCIe SATA controller which does not support
+ASPM, on entry to suspend or during platform pm_test, the SATA controller
+enters D3hot state and the link enters L1 state. If the SATA controller
+wakes up before rcar_pcie_wakeup() was called and returns to D0, the link
+returns to L0 before the controller driver even started its transition to
+L1 link state. At this point, the SATA controller did send an PM_ENTER_L1
+DLLP to the PCIe controller and the PCIe controller received it, and the
+PCIe controller did set PMSR PMEL1RX bit.
+
+Once rcar_pcie_wakeup() is called, if the link is already back in L0 state
+and PMEL1RX bit is set, the controller driver has no way to determine if
+it should perform the link transition to L1 state, or treat the link as if
+it is in L0 state. Currently the driver attempts to perform the transition
+to L1 link state unconditionally, which in this specific case fails with a
+PMSR L1FAEG poll timeout, however the link still works as it is already
+back in L0 state.
+
+Reduce this warning verbosity. In case the link is really broken, the
+rcar_pcie_config_access() would fail, otherwise it will succeed and any
+system with this controller and ASM1062 can suspend without generating
+a backtrace.
+
+Fixes: 84b576146294 ("PCI: rcar: Finish transition to L1 state in rcar_pcie_config_access()")
+Link: https://lore.kernel.org/linux-pci/20240511235513.77301-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virtual/virt_wifi.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/pci/controller/pcie-rcar-host.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
-index ba14d83353a4b..cf1eb41e282a9 100644
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -136,6 +136,8 @@ static struct ieee80211_supported_band band_5ghz = {
- /* Assigned at module init. Guaranteed locally-administered and unicast. */
- static u8 fake_router_bssid[ETH_ALEN] __ro_after_init = {};
+diff --git a/drivers/pci/controller/pcie-rcar-host.c b/drivers/pci/controller/pcie-rcar-host.c
+index 996077ab7cfdb..c01efc6ea64f6 100644
+--- a/drivers/pci/controller/pcie-rcar-host.c
++++ b/drivers/pci/controller/pcie-rcar-host.c
+@@ -78,7 +78,11 @@ static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
+ 		writel(L1IATN, pcie_base + PMCTLR);
+ 		ret = readl_poll_timeout_atomic(pcie_base + PMSR, val,
+ 						val & L1FAEG, 10, 1000);
+-		WARN(ret, "Timeout waiting for L1 link state, ret=%d\n", ret);
++		if (ret) {
++			dev_warn_ratelimited(pcie_dev,
++					     "Timeout waiting for L1 link state, ret=%d\n",
++					     ret);
++		}
+ 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
+ 	}
  
-+#define VIRT_WIFI_SSID "VirtWifi"
-+
- static void virt_wifi_inform_bss(struct wiphy *wiphy)
- {
- 	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
-@@ -146,8 +148,8 @@ static void virt_wifi_inform_bss(struct wiphy *wiphy)
- 		u8 ssid[8];
- 	} __packed ssid = {
- 		.tag = WLAN_EID_SSID,
--		.len = 8,
--		.ssid = "VirtWifi",
-+		.len = strlen(VIRT_WIFI_SSID),
-+		.ssid = VIRT_WIFI_SSID,
- 	};
- 
- 	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
-@@ -213,6 +215,8 @@ struct virt_wifi_netdev_priv {
- 	struct net_device *upperdev;
- 	u32 tx_packets;
- 	u32 tx_failed;
-+	u32 connect_requested_ssid_len;
-+	u8 connect_requested_ssid[IEEE80211_MAX_SSID_LEN];
- 	u8 connect_requested_bss[ETH_ALEN];
- 	bool is_up;
- 	bool is_connected;
-@@ -229,6 +233,12 @@ static int virt_wifi_connect(struct wiphy *wiphy, struct net_device *netdev,
- 	if (priv->being_deleted || !priv->is_up)
- 		return -EBUSY;
- 
-+	if (!sme->ssid)
-+		return -EINVAL;
-+
-+	priv->connect_requested_ssid_len = sme->ssid_len;
-+	memcpy(priv->connect_requested_ssid, sme->ssid, sme->ssid_len);
-+
- 	could_schedule = schedule_delayed_work(&priv->connect, HZ * 2);
- 	if (!could_schedule)
- 		return -EBUSY;
-@@ -252,12 +262,15 @@ static void virt_wifi_connect_complete(struct work_struct *work)
- 		container_of(work, struct virt_wifi_netdev_priv, connect.work);
- 	u8 *requested_bss = priv->connect_requested_bss;
- 	bool right_addr = ether_addr_equal(requested_bss, fake_router_bssid);
-+	bool right_ssid = priv->connect_requested_ssid_len == strlen(VIRT_WIFI_SSID) &&
-+			  !memcmp(priv->connect_requested_ssid, VIRT_WIFI_SSID,
-+				  priv->connect_requested_ssid_len);
- 	u16 status = WLAN_STATUS_SUCCESS;
- 
- 	if (is_zero_ether_addr(requested_bss))
- 		requested_bss = NULL;
- 
--	if (!priv->is_up || (requested_bss && !right_addr))
-+	if (!priv->is_up || (requested_bss && !right_addr) || !right_ssid)
- 		status = WLAN_STATUS_UNSPECIFIED_FAILURE;
- 	else
- 		priv->is_connected = true;
 -- 
 2.43.0
 
