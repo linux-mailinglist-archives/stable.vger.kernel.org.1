@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A1A9419D5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 463E894177D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C492528386F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05CE3284448
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B375184535;
-	Tue, 30 Jul 2024 16:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6313618953A;
+	Tue, 30 Jul 2024 16:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJCQyKTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/XfQFES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8A21A6192;
-	Tue, 30 Jul 2024 16:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F52929A2;
+	Tue, 30 Jul 2024 16:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357418; cv=none; b=Pzs8z5qTkduCVnF94gXikH1bHsFL/6QNqASzsY3H3DqBdYPOfTGqEZ9jmvjiwgi4MBBvwAEEfeTV5LMOuAKo9Z6M5c8ZzFmlNgKLlDkV9A5g3NWNnsgSp5FMAdfSMQeN9+PEV4JwucQDnjFPhC83GccvSRJV83eNLEgtfRvWTrU=
+	t=1722355763; cv=none; b=e2E/uTZ1jq2OZu5UiV7JTCdnmzkXoEndIStJ+c2a8AftLrkmY4dFqyw9YuTB4C+GiNTrCqH9g03gBM09yKzSkh/Aq6BToQhuChnHFmFg4m5vcSZXGSu5djfBlCj5NjKLyrIe0sP58dt27SSJJqPiKkfwNDOaTfFN8yky9nn5CL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357418; c=relaxed/simple;
-	bh=3wZIDg2WfY8ePF0xx2wFgRGmUfIr0nlUVWybplN+Y3Q=;
+	s=arc-20240116; t=1722355763; c=relaxed/simple;
+	bh=m8qizXLrjnyq1uikQinmKkXcvlscgZ5RFao8DHWah60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drhU2XedL7/3nnDGItyowpuZB93iCL1ohacDdh157Pnqf0ILS9eBj7Qboan+Cc3ppx/l4+55Uz0N14Asb7aOGZL8VtjV2vop047lFY007Q6+RAPBC+KCg0Zvz6LAiiZAJ3MdHoUGZnnEB+ttyFMlQAYfU2SJ3bJO/exMJFo0IG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJCQyKTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCD6C32782;
-	Tue, 30 Jul 2024 16:36:57 +0000 (UTC)
+	 MIME-Version; b=T05rrlx7KmbHRmF1W/FKa1/bsUOlfTDf/8DuxbCvJFSty5XZi7rpyO7y17MOdDWttIl1E1PyCwAEdEgBgCJ4yEZ5fd+hv6J0B+SjrwAIy/8SJFCKgaBjyDN6a4QyqB61sh+VRN48YyNYwUfGRoFIieIJFuiPA0SgTlpC+38x8UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/XfQFES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E588C32782;
+	Tue, 30 Jul 2024 16:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357417;
-	bh=3wZIDg2WfY8ePF0xx2wFgRGmUfIr0nlUVWybplN+Y3Q=;
+	s=korg; t=1722355762;
+	bh=m8qizXLrjnyq1uikQinmKkXcvlscgZ5RFao8DHWah60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJCQyKTMyCbrfc5JGnry2MhFTsOiP/yfKb42X0WWv1vlj8Cd3s47lanqWM6O/qtV5
-	 TrT9CDcXnlmmvyotIzF1agwKT84grsaysWlGGMcloiZzSoCgs46NHRQRK92k4Z/1Jy
-	 QY7GZWoRAikp9UIGOM4VDad+/C+6WQnHK9JVamq0=
+	b=l/XfQFESumxlW3LKTnUsiDuo3SIuiS5xTbjLOJmfy/XfZZNAyaOqgAROBAROxubDE
+	 WsC93jMC+KblnPLz7IPO6L6cD/v8Ml6THBmilpoSRpgl5swUtAHKen50zthMjMoV8f
+	 q2idrrZNK2SINok4cOISs0dOxIY/wKmCAhqDuw/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asutosh Das <quic_asutoshd@quicinc.com>,
-	Minwoo Im <minwoo.im@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/568] scsi: ufs: mcq: Fix missing argument hba in MCQ_OPR_OFFSET_n
-Date: Tue, 30 Jul 2024 17:46:00 +0200
-Message-ID: <20240730151649.769202278@linuxfoundation.org>
+Subject: [PATCH 6.1 128/440] drm/rockchip: vop2: Fix the port mux of VP2
+Date: Tue, 30 Jul 2024 17:46:01 +0200
+Message-ID: <20240730151620.883733547@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minwoo Im <minwoo.im@samsung.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 2fc39848952dfb91a9233563cc1444669b8e79c3 ]
+[ Upstream commit 2bdb481bf7a93c22b9fea8daefa2834aab23a70f ]
 
-The MCQ_OPR_OFFSET_n macro takes 'hba' in the caller context without
-receiving 'hba' instance as an argument.  To prevent potential bugs in
-future use cases, add an argument 'hba'.
+The port mux of VP2 should be RK3568_OVL_PORT_SET__PORT2_MUX.
 
-Fixes: 2468da61ea09 ("scsi: ufs: core: mcq: Configure operation and runtime interface")
-Cc: Asutosh Das <quic_asutoshd@quicinc.com>
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
-Link: https://lore.kernel.org/r/20240519221457.772346-2-minwoo.im@samsung.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
+Tested-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240422101905.32703-2-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 10 ++++------
- include/ufs/ufshcd.h       |  6 ++++++
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index a10fc7a697109..af5ce45315b3c 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -230,8 +230,6 @@ int ufshcd_mcq_memory_alloc(struct ufs_hba *hba)
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index a72642bb9cc60..80b8c83342840 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1923,7 +1923,7 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
+ 		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX,
+ 			(vp2->nlayers + vp1->nlayers + vp0->nlayers - 1));
+ 	else
+-		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT1_MUX, 8);
++		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX, 8);
  
- /* Operation and runtime registers configuration */
- #define MCQ_CFG_n(r, i)	((r) + MCQ_QCFG_SIZE * (i))
--#define MCQ_OPR_OFFSET_n(p, i) \
--	(hba->mcq_opr[(p)].offset + hba->mcq_opr[(p)].stride * (i))
+ 	layer_sel = vop2_readl(vop2, RK3568_OVL_LAYER_SEL);
  
- static void __iomem *mcq_opr_base(struct ufs_hba *hba,
- 					 enum ufshcd_mcq_opr n, int i)
-@@ -344,10 +342,10 @@ void ufshcd_mcq_make_queues_operational(struct ufs_hba *hba)
- 		ufsmcq_writelx(hba, upper_32_bits(hwq->sqe_dma_addr),
- 			      MCQ_CFG_n(REG_SQUBA, i));
- 		/* Submission Queue Doorbell Address Offset */
--		ufsmcq_writelx(hba, MCQ_OPR_OFFSET_n(OPR_SQD, i),
-+		ufsmcq_writelx(hba, ufshcd_mcq_opr_offset(hba, OPR_SQD, i),
- 			      MCQ_CFG_n(REG_SQDAO, i));
- 		/* Submission Queue Interrupt Status Address Offset */
--		ufsmcq_writelx(hba, MCQ_OPR_OFFSET_n(OPR_SQIS, i),
-+		ufsmcq_writelx(hba, ufshcd_mcq_opr_offset(hba, OPR_SQIS, i),
- 			      MCQ_CFG_n(REG_SQISAO, i));
- 
- 		/* Completion Queue Lower Base Address */
-@@ -357,10 +355,10 @@ void ufshcd_mcq_make_queues_operational(struct ufs_hba *hba)
- 		ufsmcq_writelx(hba, upper_32_bits(hwq->cqe_dma_addr),
- 			      MCQ_CFG_n(REG_CQUBA, i));
- 		/* Completion Queue Doorbell Address Offset */
--		ufsmcq_writelx(hba, MCQ_OPR_OFFSET_n(OPR_CQD, i),
-+		ufsmcq_writelx(hba, ufshcd_mcq_opr_offset(hba, OPR_CQD, i),
- 			      MCQ_CFG_n(REG_CQDAO, i));
- 		/* Completion Queue Interrupt Status Address Offset */
--		ufsmcq_writelx(hba, MCQ_OPR_OFFSET_n(OPR_CQIS, i),
-+		ufsmcq_writelx(hba, ufshcd_mcq_opr_offset(hba, OPR_CQIS, i),
- 			      MCQ_CFG_n(REG_CQISAO, i));
- 
- 		/* Save the base addresses for quicker access */
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 7d07b256e906b..e4da397360682 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -1117,6 +1117,12 @@ static inline bool is_mcq_enabled(struct ufs_hba *hba)
- 	return hba->mcq_enabled;
- }
- 
-+static inline unsigned int ufshcd_mcq_opr_offset(struct ufs_hba *hba,
-+		enum ufshcd_mcq_opr opr, int idx)
-+{
-+	return hba->mcq_opr[opr].offset + hba->mcq_opr[opr].stride * idx;
-+}
-+
- #ifdef CONFIG_SCSI_UFS_VARIABLE_SG_ENTRY_SIZE
- static inline size_t ufshcd_sg_entry_size(const struct ufs_hba *hba)
- {
 -- 
 2.43.0
 
