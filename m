@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027E5941AE1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1293B941D9A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34B7F1C20D44
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE4B28C880
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0346188013;
-	Tue, 30 Jul 2024 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6821A76B0;
+	Tue, 30 Jul 2024 17:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ov7KxUua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlovGSNY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD691A6166;
-	Tue, 30 Jul 2024 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8081A76A4;
+	Tue, 30 Jul 2024 17:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358107; cv=none; b=BDtRP2FQ26t/27mxgw0Qk1ftG+/HfFLocb+35dfHNraW40LXUCceyea+StUGZ9tmCPfUwcM3UBbgE19RQWpu0COE0cz55eNLbxKtvRu4EYbBLQVlxIVhKp1EJZ0lzGBEBz1YE4dW8dtgr8NM4S09Uzg+4XEXNfiFKk7434qxoGM=
+	t=1722359951; cv=none; b=YvDtkqtURWMe5rVU+/1ZAp6Jb+0ZM1MvogBjZc5urxtMdivHE53vUdEX2iWP1XFc02awuFG3CX/HKERoKwX7vUFI6ClrHcJyYYDo8V7+MrRbqKhHnfho6WlXG4wD8k+DvTFbHw9SY3NgyLbUe5tmLtdMB4AMRTWz23XsX95MAI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358107; c=relaxed/simple;
-	bh=GzvxVMbs5PgDJO9ke3uFE9GQNAK0kFbc4wRSUrS73eQ=;
+	s=arc-20240116; t=1722359951; c=relaxed/simple;
+	bh=uUshivuwMt2u8I85yYt8Ra5W/1CzlGGXeQbZYslywd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpClrCOjC38pHB855VnUbxH3VruhpisOuRnYspx8Hki9Fd3IQIrZ3mQGgzjofFEbIDRfYQvZdY8bo/ZfTpRfTkOxOkSbNsaEL/UtJdYrFXMTclcMv3H1FM50GsSZ5qIrm8NJSRN4bGmas+LzYBa3/L8f8HFaMOgYOwDBqJWDdEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ov7KxUua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30FAC4AF0C;
-	Tue, 30 Jul 2024 16:48:26 +0000 (UTC)
+	 MIME-Version; b=WRduDqflNkH6dgnWfSG5WZ7p6uClH/iUFbF2+3M/cX9vQQBfmIAjUnWkxqsfIUB9ZFo+nMUNVf8vuAlhz49WOpWtDeKB+K7bRNzBUlsDg3lMS/U+CoCSnqsa/OctD7RsfeI8QgS2fOCadw8YaQyll6ekjVBstsd/yc3t9PtjlN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IlovGSNY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCA8C32782;
+	Tue, 30 Jul 2024 17:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358107;
-	bh=GzvxVMbs5PgDJO9ke3uFE9GQNAK0kFbc4wRSUrS73eQ=;
+	s=korg; t=1722359950;
+	bh=uUshivuwMt2u8I85yYt8Ra5W/1CzlGGXeQbZYslywd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ov7KxUuaUUp2rR5eWqquBShPALH6bp30TFL072ZzCfApscP0DRi9JWFgBCkywQoK8
-	 4xpax8uUkJkTxqzrZKuRlgikqEQqUY9trnF3l+LHSi5bNE2PUbTR8+E8obJ1sFw0Mx
-	 bw4FKeBsotBGLJNONvIU8Zvt8Nr3NCz/Q4yI2uPA=
+	b=IlovGSNY55ycFxrXHtaLLQT47nCd2twDtAfiudXEPTcTWhq43KqRyZHgvQA1ojJzf
+	 IppF/OYvJraCNFO3cGpI4/HAm0rPcLihuAJbAq5eoo8010LjMwwB+80YaYBfkTm7+S
+	 fECirqr7WAJpv3SfrGC7epFxor2cTybiiuOAR7Y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 326/568] pinctrl: core: fix possible memory leak when pinctrl_enable() fails
-Date: Tue, 30 Jul 2024 17:47:13 +0200
-Message-ID: <20240730151652.616748522@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.10 558/809] NFSD: Support write delegations in LAYOUTGET
+Date: Tue, 30 Jul 2024 17:47:14 +0200
+Message-ID: <20240730151746.800250245@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit ae1cf4759972c5fe665ee4c5e0c29de66fe3cf4a ]
+commit abc02e5602f7bf9bbae1e8999570a2ad5114578c upstream.
 
-In devm_pinctrl_register(), if pinctrl_enable() fails in pinctrl_register(),
-the "pctldev" has not been added to dev resources, so devm_pinctrl_dev_release()
-can not be called, it leads memory leak.
+I noticed LAYOUTGET(LAYOUTIOMODE4_RW) returning NFS4ERR_ACCESS
+unexpectedly. The NFS client had created a file with mode 0444, and
+the server had returned a write delegation on the OPEN(CREATE). The
+client was requesting a RW layout using the write delegation stateid
+so that it could flush file modifications.
 
-Introduce pinctrl_uninit_controller(), call it in the error path to free memory.
+Creating a read-only file does not seem to be problematic for
+NFSv4.1 without pNFS, so I began looking at NFSD's implementation of
+LAYOUTGET.
 
-Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240606023704.3931561-2-yangyingliang@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The failure was because fh_verify() was doing a permission check as
+part of verifying the FH presented during the LAYOUTGET. It uses the
+loga_iomode value to specify the @accmode argument to fh_verify().
+fh_verify(MAY_WRITE) on a file whose mode is 0444 fails with -EACCES.
+
+To permit LAYOUT* operations in this case, add OWNER_OVERRIDE when
+checking the access permission of the incoming file handle for
+LAYOUTGET and LAYOUTCOMMIT.
+
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org # v6.6+
+Message-Id: 4E9C0D74-A06D-4DC3-A48A-73034DC40395@oracle.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4proc.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index e19ee66e027bb..88ee086e13763 100644
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -2072,6 +2072,14 @@ pinctrl_init_controller(struct pinctrl_desc *pctldesc, struct device *dev,
- 	return ERR_PTR(ret);
- }
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -2269,7 +2269,7 @@ nfsd4_layoutget(struct svc_rqst *rqstp,
+ 	const struct nfsd4_layout_ops *ops;
+ 	struct nfs4_layout_stateid *ls;
+ 	__be32 nfserr;
+-	int accmode = NFSD_MAY_READ_IF_EXEC;
++	int accmode = NFSD_MAY_READ_IF_EXEC | NFSD_MAY_OWNER_OVERRIDE;
  
-+static void pinctrl_uninit_controller(struct pinctrl_dev *pctldev, struct pinctrl_desc *pctldesc)
-+{
-+	pinctrl_free_pindescs(pctldev, pctldesc->pins,
-+			      pctldesc->npins);
-+	mutex_destroy(&pctldev->mutex);
-+	kfree(pctldev);
-+}
-+
- static int pinctrl_claim_hogs(struct pinctrl_dev *pctldev)
- {
- 	pctldev->p = create_pinctrl(pctldev->dev, pctldev);
-@@ -2152,8 +2160,10 @@ struct pinctrl_dev *pinctrl_register(struct pinctrl_desc *pctldesc,
- 		return pctldev;
+ 	switch (lgp->lg_seg.iomode) {
+ 	case IOMODE_READ:
+@@ -2359,7 +2359,8 @@ nfsd4_layoutcommit(struct svc_rqst *rqst
+ 	struct nfs4_layout_stateid *ls;
+ 	__be32 nfserr;
  
- 	error = pinctrl_enable(pctldev);
--	if (error)
-+	if (error) {
-+		pinctrl_uninit_controller(pctldev, pctldesc);
- 		return ERR_PTR(error);
-+	}
+-	nfserr = fh_verify(rqstp, current_fh, 0, NFSD_MAY_WRITE);
++	nfserr = fh_verify(rqstp, current_fh, 0,
++			   NFSD_MAY_WRITE | NFSD_MAY_OWNER_OVERRIDE);
+ 	if (nfserr)
+ 		goto out;
  
- 	return pctldev;
- }
--- 
-2.43.0
-
 
 
 
