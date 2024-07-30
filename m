@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645DD9417CD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:16:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8BA8941A0C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1DC0B28ABF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:16:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94925285DEB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABDB1A3027;
-	Tue, 30 Jul 2024 16:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D99514D29B;
+	Tue, 30 Jul 2024 16:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZVLs2O4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zJkAKKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95711A3024;
-	Tue, 30 Jul 2024 16:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9061A6192;
+	Tue, 30 Jul 2024 16:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355929; cv=none; b=pBikgNNHRrquo7nyR527qQzTi5pnsBGz8KLeki5CHRWHWAlnQYb948QVlwtZIVURKza3OKg8WtnC8A8l9knWc5WK9bDgTQQrSJzSj1zxeKkEg4BY1E5S6RLwjvE+diajjze6iO8ZeRGC21+MTUWSlCRmVE3HQXm/ClZ129RxO+s=
+	t=1722357578; cv=none; b=q7PpPYgJR8Rku8U6+FRnWXvQnPw4Oi7y1xngIdS2VILgKMatDMPyjrvOdNc2noK+9GLvWWwElP30BUKEtviPIzcXZuqKRgGeiikIHrLKYPMRd0BSIGeDokEu8yd1rZM3DCSKmGYHYU9Zy72iINZXDXnx8QimRNpSMy4qYUifvgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355929; c=relaxed/simple;
-	bh=e3maEF8aa/f4DgA1aHrFLBJ9Tju/W0/88hi0k1kpgkw=;
+	s=arc-20240116; t=1722357578; c=relaxed/simple;
+	bh=GU1avLtTMZxGIxluB4oKBziVkv4iZmXQfRFc5uqHaJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMue/A0JLieCtEB4ZPSEDDXIL/EuJ7sCkUo3yrRoGlIkKP7gfo3NbSX1jJ/b7+HsiGkhL3wyW31aFyIDHaghor9hT4eG1vZwuUX6tlltTFby2PtjObFA/4bCiM/JjQCGWU/PPqf+nWqVO8NFiTi1upItgWRvipJjleNQ9vQ0hb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZVLs2O4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D092C32782;
-	Tue, 30 Jul 2024 16:12:08 +0000 (UTC)
+	 MIME-Version; b=hgJRjDGDcIlQ5YIP+Nc3lsptR4LgPNYiySW6eXcUZIGE2XlP1t7wl58vyBpsAKs34yL70TQQPgFs1ZqmO8adWf5NV2ZKNcoPVAHRbUr6N2N6OVGfkB0ziXDbZuhQFrkEdJCL9lStWPTBQ02G4tdQHq++6BG6UWkiphhbbMXwwtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zJkAKKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C029C32782;
+	Tue, 30 Jul 2024 16:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355929;
-	bh=e3maEF8aa/f4DgA1aHrFLBJ9Tju/W0/88hi0k1kpgkw=;
+	s=korg; t=1722357578;
+	bh=GU1avLtTMZxGIxluB4oKBziVkv4iZmXQfRFc5uqHaJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZVLs2O4Q5j2PVMO/hdsOGwCG/v59NBZWvMdMJfyWU+XiS2msDj2kfJ1SRZ+b8P7v
-	 7728ESfdkELol8aNTTEZSLYbGwOeFYQmHOEUBtXbdM+2D4nOma+NEBpBBbMbPHuWDD
-	 tqJuqNWa4nJNs1K1IkoNu7Fcf2hnL/f0vzq1hZ0w=
+	b=1zJkAKKQwYPNoRJoczFZOtmWeLHgURibUcPqEwdzctsM934wUDDcV14Ml7A2ZJAGu
+	 3sDpv8ZnZAuMTzjyKLuKrQ/yhY0qICnumxiQLTgIqbfLVXBOInB+CksLE8evL+ybsX
+	 Brq9IJFNZrakyHCmh9z+WCRTv2ZCW/ZK0wzmzIc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Schaefer <dhs@frame.work>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Andrei Lalaev <andrei.lalaev@anton-paar.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/440] media: uvcvideo: Override default flags
+Subject: [PATCH 6.6 271/568] Input: qt1050 - handle CHIP_ID reading error
 Date: Tue, 30 Jul 2024 17:46:18 +0200
-Message-ID: <20240730151621.545617402@linuxfoundation.org>
+Message-ID: <20240730151650.474057096@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Schaefer <dhs@frame.work>
+From: Andrei Lalaev <andrei.lalaev@anton-paar.com>
 
-[ Upstream commit 86419686e66da5b90a07fb8a40ab138fe97189b5 ]
+[ Upstream commit 866a5c7e2781cf1b019072288f1f5c64186dcb63 ]
 
-When the UVC device has a control that is readonly it doesn't set the
-SET_CUR flag. For example the privacy control has SET_CUR flag set in
-the defaults in the `uvc_ctrls` variable. Even if the device does not
-have it set, it's not cleared by uvc_ctrl_get_flags().
+If the device is missing, we get the following error:
 
-Originally written with assignment in commit 859086ae3636 ("media:
-uvcvideo: Apply flags from device to actual properties"). But changed to
-|= in commit 0dc68cabdb62 ("media: uvcvideo: Prevent setting unavailable
-flags"). It would not clear the default flags.
+  qt1050 3-0041: ID -1340767592 not supported
 
-With this patch applied the correct flags are reported to user space.
-Tested with:
+Let's handle this situation and print more informative error
+when reading of CHIP_ID fails:
 
-```
-> v4l2-ctl --list-ctrls | grep privacy
-privacy 0x009a0910 (bool)   : default=0 value=0 flags=read-only
-```
+  qt1050 3-0041: Failed to read chip ID: -6
 
-Signed-off-by: Daniel Schaefer <dhs@frame.work>
-Fixes: 0dc68cabdb62 ("media: uvcvideo: Prevent setting unavailable flags")
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240602065053.36850-1-dhs@frame.work
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: cbebf5addec1 ("Input: qt1050 - add Microchip AT42QT1050 support")
+Signed-off-by: Andrei Lalaev <andrei.lalaev@anton-paar.com>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Link: https://lore.kernel.org/r/20240617183018.916234-1-andrey.lalaev@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/input/keyboard/qt1050.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 6d7535efc09de..dffc9d03235c4 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1959,7 +1959,13 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
- 	else
- 		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
- 				     dev->intfnum, info->selector, data, 1);
--	if (!ret)
-+
-+	if (!ret) {
-+		info->flags &= ~(UVC_CTRL_FLAG_GET_CUR |
-+				 UVC_CTRL_FLAG_SET_CUR |
-+				 UVC_CTRL_FLAG_AUTO_UPDATE |
-+				 UVC_CTRL_FLAG_ASYNCHRONOUS);
-+
- 		info->flags |= (data[0] & UVC_CONTROL_CAP_GET ?
- 				UVC_CTRL_FLAG_GET_CUR : 0)
- 			    |  (data[0] & UVC_CONTROL_CAP_SET ?
-@@ -1968,6 +1974,7 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
- 				UVC_CTRL_FLAG_AUTO_UPDATE : 0)
- 			    |  (data[0] & UVC_CONTROL_CAP_ASYNCHRONOUS ?
- 				UVC_CTRL_FLAG_ASYNCHRONOUS : 0);
-+	}
+diff --git a/drivers/input/keyboard/qt1050.c b/drivers/input/keyboard/qt1050.c
+index 6953097db4456..cd2f4216daf86 100644
+--- a/drivers/input/keyboard/qt1050.c
++++ b/drivers/input/keyboard/qt1050.c
+@@ -226,7 +226,12 @@ static bool qt1050_identify(struct qt1050_priv *ts)
+ 	int err;
  
- 	kfree(data);
- 	return ret;
+ 	/* Read Chip ID */
+-	regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
++	err = regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
++	if (err) {
++		dev_err(&ts->client->dev, "Failed to read chip ID: %d\n", err);
++		return false;
++	}
++
+ 	if (val != QT1050_CHIP_ID_VER) {
+ 		dev_err(&ts->client->dev, "ID %d not supported\n", val);
+ 		return false;
 -- 
 2.43.0
 
