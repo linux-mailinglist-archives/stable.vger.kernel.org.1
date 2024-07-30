@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94444941771
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB6E941B18
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5AFA1C234FF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BCFAB2626A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129DB1A302F;
-	Tue, 30 Jul 2024 16:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE4618B466;
+	Tue, 30 Jul 2024 16:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gR+3DLjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXAlh7Fq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44F91A4B4C;
-	Tue, 30 Jul 2024 16:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4E7155CB3;
+	Tue, 30 Jul 2024 16:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355734; cv=none; b=r2clnwUiGoKpQhuxCaPCU6qfjkxzW5+xuxG84Qod/x8ZYUe/04WZ8dmhxhmjSdSl6EcUO4FA2L2OJZ/0qHgfEaEOgdTkKPvCdd+Xn7D4Yhg7VnOWZupYTusT6FUZLJWtHuvsy16l8kl+vcdC5u45pSl4dYgZGZQoS3JiU+ZPsnk=
+	t=1722358028; cv=none; b=AToyp37C1RdqcTsV69g80ZT2pZn1ITQV5rQ/TQISE2Bd3f8kVDomIew6EceSwp1NKKAz8p9QonM9gaZGwKNYvZ8CQRajY2ovl9prUM5J3lmMSTKxlRNqSUcFZaFuI9NqqZvK8n5q7Hfciz6COsfTzJUJmqdeLL6owuZrDf75AoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355734; c=relaxed/simple;
-	bh=Nqof0UeOP5o6Wl+/224jxXViTVxWbSXxk5J7Nt8/ueU=;
+	s=arc-20240116; t=1722358028; c=relaxed/simple;
+	bh=8Zsyozzsw9oiLHZSKRaTokoTWPqsfznviqYWcWRKsIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zah0QkCKrUInAHx5DjlYA8jMtzAtvpDlrOaVbaAfHUYDvTfDxP5mMX7lYWmB6LYMsI9vJA2EtOl7cl2tbALDWpMR9245eqSd4/hqF+8VkXAWDA28TLiU6UsJ3zokBamCOWwFiRM5M6bkqWOY1NRiXRLdPpzR7Kj+NicvuCwpznA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gR+3DLjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32407C32782;
-	Tue, 30 Jul 2024 16:08:54 +0000 (UTC)
+	 MIME-Version; b=OEK5g26S1PzqwUHmxTP4SGFpup0tFj+2MpE8fiVYRHJeTbY4BgU1cTBGnhz6aK4W8j9oESGh4/vCiSe/ywzmRCPNtKe5Knbw/G+8UuIlT1c2YdnSYqofvxURGhLf3LuhJOXmzecJdZHNKLdVoBdQ7zXd2NAhHNJq7lwaXdqkWpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXAlh7Fq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8CEC4AF0C;
+	Tue, 30 Jul 2024 16:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355734;
-	bh=Nqof0UeOP5o6Wl+/224jxXViTVxWbSXxk5J7Nt8/ueU=;
+	s=korg; t=1722358028;
+	bh=8Zsyozzsw9oiLHZSKRaTokoTWPqsfznviqYWcWRKsIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gR+3DLjKverxxsnKKmZoBSmMsk28zifj+wCMOSg8H0/yo/3IxrfbDF+tOKQhJpUxe
-	 UJyiWB6sukhKqHnoW1MBfiNNkq+fIwtZ9xJ6jp1IUdZl+bQ53JwsO5aPBj6KJ4FWEg
-	 erwYfaxkFfhevRqSkXYKRdOCKiNWX4v2xq0TIekM=
+	b=NXAlh7Fq1p6CxCnifBRflDnfBI0+DmAsifg8yWvHE9GwaxHf5h7lZKwNV2MPlkmgk
+	 zBAN8WntYaFDnOZC4fFJCXyiY4T0+ixWwj5zYlmzRLqM+vPSFa+AZVg/FwzV76YV17
+	 ay8xdE7850WPe9oayPyRK+jBaqReXUObnUJbOwNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/568] arm64: dts: renesas: r8a779g0: Add missing hypervisor virtual timer IRQ
+Subject: [PATCH 6.10 316/809] drm: zynqmp_kms: Fix AUX bus not getting unregistered
 Date: Tue, 30 Jul 2024 17:43:12 +0200
-Message-ID: <20240730151643.189044182@linuxfoundation.org>
+Message-ID: <20240730151737.085050484@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 6775165fc95052a03acc91e25bc20fcf286910a7 ]
+[ Upstream commit 0743dafefd3f2b92116213f2225ea355001b7948 ]
 
-Add the missing fifth interrupt to the device node that represents the
-ARM architected timer.  While at it, add an interrupt-names property for
-clarity,
+drm_encoder_cleanup is responsible for calling drm_bridge_detach for
+each bridge attached to the encoder. zynqmp_dp_bridge_detach is in turn
+responsible for unregistering the AUX bus. However, we never ended up
+calling drm_encoder_cleanup in the remove or error paths, so the AUX bus
+would stick around after the rest of the driver had been removed.
 
-Fixes: 987da486d84a5643 ("arm64: dts: renesas: Add Renesas R8A779G0 SoC support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/5eeabbeaea1c5fd518a608f2e8013d260b00fd7e.1718890849.git.geert+renesas@glider.be
+I don't really understand why drm_mode_config_cleanup doesn't call
+drm_encoder_cleanup for us. It will call destroy (which for
+simple_encoder is drm_encoder_cleanup) on encoders in the mode_config's
+encoder_list.
+
+Should drm_encoder_cleanup get called before or after
+drm_atomic_helper_shutdown?
+
+Fixes: 2dfd045c8435 ("drm: xlnx: zynqmp_dpsub: Register AUX bus at bridge attach time")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240503192922.2172314-2-sean.anderson@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a779g0.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xlnx/zynqmp_kms.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-index d7677595204dc..87fbc53316906 100644
---- a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
-@@ -2350,6 +2350,9 @@ timer {
- 		interrupts-extended = <&gic GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
- 				      <&gic GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
- 				      <&gic GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
--				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
-+				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>,
-+				      <&gic GIC_PPI 12 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-names = "sec-phys", "phys", "virt", "hyp-phys",
-+				  "hyp-virt";
- 	};
- };
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+index 43bf416b33d5c..f25583ce92e60 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+@@ -433,23 +433,28 @@ static int zynqmp_dpsub_kms_init(struct zynqmp_dpsub *dpsub)
+ 				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+ 	if (ret) {
+ 		dev_err(dpsub->dev, "failed to attach bridge to encoder\n");
+-		return ret;
++		goto err_encoder;
+ 	}
+ 
+ 	/* Create the connector for the chain of bridges. */
+ 	connector = drm_bridge_connector_init(&dpsub->drm->dev, encoder);
+ 	if (IS_ERR(connector)) {
+ 		dev_err(dpsub->dev, "failed to created connector\n");
+-		return PTR_ERR(connector);
++		ret = PTR_ERR(connector);
++		goto err_encoder;
+ 	}
+ 
+ 	ret = drm_connector_attach_encoder(connector, encoder);
+ 	if (ret < 0) {
+ 		dev_err(dpsub->dev, "failed to attach connector to encoder\n");
+-		return ret;
++		goto err_encoder;
+ 	}
+ 
+ 	return 0;
++
++err_encoder:
++	drm_encoder_cleanup(encoder);
++	return ret;
+ }
+ 
+ static void zynqmp_dpsub_drm_release(struct drm_device *drm, void *res)
+@@ -529,5 +534,6 @@ void zynqmp_dpsub_drm_cleanup(struct zynqmp_dpsub *dpsub)
+ 
+ 	drm_dev_unregister(drm);
+ 	drm_atomic_helper_shutdown(drm);
++	drm_encoder_cleanup(&dpsub->drm->encoder);
+ 	drm_kms_helper_poll_fini(drm);
+ }
 -- 
 2.43.0
 
