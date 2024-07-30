@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-62969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9CE94167C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2938C941631
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 900131C23286
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7D701F25558
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868871C2320;
-	Tue, 30 Jul 2024 16:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E781BA86A;
+	Tue, 30 Jul 2024 15:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuZxdUf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCL9dTPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3CD1C2324;
-	Tue, 30 Jul 2024 16:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C0A1B5831;
+	Tue, 30 Jul 2024 15:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355232; cv=none; b=LAe98kbfqGyCL2r4ZrSO6/X/jS8dPn5ZEEgFyUS8Ei/mh2IfXzqh6FFq9nToxG51VjBksZ4ciUuXx630hl5GcVoz88QPFIgWbBNTKun4ZwdioyE2l5im2o7txWasZFx0cF7Zk0uAP7a3fRS0CzuDeFI0VMJe9x6+5yJgQBO8alo=
+	t=1722355034; cv=none; b=NR21vhNwdM5C+9oqOul3hZG51Vi3624qzJrIHoJgVQ4m4Bgjy77/D3Q4Q185M5US6QKFOPIFWt4wBHJwgfGbVwWjONR/0R48OnItd5J8jnwfb77Bw1cOgdMFYBLIMNtWAlNC7YdgHwjNF24c1nlbmusKwmVZhngtCyjPOJzJtB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355232; c=relaxed/simple;
-	bh=3/F8P7hLPWkhl6tgX1PKq7keR+6dy9M5yXSggO1LEXc=;
+	s=arc-20240116; t=1722355034; c=relaxed/simple;
+	bh=XWPmdPZpDCBeWjnBG9dl4aBt/DeAmvBIrMyoQFt+Npc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rld3v+Y3a8rkUqe9oUrKYNhF82RzS/yroBdjKmZ9oSqprgHvWbfAwRJgXkPGNNpvQwL774dEDm7eR8ik1eYnjy5syTVDroRuAuzcc7df67yp5UVtFiyMgcyJYEUispY7TiZxpZHMbnh2Vop5T9SzeweX9iv9bTnGLOL32puI+Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuZxdUf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D72EC4AF0C;
-	Tue, 30 Jul 2024 16:00:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WFpJzudIe593tXa8G0iF90QyYQINOkB6arD9ClypV+u4FgZdu19j/cVoQqn+XyBBj8laHLDhb8iBgIFC48ll5pw1/3hrzC7bnQWBE8QNxpoQlxzrXwySuUue88WFyKNZcAR5+xze2ubViWt2yP08GpeMhxtI/VmSw887AQdxwe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCL9dTPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6B6C32782;
+	Tue, 30 Jul 2024 15:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355232;
-	bh=3/F8P7hLPWkhl6tgX1PKq7keR+6dy9M5yXSggO1LEXc=;
+	s=korg; t=1722355034;
+	bh=XWPmdPZpDCBeWjnBG9dl4aBt/DeAmvBIrMyoQFt+Npc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuZxdUf847CqMn+BtKV8RY7f5BLqbeewJxqjPRxuVJxRq7KVVrbvFvDb4Hlf+fAwP
-	 RteBuEePDTdazT5p7egt/nzPBHOT6k5L71L3TFp6cak+5F5iuI4NoUiEPAEDIfiUm9
-	 CbciwRzpuh8y8OiCRLA9nptMzi3Kb3pMLYBqeTm8=
+	b=bCL9dTPipHoAI4YO93eppnFaNQkhBihwuKUOGagUX3fBnyeXQkFzQW5P8uTPOX9qW
+	 K4fSuCxloqxTkWSl8ksBrZlZ0r/9KlU3GwjIOjazQoNsFG/a4rGPv6/HQ+wEAZx9mb
+	 7Bg7LFusOJl4tLwhaxmWXzr3Nn8+ROSJOO7ZrlR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Kusiak <mateusz.kusiak@linux.intel.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/568] md: Dont wait for MD_RECOVERY_NEEDED for HOT_REMOVE_DISK ioctl
-Date: Tue, 30 Jul 2024 17:42:08 +0200
-Message-ID: <20240730151640.661304354@linuxfoundation.org>
+Subject: [PATCH 6.6 022/568] pwm: stm32: Always do lazy disabling
+Date: Tue, 30 Jul 2024 17:42:09 +0200
+Message-ID: <20240730151640.699730460@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -61,61 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit a1fd37f97808db4fa1bf55da0275790c42521e45 ]
+[ Upstream commit 7346e7a058a2c9aa9ff1cc699c7bf18a402d9f84 ]
 
-Commit 90f5f7ad4f38 ("md: Wait for md_check_recovery before attempting
-device removal.") explained in the commit message that failed device
-must be reomoved from the personality first by md_check_recovery(),
-before it can be removed from the array. That's the reason the commit
-add the code to wait for MD_RECOVERY_NEEDED.
+When the state changes from enabled to disabled, polarity, duty_cycle
+and period are not configured in hardware and TIM_CCER_CCxE is just
+cleared. However if the state changes from one disabled state to
+another, all parameters are written to hardware because the early exit
+from stm32_pwm_apply() is only taken if the pwm is currently enabled.
 
-However, this is not the case now, because remove_and_add_spares() is
-called directly from hot_remove_disk() from ioctl path, hence failed
-device(marked faulty) can be removed from the personality by ioctl.
+This yields surprises like: Applying
 
-On the other hand, the commit introduced a performance problem that
-if MD_RECOVERY_NEEDED is set and the array is not running, ioctl will
-wait for 5s before it can return failure to user.
+	{ .period = 1, .duty_cycle = 0, .enabled = false }
 
-Since the waiting is not needed now, fix the problem by removing the
-waiting.
+succeeds if the pwm is initially on, but fails if it's already off
+because 1 is a too small period.
 
-Fixes: 90f5f7ad4f38 ("md: Wait for md_check_recovery before attempting device removal.")
-Reported-by: Mateusz Kusiak <mateusz.kusiak@linux.intel.com>
-Closes: https://lore.kernel.org/all/814ff6ee-47a2-4ba0-963e-cf256ee4ecfa@linux.intel.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240627112321.3044744-1-yukuai1@huaweicloud.com
+Update the check for lazy disable to always exit early if the target
+state is disabled, no matter what is currently configured.
+
+Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20240703110010.672654-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/pwm/pwm-stm32.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index ba732b1d00b5b..b5dea664f946d 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -7684,12 +7684,6 @@ static int md_ioctl(struct block_device *bdev, blk_mode_t mode,
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index 9bdab6c24fbaf..b91a14c895bea 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -456,8 +456,9 @@ static int stm32_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
  
+ 	enabled = pwm->state.enabled;
+ 
+-	if (enabled && !state->enabled) {
+-		stm32_pwm_disable(priv, pwm->hwpwm);
++	if (!state->enabled) {
++		if (enabled)
++			stm32_pwm_disable(priv, pwm->hwpwm);
+ 		return 0;
  	}
  
--	if (cmd == HOT_REMOVE_DISK)
--		/* need to ensure recovery thread has run */
--		wait_event_interruptible_timeout(mddev->sb_wait,
--						 !test_bit(MD_RECOVERY_NEEDED,
--							   &mddev->recovery),
--						 msecs_to_jiffies(5000));
- 	if (cmd == STOP_ARRAY || cmd == STOP_ARRAY_RO) {
- 		/* Need to flush page cache, and ensure no-one else opens
- 		 * and writes
 -- 
 2.43.0
 
