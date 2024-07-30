@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4148941A15
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A6F941C42
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E6ED286A5B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 924D128180B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E0418452F;
-	Tue, 30 Jul 2024 16:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B00A18454A;
+	Tue, 30 Jul 2024 17:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQmkGmm5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt9/NOg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3131A6192;
-	Tue, 30 Jul 2024 16:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDEC1A6192;
+	Tue, 30 Jul 2024 17:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357594; cv=none; b=CHm77MVlRnh57G/gbhkyStyTXPgGhtPRZqRdPiPmPkiExhy0uSBz5uxIghCre6VAJKf1loJP9bpKZxOjaczacNKW3z+G7zofl6qRZDdOiaZY/Y8HM/xsGAVRWV2unQZLni8KwvYQ2KHR+VNIinzQ9qv06n1oNYy27htiWIoyyGc=
+	t=1722359112; cv=none; b=A7vgpC7RQ4XfGsy99NpKtqTDR28U3EojiLt3xTzH6tN0+KEyz/uBpgExgyRPyJ3RGscJ0Ybx8s5KpZu0g3dYIx0TznIubCgaGV7HRKbNz9pNPvnAMuuIRQRb2/CC68wZ+woJRo1IJAq/E8hxJQhux5HiwiRmWbUxl817nPGWI9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357594; c=relaxed/simple;
-	bh=glBMCQsu9f4s9jwaE05oHSTC/mKj8oRkHwMsoRLZ9Ww=;
+	s=arc-20240116; t=1722359112; c=relaxed/simple;
+	bh=IjpcMMqTanEQqA/WGmBiZ6796PMwPO82nlZW94RZZpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ezmb6KtcvhMTCrx/2V+6QUdPUhbEbOSW31JEWd5o4BJvyErxO/0nL3hWKF20M1sPri+mjnRBv6y/nsOr0+TE1AEyBDfIlyYEz/VOJ52USh4A6fLN/afCJNEoMB1JGqRk1UwZwoYVnO8PVem/NzycQWiUHynWAo8D86obdXmK/2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQmkGmm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC8BC32782;
-	Tue, 30 Jul 2024 16:39:53 +0000 (UTC)
+	 MIME-Version; b=AwKL3q34hkR+xcog6lkFAE3O6liUrTIWJqwK4VQqPTXfZyqb9ngoYvpzuUghonoh9z4VkA1lJXhipip2PhUyo7fVf34deWUz/guxOTTw9EzN94zIZh9DQPTITqWkXWSG7TMWAKeVgoNS5gWD6UH0aRgLODilvDbpUZ1aa1X1Bjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt9/NOg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6597DC32782;
+	Tue, 30 Jul 2024 17:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357593;
-	bh=glBMCQsu9f4s9jwaE05oHSTC/mKj8oRkHwMsoRLZ9Ww=;
+	s=korg; t=1722359111;
+	bh=IjpcMMqTanEQqA/WGmBiZ6796PMwPO82nlZW94RZZpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQmkGmm5KGoXFhYTvX2pmtjKcHeE7pfKiNWXR46odPCq4Aw0f351ie8fSS3Xhwg6T
-	 ZtadSvnFDxMAMy0FOF5eBzpS5WAWcQ3TGhlNMpwQX9yrcHODmxV2YD51gEi0Q3F+zZ
-	 jxf49l5ptt3O+Uz9uKGx9CZUqFf5o59gc9M7Vt1g=
+	b=Pt9/NOg/6JALkOHYT/9+h/KqVWhHGBf9oB7QCZGUfcvdDwOsyp269o5zXddu5e7A4
+	 8nnBbYh2zrOY4dyNqtZQor69N/MdzwG1ryRBmZLewKf6btovYQq36Occ/+tl76ZrMB
+	 wVRV4JLTh+ADQOOdKceAGpMdoSuBxpyq1VeojPtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.1 307/440] selftests/landlock: Add cred_transfer test
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.6 433/568] fs/ntfs3: Update log->page_{mask,bits} if log->page_size changed
 Date: Tue, 30 Jul 2024 17:49:00 +0200
-Message-ID: <20240730151627.813763789@linuxfoundation.org>
+Message-ID: <20240730151656.794717018@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,132 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit cc374782b6ca0fd634482391da977542443d3368 upstream.
+commit 2fef55d8f78383c8e6d6d4c014b9597375132696 upstream.
 
-Check that keyctl(KEYCTL_SESSION_TO_PARENT) preserves the parent's
-restrictions.
+If an NTFS file system is mounted to another system with different
+PAGE_SIZE from the original system, log->page_size will change in
+log_replay(), but log->page_{mask,bits} don't change correspondingly.
+This will cause a panic because "u32 bytes = log->page_size - page_off"
+will get a negative value in the later read_log_page().
 
-Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
-Co-developed-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240724.Ood5aige9she@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Cc: stable@vger.kernel.org
+Fixes: b46acd6a6a627d876898e ("fs/ntfs3: Add NTFS journal")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/landlock/base_test.c |   74 +++++++++++++++++++++++++++
- tools/testing/selftests/landlock/config      |    5 +
- 2 files changed, 77 insertions(+), 2 deletions(-)
+ fs/ntfs3/fslog.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/landlock/base_test.c
-+++ b/tools/testing/selftests/landlock/base_test.c
-@@ -9,6 +9,7 @@
- #define _GNU_SOURCE
- #include <errno.h>
- #include <fcntl.h>
-+#include <linux/keyctl.h>
- #include <linux/landlock.h>
- #include <string.h>
- #include <sys/prctl.h>
-@@ -356,4 +357,77 @@ TEST(ruleset_fd_transfer)
- 	ASSERT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
- }
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -3922,6 +3922,9 @@ check_restart_area:
+ 		goto out;
+ 	}
  
-+TEST(cred_transfer)
-+{
-+	struct landlock_ruleset_attr ruleset_attr = {
-+		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_DIR,
-+	};
-+	int ruleset_fd, dir_fd;
-+	pid_t child;
-+	int status;
++	log->page_mask = log->page_size - 1;
++	log->page_bits = blksize_bits(log->page_size);
 +
-+	drop_caps(_metadata);
-+
-+	dir_fd = open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-+	EXPECT_LE(0, dir_fd);
-+	EXPECT_EQ(0, close(dir_fd));
-+
-+	/* Denies opening directories. */
-+	ruleset_fd =
-+		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
-+	ASSERT_LE(0, ruleset_fd);
-+	EXPECT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
-+	ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
-+	EXPECT_EQ(0, close(ruleset_fd));
-+
-+	/* Checks ruleset enforcement. */
-+	EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+	EXPECT_EQ(EACCES, errno);
-+
-+	/* Needed for KEYCTL_SESSION_TO_PARENT permission checks */
-+	EXPECT_NE(-1, syscall(__NR_keyctl, KEYCTL_JOIN_SESSION_KEYRING, NULL, 0,
-+			      0, 0))
-+	{
-+		TH_LOG("Failed to join session keyring: %s", strerror(errno));
-+	}
-+
-+	child = fork();
-+	ASSERT_LE(0, child);
-+	if (child == 0) {
-+		/* Checks ruleset enforcement. */
-+		EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+		EXPECT_EQ(EACCES, errno);
-+
-+		/*
-+		 * KEYCTL_SESSION_TO_PARENT is a no-op unless we have a
-+		 * different session keyring in the child, so make that happen.
-+		 */
-+		EXPECT_NE(-1, syscall(__NR_keyctl, KEYCTL_JOIN_SESSION_KEYRING,
-+				      NULL, 0, 0, 0));
-+
-+		/*
-+		 * KEYCTL_SESSION_TO_PARENT installs credentials on the parent
-+		 * that never go through the cred_prepare hook, this path uses
-+		 * cred_transfer instead.
-+		 */
-+		EXPECT_EQ(0, syscall(__NR_keyctl, KEYCTL_SESSION_TO_PARENT, 0,
-+				     0, 0, 0));
-+
-+		/* Re-checks ruleset enforcement. */
-+		EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+		EXPECT_EQ(EACCES, errno);
-+
-+		_exit(_metadata->passed ? EXIT_SUCCESS : EXIT_FAILURE);
-+		return;
-+	}
-+
-+	EXPECT_EQ(child, waitpid(child, &status, 0));
-+	EXPECT_EQ(1, WIFEXITED(status));
-+	EXPECT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
-+
-+	/* Re-checks ruleset enforcement. */
-+	EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+	EXPECT_EQ(EACCES, errno);
-+}
-+
- TEST_HARNESS_MAIN
---- a/tools/testing/selftests/landlock/config
-+++ b/tools/testing/selftests/landlock/config
-@@ -1,7 +1,8 @@
-+CONFIG_KEYS=y
- CONFIG_OVERLAY_FS=y
-+CONFIG_SECURITY=y
- CONFIG_SECURITY_LANDLOCK=y
- CONFIG_SECURITY_PATH=y
--CONFIG_SECURITY=y
- CONFIG_SHMEM=y
--CONFIG_TMPFS_XATTR=y
- CONFIG_TMPFS=y
-+CONFIG_TMPFS_XATTR=y
+ 	/* If the file size has shrunk then we won't mount it. */
+ 	if (log->l_size < le64_to_cpu(ra2->l_size)) {
+ 		err = -EINVAL;
 
 
 
