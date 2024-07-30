@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 005EC941790
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC64A941D2E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF41A286E9A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97C171F213BF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254731898ED;
-	Tue, 30 Jul 2024 16:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B181A76A4;
+	Tue, 30 Jul 2024 17:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEYu0Uex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mp0tK6zK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47E818952F;
-	Tue, 30 Jul 2024 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E91C1A76A0;
+	Tue, 30 Jul 2024 17:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355809; cv=none; b=Y12dphXJGDjM3V1+16CDTmYQn9WQMNC2sb9tyNwpZfmJrszgTexOkqqvVkC5IVXz8REQMBg1D0HHINC7jt9nXfoaCeVMtHngzL76dhO+ioysucMu0jroCnSQua/tNmhmGNZ21Al2ngDVzWOyPSBFkkDtd+j3cHbGoNU+ST97npI=
+	t=1722359638; cv=none; b=MXCOlaouG0dYXOu0BQ4MGo+kuAlwSL85sXyx01SuKurFafBWHWvQqx7115uUiVHwLIN1KrGANxW4ENUk/ppcByHhrFJQDdryrziZNKMOEPVct0EYPjPa66QjrR/XoI36jaPcJStoe6ZT937HgIor1sLuQOBB5xEgdw/TrirRNT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355809; c=relaxed/simple;
-	bh=08zS3mtTfmb3jYX7BYgkaayCv+xluqfjPIYi8L582iQ=;
+	s=arc-20240116; t=1722359638; c=relaxed/simple;
+	bh=nM7r5b+qaJfPiqYGOJ9hlhJGMUxSUnjASup3w7P7cUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VvHHhgmo5HXNwPMvTXABO4SA1Gxvhs7ON+QySeHZJiYC4wNGi1a+hZX4qB0cyVFN07jYvJOQXmYdtZzk9oulb/sXq3Uev5NQyrweXE7e+iL5GAMPdeAm8QezJssvOgqkK/lwWuxVzkPXaJ9QNNTYYJ/jBlT2vJfQ/5PiMIpzh+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEYu0Uex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452BAC32782;
-	Tue, 30 Jul 2024 16:10:09 +0000 (UTC)
+	 MIME-Version; b=CKDvMy77egLt0jLz2nQmsRzOfvhgYRDiRa4bGScivbaO3CFwagdBa5iTEBqZK6Kec1Qgy2mPKVFyOscJ58SDlvBl+SdNMMXz4+J9z6+7WMH2S8a4xiZ23s3QfWwEsXtFM9r6Si2A5BJs+UDNolv9w2lo/pUejJsfErJsVLZgivE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mp0tK6zK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C10C32782;
+	Tue, 30 Jul 2024 17:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355809;
-	bh=08zS3mtTfmb3jYX7BYgkaayCv+xluqfjPIYi8L582iQ=;
+	s=korg; t=1722359638;
+	bh=nM7r5b+qaJfPiqYGOJ9hlhJGMUxSUnjASup3w7P7cUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zEYu0UexY01w18eYQFQiyzoDuLmkba1t64pkajxHIYOINH3d7aSgZpIVTrk/HhM2F
-	 RRQyo2/DG1HAqT4OgkToG/qPj3rHBImpjNzLunB9Q+4RPGPjKMzo9Igta8Kit07abr
-	 iBUoQ9Y//OjdjHK5RbRnTzMAbiASZEuEnoVhUZ/M=
+	b=Mp0tK6zKRK39UnRmTwzNQX+72BOCgNLT322iOGueYlldjeWKp2xJefyvMXLh3jTyc
+	 hDxsfN/3pL0unTPbTKkOo7fdQKwKxsyITdMF364Ep8AR+YRHYxZSRUpguy2qlbAJDC
+	 uLBOkVRWcT1f7GC+g7dgnZEEDVzhLs6r3x9VmVlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Friedrich Vock <friedrich.vock@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/440] drm/amdgpu: Check if NBIO funcs are NULL in amdgpu_device_baco_exit
+Subject: [PATCH 6.10 489/809] fs/ntfs3: Add missing .dirty_folio in address_space_operations
 Date: Tue, 30 Jul 2024 17:46:05 +0200
-Message-ID: <20240730151621.038726681@linuxfoundation.org>
+Message-ID: <20240730151744.052829982@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Friedrich Vock <friedrich.vock@gmx.de>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 0cdb3f9740844b9d95ca413e3fcff11f81223ecf ]
+[ Upstream commit 0f9579d9e0331b6255132ac06bdf2c0a01cceb90 ]
 
-The special case for VM passthrough doesn't check adev->nbio.funcs
-before dereferencing it. If GPUs that don't have an NBIO block are
-passed through, this leads to a NULL pointer dereference on startup.
+After switching from pages to folio [1], it became evident that
+the initialization of .dirty_folio for page cache operations was missed for
+compressed files.
 
-Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
-Fixes: 1bece222eabe ("drm/amdgpu: Clear doorbell interrupt status for Sienna Cichlid")
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[1] https://lore.kernel.org/ntfs3/20240422193203.3534108-1-willy@infradead.org
+
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 157441dd07041..d4faa489bd5fa 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5815,7 +5815,7 @@ int amdgpu_device_baco_exit(struct drm_device *dev)
- 	    adev->nbio.funcs->enable_doorbell_interrupt)
- 		adev->nbio.funcs->enable_doorbell_interrupt(adev, true);
- 
--	if (amdgpu_passthrough(adev) &&
-+	if (amdgpu_passthrough(adev) && adev->nbio.funcs &&
- 	    adev->nbio.funcs->clear_doorbell_interrupt)
- 		adev->nbio.funcs->clear_doorbell_interrupt(adev);
- 
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 8521238f5448e..bef3b4a36b750 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -2133,5 +2133,6 @@ const struct address_space_operations ntfs_aops = {
+ const struct address_space_operations ntfs_aops_cmpr = {
+ 	.read_folio	= ntfs_read_folio,
+ 	.readahead	= ntfs_readahead,
++	.dirty_folio	= block_dirty_folio,
+ };
+ // clang-format on
 -- 
 2.43.0
 
