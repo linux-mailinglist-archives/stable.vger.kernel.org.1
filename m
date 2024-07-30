@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-63254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DC6941815
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623BA941A42
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 971501F252BD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14BB3282154
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A55184556;
-	Tue, 30 Jul 2024 16:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C4A184553;
+	Tue, 30 Jul 2024 16:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmDeD8P7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spVxkVyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE1E183CBF;
-	Tue, 30 Jul 2024 16:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86539183CD5;
+	Tue, 30 Jul 2024 16:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356227; cv=none; b=J85kp+Gzcw9MvjoGmpk9ypYJoQCzGAkmnAMPjJzx6HvAuRtnfnfM903+0nD6FV8zBhrvCMj1X5LysakBd24AoSpf0v90qFHTeEtZufynZcamkd7CDUJyGVSglvN7LzRd77HXD9V69/pgOSdJ+3uSgUmMwc4tUHY+2a51awOkPH0=
+	t=1722357715; cv=none; b=J/2Haj4xQ/45JuUVpglU5T/01s5eQzip9doCwKJJJxUnJ3yEtkkLEp5d7PmFm4+rviv5TJdVpJHQtRDyACOX5pX+AMjRCh1YLeqIEJc3TyH/PlQLIv1FJx88XYLo/d/5ZxlDWcDQ8RViCrES0MHVc3JxnLlF9ii2bS2N9cnHKkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356227; c=relaxed/simple;
-	bh=WZkc0GdqszdnYYx1qOtUDIxLNaTT+9v10IAvkFZMnb4=;
+	s=arc-20240116; t=1722357715; c=relaxed/simple;
+	bh=VDnLcQzDmEU7cPA5HsUqkfJKgQW6wDS2y2A5FL61U+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMVURK4c77VKzgpUvJjiYLthHvAXqlLsACWHfKn3j7iNlRopPjU2J7zSvccJogHtjLXhf+7HjWFYPe63YpzUVc9+s1PtorSe/Z9x1nIebPS+x1T+4QIsufo9ceYeAivkT7bXpiwN+7OgbeeNhVcTiD9iAxHKMTqT8Xli03+rTGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmDeD8P7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E5EC32782;
-	Tue, 30 Jul 2024 16:17:06 +0000 (UTC)
+	 MIME-Version; b=hVV5Bn8dmBeG0Cthl22x48Jc8VHgWG3K12hzTV0KmZ+KRq6Ti7Fe1sccxWDrnDc01wpJVwydfobuMLO2E3jMZORw6nIjrP+kr6OFa70NkPnY5mGo1WxvL09lkVw3D09Rq1KqH7ulPT7HfHfdtPhV7PZ6/Julf3V9udEJ2bP2e6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spVxkVyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A43C32782;
+	Tue, 30 Jul 2024 16:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356227;
-	bh=WZkc0GdqszdnYYx1qOtUDIxLNaTT+9v10IAvkFZMnb4=;
+	s=korg; t=1722357715;
+	bh=VDnLcQzDmEU7cPA5HsUqkfJKgQW6wDS2y2A5FL61U+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PmDeD8P7V89e/K112dFUfdlWoGyuqs3rA0bPtF5mRTPzq8uyYbU5UnW8NRZHxAJWF
-	 5YxqWfDX0oYKVjkDxWeBZR2oiqorPPa3gTQOr0LLlI0Pke6mmOUXhAfk1oSlHEzLrj
-	 AyvglX3Mkf5Q5xHVqKfstaShz+wzG7y4CyzoSJM4=
+	b=spVxkVywuG20LeZdhnvH6F2YGzViSXR3g+T+zNhO72Np3TC8v0uHU6uIL0jLxo4sE
+	 l6WPnjDsMOiOrLGkXuMlkaI/6H+nFRy+sbhyA3vD3TCOi4Bjs0SgUAtZ2VqCOkZDCB
+	 cqHe2lUORgO8mum10r4uazg5wRO7JNkjJjE9FWjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	spoorts2@in.ibm.com,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/440] perf tests: Fix test_arm_callgraph_fp variable expansion
+Subject: [PATCH 6.6 284/568] ASoC: amd: Adjust error handling in case of absent codec device
 Date: Tue, 30 Jul 2024 17:46:31 +0200
-Message-ID: <20240730151622.047214609@linuxfoundation.org>
+Message-ID: <20240730151650.974501123@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,68 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 33fe7c08446af6dda0ff08ff4fa9c921e574477f ]
+[ Upstream commit 5080808c3339de2220c602ab7c7fa23dc6c1a5a3 ]
 
-$TEST_PROGRAM is a command with spaces so it's supposed to be word
-split. The referenced fix to fix the shellcheck warnings incorrectly
-quoted this string so unquote it to fix the test.
+acpi_get_first_physical_node() can return NULL in several cases (no such
+device, ACPI table error, reference count drop to 0, etc).
+Existing check just emit error message, but doesn't perform return.
+Then this NULL pointer is passed to devm_acpi_dev_add_driver_gpios()
+where it is dereferenced.
 
-At the same time silence the shellcheck warning for that line and fix
-two more shellcheck errors at the end of the script.
+Adjust this error handling by adding error code return.
 
-Fixes: 1bb17b4c6c91 ("perf tests arm_callgraph_fp: Address shellcheck warnings about signal names and adding double quotes for expression")
-Signed-off-by: James Clark <james.clark@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: spoorts2@in.ibm.com
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Link: https://lore.kernel.org/r/20230622101809.2431897-1-james.clark@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: ff16aeb9b834 ("perf test: Make test_arm_callgraph_fp.sh more robust")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 02527c3f2300 ("ASoC: amd: add Machine driver for Jadeite platform")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://patch.msgid.link/20240703191007.8524-1-amishin@t-argos.ru
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/test_arm_callgraph_fp.sh | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/amd/acp-es8336.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/shell/test_arm_callgraph_fp.sh b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-index 1380e0d12dce3..66dfdfdad553f 100755
---- a/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-+++ b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
-@@ -15,7 +15,8 @@ cleanup_files()
- trap cleanup_files EXIT TERM INT
+diff --git a/sound/soc/amd/acp-es8336.c b/sound/soc/amd/acp-es8336.c
+index 5e56d3a53be78..49bffc567e68d 100644
+--- a/sound/soc/amd/acp-es8336.c
++++ b/sound/soc/amd/acp-es8336.c
+@@ -203,8 +203,10 @@ static int st_es8336_late_probe(struct snd_soc_card *card)
  
- # Add a 1 second delay to skip samples that are not in the leaf() function
--perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- "$TEST_PROGRAM" 2> /dev/null &
-+# shellcheck disable=SC2086
-+perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- $TEST_PROGRAM 2> /dev/null &
- PID=$!
+ 	codec_dev = acpi_get_first_physical_node(adev);
+ 	acpi_dev_put(adev);
+-	if (!codec_dev)
++	if (!codec_dev) {
+ 		dev_err(card->dev, "can not find codec dev\n");
++		return -ENODEV;
++	}
  
- echo " + Recording (PID=$PID)..."
-@@ -33,8 +34,8 @@ wait $PID
- # 	76c leafloop
- # ...
- 
--perf script -i $PERF_DATA -F comm,ip,sym | head -n4
--perf script -i $PERF_DATA -F comm,ip,sym | head -n4 | \
-+perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4
-+perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4 | \
- 	awk '{ if ($2 != "") sym[i++] = $2 } END { if (sym[0] != "leaf" ||
- 						       sym[1] != "parent" ||
- 						       sym[2] != "leafloop") exit 1 }'
+ 	ret = devm_acpi_dev_add_driver_gpios(codec_dev, acpi_es8336_gpios);
+ 	if (ret)
 -- 
 2.43.0
 
