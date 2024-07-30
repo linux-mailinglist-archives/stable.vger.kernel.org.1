@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-63875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D695A941B0E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D59A9417DA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05BB91C20E1A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5980228263C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6695B188018;
-	Tue, 30 Jul 2024 16:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79926188013;
+	Tue, 30 Jul 2024 16:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKVq1FHr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm4dDAtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2523C155CB3;
-	Tue, 30 Jul 2024 16:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384C718452F;
+	Tue, 30 Jul 2024 16:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358234; cv=none; b=lSMTaMxNFkcb9g/f2g6NVQ2B3KXno8hNEoLED8W7HrdnZo233YlAXuaIFfmd3J3YpoecGFGKggwGMNUFDA15bx4A3PaZwzUClfNSG4m7YO1CGUI0SDAMyPGp/qCijl9n0RWu24qjIkqfkQ8WuJ4lC6HboB6PobYYlYbYBnEZptM=
+	t=1722356011; cv=none; b=UqhEy3YU0ztJb7tWwXTzN/KDcUUnImfQ3yLDjm9mMLIVl6Sj9RU5gtBgn35HxBJE0M9emrrHRcbUr8MYHM+kRmLFi/THq0tHJFmcAmKrdSlIKDOGgm0k76q13/cSVM5oS420Q/PnrzK7Jl7ToVk1+zbzCUfY08ApiGPv0golHrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358234; c=relaxed/simple;
-	bh=Ybyi2zcz2X+5sPTq9xhcD0nf2OeN0uNNjq9WGiXzRcg=;
+	s=arc-20240116; t=1722356011; c=relaxed/simple;
+	bh=nFDkpDjd2N3NGy2UBbnQtNDqSL3zZCnU/QV2b2DRa5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXpFjQj8+VMSQrIHQ9Iz8lLbGXRKnD3N7dA6T0YDbvpm8YBQHtJ7Q0KY0p1LGpxI2/2od/MYrNnwOP49PlG2+ZF8wJEwbdY7yJnZupoLFKwOosifDWhDa5DVRTkfYHWpcbhWsl+fRxSIw5CKfTQFKk3lmHIWSo3cBpvX13WdKfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKVq1FHr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319B3C4AF0E;
-	Tue, 30 Jul 2024 16:50:33 +0000 (UTC)
+	 MIME-Version; b=CieWRz6jFI17e45EFTLtNR8fWove9rK9+XJ0drrvw6YBs3v6MCBTcx9ZKmJFGZGBFret07IEgUGywb1UnPVE/gfE+/djmjOPSCFFe/euO8L2yp7aWk3BA7E/Ezjj5OlSacuAdjwx+TmxUHys615XyxGhzPPIlsPMmYAmw8qbQ0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm4dDAtM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55409C32782;
+	Tue, 30 Jul 2024 16:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358234;
-	bh=Ybyi2zcz2X+5sPTq9xhcD0nf2OeN0uNNjq9WGiXzRcg=;
+	s=korg; t=1722356010;
+	bh=nFDkpDjd2N3NGy2UBbnQtNDqSL3zZCnU/QV2b2DRa5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKVq1FHrKRqyDmm8THqFJR6x1DhC4bdRxlrtUeROTp5IBW7g2Vturtbv7IXe/dMky
-	 Ugvko+FFeltnj2pADlVgwLi85kElvqkWZP+zLdYUUZ91V12iUe6cm/Ss0RpUdjIo+X
-	 FcEKXIw8RErylJlxINK+Axzc8FKYQYEfVE8esXys=
+	b=zm4dDAtMkkGarQjn3PH78Uq3jbwn4UK097HkIRAQGnumx9SNWIZx+PPjwwrCcSYF3
+	 hcwQYL5XEjzbM/0eFHPbm5l/xCOcbIKcty23kdAVshcDQEUaGoCZ82Lhk+g6P9rX75
+	 7M3Lu3teXFwmhauJQoK3R8ETo5mfKZXsXZrI1+r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Jun Nie <jun.nie@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.10 337/809] drm/msm/dsi: set video mode widebus enable bit when widebus is enabled
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 106/568] vmlinux.lds.h: catch .bss..L* sections into BSS")
 Date: Tue, 30 Jul 2024 17:43:33 +0200
-Message-ID: <20240730151737.930608286@linuxfoundation.org>
+Message-ID: <20240730151644.017757845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 007870b8eaf54739c7b417ddaf90bf364b7e4bc8 ]
+[ Upstream commit 1a7b7326d587c9a5e8ff067e70d6aaf0333f4bb3 ]
 
-The value returned by msm_dsi_wide_bus_enabled() doesn't match what the
-driver is doing in video mode. Fix that by actually enabling widebus for
-video mode.
+Commit 9a427556fb8e ("vmlinux.lds.h: catch compound literals into
+data and BSS") added catches for .data..L* and .rodata..L* but missed
+.bss..L*
 
-Fixes: efcbd6f9cdeb ("drm/msm/dsi: Enable widebus for DSI")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Jun Nie <jun.nie@linaro.org>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Patchwork: https://patchwork.freedesktop.org/patch/596232/
-Link: https://lore.kernel.org/r/20240530-msm-drm-dsc-dsi-video-upstream-4-v6-4-2ab1d334c657@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Since commit 5431fdd2c181 ("ptrace: Convert ptrace_attach() to use
+lock guards") the following appears at build:
+
+  LD      .tmp_vmlinux.kallsyms1
+powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
+  NM      .tmp_vmlinux.kallsyms1.syms
+  KSYMS   .tmp_vmlinux.kallsyms1.S
+  AS      .tmp_vmlinux.kallsyms1.S
+  LD      .tmp_vmlinux.kallsyms2
+powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
+  NM      .tmp_vmlinux.kallsyms2.syms
+  KSYMS   .tmp_vmlinux.kallsyms2.S
+  AS      .tmp_vmlinux.kallsyms2.S
+  LD      vmlinux
+powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
+
+Lets add .bss..L* to BSS_MAIN macro to catch those sections into BSS.
+
+Fixes: 9a427556fb8e ("vmlinux.lds.h: catch compound literals into data and BSS")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404031349.nmKhyuUG-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/asm-generic/vmlinux.lds.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index a50f4dda59410..47f5858334f61 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -754,6 +754,8 @@ static void dsi_ctrl_enable(struct msm_dsi_host *msm_host,
- 		data |= DSI_VID_CFG0_TRAFFIC_MODE(dsi_get_traffic_mode(flags));
- 		data |= DSI_VID_CFG0_DST_FORMAT(dsi_get_vid_fmt(mipi_fmt));
- 		data |= DSI_VID_CFG0_VIRT_CHANNEL(msm_host->channel);
-+		if (msm_dsi_host_is_wide_bus_enabled(&msm_host->base))
-+			data |= DSI_VID_CFG0_DATABUS_WIDEN;
- 		dsi_write(msm_host, REG_DSI_VID_CFG0, data);
- 
- 		/* Do not swap RGB colors */
-@@ -778,7 +780,6 @@ static void dsi_ctrl_enable(struct msm_dsi_host *msm_host,
- 			if (cfg_hnd->minor >= MSM_DSI_6G_VER_MINOR_V1_3)
- 				data |= DSI_CMD_MODE_MDP_CTRL2_BURST_MODE;
- 
--			/* TODO: Allow for video-mode support once tested/fixed */
- 			if (msm_dsi_host_is_wide_bus_enabled(&msm_host->base))
- 				data |= DSI_CMD_MODE_MDP_CTRL2_DATABUS_WIDEN;
- 
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index bae0fe4d499bc..63029bc7c9dd0 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -101,7 +101,7 @@
+ #define DATA_MAIN .data .data.[0-9a-zA-Z_]* .data..L* .data..compoundliteral* .data.$__unnamed_* .data.$L*
+ #define SDATA_MAIN .sdata .sdata.[0-9a-zA-Z_]*
+ #define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]* .rodata..L*
+-#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..compoundliteral*
++#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..L* .bss..compoundliteral*
+ #define SBSS_MAIN .sbss .sbss.[0-9a-zA-Z_]*
+ #else
+ #define TEXT_MAIN .text
 -- 
 2.43.0
 
