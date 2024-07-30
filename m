@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-62919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD3194163B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7064994165C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7D5CB25C99
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:57:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 261281F24DAD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5561BA89E;
-	Tue, 30 Jul 2024 15:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF961BC068;
+	Tue, 30 Jul 2024 15:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JU0Ci5Uy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaRCwBvQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7561BA869;
-	Tue, 30 Jul 2024 15:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A861BBBDB;
+	Tue, 30 Jul 2024 15:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355061; cv=none; b=tPFF6hxCYuo6WEPlvq/9GIzBIE3hAMIOg1sF9E/UvX3mlZkFHcx9BN/MDasAIa0IpMV+rowtohnjXF3yPHdEiaW8nuPBmzGMpKqJXl+BvLFJnNiHykk3eFr+I9W20gzXfKvCBpr2dOUDcuCPEUVo/w+PHA7nlGQaYYKgxr/d89g=
+	t=1722355137; cv=none; b=dw7Z7iOzs4ynkds+Z32kEkiRMXqq2y7DiUS61RgFxfWNO5JZEDRK4mYJgtzKrhcbiUZF1Eb2Ij7dXrzsW+wmh+jQAzkHYzVZSmEVDX9ZkcexrMAl6hTL6H9s8M+Uf9KOvf4rm8hRSRe2M6Yi1OqFSnzOc77oML7vlEkrg9vOYsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355061; c=relaxed/simple;
-	bh=SyrFHrM6K0vce7BmjNTaMgWYzkrHHP1fc6XkooMW4E8=;
+	s=arc-20240116; t=1722355137; c=relaxed/simple;
+	bh=XZO8+rmxhrPgV9C0P3dhw7fSwois28EmHLO/hYttW/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKP44VGnNMOklI0S7fVGxeQqzt27+y7ToEuu4nnnExHYRPhpwHP4+c8b1hJC2GIKEVDGwrUjhH+XRnX9xsTA0gR/hL3wE0aqoAvVizX2UFcUUiyHIsYykXKOELtCT07tGVn6k5CrjHBsyjrD5H/F38xf1pzZIUhJdKGHn+CgniU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JU0Ci5Uy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04602C32782;
-	Tue, 30 Jul 2024 15:57:40 +0000 (UTC)
+	 MIME-Version; b=sLxmf03jLlCjiMYI7Eeowi1dkPt9ze7r0HZXi7MMBMRVNydKeAMG4p7WVEapuC6uRumyBPxDSmGtRFHsTGJ/pKQD79gNdyMAYkyNmyNR9x2gm6ayW14KexBA9KfRJqYqxcx5ydI62fIGJwLNHei+xOLAhkvG6CkVJ+/tp8xbkyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaRCwBvQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3C3C32782;
+	Tue, 30 Jul 2024 15:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355061;
-	bh=SyrFHrM6K0vce7BmjNTaMgWYzkrHHP1fc6XkooMW4E8=;
+	s=korg; t=1722355136;
+	bh=XZO8+rmxhrPgV9C0P3dhw7fSwois28EmHLO/hYttW/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JU0Ci5UyzE8Hn/msET901xnfSALrRC14M/deJGw6vTimMBgPG+sVZcc1Z1ttOhPSH
-	 tQPwVRDTLG/o8CC22cCFnV4Uqsh89e5QrcAt6LJFC+wExwHp2/mzKeNlLkG/v4ruWE
-	 e1Icv31xLmwMNZq22ttw4othazDzhbe5uXyqeY/8=
+	b=VaRCwBvQWdgthR0hxjuaBpbbzcPU6RNrehxefGGy1jHmBpSgFOHIcM59yO4JUX5aa
+	 AmYINQvt/OlppoVzdOx20911PpSlzSXgAPSe8we9mgDe2c7E/W+45Qc0g3u0ERD2sp
+	 az5hnW8AYqRmkWPbWCwKFDsy47B9hta7BemjND6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Steev Klimaszewski <steev@kali.org>,
 	Alexey Minnekhanov <alexeymin@postmarketos.org>,
+	Chris Lew <quic_clew@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.1 048/440] soc: qcom: pdr: protect locator_addr with the main mutex
-Date: Tue, 30 Jul 2024 17:44:41 +0200
-Message-ID: <20240730151617.639448714@linuxfoundation.org>
+Subject: [PATCH 6.1 049/440] soc: qcom: pdr: fix parsing of domains lists
+Date: Tue, 30 Jul 2024 17:44:42 +0200
+Message-ID: <20240730151617.678750317@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -71,69 +72,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 107924c14e3ddd85119ca43c26a4ee1056fa9b84 ]
+[ Upstream commit 57f20d51f35780f240ecf39d81cda23612800a92 ]
 
-If the service locator server is restarted fast enough, the PDR can
-rewrite locator_addr fields concurrently. Protect them by placing
-modification of those fields under the main pdr->lock.
+While parsing the domains list, start offsets from 0 rather than from
+domains_read. The domains_read is equal to the total count of the
+domains we have seen, while the domains list in the message starts from
+offset 0.
 
 Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
 Tested-by: Steev Klimaszewski <steev@kali.org>
 Tested-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Reviewed-by: Chris Lew <quic_clew@quicinc.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240622-qcom-pd-mapper-v9-1-a84ee3591c8e@linaro.org
+Link: https://lore.kernel.org/r/20240622-qcom-pd-mapper-v9-2-a84ee3591c8e@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pdr_interface.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/pdr_interface.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/soc/qcom/pdr_interface.c b/drivers/soc/qcom/pdr_interface.c
-index 0034af927b488..fbf91d7904482 100644
+index fbf91d7904482..c7cd4daa10b0f 100644
 --- a/drivers/soc/qcom/pdr_interface.c
 +++ b/drivers/soc/qcom/pdr_interface.c
-@@ -76,12 +76,12 @@ static int pdr_locator_new_server(struct qmi_handle *qmi,
- 					      locator_hdl);
- 	struct pdr_service *pds;
+@@ -417,7 +417,7 @@ static int pdr_locate_service(struct pdr_handle *pdr, struct pdr_service *pds)
+ 		if (ret < 0)
+ 			goto out;
  
-+	mutex_lock(&pdr->lock);
- 	/* Create a local client port for QMI communication */
- 	pdr->locator_addr.sq_family = AF_QIPCRTR;
- 	pdr->locator_addr.sq_node = svc->node;
- 	pdr->locator_addr.sq_port = svc->port;
+-		for (i = domains_read; i < resp->domain_list_len; i++) {
++		for (i = 0; i < resp->domain_list_len; i++) {
+ 			entry = &resp->domain_list[i];
  
--	mutex_lock(&pdr->lock);
- 	pdr->locator_init_complete = true;
- 	mutex_unlock(&pdr->lock);
- 
-@@ -104,10 +104,10 @@ static void pdr_locator_del_server(struct qmi_handle *qmi,
- 
- 	mutex_lock(&pdr->lock);
- 	pdr->locator_init_complete = false;
--	mutex_unlock(&pdr->lock);
- 
- 	pdr->locator_addr.sq_node = 0;
- 	pdr->locator_addr.sq_port = 0;
-+	mutex_unlock(&pdr->lock);
- }
- 
- static const struct qmi_ops pdr_locator_ops = {
-@@ -365,12 +365,14 @@ static int pdr_get_domain_list(struct servreg_get_domain_list_req *req,
- 	if (ret < 0)
- 		return ret;
- 
-+	mutex_lock(&pdr->lock);
- 	ret = qmi_send_request(&pdr->locator_hdl,
- 			       &pdr->locator_addr,
- 			       &txn, SERVREG_GET_DOMAIN_LIST_REQ,
- 			       SERVREG_GET_DOMAIN_LIST_REQ_MAX_LEN,
- 			       servreg_get_domain_list_req_ei,
- 			       req);
-+	mutex_unlock(&pdr->lock);
- 	if (ret < 0) {
- 		qmi_txn_cancel(&txn);
- 		return ret;
+ 			if (strnlen(entry->name, sizeof(entry->name)) == sizeof(entry->name))
 -- 
 2.43.0
 
