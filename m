@@ -1,185 +1,165 @@
-Return-Path: <stable+bounces-64663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA6C942119
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 21:53:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C505594212E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 22:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FD7F1C22E93
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:53:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43B541F2508C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 20:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869AD18CC0A;
-	Tue, 30 Jul 2024 19:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F7D18CC0F;
+	Tue, 30 Jul 2024 20:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="VNOFhtsG"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="UMdY8vFk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-43166.protonmail.ch (mail-43166.protonmail.ch [185.70.43.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEF918CBE1;
-	Tue, 30 Jul 2024 19:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7731AA3E2
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 20:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722369221; cv=none; b=QMcmthRd2UPKDc5TuzJ6ANyE82zGA5UIh+cBw4tYDAQqNWBYShFwtDY16e0YAA+mJ+SxDCphp8dHcebZN++SXWSQ3W7W5kEjp/vcC590cMZvBaIcV033V+mq3mnvny7JLxej8EDWlQE1ZkG0ogL7fP+cfprnisO7qrmhfpyMEYw=
+	t=1722369643; cv=none; b=R1Y4qbQuiotjXqGq8QEZ7qN+fm2VSROnhtZmUUu3OL11D6tEaSGpMb/syn6/uFUMavGqL7axB2G1q2tZaUMI/1N8vuexOdLlm931ZfP0dwsuGhAh61ulHKQHeT3NL4T8K549MMArJVbmsHq5mx5FXSg9egiDqaGozgJDIhTaKEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722369221; c=relaxed/simple;
-	bh=7t2pb5/6Q/LkGZmrG+ccU7x8AQ7CkBLsXiBJgc4OsqY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nXsE3DuVG/sf7NC38HZtuaYd08JMCQB0RjTg8jIlJUNBaViWyKFi2mO6s+izH23T0KpTx2BX8c8C82iZA4Uq2XG7UmqoNF1FDIYOr+q3N0Fg+iEoe0CeW1d0R3QwZ6UVGZ6NhYpRZ3wIvUadJSxCPDhDh5omk2xbVPVV9u4FrTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=VNOFhtsG; arc=none smtp.client-ip=185.70.43.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1722369211; x=1722628411;
-	bh=jywWkedUWZsQUoqanntjxmq0rUgTqu6frKuhe/bbf+o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=VNOFhtsGfwXJInt2Au4rVPgZxoMEG5asE978MEg4iNvPRB3rp4pvsEp8+vfEWT5rn
-	 nHbSJ0AOwcldCFHQo9UAivw+hkoaw6AqZMUIq2IpSJZazo8A1MIJvOZLPtV8BPTEO9
-	 9NaXQsPk9VdVjb3Uq0rwYqdTrazThIEZqaam6rCidKU73Gj9rPYPwEM/5YhcgkpeDe
-	 a6dDyQ5UuZ8m0XgotsZqQL2nvTeegP4QkgTzwLjUxou7Qnt/kcKbbw96FiEHNqKguP
-	 YZ1C1VYO50l2Fv0r1tDB8vTOtFQmH+SHkvOStfjgrguq+jjmT2xYe7nX7FEQ8oJHpc
-	 TroRmWsf5mqMg==
-Date: Tue, 30 Jul 2024 19:53:29 +0000
-To: o-takashi@sakamocchi.jp, clemens@ladisch.de
-From: Edmund Raile <edmund.raile@protonmail.com>
-Cc: tiwai@suse.com, alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v4 2/2] Revert "ALSA: firewire-lib: operate for period elapse event in process context"
-Message-ID: <20240730195318.869840-3-edmund.raile@protonmail.com>
-In-Reply-To: <20240730195318.869840-1-edmund.raile@protonmail.com>
-References: <20240730195318.869840-1-edmund.raile@protonmail.com>
-Feedback-ID: 43016623:user:proton
-X-Pm-Message-ID: ae12f90033d54c69dac6f2fe2a36cdef77a7bfee
+	s=arc-20240116; t=1722369643; c=relaxed/simple;
+	bh=KW8P1f9QtLpNiOED/9q/P8RZi+voxvllnMDRlZd/H2A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T7i5JwZtH3LHBElRaObov1pqJuxo79B6607h+O6UlAnrF54zkOEQIf24nTZIgCGApDI5nLJDyX5K2lu6ERheJj9PPssNoRW/Du6PHZgeX2GtGImNnc54Knh/zS8GnZAA6X7jnbUYmLWRtcPHHlBYXZMA9SnQV2+plemMRpvydKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=UMdY8vFk; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a7aa086b077so435180966b.0
+        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 13:00:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1722369640; x=1722974440; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VbPZYMLRnlwPHtoaKt4K6dn+FyDOOUhmY8EoiLqybE0=;
+        b=UMdY8vFkU3l54CTk70AIDub1zNuhBBpWlzfDJ/euXjLqdFGm+58FUHxJuyERUfogZ9
+         J7X1/rVKCsoWpDAMtb+K29O/bBJm0W/aJTTR9Jh6XsT+QdFgrQVCSFhFwDoR0Lpq+Rhr
+         l1tWxLeVnLfUbZcWndfRfK2opZxKknonZH3OVD3is6yHYc6V1/d81xdfqIJNXUqUTHA9
+         voLHjm4vQEo852eg00ZTPXiUP39d98YDBgaGmMuT1dPPfkOSikA0yspaDH6BKjuq1hX/
+         7jk1bUPA9H8w8rCGppkV3Iq8Q8VirenY879zfC63mrUcasLwNAewS6+sWxzbuPjV+PIm
+         rEmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722369640; x=1722974440;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VbPZYMLRnlwPHtoaKt4K6dn+FyDOOUhmY8EoiLqybE0=;
+        b=AobBTOr41buHZrafVmdm47b967qjvKHJlMTR4FIZKSVTL+KEtP2JTOvPycqIOvauwk
+         DXQiEtjYCj6PJSfgcAN1jfyW2WDY3a4xitqtdWDP78z5PB+jgd6b+AHBcYH9tD20un8+
+         cCIvpb+RMgaLsUVqfo2t7B4nWZlCO4RTcoT15OYCWm17fPsssFX80dr1derq6zmTrjeG
+         QZG/XxtwwNZ+wGpcY9Gv93A596AZuhV+Lnz9gTsdblMfa81JQ+ftakMrdZJ9BEtmBpLX
+         BwCodKp707Z1sSEuUbJT6yLr+DUYZC2DGja8TeqKJGToqLmY/RgrzwpblPlTW2OhzCbq
+         8JGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQYF2dAG4ZdhgBuyarypFn4b7W8C+6zupVe7PHPqLdZ08kUvvifprTmPy0VcodzWLLDTJ+LfF1XI5okaNtgIqb6GWAxrPJ
+X-Gm-Message-State: AOJu0Yz1yOsY2JMPJ5xn1l5fEnLDWPXJfA9qKOScKlWNLq7YZPdpog/F
+	NYn3Wiv2kMjy/V95gnxI9KSfxm2/o5bEY+TvKbyWS1MDLbaSBVF297sQmH9S0NBlF2D8ukxlbAp
+	yPCN6x5SUJfR1LeaYIuQcjO417i9nbF56v9HTFQ==
+X-Google-Smtp-Source: AGHT+IEE5EzRjQgQf7OLsadPZRVm5wfpMjhdtPXwM5eAo5BtDg8quTA9PAyUuMV7aPlhtR9I5OqiC7L3/3tTJkE4oTA=
+X-Received: by 2002:a17:907:a80d:b0:a6f:6126:18aa with SMTP id
+ a640c23a62f3a-a7d40173b7emr694439966b.67.1722369640184; Tue, 30 Jul 2024
+ 13:00:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240729091532.855688-1-max.kellermann@ionos.com>
+ <3575457.1722355300@warthog.procyon.org.uk> <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com>
+In-Reply-To: <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Tue, 30 Jul 2024 22:00:29 +0200
+Message-ID: <CAKPOu+-qJR08WMfP0ZKCyWzXO6EgPGiKH1F_SB5S+v=sgNGeOQ@mail.gmail.com>
+Subject: Re: [PATCH] netfs, ceph: Revert "netfs: Remove deprecated use of
+ PG_private_2 as a second writeback flag"
+To: David Howells <dhowells@redhat.com>
+Cc: Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>, 
+	Jeff Layton <jlayton@kernel.org>, willy@infradead.org, ceph-devel@vger.kernel.org, 
+	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event
-in process context") removed the process context workqueue from
-amdtp_domain_stream_pcm_pointer() and update_pcm_pointers() to remove
-its overhead.
+On Tue, Jul 30, 2024 at 6:28=E2=80=AFPM Max Kellermann <max.kellermann@iono=
+s.com> wrote:
+> I'll let you know when problems occur later, but until
+> then, I agree with merging your revert instead of my patches.
 
-With RME Fireface 800, this lead to a regression since
-Kernels 5.14.0, causing an AB/BA deadlock competition for the
-substream lock with eventual system freeze under ALSA operation:
+Not sure if that's the same bug/cause (looks different), but 6.10.2
+with your patch is still unstable:
 
-thread 0:
-    * (lock A) acquire substream lock by
-=09snd_pcm_stream_lock_irq() in
-=09snd_pcm_status64()
-    * (lock B) wait for tasklet to finish by calling
-    =09tasklet_unlock_spin_wait() in
-=09tasklet_disable_in_atomic() in
-=09ohci_flush_iso_completions() of ohci.c
-
-thread 1:
-    * (lock B) enter tasklet
-    * (lock A) attempt to acquire substream lock,
-    =09waiting for it to be released:
-=09snd_pcm_stream_lock_irqsave() in
-    =09snd_pcm_period_elapsed() in
-=09update_pcm_pointers() in
-=09process_ctx_payloads() in
-=09process_rx_packets() of amdtp-stream.c
-
-? tasklet_unlock_spin_wait
- </NMI>
- <TASK>
-ohci_flush_iso_completions firewire_ohci
-amdtp_domain_stream_pcm_pointer snd_firewire_lib
-snd_pcm_update_hw_ptr0 snd_pcm
-snd_pcm_status64 snd_pcm
-
-? native_queued_spin_lock_slowpath
- </NMI>
- <IRQ>
-_raw_spin_lock_irqsave
-snd_pcm_period_elapsed snd_pcm
-process_rx_packets snd_firewire_lib
-irq_target_callback snd_firewire_lib
-handle_it_packet firewire_ohci
-context_tasklet firewire_ohci
-
-Restore the process context work queue to prevent deadlock
-AB/BA deadlock competition for ALSA substream lock of
-snd_pcm_stream_lock_irq() in snd_pcm_status64()
-and snd_pcm_stream_lock_irqsave() in snd_pcm_period_elapsed().
-
-revert commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period
-elapse event in process context")
-
-Replace inline description to prevent future deadlock.
-
-Cc: stable@vger.kernel.org
-Fixes: 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event i=
-n process context")
-Reported-by: edmund.raile <edmund.raile@proton.me>
-Closes: https://lore.kernel.org/r/kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76h=
-zeo4simnl@jn3eo7pe642q/
-Signed-off-by: Edmund Raile <edmund.raile@protonmail.com>
----
- sound/firewire/amdtp-stream.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
-
-diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
-index 31201d506a21..7438999e0510 100644
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -615,16 +615,8 @@ static void update_pcm_pointers(struct amdtp_stream *s=
-,
- =09=09// The program in user process should periodically check the status =
-of intermediate
- =09=09// buffer associated to PCM substream to process PCM frames in the b=
-uffer, instead
- =09=09// of receiving notification of period elapsed by poll wait.
--=09=09if (!pcm->runtime->no_period_wakeup) {
--=09=09=09if (in_softirq()) {
--=09=09=09=09// In software IRQ context for 1394 OHCI.
--=09=09=09=09snd_pcm_period_elapsed(pcm);
--=09=09=09} else {
--=09=09=09=09// In process context of ALSA PCM application under acquired l=
-ock of
--=09=09=09=09// PCM substream.
--=09=09=09=09snd_pcm_period_elapsed_under_stream_lock(pcm);
--=09=09=09}
--=09=09}
-+=09=09if (!pcm->runtime->no_period_wakeup)
-+=09=09=09queue_work(system_highpri_wq, &s->period_work);
- =09}
- }
-=20
-@@ -1864,11 +1856,14 @@ unsigned long amdtp_domain_stream_pcm_pointer(struc=
-t amdtp_domain *d,
- {
- =09struct amdtp_stream *irq_target =3D d->irq_target;
-=20
--=09// Process isochronous packets queued till recent isochronous cycle to =
-handle PCM frames.
- =09if (irq_target && amdtp_stream_running(irq_target)) {
--=09=09// In software IRQ context, the call causes dead-lock to disable the=
- tasklet
--=09=09// synchronously.
--=09=09if (!in_softirq())
-+=09=09// use wq to prevent AB/BA deadlock competition for
-+=09=09// substream lock:
-+=09=09// fw_iso_context_flush_completions() acquires
-+=09=09// lock by ohci_flush_iso_completions(),
-+=09=09// amdtp-stream process_rx_packets() attempts to
-+=09=09// acquire same lock by snd_pcm_elapsed()
-+=09=09if (current_work() !=3D &s->period_work)
- =09=09=09fw_iso_context_flush_completions(irq_target->context);
- =09}
-=20
---=20
-2.45.2
-
-
+ rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: {
+9-.... 15-.... } 521399 jiffies s: 2085 root: 0x1/.
+ rcu: blocking rcu_node structures (internal RCU debug): l=3D1:0-15:0x8200/=
+.
+ Sending NMI from CPU 3 to CPUs 9:
+ NMI backtrace for cpu 9
+ CPU: 9 PID: 2756 Comm: kworker/9:2 Tainted: G      D
+6.10.2-cm4all2-vm+ #171
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01=
+/2014
+ Workqueue: ceph-msgr ceph_con_workfn
+ RIP: 0010:native_queued_spin_lock_slowpath+0x80/0x260
+ Code: 57 85 c0 74 10 0f b6 03 84 c0 74 09 f3 90 0f b6 03 84 c0 75 f7
+b8 01 00 00 00 66 89 03 5b 5d 41 5c 41 5d c3 cc cc cc cc f3 90 <eb> 93
+8b 37 b8 00 02 00 00 81 fe 00 01 00 00 74 07 eb a1 83 e8 01
+ RSP: 0018:ffffaf5880c03bb8 EFLAGS: 00000202
+ RAX: 0000000000000001 RBX: ffffa02bc37c9e98 RCX: ffffaf5880c03c90
+ RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffffa02bc37c9e98
+ RBP: ffffa02bc2f94000 R08: ffffaf5880c03c90 R09: 0000000000000010
+ R10: 0000000000000514 R11: 0000000000000000 R12: ffffaf5880c03c90
+ R13: ffffffffb4bcb2f0 R14: ffffa036c9e7e8e8 R15: ffffa02bc37c9e98
+ FS:  0000000000000000(0000) GS:ffffa036cf040000(0000) knlGS:00000000000000=
+00
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055fecac48568 CR3: 000000030d82c002 CR4: 00000000001706b0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ Call Trace:
+  <NMI>
+  ? nmi_cpu_backtrace+0x83/0xf0
+  ? nmi_cpu_backtrace_handler+0xd/0x20
+  ? nmi_handle+0x56/0x120
+  ? default_do_nmi+0x40/0x100
+  ? exc_nmi+0xdc/0x100
+  ? end_repeat_nmi+0xf/0x53
+  ? __pfx_ceph_ino_compare+0x10/0x10
+  ? native_queued_spin_lock_slowpath+0x80/0x260
+  ? native_queued_spin_lock_slowpath+0x80/0x260
+  ? native_queued_spin_lock_slowpath+0x80/0x260
+  </NMI>
+  <TASK>
+  ? __pfx_ceph_ino_compare+0x10/0x10
+  _raw_spin_lock+0x1e/0x30
+  find_inode+0x6e/0xc0
+  ? __pfx_ceph_ino_compare+0x10/0x10
+  ? __pfx_ceph_set_ino_cb+0x10/0x10
+  ilookup5_nowait+0x6d/0xa0
+  ? __pfx_ceph_ino_compare+0x10/0x10
+  iget5_locked+0x33/0xe0
+  ceph_get_inode+0xb8/0xf0
+  mds_dispatch+0xfe8/0x1ff0
+  ? inet_recvmsg+0x4d/0xf0
+  ceph_con_process_message+0x66/0x80
+  ceph_con_v1_try_read+0xcfc/0x17c0
+  ? __switch_to_asm+0x39/0x70
+  ? finish_task_switch.isra.0+0x78/0x240
+  ? __schedule+0x32a/0x1440
+  ceph_con_workfn+0x339/0x4f0
+  process_one_work+0x138/0x2e0
+  worker_thread+0x2b9/0x3d0
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xba/0xe0
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x30/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
