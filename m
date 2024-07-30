@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C93941D7B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E60F941BE0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BF461F26910
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F482283C5B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8A41A76B2;
-	Tue, 30 Jul 2024 17:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A1318454A;
+	Tue, 30 Jul 2024 17:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCeSpqmC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rh+ICCo7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B27D1A76B3;
-	Tue, 30 Jul 2024 17:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACFF183CC3;
+	Tue, 30 Jul 2024 17:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359873; cv=none; b=E4UX8gW6B3R2XcXdTaiySf41/CY6MANX2nQhwI6/Qx4Awt0qESVDJVipKbRFnyhNLX9ibnyPyfMbwW6EypEHNG6YxdSpdplFl1qmQELIO0Px5W7XZQSWKaOfVpEaOJkoK3HRlOueuI9oixJaAhg32tLA+jwFTdQ3YYNNpxQYv/s=
+	t=1722358813; cv=none; b=DVHNohhqfbb0xJIHbnHSM5wODk3+/yLTO03lZVgH19ACLV4Rqn6FrBzQVF4uwsB1qtf0gl9n0CDgHLcowyTy6DiDe4ZxEhsN9Vn9LJ/MTlxPSFVFO02sJpT8TMzR4pkgcG4ogvrSbNpJ4MQfKWCrLAu4MIBNWP5vd502OkeKUpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359873; c=relaxed/simple;
-	bh=Larc2o8tF49U2YvkTY1beXt8aeLZiGkcVraLxiCSLBw=;
+	s=arc-20240116; t=1722358813; c=relaxed/simple;
+	bh=/JMNEozdpW+oxDyO18SeEgdooVKZ1UwgJS1bW8oTgn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQEE7JM5ZqeMCIiowJjxgwzBfl04C5LU3soqXBSqsCjX2a9Qw0yM4XZfAWAWVl0gcwzIRAspuHJCiwCRbOx+g1gnEvfGzITgNgPLtEgJXY/FC1gY2PgeykhwSUarEfay5qB2acFBcKRSWqx2JFYysvvEh+7kFYHCgou6PoU8woE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCeSpqmC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706E4C32782;
-	Tue, 30 Jul 2024 17:17:52 +0000 (UTC)
+	 MIME-Version; b=NT5ghTN/xGIYneP9TjI1pZYBlKHNdw6DrkxcJJLOfn+jSAqfkpIAdAnaks+byEdElJwz4YArt6pZ0xCfhqzVgHWTSTd8QdlWplI9pZgoV0BkBhsvI54iq0CnsY7LvK3YQHLDGHRBlopn829SJTo3y938H5Abba3ipRn4Z3d7RR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rh+ICCo7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D870C32782;
+	Tue, 30 Jul 2024 17:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359872;
-	bh=Larc2o8tF49U2YvkTY1beXt8aeLZiGkcVraLxiCSLBw=;
+	s=korg; t=1722358813;
+	bh=/JMNEozdpW+oxDyO18SeEgdooVKZ1UwgJS1bW8oTgn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCeSpqmCKOdZMD12bDAgBDgZINZxNkxznu/nz6Cv1XztGNvVOulBf5w0I/0aYDe69
-	 DDGz3GsnF1kPP8srG6gliC41V1bKW4s7WYsoB/cp3uxKZyLPLKFBpROM/ihfvMBGT0
-	 aM4Kf53C40xbaDN76d8coIHZj7wCEmu5UVUHpPbk=
+	b=rh+ICCo7mUVICMo60w69CWkcWEITElivB0ScH5M1hamevmZ9wMNgLegzSKt4zn1Dm
+	 8uvbdjL7mPrpTGs2EA0igYqQi/+ay1npyLMYAGETAPclKXLiajyeSqVD7xyRUcFFbg
+	 OhhYcIRDC/mivNO00mYkJVZi9il0sPXNt8FgkWh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Baluta <daniel.baluta@nxp.com>,
+	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 549/568] ASoC: SOF: imx8m: Fix DSP control regmap retrieval
-Date: Tue, 30 Jul 2024 17:50:56 +0200
-Message-ID: <20240730151701.620115816@linuxfoundation.org>
+Subject: [PATCH 6.1 424/440] spi: microchip-core: fix the issues in the isr
+Date: Tue, 30 Jul 2024 17:50:57 +0200
+Message-ID: <20240730151632.343728807@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Baluta <daniel.baluta@nxp.com>
+From: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
 
-[ Upstream commit 2634f745eac25a33f032df32cf98fca8538a534a ]
+[ Upstream commit 502a582b8dd897d9282db47c0911d5320ef2e6b9 ]
 
-According to Documentation/devicetree/bindings/dsp/fsl,dsp.yaml
-fsl,dsp-ctrl is a phandle to syscon block so we need to use correct
-function to retrieve it.
+It is possible for the TXDONE interrupt be raised if the tx FIFO becomes
+temporarily empty while transmitting, resulting in recursive calls to
+mchp_corespi_write_fifo() and therefore a garbage message might be
+transmitted depending on when the interrupt is triggered. Moving all of
+the tx FIFO writes out of the TXDONE portion of the interrupt handler
+avoids this problem.
 
-Currently there is no SOF DSP DTS merged into mainline so there is no
-need to support the old way of retrieving the dsp control node.
+Most of rest of the TXDONE portion of the handler is problematic too.
+Only reading the rx FIFO (and finalising the transfer) when the TXDONE
+interrupt is raised can cause the transfer to stall, if the final bytes
+of rx data are not available in the rx FIFO when the final TXDONE
+interrupt is raised. The transfer should be finalised regardless of
+which interrupt is raised, provided that all tx data has been set and
+all rx data received.
 
-Fixes: 9ba23717b292 ("ASoC: SOF: imx8m: Implement DSP start")
-Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/20240715151653.114751-1-daniel.baluta@oss.nxp.com
+The first issue was encountered "in the wild", the second is
+theoretical.
+
+Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
+Signed-off-by: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20240715-candied-deforest-585685ef3c8a@wendy
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/imx/imx8m.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-microchip-core.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/sound/soc/sof/imx/imx8m.c b/sound/soc/sof/imx/imx8m.c
-index 1243f8a6141ea..186ba4bbb5b26 100644
---- a/sound/soc/sof/imx/imx8m.c
-+++ b/sound/soc/sof/imx/imx8m.c
-@@ -243,7 +243,7 @@ static int imx8m_probe(struct snd_sof_dev *sdev)
- 	/* set default mailbox offset for FW ready message */
- 	sdev->dsp_box.offset = MBOX_OFFSET;
+diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
+index d4c08d3668741..202ac889b5ae2 100644
+--- a/drivers/spi/spi-microchip-core.c
++++ b/drivers/spi/spi-microchip-core.c
+@@ -389,21 +389,18 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
+ 	if (intfield == 0)
+ 		return IRQ_NONE;
  
--	priv->regmap = syscon_regmap_lookup_by_compatible("fsl,dsp-ctrl");
-+	priv->regmap = syscon_regmap_lookup_by_phandle(np, "fsl,dsp-ctrl");
- 	if (IS_ERR(priv->regmap)) {
- 		dev_err(sdev->dev, "cannot find dsp-ctrl registers");
- 		ret = PTR_ERR(priv->regmap);
+-	if (intfield & INT_TXDONE) {
++	if (intfield & INT_TXDONE)
+ 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_TXDONE);
+ 
++	if (intfield & INT_RXRDY) {
++		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
++
+ 		if (spi->rx_len)
+ 			mchp_corespi_read_fifo(spi);
+-
+-		if (spi->tx_len)
+-			mchp_corespi_write_fifo(spi);
+-
+-		if (!spi->rx_len)
+-			finalise = true;
+ 	}
+ 
+-	if (intfield & INT_RXRDY)
+-		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
++	if (!spi->rx_len && !spi->tx_len)
++		finalise = true;
+ 
+ 	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
+ 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
+@@ -488,8 +485,9 @@ static int mchp_corespi_transfer_one(struct spi_master *master,
+ 	mchp_corespi_set_xfer_size(spi, (spi->tx_len > FIFO_DEPTH)
+ 				   ? FIFO_DEPTH : spi->tx_len);
+ 
+-	if (spi->tx_len)
++	while (spi->tx_len)
+ 		mchp_corespi_write_fifo(spi);
++
+ 	return 1;
+ }
+ 
 -- 
 2.43.0
 
