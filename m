@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B209418E9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B96B9418D3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BFECB2BA14
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE1D1F245B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3852A1A6166;
-	Tue, 30 Jul 2024 16:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC84E18953A;
+	Tue, 30 Jul 2024 16:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0cbMpwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCafPPeh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E962618455E;
-	Tue, 30 Jul 2024 16:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794A9189522;
+	Tue, 30 Jul 2024 16:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356726; cv=none; b=aIi/iV2U/F6GZ1gEKZXwZ785Zm4ucot1k2UfjV0Qp6FTJxbWltVicoXxrid1tGxKPYiPcCwdvFkCen1pXt/qgnKRZMD4nW/mnisNuNzMWoJn0c/lwpvZKs39sLtQCOKoTJwVSYuMZ9UU/76KoprYGIbqUCMXrzwaU6qb3aHA+hc=
+	t=1722356732; cv=none; b=ngsQEq7TaAZWTvTbAfQPfdqURFb9OzUP5CPDNR38hDboTALc9lHtGERhipI/iraJpmcJo9YiJM1wyVs2XJoO+5vCJ7OZDKZxF/BW8GswVyiyaVc3EK63ML5UGDPlwgX6Q/qfLlIeVDjnuKl4SkKDmhJbEVZI1TXuXH4Ytf4euvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356726; c=relaxed/simple;
-	bh=YHcksEueiBxFP8vZcPgtnNeXTNK4RwV8kA8VPycS5d0=;
+	s=arc-20240116; t=1722356732; c=relaxed/simple;
+	bh=GEmpZ40ureNYtdLPEV/UDNCB7/UJv7Y3+9j/ZiRB3z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hASpewTCAG7IJgouUOHvNUxu18l+YcsS/DiMojoWAYMokmqwLNfdOP/z/doNmgV2lpIvXCi3+2dkKFriP8g50S1oo1vqw5lARBDHT9J2+nA4Zg4FoAyRvm1HBOkHG8wCWCknjUHbYUeZlkVHG0Hiundr8kv346Zw2zAXbCn4wiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0cbMpwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B30C4AF0F;
-	Tue, 30 Jul 2024 16:25:25 +0000 (UTC)
+	 MIME-Version; b=JVJKtjNRruQStdlb0mXXVXsF8lhHw06WpRnbsRLXyUrZRfRUvI2eJIyqPzQoIXHcwI130P2M5M2ZKC8lF71n/UBmOwz1RpKlYB8VizHo5+zYQqp30AijwhgdRIAGoEKnjKFYhkiRqLdotKpOyhgSJah+a2jsu5T2ooXoF8KqBSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCafPPeh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAC3C4AF0A;
+	Tue, 30 Jul 2024 16:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356725;
-	bh=YHcksEueiBxFP8vZcPgtnNeXTNK4RwV8kA8VPycS5d0=;
+	s=korg; t=1722356732;
+	bh=GEmpZ40ureNYtdLPEV/UDNCB7/UJv7Y3+9j/ZiRB3z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0cbMpwfw59rI3Pf8YUeqA9z73stEhIATu3Y0iWtHfcZEi7FaoOgRA5ybJhcBxTR5
-	 VQFHY0jGODe+1FMstSbpfRVHNit7DSOw6HqXLOA5vhMOHlVvhKVQvrtIXH8ry+2G8b
-	 VMkPs4qCgjFA3gVrc0vLYpvLltZSNr8+0+2xDVU0=
+	b=BCafPPehQ0SunxQgliqH/oVafawnJn5FxDLlsIn38kFbq1LyVSaqo2nAqPkx95cSc
+	 66B75IVCf1lRtlzlXlM40WPTezMjMixSJIlUYZqRpk4XYq9iIuxKN5nzGrt5FyKMDs
+	 Y4e+ru6nhH9LScCIYe8alp/Pd+93KKQEU7PEaaBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 158/809] net: esp: cleanup esp_output_tail_tcp() in case of unsupported ESPINTCP
-Date: Tue, 30 Jul 2024 17:40:34 +0200
-Message-ID: <20240730151730.844365816@linuxfoundation.org>
+Subject: [PATCH 6.10 159/809] wifi: iwlwifi: mvm: dont skip link selection
+Date: Tue, 30 Jul 2024 17:40:35 +0200
+Message-ID: <20240730151730.883358705@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,89 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 96f887a612e4cda89efc3f54bc10c1997e3ab0e9 ]
+[ Upstream commit 46144103ace2863e26f4e911aa45200753b7dbca ]
 
-xmit() functions should consume skb or return error codes in error
-paths.
-When the configuration "CONFIG_INET_ESPINTCP" is not set, the
-implementation of the function "esp_output_tail_tcp" violates this rule.
-The function frees the skb and returns the error code.
-This change removes the kfree_skb from both functions, for both
-esp4 and esp6.
-WARN_ON is added because esp_output_tail_tcp() should never be called if
-CONFIG_INET_ESPINTCP is not set.
+If we exit EMLSR due to a IWL_MVM_ESR_EXIT*, a MLO scan followed by a
+link selection is scheduled with a delay of 30 seconds.
+If during that 30 seconds EMLSR was blocked and unblocked
+(IWL_MVM_ESR_BLOCKED*), we would still want to get the needed data from
+the MLO scan and select link accordingly, and not return immediately to
+EMLSR.
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
-
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 2f33561ea8f9 ("wifi: iwlwifi: mvm: trigger link selection after exiting EMLSR")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://msgid.link/20240512152312.caab27a8dd8f.I63f67e213d5e05416f71513a8d914917d59aa44f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4.c | 3 +--
- net/ipv6/esp6.c | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 3968d3f98e083..619a4df7be1e8 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -239,8 +239,7 @@ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
- #else
- static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
- {
--	kfree_skb(skb);
--
-+	WARN_ON(1);
- 	return -EOPNOTSUPP;
- }
- #endif
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 34a9a5b9ed00b..3920e8aa1031e 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -256,8 +256,7 @@ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
- #else
- static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
- {
--	kfree_skb(skb);
--
-+	WARN_ON(1);
- 	return -EOPNOTSUPP;
- }
- #endif
--- 
-2.43.0
-
-
-
- inline int __down_read_trylock(struct rw_semaphore *sem)
- /*
-  * lock for writing
-  */
--static inline int __down_write_common(struct rw_semaphore *sem, int state)
-+static __always_inline int __down_write_common(struct rw_semaphore *sem, int state)
- {
- 	int ret = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+index 6ec9a8e21a34e..b4a4d25b31cd2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+@@ -1082,6 +1082,13 @@ static void iwl_mvm_esr_unblocked(struct iwl_mvm *mvm,
  
-@@ -1310,12 +1310,12 @@ static inline int __down_write_common(struct rw_semaphore *sem, int state)
- 	return ret;
- }
+ 	IWL_DEBUG_INFO(mvm, "EMLSR is unblocked\n");
  
--static inline void __down_write(struct rw_semaphore *sem)
-+static __always_inline void __down_write(struct rw_semaphore *sem)
- {
- 	__down_write_common(sem, TASK_UNINTERRUPTIBLE);
- }
- 
--static inline int __down_write_killable(struct rw_semaphore *sem)
-+static __always_inline int __down_write_killable(struct rw_semaphore *sem)
- {
- 	return __down_write_common(sem, TASK_KILLABLE);
- }
++	/* We exited due to an EXIT reason, so MLO scan was scheduled already */
++	if (mvmvif->last_esr_exit.reason &&
++	    !(mvmvif->last_esr_exit.reason & IWL_MVM_BLOCK_ESR_REASONS)) {
++		IWL_DEBUG_INFO(mvm, "Wait for MLO scan\n");
++		return;
++	}
++
+ 	/*
+ 	 * If EMLSR was blocked for more than 30 seconds, or the last link
+ 	 * selection decided to not enter EMLSR, trigger a new scan.
 -- 
 2.43.0
 
