@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2FA941812
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E48B941B50
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D590287993
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FFD01C22E4C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4122F18B49F;
-	Tue, 30 Jul 2024 16:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EE9189514;
+	Tue, 30 Jul 2024 16:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diW/20tg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7mJ1U47"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F395118B491;
-	Tue, 30 Jul 2024 16:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BDB18801A;
+	Tue, 30 Jul 2024 16:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356211; cv=none; b=pVWY+GlM3FbBL08zrN+rUa1qYN2cqhGI+xXyPwYq7oARTlvQWAxpAS55u9lRIV/EvS+8SV3v/e+JGZ8COeB67CUZd8ZHSFKkoaFlT/xKQ7Ax+wilyvaVr7C3NmGXpSeUGdLyV913wn0boB4p1syQLt9Sv2jELcB4TrTVvqoypn4=
+	t=1722358404; cv=none; b=I5wO3Vc9GJ/uOu3rzdy4wDw/M4kLcVGzclTXDpRXBoF2/+YBJ6dIHhWAs6wQ5an56R3VzU+Y8o88qJo5oRGPcxsSfgP4qQvgMeNMU8pyZTrh8ntqZwPwzGFiE+eReNh3Dz3NiXTa9Xgh35JafPAYOpgmtUvv3kr5qZE1FsR9oVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356211; c=relaxed/simple;
-	bh=TungPDSBvGniqiButLJu7ZDGJ4Ogm7kx66Pz1xX8ZtA=;
+	s=arc-20240116; t=1722358404; c=relaxed/simple;
+	bh=fvdIlybOZp/9DafUqHNiY0Lu50IDFte2Z8vv2z06JCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BWayfVxyFNYwxnhIfmI+UdRa+r6rwIK71zEvYjs5pxvRf3xa8P+wYwWBdhKAADKWOGnNRfZ3qXg+YmUIw4HiCm30rBMverX3LijErm8EOeU9bzz+7ZV0nAocFQmae3n+1Pxkk4Rujid4gAvrykmJGk9llmOHaMDBXvT4wSh3tag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diW/20tg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2288FC32782;
-	Tue, 30 Jul 2024 16:16:49 +0000 (UTC)
+	 MIME-Version; b=Huv1ke0ma0Ys98W7HhsCRqDLAqzRmH8CgECQ63w00TNkLkO2iW6Gad1p20QQfxeeBG/6zx4XVlBRDIC0xzhrahTsA69OiFKjGr+DYCQ1uvn+b7WHm/NwloFkj47872VqKapKpbWytGfk6SBxk2WohIoETE0bqUkOeSMbRGdmEe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7mJ1U47; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D599C4AF0C;
+	Tue, 30 Jul 2024 16:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356210;
-	bh=TungPDSBvGniqiButLJu7ZDGJ4Ogm7kx66Pz1xX8ZtA=;
+	s=korg; t=1722358404;
+	bh=fvdIlybOZp/9DafUqHNiY0Lu50IDFte2Z8vv2z06JCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diW/20tgi3DNtzi0CsBML99QKH4zB/Krmp/3qg0+vNeoUSGcHtma1mew96no5U9Hf
-	 PO8B9y0xuv6diDghJk1AXlqcPaDn2u1c82+pEYQ8oBG+CRvzaJdXXvvq/+pqwgDOea
-	 9F5WrzXizi4fmMmuef5llenSDxAdb6+hnWutia9c=
+	b=Z7mJ1U47x/O2HG6EqGs7u7ZEZLFN9cVXTPJ+CQ5ppVArRV+ND/3Hsx1uxa90BkQfQ
+	 /joOT1DYNRNOuvmqDrNW58ubMhTRtGnT/Ja8zXS2TiZr3ak8JVeX3sFrf6V4FLbvTO
+	 h12b7W/lUiqr1FPxCoe81VAnJSJ+BeS2H3ahJug4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/568] tcp: fix races in tcp_v[46]_err()
-Date: Tue, 30 Jul 2024 17:43:51 +0200
-Message-ID: <20240730151644.720954362@linuxfoundation.org>
+Subject: [PATCH 6.10 356/809] drm/amd/display: Add null check before access structs
+Date: Tue, 30 Jul 2024 17:43:52 +0200
+Message-ID: <20240730151738.704897255@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit fde6f897f2a184546bf5516ac736523ef24dc6a7 ]
+[ Upstream commit c96140000915b610d86f941450e15ca552de154a ]
 
-These functions have races when they:
+In enable_phantom_plane, we should better check null pointer before
+accessing various structs.
 
-1) Write sk->sk_err
-2) call sk_error_report(sk)
-3) call tcp_done(sk)
-
-As described in prior patches in this series:
-
-An smp_wmb() is missing.
-We should call tcp_done() before sk_error_report(sk)
-to have consistent tcp_poll() results on SMP hosts.
-
-Use tcp_done_with_error() where we centralized the
-correct sequence.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240528125253.1966136-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 11 +++--------
- net/ipv6/tcp_ipv6.c | 10 +++-------
- 2 files changed, 6 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 7c2ca4df0daa3..48ec2c1777d45 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -602,15 +602,10 @@ int tcp_v4_err(struct sk_buff *skb, u32 info)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c
+index 282d70e2b18ab..3d29169dd6bbf 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c
+@@ -750,6 +750,8 @@ static void enable_phantom_plane(struct dml2_context *ctx,
+ 					ctx->config.svp_pstate.callbacks.dc,
+ 					state,
+ 					curr_pipe->plane_state);
++			if (!phantom_plane)
++				return;
+ 		}
  
- 		ip_icmp_error(sk, skb, err, th->dest, info, (u8 *)th);
- 
--		if (!sock_owned_by_user(sk)) {
--			WRITE_ONCE(sk->sk_err, err);
--
--			sk_error_report(sk);
--
--			tcp_done(sk);
--		} else {
-+		if (!sock_owned_by_user(sk))
-+			tcp_done_with_error(sk, err);
-+		else
- 			WRITE_ONCE(sk->sk_err_soft, err);
--		}
- 		goto out;
- 	}
- 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 07bcb690932e1..d0034916d386b 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -488,14 +488,10 @@ static int tcp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 
- 		ipv6_icmp_error(sk, skb, err, th->dest, ntohl(info), (u8 *)th);
- 
--		if (!sock_owned_by_user(sk)) {
--			WRITE_ONCE(sk->sk_err, err);
--			sk_error_report(sk);		/* Wake people up to see the error (see connect in sock.c) */
--
--			tcp_done(sk);
--		} else {
-+		if (!sock_owned_by_user(sk))
-+			tcp_done_with_error(sk, err);
-+		else
- 			WRITE_ONCE(sk->sk_err_soft, err);
--		}
- 		goto out;
- 	case TCP_LISTEN:
- 		break;
+ 		memcpy(&phantom_plane->address, &curr_pipe->plane_state->address, sizeof(phantom_plane->address));
 -- 
 2.43.0
 
