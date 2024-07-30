@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704E0941BDE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D26479418AE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B3B71F23916
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AA491F2263F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AAA189B83;
-	Tue, 30 Jul 2024 17:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CB818B492;
+	Tue, 30 Jul 2024 16:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnkpiMRS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEFvw3B5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7281FBA;
-	Tue, 30 Jul 2024 17:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10043183CCD;
+	Tue, 30 Jul 2024 16:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358807; cv=none; b=vCWlf0DE00o15b866hnS4uBR1JDpxjiDYCPMk9ZOKjJp0xttrtGGgUL62m7hhUpNjVS4h14c7nAg3tNngPxA4ISw2yTGYgsO1RCg01/qXAci5wLM1W/KOwFmWs3x6T3+qxbBfwj4UsPxfKIzaAYiTd/BdOYJDrF8RertIXEHjGw=
+	t=1722356619; cv=none; b=YfQ/iQUBmCsSyumeTHX7Q1+d8hS0NA/aBzswRLrsfpcZexBfYdemRJozSd2WJF6DMklvXeyfW/cG7X81XKH5O6BnfGU9cXRF+/TQUnhk1d9hgqn1wgzUYv9DzUkyGZfG0I560qT3wddCqztrnHCcNN0GjmgW0jpwQhNGukwcDZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358807; c=relaxed/simple;
-	bh=hRT1X53jY8hWGkrgXaaV+omSre4UvWUTDO2WPD33xjA=;
+	s=arc-20240116; t=1722356619; c=relaxed/simple;
+	bh=aqgXFIpn2ddr3PvYUg0wJvw3aykahUKT3Lvwxu2jX4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hb4ggAuzuwevO+/DMNaMVagDwCIvIZHvWwQ/EenYW7QRoScCSfcey6tUhsvCRz4M1HOknMv2brxb0+QpFOGBX5b2deVcH0ttpVXPzi0uHD/+KACarxD7lurKHamDPVOmF3DAH0CH+NyiWTSDKyHKOCW6TM8c+w3gOZtypkXVyhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnkpiMRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590A6C32782;
-	Tue, 30 Jul 2024 17:00:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U0yH6pSM3xTxUTqGxTtKgSXwIqyyBb0SBklNukE/4jVhVpYdkheURUj6iHOLkJ4wpW0+2SbjPk/2199MEnEZRJ48LJGRuAuRgG3ukxy3LN85HkCwNeQ5Ri9MEDhKLX5g/i4zofwW9ij+LM+pv082NIk4axmW0rsnPx7T1DG6m0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEFvw3B5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2772BC4AF10;
+	Tue, 30 Jul 2024 16:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358806;
-	bh=hRT1X53jY8hWGkrgXaaV+omSre4UvWUTDO2WPD33xjA=;
+	s=korg; t=1722356618;
+	bh=aqgXFIpn2ddr3PvYUg0wJvw3aykahUKT3Lvwxu2jX4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AnkpiMRSRJyJXv+ooELavbkeVJMUhMpFXDzM8lECRlNR4hsYfA7VW18tX6hzobupr
-	 MRSaARpFyooX8ebXPhny2ufxBBkVNUgaZcYpt5Xii2EcaDbtuBKMwvzQ1pdO9H4K0g
-	 VsVxyCN2PIA46zzzY9wBxwifR7O8hqHYIOVQiLVE=
+	b=VEFvw3B5+teSJax5OqP26HFUsOLApmHh5KmaJgbEgP+ph5iM2EHfkt8p3uwDN6+sA
+	 dzK861nPVDaf4gbFvr+jiCA9a82xozbWFjjE7G6T0kGE3bAM9WZHQTMSoDO4vItx9W
+	 Bhv2cgx1UE4OzGDxloDUY2RbfR83DXvUwQ25pIhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 398/809] iio: adc: adi-axi-adc: dont allow concurrent enable/disable calls
+Subject: [PATCH 6.6 167/568] bpf: Eliminate remaining "make W=1" warnings in kernel/bpf/btf.o
 Date: Tue, 30 Jul 2024 17:44:34 +0200
-Message-ID: <20240730151740.402273997@linuxfoundation.org>
+Message-ID: <20240730151646.414206237@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit 202b89f4b778d86a940f693785600acaccca6a2b ]
+[ Upstream commit 2454075f8e2915cebbe52a1195631bc7efe2b7e1 ]
 
-Add proper mutex guards as we should not be able to disable
-the core in the middle of enabling it.
+As reported by Mirsad [1] we still see format warnings in kernel/bpf/btf.o
+at W=1 warning level:
 
-Note there's no need to rush in backporting this as the only user of the
-backend does not do anything crazy..
+  CC      kernel/bpf/btf.o
+./kernel/bpf/btf.c: In function ‘btf_type_seq_show_flags’:
+./kernel/bpf/btf.c:7553:21: warning: assignment left-hand side might be a candidate for a format attribute [-Wsuggest-attribute=format]
+ 7553 |         sseq.showfn = btf_seq_show;
+      |                     ^
+./kernel/bpf/btf.c: In function ‘btf_type_snprintf_show’:
+./kernel/bpf/btf.c:7604:31: warning: assignment left-hand side might be a candidate for a format attribute [-Wsuggest-attribute=format]
+ 7604 |         ssnprintf.show.showfn = btf_snprintf_show;
+      |                               ^
 
-Fixes: 794ef0e57854 ("iio: adc: adi-axi-adc: move to backend framework")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240531-dev-axi-adc-drp-v3-1-e3fa79447c67@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Combined with CONFIG_WERROR=y these can halt the build.
+
+The fix (annotating the structure field with __printf())
+suggested by Mirsad resolves these. Apologies I missed this last time.
+No other W=1 warnings were observed in kernel/bpf after this fix.
+
+[1] https://lore.kernel.org/bpf/92c9d047-f058-400c-9c7d-81d4dc1ef71b@gmail.com/
+
+Fixes: b3470da314fd ("bpf: annotate BTF show functions with __printf")
+Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Suggested-by: Mirsad Todorovac <mtodorovac69@gmail.com>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240712092859.1390960-1-alan.maguire@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/adi-axi-adc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/btf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index 0cf0d81358fd5..bf51d619ebbc9 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -85,6 +85,7 @@ static int axi_adc_enable(struct iio_backend *back)
- 	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
- 	int ret;
- 
-+	guard(mutex)(&st->lock);
- 	ret = regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
- 			      ADI_AXI_REG_RSTN_MMCM_RSTN);
- 	if (ret)
-@@ -99,6 +100,7 @@ static void axi_adc_disable(struct iio_backend *back)
- {
- 	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
- 
-+	guard(mutex)(&st->lock);
- 	regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
- }
- 
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 896ac05bf1bd1..fbf9721ba21b6 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -405,7 +405,7 @@ const char *btf_type_str(const struct btf_type *t)
+ struct btf_show {
+ 	u64 flags;
+ 	void *target;	/* target of show operation (seq file, buffer) */
+-	void (*showfn)(struct btf_show *show, const char *fmt, va_list args);
++	__printf(2, 0) void (*showfn)(struct btf_show *show, const char *fmt, va_list args);
+ 	const struct btf *btf;
+ 	/* below are used during iteration */
+ 	struct {
 -- 
 2.43.0
 
