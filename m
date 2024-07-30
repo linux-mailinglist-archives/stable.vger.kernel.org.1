@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FC09419C2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D17D9419C9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BEB41F26A7C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E81F51F26D82
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27AA14D29B;
-	Tue, 30 Jul 2024 16:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C02F183CDA;
+	Tue, 30 Jul 2024 16:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdxJTytN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOtjR66t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F44E433A9;
-	Tue, 30 Jul 2024 16:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC081A6195;
+	Tue, 30 Jul 2024 16:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357367; cv=none; b=s9dCrJJMAgl02gKG90Kr6urfWvaUGcYgv8qMKd0VF522rXfKCGKb28VblwSJhea2f7gMW0DvGH2D4xrg3nqpW8wmhq5euoHa8+hFISatcZ1hayZ8H/55Nk6IgdunCQtP7xDNDZRmrp1qdFqzBBPVDyIN1j+bDiHFhLTBLEH+hhA=
+	t=1722357379; cv=none; b=hSLSJJBqmxyjX9eQQF9Q+vgBdM8noafyqzf/EMKqtTqJ7mH+ii9jUEk9clzddD35posa1eToW0k8X/exud6AfBejOXWeVsRu/zTSLYdR+FSTZDe7fICU4IknGP2gsH2yhhMuBY8XmQsKr+6NC/TyBo6eLbJf0Rfq7RWRZNSUtIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357367; c=relaxed/simple;
-	bh=FmtZ1JT7Ma+69melpQWpUSvprCLInWk6IDMj8Neqbcc=;
+	s=arc-20240116; t=1722357379; c=relaxed/simple;
+	bh=0hjQrnfGwSTvsIJasNFpuACxWUo91dxi4GYybJjg1u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFNnp1Gcc3M4VJpWOQGXIwaJe4kKg2dG+0OoxIiV8Sa1W23mwDslAN1CCVYY7Xa+FE3NwPOjpkoOTu5FRnI5FWEGUT165CRN53fD+J7Y9Mibd/nlPe/S1CTZwIPwB21Px0xlD6cIa3qhvcqtHhbEvBzIpJh90knEqSmWxF06NAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdxJTytN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F9CC4AF0E;
-	Tue, 30 Jul 2024 16:36:06 +0000 (UTC)
+	 MIME-Version; b=s4pqGHMLXn3QtMxPknenOPo3dWLSoFFMMhO7rKr7aP5DrgcTH5U+Oc5HqDw2vpJvm2Hy+HYfFeRljqUyMmzZpfjhi5tNwL7fvmWZeGhzFAv7IPbFPTpevRgbaN3yudfjTOdY1kDN4wno3ntY7xLrQ576ZYfnfIcrQHL2zHaHRgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOtjR66t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428AFC4AF0A;
+	Tue, 30 Jul 2024 16:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357367;
-	bh=FmtZ1JT7Ma+69melpQWpUSvprCLInWk6IDMj8Neqbcc=;
+	s=korg; t=1722357379;
+	bh=0hjQrnfGwSTvsIJasNFpuACxWUo91dxi4GYybJjg1u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BdxJTytNPQXR2+DREo3uW7dtL82kcy/2zbTARUmIFqJfmTAp9k/Geit8637OjCqMU
-	 Ecco0HlO51qqDDR1o+TUhX5ra6VuejbMu4cT0XDE7bH0iJDl/P37Ho1GOu6D8c8qFS
-	 19kC4+MZdbIkh0L2IRgjEHyaLpYjycAaorfbpQRY=
+	b=qOtjR66tX0+dorB3KQCyvd0MyWyjm92FLUaIsrLo1b1j44aWejmdfS7rbRTH4w2AC
+	 hxuFIXruVxys/Og/Db7t90xwmwmHbhN0iyx7fM7/9BQ2jB0+6FZP+EpMXNTlQsZeF5
+	 sCkVQ7/R1RUlv6zm0O7bchPcLk6gQVsHlP33JrI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Florian Evers <florian-evers@gmx.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 247/809] bpf: fix overflow check in adjust_jmp_off()
-Date: Tue, 30 Jul 2024 17:42:03 +0200
-Message-ID: <20240730151734.355061063@linuxfoundation.org>
+Subject: [PATCH 6.10 248/809] nfsd: nfsd_file_lease_notifier_call gets a file_lease as an argument
+Date: Tue, 30 Jul 2024 17:42:04 +0200
+Message-ID: <20240730151734.394145550@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,37 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 4a04b4f0de59dd5c621e78f15803ee0b0544eeb8 ]
+[ Upstream commit 769d20028f45a4f442cfe558a32faba357a7f5e2 ]
 
-adjust_jmp_off() incorrectly used the insn->imm field for all overflow check,
-which is incorrect as that should only be done or the BPF_JMP32 | BPF_JA case,
-not the general jump instruction case. Fix it by using insn->off for overflow
-check in the general case.
+"data" actually refers to a file_lease and not a file_lock. Both structs
+have their file_lock_core as the first field though, so this bug should
+be harmless without struct randomization in play.
 
-Fixes: 5337ac4c9b80 ("bpf: Fix the corner case with may_goto and jump to the 1st insn.")
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Link: https://lore.kernel.org/r/20240712080127.136608-2-shung-hsi.yu@suse.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Florian Evers <florian-evers@gmx.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219008
+Fixes: 05580bbfc6bc ("nfsd: adapt to breakup of struct file_lock")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Florian Evers <florian-evers@gmx.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 2 +-
+ fs/nfsd/filecache.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index e1e08e62a2f2f..6b422c275f78c 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -18768,7 +18768,7 @@ static int adjust_jmp_off(struct bpf_prog *prog, u32 tgt_idx, u32 delta)
- 		} else {
- 			if (i + 1 + insn->off != tgt_idx)
- 				continue;
--			if (signed_add16_overflows(insn->imm, delta))
-+			if (signed_add16_overflows(insn->off, delta))
- 				return -ERANGE;
- 			insn->off += delta;
- 		}
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index ad9083ca144ba..f4704f5d40867 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -664,7 +664,7 @@ static int
+ nfsd_file_lease_notifier_call(struct notifier_block *nb, unsigned long arg,
+ 			    void *data)
+ {
+-	struct file_lock *fl = data;
++	struct file_lease *fl = data;
+ 
+ 	/* Only close files for F_SETLEASE leases */
+ 	if (fl->c.flc_flags & FL_LEASE)
 -- 
 2.43.0
 
