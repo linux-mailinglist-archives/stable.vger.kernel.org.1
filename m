@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED85B941BD5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 273DD94198A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A349C1F21B7A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEB211F25CE8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74C51898F8;
-	Tue, 30 Jul 2024 16:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6449B146D6B;
+	Tue, 30 Jul 2024 16:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcqDDYal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4BUdzDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E37E17D8BB;
-	Tue, 30 Jul 2024 16:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227D68BE8;
+	Tue, 30 Jul 2024 16:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358776; cv=none; b=U+devSrIsiWYL0bslyitgN5OCEASUmz+iEvp9kubNDt8h9Ro8JZI+C63jdC79vmzLMaTtdzgZgBw1+fJbJ9TsJLxr+wygihIja8ZxfYIds5yu6hOTE5jlamFG7UD9QrOz/D9ll+FP0UP931xAf9XIkZVIyWH+qB6G7Fa8P33Dg8=
+	t=1722357220; cv=none; b=kZdwf31iFuvmkaZGIyKPmZU4JXRhn1pPE3O+pYCqRFtMVLpgH8udHS6lC2PqTgPBXL4V3cVcvwixTB3ym5UQxXfIcgf3O9dufxN11D94VW+PYR/M5yUFjydha0AYYJAkbAshLmQUSphuHMYkZqELwYkXThLa8vQlYFnUay5GSP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358776; c=relaxed/simple;
-	bh=QCRXrwAQkOIbVu1Zc/wRw30vrOLwSlI/9tQdbNxx7fg=;
+	s=arc-20240116; t=1722357220; c=relaxed/simple;
+	bh=/LhNFdoBIyvrwIGlWTQtWFelxL/Kr+rYmUKmUlrOEao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpXUv8yloz/wTpRwDpt3U4Mqmw7n9KeKXHPsczKQbwZatTWjGgVaBRvnANh1ejFCwqdDok/DiTJl1zhJ9IaLvaZYVQM79cCfxtbwR6oP4NlrtkECwjHcB5tG2hsw2Jpd5SDsGxDHgyq5BZn5zPekUkj1iFkg5mtFXT9gnGUBvlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcqDDYal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE017C4AF0A;
-	Tue, 30 Jul 2024 16:59:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SlLk5hxdwEGg+a5Z7nbS7dUANav0HBePfDYmQA0Fhlnw9OZCJjDS+LowFMB5S4JcCL/el/3g2AaVM2NFLzRcxd5wSL2usx+iwLZZbh1gcpcchB65naMqvnPSGXo+qD7jS7vo7Hl+3o/cHQZix7FJ1Pebh5zha2itpGt4s3xAQmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4BUdzDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA96C32782;
+	Tue, 30 Jul 2024 16:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358776;
-	bh=QCRXrwAQkOIbVu1Zc/wRw30vrOLwSlI/9tQdbNxx7fg=;
+	s=korg; t=1722357219;
+	bh=/LhNFdoBIyvrwIGlWTQtWFelxL/Kr+rYmUKmUlrOEao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcqDDYalcOvZH6TDxp2/wCc4ZnAtmbJox2HBUYVN1QGHe5BOALVd1u1ZQX3sH3s8X
-	 SAHwAibxyZ7y+B6Mo6xEnPna0y6zqEEOItBKs0FuBvGqW6Ic7B2Zr15OMa/u9sGRx3
-	 8l943HowxK6f6TI8i5huf8kEqhuglkTItUUIzBog=
+	b=M4BUdzDSUVH0PFgUQUKZc88zSSP8Z/9IqmnSFwdkEYWg16iKn0a/wWdPvaqW84wlL
+	 CVi4fNIM7/FPzY/wJcqQ/ufD0V6DUDLJD74osFBTXCyQK6AULVMJnjRIWKThPYWBEu
+	 6Iq62mp3Rtwq+pHM6gEQ7q81E5vuJrf+pzTDDZqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Paolo Pisati <p.pisati@gmail.com>,
-	Michael Schmitz <schmitzmic@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 6.6 396/568] m68k: amiga: Turn off Warp1260 interrupts during boot
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.1 270/440] landlock: Dont lose track of restrictions on cred_transfer
 Date: Tue, 30 Jul 2024 17:48:23 +0200
-Message-ID: <20240730151655.348389897@linuxfoundation.org>
+Message-ID: <20240730151626.382438441@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Pisati <p.pisati@gmail.com>
+From: Jann Horn <jannh@google.com>
 
-commit 1d8491d3e726984343dd8c3cdbe2f2b47cfdd928 upstream.
+commit 39705a6c29f8a2b93cf5b99528a55366c50014d1 upstream.
 
-On an Amiga 1200 equipped with a Warp1260 accelerator, an interrupt
-storm coming from the accelerator board causes the machine to crash in
-local_irq_enable() or auto_irq_enable().  Disabling interrupts for the
-Warp1260 in amiga_parse_bootinfo() fixes the problem.
+When a process' cred struct is replaced, this _almost_ always invokes
+the cred_prepare LSM hook; but in one special case (when
+KEYCTL_SESSION_TO_PARENT updates the parent's credentials), the
+cred_transfer LSM hook is used instead.  Landlock only implements the
+cred_prepare hook, not cred_transfer, so KEYCTL_SESSION_TO_PARENT causes
+all information on Landlock restrictions to be lost.
 
-Link: https://lore.kernel.org/r/ZkjwzVwYeQtyAPrL@amaterasu.local
-Cc: stable <stable@kernel.org>
-Signed-off-by: Paolo Pisati <p.pisati@gmail.com>
-Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/20240601153254.186225-1-p.pisati@gmail.com
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+This basically means that a process with the ability to use the fork()
+and keyctl() syscalls can get rid of all Landlock restrictions on
+itself.
+
+Fix it by adding a cred_transfer hook that does the same thing as the
+existing cred_prepare hook. (Implemented by having hook_cred_prepare()
+call hook_cred_transfer() so that the two functions are less likely to
+accidentally diverge in the future.)
+
+Cc: stable@kernel.org
+Fixes: 385975dca53e ("landlock: Set up the security framework and manage credentials")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240724-landlock-houdini-fix-v1-1-df89a4560ca3@google.com
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/amiga/config.c       |    9 +++++++++
- include/uapi/linux/zorro_ids.h |    3 +++
- 2 files changed, 12 insertions(+)
+ security/landlock/cred.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/arch/m68k/amiga/config.c
-+++ b/arch/m68k/amiga/config.c
-@@ -180,6 +180,15 @@ int __init amiga_parse_bootinfo(const st
- 			dev->slotsize = be16_to_cpu(cd->cd_SlotSize);
- 			dev->boardaddr = be32_to_cpu(cd->cd_BoardAddr);
- 			dev->boardsize = be32_to_cpu(cd->cd_BoardSize);
-+
-+			/* CS-LAB Warp 1260 workaround */
-+			if (be16_to_cpu(dev->rom.er_Manufacturer) == ZORRO_MANUF(ZORRO_PROD_CSLAB_WARP_1260) &&
-+			    dev->rom.er_Product == ZORRO_PROD(ZORRO_PROD_CSLAB_WARP_1260)) {
-+
-+				/* turn off all interrupts */
-+				pr_info("Warp 1260 card detected: applying interrupt storm workaround\n");
-+				*(uint32_t *)(dev->boardaddr + 0x1000) = 0xfff;
-+			}
- 		} else
- 			pr_warn("amiga_parse_bootinfo: too many AutoConfig devices\n");
- #endif /* CONFIG_ZORRO */
---- a/include/uapi/linux/zorro_ids.h
-+++ b/include/uapi/linux/zorro_ids.h
-@@ -449,6 +449,9 @@
- #define  ZORRO_PROD_VMC_ISDN_BLASTER_Z2				ZORRO_ID(VMC, 0x01, 0)
- #define  ZORRO_PROD_VMC_HYPERCOM_4				ZORRO_ID(VMC, 0x02, 0)
+--- a/security/landlock/cred.c
++++ b/security/landlock/cred.c
+@@ -14,8 +14,8 @@
+ #include "ruleset.h"
+ #include "setup.h"
  
-+#define ZORRO_MANUF_CSLAB					0x1400
-+#define  ZORRO_PROD_CSLAB_WARP_1260				ZORRO_ID(CSLAB, 0x65, 0)
+-static int hook_cred_prepare(struct cred *const new,
+-			     const struct cred *const old, const gfp_t gfp)
++static void hook_cred_transfer(struct cred *const new,
++			       const struct cred *const old)
+ {
+ 	struct landlock_ruleset *const old_dom = landlock_cred(old)->domain;
+ 
+@@ -23,6 +23,12 @@ static int hook_cred_prepare(struct cred
+ 		landlock_get_ruleset(old_dom);
+ 		landlock_cred(new)->domain = old_dom;
+ 	}
++}
 +
- #define ZORRO_MANUF_INFORMATION					0x157C
- #define  ZORRO_PROD_INFORMATION_ISDN_ENGINE_I			ZORRO_ID(INFORMATION, 0x64, 0)
++static int hook_cred_prepare(struct cred *const new,
++			     const struct cred *const old, const gfp_t gfp)
++{
++	hook_cred_transfer(new, old);
+ 	return 0;
+ }
+ 
+@@ -36,6 +42,7 @@ static void hook_cred_free(struct cred *
+ 
+ static struct security_hook_list landlock_hooks[] __lsm_ro_after_init = {
+ 	LSM_HOOK_INIT(cred_prepare, hook_cred_prepare),
++	LSM_HOOK_INIT(cred_transfer, hook_cred_transfer),
+ 	LSM_HOOK_INIT(cred_free, hook_cred_free),
+ };
  
 
 
