@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB51941D53
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C86941B8A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABFCC1C235BE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92A2C1F2360E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB181A76B6;
-	Tue, 30 Jul 2024 17:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB6A18990C;
+	Tue, 30 Jul 2024 16:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qqg9LXqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaCFWF1D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2960F1E86F;
-	Tue, 30 Jul 2024 17:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53005189537;
+	Tue, 30 Jul 2024 16:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359737; cv=none; b=bORrH36QFBU8wha5EEqdgjMO43aN7xW35oc5RacM5Fo3g7z1B2HTR91SD93oCSJ3R60/r/GFDOcaI3BxPrH6CG3wNdSskhW3ut7m37YB/XnMAyxNtFQYwFNCzXccsmqSnbKvgAXZsaFgnQu8/lD2fPB44dwPA6Zcq6ovWJ5S2yA=
+	t=1722358574; cv=none; b=kuaf6EHxI+1W/gUYIiMy6Z5Emkanbc/Ev01guilGPM+Lx/n0MggnkLo1mLCya7qtwlSDs25A8lge/iUBtdZYIHL0B5j+fElaegrDJOw+1me6yXb4v1Z1yfnxa7zVBDHNI/J1X5jlOp0pyZ/guiWj3PeQ5qut3FObZ9ncdxm3398=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359737; c=relaxed/simple;
-	bh=ntAk8dutVIqMcbyLMtN1hphevWD4BWU5GNRaWkv+Q/c=;
+	s=arc-20240116; t=1722358574; c=relaxed/simple;
+	bh=a9q8igH7ppooWfi5MgMRFN9VxbNvJ8tW+5Obb04ZWfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nprvrsh6ElKsprpGNh/QLGDpVJ5c72ltbkL+45IPUo1SJIazvvQtgKeQ77oj24okZI6r9qPikJOUwHHVJqMhytzqVH4Neesju4YThW3YbI7+fBY1xVWikg06t0U38icOSD93E55IJKZtwTEvnmPZl+/xZTarSaSiWhUtP5T+CfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qqg9LXqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65E0C32782;
-	Tue, 30 Jul 2024 17:15:36 +0000 (UTC)
+	 MIME-Version; b=M/szRsZIZccpVfmiJ3bsXXiZoNwRYrlocZjcwefA79aAsEjuLVvjJE5s53z4NigNSnvcgCIisUpEu1eI4cKZRgZAHQIjPMZtMLM9Y3BZWmJsWxZwOtugwn7s2KVxe8c69+Yw+pIWlaimyXjytxan88KrPz9EdD5/VjuQ1NROvPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaCFWF1D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A52CC4AF0C;
+	Tue, 30 Jul 2024 16:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359737;
-	bh=ntAk8dutVIqMcbyLMtN1hphevWD4BWU5GNRaWkv+Q/c=;
+	s=korg; t=1722358574;
+	bh=a9q8igH7ppooWfi5MgMRFN9VxbNvJ8tW+5Obb04ZWfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qqg9LXqwk0DXNen6xGP/HfvB/eGMID1uTIpEjNjf4h0cu38ngwuEbiPZVky93Bm61
-	 f/RIS5IaW3nkWMy3mtF5asIOxLsaj2bM+y0zU1w4Iu9O+zdEyL0cKWLXnnyPUfu8rG
-	 smYkEFt3R96/LnMThThejQLtycpFeA0WSGfVC+9M=
+	b=ZaCFWF1DbV/XqTaBTE7w/1aIt1J6bS+4Pw/WGCXD3rBdofV/Hy+vr1CVugPuI9+aB
+	 m6jnFnjTTMaR6eFXasqItyJi8vwhZ6H7Ci/yICZSOfX98xIniY6XhFggWGcCU38uIS
+	 FjriKhHD6I1+vNm1SUftATEOoPkAJWBmYHeeD9AM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Yunlei He <heyunlei@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 529/568] selftests/bpf: fexit_sleep: Fix stack allocation for arm64
+Subject: [PATCH 6.1 403/440] f2fs: fix to update user block counts in block_operations()
 Date: Tue, 30 Jul 2024 17:50:36 +0200
-Message-ID: <20240730151700.833504344@linuxfoundation.org>
+Message-ID: <20240730151631.539946245@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit e1ef78dce9b7b0fa7f9d88bb3554441d74d33b34 ]
+[ Upstream commit f06c0f82e38bbda7264d6ef3c90045ad2810e0f3 ]
 
-On ARM64 the stack pointer should be aligned at a 16 byte boundary or
-the SPAlignmentFault can occur. The fexit_sleep selftest allocates the
-stack for the child process as a character array, this is not guaranteed
-to be aligned at 16 bytes.
+Commit 59c9081bc86e ("f2fs: allow write page cache when writting cp")
+allows write() to write data to page cache during checkpoint, so block
+count fields like .total_valid_block_count, .alloc_valid_block_count
+and .rf_node_block_count may encounter race condition as below:
 
-Because of the SPAlignmentFault, the child process is killed before it
-can do the nanosleep call and hence fentry_cnt remains as 0. This causes
-the main thread to hang on the following line:
+CP				Thread A
+- write_checkpoint
+ - block_operations
+  - f2fs_down_write(&sbi->node_change)
+  - __prepare_cp_block
+  : ckpt->valid_block_count = .total_valid_block_count
+  - f2fs_up_write(&sbi->node_change)
+				- write
+				 - f2fs_preallocate_blocks
+				  - f2fs_map_blocks(,F2FS_GET_BLOCK_PRE_AIO)
+				   - f2fs_map_lock
+				    - f2fs_down_read(&sbi->node_change)
+				   - f2fs_reserve_new_blocks
+				    - inc_valid_block_count
+				    : percpu_counter_add(&sbi->alloc_valid_block_count, count)
+				    : sbi->total_valid_block_count += count
+				    - f2fs_up_read(&sbi->node_change)
+ - do_checkpoint
+ : sbi->last_valid_block_count = sbi->total_valid_block_count
+ : percpu_counter_set(&sbi->alloc_valid_block_count, 0)
+ : percpu_counter_set(&sbi->rf_node_block_count, 0)
+				- fsync
+				 - need_do_checkpoint
+				  - f2fs_space_for_roll_forward
+				  : alloc_valid_block_count was reset to zero,
+				    so, it may missed last data during checkpoint
 
-while (READ_ONCE(fexit_skel->bss->fentry_cnt) != 2);
+Let's change to update .total_valid_block_count, .alloc_valid_block_count
+and .rf_node_block_count in block_operations(), then their access can be
+protected by .node_change and .cp_rwsem lock, so that it can avoid above
+race condition.
 
-Fix this by allocating the stack using mmap() as described in the
-example in the man page of clone().
-
-Remove the fexit_sleep test from the DENYLIST of arm64.
-
-Fixes: eddbe8e65214 ("selftest/bpf: Add a test to check trampoline freeing logic.")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240715173327.8657-1-puranjay@kernel.org
+Fixes: 59c9081bc86e ("f2fs: allow write page cache when writting cp")
+Cc: Yunlei He <heyunlei@oppo.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/DENYLIST.aarch64         | 1 -
- tools/testing/selftests/bpf/prog_tests/fexit_sleep.c | 8 +++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ fs/f2fs/checkpoint.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/DENYLIST.aarch64 b/tools/testing/selftests/bpf/DENYLIST.aarch64
-index 3babaf3eee5c4..ec6aa58fb1810 100644
---- a/tools/testing/selftests/bpf/DENYLIST.aarch64
-+++ b/tools/testing/selftests/bpf/DENYLIST.aarch64
-@@ -1,6 +1,5 @@
- bpf_cookie/multi_kprobe_attach_api               # kprobe_multi_link_api_subtest:FAIL:fentry_raw_skel_load unexpected error: -3
- bpf_cookie/multi_kprobe_link_api                 # kprobe_multi_link_api_subtest:FAIL:fentry_raw_skel_load unexpected error: -3
--fexit_sleep                                      # The test never returns. The remaining tests cannot start.
- kprobe_multi_bench_attach                        # needs CONFIG_FPROBE
- kprobe_multi_test                                # needs CONFIG_FPROBE
- module_attach                                    # prog 'kprobe_multi': failed to auto-attach: -95
-diff --git a/tools/testing/selftests/bpf/prog_tests/fexit_sleep.c b/tools/testing/selftests/bpf/prog_tests/fexit_sleep.c
-index f949647dbbc21..552a0875ca6db 100644
---- a/tools/testing/selftests/bpf/prog_tests/fexit_sleep.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fexit_sleep.c
-@@ -21,13 +21,13 @@ static int do_sleep(void *skel)
- }
- 
- #define STACK_SIZE (1024 * 1024)
--static char child_stack[STACK_SIZE];
- 
- void test_fexit_sleep(void)
- {
- 	struct fexit_sleep_lskel *fexit_skel = NULL;
- 	int wstatus, duration = 0;
- 	pid_t cpid;
-+	char *child_stack = NULL;
- 	int err, fexit_cnt;
- 
- 	fexit_skel = fexit_sleep_lskel__open_and_load();
-@@ -38,6 +38,11 @@ void test_fexit_sleep(void)
- 	if (CHECK(err, "fexit_attach", "fexit attach failed: %d\n", err))
- 		goto cleanup;
- 
-+	child_stack = mmap(NULL, STACK_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE |
-+			   MAP_ANONYMOUS | MAP_STACK, -1, 0);
-+	if (!ASSERT_NEQ(child_stack, MAP_FAILED, "mmap"))
-+		goto cleanup;
+diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
+index 13d8774706758..ad4073cde397b 100644
+--- a/fs/f2fs/checkpoint.c
++++ b/fs/f2fs/checkpoint.c
+@@ -1178,6 +1178,11 @@ static void __prepare_cp_block(struct f2fs_sb_info *sbi)
+ 	ckpt->valid_node_count = cpu_to_le32(valid_node_count(sbi));
+ 	ckpt->valid_inode_count = cpu_to_le32(valid_inode_count(sbi));
+ 	ckpt->next_free_nid = cpu_to_le32(last_nid);
 +
- 	cpid = clone(do_sleep, child_stack + STACK_SIZE, CLONE_FILES | SIGCHLD, fexit_skel);
- 	if (CHECK(cpid == -1, "clone", "%s\n", strerror(errno)))
- 		goto cleanup;
-@@ -78,5 +83,6 @@ void test_fexit_sleep(void)
- 		goto cleanup;
- 
- cleanup:
-+	munmap(child_stack, STACK_SIZE);
- 	fexit_sleep_lskel__destroy(fexit_skel);
++	/* update user_block_counts */
++	sbi->last_valid_block_count = sbi->total_valid_block_count;
++	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
++	percpu_counter_set(&sbi->rf_node_block_count, 0);
  }
+ 
+ static bool __need_flush_quota(struct f2fs_sb_info *sbi)
+@@ -1569,11 +1574,6 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
+ 		start_blk += NR_CURSEG_NODE_TYPE;
+ 	}
+ 
+-	/* update user_block_counts */
+-	sbi->last_valid_block_count = sbi->total_valid_block_count;
+-	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
+-	percpu_counter_set(&sbi->rf_node_block_count, 0);
+-
+ 	/* Here, we have one bio having CP pack except cp pack 2 page */
+ 	f2fs_sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
+ 	/* Wait for all dirty meta pages to be submitted for IO */
 -- 
 2.43.0
 
