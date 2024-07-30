@@ -1,280 +1,614 @@
-Return-Path: <stable+bounces-62653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC78940C5E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:53:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80118940C63
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44A4A28809C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 08:53:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 037291F25808
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 08:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE6419408E;
-	Tue, 30 Jul 2024 08:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cZrFFiUf";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JX4xcZ4z";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cZrFFiUf";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JX4xcZ4z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D84D7192B74;
+	Tue, 30 Jul 2024 08:54:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559131B86DD
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 08:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BA343152;
+	Tue, 30 Jul 2024 08:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722329550; cv=none; b=QExP65fyQSjTqWzR+4RCzJBT3uEnXek0bOxROUb3d+McRIFjRngqd6ac1XWkmzoZgwt29xw6uBbHRjGJTvAryiuQcVBcFEJk81T2UP2XewtJw58aYF4a7gyq87ETqEad3TX/YWd5Oz2NoWi7E6WvegVtRZ/mxqGwCPbvXyB7zzU=
+	t=1722329698; cv=none; b=Ag9ekxlKp8FTKNUNHnVWh9OeaFKp3XzDlPprmDqcUClH/kgs2iLbbWXHGXrskMRGIDyHpPols5q8mur4Bfyw9wJaW9KrNSPmMpUzxK+36zPhhh4PATsH9FzxbfyWYx5K+yB7UDmjbhCpS79GyOK6UYA/C4wThQn+KkvMMxPuFhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722329550; c=relaxed/simple;
-	bh=eUrIiyjAv8+q6uUDZeDRryUCLbKteGK9QObC9yfAP7c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T62sqSMJr+FAQGaYPNPGuPfYoQNCj7VDwvM/5+ypiJey9/bEFpfonmvqPrg1twk9yGpKWdDDWO6gQQ4n7FVEWLmjXk3fyzA8IkpWBUSIihPGr+LYEOlR9CI4E//CEhmcF+jmwCxKVURxvlnAjgV/mKjbbY1qmwWw6+2jxqOkFto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cZrFFiUf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JX4xcZ4z; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cZrFFiUf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JX4xcZ4z; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	s=arc-20240116; t=1722329698; c=relaxed/simple;
+	bh=evmp6JIC0/O0Np7RtQdWKUhbbxAoESChjbkK9myxIVk=;
+	h=Message-ID:From:Date:Subject:To:Cc; b=lMbPSuMOKLzJJ8yRONeZFhpsZJdEcUdpvP0R3JNDj6I/TL6akDXxPTFonY7LGPe5XQkOuwuFHeKQ5TV+8Z2Ilz4okIrPm0V4btrZjEHl0SXAOmEos4EC//08gr4ecmomJB6kUcAdiPMq/0w9sZe4I62OCbK07PZ5+oXt6PBQyHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6054821B5C;
-	Tue, 30 Jul 2024 08:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1722329546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VrnSN+Hi+plf1wCIyYH4uh/WBbuBnPEnFiIQu480KFY=;
-	b=cZrFFiUf3bFjrpAh3Yas8Q3/6UQgKFmqcMRuS1SlGmjvvxT8wcRn94GWjpDVE6l84ovysB
-	ScKMWCuyDL+afRRIoQbHsSEU1yX3RZH2scBA/xE5lFpVq1+OPDKH3WpcCDoMGttx1c1B6q
-	teeP3rzyVBevohQYtHsQcOIg5OHaQzo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1722329546;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VrnSN+Hi+plf1wCIyYH4uh/WBbuBnPEnFiIQu480KFY=;
-	b=JX4xcZ4zo4ESSb0cpOFNiHPrQxq8RuG6cpTsDtc8kIQ49wEAQmFP+RwFlk7LduM8Kws377
-	Btqqg+MO2aaPnyBA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1722329546; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VrnSN+Hi+plf1wCIyYH4uh/WBbuBnPEnFiIQu480KFY=;
-	b=cZrFFiUf3bFjrpAh3Yas8Q3/6UQgKFmqcMRuS1SlGmjvvxT8wcRn94GWjpDVE6l84ovysB
-	ScKMWCuyDL+afRRIoQbHsSEU1yX3RZH2scBA/xE5lFpVq1+OPDKH3WpcCDoMGttx1c1B6q
-	teeP3rzyVBevohQYtHsQcOIg5OHaQzo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1722329546;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VrnSN+Hi+plf1wCIyYH4uh/WBbuBnPEnFiIQu480KFY=;
-	b=JX4xcZ4zo4ESSb0cpOFNiHPrQxq8RuG6cpTsDtc8kIQ49wEAQmFP+RwFlk7LduM8Kws377
-	Btqqg+MO2aaPnyBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id E39131019178E;
+	Tue, 30 Jul 2024 10:54:51 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2854F13983;
-	Tue, 30 Jul 2024 08:52:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Y2+JCMqpqGY7CQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 30 Jul 2024 08:52:26 +0000
-Message-ID: <f890e750-cd0d-48bb-9452-a41dd1775788@suse.de>
-Date: Tue, 30 Jul 2024 10:52:25 +0200
+	by h08.hostsharing.net (Postfix) with ESMTPSA id B46C7603B5E6;
+	Tue, 30 Jul 2024 10:54:51 +0200 (CEST)
+X-Mailbox-Line: From dd76a3196d5295fa7575bf149d890e647fbe0fd6 Mon Sep 17 00:00:00 2001
+Message-ID: <dd76a3196d5295fa7575bf149d890e647fbe0fd6.1722329230.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Tue, 30 Jul 2024 10:54:51 +0200
+Subject: [PATCH 5.15-stable 1/3] locking: Introduce __cleanup() based
+ infrastructure
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, linux-pci@vger.kernel.org, Keith Busch <kbusch@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Bjorn Helgaas <helgaas@kernel.org>, Krzysztof Wilczynski <kwilczynski@kernel.org>, Ira Weiny <ira.weiny@intel.com>, Peter Zijlstra <peterz@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] drm/ast: astdp: Wake up during connector status
- detection
-To: airlied@redhat.com, jfalempe@redhat.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- daniel@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20240717143319.104012-1-tzimmermann@suse.de>
- <20240717143319.104012-2-tzimmermann@suse.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20240717143319.104012-2-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.09 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo,lists.freedesktop.org:email]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -4.09
 
-I merged this patch into drm-misc-fixes.
+From: Peter Zijlstra <peterz@infradead.org>
 
-Am 17.07.24 um 16:24 schrieb Thomas Zimmermann:
-> Power up the ASTDP connector for connection status detection if the
-> connector is not active. Keep it powered if a display is attached.
->
-> This fixes a bug where the connector does not come back after
-> disconnecting the display. The encoder's atomic_disable turns off
-> power on the physical connector. Further HPD reads will fail,
-> thus preventing the driver from detecting re-connected displays.
->
-> For connectors that are actively used, only test the HPD flag without
-> touching power.
->
-> Fixes: f81bb0ac7872 ("drm/ast: report connection status on Display Port.")
-> Cc: Jocelyn Falempe <jfalempe@redhat.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Dave Airlie <airlied@redhat.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.6+
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->   drivers/gpu/drm/ast/ast_dp.c   |  7 +++++++
->   drivers/gpu/drm/ast/ast_drv.h  |  1 +
->   drivers/gpu/drm/ast/ast_mode.c | 29 +++++++++++++++++++++++++++--
->   3 files changed, 35 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
-> index 1e9259416980..e6c7f0d64e99 100644
-> --- a/drivers/gpu/drm/ast/ast_dp.c
-> +++ b/drivers/gpu/drm/ast/ast_dp.c
-> @@ -158,7 +158,14 @@ void ast_dp_launch(struct drm_device *dev)
->   			       ASTDP_HOST_EDID_READ_DONE);
->   }
->   
-> +bool ast_dp_power_is_on(struct ast_device *ast)
-> +{
-> +	u8 vgacre3;
-> +
-> +	vgacre3 = ast_get_index_reg(ast, AST_IO_VGACRI, 0xe3);
->   
-> +	return !(vgacre3 & AST_DP_PHY_SLEEP);
-> +}
->   
->   void ast_dp_power_on_off(struct drm_device *dev, bool on)
->   {
-> diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
-> index ba3d86973995..47bab5596c16 100644
-> --- a/drivers/gpu/drm/ast/ast_drv.h
-> +++ b/drivers/gpu/drm/ast/ast_drv.h
-> @@ -472,6 +472,7 @@ void ast_init_3rdtx(struct drm_device *dev);
->   bool ast_astdp_is_connected(struct ast_device *ast);
->   int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata);
->   void ast_dp_launch(struct drm_device *dev);
-> +bool ast_dp_power_is_on(struct ast_device *ast);
->   void ast_dp_power_on_off(struct drm_device *dev, bool no);
->   void ast_dp_set_on_off(struct drm_device *dev, bool no);
->   void ast_dp_set_mode(struct drm_crtc *crtc, struct ast_vbios_mode_info *vbios_mode);
-> diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-> index dc8f639e82fd..049ee1477c33 100644
-> --- a/drivers/gpu/drm/ast/ast_mode.c
-> +++ b/drivers/gpu/drm/ast/ast_mode.c
-> @@ -28,6 +28,7 @@
->    * Authors: Dave Airlie <airlied@redhat.com>
->    */
->   
-> +#include <linux/delay.h>
->   #include <linux/export.h>
->   #include <linux/pci.h>
->   
-> @@ -1687,11 +1688,35 @@ static int ast_astdp_connector_helper_detect_ctx(struct drm_connector *connector
->   						 struct drm_modeset_acquire_ctx *ctx,
->   						 bool force)
->   {
-> +	struct drm_device *dev = connector->dev;
->   	struct ast_device *ast = to_ast_device(connector->dev);
-> +	enum drm_connector_status status = connector_status_disconnected;
-> +	struct drm_connector_state *connector_state = connector->state;
-> +	bool is_active = false;
-> +
-> +	mutex_lock(&ast->modeset_lock);
-> +
-> +	if (connector_state && connector_state->crtc) {
-> +		struct drm_crtc_state *crtc_state = connector_state->crtc->state;
-> +
-> +		if (crtc_state && crtc_state->active)
-> +			is_active = true;
-> +	}
-> +
-> +	if (!is_active && !ast_dp_power_is_on(ast)) {
-> +		ast_dp_power_on_off(dev, true);
-> +		msleep(50);
-> +	}
->   
->   	if (ast_astdp_is_connected(ast))
-> -		return connector_status_connected;
-> -	return connector_status_disconnected;
-> +		status = connector_status_connected;
-> +
-> +	if (!is_active && status == connector_status_disconnected)
-> +		ast_dp_power_on_off(dev, false);
-> +
-> +	mutex_unlock(&ast->modeset_lock);
-> +
-> +	return status;
->   }
->   
->   static const struct drm_connector_helper_funcs ast_astdp_connector_helper_funcs = {
+commit 54da6a0924311c7cf5015533991e44fb8eb12773 upstream.
 
+Use __attribute__((__cleanup__(func))) to build:
+
+ - simple auto-release pointers using __free()
+
+ - 'classes' with constructor and destructor semantics for
+   scope-based resource management.
+
+ - lock guards based on the above classes.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Link: https://lkml.kernel.org/r/20230612093537.614161713%40infradead.org
+---
+ include/linux/cleanup.h             | 171 ++++++++++++++++++++++++++++
+ include/linux/compiler-clang.h      |   9 ++
+ include/linux/compiler_attributes.h |   6 +
+ include/linux/device.h              |   7 ++
+ include/linux/file.h                |   6 +
+ include/linux/irqflags.h            |   7 ++
+ include/linux/mutex.h               |   4 +
+ include/linux/percpu.h              |   4 +
+ include/linux/preempt.h             |   5 +
+ include/linux/rcupdate.h            |   3 +
+ include/linux/rwsem.h               |   8 ++
+ include/linux/sched/task.h          |   2 +
+ include/linux/slab.h                |   4 +
+ include/linux/spinlock.h            |  31 +++++
+ include/linux/srcu.h                |   5 +
+ scripts/checkpatch.pl               |   2 +-
+ 16 files changed, 273 insertions(+), 1 deletion(-)
+ create mode 100644 include/linux/cleanup.h
+
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+new file mode 100644
+index 000000000000..53f1a7a932b0
+--- /dev/null
++++ b/include/linux/cleanup.h
+@@ -0,0 +1,171 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __LINUX_GUARDS_H
++#define __LINUX_GUARDS_H
++
++#include <linux/compiler.h>
++
++/*
++ * DEFINE_FREE(name, type, free):
++ *	simple helper macro that defines the required wrapper for a __free()
++ *	based cleanup function. @free is an expression using '_T' to access
++ *	the variable.
++ *
++ * __free(name):
++ *	variable attribute to add a scoped based cleanup to the variable.
++ *
++ * no_free_ptr(var):
++ *	like a non-atomic xchg(var, NULL), such that the cleanup function will
++ *	be inhibited -- provided it sanely deals with a NULL value.
++ *
++ * return_ptr(p):
++ *	returns p while inhibiting the __free().
++ *
++ * Ex.
++ *
++ * DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++ *
++ *	struct obj *p __free(kfree) = kmalloc(...);
++ *	if (!p)
++ *		return NULL;
++ *
++ *	if (!init_obj(p))
++ *		return NULL;
++ *
++ *	return_ptr(p);
++ */
++
++#define DEFINE_FREE(_name, _type, _free) \
++	static inline void __free_##_name(void *p) { _type _T = *(_type *)p; _free; }
++
++#define __free(_name)	__cleanup(__free_##_name)
++
++#define no_free_ptr(p) \
++	({ __auto_type __ptr = (p); (p) = NULL; __ptr; })
++
++#define return_ptr(p)	return no_free_ptr(p)
++
++
++/*
++ * DEFINE_CLASS(name, type, exit, init, init_args...):
++ *	helper to define the destructor and constructor for a type.
++ *	@exit is an expression using '_T' -- similar to FREE above.
++ *	@init is an expression in @init_args resulting in @type
++ *
++ * EXTEND_CLASS(name, ext, init, init_args...):
++ *	extends class @name to @name@ext with the new constructor
++ *
++ * CLASS(name, var)(args...):
++ *	declare the variable @var as an instance of the named class
++ *
++ * Ex.
++ *
++ * DEFINE_CLASS(fdget, struct fd, fdput(_T), fdget(fd), int fd)
++ *
++ *	CLASS(fdget, f)(fd);
++ *	if (!f.file)
++ *		return -EBADF;
++ *
++ *	// use 'f' without concern
++ */
++
++#define DEFINE_CLASS(_name, _type, _exit, _init, _init_args...)		\
++typedef _type class_##_name##_t;					\
++static inline void class_##_name##_destructor(_type *p)			\
++{ _type _T = *p; _exit; }						\
++static inline _type class_##_name##_constructor(_init_args)		\
++{ _type t = _init; return t; }
++
++#define EXTEND_CLASS(_name, ext, _init, _init_args...)			\
++typedef class_##_name##_t class_##_name##ext##_t;			\
++static inline void class_##_name##ext##_destructor(class_##_name##_t *p)\
++{ class_##_name##_destructor(p); }					\
++static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
++{ class_##_name##_t t = _init; return t; }
++
++#define CLASS(_name, var)						\
++	class_##_name##_t var __cleanup(class_##_name##_destructor) =	\
++		class_##_name##_constructor
++
++
++/*
++ * DEFINE_GUARD(name, type, lock, unlock):
++ *	trivial wrapper around DEFINE_CLASS() above specifically
++ *	for locks.
++ *
++ * guard(name):
++ *	an anonymous instance of the (guard) class
++ *
++ * scoped_guard (name, args...) { }:
++ *	similar to CLASS(name, scope)(args), except the variable (with the
++ *	explicit name 'scope') is declard in a for-loop such that its scope is
++ *	bound to the next (compound) statement.
++ *
++ */
++
++#define DEFINE_GUARD(_name, _type, _lock, _unlock) \
++	DEFINE_CLASS(_name, _type, _unlock, ({ _lock; _T; }), _type _T)
++
++#define guard(_name) \
++	CLASS(_name, __UNIQUE_ID(guard))
++
++#define scoped_guard(_name, args...)					\
++	for (CLASS(_name, scope)(args),					\
++	     *done = NULL; !done; done = (void *)1)
++
++/*
++ * Additional helper macros for generating lock guards with types, either for
++ * locks that don't have a native type (eg. RCU, preempt) or those that need a
++ * 'fat' pointer (eg. spin_lock_irqsave).
++ *
++ * DEFINE_LOCK_GUARD_0(name, lock, unlock, ...)
++ * DEFINE_LOCK_GUARD_1(name, type, lock, unlock, ...)
++ *
++ * will result in the following type:
++ *
++ *   typedef struct {
++ *	type *lock;		// 'type := void' for the _0 variant
++ *	__VA_ARGS__;
++ *   } class_##name##_t;
++ *
++ * As above, both _lock and _unlock are statements, except this time '_T' will
++ * be a pointer to the above struct.
++ */
++
++#define __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, ...)		\
++typedef struct {							\
++	_type *lock;							\
++	__VA_ARGS__;							\
++} class_##_name##_t;							\
++									\
++static inline void class_##_name##_destructor(class_##_name##_t *_T)	\
++{									\
++	if (_T->lock) { _unlock; }					\
++}
++
++
++#define __DEFINE_LOCK_GUARD_1(_name, _type, _lock)			\
++static inline class_##_name##_t class_##_name##_constructor(_type *l)	\
++{									\
++	class_##_name##_t _t = { .lock = l }, *_T = &_t;		\
++	_lock;								\
++	return _t;							\
++}
++
++#define __DEFINE_LOCK_GUARD_0(_name, _lock)				\
++static inline class_##_name##_t class_##_name##_constructor(void)	\
++{									\
++	class_##_name##_t _t = { .lock = (void*)1 },			\
++			 *_T __maybe_unused = &_t;			\
++	_lock;								\
++	return _t;							\
++}
++
++#define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
++__DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
++__DEFINE_LOCK_GUARD_1(_name, _type, _lock)
++
++#define DEFINE_LOCK_GUARD_0(_name, _lock, _unlock, ...)			\
++__DEFINE_UNLOCK_GUARD(_name, void, _unlock, __VA_ARGS__)		\
++__DEFINE_LOCK_GUARD_0(_name, _lock)
++
++#endif /* __LINUX_GUARDS_H */
+diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
+index 3c4de9b6c6e3..e75768ca8c18 100644
+--- a/include/linux/compiler-clang.h
++++ b/include/linux/compiler-clang.h
+@@ -5,6 +5,15 @@
+ 
+ /* Compiler specific definitions for Clang compiler */
+ 
++/*
++ * Clang prior to 17 is being silly and considers many __cleanup() variables
++ * as unused (because they are, their sole purpose is to go out of scope).
++ *
++ * https://reviews.llvm.org/D152180
++ */
++#undef __cleanup
++#define __cleanup(func) __maybe_unused __attribute__((__cleanup__(func)))
++
+ /* same as gcc, this was present in clang-2.6 so we can assume it works
+  * with any version that can compile the kernel
+  */
+diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
+index 932b8fd6f36f..5ee9e2aeab63 100644
+--- a/include/linux/compiler_attributes.h
++++ b/include/linux/compiler_attributes.h
+@@ -80,6 +80,12 @@
+  */
+ #define __cold                          __attribute__((__cold__))
+ 
++/*
++ *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-cleanup-variable-attribute
++ * clang: https://clang.llvm.org/docs/AttributeReference.html#cleanup
++ */
++#define __cleanup(func)			__attribute__((__cleanup__(func)))
++
+ /*
+  * Note the long name.
+  *
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 3e04bd84f126..3826d3a0c625 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -30,6 +30,7 @@
+ #include <linux/device/bus.h>
+ #include <linux/device/class.h>
+ #include <linux/device/driver.h>
++#include <linux/cleanup.h>
+ #include <asm/device.h>
+ 
+ struct device;
+@@ -822,6 +823,9 @@ void device_unregister(struct device *dev);
+ void device_initialize(struct device *dev);
+ int __must_check device_add(struct device *dev);
+ void device_del(struct device *dev);
++
++DEFINE_FREE(device_del, struct device *, if (_T) device_del(_T))
++
+ int device_for_each_child(struct device *dev, void *data,
+ 			  int (*fn)(struct device *dev, void *data));
+ int device_for_each_child_reverse(struct device *dev, void *data,
+@@ -950,6 +954,9 @@ extern int (*platform_notify_remove)(struct device *dev);
+  */
+ struct device *get_device(struct device *dev);
+ void put_device(struct device *dev);
++
++DEFINE_FREE(put_device, struct device *, if (_T) put_device(_T))
++
+ bool kill_device(struct device *dev);
+ 
+ #ifdef CONFIG_DEVTMPFS
+diff --git a/include/linux/file.h b/include/linux/file.h
+index 51e830b4fe3a..6726240b9279 100644
+--- a/include/linux/file.h
++++ b/include/linux/file.h
+@@ -10,6 +10,7 @@
+ #include <linux/types.h>
+ #include <linux/posix_types.h>
+ #include <linux/errno.h>
++#include <linux/cleanup.h>
+ 
+ struct file;
+ 
+@@ -82,6 +83,8 @@ static inline void fdput_pos(struct fd f)
+ 	fdput(f);
+ }
+ 
++DEFINE_CLASS(fd, struct fd, fdput(_T), fdget(fd), int fd)
++
+ extern int f_dupfd(unsigned int from, struct file *file, unsigned flags);
+ extern int replace_fd(unsigned fd, struct file *file, unsigned flags);
+ extern void set_close_on_exec(unsigned int fd, int flag);
+@@ -90,6 +93,9 @@ extern int __get_unused_fd_flags(unsigned flags, unsigned long nofile);
+ extern int get_unused_fd_flags(unsigned flags);
+ extern void put_unused_fd(unsigned int fd);
+ 
++DEFINE_CLASS(get_unused_fd, int, if (_T >= 0) put_unused_fd(_T),
++	     get_unused_fd_flags(flags), unsigned flags)
++
+ extern void fd_install(unsigned int fd, struct file *file);
+ 
+ extern int __receive_fd(struct file *file, int __user *ufd,
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index 37738ec87de3..c4288c7ae613 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -13,6 +13,7 @@
+ #define _LINUX_TRACE_IRQFLAGS_H
+ 
+ #include <linux/typecheck.h>
++#include <linux/cleanup.h>
+ #include <asm/irqflags.h>
+ #include <asm/percpu.h>
+ 
+@@ -260,4 +261,10 @@ extern void warn_bogus_irq_restore(void);
+ 
+ #define irqs_disabled_flags(flags) raw_irqs_disabled_flags(flags)
+ 
++DEFINE_LOCK_GUARD_0(irq, local_irq_disable(), local_irq_enable())
++DEFINE_LOCK_GUARD_0(irqsave,
++		    local_irq_save(_T->flags),
++		    local_irq_restore(_T->flags),
++		    unsigned long flags)
++
+ #endif
+diff --git a/include/linux/mutex.h b/include/linux/mutex.h
+index 9ef01b9d2456..5b5630e58407 100644
+--- a/include/linux/mutex.h
++++ b/include/linux/mutex.h
+@@ -19,6 +19,7 @@
+ #include <asm/processor.h>
+ #include <linux/osq_lock.h>
+ #include <linux/debug_locks.h>
++#include <linux/cleanup.h>
+ 
+ struct device;
+ 
+@@ -246,4 +247,7 @@ extern void mutex_unlock(struct mutex *lock);
+ 
+ extern int atomic_dec_and_mutex_lock(atomic_t *cnt, struct mutex *lock);
+ 
++DEFINE_GUARD(mutex, struct mutex *, mutex_lock(_T), mutex_unlock(_T))
++DEFINE_FREE(mutex, struct mutex *, if (_T) mutex_unlock(_T))
++
+ #endif /* __LINUX_MUTEX_H */
+diff --git a/include/linux/percpu.h b/include/linux/percpu.h
+index 5e76af742c80..c9a84532bb79 100644
+--- a/include/linux/percpu.h
++++ b/include/linux/percpu.h
+@@ -9,6 +9,7 @@
+ #include <linux/printk.h>
+ #include <linux/pfn.h>
+ #include <linux/init.h>
++#include <linux/cleanup.h>
+ 
+ #include <asm/percpu.h>
+ 
+@@ -134,6 +135,9 @@ extern void __init setup_per_cpu_areas(void);
+ extern void __percpu *__alloc_percpu_gfp(size_t size, size_t align, gfp_t gfp);
+ extern void __percpu *__alloc_percpu(size_t size, size_t align);
+ extern void free_percpu(void __percpu *__pdata);
++
++DEFINE_FREE(free_percpu, void __percpu *, free_percpu(_T))
++
+ extern phys_addr_t per_cpu_ptr_to_phys(void *addr);
+ 
+ #define alloc_percpu_gfp(type, gfp)					\
+diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+index 9c4534a69a8f..36c4233742a1 100644
+--- a/include/linux/preempt.h
++++ b/include/linux/preempt.h
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/linkage.h>
++#include <linux/cleanup.h>
+ #include <linux/list.h>
+ 
+ /*
+@@ -431,4 +432,8 @@ static inline void migrate_enable(void) { }
+ 
+ #endif /* CONFIG_SMP */
+ 
++DEFINE_LOCK_GUARD_0(preempt, preempt_disable(), preempt_enable())
++DEFINE_LOCK_GUARD_0(preempt_notrace, preempt_disable_notrace(), preempt_enable_notrace())
++DEFINE_LOCK_GUARD_0(migrate, migrate_disable(), migrate_enable())
++
+ #endif /* __LINUX_PREEMPT_H */
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index d908af591733..b45cf762ed1e 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -27,6 +27,7 @@
+ #include <linux/preempt.h>
+ #include <linux/bottom_half.h>
+ #include <linux/lockdep.h>
++#include <linux/cleanup.h>
+ #include <asm/processor.h>
+ #include <linux/cpumask.h>
+ 
+@@ -1057,4 +1058,6 @@ rcu_head_after_call_rcu(struct rcu_head *rhp, rcu_callback_t f)
+ extern int rcu_expedited;
+ extern int rcu_normal;
+ 
++DEFINE_LOCK_GUARD_0(rcu, rcu_read_lock(), rcu_read_unlock())
++
+ #endif /* __LINUX_RCUPDATE_H */
+diff --git a/include/linux/rwsem.h b/include/linux/rwsem.h
+index 352c6127cb90..458a0c92cc68 100644
+--- a/include/linux/rwsem.h
++++ b/include/linux/rwsem.h
+@@ -16,6 +16,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/atomic.h>
+ #include <linux/err.h>
++#include <linux/cleanup.h>
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ # define __RWSEM_DEP_MAP_INIT(lockname)			\
+@@ -202,6 +203,13 @@ extern void up_read(struct rw_semaphore *sem);
+  */
+ extern void up_write(struct rw_semaphore *sem);
+ 
++DEFINE_GUARD(rwsem_read, struct rw_semaphore *, down_read(_T), up_read(_T))
++DEFINE_GUARD(rwsem_write, struct rw_semaphore *, down_write(_T), up_write(_T))
++
++DEFINE_FREE(up_read, struct rw_semaphore *, if (_T) up_read(_T))
++DEFINE_FREE(up_write, struct rw_semaphore *, if (_T) up_write(_T))
++
++
+ /*
+  * downgrade write lock to read lock
+  */
+diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+index 0c2d00809915..fa9f79ac4bac 100644
+--- a/include/linux/sched/task.h
++++ b/include/linux/sched/task.h
+@@ -141,6 +141,8 @@ static inline void put_task_struct(struct task_struct *t)
+ 		__put_task_struct(t);
+ }
+ 
++DEFINE_FREE(put_task, struct task_struct *, if (_T) put_task_struct(_T))
++
+ static inline void put_task_struct_many(struct task_struct *t, int nr)
+ {
+ 	if (refcount_sub_and_test(nr, &t->usage))
+diff --git a/include/linux/slab.h b/include/linux/slab.h
+index 083f3ce550bc..78a471aa8145 100644
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -17,6 +17,7 @@
+ #include <linux/types.h>
+ #include <linux/workqueue.h>
+ #include <linux/percpu-refcount.h>
++#include <linux/cleanup.h>
+ 
+ 
+ /*
+@@ -186,6 +187,9 @@ void kfree(const void *);
+ void kfree_sensitive(const void *);
+ size_t __ksize(const void *);
+ size_t ksize(const void *);
++
++DEFINE_FREE(kfree, void *, if (_T) kfree(_T))
++
+ #ifdef CONFIG_PRINTK
+ bool kmem_valid_obj(void *object);
+ void kmem_dump_obj(void *object);
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index 45310ea1b1d7..44ac0897c26c 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -61,6 +61,7 @@
+ #include <linux/stringify.h>
+ #include <linux/bottom_half.h>
+ #include <linux/lockdep.h>
++#include <linux/cleanup.h>
+ #include <asm/barrier.h>
+ #include <asm/mmiowb.h>
+ 
+@@ -506,4 +507,34 @@ int __alloc_bucket_spinlocks(spinlock_t **locks, unsigned int *lock_mask,
+ 
+ void free_bucket_spinlocks(spinlock_t *locks);
+ 
++DEFINE_LOCK_GUARD_1(raw_spinlock, raw_spinlock_t,
++		    raw_spin_lock(_T->lock),
++		    raw_spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
++		    raw_spin_lock_nested(_T->lock, SINGLE_DEPTH_NESTING),
++		    raw_spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
++		    raw_spin_lock_irq(_T->lock),
++		    raw_spin_unlock_irq(_T->lock))
++
++DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
++		    raw_spin_lock_irqsave(_T->lock, _T->flags),
++		    raw_spin_unlock_irqrestore(_T->lock, _T->flags),
++		    unsigned long flags)
++
++DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
++		    spin_lock(_T->lock),
++		    spin_unlock(_T->lock))
++
++DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
++		    spin_lock_irq(_T->lock),
++		    spin_unlock_irq(_T->lock))
++
++DEFINE_LOCK_GUARD_1(spinlock_irqsave, spinlock_t,
++		    spin_lock_irqsave(_T->lock, _T->flags),
++		    spin_unlock_irqrestore(_T->lock, _T->flags),
++		    unsigned long flags)
++
+ #endif /* __LINUX_SPINLOCK_H */
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index e6011a9975af..e94687215fbe 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -211,4 +211,9 @@ static inline void smp_mb__after_srcu_read_unlock(void)
+ 	/* __srcu_read_unlock has smp_mb() internally so nothing to do here. */
+ }
+ 
++DEFINE_LOCK_GUARD_1(srcu, struct srcu_struct,
++		    _T->idx = srcu_read_lock(_T->lock),
++		    srcu_read_unlock(_T->lock, _T->idx),
++		    int idx)
++
+ #endif
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 88cb294dc447..b4fe18228805 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -4895,7 +4895,7 @@ sub process {
+ 				if|for|while|switch|return|case|
+ 				volatile|__volatile__|
+ 				__attribute__|format|__extension__|
+-				asm|__asm__)$/x)
++				asm|__asm__|scoped_guard)$/x)
+ 			{
+ 			# cpp #define statements have non-optional spaces, ie
+ 			# if there is a space between the name and the open
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+2.43.0
 
 
