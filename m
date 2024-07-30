@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-64656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED35941FDA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 20:41:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9378B94200C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 20:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB3C42861A8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46C9E285AD1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0541AA3DB;
-	Tue, 30 Jul 2024 18:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099D118950C;
+	Tue, 30 Jul 2024 18:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LHEUQKKZ"
+	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="mKbTeXjP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE1F1AA3C3
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 18:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AB41AA3C6
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 18:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722364869; cv=none; b=NspqF2hpRQedtBk9NCJ8YBCVz0x3h7/hOsR4/dMZ0huTP4yPi336sztK2tLlE4u6frjw9kclct5Ol5H6QfFTPEWa3WvJ5i9Eegr/GXBUrOTC4f61Jxm4mkuEx7YCguGYz9DgmGix0CTjbiFSWupNhY0Ngbn0A63fBLASeHQ7NcE=
+	t=1722365632; cv=none; b=AgsYa9yl2QG+mXDG8Zum6W6sKR0wzvZoHD1gxbdw6Fzf13kju9LS77TN63HaPLGbBenrz2yd0PbvQ/d8vADh761Bmzl4BFMDSOsk5d2o6kqMhOVfNyEE9aG0eBBy5cUc0RtNMoNaQPOGJvW8TYUyGR0ORU4kpGsz1KhE0AyTnhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722364869; c=relaxed/simple;
-	bh=kkjbWUhITPAf72kxvWSFwesuO9YPDf6AEx7QFPJrO3A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DszGzzXibqwBTUZLRS97tW6BPO53g92sfP/D/GaOCfiuCcyk9EfLnz3Zo/NJwNtHJhQEiKEjGEVOW8Xh82cq1Pz9FBPRzG0Wfo8q43utFiHtMnecY4qXmEyKW4KSz4PgJrk3VzWIMBR+Nw+z+ViaLr7JJZApChP1kdauG5DFAIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LHEUQKKZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597E9C4AF0C;
-	Tue, 30 Jul 2024 18:41:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722364868;
-	bh=kkjbWUhITPAf72kxvWSFwesuO9YPDf6AEx7QFPJrO3A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHEUQKKZ49GOGK4/KyP7S2pbrpKdzyFa0kAPJ9RhDeKt2+SVYUlGSijqxJMoeXSpr
-	 JWVlO5vq3yMg/nJKx+UHWj59sN5MHnjL9Q38BHJcSLJTU+d+PoRxlh8frf3AbmTQpI
-	 VrN9VGDK4m1wV9/12OjVyv/i9zogy1xoJ/sqEu0vX3XSXGTEoiLY9848TDyCp8fAyv
-	 A8WjI8kvmSwUQ34HI9uAmFoGEqk6G5MFKzhGyW+7BGza4iQic4QTUadjlPJSIFHpKl
-	 A3CVWCt6YK83zgknNOG4lCmWR1Jn/Pskl7cIS5m7k8slY6gyO9n/E8vi1Imt+JyNiV
-	 d2dnzApg9QTsg==
-From: Nathan Chancellor <nathan@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 and 4.19] kbuild: Fix '-S -c' in x86 stack protector scripts
-Date: Tue, 30 Jul 2024 11:40:54 -0700
-Message-ID: <20240730184054.254156-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024073000-polish-wish-b988@gregkh>
-References: <2024073000-polish-wish-b988@gregkh>
+	s=arc-20240116; t=1722365632; c=relaxed/simple;
+	bh=3KF1m7Yt4Ol9otmLzmXemHFItOj8lfFyse+zAjzf1lw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CXKlq+BXyJGpO5DjRp4vRCpC25++vXsdWohlhz+IKUqY8N2kbt2pCkohbnl4Jpe+5M8HS8oyxXbPACP1/lSsjsuCJRuJytEWk6Bfhov6z9IWcxmKxeye91yRT9MmwtXkrI7zZk2YwUPoVIL34jypdb/K+ioNFGgWQIDokH3M8zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=mKbTeXjP; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
+	t=1722365626;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Dn0xLoWfpimcsell+FemET9LAXc+6vt12NIgpqJmTuA=;
+	b=mKbTeXjP4/9I1YF92icnDI09ZeHIfFWNXVz6Xr+njiwq//LEdXFTrZXsXIM/NRagozi3Bq
+	V15l4NcBHoTVjm0dsn9tpEt58s4cDH/KDmdeLnYedz8WcFEZHS6m8uB4JfWAa1TcOLAgs8
+	1lnJfWAr3RxvEL/vTM+G+hhlnMhrUHjlnT8z2LBVsf5Hc1ZCljUD4ysAmgmKuHD8MZgStY
+	84jmZj3d2GQ8UsTyLI99gc+PJFhEAdIds2eGNQXGy6JUMBQpOa+UbS9e8X7WnFboTGXMtb
+	nthKe0cP7YjasayTr4vDRHHlXOAhH0Kpfch8cthWynbQPBRrkhXZhji8QxMiCw==
+From: Kevin Holm <kevin@holm.dev>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev,
+	amd-gfx@lists.freedesktop.org,
+	ML dri-devel <dri-devel@lists.freedesktop.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Kevin Holm <kevin@holm.dev>
+Subject: [PATCH 6.10] drm/amd/display: Refactor function dm_dp_mst_is_port_support_mode()
+Date: Tue, 30 Jul 2024 20:53:39 +0200
+Message-ID: <20240730185339.543359-1-kevin@holm.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,65 +64,300 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-commit 3415b10a03945b0da4a635e146750dfe5ce0f448 upstream.
+From: Wayne Lin <wayne.lin@amd.com>
 
-After a recent change in clang to stop consuming all instances of '-S'
-and '-c' [1], the stack protector scripts break due to the kernel's use
-of -Werror=unused-command-line-argument to catch cases where flags are
-not being properly consumed by the compiler driver:
+[ Upstream commit fa57924c76d995e87ca3533ec60d1d5e55769a27 ]
 
-  $ echo | clang -o - -x c - -S -c -Werror=unused-command-line-argument
-  clang: error: argument unused during compilation: '-c' [-Werror,-Wunused-command-line-argument]
+[Why]
+dm_dp_mst_is_port_support_mode() is a bit not following the original design rule and cause
+light up issue with multiple 4k monitors after mst dsc hub.
 
-This results in CONFIG_STACKPROTECTOR getting disabled because
-CONFIG_CC_HAS_SANE_STACKPROTECTOR is no longer set.
+[How]
+Refactor function dm_dp_mst_is_port_support_mode() a bit to solve the light up issue.
 
-'-c' and '-S' both instruct the compiler to stop at different stages of
-the pipeline ('-S' after compiling, '-c' after assembling), so having
-them present together in the same command makes little sense. In this
-case, the test wants to stop before assembling because it is looking at
-the textual assembly output of the compiler for either '%fs' or '%gs',
-so remove '-c' from the list of arguments to resolve the error.
-
-All versions of GCC continue to work after this change, along with
-versions of clang that do or do not contain the change mentioned above.
-
-Cc: stable@vger.kernel.org
-Fixes: 4f7fd4d7a791 ("[PATCH] Add the -fstack-protector option to the CFLAGS")
-Fixes: 60a5317ff0f4 ("x86: implement x86_32 stack protector")
-Link: https://github.com/llvm/llvm-project/commit/6461e537815f7fa68cef06842505353cf5600e9c [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-[nathan: Fixed conflict in 32-bit version due to lack of 3fb0fdb3bbe7]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[kevin@holm.dev: Resolved merge conflict in .../amdgpu_dm_mst_types.c]
+Fixes: 4df96ba6676034 ("drm/amd/display: Add timing pixel encoding for mst mode validation")
+Link: https://lore.kernel.org/stable/d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev/T/#u
+Signed-off-by: Kevin Holm <kevin@holm.dev>
 ---
-This change applies cleanly with 'patch -p1' on both 5.4 and 4.19.
----
- scripts/gcc-x86_32-has-stack-protector.sh | 2 +-
- scripts/gcc-x86_64-has-stack-protector.sh | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+I resolved the merge conflict so that, after this patch is applied to the
+linux-6.10.y branch of the stable git repository, the resulting function
+dm_dp_mst_is_port_support_mode (and also the new function 
+dp_get_link_current_set_bw) is identical to the original commit.
 
-diff --git a/scripts/gcc-x86_32-has-stack-protector.sh b/scripts/gcc-x86_32-has-stack-protector.sh
-index f5c119495254..e05020116b37 100755
---- a/scripts/gcc-x86_32-has-stack-protector.sh
-+++ b/scripts/gcc-x86_32-has-stack-protector.sh
-@@ -1,4 +1,4 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
+I've confirmed that it fixes the regression I reported for my use case.
+---
+ .../display/amdgpu_dm/amdgpu_dm_mst_types.c   | 232 +++++++++++-------
+ 1 file changed, 147 insertions(+), 85 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index a5e1a93ddaea..e90f9d697511 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1595,109 +1595,171 @@ static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
+ 	return bw_range->max_target_bpp_x16 && bw_range->min_target_bpp_x16;
+ }
  
--echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -m32 -O0 -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
-+echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -m32 -O0 -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
-diff --git a/scripts/gcc-x86_64-has-stack-protector.sh b/scripts/gcc-x86_64-has-stack-protector.sh
-index 75e4e22b986a..f680bb01aeeb 100755
---- a/scripts/gcc-x86_64-has-stack-protector.sh
-+++ b/scripts/gcc-x86_64-has-stack-protector.sh
-@@ -1,4 +1,4 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
++#if defined(CONFIG_DRM_AMD_DC_FP)
++static bool dp_get_link_current_set_bw(struct drm_dp_aux *aux, uint32_t *cur_link_bw)
++{
++	uint32_t total_data_bw_efficiency_x10000 = 0;
++	uint32_t link_rate_per_lane_kbps = 0;
++	enum dc_link_rate link_rate;
++	union lane_count_set lane_count;
++	u8 dp_link_encoding;
++	u8 link_bw_set = 0;
++
++	*cur_link_bw = 0;
++
++	if (drm_dp_dpcd_read(aux, DP_MAIN_LINK_CHANNEL_CODING_SET, &dp_link_encoding, 1) != 1 ||
++		drm_dp_dpcd_read(aux, DP_LANE_COUNT_SET, &lane_count.raw, 1) != 1 ||
++		drm_dp_dpcd_read(aux, DP_LINK_BW_SET, &link_bw_set, 1) != 1)
++		return false;
++
++	switch (dp_link_encoding) {
++	case DP_8b_10b_ENCODING:
++		link_rate = link_bw_set;
++		link_rate_per_lane_kbps = link_rate * LINK_RATE_REF_FREQ_IN_KHZ * BITS_PER_DP_BYTE;
++		total_data_bw_efficiency_x10000 = DATA_EFFICIENCY_8b_10b_x10000;
++		total_data_bw_efficiency_x10000 /= 100;
++		total_data_bw_efficiency_x10000 *= DATA_EFFICIENCY_8b_10b_FEC_EFFICIENCY_x100;
++		break;
++	case DP_128b_132b_ENCODING:
++		switch (link_bw_set) {
++		case DP_LINK_BW_10:
++			link_rate = LINK_RATE_UHBR10;
++			break;
++		case DP_LINK_BW_13_5:
++			link_rate = LINK_RATE_UHBR13_5;
++			break;
++		case DP_LINK_BW_20:
++			link_rate = LINK_RATE_UHBR20;
++			break;
++		default:
++			return false;
++		}
++
++		link_rate_per_lane_kbps = link_rate * 10000;
++		total_data_bw_efficiency_x10000 = DATA_EFFICIENCY_128b_132b_x10000;
++		break;
++	default:
++		return false;
++	}
++
++	*cur_link_bw = link_rate_per_lane_kbps * lane_count.bits.LANE_COUNT_SET / 10000 * total_data_bw_efficiency_x10000;
++	return true;
++}
++#endif
++
+ enum dc_status dm_dp_mst_is_port_support_mode(
+ 	struct amdgpu_dm_connector *aconnector,
+ 	struct dc_stream_state *stream)
+ {
+-	int pbn, branch_max_throughput_mps = 0;
++#if defined(CONFIG_DRM_AMD_DC_FP)
++	int branch_max_throughput_mps = 0;
+ 	struct dc_link_settings cur_link_settings;
+-	unsigned int end_to_end_bw_in_kbps = 0;
+-	unsigned int upper_link_bw_in_kbps = 0, down_link_bw_in_kbps = 0;
++	uint32_t end_to_end_bw_in_kbps = 0;
++	uint32_t root_link_bw_in_kbps = 0;
++	uint32_t virtual_channel_bw_in_kbps = 0;
+ 	struct dc_dsc_bw_range bw_range = {0};
+ 	struct dc_dsc_config_options dsc_options = {0};
++	uint32_t stream_kbps;
  
--echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -m64 -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
-+echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -m64 -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
+-	/*
+-	 * Consider the case with the depth of the mst topology tree is equal or less than 2
+-	 * A. When dsc bitstream can be transmitted along the entire path
+-	 *    1. dsc is possible between source and branch/leaf device (common dsc params is possible), AND
+-	 *    2. dsc passthrough supported at MST branch, or
+-	 *    3. dsc decoding supported at leaf MST device
+-	 *    Use maximum dsc compression as bw constraint
+-	 * B. When dsc bitstream cannot be transmitted along the entire path
+-	 *    Use native bw as bw constraint
++	/* DSC unnecessary case
++	 * Check if timing could be supported within end-to-end BW
+ 	 */
+-	if (is_dsc_common_config_possible(stream, &bw_range) &&
+-	   (aconnector->mst_output_port->passthrough_aux ||
+-	    aconnector->dsc_aux == &aconnector->mst_output_port->aux)) {
+-		cur_link_settings = stream->link->verified_link_cap;
+-		upper_link_bw_in_kbps = dc_link_bandwidth_kbps(aconnector->dc_link, &cur_link_settings);
+-		down_link_bw_in_kbps = kbps_from_pbn(aconnector->mst_output_port->full_pbn);
+-
+-		/* pick the end to end bw bottleneck */
+-		end_to_end_bw_in_kbps = min(upper_link_bw_in_kbps, down_link_bw_in_kbps);
+-
+-		if (end_to_end_bw_in_kbps < bw_range.min_kbps) {
+-			DRM_DEBUG_DRIVER("maximum dsc compression cannot fit into end-to-end bandwidth\n");
++	stream_kbps =
++		dc_bandwidth_in_kbps_from_timing(&stream->timing,
++			dc_link_get_highest_encoding_format(stream->link));
++	cur_link_settings = stream->link->verified_link_cap;
++	root_link_bw_in_kbps = dc_link_bandwidth_kbps(aconnector->dc_link, &cur_link_settings);
++	virtual_channel_bw_in_kbps = kbps_from_pbn(aconnector->mst_output_port->full_pbn);
++
++	/* pick the end to end bw bottleneck */
++	end_to_end_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
++
++	if (stream_kbps <= end_to_end_bw_in_kbps) {
++		DRM_DEBUG_DRIVER("No DSC needed. End-to-end bw sufficient.");
++		return DC_OK;
++	}
++
++	/*DSC necessary case*/
++	if (!aconnector->dsc_aux)
++		return DC_FAIL_BANDWIDTH_VALIDATE;
++
++	if (is_dsc_common_config_possible(stream, &bw_range)) {
++
++		/*capable of dsc passthough. dsc bitstream along the entire path*/
++		if (aconnector->mst_output_port->passthrough_aux) {
++			if (bw_range.min_kbps > end_to_end_bw_in_kbps) {
++				DRM_DEBUG_DRIVER("DSC passthrough. Max dsc compression can't fit into end-to-end bw\n");
+ 			return DC_FAIL_BANDWIDTH_VALIDATE;
+-		}
++			}
++		} else {
++			/*dsc bitstream decoded at the dp last link*/
++			struct drm_dp_mst_port *immediate_upstream_port = NULL;
++			uint32_t end_link_bw = 0;
++
++			/*Get last DP link BW capability*/
++			if (dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw)) {
++				if (stream_kbps > end_link_bw) {
++					DRM_DEBUG_DRIVER("DSC decode at last link. Mode required bw can't fit into available bw\n");
++					return DC_FAIL_BANDWIDTH_VALIDATE;
++				}
++			}
+ 
+-		if (end_to_end_bw_in_kbps < bw_range.stream_kbps) {
+-			dc_dsc_get_default_config_option(stream->link->dc, &dsc_options);
+-			dsc_options.max_target_bpp_limit_override_x16 = aconnector->base.display_info.max_dsc_bpp * 16;
+-			if (dc_dsc_compute_config(stream->sink->ctx->dc->res_pool->dscs[0],
+-					&stream->sink->dsc_caps.dsc_dec_caps,
+-					&dsc_options,
+-					end_to_end_bw_in_kbps,
+-					&stream->timing,
+-					dc_link_get_highest_encoding_format(stream->link),
+-					&stream->timing.dsc_cfg)) {
+-				stream->timing.flags.DSC = 1;
+-				DRM_DEBUG_DRIVER("end-to-end bandwidth require dsc and dsc config found\n");
+-			} else {
+-				DRM_DEBUG_DRIVER("end-to-end bandwidth require dsc but dsc config not found\n");
+-				return DC_FAIL_BANDWIDTH_VALIDATE;
++			/*Get virtual channel bandwidth between source and the link before the last link*/
++			if (aconnector->mst_output_port->parent->port_parent)
++				immediate_upstream_port = aconnector->mst_output_port->parent->port_parent;
++
++			if (immediate_upstream_port) {
++				virtual_channel_bw_in_kbps = kbps_from_pbn(immediate_upstream_port->full_pbn);
++				virtual_channel_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
++				if (bw_range.min_kbps > virtual_channel_bw_in_kbps) {
++					DRM_DEBUG_DRIVER("DSC decode at last link. Max dsc compression can't fit into MST available bw\n");
++					return DC_FAIL_BANDWIDTH_VALIDATE;
++				}
+ 			}
+ 		}
+-	} else {
+-		/* Check if mode could be supported within max slot
+-		 * number of current mst link and full_pbn of mst links.
+-		 */
+-		int pbn_div, slot_num, max_slot_num;
+-		enum dc_link_encoding_format link_encoding;
+-		uint32_t stream_kbps =
+-			dc_bandwidth_in_kbps_from_timing(&stream->timing,
+-				dc_link_get_highest_encoding_format(stream->link));
+-
+-		pbn = kbps_to_peak_pbn(stream_kbps);
+-		pbn_div = dm_mst_get_pbn_divider(stream->link);
+-		slot_num = DIV_ROUND_UP(pbn, pbn_div);
+-
+-		link_encoding = dc_link_get_highest_encoding_format(stream->link);
+-		if (link_encoding == DC_LINK_ENCODING_DP_8b_10b)
+-			max_slot_num = 63;
+-		else if (link_encoding == DC_LINK_ENCODING_DP_128b_132b)
+-			max_slot_num = 64;
+-		else {
+-			DRM_DEBUG_DRIVER("Invalid link encoding format\n");
+-			return DC_FAIL_BANDWIDTH_VALIDATE;
+-		}
+ 
+-		if (slot_num > max_slot_num ||
+-			pbn > aconnector->mst_output_port->full_pbn) {
+-			DRM_DEBUG_DRIVER("Mode can not be supported within mst links!");
++		/*Confirm if we can obtain dsc config*/
++		dc_dsc_get_default_config_option(stream->link->dc, &dsc_options);
++		dsc_options.max_target_bpp_limit_override_x16 = aconnector->base.display_info.max_dsc_bpp * 16;
++		if (dc_dsc_compute_config(stream->sink->ctx->dc->res_pool->dscs[0],
++				&stream->sink->dsc_caps.dsc_dec_caps,
++				&dsc_options,
++				end_to_end_bw_in_kbps,
++				&stream->timing,
++				dc_link_get_highest_encoding_format(stream->link),
++				&stream->timing.dsc_cfg)) {
++			stream->timing.flags.DSC = 1;
++			DRM_DEBUG_DRIVER("Require dsc and dsc config found\n");
++		} else {
++			DRM_DEBUG_DRIVER("Require dsc but can't find appropriate dsc config\n");
+ 			return DC_FAIL_BANDWIDTH_VALIDATE;
+ 		}
+-	}
+ 
+-	/* check is mst dsc output bandwidth branch_overall_throughput_0_mps */
+-	switch (stream->timing.pixel_encoding) {
+-	case PIXEL_ENCODING_RGB:
+-	case PIXEL_ENCODING_YCBCR444:
+-		branch_max_throughput_mps =
+-			aconnector->dc_sink->dsc_caps.dsc_dec_caps.branch_overall_throughput_0_mps;
+-		break;
+-	case PIXEL_ENCODING_YCBCR422:
+-	case PIXEL_ENCODING_YCBCR420:
+-		branch_max_throughput_mps =
+-			aconnector->dc_sink->dsc_caps.dsc_dec_caps.branch_overall_throughput_1_mps;
+-		break;
+-	default:
+-		break;
+-	}
++		/* check is mst dsc output bandwidth branch_overall_throughput_0_mps */
++		switch (stream->timing.pixel_encoding) {
++		case PIXEL_ENCODING_RGB:
++		case PIXEL_ENCODING_YCBCR444:
++			branch_max_throughput_mps =
++				aconnector->dc_sink->dsc_caps.dsc_dec_caps.branch_overall_throughput_0_mps;
++			break;
++		case PIXEL_ENCODING_YCBCR422:
++		case PIXEL_ENCODING_YCBCR420:
++			branch_max_throughput_mps =
++				aconnector->dc_sink->dsc_caps.dsc_dec_caps.branch_overall_throughput_1_mps;
++			break;
++		default:
++			break;
++		}
+ 
+-	if (branch_max_throughput_mps != 0 &&
+-		((stream->timing.pix_clk_100hz / 10) >  branch_max_throughput_mps * 1000))
++		if (branch_max_throughput_mps != 0 &&
++			((stream->timing.pix_clk_100hz / 10) >  branch_max_throughput_mps * 1000)) {
++			DRM_DEBUG_DRIVER("DSC is required but max throughput mps fails");
+ 		return DC_FAIL_BANDWIDTH_VALIDATE;
+-
++		}
++	} else {
++		DRM_DEBUG_DRIVER("DSC is required but can't find common dsc config.");
++		return DC_FAIL_BANDWIDTH_VALIDATE;
++	}
++#endif
+ 	return DC_OK;
+ }
 -- 
 2.45.2
 
