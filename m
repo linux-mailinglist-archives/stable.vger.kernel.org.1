@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-64574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDE3941EB9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB5A941B40
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 395A0B23293
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46FBF1F22DC5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3361A76BE;
-	Tue, 30 Jul 2024 17:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CD8189514;
+	Tue, 30 Jul 2024 16:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCDBHqZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLy8iPbh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7640F1A76C1;
-	Tue, 30 Jul 2024 17:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956481A619E;
+	Tue, 30 Jul 2024 16:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360569; cv=none; b=I0+cs/HRpF+rykE1/IFfJjz5JRovLP4LsrO9QzLayk92T++8MqmW1QtZiDvqNwpjcW98hlrIUlmFiklSh6cafSKSbEqi+WEQg4an6YGbAcO+5Zd/Q992j8asSf5+rFpqEhWiv1jUvZvUZ14NgULRHqWAijUU5Pa1pdtS1UaFHyc=
+	t=1722358357; cv=none; b=HoV3RyWhd+Vi+PK94bs/wi4sNfj8K0wx5lElkDb3sIDl+S/Ai1q+Z5zi1YhNS43NrTVF2gXY4be7mehAqj9zXiNQwBtGuC39jZtUbIPxuXZraNqeemVDc+55P9E7f5uxiIe8Yb0vUi4Tts4a5b4m5CURh3BMsQ+XrEp0zWXkqMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360569; c=relaxed/simple;
-	bh=gwfzc6fz1+YQr6CcPG6GkPKEkq4xfx7r8YrzfcQ4tCM=;
+	s=arc-20240116; t=1722358357; c=relaxed/simple;
+	bh=kHxy8q3tli3S824rO+hWbL35/AAhsKaBZAYr2nvWQG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ey4+SBXmAXE4JOCXAD8WeJtXptXlhSLkOATBvyfXVclK9LQUBj20xsQLkpIdHUWTRmY12NFYkg5pOM9zEtgyEhjxnHvXlEEHAenNOYUhwCkhJgc2kMRAphxr8HStXYJhIQ4uB9LAv6txMG+Sp5WFHybasUvfjTdw+G7BLx3F17Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCDBHqZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81C9C32782;
-	Tue, 30 Jul 2024 17:29:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oE9n11A7XGUwzS021sih9XpEDuw/obktcfU5vyzCs4YqNk8ocwGnEc299FYos1WQrVwx0SfuekU4a4qunDNBNvVhoH3mN4F7Z9daGhKlH+uPmjil0vbLLN2KmXk4AdfTHwAEYaGiBbdQAxtraX+G6wKwRIrVdN4H/KNXPHuogJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLy8iPbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C76C4AF0C;
+	Tue, 30 Jul 2024 16:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360569;
-	bh=gwfzc6fz1+YQr6CcPG6GkPKEkq4xfx7r8YrzfcQ4tCM=;
+	s=korg; t=1722358357;
+	bh=kHxy8q3tli3S824rO+hWbL35/AAhsKaBZAYr2nvWQG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCDBHqZYLqIHUpiPwTDiQpV5SOuolgDaRvfh5XDoY/rkGkNkbqvcv7U91XBQb+SGq
-	 oemEnVSHZmpWo0PipVhG9s/ezMgjJNVBzPRJ3ucb6WoUEeedoa+JBwFbQo5BZB6Q9E
-	 JSn+m7n3MOym3AgzGp+a3VxqN1qZpkpzERfSdgDE=
+	b=kLy8iPbhQvGE6Bve9NpnbUey0l+yXF3xDgfEtKWvTYpjqMyXgJLKhLO46FR7ZcL/T
+	 NX4v9bqWItsQ/78rH/k2z0CXu/b09Hzy5WCoE3f85X4VfBCGbaLcjAS5xKBg1xPnxr
+	 zYXOqma9BRQaAi7al4LZdi//YUGe2V28QCeBrGHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+241c815bda521982cb49@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 740/809] jfs: Fix array-index-out-of-bounds in diFree
+	Hao Sun <sunhao.th@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Yonghong Song <yhs@fb.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	syzbot+08ba1e474d350b613604@syzkaller.appspotmail.com,
+	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
+Subject: [PATCH 6.1 383/440] bpf: Synchronize dispatcher update with bpf_dispatcher_xdp_func
 Date: Tue, 30 Jul 2024 17:50:16 +0200
-Message-ID: <20240730151754.176736710@linuxfoundation.org>
+Message-ID: <20240730151630.767677214@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit f73f969b2eb39ad8056f6c7f3a295fa2f85e313a ]
+commit 4121d4481b72501aa4d22680be4ea1096d69d133 upstream.
 
-Reported-by: syzbot+241c815bda521982cb49@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hao Sun reported crash in dispatcher image [1].
+
+Currently we don't have any sync between bpf_dispatcher_update and
+bpf_dispatcher_xdp_func, so following race is possible:
+
+ cpu 0:                               cpu 1:
+
+ bpf_prog_run_xdp
+   ...
+   bpf_dispatcher_xdp_func
+     in image at offset 0x0
+
+                                      bpf_dispatcher_update
+                                        update image at offset 0x800
+                                      bpf_dispatcher_update
+                                        update image at offset 0x0
+
+     in image at offset 0x0 -> crash
+
+Fixing this by synchronizing dispatcher image update (which is done
+in bpf_dispatcher_update function) with bpf_dispatcher_xdp_func that
+reads and execute the dispatcher image.
+
+Calling synchronize_rcu after updating and installing new image ensures
+that readers leave old image before it's changed in the next dispatcher
+update. The update itself is locked with dispatcher's mutex.
+
+The bpf_prog_run_xdp is called under local_bh_disable and synchronize_rcu
+will wait for it to leave [2].
+
+[1] https://lore.kernel.org/bpf/Y5SFho7ZYXr9ifRn@krava/T/#m00c29ece654bc9f332a17df493bbca33e702896c
+[2] https://lore.kernel.org/bpf/0B62D35A-E695-4B7A-A0D4-774767544C1A@gmail.com/T/#mff43e2c003ae99f4a38f353c7969be4c7162e877
+
+Reported-by: Hao Sun <sunhao.th@gmail.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Yonghong Song <yhs@fb.com>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20221214123542.1389719-1-jolsa@kernel.org
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reported-by: syzbot+08ba1e474d350b613604@syzkaller.appspotmail.com
+Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_imap.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/bpf/dispatcher.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 2ec35889ad24e..1407feccbc2d0 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -290,7 +290,7 @@ int diSync(struct inode *ipimap)
- int diRead(struct inode *ip)
- {
- 	struct jfs_sb_info *sbi = JFS_SBI(ip->i_sb);
--	int iagno, ino, extno, rc;
-+	int iagno, ino, extno, rc, agno;
- 	struct inode *ipimap;
- 	struct dinode *dp;
- 	struct iag *iagp;
-@@ -339,8 +339,11 @@ int diRead(struct inode *ip)
+--- a/kernel/bpf/dispatcher.c
++++ b/kernel/bpf/dispatcher.c
+@@ -125,6 +125,11 @@ static void bpf_dispatcher_update(struct
  
- 	/* get the ag for the iag */
- 	agstart = le64_to_cpu(iagp->agstart);
-+	agno = BLKTOAG(agstart, JFS_SBI(ip->i_sb));
+ 	__BPF_DISPATCHER_UPDATE(d, new ?: (void *)&bpf_dispatcher_nop_func);
  
- 	release_metapage(mp);
-+	if (agno >= MAXAG || agno < 0)
-+		return -EIO;
- 
- 	rel_inode = (ino & (INOSPERPAGE - 1));
- 	pageno = blkno >> sbi->l2nbperpage;
--- 
-2.43.0
-
++	/* Make sure all the callers executing the previous/old half of the
++	 * image leave it, so following update call can modify it safely.
++	 */
++	synchronize_rcu();
++
+ 	if (new)
+ 		d->image_off = noff;
+ }
 
 
 
