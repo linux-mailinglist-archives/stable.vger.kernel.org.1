@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122BF9418D1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590E3941DB9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43BD71C2109C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13C3228CFC3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2297118800A;
-	Tue, 30 Jul 2024 16:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A2C1A76BB;
+	Tue, 30 Jul 2024 17:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LC0xMFWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwnOoHQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53F31A6166;
-	Tue, 30 Jul 2024 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F501A76B2;
+	Tue, 30 Jul 2024 17:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356722; cv=none; b=XxJ6kkjTVHFff1jQAvbeN2QPS/+D/aPIwzjP7IU3cWheUUk0jN2ptdXXYfPy12WTeAagI/auDaKrktdCHpiGHNj0R5CMv0gV5HF8GpvMEvPPw2J5DonylHjA8qeLa/3lFTv4XPewa9TUfJc6PHHHJeyJeY+QBc/D/iXEiKYkT58=
+	t=1722360045; cv=none; b=EqOa3YcwF0d4dwAOpssCH2L5ssdj2GbFwTBBGlTLwkZqihHPP678dGZ3RGR2vxunZHmLTJDo8dYsTcb59JG7X4TrCdbEWbKtUdqPqlAT+0tlWjh35Q5LUnplcvCiZoDFqO8HwF92vYepNGgJqbGbC/CxXaMlJX4QZkUf7rnF7VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356722; c=relaxed/simple;
-	bh=0/qF3Rp6nQXVQtkFAACPJkekXRF/VVzXHxY4rzORC54=;
+	s=arc-20240116; t=1722360045; c=relaxed/simple;
+	bh=ZgrPRf0flEbtqCDLINURLq6+hmIjdYlTTeifhHaX+Lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvT60RWp7EjKcv4JC4FnhQiT3L/JQ8T1GCntQjOYjkSRfFz3fwYblGaOAXg76dPJNoxgEoflAC8/Z3InVnTz0arg6r0Nl9TjBui4G1GNr9KTvCfRRQTXKJHaDTs418+j/u50WAxEDasKvYIxjr0TxNHvhbDTFjWpyesVK9vWvIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LC0xMFWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA301C4AF0C;
-	Tue, 30 Jul 2024 16:25:21 +0000 (UTC)
+	 MIME-Version; b=lNtnjwaDaK//wrHmCHqoRpxDa+HsW0QCL3CEwB0FSu56VAokQqQL27nAIHkI2gFTq2LnhZV79p8TtR6CGuGZcUxHc5q9ypK0DPOBa43q+GjFUZGFjtYKdN9VDQ1GNnJxGCCn0heX4N6FZIPbNUkPtyZeG5DtTuNNJZ6h7Nc1pr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwnOoHQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91939C4AF0E;
+	Tue, 30 Jul 2024 17:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356722;
-	bh=0/qF3Rp6nQXVQtkFAACPJkekXRF/VVzXHxY4rzORC54=;
+	s=korg; t=1722360045;
+	bh=ZgrPRf0flEbtqCDLINURLq6+hmIjdYlTTeifhHaX+Lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LC0xMFWDgasrBExy3WmVl9oOH9ZWPNKBRDwSz7Rd6aoQn6DfW2YQwNxM2aJMG+I7q
-	 sgpO7Hz/r7vp9hucqvGjlRrbXvXgLta8raYdIIYVXJK1KvTSt85DV2k6NTFA5Ihi8a
-	 BKX2uPHdH9x3DeSEYq9CjciSwcHG4DIqpZLQquuI=
+	b=JwnOoHQOgyDEgkd/zsd7eGZEX+qBEz8jaxh3/uK780Jjcs+y6gzUUv/VD11MbPzLW
+	 XKFKzxdLaMFzIlGitb+zN1tPsJDZ9TUnMGs09PSVVn6KegocV2YFIHDU0bVG28QnI1
+	 YLjWJOwAW2MQ5f+vd+GA9ABW761kqTDZFn/GOaWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 222/440] RDMA/hns: Fix unmatch exception handling when init eq table fails
+	Ma Ke <make24@iscas.ac.cn>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 6.10 579/809] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
 Date: Tue, 30 Jul 2024 17:47:35 +0200
-Message-ID: <20240730151624.531389722@linuxfoundation.org>
+Message-ID: <20240730151747.649476999@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 543fb987bd63ed27409b5dea3d3eec27b9c1eac9 ]
+commit 2df7aac81070987b0f052985856aa325a38debf6 upstream.
 
-The hw ctx should be destroyed when init eq table fails.
+In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Fixes: a5073d6054f7 ("RDMA/hns: Add eq support of hip08")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240710133705.896445-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240709092011.3204970-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 25 +++++++++++-----------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/gma500/psb_intel_lvds.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 176d75f2514eb..b592f1c1e2f5b 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -6418,9 +6418,16 @@ static void hns_roce_v2_int_mask_enable(struct hns_roce_dev *hr_dev,
- 	roce_write(hr_dev, ROCEE_VF_ABN_INT_CFG_REG, enable_flag);
- }
- 
--static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
-+static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
-+{
-+	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
-+}
+--- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
++++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
+@@ -504,6 +504,9 @@ static int psb_intel_lvds_get_modes(stru
+ 	if (mode_dev->panel_fixed_mode != NULL) {
+ 		struct drm_display_mode *mode =
+ 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
++		if (!mode)
++			return 0;
 +
-+static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev,
-+				    struct hns_roce_eq *eq)
- {
- 	struct device *dev = hr_dev->dev;
-+	int eqn = eq->eqn;
- 	int ret;
- 	u8 cmd;
- 
-@@ -6431,12 +6438,9 @@ static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
- 
- 	ret = hns_roce_destroy_hw_ctx(hr_dev, cmd, eqn & HNS_ROCE_V2_EQN_M);
- 	if (ret)
--		dev_err(dev, "[mailbox cmd] destroy eqc(%u) failed.\n", eqn);
--}
-+		dev_err(dev, "[mailbox cmd] destroy eqc(%d) failed.\n", eqn);
- 
--static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
--{
--	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
-+	free_eq_buf(hr_dev, eq);
- }
- 
- static void init_eq_config(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
-@@ -6742,7 +6746,7 @@ static int hns_roce_v2_init_eq_table(struct hns_roce_dev *hr_dev)
- 
- err_create_eq_fail:
- 	for (i -= 1; i >= 0; i--)
--		free_eq_buf(hr_dev, &eq_table->eq[i]);
-+		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
- 	kfree(eq_table->eq);
- 
- 	return ret;
-@@ -6762,11 +6766,8 @@ static void hns_roce_v2_cleanup_eq_table(struct hns_roce_dev *hr_dev)
- 	__hns_roce_free_irq(hr_dev);
- 	destroy_workqueue(hr_dev->irq_workq);
- 
--	for (i = 0; i < eq_num; i++) {
--		hns_roce_v2_destroy_eqc(hr_dev, i);
--
--		free_eq_buf(hr_dev, &eq_table->eq[i]);
--	}
-+	for (i = 0; i < eq_num; i++)
-+		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
- 
- 	kfree(eq_table->eq);
- }
--- 
-2.43.0
-
+ 		drm_mode_probed_add(connector, mode);
+ 		return 1;
+ 	}
 
 
 
