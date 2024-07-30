@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-63824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A098C941AD5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A73DA941785
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D290C1C231BF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6198C285576
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC901898F3;
-	Tue, 30 Jul 2024 16:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7083718C901;
+	Tue, 30 Jul 2024 16:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5yES2/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzL/eE4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1DE155CB3;
-	Tue, 30 Jul 2024 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDBB18B498;
+	Tue, 30 Jul 2024 16:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358069; cv=none; b=Iuk80Vva0OiRM0epQtU0yWaDkf88FGM/BHrwnVXvALIRcpsAMfE9zDXNp6oDLNGnzQ724IaAAGytad221JEReVetpAaGQACMsaHAfEfl+TxzvPG9yCbL1tVncEKnModJupNqnQ/cE0MTKnLCMMsbGrxqN5r/y1miyjwtyAVgTxI=
+	t=1722355780; cv=none; b=mHBTREWmG8SteCEsWHFa5AzR/mlIFyxK/s3/avKiTjWWH2dMAeUCudgN/9M4s1Fu5tl6AeIYzbymjmN/SI9PookdNOyLkNkSo6k9pkKfqRSWhLkDJpIX1ihNVQFzYfzAI3fwJkJ8rL4xbH4M6YCs77fQlV5wCfQSkyXJHNww524=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358069; c=relaxed/simple;
-	bh=yWLsWTeL7s3VQZ1m2DO2LUdG96sT3A03bdPsbgcb5TU=;
+	s=arc-20240116; t=1722355780; c=relaxed/simple;
+	bh=+g02nwPFDTftHxaoLxa+KpqJ6vqCr3nE6pmE8Qib6ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dwaxCESkltnls84vzjQrUTryTISKlllf5J+SbV0SGcLRArYIy7v6SXWAz4hOK8ApN6LIhbOW/XHDJnQ/LXNpVSnZgiwOnwnz3o7W4ndJAEV9ULb1BDQuHeuaObDutP7yaoccuGEVl/DKkJY0v8PEcLrfyOp+6YvDG3zVzitw9OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5yES2/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69741C32782;
-	Tue, 30 Jul 2024 16:47:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OPNxqh4exXMGRfSmFaHEdsHkYVECK8CNUzJZtXZL2iX5iXeO/oeYHmF055EiV/TBdujI0lLxvKXVWxXRWONG/Zjn/UCUaJWlMWYDsH73Ib2PA4bLKm0xkfMpYivFfA+OWn7ylqM+hO/167/fTPICVbx6Srll55OmINLjpqypgXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzL/eE4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E8CC32782;
+	Tue, 30 Jul 2024 16:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358068;
-	bh=yWLsWTeL7s3VQZ1m2DO2LUdG96sT3A03bdPsbgcb5TU=;
+	s=korg; t=1722355780;
+	bh=+g02nwPFDTftHxaoLxa+KpqJ6vqCr3nE6pmE8Qib6ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5yES2/tQwkpBMjgYpcTTfCyF/jK6KiMN9k3/mW6rq8zpfiv9lbpoj/bNCmvwZd82
-	 R+i/fDoggZmGm+cuUQQ6719ckMLvVHpRivuUb5SbAEJO+zcTxR1ZuEXY06XeMhLDCk
-	 +b5KiSmlnxBszCza651NpnjYklfyytGoD5cwIHH0=
+	b=GzL/eE4Hb8NG0E4I7ufWffI0px9ETgAw6QK+6Rn0l/dkbZxd3x1nh/qMQqCT2ZgOh
+	 j3Tt96mZBfXIAZGAHF/fN4Erxn1IzfGL16YO1tmEfC8x4gjJJSNKmE4+w9D1tEAQ53
+	 kYx647kLyuezyjRD4EZ7zWCtVTEwv0b7rgsyUIp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	=?UTF-8?q?Nicolas=20Pomar=C3=A8de?= <npomarede@corp.free.fr>,
+	Christian Zietz <czietz@gmx.net>,
+	Eero Tamminen <oak@helsinkinet.fi>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 320/809] media: rcar-csi2: Cleanup subdevice in remove()
+Subject: [PATCH 6.6 089/568] m68k: atari: Fix TT bootup freeze / unexpected (SCU) interrupt messages
 Date: Tue, 30 Jul 2024 17:43:16 +0200
-Message-ID: <20240730151737.244583886@linuxfoundation.org>
+Message-ID: <20240730151643.351859038@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +66,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+From: Eero Tamminen <oak@helsinkinet.fi>
 
-[ Upstream commit f6d64d0d2897ed4e85ac00afe43e45c8b8fc0c44 ]
+[ Upstream commit f70065a9fd988983b2c693631b801f25a615fc04 ]
 
-Cleanup the V4L2 subdevice in the driver's remove function to
-ensure its async connection are freed, and guarantee in future that
-the subdev active state is cleaned up.
+Avoid freeze on Atari TT / MegaSTe boot with continuous messages of:
 
-Fixes: 769afd212b16 ("media: rcar-csi2: add Renesas R-Car MIPI CSI-2 receiver driver")
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://lore.kernel.org/r/20240617161135.130719-4-jacopo.mondi@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+	unexpected interrupt from 112
+
+Which was due to VBL interrupt being enabled in SCU sys mask, but there
+being no handler for that any more.
+
+(Bug and fix were first verified on real Atari TT HW by Christian,
+ this patch later on in Hatari emulator.)
+
+Fixes: 1fa0b29f3a43f9dd ("fbdev: Kill Atari vblank cursor blinking")
+Reported-by: Nicolas Pomarède <npomarede@corp.free.fr>
+Closes: https://listengine.tuxfamily.org/lists.tuxfamily.org/hatari-devel/2024/06/msg00016.html
+Closes: https://lore.kernel.org/all/9aa793d7-82ed-4fbd-bce5-60810d8a9119@helsinkinet.fi
+Tested-by: Christian Zietz <czietz@gmx.net>
+Signed-off-by: Eero Tamminen <oak@helsinkinet.fi>
+Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/20240624144901.5236-1-oak@helsinkinet.fi
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/rcar-csi2.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/m68k/atari/ataints.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar-csi2.c b/drivers/media/platform/renesas/rcar-csi2.c
-index 249e58c771761..2d464e43a5be8 100644
---- a/drivers/media/platform/renesas/rcar-csi2.c
-+++ b/drivers/media/platform/renesas/rcar-csi2.c
-@@ -1938,6 +1938,7 @@ static void rcsi2_remove(struct platform_device *pdev)
- 	v4l2_async_nf_unregister(&priv->notifier);
- 	v4l2_async_nf_cleanup(&priv->notifier);
- 	v4l2_async_unregister_subdev(&priv->subdev);
-+	v4l2_subdev_cleanup(&priv->subdev);
+diff --git a/arch/m68k/atari/ataints.c b/arch/m68k/atari/ataints.c
+index 56f02ea2c248d..715d1e0d973e6 100644
+--- a/arch/m68k/atari/ataints.c
++++ b/arch/m68k/atari/ataints.c
+@@ -302,11 +302,7 @@ void __init atari_init_IRQ(void)
  
- 	pm_runtime_disable(&pdev->dev);
- 
+ 	if (ATARIHW_PRESENT(SCU)) {
+ 		/* init the SCU if present */
+-		tt_scu.sys_mask = 0x10;		/* enable VBL (for the cursor) and
+-									 * disable HSYNC interrupts (who
+-									 * needs them?)  MFP and SCC are
+-									 * enabled in VME mask
+-									 */
++		tt_scu.sys_mask = 0x0;		/* disable all interrupts */
+ 		tt_scu.vme_mask = 0x60;		/* enable MFP and SCC ints */
+ 	} else {
+ 		/* If no SCU and no Hades, the HSYNC interrupt needs to be
 -- 
 2.43.0
 
