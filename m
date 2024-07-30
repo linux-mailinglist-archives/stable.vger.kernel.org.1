@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59920941D11
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A739417EB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61AA9B2937A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16D371F246A7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7631A76C1;
-	Tue, 30 Jul 2024 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85DB18B468;
+	Tue, 30 Jul 2024 16:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJJV9+HC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0P2COrO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C58F1A76A5;
-	Tue, 30 Jul 2024 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644F618991C;
+	Tue, 30 Jul 2024 16:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359502; cv=none; b=fI51RUY1D3J5D4Q5coWef0f+pF0vF7ZItnQpsDZ9rv/0YYwoF/ToLy36GXhAJ+h3gRRZq607tBrVCI5s2jc/kY/n4zPiZjAwht/yMd9fTivumX8MvuL01M6CVYdYiGkjSWv5SroFNiF2TE1HOu+5OFAKbHukzFkQdhItCnM0PXM=
+	t=1722356058; cv=none; b=YMU1e1OBibdOpPiUnQ8BkS2weCi/pEj+ENnhQUkmG0XRgeW2cx5Ra2RY0qeJTG6K+YGI1D/UQCEn9IM7kozqoXNOgujXimvCejbbcp0o7axoHq/Vh+uEORBown34DRCnp74/R78Nx0u1Sg3y540flvP80BCrAdZTvittMoUC5v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359502; c=relaxed/simple;
-	bh=OttFG6MErymp/2oZ2MIUaRzJFdLm5rviiRyAx2uQGNo=;
+	s=arc-20240116; t=1722356058; c=relaxed/simple;
+	bh=J4vuVOQpvC5z8ioVagU9tXSmIM/+tPBO8El+2NozX4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GatHNMNOLHYwKkSTbvzJQYlKIpHQXna5qm7EciaXo9OB+UhRaYQdKkCDiFQzyYavNFsgWRn28duJefBWy7I4RoXq4g1oXnEFqi/Oj49IOw8szyz1N7oYv2olxm8g+HSIzXGM08AcyUlpiIoGzLF57Mi/H1q5KdHo47tGjVJKLg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJJV9+HC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8284CC32782;
-	Tue, 30 Jul 2024 17:11:41 +0000 (UTC)
+	 MIME-Version; b=NKbi7E+7RL/iF7qqb3DGcfZ+AvU5ox+VTRa0ouQJRdd4IfZOi90S3XQjxzMXLLhKtNodhVhGKNiFRLfB8pF+SjIk3+XU0RWI7u0nKnVjNdHJzVziID1M+qD8ndsD0qtHdx3V1Y8CrlgeaUdHJ2Dq/6A74FYN+y2vTQ6MTuAmb0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0P2COrO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE58FC4AF0E;
+	Tue, 30 Jul 2024 16:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359501;
-	bh=OttFG6MErymp/2oZ2MIUaRzJFdLm5rviiRyAx2uQGNo=;
+	s=korg; t=1722356058;
+	bh=J4vuVOQpvC5z8ioVagU9tXSmIM/+tPBO8El+2NozX4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJJV9+HCXmqUMxkLqCUHVba4p+VXZEG4WhJuVXGQUEK0vzbrIGn5hv6QDycQUw0rr
-	 Gj7sKeWqY6eE3ok8KSBJUfevB3wtQ7iOCn0IUShVU71YAaud6GD+AcgdxtAB99cFjz
-	 b0+5QsoOIUtJxyYlvCf5SiPq8ZMMvhhmhsnxNNsk=
+	b=X0P2COrOpaQV9qByYmLd6IlUj3I0UdBF2dTqixmmYEO0/77LeV0sdjMDfvbDZXYD5
+	 ohTLgwcWDHVXWwyfyaU8963l18djiNJ+BmY+4k2KafAYrwA2r5iYLwkLd0oNPnXisB
+	 eqtTpRU5mpjgfpLqyZOFoj7awyhqM1PBMT+myh3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 493/809] pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails
-Date: Tue, 30 Jul 2024 17:46:09 +0200
-Message-ID: <20240730151744.211358097@linuxfoundation.org>
+Subject: [PATCH 6.1 137/440] media: dvb-usb: Fix unexpected infinite loop in dvb_usb_read_remote_control()
+Date: Tue, 30 Jul 2024 17:46:10 +0200
+Message-ID: <20240730151621.234094943@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 9b401f4a7170125365160c9af267a41ff6b39001 ]
+[ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
 
-This driver calls pinctrl_register_and_init() which is not
-devm_ managed, it will leads memory leak if pinctrl_enable()
-fails. Replace it with devm_pinctrl_register_and_init().
-And add missing of_node_put() in the error path.
+Infinite log printing occurs during fuzz test:
 
-Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240606023704.3931561-4-yangyingliang@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+  rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
+  ...
+  dvb-usb: schedule remote query interval to 100 msecs.
+  dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialized ...
+  dvb-usb: bulk message failed: -22 (1/0)
+  dvb-usb: bulk message failed: -22 (1/0)
+  dvb-usb: bulk message failed: -22 (1/0)
+  ...
+  dvb-usb: bulk message failed: -22 (1/0)
+
+Looking into the codes, there is a loop in dvb_usb_read_remote_control(),
+that is in rc_core_dvb_usb_remote_init() create a work that will call
+dvb_usb_read_remote_control(), and this work will reschedule itself at
+'rc_interval' intervals to recursively call dvb_usb_read_remote_control(),
+see following code snippet:
+
+  rc_core_dvb_usb_remote_init() {
+    ...
+    INIT_DELAYED_WORK(&d->rc_query_work, dvb_usb_read_remote_control);
+    schedule_delayed_work(&d->rc_query_work,
+                          msecs_to_jiffies(rc_interval));
+    ...
+  }
+
+  dvb_usb_read_remote_control() {
+    ...
+    err = d->props.rc.core.rc_query(d);
+    if (err)
+      err(...)  // Did not return even if query failed
+    schedule_delayed_work(&d->rc_query_work,
+                          msecs_to_jiffies(rc_interval));
+  }
+
+When the infinite log printing occurs, the query callback
+'d->props.rc.core.rc_query' is cxusb_rc_query(). And the log is due to
+the failure of finding a valid 'generic_bulk_ctrl_endpoint'
+in usb_bulk_msg(), see following code snippet:
+
+  cxusb_rc_query() {
+    cxusb_ctrl_msg() {
+      dvb_usb_generic_rw() {
+        ret = usb_bulk_msg(d->udev, usb_sndbulkpipe(d->udev,
+                           d->props.generic_bulk_ctrl_endpoint),...);
+        if (ret)
+          err("bulk message failed: %d (%d/%d)",ret,wlen,actlen);
+          ...
+      }
+  ...
+  }
+
+By analyzing the corresponding USB descriptor, it shows that the
+bNumEndpoints is 0 in its interface descriptor, but
+the 'generic_bulk_ctrl_endpoint' is 1, that means user don't configure
+a valid endpoint for 'generic_bulk_ctrl_endpoint', therefore this
+'invalid' USB device should be rejected before it calls into
+dvb_usb_read_remote_control().
+
+To fix it, we need to add endpoint check for 'generic_bulk_ctrl_endpoint'.
+And as Sean suggested, the same check and clear halts should be done for
+'generic_bulk_ctrl_endpoint_response'. So introduce
+dvb_usb_check_bulk_endpoint() to do it for both of them.
+
+Fixes: 4d43e13f723e ("V4L/DVB (4643): Multi-input patch for DVB-USB device")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/media/usb/dvb-usb/dvb-usb-init.c | 35 +++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-index 040f2c46a868d..ef97586385019 100644
---- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-+++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-@@ -876,7 +876,7 @@ static int ti_iodelay_probe(struct platform_device *pdev)
- 	iod->desc.name = dev_name(dev);
- 	iod->desc.owner = THIS_MODULE;
+diff --git a/drivers/media/usb/dvb-usb/dvb-usb-init.c b/drivers/media/usb/dvb-usb/dvb-usb-init.c
+index 58eea8ab54779..6cf6d08cc4ec9 100644
+--- a/drivers/media/usb/dvb-usb/dvb-usb-init.c
++++ b/drivers/media/usb/dvb-usb/dvb-usb-init.c
+@@ -23,11 +23,40 @@ static int dvb_usb_force_pid_filter_usage;
+ module_param_named(force_pid_filter_usage, dvb_usb_force_pid_filter_usage, int, 0444);
+ MODULE_PARM_DESC(force_pid_filter_usage, "force all dvb-usb-devices to use a PID filter, if any (default: 0).");
  
--	ret = pinctrl_register_and_init(&iod->desc, dev, iod, &iod->pctl);
-+	ret = devm_pinctrl_register_and_init(dev, &iod->desc, iod, &iod->pctl);
- 	if (ret) {
- 		dev_err(dev, "Failed to register pinctrl\n");
- 		goto exit_out;
-@@ -884,7 +884,11 @@ static int ti_iodelay_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, iod);
- 
--	return pinctrl_enable(iod->pctl);
-+	ret = pinctrl_enable(iod->pctl);
-+	if (ret)
-+		goto exit_out;
++static int dvb_usb_check_bulk_endpoint(struct dvb_usb_device *d, u8 endpoint)
++{
++	if (endpoint) {
++		int ret;
 +
++		ret = usb_pipe_type_check(d->udev, usb_sndbulkpipe(d->udev, endpoint));
++		if (ret)
++			return ret;
++		ret = usb_pipe_type_check(d->udev, usb_rcvbulkpipe(d->udev, endpoint));
++		if (ret)
++			return ret;
++	}
 +	return 0;
- 
- exit_out:
- 	of_node_put(np);
-@@ -899,9 +903,6 @@ static void ti_iodelay_remove(struct platform_device *pdev)
++}
++
++static void dvb_usb_clear_halt(struct dvb_usb_device *d, u8 endpoint)
++{
++	if (endpoint) {
++		usb_clear_halt(d->udev, usb_sndbulkpipe(d->udev, endpoint));
++		usb_clear_halt(d->udev, usb_rcvbulkpipe(d->udev, endpoint));
++	}
++}
++
+ static int dvb_usb_adapter_init(struct dvb_usb_device *d, short *adapter_nrs)
  {
- 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
+ 	struct dvb_usb_adapter *adap;
+ 	int ret, n, o;
  
--	if (iod->pctl)
--		pinctrl_unregister(iod->pctl);
--
- 	ti_iodelay_pinconf_deinit_dev(iod);
++	ret = dvb_usb_check_bulk_endpoint(d, d->props.generic_bulk_ctrl_endpoint);
++	if (ret)
++		return ret;
++	ret = dvb_usb_check_bulk_endpoint(d, d->props.generic_bulk_ctrl_endpoint_response);
++	if (ret)
++		return ret;
+ 	for (n = 0; n < d->props.num_adapters; n++) {
+ 		adap = &d->adapter[n];
+ 		adap->dev = d;
+@@ -103,10 +132,8 @@ static int dvb_usb_adapter_init(struct dvb_usb_device *d, short *adapter_nrs)
+ 	 * when reloading the driver w/o replugging the device
+ 	 * sometimes a timeout occurs, this helps
+ 	 */
+-	if (d->props.generic_bulk_ctrl_endpoint != 0) {
+-		usb_clear_halt(d->udev, usb_sndbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
+-		usb_clear_halt(d->udev, usb_rcvbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
+-	}
++	dvb_usb_clear_halt(d, d->props.generic_bulk_ctrl_endpoint);
++	dvb_usb_clear_halt(d, d->props.generic_bulk_ctrl_endpoint_response);
  
- 	/* Expect other allocations to be freed by devm */
+ 	return 0;
+ 
 -- 
 2.43.0
 
