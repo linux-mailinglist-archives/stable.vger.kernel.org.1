@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8E7941969
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0207E941A31
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D10F9283A61
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53EF8B2A5D1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC6A18B46E;
-	Tue, 30 Jul 2024 16:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1F418801C;
+	Tue, 30 Jul 2024 16:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDlLQtbi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eU2wZKWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD14418B46A;
-	Tue, 30 Jul 2024 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062FE1A6195;
+	Tue, 30 Jul 2024 16:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357110; cv=none; b=tyTev4RNdlt2eY6k6TqDMl3l6pXW7XJXQY0suvbj57TIA9p3aQRfIpF7TWtZBArfc52fpuu0xRWdnyolTO4Nb5pKiJdzohMNXY79l30yM/KBkjxsxmoe7URNmxL2CKvWoyU6qEcTDhtImfULridKuYAIiWOZBGfCyQBHBUViUHI=
+	t=1722357334; cv=none; b=s/UI/aiTzLG/yMcY32p/mQfNTt+LoWLYKlrSVAAJCErQgU33owuzz3fl2gY14O9A6syt0yWZzjfy/otG+tA3E/sBw0UpALHCc1Xtl0zcNoMPTdGTRruXLqKadJio+o5HOvinVDzIoVnta6lLqec3/hrOFSe3f3Af/EQfyd0VZNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357110; c=relaxed/simple;
-	bh=9x/m8hRPQxnn7FWw1rxkzGaiBW9gi23PyxA/iVvFMvg=;
+	s=arc-20240116; t=1722357334; c=relaxed/simple;
+	bh=7Dk1ZVtzuJA7ihXRJB1nCrGdpY5KGDYSdxMxb3Hpgng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGKgjMtLQGUzXfQMp17yTRbuU5qwopIjemxJ1uDtK+H2U4myy+1FiBKnrjYQc9/lmjxhpW3/1AK3qDnzjpnd8klFfaGehoqMqNwYTS3EzVazYPcbJKdoWntkwZO5Pqlny34BlMqH7wQLrUw/uP4tlwJtYy1mCHSgXRHJrCLVFzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDlLQtbi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39539C4AF0A;
-	Tue, 30 Jul 2024 16:31:50 +0000 (UTC)
+	 MIME-Version; b=dllswSd9x0IJAmJZyFsnjH1wLIfWryx7HX3mKb+VTLfIJMnOL0CdfJQ51PbNZhaM0En63hWxOFBgrqL9n+UbIgAqaSytiqWjDcIfkZqrgp9RGWjhrLAGcD1kVhGR/YgjBGTdPuxnvxmtWmSOGYmZ6pvoL+CxG7tzA981tTfq0EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eU2wZKWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E28C4AF0A;
+	Tue, 30 Jul 2024 16:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357110;
-	bh=9x/m8hRPQxnn7FWw1rxkzGaiBW9gi23PyxA/iVvFMvg=;
+	s=korg; t=1722357333;
+	bh=7Dk1ZVtzuJA7ihXRJB1nCrGdpY5KGDYSdxMxb3Hpgng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDlLQtbi+Z1dBJFH6TroKLuIk/eMkyjCH3ftl8FdYnRruDdJUGyW5P1g0JTP6uB/X
-	 OhH3dreSFQbAn4sDPUHmYCcqrutlSEzCvSSZ3opqK28J06ZS1B+E/+s557CZuDF185
-	 OHFmicVkjsObWLwipGVOQx95BBjAq9+YMmcUsmKA=
+	b=eU2wZKWWNLVUsppYbGsiWU+7uBBWweRx9sDfLgJzG1VIZu02KP5KBYa7vzH7RNMS8
+	 LOjd7sW10YhERfWQy7CMjsQ5gq8dYrmxPf4v+ufItcrB0bfwpXvlQil0p3t7aylCDA
+	 DDKixfAwOzMe5hbTLnju4yR3NvuGvt1j9GzkcaXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
+	Tao Chen <chen.dylane@gmail.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 219/809] riscv, bpf: Fix out-of-bounds issue when preparing trampoline image
-Date: Tue, 30 Jul 2024 17:41:35 +0200
-Message-ID: <20240730151733.257087333@linuxfoundation.org>
+Subject: [PATCH 6.10 220/809] bpftool: Mount bpffs when pinmaps path not under the bpffs
+Date: Tue, 30 Jul 2024 17:41:36 +0200
+Message-ID: <20240730151733.298502008@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,88 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Tao Chen <chen.dylane@gmail.com>
 
-[ Upstream commit 9f1e16fb1fc9826001c69e0551d51fbbcd2d74e9 ]
+[ Upstream commit da5f8fd1f0d393d5eaaba9ad8c22d1c26bb2bf9b ]
 
-We get the size of the trampoline image during the dry run phase and
-allocate memory based on that size. The allocated image will then be
-populated with instructions during the real patch phase. But after
-commit 26ef208c209a ("bpf: Use arch_bpf_trampoline_size"), the `im`
-argument is inconsistent in the dry run and real patch phase. This may
-cause emit_imm in RV64 to generate a different number of instructions
-when generating the 'im' address, potentially causing out-of-bounds
-issues. Let's emit the maximum number of instructions for the "im"
-address during dry run to fix this problem.
+As Quentin said [0], BPF map pinning will fail if the pinmaps path is not
+under the bpffs, like:
 
-Fixes: 26ef208c209a ("bpf: Use arch_bpf_trampoline_size")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+  libbpf: specified path /home/ubuntu/test/sock_ops_map is not on BPF FS
+  Error: failed to pin all maps
+
+  [0] https://github.com/libbpf/bpftool/issues/146
+
+Fixes: 3767a94b3253 ("bpftool: add pinmaps argument to the load/loadall")
+Signed-off-by: Tao Chen <chen.dylane@gmail.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240622030437.3973492-3-pulehui@huaweicloud.com
+Tested-by: Quentin Monnet <qmo@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20240702131150.15622-1-chen.dylane@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/net/bpf_jit_comp64.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ tools/bpf/bpftool/prog.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index 79a001d5533ea..212b015e09b75 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -16,6 +16,8 @@
- #include "bpf_jit.h"
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 1a501cf09e782..40ea743d139fd 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -1813,6 +1813,10 @@ static int load_with_options(int argc, char **argv, bool first_prog_only)
+ 	}
  
- #define RV_FENTRY_NINSNS 2
-+/* imm that allows emit_imm to emit max count insns */
-+#define RV_MAX_COUNT_IMM 0x7FFF7FF7FF7FF7FF
- 
- #define RV_REG_TCC RV_REG_A6
- #define RV_REG_TCC_SAVED RV_REG_S6 /* Store A6 in S6 if program do calls */
-@@ -915,7 +917,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 		orig_call += RV_FENTRY_NINSNS * 4;
- 
- 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
--		emit_imm(RV_REG_A0, (const s64)im, ctx);
-+		emit_imm(RV_REG_A0, ctx->insns ? (const s64)im : RV_MAX_COUNT_IMM, ctx);
- 		ret = emit_call((const u64)__bpf_tramp_enter, true, ctx);
- 		if (ret)
- 			return ret;
-@@ -976,7 +978,7 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
- 
- 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
- 		im->ip_epilogue = ctx->insns + ctx->ninsns;
--		emit_imm(RV_REG_A0, (const s64)im, ctx);
-+		emit_imm(RV_REG_A0, ctx->insns ? (const s64)im : RV_MAX_COUNT_IMM, ctx);
- 		ret = emit_call((const u64)__bpf_tramp_exit, true, ctx);
- 		if (ret)
- 			goto out;
-@@ -1045,6 +1047,7 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image,
- {
- 	int ret;
- 	struct rv_jit_context ctx;
-+	u32 size = image_end - image;
- 
- 	ctx.ninsns = 0;
- 	/*
-@@ -1058,11 +1061,16 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image,
- 	ctx.ro_insns = image;
- 	ret = __arch_prepare_bpf_trampoline(im, m, tlinks, func_addr, flags, &ctx);
- 	if (ret < 0)
--		return ret;
-+		goto out;
- 
--	bpf_flush_icache(ctx.insns, ctx.insns + ctx.ninsns);
-+	if (WARN_ON(size < ninsns_rvoff(ctx.ninsns))) {
-+		ret = -E2BIG;
-+		goto out;
-+	}
- 
--	return ninsns_rvoff(ret);
-+	bpf_flush_icache(image, image_end);
-+out:
-+	return ret < 0 ? ret : size;
- }
- 
- int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
+ 	if (pinmaps) {
++		err = create_and_mount_bpffs_dir(pinmaps);
++		if (err)
++			goto err_unpin;
++
+ 		err = bpf_object__pin_maps(obj, pinmaps);
+ 		if (err) {
+ 			p_err("failed to pin all maps");
 -- 
 2.43.0
 
