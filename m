@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF13C941734
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EB6941A92
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F05751C232AF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEB0A1F259A1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3AC18B489;
-	Tue, 30 Jul 2024 16:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD58155CB3;
+	Tue, 30 Jul 2024 16:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cj5OW+qy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCzES58B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3973818B482;
-	Tue, 30 Jul 2024 16:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D371A6166;
+	Tue, 30 Jul 2024 16:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355606; cv=none; b=k3bzKa5/FBJa+UgiVJdz4waDha//Ms7FpukWzD+HM2IU68BZHt+B0WPGbDkTJ6Rqu6tjQWwzQ49IDih8ci91jP9At+w5GCTpP3cFN7ggm0p/6lIDlB4kvIuDEF+4RzM8vKyxzzMz4lPBe1nbXjst14EgwLadge0b80GEiEXeZx4=
+	t=1722357915; cv=none; b=pDf+eHW3NBNtw3v1aQTxka4rmVrTMuEvXPr1VkaJA+aoQ3dGdVRT647T4F/g2a9iFcz+Zp6YQtgMjZt/G/J/qHWYdeXVjEftDY/tzxSQdFxmvfykLAQl72VRoGc+NmT8io+PyR3FVsuEEsCOaNE9VUEhOt+zZfrjC8NVKUTlYKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355606; c=relaxed/simple;
-	bh=BYgRjivsXBWxinTUa5Q6gDa8Nfwl6R+JNBXkfkAqYSc=;
+	s=arc-20240116; t=1722357915; c=relaxed/simple;
+	bh=mv3yJ6cJOzAYePagrFevc159N2Z9N9GZwUj2Q95Naqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlHvs56Azgbn5Rz43EK4kUKYaISQMgLeuM7wclwnnqrLHFdWb225iqHaV+pflPMgsOKSWxhgCPLljkrmvw4rKzLuOn/MsCVKJCpwYmamiiR1LN3i7cux9ckt2lLbosDBqpWANaFsO+NifpIk0mHneRzDE5mVBRB1k0u4xavao4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cj5OW+qy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC989C32782;
-	Tue, 30 Jul 2024 16:06:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A8yUiVMWR9qlSyyuGKyv6ar7BAEfh6YSFThxgm1tyPa5WadLU7rurNQB+i+qL1MOspl1XEC+fB31YKjggb6M1vKFIOtkn6xwlAo9WSlESfWgsj0kLL7biKtzLt1imoCXKyo7IeYoblgewNfnQpoo1EmXuEAszT23k4kjtgkpMTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCzES58B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31B1C32782;
+	Tue, 30 Jul 2024 16:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355606;
-	bh=BYgRjivsXBWxinTUa5Q6gDa8Nfwl6R+JNBXkfkAqYSc=;
+	s=korg; t=1722357915;
+	bh=mv3yJ6cJOzAYePagrFevc159N2Z9N9GZwUj2Q95Naqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cj5OW+qywJ2raq17aZ2vdcsCsuIyHvfphTk4Mu5Auip9a15aiDLunZTLg/w7udeHp
-	 P6Qftvgu9SRQyZFT7KeYDomvMitW6JUKlEfEIfICwp60V/j0BhWL5zQIFj9/n0xlBx
-	 xgeFWySB5rea6YoRxs0cfp2NXMU96CD7p9XCTkhs=
+	b=uCzES58BexDMyUGfH9OoIVo+uPvFmzCoJIW3mTzadA6QU/2PL/wYLMz2MQ6ujmjOH
+	 qYg6U5RQOM4bMwivuejqdEQVDpkVpQ3F7UN0nQUIXhPhysmGbhzGLlK7cAGl4FUjwL
+	 F2yMOcAVJg9jtpePx3E61akK1uMLr+fXXYrMgNhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Animesh Manna <animesh.manna@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/568] arm64: dts: mediatek: mt8192-asurada: Add off-on-delay-us for pp3300_mipibrdg
+Subject: [PATCH 6.10 304/809] drm/i915/display: Skip Panel Replay on pipe comparison if no active planes
 Date: Tue, 30 Jul 2024 17:43:00 +0200
-Message-ID: <20240730151642.713247762@linuxfoundation.org>
+Message-ID: <20240730151736.599159645@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit 897a7edba9330974726c564dfdbf4fb5e203b9ac ]
+[ Upstream commit 955446ed6e822b86751993bd69022d347b43a99e ]
 
-Set off-on-delay-us to 500000 us for pp3300_mipibrdg to make sure it
-complies with the panel's unprepare delay (the time to power down
-completely) of the power sequence. Explicit configuration on the
-regulator node is required because mt8192-asurada uses the same power
-supply for the panel and the anx7625 DP bridge.
+Panel Replay is not enabled if there are no active planes. Do not compare
+it on pipe comparison. Otherwise we get pipe mismatch.
 
-For example, the power sequence could be violated in this sequence:
-1. Bridge on: panel goes off, but regulator doesn't turn off (refcount=1).
-2. Bridge off: regulator turns off (refcount=0).
-3. Bridge resume -> regulator turns on but the bridge driver doesn't
-   check the delay.
-
-Or in this sequence:
-1. Bridge on: panel goes off. The regulator doesn't turn off (refcount=1),
-   but the .unprepared_time in panel_edp is still updated.
-2. Bridge off, regulator goes off (refcount=0).
-3. Panel on, but the panel driver uses the wrong .unprepared_time to check
-   the unprepare delay.
-
-Fixes: f9f00b1f6b9b ("arm64: dts: mediatek: asurada: Add display regulators")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240502154455.3427793-1-treapking@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: ac9ef327327b ("drm/i915/psr: Panel replay has to be enabled before link training")
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240607134917.1327574-5-jouni.hogander@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/intel_display.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-index dc39ebd1bbfc8..6b4b7a7cd35ef 100644
---- a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
-@@ -147,6 +147,7 @@ pp3300_mipibrdg: regulator-3v3-mipibrdg {
- 		regulator-boot-on;
- 		gpio = <&pio 127 GPIO_ACTIVE_HIGH>;
- 		vin-supply = <&pp3300_g>;
-+		off-on-delay-us = <500000>;
- 	};
- 
- 	/* separately switched 3.3V power rail */
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index 0ae18b07ac87d..e53d3e900b3e4 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -5318,7 +5318,9 @@ intel_pipe_config_compare(const struct intel_crtc_state *current_config,
+ 	 * Panel replay has to be enabled before link training. PSR doesn't have
+ 	 * this requirement -> check these only if using panel replay
+ 	 */
+-	if (current_config->has_panel_replay || pipe_config->has_panel_replay) {
++	if (current_config->active_planes &&
++	    (current_config->has_panel_replay ||
++	     pipe_config->has_panel_replay)) {
+ 		PIPE_CONF_CHECK_BOOL(has_psr);
+ 		PIPE_CONF_CHECK_BOOL(has_sel_update);
+ 		PIPE_CONF_CHECK_BOOL(enable_psr2_sel_fetch);
 -- 
 2.43.0
 
