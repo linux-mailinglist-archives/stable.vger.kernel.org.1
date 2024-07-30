@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A5D941729
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:08:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C54941A8A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35AB91C22F15
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:08:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F7F1C23732
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B24018B46A;
-	Tue, 30 Jul 2024 16:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F287018990C;
+	Tue, 30 Jul 2024 16:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBurYBD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dt65+sTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599E218B461;
-	Tue, 30 Jul 2024 16:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A71C31898F7;
+	Tue, 30 Jul 2024 16:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355582; cv=none; b=ii2LhxAF4AI64PAl6PxWrDGbOxm6LnhGmK1FGEmekIhi0EY2w8oawYElvVWUzT6YCQow7auMjtcv/gMF5ss1J3pkFkGgmqgLkuLFEWOKE+NmL79EA+6Sz3Vd7f5g5Z8JsRbn7sfppdixrQxi3+vsQdwhY/AyUhtkTmvDCsJRV/Y=
+	t=1722357895; cv=none; b=lDcpVgGoDOy1ftPdNSdPViRtRbYx5ODw6JATE1NT1UT2Bf+7/qNTR7ToFQLRmGRgzl4OOxaxs9bMPqstc3v1095HH0mZj5ljPhbwZRCCGTDBmDtreLrBXlUO8Q91Cireh5xvNbp1pMKxPe5a8PoHc8lbGkDaLl9L17ZjZh4UZrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355582; c=relaxed/simple;
-	bh=yVd8P/zSl2CMb1mXy5E6//S0t05oCGKu90nh3cdN8CA=;
+	s=arc-20240116; t=1722357895; c=relaxed/simple;
+	bh=ul0QVal0vhk0mydQTql5mLwWQ5yZsBEGWYDB2o9S9AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0k5oTgAVUly11VhAZwp1LQjDUNMlqLRhn3wFBNaMi4kmjylkAg1K2bf8YoCaGAO48oI3IS+IFPOen3d1O7Pyz7knMLq5PR29RrnRp6Vc2qYC3aAB9glV4xbp8J2Wlk7mRJgn4bi3PKestZbnVJR1ZGJlI1SANwiM58Gna/PMF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBurYBD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1828BC4AF0C;
-	Tue, 30 Jul 2024 16:06:20 +0000 (UTC)
+	 MIME-Version; b=HAKedOeBNH50xuFfSG83tXY0LoYaunUJ1P9+qpELtAkhuJ0DA8JboqVRqsBoW1lAqYjnRg3aXmHkTF3WbWSLNFiphqlP3czZjLCcPXyT3x140cyDTaLpGG7QaQtmTNdqQhHf5U9iuZfHDqLUHgY8TIf8GxFOzFbVg4JbMqY77Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dt65+sTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242F5C32782;
+	Tue, 30 Jul 2024 16:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355581;
-	bh=yVd8P/zSl2CMb1mXy5E6//S0t05oCGKu90nh3cdN8CA=;
+	s=korg; t=1722357895;
+	bh=ul0QVal0vhk0mydQTql5mLwWQ5yZsBEGWYDB2o9S9AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBurYBD1qKCFLju97SfKInPVZ2WSEazxbqm3UxdDmVDcjNg+bEkNkOqNeth8oGkAJ
-	 b6hgFf/rWnX6XkOsxBqE60P0D6eauwHwUBdNA09jTGjExQ8LyJTY2DV8aVhAdFUXGL
-	 Qt0VT3xSym9RKEQNGcUbx32K2qsFP0dtAJw25vHI=
+	b=Dt65+sTJKoO5y/UPYRYGp3PaIEN3ROc4G5/xoIsCGgZ3F6If/RCgrtZhbD7DZNmYs
+	 bBZ2arL+l4LbzyO24l7Bas4/kniBMzwacLSO0ULYNLNu8AFwM79D230V31g0Pvz3Wt
+	 zE5clphKmfYIBRlesBSUJizGvllecfWqIisccv3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Yunfei Dong <yunfei.dong@mediatek.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/568] arm64: dts: mediatek: mt8195: Fix GPU thermal zone name for SVS
+Subject: [PATCH 6.10 302/809] media: mediatek: vcodec: Fix unreasonable data conversion
 Date: Tue, 30 Jul 2024 17:42:58 +0200
-Message-ID: <20240730151642.635697565@linuxfoundation.org>
+Message-ID: <20240730151736.521906686@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit b2b6f2edb82a08abe8942535bc77da55a0f43e14 ]
+[ Upstream commit 48d85de244047eabe07c5040af12dfa736d61d6c ]
 
-This SoC has two GPU related thermal zones: the primary zone must be
-called "gpu-thermal" for SVS to pick it up.
+Both 'bs_dma' and 'dma_addr' are integers. No need to convert the
+type from dma_addr_t to uint64_t again.
 
-Fixes: 1e5b6725199f ("arm64: dts: mediatek: mt8195: Add AP domain thermal zones")
-Link: https://lore.kernel.org/r/20240410083002.1357857-2-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: d353c3c34af0 ("media: mediatek: vcodec: support 36 bits physical address")
+
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 2 +-
+ .../media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c   | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 2bb9d9aa65fed..20e6d90cc4118 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -3395,7 +3395,7 @@ vpu1_crit: trip-crit {
- 			};
- 		};
+diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c
+index 4bc89c8644fec..5f848691cea44 100644
+--- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c
++++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp8_if.c
+@@ -449,7 +449,7 @@ static int vdec_vp8_decode(void *h_vdec, struct mtk_vcodec_mem *bs,
+ 		       inst->frm_cnt, y_fb_dma, c_fb_dma, fb);
  
--		gpu0-thermal {
-+		gpu-thermal {
- 			polling-delay = <1000>;
- 			polling-delay-passive = <250>;
- 			thermal-sensors = <&lvts_ap MT8195_AP_GPU0>;
+ 	inst->cur_fb = fb;
+-	dec->bs_dma = (uint64_t)bs->dma_addr;
++	dec->bs_dma = bs->dma_addr;
+ 	dec->bs_sz = bs->size;
+ 	dec->cur_y_fb_dma = y_fb_dma;
+ 	dec->cur_c_fb_dma = c_fb_dma;
 -- 
 2.43.0
 
