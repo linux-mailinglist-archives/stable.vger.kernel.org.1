@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-63473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C1194191B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2247694191E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 570161C235EC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBFA11F22785
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EF71A6196;
-	Tue, 30 Jul 2024 16:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A07183CD5;
+	Tue, 30 Jul 2024 16:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HG0X8aSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoLM5civ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742271A6161;
-	Tue, 30 Jul 2024 16:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CB51A6161;
+	Tue, 30 Jul 2024 16:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356941; cv=none; b=h21FUiz2Pr9OcGacwjUB8FyX/PHRWC4AulqNV96QZeSubTiBU8rPyCJ3i4AKojx2ztDWPVhrKVRSxO31dw1piFQp5kVvxUvuJLauQq5ctL8CsYYpxDfOJnSsNYx8TUwN5NjP/faK2NmUtDhuXQqnXd9JvFu9RqeZ0OCUhpdQ544=
+	t=1722356951; cv=none; b=Xtyx9lmUheUIYpxJfSQ2Xo3E00Zapa04bMkZs+XWQE7IMghBdK13Kg7DlkwTEcs6rCGu600C1cAOpeipE5aB27jc250vW33vAgZM6+o0KuTr+m3ToAnHTAOZmRHQiD6TK8dpKenMvu+QQUjs/HjU9pxMbukY6A4vV/mkXioETsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356941; c=relaxed/simple;
-	bh=fGVbRV5dCK439TYXjV0xHekroXHb6meZ1aIV7brjods=;
+	s=arc-20240116; t=1722356951; c=relaxed/simple;
+	bh=THVp247Wgl0yfNHxqmgxjMtGBuFBdiZAVapElEku5Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8faweGjn2pnLm6xHStXXpXvOlQRHAeHlNqT8zBX0JvkYkSDKqsp3tOpIli1odZMTt8gBQ7bR6bfIVVaYnhDY6CFVoyc0inS+iYus3NzeLBRT6rRsu0aZ9Zsb+VKLyiF6rZ+R0rvs1mQh/hpMFw93VVsvv7oXhf+O6X8R774uy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HG0X8aSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49C3C32782;
-	Tue, 30 Jul 2024 16:29:00 +0000 (UTC)
+	 MIME-Version; b=edZ9UUqDeFHXtMJ8PnQglT4tVe6MPLhIacLtOlBwo+07xNPQ7QRUMcE6yGlyrTNNh5oJE5EFe6gQJuS/TezVnSA2QclZM70MoD+G3AmZSOBnyNROuG2i+X4dJ0vsk2vv4lO1WFxXlkBP0uVOkEQSSckTpIHgOr2vPBFI1d+kXbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoLM5civ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53855C32782;
+	Tue, 30 Jul 2024 16:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356941;
-	bh=fGVbRV5dCK439TYXjV0xHekroXHb6meZ1aIV7brjods=;
+	s=korg; t=1722356950;
+	bh=THVp247Wgl0yfNHxqmgxjMtGBuFBdiZAVapElEku5Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HG0X8aSB4wKZKHfiI0Ug2+Xwhcde+u8LBpKThUI8Ye+TiGZs3bUIU84F/wmFc+jPD
-	 +PW6dg9JbR/RBj5uhQeyiLIdeKYShNRXmgiaLV5HN8z3SzjJm+UGAt6+gx7McImuNb
-	 Lsg8yhDffblBCOR9Et8zamUOiRMwg/1YPPgA0iiM=
+	b=GoLM5civCYOL7jcVC0gyjpYS6pAfysaER4A/eA2el9vnTyOhdRk3bszn+TgwrxioH
+	 P2TUjlu7aSkXF3OpRpqqq59VoyGVsRBWuUkpVyA6r4BDd/9xKshj1o/798g9YgO92r
+	 3gkzs3/4wwvJBSPLZidGd0KBpk07suvcVNmykF/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
+	Donglin Peng <dolinux.peng@gmail.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 203/809] bpf: Change bpf_session_cookie return value to __u64 *
-Date: Tue, 30 Jul 2024 17:41:19 +0200
-Message-ID: <20240730151732.625983622@linuxfoundation.org>
+Subject: [PATCH 6.10 204/809] libbpf: Checking the btf_type kind when fixing variable offsets
+Date: Tue, 30 Jul 2024 17:41:20 +0200
+Message-ID: <20240730151732.664895750@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,64 +68,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Donglin Peng <dolinux.peng@gmail.com>
 
-[ Upstream commit 717d6313bba1b3179f0bf1026aaec6b7e26f484e ]
+[ Upstream commit cc5083d1f3881624ad2de1f3cbb3a07e152cb254 ]
 
-This reverts [1] and changes return value for bpf_session_cookie
-in bpf selftests. Having long * might lead to problems on 32-bit
-architectures.
+I encountered an issue when building the test_progs from the repository [1]:
 
-Fixes: 2b8dd87332cd ("bpf: Make bpf_session_cookie() kfunc return long *")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+  $ pwd
+  /work/Qemu/x86_64/linux-6.10-rc2/tools/testing/selftests/bpf/
+
+  $ make test_progs V=1
+  [...]
+  ./tools/sbin/bpftool gen object ./ip_check_defrag.bpf.linked2.o ./ip_check_defrag.bpf.linked1.o
+  libbpf: failed to find symbol for variable 'bpf_dynptr_slice' in section '.ksyms'
+  Error: failed to link './ip_check_defrag.bpf.linked1.o': No such file or directory (2)
+  [...]
+
+Upon investigation, I discovered that the btf_types referenced in the '.ksyms'
+section had a kind of BTF_KIND_FUNC instead of BTF_KIND_VAR:
+
+  $ bpftool btf dump file ./ip_check_defrag.bpf.linked1.o
+  [...]
+  [2] DATASEC '.ksyms' size=0 vlen=2
+        type_id=16 offset=0 size=0 (FUNC 'bpf_dynptr_from_skb')
+        type_id=17 offset=0 size=0 (FUNC 'bpf_dynptr_slice')
+  [...]
+  [16] FUNC 'bpf_dynptr_from_skb' type_id=82 linkage=extern
+  [17] FUNC 'bpf_dynptr_slice' type_id=85 linkage=extern
+  [...]
+
+For a detailed analysis, please refer to [2]. We can add a kind checking to
+fix the issue.
+
+  [1] https://github.com/eddyz87/bpf/tree/binsort-btf-dedup
+  [2] https://lore.kernel.org/all/0c0ef20c-c05e-4db9-bad7-2cbc0d6dfae7@oracle.com/
+
+Fixes: 8fd27bf69b86 ("libbpf: Add BPF static linker BTF and BTF.ext support")
+Signed-off-by: Donglin Peng <dolinux.peng@gmail.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240619081624.1620152-1-jolsa@kernel.org
+Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/bpf/20240619122355.426405-1-dolinux.peng@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c                                        | 2 +-
- tools/testing/selftests/bpf/bpf_kfuncs.h                        | 2 +-
- tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ tools/lib/bpf/linker.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index bc16e21a2a443..d1daeab1bbc14 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -3527,7 +3527,7 @@ __bpf_kfunc bool bpf_session_is_return(void)
- 	return session_ctx->is_return;
- }
+diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
+index 0d4be829551b5..5a583053e3119 100644
+--- a/tools/lib/bpf/linker.c
++++ b/tools/lib/bpf/linker.c
+@@ -2213,10 +2213,17 @@ static int linker_fixup_btf(struct src_obj *obj)
+ 		vi = btf_var_secinfos(t);
+ 		for (j = 0, m = btf_vlen(t); j < m; j++, vi++) {
+ 			const struct btf_type *vt = btf__type_by_id(obj->btf, vi->type);
+-			const char *var_name = btf__str_by_offset(obj->btf, vt->name_off);
+-			int var_linkage = btf_var(vt)->linkage;
++			const char *var_name;
++			int var_linkage;
+ 			Elf64_Sym *sym;
  
--__bpf_kfunc long *bpf_session_cookie(void)
-+__bpf_kfunc __u64 *bpf_session_cookie(void)
- {
- 	struct bpf_session_run_ctx *session_ctx;
- 
-diff --git a/tools/testing/selftests/bpf/bpf_kfuncs.h b/tools/testing/selftests/bpf/bpf_kfuncs.h
-index be91a69193158..3b6675ab40861 100644
---- a/tools/testing/selftests/bpf/bpf_kfuncs.h
-+++ b/tools/testing/selftests/bpf/bpf_kfuncs.h
-@@ -77,5 +77,5 @@ extern int bpf_verify_pkcs7_signature(struct bpf_dynptr *data_ptr,
- 				      struct bpf_key *trusted_keyring) __ksym;
- 
- extern bool bpf_session_is_return(void) __ksym __weak;
--extern long *bpf_session_cookie(void) __ksym __weak;
-+extern __u64 *bpf_session_cookie(void) __ksym __weak;
- #endif
-diff --git a/tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c b/tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c
-index d49070803e221..0835b5edf6858 100644
---- a/tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c
-+++ b/tools/testing/selftests/bpf/progs/kprobe_multi_session_cookie.c
-@@ -25,7 +25,7 @@ int BPF_PROG(trigger)
- 
- static int check_cookie(__u64 val, __u64 *result)
- {
--	long *cookie;
-+	__u64 *cookie;
- 
- 	if (bpf_get_current_pid_tgid() >> 32 != pid)
- 		return 1;
++			/* could be a variable or function */
++			if (!btf_is_var(vt))
++				continue;
++
++			var_name = btf__str_by_offset(obj->btf, vt->name_off);
++			var_linkage = btf_var(vt)->linkage;
++
+ 			/* no need to patch up static or extern vars */
+ 			if (var_linkage != BTF_VAR_GLOBAL_ALLOCATED)
+ 				continue;
 -- 
 2.43.0
 
