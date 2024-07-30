@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-63316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C384D941858
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8223C941D73
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E120287252
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3C2F1C213CE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061071A6162;
-	Tue, 30 Jul 2024 16:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD74E1A76B1;
+	Tue, 30 Jul 2024 17:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x86G4wpp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZY2CQee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77611A6177;
-	Tue, 30 Jul 2024 16:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6C01A76A7;
+	Tue, 30 Jul 2024 17:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356435; cv=none; b=CuWiDofoWYl02tnVC1rW0P9d+xlq0GJVBFoPjrokE1IW05nY2AmKMJLuq0XPS83xdGpXBjRjfG7KITtFQWHaR+rsVmYqbHr1mCTYf3pPFncMVa5aYvh+BRA4SzJYeK7HT2YN1FxyGPYIlMNUqs09e03YNSAZoWdtKMRcLpq5XsI=
+	t=1722359859; cv=none; b=hM1rs0Ogg4JrzYsFwj16HYvWaXD+Yx2sToTon6SyI0PrZevbte64QVRIiTXaP6BQXfq5uVRxgFoNI2/clbK6vlcLiZPxluQUPHJHuuaXpVV9Z1XMGawO/x/c98kkJSW3RMEjVeLLbYAztZU6F/tstt6cNqy4/AlnxpoRnDfQhb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356435; c=relaxed/simple;
-	bh=OmKZM7+YPrKJpK61eMdwst29xCDEvHGG2lcgQF9n1Lw=;
+	s=arc-20240116; t=1722359859; c=relaxed/simple;
+	bh=JOjFEmw679C50v8ILDMoypGBeetsDOmpJmIJnzOpd/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Uk8kZMlyMCQCCdLhAVVkU0CtwMthq8QjB2I1bABfEwzT5NRZkdDAWBCWTy/Tf8KeJM1D7gsGmIL3G+/MiQkEz72nK6QbVUgicx6UE3t0G74sP+czrf1rieL624sCKfasuVxtfGlBOVXLE7BY3momD7jLpduzxPAsPnmSu7inZzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x86G4wpp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04339C32782;
-	Tue, 30 Jul 2024 16:20:34 +0000 (UTC)
+	 MIME-Version; b=sR6mL3O9rBsKzr4KlspIyThaDYP4UcCJXZurWZ1jVm86aAF69AVVfEL+3aHdc64nw0tc9UVB7gP+FtxBBw7SLGPYbrEYzuLch6l0xgGQCPwzMutK+eicm0WbR1yAt5OEt2CTX7/5dRDsU26aanzY+m2QJ4ZtpHWo6T07QyDZFdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZY2CQee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D85AC4AF0E;
+	Tue, 30 Jul 2024 17:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356435;
-	bh=OmKZM7+YPrKJpK61eMdwst29xCDEvHGG2lcgQF9n1Lw=;
+	s=korg; t=1722359859;
+	bh=JOjFEmw679C50v8ILDMoypGBeetsDOmpJmIJnzOpd/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x86G4wppDyIWVq7oGBads1m5ki6fTMbqI4jGb+GeBCZP4j+4Aonh3sL6egWTChZRY
-	 YqY9m2ORuasdPfmivEXQe83d19uZOzWTXwj/2L5PGK3cTC7Yvy5q8tqNkh6kzlaxUG
-	 GrgoScDJLFPIrb/I6r3XfylObcSGjxsdePVQDJv0=
+	b=KZY2CQeeYYtBkYw5wW0CYODZXKjidfAod7QmH+rmIgY47i8A5lnQi7+bVp6fOFmdP
+	 VSif9Vsu608pF7lG01+U57hWco/oeZYCmlN5110OawvWbG9sju/aTXOlj9GjlvodQZ
+	 1VEKrcfk+9hOJdS4R9qgybj+mUXwjdzbhlu0ROcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/440] PCI: keystone: Dont enable BAR 0 for AM654x
-Date: Tue, 30 Jul 2024 17:46:52 +0200
-Message-ID: <20240730151622.866118375@linuxfoundation.org>
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 537/809] mm/hugetlb: fix possible recursive locking detected warning
+Date: Tue, 30 Jul 2024 17:46:53 +0200
+Message-ID: <20240730151745.951612596@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +60,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit 9ffa0e70b2daf9b0271e4960b7c8a2350e2cda08 ]
+commit 667574e873b5f77a220b2a93329689f36fb56d5d upstream.
 
-After 6ab15b5e7057 ("PCI: dwc: keystone: Convert .scan_bus() callback to
-use add_bus"), ks_pcie_v3_65_add_bus() enabled BAR 0 for both v3.65a and
-v4.90a devices.  On the AM654x SoC, which uses v4.90a, enabling BAR 0
-causes Completion Timeouts when setting up MSI-X.  These timeouts delay
-boot of the AM654x by about 45 seconds.
+When tries to demote 1G hugetlb folios, a lockdep warning is observed:
 
-Move the BAR 0 initialization to ks_pcie_msi_host_init(), which is only
-used for v3.65a devices, and remove ks_pcie_v3_65_add_bus().
+============================================
+WARNING: possible recursive locking detected
+6.10.0-rc6-00452-ga4d0275fa660-dirty #79 Not tainted
+--------------------------------------------
+bash/710 is trying to acquire lock:
+ffffffff8f0a7850 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0x244/0x460
 
-[bhelgaas: commit log]
-Fixes: 6ab15b5e7057 ("PCI: dwc: keystone: Convert .scan_bus() callback to use add_bus")
-Link: https://lore.kernel.org/linux-pci/20240328085041.2916899-3-s-vadapalli@ti.com
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Suggested-by: Niklas Cassel <cassel@kernel.org>
-Suggested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+but task is already holding lock:
+ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&h->resize_lock);
+  lock(&h->resize_lock);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+4 locks held by bash/710:
+ #0: ffff8f118439c3f0 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x64/0xe0
+ #1: ffff8f11893b9e88 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0xf8/0x1d0
+ #2: ffff8f1183dc4428 (kn->active#98){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x100/0x1d0
+ #3: ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
+
+stack backtrace:
+CPU: 3 PID: 710 Comm: bash Not tainted 6.10.0-rc6-00452-ga4d0275fa660-dirty #79
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x68/0xa0
+ __lock_acquire+0x10f2/0x1ca0
+ lock_acquire+0xbe/0x2d0
+ __mutex_lock+0x6d/0x400
+ demote_store+0x244/0x460
+ kernfs_fop_write_iter+0x12c/0x1d0
+ vfs_write+0x380/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa61db14887
+RSP: 002b:00007ffc56c48358 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007fa61db14887
+RDX: 0000000000000002 RSI: 000055a030050220 RDI: 0000000000000001
+RBP: 000055a030050220 R08: 00007fa61dbd1460 R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007fa61dc1b780 R14: 00007fa61dc17600 R15: 00007fa61dc16a00
+ </TASK>
+
+Lockdep considers this an AA deadlock because the different resize_lock
+mutexes reside in the same lockdep class, but this is a false positive.
+Place them in distinct classes to avoid these warnings.
+
+Link: https://lkml.kernel.org/r/20240712031314.2570452-1-linmiaohe@huawei.com
+Fixes: 8531fc6f52f5 ("hugetlb: add hugetlb demote page support")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 52 ++++++++---------------
- 1 file changed, 18 insertions(+), 34 deletions(-)
+ include/linux/hugetlb.h |    1 +
+ mm/hugetlb.c            |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 348a9f755d0ba..438aa5fa4c64b 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -291,6 +291,24 @@ static void ks_pcie_clear_dbi_mode(struct keystone_pcie *ks_pcie)
- 
- static int ks_pcie_msi_host_init(struct dw_pcie_rp *pp)
- {
-+	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
-+	struct keystone_pcie *ks_pcie = to_keystone_pcie(pci);
-+
-+	/* Configure and set up BAR0 */
-+	ks_pcie_set_dbi_mode(ks_pcie);
-+
-+	/* Enable BAR0 */
-+	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, 1);
-+	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, SZ_4K - 1);
-+
-+	ks_pcie_clear_dbi_mode(ks_pcie);
-+
-+	/*
-+	 * For BAR0, just setting bus address for inbound writes (MSI) should
-+	 * be sufficient.  Use physical address to avoid any conflicts.
-+	 */
-+	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, ks_pcie->app.start);
-+
- 	pp->msi_irq_chip = &ks_pcie_msi_irq_chip;
- 	return dw_pcie_allocate_domains(pp);
- }
-@@ -448,44 +466,10 @@ static struct pci_ops ks_child_pcie_ops = {
- 	.write = pci_generic_config_write,
- };
- 
--/**
-- * ks_pcie_v3_65_add_bus() - keystone add_bus post initialization
-- * @bus: A pointer to the PCI bus structure.
-- *
-- * This sets BAR0 to enable inbound access for MSI_IRQ register
-- */
--static int ks_pcie_v3_65_add_bus(struct pci_bus *bus)
--{
--	struct dw_pcie_rp *pp = bus->sysdata;
--	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
--	struct keystone_pcie *ks_pcie = to_keystone_pcie(pci);
--
--	if (!pci_is_root_bus(bus))
--		return 0;
--
--	/* Configure and set up BAR0 */
--	ks_pcie_set_dbi_mode(ks_pcie);
--
--	/* Enable BAR0 */
--	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, 1);
--	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, SZ_4K - 1);
--
--	ks_pcie_clear_dbi_mode(ks_pcie);
--
--	 /*
--	  * For BAR0, just setting bus address for inbound writes (MSI) should
--	  * be sufficient.  Use physical address to avoid any conflicts.
--	  */
--	dw_pcie_writel_dbi(pci, PCI_BASE_ADDRESS_0, ks_pcie->app.start);
--
--	return 0;
--}
--
- static struct pci_ops ks_pcie_ops = {
- 	.map_bus = dw_pcie_own_conf_map_bus,
- 	.read = pci_generic_config_read,
- 	.write = pci_generic_config_write,
--	.add_bus = ks_pcie_v3_65_add_bus,
- };
- 
- /**
--- 
-2.43.0
-
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -681,6 +681,7 @@ HPAGEFLAG(RawHwpUnreliable, raw_hwp_unre
+ /* Defines one hugetlb page size */
+ struct hstate {
+ 	struct mutex resize_lock;
++	struct lock_class_key resize_key;
+ 	int next_nid_to_alloc;
+ 	int next_nid_to_free;
+ 	unsigned int order;
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4643,7 +4643,7 @@ void __init hugetlb_add_hstate(unsigned
+ 	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+ 	BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+ 	h = &hstates[hugetlb_max_hstate++];
+-	mutex_init(&h->resize_lock);
++	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+ 	h->order = order;
+ 	h->mask = ~(huge_page_size(h) - 1);
+ 	for (i = 0; i < MAX_NUMNODES; ++i)
 
 
 
