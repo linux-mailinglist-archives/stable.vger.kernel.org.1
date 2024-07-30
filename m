@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-63293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3119D941842
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DA1941BD4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB73C1F22840
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13BECB258BB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2C2189537;
-	Tue, 30 Jul 2024 16:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5180F189907;
+	Tue, 30 Jul 2024 16:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmRwLR+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXK7AKGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B18E1A6193;
-	Tue, 30 Jul 2024 16:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086E217D8BB;
+	Tue, 30 Jul 2024 16:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356358; cv=none; b=rMWahxDAg4kXmSxhoXf59d7H5gogQ23Mawzi887o44JtLQ+z+Nuna3y+lnsPxft4EYjRXgrvW9J565BfeMSt55umqBCrLLyavPkuoSVB9NtNkbk+660gnxeJRS6GvQFqKS9aCUhE5cyw1McBM0/4HzbUW711YYFXMu0gvD8JcNI=
+	t=1722358741; cv=none; b=WtfZq+YsGIpP6QszhHkPaPiLJw3hRhXSg9VbA1WYvriWPtN8762buwNe+bB1eEKWxYfNZomsG4hLPs+K+fBGuLeXEkaHD1SUt7ZwQQtDHInVb/BCawnrYWrQl6K/FKNTVRQkxQPGMLdafBiyl99MxeUI/5lQalS6fj0wfYEaHp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356358; c=relaxed/simple;
-	bh=caIMO3bTK2MoZVibbg8JO102clWWfH7Zr8BMYEjA69I=;
+	s=arc-20240116; t=1722358741; c=relaxed/simple;
+	bh=nRGqJ6XKPpWFj9SOx5OXPhsngQ8td3wAfV2CsgpvS2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IpYt0Gq7NTfcxSeKV+igDTYT6f6TTnh//zQTNcyKqzprbjzZvhtcL4+ZGbhO9jPd5AN+IPPkjekTrIorvwm1WZUl4u/xvBS9xQ9GIZmDn72ntWCfoWyssvTn+fb0Lls6SOsnlairSfb78R76/th0Olz3J9DdCaTlGDs45VFy3u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmRwLR+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD50BC32782;
-	Tue, 30 Jul 2024 16:19:17 +0000 (UTC)
+	 MIME-Version; b=nmVhcJvrj2pQBLdEbUzcsWgevjS7/st3lp7soEsVawwsrdzR2ob75nNP2htwSIw58opFI+BJFsXLdsGTDpTwy2kXrYNkKNHCgqqhv04nWhvzoa0WXFGDwUtlouq9CH4kV7Q/5jEmO68JxSVvoQMK6sxY7OuLFE1r0KNijWy6jBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXK7AKGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5BEC32782;
+	Tue, 30 Jul 2024 16:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356358;
-	bh=caIMO3bTK2MoZVibbg8JO102clWWfH7Zr8BMYEjA69I=;
+	s=korg; t=1722358740;
+	bh=nRGqJ6XKPpWFj9SOx5OXPhsngQ8td3wAfV2CsgpvS2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmRwLR+on328mY0eRDAs9iZ3zNbcsRENHz3ksPUW1ZG/X1f95Yu4DZZ5OQAZixCTH
-	 upXtWv9bU/h7d0VKbZggXzUczKMc6nl33t/pljGuNbT14TTRj5qwkUz5BxHAQ0fmj2
-	 oVDEQoGLUe7u3uIKrHdAuB+zsCMc2i8efWKxwDFU=
+	b=dXK7AKGHv86cQmkrb569ywClVRktvUZLQOsefGCynl3Y4SaunzThfIie9XWo8EvOq
+	 EjZPj6X0JSAwhHmSkCS/NHC/AVdcwj2iIZvlSPuoixTTmjXBOnrVSiRD8uTzjOFSV2
+	 A/yyW8X2w6G/5o2m2DqoHr4tYwUU80qh1Pec/Swc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ismael Luceno <iluceno@suse.de>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com,
+	Hugh Dickins <hughd@google.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/568] ipvs: Avoid unnecessary calls to skb_is_gso_sctp
+Subject: [PATCH 6.10 372/809] ext4: avoid writing unitialized memory to disk in EA inodes
 Date: Tue, 30 Jul 2024 17:44:08 +0200
-Message-ID: <20240730151645.388732367@linuxfoundation.org>
+Message-ID: <20240730151739.353338088@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ismael Luceno <iluceno@suse.de>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 53796b03295cf7ab1fc8600016fa6dfbf4a494a0 ]
+[ Upstream commit 65121eff3e4c8c90f8126debf3c369228691c591 ]
 
-In the context of the SCTP SNAT/DNAT handler, these calls can only
-return true.
+If the extended attribute size is not a multiple of block size, the last
+block in the EA inode will have uninitialized tail which will get
+written to disk. We will never expose the data to userspace but still
+this is not a good practice so just zero out the tail of the block as it
+isn't going to cause a noticeable performance overhead.
 
-Fixes: e10d3ba4d434 ("ipvs: Fix checksumming on GSO of SCTP packets")
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
+Reported-by: syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com
+Reported-by: Hugh Dickins <hughd@google.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240613150234.25176-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/xattr.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index 1e689c7141271..83e452916403d 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -126,7 +126,7 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	if (sctph->source != cp->vport || payload_csum ||
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
- 		sctph->source = cp->vport;
--		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+		if (!skb_is_gso(skb))
- 			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
-@@ -175,7 +175,7 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
- 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
- 		sctph->dest = cp->dport;
--		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+		if (!skb_is_gso(skb))
- 			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index 6460879b9fcbb..46ce2f21fef9d 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1433,6 +1433,12 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
+ 			goto out;
+ 
+ 		memcpy(bh->b_data, buf, csize);
++		/*
++		 * Zero out block tail to avoid writing uninitialized memory
++		 * to disk.
++		 */
++		if (csize < blocksize)
++			memset(bh->b_data + csize, 0, blocksize - csize);
+ 		set_buffer_uptodate(bh);
+ 		ext4_handle_dirty_metadata(handle, ea_inode, bh);
+ 
 -- 
 2.43.0
 
