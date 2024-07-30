@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F68941948
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9025594194A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82D4A285482
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3A311C23539
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FB218452F;
-	Tue, 30 Jul 2024 16:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81BF189503;
+	Tue, 30 Jul 2024 16:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EtrvVJeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKQITE18"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AA01A6192;
-	Tue, 30 Jul 2024 16:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747B5148848;
+	Tue, 30 Jul 2024 16:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357050; cv=none; b=dVa+2lMJXerVGJuJB2WnNe8/COPuR9tGftppzNWsYuiuTwX6sck3tdlKV3CExgZPZ9PMbSulJEgACTteCpb/Hu76Df7XaUyqPnv6sTMgBYwqnAIi2ZVd+G/M146DcgI4rRzD3j2AwI1v0/FAtrEvohTWGDntErv3NIjLngEUcPg=
+	t=1722357059; cv=none; b=HwVebQER4VUaIUXwV52mBth+ZCZwvkdncgXANUDDZbeLIRtD08KFbVmwgv3iYfeeD7f/J0dsf324Q428RJWx58o9WkB7CuJ2Rma6gvlSlBtAWK47YiOZ9WrOkyBRwBDDM4yXDUn0TTYYCuuSFMK0Cyya2HPPl6I8p/fQNrPP5y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357050; c=relaxed/simple;
-	bh=wMTqZtLa9NPhptlfLQzGOS6NDJwg86/RQspCqMkmzsE=;
+	s=arc-20240116; t=1722357059; c=relaxed/simple;
+	bh=bWxkTcqcdLgkgXbe6sZAKL1e92AURLQE1GhWshTE51c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWJOG/cP1IsiFYX9qD0IlNyF7gxPS4BVbyYyhz+KGMcoVR1jo4GNSfPIa9CytxQpFTO2kNAcgqRIFcbI7KwaQ73ncnPCinK1ZDOa/32Ooql2x8yAWWPTLMjMEHvfeaDda4hISB34j0Ib+sFOx1Fz4wm6NfY+cIZcznFLiTGpUhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EtrvVJeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F95EC32782;
-	Tue, 30 Jul 2024 16:30:49 +0000 (UTC)
+	 MIME-Version; b=HCD5SoeIdzPn0D3pMMI9GW5KfVeytbfTuHvMe7oNfMtWHdFXcbugfU6C2ZcMAOIkMieMw7FTMSOH8pdikyHsWndukIRbeuzozWC4UpaJtjBD8w2QfxE3LSf+u0GLMTqnk9Rj4Dv045RSTBHqz8DZcL0jd+L47zQaC+NVK2lylps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKQITE18; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99BAC4AF0C;
+	Tue, 30 Jul 2024 16:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357049;
-	bh=wMTqZtLa9NPhptlfLQzGOS6NDJwg86/RQspCqMkmzsE=;
+	s=korg; t=1722357059;
+	bh=bWxkTcqcdLgkgXbe6sZAKL1e92AURLQE1GhWshTE51c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EtrvVJeB3LZeCgjCU+s1E5wD5wwj+gUcv+KOmKmIMuo3sRpJnR/wYD+PzCDnO3w3V
-	 do4Ky3qCOnFTprP892NaRaHSzx5iAXBILGGFPXeLm+G70wGS3Npbag2naYo6JvBk8z
-	 2cCvxW2YdTSZDX9gQXeJLqkdlDMcSVIzxHdQlD00=
+	b=wKQITE18uI12HmBEmpUFcLzRHGNVyZxhW719rCVeRMdQ7FnosF0ngqDC+lomSj8Z5
+	 MlYy6YecYpDOdRr0tZihxkatn8gFoS4F1ljC+ncZkBZstvW+Rn3TCIKv7LX4IrooLe
+	 vgufevz4KLUEt2p27GZtahtRUhSdpaWJTRboPD2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aloka Dixit <quic_alokad@quicinc.com>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 213/809] wifi: ath12k: advertise driver capabilities for MBSSID and EMA
-Date: Tue, 30 Jul 2024 17:41:29 +0200
-Message-ID: <20240730151733.017167096@linuxfoundation.org>
+Subject: [PATCH 6.10 214/809] wifi: ath12k: fix peer metadata parsing
+Date: Tue, 30 Jul 2024 17:41:30 +0200
+Message-ID: <20240730151733.056050265@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,138 +67,227 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aloka Dixit <quic_alokad@quicinc.com>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 519a545cfee790024c623c7aacd165f7431773d5 ]
+[ Upstream commit 1eeafd64c7b455381b77c546e41bc267e13e2809 ]
 
-Advertise the driver support for multiple BSSID (MBSSID) and
-enhanced multi-BSSID advertisements (EMA) by setting extended
-capabilities.
-
-Configure mbssid_max_interfaces and ema_max_profile_periodicity
-fields in structure wiphy which are used to advertise maximum number
-of interfaces and profile periodicity supported by the driver.
-
-Add new WMI fields to configure maximum vdev count supported for
-MBSSID and profile periodicity in case of EMA.
-
-Set WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET flag to allow
-firmware to track and update the DTIM counts for each nontransmitted
-profile.
+Currently, the Rx data path only supports parsing peer metadata of version
+zero. However, the QCN9274 platform configures the peer metadata version
+as V1B. When V1B peer metadata is parsed using the version zero logic,
+invalid data is populated, causing valid packets to be dropped. To address
+this issue, refactor the peer metadata version and add the version based
+parsing to populate the data from peer metadata correctly.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Fixes: 287033810990 ("wifi: ath12k: add support for peer meta data version")
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240508202912.11902-2-quic_alokad@quicinc.com
-Stable-dep-of: 1eeafd64c7b4 ("wifi: ath12k: fix peer metadata parsing")
+Link: https://patch.msgid.link/20240624145418.2043461-1-quic_periyasa@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/hw.h  | 1 +
- drivers/net/wireless/ath/ath12k/mac.c | 7 +++++++
- drivers/net/wireless/ath/ath12k/wmi.c | 7 ++++++-
- drivers/net/wireless/ath/ath12k/wmi.h | 3 +++
- 4 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp.h       |  1 +
+ drivers/net/wireless/ath/ath12k/dp_rx.c    | 40 ++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 26 ++++++++++++--
+ drivers/net/wireless/ath/ath12k/hw.h       |  2 --
+ drivers/net/wireless/ath/ath12k/wmi.c      |  6 ++--
+ drivers/net/wireless/ath/ath12k/wmi.h      | 11 ++++--
+ 6 files changed, 72 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index 3f450ee93f34b..2745bde0502c6 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -80,6 +80,7 @@
- #define TARGET_RX_BATCHMODE		1
- #define TARGET_RX_PEER_METADATA_VER_V1A	2
- #define TARGET_RX_PEER_METADATA_VER_V1B	3
-+#define TARGET_EMA_MAX_PROFILE_PERIOD	8
- 
- #define ATH12K_HW_DEFAULT_QUEUE		0
- #define ATH12K_HW_MAX_QUEUES		4
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 2c68376a39fd3..0ed388a6fc804 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -8489,19 +8489,23 @@ static int ath12k_mac_setup_iface_combinations(struct ath12k_hw *ah)
- 
- static const u8 ath12k_if_types_ext_capa[] = {
- 	[0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
-+	[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
- 	[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
- };
- 
- static const u8 ath12k_if_types_ext_capa_sta[] = {
- 	[0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
-+	[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
- 	[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
- 	[9] = WLAN_EXT_CAPA10_TWT_REQUESTER_SUPPORT,
- };
- 
- static const u8 ath12k_if_types_ext_capa_ap[] = {
- 	[0] = WLAN_EXT_CAPA1_EXT_CHANNEL_SWITCHING,
-+	[2] = WLAN_EXT_CAPA3_MULTI_BSSID_SUPPORT,
- 	[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
- 	[9] = WLAN_EXT_CAPA10_TWT_RESPONDER_SUPPORT,
-+	[10] = WLAN_EXT_CAPA11_EMA_SUPPORT,
- };
- 
- static const struct wiphy_iftype_ext_capab ath12k_iftypes_ext_capa[] = {
-@@ -8740,6 +8744,9 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
- 	wiphy->iftype_ext_capab = ath12k_iftypes_ext_capa;
- 	wiphy->num_iftype_ext_capab = ARRAY_SIZE(ath12k_iftypes_ext_capa);
- 
-+	wiphy->mbssid_max_interfaces = TARGET_NUM_VDEVS;
-+	wiphy->ema_max_profile_periodicity = TARGET_EMA_MAX_PROFILE_PERIOD;
-+
- 	if (is_6ghz) {
- 		wiphy_ext_feature_set(wiphy,
- 				      NL80211_EXT_FEATURE_FILS_DISCOVERY);
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index e88ec9e1201a9..bf33767af2c87 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -228,6 +228,9 @@ void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
- 	config->peer_map_unmap_version = 0x32;
- 	config->twt_ap_pdev_count = ab->num_radios;
- 	config->twt_ap_sta_count = 1000;
-+	config->ema_max_vap_cnt = ab->num_radios;
-+	config->ema_max_profile_period = TARGET_EMA_MAX_PROFILE_PERIOD;
-+	config->beacon_tx_offload_max_vdev += config->ema_max_vap_cnt;
- 
- 	if (test_bit(WMI_TLV_SERVICE_PEER_METADATA_V1A_V1B_SUPPORT, ab->wmi_ab.svc_map))
- 		config->dp_peer_meta_data_ver = TARGET_RX_PEER_METADATA_VER_V1B;
-@@ -3475,9 +3478,11 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
- 	wmi_cfg->twt_ap_sta_count = cpu_to_le32(tg_cfg->twt_ap_sta_count);
- 	wmi_cfg->flags2 = le32_encode_bits(tg_cfg->dp_peer_meta_data_ver,
- 					   WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION);
--
- 	wmi_cfg->host_service_flags = cpu_to_le32(tg_cfg->is_reg_cc_ext_event_supported <<
- 				WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT);
-+	wmi_cfg->ema_max_vap_cnt = cpu_to_le32(tg_cfg->ema_max_vap_cnt);
-+	wmi_cfg->ema_max_profile_period = cpu_to_le32(tg_cfg->ema_max_profile_period);
-+	wmi_cfg->flags2 |= cpu_to_le32(WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET);
+diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
+index 5cf0d21ef184b..4dfbff326030e 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.h
++++ b/drivers/net/wireless/ath/ath12k/dp.h
+@@ -334,6 +334,7 @@ struct ath12k_dp {
+ 	struct dp_srng reo_except_ring;
+ 	struct dp_srng reo_cmd_ring;
+ 	struct dp_srng reo_status_ring;
++	enum ath12k_peer_metadata_version peer_metadata_ver;
+ 	struct dp_srng reo_dst_ring[DP_REO_DST_RING_MAX];
+ 	struct dp_tx_ring tx_ring[DP_TCL_NUM_RING_MAX];
+ 	struct hal_wbm_idle_scatter_list scatter_list[DP_IDLE_SCATTER_BUFS_MAX];
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 44e8d9d7834c4..121f27284be59 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2607,6 +2607,29 @@ static void ath12k_dp_rx_process_received_packets(struct ath12k_base *ab,
+ 	rcu_read_unlock();
  }
  
- static int ath12k_init_cmd_send(struct ath12k_wmi_pdev *wmi,
++static u16 ath12k_dp_rx_get_peer_id(struct ath12k_base *ab,
++				    enum ath12k_peer_metadata_version ver,
++				    __le32 peer_metadata)
++{
++	switch (ver) {
++	default:
++		ath12k_warn(ab, "Unknown peer metadata version: %d", ver);
++		fallthrough;
++	case ATH12K_PEER_METADATA_V0:
++		return le32_get_bits(peer_metadata,
++				     RX_MPDU_DESC_META_DATA_V0_PEER_ID);
++	case ATH12K_PEER_METADATA_V1:
++		return le32_get_bits(peer_metadata,
++				     RX_MPDU_DESC_META_DATA_V1_PEER_ID);
++	case ATH12K_PEER_METADATA_V1A:
++		return le32_get_bits(peer_metadata,
++				     RX_MPDU_DESC_META_DATA_V1A_PEER_ID);
++	case ATH12K_PEER_METADATA_V1B:
++		return le32_get_bits(peer_metadata,
++				     RX_MPDU_DESC_META_DATA_V1B_PEER_ID);
++	}
++}
++
+ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
+ 			 struct napi_struct *napi, int budget)
+ {
+@@ -2635,6 +2658,8 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
+ 	ath12k_hal_srng_access_begin(ab, srng);
+ 
+ 	while ((desc = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
++		struct rx_mpdu_desc *mpdu_info;
++		struct rx_msdu_desc *msdu_info;
+ 		enum hal_reo_dest_ring_push_reason push_reason;
+ 		u32 cookie;
+ 
+@@ -2681,16 +2706,19 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
+ 			continue;
+ 		}
+ 
+-		rxcb->is_first_msdu = !!(le32_to_cpu(desc->rx_msdu_info.info0) &
++		msdu_info = &desc->rx_msdu_info;
++		mpdu_info = &desc->rx_mpdu_info;
++
++		rxcb->is_first_msdu = !!(le32_to_cpu(msdu_info->info0) &
+ 					 RX_MSDU_DESC_INFO0_FIRST_MSDU_IN_MPDU);
+-		rxcb->is_last_msdu = !!(le32_to_cpu(desc->rx_msdu_info.info0) &
++		rxcb->is_last_msdu = !!(le32_to_cpu(msdu_info->info0) &
+ 					RX_MSDU_DESC_INFO0_LAST_MSDU_IN_MPDU);
+-		rxcb->is_continuation = !!(le32_to_cpu(desc->rx_msdu_info.info0) &
++		rxcb->is_continuation = !!(le32_to_cpu(msdu_info->info0) &
+ 					   RX_MSDU_DESC_INFO0_MSDU_CONTINUATION);
+ 		rxcb->mac_id = mac_id;
+-		rxcb->peer_id = le32_get_bits(desc->rx_mpdu_info.peer_meta_data,
+-					      RX_MPDU_DESC_META_DATA_PEER_ID);
+-		rxcb->tid = le32_get_bits(desc->rx_mpdu_info.info0,
++		rxcb->peer_id = ath12k_dp_rx_get_peer_id(ab, dp->peer_metadata_ver,
++							 mpdu_info->peer_meta_data);
++		rxcb->tid = le32_get_bits(mpdu_info->info0,
+ 					  RX_MPDU_DESC_INFO0_TID);
+ 
+ 		__skb_queue_tail(&msdu_list, msdu);
+diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
+index 814c02f876d64..072e36365808e 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_desc.h
++++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
+@@ -597,8 +597,30 @@ struct hal_tlv_64_hdr {
+ #define RX_MPDU_DESC_INFO0_MPDU_QOS_CTRL_VALID	BIT(27)
+ #define RX_MPDU_DESC_INFO0_TID			GENMASK(31, 28)
+ 
+-/* TODO revisit after meta data is concluded */
+-#define RX_MPDU_DESC_META_DATA_PEER_ID		GENMASK(15, 0)
++/* Peer Metadata classification */
++
++/* Version 0 */
++#define RX_MPDU_DESC_META_DATA_V0_PEER_ID	GENMASK(15, 0)
++#define RX_MPDU_DESC_META_DATA_V0_VDEV_ID	GENMASK(23, 16)
++
++/* Version 1 */
++#define RX_MPDU_DESC_META_DATA_V1_PEER_ID		GENMASK(13, 0)
++#define RX_MPDU_DESC_META_DATA_V1_LOGICAL_LINK_ID	GENMASK(15, 14)
++#define RX_MPDU_DESC_META_DATA_V1_VDEV_ID		GENMASK(23, 16)
++#define RX_MPDU_DESC_META_DATA_V1_LMAC_ID		GENMASK(25, 24)
++#define RX_MPDU_DESC_META_DATA_V1_DEVICE_ID		GENMASK(28, 26)
++
++/* Version 1A */
++#define RX_MPDU_DESC_META_DATA_V1A_PEER_ID		GENMASK(13, 0)
++#define RX_MPDU_DESC_META_DATA_V1A_VDEV_ID		GENMASK(21, 14)
++#define RX_MPDU_DESC_META_DATA_V1A_LOGICAL_LINK_ID	GENMASK(25, 22)
++#define RX_MPDU_DESC_META_DATA_V1A_DEVICE_ID		GENMASK(28, 26)
++
++/* Version 1B */
++#define RX_MPDU_DESC_META_DATA_V1B_PEER_ID	GENMASK(13, 0)
++#define RX_MPDU_DESC_META_DATA_V1B_VDEV_ID	GENMASK(21, 14)
++#define RX_MPDU_DESC_META_DATA_V1B_HW_LINK_ID	GENMASK(25, 22)
++#define RX_MPDU_DESC_META_DATA_V1B_DEVICE_ID	GENMASK(28, 26)
+ 
+ struct rx_mpdu_desc {
+ 	__le32 info0; /* %RX_MPDU_DESC_INFO */
+diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
+index 2745bde0502c6..2a314cfc8cb84 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.h
++++ b/drivers/net/wireless/ath/ath12k/hw.h
+@@ -78,8 +78,6 @@
+ #define TARGET_NUM_WDS_ENTRIES		32
+ #define TARGET_DMA_BURST_SIZE		1
+ #define TARGET_RX_BATCHMODE		1
+-#define TARGET_RX_PEER_METADATA_VER_V1A	2
+-#define TARGET_RX_PEER_METADATA_VER_V1B	3
+ #define TARGET_EMA_MAX_PROFILE_PERIOD	8
+ 
+ #define ATH12K_HW_DEFAULT_QUEUE		0
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index bf33767af2c87..ef775af25093c 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -233,7 +233,7 @@ void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
+ 	config->beacon_tx_offload_max_vdev += config->ema_max_vap_cnt;
+ 
+ 	if (test_bit(WMI_TLV_SERVICE_PEER_METADATA_V1A_V1B_SUPPORT, ab->wmi_ab.svc_map))
+-		config->dp_peer_meta_data_ver = TARGET_RX_PEER_METADATA_VER_V1B;
++		config->peer_metadata_ver = ATH12K_PEER_METADATA_V1B;
+ }
+ 
+ void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
+@@ -3476,7 +3476,7 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
+ 	wmi_cfg->sched_params = cpu_to_le32(tg_cfg->sched_params);
+ 	wmi_cfg->twt_ap_pdev_count = cpu_to_le32(tg_cfg->twt_ap_pdev_count);
+ 	wmi_cfg->twt_ap_sta_count = cpu_to_le32(tg_cfg->twt_ap_sta_count);
+-	wmi_cfg->flags2 = le32_encode_bits(tg_cfg->dp_peer_meta_data_ver,
++	wmi_cfg->flags2 = le32_encode_bits(tg_cfg->peer_metadata_ver,
+ 					   WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION);
+ 	wmi_cfg->host_service_flags = cpu_to_le32(tg_cfg->is_reg_cc_ext_event_supported <<
+ 				WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT);
+@@ -3706,6 +3706,8 @@ int ath12k_wmi_cmd_init(struct ath12k_base *ab)
+ 	arg.num_band_to_mac = ab->num_radios;
+ 	ath12k_fill_band_to_mac_param(ab, arg.band_to_mac);
+ 
++	ab->dp.peer_metadata_ver = arg.res_cfg.peer_metadata_ver;
++
+ 	return ath12k_init_cmd_send(&wmi_ab->wmi[0], &arg);
+ }
+ 
 diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 496866673aead..e71e6c73f2495 100644
+index e71e6c73f2495..742fe0b36cf20 100644
 --- a/drivers/net/wireless/ath/ath12k/wmi.h
 +++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2356,6 +2356,8 @@ struct ath12k_wmi_resource_config_arg {
+@@ -2292,6 +2292,13 @@ struct ath12k_wmi_host_mem_chunk_arg {
+ 	u32 req_id;
+ };
+ 
++enum ath12k_peer_metadata_version {
++	ATH12K_PEER_METADATA_V0,
++	ATH12K_PEER_METADATA_V1,
++	ATH12K_PEER_METADATA_V1A,
++	ATH12K_PEER_METADATA_V1B
++};
++
+ struct ath12k_wmi_resource_config_arg {
+ 	u32 num_vdevs;
+ 	u32 num_peers;
+@@ -2354,10 +2361,10 @@ struct ath12k_wmi_resource_config_arg {
+ 	u32 sched_params;
+ 	u32 twt_ap_pdev_count;
  	u32 twt_ap_sta_count;
- 	bool is_reg_cc_ext_event_supported;
- 	u8  dp_peer_meta_data_ver;
-+	u32 ema_max_vap_cnt;
-+	u32 ema_max_profile_period;
+-	bool is_reg_cc_ext_event_supported;
+-	u8  dp_peer_meta_data_ver;
++	enum ath12k_peer_metadata_version peer_metadata_ver;
+ 	u32 ema_max_vap_cnt;
+ 	u32 ema_max_profile_period;
++	bool is_reg_cc_ext_event_supported;
  };
  
  struct ath12k_wmi_init_cmd_arg {
-@@ -2410,6 +2412,7 @@ struct wmi_init_cmd {
- #define WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT 4
- #define WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION		GENMASK(5, 4)
- #define WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64	BIT(5)
-+#define WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET      BIT(9)
- 
- struct ath12k_wmi_resource_config_params {
- 	__le32 tlv_header;
 -- 
 2.43.0
 
