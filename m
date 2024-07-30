@@ -1,118 +1,94 @@
-Return-Path: <stable+bounces-62722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0458940DDD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:37:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4789B940DF4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474511F2598A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:37:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0252A281F5B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CD31957E7;
-	Tue, 30 Jul 2024 09:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6127B194C85;
+	Tue, 30 Jul 2024 09:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="dCKWbzjm"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="dPtaesp5"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD8D194A71;
-	Tue, 30 Jul 2024 09:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
+Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C749B18EFE0;
+	Tue, 30 Jul 2024 09:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722332258; cv=none; b=V4r5lL6Qw9vMhZxbZQoS8GAenIoSZRWjUQPsdOfMSIQNfoM6guo0J6KFurDoyJ7OV5yB4azpOM9QgzVUyIQYfieO0zEOKfkIuaC6o8Uv3r9UrfKJt8Mxi/+JdBdPqcbehZh+YQOR9TUZkJUibReXmcg1yL471DIAUCbvcuvbi/k=
+	t=1722332426; cv=none; b=isfIPnI0zbKYFX73OHH7OASCxsUK4ozwnnVGYEvBqT2Uyv5ZKzp9svgml6FtaO5q70sehAMdj2+BMbzH2iS0kW5Xzw5FXShTm2prN71az5Q56saRmUoJHAbP1Yl8ZthFjAfT7P1cP/btk20hWzhwk/GcRR5XDMXY4ptnGNzshtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722332258; c=relaxed/simple;
-	bh=uAoCj342s28bN8WzPF4jxoxE/9JcpYsWneD9ocMbptg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XDwVNEHtKrG6Y5IL34sJrz4bg8aK13Ge0z4e6HqoCaQdEQqaw3EKmvNzJEQsf8MYZAHpY3Nq7GfRRs89+Bli7iwuLJMe0SfuyF4YwncAa5HbAaAIuw3yH1Drz4sPBrqTJux4oHZu49GE6RsrI3kOIJ4FNxcufXuaqGgS0WrTovY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=dCKWbzjm; arc=none smtp.client-ip=117.135.210.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=LI6OvfJ54Zf0AJX2niBwJqF6IGU6IH2SW6Hn7PnnAQE=;
-	b=dCKWbzjm4s/B0cn6vNywAOFNR/7BabeH/NUdh5xYJvm1H+lpmu3S7O+74OUiko
-	lLF426ZfHZpvtZXldAH+s94vZs9jsB29w/f6f6Zeha2wbycpgFThLv5xj95zU7Lm
-	DF0mFLsSJU/YWA7Z6tCWVtnVs07V/YHa2RpUwycE9DGqA=
-Received: from [172.21.22.210] (unknown [118.242.3.34])
-	by gzga-smtp-mta-g1-5 (Coremail) with SMTP id _____wD3HxIUtKhmLc8oAw--.11873S2;
-	Tue, 30 Jul 2024 17:36:21 +0800 (CST)
-Message-ID: <1c5f1582-d6ea-4e27-a966-e6e992cf7c22@126.com>
-Date: Tue, 30 Jul 2024 17:36:20 +0800
+	s=arc-20240116; t=1722332426; c=relaxed/simple;
+	bh=oVNeHZDvzBbCvsVn671kV8YJr1yVUslmJ7XFxgv/sNo=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=OQe16pk9NGjd89rW2UTa6IMy/bKtfBdgEbIx5/0vZuNeTJ4wNIYKhfnEs1Cfmzd5qrIPVVRtN8GEg5Zulox2M9KxFjHtCxEanJIky3u4XtZBtLe/n9NB9RCoFYl4TeZtUuktDdljonEP7hEpOOSwBAexKDlFOZvqPaaDnsRLp2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=dPtaesp5; arc=none smtp.client-ip=203.205.221.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1722332421; bh=oVNeHZDvzBbCvsVn671kV8YJr1yVUslmJ7XFxgv/sNo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=dPtaesp5T6wMRTemmmSmugd/pjCYoyeyA3uStaGxygfgfXUwkSvF0mitcm/zsd3mF
+	 q5enJdedB/wMpCGbhigJMvPRrvXJWvvyvAkgQkcvjY2AlFwPzCmFjcU0Q/BF2nQaKv
+	 9Zz8Pi1qCOAGYpILPfZYw8BCfzCnVvo1ozQVGdwM=
+Received: from localhost.localdomain ([36.111.64.84])
+	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
+	id A11BDC01; Tue, 30 Jul 2024 17:40:17 +0800
+X-QQ-mid: xmsmtpt1722332417t59l2guzw
+Message-ID: <tencent_02C238CCB4CAA1D0C58AF9A89E8263AE740A@qq.com>
+X-QQ-XMAILINFO: MyIXMys/8kCtJSFYZFoLP8d12IVuQYRBXmnqwBMDgmsQhmNz7yCeIf1iwGzIWN
+	 Rnkxa83z486R2x7FB4+mBfOkldInFjNCO4zX1EBxKJM8yEDmmcs7NNAQtL3ffz5BFuyozc3XlD00
+	 WvT/SLb2FEzMSId/hDQ5M4n971lch9gYGT1cTLQ3MVpEj8aLcCtH91VAdjhzzswiMs+bllw2gpvq
+	 yeUC8GwbWrrfgYUnR2XBoROU4raewO8UeSmtCY7nTNekoXuLt9B5VSuSNS4FeHuvxaf/nG1r4Owj
+	 rNq0p5dt82r9U23qsgrxUaXaLs2T2ozCMlHy8bo3H/clQfHtKwQDn58MZjuF3BD8P7w+9BiQhi70
+	 OPnjwYw5FCIA+rNZH9dmC3Uiu2rV37vztxUIdranUAuj0gG5HddkuURMNy2Z8qeHKiMiUrR0S+Dw
+	 9imUhS2EdjhshDoisgIADA6s5A3lp9CzFCMVtIgNIOUD/gRFzbg9sxQthcqj36rRulHfL7sQfH2h
+	 av4YPbA7qI+DsU6MFm7BPuXARQ5RLqVqQqjbbzuEm/Y20QZGsXeOsqZQPRoZLe3zV7iFGaQMfiIY
+	 /AvSuHQ0fRmRtts7RuH9J4Jw8DQci4PFRJkVCy0TrjKp+IxFZWonOLC/hR8Ve3PWxCgaHkWaTCzD
+	 UQUQxRKmq3rbexUuuKo1fV81LgYPqYwNU+3w+1VysXw6wfvTflR7Fpc+JgiRA3J5Q8pDGDUzrjha
+	 00yyBTKoqqyqxxsZcHbb9s0womJnjWS0uavTsRA/6tQ7MAMnout+geoQG3dt+cET0bIUUEQR85DE
+	 Bz70VbpYFwdfJslopVKd81SJKddEwOcsuRtJx0HT0MYHCXnXJZkplviAWWFsmkuILtGpsTb+Wpng
+	 ACZPQaEMved2yUorXowsm4JvksDmTY1h1cCiO5dcCQ2/XjhQf/w1IoIN40eQIM6IXjcZy1ipwtFm
+	 dKepoUcz/qfoJgu6LFFkBJeFlEOO7MZTKhZIhaNFw4Yobec/jj3A==
+X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+From: wujing <realwujing@qq.com>
+To: gregkh@linuxfoundation.org
+Cc: dongml2@chinatelecom.cn,
+	linux-kernel@vger.kernel.org,
+	menglong8.dong@gmail.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	realwujing@qq.com,
+	stable@vger.kernel.org,
+	yuanql9@chinatelecom.cn
+Subject: Re: Re: [PATCH] sched/fair: Correct CPU selection from isolated domain
+Date: Tue, 30 Jul 2024 17:40:17 +0800
+X-OQ-MSGID: <20240730094017.44676-1-realwujing@qq.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024073032-ferret-obtrusive-3ce4@gregkh>
+References: <2024073032-ferret-obtrusive-3ce4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
- LRU batch
-To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
-References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
- <3a2ab0ea-3a07-45a0-ae0e-b9d48bf409bd@redhat.com>
- <79234eac-d7cc-424b-984d-b78861a5e862@126.com>
- <9e018975-8a80-46a6-ab38-f3e2945c8878@redhat.com>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <9e018975-8a80-46a6-ab38-f3e2945c8878@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3HxIUtKhmLc8oAw--.11873S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtry5uFWfKFyfJr4DXrW5Wrg_yoWkZFX_Gr
-	48Zws5Gw4jg3ZrJ3Z0yry5JrWkXFWYkr18uFy8Jay3A347Aw48CFn2gr18ZFy7Jw1xAFs0
-	9F4DAF4Yvr9xZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8yrW5UUUUU==
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOhksG2VEx2GucgAAsP
 
+> What "current patch"?
+>
+> confused,
+>
+> greg k-h
 
-
-在 2024/7/30 15:45, David Hildenbrand 写道:
->>> Looking at this in more detail, I wonder if we can turn that to
->>>
->>> if (!folio_test_clear_lru(folio))
->>>       return;
->>> folio_get(folio);
->>>
->>> In all cases? The caller must hold a reference, so this should be fine.
->>>
->>
->> Seems the caller madvise_free_pte_range(...), calling
->> folio_mark_lazyfree(...), doesn't hold a reference on folio.
->>
-> 
-> If that would be the case and the folio could get freed concurrently, 
-> the folio_get(folio) would be completely broken.
-> 
-> In madvise_free_pte_range() we hold the PTL, so the folio cannot get 
-> freed concurrently.
-> 
-
-Right.
-
-> folio_get() is only allowed when we are sure the folio cannot get freed 
-> concurrently, because we know there is a reference that cannot go away.
-> 
-> 
-
-When cpu0 runs folio_activate(), and cpu1 runs folio_put() concurrently, 
-a possible bad scenario would like:
-
-cpu0                                           cpu1
-
-                                            folio_put_testzero(folio)
-if (!folio_test_clear_lru(folio))// Seems folio shouldn't be accessed 
-
-        return;
-folio_get(folio);
-                                             __folio_put(folio)
-                                             __folio_clear_lru(folio)
-
-
-Seems we should use folio_try_get(folio) instead of folio_get(folio).
-
-
+The current patch is in my first email. Please ignore the previous two emails.
+The "current patch" mentioned in the earlier emails refers to the upstream
+status, but the latest upstream patch can no longer be applied to linux-4.19.y.
 
 
