@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7B39418A6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F618941AFB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA180286FF7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:24:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 140F1281D8C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5288F18B470;
-	Tue, 30 Jul 2024 16:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6C5188013;
+	Tue, 30 Jul 2024 16:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIrk7FaZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9WQ1ttv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103EA183CBF;
-	Tue, 30 Jul 2024 16:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA9C14831F;
+	Tue, 30 Jul 2024 16:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356612; cv=none; b=Lv/TaLUTxXWNP8cWzHOjN7cCu6I6rql4XnXpsvLJA25RpiI40Lmqxn/jDi15ikfD/F4Ha34R9faq5vXwCUOvznH/cs1Qp8gkWKekgGUNzwcLXOBltG7WzAF9HWPcEAws+iKX1w1ap4LI+Wcq1/EN019wN0qgCig1IfYQG4TyJoE=
+	t=1722358188; cv=none; b=ZtiGNv4pQ/atm1ltHCH7DHNvaQr/fCAb9LIRTmr/zIE5pxKYnCsZJGtjcD43Odx//O2lru2Xs7btkwEipvkFRzOmg5Rjn1FRBhG7PXzOhoRI2n8IfFrrfjp7DGQ1TRLRVBfvf27DS33m1SpO3IQ47XRuln4WaN0fTnz3+u//wp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356612; c=relaxed/simple;
-	bh=P6FwHRSst7RLksNyUxzps987DQfssJ0DixmNMt/f3oA=;
+	s=arc-20240116; t=1722358188; c=relaxed/simple;
+	bh=UvBYVG5ZWy6M+71VpeNUhv6kDAohNbx3/cQf4R4/D5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Li1lxFbmTFpfDoeY5m9bDorJNeHUuFsNS/imT8+Hqjf+8B2UOCgDBaOqNcHbLp7D9eBIcaA5Sx/93zG0pqS/hOQmpZzfIQMI3r8HhyvRT7WTJ03du2uT/Mg/16rBHsUMrGAfdEarIKHqC/6hCB3IIPYj79DO6XL+njlGISj7RLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIrk7FaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7884FC4AF0C;
-	Tue, 30 Jul 2024 16:23:31 +0000 (UTC)
+	 MIME-Version; b=acX2VD/payZOeqINnA793lgh39ltG2bRMEOMYYnRZDn0mRA2+8ffGdk6YTx/FAWXuo9JQmxYhvdZodcufoiTRS3fr9rqay91csVp90CCbzDa57/T1BoBdPIB41Jb+KYkHyEbFCoz/vko29hjVw4JsX+WWeIcmPG42OqcYLUj7jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9WQ1ttv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C61FC4AF10;
+	Tue, 30 Jul 2024 16:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356611;
-	bh=P6FwHRSst7RLksNyUxzps987DQfssJ0DixmNMt/f3oA=;
+	s=korg; t=1722358187;
+	bh=UvBYVG5ZWy6M+71VpeNUhv6kDAohNbx3/cQf4R4/D5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIrk7FaZJgdroP0VD0xQxDxhqeZH6vxUTRK8N1FhUZnekoNHiPEjw3uecEA4dz66w
-	 A4n1yu0l1t1vG4+dtEMWJBbzpPUkaeYsKaiQaQYsli5xguWc4ULKD8pdaIoH3QFuex
-	 +q0iF7HUReYOEBNRvXXHu003VkWr8PrPkmSPnjyE=
+	b=i9WQ1ttvO9x8wnov4a282CWan5JNqqTscjzNEEP6k7xzi0e/WjwHstf7gLRQzMNnS
+	 ToLqaICORTdcH+o1pwc8A/QmhYx4Y5rdS871xGw8WbTnEDtpig8BB3fqJiIGLdQW56
+	 8xjC8i8yG3i9DUVWdbgnblIBaGpH4E3ErzrWOtLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/440] net: missing check virtio
+Subject: [PATCH 6.6 338/568] pinctrl: renesas: r8a779g0: Fix (H)SCIF3 suffixes
 Date: Tue, 30 Jul 2024 17:47:25 +0200
-Message-ID: <20240730151624.145677758@linuxfoundation.org>
+Message-ID: <20240730151653.080138575@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +61,362 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit e269d79c7d35aa3808b1f3c1737d63dab504ddc8 ]
+[ Upstream commit 5350f38150a171322b50c0a48efa671885f87050 ]
 
-Two missing check in virtio_net_hdr_to_skb() allowed syzbot
-to crash kernels again
+(H)SCIF instance 3 has two alternate pin groups: "hscif3" and
+"hscif3_a", resp. "scif3" and "scif3_a", but the actual meanings of the
+pins within the groups do not match.
 
-1. After the skb_segment function the buffer may become non-linear
-(nr_frags != 0), but since the SKBTX_SHARED_FRAG flag is not set anywhere
-the __skb_linearize function will not be executed, then the buffer will
-remain non-linear. Then the condition (offset >= skb_headlen(skb))
-becomes true, which causes WARN_ON_ONCE in skb_checksum_help.
+Increase uniformity by adopting R-Car V4M naming:
+  - Rename "hscif3_a" to "hscif3_b",
+  - Rename "hscif3" to "hscif3_a",
+  - Rename "scif3" to "scif3_b".
 
-2. The struct sk_buff and struct virtio_net_hdr members must be
-mathematically related.
-(gso_size) must be greater than (needed) otherwise WARN_ON_ONCE.
-(remainder) must be greater than (needed) otherwise WARN_ON_ONCE.
-(remainder) may be 0 if division is without remainder.
+While at it, remove unneeded separators.
 
-offset+2 (4191) > skb_headlen() (1116)
-WARNING: CPU: 1 PID: 5084 at net/core/dev.c:3303 skb_checksum_help+0x5e2/0x740 net/core/dev.c:3303
-Modules linked in:
-CPU: 1 PID: 5084 Comm: syz-executor336 Not tainted 6.7.0-rc3-syzkaller-00014-gdf60cee26a2e #0
-Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-RIP: 0010:skb_checksum_help+0x5e2/0x740 net/core/dev.c:3303
-Code: 89 e8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 52 01 00 00 44 89 e2 2b 53 74 4c 89 ee 48 c7 c7 40 57 e9 8b e8 af 8f dd f8 90 <0f> 0b 90 90 e9 87 fe ff ff e8 40 0f 6e f9 e9 4b fa ff ff 48 89 ef
-RSP: 0018:ffffc90003a9f338 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ffff888025125780 RCX: ffffffff814db209
-RDX: ffff888015393b80 RSI: ffffffff814db216 RDI: 0000000000000001
-RBP: ffff8880251257f4 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000045c
-R13: 000000000000105f R14: ffff8880251257f0 R15: 000000000000105d
-FS:  0000555555c24380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000002000f000 CR3: 0000000023151000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ip_do_fragment+0xa1b/0x18b0 net/ipv4/ip_output.c:777
- ip_fragment.constprop.0+0x161/0x230 net/ipv4/ip_output.c:584
- ip_finish_output_gso net/ipv4/ip_output.c:286 [inline]
- __ip_finish_output net/ipv4/ip_output.c:308 [inline]
- __ip_finish_output+0x49c/0x650 net/ipv4/ip_output.c:295
- ip_finish_output+0x31/0x310 net/ipv4/ip_output.c:323
- NF_HOOK_COND include/linux/netfilter.h:303 [inline]
- ip_output+0x13b/0x2a0 net/ipv4/ip_output.c:433
- dst_output include/net/dst.h:451 [inline]
- ip_local_out+0xaf/0x1a0 net/ipv4/ip_output.c:129
- iptunnel_xmit+0x5b4/0x9b0 net/ipv4/ip_tunnel_core.c:82
- ipip6_tunnel_xmit net/ipv6/sit.c:1034 [inline]
- sit_tunnel_xmit+0xed2/0x28f0 net/ipv6/sit.c:1076
- __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
- netdev_start_xmit include/linux/netdevice.h:4954 [inline]
- xmit_one net/core/dev.c:3545 [inline]
- dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3561
- __dev_queue_xmit+0x7c1/0x3d60 net/core/dev.c:4346
- dev_queue_xmit include/linux/netdevice.h:3134 [inline]
- packet_xmit+0x257/0x380 net/packet/af_packet.c:276
- packet_snd net/packet/af_packet.c:3087 [inline]
- packet_sendmsg+0x24ca/0x5240 net/packet/af_packet.c:3119
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg+0xd5/0x180 net/socket.c:745
- __sys_sendto+0x255/0x340 net/socket.c:2190
- __do_sys_sendto net/socket.c:2202 [inline]
- __se_sys_sendto net/socket.c:2198 [inline]
- __x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller
-
-Fixes: 0f6925b3e8da ("virtio_net: Do not pull payload in skb->head")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Message-Id: <20240613095448.27118-1-arefev@swemel.ru>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
+Fixes: 050442ae4c74f830 ("pinctrl: renesas: r8a779g0: Add pins, groups and functions")
+Fixes: 213b713255defaa6 ("pinctrl: renesas: r8a779g0: Add missing HSCIF3_A")
+Fixes: 49e4697656bdd1cd ("pinctrl: renesas: r8a779g0: Add missing SCIF3")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/61fdde58e369e8070ffd3c5811c089e6219c7ecc.1717754960.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_net.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/pinctrl/renesas/pfc-r8a779g0.c | 192 ++++++++++++-------------
+ 1 file changed, 94 insertions(+), 98 deletions(-)
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 6047058d67037..29b19d0a324c7 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -51,6 +51,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 	unsigned int thlen = 0;
- 	unsigned int p_off = 0;
- 	unsigned int ip_proto;
-+	u64 ret, remainder, gso_size;
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+index 7b64429c35ad3..e3c720ea76e32 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+@@ -77,11 +77,11 @@
+ #define GPSR0_0		F_(GP0_00,		IP0SR0_3_0)
  
- 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
- 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
-@@ -87,6 +88,16 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
- 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
+ /* GPSR1 */
+-#define GPSR1_28	F_(HTX3,		IP3SR1_19_16)
+-#define GPSR1_27	F_(HCTS3_N,		IP3SR1_15_12)
+-#define GPSR1_26	F_(HRTS3_N,		IP3SR1_11_8)
+-#define GPSR1_25	F_(HSCK3,		IP3SR1_7_4)
+-#define GPSR1_24	F_(HRX3,		IP3SR1_3_0)
++#define GPSR1_28	F_(HTX3_A,		IP3SR1_19_16)
++#define GPSR1_27	F_(HCTS3_N_A,		IP3SR1_15_12)
++#define GPSR1_26	F_(HRTS3_N_A,		IP3SR1_11_8)
++#define GPSR1_25	F_(HSCK3_A,		IP3SR1_7_4)
++#define GPSR1_24	F_(HRX3_A,		IP3SR1_3_0)
+ #define GPSR1_23	F_(GP1_23,		IP2SR1_31_28)
+ #define GPSR1_22	F_(AUDIO_CLKIN,		IP2SR1_27_24)
+ #define GPSR1_21	F_(AUDIO_CLKOUT,	IP2SR1_23_20)
+@@ -301,11 +301,11 @@
  
-+		if (hdr->gso_size) {
-+			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
-+			ret = div64_u64_rem(skb->len, gso_size, &remainder);
-+			if (!(ret && (hdr->gso_size > needed) &&
-+						((remainder > needed) || (remainder == 0)))) {
-+				return -EINVAL;
-+			}
-+			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
-+		}
+ /* SR1 */
+ /* IP0SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+-#define IP0SR1_3_0	FM(MSIOF1_SS2)		FM(HTX3_A)		FM(TX3)			F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_7_4	FM(MSIOF1_SS1)		FM(HCTS3_N_A)		FM(RX3)			F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_11_8	FM(MSIOF1_SYNC)		FM(HRTS3_N_A)		FM(RTS3_N)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_15_12	FM(MSIOF1_SCK)		FM(HSCK3_A)		FM(CTS3_N)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR1_19_16	FM(MSIOF1_TXD)		FM(HRX3_A)		FM(SCK3)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_3_0	FM(MSIOF1_SS2)		FM(HTX3_B)		FM(TX3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_7_4	FM(MSIOF1_SS1)		FM(HCTS3_N_B)		FM(RX3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_11_8	FM(MSIOF1_SYNC)		FM(HRTS3_N_B)		FM(RTS3_N_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_15_12	FM(MSIOF1_SCK)		FM(HSCK3_B)		FM(CTS3_N_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR1_19_16	FM(MSIOF1_TXD)		FM(HRX3_B)		FM(SCK3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_23_20	FM(MSIOF1_RXD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_27_24	FM(MSIOF0_SS2)		FM(HTX1_B)		FM(TX1_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR1_31_28	FM(MSIOF0_SS1)		FM(HRX1_B)		FM(RX1_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+@@ -331,11 +331,11 @@
+ #define IP2SR1_31_28	F_(0, 0)		FM(TCLK2)		FM(MSIOF4_SS1)		FM(IRQ3_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ 
+ /* IP3SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+-#define IP3SR1_3_0	FM(HRX3)		FM(SCK3_A)		FM(MSIOF4_SS2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_7_4	FM(HSCK3)		FM(CTS3_N_A)		FM(MSIOF4_SCK)		FM(TPU0TO0_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_11_8	FM(HRTS3_N)		FM(RTS3_N_A)		FM(MSIOF4_TXD)		FM(TPU0TO1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_15_12	FM(HCTS3_N)		FM(RX3_A)		FM(MSIOF4_RXD)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP3SR1_19_16	FM(HTX3)		FM(TX3_A)		FM(MSIOF4_SYNC)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_3_0	FM(HRX3_A)		FM(SCK3_A)		FM(MSIOF4_SS2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_7_4	FM(HSCK3_A)		FM(CTS3_N_A)		FM(MSIOF4_SCK)		FM(TPU0TO0_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_11_8	FM(HRTS3_N_A)		FM(RTS3_N_A)		FM(MSIOF4_TXD)		FM(TPU0TO1_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_15_12	FM(HCTS3_N_A)		FM(RX3_A)		FM(MSIOF4_RXD)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP3SR1_19_16	FM(HTX3_A)		FM(TX3_A)		FM(MSIOF4_SYNC)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ 
+ /* SR2 */
+ /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+@@ -776,24 +776,24 @@ static const u16 pinmux_data[] = {
+ 
+ 	/* IP0SR1 */
+ 	PINMUX_IPSR_GPSR(IP0SR1_3_0,	MSIOF1_SS2),
+-	PINMUX_IPSR_GPSR(IP0SR1_3_0,	HTX3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_3_0,	TX3),
++	PINMUX_IPSR_GPSR(IP0SR1_3_0,	HTX3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_3_0,	TX3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_7_4,	MSIOF1_SS1),
+-	PINMUX_IPSR_GPSR(IP0SR1_7_4,	HCTS3_N_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_7_4,	RX3),
++	PINMUX_IPSR_GPSR(IP0SR1_7_4,	HCTS3_N_B),
++	PINMUX_IPSR_GPSR(IP0SR1_7_4,	RX3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_11_8,	MSIOF1_SYNC),
+-	PINMUX_IPSR_GPSR(IP0SR1_11_8,	HRTS3_N_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_11_8,	RTS3_N),
++	PINMUX_IPSR_GPSR(IP0SR1_11_8,	HRTS3_N_B),
++	PINMUX_IPSR_GPSR(IP0SR1_11_8,	RTS3_N_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_15_12,	MSIOF1_SCK),
+-	PINMUX_IPSR_GPSR(IP0SR1_15_12,	HSCK3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_15_12,	CTS3_N),
++	PINMUX_IPSR_GPSR(IP0SR1_15_12,	HSCK3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_15_12,	CTS3_N_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_19_16,	MSIOF1_TXD),
+-	PINMUX_IPSR_GPSR(IP0SR1_19_16,	HRX3_A),
+-	PINMUX_IPSR_GPSR(IP0SR1_19_16,	SCK3),
++	PINMUX_IPSR_GPSR(IP0SR1_19_16,	HRX3_B),
++	PINMUX_IPSR_GPSR(IP0SR1_19_16,	SCK3_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR1_23_20,	MSIOF1_RXD),
+ 
+@@ -864,25 +864,25 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP2SR1_31_28,	IRQ3_B),
+ 
+ 	/* IP3SR1 */
+-	PINMUX_IPSR_GPSR(IP3SR1_3_0,	HRX3),
++	PINMUX_IPSR_GPSR(IP3SR1_3_0,	HRX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_3_0,	SCK3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_3_0,	MSIOF4_SS2),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_7_4,	HSCK3),
++	PINMUX_IPSR_GPSR(IP3SR1_7_4,	HSCK3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	CTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	MSIOF4_SCK),
+ 	PINMUX_IPSR_GPSR(IP3SR1_7_4,	TPU0TO0_A),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_11_8,	HRTS3_N),
++	PINMUX_IPSR_GPSR(IP3SR1_11_8,	HRTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	RTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	MSIOF4_TXD),
+ 	PINMUX_IPSR_GPSR(IP3SR1_11_8,	TPU0TO1_A),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_15_12,	HCTS3_N),
++	PINMUX_IPSR_GPSR(IP3SR1_15_12,	HCTS3_N_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_15_12,	RX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_15_12,	MSIOF4_RXD),
+ 
+-	PINMUX_IPSR_GPSR(IP3SR1_19_16,	HTX3),
++	PINMUX_IPSR_GPSR(IP3SR1_19_16,	HTX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_19_16,	TX3_A),
+ 	PINMUX_IPSR_GPSR(IP3SR1_19_16,	MSIOF4_SYNC),
+ 
+@@ -1666,49 +1666,48 @@ static const unsigned int hscif2_ctrl_mux[] = {
+ };
+ 
+ /* - HSCIF3 ----------------------------------------------------------------- */
+-static const unsigned int hscif3_data_pins[] = {
+-	/* HRX3, HTX3 */
++static const unsigned int hscif3_data_a_pins[] = {
++	/* HRX3_A, HTX3_A */
+ 	RCAR_GP_PIN(1, 24), RCAR_GP_PIN(1, 28),
+ };
+-static const unsigned int hscif3_data_mux[] = {
+-	HRX3_MARK, HTX3_MARK,
++static const unsigned int hscif3_data_a_mux[] = {
++	HRX3_A_MARK, HTX3_A_MARK,
+ };
+-static const unsigned int hscif3_clk_pins[] = {
+-	/* HSCK3 */
++static const unsigned int hscif3_clk_a_pins[] = {
++	/* HSCK3_A */
+ 	RCAR_GP_PIN(1, 25),
+ };
+-static const unsigned int hscif3_clk_mux[] = {
+-	HSCK3_MARK,
++static const unsigned int hscif3_clk_a_mux[] = {
++	HSCK3_A_MARK,
+ };
+-static const unsigned int hscif3_ctrl_pins[] = {
+-	/* HRTS3_N, HCTS3_N */
++static const unsigned int hscif3_ctrl_a_pins[] = {
++	/* HRTS3_N_A, HCTS3_N_A */
+ 	RCAR_GP_PIN(1, 26), RCAR_GP_PIN(1, 27),
+ };
+-static const unsigned int hscif3_ctrl_mux[] = {
+-	HRTS3_N_MARK, HCTS3_N_MARK,
++static const unsigned int hscif3_ctrl_a_mux[] = {
++	HRTS3_N_A_MARK, HCTS3_N_A_MARK,
+ };
+ 
+-/* - HSCIF3_A ----------------------------------------------------------------- */
+-static const unsigned int hscif3_data_a_pins[] = {
+-	/* HRX3_A, HTX3_A */
++static const unsigned int hscif3_data_b_pins[] = {
++	/* HRX3_B, HTX3_B */
+ 	RCAR_GP_PIN(1, 4), RCAR_GP_PIN(1, 0),
+ };
+-static const unsigned int hscif3_data_a_mux[] = {
+-	HRX3_A_MARK, HTX3_A_MARK,
++static const unsigned int hscif3_data_b_mux[] = {
++	HRX3_B_MARK, HTX3_B_MARK,
+ };
+-static const unsigned int hscif3_clk_a_pins[] = {
+-	/* HSCK3_A */
++static const unsigned int hscif3_clk_b_pins[] = {
++	/* HSCK3_B */
+ 	RCAR_GP_PIN(1, 3),
+ };
+-static const unsigned int hscif3_clk_a_mux[] = {
+-	HSCK3_A_MARK,
++static const unsigned int hscif3_clk_b_mux[] = {
++	HSCK3_B_MARK,
+ };
+-static const unsigned int hscif3_ctrl_a_pins[] = {
+-	/* HRTS3_N_A, HCTS3_N_A */
++static const unsigned int hscif3_ctrl_b_pins[] = {
++	/* HRTS3_N_B, HCTS3_N_B */
+ 	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 1),
+ };
+-static const unsigned int hscif3_ctrl_a_mux[] = {
+-	HRTS3_N_A_MARK, HCTS3_N_A_MARK,
++static const unsigned int hscif3_ctrl_b_mux[] = {
++	HRTS3_N_B_MARK, HCTS3_N_B_MARK,
+ };
+ 
+ /* - I2C0 ------------------------------------------------------------------- */
+@@ -2304,29 +2303,6 @@ static const unsigned int scif1_ctrl_b_mux[] = {
+ };
+ 
+ /* - SCIF3 ------------------------------------------------------------------ */
+-static const unsigned int scif3_data_pins[] = {
+-	/* RX3, TX3 */
+-	RCAR_GP_PIN(1, 1), RCAR_GP_PIN(1, 0),
+-};
+-static const unsigned int scif3_data_mux[] = {
+-	RX3_MARK, TX3_MARK,
+-};
+-static const unsigned int scif3_clk_pins[] = {
+-	/* SCK3 */
+-	RCAR_GP_PIN(1, 4),
+-};
+-static const unsigned int scif3_clk_mux[] = {
+-	SCK3_MARK,
+-};
+-static const unsigned int scif3_ctrl_pins[] = {
+-	/* RTS3_N, CTS3_N */
+-	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 3),
+-};
+-static const unsigned int scif3_ctrl_mux[] = {
+-	RTS3_N_MARK, CTS3_N_MARK,
+-};
+-
+-/* - SCIF3_A ------------------------------------------------------------------ */
+ static const unsigned int scif3_data_a_pins[] = {
+ 	/* RX3_A, TX3_A */
+ 	RCAR_GP_PIN(1, 27), RCAR_GP_PIN(1, 28),
+@@ -2349,6 +2325,28 @@ static const unsigned int scif3_ctrl_a_mux[] = {
+ 	RTS3_N_A_MARK, CTS3_N_A_MARK,
+ };
+ 
++static const unsigned int scif3_data_b_pins[] = {
++	/* RX3_B, TX3_B */
++	RCAR_GP_PIN(1, 1), RCAR_GP_PIN(1, 0),
++};
++static const unsigned int scif3_data_b_mux[] = {
++	RX3_B_MARK, TX3_B_MARK,
++};
++static const unsigned int scif3_clk_b_pins[] = {
++	/* SCK3_B */
++	RCAR_GP_PIN(1, 4),
++};
++static const unsigned int scif3_clk_b_mux[] = {
++	SCK3_B_MARK,
++};
++static const unsigned int scif3_ctrl_b_pins[] = {
++	/* RTS3_N_B, CTS3_N_B */
++	RCAR_GP_PIN(1, 2), RCAR_GP_PIN(1, 3),
++};
++static const unsigned int scif3_ctrl_b_mux[] = {
++	RTS3_N_B_MARK, CTS3_N_B_MARK,
++};
 +
- 		if (!pskb_may_pull(skb, needed))
- 			return -EINVAL;
+ /* - SCIF4 ------------------------------------------------------------------ */
+ static const unsigned int scif4_data_pins[] = {
+ 	/* RX4, TX4 */
+@@ -2593,12 +2591,12 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	SH_PFC_PIN_GROUP(hscif2_data),
+ 	SH_PFC_PIN_GROUP(hscif2_clk),
+ 	SH_PFC_PIN_GROUP(hscif2_ctrl),
+-	SH_PFC_PIN_GROUP(hscif3_data),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_clk),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_ctrl),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_data_a),	/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_clk_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(hscif3_ctrl_a),	/* suffix might be updated */
++	SH_PFC_PIN_GROUP(hscif3_data_a),
++	SH_PFC_PIN_GROUP(hscif3_clk_a),
++	SH_PFC_PIN_GROUP(hscif3_ctrl_a),
++	SH_PFC_PIN_GROUP(hscif3_data_b),
++	SH_PFC_PIN_GROUP(hscif3_clk_b),
++	SH_PFC_PIN_GROUP(hscif3_ctrl_b),
  
+ 	SH_PFC_PIN_GROUP(i2c0),
+ 	SH_PFC_PIN_GROUP(i2c1),
+@@ -2689,12 +2687,12 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	SH_PFC_PIN_GROUP(scif1_data_b),
+ 	SH_PFC_PIN_GROUP(scif1_clk_b),
+ 	SH_PFC_PIN_GROUP(scif1_ctrl_b),
+-	SH_PFC_PIN_GROUP(scif3_data),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_clk),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_ctrl),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_data_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_clk_a),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(scif3_ctrl_a),		/* suffix might be updated */
++	SH_PFC_PIN_GROUP(scif3_data_a),
++	SH_PFC_PIN_GROUP(scif3_clk_a),
++	SH_PFC_PIN_GROUP(scif3_ctrl_a),
++	SH_PFC_PIN_GROUP(scif3_data_b),
++	SH_PFC_PIN_GROUP(scif3_clk_b),
++	SH_PFC_PIN_GROUP(scif3_ctrl_b),
+ 	SH_PFC_PIN_GROUP(scif4_data),
+ 	SH_PFC_PIN_GROUP(scif4_clk),
+ 	SH_PFC_PIN_GROUP(scif4_ctrl),
+@@ -2823,13 +2821,12 @@ static const char * const hscif2_groups[] = {
+ };
+ 
+ static const char * const hscif3_groups[] = {
+-	/* suffix might be updated */
+-	"hscif3_data",
+-	"hscif3_clk",
+-	"hscif3_ctrl",
+ 	"hscif3_data_a",
+ 	"hscif3_clk_a",
+ 	"hscif3_ctrl_a",
++	"hscif3_data_b",
++	"hscif3_clk_b",
++	"hscif3_ctrl_b",
+ };
+ 
+ static const char * const i2c0_groups[] = {
+@@ -2999,13 +2996,12 @@ static const char * const scif1_groups[] = {
+ };
+ 
+ static const char * const scif3_groups[] = {
+-	/* suffix might be updated */
+-	"scif3_data",
+-	"scif3_clk",
+-	"scif3_ctrl",
+ 	"scif3_data_a",
+ 	"scif3_clk_a",
+ 	"scif3_ctrl_a",
++	"scif3_data_b",
++	"scif3_clk_b",
++	"scif3_ctrl_b",
+ };
+ 
+ static const char * const scif4_groups[] = {
 -- 
 2.43.0
 
