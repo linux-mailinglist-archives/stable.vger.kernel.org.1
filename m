@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B356F941C25
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989D79418FC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72D38283372
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53EF02856C5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6ED3188003;
-	Tue, 30 Jul 2024 17:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031EB1A618F;
+	Tue, 30 Jul 2024 16:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr76QLHT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk5VvDaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DBF1E86F;
-	Tue, 30 Jul 2024 17:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57AD1A6160;
+	Tue, 30 Jul 2024 16:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359019; cv=none; b=hGV5VLVQkCs0l7/TxDXc8YCvyUhX49OH+oXdTBF8uFR7tx1f3+rnAoCkqNt6B8TYwETgT0Wb+1Z7rTy/FkQS6O53nU5z/DLnqlkKV+WPpYLxBGLq3D7E0xkOVPtXyXskE52GdFkyPpLNi+0GSIWxq2qYH63awBxqjkIlgW5e5Vw=
+	t=1722356858; cv=none; b=EeFfAcRhYX9d1cdTSFoRNCx1/OxUyd3euEOOHviNnwKvCF5alwysq6ZM3ZEMP4geqv3N2DBdSH7La9uKkNZrg9CeUVkoOHfmfLZ1dSDxvVQ0AjR8FD4SNTyFeyW3gdDi0sFPg0OSQNLfbKgvnWQ2pRIPXikycXhcnrT3MUkp49c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359019; c=relaxed/simple;
-	bh=YuJJ45cYTudpWNlyvmoMbiRDBeykdwGrO4Sq8nbZkxQ=;
+	s=arc-20240116; t=1722356858; c=relaxed/simple;
+	bh=qWzAWSkJzlKaow2r5RDnKa6F5l8UZibAgXTYFSJQPOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPRxgBGDpZi60F7zZVogt7RVGIcjXKPWC9D+ntEFXxSXnigjsnLq4CpP5aVfa96mE27i3u3DrM+k5zQcQ+H0Stn+WDpDRBntnaBmwZsB1LHSxpiIrvwIE8dFwSats12Yjq70HWItpll5EPDmF0tw2hRhPRL21jVA4791wAutZHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr76QLHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CCBDC32782;
-	Tue, 30 Jul 2024 17:03:38 +0000 (UTC)
+	 MIME-Version; b=krZfJ2IJRabw9G4OWiJHeD6NWd6jaCiM7lkl0uJP9AQXa7yJ1tV6f6khBbRRB69RyruG26N5g6uOcCufFO7ZQiD275OcUhxi6zSovVuvydpQPluyfAKJJWkS4sZBcMbxaml+b/T5Kn6kV1hJnd1Wo8dZDwcxvHsks0HMb9Lj16Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk5VvDaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387F3C32782;
+	Tue, 30 Jul 2024 16:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359019;
-	bh=YuJJ45cYTudpWNlyvmoMbiRDBeykdwGrO4Sq8nbZkxQ=;
+	s=korg; t=1722356858;
+	bh=qWzAWSkJzlKaow2r5RDnKa6F5l8UZibAgXTYFSJQPOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qr76QLHTQMh3JJ/7JMudb8LYHac3BHiqNICbENJ2IvRZ+B/JjcrPuflc72H2T7tr4
-	 RvyXImDCviMIkeRemuFIeFjgCaXjwZM/r8P7+MCoWwLUSSDacQxfw8BdpGB+c8LBrL
-	 mvRL/QMtpPnfBr2hR91RqKQ7pbJNDRUYL+9wuseg=
+	b=Wk5VvDaPw/CndJ2tKZIn7K7471NwiRAHkPvGOXdqAtag6phyJk58+DgSjI1mJP8ij
+	 T1yrcKtiNzXT/vQJg6Ho/jcnLWbx0txgxeMpcT6lkh2alDOHBRp0lq1j4M+R8mMI1F
+	 Q3/8DPAOpcBZA0aMYeFamCBHuhg24uRarNqa/Vi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honggang LI <honggangli@163.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 422/809] RDMA/rxe: Dont set BTH_ACK_MASK for UC or UD QPs
+Subject: [PATCH 6.6 191/568] media: imon: Fix race getting ictx->lock
 Date: Tue, 30 Jul 2024 17:44:58 +0200
-Message-ID: <20240730151741.362286308@linuxfoundation.org>
+Message-ID: <20240730151647.344732166@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 4adcaf969d77d3d3aa3871bbadc196258a38aec6 ]
+[ Upstream commit 24147897507cd3a7d63745d1518a638bf4132238 ]
 
-BTH_ACK_MASK bit is used to indicate that an acknowledge
-(for this packet) should be scheduled by the responder.
-Both UC and UD QPs are unacknowledged, so don't set
-BTH_ACK_MASK for UC or UD QPs.
+Lets fix a race between mutex_is_lock() and mutex_lock().
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://lore.kernel.org/r/20240624020348.494338-1-honggangli@163.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+<-mutex is not locked
+if (!mutex_is_locked(&ictx->lock)) {
+	unlock = true; <- mutex is locked externaly
+	mutex_lock(&ictx->lock);
+}
+
+Let's use mutex_trylock() that does mutex_is_lock() and mutex_lock()
+atomically.
+
+Fix the following cocci warning:
+drivers/media/rc/imon.c:1167:1-7: preceding lock on line 1153
+
+Fixes: 23ef710e1a6c ("[media] imon: add conditional locking in change_protocol")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_req.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/rc/imon.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-index cd14c4c2dff9d..479c07e6e4ed3 100644
---- a/drivers/infiniband/sw/rxe/rxe_req.c
-+++ b/drivers/infiniband/sw/rxe/rxe_req.c
-@@ -424,7 +424,7 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	int			paylen;
- 	int			solicited;
- 	u32			qp_num;
--	int			ack_req;
-+	int			ack_req = 0;
+diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
+index 5719dda6e0f0e..e5590a708f1c5 100644
+--- a/drivers/media/rc/imon.c
++++ b/drivers/media/rc/imon.c
+@@ -1148,10 +1148,7 @@ static int imon_ir_change_protocol(struct rc_dev *rc, u64 *rc_proto)
  
- 	/* length from start of bth to end of icrc */
- 	paylen = rxe_opcode[opcode].length + payload + pad + RXE_ICRC_SIZE;
-@@ -445,8 +445,9 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
- 	qp_num = (pkt->mask & RXE_DETH_MASK) ? ibwr->wr.ud.remote_qpn :
- 					 qp->attr.dest_qp_num;
+ 	memcpy(ictx->usb_tx_buf, &ir_proto_packet, sizeof(ir_proto_packet));
  
--	ack_req = ((pkt->mask & RXE_END_MASK) ||
--		(qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
-+	if (qp_type(qp) != IB_QPT_UD && qp_type(qp) != IB_QPT_UC)
-+		ack_req = ((pkt->mask & RXE_END_MASK) ||
-+			   (qp->req.noack_pkts++ > RXE_MAX_PKT_PER_ACK));
- 	if (ack_req)
- 		qp->req.noack_pkts = 0;
+-	if (!mutex_is_locked(&ictx->lock)) {
+-		unlock = true;
+-		mutex_lock(&ictx->lock);
+-	}
++	unlock = mutex_trylock(&ictx->lock);
  
+ 	retval = send_packet(ictx);
+ 	if (retval)
 -- 
 2.43.0
 
