@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFC09416D0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013B39416D2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28169287508
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0DF1F24837
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E227188003;
-	Tue, 30 Jul 2024 16:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FACD184543;
+	Tue, 30 Jul 2024 16:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYof5cno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4WkahI4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C181187FF2;
-	Tue, 30 Jul 2024 16:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9EF183CD5;
+	Tue, 30 Jul 2024 16:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355432; cv=none; b=CdwxX0fKvF3bSXOB/UKD2jkiw/a8cIb7yjEX3rFYRpr8yL4v/hp3Qh/hmHW6Ch2IAttEFB/C5DPuhAasX3pRQ5ofDPUPL2B3JBd/P44B2UQr71MsdSnfOOi5ysLIXqyfHHBfWXeyp+jBMD+DtglqswMuEdV8hb0MZr22nc3GShk=
+	t=1722355439; cv=none; b=fnBOHp3OJfdyOfSRJRO8msbGv2iujYtSUlC1gSCPcUUjQPQ9A/XztVBams1MNBGZHDZqVhLsiq+GxHR5ZiJUi6vU4iqj61F7XGV+40r3dsVYjzH4TIhEj/dBnNRGH2CmtZqm/8F+NX2GUQqeupphNeRK198qOTM2UpjYHcLyGp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355432; c=relaxed/simple;
-	bh=Rchq3S7/6eow97VhCB7G1KaEUtqLT+pVNP5S6IbUBFI=;
+	s=arc-20240116; t=1722355439; c=relaxed/simple;
+	bh=i6e9CGiXEeoDMWjoBlzCb8SOnw3yjthSZLqjfLWUJ/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NySlrL7fpJdBGOl45324rUJC+f1Fl1qI8sQ7R9KD1Cr8zQTbCMI7vuzoWD1ZB2uIC/+ut28rTwpq6OPLkdkVw4dK9kU6qjVZ6wTwqHPnykeEFMId8bvyyMLYI2LGGy03nRVnt8pAT3gAI7GhXvQV0wGWXO0W0E1QgRK2STBEe1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYof5cno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5164C32782;
-	Tue, 30 Jul 2024 16:03:51 +0000 (UTC)
+	 MIME-Version; b=Eu0CvvK0I848lu4MqhZdg6ckVGOJoYJLKviL96qpEfzHL7zkav+mqkgDarMuUcolvly/kVPCntwdnV6FfZXmx7UtBUktiasXLWdfIhpTGre91GI9n9/LP9gA1XNfnNud54L4/YaWMLCXY2e3jVLqv9xyN6u8v+wXF7DoTYKuZGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4WkahI4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9A3C32782;
+	Tue, 30 Jul 2024 16:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355432;
-	bh=Rchq3S7/6eow97VhCB7G1KaEUtqLT+pVNP5S6IbUBFI=;
+	s=korg; t=1722355438;
+	bh=i6e9CGiXEeoDMWjoBlzCb8SOnw3yjthSZLqjfLWUJ/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kYof5cnolOeYVUEdIJO4rw8ioA8bXWC848G7Cny/K3+ShuU+jI9dVTdy5z9N5QQSu
-	 knEXfL716ZE4Rr3ttWGJtD7En11T+S29xKgKaKeJ1W5xEAdw8DCbMnl2TNF7t7lA4U
-	 yIgpduhS41aFUwq06eebMK6DUn6jnE1/qo7OvTUU=
+	b=P4WkahI4mpPaB5YJUtZXwRn8T88HtMfOKLqNMgANkTjYoQRfDfeWBhrRjLnpxHoyi
+	 J36T16p+614X2C8g+hf23XdXazAc5E+0jBPg1p2X+5mbVHCeyFtLL3FaqxuQeG5j1N
+	 D+Nczttj0Ae5ja+n0cvdIpr4ZFZGk4JHGcXQ3FTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/440] arm64: dts: rockchip: Add missing power-domains for rk356x vop_mmu
-Date: Tue, 30 Jul 2024 17:45:07 +0200
-Message-ID: <20240730151618.653091824@linuxfoundation.org>
+Subject: [PATCH 6.1 075/440] arm64: dts: qcom: sm6350: Add missing qcom,non-secure-domain property
+Date: Tue, 30 Jul 2024 17:45:08 +0200
+Message-ID: <20240730151618.690867625@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,40 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 9d42c3ee3ce37cdad6f98c9e77bfbd0d791ac7da ]
+[ Upstream commit 81008068ee4f2c4c26e97a0404405bb4b450241b ]
 
-The iommu@fe043e00 on RK356x SoC shares the VOP power domain, but the
-power-domains property was not provided when the node has been added.
+By default the DSP domains are secure, add the missing
+qcom,non-secure-domain property to mark them as non-secure.
 
-The consequence is that an attempt to reload the rockchipdrm module will
-freeze the entire system.  That is because on probe time,
-pm_runtime_get_suppliers() gets called for vop@fe040000, which blocks
-when pm_runtime_get_sync() is being invoked for iommu@fe043e00.
-
-Fix the issue by adding the missing property.
-
-Fixes: 9d6c6d978f97 ("arm64: dts: rockchip: rk356x: Add VOP2 nodes")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20240702-rk356x-fix-vop-mmu-v1-1-a66d1a0c45ea@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: efc33c969f23 ("arm64: dts: qcom: sm6350: Add ADSP nodes")
+Fixes: 8eb5287e8a42 ("arm64: dts: qcom: sm6350: Add CDSP nodes")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Link: https://lore.kernel.org/r/20240705-sm6350-fastrpc-fix-v2-1-89a43166c9bb@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk356x.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-index 99ad6fc51b584..e5c88f0007253 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-@@ -737,6 +737,7 @@ vop_mmu: iommu@fe043e00 {
- 		clocks = <&cru ACLK_VOP>, <&cru HCLK_VOP>;
- 		clock-names = "aclk", "iface";
- 		#iommu-cells = <0>;
-+		power-domains = <&power RK3568_PD_VO>;
- 		status = "disabled";
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 66998df053d52..ba078099b8054 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -895,6 +895,7 @@ fastrpc {
+ 					compatible = "qcom,fastrpc";
+ 					qcom,glink-channels = "fastrpcglink-apps-dsp";
+ 					label = "adsp";
++					qcom,non-secure-domain;
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
+ 
+@@ -1002,6 +1003,7 @@ fastrpc {
+ 					compatible = "qcom,fastrpc";
+ 					qcom,glink-channels = "fastrpcglink-apps-dsp";
+ 					label = "cdsp";
++					qcom,non-secure-domain;
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
  
 -- 
 2.43.0
