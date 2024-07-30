@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-63911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F206E941B3D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9B7941D27
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F83E1C210D7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4960D28B2D2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91149189514;
-	Tue, 30 Jul 2024 16:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433341FBA;
+	Tue, 30 Jul 2024 17:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxV8qPUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXKdnJss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB311A619E;
-	Tue, 30 Jul 2024 16:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D83188017;
+	Tue, 30 Jul 2024 17:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358348; cv=none; b=i4c3wILGS0/kdYMH4E0+6deb1eL2lwtEU0hTyB9JYFE6v9GbLhqDToHvo9t/SYf/Mkurhmshgs+3Dapr56XmTL4jJgXn3wpzqrpObpsSfcKdxouMYF6LF3l4+x4L8vOr1xTQ92XBbn+L0u2Vs0PIEm4O93LWBjri1EyeHjBgWVo=
+	t=1722359611; cv=none; b=tRWRf+Qg4qvQl2+oqqF4O5t09VUJ4ZWSeWQXFHL4iKpYLXm7xOQ8vr154mdrDJ8MkGDPzHAfUQgQs6IFVl1Fre4M7KAmpGrsZHR+GltdHY05ZWu9PYwGLVYjGLlpmBvBs5NjK2kT7e+lJB0aL15EA5T4EX2aXi4YZI+CTKA6uQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358348; c=relaxed/simple;
-	bh=wp23HBVgriKIiJaMcmb3VhgtzxaU2lQKIBZoMV8pIUU=;
+	s=arc-20240116; t=1722359611; c=relaxed/simple;
+	bh=HXVXF91pb216vefyfuC/Fx0rJ3iwX7leGQIgaPUclnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdPtKiunfOzcYk0S31dvzHEhQhBERjOF9XAPnN8RO8UZgmtikiMgamw01y6jh6nWNcLk10MRIfrkAeD1/oNtg2MXfrh8ktDuhAruUMEsayyvr2eBD1fT13okWDuhDAU0Zx3eVGWu2PTQ0C3dOM7kq3/PTMrePy5VdZ8dKBtdhSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxV8qPUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE086C32782;
-	Tue, 30 Jul 2024 16:52:27 +0000 (UTC)
+	 MIME-Version; b=HTAXwCVcrPi/7PkrpIMLgSrf6v0Z0op1tMTWTg3YnHzVciW2+HLsFFHNS4G2j7m2i/yusdY6DO7vf6/spa1a2jZTr3AgWgXDPiHGrUw6U/gLPwzItwjrCgb3lI9s7nOTV1U++Zm/XKeKlUgdLxCT9BFpUoXmXULVCUi+Et4Rqrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXKdnJss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B11C4AF0E;
+	Tue, 30 Jul 2024 17:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358348;
-	bh=wp23HBVgriKIiJaMcmb3VhgtzxaU2lQKIBZoMV8pIUU=;
+	s=korg; t=1722359610;
+	bh=HXVXF91pb216vefyfuC/Fx0rJ3iwX7leGQIgaPUclnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxV8qPUFGuFnMbuSr+MhKB2FpGJYb4YxL6xDXH4EeJYn3/NY32Q9TcVeqMGIyLoH9
-	 /O8sG9/euuLqiN0Wdk2Aq//9mQfPKsqx4rosMygz0jU4VfgcUa2Av1VhlRFm73rqxS
-	 zYohcAx6XzLBiUMSruNG7D8PGyI9iUz0kHQXiBIU=
+	b=OXKdnJssPwaOXEHdUnga9MZV/EpZ8Xs/3D55ft6vR5xJAQwI1VqigRB+lk5oQiX91
+	 miMYWFGITD5HmlOuWNnkR1wMNycCV+A8MSBo/MKEbjnj6Xur4/ztLRKs67n+O6JakE
+	 nByGj3I6XLmEfOfQYEkcAMKzwDyNTLNBQ2qIdflQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 6.1 382/440] rbd: dont assume RBD_LOCK_STATE_LOCKED for exclusive mappings
+	Justin Stitt <justinstitt@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH 6.6 508/568] minmax: scsi: fix mis-use of clamp() in sr.c
 Date: Tue, 30 Jul 2024 17:50:15 +0200
-Message-ID: <20240730151630.728041233@linuxfoundation.org>
+Message-ID: <20240730151659.880686349@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 2237ceb71f89837ac47c5dce2aaa2c2b3a337a3c upstream.
+commit 9f499b8c791d2983c0a31a543c51d1b2f15e8755 upstream.
 
-Every time a watch is reestablished after getting lost, we need to
-update the cookie which involves quiescing exclusive lock.  For this,
-we transition from RBD_LOCK_STATE_LOCKED to RBD_LOCK_STATE_QUIESCING
-roughly for the duration of rbd_reacquire_lock() call.  If the mapping
-is exclusive and I/O happens to arrive in this time window, it's failed
-with EROFS (later translated to EIO) based on the wrong assumption in
-rbd_img_exclusive_lock() -- "lock got released?" check there stopped
-making sense with commit a2b1da09793d ("rbd: lock should be quiesced on
-reacquire").
+While working on simplifying the minmax functions, and avoiding
+excessive macro expansion, it turns out that the sr.c use of the
+'clamp()' macro has the arguments the wrong way around.
 
-To make it worse, any such I/O is added to the acquiring list before
-EROFS is returned and this sets up for violating rbd_lock_del_request()
-precondition that the request is either on the running list or not on
-any list at all -- see commit ded080c86b3f ("rbd: don't move requests
-to the running list on errors").  rbd_lock_del_request() ends up
-processing these requests as if they were on the running list which
-screws up quiescing_wait completion counter and ultimately leads to
+The clamp logic is
 
-    rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
+	val = clamp(in, low, high);
 
-being triggered on the next watch error.
+and it returns the input clamped to the low/high limits. But sr.c ddid
 
-Cc: stable@vger.kernel.org # 06ef84c4e9c4: rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
-Cc: stable@vger.kernel.org
-Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+	speed = clamp(0, speed, 0xffff / 177);
+
+which clamps the value '0' to the range '[speed, 0xffff / 177]' and ends
+up being nonsensical.
+
+Happily, I don't think anybody ever cared.
+
+Fixes: 9fad9d560af5 ("scsi: sr: Fix unintentional arithmetic wraparound")
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Wentao Guan <guanwentao@uniontech.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/scsi/sr_ioctl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3458,6 +3458,7 @@ static void rbd_lock_del_request(struct
- 	lockdep_assert_held(&rbd_dev->lock_rwsem);
- 	spin_lock(&rbd_dev->lock_lists_lock);
- 	if (!list_empty(&img_req->lock_item)) {
-+		rbd_assert(!list_empty(&rbd_dev->running_list));
- 		list_del_init(&img_req->lock_item);
- 		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
- 			       list_empty(&rbd_dev->running_list));
-@@ -3477,11 +3478,6 @@ static int rbd_img_exclusive_lock(struct
- 	if (rbd_lock_add_request(img_req))
- 		return 1;
+--- a/drivers/scsi/sr_ioctl.c
++++ b/drivers/scsi/sr_ioctl.c
+@@ -431,7 +431,7 @@ int sr_select_speed(struct cdrom_device_
+ 	struct packet_command cgc;
  
--	if (rbd_dev->opts->exclusive) {
--		WARN_ON(1); /* lock got released? */
--		return -EROFS;
--	}
--
- 	/*
- 	 * Note the use of mod_delayed_work() in rbd_acquire_lock()
- 	 * and cancel_delayed_work() in wake_lock_waiters().
-@@ -4602,6 +4598,10 @@ static void rbd_reacquire_lock(struct rb
- 			rbd_warn(rbd_dev, "failed to update lock cookie: %d",
- 				 ret);
+ 	/* avoid exceeding the max speed or overflowing integer bounds */
+-	speed = clamp(0, speed, 0xffff / 177);
++	speed = clamp(speed, 0, 0xffff / 177);
  
-+		if (rbd_dev->opts->exclusive)
-+			rbd_warn(rbd_dev,
-+			     "temporarily releasing lock on exclusive mapping");
-+
- 		/*
- 		 * Lock cookie cannot be updated on older OSDs, so do
- 		 * a manual release and queue an acquire.
+ 	if (speed == 0)
+ 		speed = 0xffff;	/* set to max */
 
 
 
