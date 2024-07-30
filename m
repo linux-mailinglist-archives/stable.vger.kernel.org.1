@@ -1,61 +1,54 @@
-Return-Path: <stable+bounces-63877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285FB941B68
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D485A941DB4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACBA1B2697E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11F801C23CC8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB3E1078F;
-	Tue, 30 Jul 2024 16:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6145D1A76B0;
+	Tue, 30 Jul 2024 17:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJsWJxDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujulpPEi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E318455E;
-	Tue, 30 Jul 2024 16:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3361A76A9;
+	Tue, 30 Jul 2024 17:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358241; cv=none; b=JSQ/s0iVpV0mDzaQK2BmMHQm6s98A3EJ4nC92odL3oDsSrf/j4nGTP9I3G1emWAtBdh5J6WlJ5DPecqv+WVfwG53Gmkp6d+YndjolRKNe2zQBhBFaAVXMkpsVJrRpmVbrHizaCRQI0EjMIrJLZb8HVWU0YV5ME5Q7a95xCIY1Vw=
+	t=1722360026; cv=none; b=rRzGzR1mIxP0LZApJLOMh/Od3X78yJEBsJtwXqDGkvJem/l8D6pDCptGogxZs7r7XwTqnHf2hVsqiIoFU/7gVPHhNyHIWsyfnB7dloTNRgJRlNq6QFiojs3GtUbTke35YYI3L1PlI/t3A0+JHi5wyjcWEQnAz2WZ9ZrHN1XaE7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358241; c=relaxed/simple;
-	bh=lxzB9Ci9yK4N1+EqvyCk9AbmvHNCeP1NGtk2cSWfs34=;
+	s=arc-20240116; t=1722360026; c=relaxed/simple;
+	bh=5TNc0V/bjIuZM00WnpiHWlavJP4+jwHLL9iytUySZgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwEIvpUYkSTvlXZrj5iqqSbgRcEnAW9EN2Qf32kULPVNYkcPIXJ9Wn9lVL1UmXeC5So3iRIcxLS+/A+yeDKraiEN8St+rQnDiwME54KV0nWNf5AS4UJx68rqERt3ZmSLJ6GXajyPmq7f9HxGNrXhbmRUbWDsbHklloHIwyfJarg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJsWJxDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EA6C32782;
-	Tue, 30 Jul 2024 16:50:39 +0000 (UTC)
+	 MIME-Version; b=scJOP1jGAfysFISwSTKzRj1Azfh3ru3wEYcC3AYvTe3554hXbsJn9FXszAqEoPnKavxLHaRn3yHqGNoH4/E2kHIzPl5OXv3ZxXH3zVbqEf+FQVPIdSzPE3GQQL1mf0xnHN1LQT5yVqqeYSMz4phRs8Tbd3NvZPv+FPximcorVXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujulpPEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548AEC32782;
+	Tue, 30 Jul 2024 17:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358240;
-	bh=lxzB9Ci9yK4N1+EqvyCk9AbmvHNCeP1NGtk2cSWfs34=;
+	s=korg; t=1722360025;
+	bh=5TNc0V/bjIuZM00WnpiHWlavJP4+jwHLL9iytUySZgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJsWJxDDftZmvkccKr1EyKxa9M6l3d6D6Nr9RqeTnk4zbGYbLO2neL12qLuoHCO+6
-	 BbmRmy6fmqgHAfbupzXLvMlXa6cd2YLuP6r/G50D+gvNnje5fIYsITE32L1oXgFoVX
-	 28opmUXjMyRfl0NR4agjMVWwxu91xhXsY0DioOOU=
+	b=ujulpPEiH2/036LA04OZF3DPgECp5OhK589eKdXigSSzBL7KxkhQRjqsX+NbGJWja
+	 G/TdLOSMpRCNwqOy1hJHbOa3o9Z6eHA06av85IBbpY7RtMEEspX/cvpJIlEIdaDlaE
+	 tbrG3Lvfmp2RCLrWQxD7UeRBHBzYO0xN7q3bRL/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Lance Yang <ioworker0@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 343/568] fs/proc/task_mmu: indicate PM_FILE for PMD-mapped file THP
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.10 574/809] ext2: Verify bitmap and itable block numbers before using them
 Date: Tue, 30 Jul 2024 17:47:30 +0200
-Message-ID: <20240730151653.276108678@linuxfoundation.org>
+Message-ID: <20240730151747.447234243@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 3f9f022e975d930709848a86a1c79775b0585202 ]
+commit 322a6aff03937aa1ece33b4e46c298eafaf9ac41 upstream.
 
-Patch series "fs/proc: move page_mapcount() to fs/proc/internal.h".
+Verify bitmap block numbers and inode table blocks are sane before using
+them for checking bits in the block bitmap.
 
-With all other page_mapcount() users in the tree gone, move
-page_mapcount() to fs/proc/internal.h, rename it and extend the
-documentation to prevent future (ab)use.
-
-... of course, I find some issues while working on that code that I sort
-first ;)
-
-We'll now only end up calling page_mapcount() [now
-folio_precise_page_mapcount()] on pages mapped via present page table
-entries.  Except for /proc/kpagecount, that still does questionable
-things, but we'll leave that legacy interface as is for now.
-
-Did a quick sanity check.  Likely we would want some better selfestest for
-/proc/$/pagemap + smaps.  I'll see if I can find some time to write some
-more.
-
-This patch (of 6):
-
-Looks like we never taught pagemap_pmd_range() about the existence of
-PMD-mapped file THPs.  Seems to date back to the times when we first added
-support for non-anon THPs in the form of shmem THP.
-
-Link: https://lkml.kernel.org/r/20240607122357.115423-1-david@redhat.com
-Link: https://lkml.kernel.org/r/20240607122357.115423-2-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Lance Yang <ioworker0@gmail.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_mmu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext2/balloc.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index ac605f143762f..0f5c06b8bb342 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1519,6 +1519,8 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 		}
- #endif
+--- a/fs/ext2/balloc.c
++++ b/fs/ext2/balloc.c
+@@ -77,26 +77,33 @@ static int ext2_valid_block_bitmap(struc
+ 	ext2_grpblk_t next_zero_bit;
+ 	ext2_fsblk_t bitmap_blk;
+ 	ext2_fsblk_t group_first_block;
++	ext2_grpblk_t max_bit;
  
-+		if (page && !PageAnon(page))
-+			flags |= PM_FILE;
- 		if (page && !migration && page_mapcount(page) == 1)
- 			flags |= PM_MMAP_EXCLUSIVE;
+ 	group_first_block = ext2_group_first_block_no(sb, block_group);
++	max_bit = ext2_group_last_block_no(sb, block_group) - group_first_block;
  
--- 
-2.43.0
-
+ 	/* check whether block bitmap block number is set */
+ 	bitmap_blk = le32_to_cpu(desc->bg_block_bitmap);
+ 	offset = bitmap_blk - group_first_block;
+-	if (!ext2_test_bit(offset, bh->b_data))
++	if (offset < 0 || offset > max_bit ||
++	    !ext2_test_bit(offset, bh->b_data))
+ 		/* bad block bitmap */
+ 		goto err_out;
+ 
+ 	/* check whether the inode bitmap block number is set */
+ 	bitmap_blk = le32_to_cpu(desc->bg_inode_bitmap);
+ 	offset = bitmap_blk - group_first_block;
+-	if (!ext2_test_bit(offset, bh->b_data))
++	if (offset < 0 || offset > max_bit ||
++	    !ext2_test_bit(offset, bh->b_data))
+ 		/* bad block bitmap */
+ 		goto err_out;
+ 
+ 	/* check whether the inode table block number is set */
+ 	bitmap_blk = le32_to_cpu(desc->bg_inode_table);
+ 	offset = bitmap_blk - group_first_block;
++	if (offset < 0 || offset > max_bit ||
++	    offset + EXT2_SB(sb)->s_itb_per_group - 1 > max_bit)
++		goto err_out;
+ 	next_zero_bit = ext2_find_next_zero_bit(bh->b_data,
+ 				offset + EXT2_SB(sb)->s_itb_per_group,
+ 				offset);
 
 
 
