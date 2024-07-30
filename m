@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-63476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2247694191E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48636941923
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBFA11F22785
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 033CF286CBC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A07183CD5;
-	Tue, 30 Jul 2024 16:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061C218455C;
+	Tue, 30 Jul 2024 16:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoLM5civ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RChsa0q4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CB51A6161;
-	Tue, 30 Jul 2024 16:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B851018454F;
+	Tue, 30 Jul 2024 16:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356951; cv=none; b=Xtyx9lmUheUIYpxJfSQ2Xo3E00Zapa04bMkZs+XWQE7IMghBdK13Kg7DlkwTEcs6rCGu600C1cAOpeipE5aB27jc250vW33vAgZM6+o0KuTr+m3ToAnHTAOZmRHQiD6TK8dpKenMvu+QQUjs/HjU9pxMbukY6A4vV/mkXioETsg=
+	t=1722356960; cv=none; b=SB9QN/w9W1DsULmmkmTF5QsainiemHxApR6cS/zeqEe/MUIbwQtvHWyphvtRduxkWPu+/bWUxX3nprMJ/BYpr5uZh05Scf6Rk55Z3V44z7+GO1VAb59esesDjpgizi4VnIPRLxu+MoVEViiNJlgLgnT/+/nu7ykWDASKje/uOz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356951; c=relaxed/simple;
-	bh=THVp247Wgl0yfNHxqmgxjMtGBuFBdiZAVapElEku5Gg=;
+	s=arc-20240116; t=1722356960; c=relaxed/simple;
+	bh=4UXT8R5b45Yt311HmvdRTkbASedqAFbRSc4eC8MAVy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edZ9UUqDeFHXtMJ8PnQglT4tVe6MPLhIacLtOlBwo+07xNPQ7QRUMcE6yGlyrTNNh5oJE5EFe6gQJuS/TezVnSA2QclZM70MoD+G3AmZSOBnyNROuG2i+X4dJ0vsk2vv4lO1WFxXlkBP0uVOkEQSSckTpIHgOr2vPBFI1d+kXbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoLM5civ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53855C32782;
-	Tue, 30 Jul 2024 16:29:10 +0000 (UTC)
+	 MIME-Version; b=cy/J7Y8AVmqZcIimHKxZ7+a4XzDPWkmzyB5a0O+nK3gDq8mdZ+D4S12C4nsL29aAbXOENHJeLqBE38EzcjTY/JhfHJS3JBDDC1ei8x/II4T+L+MgxbkrokLaqyD+M63BmSftiKkT8h382RoqOmGFU297HLY3Yy81w5ac3i5w5Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RChsa0q4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299C6C4AF0A;
+	Tue, 30 Jul 2024 16:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356950;
-	bh=THVp247Wgl0yfNHxqmgxjMtGBuFBdiZAVapElEku5Gg=;
+	s=korg; t=1722356960;
+	bh=4UXT8R5b45Yt311HmvdRTkbASedqAFbRSc4eC8MAVy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GoLM5civCYOL7jcVC0gyjpYS6pAfysaER4A/eA2el9vnTyOhdRk3bszn+TgwrxioH
-	 P2TUjlu7aSkXF3OpRpqqq59VoyGVsRBWuUkpVyA6r4BDd/9xKshj1o/798g9YgO92r
-	 3gkzs3/4wwvJBSPLZidGd0KBpk07suvcVNmykF/U=
+	b=RChsa0q42Tv98MP1Rmq5XWxmcGiS2arDy4lX/lMKSTl5JFoulizJlaajY7ot8HErX
+	 Vsq20nWcScrN0UHHrvZgQE4LU/WU7OCywV6yXyWr+svM70UVZI66nhZyYmT0QPfmF3
+	 JUz23ruVtMW+7GqhDLTwdDbRJ8crPsFHcCGBr9dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donglin Peng <dolinux.peng@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Antoine Tenart <atenart@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Alan Maguire <alan.maguire@oracle.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 204/809] libbpf: Checking the btf_type kind when fixing variable offsets
-Date: Tue, 30 Jul 2024 17:41:20 +0200
-Message-ID: <20240730151732.664895750@linuxfoundation.org>
+Subject: [PATCH 6.10 205/809] libbpf: Skip base btf sanity checks
+Date: Tue, 30 Jul 2024 17:41:21 +0200
+Message-ID: <20240730151732.705229832@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,76 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Donglin Peng <dolinux.peng@gmail.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit cc5083d1f3881624ad2de1f3cbb3a07e152cb254 ]
+[ Upstream commit c73a9683cb21012b6c0f14217974837151c527a8 ]
 
-I encountered an issue when building the test_progs from the repository [1]:
+When upgrading to libbpf 1.3 we noticed a big performance hit while
+loading programs using CORE on non base-BTF symbols. This was tracked
+down to the new BTF sanity check logic. The issue is the base BTF
+definitions are checked first for the base BTF and then again for every
+module BTF.
 
-  $ pwd
-  /work/Qemu/x86_64/linux-6.10-rc2/tools/testing/selftests/bpf/
+Loading 5 dummy programs (using libbpf-rs) that are using CORE on a
+non-base BTF symbol on my system:
+- Before this fix: 3s.
+- With this fix: 0.1s.
 
-  $ make test_progs V=1
-  [...]
-  ./tools/sbin/bpftool gen object ./ip_check_defrag.bpf.linked2.o ./ip_check_defrag.bpf.linked1.o
-  libbpf: failed to find symbol for variable 'bpf_dynptr_slice' in section '.ksyms'
-  Error: failed to link './ip_check_defrag.bpf.linked1.o': No such file or directory (2)
-  [...]
+Fix this by only checking the types starting at the BTF start id. This
+should ensure the base BTF is still checked as expected but only once
+(btf->start_id == 1 when creating the base BTF), and then only
+additional types are checked for each module BTF.
 
-Upon investigation, I discovered that the btf_types referenced in the '.ksyms'
-section had a kind of BTF_KIND_FUNC instead of BTF_KIND_VAR:
-
-  $ bpftool btf dump file ./ip_check_defrag.bpf.linked1.o
-  [...]
-  [2] DATASEC '.ksyms' size=0 vlen=2
-        type_id=16 offset=0 size=0 (FUNC 'bpf_dynptr_from_skb')
-        type_id=17 offset=0 size=0 (FUNC 'bpf_dynptr_slice')
-  [...]
-  [16] FUNC 'bpf_dynptr_from_skb' type_id=82 linkage=extern
-  [17] FUNC 'bpf_dynptr_slice' type_id=85 linkage=extern
-  [...]
-
-For a detailed analysis, please refer to [2]. We can add a kind checking to
-fix the issue.
-
-  [1] https://github.com/eddyz87/bpf/tree/binsort-btf-dedup
-  [2] https://lore.kernel.org/all/0c0ef20c-c05e-4db9-bad7-2cbc0d6dfae7@oracle.com/
-
-Fixes: 8fd27bf69b86 ("libbpf: Add BPF static linker BTF and BTF.ext support")
-Signed-off-by: Donglin Peng <dolinux.peng@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: 3903802bb99a ("libbpf: Add basic BTF sanity validation")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20240619122355.426405-1-dolinux.peng@gmail.com
+Link: https://lore.kernel.org/bpf/20240624090908.171231-1-atenart@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/linker.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tools/lib/bpf/btf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index 0d4be829551b5..5a583053e3119 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -2213,10 +2213,17 @@ static int linker_fixup_btf(struct src_obj *obj)
- 		vi = btf_var_secinfos(t);
- 		for (j = 0, m = btf_vlen(t); j < m; j++, vi++) {
- 			const struct btf_type *vt = btf__type_by_id(obj->btf, vi->type);
--			const char *var_name = btf__str_by_offset(obj->btf, vt->name_off);
--			int var_linkage = btf_var(vt)->linkage;
-+			const char *var_name;
-+			int var_linkage;
- 			Elf64_Sym *sym;
+diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
+index 2d0840ef599af..142060bbce0a0 100644
+--- a/tools/lib/bpf/btf.c
++++ b/tools/lib/bpf/btf.c
+@@ -598,7 +598,7 @@ static int btf_sanity_check(const struct btf *btf)
+ 	__u32 i, n = btf__type_cnt(btf);
+ 	int err;
  
-+			/* could be a variable or function */
-+			if (!btf_is_var(vt))
-+				continue;
-+
-+			var_name = btf__str_by_offset(obj->btf, vt->name_off);
-+			var_linkage = btf_var(vt)->linkage;
-+
- 			/* no need to patch up static or extern vars */
- 			if (var_linkage != BTF_VAR_GLOBAL_ALLOCATED)
- 				continue;
+-	for (i = 1; i < n; i++) {
++	for (i = btf->start_id; i < n; i++) {
+ 		t = btf_type_by_id(btf, i);
+ 		err = btf_validate_type(btf, t, i);
+ 		if (err)
 -- 
 2.43.0
 
