@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41609418D2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52003941B09
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8C21F245A6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A427281ECC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83171189505;
-	Tue, 30 Jul 2024 16:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDB4189514;
+	Tue, 30 Jul 2024 16:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c803+fG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2kapwKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF0518455E;
-	Tue, 30 Jul 2024 16:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B94718455B;
+	Tue, 30 Jul 2024 16:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356729; cv=none; b=U8ZosYB5JfnYWDpq6azPyqEsr40flBp4/OgqK5krhA9eUq8ri5YnKoGLvrVDUPK74L7lUmzVoOWCgyFd+54esJl3zXxwWRF2xe6hrQwsq2nEdjAb3yiG8SjkZ6plW+/7QKbXQxQaE5TFOTavljlrXsN5VxgFEHynqhICd+FqIKM=
+	t=1722358214; cv=none; b=pp84Q77CClIDvfAX8j3eMlC1dSvSya5LpOIK1U6/3ikTbF7G9d6FCsfmaLCqQMsMfGnLtdnSDHPJF2+cXRIyT2TAobBRNJpozH1rNY/MbEP/n1Pb+IP4ylmXZdkN7jPvOzo9VzNlpXrBlxsOpqq+uet87l3scb7r2RZNZ24jVok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356729; c=relaxed/simple;
-	bh=TqppeM0BmbjDuNoAbzQHYn5+nmu0I90aj4DqTHBb1Qs=;
+	s=arc-20240116; t=1722358214; c=relaxed/simple;
+	bh=Tm/jEqf71nQbmXHS3W/qm9luuOvkTMZ0sOG1w/vh/3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZY3emY1YR//dhlPv/Bs5LWzZuPtkWAFOx2p+UhNvoxVPIXx9jJC/MLIGQ1wF/OWUROYSnJxDdTbAowrx49Rq+QxAQ6blvfk8ikdp8KGo9Dl21ZSnWvpBosznh2j+3aPAgVyJEr4hqt/XKSqoupkkXAPHvZuspDCZ6ynWBHhJQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c803+fG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C155C32782;
-	Tue, 30 Jul 2024 16:25:28 +0000 (UTC)
+	 MIME-Version; b=fsrn+ZfZ7Zi8PZG31LEnnd4/j3paPUcYi7HzCJPHqQJNaq5jFUx9zhbz9zCT7oOilJLCW/M60GUuHkM0n0XLAi8csQqZFnh+cPas/7as82WrtR4pEDv+tnQ7Go6w/Rv3excMZ5L0Gw4jyryUfOqy7fDK0YiMoSY2+8FHBmhETJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2kapwKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF59C32782;
+	Tue, 30 Jul 2024 16:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356729;
-	bh=TqppeM0BmbjDuNoAbzQHYn5+nmu0I90aj4DqTHBb1Qs=;
+	s=korg; t=1722358213;
+	bh=Tm/jEqf71nQbmXHS3W/qm9luuOvkTMZ0sOG1w/vh/3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c803+fG8BS0hsLL6ZS7sUU4O/cA53ibtRIeIxNNDxiyFYuFk2bYTlOwgxqHZnSkOn
-	 JOIjK16GBrGPz601U2GB6E5B5ZvOjCtNxpPe2eiCqJdIfPodvd3+u86NNv6tXPnTYj
-	 5wk94OgztofU9MAdT/DCi+cjmr/iqldgSdmjBq/M=
+	b=a2kapwKihDbSra4IhNYNyP6t5xFUa9GtacMNNFRstJ2B/XebuFv8Uy8TSv9tG0HiO
+	 zZVSXioFWbfKPLSfWfXQa2EnSkDw+Ps3HiIydsf1jgMEimUH4SYTEkPw9FhsJ0wx2b
+	 EQ0ZYLbi0mfDYge9VxcVxxwMPb2hph+0R/wuD+io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/440] ASoC: max98088: Check for clk_prepare_enable() error
-Date: Tue, 30 Jul 2024 17:47:17 +0200
-Message-ID: <20240730151623.837680443@linuxfoundation.org>
+Subject: [PATCH 6.6 331/568] fs/ntfs3: Replace inode_trylock with inode_lock
+Date: Tue, 30 Jul 2024 17:47:18 +0200
+Message-ID: <20240730151652.809308003@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 1a70579723fde3624a72dfea6e79e55be6e36659 ]
+[ Upstream commit 69505fe98f198ee813898cbcaf6770949636430b ]
 
-clk_prepare_enable() may fail, so we should better check its return
-value and propagate it in the case of error.
+The issue was detected due to xfstest 465 failing.
 
-Fixes: 62a7fc32a628 ("ASoC: max98088: Add master clock handling")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://patch.msgid.link/20240628080534.843815-1-nichen@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/max98088.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/ntfs3/file.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/max98088.c b/sound/soc/codecs/max98088.c
-index 405ec16be2b6a..eaabfe2cfd70d 100644
---- a/sound/soc/codecs/max98088.c
-+++ b/sound/soc/codecs/max98088.c
-@@ -1318,6 +1318,7 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
-                                   enum snd_soc_bias_level level)
- {
- 	struct max98088_priv *max98088 = snd_soc_component_get_drvdata(component);
-+	int ret;
- 
- 	switch (level) {
- 	case SND_SOC_BIAS_ON:
-@@ -1333,10 +1334,13 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
- 		 */
- 		if (!IS_ERR(max98088->mclk)) {
- 			if (snd_soc_component_get_bias_level(component) ==
--			    SND_SOC_BIAS_ON)
-+			    SND_SOC_BIAS_ON) {
- 				clk_disable_unprepare(max98088->mclk);
--			else
--				clk_prepare_enable(max98088->mclk);
-+			} else {
-+				ret = clk_prepare_enable(max98088->mclk);
-+				if (ret)
-+					return ret;
-+			}
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index dfd5402a42e44..cd69cbd0aaae7 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -299,10 +299,7 @@ static int ntfs_file_mmap(struct file *file, struct vm_area_struct *vma)
  		}
- 		break;
  
+ 		if (ni->i_valid < to) {
+-			if (!inode_trylock(inode)) {
+-				err = -EAGAIN;
+-				goto out;
+-			}
++			inode_lock(inode);
+ 			err = ntfs_extend_initialized_size(file, ni,
+ 							   ni->i_valid, to);
+ 			inode_unlock(inode);
 -- 
 2.43.0
 
