@@ -1,55 +1,67 @@
-Return-Path: <stable+bounces-63710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16706941A40
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DC6941815
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9465282EC8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 971501F252BD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946D8183CD5;
-	Tue, 30 Jul 2024 16:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A55184556;
+	Tue, 30 Jul 2024 16:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihsDwMbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmDeD8P7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544041A6192;
-	Tue, 30 Jul 2024 16:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE1E183CBF;
+	Tue, 30 Jul 2024 16:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357706; cv=none; b=JgoQoc84fhRE/rd/QR8+4HkW6KQ+CSoM9MKO98CSLdZTj6y+E5B44+Um7R41JJNXt4YZi0t5VXYM/NXHIZxH8XgIi4UGynhHZ4bilyl38dr0ET4JYPh78SOTK3jt6nR1jS5dlcGvHlhaibyah5amKk+HhAjneyyo2487qoEfOH8=
+	t=1722356227; cv=none; b=J85kp+Gzcw9MvjoGmpk9ypYJoQCzGAkmnAMPjJzx6HvAuRtnfnfM903+0nD6FV8zBhrvCMj1X5LysakBd24AoSpf0v90qFHTeEtZufynZcamkd7CDUJyGVSglvN7LzRd77HXD9V69/pgOSdJ+3uSgUmMwc4tUHY+2a51awOkPH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357706; c=relaxed/simple;
-	bh=/voysrC3ku3HIsd0OC48C2DPTkqOPMhHhFxgAEhbhms=;
+	s=arc-20240116; t=1722356227; c=relaxed/simple;
+	bh=WZkc0GdqszdnYYx1qOtUDIxLNaTT+9v10IAvkFZMnb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDjpfPgo1IWrhbWWpoPhCEFddpp4LXcfg4i/vL7vA3tUGVnFP3vqN3ZcHTL5rik40N62KfI8dwx8jHjkWaawk0T0jck3QPlhQLwhJ2GpFmgtcMvE6qsMncrgsHwPZkAEo09380bxjZsxkcAtnhuwJyvDEeNZh4V+iWCrVd/FZLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihsDwMbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA543C4AF0A;
-	Tue, 30 Jul 2024 16:41:45 +0000 (UTC)
+	 MIME-Version; b=MMVURK4c77VKzgpUvJjiYLthHvAXqlLsACWHfKn3j7iNlRopPjU2J7zSvccJogHtjLXhf+7HjWFYPe63YpzUVc9+s1PtorSe/Z9x1nIebPS+x1T+4QIsufo9ceYeAivkT7bXpiwN+7OgbeeNhVcTiD9iAxHKMTqT8Xli03+rTGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmDeD8P7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E5EC32782;
+	Tue, 30 Jul 2024 16:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357706;
-	bh=/voysrC3ku3HIsd0OC48C2DPTkqOPMhHhFxgAEhbhms=;
+	s=korg; t=1722356227;
+	bh=WZkc0GdqszdnYYx1qOtUDIxLNaTT+9v10IAvkFZMnb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ihsDwMbcy83TeZ+0K62/hen5K/An5IriWlFci5wmqKGAWdUQY6USFM6vf+9Be0MqA
-	 skANXBGOtrDJy7t7aQj5EXpyKcl2+zh2Lbyjh8Zi2fNScW/SAUSTX6Rn2f9d+X1MyJ
-	 JOlur0PCiGY8e8NhNbp9GJ8NqS84YJto0LSKiuEA=
+	b=PmDeD8P7V89e/K112dFUfdlWoGyuqs3rA0bPtF5mRTPzq8uyYbU5UnW8NRZHxAJWF
+	 5YxqWfDX0oYKVjkDxWeBZR2oiqorPPa3gTQOr0LLlI0Pke6mmOUXhAfk1oSlHEzLrj
+	 AyvglX3Mkf5Q5xHVqKfstaShz+wzG7y4CyzoSJM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	James Clark <james.clark@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	spoorts2@in.ibm.com,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/568] Input: elan_i2c - do not leave interrupt disabled on suspend failure
-Date: Tue, 30 Jul 2024 17:46:30 +0200
-Message-ID: <20240730151650.936157438@linuxfoundation.org>
+Subject: [PATCH 6.1 158/440] perf tests: Fix test_arm_callgraph_fp variable expansion
+Date: Tue, 30 Jul 2024 17:46:31 +0200
+Message-ID: <20240730151622.047214609@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +73,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit 5f82c1e04721e7cd98e604eb4e58f0724d8e5a65 ]
+[ Upstream commit 33fe7c08446af6dda0ff08ff4fa9c921e574477f ]
 
-Make sure interrupts are not left disabled when we fail to suspend the
-touch controller.
+$TEST_PROGRAM is a command with spaces so it's supposed to be word
+split. The referenced fix to fix the shellcheck warnings incorrectly
+quoted this string so unquote it to fix the test.
 
-Fixes: 6696777c6506 ("Input: add driver for Elan I2C/SMbus touchpad")
-Link: https://lore.kernel.org/r/ZmKiiL-1wzKrhqBj@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+At the same time silence the shellcheck warning for that line and fix
+two more shellcheck errors at the end of the script.
+
+Fixes: 1bb17b4c6c91 ("perf tests arm_callgraph_fp: Address shellcheck warnings about signal names and adding double quotes for expression")
+Signed-off-by: James Clark <james.clark@arm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: spoorts2@in.ibm.com
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Link: https://lore.kernel.org/r/20230622101809.2431897-1-james.clark@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Stable-dep-of: ff16aeb9b834 ("perf test: Make test_arm_callgraph_fp.sh more robust")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/elan_i2c_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/tests/shell/test_arm_callgraph_fp.sh | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/input/mouse/elan_i2c_core.c b/drivers/input/mouse/elan_i2c_core.c
-index 148a601396f92..dc80e407fb860 100644
---- a/drivers/input/mouse/elan_i2c_core.c
-+++ b/drivers/input/mouse/elan_i2c_core.c
-@@ -1356,6 +1356,8 @@ static int elan_suspend(struct device *dev)
- 	}
+diff --git a/tools/perf/tests/shell/test_arm_callgraph_fp.sh b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
+index 1380e0d12dce3..66dfdfdad553f 100755
+--- a/tools/perf/tests/shell/test_arm_callgraph_fp.sh
++++ b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
+@@ -15,7 +15,8 @@ cleanup_files()
+ trap cleanup_files EXIT TERM INT
  
- err:
-+	if (ret)
-+		enable_irq(client->irq);
- 	mutex_unlock(&data->sysfs_mutex);
- 	return ret;
- }
+ # Add a 1 second delay to skip samples that are not in the leaf() function
+-perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- "$TEST_PROGRAM" 2> /dev/null &
++# shellcheck disable=SC2086
++perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- $TEST_PROGRAM 2> /dev/null &
+ PID=$!
+ 
+ echo " + Recording (PID=$PID)..."
+@@ -33,8 +34,8 @@ wait $PID
+ # 	76c leafloop
+ # ...
+ 
+-perf script -i $PERF_DATA -F comm,ip,sym | head -n4
+-perf script -i $PERF_DATA -F comm,ip,sym | head -n4 | \
++perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4
++perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4 | \
+ 	awk '{ if ($2 != "") sym[i++] = $2 } END { if (sym[0] != "leaf" ||
+ 						       sym[1] != "parent" ||
+ 						       sym[2] != "leafloop") exit 1 }'
 -- 
 2.43.0
 
