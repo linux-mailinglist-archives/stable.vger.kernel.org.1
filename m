@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEA1941EA2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A14941BC8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3859E28760B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2658DB2537C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A34A18455C;
-	Tue, 30 Jul 2024 17:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECF7189907;
+	Tue, 30 Jul 2024 16:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daAB/wVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbZ8QmeX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585AF1A76A5;
-	Tue, 30 Jul 2024 17:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B1618801A;
+	Tue, 30 Jul 2024 16:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360675; cv=none; b=ccEXA3T9QcBt78XuDY1K9r5Lawp7Z7lfxCm4t8QYdotPJF0ovB5dIUBSpn/qpK0Zihod4Xe2OJU5yr6NoOQckWZvjp/EI2EyIOACqVBFsMlxAdz4DIElGqMSkwlyIqcHwVtYR/DMJW6PUisj4iqyfsp8/28sff2Yb2RcOcafr+s=
+	t=1722358721; cv=none; b=qhHHWEbSry+HlZiMwru9apFK2341IFhYX7dFzgQXSB0mkztyWKYYarTmFKBAoT6cXS/tNB/vg9PTpvzoAdcGaC54TSk7RWSwpu3a4UZWQ8hCoTv7IitNGz6jHGE8kSupR9YWXn3nimVXN2gKgPWVaUKw3Nm0S+5IyyNCBMdA18I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360675; c=relaxed/simple;
-	bh=Nf02E0T8RQVFKXu3DizHUgC/I0cxIPKIQQpIW0aItxs=;
+	s=arc-20240116; t=1722358721; c=relaxed/simple;
+	bh=rXaKpUl8VD5hJU7iwQ9tXpCkGgl/IEwfEwp4o8gNn2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxQJ/if0chm0Ok0+ouQBtfknUOYarPA8FA49xVzFdcxM7iMEvI+2u+m/AShfaktrgCCqzz6JrOUpBs2tG9C6ubDO74stJ9YT0YGWz5vHW9Phv91iH1Mtga3pVuStF+2t8wEJKpitLj1oJ6kYtGbbnITNDz+wdIEVTBYAa8OANRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daAB/wVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6EEC32782;
-	Tue, 30 Jul 2024 17:31:14 +0000 (UTC)
+	 MIME-Version; b=Csyn9V0nig3MIL4Zfbq5D9g3MsJ9sLFDNWGUjdxXwZwdTTyRJ5EBSqISnljOCKPqaA2aeEi9KHmZYhRtn+DSdGnUxhgneY5cbIhliMKLrdqClfytWW0+tpc6bJjyak1qV8d1EPPy4vaKu+oQ0qtYi904uj7aMZTWpqBWAuDFqgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbZ8QmeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5459AC32782;
+	Tue, 30 Jul 2024 16:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360675;
-	bh=Nf02E0T8RQVFKXu3DizHUgC/I0cxIPKIQQpIW0aItxs=;
+	s=korg; t=1722358720;
+	bh=rXaKpUl8VD5hJU7iwQ9tXpCkGgl/IEwfEwp4o8gNn2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=daAB/wVupauPxVbVHCXcrucPTu6SstnRZ8kN4bzHLg6a65X5TqasZQKQhysNF9nfz
-	 Xg4jPQGDmLw/wTDIGO20GIeFVsgJUa2WZD1s1EitNFFB1UgGsBV2ZZ4ROY01IcDosn
-	 Y0IVz9zrrsfupeGyQwFLIfZDRplChWRZasdvejzU=
+	b=gbZ8QmeX0xnsAGajUcCWQTGEFHRde8jHjN0LQOyScIeEHJxZp1luUpKygTzpoCQUh
+	 ZHMWOtyt5uzFHUsY8/lv/5DWMWoDjOKE2qkNBBdmGCYRF1OywZL/4+2NBfFaeFMh/D
+	 sFLJJOIE+cEfG41VpU30QwFT5ZnaUg0defbSkDm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 773/809] mISDN: Fix a use after free in hfcmulti_tx()
+Subject: [PATCH 6.1 416/440] net: nexthop: Initialize all fields in dumped nexthops
 Date: Tue, 30 Jul 2024 17:50:49 +0200
-Message-ID: <20240730151755.500832827@linuxfoundation.org>
+Message-ID: <20240730151632.037356611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 61ab751451f5ebd0b98e02276a44e23a10110402 ]
+[ Upstream commit 6d745cd0e9720282cd291d36b9db528aea18add2 ]
 
-Don't dereference *sp after calling dev_kfree_skb(*sp).
+struct nexthop_grp contains two reserved fields that are not initialized by
+nla_put_nh_group(), and carry garbage. This can be observed e.g. with
+strace (edited for clarity):
 
-Fixes: af69fb3a8ffa ("Add mISDN HFC multiport driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8be65f5a-c2dd-4ba0-8a10-bfe5980b8cfb@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    # ip nexthop add id 1 dev lo
+    # ip nexthop add id 101 group 1
+    # strace -e recvmsg ip nexthop get id 101
+    ...
+    recvmsg(... [{nla_len=12, nla_type=NHA_GROUP},
+                 [{id=1, weight=0, resvd1=0x69, resvd2=0x67}]] ...) = 52
+
+The fields are reserved and therefore not currently used. But as they are, they
+leak kernel memory, and the fact they are not just zero complicates repurposing
+of the fields for new ends. Initialize the full structure.
+
+Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/hardware/mISDN/hfcmulti.c | 7 ++++---
+ net/ipv4/nexthop.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/isdn/hardware/mISDN/hfcmulti.c b/drivers/isdn/hardware/mISDN/hfcmulti.c
-index 2e5cb9dde3ec5..44383cec1f47a 100644
---- a/drivers/isdn/hardware/mISDN/hfcmulti.c
-+++ b/drivers/isdn/hardware/mISDN/hfcmulti.c
-@@ -1900,7 +1900,7 @@ hfcmulti_dtmf(struct hfc_multi *hc)
- static void
- hfcmulti_tx(struct hfc_multi *hc, int ch)
- {
--	int i, ii, temp, len = 0;
-+	int i, ii, temp, tmp_len, len = 0;
- 	int Zspace, z1, z2; /* must be int for calculation */
- 	int Fspace, f1, f2;
- 	u_char *d;
-@@ -2121,14 +2121,15 @@ hfcmulti_tx(struct hfc_multi *hc, int ch)
- 		HFC_wait_nodebug(hc);
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index be5498f5dd319..bba955d82f723 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -676,9 +676,10 @@ static int nla_put_nh_group(struct sk_buff *skb, struct nh_group *nhg)
+ 
+ 	p = nla_data(nla);
+ 	for (i = 0; i < nhg->num_nh; ++i) {
+-		p->id = nhg->nh_entries[i].nh->id;
+-		p->weight = nhg->nh_entries[i].weight - 1;
+-		p += 1;
++		*p++ = (struct nexthop_grp) {
++			.id = nhg->nh_entries[i].nh->id,
++			.weight = nhg->nh_entries[i].weight - 1,
++		};
  	}
  
-+	tmp_len = (*sp)->len;
- 	dev_kfree_skb(*sp);
- 	/* check for next frame */
- 	if (bch && get_next_bframe(bch)) {
--		len = (*sp)->len;
-+		len = tmp_len;
- 		goto next_frame;
- 	}
- 	if (dch && get_next_dframe(dch)) {
--		len = (*sp)->len;
-+		len = tmp_len;
- 		goto next_frame;
- 	}
- 
+ 	if (nhg->resilient && nla_put_nh_group_res(skb, nhg))
 -- 
 2.43.0
 
