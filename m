@@ -1,168 +1,113 @@
-Return-Path: <stable+bounces-62825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5C194144C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03FDC94144E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0219288174
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:26:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 925ECB26119
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6491A2542;
-	Tue, 30 Jul 2024 14:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E45335D3;
+	Tue, 30 Jul 2024 14:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rAmsmHIA"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Inq/kNh+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340B5D529;
-	Tue, 30 Jul 2024 14:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E300D529;
+	Tue, 30 Jul 2024 14:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.50.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722349576; cv=none; b=fRblRz4vHaT+uDA2UserXmbw5AUcQRF9IHcywiGDgpHaKT/OXUx5YqsRuD5nhnK/RcGXEqqvxpwKtXky/70COuckNcsGpETJMD6/5Q1CeskDbKVEMhY5VM+EFcYylzwRe1JbTkGdLvpCYj5ucTeiivMTRB78wQ+Qfs8whDgmUgU=
+	t=1722349601; cv=none; b=DoNZ2QCcKh9ok7VmLy5yPX33e47Lxz3o9GVNdSJ71SCa14C5eTDCNIgZ8pbrhcuUl7uR03WDegKSW9THBJSkGxy1GVCoXgNinBqPmA2LYz2OCjVGfY/Ush0ZqnGtVvSnbFMT02eJbQZ1PtBOgqfLPJhua+zBZ8FmULtQNGmw6K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722349576; c=relaxed/simple;
-	bh=B5LjsGmjUnGgC+3S3K4vgufSp6MgbbSVrQQVJKjPAqQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b7XZIA39J+0tbcozRls7L0byAma8PQhv2+6jVjCdSs+p/XlFlTG/EqsYy0fOBR6qI9ZaLd7Te83dOGs6XB6vQdMrh2agsSJvdTxZExdcNIyDYf3R/h+aywlU9aTgfv0VdBEdzi4DLw7d9iRVoN0eo68az4JgaU2xlFshgOOfb3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rAmsmHIA; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46UEK2bv031219;
-	Tue, 30 Jul 2024 14:26:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:content-transfer-encoding
-	:mime-version; s=pp1; bh=45CkuGD/86iKKCzErMLWJiA5f4Ert2ueHMCgSAN
-	L0nQ=; b=rAmsmHIA+EYoBIUkiBdUauQZdgnimEoHxxJgY/H/4leFgGafhd2G5Wx
-	TiWWZleguSlGfOUlV7fZSTAd5ltZ7sHTdVXNGaEnhkSOwlhDuAoSmoa+rG90pS5/
-	lW6KNk2vyVvWycrfvtOZIJr/zmf14eLVMBw4KJXDLiz/ZonZbm53CphwNRe96o3u
-	9ozlS0mlE9EF8S64DPlViFe+YBktPNqbUDZW20psQD5Rx1cHR5Mf+x0EHuxayZ9D
-	gCesn0hsEvyqIQw2j/45m6iBTKkvWzuLXntHW0nJlILmQgDLGblT5c++K0+x4gpW
-	3Oy844h47xAzxPNzgd4S4U8a/v7wtQw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40pys48b1n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 14:26:11 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46UC9Isc003857;
-	Tue, 30 Jul 2024 14:26:11 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 40ndemctjh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 14:26:11 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46UEQ57M48693532
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jul 2024 14:26:07 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 932882005A;
-	Tue, 30 Jul 2024 14:26:05 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 737FC20040;
-	Tue, 30 Jul 2024 14:26:05 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jul 2024 14:26:05 +0000 (GMT)
-From: Michael Mueller <mimu@linux.ibm.com>
-To: linux-s390@vger.kernel.org
-Cc: borntraeger@linux.ibm.com, frankja@linux.ibm.com, nrb@linux.ibm.com,
-        mimu@linux.ibm.com, stable@vger.kernel.org
-Subject: [PATCH] KVM: s390: fix validity interception issue when gisa is switched off
-Date: Tue, 30 Jul 2024 16:25:40 +0200
-Message-ID: <20240730142540.1064136-1-mimu@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RPQgVhFh-ASmFYDQLBHi2AYhxRnpnGms
-X-Proofpoint-ORIG-GUID: RPQgVhFh-ASmFYDQLBHi2AYhxRnpnGms
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1722349601; c=relaxed/simple;
+	bh=Y/BTsUGgKf7Mhqj9uRQJvsNaHTykMcJX4jhdObr4Jqs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eD7+ZrOJEjnZTCZ34M7BzCbnUxGlFuCp/mLZDj2FRjzRJCr1SN1V2gCEpCu1M6sxgX3LToCdiiMyJLeMQsWCl9UrL4PyBU2bVlvUDbUEdsIp+8Y5xLNo6bFQx8qsBre4hpP0UvtP/nQdsqZ2KTFSDZ1qdro67XAwnPeXA3ftc+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Inq/kNh+; arc=none smtp.client-ip=45.254.50.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=+r1GO
+	9lXpfV8NuodAhuijwCksvgX5ChGFsu9hFSC2ao=; b=Inq/kNh+gvNjevg3x9EMA
+	asfE24h/oSPcIjJG5ayH0+9j8czKKvaTZ7gvoxohVULdPME87rjGDf/6WPmSmELi
+	fkRkrk1XIkXxPcBr1fqFDdLD9xFE80OS5xisVSXCb4Rea/rEKu4XMRZYf5m+O10H
+	q+3eh0GdktEULtg0nEVXPw=
+Received: from localhost.localdomain (unknown [111.35.189.52])
+	by gzga-smtp-mta-g0-3 (Coremail) with SMTP id _____wDnN_j196hmrfcYFA--.59262S4;
+	Tue, 30 Jul 2024 22:26:05 +0800 (CST)
+From: David Wang <00107082@163.com>
+To: liaoyu15@huawei.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org,
+	stable@vger.kernel.org,
+	tglx@linutronix.de,
+	x86@kernel.org
+Subject: [Regression] 6.11.0-rc1: BUG: using smp_processor_id() in preemptible when suspend the system
+Date: Tue, 30 Jul 2024 22:25:57 +0800
+Message-Id: <20240730142557.4619-1-00107082@163.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-30_11,2024-07-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
- impostorscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
- priorityscore=1501 malwarescore=0 clxscore=1011 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2407300098
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnN_j196hmrfcYFA--.59262S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCr1fZF4DKF4DCF4UGFy7Awb_yoW5WrW3pF
+	n5tF1UCF4kJ34jy3WxJ3yjkryUCasrAF15WF97GrySgayUC3W8Xrs3Zr17Wrn5K340gw47
+	ZrWqyw4qvw4UtaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrGYLUUUUU=
+X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiqQ4sqmVOB3V2uAAAs2
 
-The following validity interception occures when the gisa usage has been
-switched off either by using kernel parameter "kvm.use_gisa=0" or by
-setting the related sysfs attribute to N (echo N >/sys/module/kvm/
-parameters/use_gisa).
+Hi,
 
-The issue surfaces in the host kernel with the following kernel message as
-soon a new kvm guest start has been attemted.
+When I suspend my system, via `systemctl suspend`, kernel BUG shows up in log:
 
-kvm: unhandled validity intercept 0x1011
-WARNING: CPU: 0 PID: 781237 at arch/s390/kvm/intercept.c:101 kvm_handle_sie_intercept+0x42e/0x4d0 [kvm]
-Modules linked in: vhost_net tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT xt_tcpudp nft_compat x_tables nf_nat_tftp nf_conntrack_tftp vfio_pci_core irqbypass vhost_vsock vmw_vsock_virtio_transport_common vsock vhost vhost_iotlb kvm nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables sunrpc mlx5_ib ib_uverbs ib_core mlx5_core uvdevice s390_trng eadm_sch vfio_ccw zcrypt_cex4 mdev vfio_iommu_type1 vfio sch_fq_codel drm i2c_core loop drm_panel_orientation_quirks configfs nfnetlink lcs ctcm fsm dm_service_time ghash_s390 prng chacha_s390 libchacha aes_s390 des_s390 libdes sha3_512_s390 sha3_256_s390 sha512_s390 sha256_s390 sha1_s390 sha_common dm_mirror dm_region_hash dm_log zfcp scsi_transport_fc scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey zcrypt dm_multipath rng_core autofs4 [last unloaded: vfio_pci]
-CPU: 0 PID: 781237 Comm: CPU 0/KVM Not tainted 6.10.0-08682-gcad9f11498ea #6
-Hardware name: IBM 3931 A01 701 (LPAR)
-Krnl PSW : 0704c00180000000 000003d93deb0122 (kvm_handle_sie_intercept+0x432/0x4d0 [kvm])
-           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-Krnl GPRS: 000003d900000027 000003d900000023 0000000000000028 000002cd00000000
-           000002d063a00900 00000359c6daf708 00000000000bebb5 0000000000001eff
-           000002cfd82e9000 000002cfd80bc000 0000000000001011 000003d93deda412
-           000003ff8962df98 000003d93de77ce0 000003d93deb011e 00000359c6daf960
-Krnl Code: 000003d93deb0112: c020fffe7259	larl	%r2,000003d93de7e5c4
-           000003d93deb0118: c0e53fa8beac	brasl	%r14,000003d9bd3c7e70
-          #000003d93deb011e: af000000		mc	0,0
-          >000003d93deb0122: a728ffea		lhi	%r2,-22
-           000003d93deb0126: a7f4fe24		brc	15,000003d93deafd6e
-           000003d93deb012a: 9101f0b0		tm	176(%r15),1
-           000003d93deb012e: a774fe48		brc	7,000003d93deafdbe
-           000003d93deb0132: 40a0f0ae		sth	%r10,174(%r15)
-Call Trace:
- [<000003d93deb0122>] kvm_handle_sie_intercept+0x432/0x4d0 [kvm]
-([<000003d93deb011e>] kvm_handle_sie_intercept+0x42e/0x4d0 [kvm])
- [<000003d93deacc10>] vcpu_post_run+0x1d0/0x3b0 [kvm]
- [<000003d93deaceda>] __vcpu_run+0xea/0x2d0 [kvm]
- [<000003d93dead9da>] kvm_arch_vcpu_ioctl_run+0x16a/0x430 [kvm]
- [<000003d93de93ee0>] kvm_vcpu_ioctl+0x190/0x7c0 [kvm]
- [<000003d9bd728b4e>] vfs_ioctl+0x2e/0x70
- [<000003d9bd72a092>] __s390x_sys_ioctl+0xc2/0xd0
- [<000003d9be0e9222>] __do_syscall+0x1f2/0x2e0
- [<000003d9be0f9a90>] system_call+0x70/0x98
-Last Breaking-Event-Address:
- [<000003d9bd3c7f58>] __warn_printk+0xe8/0xf0
+ kernel: [ 1734.412974] smpboot: CPU 2 is now offline
+ kernel: [ 1734.414952] BUG: using smp_processor_id() in preemptible [00000000] code: systemd-sleep/4619
+ kernel: [ 1734.414957] caller is hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
+ kernel: [ 1734.414964] CPU: 0 UID: 0 PID: 4619 Comm: systemd-sleep Tainted: P           OE      6.11.0-rc1-linan-4 #292
+ kernel: [ 1734.414968] Tainted: [P]=PROPRIETARY_MODULE, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+ kernel: [ 1734.414969] Hardware name: Micro-Star International Co., Ltd. MS-7B89/B450M MORTAR MAX (MS-7B89), BIOS 2.80 06/10/2020
+ kernel: [ 1734.414970] Call Trace:
+ kernel: [ 1734.414974]  <TASK>
+ kernel: [ 1734.414978]  dump_stack_lvl+0x60/0x80
+ kernel: [ 1734.414982]  check_preemption_disabled+0xce/0xe0
+ kernel: [ 1734.414987]  hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
+ kernel: [ 1734.414992]  ? __pfx_takedown_cpu+0x10/0x10
+ kernel: [ 1734.414996]  takedown_cpu+0x97/0x130
+ kernel: [ 1734.414999]  cpuhp_invoke_callback+0xf8/0x450
+ kernel: [ 1734.415004]  __cpuhp_invoke_callback_range+0x78/0xe0
+ kernel: [ 1734.415008]  _cpu_down+0xf4/0x360
+ kernel: [ 1734.415012]  freeze_secondary_cpus+0xae/0x290
+ kernel: [ 1734.415016]  suspend_devices_and_enter+0x1da/0x920
+ kernel: [ 1734.415022]  pm_suspend+0x1fa/0x500
+ kernel: [ 1734.415025]  state_store+0x68/0xd0
+ kernel: [ 1734.415028]  kernfs_fop_write_iter+0x169/0x1f0
+ kernel: [ 1734.415034]  vfs_write+0x269/0x440
+ kernel: [ 1734.415041]  ksys_write+0x63/0xe0
+ kernel: [ 1734.415044]  do_syscall_64+0x4b/0x110
+ kernel: [ 1734.415048]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ kernel: [ 1734.415052] RIP: 0033:0x7fe885cee240
+ kernel: [ 1734.415055] Code: 40 00 48 8b 15 c1 9b 0d 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 80 3d a1 23 0e 00 00 74 17 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 48 83 ec 28 48 89
+ kernel: [ 1734.415057] RSP: 002b:00007ffc53ccec58 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+ kernel: [ 1734.415060] RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007fe885cee240
+ kernel: [ 1734.415062] RDX: 0000000000000004 RSI: 00007ffc53cced40 RDI: 0000000000000004
+ kernel: [ 1734.415063] RBP: 00007ffc53cced40 R08: 0000000000000007 R09: 000055f34dde8210
+ kernel: [ 1734.415064] R10: 6bccc22257390b18 R11: 0000000000000202 R12: 0000000000000004
+ kernel: [ 1734.415066] R13: 000055f34dde42d0 R14: 0000000000000004 R15: 00007fe885dc49e0
+ kernel: [ 1734.415071]  </TASK>
 
-Cc: stable@vger.kernel.org
-Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Closes: https://ibm-systems-z.slack.com/archives/C04BWBXSKEY/p1722280755665409
-Fixes: fe0ef0030463 ("KVM: s390: sort out physical vs virtual pointers usage")
-Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
----
- arch/s390/kvm/kvm-s390.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kvm/kvm-s390.h b/arch/s390/kvm/kvm-s390.h
-index bf8534218af3..e680c6bf0c9d 100644
---- a/arch/s390/kvm/kvm-s390.h
-+++ b/arch/s390/kvm/kvm-s390.h
-@@ -267,7 +267,12 @@ static inline unsigned long kvm_s390_get_gfn_end(struct kvm_memslots *slots)
- 
- static inline u32 kvm_s390_get_gisa_desc(struct kvm *kvm)
- {
--	u32 gd = virt_to_phys(kvm->arch.gisa_int.origin);
-+	u32 gd;
-+
-+	if (!kvm->arch.gisa_int.origin)
-+		return 0;
-+
-+	gd = virt_to_phys(kvm->arch.gisa_int.origin);
- 
- 	if (gd && sclp.has_gisaf)
- 		gd |= GISA_FORMAT1;
--- 
-2.43.0
+I confirmed that this was introduced by commit:
+ f7d43dd206e7e18c182f200e67a8db8c209907fa tick/broadcast: Make takeover of broadcast hrtimer reliable
+, and revert this commit can fix it.
+
+
+Thanks
+David
 
 
