@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-63117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3936294176D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6566A941ABE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AA311C236FC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21264281B75
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAEE1A3025;
-	Tue, 30 Jul 2024 16:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BD91448FA;
+	Tue, 30 Jul 2024 16:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayNYMU7r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QD7R9qxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2CD1A3020;
-	Tue, 30 Jul 2024 16:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600C01A6166;
+	Tue, 30 Jul 2024 16:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355720; cv=none; b=gtpCRiflDztC5fAwkKy0f6whRWmChSBjkfnJ66JOtlt7VAQc5vM9HwIWa1RZB7vbV5uOtqr2X/AVdXg1Sy8xcshD60uaPOVkXoOWGgpJNIJAANAsG51CgN5ULOkMe8fbWhduZmks6V7HLXWGLsKYWjVBzMsV5k0YN+JelH7Q7Bg=
+	t=1722358019; cv=none; b=R+KKqT0QetXCZuFQZ1doCS8sbYPHh4Z8Xx9CUdhFpedtAK0GuyN5wclWIDmzEv2fuEYElUYuMPBaS/WyREzXRiFE3YsdeVCjtDFMik/sWEb7nWBlcE4NZcOZCAcFrHI5pRlp5PaC3Zb5jX1NKpdcWiBCjJZZ3dxt6YzKmus0n0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355720; c=relaxed/simple;
-	bh=uvObUKRLVFk6TYmqSxnFk1qzbdcKvgL9TwH02JDuaHM=;
+	s=arc-20240116; t=1722358019; c=relaxed/simple;
+	bh=q9L3Cnn+8ZCGu91BnoMF9ze2lnGSW/kFd/pppSUPO+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Axa5CR8Cpenqn7elvg4zLRtJp5vghFx2ssr0IgevsSz1P45C2uVLE4J1afsB3c6LdbEy1iE0KrBs73QjuAEXPpYjs0sgNW6I6gCSq5W/hhcDR7hMFYmYD7x5Z6w+4Xvgk9AEEXj7eio1baB+f+q3FnSksIxF7CZwpF7Lb3no8TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayNYMU7r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B77C32782;
-	Tue, 30 Jul 2024 16:08:39 +0000 (UTC)
+	 MIME-Version; b=ujQRpBUTG4JITAFW6NDjX4gt3kx51LzAuN+rguoFNpBr8OpDeKUVEdhmUAISOM4CgSgmcft06huoU2x0d5zPRcpi/XYIwGbqRfcyWkvEBPySDqI0g8bV7HE9+TadRCbZATCExUjCBR09tvyO6R0i3zwg+/iGG1e3qUr2W1KP1mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QD7R9qxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9B4C32782;
+	Tue, 30 Jul 2024 16:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355720;
-	bh=uvObUKRLVFk6TYmqSxnFk1qzbdcKvgL9TwH02JDuaHM=;
+	s=korg; t=1722358019;
+	bh=q9L3Cnn+8ZCGu91BnoMF9ze2lnGSW/kFd/pppSUPO+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayNYMU7rDLshM44eW//fhIPkeOT01fYW3GNZCLa9O+7i3T1n3C5bVOI7EwWsj2G7K
-	 uRkx+B9ZVwjd7IEBNEQXYLjcQz14SCoWtKbz1wd8v6FdLT2GTfgWoAjDRwBnrlg2Z/
-	 7tadyRRAfdsW/qcy9joZSwvlQetFWcIIq4T8bG5c=
+	b=QD7R9qxxK0cXu4AEnATTlaAGVel/7HHx2jvWssjHlnK/Hxq05EQlz7HTgOkvhZ0Rc
+	 O5TO4VPCiX1JyWDKrrlgmYL5FD2OTNvyyWnHweTQOhRz94Wmtcog0mfvK4fs72zZ6y
+	 sMHr1mofS6pzpcK9Vvn8oRJU/cnKku1SpL3d1FR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Sean Anderson <sean.anderso@linux.dev>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/568] arm64: dts: renesas: r8a779f0: Add missing hypervisor virtual timer IRQ
+Subject: [PATCH 6.10 315/809] drm: zynqmp_dpsub: Fix an error handling path in zynqmp_dpsub_probe()
 Date: Tue, 30 Jul 2024 17:43:11 +0200
-Message-ID: <20240730151643.148523387@linuxfoundation.org>
+Message-ID: <20240730151737.040236807@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit b1c34567aebe300f9a0f70320eaeef0b3d56ffc7 ]
+[ Upstream commit 4ea3deda1341fef7b923ad9cfe5dd46b1b51bfa8 ]
 
-Add the missing fifth interrupt to the device node that represents the
-ARM architected timer.  While at it, add an interrupt-names property for
-clarity,
+If zynqmp_dpsub_drm_init() fails, we must undo the previous
+drm_bridge_add() call.
 
-Fixes: c62331e8222f8f21 ("arm64: dts: renesas: Add Renesas R8A779F0 SoC support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/46deba1008f73e4b6864f937642d17f9d4ae7205.1718890849.git.geert+renesas@glider.be
+Fixes: be3f3042391d ("drm: zynqmp_dpsub: Always register bridge")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Sean Anderson <sean.anderso@linux.dev>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/974d1b062d7c61ee6db00d16fa7c69aa1218ee02.1716198025.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a779f0.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xlnx/zynqmp_dpsub.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779f0.dtsi b/arch/arm64/boot/dts/renesas/r8a779f0.dtsi
-index ecdd5a523fa34..555fff9364e35 100644
---- a/arch/arm64/boot/dts/renesas/r8a779f0.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a779f0.dtsi
-@@ -1181,7 +1181,10 @@ timer {
- 		interrupts-extended = <&gic GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
- 				      <&gic GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
- 				      <&gic GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
--				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
-+				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>,
-+				      <&gic GIC_PPI 12 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-names = "sec-phys", "phys", "virt", "hyp-phys",
-+				  "hyp-virt";
- 	};
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+index face8d6b2a6fb..f5781939de9c3 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+@@ -269,6 +269,7 @@ static int zynqmp_dpsub_probe(struct platform_device *pdev)
+ 	return 0;
  
- 	ufs30_clk: ufs30-clk {
+ err_disp:
++	drm_bridge_remove(dpsub->bridge);
+ 	zynqmp_disp_remove(dpsub);
+ err_dp:
+ 	zynqmp_dp_remove(dpsub);
 -- 
 2.43.0
 
