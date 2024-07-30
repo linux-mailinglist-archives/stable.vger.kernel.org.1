@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E01941B24
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16105941E97
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EB401F22FDB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B9C2874EC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92D618801A;
-	Tue, 30 Jul 2024 16:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BE6187FEC;
+	Tue, 30 Jul 2024 17:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oYSC5OQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jq8Yuvlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1841078F;
-	Tue, 30 Jul 2024 16:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303DD1A76AD;
+	Tue, 30 Jul 2024 17:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358290; cv=none; b=VKPluvXCLb4RY5XksG2Vxu8/R4O+Gvq3E1xE6Ohn/4URz2B3y5fDxDVKC0i3zGC7SZkaGZjDM08vkDgxny/bRtMTVCBzqoraXzJqzA4VPEOB8t2mmVOom5pD3vB5Qf888jPnOyhSkn/ciyCoHOSZSM1aAOS1OTDahhhkodka3Dg=
+	t=1722360647; cv=none; b=cnTRWszACihF0H399nEnNxa/m+FH8V3RpT6pSD80tiFInhm5jVMbkpudWRlMPzaq7sy/DKYPfWJV1SgOLcdTjVu6xx5t91u1xwmEDTSN/ffwN4ToDkT9q+3oYWS6KNIrHsr2pf4xrtq+L84vzUOnrLa4ohjPOKeL25JnD7A69eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358290; c=relaxed/simple;
-	bh=JP0aczD3cjPfHlDdwjz4kk38X3hJBPXt+EC9FDms+pc=;
+	s=arc-20240116; t=1722360647; c=relaxed/simple;
+	bh=e1KLrGhhYxH5anwihzib/DovK+OeeHpxFoyBJKyVonA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h6Q1m9pQA4mZ8ki7vtlYq85+fb9YVg7ePJJxpYZnT3mIa6OFGtNVviRHPrLo0xh8XPKhMXO+rvMuHM15ElEmome5F02idBMpVllmClFFO0oOlIaJ85TpqsbQ7gLGkFrMQs2n2zVDTwSevGM2WZx5khHfVKAjUQTk0cHgseXYywE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oYSC5OQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F57C32782;
-	Tue, 30 Jul 2024 16:51:29 +0000 (UTC)
+	 MIME-Version; b=YdkDmE8ly681vgQrf8fzUS5eFpQI6FlkOyySVKzyUIAgmSKReYUPgiNaXk2KlpOMVT9ehgXsOoObFyZ0iGheHyGWURmRVQZ3XsUlKSO0SmZbb8K9FI5y3feUzDSLhOI/88+NLl5W0pnq6jq4B8nVeDYz2AVhMyeP1ozkn9vFwfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jq8Yuvlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38E5C32782;
+	Tue, 30 Jul 2024 17:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358290;
-	bh=JP0aczD3cjPfHlDdwjz4kk38X3hJBPXt+EC9FDms+pc=;
+	s=korg; t=1722360647;
+	bh=e1KLrGhhYxH5anwihzib/DovK+OeeHpxFoyBJKyVonA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1oYSC5OQqz6ymkNhjxjajtg1AWebViRRFbaA+xDJ/kbQSp1wspSkqaDqTZxhG3PBx
-	 Lfvds1gUeaXXj18R1XsYbCKaX/Md1pMAnQRkEhuyF7LQD0WwwGOj7ihmlNVqqB7dcm
-	 uO5x5HVyqR15gKaCZG4bMOBtF2iXctHtc0W9ml3c=
+	b=jq8YuvlzisK+ZsnabbrxYuvFoRjZ5ehhWzjBFALnAS+7PYElgTFMrIwoOUDsGqcMW
+	 1sZMopaUqmbsB6DpD03AvH3ZL4bI7FQrz/I3iEqowoTT2dUorWRIpwIZwH2b1cxowJ
+	 AeIc1PeMPyaV/sp4pB8IRyW1+dZdxhepZqlfcZgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 374/440] MIPS: dts: loongson: Fix GMAC phy node
-Date: Tue, 30 Jul 2024 17:50:07 +0200
-Message-ID: <20240730151630.421427896@linuxfoundation.org>
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.10 732/809] rbd: dont assume RBD_LOCK_STATE_LOCKED for exclusive mappings
+Date: Tue, 30 Jul 2024 17:50:08 +0200
+Message-ID: <20240730151753.854993421@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 813c18d1ca1987afaf47e035152e1baa1375b1b2 upstream.
+commit 2237ceb71f89837ac47c5dce2aaa2c2b3a337a3c upstream.
 
-phy-mode should be rgmii-id to match hardware configuration.
+Every time a watch is reestablished after getting lost, we need to
+update the cookie which involves quiescing exclusive lock.  For this,
+we transition from RBD_LOCK_STATE_LOCKED to RBD_LOCK_STATE_QUIESCING
+roughly for the duration of rbd_reacquire_lock() call.  If the mapping
+is exclusive and I/O happens to arrive in this time window, it's failed
+with EROFS (later translated to EIO) based on the wrong assumption in
+rbd_img_exclusive_lock() -- "lock got released?" check there stopped
+making sense with commit a2b1da09793d ("rbd: lock should be quiesced on
+reacquire").
 
-Also there should be a phy-handle to reference phy node.
+To make it worse, any such I/O is added to the acquiring list before
+EROFS is returned and this sets up for violating rbd_lock_del_request()
+precondition that the request is either on the running list or not on
+any list at all -- see commit ded080c86b3f ("rbd: don't move requests
+to the running list on errors").  rbd_lock_del_request() ends up
+processing these requests as if they were on the running list which
+screws up quiescing_wait completion counter and ultimately leads to
 
-Fixes: f8a11425075f ("MIPS: Loongson64: Add GMAC support for Loongson-2K1000")
+    rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
+
+being triggered on the next watch error.
+
+Cc: stable@vger.kernel.org # 06ef84c4e9c4: rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/block/rbd.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-+++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-@@ -137,7 +137,8 @@
- 					     <13 IRQ_TYPE_LEVEL_LOW>;
- 				interrupt-names = "macirq", "eth_lpi";
- 				interrupt-parent = <&liointc0>;
--				phy-mode = "rgmii";
-+				phy-mode = "rgmii-id";
-+				phy-handle = <&phy1>;
- 				mdio {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
-@@ -160,7 +161,8 @@
- 					     <15 IRQ_TYPE_LEVEL_LOW>;
- 				interrupt-names = "macirq", "eth_lpi";
- 				interrupt-parent = <&liointc0>;
--				phy-mode = "rgmii";
-+				phy-mode = "rgmii-id";
-+				phy-handle = <&phy1>;
- 				mdio {
- 					#address-cells = <1>;
- 					#size-cells = <0>;
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -3457,6 +3457,7 @@ static void rbd_lock_del_request(struct
+ 	lockdep_assert_held(&rbd_dev->lock_rwsem);
+ 	spin_lock(&rbd_dev->lock_lists_lock);
+ 	if (!list_empty(&img_req->lock_item)) {
++		rbd_assert(!list_empty(&rbd_dev->running_list));
+ 		list_del_init(&img_req->lock_item);
+ 		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
+ 			       list_empty(&rbd_dev->running_list));
+@@ -3476,11 +3477,6 @@ static int rbd_img_exclusive_lock(struct
+ 	if (rbd_lock_add_request(img_req))
+ 		return 1;
+ 
+-	if (rbd_dev->opts->exclusive) {
+-		WARN_ON(1); /* lock got released? */
+-		return -EROFS;
+-	}
+-
+ 	/*
+ 	 * Note the use of mod_delayed_work() in rbd_acquire_lock()
+ 	 * and cancel_delayed_work() in wake_lock_waiters().
+@@ -4601,6 +4597,10 @@ static void rbd_reacquire_lock(struct rb
+ 			rbd_warn(rbd_dev, "failed to update lock cookie: %d",
+ 				 ret);
+ 
++		if (rbd_dev->opts->exclusive)
++			rbd_warn(rbd_dev,
++			     "temporarily releasing lock on exclusive mapping");
++
+ 		/*
+ 		 * Lock cookie cannot be updated on older OSDs, so do
+ 		 * a manual release and queue an acquire.
 
 
 
