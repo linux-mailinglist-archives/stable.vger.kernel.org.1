@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B8B941865
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF1D941B7A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B43F5280DCB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3BA02828E4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99B618800A;
-	Tue, 30 Jul 2024 16:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AB91898ED;
+	Tue, 30 Jul 2024 16:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4TeQC5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V602y7ay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C221A617E;
-	Tue, 30 Jul 2024 16:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED51D1A6195;
+	Tue, 30 Jul 2024 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356471; cv=none; b=ltipCexs4Bw9RL1SPZQdfW4N912VA3BwPc6PSetnhLzS7/wRR12HQ3pCkJdBFFBAjKK5Oy5DLaNh61cP/VvLxtwDgat6ogdKQIUpa3SM1bGmWItS4GNN4Xvfi0KYYKEafc4LP7DI9zfa1277br+7+UzZMYtPGqKIjYrrZk01CIk=
+	t=1722358530; cv=none; b=bWDxyUhA+2aILuptR4gHF7bKj5+LOTkk2aGjWAN66VDW0Qg02tsvQPY0KS9XPjtE7BD+erJDdlD7mhGE8RI5ZOnKA5zioxl9L9fpP3o7+aMLyJ4cVThAc5k/mClsVkue2h1HfRw6aYx3M96mAGXPrVdvXzWe5fHOoyDkUjTkW6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356471; c=relaxed/simple;
-	bh=ekHbwnfq+iPpcBnREENs2OM2lWW/Kw6Wm2DdG9/N4Cc=;
+	s=arc-20240116; t=1722358530; c=relaxed/simple;
+	bh=GjZfosucJwojO8kVMZcqns6pyXcBs2bMozZRus6QxmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEal0In2rfkAZjI5mrSPy3rRqbqDxyGBXTl9kTDrRoWmvmUym+mvMlZ7zumFvZFi3YMxjiaK/vs4Wrt+qintqRxQdfTaRHMg6KEOxWUVOOOoj7Ek+USc2VebOmAojaL/7figP0b693pCVgWTlw/uSAvWCWmZsEHBw971cVoLvm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4TeQC5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E41AC32782;
-	Tue, 30 Jul 2024 16:21:10 +0000 (UTC)
+	 MIME-Version; b=RvAlL9d8zeGQLGOn6nHqeOKnTGV7IipW9lm4BsayL3qJT1HBtzUnu5lM/0JFiuGsqD/3MUUwZgM9KrA2q+ibrINyHZJZ8EEaakMZNJm0W2xiqrYvMYjumOkoeop5YIIrKnTpbgHs5emYf7TP0a0zAAxV0R+efdY0YTe0euvkQnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V602y7ay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E43C32782;
+	Tue, 30 Jul 2024 16:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356471;
-	bh=ekHbwnfq+iPpcBnREENs2OM2lWW/Kw6Wm2DdG9/N4Cc=;
+	s=korg; t=1722358529;
+	bh=GjZfosucJwojO8kVMZcqns6pyXcBs2bMozZRus6QxmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4TeQC5UMaDb5BhqVFjmw5Xqi8aO1g0Q60XjniDk7CmknYO8NmUH5su++tvO86Cdg
-	 oeR2FpBr7//p8jYcFbBgqq0J5BhY2VFCfnSOuP9183ru1touruabIpj6YhIXVjN/1F
-	 4whX5RGbP23ARQJwuaWebWk/mKjs/pMPwc5O2J/c=
+	b=V602y7ayOcvZK/jEg+rcv7eqMZnDAJKs4S2PaT1xtpxOrlTm+6+fjtAjAWKcGz8s2
+	 LdFZPEnNWh63o7Ut22v9BIrUnpqAnpD05DPeEh6U4yglHEPSdrGNDqEU7u46TzR2gF
+	 KcB7GjnU5kquzyAxg0RcHUSCdK9kLfytnpKE4JkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d31185aa54170f7fc1f5@syzkaller.appspotmail.com,
-	Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/568] udf: Fix bogus checksum computation in udf_rename()
+Subject: [PATCH 6.10 367/809] mfd: omap-usb-tll: Use struct_size to allocate tll
 Date: Tue, 30 Jul 2024 17:44:03 +0200
-Message-ID: <20240730151645.190551901@linuxfoundation.org>
+Message-ID: <20240730151739.150569571@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 27ab33854873e6fb958cb074681a0107cc2ecc4c ]
+[ Upstream commit 40176714c818b0b6a2ca8213cdb7654fbd49b742 ]
 
-Syzbot reports uninitialized memory access in udf_rename() when updating
-checksum of '..' directory entry of a moved directory. This is indeed
-true as we pass on-stack diriter.fi to the udf_update_tag() and because
-that has only struct fileIdentDesc included in it and not the impUse or
-name fields, the checksumming function is going to checksum random stack
-contents beyond the end of the structure. This is actually harmless
-because the following udf_fiiter_write_fi() will recompute the checksum
-from on-disk buffers where everything is properly included. So all that
-is needed is just removing the bogus calculation.
+Commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+changed the memory allocation of 'tll' to consolidate it into a single
+allocation, introducing an incorrect size calculation.
 
-Fixes: e9109a92d2a9 ("udf: Convert udf_rename() to new directory iteration code")
-Link: https://lore.kernel.org/all/000000000000cf405f060d8f75a9@google.com/T/
-Link: https://patch.msgid.link/20240617154201.29512-1-jack@suse.cz
-Reported-by: syzbot+d31185aa54170f7fc1f5@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+In particular, the allocation for the array of pointers was converted
+into a single-pointer allocation.
+
+The memory allocation used to occur in two steps:
+
+tll = devm_kzalloc(dev, sizeof(struct usbtll_omap), GFP_KERNEL);
+tll->ch_clk = devm_kzalloc(dev, sizeof(struct clk *) * tll->nch,
+                           GFP_KERNEL);
+
+And it turned that into the following allocation:
+
+tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
+                   GFP_KERNEL);
+
+sizeof(tll->ch_clk[nch]) returns the size of a single pointer instead of
+the expected nch pointers.
+
+This bug went unnoticed because the allocation size was small enough to
+fit within the minimum size of a memory allocation for this particular
+case [1].
+
+The complete allocation can still be done at once with the struct_size
+macro, which comes in handy for structures with a trailing flexible
+array.
+
+Fix the memory allocation to obtain the original size again.
+
+Link: https://lore.kernel.org/all/202406261121.2FFD65647@keescook/ [1]
+Fixes: 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+Reviewed-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Fixes: commit 16c2004d9e4d ("mfd: omap-usb-tll: Allocate driver data at once")
+Link: https://lore.kernel.org/r/20240626-omap-usb-tll-counted_by-v2-1-4bedf20d1b51@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/namei.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/mfd/omap-usb-tll.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/udf/namei.c b/fs/udf/namei.c
-index ae55ab8859b6d..605f182da42cb 100644
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -874,8 +874,6 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 	if (has_diriter) {
- 		diriter.fi.icb.extLocation =
- 					cpu_to_lelb(UDF_I(new_dir)->i_location);
--		udf_update_tag((char *)&diriter.fi,
--			       udf_dir_entry_len(&diriter.fi));
- 		udf_fiiter_write_fi(&diriter, NULL);
- 		udf_fiiter_release(&diriter);
+diff --git a/drivers/mfd/omap-usb-tll.c b/drivers/mfd/omap-usb-tll.c
+index b6303ddb013b0..f68dd02814638 100644
+--- a/drivers/mfd/omap-usb-tll.c
++++ b/drivers/mfd/omap-usb-tll.c
+@@ -230,8 +230,7 @@ static int usbtll_omap_probe(struct platform_device *pdev)
+ 		break;
+ 	}
  
+-	tll = devm_kzalloc(dev, sizeof(*tll) + sizeof(tll->ch_clk[nch]),
+-			   GFP_KERNEL);
++	tll = devm_kzalloc(dev, struct_size(tll, ch_clk, nch), GFP_KERNEL);
+ 	if (!tll) {
+ 		pm_runtime_put_sync(dev);
+ 		pm_runtime_disable(dev);
 -- 
 2.43.0
 
