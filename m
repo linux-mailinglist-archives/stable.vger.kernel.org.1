@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-63312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66CC94192C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FAC941ABB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D76B9B2A609
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3E9B1C22176
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7141189903;
-	Tue, 30 Jul 2024 16:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B30A1898F7;
+	Tue, 30 Jul 2024 16:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jfxo0Lnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuBq5zjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661161A6186;
-	Tue, 30 Jul 2024 16:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484401898ED;
+	Tue, 30 Jul 2024 16:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356421; cv=none; b=PysXidiSgt5pzo11hY0yj/gyoq0UBj62imjILd/l89O5Nws9FQBd7GzSgV7fv/UdxS8KdB3KwOIcV/WH0D1t9acWLga6d2gjF7tGEhCB3kNR5yEJUNPyEsQttCpjAm58xz2u28NEiu11iQs0dF87HT/6ekrbkl0VCFVBYobX2pM=
+	t=1722358003; cv=none; b=NFV/md3477UmThIIDTxZZIeAH1QEoUUCMGphycXUeEq2yU0JtlDD90GVQQSedyfuNz/zEllGSqzIG8GMVy0XXzmuAMFjlBTPAxI2woY4tJAQtQTeO7pTisFm2XmzNsw0TL9958n9MllxKtKwKW8poSpO+arGERyHZcEXXiKt9Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356421; c=relaxed/simple;
-	bh=zDAjgR3bSFhJPBmFdbmuDTkiihQPBBgI+tFk47qXwLs=;
+	s=arc-20240116; t=1722358003; c=relaxed/simple;
+	bh=m3lFJPOC1Te1iMHkZ6ayATaeoMGSiIkptyCxk6OynNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RNFmko/54lXdEOAJ2k9tT9+/Zrn9Ii3lF/RyVzsi57aiiYSuF5XDjdj/nP/srqPZvlm6dLUQUhCbFdsR8V8c4T0YjS1apeCD5Eyx9CXCYpY3PqiqIrGCwfWY002WAdfDngyTfKUVUFkwAq4Lv0kG8PUC8cT4q4N+gYrNjXERhRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jfxo0Lnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9127C32782;
-	Tue, 30 Jul 2024 16:20:20 +0000 (UTC)
+	 MIME-Version; b=N2UoL1iaYH0i4eyRXfbRUzD/PJkbJMOghKRavkOktSss4IAqngCJBfxFeel1LvxmrmWn9Oltlp41JwZLTC761vTRiIDYoWsnYLbkAUI3y/XQQf7fCpirwGfFN2lEQqi3jy0G8++Rv1++GEzCeYCQUztdF4H+w8HLuAk0ki1w1Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuBq5zjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BA4C4AF0C;
+	Tue, 30 Jul 2024 16:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356421;
-	bh=zDAjgR3bSFhJPBmFdbmuDTkiihQPBBgI+tFk47qXwLs=;
+	s=korg; t=1722358003;
+	bh=m3lFJPOC1Te1iMHkZ6ayATaeoMGSiIkptyCxk6OynNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jfxo0LnfTgnL0hKr+OOse1UUzyEyZq2qAkxsOpAnLMXzkxcTR15cUjH/nPY61OpGZ
-	 z/SgVHG9FCZffbM+79KJ6BaA4KPBHWguSnrnPIrvBxZI8ReyUqxwDAEO9b8yzIobN+
-	 RtE05ygB9TATaCijrk6bqF/PrM5M4ppHlZ4eoyhQ=
+	b=XuBq5zjmIioJ6duDCpTvEdXgINw39LePrssMSaG0ixrd8sJKWfS6IUZI94NPauuxX
+	 M6GYSSIiFPemv4I6AdaUpSMjlPH/1qWflt/h0zGyW4A3N9LimGAkqu4O2qnCBprzpk
+	 vosw5T5OiYC/i/6Jm+qOfd3XWWuoro4UHI75Do/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nayna Jain <nayna@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Russell Currey <ruscur@russell.cc>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/440] powerpc/pseries: Expose PLPKS config values, support additional fields
+Subject: [PATCH 6.6 316/568] ipv4: Fix incorrect TOS in fibmatch route get reply
 Date: Tue, 30 Jul 2024 17:47:03 +0200
-Message-ID: <20240730151623.294442877@linuxfoundation.org>
+Message-ID: <20240730151652.222385988@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,292 +64,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nayna Jain <nayna@linux.ibm.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 119da30d037dced29118fb90afe683ff50313386 ]
+[ Upstream commit f036e68212c11e5a7edbb59b5e25299341829485 ]
 
-The plpks driver uses the H_PKS_GET_CONFIG hcall to retrieve configuration
-and status information about the PKS from the hypervisor.
+The TOS value that is returned to user space in the route get reply is
+the one with which the lookup was performed ('fl4->flowi4_tos'). This is
+fine when the matched route is configured with a TOS as it would not
+match if its TOS value did not match the one with which the lookup was
+performed.
 
-Update _plpks_get_config() to handle some additional fields. Add getter
-functions to allow the PKS configuration information to be accessed from
-other files. Validate that the values we're getting comply with the spec.
+However, matching on TOS is only performed when the route's TOS is not
+zero. It is therefore possible to have the kernel incorrectly return a
+non-zero TOS:
 
-While we're here, move the config struct in _plpks_get_config() off the
-stack - it's getting large and we also need to make sure it doesn't cross
-a page boundary.
+ # ip link add name dummy1 up type dummy
+ # ip address add 192.0.2.1/24 dev dummy1
+ # ip route get fibmatch 192.0.2.2 tos 0xfc
+ 192.0.2.0/24 tos 0x1c dev dummy1 proto kernel scope link src 192.0.2.1
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-[ajd: split patch, extend to support additional v3 API fields, minor fixes]
-Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230210080401.345462-17-ajd@linux.ibm.com
-Stable-dep-of: 932bed412170 ("powerpc/kexec_file: fix cpus node update to FDT")
+Fix by instead returning the DSCP field from the FIB result structure
+which was populated during the route lookup.
+
+Output after the patch:
+
+ # ip link add name dummy1 up type dummy
+ # ip address add 192.0.2.1/24 dev dummy1
+ # ip route get fibmatch 192.0.2.2 tos 0xfc
+ 192.0.2.0/24 dev dummy1 proto kernel scope link src 192.0.2.1
+
+Extend the existing selftests to not only verify that the correct route
+is returned, but that it is also returned with correct "tos" value (or
+without it).
+
+Fixes: b61798130f1b ("net: ipv4: RTM_GETROUTE: return matched fib result when requested")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/plpks.h       |  58 ++++++++++
- arch/powerpc/platforms/pseries/plpks.c | 149 +++++++++++++++++++++++--
- 2 files changed, 195 insertions(+), 12 deletions(-)
+ net/ipv4/route.c                         |  2 +-
+ tools/testing/selftests/net/fib_tests.sh | 24 ++++++++++++------------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-index 44c3d93fb5e7d..8dab5c26c1e41 100644
---- a/arch/powerpc/include/asm/plpks.h
-+++ b/arch/powerpc/include/asm/plpks.h
-@@ -95,6 +95,64 @@ int plpks_read_fw_var(struct plpks_var *var);
-  */
- int plpks_read_bootloader_var(struct plpks_var *var);
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 810779d537bec..4d169573148f6 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -3394,7 +3394,7 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 		fri.tb_id = table_id;
+ 		fri.dst = res.prefix;
+ 		fri.dst_len = res.prefixlen;
+-		fri.dscp = inet_dsfield_to_dscp(fl4.flowi4_tos);
++		fri.dscp = res.dscp;
+ 		fri.type = rt->rt_type;
+ 		fri.offload = 0;
+ 		fri.trap = 0;
+diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
+index 66d0db7a2614d..ede2c0ec2a9dd 100755
+--- a/tools/testing/selftests/net/fib_tests.sh
++++ b/tools/testing/selftests/net/fib_tests.sh
+@@ -1643,53 +1643,53 @@ ipv4_rt_dsfield()
  
-+/**
-+ * Returns if PKS is available on this LPAR.
-+ */
-+bool plpks_is_available(void);
-+
-+/**
-+ * Returns version of the Platform KeyStore.
-+ */
-+u8 plpks_get_version(void);
-+
-+/**
-+ * Returns hypervisor storage overhead per object, not including the size of
-+ * the object or label. Only valid for config version >= 2
-+ */
-+u16 plpks_get_objoverhead(void);
-+
-+/**
-+ * Returns maximum password size. Must be >= 32 bytes
-+ */
-+u16 plpks_get_maxpwsize(void);
-+
-+/**
-+ * Returns maximum object size supported by Platform KeyStore.
-+ */
-+u16 plpks_get_maxobjectsize(void);
-+
-+/**
-+ * Returns maximum object label size supported by Platform KeyStore.
-+ */
-+u16 plpks_get_maxobjectlabelsize(void);
-+
-+/**
-+ * Returns total size of the configured Platform KeyStore.
-+ */
-+u32 plpks_get_totalsize(void);
-+
-+/**
-+ * Returns used space from the total size of the Platform KeyStore.
-+ */
-+u32 plpks_get_usedspace(void);
-+
-+/**
-+ * Returns bitmask of policies supported by the hypervisor.
-+ */
-+u32 plpks_get_supportedpolicies(void);
-+
-+/**
-+ * Returns maximum byte size of a single object supported by the hypervisor.
-+ * Only valid for config version >= 3
-+ */
-+u32 plpks_get_maxlargeobjectsize(void);
-+
-+/**
-+ * Returns bitmask of signature algorithms supported for signed updates.
-+ * Only valid for config version >= 3
-+ */
-+u64 plpks_get_signedupdatealgorithms(void);
-+
- #endif // CONFIG_PSERIES_PLPKS
+ 	# DSCP 0x10 should match the specific route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x10 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:Not-ECT"
  
- #endif // _ASM_POWERPC_PLPKS_H
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 1c43c4febd3da..2b659f2b01214 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -24,8 +24,16 @@ static u8 *ospassword;
- static u16 ospasswordlength;
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x11 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:ECT(1)"
  
- // Retrieved with H_PKS_GET_CONFIG
-+static u8 version;
-+static u16 objoverhead;
- static u16 maxpwsize;
- static u16 maxobjsize;
-+static s16 maxobjlabelsize;
-+static u32 totalsize;
-+static u32 usedspace;
-+static u32 supportedpolicies;
-+static u32 maxlargeobjectsize;
-+static u64 signedupdatealgorithms;
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x12 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:ECT(0)"
  
- struct plpks_auth {
- 	u8 version;
-@@ -206,32 +214,149 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
- static int _plpks_get_config(void)
- {
- 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
--	struct {
-+	struct config {
- 		u8 version;
- 		u8 flags;
--		__be32 rsvd0;
-+		__be16 rsvd0;
-+		__be16 objoverhead;
- 		__be16 maxpwsize;
- 		__be16 maxobjlabelsize;
- 		__be16 maxobjsize;
- 		__be32 totalsize;
- 		__be32 usedspace;
- 		__be32 supportedpolicies;
--		__be64 rsvd1;
--	} __packed config;
-+		__be32 maxlargeobjectsize;
-+		__be64 signedupdatealgorithms;
-+		u8 rsvd1[476];
-+	} __packed * config;
- 	size_t size;
--	int rc;
-+	int rc = 0;
-+
-+	size = sizeof(*config);
-+
-+	// Config struct must not cross a page boundary. So long as the struct
-+	// size is a power of 2, this should be fine as alignment is guaranteed
-+	config = kzalloc(size, GFP_KERNEL);
-+	if (!config) {
-+		rc = -ENOMEM;
-+		goto err;
-+	}
-+
-+	rc = plpar_hcall(H_PKS_GET_CONFIG, retbuf, virt_to_phys(config), size);
-+
-+	if (rc != H_SUCCESS) {
-+		rc = pseries_status_to_err(rc);
-+		goto err;
-+	}
-+
-+	version = config->version;
-+	objoverhead = be16_to_cpu(config->objoverhead);
-+	maxpwsize = be16_to_cpu(config->maxpwsize);
-+	maxobjsize = be16_to_cpu(config->maxobjsize);
-+	maxobjlabelsize = be16_to_cpu(config->maxobjlabelsize);
-+	totalsize = be32_to_cpu(config->totalsize);
-+	usedspace = be32_to_cpu(config->usedspace);
-+	supportedpolicies = be32_to_cpu(config->supportedpolicies);
-+	maxlargeobjectsize = be32_to_cpu(config->maxlargeobjectsize);
-+	signedupdatealgorithms = be64_to_cpu(config->signedupdatealgorithms);
-+
-+	// Validate that the numbers we get back match the requirements of the spec
-+	if (maxpwsize < 32) {
-+		pr_err("Invalid Max Password Size received from hypervisor (%d < 32)\n", maxpwsize);
-+		rc = -EIO;
-+		goto err;
-+	}
-+
-+	if (maxobjlabelsize < 255) {
-+		pr_err("Invalid Max Object Label Size received from hypervisor (%d < 255)\n",
-+		       maxobjlabelsize);
-+		rc = -EIO;
-+		goto err;
-+	}
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x13 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:CE"
  
--	size = sizeof(config);
-+	if (totalsize < 4096) {
-+		pr_err("Invalid Total Size received from hypervisor (%d < 4096)\n", totalsize);
-+		rc = -EIO;
-+		goto err;
-+	}
-+
-+	if (version >= 3 && maxlargeobjectsize >= 65536 && maxobjsize != 0xFFFF) {
-+		pr_err("Invalid Max Object Size (0x%x != 0xFFFF)\n", maxobjsize);
-+		rc = -EIO;
-+		goto err;
-+	}
-+
-+err:
-+	kfree(config);
-+	return rc;
-+}
-+
-+u8 plpks_get_version(void)
-+{
-+	return version;
-+}
+ 	# Unknown DSCP should match the generic route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x14 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:Not-ECT"
  
--	rc = plpar_hcall(H_PKS_GET_CONFIG, retbuf, virt_to_phys(&config), size);
-+u16 plpks_get_objoverhead(void)
-+{
-+	return objoverhead;
-+}
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x15 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:ECT(1)"
  
--	if (rc != H_SUCCESS)
--		return pseries_status_to_err(rc);
-+u16 plpks_get_maxpwsize(void)
-+{
-+	return maxpwsize;
-+}
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x16 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:ECT(0)"
  
--	maxpwsize = be16_to_cpu(config.maxpwsize);
--	maxobjsize = be16_to_cpu(config.maxobjsize);
-+u16 plpks_get_maxobjectsize(void)
-+{
-+	return maxobjsize;
-+}
-+
-+u16 plpks_get_maxobjectlabelsize(void)
-+{
-+	return maxobjlabelsize;
-+}
-+
-+u32 plpks_get_totalsize(void)
-+{
-+	return totalsize;
-+}
-+
-+u32 plpks_get_usedspace(void)
-+{
-+	// Unlike other config values, usedspace regularly changes as objects
-+	// are updated, so we need to refresh.
-+	int rc = _plpks_get_config();
-+	if (rc) {
-+		pr_err("Couldn't get config, rc: %d\n", rc);
-+		return 0;
-+	}
-+	return usedspace;
-+}
-+
-+u32 plpks_get_supportedpolicies(void)
-+{
-+	return supportedpolicies;
-+}
-+
-+u32 plpks_get_maxlargeobjectsize(void)
-+{
-+	return maxlargeobjectsize;
-+}
-+
-+u64 plpks_get_signedupdatealgorithms(void)
-+{
-+	return signedupdatealgorithms;
-+}
-+
-+bool plpks_is_available(void)
-+{
-+	int rc;
-+
-+	rc = _plpks_get_config();
-+	if (rc)
-+		return false;
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x17 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:CE"
  
--	return 0;
-+	return true;
+ 	# Null DSCP should match the generic route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x00 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:Not-ECT"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x01 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:ECT(1)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x02 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:ECT(0)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x03 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:CE"
  }
  
- static int plpks_confirm_object_flushed(struct label *label,
 -- 
 2.43.0
 
