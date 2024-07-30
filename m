@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D354941DF6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E28941BF4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0806D289AA6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 053ABB22682
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2441A76B2;
-	Tue, 30 Jul 2024 17:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA7B83A17;
+	Tue, 30 Jul 2024 17:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3immezD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNDhzOQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668DF1A76A1;
-	Tue, 30 Jul 2024 17:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DBC156F30;
+	Tue, 30 Jul 2024 17:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360224; cv=none; b=kv0NRuwbPkWQd4k7uOsNjozWdJxd4Lood2wad9ruJLRiI8sSM2czX6mJRoHoVQlHb9K8jcImryhR73Iuj4B2tX06AEmsiixifezDnQZyuUibr5S7Bhwia9MjP7rOll8rQHwbhxGfAZD5w/kZqmdTcpav9OEKTgLRzdriWLCiTyw=
+	t=1722358882; cv=none; b=Ay1hacyLL/qB5VLtwhOCYr22DC8gIl8rZaQghOdhaZQiTFS24PMJnfomJfP7TPnwwWHtWE1QM2aWqBwlwW6HfFqNyjKoEBV1wWRrqC1cgrEdGFjQr8jYtbj3GFv8sTh8fCN6Nvjyw5REpCut8n7Kkm+mOTFD/HL5elF4lD1BNFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360224; c=relaxed/simple;
-	bh=eafieAQvpRzMF+MNzRbcjzzoQL3xJhOdWx+oKvAbpn8=;
+	s=arc-20240116; t=1722358882; c=relaxed/simple;
+	bh=aMR8BXxnWvIe8CUxwNlwdjTg10hLJPAEUU9gqKozXwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gQmWinrKo6ZnacXrg/7XwPzaA66QG2MDVvBl6foQwsBRvTnjO0UO8hHKTadaqniyB9qF8eHt9NWfwK1D9qzzqWKmqE7m7yZwWmPbL7gTGtjWskt7c6rPNq4+fUeQ3HSAtmcweILzYD12ZI8ckmdh0Q0RQJtjKck+ImiqLaxl2rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3immezD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B22C32782;
-	Tue, 30 Jul 2024 17:23:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XltBL8NMd6qZwj0FC0yy7IJixMyfqFeunG4lgYLq7lv2IbPZLFlnrZfL228BdXOIKrkXUXrwXPHrMye8GMChW2sHmSY/hlB0A2AG9xy/iP3ZNXB2hSJhfz7JQqOcUgW1lQIWzgUIuceduf8FkBbT1jMbdCIKGz3ZnIm0p+xueyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNDhzOQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F34C32782;
+	Tue, 30 Jul 2024 17:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360224;
-	bh=eafieAQvpRzMF+MNzRbcjzzoQL3xJhOdWx+oKvAbpn8=;
+	s=korg; t=1722358882;
+	bh=aMR8BXxnWvIe8CUxwNlwdjTg10hLJPAEUU9gqKozXwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3immezD+KLjLh0imrvyU9S4NEyfAZdLtUQ6AA5K55++knIoavyzeO/3za2b0VI8H
-	 okdcYXM+WjAB6eY0nR388iBCnIjE44b69Dm4q0K/IIOZgt3ZUHL7MlCyz0NZdmUcWi
-	 tsZ+7VFNE9y07dVGUTP1u/u5bQApM7k915eIdE5o=
+	b=SNDhzOQRDpcxwu6298+o0SFFzy2w/T1j+IcsEGgcB5tA0MsUKUL5b2n7hd4guUhLv
+	 6K0TxZijwjObTvSeDyJW8rT+qshzItbtWF4XS7+OArDMn6l00jaCKPrvAf+IsYN6he
+	 Y0WvRJlFcloUvp7to9TdxKlewdZh5oWxMTqwVhW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.10 635/809] hwrng: amd - Convert PCIBIOS_* return codes to errnos
-Date: Tue, 30 Jul 2024 17:48:31 +0200
-Message-ID: <20240730151749.924647604@linuxfoundation.org>
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 405/568] leds: ss4200: Convert PCIBIOS_* return codes to errnos
+Date: Tue, 30 Jul 2024 17:48:32 +0200
+Message-ID: <20240730151655.700440694@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 14cba6ace79627a57fb9058582b03f0ed3832390 upstream.
+commit ce068e83976140badb19c7f1307926b4b562fac4 upstream.
 
-amd_rng_mod_init() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is then returned as is but amd_rng_mod_init() is
-a module_init() function that should return normal errnos.
+ich7_lpc_probe() uses pci_read_config_dword() that returns PCIBIOS_*
+codes. The error handling code assumes incorrectly it's a normal errno
+and checks for < 0. The return code is returned from the probe function
+as is but probe functions should return normal errnos.
 
-Convert PCIBIOS_* returns code using pcibios_err_to_errno() into normal
-errno before returning it.
+Remove < 0 from the check and convert PCIBIOS_* returns code using
+pcibios_err_to_errno() into normal errno before returning it.
 
-Fixes: 96d63c0297cc ("[PATCH] Add AMD HW RNG driver")
-Cc: stable@vger.kernel.org
+Fixes: a328e95b82c1 ("leds: LED driver for Intel NAS SS4200 series (v5)")
+Cc:  <stable@vger.kernel.org>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/r/20240527132700.14260-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/hw_random/amd-rng.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/leds/leds-ss4200.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/char/hw_random/amd-rng.c
-+++ b/drivers/char/hw_random/amd-rng.c
-@@ -143,8 +143,10 @@ static int __init amd_rng_mod_init(void)
+--- a/drivers/leds/leds-ss4200.c
++++ b/drivers/leds/leds-ss4200.c
+@@ -356,8 +356,10 @@ static int ich7_lpc_probe(struct pci_dev
  
- found:
- 	err = pci_read_config_dword(pdev, 0x58, &pmbase);
--	if (err)
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
- 		goto put_dev;
+ 	nas_gpio_pci_dev = dev;
+ 	status = pci_read_config_dword(dev, PMBASE, &g_pm_io_base);
+-	if (status)
++	if (status) {
++		status = pcibios_err_to_errno(status);
+ 		goto out;
 +	}
+ 	g_pm_io_base &= 0x00000ff80;
  
- 	pmbase &= 0x0000FF00;
- 	if (pmbase == 0) {
+ 	status = pci_read_config_dword(dev, GPIO_CTRL, &gc);
+@@ -369,8 +371,9 @@ static int ich7_lpc_probe(struct pci_dev
+ 	}
+ 
+ 	status = pci_read_config_dword(dev, GPIO_BASE, &nas_gpio_io_base);
+-	if (0 > status) {
++	if (status) {
+ 		dev_info(&dev->dev, "Unable to read GPIOBASE.\n");
++		status = pcibios_err_to_errno(status);
+ 		goto out;
+ 	}
+ 	dev_dbg(&dev->dev, ": GPIOBASE = 0x%08x\n", nas_gpio_io_base);
 
 
 
