@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42B2941710
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1A3941716
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21DD11C22F32
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB76D1C23197
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8631F18C936;
-	Tue, 30 Jul 2024 16:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF1918800E;
+	Tue, 30 Jul 2024 16:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYS1imHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVYyIDGy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420C118C91E;
-	Tue, 30 Jul 2024 16:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C131B18455E;
+	Tue, 30 Jul 2024 16:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355531; cv=none; b=kfd6kC9EqU0p+fKatj8miMpJRubdvuEF1wOdNQo/FiLUF+ZANA5n6c4VICKS4Myg0eCXn+ykHSgaVGSrTpTT74c7hkyDtaVTYQ/TQc6jX049TxyHkgr9rZbVThdrgyD5/4HSAWS6QqC2HdDBV32R6saju/kEVXr/mundJySkYxs=
+	t=1722355541; cv=none; b=sPFuLtMMsBjSbWdokWtEv/obFWUxeMhCVGOndu88s4Aat7LJ4/pESRQTwgQuVOOsIFqXSUo3cGT9blZUmDfNEcOWHMgQr5ejc9acRFSxBzQ+u1ZKQ1zBO/mUy3md4nUEewV1iotPsMdA7rKmSFNW/Cae1zA/qbzNWW2xXlSYVFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355531; c=relaxed/simple;
-	bh=AaF+o7rVfGfjvXv0ya5PiT2LPGFAp6ldfTbDSWdyHsQ=;
+	s=arc-20240116; t=1722355541; c=relaxed/simple;
+	bh=bCpkECuQ5c94ztaRNaGmJOv1wIg3YYnOjjVt1U28B8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e48HgLoFwHys2fX5hY5IjHOKOhReHZtz+437a1nAAWqEJMlRgyW4IOrdV4pnfOmqQOlcBnNJSFJFp167z9Tpopte1ELouPTemsOM0HLAbDuStQaQlaBnABxWj1a/3HA3JxBQQQutNXAi6eSzRMRRGv6atXPGwEsrzXcNDeutMgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYS1imHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FE2C4AF0A;
-	Tue, 30 Jul 2024 16:05:30 +0000 (UTC)
+	 MIME-Version; b=jd++/Dlk1BPps+uBHOZ42ue5hdpBOpIBrEl6rsu6RD5nOXZ+8WOkLQRPuZ1KenOQAWU877z9b+RKKVP5+g/K5EEYHowj8ILPlQjG+KlE/AZeQ8uISIt1vjz3Dgd7RFkqDU/nNjQONhR2muk/b69kGbug07NC20S23X08SDwLhNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVYyIDGy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EC0C32782;
+	Tue, 30 Jul 2024 16:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355531;
-	bh=AaF+o7rVfGfjvXv0ya5PiT2LPGFAp6ldfTbDSWdyHsQ=;
+	s=korg; t=1722355541;
+	bh=bCpkECuQ5c94ztaRNaGmJOv1wIg3YYnOjjVt1U28B8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYS1imHxWAN+KuKQPV9wZug2UmvUd29f7kcLvgAwQ64vWn+oldessC3XNok5RS2pg
-	 7PsVZikLGY6MPhEgefW0WIg2/2o+HHHyXt1W/4t8jqIua8OuQncaKE5nSm+8F79DG9
-	 1/1Po/VP90B1yLn51fIx2BFk9LxhYHaanMeH+4to=
+	b=CVYyIDGy7iz1rK6YwxmZ1WVn10ZQooHgx9+phGjrq0oeWJYEuah3XoM2pqwL8koJj
+	 3qPHB5nZehVl3c5JCbWdhxFKJf50z3l8xYt/8mYNrFaYnXsC1wPTUw3lSZAkRVsjss
+	 lm5A4/tMRbeqFZqz4LsFZXW+MPpJLYDlgECChSOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Michael Walle <mwalle@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/568] ARM: dts: imx6qdl-kontron-samx6i: fix phy-mode
-Date: Tue, 30 Jul 2024 17:42:53 +0200
-Message-ID: <20240730151642.440768901@linuxfoundation.org>
+Subject: [PATCH 6.6 067/568] ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset
+Date: Tue, 30 Jul 2024 17:42:54 +0200
+Message-ID: <20240730151642.478905868@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -68,33 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit 0df3c7d7a73d75153090637392c0b73a63cdc24a ]
+[ Upstream commit edfea889a049abe80f0d55c0365bf60fbade272f ]
 
-The i.MX6 cannot add any RGMII delays. The PHY has to add both the RX
-and TX delays on the RGMII interface. Fix the interface mode. While at
-it, use the new phy-connection-type property name.
+The PHY reset line is connected to both the SoC (GPIO1_25) and
+the CPLD. We must not use the GPIO1_25 as it will drive against
+the output buffer of the CPLD. Instead there is another GPIO
+(GPIO2_01), an input to the CPLD, which will tell the CPLD to
+assert the PHY reset line.
 
+Fixes: 2a51f9dae13d ("ARM: dts: imx6qdl-kontron-samx6i: Add iMX6-based Kontron SMARC-sAMX6i module")
 Fixes: 5694eed98cca ("ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node")
 Signed-off-by: Michael Walle <mwalle@kernel.org>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-index 85aeebc9485dd..d8c1dfb8c9abb 100644
+index d8c1dfb8c9abb..d6c049b9a9c69 100644
 --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
 +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-@@ -259,7 +259,7 @@ smarc_flash: flash@0 {
- &fec {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_enet>;
--	phy-mode = "rgmii";
-+	phy-connection-type = "rgmii-id";
- 	phy-handle = <&ethphy>;
+@@ -269,7 +269,7 @@ mdio {
+ 		ethphy: ethernet-phy@1 {
+ 			compatible = "ethernet-phy-ieee802.3-c22";
+ 			reg = <1>;
+-			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
++			reset-gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
+ 			reset-assert-us = <1000>;
+ 		};
+ 	};
+@@ -516,7 +516,7 @@ MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL 0x1b0b0
+ 			MX6QDL_PAD_ENET_MDIO__ENET_MDIO       0x1b0b0
+ 			MX6QDL_PAD_ENET_MDC__ENET_MDC         0x1b0b0
+ 			MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK  0x1b0b0
+-			MX6QDL_PAD_ENET_CRS_DV__GPIO1_IO25    0x1b0b0 /* RST_GBE0_PHY# */
++			MX6QDL_PAD_NANDF_D1__GPIO2_IO01       0x1b0b0 /* RST_GBE0_PHY# */
+ 		>;
+ 	};
  
- 	mdio {
 -- 
 2.43.0
 
