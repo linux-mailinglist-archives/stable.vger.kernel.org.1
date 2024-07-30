@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A884A9417A8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98921941CD3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA7A61C21646
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CB281F246DF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E2518E04D;
-	Tue, 30 Jul 2024 16:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A1A18E053;
+	Tue, 30 Jul 2024 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gK5KBDc+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X92S3iMD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3409418E04A;
-	Tue, 30 Jul 2024 16:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5809118E04F;
+	Tue, 30 Jul 2024 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355860; cv=none; b=qb9G7+XIAlGP+TGU4AaDyxJKPKzDb61todF7UceIYUTqte2isnpL7ADIWLmtreq1uaYGGfZldIlqbzL87r6yNX/Y0Myo0RskOOuYS0Gi0aQV5eRKRl1jrAx8daNbvQnuw6kdoGrndkfed3qGSpIDtfbeDEqdSHNJD8yH0aGcpVA=
+	t=1722359339; cv=none; b=YSzETivkmgR3UNhNfMVbpxhcs43I6o5g6bUpNnYweoPwdFECJyNj0HQ/284eAg5c3X1MdieA3FLMpanK66FEPugNoCW0c5lOH0IMOKKJaXwFJJjS7DGCHHyT5+TOqm+OEypGuIgYT9D/vd/1L6iTL0qkv6JE671/w2JvYuiq+Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355860; c=relaxed/simple;
-	bh=45XmFBfQagen9Cew1nv1ObvGZ/pOsvs83w4EcNxFkis=;
+	s=arc-20240116; t=1722359339; c=relaxed/simple;
+	bh=3FwC84y5n2gSwgfu69PkjsE7MUcYAr0YWjOVx7LZBpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+YRknINsySwtn0mzFv58gP+RpcAMY8fPimTjVfwmyC18yyflGBRI2P/gYGWIUdgYcTeEzJs4sD0QnGFrpmQuvoCX50oYclPT6l4BqA4F/6ttjb4Ya3SqK/DkJJ9M0L6wiOYmF0pb/eedEg4jWubUqRTxCmEhaRyLQ12Ne4as0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gK5KBDc+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C68CC32782;
-	Tue, 30 Jul 2024 16:10:59 +0000 (UTC)
+	 MIME-Version; b=mMXnqNXT4cIFlsKSwGuUjp6jX0rlngOSoLtS6X5lNvADKRV7h3/NKJtJyS5vFXAorPz+pQZTWHV6VtK6/i4v2ORHzHtHiIazCZNm++7YAA8LtO6SyKlw5eeH9n4SllbOvgsJynC0jVIUePIGwhQ+8As5CJSJI96YB6MzGF0tFZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X92S3iMD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA8CC32782;
+	Tue, 30 Jul 2024 17:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355859;
-	bh=45XmFBfQagen9Cew1nv1ObvGZ/pOsvs83w4EcNxFkis=;
+	s=korg; t=1722359338;
+	bh=3FwC84y5n2gSwgfu69PkjsE7MUcYAr0YWjOVx7LZBpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gK5KBDc+HTbIn/jjt4PMMTclrkOv8j6GyY1hN3gnl/V0vpWkDZosR09xc7hCZvjS8
-	 F9EnuPv/CmdO2woP9ex5dyFcHOsG8J2bjfXM6UyEra3xnBW8LvKAWw2ezynTIywY2e
-	 8233TEGxxJ8uzfRFpn7WiarCpbKtPGVULUznOkD8=
+	b=X92S3iMDCiQmNeeWTFCvjcIMvgtd6Eatt55DChQH77z5b2WrWRqjNRjS3emedFIPY
+	 3kSJ4tQJAjCzd4aMYpk5LCKGroQ59nhm5xILKTRGBAzuipz0WfwDmE4ULN3T17D+Aa
+	 4Uy77HPFFrD3/5QKNsIdikbyX4iU2ISAYosSfCZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
+	David Ahern <dsahern@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/440] perf/x86/intel/cstate: Fix Alderlake/Raptorlake/Meteorlake
+Subject: [PATCH 6.10 470/809] RDMA: Fix netdev tracker in ib_device_set_netdev
 Date: Tue, 30 Jul 2024 17:45:46 +0200
-Message-ID: <20240730151620.305351733@linuxfoundation.org>
+Message-ID: <20240730151743.300162249@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: David Ahern <dsahern@kernel.org>
 
-[ Upstream commit 2c3aedd9db6295619d21e50ad29efda614023bf1 ]
+[ Upstream commit 2043a14fb3de9d88440b21590f714306fcbbd55f ]
 
-For Alderlake, the spec changes after the patch submitted and PC7/PC9
-are removed.
+If a netdev has already been assigned, ib_device_set_netdev needs to
+release the reference on the older netdev but it is mistakenly being
+called for the new netdev. Fix it and in the process use netdev_put
+to be symmetrical with the netdev_hold.
 
-Raptorlake and Meteorlake, which copy the Alderlake cstate PMU, also
-don't have PC7/PC9.
-
-Remove PC7/PC9 support for Alderlake/Raptorlake/Meteorlake.
-
-Fixes: d0ca946bcf84 ("perf/x86/cstate: Add Alder Lake CPU support")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20240628031758.43103-2-rui.zhang@intel.com
+Fixes: 09f530f0c6d6 ("RDMA: Add netdevice_tracker to ib_device_set_netdev()")
+Signed-off-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240710203310.19317-1-dsahern@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/cstate.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/infiniband/core/device.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index 551741e79e038..8175bff77efa7 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -80,7 +80,7 @@
-  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
-  *			       perf code: 0x03
-  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,CNL,
-- *						KBL,CML,ICL,TGL,RKL,ADL,RPL,MTL
-+ *						KBL,CML,ICL,TGL,RKL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C8_RESIDENCY:  Package C8 Residency Counter.
-  *			       perf code: 0x04
-@@ -89,8 +89,7 @@
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C9_RESIDENCY:  Package C9 Residency Counter.
-  *			       perf code: 0x05
-- *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
-- *						ADL,RPL,MTL
-+ *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C10_RESIDENCY: Package C10 Residency Counter.
-  *			       perf code: 0x06
-@@ -584,9 +583,7 @@ static const struct cstate_model adl_cstates __initconst = {
- 	.pkg_events		= BIT(PERF_CSTATE_PKG_C2_RES) |
- 				  BIT(PERF_CSTATE_PKG_C3_RES) |
- 				  BIT(PERF_CSTATE_PKG_C6_RES) |
--				  BIT(PERF_CSTATE_PKG_C7_RES) |
- 				  BIT(PERF_CSTATE_PKG_C8_RES) |
--				  BIT(PERF_CSTATE_PKG_C9_RES) |
- 				  BIT(PERF_CSTATE_PKG_C10_RES),
- };
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index e0cff28bb0ef1..46d1c2c32d719 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -2166,16 +2166,12 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
+ 		return 0;
+ 	}
  
+-	if (old_ndev)
+-		netdev_tracker_free(ndev, &pdata->netdev_tracker);
+-	if (ndev)
+-		netdev_hold(ndev, &pdata->netdev_tracker, GFP_ATOMIC);
+ 	rcu_assign_pointer(pdata->netdev, ndev);
++	netdev_put(old_ndev, &pdata->netdev_tracker);
++	netdev_hold(ndev, &pdata->netdev_tracker, GFP_ATOMIC);
+ 	spin_unlock_irqrestore(&pdata->netdev_lock, flags);
+ 
+ 	add_ndev_hash(pdata);
+-	__dev_put(old_ndev);
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL(ib_device_set_netdev);
 -- 
 2.43.0
 
