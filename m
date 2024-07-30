@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A528941B8F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB2094193F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEE6E282993
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14DC71F24BB2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C33318B475;
-	Tue, 30 Jul 2024 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7E018B466;
+	Tue, 30 Jul 2024 16:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkKgoc8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsKpDihQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AB318990B;
-	Tue, 30 Jul 2024 16:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F648BE8;
+	Tue, 30 Jul 2024 16:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358580; cv=none; b=TmkTcs0+o4wexA3S+PoRX0vaSrs50Iehwu7a17SoRLYtxBqwp2LHopz+LPTCeOYN7pziBL9krJqU/FHjq3eXsASEaSZp5aMYzhqH+W4/dSQGP5MTBwS7sS3oZ+h/J9s95Q14acd7JwIeacrqNo6Kx/z5JQZdkE1M34bo4DR0CWs=
+	t=1722357024; cv=none; b=SNJabAthH+4+N4Fm/HjEMLdlkJssgbnaRhF9D4OsWUU3J1cDa5rR8HSeo2IkknbUWCwVb0oTJH9wLkmP976mvzEZP0CUT15hzHkJxvx1k8D7YLo1IScocUiCfeBYM5RCcuFrGNtZuJTW56Z16CgFyZlCHprrCoF/b+727Mn+FSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358580; c=relaxed/simple;
-	bh=BAGqH2SF3DRbAe4Zv0Zt2WM0DqhV+5z6lQaCRcAb6IY=;
+	s=arc-20240116; t=1722357024; c=relaxed/simple;
+	bh=JlU3KGqtlPiKXG4u2HWbUVfroFCOWXFtTF1pM31nNp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swZcYddLcoIl+unWuNqyNRwqVf6DsV9ABAesvUUrqQIBdDbCQjqk18cxmtP7O8sT9IZp5LjYgqaejvB7NzXUiMXcLFtTtlZKlPwtuC4mZtAbTMYaUwxqeyeALxFHIEJJylV4IN1Wl81MYsv8V8HVaAo/eXICnfjSR52vxc6vi4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkKgoc8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D3FC32782;
-	Tue, 30 Jul 2024 16:56:19 +0000 (UTC)
+	 MIME-Version; b=rrrx1cZNbDSjhcB8EyrKQqh/R8jVUI8M/myR/E5jF3yRYRrstXU5pvxEu+WoAF4LP3VDGWO9DnLBHU3OJxgURaw2eazWqgJGl/P/YmVmi73uSUvSu9Ii4nT2FunV44ADr7n8dWbU06I8PavUq7QLl4LvaUkm3UfmHQCgyNV9xJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsKpDihQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE79C32782;
+	Tue, 30 Jul 2024 16:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358580;
-	bh=BAGqH2SF3DRbAe4Zv0Zt2WM0DqhV+5z6lQaCRcAb6IY=;
+	s=korg; t=1722357023;
+	bh=JlU3KGqtlPiKXG4u2HWbUVfroFCOWXFtTF1pM31nNp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QkKgoc8xv8BI5Yt7ShOEb7XmUREgx9LY+j00JApmSN84Cl0+BZKnpHXkdgpDkut96
-	 t5G9Hez5qd2tagFrK1lhByzXnUauIhBvjiOic627eNfiHJRwod8KzdQxCzXD24uCjr
-	 RHxAd3yj8KSCiTJ3rs0zuOZSAhxt+bJ+qrU5T/SA=
+	b=JsKpDihQBQx/DqBQHlXfdqPIFEk3nshwnKhmS8g0YWkQpxvcZLvG9CEaGJ+WR7fmK
+	 zLF4M0j+kw3zlOhC5cVN4WAn/FqUzz/3JRKKe7gF8TY6t79Rtg3ZS3ieH04Ggvce0y
+	 +uOO+rm7gnOVPygVHU64LZdrdpN05PGtbXAPv69Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: [PATCH 6.6 376/568] fuse: verify {g,u}id mount options correctly
-Date: Tue, 30 Jul 2024 17:48:03 +0200
-Message-ID: <20240730151654.559777043@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 251/440] fs/ntfs3: Fix field-spanning write in INDEX_HDR
+Date: Tue, 30 Jul 2024 17:48:04 +0200
+Message-ID: <20240730151625.652514156@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 525bd65aa759ec320af1dc06e114ed69733e9e23 upstream.
+[ Upstream commit 2f3e176fee66ac86ae387787bf06457b101d9f7a ]
 
-As was done in
-0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
-we need to validate that the requested uid and/or gid is representable in
-the filesystem's idmapping.
+Fields flags and res[3] replaced with one 4 byte flags.
 
-Cribbing from the above commit log,
-
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, fuse has been doing the correct thing.
-But since fuse is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock.
-
-Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/8f07d45d-c806-484d-a2e3-7a2199df1cd2@redhat.com
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4534a70b7056 ("fs/ntfs3: Add headers and misc files")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/inode.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ fs/ntfs3/index.c | 4 ++--
+ fs/ntfs3/ntfs.h  | 9 +++++----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -751,6 +751,8 @@ static int fuse_parse_param(struct fs_co
- 	struct fs_parse_result result;
- 	struct fuse_fs_context *ctx = fsc->fs_private;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 730629235ffa1..9c36e0f3468d7 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -979,7 +979,7 @@ static struct indx_node *indx_new(struct ntfs_index *indx,
+ 		hdr->used =
+ 			cpu_to_le32(eo + sizeof(struct NTFS_DE) + sizeof(u64));
+ 		de_set_vbn_le(e, *sub_vbn);
+-		hdr->flags = 1;
++		hdr->flags = NTFS_INDEX_HDR_HAS_SUBNODES;
+ 	} else {
+ 		e->size = cpu_to_le16(sizeof(struct NTFS_DE));
+ 		hdr->used = cpu_to_le32(eo + sizeof(struct NTFS_DE));
+@@ -1677,7 +1677,7 @@ static int indx_insert_into_root(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 	e->size = cpu_to_le16(sizeof(struct NTFS_DE) + sizeof(u64));
+ 	e->flags = NTFS_IE_HAS_SUBNODES | NTFS_IE_LAST;
  
- 	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
- 		/*
-@@ -795,16 +797,30 @@ static int fuse_parse_param(struct fs_co
- 		break;
+-	hdr->flags = 1;
++	hdr->flags = NTFS_INDEX_HDR_HAS_SUBNODES;
+ 	hdr->used = hdr->total =
+ 		cpu_to_le32(new_root_size - offsetof(struct INDEX_ROOT, ihdr));
  
- 	case OPT_USER_ID:
--		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
--		if (!uid_valid(ctx->user_id))
-+		kuid =  make_kuid(fsc->user_ns, result.uint_32);
-+		if (!uid_valid(kuid))
- 			return invalfc(fsc, "Invalid user_id");
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fsc->user_ns, kuid))
-+			return invalfc(fsc, "Invalid user_id");
-+		ctx->user_id = kuid;
- 		ctx->user_id_present = true;
- 		break;
+diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
+index b992ec42a1d92..625f2b52bd586 100644
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -686,14 +686,15 @@ static inline bool de_has_vcn_ex(const struct NTFS_DE *e)
+ 	      offsetof(struct ATTR_FILE_NAME, name) + \
+ 	      NTFS_NAME_LEN * sizeof(short), 8)
  
- 	case OPT_GROUP_ID:
--		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
--		if (!gid_valid(ctx->group_id))
-+		kgid = make_kgid(fsc->user_ns, result.uint_32);;
-+		if (!gid_valid(kgid))
-+			return invalfc(fsc, "Invalid group_id");
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fsc->user_ns, kgid))
- 			return invalfc(fsc, "Invalid group_id");
-+		ctx->group_id = kgid;
- 		ctx->group_id_present = true;
- 		break;
++#define NTFS_INDEX_HDR_HAS_SUBNODES cpu_to_le32(1)
++
+ struct INDEX_HDR {
+ 	__le32 de_off;	// 0x00: The offset from the start of this structure
+ 			// to the first NTFS_DE.
+ 	__le32 used;	// 0x04: The size of this structure plus all
+ 			// entries (quad-word aligned).
+ 	__le32 total;	// 0x08: The allocated size of for this structure plus all entries.
+-	u8 flags;	// 0x0C: 0x00 = Small directory, 0x01 = Large directory.
+-	u8 res[3];
++	__le32 flags;	// 0x0C: 0x00 = Small directory, 0x01 = Large directory.
  
+ 	//
+ 	// de_off + used <= total
+@@ -740,7 +741,7 @@ static inline struct NTFS_DE *hdr_next_de(const struct INDEX_HDR *hdr,
+ 
+ static inline bool hdr_has_subnode(const struct INDEX_HDR *hdr)
+ {
+-	return hdr->flags & 1;
++	return hdr->flags & NTFS_INDEX_HDR_HAS_SUBNODES;
+ }
+ 
+ struct INDEX_BUFFER {
+@@ -760,7 +761,7 @@ static inline bool ib_is_empty(const struct INDEX_BUFFER *ib)
+ 
+ static inline bool ib_is_leaf(const struct INDEX_BUFFER *ib)
+ {
+-	return !(ib->ihdr.flags & 1);
++	return !(ib->ihdr.flags & NTFS_INDEX_HDR_HAS_SUBNODES);
+ }
+ 
+ /* Index root structure ( 0x90 ). */
+-- 
+2.43.0
+
 
 
 
