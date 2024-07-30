@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3533941A52
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE446941C62
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45AB4B25809
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17695B21BE6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC40189502;
-	Tue, 30 Jul 2024 16:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FA5188003;
+	Tue, 30 Jul 2024 17:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP3tdXGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f55uz1Jp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A47F1A6192;
-	Tue, 30 Jul 2024 16:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496B61E86F;
+	Tue, 30 Jul 2024 17:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357095; cv=none; b=tWXL3/EqHKhsTvtJtaE3HwWAbnWsi6hjmpgrZmJtPNXpjlS98FXXhIhRAKVfygQ/GybmYijOCzc3QwbVR8iiynWIChv1uQK05DG98XT5M+EDhq4UD/clJi5bq+VIKYUZ92TWpVoIbzzZaHrRA3aXu4VB3v540fnQcB6wjr+7Mhk=
+	t=1722359188; cv=none; b=LGzuDm2tWneYdNqz64AOIVBdP0i0BclwVjqV0IaobfkC4LypozZG0UWKkonuf/bi86zPmKoUJFKlLjxygV4OfIbhsF3MofFqAKqBs1cK1uEN2L2gIusOgXGbgLfrE2ivQIOG6A2Lm3oSR1LuQfclbVcs6phnNFPFBFJLjLr9+Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357095; c=relaxed/simple;
-	bh=RgEOggoP/HO8civrs5ivWlzKnYQ6v9t2QZ273yjMBMQ=;
+	s=arc-20240116; t=1722359188; c=relaxed/simple;
+	bh=GgsKJhWcWuFmi8C1VO0Wtppk0wY59mAmgwrYZnrNMFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XywyM1inOanRqI4uPS/tclOgdqRrJQ6eNe2W4D7AZxn0iuE4fmY+bJv/vhtza4II0YHAUw+IkygmkiFTqlyk6Xlo7p+f3/ESLQ8EhuBVQz16Dw1kWWhpYsL2OZvCbW/UN93CncLL8BqeKhv1N6ES9jOgRYB2lRi7olNfTf/uLIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP3tdXGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D56EC32782;
-	Tue, 30 Jul 2024 16:31:34 +0000 (UTC)
+	 MIME-Version; b=k5stdjPYHHWnoAzYKdeYEfarN/WHPUpdth7jpJ3Bd/g24DZhTqlwNs3g5uEs/YPXnDkwXilBPKd61yJFgYB6MceRpTt/3x+9svovC0+w4XL1FHbkXEjGlE3fKvVBBZKCX8iD1Pabw8PdMxKLUmgdy0OOaIRUqRO9FZCemdlqYWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f55uz1Jp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE396C32782;
+	Tue, 30 Jul 2024 17:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357095;
-	bh=RgEOggoP/HO8civrs5ivWlzKnYQ6v9t2QZ273yjMBMQ=;
+	s=korg; t=1722359188;
+	bh=GgsKJhWcWuFmi8C1VO0Wtppk0wY59mAmgwrYZnrNMFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nP3tdXGtbu7SaCy2bxcip4/Gak+gPBNpRmH+3T/PVzi5pSoPXAtj63JJ/uQW2007J
-	 wpPvUYxLF3qeazwj8Jm1rpkdKJU6fNZ2wMtUsEd5vjx9WEFN3WtUiYxsdJDTFK0OmL
-	 H6fyODLXAoHoKTPtDwTQrjNR8AM8w04ePUkWtVNg=
+	b=f55uz1Jpfs7SKrX9la6JRmcQzZu8Vi304rGl/JS229yStZZeJGlxe3dUTBTH/ZHks
+	 UiNQ9wLDHVkr0ySbbL+d6guMj3jxb45DqjgCkvV9g1FTcqdu9U/XfWx5wDa8LTCxtn
+	 mByLgv/bUU72JJm459BMneX1/9oRT4LYKk27JAPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Nivas Varadharajan Mugunthakumar <nivasx.varadharajan.mugunthakumar@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 217/568] drm/mediatek: Fix destination alpha error in OVL
+Subject: [PATCH 6.10 448/809] crypto: qat - extend scope of lock in adf_cfg_add_key_value_param()
 Date: Tue, 30 Jul 2024 17:45:24 +0200
-Message-ID: <20240730151648.352656851@linuxfoundation.org>
+Message-ID: <20240730151742.402358430@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Nivas Varadharajan Mugunthakumar <nivasx.varadharajan.mugunthakumar@intel.com>
 
-[ Upstream commit 31c0fbf67c8c0bb38d7fb21d404ea3dbd619d99e ]
+[ Upstream commit 6424da7d8b938fe66e7e771eaa949bc7b6c29c00 ]
 
-The formula of Coverage alpha blending is:
-dst.a = dst.a * (0xff - src.a * SCA / 0xff) / 0xff
-      + src.a * SCA / 0xff
+The function adf_cfg_add_key_value_param() attempts to access and modify
+the key value store of the driver without locking.
 
-dst.a: destination alpha
-src.a: pixel alpha
-SCA  : plane alpha
+Extend the scope of cfg->lock to avoid a potential race condition.
 
-When SCA = 0xff, the formula becomes:
-dst.a = dst.a * (0xff - src.a) + src.a
-
-This patch is to set the destination alpha (background) to 0xff:
-- When dst.a = 0    (before), dst.a = src.a
-- When dst.a = 0xff (after) , dst.a = 0xff * (0xff - src.a) + src.a
-
-According to the fomula above:
-- When src.a = 0   , dst.a = 0
-- When src.a = 0xff, dst.a = 0xff
-This two cases are just still correct. But when src.a is
-between 0 and 0xff, the difference starts to appear
-
-Fixes: 616443ca577e ("drm/mediatek: Move cmdq_reg info from struct mtk_ddp_comp to sub driver private data")
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-5-a9d62d2e2c7e@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 92bf269fbfe9 ("crypto: qat - change behaviour of adf_cfg_add_key_value_param()")
+Signed-off-by: Nivas Varadharajan Mugunthakumar <nivasx.varadharajan.mugunthakumar@intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/crypto/intel/qat/qat_common/adf_cfg.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-index 6c25fbc3db294..6f15069da8b02 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-@@ -72,6 +72,8 @@
- #define	OVL_CON_VIRT_FLIP	BIT(9)
- #define	OVL_CON_HORZ_FLIP	BIT(10)
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg.c b/drivers/crypto/intel/qat/qat_common/adf_cfg.c
+index 8836f015c39c4..2cf102ad4ca82 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_cfg.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_cfg.c
+@@ -290,17 +290,19 @@ int adf_cfg_add_key_value_param(struct adf_accel_dev *accel_dev,
+ 	 * 3. if the key exists with the same value, then return without doing
+ 	 *    anything (the newly created key_val is freed).
+ 	 */
++	down_write(&cfg->lock);
+ 	if (!adf_cfg_key_val_get(accel_dev, section_name, key, temp_val)) {
+ 		if (strncmp(temp_val, key_val->val, sizeof(temp_val))) {
+ 			adf_cfg_keyval_remove(key, section);
+ 		} else {
+ 			kfree(key_val);
+-			return 0;
++			goto out;
+ 		}
+ 	}
  
-+#define OVL_COLOR_ALPHA		GENMASK(31, 24)
+-	down_write(&cfg->lock);
+ 	adf_cfg_keyval_add(key_val, section);
 +
- static const u32 mt8173_formats[] = {
- 	DRM_FORMAT_XRGB8888,
- 	DRM_FORMAT_ARGB8888,
-@@ -274,7 +276,13 @@ void mtk_ovl_config(struct device *dev, unsigned int w,
- 	if (w != 0 && h != 0)
- 		mtk_ddp_write_relaxed(cmdq_pkt, h << 16 | w, &ovl->cmdq_reg, ovl->regs,
- 				      DISP_REG_OVL_ROI_SIZE);
--	mtk_ddp_write_relaxed(cmdq_pkt, 0x0, &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_ROI_BGCLR);
-+
-+	/*
-+	 * The background color must be opaque black (ARGB),
-+	 * otherwise the alpha blending will have no effect
-+	 */
-+	mtk_ddp_write_relaxed(cmdq_pkt, OVL_COLOR_ALPHA, &ovl->cmdq_reg,
-+			      ovl->regs, DISP_REG_OVL_ROI_BGCLR);
- 
- 	mtk_ddp_write(cmdq_pkt, 0x1, &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_RST);
- 	mtk_ddp_write(cmdq_pkt, 0x0, &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_RST);
++out:
+ 	up_write(&cfg->lock);
+ 	return 0;
+ }
 -- 
 2.43.0
 
