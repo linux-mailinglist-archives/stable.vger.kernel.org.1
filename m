@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476C7941777
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DCA3941ACC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77A671C23841
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FA941C22DFB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE001A3055;
-	Tue, 30 Jul 2024 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FD818B47D;
+	Tue, 30 Jul 2024 16:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdwyGPDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DseOtQ6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56F01A3031;
-	Tue, 30 Jul 2024 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A606F18B475;
+	Tue, 30 Jul 2024 16:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355745; cv=none; b=dTI8yWejx2LvxBItKwqY3wvylaZRVy2QgYrmJxJAmwb2y1DjS/UAjc7U8JIBcsR06v2ojjNE69K75Co0FQcQcjfVnLz2kkX0cPujMle/eNdl8Yzs6wvryPzm77g+8CDAZTNmjCvEKrVqOZ4Jes52r/T0jg/02juLWXKQZOHneaY=
+	t=1722358046; cv=none; b=ApRN1n1AhP3NxMPNH7uUZflzV4T7r3suzpB4Ip2HFClMbVkkeEjF70LW/f/UMsgdIRgpWw7bMtcQlaCMP4QZ1PcUqSCOAY6nILRo1pytOoyBLVQ+ALajy4GBJelN/tSMzMCukc/m7CG46bgGat6xT+5KViQaFUPqFDMDicWUNc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355745; c=relaxed/simple;
-	bh=+9BPq9QO8VO88mG4bB1lk0lWkFeEmZfU4hWGGKmXDWk=;
+	s=arc-20240116; t=1722358046; c=relaxed/simple;
+	bh=HWFtVE54UqW0I7jxp823+wGEr6wdagj/zpRE/tBs5E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSrwx9VOWyhDk0mWMNqPHNspv0LRbmDonDijQwl45FqINFQ1lqj+pyJulAJZbYSKhN08vJ83Ll6/rmiVDENFzMZVsyNgCmrEZkku5rjHX98JYi6T23hEUpwMxjuxbSs4f7Suio5I7ZFL7gYF+ylgRPwJ02qkojAdgigl5fGNFR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdwyGPDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1244AC4AF0A;
-	Tue, 30 Jul 2024 16:09:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BxuZHdHC2e5Log0SpdysTSLaICDmyQk/gF/+C4N4wMyQn/t13zM7GpJAPAPMlin+o0+Nnt/w+rIf8WKwoz3zoljwxxe9Zd0TeQeEUzDrcirv5oydcld8XMRESLhG75x1ztEdBRJYQmOABsYyzmqh4tCPffn6bUkV80LGfupl5xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DseOtQ6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA0FC4AF0A;
+	Tue, 30 Jul 2024 16:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355745;
-	bh=+9BPq9QO8VO88mG4bB1lk0lWkFeEmZfU4hWGGKmXDWk=;
+	s=korg; t=1722358046;
+	bh=HWFtVE54UqW0I7jxp823+wGEr6wdagj/zpRE/tBs5E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdwyGPDVJKkS4xDzETlDAhAnqt3A/TPW0iWgku2l1OFbmEzLhpOHD92d54539ALV0
-	 8AmUiYH+gs1+hOBwipsLbimbq9t4VxPYiltPdCGdmgKTS0MRcoqhvahHFysw5tuaon
-	 0EV0JEUK/EEDSTtalxa3te1la943uHga2egeMv0I=
+	b=DseOtQ6pGyd9wA9cRbKHLPQr2VFPSGk5X3pGATEutX/25wt99aCizY2OHtGAJk7bK
+	 Ir9+YhBF/7AqvKC//BOOz4F35f7z2sQQLlReySzRCYVDFPL1cD+GFuX0TCQLpx4lxP
+	 G7brBhvYrgClo2+A+35w4gwofdz8cfbz39AzKRLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/568] arm64: dts: renesas: r9a07g043u: Add missing hypervisor virtual timer IRQ
-Date: Tue, 30 Jul 2024 17:43:13 +0200
-Message-ID: <20240730151643.227515408@linuxfoundation.org>
+Subject: [PATCH 6.10 318/809] media: rcar-vin: Fix YUYV8_1X16 handling for CSI-2
+Date: Tue, 30 Jul 2024 17:43:14 +0200
+Message-ID: <20240730151737.164928020@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-[ Upstream commit 4036bae6dfd782d414040e7d714abc525b2e8792 ]
+[ Upstream commit 9caf253e8ad6f4c66f5591bac900f9f68b6b6620 ]
 
-Add the missing fifth interrupt to the device node that represents the
-ARM architected timer.  While at it, add an interrupt-names property for
-clarity,
+The YUYV8_1X16 and UYVY8_1X16 formats are treated as 'ITU-R
+BT.601/BT.1358 16-bit YCbCr-422 input' (YUV16 - 0x5) in the R-Car VIN
+driver and are thus disallowed when capturing frames from the R-Car
+CSI-2 interface according to the hardware manual.
 
-Fixes: cf40c9689e5109bf ("arm64: dts: renesas: Add initial DTSI for RZ/G2UL SoC")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/15cc7a7522b1658327a2bd0c4990d0131bbcb4d7.1718890849.git.geert+renesas@glider.be
+As the 1X16 format variants are meant to be used with serial busses they
+have to be treated as 'YCbCr-422 8-bit data input' (0x1) when capturing
+from CSI-2, which is a valid setting for CSI-2.
+
+Commit 78b3f9d75a62 ("media: rcar-vin: Add check that input interface
+and format are valid") disallowed capturing YUV16 when using the CSI-2
+interface. Fix this by using YUV8_BT601 for YCbCr422 when CSI-2 is in
+use.
+
+Fixes: 78b3f9d75a62 ("media: rcar-vin: Add check that input interface and format are valid")
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://lore.kernel.org/r/20240617161135.130719-2-jacopo.mondi@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r9a07g043u.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../media/platform/renesas/rcar-vin/rcar-dma.c   | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi b/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
-index b3f83d0ebcbb5..4b72de43b71cc 100644
---- a/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a07g043u.dtsi
-@@ -50,7 +50,10 @@ timer {
- 		interrupts-extended = <&gic GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
- 				      <&gic GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
- 				      <&gic GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
--				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
-+				      <&gic GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>,
-+				      <&gic GIC_PPI 12 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-names = "sec-phys", "phys", "virt", "hyp-phys",
-+				  "hyp-virt";
- 	};
- };
- 
+diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
+index e2c40abc6d3d1..21d5b2815e86a 100644
+--- a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
++++ b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
+@@ -742,12 +742,22 @@ static int rvin_setup(struct rvin_dev *vin)
+ 	 */
+ 	switch (vin->mbus_code) {
+ 	case MEDIA_BUS_FMT_YUYV8_1X16:
+-		/* BT.601/BT.1358 16bit YCbCr422 */
+-		vnmc |= VNMC_INF_YUV16;
++		if (vin->is_csi)
++			/* YCbCr422 8-bit */
++			vnmc |= VNMC_INF_YUV8_BT601;
++		else
++			/* BT.601/BT.1358 16bit YCbCr422 */
++			vnmc |= VNMC_INF_YUV16;
+ 		input_is_yuv = true;
+ 		break;
+ 	case MEDIA_BUS_FMT_UYVY8_1X16:
+-		vnmc |= VNMC_INF_YUV16 | VNMC_YCAL;
++		if (vin->is_csi)
++			/* YCbCr422 8-bit */
++			vnmc |= VNMC_INF_YUV8_BT601;
++		else
++			/* BT.601/BT.1358 16bit YCbCr422 */
++			vnmc |= VNMC_INF_YUV16;
++		vnmc |= VNMC_YCAL;
+ 		input_is_yuv = true;
+ 		break;
+ 	case MEDIA_BUS_FMT_UYVY8_2X8:
 -- 
 2.43.0
 
