@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-64248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0149F941D03
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2323A941AEE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A076A1F24C01
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 537751C20ACD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA981A76AE;
-	Tue, 30 Jul 2024 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210EB18455D;
+	Tue, 30 Jul 2024 16:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrfDr3Tv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHoUou6o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4781A76A8;
-	Tue, 30 Jul 2024 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46FC14831F;
+	Tue, 30 Jul 2024 16:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359489; cv=none; b=i2KvJDK3+smT4N+gRmDU/5/kT5dZ/pkte4k4kEqHMf8A6/0XjaQpa20V1zQYC8CPOqyLU00rqscWygzU0NdLZVhzF1u4j3rlxWI9Hfkw78RQ0MWUZOgaCT13K+P5B7iu8Z/xHEeB8Z1TXKsQFFc8nOWUFuh9hKPC2nCI9DLN3ek=
+	t=1722358151; cv=none; b=Db9Bjv28sRcaQ8iTQQb87cfpGPSHdi6jFpwjVnlR4m0JPrWzm5nJSm+9PycDQuID6vkuqYy7lStZCkiSgpwxPDukySMgTerXl6+WJoJjrwzaxRlwSnXCCkTJWigrQeFdYqCcvppPQof86u+TCvnfgXxUikh7cQu9Saaf5/jGkGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359489; c=relaxed/simple;
-	bh=57PrMI9Ppa7ad2VVpMJWKsUNW8YwOs5Uxi2YknwgqKM=;
+	s=arc-20240116; t=1722358151; c=relaxed/simple;
+	bh=sQRzzlc4RFcMiecadPA1fSrNcqiZbrQ0sQbvn6HCmLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r4bslmcw+q9uHUZNeXoDKGzC2UGScERYF+wH4/yPI/6GKNSxLceSNsviRMS36kw3bLKCMfi4eAkimusTbLl+EOHvDDXLditoAkK3syd6PjeeugMHnYSPKqCdA1cfxMCd44Kd1ppp0CRGszY6qH74INs0dEhqSeWsxcjsnxC6eLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrfDr3Tv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888E2C32782;
-	Tue, 30 Jul 2024 17:11:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r8b2eKOJ6c0wqAlmZWYhuza5VMhMb3oKI3jzNvL258yUYk89SS9ihmwtm+sCelwZ/jvAYWhgok7sfyPjOs5nUuzqAPPDAjpKPghFXULSqrmiHEBEeIy0LZDMNURtj0uT0ptVD2Fd/XbgT+OL1NpWolMluyS7fK2/FEn2KK3Elag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHoUou6o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AB8C32782;
+	Tue, 30 Jul 2024 16:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359488;
-	bh=57PrMI9Ppa7ad2VVpMJWKsUNW8YwOs5Uxi2YknwgqKM=;
+	s=korg; t=1722358151;
+	bh=sQRzzlc4RFcMiecadPA1fSrNcqiZbrQ0sQbvn6HCmLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrfDr3TvnUgYexuoXgp5xOnUL0TOIQnmhQkMvKTZfTnoN4uBR1y2z+f7uxjrDzwpp
-	 8vxzt/KZowhXlVBIiXRT3MpyEwXnAove5QNXAKdVJTJGffBiF8p5k9vBNolYaoL0ga
-	 Ourl7B6g3T7M6UIf35gqFxGYAu283uMGBnazY/yA=
+	b=LHoUou6oixHiAcsW0wm2ekf5EagPUZfrdqIrUPbqGZbS1BEZUmlFabhOWDgJqaCZu
+	 mC7VNer+hOZWQilH3vJLj2oBpdJAE6cUXl2X/x07lHUVpdgyWJdO7Z+oYJ7BQ1h3ti
+	 Kj5EOlLiW6QM+SWw8QAdU3RW0Vy1JdLzvd+63cRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 487/568] selftests/sigaltstack: Fix ppc64 GCC build
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.1 361/440] drm/i915/dp: Reset intel_dp->link_trained before retraining the link
 Date: Tue, 30 Jul 2024 17:49:54 +0200
-Message-ID: <20240730151659.062288624@linuxfoundation.org>
+Message-ID: <20240730151629.914136779@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +64,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Imre Deak <imre.deak@intel.com>
 
-commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
+commit d13e2a6e95e6b87f571c837c71a3d05691def9bb upstream.
 
-Building the sigaltstack test with GCC on 64-bit powerpc errors with:
+Regularly retraining a link during an atomic commit happens with the
+given pipe/link already disabled and hence intel_dp->link_trained being
+false. Ensure this also for retraining a DP SST link via direct calls to
+the link training functions (vs. an actual commit as for DP MST). So far
+nothing depended on this, however the next patch will depend on
+link_trained==false for changing the LTTPR mode to non-transparent.
 
-  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
-  In file included from sas.c:23:
-  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
-     22 | #error "implement current_stack_pointer equivalent"
-        |  ^~~~~
-  sas.c: In function ‘my_usr1’:
-  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
-     50 |         if (sp < (unsigned long)sstack ||
-        |             ^~
-
-This happens because GCC doesn't define __ppc__ for 64-bit builds, only
-32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
-is defined by clang and GCC for 64-bit and 32-bit builds.
-
-Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
-Cc: stable@vger.kernel.org # v6.3+
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
+Cc: <stable@vger.kernel.org> # v5.15+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240708190029.271247-2-imre.deak@intel.com
+(cherry picked from commit a4d5ce61765c08ab364aa4b327f6739b646e6cfa)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-+++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
- register unsigned long sp asm("esp");
- #elif __loongarch64
- register unsigned long sp asm("$sp");
--#elif __ppc__
-+#elif __powerpc__
- register unsigned long sp asm("r1");
- #elif __s390x__
- register unsigned long sp asm("%15");
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -4089,6 +4089,8 @@ int intel_dp_retrain_link(struct intel_e
+ 		    !intel_dp_mst_is_master_trans(crtc_state))
+ 			continue;
+ 
++		intel_dp->link_trained = false;
++
+ 		intel_dp_check_frl_training(intel_dp);
+ 		intel_dp_pcon_dsc_configure(intel_dp, crtc_state);
+ 		intel_dp_start_link_train(intel_dp, crtc_state);
 
 
 
