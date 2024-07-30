@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1114941E48
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB02941CE3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F5B81C23460
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BFFB1C2392C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58E21A76D8;
-	Tue, 30 Jul 2024 17:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9703418A6A3;
+	Tue, 30 Jul 2024 17:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPyPZfaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPXEzZCg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27541A76B2;
-	Tue, 30 Jul 2024 17:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5283618454A;
+	Tue, 30 Jul 2024 17:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360456; cv=none; b=PHGfJHwRLx9bgiwNkf1XWoPq6NcqFjt/+5r1SAWBrADTcUyKVmAEH6P6FSJ7Kgt6b5Gsewa8x9ODcm6iPnfoTyBltIA2Wg1iYolGPGQmH8BEI5Tl6CNd7b9qe6kHCVwilsCPvBbaT0U+zbBu8+Bh9P2DijpLNrK3PC67OLZyEes=
+	t=1722359385; cv=none; b=OQoUIl5rlFpVgUkegXyrUTsPoHWZuedrWx2SwHmFZFVKvcFWsZH+amQz8Orb9fA9GW2CUOI7qA6G9S7uZMofOc2ezmjJZVeJHoSis8B/F7Jmd4oOWIwME6Gk1sy9BHJPp11YCqkDcgYBUvJ6CvAwBTwdxJ3XdCm12og7j88OJK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360456; c=relaxed/simple;
-	bh=kcGP2ZtZkJ0+CX7HWbxvVZ4/l2pAbQB3SpRM9AcsvJA=;
+	s=arc-20240116; t=1722359385; c=relaxed/simple;
+	bh=FaS5drBGMDCFVrMu31Cbpxuy1sr0xUCLj3jj6XeSHYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ctDMXVzdP33gb4cf3TeNxttMSv0RzYlhZqSL+UAWXk5SAiMyeDXtIYO7CNrStQ8yXnJf+BZV/c5sngDQuCOwP8VzdWix+Tahz1xcHqUmq38/U3fsjNOLITF6vVuiD3g6E0QECXNkKaRSn8XuZPlqu3CDMyqlzrS4PP1Gq1fKq0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPyPZfaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABD6C32782;
-	Tue, 30 Jul 2024 17:27:35 +0000 (UTC)
+	 MIME-Version; b=Fyr33R4eH3uL/FGurlcM1dvl9zCuRTtZTjkIZfUpFi7PFYMg+kdKn7qlgm/3TFjN9MtSbxFLO94ps02YI3yKshqFDyBez+HeR5Q2AVQQXKrlD0z+tvBH8t9mO2R8dmbC3oYakWOrH2hJ48D4E25EzsOFvbSDFzQzS6s9hMkEI7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPXEzZCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D69C32782;
+	Tue, 30 Jul 2024 17:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360456;
-	bh=kcGP2ZtZkJ0+CX7HWbxvVZ4/l2pAbQB3SpRM9AcsvJA=;
+	s=korg; t=1722359384;
+	bh=FaS5drBGMDCFVrMu31Cbpxuy1sr0xUCLj3jj6XeSHYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPyPZfaE68Kn3ve69lI5R+PZY/cnVPUbHsvfTH6QxqLawppdFqzPxaZ/HohZS9Atu
-	 xw9s01y12hVvH9t+KNPs60VghR7asId/vXLn8SurdLDsDLBuT17V0+C3xfKHRIRHyg
-	 TzD8HG/ivjXdSf+n9sDqTmbd4dC2YgU7aGHJhXY0=
+	b=qPXEzZCgaFESnEwI+RSqzfTnPQaeob8k375CngL+WSD5os3ymKjDgKULbT0rKexVs
+	 5ZNzDVB9ST22ARpsOREhV14dUb+6R/QcU8O9DX1EHc6znOSUwIUlPUyxY+uattWnA6
+	 eDJYn+xDxnSVWLGGNV3EXdT7tCaMKJqP02n3R8ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.10 705/809] drm/i915/dp: Reset intel_dp->link_trained before retraining the link
-Date: Tue, 30 Jul 2024 17:49:41 +0200
-Message-ID: <20240730151752.770787686@linuxfoundation.org>
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 475/568] drm/amdgpu/sdma5.2: Update wptr registers as well as doorbell
+Date: Tue, 30 Jul 2024 17:49:42 +0200
+Message-ID: <20240730151658.592504111@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +59,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit d13e2a6e95e6b87f571c837c71a3d05691def9bb upstream.
+commit a03ebf116303e5d13ba9a2b65726b106cb1e96f6 upstream.
 
-Regularly retraining a link during an atomic commit happens with the
-given pipe/link already disabled and hence intel_dp->link_trained being
-false. Ensure this also for retraining a DP SST link via direct calls to
-the link training functions (vs. an actual commit as for DP MST). So far
-nothing depended on this, however the next patch will depend on
-link_trained==false for changing the LTTPR mode to non-transparent.
+We seem to have a case where SDMA will sometimes miss a doorbell
+if GFX is entering the powergating state when the doorbell comes in.
+To workaround this, we can update the wptr via MMIO, however,
+this is only safe because we disallow gfxoff in begin_ring() for
+SDMA 5.2 and then allow it again in end_ring().
 
-Cc: <stable@vger.kernel.org> # v5.15+
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240708190029.271247-2-imre.deak@intel.com
-(cherry picked from commit a4d5ce61765c08ab364aa4b327f6739b646e6cfa)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Enable this workaround while we are root causing the issue with
+the HW team.
+
+Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/3440
+Tested-by: Friedrich Vock <friedrich.vock@gmx.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+(cherry picked from commit f2ac52634963fc38e4935e11077b6f7854e5d700)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -5267,6 +5267,8 @@ int intel_dp_retrain_link(struct intel_e
- 		    !intel_dp_mst_is_master_trans(crtc_state))
- 			continue;
- 
-+		intel_dp->link_trained = false;
-+
- 		intel_dp_check_frl_training(intel_dp);
- 		intel_dp_pcon_dsc_configure(intel_dp, crtc_state);
- 		intel_dp_start_link_train(intel_dp, crtc_state);
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
+@@ -188,6 +188,14 @@ static void sdma_v5_2_ring_set_wptr(stru
+ 		DRM_DEBUG("calling WDOORBELL64(0x%08x, 0x%016llx)\n",
+ 				ring->doorbell_index, ring->wptr << 2);
+ 		WDOORBELL64(ring->doorbell_index, ring->wptr << 2);
++		/* SDMA seems to miss doorbells sometimes when powergating kicks in.
++		 * Updating the wptr directly will wake it. This is only safe because
++		 * we disallow gfxoff in begin_use() and then allow it again in end_use().
++		 */
++		WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR),
++		       lower_32_bits(ring->wptr << 2));
++		WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR_HI),
++		       upper_32_bits(ring->wptr << 2));
+ 	} else {
+ 		DRM_DEBUG("Not using doorbell -- "
+ 				"mmSDMA%i_GFX_RB_WPTR == 0x%08x "
+@@ -1666,6 +1674,10 @@ static void sdma_v5_2_ring_begin_use(str
+ 	 * but it shouldn't hurt for other parts since
+ 	 * this GFXOFF will be disallowed anyway when SDMA is
+ 	 * active, this just makes it explicit.
++	 * sdma_v5_2_ring_set_wptr() takes advantage of this
++	 * to update the wptr because sometimes SDMA seems to miss
++	 * doorbells when entering PG.  If you remove this, update
++	 * sdma_v5_2_ring_set_wptr() as well!
+ 	 */
+ 	amdgpu_gfx_off_ctrl(adev, false);
+ }
 
 
 
