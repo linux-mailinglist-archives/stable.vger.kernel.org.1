@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41FA941A2E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18E2941A30
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EEBC1F22B9F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54D57281C8A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3D718454A;
-	Tue, 30 Jul 2024 16:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BC618454A;
+	Tue, 30 Jul 2024 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9r3ZIcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/bszulR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF01B1A6192;
-	Tue, 30 Jul 2024 16:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F891A6192;
+	Tue, 30 Jul 2024 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357656; cv=none; b=YA1Vz7puN3bNMq6fzf02Vm2x67cfNfiSyPdF2trZbSZIE1/Ntv7Epk+rAw5y/G1qwggElSK4gcwqC6IRKNTzevQCUzbVjS9q2LipnMEWGBtOeHyHOh3dGuquEHKhWDrD/OeDjdXvgFAkfuRzBVbLTymQHm6d0Me1uhGs+TDJZkA=
+	t=1722357665; cv=none; b=aYoZhEuMwvcyTzAedAs1RC3AJHUJUtVtnpX28g1RWGEYdoFLNrDDIqC+xAgaGiMNcLcSQCTGyLU5XpK8t6nRuPZndq6ru42g6oHpoHZOXEYXlT9vXKg2LaalKQ8TySIbV2GR9b3Lxs7X7GD6wfkw9y8Ga+t9RAMywiepAXnX2P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357656; c=relaxed/simple;
-	bh=oRjM1XhENPjFU0LCSYqEVhTUEhuMN2YZOmKlo89GERc=;
+	s=arc-20240116; t=1722357665; c=relaxed/simple;
+	bh=1v+GZLxUcF5DpCPPZT3MAn5jjw2fR7unnsYkhJsnLn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgXTWI44rg/sNbwrC7Wh5zUjXTfukrZEdkyUE8tYwBTN1A7E1E+Vu5r6s5cMoQfSzfHixMhBkfkYl9c7gyytA2OhC8gaBMXfYLNgjYVWNcXtHm97kTbP1H3xiFgxN6UJQZ81uAbYT4GOekuOE4v38OYR3whvJbsDE3CyEtnztYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9r3ZIcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DF4C32782;
-	Tue, 30 Jul 2024 16:40:55 +0000 (UTC)
+	 MIME-Version; b=W4bDgLvJdRYcvxSQzIfLHbMEZUZnvtIgvQeAM3uzVdUyBwA4U9usz3bO02d1an+MVLawpdnCuWzmUuWb2NSSZ7TKnICQl72wVXFTFpIYP4VWYFPz5ExSz5Ht3IduXswHuhWiqRGlPvsgWfgoSZMadXyOX3yuTiIAgi5tMpiJpeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/bszulR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1824EC32782;
+	Tue, 30 Jul 2024 16:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357655;
-	bh=oRjM1XhENPjFU0LCSYqEVhTUEhuMN2YZOmKlo89GERc=;
+	s=korg; t=1722357665;
+	bh=1v+GZLxUcF5DpCPPZT3MAn5jjw2fR7unnsYkhJsnLn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9r3ZIcZxzJo8037WZ2Utrs/OF5p2R1wR8XqDR+Qplug8JgpXjbeD9+0zIRxTsFjy
-	 xm0j5lC9c8jwPMlFEGqamGdgVxJfFkthNR98/regqpcitoLnLt1xocpZ5pXCNVlxfF
-	 PN+UrehN6mxgtkrmuyVvvaX7MWPnk1vjkZOGjNA0=
+	b=j/bszulRRsZYM3RHJvwixhZHS8O9tM8Kq+cNe2tV/WXXsDn4wTLcEwX+HJh0UA8xG
+	 IonkvsK1PRXoA/R5ZPcHbn0lJc99vgTxOI/BrVeMN3zGb8b0I5cHRZ6O04dvDLxKT9
+	 d/gb88n6Fw/LzTzyAMhcMoPEJCxPOm9g4GzJdyO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Van Patten <timvp@google.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 276/809] drm/amdgpu: Remove GC HW IP 9.3.0 from noretry=1
-Date: Tue, 30 Jul 2024 17:42:32 +0200
-Message-ID: <20240730151735.496143817@linuxfoundation.org>
+Subject: [PATCH 6.10 277/809] drm/panel: himax-hx8394: Handle errors from mipi_dsi_dcs_set_display_on() better
+Date: Tue, 30 Jul 2024 17:42:33 +0200
+Message-ID: <20240730151735.534552007@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,39 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tim Van Patten <timvp@google.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 1446226d32a45bb7c4f63195a59be8c08defe658 ]
+[ Upstream commit cc2db2ef8d9eebc0df03808ac0dadbdb96733499 ]
 
-The following commit updated gmc->noretry from 0 to 1 for GC HW IP
-9.3.0:
+If mipi_dsi_dcs_set_display_on() returned an error then we'd store
+that in the "ret" variable and jump to error handling. We'd then
+attempt an orderly poweroff. Unfortunately we then blew away the value
+stored in "ret". That means that if the orderly poweroff actually
+worked then we're return 0 (no error) from hx8394_enable() even though
+the panel wasn't enabled.
 
-    commit 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
+Fix this by not blowing away "ret".
 
-This causes the device to hang when a page fault occurs, until the
-device is rebooted. Instead, revert back to gmc->noretry=0 so the device
-is still responsive.
+Found by code inspection.
 
-Fixes: 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
-Signed-off-by: Tim Van Patten <timvp@google.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 65dc9360f741 ("drm: panel: Add Himax HX8394 panel controller driver")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240517143643.1.I0a6836fffd8d7620f353becb3df2370d2898f803@changeid
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.1.I0a6836fffd8d7620f353becb3df2370d2898f803@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/panel/panel-himax-hx8394.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index 08b9dfb653355..86b096ad0319c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -878,7 +878,6 @@ void amdgpu_gmc_noretry_set(struct amdgpu_device *adev)
- 	struct amdgpu_gmc *gmc = &adev->gmc;
- 	uint32_t gc_ver = amdgpu_ip_version(adev, GC_HWIP, 0);
- 	bool noretry_default = (gc_ver == IP_VERSION(9, 0, 1) ||
--				gc_ver == IP_VERSION(9, 3, 0) ||
- 				gc_ver == IP_VERSION(9, 4, 0) ||
- 				gc_ver == IP_VERSION(9, 4, 1) ||
- 				gc_ver == IP_VERSION(9, 4, 2) ||
+diff --git a/drivers/gpu/drm/panel/panel-himax-hx8394.c b/drivers/gpu/drm/panel/panel-himax-hx8394.c
+index ff0dc08b98297..cb9f46e853de4 100644
+--- a/drivers/gpu/drm/panel/panel-himax-hx8394.c
++++ b/drivers/gpu/drm/panel/panel-himax-hx8394.c
+@@ -370,8 +370,7 @@ static int hx8394_enable(struct drm_panel *panel)
+ 
+ sleep_in:
+ 	/* This will probably fail, but let's try orderly power off anyway. */
+-	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
+-	if (!ret)
++	if (!mipi_dsi_dcs_enter_sleep_mode(dsi))
+ 		msleep(50);
+ 
+ 	return ret;
 -- 
 2.43.0
 
