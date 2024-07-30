@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-62861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D2A9415F1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:54:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52DF9415F3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1013E1C22FD3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:54:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AE581F21885
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40AB1B583B;
-	Tue, 30 Jul 2024 15:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E645F1B5833;
+	Tue, 30 Jul 2024 15:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQdZv524"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/iyUixx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F8129A2;
-	Tue, 30 Jul 2024 15:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43EB145A18;
+	Tue, 30 Jul 2024 15:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354875; cv=none; b=kTjo2WX0w2NHw4PAp6VL2E8HHYVR01KuIy3dLRGcjGKT4HNccdukF60E20q1Nr5mN7yN1IZ1mq7reAwmOEUWvMyZqWV56FnQefAn399vpzgscQxZ2FimOy+tzLMiROX9UNaZSklyujMSLUtdLh3j5ElEv6klv+mUppT5aEQ+ak4=
+	t=1722354882; cv=none; b=BJozsJhZMZ9j8kb2gc3r5imv6eWj7pe9mt6N6CTR2RmJ01g7jch1o/41hbUmAl+vP5h8u2Q4MYs0AxXdLC+TFIUtWgorktfYtXIVqGbAtBUly58RGwLrarR3ptAuUWPWZdODlQGWi0WegC6cfTDKps5LYtdT7efnabQ/IvIqqwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354875; c=relaxed/simple;
-	bh=CW8ZP9etZF0og8l6p8pPr3cHQxuRF/V5RO3TTzlbkDA=;
+	s=arc-20240116; t=1722354882; c=relaxed/simple;
+	bh=IlKqDMY7UI31FEbCsuUUSq9JLbbmDqdfrksKPsiVLlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVKCZDBFA2ZRFHJfdvjYFfd57BUaV31GRMugxuE+tZBeE4vgXZ97QKFMs+F6/lRKN0iA6U9RArOQQEXYTe59kZD84f6GHnHUXZcGzKZ4TFcnEWaQ51fGp8wjkY+WAzFoj91S+oLCjEM7FLBnKZHeDLrKgzkALW5LM0Ca585Gcys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQdZv524; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F40C4AF0C;
-	Tue, 30 Jul 2024 15:54:34 +0000 (UTC)
+	 MIME-Version; b=T81GRnP3JfEcJivDY3Gqz2fMVoX1axAWKMmrpE6WFZjyR3hpIYmMnh5TC4qjnpZAxle1atmJeTFiQFBAO/uYb5hzZsxFy599bLeHNPlGwMlgzvlJ/3CxAJuwkjBSh9EhSa6hNJiVh0azdRngoo4u5AbRAZhXa+iDiPRuz5xWNRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/iyUixx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFA2C32782;
+	Tue, 30 Jul 2024 15:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354875;
-	bh=CW8ZP9etZF0og8l6p8pPr3cHQxuRF/V5RO3TTzlbkDA=;
+	s=korg; t=1722354882;
+	bh=IlKqDMY7UI31FEbCsuUUSq9JLbbmDqdfrksKPsiVLlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQdZv524cc2dDbdu5EjRLR4es72cj1ecOTk1gAOfaSOdDj3VEH6v3J19d2mal1U0h
-	 MeBXKzI4RYQK2WkW02UjRo0O1VSM0UEu9Yc6doQO1BqYoPIssHUz8UpiI3F5GoF6tk
-	 TpEzrfoZyqRHK56m0sX8TH4LCurlMQkFq/UwIy4Q=
+	b=J/iyUixxdanKgvQYeRTEgrvXkTCzrKjaC/eGK5eemuarCtcw8J4xgwO3Nh/3zxXL4
+	 0uw2Qcx2HTTPmM5KUD+EaYfhdskpDRq3CHApYauFTQmJfu2jgSGX9UbkpEI9LkJj9b
+	 2dUNDdvOmk3BJgJ4OwLiwP7S43yN73gGf4H+AGmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/440] hwmon: (max6697) Fix swapped temp{1,8} critical alarms
-Date: Tue, 30 Jul 2024 17:44:23 +0200
-Message-ID: <20240730151616.941684591@linuxfoundation.org>
+Subject: [PATCH 6.1 031/440] arm64: dts: qcom: sdm845: add power-domain to UFS PHY
+Date: Tue, 30 Jul 2024 17:44:24 +0200
+Message-ID: <20240730151616.981517482@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,46 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1ea3fd1eb9869fcdcbc9c68f9728bfc47b9503f1 ]
+[ Upstream commit fd39ae8b9bc10419b1e4b849cdbc6755a967ade1 ]
 
-The critical alarm bit for the local temperature sensor (temp1) is in
-bit 7 of register 0x45 (not bit 6), and the critical alarm bit for remote
-temperature sensor 7 (temp8) is in bit 6 (not bit 7).
+The UFS PHY is powered on via the UFS_PHY_GDSC power domain. Add
+corresponding power-domain the the PHY node.
 
-This only affects MAX6581 since all other chips supported by this driver
-do not support those critical alarms.
-
-Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: cc16687fbd74 ("arm64: dts: qcom: sdm845: add UFS controller")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-6-f1fd15c33fb3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max6697.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
-index 563e73f071d07..266baae94e3ee 100644
---- a/drivers/hwmon/max6697.c
-+++ b/drivers/hwmon/max6697.c
-@@ -430,14 +430,14 @@ static SENSOR_DEVICE_ATTR_RO(temp6_max_alarm, alarm, 20);
- static SENSOR_DEVICE_ATTR_RO(temp7_max_alarm, alarm, 21);
- static SENSOR_DEVICE_ATTR_RO(temp8_max_alarm, alarm, 23);
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 95c515da9f2e0..71644b9b8866a 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -2537,6 +2537,8 @@ ufs_mem_phy: phy@1d87000 {
+ 			clocks = <&gcc GCC_UFS_MEM_CLKREF_CLK>,
+ 				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>;
  
--static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 14);
-+static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 15);
- static SENSOR_DEVICE_ATTR_RO(temp2_crit_alarm, alarm, 8);
- static SENSOR_DEVICE_ATTR_RO(temp3_crit_alarm, alarm, 9);
- static SENSOR_DEVICE_ATTR_RO(temp4_crit_alarm, alarm, 10);
- static SENSOR_DEVICE_ATTR_RO(temp5_crit_alarm, alarm, 11);
- static SENSOR_DEVICE_ATTR_RO(temp6_crit_alarm, alarm, 12);
- static SENSOR_DEVICE_ATTR_RO(temp7_crit_alarm, alarm, 13);
--static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 15);
-+static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 14);
- 
- static SENSOR_DEVICE_ATTR_RO(temp2_fault, alarm, 1);
- static SENSOR_DEVICE_ATTR_RO(temp3_fault, alarm, 2);
++			power-domains = <&gcc UFS_PHY_GDSC>;
++
+ 			resets = <&ufs_mem_hc 0>;
+ 			reset-names = "ufsphy";
+ 			status = "disabled";
 -- 
 2.43.0
 
