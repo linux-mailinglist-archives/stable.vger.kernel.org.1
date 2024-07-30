@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-63499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FF2941940
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC144941944
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 545571F232B5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDEF31C228D4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3D6183CDA;
-	Tue, 30 Jul 2024 16:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2494433A9;
+	Tue, 30 Jul 2024 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNpm2tOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+GIuDJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B021A6161;
-	Tue, 30 Jul 2024 16:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED3B1A6161;
+	Tue, 30 Jul 2024 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357027; cv=none; b=MxfDlM3ZSIUSiEHC6wFNdCASPtu4n7DCcNvh5DUOWJ1j8eLJUfT7Df5jlzahWDCRvseKmtexPl5j9YQd+e1HnL+FbPKZZNRx8jO+YI2oZs+uDNlAku7NTQWEj1SDmthL8Z1FmKKz8kBYYpIlI466HJkNTgEQOUP8/FaQ6X+2Isc=
+	t=1722357037; cv=none; b=cF+4wWE5e43/TJBMnnbFejTf92pDGDDI245gLN9BUoR8hu/Nb+iEjjx8cGY9cBsDMge0k5p/8VtrPogk80M0/UNrpG78HEoG8gHxKOB42RR9OjLgSAZjcjEXueMI+gcjUNEskfm4LZN4EE35z7wwGiUPy/sIO3eoAXUm2mNivow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357027; c=relaxed/simple;
-	bh=Ubp10UyruLnmI5cOFXpL9zvp6AjulhryhH8x3bl/AkU=;
+	s=arc-20240116; t=1722357037; c=relaxed/simple;
+	bh=iahH78ZChp+DxXPd4pz4MGQdgbkG0Bytq2Dhji1CJ7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmd3H+mtjW5rva+dd2Uh+J1IrOsJ212zU/JKgiG8HhCy2cVI+kOCGtv/wbMbAU3choGrAqmfdi5fwR2/8giVAulnCXiJFBH907jRSYO5Nd+Twug9K/DKHA9XGJdwhV3RPBZEDjR4iAbppqPlJRhI19NuQhW8SM9xsGN1qcDyKUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNpm2tOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27B0C32782;
-	Tue, 30 Jul 2024 16:30:26 +0000 (UTC)
+	 MIME-Version; b=deAZoXV6zafkCi4wuFI57Z/0HF1A8/1n49IWPhy/VJ+XrZJm8swrK/wEuOoy+5D3eG58QC8knqj18a0ehjxnTBw23rSgIL9xM4BmtEPjTUaovTM/3HpZ/7lni71jQe879M1JeN5ikDVuukyWn5AApaMmfzsNSX7DUjnh0NglH94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+GIuDJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13BAC32782;
+	Tue, 30 Jul 2024 16:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357027;
-	bh=Ubp10UyruLnmI5cOFXpL9zvp6AjulhryhH8x3bl/AkU=;
+	s=korg; t=1722357037;
+	bh=iahH78ZChp+DxXPd4pz4MGQdgbkG0Bytq2Dhji1CJ7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNpm2tOoZt+e8bpt2ZXcDUrszdz8UNCN7plUis8s3Y2rzHF8SGXx5Y7MFcNJxJdZg
-	 o6aGnkDg9uzgKVYXMLTXkJ1WdMO986VfxXIqTUoT3cTR4PRLAo+BzIIWvSzEta34+h
-	 nh43gcQKUUhjBkQkp3Z7Tg7RAJbu0HYhhr+h+HZA=
+	b=Q+GIuDJ5LYY9m3RYkfE9xNLMSTQU1JtUV+lj2C8Ju8RwkTi6uShVCX0GMqSqpGyOn
+	 H3GIY3C0hG0RbmN0IBRSW+GERIjxpu6N22rJ0Jc2+fPaiwjJTdUaor6SviAJYffbIi
+	 hCc1izuYrTefa/jTyHOe8eXvlUgCjn4nxQxUHaCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 211/809] wifi: iwlwifi: fix iwl_mvm_get_valid_rx_ant()
-Date: Tue, 30 Jul 2024 17:41:27 +0200
-Message-ID: <20240730151732.939525558@linuxfoundation.org>
+Subject: [PATCH 6.10 212/809] wifi: iwlwifi: mvm: always unblock EMLSR on ROC end
+Date: Tue, 30 Jul 2024 17:41:28 +0200
+Message-ID: <20240730151732.978082209@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,40 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0091eda01412805e0d2c8025638ac0992102a7fc ]
+[ Upstream commit f9068fe4fd49f9e4409c30546d7e16238942ce62 ]
 
-Fix incorrect use of _tx_ valid ant data in the function.
+Since we always block EMLSR for ROC, we also need to always
+unblock it, even if we don't have a P2P device interface.
+Fix this.
 
-Fixes: 4ea1ed1d14d8 ("wifi: iwlwifi: mvm: support set_antenna()")
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Fixes: a1efeb823084 ("wifi: iwlwifi: mvm: Block EMLSR when a p2p/softAP vif is active")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240618200104.b7c6a320c7dc.I3092eb5275056f2162b9694e583c310c38568b2a@changeid
+Link: https://patch.msgid.link/20240625194805.96bbf98b716d.Id5a36954f8ebaa95142fd3d3a7a52bab5363b0bd@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/time-event.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 6837d8afb9877..ded094b6b63df 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1863,10 +1863,10 @@ static inline u8 iwl_mvm_get_valid_tx_ant(struct iwl_mvm *mvm)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+index c0322349bfcd8..9d681377cbab3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+@@ -120,7 +120,7 @@ static void iwl_mvm_cleanup_roc(struct iwl_mvm *mvm)
+ 			iwl_mvm_rm_aux_sta(mvm);
+ 	}
  
- static inline u8 iwl_mvm_get_valid_rx_ant(struct iwl_mvm *mvm)
- {
--	u8 rx_ant = mvm->fw->valid_tx_ant;
-+	u8 rx_ant = mvm->fw->valid_rx_ant;
- 
- 	if (mvm->nvm_data && mvm->nvm_data->valid_rx_ant)
--		rx_ant &= mvm->nvm_data->valid_tx_ant;
-+		rx_ant &= mvm->nvm_data->valid_rx_ant;
- 
- 	if (mvm->set_rx_ant)
- 		rx_ant &= mvm->set_rx_ant;
+-	if (vif && !IS_ERR_OR_NULL(bss_vif))
++	if (!IS_ERR_OR_NULL(bss_vif))
+ 		iwl_mvm_unblock_esr(mvm, bss_vif, IWL_MVM_ESR_BLOCKED_ROC);
+ 	mutex_unlock(&mvm->mutex);
+ }
 -- 
 2.43.0
 
