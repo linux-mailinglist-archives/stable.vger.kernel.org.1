@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66300941AED
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15229417B0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96DB71C22C0A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEE01C23635
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051E2188013;
-	Tue, 30 Jul 2024 16:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0413718E046;
+	Tue, 30 Jul 2024 16:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IdVQ3oH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EI5/kV9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B671414831F;
-	Tue, 30 Jul 2024 16:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B772F1917DB;
+	Tue, 30 Jul 2024 16:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358148; cv=none; b=SuIzzSxGXa/feM0h5feSxe4bAGXG/g0P7NbU5S1iUvfg133gO4IY7u4DLfg5WJ/ZTqZQmSrhD6wHkR966qghlUF1oU4RkAL/+c01z0DNrA7pOt89eZ6Rcl5JcOROoh7MyS2ST4jUDiQoyIAX51ypzUkgAiA41lWUctM3v0wtDS8=
+	t=1722355875; cv=none; b=jHEzbK6KJ4CcsZh7tLHxSuY990NpnK2oV2z0jJ4HWn0u6PxAg8WTthqU+TAnWR3LfgYHV1ajtK4kGp966ERDWq5wc5rNphWDVvwENncuqo25EPMyMu1NpmWB0iCkHlNJIEAK3gfu3U/b6F+Dq4IsAnd7Er35s0jB1B/A67dfEGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358148; c=relaxed/simple;
-	bh=ckpGHQgGWdNh9Ki3ZhnPffGQspcrojaXSjfQgazC2qo=;
+	s=arc-20240116; t=1722355875; c=relaxed/simple;
+	bh=DRiDqLy0PT6MT422iL1Z/bWJ8nZ9uiX8574SO9OPoW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/wAKkMVmsa9VnvdbU8TkKpaWCFTOcHfH8R6rlNRpbKZzMyW9luzMv6ebGOW/Lfv6MEF7uA6x9aMVbEkuSYRzdL9QjSC+Ics1w3QTfbT8T5bgMlAy5dh6WURoAdjfOiEb+2pjgkzWFMo7l/a199huaaHd2TwVBh3vPMVLh+3T68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IdVQ3oH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1FCC32782;
-	Tue, 30 Jul 2024 16:49:07 +0000 (UTC)
+	 MIME-Version; b=mnSGvKbGb/JxkXDIHYYKtGcJ1CqjpJ9w2nb3p2KsLjAFxBRptSsDR51klVWfk4S0s3Tn6ZSbLC/PRFIH3BAr0q5xT6jJyGsl3VjH+obaVPRmVewZP9syQtjI2mJVSYgrOeM9vagha1Y4OmTBOlUjsyRsWaDj7NkerKFW4Pghy0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EI5/kV9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27801C32782;
+	Tue, 30 Jul 2024 16:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358148;
-	bh=ckpGHQgGWdNh9Ki3ZhnPffGQspcrojaXSjfQgazC2qo=;
+	s=korg; t=1722355875;
+	bh=DRiDqLy0PT6MT422iL1Z/bWJ8nZ9uiX8574SO9OPoW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IdVQ3oHZsW+c+g7s0Gl0MeQjIsNAFcfT0EoFl6bsqo5HGf8zCYAxIO7UhpGRGkGC
-	 H3rMCLu3MsRx+n+Z3fPj/W2iGCAuv4sM+/fambSswW7De26ckD7rM40iZCiHpmMmkc
-	 6PWOfaKYc0O1+jKCtJmmZR9/di3yTzw4WFZiWBVQ=
+	b=EI5/kV9YXwYIMmtN10MF9Rhse+SNUNXiV1FiLn6TqIzD9DfazoEMXUs7dcCHL0oT/
+	 P75nxrFQaaRa02F6hKZicWu3MbaZlb2/NGc22quvFOfkcXMhG5k+Ppt37oWYe1zsia
+	 Ed+4pWi22LxXB/Hr6U80CPo077BHV33FlatwDKo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 329/809] drm/mediatek: Turn off the layers with zero width or height
+Subject: [PATCH 6.6 098/568] arm64: dts: rockchip: fix pmu_io supply for Lunzn Fastrhino R6xS
 Date: Tue, 30 Jul 2024 17:43:25 +0200
-Message-ID: <20240730151737.611970930@linuxfoundation.org>
+Message-ID: <20240730151643.707310267@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 6b9946f4550d8dad8bc1af2db97286ca449af786 ]
+[ Upstream commit cfeac8e5d05815521f5c5568680735a92ee91fe4 ]
 
-We found that IGT (Intel GPU Tool) will try to commit layers with
-zero width or height and lead to undefined behaviors in hardware.
-Disable the layers in such a situation.
+Fixes pmu_io_domains supply according to the schematic. Among them,
+the vccio3 is responsible for the io voltage of sdcard. There is no
+sdcard slot on the R68S, and it's connected to vcc_3v3, so describe
+the supply of vccio3 separately.
 
-Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
-Fixes: d886c0009bd0 ("drm/mediatek: Add ETHDR support for MT8195")
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-6-a9d62d2e2c7e@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
+Fixes: b9f8ca655d80 ("arm64: dts: rockchip: Add Lunzn Fastrhino R68S")
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/r/20240630150010.55729-4-amadeus@jmu.edu.cn
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c | 2 +-
- drivers/gpu/drm/mediatek/mtk_ethdr.c            | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts  | 4 ++++
+ arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 4 ++--
+ arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts  | 4 ++++
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-index 02dd7dcdfedb2..2b62d64759181 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-@@ -158,7 +158,7 @@ void mtk_ovl_adaptor_layer_config(struct device *dev, unsigned int idx,
- 	merge = ovl_adaptor->ovl_adaptor_comp[OVL_ADAPTOR_MERGE0 + idx];
- 	ethdr = ovl_adaptor->ovl_adaptor_comp[OVL_ADAPTOR_ETHDR0];
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
+index 58ab7e9971dbc..b5e67990dd0f8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
+@@ -11,6 +11,10 @@ aliases {
+ 	};
+ };
  
--	if (!pending->enable) {
-+	if (!pending->enable || !pending->width || !pending->height) {
- 		mtk_merge_stop_cmdq(merge, cmdq_pkt);
- 		mtk_mdp_rdma_stop(rdma_l, cmdq_pkt);
- 		mtk_mdp_rdma_stop(rdma_r, cmdq_pkt);
-diff --git a/drivers/gpu/drm/mediatek/mtk_ethdr.c b/drivers/gpu/drm/mediatek/mtk_ethdr.c
-index 5c52e514ae301..bf5826b7e7760 100644
---- a/drivers/gpu/drm/mediatek/mtk_ethdr.c
-+++ b/drivers/gpu/drm/mediatek/mtk_ethdr.c
-@@ -160,7 +160,12 @@ void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
- 	if (idx >= 4)
- 		return;
++&pmu_io_domains {
++	vccio3-supply = <&vccio_sd>;
++};
++
+ &sdmmc0 {
+ 	bus-width = <4>;
+ 	cap-mmc-highspeed;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+index 8f587978fa3b6..82577eba31eb5 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+@@ -397,8 +397,8 @@ vcc5v0_usb_otg_en: vcc5v0-usb-otg-en {
+ &pmu_io_domains {
+ 	pmuio1-supply = <&vcc3v3_pmu>;
+ 	pmuio2-supply = <&vcc3v3_pmu>;
+-	vccio1-supply = <&vccio_acodec>;
+-	vccio3-supply = <&vccio_sd>;
++	vccio1-supply = <&vcc_3v3>;
++	vccio2-supply = <&vcc_1v8>;
+ 	vccio4-supply = <&vcc_1v8>;
+ 	vccio5-supply = <&vcc_3v3>;
+ 	vccio6-supply = <&vcc_1v8>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
+index e1fe5e442689a..a3339186e89c8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
+@@ -102,6 +102,10 @@ eth_phy1_reset_pin: eth-phy1-reset-pin {
+ 	};
+ };
  
--	if (!pending->enable) {
-+	if (!pending->enable || !pending->width || !pending->height) {
-+		/*
-+		 * instead of disabling layer with MIX_SRC_CON directly
-+		 * set the size to 0 to avoid screen shift due to mixer
-+		 * mode switch (hardware behavior)
-+		 */
- 		mtk_ddp_write(cmdq_pkt, 0, &mixer->cmdq_base, mixer->regs, MIX_L_SRC_SIZE(idx));
- 		return;
- 	}
++&pmu_io_domains {
++	vccio3-supply = <&vcc_3v3>;
++};
++
+ &sdhci {
+ 	bus-width = <8>;
+ 	max-frequency = <200000000>;
 -- 
 2.43.0
 
