@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCBE9416A8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFC09416D0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEA401C23661
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28169287508
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D37188014;
-	Tue, 30 Jul 2024 16:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E227188003;
+	Tue, 30 Jul 2024 16:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHKlRyAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYof5cno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A583187FEC;
-	Tue, 30 Jul 2024 16:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C181187FF2;
+	Tue, 30 Jul 2024 16:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355347; cv=none; b=Ypg9OWlKyCSBLjaQyrY4C1nToaH7QHa7Sz2jR/VjNj9cNvHgx3vIMCoWIy/bfyK2yU7kwb/kAQdTjCv2vJaPT1zp/lc/WTVstWQ3lAJNNoWZk7R1+GroGV+RoyZ8J71y0x4qMGSwWzfMAxRiHuySLOb6E+QmD0/9yBZjdxtR/Lo=
+	t=1722355432; cv=none; b=CdwxX0fKvF3bSXOB/UKD2jkiw/a8cIb7yjEX3rFYRpr8yL4v/hp3Qh/hmHW6Ch2IAttEFB/C5DPuhAasX3pRQ5ofDPUPL2B3JBd/P44B2UQr71MsdSnfOOi5ysLIXqyfHHBfWXeyp+jBMD+DtglqswMuEdV8hb0MZr22nc3GShk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355347; c=relaxed/simple;
-	bh=awwjwgviDilkjdv874Yg9g/lT/VTc8McVAw9r3UIumY=;
+	s=arc-20240116; t=1722355432; c=relaxed/simple;
+	bh=Rchq3S7/6eow97VhCB7G1KaEUtqLT+pVNP5S6IbUBFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OwDoqKF8l6xgE1vLlKwLJnIYzONLPld3bf3um9dNkQzjDx4Iuoa0w1uCpF/xOp8HCKpVdyvYP3s3ixzIUhDYSgshdOCKI+YrLUWq4k5uZI6XEtCyerGTo63oABvnP9KP+5gWniG24zyx90nCBoCIPBK0bKi25jPtJkIC99WSKAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHKlRyAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C3AC32782;
-	Tue, 30 Jul 2024 16:02:26 +0000 (UTC)
+	 MIME-Version; b=NySlrL7fpJdBGOl45324rUJC+f1Fl1qI8sQ7R9KD1Cr8zQTbCMI7vuzoWD1ZB2uIC/+ut28rTwpq6OPLkdkVw4dK9kU6qjVZ6wTwqHPnykeEFMId8bvyyMLYI2LGGy03nRVnt8pAT3gAI7GhXvQV0wGWXO0W0E1QgRK2STBEe1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYof5cno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5164C32782;
+	Tue, 30 Jul 2024 16:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355347;
-	bh=awwjwgviDilkjdv874Yg9g/lT/VTc8McVAw9r3UIumY=;
+	s=korg; t=1722355432;
+	bh=Rchq3S7/6eow97VhCB7G1KaEUtqLT+pVNP5S6IbUBFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DHKlRyAKinf8WFg4NfCDK54sZn0mSWsl6/kX3YQAXjQdYLDQq8HPbCP0JE3NWF3Ef
-	 N70XkaWbGthvtJRJhjrkQbVkqKQUR/r236dPDPf21pLIakoxdQD9a0BFNr+odl/zUc
-	 N5gM6Kf5vXiLAvPcYpE1DkcnwGAyjqyqN6tq6ssQ=
+	b=kYof5cnolOeYVUEdIJO4rw8ioA8bXWC848G7Cny/K3+ShuU+jI9dVTdy5z9N5QQSu
+	 knEXfL716ZE4Rr3ttWGJtD7En11T+S29xKgKaKeJ1W5xEAdw8DCbMnl2TNF7t7lA4U
+	 yIgpduhS41aFUwq06eebMK6DUn6jnE1/qo7OvTUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Juergen Gross <jgross@suse.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/440] x86/xen: Convert comma to semicolon
-Date: Tue, 30 Jul 2024 17:45:06 +0200
-Message-ID: <20240730151618.615253972@linuxfoundation.org>
+Subject: [PATCH 6.1 074/440] arm64: dts: rockchip: Add missing power-domains for rk356x vop_mmu
+Date: Tue, 30 Jul 2024 17:45:07 +0200
+Message-ID: <20240730151618.653091824@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,44 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 349d271416c61f82b853336509b1d0dc04c1fcbb ]
+[ Upstream commit 9d42c3ee3ce37cdad6f98c9e77bfbd0d791ac7da ]
 
-Replace a comma between expression statements by a semicolon.
+The iommu@fe043e00 on RK356x SoC shares the VOP power domain, but the
+power-domains property was not provided when the node has been added.
 
-Fixes: 8310b77b48c5 ("Xen/gnttab: handle p2m update errors on a per-slot basis")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20240702031010.1411875-1-nichen@iscas.ac.cn
-Signed-off-by: Juergen Gross <jgross@suse.com>
+The consequence is that an attempt to reload the rockchipdrm module will
+freeze the entire system.  That is because on probe time,
+pm_runtime_get_suppliers() gets called for vop@fe040000, which blocks
+when pm_runtime_get_sync() is being invoked for iommu@fe043e00.
+
+Fix the issue by adding the missing property.
+
+Fixes: 9d6c6d978f97 ("arm64: dts: rockchip: rk356x: Add VOP2 nodes")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://lore.kernel.org/r/20240702-rk356x-fix-vop-mmu-v1-1-a66d1a0c45ea@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/p2m.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk356x.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/xen/p2m.c b/arch/x86/xen/p2m.c
-index 58db86f7b3846..a02cc54338897 100644
---- a/arch/x86/xen/p2m.c
-+++ b/arch/x86/xen/p2m.c
-@@ -736,7 +736,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
- 		 * immediate unmapping.
- 		 */
- 		map_ops[i].status = GNTST_general_error;
--		unmap[0].host_addr = map_ops[i].host_addr,
-+		unmap[0].host_addr = map_ops[i].host_addr;
- 		unmap[0].handle = map_ops[i].handle;
- 		map_ops[i].handle = INVALID_GRANT_HANDLE;
- 		if (map_ops[i].flags & GNTMAP_device_map)
-@@ -746,7 +746,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
+diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+index 99ad6fc51b584..e5c88f0007253 100644
+--- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+@@ -737,6 +737,7 @@ vop_mmu: iommu@fe043e00 {
+ 		clocks = <&cru ACLK_VOP>, <&cru HCLK_VOP>;
+ 		clock-names = "aclk", "iface";
+ 		#iommu-cells = <0>;
++		power-domains = <&power RK3568_PD_VO>;
+ 		status = "disabled";
+ 	};
  
- 		if (kmap_ops) {
- 			kmap_ops[i].status = GNTST_general_error;
--			unmap[1].host_addr = kmap_ops[i].host_addr,
-+			unmap[1].host_addr = kmap_ops[i].host_addr;
- 			unmap[1].handle = kmap_ops[i].handle;
- 			kmap_ops[i].handle = INVALID_GRANT_HANDLE;
- 			if (kmap_ops[i].flags & GNTMAP_device_map)
 -- 
 2.43.0
 
