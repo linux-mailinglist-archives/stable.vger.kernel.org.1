@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D476894161A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B6494161D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126631C20A85
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 861ADB24F07
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7156E1B5833;
-	Tue, 30 Jul 2024 15:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A1F1B583F;
+	Tue, 30 Jul 2024 15:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSuC+Pry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYYshR4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E6529A2;
-	Tue, 30 Jul 2024 15:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B671E29A2;
+	Tue, 30 Jul 2024 15:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354979; cv=none; b=Z1nryA9vyC7Mmbq9L1J/ibd/RTKmwRDD19QNvu7SBpc8hZnjo5kLrt/guqYkf9twjevB+ewdKgilGYsnxmAyIAqZ49WavvElMgCJ4AGYaPgFsxbmcIXv973VQz6PchDvWb3SYa4UHjTBTtvHx+I6FJRq30x6H+05KXO8QTvPDN4=
+	t=1722354988; cv=none; b=VhbaaYwHL/o/xJhP5nrdn/zk35fHTtcgsKosbzUVsspX6MIAr4lA2G+4XxennIvn/iNCevME6X8/G963fL/HqgKtVlWDC6hVqKGkEuoN3CcheguFuwFy/u6N9PTLZ7YGrb/qGf28IjNSvmEeS+0XXLRqCXZJVoAHcxjTQWbnouk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354979; c=relaxed/simple;
-	bh=AN44CGrXuZXp0haZSVaFpgrLgEd8TnqLt2yAVVjwKUQ=;
+	s=arc-20240116; t=1722354988; c=relaxed/simple;
+	bh=z3fIHwPMVGC3J3W+RrQ0wpE6e3m6c17+NvUfszEZLZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zu5lGBwyZQgTZJEXg+DXrlddY+xkdKbrnXQqdr7qvJhdjIodXCbm6cSqEF6Swc79jdsxfU4MTav4I2+tZuPjofyQLu13yUccUY24Q4T0YNq0/DffwRw6E9bLd2Uyayeyf7Hyks+QsJcr5jhkie8ySfYVHqHu9h9uj2zvSrDsAkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSuC+Pry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92ACCC4AF0C;
-	Tue, 30 Jul 2024 15:56:18 +0000 (UTC)
+	 MIME-Version; b=maj5QZHI4O95m8qZCIgqF6jKuUMdypy13D/bLGYnXnRfzw3PiyXliuCHQok6BQvLr+JEFPpgPIA48xXHykea78pl47xSlz/LdpqxsjTcYnXTcoQCla53OsHKe15E6Zel2ezKRFrOBOLFWQxML1PESpqyzEFHzyBz9NHfK4+RiZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYYshR4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FEFC32782;
+	Tue, 30 Jul 2024 15:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354979;
-	bh=AN44CGrXuZXp0haZSVaFpgrLgEd8TnqLt2yAVVjwKUQ=;
+	s=korg; t=1722354988;
+	bh=z3fIHwPMVGC3J3W+RrQ0wpE6e3m6c17+NvUfszEZLZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSuC+PryUIiHORbsU3lJDhnMvNzxHwLSFd2TL4FZORyQZEx2NegIm46l2fZwwbg9Q
-	 w+Z9mvx0Ye42kuS9MyO0CQmeYPWiplC5ju9OkVhpi8MaHevPfCmjfwBklcPHPPxvNZ
-	 GBEXDtXRpxJgkoeI07kd6KEYcO+sj79PZnjj/7yo=
+	b=DYYshR4y0OIz1VFOB/IDoL9DZc2PkrtMa5kcgBRdxl6PTHG4n3muRWEoo2uxpHvZO
+	 deeI0sP70CIE/V+buqWfccmZqrX/lsW+mYgk1DNNgWGr2BN+z/Z8D5kwjodgbYDZRp
+	 9pxkI+Guu1uBxV47Yu1xnAk9UEmpGhrDLHEaHP7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Song Liu <song@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 007/809] md/raid1: dont free conf on raid0_run failure
-Date: Tue, 30 Jul 2024 17:38:03 +0200
-Message-ID: <20240730151724.947032010@linuxfoundation.org>
+Subject: [PATCH 6.10 008/809] platform/chrome: cros_ec_debugfs: fix wrong EC message version
+Date: Tue, 30 Jul 2024 17:38:04 +0200
+Message-ID: <20240730151724.985370102@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,68 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 17f91ac0843b50462a9c9c8f18df962338bd3db2 ]
+[ Upstream commit c2a28647bbb4e0894e8824362410f72b06ac57a4 ]
 
-The core md code calls the ->free method which already frees conf.
+ec_read_version_supported() uses ec_params_get_cmd_versions_v1 but it
+wrongly uses message version 0.
 
-Fixes: 07f1a6850c5d ("md/raid1: fail run raid1 array when active disk less than one")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240604172607.3185916-3-hch@lst.de
+Fix it.
+
+Fixes: e86264595225 ("mfd: cros_ec: add debugfs, console log file")
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Link: https://lore.kernel.org/r/20240611113110.16955-1-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/platform/chrome/cros_ec_debugfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 7b8a71ca66dde..1f321826ef02b 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -3204,7 +3204,6 @@ static int raid1_set_limits(struct mddev *mddev)
- 	return queue_limits_set(mddev->gendisk->queue, &lim);
- }
+diff --git a/drivers/platform/chrome/cros_ec_debugfs.c b/drivers/platform/chrome/cros_ec_debugfs.c
+index e1d313246beb5..5996e9d53c387 100644
+--- a/drivers/platform/chrome/cros_ec_debugfs.c
++++ b/drivers/platform/chrome/cros_ec_debugfs.c
+@@ -330,6 +330,7 @@ static int ec_read_version_supported(struct cros_ec_dev *ec)
+ 	if (!msg)
+ 		return 0;
  
--static void raid1_free(struct mddev *mddev, void *priv);
- static int raid1_run(struct mddev *mddev)
- {
- 	struct r1conf *conf;
-@@ -3238,7 +3237,7 @@ static int raid1_run(struct mddev *mddev)
- 	if (!mddev_is_dm(mddev)) {
- 		ret = raid1_set_limits(mddev);
- 		if (ret)
--			goto abort;
-+			return ret;
- 	}
- 
- 	mddev->degraded = 0;
-@@ -3252,8 +3251,7 @@ static int raid1_run(struct mddev *mddev)
- 	 */
- 	if (conf->raid_disks - mddev->degraded < 1) {
- 		md_unregister_thread(mddev, &conf->thread);
--		ret = -EINVAL;
--		goto abort;
-+		return -EINVAL;
- 	}
- 
- 	if (conf->raid_disks - mddev->degraded == 1)
-@@ -3277,14 +3275,8 @@ static int raid1_run(struct mddev *mddev)
- 	md_set_array_sectors(mddev, raid1_size(mddev, 0, 0));
- 
- 	ret = md_integrity_register(mddev);
--	if (ret) {
-+	if (ret)
- 		md_unregister_thread(mddev, &mddev->thread);
--		goto abort;
--	}
--	return 0;
--
--abort:
--	raid1_free(mddev, conf);
- 	return ret;
- }
- 
++	msg->version = 1;
+ 	msg->command = EC_CMD_GET_CMD_VERSIONS + ec->cmd_offset;
+ 	msg->outsize = sizeof(*params);
+ 	msg->insize = sizeof(*response);
 -- 
 2.43.0
 
