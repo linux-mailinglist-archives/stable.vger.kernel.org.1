@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50FA9419DC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA42941CC3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06574B22347
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8B32890C0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7B3433A9;
-	Tue, 30 Jul 2024 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEDF18C922;
+	Tue, 30 Jul 2024 17:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSv8hQSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgwljqPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3D28BE8;
-	Tue, 30 Jul 2024 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9CC1898F2;
+	Tue, 30 Jul 2024 17:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357226; cv=none; b=pHnptHH0+Ef/qNV7XmmH0g6MX6q+uF8CMlgpXx2Ksk/6tYc5dxFhUQuyduQxc/q8tG9LbBxI9UBa0WCHLU4ANGv6F6bML2mTo/wbC2P0tKdkqcpCuUnJq35rBO+EKZygjm0trTsCjU+/7zUq6ls7yRG3F02MSppW2RTVGlCkwAo=
+	t=1722359288; cv=none; b=Ntd5I6qsinsD8lwdDGHLd7QYpKjLB7thT8DMpXwg4bhVQKM5Lf2BPE2Z6uXogLbSdicKMBEudXS3h9ems6jJMCXno1os/Vf7Y/P8wyl4KqWQpxfqU5INXgCUIwlJtcoziTyiJP9YI3EkhU5WtUoUGS71Y3Rge3tYFNq+YnxuZUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357226; c=relaxed/simple;
-	bh=8xRlvFmHmTCf1i3b7vY5vqSCXhOS5IYh5B1g/QDiln8=;
+	s=arc-20240116; t=1722359288; c=relaxed/simple;
+	bh=Rl+OIyM2Qi2HooBmpIeAfbaft/u9TA7vhivfn6pR6Tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/IdN9k0ZJZIL97dm8J2ja0AiIyQefh7alMgsNWdf3cbfDXX1YGTU46kojUJJ9v708Le+oSGTHmKNmO5/7IRIJQSWbJtyforv20RMtoCRLs/4RmngkmFtITaB0y5YwOe3aFHfOmAaI5hwLrulnIVCgyiVizx0X2Wb8GBNq/m5GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSv8hQSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D97C32782;
-	Tue, 30 Jul 2024 16:33:45 +0000 (UTC)
+	 MIME-Version; b=HFPj3TqJCjfjR86fRF7F8qzAz9Xu9SGI2F4dDo5l5Ceq9FY6GafMjhDHBwK1JmQ7mwP4AUnuQaVLEFn7nPJwxKOb2NpydHpUyfHP1Tml9Bb37SrA4M+I/GKkqtu8udqgHe4aLui6XLLgJZGy2Da+WE6DjY1e+OBpvP2Z2VJ0/yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgwljqPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC290C4AF0A;
+	Tue, 30 Jul 2024 17:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357226;
-	bh=8xRlvFmHmTCf1i3b7vY5vqSCXhOS5IYh5B1g/QDiln8=;
+	s=korg; t=1722359288;
+	bh=Rl+OIyM2Qi2HooBmpIeAfbaft/u9TA7vhivfn6pR6Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eSv8hQSMzq4fiqVPj0q0qimfnih0NZgDEBDNNS19DQnkk/XCexyQxeM7RmsDZR9Ay
-	 XeMaAi8RN9SdXNFSk0shHIIo9rvgjaHaKAoJZnX8wS5UrIn4T+WHVHYyHmwXr+stpE
-	 dkbhzYNTH08R7lnVzaP/6M1Gh425kciWri6BR7UA=
+	b=QgwljqPwH3b83ct6v3K0JpsTIscIrLnTqhGPR0qteOotbB968gvGFBOB+la4l3lzD
+	 HqoWh6W6QDVybysgZIswB0BV9IBTlh9s3NGx0EkkgScvmhyZImIxXiU+4F41pfpPuT
+	 Z7o+aSlVhcmu4H9z2T/nexTz/tAacYfJw1tcLOM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/568] ext4: fix infinite loop when replaying fast_commit
+Subject: [PATCH 6.10 462/809] RDMA/hns: Fix unmatch exception handling when init eq table fails
 Date: Tue, 30 Jul 2024 17:45:38 +0200
-Message-ID: <20240730151648.910591769@linuxfoundation.org>
+Message-ID: <20240730151742.976453023@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 907c3fe532253a6ef4eb9c4d67efb71fab58c706 ]
+[ Upstream commit 543fb987bd63ed27409b5dea3d3eec27b9c1eac9 ]
 
-When doing fast_commit replay an infinite loop may occur due to an
-uninitialized extent_status struct.  ext4_ext_determine_insert_hole() does
-not detect the replay and calls ext4_es_find_extent_range(), which will
-return immediately without initializing the 'es' variable.
+The hw ctx should be destroyed when init eq table fails.
 
-Because 'es' contains garbage, an integer overflow may happen causing an
-infinite loop in this function, easily reproducible using fstest generic/039.
-
-This commit fixes this issue by unconditionally initializing the structure
-in function ext4_es_find_extent_range().
-
-Thanks to Zhang Yi, for figuring out the real problem!
-
-Fixes: 8016e29f4362 ("ext4: fast commit recovery path")
-Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20240515082857.32730-1-luis.henriques@linux.dev
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: a5073d6054f7 ("RDMA/hns: Add eq support of hip08")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-4-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 25 +++++++++++-----------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index f4b50652f0cce..d9d5cfb9c951a 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -310,6 +310,8 @@ void ext4_es_find_extent_range(struct inode *inode,
- 			       ext4_lblk_t lblk, ext4_lblk_t end,
- 			       struct extent_status *es)
- {
-+	es->es_lblk = es->es_len = es->es_pblk = 0;
-+
- 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
- 		return;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 2f16554c96bef..cbbc142afc1be 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -6368,9 +6368,16 @@ static void hns_roce_v2_int_mask_enable(struct hns_roce_dev *hr_dev,
+ 	roce_write(hr_dev, ROCEE_VF_ABN_INT_CFG_REG, enable_flag);
+ }
  
+-static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
++static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
++{
++	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
++}
++
++static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev,
++				    struct hns_roce_eq *eq)
+ {
+ 	struct device *dev = hr_dev->dev;
++	int eqn = eq->eqn;
+ 	int ret;
+ 	u8 cmd;
+ 
+@@ -6381,12 +6388,9 @@ static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
+ 
+ 	ret = hns_roce_destroy_hw_ctx(hr_dev, cmd, eqn & HNS_ROCE_V2_EQN_M);
+ 	if (ret)
+-		dev_err(dev, "[mailbox cmd] destroy eqc(%u) failed.\n", eqn);
+-}
++		dev_err(dev, "[mailbox cmd] destroy eqc(%d) failed.\n", eqn);
+ 
+-static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
+-{
+-	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
++	free_eq_buf(hr_dev, eq);
+ }
+ 
+ static void init_eq_config(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
+@@ -6733,7 +6737,7 @@ static int hns_roce_v2_init_eq_table(struct hns_roce_dev *hr_dev)
+ 
+ err_create_eq_fail:
+ 	for (i -= 1; i >= 0; i--)
+-		free_eq_buf(hr_dev, &eq_table->eq[i]);
++		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
+ 	kfree(eq_table->eq);
+ 
+ 	return ret;
+@@ -6753,11 +6757,8 @@ static void hns_roce_v2_cleanup_eq_table(struct hns_roce_dev *hr_dev)
+ 	__hns_roce_free_irq(hr_dev);
+ 	destroy_workqueue(hr_dev->irq_workq);
+ 
+-	for (i = 0; i < eq_num; i++) {
+-		hns_roce_v2_destroy_eqc(hr_dev, i);
+-
+-		free_eq_buf(hr_dev, &eq_table->eq[i]);
+-	}
++	for (i = 0; i < eq_num; i++)
++		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
+ 
+ 	kfree(eq_table->eq);
+ }
 -- 
 2.43.0
 
