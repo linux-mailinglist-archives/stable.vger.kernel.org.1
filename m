@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F199417BD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:15:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0761941D13
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CE3F1C235EE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:15:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D1D81F24CB7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2762D1A6189;
-	Tue, 30 Jul 2024 16:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F15189BB1;
+	Tue, 30 Jul 2024 17:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9W2PYz6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+19jpX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A3B1A616E;
-	Tue, 30 Jul 2024 16:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84171898E0;
+	Tue, 30 Jul 2024 17:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355900; cv=none; b=ncpXyNUOg8T0QWFVOp+FepCyNb7oH/Ekmj2hZX7zXnFmmZ9oNQ6pogxF6XA8HCL7IfXa/VYUFba64AwYowdIm6mJhiA3EBJ6tM0no90ENopoAkJmso+fYrRXWkWKxR+GaB0FIQPu+YRobJXkvIExtagOQH2RjaZt7uT7XWE6A/o=
+	t=1722359553; cv=none; b=TVIdclqkOxa4Zgz4I3jQb7y9Jc5hFHQlz8YbLC64XnUUecBnXErDLpB9HXLq00IhwBFDaUjDB6OgOnaXxwICBa67tyZ9fz2CBl58uNsyBG0B7NzrPdZNpP1AtJQYEAnNM/y8n2ZLsxtH8TwbASyxqpDG7+GYO9KK/y0pa++eleo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355900; c=relaxed/simple;
-	bh=8Wp7H5IOZFWyTypc+2I2kqtYFU1tTQ25J71u0ORoFw4=;
+	s=arc-20240116; t=1722359553; c=relaxed/simple;
+	bh=h/GN1qafrlp0irfiDzAsPH55zbXfsKxeh4iSK0mx1tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rO9CGRuWr5QP4TxEDaMGQ6jt95yWvi5Jz1kRues5hftDHhfl0k9xsHvnvLr9sXEw+K+SBeYbOigYGnVEDmoJwrBnJ4v1bQrPUigokjllS/PemT7Q70mNHQhPPsOQvsngwWzOVwYaGzf4DMpYrCe8EUflX+0y4uWbItT04y6vR5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9W2PYz6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E5AC32782;
-	Tue, 30 Jul 2024 16:11:39 +0000 (UTC)
+	 MIME-Version; b=EFfwn4PGQQvLzVzRnC4xK72M+PfSIf/Oq9a+MPvkFn4L+0iFvPguJrDPRJnvF4AXHQfR8FMZikAcq98yzNhsrLVD/4y+o5E2wA1q3RXF9BYFwpRNaA9JRQ9romw0741yFynkTrJ/0VbN0i0IuPJLkm+pAhpgU6WYoiF3eRJ45CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+19jpX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A16FC4AF0C;
+	Tue, 30 Jul 2024 17:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355900;
-	bh=8Wp7H5IOZFWyTypc+2I2kqtYFU1tTQ25J71u0ORoFw4=;
+	s=korg; t=1722359553;
+	bh=h/GN1qafrlp0irfiDzAsPH55zbXfsKxeh4iSK0mx1tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9W2PYz6nTQczV67fXZ+dunnKLh4iHX0MySOU/Wyv0rq+oeHovQY4EEA46ZDQDWcX
-	 WODVV8vBk32dtpijdeYB+8DOIB8fn5L2AUR6BsxPz738gM1Pl5CcMzrtqLuDB7V1PZ
-	 VtAa/WfyCPcWJqsgQ9ujSlEwFRNZlkrkXt8siz68=
+	b=t+19jpX98Sl1jsGyG83FmVOAwsv1DHZlxTBRDF2HBzdhspsfrBw2dS7jzRTmUBzX+
+	 NsS2xx1YahHS3VWrk4Ao+N7SemqpAS5Rj2CGFIkYPh6xUXc63IcreNo1ZunT101uph
+	 6CJNgqM+Kn8J4h6eaJoyORW16NzRAqmL0vCRQh/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/440] s390/mm: Convert gmap_make_secure to use a folio
-Date: Tue, 30 Jul 2024 17:46:15 +0200
-Message-ID: <20240730151621.428047001@linuxfoundation.org>
+Subject: [PATCH 6.10 500/809] pinctrl: renesas: r8a779g0: Fix CANFD5 suffix
+Date: Tue, 30 Jul 2024 17:46:16 +0200
+Message-ID: <20240730151744.485395361@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit d35c34bb32f2cc4ec0b52e91ad7a8fcab55d7856 ]
+[ Upstream commit 77fa9007ac31e80674beadc452d3f3614f283e18 ]
 
-Remove uses of deprecated page APIs, and move the check for large
-folios to here to avoid taking the folio lock if the folio is too large.
-We could do better here by attempting to split the large folio, but I'll
-leave that improvement for someone who can test it.
+CAN-FD instance 5 has two alternate pin groups: "canfd5" and "canfd5_b".
+Rename the former to "canfd5_a" to increase uniformity.
 
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20240322161149.2327518-3-willy@infradead.org
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
+While at it, remove the unneeded separator.
+
+Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
+Fixes: 050442ae4c74f830 ("pinctrl: renesas: r8a779g0: Add pins, groups and functions")
+Fixes: c2b4b2cd632d17e7 ("pinctrl: renesas: r8a779g0: Add missing CANFD5_B")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/10b22d54086ed11cdfeb0004583029ccf249bdb9.1717754960.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/uv.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/pinctrl/renesas/pfc-r8a779g0.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index 97567fb8936c7..6f661add0a5d6 100644
---- a/arch/s390/kernel/uv.c
-+++ b/arch/s390/kernel/uv.c
-@@ -192,13 +192,10 @@ static int expected_folio_refs(struct folio *folio)
- 	return res;
- }
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+index d2de526a3b588..d90ba8b6b4b42 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+@@ -341,8 +341,8 @@
+ /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+ #define IP0SR2_3_0	FM(FXR_TXDA)		FM(CANFD1_TX)		FM(TPU0TO2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_7_4	FM(FXR_TXENA_N)		FM(CANFD1_RX)		FM(TPU0TO3_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX_A)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX_A)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_19_16	FM(RXDB_EXTFXR)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_23_20	FM(FXR_TXENB_N)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR2_27_24	FM(FXR_TXDB)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+@@ -896,11 +896,11 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP0SR2_7_4,	TPU0TO3_A),
  
--static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
-+static int make_folio_secure(struct folio *folio, struct uv_cb_header *uvcb)
- {
--	struct folio *folio = page_folio(page);
- 	int expected, cc = 0;
+ 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	RXDA_EXTFXR),
+-	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX),
++	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX_A),
+ 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	IRQ5),
  
--	if (folio_test_large(folio))
--		return -EINVAL;
- 	if (folio_test_writeback(folio))
- 		return -EAGAIN;
- 	expected = expected_folio_refs(folio);
-@@ -264,7 +261,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 	bool local_drain = false;
- 	spinlock_t *ptelock;
- 	unsigned long uaddr;
--	struct page *page;
-+	struct folio *folio;
- 	pte_t *ptep;
- 	int rc;
+ 	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CLK_EXTFXR),
+-	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CANFD5_RX),
++	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CANFD5_RX_A),
+ 	PINMUX_IPSR_GPSR(IP0SR2_15_12,	IRQ4_B),
  
-@@ -291,15 +288,19 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 	rc = -ENXIO;
- 	ptep = get_locked_pte(gmap->mm, uaddr, &ptelock);
- 	if (pte_present(*ptep) && !(pte_val(*ptep) & _PAGE_INVALID) && pte_write(*ptep)) {
--		page = pte_page(*ptep);
-+		folio = page_folio(pte_page(*ptep));
-+		rc = -EINVAL;
-+		if (folio_test_large(folio))
-+			goto unlock;
- 		rc = -EAGAIN;
--		if (trylock_page(page)) {
-+		if (folio_trylock(folio)) {
- 			if (should_export_before_import(uvcb, gmap->mm))
--				uv_convert_from_secure(page_to_phys(page));
--			rc = make_page_secure(page, uvcb);
--			unlock_page(page);
-+				uv_convert_from_secure(PFN_PHYS(folio_pfn(folio)));
-+			rc = make_folio_secure(folio, uvcb);
-+			folio_unlock(folio);
- 		}
- 	}
-+unlock:
- 	pte_unmap_unlock(ptep, ptelock);
- out:
- 	mmap_read_unlock(gmap->mm);
-@@ -309,10 +310,10 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 		 * If we are here because the UVC returned busy or partial
- 		 * completion, this is just a useless check, but it is safe.
- 		 */
--		wait_on_page_writeback(page);
-+		folio_wait_writeback(folio);
- 	} else if (rc == -EBUSY) {
- 		/*
--		 * If we have tried a local drain and the page refcount
-+		 * If we have tried a local drain and the folio refcount
- 		 * still does not match our expected safe value, try with a
- 		 * system wide drain. This is needed if the pagevecs holding
- 		 * the page are on a different CPU.
-@@ -323,7 +324,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 			return -EAGAIN;
- 		}
- 		/*
--		 * We are here if the page refcount does not match the
-+		 * We are here if the folio refcount does not match the
- 		 * expected safe value. The main culprits are usually
- 		 * pagevecs. With lru_add_drain() we drain the pagevecs
- 		 * on the local CPU so that hopefully the refcount will
+ 	PINMUX_IPSR_GPSR(IP0SR2_19_16,	RXDB_EXTFXR),
+@@ -1531,15 +1531,14 @@ static const unsigned int canfd4_data_mux[] = {
+ };
+ 
+ /* - CANFD5 ----------------------------------------------------------------- */
+-static const unsigned int canfd5_data_pins[] = {
+-	/* CANFD5_TX, CANFD5_RX */
++static const unsigned int canfd5_data_a_pins[] = {
++	/* CANFD5_TX_A, CANFD5_RX_A */
+ 	RCAR_GP_PIN(2, 2), RCAR_GP_PIN(2, 3),
+ };
+-static const unsigned int canfd5_data_mux[] = {
+-	CANFD5_TX_MARK, CANFD5_RX_MARK,
++static const unsigned int canfd5_data_a_mux[] = {
++	CANFD5_TX_A_MARK, CANFD5_RX_A_MARK,
+ };
+ 
+-/* - CANFD5_B ----------------------------------------------------------------- */
+ static const unsigned int canfd5_data_b_pins[] = {
+ 	/* CANFD5_TX_B, CANFD5_RX_B */
+ 	RCAR_GP_PIN(1, 8), RCAR_GP_PIN(1, 9),
+@@ -2578,8 +2577,8 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	SH_PFC_PIN_GROUP(canfd2_data),
+ 	SH_PFC_PIN_GROUP(canfd3_data),
+ 	SH_PFC_PIN_GROUP(canfd4_data),
+-	SH_PFC_PIN_GROUP(canfd5_data),		/* suffix might be updated */
+-	SH_PFC_PIN_GROUP(canfd5_data_b),	/* suffix might be updated */
++	SH_PFC_PIN_GROUP(canfd5_data_a),
++	SH_PFC_PIN_GROUP(canfd5_data_b),
+ 	SH_PFC_PIN_GROUP(canfd6_data),
+ 	SH_PFC_PIN_GROUP(canfd7_data),
+ 	SH_PFC_PIN_GROUP(can_clk),
+@@ -2788,8 +2787,7 @@ static const char * const canfd4_groups[] = {
+ };
+ 
+ static const char * const canfd5_groups[] = {
+-	/* suffix might be updated */
+-	"canfd5_data",
++	"canfd5_data_a",
+ 	"canfd5_data_b",
+ };
+ 
 -- 
 2.43.0
 
