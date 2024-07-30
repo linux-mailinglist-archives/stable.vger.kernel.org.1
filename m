@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF5E941ACB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A921941D5C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECD01B23724
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F5128B530
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C09B189903;
-	Tue, 30 Jul 2024 16:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9072018801A;
+	Tue, 30 Jul 2024 17:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PU0ZggkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0f9BLqR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE40118455C;
-	Tue, 30 Jul 2024 16:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9C31A76DD;
+	Tue, 30 Jul 2024 17:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357868; cv=none; b=eJLdje6SbDCbu8FTnR4Wh9q5xvoFiFTqoXBwet2Km+TeoWwy9s0VhtNEYuyDad2563iTQU86bh/HlCUUbh2l07r2vXE5LQw0s06V3ZSIpIk3djMb/G6E7grvzudfkJcJtiJ1WpCqi62/vPkRdyAMbsznSPlJ/y0g18xDrkdVaes=
+	t=1722359772; cv=none; b=sBYZy+EA3A1eZIaU7tVuez2/xvgFHQzBRET3YhslRVzTStTBfVCi3DuEbLw3A7JWy3v7Cgj+/+Q/13KT/nDSlBGk5wIqid6iQ2fi8GVO9NNR5YjMxmhSP303XH6WCMzqk4M3GFgynSB9LtVLQLgzzj9CPNTjXUcL8cjYSNnw7ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357868; c=relaxed/simple;
-	bh=MDAxQrWxYblnKJZ0L4S8aerl80Dr8i0sjWaXd/BUU68=;
+	s=arc-20240116; t=1722359772; c=relaxed/simple;
+	bh=81szZ3UV/5mexYSd7R5/pA/mLpbun2SyIQyFgXfCM3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLuw+Nv7Z80M4Txg2B70h0R/TRUkf4DNEQrxc8IlSelNXCaTMKKbfRti7N8P5uKbKsTqM9uVLl70pjKkPh2zGl7rFLL0LZfK88B2J5Dalc8gP9EMFzkXwBLpwed+rM10G2lWWcgsz5iopJQ9NgRRPyapSy/yWVjH6dOM8vKxOGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PU0ZggkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F82FC32782;
-	Tue, 30 Jul 2024 16:44:27 +0000 (UTC)
+	 MIME-Version; b=IB643txzQsDms4bvBAPGWD0HIcaXrSB1+XxAAmFHMxUVBCz+CBdgvdm66ujIl6swjOj/n2EPGG+kUSfjIrDjN9s2vb66PZN5qINRMxhvdgaqJrjr4i7qK1mnHLDMtngjCFzCgvjwSBN85A9gjbEoDr5h0ISqddC7m316Fz9xuyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0f9BLqR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AF7C32782;
+	Tue, 30 Jul 2024 17:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357867;
-	bh=MDAxQrWxYblnKJZ0L4S8aerl80Dr8i0sjWaXd/BUU68=;
+	s=korg; t=1722359772;
+	bh=81szZ3UV/5mexYSd7R5/pA/mLpbun2SyIQyFgXfCM3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PU0ZggkSWmhzUHttWTo8PHDdrKCbCYjgnuSe/H1Z4wBKrKkNatKw0LA0JNhWji5Hy
-	 0uCMsGuVquX9aAV+n38D1Ix2rTo2AymFWAEyx+TovPoOCpo19n4F14OVOEt2DRqFbd
-	 pdbsCWDJZ6LxnBkbDfUoFP6QcnCwuKr6YKse448A=
+	b=l0f9BLqR9bfRKaSkdZTIYq3MS9SzWeUCrNFVyRZbl8cGdNdNGZ8Yj95ipksjq6qlg
+	 0xPRfuFMM1QDbEDHUcZRMhwG1gBP+tT9D1XJoYc6L5nDIfdCXAd0AIbIpOdqd94yOV
+	 Gzrg6WpZceBxv3tyStpgzg6LlB+tElBsTIxR4ogI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 299/568] RDMA/hns: Check atomic wr length
+Subject: [PATCH 6.10 530/809] mailbox: imx: fix TXDB_V2 channel race condition
 Date: Tue, 30 Jul 2024 17:46:46 +0200
-Message-ID: <20240730151651.561847517@linuxfoundation.org>
+Message-ID: <20240730151745.671591204@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 6afa2c0bfb8ef69f65715ae059e5bd5f9bbaf03b ]
+[ Upstream commit b5ef17917f3a797a7b12d1edd51f676554e44a07 ]
 
-8 bytes is the only supported length of atomic. Add this check in
-set_rc_wqe(). Besides, stop processing WQEs and return from
-set_rc_wqe() if there is any error.
+Two TXDB_V2 channels are used between Linux and System Manager(SM).
+Channel0 for normal TX, Channel 1 for notification completion.
+The TXDB_V2 trigger logic is using imx_mu_xcr_rmw which uses
+read/modify/update logic.
 
-Fixes: 384f88185112 ("RDMA/hns: Add atomic support")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240710133705.896445-2-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Note: clear MUB GSR BITs, the MUA side GCR BITs will also got cleared per
+hardware design.
+Channel0 Linux
+read GCR->modify GCR->write GCR->M33 SM->read GSR----->clear GSR
+                                                |-(1)-|
+Channel1 Linux start in time slot(1)
+read GCR->modify GCR->write GCR->M33 SM->read GSR->clear GSR
+So Channel1 read GCR will read back the GCR that Channel0 wrote, because
+M33 has not finish clear GSR, this means Channel1 GCR writing will
+trigger Channel1 and Channel0 interrupt both which is wrong.
+
+Channel0 will be freed(SCMI channel status set to FREE) in M33 SM when
+processing the 1st Channel0 interrupt. So when 2nd interrupt trigger
+(channel 0/1 trigger together), SM will see a freed Channel0, and report
+protocol error.
+
+To address the issue, not using read/modify/update logic, just use
+write, because write 0 to GCR will be ignored. And after write MUA GCR,
+wait the SM to clear MUB GSR by looping MUA GCR value.
+
+Fixes: 5bfe4067d350 ("mailbox: imx: support channel type tx doorbell v2")
+Reviewed-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h | 2 ++
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c  | 9 +++++++--
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/mailbox/imx-mailbox.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
-index 82066859cc113..b3719579a24b3 100644
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -90,6 +90,8 @@
- /* Configure to HW for PAGE_SIZE larger than 4KB */
- #define PG_SHIFT_OFFSET				(PAGE_SHIFT - 12)
+diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+index 933727f89431d..d17efb1dd0cb1 100644
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -225,6 +225,8 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
+ 			     void *data)
+ {
+ 	u32 *arg = data;
++	u32 val;
++	int ret;
  
-+#define ATOMIC_WR_LEN				8
-+
- #define HNS_ROCE_IDX_QUE_ENTRY_SZ		4
- #define SRQ_DB_REG				0x230
- 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 32fb2c00a8f26..8c90391fd3524 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -595,11 +595,16 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
- 		     (wr->send_flags & IB_SEND_SIGNALED) ? 1 : 0);
- 
- 	if (wr->opcode == IB_WR_ATOMIC_CMP_AND_SWP ||
--	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD)
-+	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD) {
-+		if (msg_len != ATOMIC_WR_LEN)
-+			return -EINVAL;
- 		set_atomic_seg(wr, rc_sq_wqe, valid_num_sge);
--	else if (wr->opcode != IB_WR_REG_MR)
-+	} else if (wr->opcode != IB_WR_REG_MR) {
- 		ret = set_rwqe_data_seg(&qp->ibqp, wr, rc_sq_wqe,
- 					&curr_idx, valid_num_sge);
+ 	switch (cp->type) {
+ 	case IMX_MU_TYPE_TX:
+@@ -236,7 +238,13 @@ static int imx_mu_generic_tx(struct imx_mu_priv *priv,
+ 		queue_work(system_bh_wq, &cp->txdb_work);
+ 		break;
+ 	case IMX_MU_TYPE_TXDB_V2:
+-		imx_mu_xcr_rmw(priv, IMX_MU_GCR, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx), 0);
++		imx_mu_write(priv, IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx),
++			     priv->dcfg->xCR[IMX_MU_GCR]);
++		ret = readl_poll_timeout(priv->base + priv->dcfg->xCR[IMX_MU_GCR], val,
++					 !(val & IMX_MU_xCR_GIRn(priv->dcfg->type, cp->idx)),
++					 0, 1000);
 +		if (ret)
-+			return ret;
-+	}
- 
- 	/*
- 	 * The pipeline can sequentially post all valid WQEs into WQ buffer,
++			dev_warn_ratelimited(priv->dev, "channel type: %d failure\n", cp->type);
+ 		break;
+ 	default:
+ 		dev_warn_ratelimited(priv->dev, "Send data on wrong channel type: %d\n", cp->type);
 -- 
 2.43.0
 
