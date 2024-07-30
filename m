@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-64061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769BC941BED
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FE7941EB0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 307B1283F98
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F591F235F3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A04187FF6;
-	Tue, 30 Jul 2024 17:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C092F18455C;
+	Tue, 30 Jul 2024 17:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Owh3OQKC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLtfqXvI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2763E83A17;
-	Tue, 30 Jul 2024 17:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6051A76AD;
+	Tue, 30 Jul 2024 17:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358857; cv=none; b=GAKfQsCTi9wSbxKFDlQcLFqO04SjQu6Bezst5uOYvu1pQQfSmxLFYg+GaheZCaq6nfdXF3uYiCZPqUGBkUiaatQSkLVSVg1X8oV5wM1+CE6oXrjTe388L1AtRdpI5/dfssofk5TfNRZCV1DvaSrDgPbzfooK1SBQebn4bu+VShk=
+	t=1722360719; cv=none; b=rx/zPTo9kf2LTXO2Ym2UDXfZi7dsdijymyPdoL0Ppv9tFTSPyxdwbENooctK9HnCJxVrCgfW/vTgDqaP8BXMzGE5uhQ+LYPquaLDsikeNlLpFQHrJFdcsjmws+6OmwNJo5KWuQ6d1FZRcZoOV4nO/IH0ff39k0vSwglVuTMzeRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358857; c=relaxed/simple;
-	bh=yUQaxuvkk74X7eVTYa8dZxFfDonvNdBCRXljvnnqNxM=;
+	s=arc-20240116; t=1722360719; c=relaxed/simple;
+	bh=VdWh/PzDqAOl1TNBee5qImNghEW+Q0DlBDpC9ntWU9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iw+5WnUnYSwV6Nby2j6yqc2Db8fd1YHeBQLiAevTpwo4oszSKf6wp9bGkXOnBUEikhlYFGARRMwT/W8JO+yLKvNY2GBIVmERVquHarOCjmBfhl5o2qAC8//DHMfiWH65b3sjl296Bmpj0l+a7kfx+aR2Yh16P2bmboVfKZYAyn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Owh3OQKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E711C32782;
-	Tue, 30 Jul 2024 17:00:56 +0000 (UTC)
+	 MIME-Version; b=fcXwXHlwdVOxrbYt9lo3GeQW4H7QMEgMfp+ZdWimk09S7Q0gOJ1+ta9fPVrH8GgWUnNk/WrDFy2YZZ5Y4GdoqYWNDZ5jOpia+nwxwtnUzMF+mKHtmFM3QHPTmlr6vbpcG5mQI+mG2XhfSHHUC4bD4iupH8k/m82X62fkf6i6arg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLtfqXvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A88C32782;
+	Tue, 30 Jul 2024 17:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358857;
-	bh=yUQaxuvkk74X7eVTYa8dZxFfDonvNdBCRXljvnnqNxM=;
+	s=korg; t=1722360719;
+	bh=VdWh/PzDqAOl1TNBee5qImNghEW+Q0DlBDpC9ntWU9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Owh3OQKCQV59fZxl3DRPl/q2x6Ggrpj3fsBkRBI5GBQmxVvAAuh2i4NtWW0wBUzPY
-	 2qCLg3YvHx/7CB+L8HLDCp4qo9H8AYxmkvdbvH1nvsT9Y4dXKOOOQpnfYegLmiL05s
-	 ESv5Wd2XLT0kQcCLkK6LtP3CZTWfOaSbDD6BZ+S8=
+	b=DLtfqXvIxuQ7RpHaMSzrmT9/r3w0ODP7DfKQrg3hT+TCBGb8NkqSCSwaqdxoPDb7d
+	 mR8wXfJ6yMeUUlVUTb1iXKE/Gn4uj0S5T67+eMuqq3emwMTi97T4KJp8h50MiX7TbL
+	 vKI3am3g65g6txK7VSKqsr9byPCxVRes3W7HSffc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Bart Van Assche <bvanassche@acm.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Curtis Malainey <cujomalainey@chromium.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 428/440] nvme-pci: Fix the instructions for disabling power management
-Date: Tue, 30 Jul 2024 17:51:01 +0200
-Message-ID: <20240730151632.497548512@linuxfoundation.org>
+Subject: [PATCH 6.10 786/809] ASoC: Intel: Fix RT5650 SSP lookup
+Date: Tue, 30 Jul 2024 17:51:02 +0200
+Message-ID: <20240730151756.010684951@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Curtis Malainey <cujomalainey@chromium.org>
 
-[ Upstream commit 92fc2c469eb26060384e9b2cd4cb0cc228aba582 ]
+[ Upstream commit 6f6a23d42bdfbbfe1b41a23e2c78319a0cc65db3 ]
 
-pcie_aspm=off tells the kernel not to modify the ASPM configuration. This
-setting does not guarantee that ASPM (Active State Power Management) is
-disabled. Hence add pcie_port_pm=off. This disables power management for
-all PCIe ports.
+Commit 8efcd4864652 ("ASoC: Intel: sof_rt5682: use common module for
+sof_card_private initialization") migrated the pin assignment in the
+context struct up to soc-acpi-intel-ssp-common.c. This uses a lookup
+table to see if a device has a amp/codec before assigning the pin. The
+issue here arises when combination parts that serve both (with 2 ports)
+are used.
 
-This patch has been tested on a workstation with a Samsung SSD 970 EVO Plus
-NVMe SSD.
+sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:1f.3/adl_rt5682_def/SSP0-Codec'
+CPU: 1 PID: 2079 Comm: udevd Tainted: G     U             6.6.36-03391-g744739e00023 #1 3be1a2880a0970f65545a957db7d08ef4b3e2c0d
+Hardware name: Google Anraggar/Anraggar, BIOS Google_Anraggar.15217.552.0 05/07/2024
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x69/0xa0
+ sysfs_warn_dup+0x5b/0x70
+ sysfs_create_dir_ns+0xb0/0x100
+ kobject_add_internal+0x133/0x3c0
+ kobject_add+0x66/0xb0
+ ? device_add+0x65/0x780
+ device_add+0x164/0x780
+ snd_soc_add_pcm_runtimes+0x2fa/0x800
+ snd_soc_bind_card+0x35e/0xc20
+ devm_snd_soc_register_card+0x48/0x90
+ platform_probe+0x7b/0xb0
+ really_probe+0xf7/0x2a0
+ ...
+kobject: kobject_add_internal failed for SSP0-Codec with -EEXIST, don't try to register things with the same name in the same directory.
 
-Fixes: 4641a8e6e145 ("nvme-pci: add trouble shooting steps for timeouts")
-Cc: Keith Busch <kbusch@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+The issue is that the ALC5650 was only defined in the codec table and
+not the amp table which left the pin unassigned but the dai link was
+still created by the machine driver.
+
+Also patch the suffix filename code for the topology to prevent double
+suffix names as a result of this change.
+
+Fixes: 8efcd4864652 ("ASoC: Intel: sof_rt5682: use common module for sof_card_private initialization")
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Curtis Malainey <cujomalainey@chromium.org>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240716084012.299257-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../intel/common/soc-acpi-intel-ssp-common.c    |  9 +++++++++
+ sound/soc/sof/intel/hda.c                       | 17 +++++++++--------
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 32e89ea853a47..42ef44cc7a852 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1322,7 +1322,7 @@ static void nvme_warn_reset(struct nvme_dev *dev, u32 csts)
- 	dev_warn(dev->ctrl.device,
- 		 "Does your device have a faulty power saving mode enabled?\n");
- 	dev_warn(dev->ctrl.device,
--		 "Try \"nvme_core.default_ps_max_latency_us=0 pcie_aspm=off\" and report a bug\n");
-+		 "Try \"nvme_core.default_ps_max_latency_us=0 pcie_aspm=off pcie_port_pm=off\" and report a bug\n");
- }
+diff --git a/sound/soc/intel/common/soc-acpi-intel-ssp-common.c b/sound/soc/intel/common/soc-acpi-intel-ssp-common.c
+index 75d0b931d895d..de7a3f7f47f10 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-ssp-common.c
++++ b/sound/soc/intel/common/soc-acpi-intel-ssp-common.c
+@@ -64,6 +64,15 @@ static const struct codec_map amps[] = {
+ 	CODEC_MAP_ENTRY("RT1015P", "rt1015", RT1015P_ACPI_HID, CODEC_RT1015P),
+ 	CODEC_MAP_ENTRY("RT1019P", "rt1019", RT1019P_ACPI_HID, CODEC_RT1019P),
+ 	CODEC_MAP_ENTRY("RT1308", "rt1308", RT1308_ACPI_HID, CODEC_RT1308),
++
++	/*
++	 * Monolithic components
++	 *
++	 * Only put components that can serve as both the amp and the codec below this line.
++	 * This will ensure that if the part is used just as a codec and there is an amp as well
++	 * then the amp will be selected properly.
++	 */
++	CODEC_MAP_ENTRY("RT5650", "rt5650", RT5650_ACPI_HID, CODEC_RT5650),
+ };
  
- static enum blk_eh_timer_return nvme_timeout(struct request *req)
+ enum snd_soc_acpi_intel_codec
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index dead1c19558bb..81647ddac8cbc 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -1307,9 +1307,10 @@ struct snd_soc_acpi_mach *hda_machine_select(struct snd_sof_dev *sdev)
+ 	const struct sof_dev_desc *desc = sof_pdata->desc;
+ 	struct hdac_bus *bus = sof_to_bus(sdev);
+ 	struct snd_soc_acpi_mach *mach = NULL;
+-	enum snd_soc_acpi_intel_codec codec_type;
++	enum snd_soc_acpi_intel_codec codec_type, amp_type;
+ 	const char *tplg_filename;
+ 	const char *tplg_suffix;
++	bool amp_name_valid;
+ 
+ 	/* Try I2S or DMIC if it is supported */
+ 	if (interface_mask & (BIT(SOF_DAI_INTEL_SSP) | BIT(SOF_DAI_INTEL_DMIC)))
+@@ -1413,15 +1414,16 @@ struct snd_soc_acpi_mach *hda_machine_select(struct snd_sof_dev *sdev)
+ 			}
+ 		}
+ 
+-		codec_type = snd_soc_acpi_intel_detect_amp_type(sdev->dev);
++		amp_type = snd_soc_acpi_intel_detect_amp_type(sdev->dev);
++		codec_type = snd_soc_acpi_intel_detect_codec_type(sdev->dev);
++		amp_name_valid = amp_type != CODEC_NONE && amp_type != codec_type;
+ 
+-		if (tplg_fixup &&
+-		    mach->tplg_quirk_mask & SND_SOC_ACPI_TPLG_INTEL_AMP_NAME &&
+-		    codec_type != CODEC_NONE) {
+-			tplg_suffix = snd_soc_acpi_intel_get_amp_tplg_suffix(codec_type);
++		if (tplg_fixup && amp_name_valid &&
++		    mach->tplg_quirk_mask & SND_SOC_ACPI_TPLG_INTEL_AMP_NAME) {
++			tplg_suffix = snd_soc_acpi_intel_get_amp_tplg_suffix(amp_type);
+ 			if (!tplg_suffix) {
+ 				dev_err(sdev->dev, "no tplg suffix found, amp %d\n",
+-					codec_type);
++					amp_type);
+ 				return NULL;
+ 			}
+ 
+@@ -1436,7 +1438,6 @@ struct snd_soc_acpi_mach *hda_machine_select(struct snd_sof_dev *sdev)
+ 			add_extension = true;
+ 		}
+ 
+-		codec_type = snd_soc_acpi_intel_detect_codec_type(sdev->dev);
+ 
+ 		if (tplg_fixup &&
+ 		    mach->tplg_quirk_mask & SND_SOC_ACPI_TPLG_INTEL_CODEC_NAME &&
 -- 
 2.43.0
 
