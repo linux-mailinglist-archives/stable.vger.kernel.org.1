@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BE1941607
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:55:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E68D941615
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BBD1284061
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:55:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F9E3B24FE4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44361BA88A;
-	Tue, 30 Jul 2024 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A138E1BA867;
+	Tue, 30 Jul 2024 15:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAtu2nCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEVMwzKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731C81BA87F;
-	Tue, 30 Jul 2024 15:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4DF29A2;
+	Tue, 30 Jul 2024 15:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354927; cv=none; b=buv9FBOHrErq5be8KdILt/eZ0trM+T9SgL5vxHr798WQC5TZNy8PJy7vSRl1Nsmvvz/CyyHtmsO3MfeWKAnQH8CNncLDif4lzymrGcroqWiyIqC6BWx/BT88cnmpSq8/xEP1Q27NfgYholv2pTdLQnNyvq5E1Wn6WcdXdnAnffo=
+	t=1722354963; cv=none; b=WzJw4/JvqHwIkwGaLUuArHocvNSUI+MTSMsOmaZYtMdRWsJidE769TGZQ149SbHuwQyR6t2kMFgmppSS6ofzUrMO2VP23ztc5zvbYBMPHqDkVIiLvmo0zzY2U8h6Dov7sWV8WpeLiQZr0DuWKgvFkfamb/571cjOgAmzFGd1x8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354927; c=relaxed/simple;
-	bh=CslAzeLF8K/oCuE9DGtMHgeYGYSBPicqg0vzxA9QybU=;
+	s=arc-20240116; t=1722354963; c=relaxed/simple;
+	bh=HqKEVi04CP+jV2P2OHe+dExWHzZ110GDxSpY637VXeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTF0RSrjSiWzs91+y1vvXIZmZY0UdzJo+E9R/beT71AiTXf3pkxyB+6GDArNaRGTp4Gy94wYc4ha7KQqseL+aCrqJbkdQk1K8xiq8XAj+PPl2xMQia0JJ95b7tSaLuC9EMqifnYG+JcqYZeC1lY1Ha/reTff1szLFuiiPM1w2LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAtu2nCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C56C4AF0A;
-	Tue, 30 Jul 2024 15:55:26 +0000 (UTC)
+	 MIME-Version; b=A5p8Lx6TQ43trkdkKdQXgc+mEt+dYTBWLnSebj5PTwms8GQ2vLJEuvDWgzWuOeoRD0ioXmnIDh2pqCmdIBefMRMUZbVFrB+usvwEpe95n4Fx/dGh3eigDYNJvux0anEwGFa0v4Sh0TezTnWzVXNKhtCPh3Dwdvc8XA3CMRq1Src=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEVMwzKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E1DC32782;
+	Tue, 30 Jul 2024 15:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354927;
-	bh=CslAzeLF8K/oCuE9DGtMHgeYGYSBPicqg0vzxA9QybU=;
+	s=korg; t=1722354963;
+	bh=HqKEVi04CP+jV2P2OHe+dExWHzZ110GDxSpY637VXeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAtu2nCMIVsfxC5MDXXHpubS03Mdph2UjrPm+p2iwweXVOGYxhfUx1lViobkY+VIM
-	 YUV6N0V6wHD06wtkEW0+ZQpaGRzhNVbeHlEyXAD3b+EI/hhVMd7ZXy1dmJl0lxY4eV
-	 7yg5J7hseGn6UjtvO+NCLZbFOS4a9zfe4JEnzkRk=
+	b=nEVMwzKCufpE9tQhxfU+6t8GY7inyimEvnCw7SZgDPXV14fkDwduw1W0q3MozSpGX
+	 hkqUfLL5jZBHUapr6Y8hml223chb5zOCigOl5aqdnAFDFJ73NH/8nblgoXf2eBs8mv
+	 gLpCuUpVk/TO6/YDYlqP5TuCmMvGYuZBnjo/47yA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
+	Wayne Tung <chineweff@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/440] cgroup/cpuset: Prevent UAF in proc_cpuset_show()
-Date: Tue, 30 Jul 2024 17:44:12 +0200
-Message-ID: <20240730151616.514752574@linuxfoundation.org>
+Subject: [PATCH 6.1 020/440] hwmon: (adt7475) Fix default duty on fan is disabled
+Date: Tue, 30 Jul 2024 17:44:13 +0200
+Message-ID: <20240730151616.554221257@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,94 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Wayne Tung <chineweff@gmail.com>
 
-[ Upstream commit 1be59c97c83ccd67a519d8a49486b3a8a73ca28a ]
+[ Upstream commit 39b24cced70fdc336dbc0070f8b3bde61d8513a8 ]
 
-An UAF can happen when /proc/cpuset is read as reported in [1].
+According to the comments on fan is disabled, we change to manual mode
+and set the duty cycle to 0.
+For setting the duty cycle part, the register is wrong. Fix it.
 
-This can be reproduced by the following methods:
-1.add an mdelay(1000) before acquiring the cgroup_lock In the
- cgroup_path_ns function.
-2.$cat /proc/<pid>/cpuset   repeatly.
-3.$mount -t cgroup -o cpuset cpuset /sys/fs/cgroup/cpuset/
-$umount /sys/fs/cgroup/cpuset/   repeatly.
-
-The race that cause this bug can be shown as below:
-
-(umount)		|	(cat /proc/<pid>/cpuset)
-css_release		|	proc_cpuset_show
-css_release_work_fn	|	css = task_get_css(tsk, cpuset_cgrp_id);
-css_free_rwork_fn	|	cgroup_path_ns(css->cgroup, ...);
-cgroup_destroy_root	|	mutex_lock(&cgroup_mutex);
-rebind_subsystems	|
-cgroup_free_root 	|
-			|	// cgrp was freed, UAF
-			|	cgroup_path_ns_locked(cgrp,..);
-
-When the cpuset is initialized, the root node top_cpuset.css.cgrp
-will point to &cgrp_dfl_root.cgrp. In cgroup v1, the mount operation will
-allocate cgroup_root, and top_cpuset.css.cgrp will point to the allocated
-&cgroup_root.cgrp. When the umount operation is executed,
-top_cpuset.css.cgrp will be rebound to &cgrp_dfl_root.cgrp.
-
-The problem is that when rebinding to cgrp_dfl_root, there are cases
-where the cgroup_root allocated by setting up the root for cgroup v1
-is cached. This could lead to a Use-After-Free (UAF) if it is
-subsequently freed. The descendant cgroups of cgroup v1 can only be
-freed after the css is released. However, the css of the root will never
-be released, yet the cgroup_root should be freed when it is unmounted.
-This means that obtaining a reference to the css of the root does
-not guarantee that css.cgrp->root will not be freed.
-
-Fix this problem by using rcu_read_lock in proc_cpuset_show().
-As cgroup_root is kfree_rcu after commit d23b5c577715
-("cgroup: Make operations on the cgroup root_list RCU safe"),
-css->cgroup won't be freed during the critical section.
-To call cgroup_path_ns_locked, css_set_lock is needed, so it is safe to
-replace task_get_css with task_css.
-
-[1] https://syzkaller.appspot.com/bug?extid=9b1ff7be974a403aa4cd
-
-Fixes: a79a908fd2b0 ("cgroup: introduce cgroup namespaces")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 1c301fc5394f ("hwmon: Add a driver for the ADT7475 hardware monitoring chip")
+Signed-off-by: Wayne Tung <chineweff@gmail.com>
+Link: https://lore.kernel.org/r/20240701073252.317397-1-chineweff@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/hwmon/adt7475.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 278248907791f..370a6bce20a80 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -21,6 +21,7 @@
-  *  License.  See the file COPYING in the main directory of the Linux
-  *  distribution for more details.
-  */
-+#include "cgroup-internal.h"
+diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
+index 6a6ebcc896b1d..3ac6744276750 100644
+--- a/drivers/hwmon/adt7475.c
++++ b/drivers/hwmon/adt7475.c
+@@ -1863,7 +1863,7 @@ static void adt7475_read_pwm(struct i2c_client *client, int index)
+ 		data->pwm[CONTROL][index] &= ~0xE0;
+ 		data->pwm[CONTROL][index] |= (7 << 5);
  
- #include <linux/cpu.h>
- #include <linux/cpumask.h>
-@@ -4213,10 +4214,14 @@ int proc_cpuset_show(struct seq_file *m, struct pid_namespace *ns,
- 	if (!buf)
- 		goto out;
+-		i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(index),
++		i2c_smbus_write_byte_data(client, PWM_REG(index),
+ 					  data->pwm[INPUT][index]);
  
--	css = task_get_css(tsk, cpuset_cgrp_id);
--	retval = cgroup_path_ns(css->cgroup, buf, PATH_MAX,
--				current->nsproxy->cgroup_ns);
--	css_put(css);
-+	rcu_read_lock();
-+	spin_lock_irq(&css_set_lock);
-+	css = task_css(tsk, cpuset_cgrp_id);
-+	retval = cgroup_path_ns_locked(css->cgroup, buf, PATH_MAX,
-+				       current->nsproxy->cgroup_ns);
-+	spin_unlock_irq(&css_set_lock);
-+	rcu_read_unlock();
-+
- 	if (retval == -E2BIG)
- 		retval = -ENAMETOOLONG;
- 	if (retval < 0)
+ 		i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(index),
 -- 
 2.43.0
 
