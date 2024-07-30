@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2908941D55
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 640FD941D7F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C8B328B40A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BAF7B29BDE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B2A1A76C5;
-	Tue, 30 Jul 2024 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0741A76C3;
+	Tue, 30 Jul 2024 17:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I86lY5I5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N38a3GL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBDD1A76A2;
-	Tue, 30 Jul 2024 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C171A76A2;
+	Tue, 30 Jul 2024 17:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359743; cv=none; b=s/SzZQ5L19WfinNyKfot5JuVYKzoMGC6vX2mX/j7apyp4y6+9DGclEGqlN3lZJ7v+i81g6a40cMpdPDDWmbq1vT2MEc7rD6YxioVhyZWOwr8WUFnK5qmRJCxS3eqTzISIVezfrR1kZ8Y/tMPG0sXju9F058XiLpFcHnrVv48j4Y=
+	t=1722359749; cv=none; b=BhU/LBMGXvhsAK0YT0Uz89NEHZowzz62FssjiJKyTsjAXUQzXmNPDR8CJaS71q8PIYr1BNtpD/d1T94QscggQLtdfGi99LrxxIavnS5x8E6uYijLeueuCu08pVpgl2sn+yuBq+h2abxRoJku40jPnG1NaLNGzo4pd/VRWr9hfbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359743; c=relaxed/simple;
-	bh=6Zqk4/JBn5Rvp1NKDAYKOAkackF6NRukX9QQTlrmVvM=;
+	s=arc-20240116; t=1722359749; c=relaxed/simple;
+	bh=ubgpjZGd6IqG6YR2ZMqDe1y3pyPFDQIyt7qCwJglV8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfdnQsWlaeLu9jIELvsxQqSINwRO4c6cTm5XMJZG31Wobn7jxU6avgD/mPz26FSUbLv8XU1FlB1UzkV3/WGzR2fF4TcCw+UNeDKZw6wYJy5kvApH2m4xF+G+nwm/qTSItw0Cybekb8Whgwif6yA5JmjeFKdIXL5RF8tLPIQJRC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I86lY5I5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2974C32782;
-	Tue, 30 Jul 2024 17:15:42 +0000 (UTC)
+	 MIME-Version; b=bJLoShBVtTJxxw0rzQ5SaokTmD0dtCWuBPyu2Pmg0KfKBpV0R2BZM+aDgHAyAytE1iKAYCeKxQMv4qX2ReCjxYr81hRf/OSlAwU+CeLzRSk5kH4gjLBE7R4UGwjjfhjCCt3+lM5MgtXq61klCJNiU3gXScEAQTg+fYawbre6Xm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N38a3GL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2072CC32782;
+	Tue, 30 Jul 2024 17:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359743;
-	bh=6Zqk4/JBn5Rvp1NKDAYKOAkackF6NRukX9QQTlrmVvM=;
+	s=korg; t=1722359749;
+	bh=ubgpjZGd6IqG6YR2ZMqDe1y3pyPFDQIyt7qCwJglV8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I86lY5I5LJdRVbW+QzC3a0ojCBt9KfbU4MrYILDDCy7dKLjjdOIKwk7AQ7z4TnQ7/
-	 xdeDeAr4M0TCqydv2ym/hWs0UPw3XBKmnLVQpDn1UtxlP58/xUtu3LsJmE1f/rWy1G
-	 K1B5/DnxXGqtYYN/p5zj4sw4kxDPPGTqb5MoDc4E=
+	b=N38a3GL1TFiXsFnTnq2K6IDeWHGvzqrk9MgbjCoKA/7YDCZT7gzymYkQ4vfpWfoyx
+	 WprTbtxyexfCn71ywj8Er5HuaZF+dIqJgBWWX0tUaI2CJVssFK9eSbhmWfEHqjkuZm
+	 fisNaC93mYQeDUtIVbYVy3C6uAJMYShhF+rf32YU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Michal Luczaj <mhal@rbox.co>,
 	Daniel Borkmann <daniel@iogearbox.net>,
-	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 530/568] libbpf: Fix no-args func prototype BTF dumping syntax
-Date: Tue, 30 Jul 2024 17:50:37 +0200
-Message-ID: <20240730151700.871978697@linuxfoundation.org>
+Subject: [PATCH 6.6 531/568] af_unix: Disable MSG_OOB handling for sockets in sockmap/sockhash
+Date: Tue, 30 Jul 2024 17:50:38 +0200
+Message-ID: <20240730151700.910318052@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -68,94 +68,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 189f1a976e426011e6a5588f1d3ceedf71fe2965 ]
+[ Upstream commit 638f32604385fd23059985da8de918e9c18f0b98 ]
 
-For all these years libbpf's BTF dumper has been emitting not strictly
-valid syntax for function prototypes that have no input arguments.
+AF_UNIX socket tracks the most recent OOB packet (in its receive queue)
+with an `oob_skb` pointer. BPF redirecting does not account for that: when
+an OOB packet is moved between sockets, `oob_skb` is left outdated. This
+results in a single skb that may be accessed from two different sockets.
 
-Instead of `int (*blah)()` we should emit `int (*blah)(void)`.
+Take the easy way out: silently drop MSG_OOB data targeting any socket that
+is in a sockmap or a sockhash. Note that such silent drop is akin to the
+fate of redirected skb's scm_fp_list (SCM_RIGHTS, SCM_CREDENTIALS).
 
-This is not normally a problem, but it manifests when we get kfuncs in
-vmlinux.h that have no input arguments. Due to compiler internal
-specifics, we get no BTF information for such kfuncs, if they are not
-declared with proper `(void)`.
+For symmetry, forbid MSG_OOB in unix_bpf_recvmsg().
 
-The fix is trivial. We also need to adjust a few ancient tests that
-happily assumed `()` is correct.
-
-Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
-Reported-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/bpf/20240712224442.282823-1-andrii@kernel.org
+Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Link: https://lore.kernel.org/bpf/20240713200218.2140950-2-mhal@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf_dump.c                                  | 8 +++++---
- .../selftests/bpf/progs/btf_dump_test_case_multidim.c     | 4 ++--
- .../selftests/bpf/progs/btf_dump_test_case_syntax.c       | 4 ++--
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ net/unix/af_unix.c  | 41 ++++++++++++++++++++++++++++++++++++++++-
+ net/unix/unix_bpf.c |  3 +++
+ 2 files changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
-index 4d9f30bf7f014..ebf56d21d08ee 100644
---- a/tools/lib/bpf/btf_dump.c
-+++ b/tools/lib/bpf/btf_dump.c
-@@ -1559,10 +1559,12 @@ static void btf_dump_emit_type_chain(struct btf_dump *d,
- 			 * Clang for BPF target generates func_proto with no
- 			 * args as a func_proto with a single void arg (e.g.,
- 			 * `int (*f)(void)` vs just `int (*f)()`). We are
--			 * going to pretend there are no args for such case.
-+			 * going to emit valid empty args (void) syntax for
-+			 * such case. Similarly and conveniently, valid
-+			 * no args case can be special-cased here as well.
- 			 */
--			if (vlen == 1 && p->type == 0) {
--				btf_dump_printf(d, ")");
-+			if (vlen == 0 || (vlen == 1 && p->type == 0)) {
-+				btf_dump_printf(d, "void)");
- 				return;
- 			}
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 5a26e785ce70d..a551be47cb6c6 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2624,10 +2624,49 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
  
-diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-index ba97165bdb282..a657651eba523 100644
---- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-+++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
-@@ -14,9 +14,9 @@ typedef int *ptr_arr_t[6];
+ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ {
++	struct unix_sock *u = unix_sk(sk);
++	struct sk_buff *skb;
++	int err;
++
+ 	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED))
+ 		return -ENOTCONN;
  
- typedef int *ptr_multiarr_t[7][8][9][10];
+-	return unix_read_skb(sk, recv_actor);
++	mutex_lock(&u->iolock);
++	skb = skb_recv_datagram(sk, MSG_DONTWAIT, &err);
++	mutex_unlock(&u->iolock);
++	if (!skb)
++		return err;
++
++#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
++	if (unlikely(skb == READ_ONCE(u->oob_skb))) {
++		bool drop = false;
++
++		unix_state_lock(sk);
++
++		if (sock_flag(sk, SOCK_DEAD)) {
++			unix_state_unlock(sk);
++			kfree_skb(skb);
++			return -ECONNRESET;
++		}
++
++		spin_lock(&sk->sk_receive_queue.lock);
++		if (likely(skb == u->oob_skb)) {
++			WRITE_ONCE(u->oob_skb, NULL);
++			drop = true;
++		}
++		spin_unlock(&sk->sk_receive_queue.lock);
++
++		unix_state_unlock(sk);
++
++		if (drop) {
++			WARN_ON_ONCE(skb_unref(skb));
++			kfree_skb(skb);
++			return -EAGAIN;
++		}
++	}
++#endif
++
++	return recv_actor(sk, skb);
+ }
  
--typedef int * (*fn_ptr_arr_t[11])();
-+typedef int * (*fn_ptr_arr_t[11])(void);
+ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
+index bd84785bf8d6c..bca2d86ba97d8 100644
+--- a/net/unix/unix_bpf.c
++++ b/net/unix/unix_bpf.c
+@@ -54,6 +54,9 @@ static int unix_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
+ 	struct sk_psock *psock;
+ 	int copied;
  
--typedef int * (*fn_ptr_multiarr_t[12][13])();
-+typedef int * (*fn_ptr_multiarr_t[12][13])(void);
++	if (flags & MSG_OOB)
++		return -EOPNOTSUPP;
++
+ 	if (!len)
+ 		return 0;
  
- struct root_struct {
- 	arr_t _1;
-diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-index ad21ee8c7e234..29d01fff32bd2 100644
---- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-+++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
-@@ -100,7 +100,7 @@ typedef void (*printf_fn_t)(const char *, ...);
-  *   `int -> char *` function and returns pointer to a char. Equivalent:
-  *   typedef char * (*fn_input_t)(int);
-  *   typedef char * (*fn_output_outer_t)(fn_input_t);
-- *   typedef const fn_output_outer_t (* fn_output_inner_t)();
-+ *   typedef const fn_output_outer_t (* fn_output_inner_t)(void);
-  *   typedef const fn_output_inner_t fn_ptr_arr2_t[5];
-  */
- /* ----- START-EXPECTED-OUTPUT ----- */
-@@ -127,7 +127,7 @@ typedef void (* (*signal_t)(int, void (*)(int)))(int);
- 
- typedef char * (*fn_ptr_arr1_t[10])(int **);
- 
--typedef char * (* (* const fn_ptr_arr2_t[5])())(char * (*)(int));
-+typedef char * (* (* const fn_ptr_arr2_t[5])(void))(char * (*)(int));
- 
- struct struct_w_typedefs {
- 	int_t a;
 -- 
 2.43.0
 
