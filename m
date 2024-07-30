@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B5A941B27
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BD0941856
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D35FB1C20BBD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18515B29671
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC9A18801C;
-	Tue, 30 Jul 2024 16:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C2218E025;
+	Tue, 30 Jul 2024 16:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCE5qP8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOLzSTgQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF47C1078F;
-	Tue, 30 Jul 2024 16:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A4218B46F;
+	Tue, 30 Jul 2024 16:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358297; cv=none; b=i/AMcL7/XONtJrJyLsMXLzWiwhZGn5EuZmUX3cRn8XS/U/eu5GuGSIYkJVsTZS2Y59KGeeFTYr7FPoCPESX4DZYHJUe3TJpelfPfHfaZiO5pJk5owCRG7e1Bnqfnq/C5zUoA/A4ph5wbM+c5XFcWUStLOvLcVbTsTF7E2nN33w0=
+	t=1722356088; cv=none; b=AO+VT2okFgavQlSzZ/ogA3AKmS7nKX7LOOzPyrXq6iP64WrHCnCsbyE4H7DJ+R/M8WWFvFarmh/zkeRg4/lUtRIQGk8xYE0mVJ7YJCMK+zivZZzyPhSK4yODV6BOpqXyNqGNguLE+JVWtRKwx/Y6685OhE0Pq+Y4x00DTMINMIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358297; c=relaxed/simple;
-	bh=YGHO/UiRFK/g9U5YGo+KkonWS9DwiL3ALLa1v2afJ7c=;
+	s=arc-20240116; t=1722356088; c=relaxed/simple;
+	bh=upIoB+PE0gxQ94D3ZzO7yl8SrVSIumKrTwhSePvLGbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bRhuL0RnN94H0+bvSuyBrIKD/dvf2KYdzyCHnDwV22OQdwt2/51G308y5FRYPOFqoFzqKhrXZO09L2pAU7DECPyrgo3rbipZsgxaIH2HOHE42KeNMKWxPZuVGRJUIfmVLCdPgCKEhRYITmjKprrl97PYgZQPEDS7obvh1C9iOK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCE5qP8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62616C4AF0E;
-	Tue, 30 Jul 2024 16:51:36 +0000 (UTC)
+	 MIME-Version; b=POm4pA/ho7NaBxfORP9B46t9yHcJ3yHstOi8W7uvZpHHDBgo66Uzgn1NG5n0j8tS1p3juyedCklRTHWCJ48pqiR2o0COAONdKhd2P4mopkbXYYMsAXZUQNfl0EoPRG7GVEsHI4j9owQPkjx/vt7TYJ9t7JNJz/Kg8ThJA4mQQqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOLzSTgQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA1FC32782;
+	Tue, 30 Jul 2024 16:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358296;
-	bh=YGHO/UiRFK/g9U5YGo+KkonWS9DwiL3ALLa1v2afJ7c=;
+	s=korg; t=1722356088;
+	bh=upIoB+PE0gxQ94D3ZzO7yl8SrVSIumKrTwhSePvLGbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCE5qP8+Wiwo8N4+fZIok8UPXtry6dlHwpBk+byx5UJ7b9xtNbDMhkiXMAu9CpzSp
-	 c9W6zw7SQ2+LJ5xIGsb1Sp6rOWhzgwMXUWLvm0lItBxwjf1d0Lw01UFzWmpu/3/MVo
-	 EARazmBt9GKaw8pCsA8kxfwyp6gmZZxyBaUn1Zko=
+	b=kOLzSTgQQps09GpBvks/M+uGeNkibecsuWhzOx2cBPEp0/S3J7/tWPRHNifm2iHJC
+	 sQ/hKQtotpLqvmvHD22yCfuqU7XLHh/nmouNN8sjJ9IlaxsfGpspyGfv7GhXWiNjAZ
+	 rJu3ncmhcemCdkWmJvoDuPc+kApnNtNaYMmQoHus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Ivan Babrou <ivan@cloudflare.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 343/809] platform/arm64: build drivers even on non-ARM64 platforms
-Date: Tue, 30 Jul 2024 17:43:39 +0200
-Message-ID: <20240730151738.181322164@linuxfoundation.org>
+Subject: [PATCH 6.6 113/568] bpftool: Un-const bpf_func_info to fix it for llvm 17 and newer
+Date: Tue, 30 Jul 2024 17:43:40 +0200
+Message-ID: <20240730151644.291495308@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Ivan Babrou <ivan@cloudflare.com>
 
-[ Upstream commit 13bbe1c83bc401c2538c758228d27b4042b08341 ]
+[ Upstream commit f4aba3471cfb9ccf69b476463f19b4c50fef6b14 ]
 
-The Kconfig for platforms/arm64 has 'depends on ARM64 || COMPILE_TEST'.
-However due to Makefile having just obj-$(CONFIG_ARM64) the subdir will
-not be descended for !ARM64 platforms and thus the drivers won't get
-built. This breaks modular builds of other driver drivers which depend
-on arm64 platform drivers.
+LLVM 17 started treating const structs as constants:
 
-Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: 363c8aea2572 ("platform: Add ARM64 platform directory")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240624-ucsi-yoga-ec-driver-v9-1-53af411a9bd6@linaro.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+* https://github.com/llvm/llvm-project/commit/0b2d5b967d98
+
+Combined with pointer laundering via ptr_to_u64, which takes a const ptr,
+but in reality treats the underlying memory as mutable, this makes clang
+always pass zero to btf__type_by_id, which breaks full name resolution.
+
+Disassembly before (LLVM 16) and after (LLVM 17):
+
+    -    8b 75 cc                 mov    -0x34(%rbp),%esi
+    -    e8 47 8d 02 00           call   3f5b0 <btf__type_by_id>
+    +    31 f6                    xor    %esi,%esi
+    +    e8 a9 8c 02 00           call   3f510 <btf__type_by_id>
+
+It's a bigger project to fix this properly (and a question whether LLVM
+itself should detect this), but for right now let's just fix bpftool.
+
+For more information, see this thread in bpf mailing list:
+
+* https://lore.kernel.org/bpf/CABWYdi0ymezpYsQsPv7qzpx2fWuTkoD1-wG1eT-9x-TSREFrQg@mail.gmail.com/T/
+
+Fixes: b662000aff84 ("bpftool: Adding support for BTF program names")
+Signed-off-by: Ivan Babrou <ivan@cloudflare.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Nick Desaulniers <ndesaulniers@google.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/20240520225149.5517-1-ivan@cloudflare.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/Makefile | 2 +-
+ tools/bpf/bpftool/common.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
-index fbbe4f77aa5d7..837202842a6f6 100644
---- a/drivers/platform/Makefile
-+++ b/drivers/platform/Makefile
-@@ -11,4 +11,4 @@ obj-$(CONFIG_OLPC_EC)		+= olpc/
- obj-$(CONFIG_GOLDFISH)		+= goldfish/
- obj-$(CONFIG_CHROME_PLATFORMS)	+= chrome/
- obj-$(CONFIG_SURFACE_PLATFORMS)	+= surface/
--obj-$(CONFIG_ARM64)		+= arm64/
-+obj-$(CONFIG_ARM64_PLATFORM_DEVICES)	+= arm64/
+diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
+index 958e92acca8e2..9b75639434b81 100644
+--- a/tools/bpf/bpftool/common.c
++++ b/tools/bpf/bpftool/common.c
+@@ -410,7 +410,7 @@ void get_prog_full_name(const struct bpf_prog_info *prog_info, int prog_fd,
+ {
+ 	const char *prog_name = prog_info->name;
+ 	const struct btf_type *func_type;
+-	const struct bpf_func_info finfo = {};
++	struct bpf_func_info finfo = {};
+ 	struct bpf_prog_info info = {};
+ 	__u32 info_len = sizeof(info);
+ 	struct btf *prog_btf = NULL;
 -- 
 2.43.0
 
