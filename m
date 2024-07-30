@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0AAF94174C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B239C94174D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68268B24FCB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E436B1C232C1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C87918455D;
-	Tue, 30 Jul 2024 16:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E34D18801C;
+	Tue, 30 Jul 2024 16:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cE4zgV02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqsAvuzu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29950183CCD;
-	Tue, 30 Jul 2024 16:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3214C18800F;
+	Tue, 30 Jul 2024 16:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355670; cv=none; b=Bt33kMl+yyfmdNzTiakUkK3nDzeSeNsWUH4Cls50CwHY9kYOlDebaLeLXEpg8jO+kHeJ91jgm9a6qcYn4tKh9YT2jirUDVUcMvBabMnfHH8uCrJli7RzW5UWsTFfVP5eVngH4lGnwCe58j7nlJ+pALtRU9DSSVTueIPD17qCcOk=
+	t=1722355680; cv=none; b=F4RX/kvGlo0pCwJlokKmeew8kSHkc87X9dQIe4MEnOxIOEM4IKXv2OeoIl0jk2AGPRk2C5I+1NmZ2Go9TxU0xvkq62ejfAyBolf3BYwIFPb0/3JWOMtoH3ViZNxbcCvHyO9Oc1HmHeofPcZYd4wmkf8cUFyfgyByCXaPfTrRQk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355670; c=relaxed/simple;
-	bh=hW+XVcRNR6gpVVUbK1a0mQioRwtSND7oe87caI8MAIo=;
+	s=arc-20240116; t=1722355680; c=relaxed/simple;
+	bh=RoU9LU1keF9Hx4LtzQLJuwySzc1hSjoVeZeSRxQmmxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYzMZb8i03q8DFnF7ZQZ+mgYJ+bKq91Tf/jwALBYGuYFCj3GR0TRaqpsMNacKQiIFqUiAHp5l7Blm++s6flbs7tt3JU/3pM7dlB9bUjhvCKNcdZqs7WIhaRJ858ucYe8PB6UUySCgvI63T299sCUiqqHQscsiJ23pVA8V1Z+CJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cE4zgV02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94234C32782;
-	Tue, 30 Jul 2024 16:07:49 +0000 (UTC)
+	 MIME-Version; b=IfsLsntFhJ1kznt6B3LIBvw3otjUXP0mvR+DzRWHPWHJ0LLUbI6rpcwt9EK6B84ghbBE/JOZSwCXrWO5CxLY1YC23iCA4Bj7klQzunKMXtAMvhfyL0+mDoC8gaZvERM8V14mpoxYU1+2AxTAGOzJPzsLNeXX8Ihp8nzvUAG4DGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqsAvuzu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AAA8C32782;
+	Tue, 30 Jul 2024 16:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355670;
-	bh=hW+XVcRNR6gpVVUbK1a0mQioRwtSND7oe87caI8MAIo=;
+	s=korg; t=1722355679;
+	bh=RoU9LU1keF9Hx4LtzQLJuwySzc1hSjoVeZeSRxQmmxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cE4zgV02zla7qW/dst/lyRyaVkhfzh6WOyDDbS8We9llHfaafo06p4FHQApTmPEaO
-	 1illgOrq8G1ygDV0rxGiSBhcoLZdUdtxC1MRffhiiMHDK6YTRwyngiowdNByVyLa2v
-	 0eVsIqYFTwB7KX8ZC2YHbaxBuRfdA49Bf4kWCUxc=
+	b=vqsAvuzum5TlHqpd7+CSLvlj7Ga7wdJJtCLI+CFdbs+4Oxn+D8WirwPPaqe7YLwWI
+	 cVgvmEydOGBrWHxg1kZRilKgny5L2cboHU64DseR53wyAIKHOonNkX7KPaozTMBh+D
+	 whkNQZBw0DXBELbp9KuhTBhX+c+41N/aJ0LajI+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
+	Vaishnav Achath <vaishnav.a@ti.com>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 078/809] arm64: dts: ti: k3-am642-hummingboard-t: correct rs485 rts polarity
-Date: Tue, 30 Jul 2024 17:39:14 +0200
-Message-ID: <20240730151727.721129000@linuxfoundation.org>
+Subject: [PATCH 6.10 079/809] arm64: dts: ti: k3-j722s: Fix main domain GPIO count
+Date: Tue, 30 Jul 2024 17:39:15 +0200
+Message-ID: <20240730151727.760973584@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,38 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Vaishnav Achath <vaishnav.a@ti.com>
 
-[ Upstream commit 9dcc0e1065f3c40d0b2ad79a858bb4ebaba33167 ]
+[ Upstream commit 2cdf63e73415ce6c8f6b3397cdc91d5f928855f9 ]
 
-The RS485 transceiver RE (Receiver enable) and DE (Driver enable) are
-shorted and connected to both RTS/CTS of the SoC UART.
-RE is active-low, DE is active-high.
+J722S does not pin out all of the GPIO same as AM62P and have
+more number of GPIO on the main_gpio1 instance. Fix the GPIO
+count on both instances by overriding the ti,ngpio property.
 
-Remove the "rs485-rts-active-low" flag to match RTS polarity with DE,
-and fix communication in both transmit and receive directions.
+Fixes: ea55b9335ad8 ("arm64: dts: ti: Introduce J722S family of SoCs")
 
-Fixes: d60483faf914 ("arm64: dts: add description for solidrun am642 som and evaluation board")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Link: https://lore.kernel.org/r/20240504-ti-rs485-rts-v1-1-e88ef1c96f34@solid-run.com
+More details at J722S/AM67 Datasheet (Section 5.3.11, GPIO):
+	https://www.ti.com/lit/ds/symlink/am67.pdf
+
+Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
+Link: https://lore.kernel.org/r/20240507103332.167928-1-vaishnav.a@ti.com
 Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am642-hummingboard-t.dts | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j722s.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t.dts b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t.dts
-index 234d76e4e9445..5b5e9eeec5ac4 100644
---- a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t.dts
-@@ -282,7 +282,6 @@ &main_uart3 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&main_uart3_default_pins>;
- 	uart-has-rtscts;
--	rs485-rts-active-low;
- 	linux,rs485-enabled-at-boot-time;
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s.dtsi b/arch/arm64/boot/dts/ti/k3-j722s.dtsi
+index c75744edb1433..9132b0232b0ba 100644
+--- a/arch/arm64/boot/dts/ti/k3-j722s.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j722s.dtsi
+@@ -83,6 +83,14 @@ &inta_main_dmss {
+ 	ti,interrupt-ranges = <7 71 21>;
  };
+ 
++&main_gpio0 {
++	ti,ngpio = <87>;
++};
++
++&main_gpio1 {
++	ti,ngpio = <73>;
++};
++
+ &oc_sram {
+ 	reg = <0x00 0x70000000 0x00 0x40000>;
+ 	ranges = <0x00 0x00 0x70000000 0x40000>;
 -- 
 2.43.0
 
