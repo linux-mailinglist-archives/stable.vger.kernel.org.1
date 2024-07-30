@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-64144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E46941C4A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19536941C1A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4A3D1C22852
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE961C231E4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ABE1A6192;
-	Tue, 30 Jul 2024 17:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA491A6192;
+	Tue, 30 Jul 2024 17:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmJgR2K+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrw6wObu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C273718801A;
-	Tue, 30 Jul 2024 17:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C407D83A17;
+	Tue, 30 Jul 2024 17:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359139; cv=none; b=o/4hNmC2J03BVI2ZKYLrEsgTSlbNfoR2rx0X0ZFhupU8HbFZjn37TW/NFp0xqzLuWlOV7tTmLW+17jqmiODAM0FJK2LuOMHpygd4KSbwxbBwznSXqzfndVmAKgCN6pnL1IFYmjQ7HB21dJBUZMaCnCd4uIY5TdOJ3Gad/gsYOqs=
+	t=1722358983; cv=none; b=q8JWZ2SsUVqJUxElZMMLpmcHay9gheI3NtLBgu2oVNSLv3Nes7f331hytOx0VOQmuBha9HeSsiT6c1MhnaBtA9gsCvkuYiQjmmNaz+8xfPxH+Wl4d7Hxwh4mC3Cp2OxFnqobRuVdjesNNHV4hL2gL89glj9A8nIKAqJAOmQiyQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359139; c=relaxed/simple;
-	bh=9+L4T1MQNu+F11eoTnLaBdXVeoE7/IcN+JgGyE5KefM=;
+	s=arc-20240116; t=1722358983; c=relaxed/simple;
+	bh=PlZ27Z+TM4b2gT4s264HIv6QoPH6uGdYhQofuRRhN6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjaGY+U+u0K3PL+RTr+Ry2+o0R9qdSubTgt64XCOlg78CPSQtgCDqYW2orCl6P5mPRW+sbM61dO+vWaztMWAg/a8cz1jF6b8LCs7UR7NRMtdQ5VYS91Sv1QMRwsPI9r4tfeYBHgReIFZ6FYVIr4ziJ4gSI3ADskq7LHBg7aFW4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmJgR2K+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10615C32782;
-	Tue, 30 Jul 2024 17:05:38 +0000 (UTC)
+	 MIME-Version; b=lRGQiqSkTGZ7cRwzhkwsHE058JLKBZdVgP2dk5asL86jRrs/UG6rO53zike5Q0Lng9eAmloNaFVmuRWQePRJwcZNCEjzDhrVTf8DDikZVSLONLW8u9e9Y3fn3SHlf0stxQB64O5uURgu3vqohvh3F5dbiPkyq9EmZjzpCQORmjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrw6wObu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33FE1C32782;
+	Tue, 30 Jul 2024 17:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359139;
-	bh=9+L4T1MQNu+F11eoTnLaBdXVeoE7/IcN+JgGyE5KefM=;
+	s=korg; t=1722358983;
+	bh=PlZ27Z+TM4b2gT4s264HIv6QoPH6uGdYhQofuRRhN6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmJgR2K+63AMUx1ZH1dda4kp3Al7gDMvCaDAn2SwMBpkD7quJx4fvqzn9u/aEZh20
-	 SLsIqjPB2kfz+xDl2UGRjkp/neq7Am4APloTebyzJt5SuVbD3TnIQ1O8LqzmNzMBPK
-	 JwAFp8GNUglwKXpk64Tm+MozDGLp8u7k5ljqiUII=
+	b=jrw6wObu83zp2VuAkgoBEqrlS1O+SoktC8fQt0dpwPLfbCZreNO93ZkPOYqRGd+tA
+	 iYbevgstm5vlWOids0srcUPmdCtzYsf4V0dhb+/81Dr3WXHcQY24Z9JVRqakirtJzb
+	 NqvS2YPbFuXytC0Br1S+1bOxrlpTu6ntb1O5cxDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Nitesh Shetty <nj.shetty@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 438/440] io_uring: fix io_match_task must_hold
-Date: Tue, 30 Jul 2024 17:51:11 +0200
-Message-ID: <20240730151632.881328509@linuxfoundation.org>
+Subject: [PATCH 6.1 439/440] nvme-pci: add missing condition check for existence of mapped data
+Date: Tue, 30 Jul 2024 17:51:12 +0200
+Message-ID: <20240730151632.919452327@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,35 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit e142e9cd8891b0c6f277ac2c2c254199a6aa56e3 ]
+[ Upstream commit c31fad1470389666ac7169fe43aa65bf5b7e2cfd ]
 
-The __must_hold annotation in io_match_task() uses a non existing
-parameter "req", fix it.
+nvme_map_data() is called when request has physical segments, hence
+the nvme_unmap_data() should have same condition to avoid dereference.
 
-Fixes: 6af3f48bf6156 ("io_uring: fix link traversal locking")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/3e65ee7709e96507cef3d93291746f2c489f2307.1721819383.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 4aedb705437f ("nvme-pci: split metadata handling from nvme_map_data / nvme_unmap_data")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/timeout.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/timeout.c b/io_uring/timeout.c
-index b0cf05ebcbcc3..7cdc234c5f53f 100644
---- a/io_uring/timeout.c
-+++ b/io_uring/timeout.c
-@@ -601,7 +601,7 @@ void io_queue_linked_timeout(struct io_kiocb *req)
- 
- static bool io_match_task(struct io_kiocb *head, struct task_struct *task,
- 			  bool cancel_all)
--	__must_hold(&req->ctx->timeout_lock)
-+	__must_hold(&head->ctx->timeout_lock)
- {
- 	struct io_kiocb *req;
- 
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 42ef44cc7a852..27446fa847526 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -910,7 +910,8 @@ static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
+ 	blk_mq_start_request(req);
+ 	return BLK_STS_OK;
+ out_unmap_data:
+-	nvme_unmap_data(dev, req);
++	if (blk_rq_nr_phys_segments(req))
++		nvme_unmap_data(dev, req);
+ out_free_cmd:
+ 	nvme_cleanup_cmd(req);
+ 	return ret;
 -- 
 2.43.0
 
