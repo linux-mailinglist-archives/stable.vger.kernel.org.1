@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07733940F00
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:25:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DD6940F02
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:25:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395E01C225EE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:25:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD894B23BB9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A11E197A89;
-	Tue, 30 Jul 2024 10:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A97197A90;
+	Tue, 30 Jul 2024 10:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNAUqAN1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IK6o1cNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DCD192B65
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 10:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB445195B28
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 10:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722335142; cv=none; b=ZtLKeKhQrV4uz21CHfByIqEJP2p2YC/HnfrpiUh5q4YAL+G6HrlMJ6o0JVnVGAT/nrUMjuRRAjoJfqgUdyYz+iy3/H9K9u95JzYiGyKsSgClmE1dH5mwRqXivHVMe0K9ZAjWKgjy7T2WofYlB4bIr7Bo4NMKeSsd4eH8ekHQlUI=
+	t=1722335145; cv=none; b=VO1sZ+xa17pU9N1s0e3nbwGbdgBHMALIS5u4mbGH4Ik8frdUTx1G/jSSqFlKslmpY1wB1fBYndf63XM2DGoqtx2qdhjoK5HfYIwwGVoqvuQWYbx391sFZ+ol+XmwXScDFdXbXv6uoSCfPMKhyUsh7rFwONMsoUxbiO9jS2PYSPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722335142; c=relaxed/simple;
-	bh=5Aag/8nUTCFqw2KYTGMfI4QhdLrpzEEDBxGfjhogbb8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iyc+EGXikhbyh+4938Un3wsm3lIxduE/6bILZpxCCzxR2reSSFTQGd4rMA4dbqcXN+ZOYDIsN8WldKFiB7uw8XawJIfVbJk6+jbjUR+OUp8V0hhCB0bdamdhJqs+LOntQ5PkNBl/n1B6tMy2I1Lnhb4RIuC7rA0iUAL4NV8o3Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNAUqAN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB38C32782;
-	Tue, 30 Jul 2024 10:25:41 +0000 (UTC)
+	s=arc-20240116; t=1722335145; c=relaxed/simple;
+	bh=eo9OI4ZC+y6kG+8h3zwsXkgm7LXs/65a5pGRMy+tw9w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=U1g9ptGmZzsNeJU7+aUroGLuDMDhuL85Jm/kWhLOxUyjhMuJnMhQj12Uw7uiUH1GIY5g0ecP8PyDhzIQvF0eea49X6XShhu1ShY3h8khdbAJil/M+FIn8TMP6Ixod6rMGrn7t14LBVBS2tyZPxIG2E4qweqeUqdrCT8qxr2Of88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IK6o1cNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B1CC32782;
+	Tue, 30 Jul 2024 10:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722335142;
-	bh=5Aag/8nUTCFqw2KYTGMfI4QhdLrpzEEDBxGfjhogbb8=;
+	s=korg; t=1722335145;
+	bh=eo9OI4ZC+y6kG+8h3zwsXkgm7LXs/65a5pGRMy+tw9w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uNAUqAN1OhiNLJpxJsQPcTLOMtvk50gkiGbHbv33S8n37x8wsLBRr85JYx2bqb+FQ
-	 ydxJp1KH9WipVo57M49DCT6KPM1Kq5bbZR3s1GBAI1YqaLjJiNiLkZx8X6UZYvyUnF
-	 Q0RzMINGNkWUi0MTGwT36bomzhVE37hVjHkZIGMA=
-Subject: FAILED: patch "[PATCH] rbd: don't assume RBD_LOCK_STATE_LOCKED for exclusive" failed to apply to 5.4-stable tree
+	b=IK6o1cNC3thRDSUyA4XDA0uqmwYLdB7sA0b3SNkpEPqpgb8+Y7/pxI1375K5xW/qE
+	 rg2aybxwBu4lRSF6CzMuPqjAbnS9vKrEboBSGiRfz5LU38bxotozBtUVtdV7a5lhWa
+	 J/HReOW/ThLOk80QwRt3+AmpCM3GgM38/bUROtuE=
+Subject: FAILED: patch "[PATCH] rbd: don't assume RBD_LOCK_STATE_LOCKED for exclusive" failed to apply to 4.19-stable tree
 To: idryomov@gmail.com,dongsheng.yang@easystack.cn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 12:25:28 +0200
-Message-ID: <2024073028-crepe-gently-80e3@gregkh>
+Date: Tue, 30 Jul 2024 12:25:29 +0200
+Message-ID: <2024073029-defog-revolt-64f0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2237ceb71f89837ac47c5dce2aaa2c2b3a337a3c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073028-crepe-gently-80e3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073029-defog-revolt-64f0@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 2237ceb71f89 ("rbd: don't assume RBD_LOCK_STATE_LOCKED for exclusive mappings")
 ded080c86b3f ("rbd: don't move requests to the running list on errors")
+637cd060537d ("rbd: new exclusive lock wait/wake code")
+e1fddc8fdd22 ("rbd: quiescing lock should wait for image requests")
+a2b1da09793d ("rbd: lock should be quiesced on reacquire")
+0192ce2ee68b ("rbd: introduce image request state machine")
+85b5e6d11898 ("rbd: move OSD request submission into object request state machines")
+0ad5d953548f ("rbd: get rid of RBD_OBJ_WRITE_{FLAT,GUARD}")
+a9b67e69949d ("rbd: replace obj_req->tried_parent with obj_req->read_state")
+54ab3b24c536 ("rbd: get rid of obj_req->xferred, obj_req->result and img_req->xferred")
+9b17eb2ce102 ("rbd: whole-object write and zeroout should copyup when snapshots exist")
+89a59c1ca73b ("rbd: copyup with an empty snapshot context (aka deep-copyup)")
+3a482501cf70 ("rbd: introduce rbd_obj_issue_copyup_ops()")
+13488d53775b ("rbd: stop copying num_osd_ops in rbd_obj_issue_copyup()")
+356889c49d84 ("rbd: clear ->xferred on error from rbd_obj_issue_copyup()")
+0c93e1b7a26b ("rbd: round off and ignore discards that are too small")
+6484cbe987e0 ("rbd: handle DISCARD and WRITE_ZEROES separately")
+fd7e3f0d8f25 ("rbd: get rid of obj_req->obj_request_count")
+26f887e0a3c4 ("libceph, rbd, ceph: move ceph_osdc_alloc_messages() calls")
+39e58c3425b1 ("libceph: introduce alloc_watch_request()")
 
 thanks,
 
