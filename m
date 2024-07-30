@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5AF8941B39
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 588D39418D0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0454B25C77
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 893A91C20ACE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FA018455D;
-	Tue, 30 Jul 2024 16:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0A118455F;
+	Tue, 30 Jul 2024 16:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZO8tLFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWzdee8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F2214831F;
-	Tue, 30 Jul 2024 16:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF9B1A6160;
+	Tue, 30 Jul 2024 16:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358142; cv=none; b=fPUMronJGQQuvdDSmwR5wjo1e7xiH0t+9XlJ7sCNX2dF6Cj8oOXyXRGV/RfMoYEZrhMr+pZ4zYOsaq5GmasxN4yU9vdPdAz6OVIDNz8bNzHESyusmImo5UtZ3YZBZJdpvDXg48To+Sr8dwUJZvUDKej+jx7ULqX0oCQHEFVIVt0=
+	t=1722356715; cv=none; b=F+k7V63yPoCf5roPba9j63xZIIacQXXBaa49novWBqz4RzNrMuKhmmaCRGNmsQxcCglYTkVS9bBee9QtZjcJdq+TZkBupSYTsYAVl5+sQUVJet4dJ9VN75RsNMcNv8FXrN/EWr3PWg67jCKXZFBM/n6ocnf6PGaDJfaB1lvOds4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358142; c=relaxed/simple;
-	bh=798deU0TpUVTuU3CdlNG+39REZq1aBnDvwDtvSxeqA0=;
+	s=arc-20240116; t=1722356715; c=relaxed/simple;
+	bh=KcpAaH95uQ02thuR/XppWSQGbic739iFf0bd9AsjQoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLo1XnVHjEwr+Entajj2G3ILZL3N+BwgWNPuoO4vsnv4AVgxd2iQ/LeBXZrxXGB8kpeHnx4dotW86CJekEmNI8a96CQ5zf5/W2bdubke+rg45Hig8W055/w7ZmSuTTz2M2d1zGXmeWzkpliQjIgbZbI0+QSrQozww8cTJQND+xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZO8tLFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4D9C32782;
-	Tue, 30 Jul 2024 16:49:01 +0000 (UTC)
+	 MIME-Version; b=HaSHSfPdavUlFpkrjV7QteDxKMTKZTEt5uoIZ+myA3PRtPirOph1gS2xo2NowcgzJiv1dJdvr+a/LPePbTWTLUzFHbGCImOx9NzzDbHzQhXvKVRjDgtvnZgtxULwVHvog8PUIbmVgoJHgsubxh3B1V8cwZ4UL7fRA9XCJ9ARYNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWzdee8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFED9C4AF0A;
+	Tue, 30 Jul 2024 16:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358141;
-	bh=798deU0TpUVTuU3CdlNG+39REZq1aBnDvwDtvSxeqA0=;
+	s=korg; t=1722356715;
+	bh=KcpAaH95uQ02thuR/XppWSQGbic739iFf0bd9AsjQoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZO8tLFbItyZWsK/nJG4AvxBen1DyR2lcZf+xRCWhYNSltJU971ZNrwgJ3Rxw3rgl
-	 wiSa0Jqi+ab/mVVmB1suR5Gt7fFiegIouG5vu4C9qG1YcpYehUkWMsWg9dGj6gGhcl
-	 xcKeEMyf28RKsuT0WG/iXn06ZIQBNN4RhIq/x0g4=
+	b=AWzdee8N1SkXbar+nFHxfrtuf6Z5lQXAFk+HCvon6+TyvZ5T1R2xhzF3n5RzWJXCO
+	 ANKnuj7mMgPrTJuW4cA2ZpY4AxIcQqf3/OUHfo8sBfjQ7IMY4+PSnXUgUp5g3eIe1O
+	 y2dbw5IkzBcHOqkRRQIs535k33byXL6G6u08XgiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 329/568] pinctrl: ti: ti-iodelay: fix possible memory leak when pinctrl_enable() fails
+Subject: [PATCH 6.1 203/440] powerpc/prom: Add CPU info to hardware description string later
 Date: Tue, 30 Jul 2024 17:47:16 +0200
-Message-ID: <20240730151652.732310365@linuxfoundation.org>
+Message-ID: <20240730151623.798867587@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit 9b401f4a7170125365160c9af267a41ff6b39001 ]
+[ Upstream commit 7bdd1c6c87de758750d419eedab7285b95b66417 ]
 
-This driver calls pinctrl_register_and_init() which is not
-devm_ managed, it will leads memory leak if pinctrl_enable()
-fails. Replace it with devm_pinctrl_register_and_init().
-And add missing of_node_put() in the error path.
+cur_cpu_spec->cpu_name is appended to ppc_hw_desc before cur_cpu_spec
+has taken on its final value. This is illustrated on pseries by
+comparing the CPU name as reported at boot ("POWER8E (raw)") to the
+contents of /proc/cpuinfo ("POWER8 (architected)"):
 
-Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240606023704.3931561-4-yangyingliang@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+  $ dmesg | grep Hardware
+  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 \
+    of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
+
+  $ grep -m 1 ^cpu /proc/cpuinfo
+  cpu             : POWER8 (architected), altivec supported
+
+Some 44x models would appear to be affected as well; see
+identical_pvr_fixup().
+
+This results in incorrect CPU information in stack dumps --
+ppc_hw_desc is an input to dump_stack_set_arch_desc().
+
+Delay gathering the CPU name until after all potential calls to
+identify_cpu().
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: bd649d40e0f2 ("powerpc: Add PVR & CPU name to hardware description")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240603-fix-cpu-hwdesc-v1-1-945f2850fcaa@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/ti/pinctrl-ti-iodelay.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/powerpc/kernel/prom.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-index f3a2735620955..5370bbdf2e1a1 100644
---- a/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-+++ b/drivers/pinctrl/ti/pinctrl-ti-iodelay.c
-@@ -878,7 +878,7 @@ static int ti_iodelay_probe(struct platform_device *pdev)
- 	iod->desc.name = dev_name(dev);
- 	iod->desc.owner = THIS_MODULE;
- 
--	ret = pinctrl_register_and_init(&iod->desc, dev, iod, &iod->pctl);
-+	ret = devm_pinctrl_register_and_init(dev, &iod->desc, iod, &iod->pctl);
- 	if (ret) {
- 		dev_err(dev, "Failed to register pinctrl\n");
- 		goto exit_out;
-@@ -886,7 +886,11 @@ static int ti_iodelay_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, iod);
- 
--	return pinctrl_enable(iod->pctl);
-+	ret = pinctrl_enable(iod->pctl);
-+	if (ret)
-+		goto exit_out;
-+
-+	return 0;
- 
- exit_out:
- 	of_node_put(np);
-@@ -903,9 +907,6 @@ static int ti_iodelay_remove(struct platform_device *pdev)
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 9531ab90feb8a..e5b90d67cd536 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -324,6 +324,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 					  void *data)
  {
- 	struct ti_iodelay_device *iod = platform_get_drvdata(pdev);
+ 	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
++	const __be32 *cpu_version = NULL;
+ 	const __be32 *prop;
+ 	const __be32 *intserv;
+ 	int i, nthreads;
+@@ -404,7 +405,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 		prop = of_get_flat_dt_prop(node, "cpu-version", NULL);
+ 		if (prop && (be32_to_cpup(prop) & 0xff000000) == 0x0f000000) {
+ 			identify_cpu(0, be32_to_cpup(prop));
+-			seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(prop));
++			cpu_version = prop;
+ 		}
  
--	if (iod->pctl)
--		pinctrl_unregister(iod->pctl);
+ 		check_cpu_feature_properties(node);
+@@ -415,6 +416,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 	}
+ 
+ 	identical_pvr_fixup(node);
++
++	// We can now add the CPU name & PVR to the hardware description
++	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
++	if (cpu_version)
++		seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(cpu_version));
++
+ 	init_mmu_slb_size(node);
+ 
+ #ifdef CONFIG_PPC64
+@@ -852,9 +859,6 @@ void __init early_init_devtree(void *params)
+ 
+ 	dt_cpu_ftrs_scan();
+ 
+-	// We can now add the CPU name & PVR to the hardware description
+-	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
 -
- 	ti_iodelay_pinconf_deinit_dev(iod);
- 
- 	/* Expect other allocations to be freed by devm */
+ 	/* Retrieve CPU related informations from the flat tree
+ 	 * (altivec support, boot CPU ID, ...)
+ 	 */
 -- 
 2.43.0
 
