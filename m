@@ -1,137 +1,179 @@
-Return-Path: <stable+bounces-62753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8030E940F4E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:30:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE33940F4F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04079B26C1F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:30:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425C12890DE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20D01991DB;
-	Tue, 30 Jul 2024 10:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaK1NqXW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D9B199E80;
+	Tue, 30 Jul 2024 10:27:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B311990CE
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 10:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE3A1993A4;
+	Tue, 30 Jul 2024 10:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722335212; cv=none; b=lSKqr0Yyv+z42g4A372LMkAfdOV74b4SHFdbFCckp91dWJ08dVWEVxK0bYMztNPZlx0Hn25PR8DvQlf2o4N9TG8M0dGmLHPJsSY2J+asVBVYWQ0o1/cZrF5RNuN/XCXs0uxMFxQizv37DWhESpJv8MvAUobCbAzDTUA0j36V6T8=
+	t=1722335220; cv=none; b=emu5si1RqQx8KQkgBWXlrnXNd8xNJvfKP97IX9pbHQjRe3/eCF5jqrFsfox1HszJVtBnDvVABsRUAakYWHh0Hb6QW6HBlIolLiT04iXOBxzmjRPbYqPRroxPqbggPdoXD+6rg3UamvpBEHTRRnOmy/0G8sAHPPmSXpyq0mzeTJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722335212; c=relaxed/simple;
-	bh=f4adDyGUNO8odQ0mZmwwlt+dcu2JWIDWsYgIT+5cYAg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S1hd290qq3mEAhCry0ySjqbnVrrQr9fIHWHI4fI4O5Nezt+Qn5ikMrEdaG5u0TALJM3cdmd9DKH5u1JTIE8PEK9sbzz2VgXQuM4aDudB4fg7yY4P2/Rg+TPDArB1Iu9s5SQ3CjOhaVJUViQmqG7T22dxSNinQaCnCYvTyGVzKSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaK1NqXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5175C4AF0F;
-	Tue, 30 Jul 2024 10:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722335212;
-	bh=f4adDyGUNO8odQ0mZmwwlt+dcu2JWIDWsYgIT+5cYAg=;
-	h=Subject:To:Cc:From:Date:From;
-	b=PaK1NqXWp2hKXufystLX1jNeClIC5c5zAuX5I1PuAPMpNtgNehAjxtw04cHvSFj6Y
-	 Z65m9syVruLMFtAfR55L4NyYjjSDNdpF/dvYROIKXL0y3HifpVoWMhK0l2wsktmlbz
-	 3K8iVy5ugJ3QWmrE2tUGW2z53uUKiw+8xP3HXAog=
-Subject: FAILED: patch "[PATCH] remoteproc: imx_rproc: Fix refcount mistake in" failed to apply to 5.15-stable tree
-To: amishin@t-argos.ru,mathieu.poirier@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 12:26:49 +0200
-Message-ID: <2024073049-brutishly-astride-ce55@gregkh>
+	s=arc-20240116; t=1722335220; c=relaxed/simple;
+	bh=SeMhm/249KMHkoxDrL9fdexhBto+hEl1x7aVk0yhivc=;
+	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=Hs5VAEl4mY3kTLIcNaOdPOm9Qbu8keYwihzvVMwZ1NLAcF4dNsj3fIkGzC8N0uhzyqfkDeyPzPGa1UWrrJnrKAauKSzrV+sBMB+Ltq2D4scPuuMarHGDvwR7eWHw+I9EseQDXER55Q61xPkQVbkfsXUh0jD4dwdKzjyTInUf+Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id BC76110189E0F;
+	Tue, 30 Jul 2024 12:26:55 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 8E4A460FA4AF;
+	Tue, 30 Jul 2024 12:26:55 +0200 (CEST)
+X-Mailbox-Line: From 4d4ac43578f9aad9d7eee85a51833ae5e4b7cdb3 Mon Sep 17 00:00:00 2001
+Message-ID: <4d4ac43578f9aad9d7eee85a51833ae5e4b7cdb3.1722335040.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Tue, 30 Jul 2024 12:26:55 +0200
+Subject: [PATCH 5.10-stable] PCI/DPC: Fix use-after-free on concurrent DPC and
+ hot-removal
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, linux-pci@vger.kernel.org, Keith Busch <kbusch@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Bjorn Helgaas <helgaas@kernel.org>, Krzysztof Wilczynski <kwilczynski@kernel.org>
 
+commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Keith reports a use-after-free when a DPC event occurs concurrently to
+hot-removal of the same portion of the hierarchy:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The dpc_handler() awaits readiness of the secondary bus below the
+Downstream Port where the DPC event occurred.  To do so, it polls the
+config space of the first child device on the secondary bus.  If that
+child device is concurrently removed, accesses to its struct pci_dev
+cause the kernel to oops.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x dce68a49be26abf52712e0ee452a45fa01ab4624
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073049-brutishly-astride-ce55@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
+reference on the child device.  Before v6.3, the function was only
+called on resume from system sleep or on runtime resume.  Holding a
+reference wasn't necessary back then because the pciehp IRQ thread
+could never run concurrently.  (On resume from system sleep, IRQs are
+not enabled until after the resume_noirq phase.  And runtime resume is
+always awaited before a PCI device is removed.)
 
-Possible dependencies:
+However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
+called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
+of secondary bus after reset"), which introduced that, failed to
+appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
+reference on the child device because dpc_handler() and pciehp may
+indeed run concurrently.  The commit was backported to v5.10+ stable
+kernels, so that's the oldest one affected.
 
-dce68a49be26 ("remoteproc: imx_rproc: Fix refcount mistake in imx_rproc_addr_init")
-61afafe8b938 ("remoteproc: imx_rproc: Fix refcount leak in imx_rproc_addr_init")
-afe670e23af9 ("remoteproc: imx_rproc: Fix ignoring mapping vdev regions")
+Add the missing reference acquisition.
 
-thanks,
+Abridged stack trace:
 
-greg k-h
+  BUG: unable to handle page fault for address: 00000000091400c0
+  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
+  RIP: pci_bus_read_config_dword+0x17/0x50
+  pci_dev_wait()
+  pci_bridge_wait_for_secondary_bus()
+  dpc_reset_link()
+  pcie_do_recovery()
+  dpc_handler()
 
------------------- original commit in Linus's tree ------------------
+Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
+Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
+Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
+Reported-by: Keith Busch <kbusch@kernel.org>
+Tested-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.10+
+---
+ drivers/pci/pci.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-From dce68a49be26abf52712e0ee452a45fa01ab4624 Mon Sep 17 00:00:00 2001
-From: Aleksandr Mishin <amishin@t-argos.ru>
-Date: Wed, 12 Jun 2024 16:17:14 +0300
-Subject: [PATCH] remoteproc: imx_rproc: Fix refcount mistake in
- imx_rproc_addr_init
-
-In imx_rproc_addr_init() strcmp() is performed over the node after the
-of_node_put() is performed over it.
-Fix this error by moving of_node_put() calls.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 5e4c1243071d ("remoteproc: imx_rproc: support remote cores booted before Linux Kernel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240612131714.12907-1-amishin@t-argos.ru
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 39eacd90af14..144c8e9a642e 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -734,25 +734,29 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
- 			continue;
- 		}
- 		err = of_address_to_resource(node, 0, &res);
--		of_node_put(node);
- 		if (err) {
- 			dev_err(dev, "unable to resolve memory region\n");
-+			of_node_put(node);
- 			return err;
- 		}
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 530ced8f7abd..09d5fa637b98 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4817,7 +4817,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 				      int timeout)
+ {
+ 	struct pci_dev *child;
+-	int delay;
++	int delay, ret = 0;
  
--		if (b >= IMX_RPROC_MEM_MAX)
-+		if (b >= IMX_RPROC_MEM_MAX) {
-+			of_node_put(node);
- 			break;
-+		}
- 
- 		/* Not use resource version, because we might share region */
- 		priv->mem[b].cpu_addr = devm_ioremap_wc(&pdev->dev, res.start, resource_size(&res));
- 		if (!priv->mem[b].cpu_addr) {
- 			dev_err(dev, "failed to remap %pr\n", &res);
-+			of_node_put(node);
- 			return -ENOMEM;
- 		}
- 		priv->mem[b].sys_addr = res.start;
- 		priv->mem[b].size = resource_size(&res);
- 		if (!strcmp(node->name, "rsc-table"))
- 			priv->rsc_table = priv->mem[b].cpu_addr;
-+		of_node_put(node);
- 		b++;
+ 	if (pci_dev_is_disconnected(dev))
+ 		return 0;
+@@ -4845,8 +4845,8 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 		return 0;
  	}
  
+-	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
+-				 bus_list);
++	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
++					     struct pci_dev, bus_list));
+ 	up_read(&pci_bus_sem);
+ 
+ 	/*
+@@ -4856,7 +4856,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 	if (!pci_is_pcie(dev)) {
+ 		pci_dbg(dev, "waiting %d ms for secondary bus\n", 1000 + delay);
+ 		msleep(1000 + delay);
+-		return 0;
++		goto put_child;
+ 	}
+ 
+ 	/*
+@@ -4877,7 +4877,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 	 * until the timeout expires.
+ 	 */
+ 	if (!pcie_downstream_port(dev))
+-		return 0;
++		goto put_child;
+ 
+ 	if (pcie_get_speed_cap(dev) <= PCIE_SPEED_5_0GT) {
+ 		pci_dbg(dev, "waiting %d ms for downstream link\n", delay);
+@@ -4888,11 +4888,16 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 		if (!pcie_wait_for_link_delay(dev, true, delay)) {
+ 			/* Did not train, no need to wait any further */
+ 			pci_info(dev, "Data Link Layer Link Active not set in 1000 msec\n");
+-			return -ENOTTY;
++			ret = -ENOTTY;
++			goto put_child;
+ 		}
+ 	}
+ 
+-	return pci_dev_wait(child, reset_type, timeout - delay);
++	ret = pci_dev_wait(child, reset_type, timeout - delay);
++
++put_child:
++	pci_dev_put(child);
++	return ret;
+ }
+ 
+ void pci_reset_secondary_bus(struct pci_dev *dev)
+-- 
+2.43.0
 
 
