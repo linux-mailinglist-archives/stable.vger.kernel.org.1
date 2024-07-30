@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90675941823
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD32941D5E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14BE1C22BFA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C54A21C23A49
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7F71898F4;
-	Tue, 30 Jul 2024 16:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F5F1898EC;
+	Tue, 30 Jul 2024 17:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHTeF3q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lp4Q7Lo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C49189516;
-	Tue, 30 Jul 2024 16:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6E51A76DD;
+	Tue, 30 Jul 2024 17:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356269; cv=none; b=GisgFUiDJxACn1iquhqcLaSsKu0K/+vJZIQlxwSmxjaNZZYKUgVrNw0GR7LplttHDll+YsQdoQUG1Tm/aZk99uayjPvquhEMsfU/bfaShHFkoSybMXSH6+eRIhvbzar/7cXOUhwSz0fIzhPBW9ahR1FAY8j/Lgs8irZkjdQl/yM=
+	t=1722359779; cv=none; b=STObh2ElfI68Lyjd28yRB4MXhpqGQ5LSv2DGKtFxMYJsS2WB3FV/4VKSIkSRfaiV/BZd3TQuzy1cEJuuPHm1ZH7zH/qV3XPaZ7c9nN/yeR38I0OUFPLK6ZSis4gjK1EBjdixXOgX0ZRjRyJvHROdL7T0r9DqS5sfzHiHbNu/itk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356269; c=relaxed/simple;
-	bh=KznpQmPVfPCQUjV+ktD4gJkEQQHUuj2gk0395HsrzzA=;
+	s=arc-20240116; t=1722359779; c=relaxed/simple;
+	bh=HSRFZ7A4pdtj+5SRLbcZcFSconct94JKnZ3brLEzs1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0Ea2MrWL0XWMCv9dk1tbrH+YGHM1Gp8vjaoQPCjPTRDCHsPbV//H3aSh9a4Nu/Z8VzeQKih64OSSuCaLWMkHhwgb5KQxV8ggbvP7lkyCW2NK+2I1C6sAeO3b//9a8/Do/WUY2O6xl3ugNq6m+xQJKGkv1nfTKU9ueK0d82eUoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHTeF3q0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E386C32782;
-	Tue, 30 Jul 2024 16:17:48 +0000 (UTC)
+	 MIME-Version; b=Gh0a0BxgWJ5AGb8RGgWM6vUeKF8aMX88TV3aLcPTNfq+rIMNw5RN3pe18Yv961fZSscfdPzfJp7T9I5yVQi6PUHO9d+2tMx0plZAl7rOfuS7/4E9vrROLodiTHpiULHKvDMcv0/xqRAuz4JbNiReuEKqySMwm2+nJzsT6V2xn/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lp4Q7Lo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DD8C32782;
+	Tue, 30 Jul 2024 17:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356269;
-	bh=KznpQmPVfPCQUjV+ktD4gJkEQQHUuj2gk0395HsrzzA=;
+	s=korg; t=1722359779;
+	bh=HSRFZ7A4pdtj+5SRLbcZcFSconct94JKnZ3brLEzs1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHTeF3q03cwSn5p40wxafARhb4zev8i1EPSOoBUfjvOhEyXIE8p+ChrcAUSj7lc+S
-	 sFjF90x1d+/tU+sgTu6aAlrPUNQfpGMwee2o+afFG4rQxX7e9qAfOQn7xGohuWKlQX
-	 ei/ZSHq8en2illvVW1d3b6P98y1m4gayLgj5IAPs=
+	b=Lp4Q7Lo0j+Iwff3054Oo2iS63ioiWCjUU6DSVszhX/XGXTTj9tcgOkdmYWJJVrnXV
+	 SQVhy6sdmr2CjxvFwAHJkhPOLZWAM1+FFJyKJEke0m/roprCeewopk7H5fW3NPu0Fu
+	 xBh3IUzsijP+/cN+Q6YTW2egNtzFBvdvtLc8hvI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com,
-	Hugh Dickins <hughd@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/440] ext4: avoid writing unitialized memory to disk in EA inodes
+Subject: [PATCH 6.10 531/809] mailbox: mtk-cmdq: Move devm_mbox_controller_register() after devm_pm_runtime_enable()
 Date: Tue, 30 Jul 2024 17:46:47 +0200
-Message-ID: <20240730151622.670961763@linuxfoundation.org>
+Message-ID: <20240730151745.710533982@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 65121eff3e4c8c90f8126debf3c369228691c591 ]
+[ Upstream commit a8bd68e4329f9a0ad1b878733e0f80be6a971649 ]
 
-If the extended attribute size is not a multiple of block size, the last
-block in the EA inode will have uninitialized tail which will get
-written to disk. We will never expose the data to userspace but still
-this is not a good practice so just zero out the tail of the block as it
-isn't going to cause a noticeable performance overhead.
+When mtk-cmdq unbinds, a WARN_ON message with condition
+pm_runtime_get_sync() < 0 occurs.
 
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Reported-by: syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com
-Reported-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240613150234.25176-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+According to the call tracei below:
+  cmdq_mbox_shutdown
+  mbox_free_channel
+  mbox_controller_unregister
+  __devm_mbox_controller_unregister
+  ...
+
+The root cause can be deduced to be calling pm_runtime_get_sync() after
+calling pm_runtime_disable() as observed below:
+1. CMDQ driver uses devm_mbox_controller_register() in cmdq_probe()
+   to bind the cmdq device to the mbox_controller, so
+   devm_mbox_controller_unregister() will automatically unregister
+   the device bound to the mailbox controller when the device-managed
+   resource is removed. That means devm_mbox_controller_unregister()
+   and cmdq_mbox_shoutdown() will be called after cmdq_remove().
+2. CMDQ driver also uses devm_pm_runtime_enable() in cmdq_probe() after
+   devm_mbox_controller_register(), so that devm_pm_runtime_disable()
+   will be called after cmdq_remove(), but before
+   devm_mbox_controller_unregister().
+
+To fix this problem, cmdq_probe() needs to move
+devm_mbox_controller_register() after devm_pm_runtime_enable() to make
+devm_pm_runtime_disable() be called after
+devm_mbox_controller_unregister().
+
+Fixes: 623a6143a845 ("mailbox: mediatek: Add Mediatek CMDQ driver")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mailbox/mtk-cmdq-mailbox.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index 28d00ed833db4..f0a45d3ec4ebb 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1384,6 +1384,12 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
- 			goto out;
+diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
+index 4aa394e91109c..63b5e3fe75281 100644
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -662,12 +662,6 @@ static int cmdq_probe(struct platform_device *pdev)
+ 		cmdq->mbox.chans[i].con_priv = (void *)&cmdq->thread[i];
+ 	}
  
- 		memcpy(bh->b_data, buf, csize);
-+		/*
-+		 * Zero out block tail to avoid writing uninitialized memory
-+		 * to disk.
-+		 */
-+		if (csize < blocksize)
-+			memset(bh->b_data + csize, 0, blocksize - csize);
- 		set_buffer_uptodate(bh);
- 		ext4_handle_dirty_metadata(handle, ea_inode, bh);
+-	err = devm_mbox_controller_register(dev, &cmdq->mbox);
+-	if (err < 0) {
+-		dev_err(dev, "failed to register mailbox: %d\n", err);
+-		return err;
+-	}
+-
+ 	platform_set_drvdata(pdev, cmdq);
+ 
+ 	WARN_ON(clk_bulk_prepare(cmdq->pdata->gce_num, cmdq->clocks));
+@@ -695,6 +689,12 @@ static int cmdq_probe(struct platform_device *pdev)
+ 	pm_runtime_set_autosuspend_delay(dev, CMDQ_MBOX_AUTOSUSPEND_DELAY_MS);
+ 	pm_runtime_use_autosuspend(dev);
+ 
++	err = devm_mbox_controller_register(dev, &cmdq->mbox);
++	if (err < 0) {
++		dev_err(dev, "failed to register mailbox: %d\n", err);
++		return err;
++	}
++
+ 	return 0;
+ }
  
 -- 
 2.43.0
