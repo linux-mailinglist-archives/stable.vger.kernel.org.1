@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A7E941739
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD86941A97
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587AD1C2336A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACBFB1F25FF6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076A518953A;
-	Tue, 30 Jul 2024 16:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B14E1448FA;
+	Tue, 30 Jul 2024 16:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+QrumtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpPPqJJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1D7187FF2;
-	Tue, 30 Jul 2024 16:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F641A618F;
+	Tue, 30 Jul 2024 16:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355615; cv=none; b=pD3/GYU9aMvgZ9jyjRG02lTcM/cRbNPE4Jp4YKSYQQmXBNbz6zgFt8JCycSmMaa2iy1kpu4/uy7WkHQgUIgI/NbmL+wTajTOyHxR8BdRckzPjnBXnTppaJYU0xXVvIae4OwEhc7P/hsv9A+SGpvthYi0OqQCNXslQG2buq3TKdc=
+	t=1722357928; cv=none; b=R907ohne/De258Y5t9p9cO/SZ2RS9Ewq45GYBtRvQUsdfIjLWEJkuVHUEFQhkyMeZzaO1+QMutiuA0DpPr6Gv+P8hK8LnwTZ+9dSN3VWbj3/oJfZ550/toiZ8Y0W6UhoyPwma/t7ubwjt0zYUnjXSWrxzWpB8wNmG/4bbICDcTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355615; c=relaxed/simple;
-	bh=6/OiqucihDT3HJulfDpe4g8K8B19ExjcTW+QOgbELDo=;
+	s=arc-20240116; t=1722357928; c=relaxed/simple;
+	bh=M6oewx1rLCoECeCGCs1N1JLMZKuib6heUU1ZVRkxWBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FBOddwEqXMqE3PcQkQ7XcI4/R46g1PI+ApWX01TqLuUPDKWEJ9GExwf9j4hbLVlz0knUqjrnUvmMalpE1tbCM2mflAA66cKKmW74y50uAJazQGOfbgBSkTo0V989tOpnuXteDfQRlXqJ97U9EZ+hXke1dntMLDVW0xiVPaHxScs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+QrumtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9ECC32782;
-	Tue, 30 Jul 2024 16:06:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QpgYNix45oKbhT7pvegMnjC1zKvXKQl/dMuy49JSSPF97E+7aAZirallNlR87IrlvCD37mflQOiMDYbIFKM/l+7UMkElr4vNJvHnICE94KAPioMo0SMA1cRFze5rQLQtYySX6J5OU1TRVPnv37nI/F0f4REI8UJ4tqle2EL1veg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpPPqJJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECA3C32782;
+	Tue, 30 Jul 2024 16:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355615;
-	bh=6/OiqucihDT3HJulfDpe4g8K8B19ExjcTW+QOgbELDo=;
+	s=korg; t=1722357927;
+	bh=M6oewx1rLCoECeCGCs1N1JLMZKuib6heUU1ZVRkxWBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+QrumtElnL8MafV7eTdJIOf75zYgQ0Inb34RUrZh712kLleW9uzcFvvwNXPC767z
-	 nRsBMUcDBWycMsP0CgXIBYQP/Mc0FbpT5kJMma9XN90CqKhqSz2Rd1OEJan9g0prx/
-	 ewWSAXoc4qiuVuaveHKEC9D5zYJKed7iUDZJpGUw=
+	b=cpPPqJJoVqOc/zC92NTAxq5J/KYXYPheHXqTkyKyWTgsnNjn8XGgzWQ92SRMA50gb
+	 NPDSoduiXcayqNE1QnRzyYxRgmWmI8UgZ63IY0oHNDEL3amD/nZIiATK0AhpT5y98A
+	 S+U5WnsC390w1hskaX8hYZQAB4KlQSr/32iwCwdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Animesh Manna <animesh.manna@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/568] arm64: dts: mediatek: mt7622: fix "emmc" pinctrl mux
+Subject: [PATCH 6.10 305/809] drm/i915/psr: Print Panel Replay status instead of frame lock status
 Date: Tue, 30 Jul 2024 17:43:01 +0200
-Message-ID: <20240730151642.754491322@linuxfoundation.org>
+Message-ID: <20240730151736.638217913@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit aebba1030a5766cdf894ed4ab0cac7aed5aee9c1 ]
+[ Upstream commit 51ee1f29a9aceb8a52037ba4759d44c70e966fe5 ]
 
-Value "emmc_rst" is a group name and should be part of the "groups"
-property.
+Currently Panel Replay status printout is printing frame lock status. It
+should print Panel Replay status instead. Panel Replay status register
+field follows PSR status register field. Use existing PSR code for that.
 
-This fixes:
-arch/arm64/boot/dts/mediatek/mt7622-rfb1.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
-        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
-arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dtb: pinctrl@10211000: emmc-pins-default:mux:function: ['emmc', 'emmc_rst'] is too long
-        from schema $id: http://devicetree.org/schemas/pinctrl/mediatek,mt7622-pinctrl.yaml#
-
-Fixes: 3725ba3f5574 ("arm64: dts: mt7622: add pinctrl related device nodes")
-Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240604074916.7929-1-zajec5@gmail.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: ef75c25e8fed ("drm/i915/panelreplay: Debugfs support for panel replay")
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240607134917.1327574-10-jouni.hogander@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts | 4 ++--
- arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c | 22 +++++-----------------
+ 1 file changed, 5 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-index 7ef517e9e3746..15838c1ee8cc3 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-@@ -318,8 +318,8 @@ asm_sel {
- 	/* eMMC is shared pin with parallel NAND */
- 	emmc_pins_default: emmc-pins-default {
- 		mux {
--			function = "emmc", "emmc_rst";
--			groups = "emmc";
-+			function = "emmc";
-+			groups = "emmc", "emmc_rst";
- 		};
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 58769197a1277..2b4512bd5b595 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -3694,16 +3694,9 @@ static int i915_psr_sink_status_show(struct seq_file *m, void *data)
+ 		"reserved",
+ 		"sink internal error",
+ 	};
+-	static const char * const panel_replay_status[] = {
+-		"Sink device frame is locked to the Source device",
+-		"Sink device is coasting, using the VTotal target",
+-		"Sink device is governing the frame rate (frame rate unlock is granted)",
+-		"Sink device in the process of re-locking with the Source device",
+-	};
+ 	const char *str;
+ 	int ret;
+ 	u8 status, error_status;
+-	u32 idx;
  
- 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
-diff --git a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-index a75dc63a1362a..0a14ef1da60de 100644
---- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-@@ -244,8 +244,8 @@ &pio {
- 	/* eMMC is shared pin with parallel NAND */
- 	emmc_pins_default: emmc-pins-default {
- 		mux {
--			function = "emmc", "emmc_rst";
--			groups = "emmc";
-+			function = "emmc";
-+			groups = "emmc", "emmc_rst";
- 		};
+ 	if (!(CAN_PSR(intel_dp) || CAN_PANEL_REPLAY(intel_dp))) {
+ 		seq_puts(m, "PSR/Panel-Replay Unsupported\n");
+@@ -3717,16 +3710,11 @@ static int i915_psr_sink_status_show(struct seq_file *m, void *data)
+ 	if (ret)
+ 		return ret;
  
- 		/* "NDL0","NDL1","NDL2","NDL3","NDL4","NDL5","NDL6","NDL7",
+-	str = "unknown";
+-	if (intel_dp->psr.panel_replay_enabled) {
+-		idx = (status & DP_SINK_FRAME_LOCKED_MASK) >> DP_SINK_FRAME_LOCKED_SHIFT;
+-		if (idx < ARRAY_SIZE(panel_replay_status))
+-			str = panel_replay_status[idx];
+-	} else if (intel_dp->psr.enabled) {
+-		idx = status & DP_PSR_SINK_STATE_MASK;
+-		if (idx < ARRAY_SIZE(sink_status))
+-			str = sink_status[idx];
+-	}
++	status &= DP_PSR_SINK_STATE_MASK;
++	if (status < ARRAY_SIZE(sink_status))
++		str = sink_status[status];
++	else
++		str = "unknown";
+ 
+ 	seq_printf(m, "Sink %s status: 0x%x [%s]\n", psr_mode_str(intel_dp), status, str);
+ 
 -- 
 2.43.0
 
