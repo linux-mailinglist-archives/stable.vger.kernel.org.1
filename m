@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765A2941ACD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8749941BBC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57EC0B2AB70
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15ED01C2309B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A70184553;
-	Tue, 30 Jul 2024 16:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3739E1898E0;
+	Tue, 30 Jul 2024 16:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoJ62hb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZI6BDCM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F614831F;
-	Tue, 30 Jul 2024 16:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C3217D8BB;
+	Tue, 30 Jul 2024 16:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357314; cv=none; b=pttYDC+McZdpClNiMICXsffzPXy0A+v3KREVdJFAu7KXjCcHvuiyami6Q23VilqMx2UqiAbF0Z2mbjrd10CM8WfYM8swgwdmhnyMMnFNG/wNQnOQYDKAOl2N6iynCnji675OqePJsXFtSAtSpKrfVikQLvGSWSLBm9IaRymADlk=
+	t=1722358707; cv=none; b=KkxeE0FIUcLbY+hLVEPj1WQt2sdj1zLPQmJd2DIEh20Lk2z3PCng35BzkB5oEEofK1Gpq29dX2g3Sc0hjQDUGUlYcUUAfmlxFZ5BgyYA14yUfCmHNUgq7s1GoueMEUyChZ2fBi8b4s+0pVjUP+VzOroavQ+S5TS5s2MiVjyCg2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357314; c=relaxed/simple;
-	bh=Q8FAIPYxtRJFWH4eYCy1zlfiirqs8tgu2DgFS/TnE9w=;
+	s=arc-20240116; t=1722358707; c=relaxed/simple;
+	bh=+c3KkB7aw7uscrd86xfwvdkxOTpcHnvRVlQfAAmNRmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gM/8Q/HjpKl1K1KbItqcF2eXFEGwwgfHmaC/6sjQCN0oAioK/eu4J4LTex9Dm8dVHNuOUdRZg7TpEgEp7COpfnw8yeA8+FtToIYvGRi9pgn3T6EZWF4lz0WP8aeEg0UykcI7HswMqhuYf+Kan82hkHiaCEgEHkOZBA2vBnWuz1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoJ62hb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C9CC32782;
-	Tue, 30 Jul 2024 16:35:13 +0000 (UTC)
+	 MIME-Version; b=r/8IAL8pWxW/bhAZD1uaXi/rg8GdXMIlSIMDtDbDcLAQVx3ziboW5yBRLdlUKQuJyJ4B0euwLIGk8liFdNUDGtRnSU84Jzfty3VQaIcIm+RxTaRlGSOba2ZaCUtnWhIjz0wildcFit8jCo2loRvW26eVGNn9HMafooWPIO9ba5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZI6BDCM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D405C32782;
+	Tue, 30 Jul 2024 16:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357314;
-	bh=Q8FAIPYxtRJFWH4eYCy1zlfiirqs8tgu2DgFS/TnE9w=;
+	s=korg; t=1722358706;
+	bh=+c3KkB7aw7uscrd86xfwvdkxOTpcHnvRVlQfAAmNRmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoJ62hb9SBsn+q3dTi9ZIsW0b4tDu7lHandNZFNGDO2DHGxkFuPDYlRVwVkmbvaHj
-	 bW/LTKS1mFMNXrBL0IjG8B2mCk2c9okpf3cpjcVvPQ/Mq+GqoudNJAEu0oyyQ+BQ1J
-	 FGYImwJNrzg2kRlMj0e27WsKNqtNVXFFENXgtjjQ=
+	b=ZI6BDCM7JcbZ3Q+JjC2aEfHsju5iZsksJ0WGfGbZ1goMQSsIID3839s/h0c5waTcg
+	 D0LIbAdkeLzJ0+0rS9C+C/cvZacj19GQsRPDOwTjocpXXscoFZdq8QmIG+3pCBBZiZ
+	 fmX5g6wrOvKiPJ9FfUkPnlK5wI9vt8vJK8wbClb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 261/440] nilfs2: avoid undefined behavior in nilfs_cnt32_ge macro
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 387/568] scsi: qla2xxx: Fix optrom version displayed in FDMI
 Date: Tue, 30 Jul 2024 17:48:14 +0200
-Message-ID: <20240730151626.036550429@linuxfoundation.org>
+Message-ID: <20240730151654.991221106@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-[ Upstream commit 0f3819e8c483771a59cf9d3190cd68a7a990083c ]
+commit 348744f27a35e087acc9378bf53537fbfb072775 upstream.
 
-According to the C standard 3.4.3p3, the result of signed integer overflow
-is undefined.  The macro nilfs_cnt32_ge(), which compares two sequence
-numbers, uses signed integer subtraction that can overflow, and therefore
-the result of the calculation may differ from what is expected due to
-undefined behavior in different environments.
+Bios version was popluated for FDMI response. Systems with EFI would show
+optrom version as 0.  EFI version is populated here and BIOS version is
+already displayed under FDMI_HBA_BOOT_BIOS_NAME.
 
-Similar to an earlier change to the jiffies-related comparison macros in
-commit 5a581b367b5d ("jiffies: Avoid undefined behavior from signed
-overflow"), avoid this potential issue by changing the definition of the
-macro to perform the subtraction as unsigned integers, then cast the
-result to a signed integer for comparison.
-
-Link: https://lkml.kernel.org/r/20130727225828.GA11864@linux.vnet.ibm.com
-Link: https://lkml.kernel.org/r/20240702183512.6390-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-9-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c | 2 +-
+ drivers/scsi/qla2xxx/qla_gs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 04943ab40a011..5110c50be2918 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -136,7 +136,7 @@ static void nilfs_dispose_list(struct the_nilfs *, struct list_head *, int);
- 
- #define nilfs_cnt32_ge(a, b)   \
- 	(typecheck(__u32, a) && typecheck(__u32, b) && \
--	 ((__s32)(a) - (__s32)(b) >= 0))
-+	 ((__s32)((a) - (b)) >= 0))
- 
- static int nilfs_prepare_segment_lock(struct super_block *sb,
- 				      struct nilfs_transaction_info *ti)
--- 
-2.43.0
-
+--- a/drivers/scsi/qla2xxx/qla_gs.c
++++ b/drivers/scsi/qla2xxx/qla_gs.c
+@@ -1710,7 +1710,7 @@ qla2x00_hba_attributes(scsi_qla_host_t *
+ 	eiter->type = cpu_to_be16(FDMI_HBA_OPTION_ROM_VERSION);
+ 	alen = scnprintf(
+ 		eiter->a.orom_version, sizeof(eiter->a.orom_version),
+-		"%d.%02d", ha->bios_revision[1], ha->bios_revision[0]);
++		"%d.%02d", ha->efi_revision[1], ha->efi_revision[0]);
+ 	alen += FDMI_ATTR_ALIGNMENT(alen);
+ 	alen += FDMI_ATTR_TYPELEN(eiter);
+ 	eiter->len = cpu_to_be16(alen);
 
 
 
