@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC9B9417D3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:16:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1087A9417D5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 509422813B9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:16:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C08F8281EF7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B0E18454A;
-	Tue, 30 Jul 2024 16:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E932C18455F;
+	Tue, 30 Jul 2024 16:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qg45aw6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFp+f+ql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746F0183CBF;
-	Tue, 30 Jul 2024 16:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7247183CBF;
+	Tue, 30 Jul 2024 16:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355984; cv=none; b=Y/LLa4hKCCAM5Bm3D/bFCoBEitDBwbcttb4ubUBMs3+4aSuIqM7kkgbz4h9zEGqWZRN2YHGZ/WFHN8UqJm8f4dD3G0P2xITD+IcaG7UAIlk5n+j1X4zjOzUeSF3B9MUa3FGoUzIp1ZAsdIVLtlDI9A1Gr3HwSDIKDZZJGDI0yOg=
+	t=1722355995; cv=none; b=h06hU0UXgzq65dBG7nVdKVW41N3omOMc2ckVfgFEER5hq5k/uAJK/ctaQSotuTWymA/P+mojuqhY4vjfcKY0ad5gzparNF8BHPZNOORH6QT8yJqDjL5Qm0YIoIxE7nsPaVn/H0aTgkmqJDdgStNY12OeDL7EaohqLMQdrBmIQuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355984; c=relaxed/simple;
-	bh=AjKvbBYMun4bwxbkTndk2MfCCxskbi61/pWhZ8a07DI=;
+	s=arc-20240116; t=1722355995; c=relaxed/simple;
+	bh=uVFNF/blrHjVW/6/wWH/OiCge3kFtfPPOvV+lCBlFVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBkovfwtgr5F2ycZompHzYcGJs/x06Z384QKONCFIRMLQs/BbCEzHpzRD7UyfCyhl9kFOL3OkfEPvVWoq0gd54+8/786Zi1Jle0vr9uibNHQNNeRgIsNFVN6+LJzZmVk1zCqIbXWtZlGqW+DoN3SMzD1RWpwNZjpjXcMaxbReqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qg45aw6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB55C4AF0C;
-	Tue, 30 Jul 2024 16:13:03 +0000 (UTC)
+	 MIME-Version; b=aD0x97VJFWIvJPvJ2WbF1wPNvzNdvpjwFxywtxXTPZFiAL2A5rFsCe+GwM5GQsgkuyk4KOanOQokTzcv6wMHAknNG3xOO0wx7OLCwxHE3ti7RhOZfk5CQLcnONwUEDIkqBKx4VDtL0/xTMzQdjW69Nz8bEf97PazFqqxm7q3NSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFp+f+ql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31424C32782;
+	Tue, 30 Jul 2024 16:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355984;
-	bh=AjKvbBYMun4bwxbkTndk2MfCCxskbi61/pWhZ8a07DI=;
+	s=korg; t=1722355995;
+	bh=uVFNF/blrHjVW/6/wWH/OiCge3kFtfPPOvV+lCBlFVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qg45aw6VdPyUu6V5QiM2WFQ0o8/MVFdZ3j8VYoumrrsY7OapQnmKj5OBZEz8Ns8O1
-	 EUbltdscq5xPyo+K2w1OH1WJCn1b9bTNDhf/eyOsbgUZ6k1CSgSdOziwQArxqrrwxy
-	 /2W+km5GazJggY7ukSdMaehaeWEmfZM3vBpOcg6Q=
+	b=LFp+f+qlaHgQa/Z+D4zJ6cmtPvhDaeD74+gPZgr8BKam+7jvPbLL7/VZ2o9i2C00E
+	 PaXTb2NyVWXyARo+qT4vDF8N9+orH8KVbycdNkJ2tAVFlmg7ay0Zi1fP4ZglpGzPO8
+	 3MoHVBLMhz3OH63IBgEaDXtB9v/xkV4lX6f+7iKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 106/809] arm64: dts: mediatek: mt8183-kukui: Fix the value of `dlg,jack-det-rate` mismatch
-Date: Tue, 30 Jul 2024 17:39:42 +0200
-Message-ID: <20240730151728.813220044@linuxfoundation.org>
+Subject: [PATCH 6.10 107/809] arm64: dts: mediatek: mt8183-pico6: Fix wake-on-X event node names
+Date: Tue, 30 Jul 2024 17:39:43 +0200
+Message-ID: <20240730151728.851620896@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,36 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 95173af725e6f41eb470466a52ddf2054439409c ]
+[ Upstream commit 70bf81dd2c2dedbed1f19dfc5d1d2f22474a5296 ]
 
-According to Documentation/devicetree/bindings/sound/dialog,da7219.yaml,
-the value of `dlg,jack-det-rate` property should be "32_64" instead of
-"32ms_64ms".
+The wake-on-bt and wake-on-wlan nodes don't have a button- or event-
+prefix that the gpio-keys binding requires.
 
-Fixes: dc0ff0fa3a9b ("ASoC: da7219: Add Jack insertion detection polarity")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://lore.kernel.org/r/20240613-jack-rate-v2-1-ebc5f9f37931@chromium.org
+Fix up the node names to satisfy the binding. While at it, also fix up
+the GPIO overriding structure for the wake-on-wlan node. Instead of
+referencing the gpio-keys node and then open coding the node, add a
+label for the event node, and use that to reference and override the
+GPIO settings.
+
+Fixes: 055ef10ccdd4 ("arm64: dts: mt8183: Add jacuzzi pico/pico6 board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240131084043.3970576-1-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts      | 8 +++-----
+ arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi            | 2 +-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
-index 8b57706ac8140..586eee79c73cf 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-audio-da7219.dtsi
-@@ -27,7 +27,7 @@ da7219_aad {
- 			dlg,btn-cfg = <50>;
- 			dlg,mic-det-thr = <500>;
- 			dlg,jack-ins-deb = <20>;
--			dlg,jack-det-rate = "32ms_64ms";
-+			dlg,jack-det-rate = "32_64";
- 			dlg,jack-rem-deb = <1>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
+index 6a7ae616512d6..0d5a11c93c681 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-pico6.dts
+@@ -17,7 +17,7 @@ bt_wakeup: bt-wakeup {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&bt_pins_wakeup>;
  
- 			dlg,a-d-btn-thr = <0xa>;
+-		wobt {
++		event-wobt {
+ 			label = "Wake on BT";
+ 			gpios = <&pio 42 GPIO_ACTIVE_HIGH>;
+ 			linux,code = <KEY_WAKEUP>;
+@@ -47,10 +47,8 @@ trackpad@2c {
+ 	};
+ };
+ 
+-&wifi_wakeup {
+-	wowlan {
+-		gpios = <&pio 113 GPIO_ACTIVE_LOW>;
+-	};
++&wifi_wakeup_event {
++	gpios = <&pio 113 GPIO_ACTIVE_LOW>;
+ };
+ 
+ &wifi_pwrseq {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+index feb8a5acf2cd6..2fbd226bf142c 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+@@ -152,7 +152,7 @@ wifi_wakeup: wifi-wakeup {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&wifi_pins_wakeup>;
+ 
+-		button-wowlan {
++		wifi_wakeup_event: event-wowlan {
+ 			label = "Wake on WiFi";
+ 			gpios = <&pio 113 GPIO_ACTIVE_HIGH>;
+ 			linux,code = <KEY_WAKEUP>;
 -- 
 2.43.0
 
