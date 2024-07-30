@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-64356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89CC6941D8F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82666941D77
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E88E8B259AC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A8CB245F3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606BD1A76AD;
-	Tue, 30 Jul 2024 17:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ED61A76B0;
+	Tue, 30 Jul 2024 17:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/5F907k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciSNaLlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB281A76A4;
-	Tue, 30 Jul 2024 17:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7631C1A76A7;
+	Tue, 30 Jul 2024 17:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359850; cv=none; b=I/xhArRTFsRMnvDwcKgdxy+mUG0zLzFl8nas2o8LGvAJ0TvpESjy02uyTJUHpSe6kFBYbyXn9OXzXn4NwfE444/3MnpcbRLZKdmU1d6HIj77uSZpwS3mAm+arvdiZAK6xRw1S48Ret9OgH6qMKk7pwhfwue8DqgzYdOUjziuTkg=
+	t=1722359856; cv=none; b=d2bRBLJ91PNSJq05ROXskBEniG55y3a1CI1Fksc8A4kdidBh//ivgBV7YWe0dTMO9lDxfG5Xfwa19RVaRx4trTw0gkbbzj1C5oUg406JpyVlXLNuGJqCtGA/11gDcSv4wyMoaoobWyrYy091Iw+kszJxuKfpuaByqIYlREH0oys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359850; c=relaxed/simple;
-	bh=9+/FsI9lWowplZAdZ+7C64l48zQIcq0RGFpLdk9muOc=;
+	s=arc-20240116; t=1722359856; c=relaxed/simple;
+	bh=QZIZgJtC2q40qNDSSKFU+he35Q6cKp/dXYKLuSa3kzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9OxxrW8ljU/fdYrKEaaYsJZaHuwKzGZSsXnEAM29ZoJTS8ammrQ3tTs7GpQm8o0EY4AEQhnAs7iP+0p8ghdociX1QpIxbmYyAjuu3PMI9JKa6+x4VfhEysOI3CUnTba06Gx2d6waNpE5WhcEUvM7mUI0vlE5XvzY2yLJmSzYc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/5F907k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9889FC4AF0A;
-	Tue, 30 Jul 2024 17:17:29 +0000 (UTC)
+	 MIME-Version; b=luyVM0sYDpDWRT8XnvLz1mizejyPjZFGpunxKu1JzjncU51ECX9S+VQUuApj24X8CZAb6+mfVQA/yscRJ+svdeGdkfrix8MdVTnVAfGPNLFLF4YzBLPfjyYaVPvhKzVuLu9USOJm5sO8o09q8xDfYJv72j4mBUGBRN9hyi7f4KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciSNaLlD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE18DC32782;
+	Tue, 30 Jul 2024 17:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359850;
-	bh=9+/FsI9lWowplZAdZ+7C64l48zQIcq0RGFpLdk9muOc=;
+	s=korg; t=1722359856;
+	bh=QZIZgJtC2q40qNDSSKFU+he35Q6cKp/dXYKLuSa3kzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/5F907kiMWyim3V4o7M9AOxewqf/g25lP4tkGUlxLwl2Za2nS3DO5flTqY2PO9hr
-	 MwXlZMy7YlNjbgUG9uGDTEsU7cRW3kwe1XG8bOm5Vw1QDZ+BdEtLBymgdjA1y66pFJ
-	 zs7fIJhXo16QMvuUQ66hI80flQ/7AbYClZqZIKNM=
+	b=ciSNaLlD3hB7iUvx+oDK8DBEGysF33bIbWN4kkYtq65a0oFuZF4mZj3dGB7cVy0rm
+	 nicB/MVXEKOzHhQHVpZWNxFudkacYox/sZuQuEnGAFs5WMRq/YsqxU9vx70tjzH49K
+	 hH95mBc8BfjQDp/F7mE1Gglz4vUnBoGVGC3jEq3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 546/568] powerpc: fix a file leak in kvm_vcpu_ioctl_enable_cap()
-Date: Tue, 30 Jul 2024 17:50:53 +0200
-Message-ID: <20240730151701.502808285@linuxfoundation.org>
+Subject: [PATCH 6.6 547/568] lirc: rc_dev_get_from_fd(): fix file leak
+Date: Tue, 30 Jul 2024 17:50:54 +0200
+Message-ID: <20240730151701.541006380@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,33 +67,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit b4cf5fc01ce83e5c0bcf3dbb9f929428646b9098 ]
+[ Upstream commit bba1f6758a9ec90c1adac5dcf78f8a15f1bad65b ]
 
-missing fdput() on one of the failure exits
+missing fdput() on a failure exit
 
-Fixes: eacc56bb9de3e # v5.2
+Fixes: 6a9d552483d50 "media: rc: bpf attach/detach requires write permission" # v6.9
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/powerpc.c | 4 +++-
+ drivers/media/rc/lirc_dev.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 7197c8256668b..6cef200c2404d 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -1990,8 +1990,10 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
- 			break;
+diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
+index caad59f76793f..f8901d6fbe9bf 100644
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -828,8 +828,10 @@ struct rc_dev *rc_dev_get_from_fd(int fd, bool write)
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
- 		r = -ENXIO;
--		if (!xive_enabled())
-+		if (!xive_enabled()) {
-+			fdput(f);
- 			break;
-+		}
+-	if (write && !(f.file->f_mode & FMODE_WRITE))
++	if (write && !(f.file->f_mode & FMODE_WRITE)) {
++		fdput(f);
+ 		return ERR_PTR(-EPERM);
++	}
  
- 		r = -EPERM;
- 		dev = kvm_device_from_filp(f.file);
+ 	fh = f.file->private_data;
+ 	dev = fh->rc;
 -- 
 2.43.0
 
