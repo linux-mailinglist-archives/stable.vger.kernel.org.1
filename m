@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-63328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC04941866
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CEB894186A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 451AD1F22AB1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BEE5284704
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E86188003;
-	Tue, 30 Jul 2024 16:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2AE189503;
+	Tue, 30 Jul 2024 16:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEHEwoXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IljODS2O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B411A617E;
-	Tue, 30 Jul 2024 16:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC285183CDB;
+	Tue, 30 Jul 2024 16:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356474; cv=none; b=UaV6zWbjFJ/xEC9xXYi5fkT81pUpkQq79aeQv7ZkQEIbN0l5JJnLPdh3FtIbiRengIf3FhWHulso4bA9q6UMkMVPvWcLAe7xnPImeUrdwCWp60Ev+0dA5llCHN6HZgVpf4Gqf461HBpye3wyfreP21DhGZhevKVRRPUBiCGU8PU=
+	t=1722356485; cv=none; b=MYJPqA1N8wvD4vNbNFxiTqflpw6q7Mh2sMchjYxgoGcHoTDb/icDs6j6q0AcF7YoeqexuIGWSRw59Pd1pp2rzCmMQ+9oxupNVPwcVkOb7QnCZN3vIjeZKjm80BtEe9p8HrIIrwy0oiBQRU0hAXqLmWRgXZ68WpBqYpndeyBy/EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356474; c=relaxed/simple;
-	bh=PEHzIsz9fjsDI2ETDOViTB5fUleU+9l0sJINEg0X16o=;
+	s=arc-20240116; t=1722356485; c=relaxed/simple;
+	bh=Um1PxQHn4rCsHf5NiVZwr33nA5+u113Z0KHm+1WJ0Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSBCEKNivrrNyHWZUd4xQuNfzsIyn4u6vjJGRjrQfUeaMqYMdZ088Q5XXvQSJLhCv4lcSocMaKEiZnmSO7Y7LO/hGFiFa9OmelLAhkoJtfFxoLrS0gBkkajaTpNNu+NXMikRm/245TFTB+pgLwdDU8nzkNviUkmymbkdrodwZMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEHEwoXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40180C32782;
-	Tue, 30 Jul 2024 16:21:14 +0000 (UTC)
+	 MIME-Version; b=ogK/n30Z/JYdP1uRboPMAIOil2pJWL2jthcIZMvOMOj3pUaTXJincgJ7ygjxccPwcC+eY7IknyZJpy7FZlFz/I/zKSzH6Jrj7Aa7K99DJoUUuE6Tp6hBtXKUvDwJKEbFoajVYjqCwRbXYcfcNYRJ4Er2Zk/gWRbio3PNOCbeVas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IljODS2O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C02C32782;
+	Tue, 30 Jul 2024 16:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356474;
-	bh=PEHzIsz9fjsDI2ETDOViTB5fUleU+9l0sJINEg0X16o=;
+	s=korg; t=1722356484;
+	bh=Um1PxQHn4rCsHf5NiVZwr33nA5+u113Z0KHm+1WJ0Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEHEwoXCPHFBuDCmFuAGkt2K2eLFjy2xTyue0L9sdEDyBeF7VWH1pEWykCUHYY3qM
-	 w+rZy53Q91bZOmlT14N0PVJQK6g8xiD3o2tcTc58FGzrudYL7+6WuB6FCJ82Bq2kSE
-	 eC8D8mEKFFZxumYtyUnqqVonhU9grfczepmw3V9c=
+	b=IljODS2ONRGwFowAh8WieRb9HldhrfwGSQNy1oDW9rhSAz2Sd8FkIIXUgOBuBqY7t
+	 wrUQMG6BkrtkA+rGTpyREmqF1dBZtMu2fUnTo41m6tRDj1fmCvMoMa6i09OOY7k9za
+	 8AlNgKoCqgMtnlqsbjhELN+7h4AdRlrRgSXjLEVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nithyanantham Paramasivam <quic_nithp@quicinc.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 153/809] wifi: ath12k: Fix tx completion ring (WBM2SW) setup failure
-Date: Tue, 30 Jul 2024 17:40:29 +0200
-Message-ID: <20240730151730.647788934@linuxfoundation.org>
+Subject: [PATCH 6.10 154/809] wifi: ath12k: fix Smatch warnings on ath12k_core_suspend()
+Date: Tue, 30 Jul 2024 17:40:30 +0200
+Message-ID: <20240730151730.687428459@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,115 +68,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 0ce9ab2785e4e9ca0752390d8e5ab65bd08f0e78 ]
+[ Upstream commit 33370412eced2dc7f81f4324e109d69319cafd82 ]
 
-We observe intermittent ping failures from the access point (AP) to
-station (STA) in any mode (AP-STA or Mesh) configured. Specifically,
-the transmission completion status is not received at tx completion
-ring id 4 (WBM2SW ring4) for the packets transmitted via TCL DATA
-ring id 3. This prevents freeing up tx descriptors and leads
-to buffer exhaustion.
+Smatch is throwing below warning:
 
-Currently, during initialization of the WBM2SW ring, we are directly
-mapping the ring number to the ring mask to obtain the ring mask
-group index. This approach is causing setup failures for WBM2SW
-ring 4. Similarly, during runtime, when receiving incoming
-transmission completion status, the validation of the ring number by
-mapping the interrupted ring mask. This is resulting in
-validation failure. Thereby preventing entry into the completion
-handler ath12k_dp_tx_completion_handler().
+Commit 692921ead832 ("wifi: ath12k: flush all packets before
+suspend") leads to the following Smatch static checker warning:
 
-The existing design assumed that the ring numbers would always be
-sequential and could be directly mapped with the ring mask. However,
-this assumption does not hold true for WBM2SW ring 4. Therefore,
-modify the design such that, instead of mapping the ring number,
-the ring ID is mapped with the ring mask.
+	drivers/net/wireless/ath/ath12k/core.c:58 ath12k_core_suspend()
+	warn: sleeping in atomic context
 
-According to this design:
+and also gives the reason:
 
-1. During initialization of the WBM2SW ring, mapping the ring ID
-to the ring mask will ensure obtaining the correct ring mask group
-ID.
+drivers/net/wireless/ath/ath12k/core.c
+    48         int ret, i;
+    49
+    50         if (!ab->hw_params->supports_suspend)
+    51                 return -EOPNOTSUPP;
+    52
+    53         rcu_read_lock();
+               ^^^^^^^^^^^^^^^
+Disables preemption.
 
-2. During runtime, validating the interrupted ring mask group ID
-within the transmission completion group is sufficient. This
-approach allows the ring ID to be derived from the interrupted ring
-mask and enables entry into the completion handler.
+    54         for (i = 0; i < ab->num_radios; i++) {
+    55                 ar = ath12k_mac_get_ar_by_pdev_id(ab, i);
+    56                 if (!ar)
+    57                         continue;
+--> 58                 ret = ath12k_mac_wait_tx_complete(ar);
+                                        ^^^^^^^
+Sleeping in atomic context.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+    59                 if (ret) {
+    60                         ath12k_warn(ab, "failed to wait tx complete: %d\n", ret);
+    61                         rcu_read_unlock();
+    62                         return ret;
+    63                 }
+    64         }
+    65         rcu_read_unlock();
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+But it is weird that no warning on this in run time even with
+CONFIG_DEBUG_ATOMIC_SLEEP=y. With some debug it is found that this is
+because: when system goes to suspend, ath12k_mac_op_stop() gets called
+where then in ath12k_mac_stop() ab->pdevs_active[ar->pdev_idx] is cleared.
+This results in ath12k_mac_get_ar_by_pdev_id() always returning a NULL ar,
+and thereby ath12k_mac_wait_tx_complete() never gets a chance to run.
+
+Fix it by retrieving ar directly from ab->pdevs[].ar instead of using
+ath12k_mac_get_ar_by_pdev_id(). Since ab->pdevs[].ar is set at boot time
+and won't get cleared when suspend, ath12k_mac_wait_tx_complete() won't
+be skipped. In addition, with ath12k_mac_get_ar_by_pdev_id() removed,
+rcu_read_lock()/unlock() are not needed any more, so remove them. This
+also fixes the warning above.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Fixes: 692921ead832 ("wifi: ath12k: flush all packets before suspend")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/ath12k/7a96ca11-80b5-4751-8cfc-fa637f3aa63a@moroto.mountain/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240510070427.206152-1-quic_nithp@quicinc.com
+Link: https://msgid.link/20240511095045.9623-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.c | 18 +++++++++++++-----
- drivers/net/wireless/ath/ath12k/hw.c |  2 +-
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 7843c76a82c17..90476f38e8d46 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -132,7 +132,9 @@ static int ath12k_dp_srng_find_ring_in_mask(int ring_num, const u8 *grp_mask)
- static int ath12k_dp_srng_calculate_msi_group(struct ath12k_base *ab,
- 					      enum hal_ring_type type, int ring_num)
- {
-+	const struct ath12k_hal_tcl_to_wbm_rbm_map *map;
- 	const u8 *grp_mask;
-+	int i;
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 6663f4e1792de..527cfa3a01ad3 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -50,19 +50,16 @@ int ath12k_core_suspend(struct ath12k_base *ab)
+ 	if (!ab->hw_params->supports_suspend)
+ 		return -EOPNOTSUPP;
  
- 	switch (type) {
- 	case HAL_WBM2SW_RELEASE:
-@@ -140,6 +142,14 @@ static int ath12k_dp_srng_calculate_msi_group(struct ath12k_base *ab,
- 			grp_mask = &ab->hw_params->ring_mask->rx_wbm_rel[0];
- 			ring_num = 0;
- 		} else {
-+			map = ab->hw_params->hal_ops->tcl_to_wbm_rbm_map;
-+			for (i = 0; i < ab->hw_params->max_tx_ring; i++) {
-+				if (ring_num == map[i].wbm_ring_num) {
-+					ring_num = i;
-+					break;
-+				}
-+			}
-+
- 			grp_mask = &ab->hw_params->ring_mask->tx[0];
+-	rcu_read_lock();
+ 	for (i = 0; i < ab->num_radios; i++) {
+-		ar = ath12k_mac_get_ar_by_pdev_id(ab, i);
++		ar = ab->pdevs[i].ar;
+ 		if (!ar)
+ 			continue;
+ 		ret = ath12k_mac_wait_tx_complete(ar);
+ 		if (ret) {
+ 			ath12k_warn(ab, "failed to wait tx complete: %d\n", ret);
+-			rcu_read_unlock();
+ 			return ret;
  		}
- 		break;
-@@ -881,11 +891,9 @@ int ath12k_dp_service_srng(struct ath12k_base *ab,
- 	enum dp_monitor_mode monitor_mode;
- 	u8 ring_mask;
- 
--	while (i < ab->hw_params->max_tx_ring) {
--		if (ab->hw_params->ring_mask->tx[grp_id] &
--			BIT(ab->hw_params->hal_ops->tcl_to_wbm_rbm_map[i].wbm_ring_num))
--			ath12k_dp_tx_completion_handler(ab, i);
--		i++;
-+	if (ab->hw_params->ring_mask->tx[grp_id]) {
-+		i = fls(ab->hw_params->ring_mask->tx[grp_id]) - 1;
-+		ath12k_dp_tx_completion_handler(ab, i);
  	}
+-	rcu_read_unlock();
  
- 	if (ab->hw_params->ring_mask->rx_err[grp_id]) {
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index f4c8270158215..5ed06c0d90e2b 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -580,8 +580,8 @@ static const struct ath12k_hw_ring_mask ath12k_hw_ring_mask_qcn9274 = {
- static const struct ath12k_hw_ring_mask ath12k_hw_ring_mask_wcn7850 = {
- 	.tx  = {
- 		ATH12K_TX_RING_MASK_0,
-+		ATH12K_TX_RING_MASK_1,
- 		ATH12K_TX_RING_MASK_2,
--		ATH12K_TX_RING_MASK_4,
- 	},
- 	.rx_mon_dest = {
- 	},
+ 	/* PM framework skips suspend_late/resume_early callbacks
+ 	 * if other devices report errors in their suspend callbacks.
 -- 
 2.43.0
 
