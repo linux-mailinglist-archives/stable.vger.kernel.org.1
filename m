@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4193C941D4F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C32B941A64
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EE61F25D65
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324EA1F24D87
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A945B1A76AF;
-	Tue, 30 Jul 2024 17:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59E9183CDB;
+	Tue, 30 Jul 2024 16:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzh43lYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyJEyw2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669A31A76A2;
-	Tue, 30 Jul 2024 17:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A521A619E;
+	Tue, 30 Jul 2024 16:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359724; cv=none; b=j7AFb3N6iCoO7PK2Vevg3oZvpb06Ae56+GNxibn5b0zJ0/vNGG3qgbtC4uqhVIRtPTtvNAYpuf7tJtW2KsS2yqXnLXB0WJ5Po2fpLeWa0fyuP9joujN2VvZ+MHQ9qZgpyIAt0SVKfs2CkPvc9mIBYkjla7ELgKurSUoHxYWVrU4=
+	t=1722357803; cv=none; b=LzA+PXm39y8fdGEnQ2Rpb6mdOrpWViiLH9f/ekqugxZSLfSb0YzQdcSqvb9lNzrjgb+191ZBVME3/bAqL1I3pf1AzpTiqnxGLJx3TDDifeqLEj3wkuFtYci4q1qK23a+XyUY2+lBhV33k04upseIymwkJkCoD7YsKK1IGfKAhPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359724; c=relaxed/simple;
-	bh=acISr0ANHkcKZhkqultyz/qb9Ms2CZsUKZIK1Qhaydo=;
+	s=arc-20240116; t=1722357803; c=relaxed/simple;
+	bh=TV/fn9aUH38tiWI2qzdpm180Dljx2hDLudwNoyBO7ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQyt3xPCbg1FGB95dk+y/PDD4ZgqYfF5ljWFETwBVB89rZpVB3owEVDU9d3doP4t8sAjhkUITMylaDMLVVEmoAbfcLGnk599DSV5jNi3ei3mGoyie1NPjtHNH4r5F/EB/fhKTJpdR2Cj7c2iKqQ88+0OMHSvul0um6GJOgJnD3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzh43lYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9769EC4AF0A;
-	Tue, 30 Jul 2024 17:15:23 +0000 (UTC)
+	 MIME-Version; b=fPKCdzZw3h6palncnfVaX467z9PNSGMIB1NYkMsY/x7873UHSEyuyYsyvs3qX0nEStm5iR/pYOUAWRZV9p8OPB3AN2NXqSG6XsvvUFnW4P4VmKpKH//TO0Sf/C/Yf9RSbGbbmBtS70IPZlfy0Qp9t2eiNwpvfQCRtdRp3jqysVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyJEyw2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F4BC32782;
+	Tue, 30 Jul 2024 16:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359724;
-	bh=acISr0ANHkcKZhkqultyz/qb9Ms2CZsUKZIK1Qhaydo=;
+	s=korg; t=1722357803;
+	bh=TV/fn9aUH38tiWI2qzdpm180Dljx2hDLudwNoyBO7ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzh43lYDL2aXxLeu52QbCalZf+728oJ1pquW3i+nKbtM8D5NMWgaxALskYMCayLne
-	 uFW8JBn4Xciy/qXkzt+xmaOD4YlMhxQYzBTPBPlI51eCOKQJBn4DmLVz5Tww3/SvZ2
-	 lpT8CxclIBZONLjI/ukILRJ64kSirOfbt7U7iUlw=
+	b=wyJEyw2jkHW2uHmivL2i0BrAGeNHSIcjQYTocBxif1ilrx3TSVJLeDy0TbAXEWviX
+	 KMOKanA3vXmSELJJmeiu9Q+GVHFk/tu+g9ZUcIrH09gGFqlt2N5i7BbJaCLhSVeXTG
+	 JHW0FWGPVK201lm7xYTCX2brhbUFldFT2bMs/u40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 524/809] LoongArch: Check TIF_LOAD_WATCH to enable user space watchpoint
+Subject: [PATCH 6.6 293/568] clk: en7523: fix rate divider for slic and spi clocks
 Date: Tue, 30 Jul 2024 17:46:40 +0200
-Message-ID: <20240730151745.435182826@linuxfoundation.org>
+Message-ID: <20240730151651.330381234@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 3892b11eac5aaaeefbf717f1953288b77759d9e2 ]
+[ Upstream commit 58c53d43142f222221e5a76a7016c4d8f3b84b97 ]
 
-Currently, there are some places to set CSR.PRMD.PWE, the first one is
-in hw_breakpoint_thread_switch() to enable user space singlestep via
-checking TIF_SINGLESTEP, the second one is in hw_breakpoint_control() to
-enable user space watchpoint. For the latter case, it should also check
-TIF_LOAD_WATCH to make the logic correct and clear.
+Introduce div_offset field in en_clk_desc struct in order to fix rate
+divider estimation in en7523_get_div routine for slic and spi fixed
+rate clocks.
+Moreover, fix base_shift for crypto clock.
 
-Fixes: c8e57ab0995c ("LoongArch: Trigger user-space watchpoints correctly")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 1e6273179190 ("clk: en7523: Add clock driver for Airoha EN7523 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/c491bdea05d847f1f1294b94f14725d292eb95d0.1718615934.git.lorenzo@kernel.org
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/hw_breakpoint.c | 2 +-
- arch/loongarch/kernel/ptrace.c        | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/clk-en7523.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/kernel/hw_breakpoint.c b/arch/loongarch/kernel/hw_breakpoint.c
-index 621ad7634df71..a6e4b605bfa8d 100644
---- a/arch/loongarch/kernel/hw_breakpoint.c
-+++ b/arch/loongarch/kernel/hw_breakpoint.c
-@@ -221,7 +221,7 @@ static int hw_breakpoint_control(struct perf_event *bp,
- 		}
- 		enable = csr_read64(LOONGARCH_CSR_CRMD);
- 		csr_write64(CSR_CRMD_WE | enable, LOONGARCH_CSR_CRMD);
--		if (bp->hw.target)
-+		if (bp->hw.target && test_tsk_thread_flag(bp->hw.target, TIF_LOAD_WATCH))
- 			regs->csr_prmd |= CSR_PRMD_PWE;
- 		break;
- 	case HW_BREAKPOINT_UNINSTALL:
-diff --git a/arch/loongarch/kernel/ptrace.c b/arch/loongarch/kernel/ptrace.c
-index 200109de1971a..19dc6eff45ccc 100644
---- a/arch/loongarch/kernel/ptrace.c
-+++ b/arch/loongarch/kernel/ptrace.c
-@@ -589,6 +589,7 @@ static int ptrace_hbp_set_ctrl(unsigned int note_type,
- 	struct perf_event *bp;
- 	struct perf_event_attr attr;
- 	struct arch_hw_breakpoint_ctrl ctrl;
-+	struct thread_info *ti = task_thread_info(tsk);
+diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
+index 7cde328495e2b..7914e60f3d6c5 100644
+--- a/drivers/clk/clk-en7523.c
++++ b/drivers/clk/clk-en7523.c
+@@ -40,6 +40,7 @@ struct en_clk_desc {
+ 	u8 div_shift;
+ 	u16 div_val0;
+ 	u8 div_step;
++	u8 div_offset;
+ };
  
- 	bp = ptrace_hbp_get_initialised_bp(note_type, tsk, idx);
- 	if (IS_ERR(bp))
-@@ -613,8 +614,10 @@ static int ptrace_hbp_set_ctrl(unsigned int note_type,
- 		if (err)
- 			return err;
- 		attr.disabled = 0;
-+		set_ti_thread_flag(ti, TIF_LOAD_WATCH);
- 	} else {
- 		attr.disabled = 1;
-+		clear_ti_thread_flag(ti, TIF_LOAD_WATCH);
+ struct en_clk_gate {
+@@ -67,6 +68,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
+ 		.div_bits = 3,
+ 		.div_shift = 0,
+ 		.div_step = 1,
++		.div_offset = 1,
+ 	}, {
+ 		.id = EN7523_CLK_EMI,
+ 		.name = "emi",
+@@ -80,6 +82,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
+ 		.div_bits = 3,
+ 		.div_shift = 0,
+ 		.div_step = 1,
++		.div_offset = 1,
+ 	}, {
+ 		.id = EN7523_CLK_BUS,
+ 		.name = "bus",
+@@ -93,6 +96,7 @@ static const struct en_clk_desc en7523_base_clks[] = {
+ 		.div_bits = 3,
+ 		.div_shift = 0,
+ 		.div_step = 1,
++		.div_offset = 1,
+ 	}, {
+ 		.id = EN7523_CLK_SLIC,
+ 		.name = "slic",
+@@ -133,13 +137,14 @@ static const struct en_clk_desc en7523_base_clks[] = {
+ 		.div_bits = 3,
+ 		.div_shift = 0,
+ 		.div_step = 1,
++		.div_offset = 1,
+ 	}, {
+ 		.id = EN7523_CLK_CRYPTO,
+ 		.name = "crypto",
+ 
+ 		.base_reg = REG_CRYPTO_CLKSRC,
+ 		.base_bits = 1,
+-		.base_shift = 8,
++		.base_shift = 0,
+ 		.base_values = emi_base,
+ 		.n_base_values = ARRAY_SIZE(emi_base),
  	}
+@@ -184,7 +189,7 @@ static u32 en7523_get_div(void __iomem *base, int i)
+ 	if (!val && desc->div_val0)
+ 		return desc->div_val0;
  
- 	return modify_user_hw_breakpoint(bp, &attr);
+-	return (val + 1) * desc->div_step;
++	return (val + desc->div_offset) * desc->div_step;
+ }
+ 
+ static int en7523_pci_is_enabled(struct clk_hw *hw)
 -- 
 2.43.0
 
