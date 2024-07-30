@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA1C941B36
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B863D941DC1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE82D282CE9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C011C234DB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC9618990B;
-	Tue, 30 Jul 2024 16:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7601A76C3;
+	Tue, 30 Jul 2024 17:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BC2WvcR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BCi14mr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513F418801C;
-	Tue, 30 Jul 2024 16:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BB91A76AE;
+	Tue, 30 Jul 2024 17:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358325; cv=none; b=OB8uUhMK+veQ2nyQkHk5eTb7KZ8k7/43eiD/083IZAJb0XYXXF+MT2KpHnXBC/BN9l0kA4ppKwagGcKU2GA9BZdWfIDPCy0AR7GvikkOsVAGLaqWnsNYGcaQ/fLobsYO2TG7jBBSNf5mpfd3AxSQ685VgALcxJVo1DXOtIAYuAY=
+	t=1722360058; cv=none; b=PjDUqQsaeE5ozLADhjY0j2v9o+BGAo33hwRCYGrabAbXjJwhQNJo4gx+CuJ7jli2yROeSp30vDbBYEnKfPN1k3m2VyH+eX+J+QQ3un/9BBi1nD8OvaOhC0+3wtTtcKI71qPj5Cmlu2N3VsqU2KqBQ7PmSeQcGKq/a58VO8s6iL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358325; c=relaxed/simple;
-	bh=tHoBm7a8RwlwACuPj1lQ5BTfyMkgfLDuVS/ZfE7QL08=;
+	s=arc-20240116; t=1722360058; c=relaxed/simple;
+	bh=roHS7vVCSGDVoaXpJOCyL3opiCvKndp3VY8gWNLD+fQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Blt9EMAXgIC4imUkZ2Ec48Rx6vUP//pw8FxjpyA4ht2UK4XMeC7N8wOcZvRNrxliD1FkqPH6Z6EcNdRcPms/PRZBYaxpSeuerY+16xaBkJMBzhWKnY044octjO4Xt45RdXbRjcBj7ONPHOU0ipxQO0XuDZ3a9sK1R8Gly7oQE/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BC2WvcR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC64C32782;
-	Tue, 30 Jul 2024 16:52:04 +0000 (UTC)
+	 MIME-Version; b=ZPMlRQFFCLSnMngZHwhjwUqLDg1ZNsB5FmVcogFe502tYWZwvefoeo5En1licQ70VhEsyoW8UkW1+HbzwNzf9k2KgayYVxv9bwiNUq1vZN3G3j0YBQ1+8qGEJHOX6KAOEuW/nUrj+DImqcfiXzYSInYPMTcKQNEcZTttNYNkHps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BCi14mr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B70C32782;
+	Tue, 30 Jul 2024 17:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358325;
-	bh=tHoBm7a8RwlwACuPj1lQ5BTfyMkgfLDuVS/ZfE7QL08=;
+	s=korg; t=1722360057;
+	bh=roHS7vVCSGDVoaXpJOCyL3opiCvKndp3VY8gWNLD+fQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BC2WvcR57gFmSVvtoA0bSZhuPrapxN5kYFQoMqNr13dzaPJETANhi+yclVzEES3Oe
-	 ueKWwKjsq4MrIxbtuzt84XTlr7VuHsYnZzC36R2asW2ilNGtIFgbwhXkqeOkXVgcrw
-	 W5oBZL/ULUQ/KzR7qKG4cTK0qCkzPm2UCurb40wU=
+	b=2BCi14mr0sQaDOaxKOaPY8Zj+cf5QZrH0uPPdktSw6++oz/Fo6tt3yrPy2LMNdEKj
+	 FV2UkbfGkm+XJ9B3TU9BhbRV3lt/aflgdf9TXPWBE1zG+pNNw5xHvXpk7uuP+KqGmb
+	 xur9mIGeesJ1CYSAV7kuMtaGdxNbW+g3iZ1OOf5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 351/568] fs/ntfs3: Keep runs for $MFT::$ATTR_DATA and $MFT::$ATTR_BITMAP
-Date: Tue, 30 Jul 2024 17:47:38 +0200
-Message-ID: <20240730151653.587502562@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.10 583/809] apparmor: use kvfree_sensitive to free data->data
+Date: Tue, 30 Jul 2024 17:47:39 +0200
+Message-ID: <20240730151747.856146111@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit eb95678ee930d67d79fc83f0a700245ae7230455 ]
+commit 2bc73505a5cd2a18a7a542022722f136c19e3b87 upstream.
 
-We skip the run_truncate_head call also for $MFT::$ATTR_BITMAP.
-Otherwise wnd_map()/run_lookup_entry will not find the disk position for the bitmap parts.
+Inside unpack_profile() data->data is allocated using kvmemdup() so it
+should be freed with the corresponding kvfree_sensitive().
 
-Fixes: 0e5b044cbf3a ("fs/ntfs3: Refactoring attr_set_size to restore after errors")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also add missing data->data release for rhashtable insertion failure path
+in unpack_profile().
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: e025be0f26d5 ("apparmor: support querying extended trusted helper extra data")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/attrib.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/apparmor/policy.c        |    2 +-
+ security/apparmor/policy_unpack.c |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index f8cc49f14c7d3..fc6cea60044ed 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -673,7 +673,8 @@ int attr_set_size(struct ntfs_inode *ni, enum ATTR_TYPE type,
- 			goto undo_2;
- 		}
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -225,7 +225,7 @@ static void aa_free_data(void *ptr, void
+ {
+ 	struct aa_data *data = ptr;
  
--		if (!is_mft)
-+		/* keep runs for $MFT::$ATTR_DATA and $MFT::$ATTR_BITMAP. */
-+		if (ni->mi.rno != MFT_REC_MFT)
- 			run_truncate_head(run, evcn + 1);
+-	kfree_sensitive(data->data);
++	kvfree_sensitive(data->data, data->size);
+ 	kfree_sensitive(data->key);
+ 	kfree_sensitive(data);
+ }
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -1071,6 +1071,7 @@ static struct aa_profile *unpack_profile
  
- 		svcn = le64_to_cpu(attr->nres.svcn);
--- 
-2.43.0
-
+ 			if (rhashtable_insert_fast(profile->data, &data->head,
+ 						   profile->data->p)) {
++				kvfree_sensitive(data->data, data->size);
+ 				kfree_sensitive(data->key);
+ 				kfree_sensitive(data);
+ 				info = "failed to insert data to table";
 
 
 
