@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE03941787
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF9B9419E4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 362ECB26335
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62E1A1F27732
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5AE18454A;
-	Tue, 30 Jul 2024 16:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE841898E0;
+	Tue, 30 Jul 2024 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGjaNNL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7MzIqqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1617D183CA0;
-	Tue, 30 Jul 2024 16:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5C8146D6B;
+	Tue, 30 Jul 2024 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355787; cv=none; b=sK5oC176M9BiKHqHrdtMyQ4EXr3+qAgIYHDVywbSL6Pv7bt3B45c4G5cD2j2blYfgJbuP3IP/wmCcnYttd2TxA/kJTIAxpVAkMVtX/CmeJOfW+24o2x0bjiaXmtpmsCgjuZirshVcSK8UNLDm+uFDPib+bF30WyTKK+SHdMYeAk=
+	t=1722357450; cv=none; b=KLhCExq7F3P31njhLm7SBFvryNkm4vQqL5TDybty7tVgIxjvCY4KlToIt6DUycUFCkB4+s3SCSvuij2pe+8PFdVxk8ggqoh+S1FP0YIddUGwRMqcFeFot3igZsMFVtHT1g2lgW5uLEXf9AYXfrI3AZ66yQD1Wq+F2S5WrkXPbfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355787; c=relaxed/simple;
-	bh=woFqQ4Ox2WkAe1/g6uhlAvSNr3xWH0MKeC/C7XBdaUQ=;
+	s=arc-20240116; t=1722357450; c=relaxed/simple;
+	bh=iiUOnuziFgbIP4l2OFrTVS3MtH2Zja+wgR3ZWYOqB3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSFVKEv6ErfsKX+fLCoBqqOD9fFXNPml0+iE9NHQmep8t7PVt1DBjPlHXvyhcdZ25rmtCJX5X8IoRZvSBDHUdNKfuB3ZvzfOK65td2M6xkMn6cH+qhkoDigChqzf68Ox0PYLWu53DjtMLk9aJtg8KpsYKZfjR1HOHDOZD5Sn26o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGjaNNL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C33C4AF0A;
-	Tue, 30 Jul 2024 16:09:46 +0000 (UTC)
+	 MIME-Version; b=Nga+PfPcFDgFuzp60IpVsu04dGPbX8CfBr3W10PY74kDSGTiOwGvq7Xn1QMlsjuinuDMHEtd9KQFRS4tVLUVA/9u1w8hoLmYJm4sUotG/B+TVCxyywCw6/1GcJZYhEYWH0cSQKqMIFf/d/7hP9aZQ+K9IiaT+JcEmdYV7dzteF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7MzIqqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E14C32782;
+	Tue, 30 Jul 2024 16:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355786;
-	bh=woFqQ4Ox2WkAe1/g6uhlAvSNr3xWH0MKeC/C7XBdaUQ=;
+	s=korg; t=1722357450;
+	bh=iiUOnuziFgbIP4l2OFrTVS3MtH2Zja+wgR3ZWYOqB3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGjaNNL4apVG2XJtKSM4iF0Cj8GNxZqFYa5xNYBO9Hz8+3/Ej2Ol3EU2vMOUW04wE
-	 qvnyr1V4k3zINptx0GwjzDp/siVnk79OuG25AQrBqPm/e9L5zlHWe4xeFtqV0XVki3
-	 wTv8M6dvW6MjH8cSs1LOBA0xq+4NLCLGyLHVBjmo=
+	b=u7MzIqqa2XIF92zILOulLtpY3JerPz85tgWhHq8vqE3b9ivMIhV2LEdjMXFbaONTf
+	 HH22jrbrM3sGYxDeQKOYCYn5VxUkhM+F/9g+mcmD1/9d6h++4P/YsQmCibtRy2j8dj
+	 lsieECXMnEnLMob6uk62aBr6i59ItQnbo/+PbXz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/440] drm/mipi-dsi: Fix theoretical int overflow in mipi_dsi_dcs_write_seq()
+Subject: [PATCH 6.6 256/568] iio: frequency: adrf6780: rm clk provider include
 Date: Tue, 30 Jul 2024 17:46:03 +0200
-Message-ID: <20240730151620.959807807@linuxfoundation.org>
+Message-ID: <20240730151649.884656471@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-[ Upstream commit 0b03829fdece47beba9ecb7dbcbde4585ee3663e ]
+[ Upstream commit e2261b4a4de2804698935eb44f98dc897e1c44c3 ]
 
-The mipi_dsi_dcs_write_seq() macro makes a call to
-mipi_dsi_dcs_write_buffer() which returns a type ssize_t. The macro
-then stores it in an int and checks to see if it's negative. This
-could theoretically be a problem if "ssize_t" is larger than "int".
+The driver has no clock provider implementation, therefore remove the
+include.
 
-To see the issue, imagine that "ssize_t" is 32-bits and "int" is
-16-bits, you could see a problem if there was some code out there that
-looked like:
-
-  mipi_dsi_dcs_write_seq(dsi, cmd, <32767 bytes as arguments>);
-
-...since we'd get back that 32768 bytes were transferred and 32768
-stored in a 16-bit int would look negative.
-
-Though there are no callsites where we'd actually hit this (even if
-"int" was only 16-bit), it's cleaner to make the types match so let's
-fix it.
-
-Fixes: 2a9e9daf7523 ("drm/mipi-dsi: Introduce mipi_dsi_dcs_write_seq macro")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240514102056.v5.1.I30fa4c8348ea316c886ef8a522a52fed617f930d@changeid
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240514102056.v5.1.I30fa4c8348ea316c886ef8a522a52fed617f930d@changeid
+Fixes: 63aaf6d06d87 ("iio: frequency: adrf6780: add support for ADRF6780")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Link: https://lore.kernel.org/r/20240530092835.36892-1-antoniu.miclaus@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_mipi_dsi.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/iio/frequency/adrf6780.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index 9dd1093b2dfa9..1a921e8943a03 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -309,18 +309,18 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
-  * @cmd: Command
-  * @seq: buffer containing data to be transmitted
-  */
--#define mipi_dsi_dcs_write_seq(dsi, cmd, seq...)                           \
--	do {                                                               \
--		static const u8 d[] = { cmd, seq };                        \
--		struct device *dev = &dsi->dev;                            \
--		int ret;                                                   \
--		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));    \
--		if (ret < 0) {                                             \
--			dev_err_ratelimited(                               \
--				dev, "sending command %#02x failed: %d\n", \
--				cmd, ret);                                 \
--			return ret;                                        \
--		}                                                          \
-+#define mipi_dsi_dcs_write_seq(dsi, cmd, seq...)                            \
-+	do {                                                                \
-+		static const u8 d[] = { cmd, seq };                         \
-+		struct device *dev = &dsi->dev;                             \
-+		ssize_t ret;                                                \
-+		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));     \
-+		if (ret < 0) {                                              \
-+			dev_err_ratelimited(                                \
-+				dev, "sending command %#02x failed: %zd\n", \
-+				cmd, ret);                                  \
-+			return ret;                                         \
-+		}                                                           \
- 	} while (0)
- 
- /**
+diff --git a/drivers/iio/frequency/adrf6780.c b/drivers/iio/frequency/adrf6780.c
+index b4defb82f37e3..3f46032c92752 100644
+--- a/drivers/iio/frequency/adrf6780.c
++++ b/drivers/iio/frequency/adrf6780.c
+@@ -9,7 +9,6 @@
+ #include <linux/bits.h>
+ #include <linux/clk.h>
+ #include <linux/clkdev.h>
+-#include <linux/clk-provider.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/iio/iio.h>
 -- 
 2.43.0
 
