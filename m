@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569DC94187B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46054941C10
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8813D1C2310C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7745F1C232FC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFC91A6192;
-	Tue, 30 Jul 2024 16:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA71A188003;
+	Tue, 30 Jul 2024 17:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzI/1bZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUBIVeVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB5E1A6162;
-	Tue, 30 Jul 2024 16:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F441A6192;
+	Tue, 30 Jul 2024 17:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356554; cv=none; b=iUncY4srDF2JbYEJGTzbDpSuPRTFZyxw8eEV8/KSab1rEd1I2yenifEdw7Yi3Ee8oBbBcilEHFSus59AHbcjaLsFMjCmkfMuMvwOOEfUjwlPe8e9E15tKVHCv6mkaP3eo0vJvjpXpiipQgKuGw+AXSiNQ7KgdNKwl4QF+haNXFE=
+	t=1722358951; cv=none; b=BiLsWaPxyo3bMfwKkhzGj8QhT1ttBCiTl1y4abOE1EyMwB4orOgsxdzI57heEJgh/XbHqVkqlvVL6HBR9qFHhllTfD75c4iAjmqnVFJhflUi7CoejjhZosnpg1womBAqSdHyXCW0p3V6SaBstIRIXfSZ5TZTyyXWbHP/sGbEQaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356554; c=relaxed/simple;
-	bh=90/OZpVcFjV699giLMypkrWPYD095dirsOJum+aq3lw=;
+	s=arc-20240116; t=1722358951; c=relaxed/simple;
+	bh=FWuH4YEPt032dBg1xlf7MR6WRWcA0bHh7eVjlQCXHf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Op7Ul8hn63Fbmm59ts7W3+/APuMkI0Zq8eVmmM9E6GRgTmgkGtXhsp84/rhHlpvJSg6Whum7o8wVq9+WerjaU9iFEtodjK86JqajsxmzZY2eQZ3qSqXTLJR0R0h4QcTcGjxYfrEvV6evVEuY+CVh8j3FnrUHMZ1B937Mda4ntk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzI/1bZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B27C32782;
-	Tue, 30 Jul 2024 16:22:33 +0000 (UTC)
+	 MIME-Version; b=LR3MwWZpcTDP0sFTGO3yVc1mdE9qPp3Huem6P4FYVZz+JhjKyDCNVXxsT8pGN/JhLYRnj2SK2yg6Xvd5bCtAB3uMzG7NFVguSv436UYfOPUdbxvlgArLqRFMIU6eURZJKs7a9MWqvHhEgO+hlOKGM2VCTS5eEvYwQ0BD+QnDEs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUBIVeVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33EAC32782;
+	Tue, 30 Jul 2024 17:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356554;
-	bh=90/OZpVcFjV699giLMypkrWPYD095dirsOJum+aq3lw=;
+	s=korg; t=1722358951;
+	bh=FWuH4YEPt032dBg1xlf7MR6WRWcA0bHh7eVjlQCXHf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzI/1bZaOqa9UEuzW4awWai2/Z7pPQFZXEJTjS+FZXiFx56bT6KYAZUDkTNI8p4oJ
-	 uKXiUUgWbangWL6VLd4Tha33rKrDYps9zB7KF+RKwcOt1PXp/AVcfj0M8bG5ch9Xwa
-	 svetkL5oCy28yaOTxFNDi0ddPCtRbtm5Mnrsk80w=
+	b=AUBIVeVxlPdVENfwDPEtXOD67IuIOPAdquu7gW9v/byrmaO+HgBXH97M2aCJvQtdU
+	 ONdoBSexeFCtSnN6j2KtUAYOrPMiHNr2Qrw8v9bAwHsHh5A9JimawO8XBAiI5zOnHV
+	 r1+8Q24fOKbYFyua9oNTI1gQmoerJWCFJdPcesmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/568] selftests/bpf: Close obj in error path in xdp_adjust_tail
-Date: Tue, 30 Jul 2024 17:44:28 +0200
-Message-ID: <20240730151646.176202845@linuxfoundation.org>
+Subject: [PATCH 6.10 393/809] clk: qcom: camcc-sc7280: Add parent dependency to all camera GDSCs
+Date: Tue, 30 Jul 2024 17:44:29 +0200
+Message-ID: <20240730151740.204113377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 52b49ec1b2c78deb258596c3b231201445ef5380 ]
+[ Upstream commit 63aec3e4d987fd43237f557460345bca3b51e530 ]
 
-If bpf_object__load() fails in test_xdp_adjust_frags_tail_grow(), "obj"
-opened before this should be closed. So use "goto out" to close it instead
-of using "return" here.
+Camera titan top GDSC is a parent supply to all other camera GDSCs. Titan
+top GDSC is required to be enabled before enabling any other camera GDSCs
+and it should be disabled only after all other camera GDSCs are disabled.
+Ensure this behavior by marking titan top GDSC as parent of all other
+camera GDSCs.
 
-Fixes: 110221081aac ("bpf: selftests: update xdp_adjust_tail selftest to include xdp frags")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Link: https://lore.kernel.org/r/f282a1ed2d0e3fb38cceefec8e81cabb69cab260.1720615848.git.tanggeliang@kylinos.cn
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: 1daec8cfebc2 ("clk: qcom: camcc: Add camera clock controller driver for SC7280")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240531095142.9688-4-quic_tdas@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/camcc-sc7280.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c b/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-index f09505f8b0386..53d6ad8c2257e 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-@@ -222,7 +222,7 @@ static void test_xdp_adjust_frags_tail_grow(void)
+diff --git a/drivers/clk/qcom/camcc-sc7280.c b/drivers/clk/qcom/camcc-sc7280.c
+index d89ddb2298e32..582fb3ba9c895 100644
+--- a/drivers/clk/qcom/camcc-sc7280.c
++++ b/drivers/clk/qcom/camcc-sc7280.c
+@@ -2260,6 +2260,7 @@ static struct gdsc cam_cc_bps_gdsc = {
+ 		.name = "cam_cc_bps_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
  
- 	prog = bpf_object__next_program(obj, NULL);
- 	if (bpf_object__load(obj))
--		return;
-+		goto out;
+@@ -2269,6 +2270,7 @@ static struct gdsc cam_cc_ife_0_gdsc = {
+ 		.name = "cam_cc_ife_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = RETAIN_FF_ENABLE,
+ };
  
- 	prog_fd = bpf_program__fd(prog);
+@@ -2278,6 +2280,7 @@ static struct gdsc cam_cc_ife_1_gdsc = {
+ 		.name = "cam_cc_ife_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = RETAIN_FF_ENABLE,
+ };
+ 
+@@ -2287,6 +2290,7 @@ static struct gdsc cam_cc_ife_2_gdsc = {
+ 		.name = "cam_cc_ife_2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = RETAIN_FF_ENABLE,
+ };
+ 
+@@ -2296,6 +2300,7 @@ static struct gdsc cam_cc_ipe_0_gdsc = {
+ 		.name = "cam_cc_ipe_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
  
 -- 
 2.43.0
