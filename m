@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0207E941A31
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611BC941971
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53EF8B2A5D1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92AFE1C23730
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1F418801C;
-	Tue, 30 Jul 2024 16:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0F7189900;
+	Tue, 30 Jul 2024 16:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eU2wZKWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiuHrK9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062FE1A6195;
-	Tue, 30 Jul 2024 16:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E5B189535;
+	Tue, 30 Jul 2024 16:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357334; cv=none; b=s/UI/aiTzLG/yMcY32p/mQfNTt+LoWLYKlrSVAAJCErQgU33owuzz3fl2gY14O9A6syt0yWZzjfy/otG+tA3E/sBw0UpALHCc1Xtl0zcNoMPTdGTRruXLqKadJio+o5HOvinVDzIoVnta6lLqec3/hrOFSe3f3Af/EQfyd0VZNs=
+	t=1722357136; cv=none; b=D8/FcoXuA+rMqYduRWHR3my1IUy5I5iJ9BGCTAHE+nk/pq2EPW6A13VZ4cHfARjCmsvqsX4L9C5Dtn/Bv39Ao5ORoqt9vDiCKmJuHU12Ti/nAAoNv2s9uwX8ndiSEdE0YodFImC927OsKyB1SiCl98JZRzEKyHUXSfzR9yq2V+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357334; c=relaxed/simple;
-	bh=7Dk1ZVtzuJA7ihXRJB1nCrGdpY5KGDYSdxMxb3Hpgng=;
+	s=arc-20240116; t=1722357136; c=relaxed/simple;
+	bh=/GnFvHZ3+oT9tOLeFRwAf9nrDIgHjtC8lJIl0dLdr0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dllswSd9x0IJAmJZyFsnjH1wLIfWryx7HX3mKb+VTLfIJMnOL0CdfJQ51PbNZhaM0En63hWxOFBgrqL9n+UbIgAqaSytiqWjDcIfkZqrgp9RGWjhrLAGcD1kVhGR/YgjBGTdPuxnvxmtWmSOGYmZ6pvoL+CxG7tzA981tTfq0EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eU2wZKWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E28C4AF0A;
-	Tue, 30 Jul 2024 16:35:33 +0000 (UTC)
+	 MIME-Version; b=tUnuH+hBMKhKXLhBTjWxYleiif54exGikxOJMt0JQEk20/vj2NBZeBGcK1ijeHJNzcGYzq5e+ykdhNLOxi1ZNV1QpFu2i63KeSn+hUOmZWZhq3oDS6gKcuwTdMaaEHQe+SYoXJl6GhGEJExzV5DfSUaagE1oNkE4LSrWf+eb4sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiuHrK9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D500BC32782;
+	Tue, 30 Jul 2024 16:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357333;
-	bh=7Dk1ZVtzuJA7ihXRJB1nCrGdpY5KGDYSdxMxb3Hpgng=;
+	s=korg; t=1722357136;
+	bh=/GnFvHZ3+oT9tOLeFRwAf9nrDIgHjtC8lJIl0dLdr0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eU2wZKWWNLVUsppYbGsiWU+7uBBWweRx9sDfLgJzG1VIZu02KP5KBYa7vzH7RNMS8
-	 LOjd7sW10YhERfWQy7CMjsQ5gq8dYrmxPf4v+ufItcrB0bfwpXvlQil0p3t7aylCDA
-	 DDKixfAwOzMe5hbTLnju4yR3NvuGvt1j9GzkcaXc=
+	b=HiuHrK9b5THrQ9HLccMCLUfyZ9XCUXcPdtvxcc3d5hgYkX8UyGFlTjcWowXqfnLfn
+	 aIjjAd/PNKCxyybX6WFTmQfjcbTzB2UWVXfcLV6ytglLJOW7Fn8S/Vsey0D/0jMlSp
+	 9UUilTGf37+2oiH/4w4GmFsQaDCyuCh4hSWgtDaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@gmail.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
-	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 220/809] bpftool: Mount bpffs when pinmaps path not under the bpffs
-Date: Tue, 30 Jul 2024 17:41:36 +0200
-Message-ID: <20240730151733.298502008@linuxfoundation.org>
+Subject: [PATCH 6.10 221/809] bpf: Fix atomic probe zero-extension
+Date: Tue, 30 Jul 2024 17:41:37 +0200
+Message-ID: <20240730151733.336647020@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,44 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tao Chen <chen.dylane@gmail.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit da5f8fd1f0d393d5eaaba9ad8c22d1c26bb2bf9b ]
+[ Upstream commit df34ec9db6f521118895f22795da49f2ec01f8cf ]
 
-As Quentin said [0], BPF map pinning will fail if the pinmaps path is not
-under the bpffs, like:
+Zero-extending results of atomic probe operations fails with:
 
-  libbpf: specified path /home/ubuntu/test/sock_ops_map is not on BPF FS
-  Error: failed to pin all maps
+    verifier bug. zext_dst is set, but no reg is defined
 
-  [0] https://github.com/libbpf/bpftool/issues/146
+The problem is that insn_def_regno() handles BPF_ATOMICs, but not
+BPF_PROBE_ATOMICs. Fix by adding the missing condition.
 
-Fixes: 3767a94b3253 ("bpftool: add pinmaps argument to the load/loadall")
-Signed-off-by: Tao Chen <chen.dylane@gmail.com>
+Fixes: d503a04f8bc0 ("bpf: Add support for certain atomics in bpf_arena to x86 JIT")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Quentin Monnet <qmo@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20240702131150.15622-1-chen.dylane@gmail.com
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240701234304.14336-2-iii@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/prog.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/bpf/verifier.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-index 1a501cf09e782..40ea743d139fd 100644
---- a/tools/bpf/bpftool/prog.c
-+++ b/tools/bpf/bpftool/prog.c
-@@ -1813,6 +1813,10 @@ static int load_with_options(int argc, char **argv, bool first_prog_only)
- 	}
- 
- 	if (pinmaps) {
-+		err = create_and_mount_bpffs_dir(pinmaps);
-+		if (err)
-+			goto err_unpin;
-+
- 		err = bpf_object__pin_maps(obj, pinmaps);
- 		if (err) {
- 			p_err("failed to pin all maps");
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 214a9fa8c6fb7..e1e08e62a2f2f 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3215,7 +3215,8 @@ static int insn_def_regno(const struct bpf_insn *insn)
+ 	case BPF_ST:
+ 		return -1;
+ 	case BPF_STX:
+-		if (BPF_MODE(insn->code) == BPF_ATOMIC &&
++		if ((BPF_MODE(insn->code) == BPF_ATOMIC ||
++		     BPF_MODE(insn->code) == BPF_PROBE_ATOMIC) &&
+ 		    (insn->imm & BPF_FETCH)) {
+ 			if (insn->imm == BPF_CMPXCHG)
+ 				return BPF_REG_0;
 -- 
 2.43.0
 
