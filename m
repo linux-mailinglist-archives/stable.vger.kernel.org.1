@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-63887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65CA941B20
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6901C941DB8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B331C20F54
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EABD1F279E7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DC8188013;
-	Tue, 30 Jul 2024 16:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7CC1A76B2;
+	Tue, 30 Jul 2024 17:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1+ubJwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgCBpD29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EBC1078F;
-	Tue, 30 Jul 2024 16:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1D51A76A9;
+	Tue, 30 Jul 2024 17:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358271; cv=none; b=Vfmg81iCLPHlftodTl3TFJzCdPspB0QpmpeeW3EJaKdxbBJH708OiYZ0KHrY/POrVaIaxGmgtt9K4kv/0lDvDxBgWe+tD6k0kjORqyKeq8fxfRoBaxtDA11wSN0ZH0kD6sNQTdxunofRSHSFiT6E8ujikBifeVbpKB6OnyJcwBo=
+	t=1722360042; cv=none; b=Jvs4Oj9q/QUnXHpHCtQvjJePMfeZKpGwQkUgdWoticehdhszAGdHNjjAztxWPEndMsIkQcYl79C/wqaKavYnEKCSvCLp0iM2OAaNJdSXLOr0XMyFSF1tPmu3fxGTmFLSj/DZVeAzW0aq1mpBMyRTzZe72n5PoVu2o6/AIXxRUsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358271; c=relaxed/simple;
-	bh=0mjcyPkG0dnyGs4+cPt0X4qptLfl/JorXBAS42oP5z4=;
+	s=arc-20240116; t=1722360042; c=relaxed/simple;
+	bh=6mn5b8b9nG/IXhcvH+EJ/u3N+Dmw/AQRcIOFCgFE+6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IyD100C4PPHWgi/36EKMErmZyGS+ZGzJVeBxHdSOZCHS0W7fFByv/xy1wUbw/HYHnizsvfeJ6vijjtbaHlc2et9R5BoXC3JGIup2LEk+5plZqPaC8pAwMm5du8DJ7E1rfsyH31BcSP9f3kaV4hz8kH3HPOvfIZtHu7KvimrWjzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1+ubJwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBBDC32782;
-	Tue, 30 Jul 2024 16:51:10 +0000 (UTC)
+	 MIME-Version; b=ZBqwnXq+XkxQR4pqQN5lVK6BoL06PcZt/s64KMrlpaoHLWS6LWdK/Cscrl6Md7CdElNsHtaPGxPOARHRSB6X3C9h15xWwNZvOjn3ddwOr/kL0Apt9ih1BZK9mRDgScF9YYs0HY3WSywyfg6RgVOGDp9m5KdkrWcWAQm1rWeh52o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgCBpD29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81246C32782;
+	Tue, 30 Jul 2024 17:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358271;
-	bh=0mjcyPkG0dnyGs4+cPt0X4qptLfl/JorXBAS42oP5z4=;
+	s=korg; t=1722360042;
+	bh=6mn5b8b9nG/IXhcvH+EJ/u3N+Dmw/AQRcIOFCgFE+6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1+ubJwdaxyizRPM8mcOdqZJ7XXhHAIFIdsvOLnEMnnFvIfq2pKFbPV92Jrl1K3Yu
-	 mWG0nsK84np0BetGjGhAJTMmAYpL7WbKvkPjaUiEN6W1pl67jHJHs9EvAFeTIxhqFF
-	 pef9XJaeUmN99vRWU9saC3pschvvHEWOJdY0/LqA=
+	b=cgCBpD29XrVwh2suuiK+crW+PdM7UTw8xZaQJTFNVZmR53ozJBlF/BPK8Jno24B5t
+	 ilalfPzcX7E8snP9U8RrfmYosoleZp9aZBwkdybQbQp5Um7RqXezQ23L+5ht8+FrNs
+	 B5aFuLWOtq38FHHz/Zn5oHU/xqr+m2khjxdhuRao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lance Yang <ioworker0@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 346/568] fs/proc/task_mmu: properly detect PM_MMAP_EXCLUSIVE per page of PMD-mapped THPs
-Date: Tue, 30 Jul 2024 17:47:33 +0200
-Message-ID: <20240730151653.394574904@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 6.10 578/809] drm/gma500: fix null pointer dereference in cdv_intel_lvds_get_modes
+Date: Tue, 30 Jul 2024 17:47:34 +0200
+Message-ID: <20240730151747.608320123@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,103 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 2c1f057e5be63e890f2dd89e4c25ab5eef084a91 ]
+commit cb520c3f366c77e8d69e4e2e2781a8ce48d98e79 upstream.
 
-We added PM_MMAP_EXCLUSIVE in 2015 via commit 77bb499bb60f ("pagemap: add
-mmap-exclusive bit for marking pages mapped only here"), when THPs could
-not be partially mapped and page_mapcount() returned something that was
-true for all pages of the THP.
+In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
+is assigned to mode, which will lead to a NULL pointer dereference on
+failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-In 2016, we added support for partially mapping THPs via commit
-53f9263baba6 ("mm: rework mapcount accounting to enable 4k mapping of
-THPs") but missed to determine PM_MMAP_EXCLUSIVE as well per page.
-
-Checking page_mapcount() on the head page does not tell the whole story.
-
-We should check each individual page.  In a future without per-page
-mapcounts it will be different, but we'll change that to be consistent
-with PTE-mapped THPs once we deal with that.
-
-Link: https://lkml.kernel.org/r/20240607122357.115423-4-david@redhat.com
-Fixes: 53f9263baba6 ("mm: rework mapcount accounting to enable 4k mapping of THPs")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Lance Yang <ioworker0@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6a227d5fd6c4 ("gma500: Add support for Cedarview")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240709113311.37168-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_mmu.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/gma500/cdv_intel_lvds.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index a5a946bef0ac4..59571737e1677 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1470,6 +1470,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 
- 	ptl = pmd_trans_huge_lock(pmdp, vma);
- 	if (ptl) {
-+		unsigned int idx = (addr & ~PMD_MASK) >> PAGE_SHIFT;
- 		u64 flags = 0, frame = 0;
- 		pmd_t pmd = *pmdp;
- 		struct page *page = NULL;
-@@ -1486,8 +1487,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 			if (pmd_uffd_wp(pmd))
- 				flags |= PM_UFFD_WP;
- 			if (pm->show_pfn)
--				frame = pmd_pfn(pmd) +
--					((addr & ~PMD_MASK) >> PAGE_SHIFT);
-+				frame = pmd_pfn(pmd) + idx;
- 		}
- #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 		else if (is_swap_pmd(pmd)) {
-@@ -1496,11 +1496,9 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 
- 			if (pm->show_pfn) {
- 				if (is_pfn_swap_entry(entry))
--					offset = swp_offset_pfn(entry);
-+					offset = swp_offset_pfn(entry) + idx;
- 				else
--					offset = swp_offset(entry);
--				offset = offset +
--					((addr & ~PMD_MASK) >> PAGE_SHIFT);
-+					offset = swp_offset(entry) + idx;
- 				frame = swp_type(entry) |
- 					(offset << MAX_SWAPFILES_SHIFT);
- 			}
-@@ -1516,12 +1514,16 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 
- 		if (page && !PageAnon(page))
- 			flags |= PM_FILE;
--		if (page && (flags & PM_PRESENT) && page_mapcount(page) == 1)
--			flags |= PM_MMAP_EXCLUSIVE;
- 
--		for (; addr != end; addr += PAGE_SIZE) {
--			pagemap_entry_t pme = make_pme(frame, flags);
-+		for (; addr != end; addr += PAGE_SIZE, idx++) {
-+			unsigned long cur_flags = flags;
-+			pagemap_entry_t pme;
+--- a/drivers/gpu/drm/gma500/cdv_intel_lvds.c
++++ b/drivers/gpu/drm/gma500/cdv_intel_lvds.c
+@@ -311,6 +311,9 @@ static int cdv_intel_lvds_get_modes(stru
+ 	if (mode_dev->panel_fixed_mode != NULL) {
+ 		struct drm_display_mode *mode =
+ 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
++		if (!mode)
++			return 0;
 +
-+			if (page && (flags & PM_PRESENT) &&
-+			    page_mapcount(page + idx) == 1)
-+				cur_flags |= PM_MMAP_EXCLUSIVE;
- 
-+			pme = make_pme(frame, cur_flags);
- 			err = add_to_pagemap(&pme, pm);
- 			if (err)
- 				break;
--- 
-2.43.0
-
+ 		drm_mode_probed_add(connector, mode);
+ 		return 1;
+ 	}
 
 
 
