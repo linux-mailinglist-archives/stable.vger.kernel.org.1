@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-63360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD80941889
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FAD5941DAD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18F25285B1C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E89AD1F27747
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9157184556;
-	Tue, 30 Jul 2024 16:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB571A76D8;
+	Tue, 30 Jul 2024 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nozq4Y63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PC19OykN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865111A6197;
-	Tue, 30 Jul 2024 16:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7C91A76A4;
+	Tue, 30 Jul 2024 17:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356579; cv=none; b=b4h033iZuOD1FnhHIEJXOoXtDZjd12UiQaAAaqchy35GOxtVFn/HqSGcHpb+cPwh+yNQCp35CpAjuYTVzmA2dSiAJ1xa74pbhCH1bzgdW+MpThStvBRkoFJWZTgtF0I1lK2h0sCyfNDIvlACkLCaIApCRs2GzW7L0k2HJV2JqcA=
+	t=1722359998; cv=none; b=gGriHZ4zbO/CAoDXQWleghU6DFHtHUvhdGzj2Uw+XxXn7Pb+OGUjuFy+/iHjmUfoVgs3/nc019OPQqJqdCnEakQHOP3EOxBPugshQlZ89wlDyqWJTUzDJDTUQJzVkQ/jX1w4HmV3bmHRgGCUibrJl5I4BpkyGNAAuJYbN25gl94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356579; c=relaxed/simple;
-	bh=wnY5JqX3buzkCVhHWRAzCA/dni9AjDekmU6QC/gGEZA=;
+	s=arc-20240116; t=1722359998; c=relaxed/simple;
+	bh=M0Q7UbI5qqZYgj5Dxp/9xQLWdLkEvO1vlgcDrplndU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tMiSnsz/W9SqNjvy5+PuoOcenS1fg2nM+7PGCG+Z8ls64/3uLYa+3Rvghp0XhI/FExXIaUa+itqzQGft674+dOAxkrTTul94DJSyQBOVpCXv/xkGXUlYBj/tBPwo8ZImUG939Vj46pRzeWYC2ADiM2QgPeTyLgdnY6mLb+W12P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nozq4Y63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECF2C32782;
-	Tue, 30 Jul 2024 16:22:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dMZpu/0pJxUrwicPGWRqdvMj6zibfRQt+WdLoXoRes5ZBg0mrPTDxJl3mhdtS2FOS5kGYpmhtlpPT5Jt6RjJeSrlLbsK5FYGv1ljmhQ4awu7WmZB0aj34BXM33rq94v7NvO4vNUlE+jSWDpZQq/pOGWda+yKhkKvze/NOEbbv/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PC19OykN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A07C4AF0C;
+	Tue, 30 Jul 2024 17:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356579;
-	bh=wnY5JqX3buzkCVhHWRAzCA/dni9AjDekmU6QC/gGEZA=;
+	s=korg; t=1722359998;
+	bh=M0Q7UbI5qqZYgj5Dxp/9xQLWdLkEvO1vlgcDrplndU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nozq4Y63ENrEdWDBqbdz/3MTDas+lLkWtT4fsbCFsjR9UwzdDOWtCKvkHYg1bZIGd
-	 1NYsCx7zSoYTEGN+iJRzkR8uIhEvljvUm2m1r8PKjEz4+ObY1KJ6KM+vmTpA8keVJV
-	 Zem1/qjuTAdXkE/wSNB+rzq2MtHAdnAFoOU6+OzI=
+	b=PC19OykNp19cbVbRq0i2GdZUwtVr699kvCzaxj+mNL5UiKxcaSZq/79g8J/I7+qj6
+	 MXMrKoOusWhuHbFSjGpMLCWdfRvDO3dB+JvHa4cwwCTiMrTKacadAXzAdi05Z9/lrN
+	 KFSyx1NITnZC2aMDkE8l/+TuUSLin2U5QTQuQhAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/440] PCI: endpoint: Clean up error handling in vpci_scan_bus()
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH 6.10 566/809] selftests/nolibc: fix printf format mismatch in expect_str_buf_eq()
 Date: Tue, 30 Jul 2024 17:47:22 +0200
-Message-ID: <20240730151624.029528121@linuxfoundation.org>
+Message-ID: <20240730151747.128167726@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +61,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 8e0f5a96c534f781e8c57ca30459448b3bfe5429 ]
+commit 92098b1c10cb29bcc6fa0908a766dc9e16b1e889 upstream.
 
-Smatch complains about inconsistent NULL checking in vpci_scan_bus():
+Fix the following compiler warning on 32bit:
 
-    drivers/pci/endpoint/functions/pci-epf-vntb.c:1024 vpci_scan_bus() error: we previously assumed 'vpci_bus' could be null (see line 1021)
+  i386-linux-gcc -Os -fno-ident -fno-asynchronous-unwind-tables -std=c89 -W -Wall -Wextra -fno-stack-protector -m32 -mstack-protector-guard=global -fstack-protector-all  -o nolibc-test \
+    -nostdlib -nostdinc -static -Isysroot/i386/include nolibc-test.c nolibc-test-linkage.c -lgcc
+  nolibc-test.c: In function 'expect_str_buf_eq':
+  nolibc-test.c:610:30: error: format '%lu' expects argument of type 'long unsigned int', but argument 2 has type 'size_t' {aka 'unsigned int'} [-Werror=format=]
+    610 |         llen += printf(" = %lu <%s> ", expr, buf);
+        |                            ~~^         ~~~~
+        |                              |         |
+        |                              |         size_t {aka unsigned int}
+        |                              long unsigned int
+        |                            %u
 
-Instead of printing an error message and then crashing we should return
-an error code and clean up.
-
-Also the NULL check is reversed so it prints an error for success
-instead of failure.
-
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Link: https://lore.kernel.org/linux-pci/68e0f6a4-fd57-45d0-945b-0876f2c8cb86@moroto.mountain
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1063649cf531 ("selftests/nolibc: Add tests for strlcat() and strlcpy()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tools/testing/selftests/nolibc/nolibc-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index b4c1a4f6029d4..3725cdfae1efa 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -1032,8 +1032,10 @@ static int vpci_scan_bus(void *sysdata)
- 	struct epf_ntb *ndev = sysdata;
- 
- 	vpci_bus = pci_scan_bus(ndev->vbus_number, &vpci_ops, sysdata);
--	if (vpci_bus)
--		pr_err("create pci bus\n");
-+	if (!vpci_bus) {
-+		pr_err("create pci bus failed\n");
-+		return -EINVAL;
-+	}
- 
- 	pci_bus_add_devices(vpci_bus);
- 
-@@ -1355,10 +1357,14 @@ static int epf_ntb_bind(struct pci_epf *epf)
- 		goto err_bar_alloc;
- 	}
- 
--	vpci_scan_bus(ntb);
-+	ret = vpci_scan_bus(ntb);
-+	if (ret)
-+		goto err_unregister;
- 
- 	return 0;
- 
-+err_unregister:
-+	pci_unregister_driver(&vntb_pci_driver);
- err_bar_alloc:
- 	epf_ntb_config_spad_bar_free(ntb);
- 
+diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
+index 94bb6e11c16f..994477ee87be 100644
+--- a/tools/testing/selftests/nolibc/nolibc-test.c
++++ b/tools/testing/selftests/nolibc/nolibc-test.c
+@@ -607,7 +607,7 @@ int expect_strne(const char *expr, int llen, const char *cmp)
+ static __attribute__((unused))
+ int expect_str_buf_eq(size_t expr, const char *buf, size_t val, int llen, const char *cmp)
+ {
+-	llen += printf(" = %lu <%s> ", expr, buf);
++	llen += printf(" = %lu <%s> ", (unsigned long)expr, buf);
+ 	if (strcmp(buf, cmp) != 0) {
+ 		result(llen, FAIL);
+ 		return 1;
 -- 
-2.43.0
+2.45.2
 
 
 
