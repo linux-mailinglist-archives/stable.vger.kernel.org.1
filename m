@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C66F941A03
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F199417BD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CB47283906
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CE3F1C235EE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91301A619B;
-	Tue, 30 Jul 2024 16:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2762D1A6189;
+	Tue, 30 Jul 2024 16:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rc4J4/c+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9W2PYz6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F131A619E;
-	Tue, 30 Jul 2024 16:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A3B1A616E;
+	Tue, 30 Jul 2024 16:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357545; cv=none; b=jINGlVRVzAGLpy44EhMUAzJ1gwPvNyv6NsOCfkqGOL5w0jD5wE8eARfDr8Anx/f/zas8QmpzZ4TLwE5rUrhA6PIjBQYIXrE3dTKUTRnhSy+2WUL9jF/ZPw1Hz53MCZtqCkdsVfMM4VyrBHs2PrvAWrVMrs0QH234dkXoQMuDlxk=
+	t=1722355900; cv=none; b=ncpXyNUOg8T0QWFVOp+FepCyNb7oH/Ekmj2hZX7zXnFmmZ9oNQ6pogxF6XA8HCL7IfXa/VYUFba64AwYowdIm6mJhiA3EBJ6tM0no90ENopoAkJmso+fYrRXWkWKxR+GaB0FIQPu+YRobJXkvIExtagOQH2RjaZt7uT7XWE6A/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357545; c=relaxed/simple;
-	bh=G2cAH4NAdVvwcLnnh0m/3QnGNS8hkQ6VtEK/ik+Q91k=;
+	s=arc-20240116; t=1722355900; c=relaxed/simple;
+	bh=8Wp7H5IOZFWyTypc+2I2kqtYFU1tTQ25J71u0ORoFw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKl1Fm5RISMDF7wbqOCbwVWvrsQyLkwrqgXHj23owPZaMWDTbQ6i1i2CMR6EgdkvNnKJeN1XDQzjwNQTD3oEcCuYTmVwLmL+JP2B1poDuhq/7VaQWa1rIXRhwqKU31smQybjG+o7fYbP7txD3dW4tsRTMhVzaNbFYyVpD8uMKpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rc4J4/c+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12CFC32782;
-	Tue, 30 Jul 2024 16:39:04 +0000 (UTC)
+	 MIME-Version; b=rO9CGRuWr5QP4TxEDaMGQ6jt95yWvi5Jz1kRues5hftDHhfl0k9xsHvnvLr9sXEw+K+SBeYbOigYGnVEDmoJwrBnJ4v1bQrPUigokjllS/PemT7Q70mNHQhPPsOQvsngwWzOVwYaGzf4DMpYrCe8EUflX+0y4uWbItT04y6vR5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9W2PYz6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E5AC32782;
+	Tue, 30 Jul 2024 16:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357545;
-	bh=G2cAH4NAdVvwcLnnh0m/3QnGNS8hkQ6VtEK/ik+Q91k=;
+	s=korg; t=1722355900;
+	bh=8Wp7H5IOZFWyTypc+2I2kqtYFU1tTQ25J71u0ORoFw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rc4J4/c+ku965qZBWximFlXRwC/uARYfQ63PggcwrQK1ss0mLkWoDdYZ2cQxiGT1l
-	 /AuU3qdzHN8nXDK8nTdNWHb2An/S2sThxGoeoOfllB39osQ1tGhIAmBSPLcFBq99P1
-	 54PzzvF7HEVPiZNHa/Etpez4MfhaKjJkuXkATLAI=
+	b=I9W2PYz6nTQczV67fXZ+dunnKLh4iHX0MySOU/Wyv0rq+oeHovQY4EEA46ZDQDWcX
+	 WODVV8vBk32dtpijdeYB+8DOIB8fn5L2AUR6BsxPz738gM1Pl5CcMzrtqLuDB7V1PZ
+	 VtAa/WfyCPcWJqsgQ9ujSlEwFRNZlkrkXt8siz68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/568] clk: qcom: gpucc-sa8775p: Park RCGs clk source at XO during disable
+Subject: [PATCH 6.1 142/440] s390/mm: Convert gmap_make_secure to use a folio
 Date: Tue, 30 Jul 2024 17:46:15 +0200
-Message-ID: <20240730151650.356226125@linuxfoundation.org>
+Message-ID: <20240730151621.428047001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit dff68b2f74547617dbb75d0d12f404877ec8f8ce ]
+[ Upstream commit d35c34bb32f2cc4ec0b52e91ad7a8fcab55d7856 ]
 
-The RCG's clk src has to be parked at XO while disabling as per the
-HW recommendation, hence use clk_rcg2_shared_ops to achieve the same.
-Also gpu_cc_cb_clk is recommended to be kept always ON, hence use
-clk_branch2_aon_ops to keep the clock always ON.
+Remove uses of deprecated page APIs, and move the check for large
+folios to here to avoid taking the folio lock if the folio is too large.
+We could do better here by attempting to split the large folio, but I'll
+leave that improvement for someone who can test it.
 
-Fixes: 0afa16afc36d ("clk: qcom: add the GPUCC driver for sa8775p")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-5-adcc756a23df@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20240322161149.2327518-3-willy@infradead.org
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sa8775p.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/s390/kernel/uv.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clk/qcom/gpucc-sa8775p.c b/drivers/clk/qcom/gpucc-sa8775p.c
-index 3f05b44c13c53..abcaefa01e386 100644
---- a/drivers/clk/qcom/gpucc-sa8775p.c
-+++ b/drivers/clk/qcom/gpucc-sa8775p.c
-@@ -161,7 +161,7 @@ static struct clk_rcg2 gpu_cc_ff_clk_src = {
- 		.name = "gpu_cc_ff_clk_src",
- 		.parent_data = gpu_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_0),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 97567fb8936c7..6f661add0a5d6 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -192,13 +192,10 @@ static int expected_folio_refs(struct folio *folio)
+ 	return res;
+ }
  
-@@ -181,7 +181,7 @@ static struct clk_rcg2 gpu_cc_gmu_clk_src = {
- 		.parent_data = gpu_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
++static int make_folio_secure(struct folio *folio, struct uv_cb_header *uvcb)
+ {
+-	struct folio *folio = page_folio(page);
+ 	int expected, cc = 0;
  
-@@ -200,7 +200,7 @@ static struct clk_rcg2 gpu_cc_hub_clk_src = {
- 		.name = "gpu_cc_hub_clk_src",
- 		.parent_data = gpu_cc_parent_data_2,
- 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_2),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-	if (folio_test_large(folio))
+-		return -EINVAL;
+ 	if (folio_test_writeback(folio))
+ 		return -EAGAIN;
+ 	expected = expected_folio_refs(folio);
+@@ -264,7 +261,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 	bool local_drain = false;
+ 	spinlock_t *ptelock;
+ 	unsigned long uaddr;
+-	struct page *page;
++	struct folio *folio;
+ 	pte_t *ptep;
+ 	int rc;
  
-@@ -294,7 +294,7 @@ static struct clk_branch gpu_cc_cb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data){
- 			.name = "gpu_cc_cb_clk",
--			.ops = &clk_branch2_ops,
-+			.ops = &clk_branch2_aon_ops,
- 		},
- 	},
- };
+@@ -291,15 +288,19 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 	rc = -ENXIO;
+ 	ptep = get_locked_pte(gmap->mm, uaddr, &ptelock);
+ 	if (pte_present(*ptep) && !(pte_val(*ptep) & _PAGE_INVALID) && pte_write(*ptep)) {
+-		page = pte_page(*ptep);
++		folio = page_folio(pte_page(*ptep));
++		rc = -EINVAL;
++		if (folio_test_large(folio))
++			goto unlock;
+ 		rc = -EAGAIN;
+-		if (trylock_page(page)) {
++		if (folio_trylock(folio)) {
+ 			if (should_export_before_import(uvcb, gmap->mm))
+-				uv_convert_from_secure(page_to_phys(page));
+-			rc = make_page_secure(page, uvcb);
+-			unlock_page(page);
++				uv_convert_from_secure(PFN_PHYS(folio_pfn(folio)));
++			rc = make_folio_secure(folio, uvcb);
++			folio_unlock(folio);
+ 		}
+ 	}
++unlock:
+ 	pte_unmap_unlock(ptep, ptelock);
+ out:
+ 	mmap_read_unlock(gmap->mm);
+@@ -309,10 +310,10 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 		 * If we are here because the UVC returned busy or partial
+ 		 * completion, this is just a useless check, but it is safe.
+ 		 */
+-		wait_on_page_writeback(page);
++		folio_wait_writeback(folio);
+ 	} else if (rc == -EBUSY) {
+ 		/*
+-		 * If we have tried a local drain and the page refcount
++		 * If we have tried a local drain and the folio refcount
+ 		 * still does not match our expected safe value, try with a
+ 		 * system wide drain. This is needed if the pagevecs holding
+ 		 * the page are on a different CPU.
+@@ -323,7 +324,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 			return -EAGAIN;
+ 		}
+ 		/*
+-		 * We are here if the page refcount does not match the
++		 * We are here if the folio refcount does not match the
+ 		 * expected safe value. The main culprits are usually
+ 		 * pagevecs. With lru_add_drain() we drain the pagevecs
+ 		 * on the local CPU so that hopefully the refcount will
 -- 
 2.43.0
 
