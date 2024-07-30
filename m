@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71464941AF9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A35941C67
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3292DB268AC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 680D21F24251
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05913189535;
-	Tue, 30 Jul 2024 16:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C068718B46E;
+	Tue, 30 Jul 2024 17:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgqmIaqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSQ2kdh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E041A619E;
-	Tue, 30 Jul 2024 16:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA44189BB1;
+	Tue, 30 Jul 2024 17:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357712; cv=none; b=mVczPQlezJEVEZ/tQphC4dLZK0py1sr1hRVSFpyDNhYusOjCNBfTlbt85W82MSjcv2JaEgY5JMlFRfUs9Vio+V/loIcEXRPqPh9Da22gTUbyt+J/2xj5YkKgjZXy6N1ajdOOau2PgZNghK16ngbddMuvcqg8B5R8Me/VslfAVo4=
+	t=1722359191; cv=none; b=IAZ+vEybzCOG8f9Og8qedKgD7dFgkI/4WU3NhmgZ6BU6Bxw9Pba878sirzA5hoM63rHW4iu3k4sxAclI0DdAEADpkBvfC35sg7wr7lzicOKrGaYmqYPDuHaG7Zh5IobtAuFanzwUeFyD483pnicbvAxOv6Q4+TWhYmHX5tSbXnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357712; c=relaxed/simple;
-	bh=3jYBC/f+W8ABhyE5AOEymT8fqtaQwDbStrD03U811g4=;
+	s=arc-20240116; t=1722359191; c=relaxed/simple;
+	bh=UslgiwE6+vRNT3kRGgHUolgIyM2qRrEv4kaWc7t+r3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7mIIB3+5pF/ra3QPISjpTTw4OJ6xx7FMgvytOVjejESEW3in6JUGLYFf8UUkGBtFKHkOLkAyGQiF9BPOBN9wUt9Xs9eKiXH39ePps3rFgQGALnT0mBx8uZNuhkUaQkZf1fYlkyCnLnmPq6VJjX36EOu7f2xdVovIoB1y4gnbq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgqmIaqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35DCC4AF0C;
-	Tue, 30 Jul 2024 16:41:51 +0000 (UTC)
+	 MIME-Version; b=Y81bUbwOecc2d0td/DpT5kqt2b5PJtH4OHthRMmgZEzlqMB0gphuXSvEQVgQ6C/NO2OMHfw84U/CUwSnN0dnRpR2AVFm3X6wdX4bDmETYaYId2F/7a6Br7AWGVEbNH9svA7gqBq90XzY2mJguxlea7vSN5/GTGQTwn6/dF0ELmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSQ2kdh2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED3DC4AF0E;
+	Tue, 30 Jul 2024 17:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357712;
-	bh=3jYBC/f+W8ABhyE5AOEymT8fqtaQwDbStrD03U811g4=;
+	s=korg; t=1722359191;
+	bh=UslgiwE6+vRNT3kRGgHUolgIyM2qRrEv4kaWc7t+r3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgqmIaqNexenHHd8JSP1+kA3pDfM/DZkYCit+p0UTGoCs8kHDn7BeZTM+1wFGRvwZ
-	 JU5id5QJf4Uekmo8ni40bzYFCOaPpNb7DwHyBX/wvNtQgj7rYkU/VpeesHFB9x2HuM
-	 NiQ4OfJ//XC7JKTQhZ+nePWFt/5U43GjXqskSTeU=
+	b=jSQ2kdh2UdY08Pw6/Y4Pwqgd3Rhsb8ITU/UOrQUUPSUbkKiLYd7bO3J94TvqRCT1v
+	 0iPZ2CeEHTowIYPRyx+XIvtKnNSBX4X0CMlFgG/o+l2umshmaBzi0qL2qS8NsWoP0w
+	 MaQH08bLaodJUA93QwLEGgWPEbocaRaIT/D3Wrd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 318/440] ALSA: usb-audio: Add a quirk for Sonix HD USB Camera
-Date: Tue, 30 Jul 2024 17:49:11 +0200
-Message-ID: <20240730151628.241200132@linuxfoundation.org>
+	Ross Lagerwall <ross.lagerwall@citrix.com>,
+	Alain Knaff <alain@knaff.lu>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 445/568] decompress_bunzip2: fix rare decompression failure
+Date: Tue, 30 Jul 2024 17:49:12 +0200
+Message-ID: <20240730151657.264040515@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Ross Lagerwall <ross.lagerwall@citrix.com>
 
-commit 21451dfd853e7d8e6e3fbd7ef1fbdb2f2ead12f5 upstream.
+commit bf6acd5d16057d7accbbb1bf7dc6d8c56eeb4ecc upstream.
 
-Sonix HD USB Camera does not support reading the sample rate which leads
-to many lines of "cannot get freq at ep 0x84".
-This patch adds the USB ID to quirks.c and avoids those error messages.
+The decompression code parses a huffman tree and counts the number of
+symbols for a given bit length.  In rare cases, there may be >= 256
+symbols with a given bit length, causing the unsigned char to overflow.
+This causes a decompression failure later when the code tries and fails to
+find the bit length for a given symbol.
 
-(snip)
-[1.789698] usb 3-3: new high-speed USB device number 2 using xhci_hcd
-[1.984121] usb 3-3: New USB device found, idVendor=0c45, idProduct=6340, bcdDevice= 0.00
-[1.984124] usb 3-3: New USB device strings: Mfr=2, Product=1, SerialNumber=0
-[1.984127] usb 3-3: Product: USB 2.0 Camera
-[1.984128] usb 3-3: Manufacturer: Sonix Technology Co., Ltd.
-[5.440957] usb 3-3: 3:1: cannot get freq at ep 0x84
-[12.130679] usb 3-3: 3:1: cannot get freq at ep 0x84
-[12.175065] usb 3-3: 3:1: cannot get freq at ep 0x84
+Since the maximum number of symbols is 258, use unsigned short instead.
 
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Link: https://lkml.kernel.org/r/20240717162016.1514077-1-ross.lagerwall@citrix.com
+Fixes: bc22c17e12c1 ("bzip2/lzma: library support for gzip, bzip2 and lzma decompression")
+Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Cc: Alain Knaff <alain@knaff.lu>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240722084822.31620-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ lib/decompress_bunzip2.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2083,6 +2083,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x0b0e, 0x0349, /* Jabra 550a */
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
-+	DEVICE_FLG(0x0c45, 0x6340, /* Sonix HD USB Camera */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x0ecb, 0x205c, /* JBL Quantum610 Wireless */
- 		   QUIRK_FLAG_FIXED_RATE),
- 	DEVICE_FLG(0x0ecb, 0x2069, /* JBL Quantum810 Wireless */
+--- a/lib/decompress_bunzip2.c
++++ b/lib/decompress_bunzip2.c
+@@ -232,7 +232,8 @@ static int INIT get_next_block(struct bu
+ 	   RUNB) */
+ 	symCount = symTotal+2;
+ 	for (j = 0; j < groupCount; j++) {
+-		unsigned char length[MAX_SYMBOLS], temp[MAX_HUFCODE_BITS+1];
++		unsigned char length[MAX_SYMBOLS];
++		unsigned short temp[MAX_HUFCODE_BITS+1];
+ 		int	minLen,	maxLen, pp;
+ 		/* Read Huffman code lengths for each symbol.  They're
+ 		   stored in a way similar to mtf; record a starting
 
 
 
