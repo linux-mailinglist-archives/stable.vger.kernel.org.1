@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4DCB94197A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24629941BCF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BCA2284CDA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D38BC283B39
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A061A6199;
-	Tue, 30 Jul 2024 16:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A38189907;
+	Tue, 30 Jul 2024 16:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HerHzkTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tZ6AsOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271C58BE8;
-	Tue, 30 Jul 2024 16:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66777189514;
+	Tue, 30 Jul 2024 16:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357165; cv=none; b=mUgtYZR/YkKOceNd3U39F01sB2f3GOsZM9kDK8E7Ygou60d/PF61mV8NcktRd40C4Z19BWcSUZHxmYsEK1IEchycT3YX3zPhnvsYcw5Qf7F2Uxfo+M/n3+eXp4yKqQEo0L3nmBfYhxmSNef67i8b4+0skTo/cKnDKa3b+qypA7U=
+	t=1722358762; cv=none; b=qBvH1sEMeJZ2qs/bCNHQXvaXntw960VzcwwK/s/YLP8MlTtqwfwGBnMun4ISEOZrb9nHbpWLjxIGxcvk43gdYogicpSfWaKdKKFQMsiDiXVV3igBoBgyzyZ/tBsXuu2IqDvyDRzkdafIaW1M4W0pPyFKmBKmU3jP6ZUQ1kq9Frw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357165; c=relaxed/simple;
-	bh=UTxYB8KIecEcOueIKsAF9qrYyWOamen8DAUxKaMi+RE=;
+	s=arc-20240116; t=1722358762; c=relaxed/simple;
+	bh=1JiwULpSQfUERRY44Ily22wLUOcKhY7dCYe0M5pI8vA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cTcauhd+mktxJPpWCySIldIK42l5Uf/kGFZkoHvQPGvlhHMMmw+5saepXlVxuL2xXsOjQanmR8jpfeo49Oxg+WLSXUrgLzSm48PyGBCNal/qB8e2x3gaE6C09mSuUYYleib7WXSv8R/GjJnbpfRlla6nbFdGh9oAuZbYW+WYX/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HerHzkTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D69C32782;
-	Tue, 30 Jul 2024 16:32:44 +0000 (UTC)
+	 MIME-Version; b=rS3BigRRX6srQ6Oixy5yTOZoUXk2opYBpdGIBwRn31CjQaczcl7TrlhwOnJDdqU9+n18HUGqaKbJNKSTyCzL4OpprtRYlBBfyUtH3qwGIQaS2kicXz23oldf/8tYFhoIukJIzpz/4buWTHkS7B63Wuroal0z8AePrnM5E9gx07g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tZ6AsOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB251C32782;
+	Tue, 30 Jul 2024 16:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357165;
-	bh=UTxYB8KIecEcOueIKsAF9qrYyWOamen8DAUxKaMi+RE=;
+	s=korg; t=1722358762;
+	bh=1JiwULpSQfUERRY44Ily22wLUOcKhY7dCYe0M5pI8vA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HerHzkTd8BhnKDPpKt8o0LJu5K99nXeTlZRiZH1t6FleEoOGfjaHAZ2p6QUav4ryR
-	 uO2pIDuH/423geFuP4bxu1K9z5GCKUiIXMpL/KJwpdIuLYI/Dc/FtiGXkoRFsYS9vI
-	 lOEYZvHtDjZHfsNWhyXkAlxLULFXX+PMhoGaQU/s=
+	b=1tZ6AsOOSRyU/f5qCmEyUOQXWw0K1wTEQgHI2lWV4oJj269Q4Tt0FYxV4u/V4tDnp
+	 +6Dg6ZL8ckFf1ZJZKB86Qvc2BCwuoNg4G1T5K+ZVkfndS668Qa9rKGq3PmOkH/cHFf
+	 TWS+a77Gk7iO0ADU/WH75ULEhBUQitkSBMFbNORQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 265/440] s390/dasd: fix error checks in dasd_copy_pair_store()
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 391/568] cifs: fix reconnect with SMB1 UNIX Extensions
 Date: Tue, 30 Jul 2024 17:48:18 +0200
-Message-ID: <20240730151626.191087202@linuxfoundation.org>
+Message-ID: <20240730151655.145820189@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +59,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos López <clopez@suse.de>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 8e64d2356cbc800b4cd0e3e614797f76bcf0cdb8 ]
+commit a214384ce26b6111ea8c8d58fa82a1ca63996c38 upstream.
 
-dasd_add_busid() can return an error via ERR_PTR() if an allocation
-fails. However, two callsites in dasd_copy_pair_store() do not check
-the result, potentially resulting in a NULL pointer dereference. Fix
-this by checking the result with IS_ERR() and returning the error up
-the stack.
+When mounting with the SMB1 Unix Extensions (e.g. mounts
+to Samba with vers=1.0), reconnects no longer reset the
+Unix Extensions (SetFSInfo SET_FILE_UNIX_BASIC) after tcon so most
+operations (e.g. stat, ls, open, statfs) will fail continuously
+with:
+        "Operation not supported"
+if the connection ever resets (e.g. due to brief network disconnect)
 
-Fixes: a91ff09d39f9b ("s390/dasd: add copy pair setup")
-Signed-off-by: Carlos López <clopez@suse.de>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240715112434.2111291-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_devmap.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/smb/client/connect.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/block/dasd_devmap.c b/drivers/s390/block/dasd_devmap.c
-index b2a4c34330573..1129f6ae98b57 100644
---- a/drivers/s390/block/dasd_devmap.c
-+++ b/drivers/s390/block/dasd_devmap.c
-@@ -2135,13 +2135,19 @@ static ssize_t dasd_copy_pair_store(struct device *dev,
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3686,6 +3686,7 @@ error:
+ }
+ #endif
  
- 	/* allocate primary devmap if needed */
- 	prim_devmap = dasd_find_busid(prim_busid);
--	if (IS_ERR(prim_devmap))
-+	if (IS_ERR(prim_devmap)) {
- 		prim_devmap = dasd_add_busid(prim_busid, DASD_FEATURE_DEFAULT);
-+		if (IS_ERR(prim_devmap))
-+			return PTR_ERR(prim_devmap);
++#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ /*
+  * Issue a TREE_CONNECT request.
+  */
+@@ -3807,11 +3808,25 @@ CIFSTCon(const unsigned int xid, struct
+ 		else
+ 			tcon->Flags = 0;
+ 		cifs_dbg(FYI, "Tcon flags: 0x%x\n", tcon->Flags);
+-	}
+ 
++		/*
++		 * reset_cifs_unix_caps calls QFSInfo which requires
++		 * need_reconnect to be false, but we would not need to call
++		 * reset_caps if this were not a reconnect case so must check
++		 * need_reconnect flag here.  The caller will also clear
++		 * need_reconnect when tcon was successful but needed to be
++		 * cleared earlier in the case of unix extensions reconnect
++		 */
++		if (tcon->need_reconnect && tcon->unix_ext) {
++			cifs_dbg(FYI, "resetting caps for %s\n", tcon->tree_name);
++			tcon->need_reconnect = false;
++			reset_cifs_unix_caps(xid, tcon, NULL, NULL);
++		}
 +	}
+ 	cifs_buf_release(smb_buffer);
+ 	return rc;
+ }
++#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
  
- 	/* allocate secondary devmap if needed */
- 	sec_devmap = dasd_find_busid(sec_busid);
--	if (IS_ERR(sec_devmap))
-+	if (IS_ERR(sec_devmap)) {
- 		sec_devmap = dasd_add_busid(sec_busid, DASD_FEATURE_DEFAULT);
-+		if (IS_ERR(sec_devmap))
-+			return PTR_ERR(sec_devmap);
-+	}
- 
- 	/* setting copy relation is only allowed for offline secondary */
- 	if (sec_devmap->device)
--- 
-2.43.0
-
+ static void delayed_free(struct rcu_head *p)
+ {
 
 
 
