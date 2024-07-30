@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E55794199A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:34:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BDD9419B6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53FA41F26097
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:34:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9DE1C20B1F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07EB148848;
-	Tue, 30 Jul 2024 16:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E3C183CD5;
+	Tue, 30 Jul 2024 16:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgUfI9Bv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISaWNAnV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957221A619E;
-	Tue, 30 Jul 2024 16:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B985E1A6192;
+	Tue, 30 Jul 2024 16:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357278; cv=none; b=B9bYdmQC2hD5nVk1JwkfcazNASmqD/IMHmA+nVB4D8GNGIpZSK05RWqWilDr/UY4iid8g8qgDgI8Nsh2ZdckvCz1yzQ+ZDwIL4KKY8BURmUJ+tCGKOjI7Np+6kmwvvbSZMstTky6PS7MjYDa8upqElqvL2V9bpuHH2s9azl5Dug=
+	t=1722357327; cv=none; b=S9/kw/1LMDlBPUszTH9rf/uInsm6teJAVB28J+c90huOEsqF9TrhLSTiEIXTZ3oEFPk/BuyUd0OsmVxNrRs/bSGBl/jsLhX4GBxDRJFTCcv2hHcqrp3wRCLisqpgL0niUDiRZw/R2H7mKiGRKYwQvvDOhN9g/vY+1I8l7AHmbmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357278; c=relaxed/simple;
-	bh=l8mAyWG9By/MPXtKtWLfeDnAnLzJ+VhTpSMOJvuDao4=;
+	s=arc-20240116; t=1722357327; c=relaxed/simple;
+	bh=Oz6QvzP7/8lzR4vErGJj/RVN8Itur8Y1YAu6NMObZJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WLccxk8KvRrfaZs363sScaU/FKxoKjbuY1fPaNPnNgLCWwBL9oLk/RVybh9hRIeL9Auj0btzixA0LAQyip/TshsQT5CRdWQ92oLIi07meDyMTuO4VzCxCzN+Y5xcI2twpE2MIVqHpoUIIMDiGnveknKMoDAZVw1ALkfEdE3P0yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgUfI9Bv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059AFC32782;
-	Tue, 30 Jul 2024 16:34:37 +0000 (UTC)
+	 MIME-Version; b=YDITHrwWfVAreFTQGOd0F2YZCrIs1Apk/C7Kt4R51XnzefSifXoj5fZrMwqlj6M9FHFQruQ7TaPnbTA2lqphazl5rLdHjjOUibv95gTqDbuUmoU31ngJEVubg2DyZsshInpYeEHtAKwLUUNNwCa464I+Ab4jpAK/ujXneakfP+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISaWNAnV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED1FC4AF10;
+	Tue, 30 Jul 2024 16:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357278;
-	bh=l8mAyWG9By/MPXtKtWLfeDnAnLzJ+VhTpSMOJvuDao4=;
+	s=korg; t=1722357327;
+	bh=Oz6QvzP7/8lzR4vErGJj/RVN8Itur8Y1YAu6NMObZJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgUfI9BvEREQ+8VwqAmoB1T1SOMGcRcyfeRhAxQ2j4DWSHslcq5Fvhy+mrogfCVuV
-	 7WXhs1kZotUW0r+ileVQqyBL8nNw+dzISCHGhF3ErkjbYEOb/v+6D/UrlijagID7Y9
-	 ojOoVs+tkS2oWZedY11g755rlbWG4jJmZPWETS3k=
+	b=ISaWNAnVj4nAvUBRYQMWXSk9WcL7fiS8H2cBd8mNYw9HKKtvLtniypoDMA4rD2l4q
+	 4qOkpX7yxezWV4Jl8U6KSoNOTQZ583CHFpdH0u4mvW2HHAWSpHGpOP4T1FGNknjwsl
+	 ybnUDZV5kBDHs7kCkC5Cxpr7NyIqow6FZ2CrnrsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 224/809] perf: Prevent passing zero nr_pages to rb_alloc_aux()
-Date: Tue, 30 Jul 2024 17:41:40 +0200
-Message-ID: <20240730151733.456651209@linuxfoundation.org>
+Subject: [PATCH 6.10 225/809] perf: Fix default aux_watermark calculation
+Date: Tue, 30 Jul 2024 17:41:41 +0200
+Message-ID: <20240730151733.494906361@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,47 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
+[ Upstream commit 43deb76b19663a96ec2189d8f4eb9a9dc2d7623f ]
 
-nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
-and is stored as an int.
+The default aux_watermark is half the AUX area buffer size. In general,
+on a 64-bit architecture, the AUX area buffer size could be a bigger than
+fits in a 32-bit type, but the calculation does not allow for that
+possibility.
 
-Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
-will be passed to rb_alloc_aux() as zero.
+However the aux_watermark value is recorded in a u32, so should not be
+more than U32_MAX either.
 
-That is not ideal because:
- 1. the value is incorrect
- 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
- return -ENOMEM in that case, it is a result of passing zero to get_order()
- even though the get_order() result is documented to be undefined in that
- case.
+Fix by doing the calculation in a correctly sized type, and limiting the
+result to U32_MAX.
 
-Fix by simply validating the maximum supported value in the first place.
-Use -ENOMEM error code for consistency with the current error code that
-is returned in that case.
-
-Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Fixes: d68e6799a5c8 ("perf: Cap allocation order at aux_watermark")
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
+Link: https://lore.kernel.org/r/20240624201101.60186-7-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/events/ring_buffer.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 8f908f0779354..053e546d5bf07 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6509,6 +6509,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 			return -EINVAL;
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index 4013408ce0123..485cf0a66631b 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -688,7 +688,9 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
+ 		 * max_order, to aid PMU drivers in double buffering.
+ 		 */
+ 		if (!watermark)
+-			watermark = nr_pages << (PAGE_SHIFT - 1);
++			watermark = min_t(unsigned long,
++					  U32_MAX,
++					  (unsigned long)nr_pages << (PAGE_SHIFT - 1));
  
- 		nr_pages = vma_size / PAGE_SIZE;
-+		if (nr_pages > INT_MAX)
-+			return -ENOMEM;
- 
- 		mutex_lock(&event->mmap_mutex);
- 		ret = -EINVAL;
+ 		/*
+ 		 * Use aux_watermark as the basis for chunking to
 -- 
 2.43.0
 
