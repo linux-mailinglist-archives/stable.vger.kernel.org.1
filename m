@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456D2941A25
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F1E941E12
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E45971F220E4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153CF2890A6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2DE183CDB;
-	Tue, 30 Jul 2024 16:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BEC1A76A1;
+	Tue, 30 Jul 2024 17:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKtwJrCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoOws8IK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C451A6192;
-	Tue, 30 Jul 2024 16:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FF21A76B2;
+	Tue, 30 Jul 2024 17:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357637; cv=none; b=jE04V+8EPiVmOOkO1+3x7RthmvIM+Tgm7Ktj2a9yZhdTle08KMgeCa9cjBlgA1Y5w/Y38HpAXQJO/BuuD7OabEIhI1YVbv+3HTLCT7l5m+7WsUadCGVxX8pTnimx2t0ObR4rapk9widmmUcSekBkgeir87Rtv/ezdQ/yx4VmGas=
+	t=1722360336; cv=none; b=fJ5/PuxNOauJbN8Vg5ksvIeyGyUehys3bIbFeNDuIaGWkRpDB0gTG/1cHvshMT0X2d2sbEh+XSQN1/PIyGkUyo03Cm2th2NjpjCJYG9zNJvzLgJyYVjd+ZaZoQ0nFvuJhp5T4QNQ7mmBJUE12gxujH+lmYPwil/aLZXMraSBFXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357637; c=relaxed/simple;
-	bh=rNoXfqTp40M3xyf8FM8085RuMp1UTDNNBbFmpJxN/Xc=;
+	s=arc-20240116; t=1722360336; c=relaxed/simple;
+	bh=vh1rMt5quOXSyfHrMEPq67gf5LY1GvvQn2UFmmy/wi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nX1udXSyR6iBcx9A95EjY9Nkf8U2pDzdViHzszuYuNtljEoIN9OqOsSLnBNcR0hdIQLd8PyjMgOs6QystMWyvIZ3CAkhsfSQClx4/O4kO+RC56CXM4tBNhTBge7aRkCgxGoVcx+DmWDVosLYfMgR/BHNaxaD7V6z8Kopn8i9xdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKtwJrCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A507C4AF0A;
-	Tue, 30 Jul 2024 16:40:36 +0000 (UTC)
+	 MIME-Version; b=bT+DupdEkGpSgMvJc7mH9jruwPbSHWs/RLSl/dWuh02rxQZ8g9dTk/U/PSeaJ0KAmssgJAWfQJEg+jwbFE8MeqBoBPWPzYF8v6X+L28jf1DC70HP4qOhP51yb2qDrYD9qOx5toGw3Jak1+kOpVrHCE0wi/N2Z8lQxpw+JEZCYIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoOws8IK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADAEC32782;
+	Tue, 30 Jul 2024 17:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357637;
-	bh=rNoXfqTp40M3xyf8FM8085RuMp1UTDNNBbFmpJxN/Xc=;
+	s=korg; t=1722360336;
+	bh=vh1rMt5quOXSyfHrMEPq67gf5LY1GvvQn2UFmmy/wi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKtwJrCT/HjY6h0FcdSdQun3bpL0F5p/D31jiy0E11y4KNpHVq6amQN81qzcEcyMU
-	 y6ljoYbaq9K4lTXryQJbTcp1uNObTsSKh5SHLkvSv+OabfXnftqNQyZ/XFvMXvtlUx
-	 Ws1/xrhzaCC86edKP1QWeXN4JTULKGU6y0V1koXo=
+	b=KoOws8IKO7vkXSBcWHiTSfuqlXnQZnU2r/jzh4wISx6GuEqzJ+djN9Dt3yySa4Orb
+	 eh25eOKzzAD6djQwyZMrr6OJnaSjOxKpItl8PristZ/dY3GKUdvnMNfEUOIzmi5D2A
+	 lbFS3Y4x/BvIkFgZdlfH44+jDDgyPW6+OxPIi3fA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 311/440] leds: mt6360: Fix memory leak in mt6360_init_isnk_properties()
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.10 668/809] ASoC: SOF: ipc4-topology: Preserve the DMA Link ID for ChainDMA on unprepare
 Date: Tue, 30 Jul 2024 17:49:04 +0200
-Message-ID: <20240730151627.971883275@linuxfoundation.org>
+Message-ID: <20240730151751.287564831@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-commit e41d574b359ccd8d99be65c6f11502efa2b83136 upstream.
+commit e6fc5fcaeffa04a3fa1db8dfccdfd4b6001c0446 upstream.
 
-The fwnode_for_each_child_node() loop requires manual intervention to
-decrement the child refcount in case of an early return.
+The DMA Link ID is set to the IPC message's primary during dai_config,
+which is only during hw_params.
+During xrun handling the hw_params is not called and the DMA Link ID
+information will be lost.
 
-Add the missing calls to fwnode_handle_put(child) to avoid memory leaks
-in the error paths.
+All other fields in the message expected to be 0 for re-configuration, only
+the DMA Link ID needs to be preserved and the in case of repeated
+dai_config, it is correctly updated (masked and then set).
 
 Cc: stable@vger.kernel.org
-Fixes: 679f8652064b ("leds: Add mt6360 driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Acked-by: Pavel Machek <pavel@ucw.cz>
-Link: https://lore.kernel.org/r/20240611-leds-mt6360-memleak-v1-1-93642eb5011e@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: ca5ce0caa67f ("ASoC: SOF: ipc4/intel: Add support for chained DMA")
+Link: https://github.com/thesofproject/linux/issues/5116
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240724081932.24542-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/flash/leds-mt6360.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/sof/ipc4-topology.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/leds/flash/leds-mt6360.c
-+++ b/drivers/leds/flash/leds-mt6360.c
-@@ -637,14 +637,17 @@ static int mt6360_init_isnk_properties(s
+--- a/sound/soc/sof/ipc4-topology.c
++++ b/sound/soc/sof/ipc4-topology.c
+@@ -1358,7 +1358,13 @@ static void sof_ipc4_unprepare_copier_mo
+ 		ipc4_copier = dai->private;
  
- 			ret = fwnode_property_read_u32(child, "reg", &reg);
- 			if (ret || reg > MT6360_LED_ISNK3 ||
--			    priv->leds_active & BIT(reg))
-+			    priv->leds_active & BIT(reg)) {
-+				fwnode_handle_put(child);
- 				return -EINVAL;
-+			}
- 
- 			ret = fwnode_property_read_u32(child, "color", &color);
- 			if (ret) {
- 				dev_err(priv->dev,
- 					"led %d, no color specified\n",
- 					led->led_no);
-+				fwnode_handle_put(child);
- 				return ret;
- 			}
+ 		if (pipeline->use_chain_dma) {
+-			pipeline->msg.primary = 0;
++			/*
++			 * Preserve the DMA Link ID and clear other bits since
++			 * the DMA Link ID is only configured once during
++			 * dai_config, other fields are expected to be 0 for
++			 * re-configuration
++			 */
++			pipeline->msg.primary &= SOF_IPC4_GLB_CHAIN_DMA_LINK_ID_MASK;
+ 			pipeline->msg.extension = 0;
+ 		}
  
 
 
