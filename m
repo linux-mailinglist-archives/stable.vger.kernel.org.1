@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE9B9418B6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F43941D9D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112B41F214AF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0D3A1F27241
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70381A6162;
-	Tue, 30 Jul 2024 16:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD3A1A76AF;
+	Tue, 30 Jul 2024 17:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a72KZbQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2IX8sAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52FF1A618E;
-	Tue, 30 Jul 2024 16:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A75C1A76A4;
+	Tue, 30 Jul 2024 17:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356641; cv=none; b=LE0FWpE3Uf7jZIWqjb5oeK8BWU5hGj75qAQvxY8CGPtDZQ4/lruRN9Gf3hdDDt31mggzz26jsjYPaqqCMosQoMPbIrW8y45jTVsQV8fIFZns+mWnTge1rm3xHpZo2xCCYk1oSnsYuHkkSh15nPLx91Lq/201EdE0V4qR2eKPyys=
+	t=1722359958; cv=none; b=bCe+spp6AALMBunFzefzKLh3B+CNPcy1ecdLgrqqWDsN6K33lYw7QOSvmbwMmf3x3v9i/KCpb5dc4XVOoTrNrpzVfc8F+m8gamG8iZE5+114UZbgKoEdw0yi3IIG7Ar5hnyrOQG7oT6gqPUUGXgwzjXkBhoih4BsVh8TWpThwR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356641; c=relaxed/simple;
-	bh=SCTSqtRT9pd3mKe4h62r359eYHeiovHdsl4xFlSAG1g=;
+	s=arc-20240116; t=1722359958; c=relaxed/simple;
+	bh=zMootvfocrLkJX9f+iCKCi+pW2gtCJg7WVHIQkHb2UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4gkaAQCSCKiCW8fOAuIU6R0kOAuXkXAv+qXyJYN05mg+/KqIlyLNCVteBHPELjQsqzHbunzcYbZjlNSudYjLZNV7HWa89/IbyNeCEP1bM3dIBccetLeV0tzAONVUNXXbHibkTeiGUM63Sb0rplzAA8tDq3DKYP8LyBy70cVMRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a72KZbQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BCCC32782;
-	Tue, 30 Jul 2024 16:24:00 +0000 (UTC)
+	 MIME-Version; b=hlCUUbjkwCqZ1euME6OkbXHvcr0f2JGxK13s9OqZ+5b8jJG4r41UyO3fx1albs5VG9vguV0criac1J6qtCFL750aKpk7ob2cHMOyjKPf37Ds5QZzVZVf4CToqS1LGpzOI7PYEBNaBd7aBmf7MBsjdlLGFE1OWZSjxFdxCb6aHdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2IX8sAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C90EC32782;
+	Tue, 30 Jul 2024 17:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356641;
-	bh=SCTSqtRT9pd3mKe4h62r359eYHeiovHdsl4xFlSAG1g=;
+	s=korg; t=1722359957;
+	bh=zMootvfocrLkJX9f+iCKCi+pW2gtCJg7WVHIQkHb2UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a72KZbQiKqdfDGRksdkEcK/qdrkPmp4ulfkXUA9YW+petY9aoRYvmpawiezcuOwZw
-	 wu+yhymM/oBdFvotGUFr8KL2myfbtYgVFzSpUYZxK6E/cklE21fHUGf93nyWU9ea/g
-	 ZI4rmszYfVwg+o3se647pH172+98fL+qC4UbteaQ=
+	b=L2IX8sAF5W1TAdITrZiK2/XBUD7TZJqQ2j2dOd9QzCRF8xsQLMicT4HZsMMP+WKL2
+	 38D20nfiwJOze/crIwW9F2SVPYWaiJbdeTSX3Ozw3n6N6qJwvs9Kae7T1IqDCUP+ud
+	 h6XeH5880YvQ0rflVP0w/GJEhbivQZmKlFjbaBt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 202/440] ASoC: qcom: Adjust issues in case of DT error in asoc_qcom_lpass_cpu_platform_probe()
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.10 559/809] wifi: mac80211: chanctx emulation set CHANGE_CHANNEL when in_reconfig
 Date: Tue, 30 Jul 2024 17:47:15 +0200
-Message-ID: <20240730151623.760960957@linuxfoundation.org>
+Message-ID: <20240730151746.840170937@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit f9f7f29f64454bb20896c7d918c3abc3a1aa487b ]
+commit 19b815ed71aadee9a2d31b7a700ef61ae8048010 upstream.
 
-If IORESOURCE_MEM "lpass-rxtx-cdc-dma-lpm" or "lpass-va-cdc-dma-lpm"
-resources is not provided in Device Tree due to any error,
-platform_get_resource_byname() will return NULL which is later
-dereferenced. According to sound/qcom,lpass-cpu.yaml, these resources
-are provided, but DT can be broken due to any error. In such cases driver
-must be able to protect itself, since the DT is external data for the
-driver.
-Adjust this issues by adding NULL return check.
+Chanctx emulation didn't info IEEE80211_CONF_CHANGE_CHANNEL to drivers
+during ieee80211_restart_hw (ieee80211_emulate_add_chanctx). It caused
+non-chanctx drivers to not stand on the correct channel after recovery.
+RX then behaved abnormally. Finally, disconnection/reconnection occurred.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+So, set IEEE80211_CONF_CHANGE_CHANNEL when in_reconfig.
 
-Fixes: b138706225c9 ("ASoC: qcom: Add regmap config support for codec dma driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://patch.msgid.link/20240605104953.12072-1-amishin@t-argos.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Link: https://patch.msgid.link/20240709073531.30565-1-kevin_yang@realtek.com
+Cc: stable@vger.kernel.org
+Fixes: 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/lpass-cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/mac80211/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
-index dbdaaa85ce481..4387cca893c5d 100644
---- a/sound/soc/qcom/lpass-cpu.c
-+++ b/sound/soc/qcom/lpass-cpu.c
-@@ -1160,9 +1160,13 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
- 		}
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 7578ea56c12f..85a267bdb3e3 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -148,7 +148,7 @@ static u32 ieee80211_calc_hw_conf_chan(struct ieee80211_local *local,
+ 	offchannel_flag ^= local->hw.conf.flags & IEEE80211_CONF_OFFCHANNEL;
  
- 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpass-rxtx-cdc-dma-lpm");
-+		if (!res)
-+			return -EINVAL;
- 		drvdata->rxtx_cdc_dma_lpm_buf = res->start;
- 
- 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpass-va-cdc-dma-lpm");
-+		if (!res)
-+			return -EINVAL;
- 		drvdata->va_cdc_dma_lpm_buf = res->start;
- 	}
- 
+ 	/* force it also for scanning, since drivers might config differently */
+-	if (offchannel_flag || local->scanning ||
++	if (offchannel_flag || local->scanning || local->in_reconfig ||
+ 	    !cfg80211_chandef_identical(&local->hw.conf.chandef, &chandef)) {
+ 		local->hw.conf.chandef = chandef;
+ 		changed |= IEEE80211_CONF_CHANGE_CHANNEL;
 -- 
-2.43.0
+2.45.2
 
 
 
