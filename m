@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1CD9417D9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEFF9417DC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 850321C225CD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDA602819C9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88844183CBF;
-	Tue, 30 Jul 2024 16:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4D818801A;
+	Tue, 30 Jul 2024 16:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbOe0YD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8tSodAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467D41A6191;
-	Tue, 30 Jul 2024 16:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7854F1A616E;
+	Tue, 30 Jul 2024 16:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356005; cv=none; b=tYlGzTLppNMAr9F7tXqg4fJDtx/1coPDpLnRvPTf0QANm+KnDVr/m7s7xiBt650jSWa7rKjufB+SSQpiyENZDQr2th8pKf8L9aVTb0hiqvtOEzWAz13nqkOTv22GsMvLWT0amitUS2hrezSYcChwvlkCdl8o3Cb6lw59IkOVDYg=
+	t=1722356018; cv=none; b=Cnjfns8BSOhLP3HUR7fK9h21IxFALg/XGyRpwBZilPxBWCLz98hLT2CQgJEsBcKn5Worw9ajf6lLC5lQ5i6Al7GWD6sH2uu4K65WlznRQzZYpE68t+f7zT2frBOZKfi6+hT0OkskS4AqfKPjVIcvMNuF/xcrU6R1FAc1YyjzYcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356005; c=relaxed/simple;
-	bh=mROHMihJ/sA756Mw4Y798hN2/JSBwIgz6S6OGmEcHM8=;
+	s=arc-20240116; t=1722356018; c=relaxed/simple;
+	bh=G8sGy22I+Epb4tSUHpDmHTzNHOLPPkK8ynBdRtLwmgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZD5sU4b53KRA7uuJ1wRIgDv8p9bU1UHZcCvOUlwh6i4mEa16xy6QHT0TFV44iWOYS9vFm+dSddNwCwXTuNcPiP+Jru8/WtYmo+j8dqNKrMjfLKp7TIkcCfSAEqhaDi2xTFOk66HOVJxrRePS/JVU3vWdlWigGb0kAWrzTcFvxB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbOe0YD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B735CC32782;
-	Tue, 30 Jul 2024 16:13:24 +0000 (UTC)
+	 MIME-Version; b=bt9BSD20k+inWVmIAMvrXaeYv8LTINUUeozuKfUdSj4jqS9grDZkhhsunnBlp4vPDYpmc4e7LL8AHwwboAt0mTdK/GDsEmDC5IFN5nwVZ3Y2PchzAsf+qI7WDIHTjwGbHM3sFTTOGR7hny7og1UxrUWsbl9HjafFWkVEFDJGq2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8tSodAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1315C4AF0A;
+	Tue, 30 Jul 2024 16:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356005;
-	bh=mROHMihJ/sA756Mw4Y798hN2/JSBwIgz6S6OGmEcHM8=;
+	s=korg; t=1722356018;
+	bh=G8sGy22I+Epb4tSUHpDmHTzNHOLPPkK8ynBdRtLwmgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QbOe0YD31jJq5CZ8QspO20Nafuwe9ZpOkOZARQXB2pJ6yu/aGfwmctKW68ZYbJMva
-	 plQ69XH6vZQ/19hfZb5Hu3ITAF/c5o1BFPVOjnaUVpLm+sGIyowGtY8MR2i6z6p+Uw
-	 6ye3dYCH6tDozt19jPxLH/fh9J5TrbyMVtvHhp/g=
+	b=V8tSodAsJqt67pdAZv4576y5g+Gam0yk8uIca7rHShyZ9ZY94jTuNghNwAtrQSMvP
+	 +6oi+tgJCKHnaM4RyvnHm7c8Gc+mATI07CUu2Xf4nxXByUnl0K2QqaVpSpZPqgZuP1
+	 naRQfhF4k54MpP0uEeRxBxR87k6LnSnVHYQyCYMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
+	Fei Shao <fshao@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 108/809] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Add ports node for anx7625
-Date: Tue, 30 Jul 2024 17:39:44 +0200
-Message-ID: <20240730151728.890234187@linuxfoundation.org>
+Subject: [PATCH 6.10 109/809] soc: mediatek: mtk-mutex: Add MDP_TCC0 mod to MT8188 mutex table
+Date: Tue, 30 Jul 2024 17:39:45 +0200
+Message-ID: <20240730151728.928992535@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,66 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 4055416e6c51347e7dd5784065263fe0ced0bb7d ]
+[ Upstream commit 161ee1eb9ab2440553dac55ada8329de704b1ffd ]
 
-The anx7625 binding requires a "ports" node as a container for the
-"port" nodes. The jacuzzi dtsi file is missing it.
+MT8188's MDP3 is able to use MDP_TCC0, this mutex_mod bit does
+actually exist and it's the same as MT8195: add it to the table.
 
-Add a "ports" node under the anx7625 node, and move the port related
-nodes and properties under it.
-
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240131083931.3970388-1-wenst@chromium.org
+Fixes: 26bb17dae6fa ("soc: mediatek: mtk-mutex: Add support for MT8188 VPPSYS")
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Link: https://lore.kernel.org/r/20240619103034.110377-1-angelogioacchino.delregno@collabora.com
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/mediatek/mt8183-kukui-jacuzzi.dtsi    | 25 +++++++++++--------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/soc/mediatek/mtk-mutex.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-index 7592e3b860377..fa4ab4d2899f9 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -155,21 +155,24 @@ anx_bridge: anx7625@58 {
- 		vdd18-supply = <&pp1800_mipibrdg>;
- 		vdd33-supply = <&vddio_mipibrdg>;
- 
--		#address-cells = <1>;
--		#size-cells = <0>;
--		port@0 {
--			reg = <0>;
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
- 
--			anx7625_in: endpoint {
--				remote-endpoint = <&dsi_out>;
-+			port@0 {
-+				reg = <0>;
-+
-+				anx7625_in: endpoint {
-+					remote-endpoint = <&dsi_out>;
-+				};
- 			};
--		};
- 
--		port@1 {
--			reg = <1>;
-+			port@1 {
-+				reg = <1>;
- 
--			anx7625_out: endpoint {
--				remote-endpoint = <&panel_in>;
-+				anx7625_out: endpoint {
-+					remote-endpoint = <&panel_in>;
-+				};
- 			};
- 		};
- 
+diff --git a/drivers/soc/mediatek/mtk-mutex.c b/drivers/soc/mediatek/mtk-mutex.c
+index b5af1fb5847ea..01b129caf1eb2 100644
+--- a/drivers/soc/mediatek/mtk-mutex.c
++++ b/drivers/soc/mediatek/mtk-mutex.c
+@@ -524,6 +524,7 @@ static const unsigned int mt8188_mdp_mutex_table_mod[MUTEX_MOD_IDX_MAX] = {
+ 	[MUTEX_MOD_IDX_MDP_PAD0] = MT8195_MUTEX_MOD_MDP_PAD0,
+ 	[MUTEX_MOD_IDX_MDP_PAD2] = MT8195_MUTEX_MOD_MDP_PAD2,
+ 	[MUTEX_MOD_IDX_MDP_PAD3] = MT8195_MUTEX_MOD_MDP_PAD3,
++	[MUTEX_MOD_IDX_MDP_TCC0] = MT8195_MUTEX_MOD_MDP_TCC0,
+ 	[MUTEX_MOD_IDX_MDP_WROT0] = MT8195_MUTEX_MOD_MDP_WROT0,
+ 	[MUTEX_MOD_IDX_MDP_WROT2] = MT8195_MUTEX_MOD_MDP_WROT2,
+ 	[MUTEX_MOD_IDX_MDP_WROT3] = MT8195_MUTEX_MOD_MDP_WROT3,
 -- 
 2.43.0
 
