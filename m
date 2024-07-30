@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF9C941E30
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DD2941A57
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8639F1F21889
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1FD81C231A1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B424E1A76C1;
-	Tue, 30 Jul 2024 17:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1695818454A;
+	Tue, 30 Jul 2024 16:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFiTCP7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZWCvIHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A831A76B6;
-	Tue, 30 Jul 2024 17:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EB31A619E;
+	Tue, 30 Jul 2024 16:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360385; cv=none; b=i8M0KvR2hcOXI0fVqGv5B/SIswdx1Mbx1H9Z1dJa5Rme/WiztdGOGWQG8lfwKD/x53uzUJ0iN6vWULcNMDXELAobB2RYC2PUDUUfBMIrlb/gxXQVUd3Pta82xzMgpYWPeP8PB+GS/HaZxhBHZmp2SNyiFKg92UIoQmGZh/A4WAY=
+	t=1722357768; cv=none; b=L4Rhokbr4Apby8tOf1YEewd023DaqNlLJqW3WooI+hcmUcPktNq2CtHB7xxNUyakqXsTHoIK7PN0zqTkg4tbOJIKqUtIWCzBfYNOjEpB5u+w2+21dETnAyXTVp+nW5nL0HOuXWmWEYjUYpY8aA/Nvbgnb/5+NBYMdAfz4KT1ECA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360385; c=relaxed/simple;
-	bh=38h8FuPXnzYDs/GbhPSJhJoA9I22cMNUFi7u83gFmDM=;
+	s=arc-20240116; t=1722357768; c=relaxed/simple;
+	bh=ryBt70rBy3Krhy2crC1FCnKCu7lT7VY3a6xZrrE7Z5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJQ9/gsiMJlT3fhlwok97f1t+9JkwQSV7Hl8uUVaHTGMBshF+JN5kAySKVr/WyUiAWQq3Ceo2pcsmIOFq9LqDvUHQpA/fFvtt+gaT7R3Q//dVbyMbq4jsldJt32BURujRB5maQ6tJUlvicepyPX9LdIiMsBEK0Yfx8WPBz+Tkmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFiTCP7N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CCBC32782;
-	Tue, 30 Jul 2024 17:26:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UybQsDFnzaN2/OVvsnAWy/k1y0ryIaebtATS5J7fileGXuY6wD/+NzXmd9dVPc2JoZU3lnA0uDwxFE2tiZvAPjRuq2tF4CL8z9qGBQb7vDsNjmAobVTM4VZ12bBzBPrsjmQsfv4jQM7jsqDVT5xoR5Oa5wzgvq0rC6DgTTNhoN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZWCvIHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5A0C32782;
+	Tue, 30 Jul 2024 16:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360385;
-	bh=38h8FuPXnzYDs/GbhPSJhJoA9I22cMNUFi7u83gFmDM=;
+	s=korg; t=1722357768;
+	bh=ryBt70rBy3Krhy2crC1FCnKCu7lT7VY3a6xZrrE7Z5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFiTCP7NprQnLLrk+rbdkkEndX3plBTabQWIYRl0Kiu7JJyHCrR6YBf9gq49NMm5W
-	 QBy7PKBRtpKXtJViJ8JQAxYkiJ4SBbcwxZs0F/ZW+vGd+pvLkt56J9ujr77QdodNfj
-	 ynAKjmfB08iKWJGJ2IPza/oBIDnKJJUoTvkwbAjs=
+	b=dZWCvIHW29hXpOUpY1hhCq73I14Kr7KuDQ++8cDMEiTMAzxeyepQONJF3nfxhrSYc
+	 iQwlgbB3G/MlPPX2UoMVHq52h3w7J75cf/wi0CvZ+q5nCDaWXqDQIy2SFLzS8BW/8i
+	 0jLFNVDkSQAu2X0yc3mYKr5jYeibAoxJ+tS6hUgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.10 682/809] scsi: lpfc: Allow DEVICE_RECOVERY mode after RSCN receipt if in PRLI_ISSUE state
+	Sheng Wu <wusheng@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.1 325/440] PCI: loongson: Enable MSI in LS7A Root Complex
 Date: Tue, 30 Jul 2024 17:49:18 +0200
-Message-ID: <20240730151751.846214584@linuxfoundation.org>
+Message-ID: <20240730151628.515109665@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 9609385dd91b26751019b22ca9bfa4bec7602ae1 upstream.
+commit a4bbcac11d3cea85822af8b40daed7e96bca5068 upstream.
 
-Certain vendor specific targets initially register with the fabric as an
-initiator function first and then re-register as a target function
-afterwards.
+The LS7A chipset can be used as part of a PCIe Root Complex with
+Loongson-3C6000 and similar CPUs.  In this case, DEV_LS7A_PCIE_PORT5 has a
+PCI_CLASS_BRIDGE_HOST class code, and it is a Type 0 Function whose config
+space provides access to Root Complex registers.
 
-The timing of the target function re-registration can cause a race
-condition such that the driver is stuck assuming the remote port as an
-initiator function and never discovers the target's hosted LUNs.
+The DEV_LS7A_PCIE_PORT5 has an MSI Capability, and its MSI Enable bit must
+be set before other devices below the Root Complex can use MSI.  This is
+not the standard PCI behavior of MSI Enable, so the normal PCI MSI code
+does not set it.
 
-Expand the nlp_state qualifier to also include NLP_STE_PRLI_ISSUE because
-the state means that PRLI was issued but we have not quite reached
-MAPPED_NODE state yet.  If we received an RSCN in the PRLI_ISSUE state,
-then we should restart discovery again by going into DEVICE_RECOVERY.
+Set the DEV_LS7A_PCIE_PORT5 MSI Enable bit via a quirk so other devices
+below the Root Complex can use MSI.
 
-Fixes: dded1dc31aa4 ("scsi: lpfc: Modify when a node should be put in device recovery mode during RSCN")
-Cc: <stable@vger.kernel.org> # v6.6+
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240628172011.25921-3-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[kwilczynski: exit early to reduce indentation; commit log]
+Link: https://lore.kernel.org/linux-pci/20240612065315.2048110-1-chenhuacai@loongson.cn
+Signed-off-by: Sheng Wu <wusheng@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/pci-loongson.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5725,7 +5725,7 @@ lpfc_setup_disc_node(struct lpfc_vport *
- 				return ndlp;
+--- a/drivers/pci/controller/pci-loongson.c
++++ b/drivers/pci/controller/pci-loongson.c
+@@ -163,6 +163,19 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LO
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON,
+ 			DEV_LS7A_HDMI, loongson_pci_pin_quirk);
  
- 			if (ndlp->nlp_state > NLP_STE_UNUSED_NODE &&
--			    ndlp->nlp_state < NLP_STE_PRLI_ISSUE) {
-+			    ndlp->nlp_state <= NLP_STE_PRLI_ISSUE) {
- 				lpfc_disc_state_machine(vport, ndlp, NULL,
- 							NLP_EVT_DEVICE_RECOVERY);
- 			}
++static void loongson_pci_msi_quirk(struct pci_dev *dev)
++{
++	u16 val, class = dev->class >> 8;
++
++	if (class != PCI_CLASS_BRIDGE_HOST)
++		return;
++
++	pci_read_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, &val);
++	val |= PCI_MSI_FLAGS_ENABLE;
++	pci_write_config_word(dev, dev->msi_cap + PCI_MSI_FLAGS, val);
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5, loongson_pci_msi_quirk);
++
+ static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus *bus)
+ {
+ 	struct pci_config_window *cfg;
 
 
 
