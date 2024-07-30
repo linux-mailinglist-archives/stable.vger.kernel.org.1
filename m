@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26661941CD5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE323941A01
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFD231F23DC6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70CBF1F22627
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B5818991F;
-	Tue, 30 Jul 2024 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E74018452F;
+	Tue, 30 Jul 2024 16:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rfqb3Ii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+/o5YHI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7257418C902;
-	Tue, 30 Jul 2024 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7F41A619B;
+	Tue, 30 Jul 2024 16:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359345; cv=none; b=t35PLTVgC9p5weIx2aYsl/W6M80v7c3ARVMiMbszed3iC/Zz8u6S08tNGcsf7VSiZKUfVxehandxvwlXScM3ER9KD9Zr05pcRoUz3ka2tIMr4mVdFI2lXQv28Qi8wouzKLLM2m5fCumA6eYhx8EDKbu2wmWr9zoN/T96akyqp1I=
+	t=1722357535; cv=none; b=cD/MA2hb0Jx3nnGeLu9TL5Wj+fZ4S14ABAe7etg9Wf18+MfDDWVT3jZyY71jxyC6ca0zmzHXb+35aOcUjjWlI4Ilf7N7KAMMsr+Dt9+vb2k6NS5Ifk8TZogZ0E1YURTE5I5A8ad9VkaTqvpah6FM3zUeVBeVAZgi7HJy/STKdtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359345; c=relaxed/simple;
-	bh=UOLPK+LpC2Ura9+MJdN30os0h/ST6u6BRLlB3qtsbtA=;
+	s=arc-20240116; t=1722357535; c=relaxed/simple;
+	bh=elQof+Dq+bsCyK3OVGXsEPM7uSJLav4vgVcwlbd7LtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0aoHKsdnjQdwH73/rh7KOkn04yIFOxq85cDf9QkuJNofUujbMgj1sA1ZhsKtJB42wMLcW2/XNOJey7agO6yxUhlPoQQOFs5YIRCx/o4wghmFvJpxL42OMII6OrFdMDun4McYQdsTM2wdXIw0Er/+1f3lgb8aPTW0MpBqElPa3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rfqb3Ii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FBDC32782;
-	Tue, 30 Jul 2024 17:09:04 +0000 (UTC)
+	 MIME-Version; b=BuoZTLaKqadaGBnNUfoK8oZtS/m0NW7Dv6e3P+ZgmCuOYNNDnrBBBPBDryPlq+9ttaafqI4qxsnPjtg/B5s3jzac3KAx67ake35MBWbzo9rY8AOCp+Z/gSk1ymD1ZkBTfY+4DwIYVdjNLouDWsmWX/idIA1ozjHexX+slLRyvVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+/o5YHI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57720C4AF15;
+	Tue, 30 Jul 2024 16:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359345;
-	bh=UOLPK+LpC2Ura9+MJdN30os0h/ST6u6BRLlB3qtsbtA=;
+	s=korg; t=1722357535;
+	bh=elQof+Dq+bsCyK3OVGXsEPM7uSJLav4vgVcwlbd7LtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2rfqb3Iioo0Egw6b/9y/8AXKLG7+Zpxbd2cvtZm58dd77ciGH9xRPbRzNsC92cR3g
-	 O2wWqPoaVC/4j1PxMzxVB9hLT3ivVex+elQbKCpb7UVv13ekbKq4zdYObfqQSLXLGC
-	 R4G5Lee7Weg3C870fE5JIvmYRZv4dpxnP7+70XtA=
+	b=f+/o5YHIBEv3mquN8oR747Iba8ZX9r8AltOtGETN2Q71MbuaW+Y0dve1qSx6ihcAI
+	 whrCqklrP4+2cAJtyTc3Vd37rPlg5jclqMf2bTal61P3htVw84gQhoqr4Jd4oc0Nvv
+	 3bvUuJZ+jjFn1rgKIbe0j6IOeCmTVB7DzQ2/iVUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 471/809] bnxt_re: Fix imm_data endianness
+Subject: [PATCH 6.6 240/568] SUNRPC: avoid soft lockup when transmitting UDP to reachable server.
 Date: Tue, 30 Jul 2024 17:45:47 +0200
-Message-ID: <20240730151743.340697988@linuxfoundation.org>
+Message-ID: <20240730151649.262010414@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 95b087f87b780daafad1dbb2c84e81b729d5d33f ]
+[ Upstream commit 6258cf25d5e3155c3219ab5a79b970eef7996356 ]
 
-When map a device between servers with MLX and BCM RoCE nics, RTRS
-server complain about unknown imm type, and can't map the device,
+Prior to the commit identified below, call_transmit_status() would
+handle -EPERM and other errors related to an unreachable server by
+falling through to call_status() which added a 3-second delay and
+handled the failure as a timeout.
 
-After more debug, it seems bnxt_re wrongly handle the
-imm_data, this patch fixed the compat issue with MLX for us.
+Since that commit, call_transmit_status() falls through to
+handle_bind().  For UDP this moves straight on to handle_connect() and
+handle_transmit() so we immediately retransmit - and likely get the same
+error.
 
-In off list discussion, Selvin confirmed HW is working in little endian format
-and all data needs to be converted to LE while providing.
+This results in an indefinite loop in __rpc_execute() which triggers a
+soft-lockup warning.
 
-This patch fix the endianness for imm_data
+For the errors that indicate an unreachable server,
+call_transmit_status() should fall back to call_status() as it did
+before.  This cannot cause the thundering herd that the previous patch
+was avoiding, as the call_status() will insert a delay.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Link: https://lore.kernel.org/r/20240710122102.37569-1-jinpu.wang@ionos.com
-Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: ed7dc973bd91 ("SUNRPC: Prevent thundering herd when the socket is not connected")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 8 ++++----
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ net/sunrpc/clnt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index ce9c5bae83bf1..582e83a36ccbe 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2479,7 +2479,7 @@ static int bnxt_re_build_send_wqe(struct bnxt_re_qp *qp,
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index d3c917c0c8d59..142ee6554848a 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2310,12 +2310,13 @@ call_transmit_status(struct rpc_task *task)
+ 		task->tk_action = call_transmit;
+ 		task->tk_status = 0;
  		break;
- 	case IB_WR_SEND_WITH_IMM:
- 		wqe->type = BNXT_QPLIB_SWQE_TYPE_SEND_WITH_IMM;
--		wqe->send.imm_data = wr->ex.imm_data;
-+		wqe->send.imm_data = be32_to_cpu(wr->ex.imm_data);
- 		break;
- 	case IB_WR_SEND_WITH_INV:
- 		wqe->type = BNXT_QPLIB_SWQE_TYPE_SEND_WITH_INV;
-@@ -2509,7 +2509,7 @@ static int bnxt_re_build_rdma_wqe(const struct ib_send_wr *wr,
- 		break;
- 	case IB_WR_RDMA_WRITE_WITH_IMM:
- 		wqe->type = BNXT_QPLIB_SWQE_TYPE_RDMA_WRITE_WITH_IMM;
--		wqe->rdma.imm_data = wr->ex.imm_data;
-+		wqe->rdma.imm_data = be32_to_cpu(wr->ex.imm_data);
- 		break;
- 	case IB_WR_RDMA_READ:
- 		wqe->type = BNXT_QPLIB_SWQE_TYPE_RDMA_READ;
-@@ -3581,7 +3581,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *gsi_sqp,
- 	wc->byte_len = orig_cqe->length;
- 	wc->qp = &gsi_qp->ib_qp;
- 
--	wc->ex.imm_data = orig_cqe->immdata;
-+	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
- 	wc->src_qp = orig_cqe->src_qp;
- 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
- 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
-@@ -3726,7 +3726,7 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
- 				 (unsigned long)(cqe->qp_handle),
- 				 struct bnxt_re_qp, qplib_qp);
- 			wc->qp = &qp->ib_qp;
--			wc->ex.imm_data = cqe->immdata;
-+			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
- 			wc->src_qp = cqe->src_qp;
- 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
- 			wc->port_num = 1;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index 7fd4506b3584f..244da20d1181f 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -164,7 +164,7 @@ struct bnxt_qplib_swqe {
- 		/* Send, with imm, inval key */
- 		struct {
- 			union {
--				__be32	imm_data;
-+				u32	imm_data;
- 				u32	inv_key;
- 			};
- 			u32		q_key;
-@@ -182,7 +182,7 @@ struct bnxt_qplib_swqe {
- 		/* RDMA write, with imm, read */
- 		struct {
- 			union {
--				__be32	imm_data;
-+				u32	imm_data;
- 				u32	inv_key;
- 			};
- 			u64		remote_va;
-@@ -389,7 +389,7 @@ struct bnxt_qplib_cqe {
- 	u16				cfa_meta;
- 	u64				wr_id;
- 	union {
--		__be32			immdata;
-+		__le32			immdata;
- 		u32			invrkey;
- 	};
- 	u64				qp_handle;
+-	case -ECONNREFUSED:
+ 	case -EHOSTDOWN:
+ 	case -ENETDOWN:
+ 	case -EHOSTUNREACH:
+ 	case -ENETUNREACH:
+ 	case -EPERM:
++		break;
++	case -ECONNREFUSED:
+ 		if (RPC_IS_SOFTCONN(task)) {
+ 			if (!task->tk_msg.rpc_proc->p_proc)
+ 				trace_xprt_ping(task->tk_xprt,
 -- 
 2.43.0
 
