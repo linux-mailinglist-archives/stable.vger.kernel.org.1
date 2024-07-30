@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-64012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173D5941BB6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82696941870
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 483341C231E0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5DF31C21486
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A40189903;
-	Tue, 30 Jul 2024 16:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA3A1A618F;
+	Tue, 30 Jul 2024 16:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2CqDyzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/Povvoz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC6018801A;
-	Tue, 30 Jul 2024 16:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACB41A6177;
+	Tue, 30 Jul 2024 16:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358688; cv=none; b=gcAOaUI8e4ISdlnlBqb/dXA7k10Nmh1GdvOKiZv0YlghEAMsytNMEOyA4kuI/NDcc/HqgzEM5L9nqheauivXeb3ND+fwCzQJuev/ZMomlsIW1lrz23STa5VeZwAgbQo2KLJ4k/fz/vFRhbVR+v6wKUXilOrliCR9QdG2/u0aomc=
+	t=1722356502; cv=none; b=A7MwOBW8DblWUN/POW4hKBd20RuSL9LAQKgRYl2513tiO6O4Bj/L8TCTHSn5GFF52QJpaBIc9ab3437/pbniXyvGnPjKzvWmzYf/+Nx2UxQyJq4tdH7mFVvuKMlwKtO6SozBrkmuux/oRPrSiyvDXj3bMaNnvSEEIBPSDXIBWwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358688; c=relaxed/simple;
-	bh=VPakyLEtFcAbTHg5eNBYximQec0HCkfLkYQtuFrfnEU=;
+	s=arc-20240116; t=1722356502; c=relaxed/simple;
+	bh=q5F2XIMgXGrgYo0E23kYvr9wIVZDwphcy0CpqEYTez8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RiWeWVfBwN8zkCWKitoDrV2bFnayu0i00aWZa6Ger2lIsTbLxLbBkplgZ3mW6RRlAPJ0ISOJG+g3SRPOv1RM9R23bqsJwBqc1Q9Qya6ANUf83S48Cas3Ejyu/9EXwIKJ2l19NeoVQuDr9Z64qRLTAHwBaW9kS+Cs3QjY/dtUp4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2CqDyzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4E6C32782;
-	Tue, 30 Jul 2024 16:58:07 +0000 (UTC)
+	 MIME-Version; b=CNQ8yGqj3gP/7q9XkxTHjzo0mwi7flTe2PK/4iaLtVJiYcMpmr3EZhIEuU4ZdM1Ty3Umo/vzDf/Opue2h0Rqi1os13nWxMllLhy/h2Yge7zJfL7jr5wxcyCNJVsDRDFT1XswryszLGu+6KS2SOERngCV31g5ynhwO3AuUDPUr3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/Povvoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5C7C32782;
+	Tue, 30 Jul 2024 16:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358688;
-	bh=VPakyLEtFcAbTHg5eNBYximQec0HCkfLkYQtuFrfnEU=;
+	s=korg; t=1722356502;
+	bh=q5F2XIMgXGrgYo0E23kYvr9wIVZDwphcy0CpqEYTez8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2CqDyzQgIhJDerjVYEQF2nHU1+KvVuXWDMnxhb3YPHGMemnwyN7opvhD43737cVz
-	 H2k+Ax2Ir07HeBWh0qOyeoO9l2mfKOiAZo2PfpdQzrdKIzYZIdri9cMt9kNsqj5m2v
-	 AozUjHrp8cGZDQwtV3rPd41nIMQsOqkarvFTaGgo=
+	b=X/PovvozfnYY7c+1I2Ikhsh/GtJ5R5+AhBhkhsnWVtJXt9tklW0qc1cKUCnsqIx1f
+	 eoa+8aOrdhNcN2CHg/e7AYeoS3KU40QiTeYyKtqefo6WQwCyL5GEP+oyUedbKMAm2P
+	 hl0OAyAv+zBwmX2KYyglfxB+NUt++0MgAe3TYqdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 385/809] PCI: keystone: Fix NULL pointer dereference in case of DT error in ks_pcie_setup_rc_app_regs()
+Subject: [PATCH 6.6 154/568] xfrm: call xfrm_dev_policy_delete when kill policy
 Date: Tue, 30 Jul 2024 17:44:21 +0200
-Message-ID: <20240730151739.876445580@linuxfoundation.org>
+Message-ID: <20240730151645.893881226@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit a231707a91f323af1e5d9f1722055ec2fc1c7775 ]
+[ Upstream commit 89a2aefe4b084686c2ffc1ee939585111ea4fc0f ]
 
-If IORESOURCE_MEM is not provided in Device Tree due to
-any error, resource_list_first_type() will return NULL and
-pci_parse_request_of_pci_ranges() will just emit a warning.
+xfrm_policy_kill() is called at different places to delete xfrm
+policy. It will call xfrm_pol_put(). But xfrm_dev_policy_delete() is
+not called to free the policy offloaded to hardware.
 
-This will cause a NULL pointer dereference. Fix this bug by adding NULL
-return check.
+The three commits cited here are to handle this issue by calling
+xfrm_dev_policy_delete() outside xfrm_get_policy(). But they didn't
+cover all the cases. An example, which is not handled for now, is
+xfrm_policy_insert(). It is called when XFRM_MSG_UPDPOLICY request is
+received. Old policy is replaced by new one, but the offloaded policy
+is not deleted, so driver doesn't have the chance to release hardware
+resources.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+To resolve this issue for all cases, move xfrm_dev_policy_delete()
+into xfrm_policy_kill(), so the offloaded policy can be deleted from
+hardware when it is called, which avoids hardware resources leakage.
 
-Fixes: 0f71c60ffd26 ("PCI: dwc: Remove storing of PCI resources")
-Link: https://lore.kernel.org/linux-pci/20240505061517.11527-1-amishin@t-argos.ru
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: 919e43fad516 ("xfrm: add an interface to offload policy")
+Fixes: bf06fcf4be0f ("xfrm: add missed call to delete offloaded policies")
+Fixes: 982c3aca8bac ("xfrm: delete offloaded policy")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ net/xfrm/xfrm_policy.c | 5 ++---
+ net/xfrm/xfrm_user.c   | 1 -
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 57135eee2d7d1..cd0e0022f91d6 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -400,17 +400,22 @@ static const struct irq_domain_ops ks_pcie_intx_irq_domain_ops = {
- 	.xlate = irq_domain_xlate_onetwocell,
- };
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 0dde08e02887d..b699cc2ec35ac 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -436,6 +436,8 @@ EXPORT_SYMBOL(xfrm_policy_destroy);
  
--static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
-+static int ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ static void xfrm_policy_kill(struct xfrm_policy *policy)
  {
- 	u32 val;
- 	u32 num_viewport = ks_pcie->num_viewport;
- 	struct dw_pcie *pci = ks_pcie->pci;
- 	struct dw_pcie_rp *pp = &pci->pp;
--	u64 start, end;
-+	struct resource_entry *entry;
- 	struct resource *mem;
-+	u64 start, end;
- 	int i;
- 
--	mem = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM)->res;
-+	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
-+	if (!entry)
-+		return -ENODEV;
++	xfrm_dev_policy_delete(policy);
 +
-+	mem = entry->res;
- 	start = mem->start;
- 	end = mem->end;
+ 	write_lock_bh(&policy->lock);
+ 	policy->walk.dead = 1;
+ 	write_unlock_bh(&policy->lock);
+@@ -1834,7 +1836,6 @@ int xfrm_policy_flush(struct net *net, u8 type, bool task_valid)
  
-@@ -421,7 +426,7 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
- 	ks_pcie_clear_dbi_mode(ks_pcie);
+ 		__xfrm_policy_unlink(pol, dir);
+ 		spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
+-		xfrm_dev_policy_delete(pol);
+ 		cnt++;
+ 		xfrm_audit_policy_delete(pol, 1, task_valid);
+ 		xfrm_policy_kill(pol);
+@@ -1875,7 +1876,6 @@ int xfrm_dev_policy_flush(struct net *net, struct net_device *dev,
  
- 	if (ks_pcie->is_am6)
--		return;
-+		return 0;
+ 		__xfrm_policy_unlink(pol, dir);
+ 		spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
+-		xfrm_dev_policy_delete(pol);
+ 		cnt++;
+ 		xfrm_audit_policy_delete(pol, 1, task_valid);
+ 		xfrm_policy_kill(pol);
+@@ -2326,7 +2326,6 @@ int xfrm_policy_delete(struct xfrm_policy *pol, int dir)
+ 	pol = __xfrm_policy_unlink(pol, dir);
+ 	spin_unlock_bh(&net->xfrm.xfrm_policy_lock);
+ 	if (pol) {
+-		xfrm_dev_policy_delete(pol);
+ 		xfrm_policy_kill(pol);
+ 		return 0;
+ 	}
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 444e58bc3f440..979f23cded401 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2348,7 +2348,6 @@ static int xfrm_get_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 					    NETLINK_CB(skb).portid);
+ 		}
+ 	} else {
+-		xfrm_dev_policy_delete(xp);
+ 		xfrm_audit_policy_delete(xp, err ? 0 : 1, true);
  
- 	val = ilog2(OB_WIN_SIZE);
- 	ks_pcie_app_writel(ks_pcie, OB_SIZE, val);
-@@ -438,6 +443,8 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
- 	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
- 	val |= OB_XLAT_EN_VAL;
- 	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
-+
-+	return 0;
- }
- 
- static void __iomem *ks_pcie_other_map_bus(struct pci_bus *bus,
-@@ -798,7 +805,10 @@ static int __init ks_pcie_host_init(struct dw_pcie_rp *pp)
- 		return ret;
- 
- 	ks_pcie_stop_link(pci);
--	ks_pcie_setup_rc_app_regs(ks_pcie);
-+	ret = ks_pcie_setup_rc_app_regs(ks_pcie);
-+	if (ret)
-+		return ret;
-+
- 	writew(PCI_IO_RANGE_TYPE_32 | (PCI_IO_RANGE_TYPE_32 << 8),
- 			pci->dbi_base + PCI_IO_BASE);
- 
+ 		if (err != 0)
 -- 
 2.43.0
 
