@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A149E941795
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0F394179B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CDA81F2459C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8533E1C22A5E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2D7189505;
-	Tue, 30 Jul 2024 16:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DC8189BB6;
+	Tue, 30 Jul 2024 16:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE4LN+qu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luRM6eHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D741898F9;
-	Tue, 30 Jul 2024 16:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2A5189B86;
+	Tue, 30 Jul 2024 16:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355823; cv=none; b=MrB1vqfFhvm81sX0eWIlh9NpqxGVTZQPIXcj2zIEcEqjwH5/iKtNbuzqXItwGxKK2Vq9n3FF/jlPUxYJCKSx6IrZXJYGsvAJewalBGHMK81uoJHg3n2JFz+yfOnxvITiLyWjPHptgIjppPPIAImEVfCp9tOKPxHL96w5vU6TLeA=
+	t=1722355833; cv=none; b=fNIyUgMBKSm9puvVFPIPj4qFt0uJ4F4bDzx+FxrfemM69Tkw28ZjQLpHoWpzd4LKhTxI0eOaSXuBdYDY41ho2C7t2UY1DYkf0KrG1bK5K4MaDIs2zpyo2B0v12RSc4iqACxsmITgCXTkqekuvW6wbspI21mJyk+fTY/HYQ3P2DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355823; c=relaxed/simple;
-	bh=zXYECPFsDUxO+JsGWyRh5YI8F5pkgT1llIgw8Vsf/z0=;
+	s=arc-20240116; t=1722355833; c=relaxed/simple;
+	bh=8JdQDM5hYc4QvLRl6GM6AyzxQbK6ZwE19+39cAJUPss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mo0U1wugiLAXQ+gpWC9r8AZlgymBS1D0fI0rqyeL2Gu0Pj/OjB17At/NJ/2Pv4vdp4Fi4xcfoolyKgl/khCXkjx4FqNeChp2WH4b7fGYdegIQVOQZk/L0pZY/Lg00ifedtvdvSKEj5VtGR5RoTCq5cNwXbGUaHVrnI043UdnT1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE4LN+qu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F877C32782;
-	Tue, 30 Jul 2024 16:10:22 +0000 (UTC)
+	 MIME-Version; b=jKAjzCGZBzrTEZecuqYY4oErdEBqT65Q3ah1vzp++f3nBOZCK9iwSehDKpwaIy4lSZyvNgC8iArY566CljlnR0u7M4nHkSHB3E4zB9JbK8CA/NQOMLobn7PFmvFoosuFJRldXLnJpp2AAvhYDBNtFXXzPzc6wZZNtTSVHnLmbS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luRM6eHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4C0C4AF0A;
+	Tue, 30 Jul 2024 16:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355822;
-	bh=zXYECPFsDUxO+JsGWyRh5YI8F5pkgT1llIgw8Vsf/z0=;
+	s=korg; t=1722355832;
+	bh=8JdQDM5hYc4QvLRl6GM6AyzxQbK6ZwE19+39cAJUPss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zE4LN+quMiPKQbrDUTvlCrGvEFxPeKPrBOVYKHJqKoxGBzguM01icCzDP2bpXTA8k
-	 +HSOnAD+A0UqP8bK7yzfeszIgH2co/ly2n8GhxQBxO5PNMre41fuL1ruZmh8Onkw6A
-	 pZBab/4mJPRRR9lxwCrPJ0L7Z5BZ9aR5uKDF6iJk=
+	b=luRM6eHBeXbyqe7KwjbrL9iz3AsNIMkN13lIxO/92nxkzWiafkA/ruW9EIbUfOhkN
+	 /Liyr0vm0db8Mye/XdbHlXC5dKujsgFziQ77lX3J3qGyCIu4dOZZYodnXWo5ekbiJR
+	 cZgv7XRETXrsXwwMfxcjzsuSMndeumY3qN3+6Mdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Adam Ford <aford173@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/568] arm64: dts: imx8mp: Fix pgc vpu locations
-Date: Tue, 30 Jul 2024 17:43:20 +0200
-Message-ID: <20240730151643.507059982@linuxfoundation.org>
+Subject: [PATCH 6.6 094/568] x86/xen: Convert comma to semicolon
+Date: Tue, 30 Jul 2024 17:43:21 +0200
+Message-ID: <20240730151643.550022194@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,104 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 2f8405fb077bcb8e98c8cd87c2a0a238b15d8da8 ]
+[ Upstream commit 349d271416c61f82b853336509b1d0dc04c1fcbb ]
 
-The various pgv_vpu nodes have a mismatch between the value after
-the @ symbol and what is referenced by 'reg' so reorder the nodes
-to align.
+Replace a comma between expression statements by a semicolon.
 
-Fixes: df680992dd62 ("arm64: dts: imx8mp: add vpu pgc nodes")
-Suggested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewd-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 8310b77b48c5 ("Xen/gnttab: handle p2m update errors on a per-slot basis")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240702031010.1411875-1-nichen@iscas.ac.cn
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 55 ++++++++++++-----------
- 1 file changed, 28 insertions(+), 27 deletions(-)
+ arch/x86/xen/p2m.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index 2de16e3d21d24..d1488ebfef3f0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -834,6 +834,12 @@ pgc_gpumix: power-domain@7 {
- 						assigned-clock-rates = <800000000>, <400000000>;
- 					};
+diff --git a/arch/x86/xen/p2m.c b/arch/x86/xen/p2m.c
+index 9bdc3b656b2c4..4c2bf989edafc 100644
+--- a/arch/x86/xen/p2m.c
++++ b/arch/x86/xen/p2m.c
+@@ -731,7 +731,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
+ 		 * immediate unmapping.
+ 		 */
+ 		map_ops[i].status = GNTST_general_error;
+-		unmap[0].host_addr = map_ops[i].host_addr,
++		unmap[0].host_addr = map_ops[i].host_addr;
+ 		unmap[0].handle = map_ops[i].handle;
+ 		map_ops[i].handle = INVALID_GRANT_HANDLE;
+ 		if (map_ops[i].flags & GNTMAP_device_map)
+@@ -741,7 +741,7 @@ int set_foreign_p2m_mapping(struct gnttab_map_grant_ref *map_ops,
  
-+					pgc_vpumix: power-domain@8 {
-+						#power-domain-cells = <0>;
-+						reg = <IMX8MP_POWER_DOMAIN_VPUMIX>;
-+						clocks = <&clk IMX8MP_CLK_VPU_ROOT>;
-+					};
-+
- 					pgc_gpu3d: power-domain@9 {
- 						#power-domain-cells = <0>;
- 						reg = <IMX8MP_POWER_DOMAIN_GPU3D>;
-@@ -849,6 +855,28 @@ pgc_mediamix: power-domain@10 {
- 							 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
- 					};
- 
-+					pgc_vpu_g1: power-domain@11 {
-+						#power-domain-cells = <0>;
-+						power-domains = <&pgc_vpumix>;
-+						reg = <IMX8MP_POWER_DOMAIN_VPU_G1>;
-+						clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
-+					};
-+
-+					pgc_vpu_g2: power-domain@12 {
-+						#power-domain-cells = <0>;
-+						power-domains = <&pgc_vpumix>;
-+						reg = <IMX8MP_POWER_DOMAIN_VPU_G2>;
-+						clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
-+
-+					};
-+
-+					pgc_vpu_vc8000e: power-domain@13 {
-+						#power-domain-cells = <0>;
-+						power-domains = <&pgc_vpumix>;
-+						reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
-+						clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
-+					};
-+
- 					pgc_hdmimix: power-domain@14 {
- 						#power-domain-cells = <0>;
- 						reg = <IMX8MP_POWER_DOMAIN_HDMIMIX>;
-@@ -886,33 +914,6 @@ pgc_ispdwp: power-domain@18 {
- 						reg = <IMX8MP_POWER_DOMAIN_MEDIAMIX_ISPDWP>;
- 						clocks = <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>;
- 					};
--
--					pgc_vpumix: power-domain@19 {
--						#power-domain-cells = <0>;
--						reg = <IMX8MP_POWER_DOMAIN_VPUMIX>;
--						clocks = <&clk IMX8MP_CLK_VPU_ROOT>;
--					};
--
--					pgc_vpu_g1: power-domain@20 {
--						#power-domain-cells = <0>;
--						power-domains = <&pgc_vpumix>;
--						reg = <IMX8MP_POWER_DOMAIN_VPU_G1>;
--						clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
--					};
--
--					pgc_vpu_g2: power-domain@21 {
--						#power-domain-cells = <0>;
--						power-domains = <&pgc_vpumix>;
--						reg = <IMX8MP_POWER_DOMAIN_VPU_G2>;
--						clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
--					};
--
--					pgc_vpu_vc8000e: power-domain@22 {
--						#power-domain-cells = <0>;
--						power-domains = <&pgc_vpumix>;
--						reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
--						clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
--					};
- 				};
- 			};
- 		};
+ 		if (kmap_ops) {
+ 			kmap_ops[i].status = GNTST_general_error;
+-			unmap[1].host_addr = kmap_ops[i].host_addr,
++			unmap[1].host_addr = kmap_ops[i].host_addr;
+ 			unmap[1].handle = kmap_ops[i].handle;
+ 			kmap_ops[i].handle = INVALID_GRANT_HANDLE;
+ 			if (kmap_ops[i].flags & GNTMAP_device_map)
 -- 
 2.43.0
 
