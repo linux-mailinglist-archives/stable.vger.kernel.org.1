@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C98A941B7E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092CB941E7C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218961F225B4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B733D283D40
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04901898F8;
-	Tue, 30 Jul 2024 16:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A421A76C9;
+	Tue, 30 Jul 2024 17:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyRv7jYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9knMAtY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5672C1A6195;
-	Tue, 30 Jul 2024 16:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D53F1A76C1;
+	Tue, 30 Jul 2024 17:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358544; cv=none; b=SKUi3zcBfa6IMgSz6zoqIDFvYjWs2tA7B0SiADfaHgDFHXxNK9FJs7jk1E1EfR8YVPBlRJvKpP+LsSL9kb/aTL6C+EJxOEVun1MPDdHYsOrOLKpfvYCPsmwdQk6UtqKYp9eyDTyCZw5BYhJds3Wimx7Rl8cGqN26otOF4RARW+o=
+	t=1722360563; cv=none; b=nvEcSM6QtXpckclHPD2/OID6fxiSCOfnPScr2NGR2IhpdKhr9eZ7N5sQCL1XXbuZcgp5PFD68yNNcPa7YFhiTnQIcZYoBTWS8wYYJE7nEZ8/mFnJLysnkyq4OpJufry3w2LnFXn7iaXInXFW/rSy9m6DSqYfHvszFmEdpvQLuWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358544; c=relaxed/simple;
-	bh=mAddqH/W5sexrSWnAtR2YNlFv7kXjziZRkM2cQJ4a7Y=;
+	s=arc-20240116; t=1722360563; c=relaxed/simple;
+	bh=Wm/T0kuJ2jCGQh3JBq/ZlAvyF29vbJPEnryLrWZfpWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ei6IflfocfFGhVlNxEVVrMA6Bqpet3GhAgY1V/U2tpqvdOvtpqfKtTmttxEPG52uSG6w94Y3DE1VjX4p23lI96VR47TzbuacUQNbiBgoXlKVY+cgWqI0puB5D2Yw2P4qNH/bUM1FFaGzPhP5MJabQacGleZ/c7LPl/4iLkSEImU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyRv7jYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929E3C32782;
-	Tue, 30 Jul 2024 16:55:43 +0000 (UTC)
+	 MIME-Version; b=U79gEtGkb9qgdnoN9RV4P18eS5hhjG6yPqib3KBaIhjDm/VuE82pGpvY4totTAJeLOzBkztf9WQz6BYwT0X0/2xHa5jVvW1OD1CrxXJ2AgExwlLQkXG7mKHZx66WFwCh2QQg4dqDq3paV58dt1lQytahBcGZGdOZWGwO+wzhm48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9knMAtY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B676DC32782;
+	Tue, 30 Jul 2024 17:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358544;
-	bh=mAddqH/W5sexrSWnAtR2YNlFv7kXjziZRkM2cQJ4a7Y=;
+	s=korg; t=1722360563;
+	bh=Wm/T0kuJ2jCGQh3JBq/ZlAvyF29vbJPEnryLrWZfpWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyRv7jYTP+75Z+K4nvVbPixaYhDspJdCB+VAFQOqbP89WbzN3PJepYn5GCVHIPge/
-	 wrhwgVlufLpBeAySacxNkZuNpXNxTgxx9GBoM24qlDnKcTnkJZTlAr+2jOf6JlDCLD
-	 XLSvZS+k/uBJn++XHK75W2fceVBGVKPLK4DV2Rok=
+	b=D9knMAtYVHnyKQZT+AlEHOHrvRTatBxj/ZpIS7+KTT9zt2nstnJNcRGH6cnx6SxSN
+	 kw6UfECn7sbpOzMq5s+MZvYbiUFc4njbMIXHZX+8tSmlU2CD6xkgh6aD3i5DeJbFNV
+	 b/daDRq34itKnFtoozOUFWJNRdaLAqpEakBk+kc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 6.1 381/440] rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
+	Arnd Bergmann <arnd@arndb.de>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 738/809] kdb: address -Wformat-security warnings
 Date: Tue, 30 Jul 2024 17:50:14 +0200
-Message-ID: <20240730151630.690135953@linuxfoundation.org>
+Message-ID: <20240730151754.097325425@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit f5c466a0fdb2d9f3650d2e3911b0735f17ba00cf upstream.
+[ Upstream commit 70867efacf4370b6c7cdfc7a5b11300e9ef7de64 ]
 
-... to RBD_LOCK_STATE_QUIESCING and quiescing_wait to recognize that
-this state and the associated completion are backing rbd_quiesce_lock(),
-which isn't specific to releasing the lock.
+When -Wformat-security is not disabled, using a string pointer
+as a format causes a warning:
 
-While exclusive lock does get quiesced before it's released, it also
-gets quiesced before an attempt to update the cookie is made and there
-the lock is not released as long as ceph_cls_set_cookie() succeeds.
+kernel/debug/kdb/kdb_io.c: In function 'kdb_read':
+kernel/debug/kdb/kdb_io.c:365:36: error: format not a string literal and no format arguments [-Werror=format-security]
+  365 |                         kdb_printf(kdb_prompt_str);
+      |                                    ^~~~~~~~~~~~~~
+kernel/debug/kdb/kdb_io.c: In function 'kdb_getstr':
+kernel/debug/kdb/kdb_io.c:456:20: error: format not a string literal and no format arguments [-Werror=format-security]
+  456 |         kdb_printf(kdb_prompt_str);
+      |                    ^~~~~~~~~~~~~~
 
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use an explcit "%s" format instead.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240528121154.3662553-1-arnd@kernel.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ kernel/debug/kdb/kdb_io.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -362,7 +362,7 @@ enum rbd_watch_state {
- enum rbd_lock_state {
- 	RBD_LOCK_STATE_UNLOCKED,
- 	RBD_LOCK_STATE_LOCKED,
--	RBD_LOCK_STATE_RELEASING,
-+	RBD_LOCK_STATE_QUIESCING,
- };
- 
- /* WatchNotify::ClientId */
-@@ -422,7 +422,7 @@ struct rbd_device {
- 	struct list_head	running_list;
- 	struct completion	acquire_wait;
- 	int			acquire_err;
--	struct completion	releasing_wait;
-+	struct completion	quiescing_wait;
- 
- 	spinlock_t		object_map_lock;
- 	u8			*object_map;
-@@ -525,7 +525,7 @@ static bool __rbd_is_lock_owner(struct r
- 	lockdep_assert_held(&rbd_dev->lock_rwsem);
- 
- 	return rbd_dev->lock_state == RBD_LOCK_STATE_LOCKED ||
--	       rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING;
-+	       rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING;
+diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
+index 3131334d7a81c..7da3fa7beffd0 100644
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -362,7 +362,7 @@ static char *kdb_read(char *buffer, size_t bufsize)
+ 			if (i >= dtab_count)
+ 				kdb_printf("...");
+ 			kdb_printf("\n");
+-			kdb_printf(kdb_prompt_str);
++			kdb_printf("%s",  kdb_prompt_str);
+ 			kdb_printf("%s", buffer);
+ 			if (cp != lastchar)
+ 				kdb_position_cursor(kdb_prompt_str, buffer, cp);
+@@ -453,7 +453,7 @@ char *kdb_getstr(char *buffer, size_t bufsize, const char *prompt)
+ {
+ 	if (prompt && kdb_prompt_str != prompt)
+ 		strscpy(kdb_prompt_str, prompt, CMD_BUFLEN);
+-	kdb_printf(kdb_prompt_str);
++	kdb_printf("%s", kdb_prompt_str);
+ 	kdb_nextline = 1;	/* Prompt and input resets line number */
+ 	return kdb_read(buffer, bufsize);
  }
- 
- static bool rbd_is_lock_owner(struct rbd_device *rbd_dev)
-@@ -3459,12 +3459,12 @@ static void rbd_lock_del_request(struct
- 	spin_lock(&rbd_dev->lock_lists_lock);
- 	if (!list_empty(&img_req->lock_item)) {
- 		list_del_init(&img_req->lock_item);
--		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING &&
-+		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
- 			       list_empty(&rbd_dev->running_list));
- 	}
- 	spin_unlock(&rbd_dev->lock_lists_lock);
- 	if (need_wakeup)
--		complete(&rbd_dev->releasing_wait);
-+		complete(&rbd_dev->quiescing_wait);
- }
- 
- static int rbd_img_exclusive_lock(struct rbd_img_request *img_req)
-@@ -4182,16 +4182,16 @@ static bool rbd_quiesce_lock(struct rbd_
- 	/*
- 	 * Ensure that all in-flight IO is flushed.
- 	 */
--	rbd_dev->lock_state = RBD_LOCK_STATE_RELEASING;
--	rbd_assert(!completion_done(&rbd_dev->releasing_wait));
-+	rbd_dev->lock_state = RBD_LOCK_STATE_QUIESCING;
-+	rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
- 	if (list_empty(&rbd_dev->running_list))
- 		return true;
- 
- 	up_write(&rbd_dev->lock_rwsem);
--	wait_for_completion(&rbd_dev->releasing_wait);
-+	wait_for_completion(&rbd_dev->quiescing_wait);
- 
- 	down_write(&rbd_dev->lock_rwsem);
--	if (rbd_dev->lock_state != RBD_LOCK_STATE_RELEASING)
-+	if (rbd_dev->lock_state != RBD_LOCK_STATE_QUIESCING)
- 		return false;
- 
- 	rbd_assert(list_empty(&rbd_dev->running_list));
-@@ -5383,7 +5383,7 @@ static struct rbd_device *__rbd_dev_crea
- 	INIT_LIST_HEAD(&rbd_dev->acquiring_list);
- 	INIT_LIST_HEAD(&rbd_dev->running_list);
- 	init_completion(&rbd_dev->acquire_wait);
--	init_completion(&rbd_dev->releasing_wait);
-+	init_completion(&rbd_dev->quiescing_wait);
- 
- 	spin_lock_init(&rbd_dev->object_map_lock);
- 
+-- 
+2.43.0
+
 
 
 
