@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE40941859
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E6F941B9E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADE29280987
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B634282ACA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470991A618F;
-	Tue, 30 Jul 2024 16:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2D01898F8;
+	Tue, 30 Jul 2024 16:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQcEGtIr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYvEd626"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051DF1A6160;
-	Tue, 30 Jul 2024 16:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F61C18801A;
+	Tue, 30 Jul 2024 16:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356439; cv=none; b=M1m5wvQjTxvo328zHykiiXmI5hS5qVY1azsN3dSUCmy+lxN90mQB1AyZiuw+rhbb5NOgiVYdHehwaczdL3OrNIc+zpJodYxf7cfKJiwV8WKtwuesywpGDANDbJv6QGvhL4diq5O8aaKAB4GnrPfS00gIwiAUTAKkk5y5sGBBFfE=
+	t=1722358621; cv=none; b=UCteH7gNpppsXrGFdJ156+wZeoPsoDoEiPsPt/l3YkQVCGigfrpVjZG3Iq23bbZQk70mCAE2gRRZgXafulIWJKvMKeGXr+qwRBbYJktHeXT2cIpH52fEaI48tXhtAKsHQhKkfXf22xjO6nJttTBqsCBJ9A2iZJus1D/C9nkW8Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356439; c=relaxed/simple;
-	bh=1ZDErPhICpY4Lew8Ck9rO4e1hDenn88Xo+R7nPFIfXI=;
+	s=arc-20240116; t=1722358621; c=relaxed/simple;
+	bh=rLjjdjMtDr+X1OtNlleN0C/mGNxe+ocjBIZSiCX4RqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3FirOmaqe60qhYcGhBv1UoB79GZvPTQLqUWHnPc0As79zdMlXXkDgwXCTW3qCvpGMjuDEegQk5STM8OpxVOtQKqIlpe0JHQaU5x+yZnH8DPqQo2XxycyG8ECtqJw9c/Cma7W63KWqD6A6sdG10zC1rytWfG00jtWC+YYNBzeyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQcEGtIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AECC32782;
-	Tue, 30 Jul 2024 16:20:38 +0000 (UTC)
+	 MIME-Version; b=FUKlBhJ6jPM0B7sZA94qjTyZo68XigSaofs96zP7DbzIQnH7TwOeO0AlH8dOOw/BT0hZ488dkFvNxtU89aLF+d8NDq7SjVFHuLmNKXDwJoGqBbbD5+XRC67or3gvNI3pOriNBCF3/qjTEG6951uMmQkBULhRxdALo4vTT72Tw9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYvEd626; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79773C32782;
+	Tue, 30 Jul 2024 16:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356438;
-	bh=1ZDErPhICpY4Lew8Ck9rO4e1hDenn88Xo+R7nPFIfXI=;
+	s=korg; t=1722358621;
+	bh=rLjjdjMtDr+X1OtNlleN0C/mGNxe+ocjBIZSiCX4RqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQcEGtIrsEvVZuaZCkKICYhWbZHW+/8isth7aXJCpsvRoNA9tQf3NXW0pAcZvniuD
-	 P36zkec7c4FPm84Gte9Ifc+jOGxHOwXUgEJ/s5CjPWmqU4NucnSLrDu6O3VGqJB1Ph
-	 W54V3PfD4WR3++mcekOn9YCgPx8dWBwrasGmmTWk=
+	b=mYvEd626o0GQN3SCtFhAKv/xC0BCV8HEVxTxOeAS2Co5upVnnBcpEsMngt4bu1c3r
+	 NfMumtoZTsuyoaxvkAm4V/EF+VlX3kKpwJr+fObG3p7O3A948sYXMwEO25x7t3CzUk
+	 FIp8HaJkrYhIzdlJnjgvKwky9nrxHoeIYtjTdeO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/568] perf: Fix perf_aux_size() for greater-than 32-bit size
+Subject: [PATCH 6.10 379/809] SUNRPC: Fixup gss_status tracepoint error output
 Date: Tue, 30 Jul 2024 17:44:15 +0200
-Message-ID: <20240730151645.661268145@linuxfoundation.org>
+Message-ID: <20240730151739.633826120@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
+[ Upstream commit b9fae9f06d84ffab0f3f9118f3a96bbcdc528bf6 ]
 
-perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
-calculate a 64-bit size.
+The GSS routine errors are values, not flags.
 
-Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
+Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/internal.h | 2 +-
+ include/trace/events/rpcgss.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/internal.h b/kernel/events/internal.h
-index 5150d5f84c033..386d21c7edfa0 100644
---- a/kernel/events/internal.h
-+++ b/kernel/events/internal.h
-@@ -128,7 +128,7 @@ static inline unsigned long perf_data_size(struct perf_buffer *rb)
+diff --git a/include/trace/events/rpcgss.h b/include/trace/events/rpcgss.h
+index 7f0c1ceae726b..b0b6300a0cabd 100644
+--- a/include/trace/events/rpcgss.h
++++ b/include/trace/events/rpcgss.h
+@@ -54,7 +54,7 @@ TRACE_DEFINE_ENUM(GSS_S_UNSEQ_TOKEN);
+ TRACE_DEFINE_ENUM(GSS_S_GAP_TOKEN);
  
- static inline unsigned long perf_aux_size(struct perf_buffer *rb)
- {
--	return rb->aux_nr_pages << PAGE_SHIFT;
-+	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
- }
- 
- #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
+ #define show_gss_status(x)						\
+-	__print_flags(x, "|",						\
++	__print_symbolic(x, 						\
+ 		{ GSS_S_BAD_MECH, "GSS_S_BAD_MECH" },			\
+ 		{ GSS_S_BAD_NAME, "GSS_S_BAD_NAME" },			\
+ 		{ GSS_S_BAD_NAMETYPE, "GSS_S_BAD_NAMETYPE" },		\
 -- 
 2.43.0
 
