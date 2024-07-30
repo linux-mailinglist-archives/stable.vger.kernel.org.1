@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFA0941E2D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D103941CAD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13FDE1F222A6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06E86288B08
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54ECD1A76DB;
-	Tue, 30 Jul 2024 17:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DED1A76D4;
+	Tue, 30 Jul 2024 17:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvvkY8kK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEOzdxu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADE41A76D9;
-	Tue, 30 Jul 2024 17:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0161A76C7;
+	Tue, 30 Jul 2024 17:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360376; cv=none; b=aIP/T7oVUN6yOyj/VlnR3kLautleis69KHCctJXahMA5e7Wf1wa5ktS7S4QHpkxfu1rOuId1BPbXGv27DVyTaYObAMe8Hhy+jGkCT13k7irbkcGpWrmD8Y/jtcpoDjX0V8T2tdZi4fx1RoYUvx1QwxIgfhA7VHxnvWA1DBVl6Ao=
+	t=1722359216; cv=none; b=L1B4rxgDCkDSxErvp5Bfv47wheS2v96jcvLiCb4rq7wnGUiOnb1ZtQjN7fWO65/ejDHHOXsUyWrQggJOHlawqbDBSgjvDRLZ8dZDrN6h3xx9vUFJR7EFIRLeB9gU3I8UX64gKMcR8eH8wy6+3xqYlops2TEzbKDcSMil3IsqkD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360376; c=relaxed/simple;
-	bh=oA+YatxUXbhLJvWofNM7r0CYIHz8p/WnJIPwKVw05z4=;
+	s=arc-20240116; t=1722359216; c=relaxed/simple;
+	bh=sfhfkgnLAnYUd3KTJsjUifwrRv4iMigOB+G9ee5I+Mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qe1LA5rLVDVtbTENVhGiC6rVTLNZKbMTS0PsKN2xZ3udspQgbPsTSzf9wayYsn1qEJMBWvcfMd8D3WSHtJy3RLOxljJTS/TXVzwdUTu7W5VZ2+oL0VQciKH0xJTwtZavMlGUEygN3Gr2t/NR1vyLQJGkiHO/OnNDx0fnr75yrMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvvkY8kK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F216C32782;
-	Tue, 30 Jul 2024 17:26:15 +0000 (UTC)
+	 MIME-Version; b=uejhv+zrWFGljLHu6CD8E7sMHxuSuUmF8NU6CqeiyRna25WGSjd9+Lw/gASNDIM2oINbowZuHvG7vj2IvcludnjKNnFOk86lVsDsL8MOoTEn4VOeewmrWJqRMq442CCoR7llVNyIfHZG9rq58im91sCnn/ZGlbnVfj38T8uXQbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEOzdxu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B618C32782;
+	Tue, 30 Jul 2024 17:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360375;
-	bh=oA+YatxUXbhLJvWofNM7r0CYIHz8p/WnJIPwKVw05z4=;
+	s=korg; t=1722359216;
+	bh=sfhfkgnLAnYUd3KTJsjUifwrRv4iMigOB+G9ee5I+Mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvvkY8kKhD5WuAba6mjMeY8QP00XvuJSLayUyK81ULyvMfUPFtAKfc1tyO9SwQbhM
-	 4le2WJcB45zr6decMk56wZEYfWPqFJIIc+6x3dsYqrPgG8YpypSibIHAe1wbJiWryN
-	 aN4TLeWM2wjGoLY6Ij57MR0C6yiQi2fCvKBwjgKE=
+	b=gEOzdxu4KjXG2f1IAbdiVQ1mXEPHuc/Niv5gDQhQ2+xjsOlvl/RCc0tnjEQZomSOG
+	 ZrRYYGiKHtkwQR6lWXHTWVF7fvwLv39NCaNhpvG3x9NoEuR8FVXPZrlivA04b+azb4
+	 QJ6ToJZbXQlN7yOuEWe3QePnTismKWY6k3vztrcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.10 679/809] irqchip/imx-irqsteer: Handle runtime power management correctly
-Date: Tue, 30 Jul 2024 17:49:15 +0200
-Message-ID: <20240730151751.724366470@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Lk Sii <lk_sii@163.com>
+Subject: [PATCH 6.6 449/568] kobject_uevent: Fix OOB access within zap_modalias_env()
+Date: Tue, 30 Jul 2024 17:49:16 +0200
+Message-ID: <20240730151657.559317771@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 33b1c47d1fc0b5f06a393bb915db85baacba18ea upstream.
+commit dd6e9894b451e7c85cceb8e9dc5432679a70e7dc upstream.
 
-The power domain is automatically activated from clk_prepare(). However, on
-certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
-sleeping functions, which triggers the 'scheduling while atomic' bug in the
-context switch path during device probing:
+zap_modalias_env() wrongly calculates size of memory block to move, so
+will cause OOB memory access issue if variable MODALIAS is not the last
+one within its @env parameter, fixed by correcting size to memmove.
 
- BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
- Call trace:
-  __schedule_bug+0x54/0x6c
-  __schedule+0x7f0/0xa94
-  schedule+0x5c/0xc4
-  schedule_preempt_disabled+0x24/0x40
-  __mutex_lock.constprop.0+0x2c0/0x540
-  __mutex_lock_slowpath+0x14/0x20
-  mutex_lock+0x48/0x54
-  clk_prepare_lock+0x44/0xa0
-  clk_prepare+0x20/0x44
-  imx_irqsteer_resume+0x28/0xe0
-  pm_generic_runtime_resume+0x2c/0x44
-  __genpd_runtime_resume+0x30/0x80
-  genpd_runtime_resume+0xc8/0x2c0
-  __rpm_callback+0x48/0x1d8
-  rpm_callback+0x6c/0x78
-  rpm_resume+0x490/0x6b4
-  __pm_runtime_resume+0x50/0x94
-  irq_chip_pm_get+0x2c/0xa0
-  __irq_do_set_handler+0x178/0x24c
-  irq_set_chained_handler_and_data+0x60/0xa4
-  mxc_gpio_probe+0x160/0x4b0
-
-Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
-callbacks and handle power management in them as they are invoked from
-non-atomic context.
-
-[ tglx: Rewrote change log, added Fixes tag ]
-
-Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 9b3fa47d4a76 ("kobject: fix suppressing modalias in uevents delivered over netlink")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Reviewed-by: Lk Sii <lk_sii@163.com>
+Link: https://lore.kernel.org/r/1717074877-11352-1-git-send-email-quic_zijuhu@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-imx-irqsteer.c |   24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ lib/kobject_uevent.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -36,6 +36,7 @@ struct irqsteer_data {
- 	int			channel;
- 	struct irq_domain	*domain;
- 	u32			*saved_reg;
-+	struct device		*dev;
- };
+--- a/lib/kobject_uevent.c
++++ b/lib/kobject_uevent.c
+@@ -432,8 +432,23 @@ static void zap_modalias_env(struct kobj
+ 		len = strlen(env->envp[i]) + 1;
  
- static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
-@@ -72,10 +73,26 @@ static void imx_irqsteer_irq_mask(struct
- 	raw_spin_unlock_irqrestore(&data->lock, flags);
- }
+ 		if (i != env->envp_idx - 1) {
++			/* @env->envp[] contains pointers to @env->buf[]
++			 * with @env->buflen chars, and we are removing
++			 * variable MODALIAS here pointed by @env->envp[i]
++			 * with length @len as shown below:
++			 *
++			 * 0               @env->buf[]      @env->buflen
++			 * ---------------------------------------------
++			 * ^             ^              ^              ^
++			 * |             |->   @len   <-| target block |
++			 * @env->envp[0] @env->envp[i]  @env->envp[i + 1]
++			 *
++			 * so the "target block" indicated above is moved
++			 * backward by @len, and its right size is
++			 * @env->buflen - (@env->envp[i + 1] - @env->envp[0]).
++			 */
+ 			memmove(env->envp[i], env->envp[i + 1],
+-				env->buflen - len);
++				env->buflen - (env->envp[i + 1] - env->envp[0]));
  
-+static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
-+
-+	pm_runtime_get_sync(data->dev);
-+}
-+
-+static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
-+{
-+	struct irqsteer_data *data = d->chip_data;
-+
-+	pm_runtime_put_autosuspend(data->dev);
-+}
-+
- static const struct irq_chip imx_irqsteer_irq_chip = {
--	.name		= "irqsteer",
--	.irq_mask	= imx_irqsteer_irq_mask,
--	.irq_unmask	= imx_irqsteer_irq_unmask,
-+	.name			= "irqsteer",
-+	.irq_mask		= imx_irqsteer_irq_mask,
-+	.irq_unmask		= imx_irqsteer_irq_unmask,
-+	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
-+	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
- };
- 
- static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
-@@ -150,6 +167,7 @@ static int imx_irqsteer_probe(struct pla
- 	if (!data)
- 		return -ENOMEM;
- 
-+	data->dev = &pdev->dev;
- 	data->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(data->regs)) {
- 		dev_err(&pdev->dev, "failed to initialize reg\n");
+ 			for (j = i; j < env->envp_idx - 1; j++)
+ 				env->envp[j] = env->envp[j + 1] - len;
 
 
 
