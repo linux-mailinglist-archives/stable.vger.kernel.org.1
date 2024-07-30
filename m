@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-64275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5082941D4A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D152941B3B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18B03B244B2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EB4C1C22317
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF5F18A6A6;
-	Tue, 30 Jul 2024 17:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D61189537;
+	Tue, 30 Jul 2024 16:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkoLq8VZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fkqv75Xa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A43F1898E0;
-	Tue, 30 Jul 2024 17:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5193218801A;
+	Tue, 30 Jul 2024 16:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359581; cv=none; b=DeXUwtbIHoHfqeU/00ePJVn+PteKXqoXq/nv/YBVpJJ4EwNgJIvS1TYmcynOE9Z9KEbHkhXCBVaz77ZXkH+cr3ww5066z3w4Fy2cadoYtASTueRaGq2spYnBkqjxhPqnp56f+PZxiEfcUndCQLuLaxseD5R9EniPUAOX5/6TmTQ=
+	t=1722358342; cv=none; b=fEM+SlqxiQqveqe1FYinkUXbPxtmFIj0JeDpu3trmleyHHQ6tMtjmvx4kc66Oh0ix6YttfF/JNtsSAlw0sWpbLvjS7CJbUfQNB057nHk5ijvraQTsUjnea3IqzJTObpFAXhfSZJB1h3Ny3kh2QVbSwp7rXixf1sWyZozZ8eIdTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359581; c=relaxed/simple;
-	bh=ZYRg2wsJjih4bTdgMTxynCPaIIMdnF/DrR6Yhd5uLKc=;
+	s=arc-20240116; t=1722358342; c=relaxed/simple;
+	bh=UkdqypuN0bnAWiNLEG7p5sepk3nQXUlaeDCqv4FHkJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVmyBpzNkPmk2UaDPbQ9KBJXfglLT85rlASrFdrll+Yg597yvLH4E1ayznuvKqgPh8V0WPD45MKZwXRnoUTJRYH37jQdikMtxDT9/VhwXrJ7b1sG6hcvNW/r983ZS5iKkyo2xQFP+IbDrXHBCL23QIf40+t8XBO5WrGzyMFcg0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkoLq8VZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664AAC32782;
-	Tue, 30 Jul 2024 17:13:00 +0000 (UTC)
+	 MIME-Version; b=G38h2cjsnFkOlgvGu/ocB6edAJgC1I8cnlymQQhMAD8y6g/8v4ayEOJ1MNNWwM83k8MTK4Ixq1e09na3JQnx7T59ZyZuyKDenR5oaDPlfA172w6yLjCI/8JFeTx8ercvqTB6W8cjG0fyZl1dsN4Yxvn+dssPnIrxEp5jnvxSV10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fkqv75Xa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A151C32782;
+	Tue, 30 Jul 2024 16:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359580;
-	bh=ZYRg2wsJjih4bTdgMTxynCPaIIMdnF/DrR6Yhd5uLKc=;
+	s=korg; t=1722358341;
+	bh=UkdqypuN0bnAWiNLEG7p5sepk3nQXUlaeDCqv4FHkJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkoLq8VZMKcZQUIbaJ8EkzVIKiW8+gHzfIOvCuIWvlAB6QlYhZdVHng6NGzE6uA6W
-	 L98/FZ88Le9F8XXFwIaFQagqPvQF6WcPi4FA2k57S7AwrgwZpBh3yiILLLtaML7Jbu
-	 kfk37uwEkkYFkuCN2IqRIIijtoxMNZ/xvfWOLeFo=
+	b=Fkqv75XaZF+RxNP4pksVfsUwF/507/dgzHZXcCkqHb7JDc9ZnB5GzH0JkevCBRFdq
+	 JxE1CRBAm+AshyhOlen1jLDXAd9YghaZT52k9AkYpA3kgykMPqjb+infyP4KS5ccji
+	 lYEPr8k5XSRlRrkNnoX5kurLO26f5EeTpBqpYRro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH 6.6 504/568] lib/build_OID_registry: dont mention the full path of the script in output
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 378/440] MIPS: Loongson64: Test register availability before use
 Date: Tue, 30 Jul 2024 17:50:11 +0200
-Message-ID: <20240730151659.726638765@linuxfoundation.org>
+Message-ID: <20240730151630.574488915@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +59,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 5ef6dc08cfde240b8c748733759185646e654570 upstream.
+commit c04366b1207a036b7de02dfcc1ac7138d3343c9b upstream.
 
-This change strips the full path of the script generating
-lib/oid_registry_data.c to just lib/build_OID_registry.  The motivation
-for this change is Yocto emitting a build warning
+Some global register address variable may be missing on
+specific CPU type, test them before use them.
 
-	File /usr/src/debug/linux-lxatac/6.7-r0/lib/oid_registry_data.c in package linux-lxatac-src contains reference to TMPDIR [buildpaths]
-
-So this change brings us one step closer to make the build result
-reproducible independent of the build path.
-
-Link: https://lkml.kernel.org/r/20240313211957.884561-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Fabio Estevam <festevam@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/build_OID_registry |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/loongson64/smp.c |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
---- a/lib/build_OID_registry
-+++ b/lib/build_OID_registry
-@@ -8,6 +8,7 @@
- #
+--- a/arch/mips/loongson64/smp.c
++++ b/arch/mips/loongson64/smp.c
+@@ -479,12 +479,25 @@ static void loongson3_smp_finish(void)
+ static void __init loongson3_smp_setup(void)
+ {
+ 	int i = 0, num = 0; /* i: physical id, num: logical id */
++	int max_cpus = 0;
  
- use strict;
-+use Cwd qw(abs_path);
+ 	init_cpu_possible(cpu_none_mask);
  
- my @names = ();
- my @oids = ();
-@@ -17,6 +18,8 @@ if ($#ARGV != 1) {
-     exit(2);
- }
- 
-+my $abs_srctree = abs_path($ENV{'srctree'});
++	for (i = 0; i < ARRAY_SIZE(smp_group); i++) {
++		if (!smp_group[i])
++			break;
++		max_cpus += loongson_sysconf.cores_per_node;
++	}
 +
- #
- # Open the file to read from
- #
-@@ -35,7 +38,7 @@ close IN_FILE || die;
- #
- open C_FILE, ">$ARGV[1]" or die;
- print C_FILE "/*\n";
--print C_FILE " * Automatically generated by ", $0, ".  Do not edit\n";
-+print C_FILE " * Automatically generated by ", $0 =~ s#^\Q$abs_srctree/\E##r, ".  Do not edit\n";
- print C_FILE " */\n";
++	if (max_cpus < loongson_sysconf.nr_cpus) {
++		pr_err("SMP Groups are less than the number of CPUs\n");
++		loongson_sysconf.nr_cpus = max_cpus ? max_cpus : 1;
++	}
++
+ 	/* For unified kernel, NR_CPUS is the maximum possible value,
+ 	 * loongson_sysconf.nr_cpus is the really present value
+ 	 */
++	i = 0;
+ 	while (i < loongson_sysconf.nr_cpus) {
+ 		if (loongson_sysconf.reserved_cpus_mask & (1<<i)) {
+ 			/* Reserved physical CPU cores */
+@@ -505,14 +518,14 @@ static void __init loongson3_smp_setup(v
+ 		__cpu_logical_map[num] = -1;
+ 		num++;
+ 	}
+-
+ 	csr_ipi_probe();
+ 	ipi_set0_regs_init();
+ 	ipi_clear0_regs_init();
+ 	ipi_status0_regs_init();
+ 	ipi_en0_regs_init();
+ 	ipi_mailbox_buf_init();
+-	ipi_write_enable(0);
++	if (smp_group[0])
++		ipi_write_enable(0);
  
- #
+ 	cpu_set_core(&cpu_data[0],
+ 		     cpu_logical_map(0) % loongson_sysconf.cores_per_package);
+@@ -829,6 +842,9 @@ static int loongson3_disable_clock(unsig
+ 	uint64_t core_id = cpu_core(&cpu_data[cpu]);
+ 	uint64_t package_id = cpu_data[cpu].package;
+ 
++	if (!loongson_chipcfg[package_id] || !loongson_freqctrl[package_id])
++		return 0;
++
+ 	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
+ 		LOONGSON_CHIPCFG(package_id) &= ~(1 << (12 + core_id));
+ 	} else {
+@@ -843,6 +859,9 @@ static int loongson3_enable_clock(unsign
+ 	uint64_t core_id = cpu_core(&cpu_data[cpu]);
+ 	uint64_t package_id = cpu_data[cpu].package;
+ 
++	if (!loongson_chipcfg[package_id] || !loongson_freqctrl[package_id])
++		return 0;
++
+ 	if ((read_c0_prid() & PRID_REV_MASK) == PRID_REV_LOONGSON3A_R1) {
+ 		LOONGSON_CHIPCFG(package_id) |= 1 << (12 + core_id);
+ 	} else {
 
 
 
