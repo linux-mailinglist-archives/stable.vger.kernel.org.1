@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902A2940CEF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5DE940CF6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8B6E1C210D8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:07:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC26C1C226ED
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBC519415C;
-	Tue, 30 Jul 2024 09:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A066194C8C;
+	Tue, 30 Jul 2024 09:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faDYfKLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bB7undHy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2A0194099
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1CD194C83
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722330401; cv=none; b=CA2mz8TL3KQqkLmRW9ItdMDc3s25c/a1V1GBydY4YGpl1l9QUVQWCgEw5Bhd8iAPimrWIUa03i+2Y7xIs6y58c3HgmhOoS8A0tH+yPgb73NHzMITm4XSZKQZI2/PihaTyWHtLqC8IqO5//Y8rlhHnaFKI7qp1e1wDP0xbcZK6rA=
+	t=1722330407; cv=none; b=QQY0KVbDKm93AA1jDGDkttQn0vpCI6jk3dPT5K9+a9QAEQJhymFZUT442nuRCgUFUAoSlPpHMbJIbSjCJ8zV0ZtWIZeRDhc0G/e2vkN/SKV4iXe5KBGWj8S+gILQ090uoSfkyDIO9pKANIItUHpgeym8epcfQtA/1eFmatrLcI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722330401; c=relaxed/simple;
-	bh=8Bb0g4u7l28RvXV+XmE/W0E6nSV2PlTfT4yfHpyFf8Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tVPYq2wLEU0Qqb2DcsqEhAK9sLunxhidaBjuB9rvjIzsxsotUGUMq72Kass4RL+sUiiiUNF8Q9MRNXZ6b+PMFqVNLFji/cI8046IKOT/eYes/6bdFdowHUDB/beyiWqFI/AeTkEBE5Yb2xvdRaTOvOku/Cp8i06O+oPEjYzGoKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faDYfKLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00C7C4AF09;
-	Tue, 30 Jul 2024 09:06:40 +0000 (UTC)
+	s=arc-20240116; t=1722330407; c=relaxed/simple;
+	bh=mbnmlddZSUD2te+kUVtfz7W9L+TdbuaDuXkU+Snr2aA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QbhD7sGKS531Pg6wi86nEWum+eGOYuONDCAVXwjhnSnYZhGnQk+JJ/dPHZAfwvar+01vLYzPa5c6okvewWu5MAoyTra1vyGPG9rdl94Z0Zm994j062cCglR4DsoCKkRsvek2cdO8t+uwOqz1Ad9w4dRqwsMPr0FK3/jFduRKj6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bB7undHy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7761EC4AF09;
+	Tue, 30 Jul 2024 09:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722330401;
-	bh=8Bb0g4u7l28RvXV+XmE/W0E6nSV2PlTfT4yfHpyFf8Q=;
+	s=korg; t=1722330406;
+	bh=mbnmlddZSUD2te+kUVtfz7W9L+TdbuaDuXkU+Snr2aA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=faDYfKLLWTIo/CkmN1ZyJ0xSPzebcmMCfh7CX8HbQcN8qNn+xzJB6ElZJsZ1RG1Bn
-	 25hyqnN6R2yiZNxMii6s7WmSpo2yXNXB2/2xiWN3ru3Y55qd8/aqJxtWRlrPwjemWf
-	 ZqmOn1C2SUPM99GYyLVBZb96Cu5/BPhUDHGnVlYU=
-Subject: FAILED: patch "[PATCH] irqdomain: Fixed unbalanced fwnode get and put" failed to apply to 4.19-stable tree
-To: herve.codina@bootlin.com,tglx@linutronix.de
+	b=bB7undHysYe2/l8nE/WYX8X2N3KXtaF2oGjqUBRdOJrDViSRa0iC/48/wffYR5l7S
+	 PjLv8I5kFYxSZiPQWksX3lSkH9V6nhjwgXx4X5k6U48uq1Hr2mcwRt/SwDi2BzMiUX
+	 G55C5s0ZRyptZ/yRIdDqYqknSa5+pMfSk5JMvGuE=
+Subject: FAILED: patch "[PATCH] irqchip/imx-irqsteer: Handle runtime power management" failed to apply to 5.15-stable tree
+To: shenwei.wang@nxp.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:06:30 +0200
-Message-ID: <2024073029-outfit-monogram-93d9@gregkh>
+Date: Tue, 30 Jul 2024 11:06:43 +0200
+Message-ID: <2024073043-depth-viral-a5b8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,28 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6ce3e98184b625d2870991880bf9586ded7ea7f9
+git cherry-pick -x 33b1c47d1fc0b5f06a393bb915db85baacba18ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073029-outfit-monogram-93d9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073043-depth-viral-a5b8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-6ce3e98184b6 ("irqdomain: Fixed unbalanced fwnode get and put")
-67a4e1a3bf7c ("irqdomain: Use return value of strreplace()")
-ed1054a02aa2 ("irqdomain: Mark fwnodes when their irqdomain is added/removed")
-181e9d4efaf6 ("irqdomain: Make __irq_domain_add() less OF-dependent")
-43b98d876f89 ("genirq/irqdomain: Remove WARN_ON() on out-of-memory condition")
-94967b55ebf3 ("genirq/debugfs: Reinstate full OF path for domain name")
+33b1c47d1fc0 ("irqchip/imx-irqsteer: Handle runtime power management correctly")
+e9a50f12e579 ("irqchip/imx-irqsteer: Constify irq_chip struct")
 
 thanks,
 
@@ -82,64 +78,102 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6ce3e98184b625d2870991880bf9586ded7ea7f9 Mon Sep 17 00:00:00 2001
-From: Herve Codina <herve.codina@bootlin.com>
-Date: Fri, 14 Jun 2024 19:32:04 +0200
-Subject: [PATCH] irqdomain: Fixed unbalanced fwnode get and put
+From 33b1c47d1fc0b5f06a393bb915db85baacba18ea Mon Sep 17 00:00:00 2001
+From: Shenwei Wang <shenwei.wang@nxp.com>
+Date: Wed, 3 Jul 2024 11:32:50 -0500
+Subject: [PATCH] irqchip/imx-irqsteer: Handle runtime power management
+ correctly
 
-fwnode_handle_get(fwnode) is called when a domain is created with fwnode
-passed as a function parameter. fwnode_handle_put(domain->fwnode) is called
-when the domain is destroyed but during the creation a path exists that
-does not set domain->fwnode.
+The power domain is automatically activated from clk_prepare(). However, on
+certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
+sleeping functions, which triggers the 'scheduling while atomic' bug in the
+context switch path during device probing:
 
-If this path is taken, the fwnode get will never be put.
+ BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
+ Call trace:
+  __schedule_bug+0x54/0x6c
+  __schedule+0x7f0/0xa94
+  schedule+0x5c/0xc4
+  schedule_preempt_disabled+0x24/0x40
+  __mutex_lock.constprop.0+0x2c0/0x540
+  __mutex_lock_slowpath+0x14/0x20
+  mutex_lock+0x48/0x54
+  clk_prepare_lock+0x44/0xa0
+  clk_prepare+0x20/0x44
+  imx_irqsteer_resume+0x28/0xe0
+  pm_generic_runtime_resume+0x2c/0x44
+  __genpd_runtime_resume+0x30/0x80
+  genpd_runtime_resume+0xc8/0x2c0
+  __rpm_callback+0x48/0x1d8
+  rpm_callback+0x6c/0x78
+  rpm_resume+0x490/0x6b4
+  __pm_runtime_resume+0x50/0x94
+  irq_chip_pm_get+0x2c/0xa0
+  __irq_do_set_handler+0x178/0x24c
+  irq_set_chained_handler_and_data+0x60/0xa4
+  mxc_gpio_probe+0x160/0x4b0
 
-To avoid the unbalanced get and put, set domain->fwnode unconditionally.
+Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
+callbacks and handle power management in them as they are invoked from
+non-atomic context.
 
-Fixes: d59f6617eef0 ("genirq: Allow fwnode to carry name information only")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+[ tglx: Rewrote change log, added Fixes tag ]
+
+Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240614173232.1184015-4-herve.codina@bootlin.com
+Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
 
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 28709c14d894..7b4d580fc8e4 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -156,7 +156,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		switch (fwid->type) {
- 		case IRQCHIP_FWNODE_NAMED:
- 		case IRQCHIP_FWNODE_NAMED_ID:
--			domain->fwnode = fwnode;
- 			domain->name = kstrdup(fwid->name, GFP_KERNEL);
- 			if (!domain->name) {
- 				kfree(domain);
-@@ -165,7 +164,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 			break;
- 		default:
--			domain->fwnode = fwnode;
- 			domain->name = fwid->name;
- 			break;
- 		}
-@@ -185,7 +183,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		}
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index 20cf7a9e9ece..75a0e980ff35 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -36,6 +36,7 @@ struct irqsteer_data {
+ 	int			channel;
+ 	struct irq_domain	*domain;
+ 	u32			*saved_reg;
++	struct device		*dev;
+ };
  
- 		domain->name = strreplace(name, '/', ':');
--		domain->fwnode = fwnode;
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
+ static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
+@@ -72,10 +73,26 @@ static void imx_irqsteer_irq_mask(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
  
-@@ -201,8 +198,8 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
++static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_get_sync(data->dev);
++}
++
++static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_put_autosuspend(data->dev);
++}
++
+ static const struct irq_chip imx_irqsteer_irq_chip = {
+-	.name		= "irqsteer",
+-	.irq_mask	= imx_irqsteer_irq_mask,
+-	.irq_unmask	= imx_irqsteer_irq_unmask,
++	.name			= "irqsteer",
++	.irq_mask		= imx_irqsteer_irq_mask,
++	.irq_unmask		= imx_irqsteer_irq_unmask,
++	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
++	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
+ };
  
--	fwnode_handle_get(fwnode);
--	fwnode_dev_initialized(fwnode, true);
-+	domain->fwnode = fwnode_handle_get(fwnode);
-+	fwnode_dev_initialized(domain->fwnode, true);
+ static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
+@@ -150,6 +167,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
  
- 	/* Fill structure */
- 	INIT_RADIX_TREE(&domain->revmap_tree, GFP_KERNEL);
++	data->dev = &pdev->dev;
+ 	data->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(data->regs)) {
+ 		dev_err(&pdev->dev, "failed to initialize reg\n");
 
 
