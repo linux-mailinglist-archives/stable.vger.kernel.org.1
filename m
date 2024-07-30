@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-63366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313CE941899
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9998941DB0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62A441C230D4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A10481F277F8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB401A6160;
-	Tue, 30 Jul 2024 16:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D911A76C2;
+	Tue, 30 Jul 2024 17:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NrghPUI4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjl0ky8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359051A618E;
-	Tue, 30 Jul 2024 16:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355581A76BE;
+	Tue, 30 Jul 2024 17:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356599; cv=none; b=QZDwfRfUocZ/d2R7p2hChAk15rmTQFjV0ODwOQMXNlRo0C1k7fvX+DqZHyMOVFPgFNFednLT1QGmaSVXWoFRyOBktEXD6htS/wBf+gyNzAzJpM3Vee4JBb0drTWwexqsA2a9CTiKjH4JVg3SMz+N4oom67vbvUbTUUjLDPlAC3U=
+	t=1722360009; cv=none; b=fsgkrf29N0WEXue6rWtMmR4cdXxPPO9IviagRJtsZfeWP/A8aKA/+EjZstmrrYDACgk7fgkDAZgbYd0GKoIvwpeVMI3SvOvTX9jiAft5Vp/Wj3tKsHuQTUSRmppYxC+aPegPuxVEm7p5d3h2oW3IjicRNIPpfCSjXMqY3YXw+B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356599; c=relaxed/simple;
-	bh=Wpg/ri5j+fLytzS3EvqnQKKLmzyMQP+pWYtOss0uk9Y=;
+	s=arc-20240116; t=1722360009; c=relaxed/simple;
+	bh=RnoX8hY+4bfXNTvT01CxTMsn54b55v6iU55pWQ0G0b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Go8j8ddzo+Xj4dbYDcx3CuKPDR75/pUY+rLo9ZEtmTobTLvnRcCJSxmXT55nxNQwqbJFd55azF7Blzlvvty3sQiAwEulJJ6mXWeFPTl2ojeA2Tuk/cV/+cQrO84gy0rEroWwrQKHlJ5a8CbMK8r9eqGzpz155V2jDEkjdEaoyhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NrghPUI4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7699FC4AF0A;
-	Tue, 30 Jul 2024 16:23:18 +0000 (UTC)
+	 MIME-Version; b=iqGyanYdQBljH7Op+7ziCakf39zhwE/DxyseHDDhOvUdzyGFCpY+11kSvYsznPECHd+AYTVUBIg+PRaRs9nOA0CyB1+jZIZBwM5AsQE/F30Y6c2SvODpNAexZFTwvQeZloe5uNLdoKF4obxdZnHSBlCKXTvrpGxiM37llAJfrsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjl0ky8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8A3C32782;
+	Tue, 30 Jul 2024 17:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356599;
-	bh=Wpg/ri5j+fLytzS3EvqnQKKLmzyMQP+pWYtOss0uk9Y=;
+	s=korg; t=1722360009;
+	bh=RnoX8hY+4bfXNTvT01CxTMsn54b55v6iU55pWQ0G0b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NrghPUI42pIqI9lI9zXcTx0Gb+GIbXNl0DpKrC9TS6xV72CM9oa3zaJPTK7Bwa7KI
-	 2HQCwe28NO8+hrTdiTRnTBdhtvGDFX/UooMqBFcraZ2wwp84TTOeXlAK0NnsH4vOdb
-	 HUa1nHV2vUxC7cLD6kgXasinAvK1IEhO5qF6yXjU=
+	b=zjl0ky8JOJ68YmixMXdTiv6xJEc7oH7LFRBbEaK0EVbgKC/gky0nFE9OuBwXf3keI
+	 HGdXkvjL8y01cBnHScJ/B6+mo2sMf6ZrvFeDFQ2tNUOdF81pupDv+sfetsbVAYXr3e
+	 8TjN+5w+LzR+xreExsLf/LWwqdQ4z9Wp5jcxOi30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6c21aeb59d0e82eb2782@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Arseny Krasnov <arseny.krasnov@kaspersky.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 211/440] vhost/vsock: always initialize seqpacket_allow
-Date: Tue, 30 Jul 2024 17:47:24 +0200
-Message-ID: <20240730151624.107459159@linuxfoundation.org>
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.10 569/809] media: venus: fix use after free in vdec_close
+Date: Tue, 30 Jul 2024 17:47:25 +0200
+Message-ID: <20240730151747.248834837@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,73 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-[ Upstream commit 1e1fdcbdde3b7663e5d8faeb2245b9b151417d22 ]
+commit a0157b5aa34eb43ec4c5510f9c260bbb03be937e upstream.
 
-There are two issues around seqpacket_allow:
-1. seqpacket_allow is not initialized when socket is
-   created. Thus if features are never set, it will be
-   read uninitialized.
-2. if VIRTIO_VSOCK_F_SEQPACKET is set and then cleared,
-   then seqpacket_allow will not be cleared appropriately
-   (existing apps I know about don't usually do this but
-    it's legal and there's no way to be sure no one relies
-    on this).
+There appears to be a possible use after free with vdec_close().
+The firmware will add buffer release work to the work queue through
+HFI callbacks as a normal part of decoding. Randomly closing the
+decoder device from userspace during normal decoding can incur
+a read after free for inst.
 
-To fix:
-	- initialize seqpacket_allow after allocation
-	- set it unconditionally in set_features
+Fix it by cancelling the work in vdec_close.
 
-Reported-by: syzbot+6c21aeb59d0e82eb2782@syzkaller.appspotmail.com
-Reported-by: Jeongjun Park <aha310510@gmail.com>
-Fixes: ced7b713711f ("vhost/vsock: support SEQPACKET for transport").
-Tested-by: Arseny Krasnov <arseny.krasnov@kaspersky.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240422100010-mutt-send-email-mst@kernel.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/vsock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/vdec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 1f3b89c885cca..c00f5821d6ecb 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -654,6 +654,7 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
- 	}
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -1747,6 +1747,7 @@ static int vdec_close(struct file *file)
  
- 	vsock->guest_cid = 0; /* no CID assigned yet */
-+	vsock->seqpacket_allow = false;
+ 	vdec_pm_get(inst);
  
- 	atomic_set(&vsock->queued_replies, 0);
- 
-@@ -797,8 +798,7 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
- 			goto err;
- 	}
- 
--	if (features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET))
--		vsock->seqpacket_allow = true;
-+	vsock->seqpacket_allow = features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET);
- 
- 	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
- 		vq = &vsock->vqs[i];
--- 
-2.43.0
-
++	cancel_work_sync(&inst->delayed_process_work);
+ 	v4l2_m2m_ctx_release(inst->m2m_ctx);
+ 	v4l2_m2m_release(inst->m2m_dev);
+ 	vdec_ctrl_deinit(inst);
 
 
 
