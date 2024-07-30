@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417B99417D6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046A2941B08
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C09F2B24600
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:16:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E08D1C20E34
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D910F184547;
-	Tue, 30 Jul 2024 16:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0244189537;
+	Tue, 30 Jul 2024 16:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQSfVuJX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMZhyRjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CBE183CC3;
-	Tue, 30 Jul 2024 16:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D45A18455B;
+	Tue, 30 Jul 2024 16:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355989; cv=none; b=Y3CAp+XiYLCF3/BrQAK6Q6KPqxjGWJc5GNcG0Xq4WkgKIzf9Lz0qyjII+WZgUW0Gik8ajATOLspQHOIytezzRJLH9xX41EkI2NRlSGCE0NMRtqRvVgzM+ilJt53y57CSd1OxMhpjE2dNbB0Tsv0fyYwMaDLRp2oDxS1hGL8PElE=
+	t=1722358210; cv=none; b=dYlWDe2e/ZkS35SzDB0vTwegdtxS1UDzjlP0TeTvmhYzDQwwQZotjNtq6e4aPcCREHTkF3qHUpGu2BBKv2s++gptAuu6ZvaUNyOr+pyMx+S0xgAirWzagtQHz4HE1QznFgkigZhUVDK0UOlA7MIwCTGAFm0NXvJIdoGR0cafi34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355989; c=relaxed/simple;
-	bh=an2oQn4u7qFOblw/3ZC3b2PsKwpvxx0EqzdugzoV8zo=;
+	s=arc-20240116; t=1722358210; c=relaxed/simple;
+	bh=/Ps/9J053VdsrQg8TnYfJCDPaUT15O3RmQMeANz5xNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7snYz5471RgeOBPlMbPxka/Iw9a6eQBl0WPibIYx8WX9WAdcd4/72wVTBunIV+3FrXxgyvUWz4tSljtOoRf4k2HUAbSkykJQ813IthRRoBuXK4DntRDplEMuTe32qChkbf+dOyq9jOMUQ4i0gEWmpOPqT2GakfRYYw7uANoML8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQSfVuJX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2A0C4AF0C;
-	Tue, 30 Jul 2024 16:13:08 +0000 (UTC)
+	 MIME-Version; b=fwc3y9dC7RQsZeyUFjHEjuwynuTypZzEd7uZyYD29jeKgsHV8iZIz2wQZm8HYq8whzrA3BRbWx5tvyRNdTn9oNiySzoVbY9jjNc2VO1m3n8YSjxNDNoi1LQvRrn9+9PVH3sb0tzJSZowGBajcYLv+ohC+kQfyGyWhIzOEaAZyls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMZhyRjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D97C32782;
+	Tue, 30 Jul 2024 16:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355989;
-	bh=an2oQn4u7qFOblw/3ZC3b2PsKwpvxx0EqzdugzoV8zo=;
+	s=korg; t=1722358210;
+	bh=/Ps/9J053VdsrQg8TnYfJCDPaUT15O3RmQMeANz5xNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NQSfVuJXyZXb6I8leUki0HMtGnz0FroSYGaB8FyU0VU/k9T9mbUie5Epa94xqkGZH
-	 zfUAQqasDtrFu3Wm5JIVRnPjd2VacWjirKVXea4eu4qrIuh6TYz1f6KTMFXRisi83G
-	 hsog2g+S76Ero9X2xvMT3bcXLuhlxH5HGEgQtEac=
+	b=KMZhyRjNUa8u1vTs9h7WcCKfYWscZCuhtYoNiXsgd8/v+eAcQhHMLZQj6expaJnJF
+	 JBhD7f4rUXo0PmOwffjcP5hUA4Z761ww4jLx4j12uX9cy9j4SLW1P82QXBF88mP1pD
+	 Vz7YA56uV0jwhwGOkerh5xtVktO/gDx31a0krsx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Ming Qian <ming.qian@nxp.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/568] m68k: cmpxchg: Fix return value for default case in __arch_xchg()
+Subject: [PATCH 6.10 335/809] media: imx-jpeg: Drop initial source change event if capture has been setup
 Date: Tue, 30 Jul 2024 17:43:31 +0200
-Message-ID: <20240730151643.940255438@linuxfoundation.org>
+Message-ID: <20240730151737.851100708@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Ming Qian <ming.qian@nxp.com>
 
-[ Upstream commit 21b9e722ad28c19c2bc83f18f540b3dbd89bf762 ]
+[ Upstream commit a8fb5fce7a441d37d106c82235e1f1b57f70f5b9 ]
 
-The return value of __invalid_xchg_size() is assigned to tmp instead of
-the return variable x. Assign it to x instead.
+In section 4.5.1.5. Initialization, the step 4 may be skipped and
+continue with the Capture Setup sequence, so if the capture has been
+setup, there is no need to trigger the initial source change event, just
+start decoding, and follow the dynamic resolution change flow if the
+configured values do not match those parsed by the decoder.
 
-Fixes: 2501cf768e4009a0 ("m68k: Fix xchg/cmpxchg to fail to link if given an inappropriate pointer")
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/20240702034116.140234-2-thorsten.blum@toblux.com
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+And it won't fail the gstreamer pipeline.
+
+Fixes: b833b178498d ("media: imx-jpeg: notify source chagne event when the first picture parsed")
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/include/asm/cmpxchg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/m68k/include/asm/cmpxchg.h b/arch/m68k/include/asm/cmpxchg.h
-index d7f3de9c5d6f7..4ba14f3535fcb 100644
---- a/arch/m68k/include/asm/cmpxchg.h
-+++ b/arch/m68k/include/asm/cmpxchg.h
-@@ -32,7 +32,7 @@ static inline unsigned long __arch_xchg(unsigned long x, volatile void * ptr, in
- 		x = tmp;
- 		break;
- 	default:
--		tmp = __invalid_xchg_size(x, ptr, size);
-+		x = __invalid_xchg_size(x, ptr, size);
- 		break;
- 	}
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index cc97790ed30f6..b1300f15e5020 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -1634,6 +1634,9 @@ static int mxc_jpeg_start_streaming(struct vb2_queue *q, unsigned int count)
+ 	dev_dbg(ctx->mxc_jpeg->dev, "Start streaming ctx=%p", ctx);
+ 	q_data->sequence = 0;
  
++	if (V4L2_TYPE_IS_CAPTURE(q->type))
++		ctx->need_initial_source_change_evt = false;
++
+ 	ret = pm_runtime_resume_and_get(ctx->mxc_jpeg->dev);
+ 	if (ret < 0) {
+ 		dev_err(ctx->mxc_jpeg->dev, "Failed to power up jpeg\n");
 -- 
 2.43.0
 
