@@ -1,92 +1,104 @@
-Return-Path: <stable+bounces-62827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0E8941455
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:27:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908BC94151E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8C7F1F2376D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:27:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC4501C232F1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E121A255A;
-	Tue, 30 Jul 2024 14:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50991A2C05;
+	Tue, 30 Jul 2024 15:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iWsZBtUO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KbwII/pT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lfbQJcAB"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DAC1A2553
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 14:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2404F1A0B15;
+	Tue, 30 Jul 2024 15:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722349619; cv=none; b=e3OdKp/+5EAK2DBr6CnIfxsd9dcmuobVXLkEHt5g42RPbGWf/kQQ7DfWiyIkfWnwJX8oAqN3w/1YDfY3YxoyoKmabTWNBkK4T67dZWG+FPRhReA5kD71qIzYWLAOPfoSvch08X1pSQti+oNEBi6iHDXR9HiO+ncxvI9jRTzPwlc=
+	t=1722352064; cv=none; b=WdvfS5UOUi/hlyCXhzcIx++QqrfE6h61OJj89azYruwIJ8EVSftgNR7rqqQBDeY5CSRVpC4x2uUBmW9S29xUjIYV8g+8UlXdjIU2yuzDz2P8EcHtGogQtt2hdFfbGGzZseAJXIGOLUr7eA6ObPzQtVpwaaa0AmYTTkFTgx3Xvtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722349619; c=relaxed/simple;
-	bh=QwOqJyMeabVVRXz2SZZrMQsxGHIjnHfDQSOp9Mld0Ok=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=YLrPBGomTUuNhiMqjSlJqdJVTfETeCDFWb8MMi8ufhQ15ZmvMiBzK3Ud3K/USyzyPpX2tTgl/uudlSzX/N+VHOhhQ4GQMcehh7Mvtn2bDEOdF/+wm01PRpn03PurqBzef1PlX3I1/ch37GXkDYdH8szCrXZk4FnPb0sS52XH918=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iWsZBtUO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722349617;
+	s=arc-20240116; t=1722352064; c=relaxed/simple;
+	bh=0vEHp4A4cdwoQ2NXtwvbDJ+K7DRuc7Cd0ke5pgmBak0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ipTQ23KGy89Tz91JiZQ8zjYIL2jTLcnb+KTAplMcoCL64OuIN05IMdHGs3d/bWdYTA+HxJX9BbXh7zs8s2s38z7k6WV7q7kH5ZRUXVbITOO5qDiHtMWdf4M2T+IXSBHSZQmCog665edZNWhP5lXixRf19pbd+kFbO+vfsrK8s/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KbwII/pT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lfbQJcAB; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1722352061;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HN99UYk8Kh6g/3OE9am3X/kGbGNdhXjLG7Bh6vntP4U=;
-	b=iWsZBtUO2xswIavOjbTp2MHpW3OsRcLUdM99q2/wITJxAQL6k8V7UkZQimPPfH07yTII4h
-	3s2FfMKw6sJ07HLisqB+rkEHb//IqrOwQ4dyypXXUlcrZEHsQU2CxJdLIMNBAaxOzIwPIi
-	UEAcCDgtQQKQOh4BVJlPVQa1A2nppvg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-416-inhxdHUVP768Hgmk5_Y2BQ-1; Tue,
- 30 Jul 2024 10:26:55 -0400
-X-MC-Unique: inhxdHUVP768Hgmk5_Y2BQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 957731956080;
-	Tue, 30 Jul 2024 14:26:53 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.216])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E4ECC1955D42;
-	Tue, 30 Jul 2024 14:26:50 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240729090639.852732-1-max.kellermann@ionos.com>
-References: <20240729090639.852732-1-max.kellermann@ionos.com>
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: dhowells@redhat.com, jlayton@kernel.org, willy@infradead.org,
-    linux-cachefs@redhat.com, linux-fsdevel@vger.kernel.org,
-    ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH] fs/ceph/addr: pass using_pgpriv2=false to fscache_write_to_cache()
+	bh=fpwPEpw3JPhRv9nBi1m3AsS0B+P8D+BFBm1aO7bI/bE=;
+	b=KbwII/pTq8x8+n5OR+jcZaKlUYBbB6p32/ph+Tp9EVTYJ7YLcic2bejdbtMrAb3Cah9Lrf
+	fSxktmAE6+QjoPUmaEc6IY/bE3pZm39L7xgbZi7K0m6iUB9LyN6wuOu6ajDLvOndETtAfe
+	oVzTyLwEQTPQwx3eAZ7HIUOf5D/YZSO3+tz/WMxaTRtFg+2etA1/aw6Opijpws7vjbhxoT
+	e27B1pFneznZRjgC+GQX8v6ciWJLLN1/eemDRV0M4VvsKmxTZU0GJrXWHEeiB8VSmyeElk
+	CTtuFesifLLLGt3SIzjzMoC5AKeBhJt+qYTz/gtXvosqW93PfZs28VcS+taSOg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1722352061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fpwPEpw3JPhRv9nBi1m3AsS0B+P8D+BFBm1aO7bI/bE=;
+	b=lfbQJcABo49SKHgsRCI3VbvBYJY/1C1r4+NcBjv+Kz6tCTlhv8/dHZ6SdJkHVKL/ZabQf2
+	djXo+eroYdiME+BQ==
+To: David Wang <00107082@163.com>, liaoyu15@huawei.com
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+ stable@vger.kernel.org, x86@kernel.org
+Subject: Re: [Regression] 6.11.0-rc1: BUG: using smp_processor_id() in
+ preemptible when suspend the system
+In-Reply-To: <20240730142557.4619-1-00107082@163.com>
+References: <20240730142557.4619-1-00107082@163.com>
+Date: Tue, 30 Jul 2024 17:07:41 +0200
+Message-ID: <87ikwm7waq.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3516607.1722349609.1@warthog.procyon.org.uk>
-Date: Tue, 30 Jul 2024 15:26:49 +0100
-Message-ID: <3516608.1722349609@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Content-Type: text/plain
 
-For the moment, ceph has to continue using PG_private_2.  It doesn't use
-netfs_writepages().  I have mostly complete patches to fix that, but they got
-popped onto the back burner for a bit.
+On Tue, Jul 30 2024 at 22:25, David Wang wrote:
+> When I suspend my system, via `systemctl suspend`, kernel BUG shows up in log:
+>
+>  kernel: [ 1734.412974] smpboot: CPU 2 is now offline
+>  kernel: [ 1734.414952] BUG: using smp_processor_id() in preemptible [00000000] code: systemd-sleep/4619
+>  kernel: [ 1734.414957] caller is hotplug_cpu__broadcast_tick_pull+0x1c/0xc0
 
-I've finally managed to get cephfs set up and can now reproduce the hang
-you're seeing.
+The below should fix that.
 
-David
+Thanks,
 
+        tglx
+---
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -1141,7 +1141,6 @@ void tick_broadcast_switch_to_oneshot(vo
+ #ifdef CONFIG_HOTPLUG_CPU
+ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
+ {
+-	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	struct clock_event_device *bc;
+ 	unsigned long flags;
+ 
+@@ -1167,6 +1166,8 @@ void hotplug_cpu__broadcast_tick_pull(in
+ 		 * device to avoid the starvation.
+ 		 */
+ 		if (tick_check_broadcast_expired()) {
++			struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
++
+ 			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
+ 			tick_program_event(td->evtdev->next_event, 1);
+ 		}
 
