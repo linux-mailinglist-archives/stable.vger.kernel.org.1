@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-63689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F50E941A26
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8D6941D28
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 593BD1C234D6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCB961C23B67
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D74184535;
-	Tue, 30 Jul 2024 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C608E18A6D9;
+	Tue, 30 Jul 2024 17:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jyq2hRSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ps321u9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454351A6192;
-	Tue, 30 Jul 2024 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A37E188017;
+	Tue, 30 Jul 2024 17:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357640; cv=none; b=TgVMSyhz3M+SZ60jduxaHRT+p+dI365alPBTzmmZqN6/EpbgsNUIvuqAZLi9tejT0UV514Ras107aOe6+kAYqT4eKtzJE5h3z+yHZORJfkREN65sFoesduf7ZgQm2Cz0mcO03Zl4EBxW/XV3ZUGkRK6hJKj3EaEnJazIlZIq9+k=
+	t=1722359614; cv=none; b=txUBAiV68QHL6uXsvNa2qIDBWQY8dA2+TdJ8DuSqhD6ayHFfto4OTE6Dj+98SkDU89qJ6WHKZCxQYxa0hLfcMtjktWoTAsgQpquotWZKD9iN+Lo8kNHoKno0JNr+0IVpo8cjo4aGsea4fe9W4WLCCAlegKyuFqKx596wbs467TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357640; c=relaxed/simple;
-	bh=dODyhXslc3jf7ieDPhZraeW1hjjlWI+a+QDDmWb4aRE=;
+	s=arc-20240116; t=1722359614; c=relaxed/simple;
+	bh=I6KwDJ5kT7jY4W6xiKA9RwIk7+Ret+GRum05vpE52mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbXWAxnkANI7hw5mqqvmgDV7YWPgt4KVRwLEgMHcV9iXmTeXL4+0BZ4UT3AyO2EtUENCdEDlyGOsZPR4c/y5Z14j7VxyuVF8xB/aKe/1Fx79l0aikgzhlLOow50wCtPRUCcsFFmEDdqFs/1fw6HSd9VUK8LJ52nr/sTboYJ+ytk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jyq2hRSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD164C32782;
-	Tue, 30 Jul 2024 16:40:39 +0000 (UTC)
+	 MIME-Version; b=eAzCpolD3JNklsVGj6iKPPDVcsqYagpimSm2+O4BeyfTgXyyKwjpGTk6KyNBVLHlZZg9KpeEuazJac4gE706FCKLD7Um/e26P+2W+1GfgiqIY0nHF5pM4JS/h4pUt2dbFpKol1Jx+AkwvyQcq2R9FUdH/7K7xpEFR8A0OuUHEm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ps321u9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A974FC32782;
+	Tue, 30 Jul 2024 17:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357640;
-	bh=dODyhXslc3jf7ieDPhZraeW1hjjlWI+a+QDDmWb4aRE=;
+	s=korg; t=1722359614;
+	bh=I6KwDJ5kT7jY4W6xiKA9RwIk7+Ret+GRum05vpE52mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jyq2hRShLFJutbFvjgTs53nMzB6uqSNjV5w+9W4Es99ZUgAmVe/SzjwtBW1vahYg8
-	 GWPTVqxMVhSuTm98BIr8RynokkqJptBehfhM/HM1847VxkwdPdlWsyxBkqIKAHlDRm
-	 7BZg/+rEoyMIFddpm09DXX0+ZxwW7DGh+JFmpD1c=
+	b=ps321u9eB/xQom7DsTEFM3P2LFnYdpuf6ZbCJMamtSIcDAgPoOcdj076t6H8BxirR
+	 50aur8gpYZ87S29vfHTwYDMYQlsM+2t+zFSvKMPBNV0VjiwUOYt/KutyaAmXgvHrIN
+	 RzRozQHfNw60WcK2t9D4728K1oy7cI7o++xvHJAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huai-Yuan Liu <qq810974084@gmail.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 277/568] scsi: lpfc: Fix a possible null pointer dereference
+Subject: [PATCH 6.10 508/809] fs/proc/task_mmu: indicate PM_FILE for PMD-mapped file THP
 Date: Tue, 30 Jul 2024 17:46:24 +0200
-Message-ID: <20240730151650.704957162@linuxfoundation.org>
+Message-ID: <20240730151744.800512250@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +67,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huai-Yuan Liu <qq810974084@gmail.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 5e0bf3e8aec2cbc51123f84b29aaacbd91fc56fa ]
+[ Upstream commit 3f9f022e975d930709848a86a1c79775b0585202 ]
 
-In function lpfc_xcvr_data_show, the memory allocation with kmalloc might
-fail, thereby making rdp_context a null pointer. In the following context
-and functions that use this pointer, there are dereferencing operations,
-leading to null pointer dereference.
+Patch series "fs/proc: move page_mapcount() to fs/proc/internal.h".
 
-To fix this issue, a null pointer check should be added. If it is null,
-use scnprintf to notify the user and return len.
+With all other page_mapcount() users in the tree gone, move
+page_mapcount() to fs/proc/internal.h, rename it and extend the
+documentation to prevent future (ab)use.
 
-Fixes: 479b0917e447 ("scsi: lpfc: Create a sysfs entry called lpfc_xcvr_data for transceiver info")
-Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
-Link: https://lore.kernel.org/r/20240621082545.449170-1-qq810974084@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+... of course, I find some issues while working on that code that I sort
+first ;)
+
+We'll now only end up calling page_mapcount() [now
+folio_precise_page_mapcount()] on pages mapped via present page table
+entries.  Except for /proc/kpagecount, that still does questionable
+things, but we'll leave that legacy interface as is for now.
+
+Did a quick sanity check.  Likely we would want some better selfestest for
+/proc/$/pagemap + smaps.  I'll see if I can find some time to write some
+more.
+
+This patch (of 6):
+
+Looks like we never taught pagemap_pmd_range() about the existence of
+PMD-mapped file THPs.  Seems to date back to the times when we first added
+support for non-anon THPs in the form of shmem THP.
+
+Link: https://lkml.kernel.org/r/20240607122357.115423-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20240607122357.115423-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Lance Yang <ioworker0@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_attr.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/proc/task_mmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_attr.c b/drivers/scsi/lpfc/lpfc_attr.c
-index 79b45ea5fdb5e..8123062ec2faf 100644
---- a/drivers/scsi/lpfc/lpfc_attr.c
-+++ b/drivers/scsi/lpfc/lpfc_attr.c
-@@ -1904,6 +1904,11 @@ lpfc_xcvr_data_show(struct device *dev, struct device_attribute *attr,
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 71e5039d940dc..76ad35df3b1ee 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1525,6 +1525,8 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		}
+ #endif
  
- 	/* Get transceiver information */
- 	rdp_context = kmalloc(sizeof(*rdp_context), GFP_KERNEL);
-+	if (!rdp_context) {
-+		len = scnprintf(buf, PAGE_SIZE - len,
-+				"SPF info NA: alloc failure\n");
-+		return len;
-+	}
++		if (page && !PageAnon(page))
++			flags |= PM_FILE;
+ 		if (page && !migration && page_mapcount(page) == 1)
+ 			flags |= PM_MMAP_EXCLUSIVE;
  
- 	rc = lpfc_get_sfp_info_wait(phba, rdp_context);
- 	if (rc) {
 -- 
 2.43.0
 
