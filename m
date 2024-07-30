@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-64174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A02B941CB5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBDA8941975
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90C781C209A4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B7E81C23710
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30EE1A76C5;
-	Tue, 30 Jul 2024 17:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B68183CDA;
+	Tue, 30 Jul 2024 16:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xL7uuDDX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwKMIvyb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC9518B47F;
-	Tue, 30 Jul 2024 17:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679421A6195;
+	Tue, 30 Jul 2024 16:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359236; cv=none; b=P97cmTN6i8wjjk73MX451f00QFuUlXBB42LPsDU7wb1Pz+LQc/35Jxy0gBG9E8srT+2cm8qSMjv+/wspFqeJTECNKsoKxEYPQZwsem0BuZlhL+lPkq36PWFIkL/rAeYAJjhvDM0FFyrukRc2hovOFsilB1QglOYNP01oaYV2ZE0=
+	t=1722357149; cv=none; b=Y2tqyia7g5U7LOEZlOfcXh7c5dmswuhODFzqjcseuBmK5XmahBZ5pOdaZ+UZq8Eqdv2V+5zEARLOcswvJ71S6ac2BLWHP+DTu/ppr+mNAjMWL9AJ7Ed/msYPw4XhL2ap1xHe/uDBJFOGcYLgEDx5i5uazJuqPCafNds8xL4s37s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359236; c=relaxed/simple;
-	bh=muM7QsJRcLC6IWQ5EOuX3AMn1YBYWLlOVfp5HoHNCD4=;
+	s=arc-20240116; t=1722357149; c=relaxed/simple;
+	bh=cqqemW4l24MIfFh7LeScuYm3ewh2+zsYGXJtjWTik5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EuZkIrg1+C9L0mAwT6OFlSb46ZQ7ptXpRIXWU6r52/BDxlBoYhW5SeL/RPfIpDt/q9XrfbLR/VMopRQopV92gxXkB/ejOyQD0LOKQ/qT6SqsuchIgo6keUGYLb8ftc/zMHsX2qhDOD67GR69RtembrjPByOVN2b8qsDuEHOzfTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xL7uuDDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8023CC32782;
-	Tue, 30 Jul 2024 17:07:15 +0000 (UTC)
+	 MIME-Version; b=qfqg+Sj8kNiagbYOvDcS7SkzQQfhdci6PP0um9AmdFgwxXWb/VjQAY+EgFJGCNE25a5rMJ9uFw/LB/qJfa0RYYyN0vc6oJmETAcxnDUFEvFhYLpP88++VbHUU3Y4di7diaE9HXXoiaTiZClm2X1dVMpKx8Dj4PHyEtIxdtssFPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwKMIvyb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F571C32782;
+	Tue, 30 Jul 2024 16:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359236;
-	bh=muM7QsJRcLC6IWQ5EOuX3AMn1YBYWLlOVfp5HoHNCD4=;
+	s=korg; t=1722357149;
+	bh=cqqemW4l24MIfFh7LeScuYm3ewh2+zsYGXJtjWTik5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xL7uuDDXiDR12V4TLd2g9V1LDSSD9WDaa58VZFbcGD02wPIdlCisKgNNe7AWrVM4P
-	 gUkiH1eG6mc3TnkNSGzAZGqxR4GIJXNb3IW9hGV4lZlVly+j20bKolJ5qV9MmHhW7C
-	 WKLf2Ko9VFmLXIlWSQwbtQx6/l4kZoxb49WjYR+c=
+	b=gwKMIvyb8jKVIm5CN6i28f1pBVIObclHBwH4D4yQxwdEclrXbhBes9PmM4TKVRyET
+	 ZtacgkcdHsx0UTEU33mDRwph/b9QU9Z9HR/y6lt3f1Y7XlpE6kxJEPw9R+oHi0JQ76
+	 pqQAbV+vnC2k71TPo9gsGXenFScUgK5gOLHqFR5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Niklas Cassel <niklas.cassel@wdc.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	German Gomez <german.gomez@arm.com>,
+	Spoorthy S <spoorts2@in.ibm.com>,
+	Kajol Jain <kjain@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 455/809] PCI: dwc: Fix index 0 incorrectly being interpreted as a free ATU slot
+Subject: [PATCH 6.6 224/568] perf test: Make test_arm_callgraph_fp.sh more robust
 Date: Tue, 30 Jul 2024 17:45:31 +0200
-Message-ID: <20240730151742.700424950@linuxfoundation.org>
+Message-ID: <20240730151648.637390586@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit c2a57ee0f2f1ad8c970ff58b78a43e85abbdeb7f ]
+[ Upstream commit ff16aeb9b83441b8458d4235496cf320189a0c60 ]
 
-When PERST# assert and deassert happens on the PERST# supported platforms,
-both iATU0 and iATU6 will map inbound window to BAR0. DMA will access the
-area that was previously allocated (iATU0) for BAR0, instead of the new
-area (iATU6) for BAR0.
+The 2 second sleep can cause the test to fail on very slow network file
+systems because Perf ends up being killed before it finishes starting
+up.
 
-Right now, this isn't an issue because both iATU0 and iATU6 should
-translate inbound accesses to BAR0 to the same allocated memory area.
-However, having two separate inbound mappings for the same BAR is a
-disaster waiting to happen.
+Fix it by making the leafloop workload end after a fixed time like the
+other workloads so there is no need to kill it after 2 seconds.
 
-The mappings between PCI BAR and iATU inbound window are maintained in the
-dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
-a BAR, dw_pcie_ep_inbound_atu() API checks for the availability of the
-existing mapping in the array and if it is not found (i.e., value in the
-array indexed by the BAR is found to be 0), it allocates a new map value
-using find_first_zero_bit().
+Also remove the 1 second start sampling delay because it is similarly
+fragile. Instead, search through all samples for a matching one, rather
+than just checking the first sample and hoping it's in the right place.
 
-The issue is the existing logic failed to consider the fact that the map
-value '0' is a valid value for BAR0, so find_first_zero_bit() will return
-'0' as the map value for BAR0 (note that it returns the first zero bit
-position).
-
-Due to this, when PERST# assert + deassert happens on the PERST# supported
-platforms, the inbound window allocation restarts from BAR0 and the
-existing logic to find the BAR mapping will return '6' for BAR0 instead of
-'0' due to the fact that it considers '0' as an invalid map value.
-
-Fix this issue by always incrementing the map value before assigning to
-bar_to_atu[] array and then decrementing it while fetching. This will make
-sure that the map value '0' always represents the invalid mapping."
-
-Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
-Closes: https://lore.kernel.org/linux-pci/ZXsRp+Lzg3x%2Fnhk3@x1-carbon/
-Link: https://lore.kernel.org/linux-pci/20240412160841.925927-1-Frank.Li@nxp.com
-Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
-Tested-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Fixes: cd6382d82752 ("perf test arm64: Test unwinding using fame-pointer (fp) mode")
+Signed-off-by: James Clark <james.clark@arm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Spoorthy S <spoorts2@in.ibm.com>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240612140316.3006660-1-james.clark@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ .../perf/tests/shell/test_arm_callgraph_fp.sh | 27 +++++++------------
+ tools/perf/tests/workloads/leafloop.c         | 20 +++++++++++---
+ 2 files changed, 26 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 47391d7d3a734..769e848246870 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -161,7 +161,7 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
- 	if (!ep->bar_to_atu[bar])
- 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
- 	else
--		free_win = ep->bar_to_atu[bar];
-+		free_win = ep->bar_to_atu[bar] - 1;
+diff --git a/tools/perf/tests/shell/test_arm_callgraph_fp.sh b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
+index 66dfdfdad553f..60cd35c73e47d 100755
+--- a/tools/perf/tests/shell/test_arm_callgraph_fp.sh
++++ b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
+@@ -14,28 +14,21 @@ cleanup_files()
  
- 	if (free_win >= pci->num_ib_windows) {
- 		dev_err(pci->dev, "No free inbound window\n");
-@@ -175,7 +175,11 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
- 		return ret;
- 	}
+ trap cleanup_files EXIT TERM INT
  
--	ep->bar_to_atu[bar] = free_win;
-+	/*
-+	 * Always increment free_win before assignment, since value 0 is used to identify
-+	 * unallocated mapping.
-+	 */
-+	ep->bar_to_atu[bar] = free_win + 1;
- 	set_bit(free_win, ep->ib_window_map);
+-# Add a 1 second delay to skip samples that are not in the leaf() function
+ # shellcheck disable=SC2086
+-perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- $TEST_PROGRAM 2> /dev/null &
+-PID=$!
++perf record -o "$PERF_DATA" --call-graph fp -e cycles//u --user-callchains -- $TEST_PROGRAM
  
- 	return 0;
-@@ -212,7 +216,10 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	enum pci_barno bar = epf_bar->barno;
--	u32 atu_index = ep->bar_to_atu[bar];
-+	u32 atu_index = ep->bar_to_atu[bar] - 1;
+-echo " + Recording (PID=$PID)..."
+-sleep 2
+-echo " + Stopping perf-record..."
+-
+-kill $PID
+-wait $PID
++# Try opening the file so any immediate errors are visible in the log
++perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4
+ 
+-# expected perf-script output:
++# expected perf-script output if 'leaf' has been inserted correctly:
+ #
+-# program
++# perf
+ # 	728 leaf
+ # 	753 parent
+ # 	76c leafloop
+-# ...
++# ... remaining stack to main() ...
+ 
+-perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4
+-perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4 | \
+-	awk '{ if ($2 != "") sym[i++] = $2 } END { if (sym[0] != "leaf" ||
+-						       sym[1] != "parent" ||
+-						       sym[2] != "leafloop") exit 1 }'
++# Each frame is separated by a tab, some spaces and an address
++SEP="[[:space:]]+ [[:xdigit:]]+"
++perf script -i "$PERF_DATA" -F comm,ip,sym | tr '\n' ' ' | \
++	grep -E -q "perf $SEP leaf $SEP parent $SEP leafloop"
+diff --git a/tools/perf/tests/workloads/leafloop.c b/tools/perf/tests/workloads/leafloop.c
+index 1bf5cc97649b0..f7561767e32cd 100644
+--- a/tools/perf/tests/workloads/leafloop.c
++++ b/tools/perf/tests/workloads/leafloop.c
+@@ -1,6 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#include <signal.h>
+ #include <stdlib.h>
+ #include <linux/compiler.h>
++#include <unistd.h>
+ #include "../tests.h"
+ 
+ /* We want to check these symbols in perf script */
+@@ -8,10 +10,16 @@ noinline void leaf(volatile int b);
+ noinline void parent(volatile int b);
+ 
+ static volatile int a;
++static volatile sig_atomic_t done;
 +
-+	if (!ep->bar_to_atu[bar])
-+		return;
++static void sighandler(int sig __maybe_unused)
++{
++	done = 1;
++}
  
- 	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
+ noinline void leaf(volatile int b)
+ {
+-	for (;;)
++	while (!done)
+ 		a += b;
+ }
+ 
+@@ -22,12 +30,16 @@ noinline void parent(volatile int b)
+ 
+ static int leafloop(int argc, const char **argv)
+ {
+-	int c = 1;
++	int sec = 1;
+ 
+ 	if (argc > 0)
+-		c = atoi(argv[0]);
++		sec = atoi(argv[0]);
++
++	signal(SIGINT, sighandler);
++	signal(SIGALRM, sighandler);
++	alarm(sec);
+ 
+-	parent(c);
++	parent(sec);
+ 	return 0;
+ }
  
 -- 
 2.43.0
