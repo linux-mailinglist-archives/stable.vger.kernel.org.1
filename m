@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C86941B8A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4E1941EA6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92A2C1F2360E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7377C1F21A1F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB6A18990C;
-	Tue, 30 Jul 2024 16:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0344E18455C;
+	Tue, 30 Jul 2024 17:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaCFWF1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGsHCZJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53005189537;
-	Tue, 30 Jul 2024 16:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A791A76A5;
+	Tue, 30 Jul 2024 17:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358574; cv=none; b=kuaf6EHxI+1W/gUYIiMy6Z5Emkanbc/Ev01guilGPM+Lx/n0MggnkLo1mLCya7qtwlSDs25A8lge/iUBtdZYIHL0B5j+fElaegrDJOw+1me6yXb4v1Z1yfnxa7zVBDHNI/J1X5jlOp0pyZ/guiWj3PeQ5qut3FObZ9ncdxm3398=
+	t=1722360690; cv=none; b=acbqo65weya7UUqPGwdepPys61IHlPB5P006qyMoFuUjJgZiGKg9JDF39s9RskmPpfT1m7rzgtFML6UdaYP8fP4x3WXP0RiWmKC6Zast+aT5qbcHU0au86ANX829ANbayHHtVnOx0NUJjKNq/qf32vFjYqKqvtFi/M+SKlpycAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358574; c=relaxed/simple;
-	bh=a9q8igH7ppooWfi5MgMRFN9VxbNvJ8tW+5Obb04ZWfo=;
+	s=arc-20240116; t=1722360690; c=relaxed/simple;
+	bh=t/se+qdtTrmesEpBszKs4cSrMNYg88t1EVePALpZ6r4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/szRsZIZccpVfmiJ3bsXXiZoNwRYrlocZjcwefA79aAsEjuLVvjJE5s53z4NigNSnvcgCIisUpEu1eI4cKZRgZAHQIjPMZtMLM9Y3BZWmJsWxZwOtugwn7s2KVxe8c69+Yw+pIWlaimyXjytxan88KrPz9EdD5/VjuQ1NROvPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaCFWF1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A52CC4AF0C;
-	Tue, 30 Jul 2024 16:56:13 +0000 (UTC)
+	 MIME-Version; b=R2+e+3Tg8Nr9X9G1FW/jPvL4elAV0rCErqpmXtNZsYcdv6oqSbUlXosOEVhR6d9ZcOUaZ92sLEB3PqdTMVF67Yr9ca0kCkN8qjqFYs6SZLalE8vSeuBuN8GZ3vUUHvqfKrgdFTcSK9xs2xjlsQ+juyACmc8cDtfLuZsM7GKlBVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGsHCZJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3481BC32782;
+	Tue, 30 Jul 2024 17:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358574;
-	bh=a9q8igH7ppooWfi5MgMRFN9VxbNvJ8tW+5Obb04ZWfo=;
+	s=korg; t=1722360690;
+	bh=t/se+qdtTrmesEpBszKs4cSrMNYg88t1EVePALpZ6r4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZaCFWF1DbV/XqTaBTE7w/1aIt1J6bS+4Pw/WGCXD3rBdofV/Hy+vr1CVugPuI9+aB
-	 m6jnFnjTTMaR6eFXasqItyJi8vwhZ6H7Ci/yICZSOfX98xIniY6XhFggWGcCU38uIS
-	 FjriKhHD6I1+vNm1SUftATEOoPkAJWBmYHeeD9AM=
+	b=oGsHCZJmy6127LYIuwy9MMIEVhH7R6CJRpZrRhDbeRIntloc1XRDzftCst9oSCb/P
+	 3SBN3LcGtG5tXLQIZAMY2WmIlN+B6jk6cS0CP9ompy2Hvb2wT8k+XolHzMzXkXAmu0
+	 tXSH7XitnbMyPDNh4ZWyRVvMRelv+ZKj9+ZpAVns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunlei He <heyunlei@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 403/440] f2fs: fix to update user block counts in block_operations()
+Subject: [PATCH 6.10 760/809] MIPS: SMP-CPS: Fix address for GCR_ACCESS register for CM3 and later
 Date: Tue, 30 Jul 2024 17:50:36 +0200
-Message-ID: <20240730151631.539946245@linuxfoundation.org>
+Message-ID: <20240730151754.979736343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
 
-[ Upstream commit f06c0f82e38bbda7264d6ef3c90045ad2810e0f3 ]
+[ Upstream commit a263e5f309f32301e1f3ad113293f4e68a82a646 ]
 
-Commit 59c9081bc86e ("f2fs: allow write page cache when writting cp")
-allows write() to write data to page cache during checkpoint, so block
-count fields like .total_valid_block_count, .alloc_valid_block_count
-and .rf_node_block_count may encounter race condition as below:
+When the CM block migrated from CM2.5 to CM3.0, the address offset for
+the Global CSR Access Privilege register was modified. We saw this in
+the "MIPS64 I6500 Multiprocessing System Programmer's Guide," it is
+stated that "the Global CSR Access Privilege register is located at
+offset 0x0120" in section 5.4. It is at least the same for I6400.
 
-CP				Thread A
-- write_checkpoint
- - block_operations
-  - f2fs_down_write(&sbi->node_change)
-  - __prepare_cp_block
-  : ckpt->valid_block_count = .total_valid_block_count
-  - f2fs_up_write(&sbi->node_change)
-				- write
-				 - f2fs_preallocate_blocks
-				  - f2fs_map_blocks(,F2FS_GET_BLOCK_PRE_AIO)
-				   - f2fs_map_lock
-				    - f2fs_down_read(&sbi->node_change)
-				   - f2fs_reserve_new_blocks
-				    - inc_valid_block_count
-				    : percpu_counter_add(&sbi->alloc_valid_block_count, count)
-				    : sbi->total_valid_block_count += count
-				    - f2fs_up_read(&sbi->node_change)
- - do_checkpoint
- : sbi->last_valid_block_count = sbi->total_valid_block_count
- : percpu_counter_set(&sbi->alloc_valid_block_count, 0)
- : percpu_counter_set(&sbi->rf_node_block_count, 0)
-				- fsync
-				 - need_do_checkpoint
-				  - f2fs_space_for_roll_forward
-				  : alloc_valid_block_count was reset to zero,
-				    so, it may missed last data during checkpoint
+This fix allows to use the VP cores in SMP mode if the reset values
+were modified by the bootloader.
 
-Let's change to update .total_valid_block_count, .alloc_valid_block_count
-and .rf_node_block_count in block_operations(), then their access can be
-protected by .node_change and .cp_rwsem lock, so that it can avoid above
-race condition.
+Based on the work of Vladimir Kondratiev
+<vladimir.kondratiev@mobileye.com> and the feedback from Jiaxun Yang
+<jiaxun.yang@flygoat.com>.
 
-Fixes: 59c9081bc86e ("f2fs: allow write page cache when writting cp")
-Cc: Yunlei He <heyunlei@oppo.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 197e89e0984a ("MIPS: mips-cm: Implement mips_cm_revision")
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/checkpoint.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/mips-cm.h | 4 ++++
+ arch/mips/kernel/smp-cps.c      | 5 ++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/checkpoint.c b/fs/f2fs/checkpoint.c
-index 13d8774706758..ad4073cde397b 100644
---- a/fs/f2fs/checkpoint.c
-+++ b/fs/f2fs/checkpoint.c
-@@ -1178,6 +1178,11 @@ static void __prepare_cp_block(struct f2fs_sb_info *sbi)
- 	ckpt->valid_node_count = cpu_to_le32(valid_node_count(sbi));
- 	ckpt->valid_inode_count = cpu_to_le32(valid_inode_count(sbi));
- 	ckpt->next_free_nid = cpu_to_le32(last_nid);
+diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
+index c2930a75b7e44..1e782275850a3 100644
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -240,6 +240,10 @@ GCR_ACCESSOR_RO(32, 0x0d0, gic_status)
+ GCR_ACCESSOR_RO(32, 0x0f0, cpc_status)
+ #define CM_GCR_CPC_STATUS_EX			BIT(0)
+ 
++/* GCR_ACCESS - Controls core/IOCU access to GCRs */
++GCR_ACCESSOR_RW(32, 0x120, access_cm3)
++#define CM_GCR_ACCESS_ACCESSEN			GENMASK(7, 0)
 +
-+	/* update user_block_counts */
-+	sbi->last_valid_block_count = sbi->total_valid_block_count;
-+	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
-+	percpu_counter_set(&sbi->rf_node_block_count, 0);
- }
+ /* GCR_L2_CONFIG - Indicates L2 cache configuration when Config5.L2C=1 */
+ GCR_ACCESSOR_RW(32, 0x130, l2_config)
+ #define CM_GCR_L2_CONFIG_BYPASS			BIT(20)
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index 9cc087dd1c194..395622c373258 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -317,7 +317,10 @@ static void boot_core(unsigned int core, unsigned int vpe_id)
+ 	write_gcr_co_reset_ext_base(CM_GCR_Cx_RESET_EXT_BASE_UEB);
  
- static bool __need_flush_quota(struct f2fs_sb_info *sbi)
-@@ -1569,11 +1574,6 @@ static int do_checkpoint(struct f2fs_sb_info *sbi, struct cp_control *cpc)
- 		start_blk += NR_CURSEG_NODE_TYPE;
- 	}
+ 	/* Ensure the core can access the GCRs */
+-	set_gcr_access(1 << core);
++	if (mips_cm_revision() < CM_REV_CM3)
++		set_gcr_access(1 << core);
++	else
++		set_gcr_access_cm3(1 << core);
  
--	/* update user_block_counts */
--	sbi->last_valid_block_count = sbi->total_valid_block_count;
--	percpu_counter_set(&sbi->alloc_valid_block_count, 0);
--	percpu_counter_set(&sbi->rf_node_block_count, 0);
--
- 	/* Here, we have one bio having CP pack except cp pack 2 page */
- 	f2fs_sync_meta_pages(sbi, META, LONG_MAX, FS_CP_META_IO);
- 	/* Wait for all dirty meta pages to be submitted for IO */
+ 	if (mips_cpc_present()) {
+ 		/* Reset the core */
 -- 
 2.43.0
 
