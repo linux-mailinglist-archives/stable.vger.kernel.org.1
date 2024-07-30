@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03236941ABC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B068A941D8D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A048D1F2360E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71688B28EDD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188341898E0;
-	Tue, 30 Jul 2024 16:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDB51A76B0;
+	Tue, 30 Jul 2024 17:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIHgjeJt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQt67NfF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE47189900;
-	Tue, 30 Jul 2024 16:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC9D1A76A4;
+	Tue, 30 Jul 2024 17:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358012; cv=none; b=Lp9WXZ8AZ99Tfc9Mz4GqsWINE6HKvaieuNsmpBMv5zRjw8dLICFmbrwWp/UIHI2p4LJINyq8yClHFYjK0tzkNinQ6DKF/XjhCYUGDgp2/wS4vK8hdxAALNnicCtegrQyzUteGDjAyyupflzbnj+syNgmgfA9xlTylRKo0N2UynI=
+	t=1722359876; cv=none; b=mMSOjhteTvxaIb8JwWKySFiQoZvaAgAT2Hv52s0nME4R8pdy+yeQ4HMskVQDrGlvoUKfg17rOLao/gWNiB+6wPfX4iFkipSFm4T4/9F4nub6Jj9VTFoGslpiwYxgOvJ8hJqLsUCy8AYaceztHFyWog5y76qrT0Pmv+NneZERrxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358012; c=relaxed/simple;
-	bh=dos7FBrflt6ouehK+u3vLhuNoqbO938qJMz2qwPBXLI=;
+	s=arc-20240116; t=1722359876; c=relaxed/simple;
+	bh=EohmZj2OIV6fNe8rAdeTcDXO4x8RSFBN5LzVHSV4ebQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5uOIjL7m9ktvPmEmFf9vTWOUBEUGydAKePGDAnO6l68aYmZFo2xfoz8+u2wKuVB+U5EjT/fVibIHgkbrgMEy2NLTPCr+1W80SmiViDleg/G08DnGUlrNuAxETvzv7upisyRj1RsS4aM+1cMeVC1XBb/7JTKizea25jVdSP2nYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIHgjeJt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3725EC32782;
-	Tue, 30 Jul 2024 16:46:52 +0000 (UTC)
+	 MIME-Version; b=FAuxRrcAW1tj1nwgb8qn3Bue3uoJqGeBHRWbYICZyALXkc2k0qZeXdLIIpLQAV02bZPjMZBd7/DWzAvEkDMF9pMduEaNeka/yQH00irLv1xCPsCu3zNGdQLmNxKMK6lsifepHdLiL3NwMzWAPcmhA8HTlO8t8v2Xk2dAz+gS18E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQt67NfF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DB3C32782;
+	Tue, 30 Jul 2024 17:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358012;
-	bh=dos7FBrflt6ouehK+u3vLhuNoqbO938qJMz2qwPBXLI=;
+	s=korg; t=1722359876;
+	bh=EohmZj2OIV6fNe8rAdeTcDXO4x8RSFBN5LzVHSV4ebQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIHgjeJt/6jpEYxIjn/NAYyltqw+xV/8si2123EHhc9TKcXAeSBzBJ/nGiaW1X85A
-	 KXkQvHbQb7ue5ZwdmZ+8GTFA1SA0PmUTZ/ekYjlr6z0/Mi2IR01sX80aMWJqVBA7Dd
-	 4u4fp4uMynfvp5A0VFllgR686GE6Na9uFKqvzodg=
+	b=JQt67NfFz0UB6VtnYmrkVlwVHVuEtC+Re621oRZDxk+osEm+q6glLSnxvflTbyocM
+	 GvonJvElDlmNrQiRpTeiJ3QtULksu/XXkdAuOvgrQkShz7vYdINZ0+H3qwTcXWEr2X
+	 WaVyeonN5AdcECs+KZPJ22H54OVHUj8viO9Ubkrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Martin Willi <martin@strongswan.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 317/568] net: dsa: mv88e6xxx: Limit chip-wide frame size config to CPU ports
+	Yu Liao <liaoyu15@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.10 548/809] tick/broadcast: Make takeover of broadcast hrtimer reliable
 Date: Tue, 30 Jul 2024 17:47:04 +0200
-Message-ID: <20240730151652.260546453@linuxfoundation.org>
+Message-ID: <20240730151746.398913486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Yu Liao <liaoyu15@huawei.com>
 
-[ Upstream commit 66b6095c264e1b4e0a441c6329861806504e06c6 ]
+commit f7d43dd206e7e18c182f200e67a8db8c209907fa upstream.
 
-Marvell chips not supporting per-port jumbo frame size configurations use
-a chip-wide frame size configuration. In the commit referenced with the
-Fixes tag, the setting is applied just for the last port changing its MTU.
+Running the LTP hotplug stress test on a aarch64 machine results in
+rcu_sched stall warnings when the broadcast hrtimer was owned by the
+un-plugged CPU. The issue is the following:
 
-While configuring CPU ports accounts for tagger overhead, user ports do
-not. When setting the MTU for a user port, the chip-wide setting is
-reduced to not include the tagger overhead, resulting in an potentially
-insufficient maximum frame size for the CPU port. Specifically, sending
-full-size frames from the CPU port on a MV88E6097 having a user port MTU
-of 1500 bytes results in dropped frames.
+CPU1 (owns the broadcast hrtimer)	CPU2
 
-As, by design, the CPU port MTU is adjusted for any user port change,
-apply the chip-wide setting only for CPU ports.
+				tick_broadcast_enter()
+				  // shutdown local timer device
+				  broadcast_shutdown_local()
+				...
+				tick_broadcast_exit()
+				  clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT)
+				  // timer device is not programmed
+				  cpumask_set_cpu(cpu, tick_broadcast_force_mask)
 
-Fixes: 1baf0fac10fb ("net: dsa: mv88e6xxx: Use chip-wide max frame size for MTU")
-Suggested-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+				initiates offlining of CPU1
+take_cpu_down()
+/*
+ * CPU1 shuts down and does not
+ * send broadcast IPI anymore
+ */
+				takedown_cpu()
+				  hotplug_cpu__broadcast_tick_pull()
+				    // move broadcast hrtimer to this CPU
+				    clockevents_program_event()
+				      bc_set_next()
+					hrtimer_start()
+					/*
+					 * timer device is not programmed
+					 * because only the first expiring
+					 * timer will trigger clockevent
+					 * device reprogramming
+					 */
+
+What happens is that CPU2 exits broadcast mode with force bit set, then the
+local timer device is not reprogrammed and CPU2 expects to receive the
+expired event by the broadcast IPI. But this does not happen because CPU1
+is offlined by CPU2. CPU switches the clockevent device to ONESHOT state,
+but does not reprogram the device.
+
+The subsequent reprogramming of the hrtimer broadcast device does not
+program the clockevent device of CPU2 either because the pending expiry
+time is already in the past and the CPU expects the event to be delivered.
+As a consequence all CPUs which wait for a broadcast event to be delivered
+are stuck forever.
+
+Fix this issue by reprogramming the local timer device if the broadcast
+force bit of the CPU is set so that the broadcast hrtimer is delivered.
+
+[ tglx: Massage comment and change log. Add Fixes tag ]
+
+Fixes: 989dcb645ca7 ("tick: Handle broadcast wakeup of multiple cpus")
+Signed-off-by: Yu Liao <liaoyu15@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240711124843.64167-1-liaoyu15@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/time/tick-broadcast.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 354d4af134562..3877744193e2a 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3490,7 +3490,8 @@ static int mv88e6xxx_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
- 	mv88e6xxx_reg_lock(chip);
- 	if (chip->info->ops->port_set_jumbo_size)
- 		ret = chip->info->ops->port_set_jumbo_size(chip, port, new_mtu);
--	else if (chip->info->ops->set_max_frame_size)
-+	else if (chip->info->ops->set_max_frame_size &&
-+		 dsa_is_cpu_port(ds, port))
- 		ret = chip->info->ops->set_max_frame_size(chip, new_mtu);
- 	mv88e6xxx_reg_unlock(chip);
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -1141,6 +1141,7 @@ void tick_broadcast_switch_to_oneshot(vo
+ #ifdef CONFIG_HOTPLUG_CPU
+ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
+ {
++	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	struct clock_event_device *bc;
+ 	unsigned long flags;
  
--- 
-2.43.0
-
+@@ -1148,6 +1149,28 @@ void hotplug_cpu__broadcast_tick_pull(in
+ 	bc = tick_broadcast_device.evtdev;
+ 
+ 	if (bc && broadcast_needs_cpu(bc, deadcpu)) {
++		/*
++		 * If the broadcast force bit of the current CPU is set,
++		 * then the current CPU has not yet reprogrammed the local
++		 * timer device to avoid a ping-pong race. See
++		 * ___tick_broadcast_oneshot_control().
++		 *
++		 * If the broadcast device is hrtimer based then
++		 * programming the broadcast event below does not have any
++		 * effect because the local clockevent device is not
++		 * running and not programmed because the broadcast event
++		 * is not earlier than the pending event of the local clock
++		 * event device. As a consequence all CPUs waiting for a
++		 * broadcast event are stuck forever.
++		 *
++		 * Detect this condition and reprogram the cpu local timer
++		 * device to avoid the starvation.
++		 */
++		if (tick_check_broadcast_expired()) {
++			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
++			tick_program_event(td->evtdev->next_event, 1);
++		}
++
+ 		/* This moves the broadcast assignment to this CPU: */
+ 		clockevents_program_event(bc, bc->next_event, 1);
+ 	}
 
 
 
