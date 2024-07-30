@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28183941C48
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5169418E7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6C6B1F23FA9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4431C1F242AF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C618188017;
-	Tue, 30 Jul 2024 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB22183CC3;
+	Tue, 30 Jul 2024 16:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rn+vD0g6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHojuoxA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191B41A6192;
-	Tue, 30 Jul 2024 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082451A619E;
+	Tue, 30 Jul 2024 16:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359133; cv=none; b=qyxrVkl7pNTKp9RUxvUKbUiqbZMspUorwvmRcs0c0gu3A4tJVgM0kAGjOxW9k6902i9ShSzfW93QKomLMZNnR9y4i7roSNWPntYbMsk7UVuLzo2opxvorm9I2aA3vCFuc9K2RiFuZ1eHI3XbWDtatSWEH9Z7iHVhKx0PtSxA2dQ=
+	t=1722356796; cv=none; b=VdO6l7d4DH/EawNhluHShyK63qIOujP94fHdkzz5SwEfaG8kaBudz9ZoK3h6A9LSQJxA4BM3+rvcM36b8sitv3vOs3qCfRD97ELKbI7NKdt2bpQ0AqY8NSx5f1ctVUksQ3K3PfdcQDlLBwrGBvbppidISlvPSNDp6IlYYUIf+Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359133; c=relaxed/simple;
-	bh=w0Oj7KzR6oBJkPhFxeLHaA8gpxtLGp0bzIwy8uxFUdk=;
+	s=arc-20240116; t=1722356796; c=relaxed/simple;
+	bh=lhvQUzqZ5BzNqlh380b6sHnJF7RodgmnGE6NvQTKAb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6oyJDJ4J8Sv3K64K5msq2Zoy6y29c60OWY+Z5omgfagAU+jI2vLRn0lUfDaeQeUpXfbYOA7AvCPHWwB6t3kBPgdXscbiRDIBVrt01S+HW2FZ422S6k0cdoT3NucLJjdOgVhhaj5x+3te6hzk1kgK41HMqa9hdTcxb9poda9PJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rn+vD0g6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1FBC32782;
-	Tue, 30 Jul 2024 17:05:32 +0000 (UTC)
+	 MIME-Version; b=UO+tC7GUEo1HWG1H8VnvvdXCeklBQBX4RE4DYtkMwU8O4RfVy/sV0VMtbudhBxa5Lpn+rjOwj7PlI4lV19lHJrIzxhalB/iZ9UUmqMWeX4sqkRDX3MqjU3i4yGv7uxxheJEfpFUFpfpnEEfUZeiH3MM9EQ8OJWtrNWiqVbzKLCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHojuoxA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819AAC32782;
+	Tue, 30 Jul 2024 16:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359133;
-	bh=w0Oj7KzR6oBJkPhFxeLHaA8gpxtLGp0bzIwy8uxFUdk=;
+	s=korg; t=1722356795;
+	bh=lhvQUzqZ5BzNqlh380b6sHnJF7RodgmnGE6NvQTKAb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rn+vD0g6Lrd3wTBSeItexA8xljbwox7Fca5DqJsovVIT57rgflBZIfz78g7kwClnK
-	 3AGg/Y7Slho8ifavxJGg8igHj2mQ9CVNsV/BwrQaOlmn7Vid4h1akN4ch3UeuS0GcQ
-	 a+qV+fcwIGs5PHXSi5DdMNoXSeVgg+gdA+U33xIw=
+	b=pHojuoxA+DxvOwhhHNV1uhvbRf3b0lK6OIeRJPy18Hh5dEKvjZ90uKR4bB6xSmv3p
+	 4dH/KjrmDi4rPNcGZhrwHZ08ALrpcZl9JrejJCJkVOT7Px1Vk2ihFnwKKc5+CvaodV
+	 4TbppCYZHI67msUT23/9okYicLVqpE4MGLYU+HQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 416/809] clk: qcom: gpucc-sa8775p: Update wait_val fields for GPU GDSCs
+Subject: [PATCH 6.6 185/568] drm/panel: boe-tv101wum-nl6: If prepare fails, disable GPIO before regulators
 Date: Tue, 30 Jul 2024 17:44:52 +0200
-Message-ID: <20240730151741.126793172@linuxfoundation.org>
+Message-ID: <20240730151647.110076947@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 211681998d706d1e0fff6b62f89efcdf29c24978 ]
+[ Upstream commit 587c48f622374e5d47b1d515c6006a4df4dee882 ]
 
-Update wait_val fields as per the default hardware values of the GDSC as
-otherwise it would lead to GDSC FSM state stuck causing power on/off
-failures of the GSDC.
+The enable GPIO should clearly be set low before turning off
+regulators. That matches both the inverse order that things were
+enabled and also the order in unprepare().
 
-Fixes: 0afa16afc36d ("clk: qcom: add the GPUCC driver for sa8775p")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-6-adcc756a23df@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: a869b9db7adf ("drm/panel: support for boe tv101wum-nl6 wuxga dsi video mode panel")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240517143643.2.Ieac346cd0f1606948ba39ceea06b55359fe972b6@changeid
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.2.Ieac346cd0f1606948ba39ceea06b55359fe972b6@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sa8775p.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gpucc-sa8775p.c b/drivers/clk/qcom/gpucc-sa8775p.c
-index 1f7a02a7503d4..3deabf8333883 100644
---- a/drivers/clk/qcom/gpucc-sa8775p.c
-+++ b/drivers/clk/qcom/gpucc-sa8775p.c
-@@ -523,6 +523,9 @@ static struct clk_regmap *gpu_cc_sa8775p_clocks[] = {
+diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+index 7990c519a56b1..688efb2253a16 100644
+--- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
++++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+@@ -1868,13 +1868,13 @@ static int boe_panel_prepare(struct drm_panel *panel)
+ 	return 0;
  
- static struct gdsc cx_gdsc = {
- 	.gdscr = 0x9108,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.gds_hw_ctrl = 0x953c,
- 	.pd = {
- 		.name = "cx_gdsc",
-@@ -533,6 +536,9 @@ static struct gdsc cx_gdsc = {
+ poweroff:
++	gpiod_set_value(boe->enable_gpio, 0);
+ 	regulator_disable(boe->avee);
+ poweroffavdd:
+ 	regulator_disable(boe->avdd);
+ poweroff1v8:
+ 	usleep_range(5000, 7000);
+ 	regulator_disable(boe->pp1800);
+-	gpiod_set_value(boe->enable_gpio, 0);
  
- static struct gdsc gx_gdsc = {
- 	.gdscr = 0x905c,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "gx_gdsc",
- 		.power_on = gdsc_gx_do_nothing_enable,
+ 	return ret;
+ }
 -- 
 2.43.0
 
