@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F11C941A82
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF12941EB5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC90F1F25F60
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9758CB2AA2C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA62189900;
-	Tue, 30 Jul 2024 16:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AF01A76DD;
+	Tue, 30 Jul 2024 17:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSww9BqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGKB6K5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF6918455C;
-	Tue, 30 Jul 2024 16:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62E01A76D8;
+	Tue, 30 Jul 2024 17:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357864; cv=none; b=maYHYMmmVfB+fLfSYAXbEUP5GDnxzKUcxeas3ibKyPGakBLLR6xsO5j3XIPdW9W4G70T/cWtLmC7LBhQqXvHYE/UexUUdfdhDsUKJvyFpTOkAfeSQ0IJovrV4AlzmOsZhqj0ZF5iDjHty7GFhAUEIwzXeoGWzDsI+yavsTqU8cU=
+	t=1722360543; cv=none; b=U9K48M0PKHfgGrBqzmxP6QyDoJTsvBugM9e4qIvOCMgq8ZGNda9+iJur1F0QBZtQI2HModshAcGVHCEUlRRLd/qe4ljv9L7VdSaIfjNvLvyCaVN9UUfSeLqCtw0rPlRWZBGBbxPkkQS4+IlX0XQ9TKA8RSyyoWxN1chHgosFiKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357864; c=relaxed/simple;
-	bh=wu9aie8iNldYeUPWcbJMOY5IGzvxVce+zDZrsfT2GPo=;
+	s=arc-20240116; t=1722360543; c=relaxed/simple;
+	bh=LPo4RcIpMHmmCh5zHUeEBUqFt2mKDjRRK1hnB8xvKIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mVkCYMNCwA9KGXMPX25cg480gaC7/ZgwWfWgjz+7jYybz/kig9sZqoEJnxbPp0xUgDqcCsRb5OhbRZTAHZvHvzP6CcsbbFQWaKAu4udDCUNV/TUo+/KQ0qESh6PzKQ6uj7VAjqR66GB8uCfYHAW6R6FXbn1sYI7wKsVAtjlULKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSww9BqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EA9C4AF0A;
-	Tue, 30 Jul 2024 16:44:24 +0000 (UTC)
+	 MIME-Version; b=ZfBYwkIeHh430RzPbcvwi/0OJ2BxoMJoDDYLf8HaOTwk81upsH309LqCri93vPWFVU/xFKGmWtlyKktZvSJdk05iPJPMg3AenlRr2igXeffpDXlX/6XxbIOBh8pJZZVAggiyovbyweN1/3mGopeUYtqdURlIZ4ml6v9eG1kDsuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGKB6K5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8B2C32782;
+	Tue, 30 Jul 2024 17:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357864;
-	bh=wu9aie8iNldYeUPWcbJMOY5IGzvxVce+zDZrsfT2GPo=;
+	s=korg; t=1722360543;
+	bh=LPo4RcIpMHmmCh5zHUeEBUqFt2mKDjRRK1hnB8xvKIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSww9BqWe0v3d+O7E31y+ztxV+Dwjnp7ja5Ep5LQeho3KLZHod/AcFzL/OVpZukWc
-	 HD0v41q6ByvL0wAFKQWDbyEMRqy+cYyoBLDnHWnG5IBVDa5Nms29vggG5XZA7r6wXR
-	 ufu0PwpX4JeyflVQXgu+8TlUqYIMFgO2eoSmelLo=
+	b=WGKB6K5ubr+M5MlY+n7m1Ie7pCSEdJUxAYQmBC5534hFOAn+P5oavgnxoRgT4vrMG
+	 vZtT69yjyrSI0DpVpYHJmansQsYaN0mEI1pWBVpWq1bgmkN6Tv4gqIfotdVYXEuu8W
+	 IDI87G6/EZysmfbs+0MdYhVTjk42g7koykPYvg/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.1 334/440] ubi: eba: properly rollback inside self_check_eba
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.10 691/809] perf: Fix event leak upon exit
 Date: Tue, 30 Jul 2024 17:49:27 +0200
-Message-ID: <20240730151628.866823506@linuxfoundation.org>
+Message-ID: <20240730151752.205859557@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit 745d9f4a31defec731119ee8aad8ba9f2536dd9a upstream.
+commit 2fd5ad3f310de22836cdacae919dd99d758a1f1b upstream.
 
-In case of a memory allocation failure in the volumes loop we can only
-process the already allocated scan_eba and fm_eba array elements on the
-error path - others are still uninitialized.
+When a task is scheduled out, pending sigtrap deliveries are deferred
+to the target task upon resume to userspace via task_work.
 
-Found by Linux Verification Center (linuxtesting.org).
+However failures while adding an event's callback to the task_work
+engine are ignored. And since the last call for events exit happen
+after task work is eventually closed, there is a small window during
+which pending sigtrap can be queued though ignored, leaking the event
+refcount addition such as in the following scenario:
 
-Fixes: 00abf3041590 ("UBI: Add self_check_eba()")
+    TASK A
+    -----
+
+    do_exit()
+       exit_task_work(tsk);
+
+       <IRQ>
+       perf_event_overflow()
+          event->pending_sigtrap = pending_id;
+          irq_work_queue(&event->pending_irq);
+       </IRQ>
+    =========> PREEMPTION: TASK A -> TASK B
+       event_sched_out()
+          event->pending_sigtrap = 0;
+          atomic_long_inc_not_zero(&event->refcount)
+          // FAILS: task work has exited
+          task_work_add(&event->pending_task)
+       [...]
+       <IRQ WORK>
+       perf_pending_irq()
+          // early return: event->oncpu = -1
+       </IRQ WORK>
+       [...]
+    =========> TASK B -> TASK A
+       perf_event_exit_task(tsk)
+          perf_event_exit_event()
+             free_event()
+                WARN(atomic_long_cmpxchg(&event->refcount, 1, 0) != 1)
+                // leak event due to unexpected refcount == 2
+
+As a result the event is never released while the task exits.
+
+Fix this with appropriate task_work_add()'s error handling.
+
+Fixes: 517e6a301f34 ("perf: Fix perf_pending_task() UaF")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Link: https://lore.kernel.org/r/20240621091601.18227-4-frederic@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/ubi/eba.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/events/core.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/mtd/ubi/eba.c
-+++ b/drivers/mtd/ubi/eba.c
-@@ -1560,6 +1560,7 @@ int self_check_eba(struct ubi_device *ub
- 					  GFP_KERNEL);
- 		if (!fm_eba[i]) {
- 			ret = -ENOMEM;
-+			kfree(scan_eba[i]);
- 			goto out_free;
- 		}
- 
-@@ -1595,7 +1596,7 @@ int self_check_eba(struct ubi_device *ub
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2284,18 +2284,15 @@ event_sched_out(struct perf_event *event
  	}
  
- out_free:
--	for (i = 0; i < num_volumes; i++) {
-+	while (--i >= 0) {
- 		if (!ubi->volumes[i])
- 			continue;
+ 	if (event->pending_sigtrap) {
+-		bool dec = true;
+-
+ 		event->pending_sigtrap = 0;
+ 		if (state != PERF_EVENT_STATE_OFF &&
+-		    !event->pending_work) {
+-			event->pending_work = 1;
+-			dec = false;
++		    !event->pending_work &&
++		    !task_work_add(current, &event->pending_task, TWA_RESUME)) {
+ 			WARN_ON_ONCE(!atomic_long_inc_not_zero(&event->refcount));
+-			task_work_add(current, &event->pending_task, TWA_RESUME);
+-		}
+-		if (dec)
++			event->pending_work = 1;
++		} else {
+ 			local_dec(&event->ctx->nr_pending);
++		}
+ 	}
  
+ 	perf_event_set_state(event, state);
 
 
 
