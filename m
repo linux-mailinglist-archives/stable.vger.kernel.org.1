@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5831941C15
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AD3941D6F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95F072854C1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D53F61C23A49
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2604918454A;
-	Tue, 30 Jul 2024 17:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB2E1A76AE;
+	Tue, 30 Jul 2024 17:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCOjHxNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEZ69w0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11361A6192;
-	Tue, 30 Jul 2024 17:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A681A76A7;
+	Tue, 30 Jul 2024 17:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358967; cv=none; b=jq6YKsO/1sEm+AaaPZV/wqE/ruAs00h4g918Xus1WV9ewBlrqRMcMm8Ihd75w08zdVqyJ+2vTFRU5AXSZZZ/Ygl/tYjlDXIeAWP43qrWQKm/u/45Yxnv9KwL6hnZCIEIicaq6XvPWM7r0o54vzdIcFSCprw7RxiTYo1JyRmAeVM=
+	t=1722359843; cv=none; b=ZYIL5csXNouPwe8durzzukx7o356ECrk37dYSRrS20UhCPBJcXXaJEmK69wOB97/zRopmv23LzwAeUmF9YAamJvPGYrLjGBeKYPK441zqJ+TA6db0sITg5xbILndBTA6sF3zq2DYQ+4fVO//nFX5si7sMsYq3p+YlnFKULKjXG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358967; c=relaxed/simple;
-	bh=Zg8QlRxyyelQDpBwy3JmCZ3Wa+ac5UH3sDPcZm+gDvQ=;
+	s=arc-20240116; t=1722359843; c=relaxed/simple;
+	bh=7BZ/lXKNtwLKxW3WTP6ccYcTkvPEldBUjljA5V43FyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxRKvBQxgWsB8PWBKmVqxcU/kmoNhBGMs1vUxhF0fFaUbB+p6xQgc7LQyLudbGtxSMJryFUWt2k9DBrcKhtMd4qQ5EhTDTBqDmK24cfN8wK03IxwRGNPIdZfeDlawwl8VL5vlk3D2I0w6dP8CJmqLtGwCOLkfd7/i6XN3FImtOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCOjHxNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388BBC4AF0A;
-	Tue, 30 Jul 2024 17:02:46 +0000 (UTC)
+	 MIME-Version; b=NafypgiCiDxy7qM5xnW0Tz8ab5gPlWV4PlBl8lgDuF2m2wEk2HPtc+I7bwfmZR3aCfackTUjDSZKm4CNxTPv/ZKKAolIn1lLQd+DDGO7IZIPLY6tBAvD6STmz1Tthx5GoGyud6BBseZCjIMhyjOrL8qVSKcwU8u5BVtqG8WOqI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEZ69w0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAABC32782;
+	Tue, 30 Jul 2024 17:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358967;
-	bh=Zg8QlRxyyelQDpBwy3JmCZ3Wa+ac5UH3sDPcZm+gDvQ=;
+	s=korg; t=1722359843;
+	bh=7BZ/lXKNtwLKxW3WTP6ccYcTkvPEldBUjljA5V43FyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCOjHxNCL9/Ip1Un8R0grS4FHPTSJHZ8t3C9p/jQm/6KNRR+n0HqBxx4r1fM5f5Ff
-	 2rzc0ZTaXPvjgwyDWDZD3udJfhGyhsgybAOqVyl9j1DcOucjVdIX8YbCdU7oxduO1O
-	 U//Sws7Yv8odgdnrf70N8E2EJNvuwUNc5wfaJ0JY=
+	b=DEZ69w0oAPkjHoYV+nxivXu1leu1mb5dUCqoRmtzRzVRJ/YAuf2mZDo/1nY+YoeXn
+	 S9DibeqRih4uoU6G5pnfH5LWJ6XquxkOXobAJz9UjfMRKnH07sGqLR9GMm2qTmU5X9
+	 EXwOM/EGF5mBDc/vgcwUxecKb2PLlwKod9WzFUbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Xiao Liang <shaw.leon@gmail.com>,
 	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 419/440] apparmor: Fix null pointer deref when receiving skb during sock creation
+Subject: [PATCH 6.6 545/568] apparmor: Fix null pointer deref when receiving skb during sock creation
 Date: Tue, 30 Jul 2024 17:50:52 +0200
-Message-ID: <20240730151632.151272837@linuxfoundation.org>
+Message-ID: <20240730151701.463802905@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -151,10 +151,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+)
 
 diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 1e2f40db15c58..97389b9c41290 100644
+index 366cdfd6a7baf..5303a51eff9c1 100644
 --- a/security/apparmor/lsm.c
 +++ b/security/apparmor/lsm.c
-@@ -1081,6 +1081,13 @@ static int apparmor_socket_sock_rcv_skb(struct sock *sk, struct sk_buff *skb)
+@@ -1130,6 +1130,13 @@ static int apparmor_socket_sock_rcv_skb(struct sock *sk, struct sk_buff *skb)
  	if (!skb->secmark)
  		return 0;
  
