@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E38A941922
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F323941C23
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A5A3B2BE78
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBF33283C52
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BF7187FF9;
-	Tue, 30 Jul 2024 16:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E92189537;
+	Tue, 30 Jul 2024 17:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SORCqqzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asimi7lD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B3818455D;
-	Tue, 30 Jul 2024 16:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E2318454A;
+	Tue, 30 Jul 2024 17:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356777; cv=none; b=OjkTYkJ3jqMlPcSj6n/7yslKttetSEIcE9Y5hNDBZxP1I6JHqGpgi7n35F7ymkxyjyeelCeG5gg6uubz1FAs9act9dV7yRuURomcRHhEFbTMjuqsor53vRukCF6e7zdVok7p07nnm/BCvq4Qog9P+lgudb/oUU936ExCbIzeb3Y=
+	t=1722359013; cv=none; b=qtdA8ufdIlVpmUwTNhHTvYJ7EwdX/iuHkZqKXi83yMZmpMh6SdBv2ACS9+AAMNvwR9rBsC6PGw1OXN2MvexDQvtiWjVhNTESA1YJNCqzG9yj0WZD2WVGD00F4Ijq5DjWWc8fe3NZEYpjyR0IODV1E0i+BqDMlfMYBxwYHcFBy3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356777; c=relaxed/simple;
-	bh=5kOMzIWgTv3EG/mcbFKjkqAEBz/LHDxTR65j3Jdwbic=;
+	s=arc-20240116; t=1722359013; c=relaxed/simple;
+	bh=JgnERLX+uy2BmF8ndJjCm73+YLY4b30MmoyRfm+IBLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/xcaBrcZmY3IPfU/MHNUBjIPEiSyecoqyUIQbtRvIz9iZpidiYg7L4cuTuIvu2WPVeDrCc+D6PPxgkhAAMc9u2/ilJXx3KajTZpDbqwv50nPvHREoaTVbmzIDs1LYjuoByTkJvVjEQ0XeD4KB7uGn6D+4SJ6X9rUcBOU4Q3DLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SORCqqzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8680C4AF0C;
-	Tue, 30 Jul 2024 16:26:16 +0000 (UTC)
+	 MIME-Version; b=oLc7f0DmJwIPb7N1uFPv/mQO4JAtOupOHtPur+yxgIar6MJi6fMpFfDfTvRPnfnoCQhnm9KRssHETIhT0ev8FOX9MWVKvWKTMKuvLd8HQzAZrNiHPzCMS4g4X8uyVJYK9SIywbTMlcq0RWcLIowtxNbMNUlMyIFCKYn/q3D0EOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asimi7lD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2F8C4AF0F;
+	Tue, 30 Jul 2024 17:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356777;
-	bh=5kOMzIWgTv3EG/mcbFKjkqAEBz/LHDxTR65j3Jdwbic=;
+	s=korg; t=1722359012;
+	bh=JgnERLX+uy2BmF8ndJjCm73+YLY4b30MmoyRfm+IBLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SORCqqzrFzlDKBs471SnEdLhlwBpzxFvb3Gmpmq6oeBbQVnw53CxZSr2WvE+1G4DN
-	 YqGznqluOxYmU5lrmlNItwIHH14b6E5Ce81KFtgydcWFsfFrbqWtXagsOdgRQiN3ba
-	 YZ1YdVb8Vvx2H9pGUDab1gelL/Yt2HWsktH6k5go=
+	b=asimi7lDqsEqM/mqdZKO8/N/QHdCm2PcfEpTi0EzFgarIsxsGlFOZymph61QkR1Np
+	 /qaO4Otio2f6H96ugwMxIX7iSTnEGYl8HlNO8EsqX72sYivqSsGf7D8YQycDDZvnht
+	 bVKE60LLT8KLAPou/TdBek0F/9QedjDlNbzsdqTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Van Patten <timvp@google.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/568] drm/amdgpu: Remove GC HW IP 9.3.0 from noretry=1
+Subject: [PATCH 6.10 414/809] clk: qcom: gpucc-sa8775p: Remove the CLK_IS_CRITICAL and ALWAYS_ON flags
 Date: Tue, 30 Jul 2024 17:44:50 +0200
-Message-ID: <20240730151647.030692841@linuxfoundation.org>
+Message-ID: <20240730151741.045055177@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Van Patten <timvp@google.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 1446226d32a45bb7c4f63195a59be8c08defe658 ]
+[ Upstream commit e69386d4a42afa5da6bfdcd4ac5ec61e1db04c61 ]
 
-The following commit updated gmc->noretry from 0 to 1 for GC HW IP
-9.3.0:
+The GPU clocks/GDSCs have been marked critical from the clock driver
+but the GPU driver votes on these resources as per the HW requirement.
+In the case where these clocks & GDSCs are left enabled, would have
+power impact and also cause GPU stability/corruptions.
+Fix the same by removing the CLK_IS_CRITICAL for clocks and ALWAYS_ON
+flags for the GPU GDSCs.
 
-    commit 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
-
-This causes the device to hang when a page fault occurs, until the
-device is rebooted. Instead, revert back to gmc->noretry=0 so the device
-is still responsive.
-
-Fixes: 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
-Signed-off-by: Tim Van Patten <timvp@google.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0afa16afc36d ("clk: qcom: add the GPUCC driver for sa8775p")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-4-adcc756a23df@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/clk/qcom/gpucc-sa8775p.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index bc0eda1a729c5..0b6a0e149f1c4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -650,7 +650,6 @@ void amdgpu_gmc_noretry_set(struct amdgpu_device *adev)
- 	struct amdgpu_gmc *gmc = &adev->gmc;
- 	uint32_t gc_ver = adev->ip_versions[GC_HWIP][0];
- 	bool noretry_default = (gc_ver == IP_VERSION(9, 0, 1) ||
--				gc_ver == IP_VERSION(9, 3, 0) ||
- 				gc_ver == IP_VERSION(9, 4, 0) ||
- 				gc_ver == IP_VERSION(9, 4, 1) ||
- 				gc_ver == IP_VERSION(9, 4, 2) ||
+diff --git a/drivers/clk/qcom/gpucc-sa8775p.c b/drivers/clk/qcom/gpucc-sa8775p.c
+index 1167c42da39db..f965babf4330d 100644
+--- a/drivers/clk/qcom/gpucc-sa8775p.c
++++ b/drivers/clk/qcom/gpucc-sa8775p.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (c) 2021-2022, Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024, Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2023, Linaro Limited
+  */
+ 
+@@ -280,7 +280,7 @@ static struct clk_branch gpu_cc_ahb_clk = {
+ 				&gpu_cc_hub_ahb_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -294,7 +294,6 @@ static struct clk_branch gpu_cc_cb_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_cb_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -312,7 +311,7 @@ static struct clk_branch gpu_cc_crc_ahb_clk = {
+ 				&gpu_cc_hub_ahb_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -330,7 +329,7 @@ static struct clk_branch gpu_cc_cx_ff_clk = {
+ 				&gpu_cc_ff_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -348,7 +347,7 @@ static struct clk_branch gpu_cc_cx_gmu_clk = {
+ 				&gpu_cc_gmu_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags =  CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags =  CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+@@ -362,7 +361,6 @@ static struct clk_branch gpu_cc_cx_snoc_dvm_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_cx_snoc_dvm_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -380,7 +378,7 @@ static struct clk_branch gpu_cc_cxo_aon_clk = {
+ 				&gpu_cc_xo_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -398,7 +396,7 @@ static struct clk_branch gpu_cc_cxo_clk = {
+ 				&gpu_cc_xo_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags =  CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags =  CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -416,7 +414,7 @@ static struct clk_branch gpu_cc_demet_clk = {
+ 				&gpu_cc_demet_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+@@ -430,7 +428,6 @@ static struct clk_branch gpu_cc_hlos1_vote_gpu_smmu_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_hlos1_vote_gpu_smmu_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -448,7 +445,7 @@ static struct clk_branch gpu_cc_hub_aon_clk = {
+ 				&gpu_cc_hub_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags = CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+@@ -466,7 +463,7 @@ static struct clk_branch gpu_cc_hub_cx_int_clk = {
+ 				&gpu_cc_hub_cx_int_div_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags =  CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
++			.flags =  CLK_SET_RATE_PARENT,
+ 			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+@@ -480,7 +477,6 @@ static struct clk_branch gpu_cc_memnoc_gfx_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_memnoc_gfx_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -494,7 +490,6 @@ static struct clk_branch gpu_cc_sleep_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_sleep_clk",
+-			.flags = CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+@@ -533,7 +528,7 @@ static struct gdsc cx_gdsc = {
+ 		.name = "cx_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
++	.flags = VOTABLE | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc gx_gdsc = {
 -- 
 2.43.0
 
