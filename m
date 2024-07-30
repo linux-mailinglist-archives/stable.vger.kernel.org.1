@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-63138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855FF94178C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A09D941792
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A9491F244A0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A85AB278F0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868C918801C;
-	Tue, 30 Jul 2024 16:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76A11898EA;
+	Tue, 30 Jul 2024 16:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybqIZRKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8jDB4gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448C7184535;
-	Tue, 30 Jul 2024 16:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767CA189505;
+	Tue, 30 Jul 2024 16:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355793; cv=none; b=dA1TDdeNB5yPs04J88L15Q5+ikOAcmvv0hNjgPoKcJ5C2x9QBphIz4GPPMnySprCntiMUB4o3lqPlX11eA8KnXkb70gWT991PT4z9bzZXBqTlr/V6f0Ijvz+rfRMCGDjoBP2CFJxj1iITLSGwL7TuYqxJTm8BCWOzT8NVioITt8=
+	t=1722355806; cv=none; b=KofS22lj5xtDRSIwnPuy7ScSXXlZymMDiESFxX6NpsKd5p+llMdzDeldMpphJsS5tK005enXTniy+aGfU1ORmw4UXueqD7FVmpsib82PpqZsCNpKnkzLVRoQDgGLOJf9ixeE0bYB3upJ9SQomLDhbhfXGNNE/EIEQXaqKXLUlmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355793; c=relaxed/simple;
-	bh=YTccryd7UbhiKZWcKXu2uFo/wYKpr4WjlL0D8YUDTWw=;
+	s=arc-20240116; t=1722355806; c=relaxed/simple;
+	bh=fA0JU0Jkkfc1y2TGd58ONug8RLfLIZqtvGGnIsRUtZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgAML+ox3eXddu3OW25xhEvFYKRlKhjV6QhG/3gtYjmWW3ykEe4u9jTyok93nTBT0TVbUR4vHtiDRvGqtaX/+oY1j9PSj6HM1NV2Cf3kwK6k6WYaOD+pDRQYrnL1Mcm7SL8KBN1LtC1rk55pUTgln0tCHl2jWyq4jFYFzsDt6hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybqIZRKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D0CC32782;
-	Tue, 30 Jul 2024 16:09:52 +0000 (UTC)
+	 MIME-Version; b=JNjP1xNxRuKqM22sFbXmFhZo6z9Q2L/9WwM+9C355E6IoXit8YtxTkP0FkXj2eSWkBZZlvAtk/kJDo1kx1YH4oMJa5EB2JgotBdwm3A3wHwTC9/4CP45Q2puzKrCzQXwpJstBXge5Cc13LVjcROzorwf0jcQSMBqj92wCYwI1o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8jDB4gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7F4C32782;
+	Tue, 30 Jul 2024 16:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355793;
-	bh=YTccryd7UbhiKZWcKXu2uFo/wYKpr4WjlL0D8YUDTWw=;
+	s=korg; t=1722355806;
+	bh=fA0JU0Jkkfc1y2TGd58ONug8RLfLIZqtvGGnIsRUtZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybqIZRKo6jsgDMJ80IEml4h7XTloFdSqh/5Tv12pOdGCH+2oA325Y57ZPDxns1U75
-	 RNaNMIqBCvxfbbpHdAljeOUdwcHjXT1YOtQWq4iR3vOkecPqPMtscXyr7C+qYamQ9n
-	 Mz2VivtSZCTYxXiXy1wKsQNoifg4QL2J7X01Tsmo=
+	b=S8jDB4gca9/ACmZAvw+7nO8ZAcTuZ3gGwoe/AI0AkK8lHRqPc4K+M/TLSGngYh9H2
+	 wx3dFIzPBIiLjraJUySiPCV7z7h1FhrHEa51htCO/rR4GRk/PfDs2JW7ZMOjcSnn78
+	 B1Dxhovxl2Pw6nhCd6EwzDXLCXr1Y3HFInCiAxC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Alexey Minnekhanov <alexeymin@postmarketos.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 089/809] soc: qcom: icc-bwmon: Fix refcount imbalance seen during bwmon_remove
-Date: Tue, 30 Jul 2024 17:39:25 +0200
-Message-ID: <20240730151728.152634319@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.10 090/809] soc: qcom: pdr: protect locator_addr with the main mutex
+Date: Tue, 30 Jul 2024 17:39:26 +0200
+Message-ID: <20240730151728.192455524@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,77 +69,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 24086640ab39396eb1a92d1cb1cd2f31b2677c52 ]
+[ Upstream commit 107924c14e3ddd85119ca43c26a4ee1056fa9b84 ]
 
-The following warning is seen during bwmon_remove due to refcount
-imbalance, fix this by releasing the OPPs after use.
+If the service locator server is restarted fast enough, the PDR can
+rewrite locator_addr fields concurrently. Protect them by placing
+modification of those fields under the main pdr->lock.
 
-Logs:
-WARNING: at drivers/opp/core.c:1640 _opp_table_kref_release+0x150/0x158
-Hardware name: Qualcomm Technologies, Inc. X1E80100 CRD (DT)
-...
-Call trace:
-_opp_table_kref_release+0x150/0x158
-dev_pm_opp_remove_table+0x100/0x1b4
-devm_pm_opp_of_table_release+0x10/0x1c
-devm_action_release+0x14/0x20
-devres_release_all+0xa4/0x104
-device_unbind_cleanup+0x18/0x60
-device_release_driver_internal+0x1ec/0x228
-driver_detach+0x50/0x98
-bus_remove_driver+0x6c/0xbc
-driver_unregister+0x30/0x60
-platform_driver_unregister+0x14/0x20
-bwmon_driver_exit+0x18/0x524 [icc_bwmon]
-__arm64_sys_delete_module+0x184/0x264
-invoke_syscall+0x48/0x118
-el0_svc_common.constprop.0+0xc8/0xe8
-do_el0_svc+0x20/0x2c
-el0_svc+0x34/0xdc
-el0t_64_sync_handler+0x13c/0x158
-el0t_64_sync+0x190/0x194
---[ end trace 0000000000000000 ]---
-
-Fixes: 0276f69f13e2 ("soc: qcom: icc-bwmon: Set default thresholds dynamically")
-Fixes: b9c2ae6cac40 ("soc: qcom: icc-bwmon: Add bandwidth monitoring driver")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240613164506.982068-1-quic_sibis@quicinc.com
+Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Steev Klimaszewski <steev@kali.org>
+Tested-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240622-qcom-pd-mapper-v9-1-a84ee3591c8e@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/icc-bwmon.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/pdr_interface.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/icc-bwmon.c b/drivers/soc/qcom/icc-bwmon.c
-index fb323b3364db4..ecddb60bd6650 100644
---- a/drivers/soc/qcom/icc-bwmon.c
-+++ b/drivers/soc/qcom/icc-bwmon.c
-@@ -565,7 +565,7 @@ static void bwmon_start(struct icc_bwmon *bwmon)
- 	int window;
+diff --git a/drivers/soc/qcom/pdr_interface.c b/drivers/soc/qcom/pdr_interface.c
+index a1b6a4081dea7..76a62c2ecc58a 100644
+--- a/drivers/soc/qcom/pdr_interface.c
++++ b/drivers/soc/qcom/pdr_interface.c
+@@ -76,12 +76,12 @@ static int pdr_locator_new_server(struct qmi_handle *qmi,
+ 					      locator_hdl);
+ 	struct pdr_service *pds;
  
- 	/* No need to check for errors, as this must have succeeded before. */
--	dev_pm_opp_find_bw_ceil(bwmon->dev, &bw_low, 0);
-+	dev_pm_opp_put(dev_pm_opp_find_bw_ceil(bwmon->dev, &bw_low, 0));
++	mutex_lock(&pdr->lock);
+ 	/* Create a local client port for QMI communication */
+ 	pdr->locator_addr.sq_family = AF_QIPCRTR;
+ 	pdr->locator_addr.sq_node = svc->node;
+ 	pdr->locator_addr.sq_port = svc->port;
  
- 	bwmon_clear_counters(bwmon, true);
+-	mutex_lock(&pdr->lock);
+ 	pdr->locator_init_complete = true;
+ 	mutex_unlock(&pdr->lock);
  
-@@ -772,11 +772,13 @@ static int bwmon_probe(struct platform_device *pdev)
- 	opp = dev_pm_opp_find_bw_floor(dev, &bwmon->max_bw_kbps, 0);
- 	if (IS_ERR(opp))
- 		return dev_err_probe(dev, PTR_ERR(opp), "failed to find max peak bandwidth\n");
-+	dev_pm_opp_put(opp);
+@@ -104,10 +104,10 @@ static void pdr_locator_del_server(struct qmi_handle *qmi,
  
- 	bwmon->min_bw_kbps = 0;
- 	opp = dev_pm_opp_find_bw_ceil(dev, &bwmon->min_bw_kbps, 0);
- 	if (IS_ERR(opp))
- 		return dev_err_probe(dev, PTR_ERR(opp), "failed to find min peak bandwidth\n");
-+	dev_pm_opp_put(opp);
+ 	mutex_lock(&pdr->lock);
+ 	pdr->locator_init_complete = false;
+-	mutex_unlock(&pdr->lock);
  
- 	bwmon->dev = dev;
+ 	pdr->locator_addr.sq_node = 0;
+ 	pdr->locator_addr.sq_port = 0;
++	mutex_unlock(&pdr->lock);
+ }
  
+ static const struct qmi_ops pdr_locator_ops = {
+@@ -365,12 +365,14 @@ static int pdr_get_domain_list(struct servreg_get_domain_list_req *req,
+ 	if (ret < 0)
+ 		return ret;
+ 
++	mutex_lock(&pdr->lock);
+ 	ret = qmi_send_request(&pdr->locator_hdl,
+ 			       &pdr->locator_addr,
+ 			       &txn, SERVREG_GET_DOMAIN_LIST_REQ,
+ 			       SERVREG_GET_DOMAIN_LIST_REQ_MAX_LEN,
+ 			       servreg_get_domain_list_req_ei,
+ 			       req);
++	mutex_unlock(&pdr->lock);
+ 	if (ret < 0) {
+ 		qmi_txn_cancel(&txn);
+ 		return ret;
 -- 
 2.43.0
 
