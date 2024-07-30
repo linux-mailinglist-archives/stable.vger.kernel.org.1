@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-63654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188399419FD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E640941E5A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C309F1F25A3C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1731B267A2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103E81898E5;
-	Tue, 30 Jul 2024 16:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294CC1A76BB;
+	Tue, 30 Jul 2024 17:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbEqe2gQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVr8ajix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DDF189502;
-	Tue, 30 Jul 2024 16:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2E31A76B1;
+	Tue, 30 Jul 2024 17:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357524; cv=none; b=tF3CGlDhSQQkszWvplhoPtiTressH0KAdl6gKFNkdG/kAe9dfV1BHlMiwyluzEaUD3iioVSmwcXBwYs1D6YD1pYuX+iJTbE2gLtPD41noDWD26stMoPebs0sl095yExd1tvASOT8U7XE2f905kMGW5gCwhW1EYt3HChGszNpPKs=
+	t=1722360238; cv=none; b=RMJ5xyNbQPUQuNbjweATuHVJymb6pmqOSDMYRV6RyJK7KbeAUbpzDon/iE7i9dhMtkqWgg7KHJSCJmJhMamr67ukStzA2PiXZNGrkZBeHYOAAlYKBvb4AVnHViFGkUQA6vf70I8h3I0OWt9zKbLysVfsDvBF7ZspgQ39QoFsf/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357524; c=relaxed/simple;
-	bh=H22xwe7zEgFDaX+NX8UKpZkgZpbvBBLkW7egQxSRrOg=;
+	s=arc-20240116; t=1722360238; c=relaxed/simple;
+	bh=0SrDAYb4AIR6B3R5GsZVzVJoo2lbo8GtdIevzCeyuCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rm2I8cqWRcvuTmazIDiPNmTyW81cYQMkxileFGcQ/VMouhwDr2oXdAKTdCLQ0Gk7/yj2IlRGhFEmv30iTnoeJMW4g+6isa1V8dgyzGWwSiioYjbFlHLKlKvx/d8v3vhym3saML67KR7WDwg7VH9SxkDekJuz6CflHO4Xuy4kEFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbEqe2gQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF75C4AF0E;
-	Tue, 30 Jul 2024 16:38:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rswcbtDFosxvB66zDAwI+o/x4lUcqYshlssqW4wBigcyrEKX7yDjxhpRA39WYVXqeu7xUL3+pKLZx4GvioqfdSSSMB3vcETdCLDbRZlQPjRfCpmahaz+sYyL2b0EoDINVs/uQg4BddwTVZyXt/FZMa+8I4N/hVvcrPCgVmjwkDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVr8ajix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D050C32782;
+	Tue, 30 Jul 2024 17:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357524;
-	bh=H22xwe7zEgFDaX+NX8UKpZkgZpbvBBLkW7egQxSRrOg=;
+	s=korg; t=1722360237;
+	bh=0SrDAYb4AIR6B3R5GsZVzVJoo2lbo8GtdIevzCeyuCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbEqe2gQNkpXJsVPJFdVPjsRekmquRNx+dvLaw1NjjUL6L2FfZIALXDrwJ4KIpz1F
-	 cW9b+CC4874rSa8I6eDJbY0nLdY7tuCiRU1ZUHHtuWnC+BGqbzE6Cc1vl9OMVdQxjW
-	 vfKIHIqbbQZg3rZAUimfU2iQ2Udu7KBV3Xww4ewM=
+	b=yVr8ajixKwVfmtDUowFxWfPNaeWQFkvBpaUg3RVDwHnCe+PXixSsJv6Zdz0J6DENM
+	 HLY3BM2IFsF15+HvIKGnlIv1jmCNtz/VVj6Egcukuj/hK1IOp5NoOQLmHXPcDuTFPt
+	 k5AdYs24OtC15r9pa2fUWQ2EStxec7aeITzb+p6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 282/440] ipv6: take care of scope when choosing the src addr
+	Heiko Stuebner <heiko@sntech.de>,
+	Jianfeng Liu <liujianfeng1994@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.10 639/809] PCI: dw-rockchip: Fix initial PERST# GPIO value
 Date: Tue, 30 Jul 2024 17:48:35 +0200
-Message-ID: <20240730151626.844245111@linuxfoundation.org>
+Message-ID: <20240730151750.089056067@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit abb9a68d2c64dd9b128ae1f2e635e4d805e7ce64 upstream.
+commit 28b8d7793b8573563b3d45321376f36168d77b1e upstream.
 
-When the source address is selected, the scope must be checked. For
-example, if a loopback address is assigned to the vrf device, it must not
-be chosen for packets sent outside.
+PERST# is active low according to the PCIe specification.
 
-CC: stable@vger.kernel.org
-Fixes: afbac6010aec ("net: ipv6: Address selection needs to consider L3 domains")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240710081521.3809742-4-nicolas.dichtel@6wind.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, the existing pcie-dw-rockchip.c driver does:
+
+  gpiod_set_value(..., 0); msleep(100); gpiod_set_value(..., 1);
+
+when asserting + deasserting PERST#.
+
+This is of course wrong, but because all the device trees for this
+compatible string have also incorrectly marked this GPIO as ACTIVE_HIGH:
+
+  $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3568*
+  $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3588*
+
+The actual toggling of PERST# is correct, and we cannot change it anyway,
+since that would break device tree compatibility.
+
+However, this driver does request the GPIO to be initialized as
+GPIOD_OUT_HIGH, which does cause a silly sequence where PERST# gets
+toggled back and forth for no good reason.
+
+Fix this by requesting the GPIO to be initialized as GPIOD_OUT_LOW (which
+for this driver means PERST# asserted).
+
+This will avoid an unnecessary signal change where PERST# gets deasserted
+(by devm_gpiod_get_optional()) and then gets asserted (by
+rockchip_pcie_start_link()) just a few instructions later.
+
+Before patch, debug prints on EP side, when booting RC:
+
+  [  845.606810] pci: PERST# asserted by host!
+  [  852.483985] pci: PERST# de-asserted by host!
+  [  852.503041] pci: PERST# asserted by host!
+  [  852.610318] pci: PERST# de-asserted by host!
+
+After patch, debug prints on EP side, when booting RC:
+
+  [  125.107921] pci: PERST# asserted by host!
+  [  132.111429] pci: PERST# de-asserted by host!
+
+This extra, very short, PERST# assertion + deassertion has been reported to
+cause issues with certain WLAN controllers, e.g. RTL8822CE.
+
+Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+Link: https://lore.kernel.org/linux-pci/20240417164227.398901-1-cassel@kernel.org
+Tested-by: Heiko Stuebner <heiko@sntech.de>
+Tested-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org	# v5.15+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1831,7 +1831,8 @@ int ipv6_dev_get_saddr(struct net *net,
- 							    master, &dst,
- 							    scores, hiscore_idx);
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -240,7 +240,7 @@ static int rockchip_pcie_resource_get(st
+ 		return PTR_ERR(rockchip->apb_base);
  
--			if (scores[hiscore_idx].ifa)
-+			if (scores[hiscore_idx].ifa &&
-+			    scores[hiscore_idx].scopedist >= 0)
- 				goto out;
- 		}
+ 	rockchip->rst_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
+-						     GPIOD_OUT_HIGH);
++						     GPIOD_OUT_LOW);
+ 	if (IS_ERR(rockchip->rst_gpio))
+ 		return PTR_ERR(rockchip->rst_gpio);
  
 
 
