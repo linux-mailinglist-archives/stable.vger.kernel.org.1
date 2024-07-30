@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-64351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FE4941D84
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA44941AA6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32FBCB266FF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759A81F23C15
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767BB1A76A9;
-	Tue, 30 Jul 2024 17:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1023C17D8BB;
+	Tue, 30 Jul 2024 16:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJK6GnR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLVsgC3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350051A76A4;
-	Tue, 30 Jul 2024 17:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDF41448FA;
+	Tue, 30 Jul 2024 16:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359834; cv=none; b=lvDNuimvxxyjmQxutwV8trnTUHbyGwWCaDr5F095o0O/XNuumanTzkwJqWvyi0t4ujHtJTdE9JP8yYru04ScJ8oSzVGWR5HYLPLAY+6ynAeYd7XDKxyxEJp1atDr+3SY48Ch+qa4DG/AqioSPU2dRhgVnaPMJpAI1LPMzmYXK7I=
+	t=1722357962; cv=none; b=eI7UnWOEZ+qzb6CYnmkj25vEyQJ+7WKDRBLZvqrUCoVWkraMbE0/3+fYKKn5LQ9egycZPni+bJj7l3KMzGlo2OerwWJk9y8unpSC6Nbsdq0bndhSQX2fybk7BBpRv7SHW169XJsIeawvoT5Xe085hWEiI7yJ+f4qjQxxjadheWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359834; c=relaxed/simple;
-	bh=msP2VvToAv/EawngSbvvO4YeKpqlmSmoNS/OMNTNnCo=;
+	s=arc-20240116; t=1722357962; c=relaxed/simple;
+	bh=BaOHbBPbA7qvskbYxpgnYssoHqis89wbXTrXSfubzz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d84DdCJGMu5bmNiaQkQ5fSVqs8YHvTz7YnxveMtN4mcXsYfZQExDULftUJAvywn9zFU4XexFupJU2iRGFa9MwKaDx+xNmNL9mpru0EsYfXU++4XcXqJmyi+YV5jqUCpIVx72URsN0UU1J5JkA7MxDAH+IPE7C30NMW52k8QyEx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJK6GnR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF36EC32782;
-	Tue, 30 Jul 2024 17:17:13 +0000 (UTC)
+	 MIME-Version; b=bXRRQYgczchFJovlAOKWNITsZXG7T7dWsGEkgGQJMw7bG+xb+ceey2c8/kQoVcHD5v6T8vTzyYiY9s8xcJ0v/J6mfM6TVoBjIFy0l0Tj+TldECfa5cWlK8tXi6X+DaM/0WmV6XcjZW4McV3C432Cu5TvyAuBe/CuFxTwGZdJVZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLVsgC3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAE4C32782;
+	Tue, 30 Jul 2024 16:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359834;
-	bh=msP2VvToAv/EawngSbvvO4YeKpqlmSmoNS/OMNTNnCo=;
+	s=korg; t=1722357962;
+	bh=BaOHbBPbA7qvskbYxpgnYssoHqis89wbXTrXSfubzz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJK6GnR5BcsmOGUJ8LzRfAwi2txIdZVp3UTPj2yU3f2dbbh7Uk2vSXotI9nQU+IiV
-	 kB1k+1YfYfU6CM3CF6mWjdXi+dXNgwTHnbTCFlc/ifKOKP3MZvvlGZ95hM5h7ohoMz
-	 yfNbwoULvyklL3fj/P55TVwOqbGi0Dz9gaEqmikY=
+	b=wLVsgC3soFD3gsvDeGxsglKlGayMCqq9OQZCWZrZzr6+l4gkf6Kd/TfqRogwNRZfq
+	 nIJjJIBsvKroeeRLnY8+N4tEb3Nl+pI9+UNmY3x3W4mbfwvwRM28vbMZHVTIqQH3lL
+	 dMoYeVv9lxOX0kfZ6+LhPZKfS//PSDHyQyUS5zXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.10 542/809] x86/efistub: Avoid returning EFI_SUCCESS on error
-Date: Tue, 30 Jul 2024 17:46:58 +0200
-Message-ID: <20240730151746.157784151@linuxfoundation.org>
+	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 312/568] ipvs: properly dereference pe in ip_vs_add_service
+Date: Tue, 30 Jul 2024 17:46:59 +0200
+Message-ID: <20240730151652.066370342@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
 
-commit fb318ca0a522295edd6d796fb987e99ec41f0ee5 upstream.
+[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
 
-The fail label is only used in a situation where the previous EFI API
-call succeeded, and so status will be set to EFI_SUCCESS. Fix this, by
-dropping the goto entirely, and call efi_exit() with the correct error
-code.
+Use pe directly to resolve sparse warning:
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+
+Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
+Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/netfilter/ipvs/ip_vs_ctl.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -501,16 +501,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
- 	if (!cmdline_ptr)
--		goto fail;
-+		efi_exit(handle, EFI_OUT_OF_RESOURCES);
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index 143a341bbc0a4..dec5309d9f1f5 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -1459,18 +1459,18 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
+ 	if (ret < 0)
+ 		goto out_err;
  
- 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
- 			  &boot_params.ext_cmd_line_ptr);
- 
- 	efi_stub_entry(handle, sys_table_arg, &boot_params);
- 	/* not reached */
+-	/* Bind the ct retriever */
+-	RCU_INIT_POINTER(svc->pe, pe);
+-	pe = NULL;
 -
--fail:
--	efi_exit(handle, status);
- }
+ 	/* Update the virtual service counters */
+ 	if (svc->port == FTPPORT)
+ 		atomic_inc(&ipvs->ftpsvc_counter);
+ 	else if (svc->port == 0)
+ 		atomic_inc(&ipvs->nullsvc_counter);
+-	if (svc->pe && svc->pe->conn_out)
++	if (pe && pe->conn_out)
+ 		atomic_inc(&ipvs->conn_out_counter);
  
- static void add_e820ext(struct boot_params *params,
++	/* Bind the ct retriever */
++	RCU_INIT_POINTER(svc->pe, pe);
++	pe = NULL;
++
+ 	/* Count only IPv4 services for old get/setsockopt interface */
+ 	if (svc->af == AF_INET)
+ 		ipvs->num_services++;
+-- 
+2.43.0
+
 
 
 
