@@ -1,95 +1,95 @@
-Return-Path: <stable+bounces-62817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC639413A8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:52:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9389413AD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 656B3280FBB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 13:52:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D81271F2457E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 13:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12251A08A9;
-	Tue, 30 Jul 2024 13:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D691A08C5;
+	Tue, 30 Jul 2024 13:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="DlLbXEkU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AUEtrlBZ"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="SZS6Cj+D";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QAgBwod4"
 X-Original-To: stable@vger.kernel.org
 Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FC7198856
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 13:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F95F1A08AE;
+	Tue, 30 Jul 2024 13:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722347549; cv=none; b=JkwAGnI97OGxXBzXPOQeZWze1qzb96NTuIryTvPfd58LAjW0pyZjFo0eML8jWtNx31BPiKCfpKzUoTSly9jbAnedsDq0f0t3IihWqNbpkI4z7EJCV6FHXJXYwt5I1TDTKgxZhHx6uKArYPUPszNDwq/mYNsr6Wj/dwO5oCIQoio=
+	t=1722347594; cv=none; b=e95ZYlWDQAmnQ2PLP+w+hmIS+bWqVYRiNGTE/rnNBGk8spS5OVXPTP98Lu0h79Zj+mPR4XZbetaq//KIcwJNHTag/kkXVoruB2HmYNzEAu0iDNOjYn/QqJeGU+k7i1mxh29lb9EdzhFP0ZJ2FQk3JtR4vjOY9G8qFz9wj4kPR24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722347549; c=relaxed/simple;
-	bh=9zNtkHvCQEqhB3QqYT0L/zBYk5Ejup31UVy5nAwNpbk=;
+	s=arc-20240116; t=1722347594; c=relaxed/simple;
+	bh=v+GdyHMBxPxewNSWLopSbrq6JyNNA4B9F0eCYvLWuEU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B9XiQDeoX92W39U/UMsvgRuXGH2/a5vG9OAPiTlfkd8ScLGPaFTraXY2/nrmTyM+wW9k4Y/uyY1bIpbc2EwR4QtQkpII+K59mgAQooXUbc9mRZxaU7n2yjMljYMxDKS+8r1Hfw0uRFLv4LXKcdxGlaAwT+0FXwVcJfpw4XibLe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=DlLbXEkU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AUEtrlBZ; arc=none smtp.client-ip=103.168.172.144
+	 Content-Type:Content-Disposition:In-Reply-To; b=NvLBln8rw8lfahsrdwgdOIsMzIsgBmKgHqD5sLAVTiKE1rUkVPAPrqtx0Eelbes8R+HLtxpqqc9dapPffPD4q4ZKz+H8B6cDpno+FVmcJRIFvYyhY1b0JNFUDTtPaB9JAaIVQCdjTWAgyI62cvYVX8Z3TlFwq9QzhcrSSA3d4G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=SZS6Cj+D; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QAgBwod4; arc=none smtp.client-ip=103.168.172.144
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute8.internal (compute8.nyi.internal [10.202.2.227])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 1F1E81380284;
-	Tue, 30 Jul 2024 09:52:26 -0400 (EDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfout.nyi.internal (Postfix) with ESMTP id BB2A6138057D;
+	Tue, 30 Jul 2024 09:53:10 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
-  by compute8.internal (MEProxy); Tue, 30 Jul 2024 09:52:26 -0400
+  by compute6.internal (MEProxy); Tue, 30 Jul 2024 09:53:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
 	:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1722347546; x=1722433946; bh=ij6GCdrhil
-	7zgni/dPV9KAgLrdFBwG7AdbsW6DV7yTA=; b=DlLbXEkUyCUQvMXAwNE6B5eN30
-	JXCKauriF8sQPku0zmBiBsiTtShoidxD51SQ21om/aimmrU0nKmmdykkprNi6T6n
-	11Yv9nLOreKzeDYwYuiMpwzxoUrK2k1rhXtAEVRnRBAXmwdNsIgsC378NUAQiPM4
-	9dJ86nYTB1HN4jQKo9AAscUSZ/v36G+m+eAjtygeJDBgbKluqWKnWYb8aNKkbWyC
-	5u1GlsM/QjanBNdgXPcVypl9pnFokEg3P7s7rfRghL1+7iduWjGdlTWirKCEfFA0
-	fVRVQIKNjra09VeG5gQG/oDvxpV2gadJnscLz2PlMDaDGg3c67w7SWZG85aQ==
+	:subject:to:to; s=fm3; t=1722347590; x=1722433990; bh=PUtjY+8IDe
+	2YsJuBKLG+kluaMusGn//j0/vcDSgjktA=; b=SZS6Cj+DeAeMjfHVF+AzViVI27
+	NQsIRl6l88jmGXp9pejkXQF4tDYG/WdFpOefjpFoqPfsP2KlJCKsBYtmTuPM+4G3
+	HPwU0JOaHlTBL3zmqfwzaYQmQc8ukXmZ9GcJ+/d9/F2r6Ah6KuroUn1c2KM6RQjy
+	q9sWNbIlnO/Pl0g9SlUEk5mhfEhEFQC/uebuJ0EH4HFhKFCYhbtr9YFSP+wiQJ+0
+	LR+gqB6k55bEm5G16HxWhGUMUeyOWRvSTIrMGydsAixbYcYwRytReTh31uxbL+CM
+	CMx8kFosuJYl6yLW4c5U+Z7c0WTNayAN73DC7kgIhfmSca7NDX9arUUYGrrA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1722347546; x=1722433946; bh=ij6GCdrhil7zgni/dPV9KAgLrdFB
-	wG7AdbsW6DV7yTA=; b=AUEtrlBZz9xr7NhV9BIaK9wu1o780ZIKXjjyQlB+xl0z
-	O4EAuATf0LnFd8tbuEI5Dd5wx8jS04l3uM17fK2dv5L1ALoC8jxoOd5h54NdnLI8
-	G/HnDhf5fN7eQH18m0cz/voly25qUqpjukvT7neyj2EyKBlkHee7q4P57tTRkIQY
-	5gq/D2iZKlyA1HacbVp1UhG0JhV7Db/NxqZ3+h2aXUiFTlW/BXfcVfER6Uuocd+9
-	rc28LNFdJaVJK26tiud5zoZHCVY/LitQZyjR2g1qr+Qug2RCjw7dGSmkcWCSg1do
-	FN44xljXJQoCus64pFQT9vyd18ZEqKo7ihAp6Fr67w==
-X-ME-Sender: <xms:GfCoZiQ9bvX0UG5cTYnAeBqIYfm804XsJKxBm5QpDXNSBYsJG0vh7g>
-    <xme:GfCoZnx8BGiT1rySCi1KRjgs6Tc18tMKIVdb7eDMj2gB3061lFcs221yy0XGK1Npa
-    lRE8WuTL4aS2g>
-X-ME-Received: <xmr:GfCoZv3AcJNNPU6dNECZZvYtzMvq62K5YUwpVlvRfLMyiI64KmMrL9sq-S77DZzo3KxXR3WEh2_P3uYpZQhFqGkc2mQ1IH6fIhXA4Q>
+	fm3; t=1722347590; x=1722433990; bh=PUtjY+8IDe2YsJuBKLG+kluaMusG
+	n//j0/vcDSgjktA=; b=QAgBwod4rKe+S8Vu5Q9trlLCO4kexKNUBlgc+mq4HlTk
+	w9T5ONWikrwwMq8nDdQtk2MHBZrS0gOQaEKbKOMqCbOuR2dcXtju7zwTj3ONzi2t
+	7OXFRgPHhAM6LAGOHRBr6nvrYzrxL5SJKI9hjtQYlUwxkho0JaQzNJizCenanGq9
+	fwcugD+bYrZfXNWcSOet3XPnUy6gLrmPcj6sIoWKnddLc7i+Qj+QVJxpi/hGbDah
+	YoK49MAJQzZthSzUL9/oHveWq+P218FU7qoBEbLLuI6f3FSACrSSBAzOvPF8hBal
+	kIEZhooOQpcVZm/kwPEg1Wtinijy1HcBEXXltnzRPg==
+X-ME-Sender: <xms:RvCoZsXYf57mHPE34z96yOyL8SCDlovw55WgWL0c4qW2exPzm3-oPg>
+    <xme:RvCoZglmwkxaIxRJzwnx6UrbYn9DlPHdJntbzFQYGWOBiL-37He2DLsnRrgCwhqoE
+    nTZojPzmC0Riw>
+X-ME-Received: <xmr:RvCoZgbgHSzKG49NoBJn40wrOLsJrPaxcKMW6L3wT7l14Z9fDE2ZJufGWjGz5xcJNJ7YSxcVGGn-DrTqPr5fuaSkfx1KksavJvfzKA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrjeeggdejtdcutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
     fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
-    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeejteeuhe
+    etkeeuhfelheekffffiefffeettdeigeekvdeigffgfeeuffekgfeuffenucffohhmrghi
+    nhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
     hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedt
-X-ME-Proxy: <xmx:GfCoZuDlhKi6B6lF_F-DgQlm5JNrtP8dE4OmBnLWEFBvZGaT1EeLzA>
-    <xmx:GfCoZrjk4I0vxO9jKQpU6qCiXXQ-gZ3ouzzoohgV447sXVrbU08M1g>
-    <xmx:GfCoZqpOxWBrbtwzNdXcHhfDPXlhYAXTXsUCQyWj5R0QrvSoX2bG1Q>
-    <xmx:GfCoZujLBNzi9G5pcE-rE45k1JdCBLnhqKGFXtmvheR-Jss4FTJHaA>
-    <xmx:GvCoZsXiddsoLHx6kjycXzuLQeU3oApjQMjKH7t6vR_1Dc7ZiGEdpT5y>
+X-ME-Proxy: <xmx:RvCoZrUyaZ61WDGHc9WGBwR6a4bcj4SPo8xLIhxqL6w91N7g2kn73w>
+    <xmx:RvCoZmn5eOe93UsQPRCJqz7VlAaktaKQ3wdOOTMoWxW71lqOHYpPqw>
+    <xmx:RvCoZgckSbqgdua_Owt5wOSCZBfe8nBXtLcGWfJJ8is2AM31qeUksQ>
+    <xmx:RvCoZoEylMJbs7Eix04RydPgUjN5Yj8T8Kjv6HGIgqroBeYj8gmWIg>
+    <xmx:RvCoZr-D289iyccVoc4PwXUOk_n1UUmWWu8eCFBU4cgSEX8JMIOQOenL>
 Feedback-ID: i787e41f1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Jul 2024 09:52:25 -0400 (EDT)
-Date: Tue, 30 Jul 2024 15:52:22 +0200
+ 30 Jul 2024 09:53:09 -0400 (EDT)
+Date: Tue, 30 Jul 2024 15:53:07 +0200
 From: Greg KH <greg@kroah.com>
-To: Yu Zhao <yuzhao@google.com>
-Cc: stable@vger.kernel.org, "T.J. Mercier" <tjmercier@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.6.y 3/3] mm/mglru: fix ineffective protection
- calculation
-Message-ID: <2024073016-spinach-salaried-fba0@gregkh>
-References: <2024072912-during-vitalize-fe0c@gregkh>
- <20240729074434.1223587-1-yuzhao@google.com>
- <20240729074434.1223587-3-yuzhao@google.com>
+To: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: stable@vger.kernel.org, johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: Re: [PATCH 6.6] wifi: mac80211: track capability/opmode NSS
+ separately
+Message-ID: <2024073001-unarmored-friday-0b79@gregkh>
+References: <20240729225849.1352302-1-hauke@hauke-m.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,41 +98,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240729074434.1223587-3-yuzhao@google.com>
+In-Reply-To: <20240729225849.1352302-1-hauke@hauke-m.de>
 
-On Mon, Jul 29, 2024 at 01:44:34AM -0600, Yu Zhao wrote:
-> mem_cgroup_calculate_protection() is not stateless and should only be used
-> as part of a top-down tree traversal.  shrink_one() traverses the per-node
-> memcg LRU instead of the root_mem_cgroup tree, and therefore it should not
-> call mem_cgroup_calculate_protection().
+On Tue, Jul 30, 2024 at 12:58:49AM +0200, Hauke Mehrtens wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> The existing misuse in shrink_one() can cause ineffective protection of
-> sub-trees that are grandchildren of root_mem_cgroup.  Fix it by reusing
-> lru_gen_age_node(), which already traverses the root_mem_cgroup tree, to
-> calculate the protection.
+> [ Upstream commit a8bca3e9371dc5e276af4168be099b2a05554c2a ]
 > 
-> Previously lru_gen_age_node() opportunistically skips the first pass,
-> i.e., when scan_control->priority is DEF_PRIORITY.  On the second pass,
-> lruvec_is_sizable() uses appropriate scan_control->priority, set by
-> set_initial_priority() from lru_gen_shrink_node(), to decide whether a
-> memcg is too small to reclaim from.
+> We're currently tracking rx_nss for each station, and that
+> is meant to be initialized to the capability NSS and later
+> reduced by the operating mode notification NSS.
 > 
-> Now lru_gen_age_node() unconditionally traverses the root_mem_cgroup tree.
-> So it should call set_initial_priority() upfront, to make sure
-> lruvec_is_sizable() uses appropriate scan_control->priority on the first
-> pass.  Otherwise, lruvec_is_reclaimable() can return false negatives and
-> result in premature OOM kills when min_ttl_ms is used.
+> However, we're mixing up capabilities and operating mode
+> NSS in the same variable. This forces us to recalculate
+> the NSS capability on operating mode notification RX,
+> which is a bit strange; due to the previous fix I had to
+> never keep rx_nss as zero, it also means that the capa is
+> never taken into account properly.
 > 
-> Link: https://lkml.kernel.org/r/20240712232956.1427127-1-yuzhao@google.com
-> Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-> Signed-off-by: Yu Zhao <yuzhao@google.com>
-> Reported-by: T.J. Mercier <tjmercier@google.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit 30d77b7eef019fa4422980806e8b7cdc8674493e)
+> Fix all this by storing the capability value, that can be
+> recalculated unconditionally whenever needed, and storing
+> the operating mode notification NSS separately, taking it
+> into account when assigning the final rx_nss value.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: dd6c064cfc3f ("wifi: mac80211: set station RX-NSS on reconfig")
+> Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+> Link: https://msgid.link/20240228120157.0e1c41924d1d.I0acaa234e0267227b7e3ef81a59117c8792116bc@changeid
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> [Fixed trivial merge conflict in copyright year net/mac80211/sta_info.h]
+> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
 > ---
->  mm/vmscan.c | 83 ++++++++++++++++++++++++-----------------------------
->  1 file changed, 38 insertions(+), 45 deletions(-)
+>  net/mac80211/cfg.c         |  2 +-
+>  net/mac80211/ieee80211_i.h |  2 +-
+>  net/mac80211/rate.c        |  2 +-
+>  net/mac80211/sta_info.h    |  6 ++++-
+>  net/mac80211/vht.c         | 46 ++++++++++++++++++--------------------
+>  5 files changed, 30 insertions(+), 28 deletions(-)
+> 
 
 Now queued up, thanks.
 
