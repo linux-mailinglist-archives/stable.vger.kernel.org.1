@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-64468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA25941DF5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6B89419AD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72AB01F252B7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FD151C229C9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC211A76BA;
-	Tue, 30 Jul 2024 17:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FEF146D6B;
+	Tue, 30 Jul 2024 16:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zOafbWH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ux+4yagz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC921A76AF;
-	Tue, 30 Jul 2024 17:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8A71A619E;
+	Tue, 30 Jul 2024 16:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360221; cv=none; b=ByNp6+mL8axYQ25K8pvhCxoEvtDiYNHyCCHkF7+ZmdLmjzFqRkdXjh1D8hx2+VZuwH3ZD8LboYhjP+wPnk91DD4BdLqLarPvO0Wde0I0lo0CuFcrhQpRjXTdw9X3o2z5fJ7KLY/oDyfMo8uNwR0MGAKnBMCaGSuWoSd+S0iCPkM=
+	t=1722357305; cv=none; b=n++FafrMhXlh8A4iOCZ07dKAlELbzCAFz7bk8hy7LMgTmE1l0s2AjX8VQi+rmUshkZvxevxXtZvVWVFmOeo9Djf8fN8OVntMzElvM73MpLIL0yR2q1LD8NHt9yZRql9f8ppaSKWCy7/3qHpdTNI3odeAQnz1Irz+yF2oXclE0xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360221; c=relaxed/simple;
-	bh=kk/w0boIX4z1xrykrSiNiGxw2TbqpWeb8cn6g3leiAE=;
+	s=arc-20240116; t=1722357305; c=relaxed/simple;
+	bh=VYxDizxFm83K7y9WLt8NrNhXKwGpsytAHYf7cqksalw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCvxaDWTAOvQnpcy9Py22zAJ+53AxoYw5xXTghEBow73qHrtyyGZH3Qq3YXyGg1Xukx0DQSTTIpoWCqIqCMD+84qCTlijW2q55NzKp9DuOcKdl801Njy6THPV2HOM5NUf6KfZoxR7uWj/qdVF7NSjgrdQl2+QRbWGMP0ATk/UeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zOafbWH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B919DC32782;
-	Tue, 30 Jul 2024 17:23:40 +0000 (UTC)
+	 MIME-Version; b=oepSBFJ2sUv22fjUr2TBhpjL4iUXgmbmDLepvp5UqkMWZ9ORuITV2UKldcne97MtL6Tmz8xHpryrEDx9ZISjn+1Jv4cxg+qheSQD/UD1bqlC4LzlKek4anMuo/jk57pfwZITOogK9pTPr3gQ20Ys/6paUzNkWx14BbmcIFrsXQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ux+4yagz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E48C32782;
+	Tue, 30 Jul 2024 16:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360221;
-	bh=kk/w0boIX4z1xrykrSiNiGxw2TbqpWeb8cn6g3leiAE=;
+	s=korg; t=1722357305;
+	bh=VYxDizxFm83K7y9WLt8NrNhXKwGpsytAHYf7cqksalw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1zOafbWHmv5zGUAoRvC8menXc9a5rabdOStmSpubxPHWj2GnR4kaUWuN7h76jEad+
-	 pxvqCrA6Ka4CeHBXs8dTbfO01MBZ/LmJJIqrJ/Iukg7clD2t7l44ylhW4FAYH0+COu
-	 ZJSDbDP8aGMeaNV5UIQQWo5KN14LQIFdSUWRrDpc=
+	b=Ux+4yagzxTfudsbfhbLX0OPZ0yLjvkaSa5kAYdWMnPhKBQIfX30Ikj/+piVVaUyzd
+	 lGggdAUhXlZX7MTqu0pkjoHoMrJa/gJgUNjLNWs/hSXFebjHlUZxvzuqf1UpN1ZwFp
+	 bgFtFnJSnRzxBXmFWNWH/O/omOBjJLBnjzaSgkEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Thomas Huth <thuth@redhat.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>
-Subject: [PATCH 6.10 634/809] drm/fbdev-dma: Fix framebuffer mode for big endian devices
-Date: Tue, 30 Jul 2024 17:48:30 +0200
-Message-ID: <20240730151749.883723357@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 278/440] net: netconsole: Disable target before netpoll cleanup
+Date: Tue, 30 Jul 2024 17:48:31 +0200
+Message-ID: <20240730151626.690433964@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Huth <thuth@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit cb31c58e8c294ff31ea842ee1fa2c06c9a9f1cc3 upstream.
+commit 97d9fba9a812cada5484667a46e14a4c976ca330 upstream.
 
-The drm_mode_legacy_fb_format() function only generates formats suitable
-for little endian devices. switch to drm_driver_legacy_fb_format() here
-instead to take the device endianness into consideration, too.
+Currently, netconsole cleans up the netpoll structure before disabling
+the target. This approach can lead to race conditions, as message
+senders (write_ext_msg() and write_msg()) check if the target is
+enabled before using netpoll. The sender can validate that the target is
+enabled, but, the netpoll might be de-allocated already, causing
+undesired behaviours.
 
-Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 6ae2ff23aa43 ("drm/client: Convert drm_client_buffer_addfb() to drm_mode_addfb2()")
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: <stable@vger.kernel.org> # v6.7+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240702121737.522878-1-thuth@redhat.com
+This patch reverses the order of operations:
+1. Disable the target
+2. Clean up the netpoll structure
+
+This change eliminates the potential race condition, ensuring that
+no messages are sent through a partially cleaned-up netpoll structure.
+
+Fixes: 2382b15bcc39 ("netconsole: take care of NETDEV_UNREGISTER event")
+Cc: stable@vger.kernel.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240712143415.1141039-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_fbdev_dma.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/netconsole.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_fbdev_dma.c
-+++ b/drivers/gpu/drm/drm_fbdev_dma.c
-@@ -90,7 +90,8 @@ static int drm_fbdev_dma_helper_fb_probe
- 		    sizes->surface_width, sizes->surface_height,
- 		    sizes->surface_bpp);
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -716,6 +716,7 @@ restart:
+ 				/* rtnl_lock already held
+ 				 * we might sleep in __netpoll_cleanup()
+ 				 */
++				nt->enabled = false;
+ 				spin_unlock_irqrestore(&target_list_lock, flags);
  
--	format = drm_mode_legacy_fb_format(sizes->surface_bpp, sizes->surface_depth);
-+	format = drm_driver_legacy_fb_format(dev, sizes->surface_bpp,
-+					     sizes->surface_depth);
- 	buffer = drm_client_framebuffer_create(client, sizes->surface_width,
- 					       sizes->surface_height, format);
- 	if (IS_ERR(buffer))
+ 				__netpoll_cleanup(&nt->np);
+@@ -723,7 +724,6 @@ restart:
+ 				spin_lock_irqsave(&target_list_lock, flags);
+ 				netdev_put(nt->np.dev, &nt->np.dev_tracker);
+ 				nt->np.dev = NULL;
+-				nt->enabled = false;
+ 				stopped = true;
+ 				netconsole_target_put(nt);
+ 				goto restart;
 
 
 
