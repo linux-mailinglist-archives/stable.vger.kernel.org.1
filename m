@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700C5940D9D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:30:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AFE940D9C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E96AB27485
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:30:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D99081C246DF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2981195F00;
-	Tue, 30 Jul 2024 09:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD3A197549;
+	Tue, 30 Jul 2024 09:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJcpGKRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw0fW6vh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632CE195B33
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C31819AD72
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722331729; cv=none; b=tnuGA/Qt5NFlqmBufxuzrWGrwnk++Kj04d1qL+KgYjxa812QhXwuO4cpyshcqzm8MXQ8u39ZqaD2lgQ2MzSDIr30dqBjFrJuvjuBr9M00ec8Z9aYxnAzmSnjV73dmJGQNz9QHgvfXniNyENL8IEf35ubMhWq9AooXnH+liQDkaA=
+	t=1722331734; cv=none; b=byEz6HCqvysTgC8ISA6poKSydeph6F0cvPe+Qc4gkDpDFvm/zzj5SNrpknI1h2hRtOT9e/AQ2rbFvyH1S75PmZwp29TQOnjDhI5fKDlAtqpybzisBLY+dsBtuZq0bGwjHb9jzow99eB08EWiyvnMish3/7kcC9FiOvQhTA5DXCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722331729; c=relaxed/simple;
-	bh=LsWpTrlfPIVN5216nZ8MaukAi/Sceavw78LO8OHJZ8w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bY78Xh1A7N5SyoCwp+5xNH2NLfgxzWQQQ5MO/DazKUF+lKANh+B19cfkpGhouanqL9sXS3Q5gDnU4tbTIba47Y61RlOE9jw2Hh624chF827pu40O/rBFLAmWbFzIrTfnvMQxQUA99+wDjceta2zmejZfnkAaZXFR6CXfefG8yEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJcpGKRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12A7C4AF0C;
-	Tue, 30 Jul 2024 09:28:48 +0000 (UTC)
+	s=arc-20240116; t=1722331734; c=relaxed/simple;
+	bh=eRqd1G8ulhwvs5I18Wdf38lm2t7DkSETg/FVEHfYhrs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cHDxB0Ph1ismgBcic3qjyoI4ZdZYJDfGnIqOfRI/UW9My6pvWnUuOzdNDnTP8A5fY+JRDvsFr0TI46wk0eKc9D0CPQoZNwwosC8UQtINNUprXoIHTztUvmVDLttTZgCShfZM7NFf7tFRyUKiBx18jDA8mJVvIdgQS+zmrxm8lwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw0fW6vh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F43C32782;
+	Tue, 30 Jul 2024 09:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722331729;
-	bh=LsWpTrlfPIVN5216nZ8MaukAi/Sceavw78LO8OHJZ8w=;
+	s=korg; t=1722331733;
+	bh=eRqd1G8ulhwvs5I18Wdf38lm2t7DkSETg/FVEHfYhrs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QJcpGKRgUo02QMpdy1mLCohSrec+IcDodEIWVDcOonhXZL60HEOamUvs/ZrzBMQES
-	 blI8k2N4nfkpIi/DL9R8DJFebR6M523U5SWg89efVm0SlwUk5xOkE4GR3SWAlPOIVd
-	 Ys3Hj11HxGDTeAGHS5fYVx5X9KZKddhIOS1Q770U=
-Subject: FAILED: patch "[PATCH] perf/x86/intel: Add a distinct name for Granite Rapids" failed to apply to 6.10-stable tree
+	b=Mw0fW6vhN3lhCfRuBYP7fga8bSeO5I/DL3UVTcPmSg5fQ6vXiaGTPGWqtHRVXUC76
+	 ojXKVAeOaQDql9ZIyUynAUtO6hZyxRKull8Xl8d1LGg7CbJvhtyUbo/ASa01/S6YzT
+	 +lrcya3v0RtZ1lPUXp11M8v/rrwJPNJJ9RxD86a4=
+Subject: FAILED: patch "[PATCH] perf/x86/intel: Add a distinct name for Granite Rapids" failed to apply to 6.6-stable tree
 To: kan.liang@linux.intel.com,ahmad.yasin@intel.com,peterz@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Tue, 30 Jul 2024 11:28:43 +0200
-Message-ID: <2024073042-perennial-patio-0790@gregkh>
+Message-ID: <2024073043-shortlist-silica-557d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,30 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x fa0c1c9d283b37fdb7fc1dcccbb88fc8f48a4aa4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073042-perennial-patio-0790@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073043-shortlist-silica-557d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 fa0c1c9d283b ("perf/x86/intel: Add a distinct name for Granite Rapids")
 d142df13f357 ("perf/x86/intel: Switch to new Intel CPU model defines")
+97588df87b56 ("perf/x86/intel: Add common intel_pmu_init_hybrid()")
+b0560bfd4b70 ("perf/x86/intel: Clean up the hybrid CPU type handling code")
+299a5fc8e783 ("perf/x86/intel: Apply the common initialization code for ADL")
+d87d221f854b ("perf/x86/intel: Factor out the initialization code for ADL e-core")
+0ba0c03528e9 ("perf/x86/intel: Factor out the initialization code for SPR")
+d4b5694c75d4 ("perf/x86/intel: Use the common uarch name for the shared functions")
 
 thanks,
 
