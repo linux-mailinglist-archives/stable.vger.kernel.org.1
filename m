@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-63610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BF49419CA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB28941DFC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2BD1F26DAE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EA5D289BA5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6661A18800D;
-	Tue, 30 Jul 2024 16:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C8D1A76B4;
+	Tue, 30 Jul 2024 17:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVagbC/b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkLILYQI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A7F1A6195;
-	Tue, 30 Jul 2024 16:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D001A76A1;
+	Tue, 30 Jul 2024 17:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357383; cv=none; b=GY1wqLQKpUl4nREXhJsaqpr4Ae3lORZ/Jr/0iUG47I7k1ZK7k94fSvPRceD6349KQNvKAK3Gpj+G0kC/RrEQw926O1utPRwtUG2fqVkWtWdSgyC2TdY1o5cXjmydig+pBxGSC0PKfJNLzylrv5tq5TH6VzQ9USuEJX2rhG2vqOg=
+	t=1722360261; cv=none; b=pgSAfkGkRirDzAGcpy84EOFePz5hQWj6rN+R/6lnLbMHo1agYsKwtnGSvgDlYo1sVKP0y7Xnh3YeGOCGCXQ2pvGjR5TNbvMrDkGoyOqtrEPhdNj9aI7rQl751cv89V6xo8xUptFXR8GS4oNMuDE58zAFN3pBBqRoc7Qq05+ZAuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357383; c=relaxed/simple;
-	bh=SsQ0kLyOlV23Iar5z3cD2IcYmfyULWF0DTLwQV2sUPI=;
+	s=arc-20240116; t=1722360261; c=relaxed/simple;
+	bh=6atmmIvTP/EcoxBleyBbs0BkrNgHLlc/GWvfRim/q0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nrm0WI68PaTrTASSnY3lB0t1FtLOkMqx1QByLWbe5IwIUBKYlXX38SZPlb+Hd1gXrdr/6+CdSuiGFbuzJTDVuVVheSBzhWlOH12hzf7NVOnm/mAidKHHyNWhhMqWMPvVxeZjOicpmw7CKFBZi2bMyOqr5XDYfwvz7v9s20FQZZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVagbC/b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7C2C4AF0C;
-	Tue, 30 Jul 2024 16:36:22 +0000 (UTC)
+	 MIME-Version; b=dt/TbIqv7KeL/5jrtcdRGNxb5bvuw1+HX5ShJrT6fV2HeP4V5/4/eiAKs2Zdi4R0ZQWQyoFHW80OFFBEws15R8XkcTWPIiuAIHLqv6zR04/0R3sMZZ5WQ3ZNeLrrOzpKXqrSdlU4kDCFSxrN/6XJrigbkLCl6Sy4bG3fzKKYZGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkLILYQI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57390C4AF0C;
+	Tue, 30 Jul 2024 17:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357383;
-	bh=SsQ0kLyOlV23Iar5z3cD2IcYmfyULWF0DTLwQV2sUPI=;
+	s=korg; t=1722360260;
+	bh=6atmmIvTP/EcoxBleyBbs0BkrNgHLlc/GWvfRim/q0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVagbC/bnfnWglFW5hnmoc7MlyZpVHnNn7lMHgB2gJ8wMawhtft7iVIfSqKgJi5tG
-	 q1o4snN+3HyDoRIxT1xIGK/gSoSa2szl/BKhWvk1bgIt2a7RCISJhZXBjZryHkDxYk
-	 gkFudPDiZNUD+eeXOLHsvYuOZKugRYoPufUcoi70=
+	b=vkLILYQIZb05CUceRrYphzpH+RVtk/dsJd293zEC70a5ElgaSPygC4OKwPiK7hfe/
+	 V8TDuNHPrxmLWj9TTwQ9Zkzeu3Grk7fLrGS9OnxcBK06F2pn+FQvKeL/qKG8/kr8pR
+	 C+hoXUj6ptSJUYbrcVF6Ij1Bl4GStqeQzDurNM18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 6.1 287/440] ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error
-Date: Tue, 30 Jul 2024 17:48:40 +0200
-Message-ID: <20240730151627.040507186@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.10 645/809] hostfs: fix dev_t handling
+Date: Tue, 30 Jul 2024 17:48:41 +0200
+Message-ID: <20240730151750.345086760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +60,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 28ab9769117ca944cb6eb537af5599aa436287a4 upstream.
+commit 267ed02c2121b75e0eaaa338240453b576039e4a upstream.
 
-SAT-5 revision 8 specification removed the text about the ANSI INCITS
-431-2007 compliance which was requiring SCSI/ATA Translation (SAT) to
-return descriptor format sense data for the ATA PASS-THROUGH commands
-regardless of the setting of the D_SENSE bit.
+dev_t is a kernel type and may have different definitions
+in kernel and userspace. On 32-bit x86 this currently makes
+the stat structure being 4 bytes longer in the user code,
+causing stack corruption.
 
-Let's honor the D_SENSE bit for ATA PASS-THROUGH commands while
-generating the "ATA PASS-THROUGH INFORMATION AVAILABLE" sense data.
+However, this is (potentially) not the only problem, since
+dev_t is a different type on user/kernel side, so we don't
+know that the major/minor encoding isn't also different.
+Decode/encode it instead to address both problems.
 
-SAT-5 revision 7
-================
-
-12.2.2.8 Fixed format sense data
-
-Table 212 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands. SATLs compliant with ANSI
-INCITS 431-2007, SCSI/ATA Translation (SAT) return descriptor format
-sense data for the ATA PASS-THROUGH commands regardless of the setting
-of the D_SENSE bit.
-
-SAT-5 revision 8
-================
-
-12.2.2.8 Fixed format sense data
-
-Table 211 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands.
-
-Cc: stable@vger.kernel.org # 4.19+
-Reported-by: Niklas Cassel <cassel@kernel.org>
-Closes: https://lore.kernel.org/linux-ide/Zn1WUhmLglM4iais@ryzen.lan
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240702024735.1152293-4-ipylypiv@google.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 74ce793bcbde ("hostfs: Fix ephemeral inodes")
+Link: https://patch.msgid.link/20240702092440.acc960585dd5.Id0767e12f562a69c6cd3c3262dc3d765db350cf6@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/hostfs/hostfs.h      |    7 ++++---
+ fs/hostfs/hostfs_kern.c |   10 ++++++----
+ fs/hostfs/hostfs_user.c |    7 ++++---
+ 3 files changed, 14 insertions(+), 10 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -900,11 +900,8 @@ static void ata_gen_passthru_sense(struc
- 				   &sense_key, &asc, &ascq, verbose);
- 		ata_scsi_set_sense(qc->dev, cmd, sense_key, asc, ascq);
- 	} else {
--		/*
--		 * ATA PASS-THROUGH INFORMATION AVAILABLE
--		 * Always in descriptor format sense.
--		 */
--		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
-+		/* ATA PASS-THROUGH INFORMATION AVAILABLE */
-+		ata_scsi_set_sense(qc->dev, cmd, RECOVERED_ERROR, 0, 0x1D);
+--- a/fs/hostfs/hostfs.h
++++ b/fs/hostfs/hostfs.h
+@@ -63,9 +63,10 @@ struct hostfs_stat {
+ 	struct hostfs_timespec atime, mtime, ctime;
+ 	unsigned int blksize;
+ 	unsigned long long blocks;
+-	unsigned int maj;
+-	unsigned int min;
+-	dev_t dev;
++	struct {
++		unsigned int maj;
++		unsigned int min;
++	} rdev, dev;
+ };
+ 
+ extern int stat_file(const char *path, struct hostfs_stat *p, int fd);
+--- a/fs/hostfs/hostfs_kern.c
++++ b/fs/hostfs/hostfs_kern.c
+@@ -530,10 +530,11 @@ static int hostfs_inode_update(struct in
+ static int hostfs_inode_set(struct inode *ino, void *data)
+ {
+ 	struct hostfs_stat *st = data;
+-	dev_t rdev;
++	dev_t dev, rdev;
+ 
+ 	/* Reencode maj and min with the kernel encoding.*/
+-	rdev = MKDEV(st->maj, st->min);
++	rdev = MKDEV(st->rdev.maj, st->rdev.min);
++	dev = MKDEV(st->dev.maj, st->dev.min);
+ 
+ 	switch (st->mode & S_IFMT) {
+ 	case S_IFLNK:
+@@ -559,7 +560,7 @@ static int hostfs_inode_set(struct inode
+ 		return -EIO;
  	}
  
- 	if ((cmd->sense_buffer[0] & 0x7f) >= 0x72) {
+-	HOSTFS_I(ino)->dev = st->dev;
++	HOSTFS_I(ino)->dev = dev;
+ 	ino->i_ino = st->ino;
+ 	ino->i_mode = st->mode;
+ 	return hostfs_inode_update(ino, st);
+@@ -568,8 +569,9 @@ static int hostfs_inode_set(struct inode
+ static int hostfs_inode_test(struct inode *inode, void *data)
+ {
+ 	const struct hostfs_stat *st = data;
++	dev_t dev = MKDEV(st->dev.maj, st->dev.min);
+ 
+-	return inode->i_ino == st->ino && HOSTFS_I(inode)->dev == st->dev;
++	return inode->i_ino == st->ino && HOSTFS_I(inode)->dev == dev;
+ }
+ 
+ static struct inode *hostfs_iget(struct super_block *sb, char *name)
+--- a/fs/hostfs/hostfs_user.c
++++ b/fs/hostfs/hostfs_user.c
+@@ -34,9 +34,10 @@ static void stat64_to_hostfs(const struc
+ 	p->mtime.tv_nsec = 0;
+ 	p->blksize = buf->st_blksize;
+ 	p->blocks = buf->st_blocks;
+-	p->maj = os_major(buf->st_rdev);
+-	p->min = os_minor(buf->st_rdev);
+-	p->dev = buf->st_dev;
++	p->rdev.maj = os_major(buf->st_rdev);
++	p->rdev.min = os_minor(buf->st_rdev);
++	p->dev.maj = os_major(buf->st_dev);
++	p->dev.min = os_minor(buf->st_dev);
+ }
+ 
+ int stat_file(const char *path, struct hostfs_stat *p, int fd)
 
 
 
