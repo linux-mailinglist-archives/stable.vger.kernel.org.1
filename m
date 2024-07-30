@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3882E9416B8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:03:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7789416BB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:03:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDDBA2856F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:03:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BAE0B24003
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A24187FFB;
-	Tue, 30 Jul 2024 16:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9527A187FFB;
+	Tue, 30 Jul 2024 16:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCun9iVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CJi5Vk5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4198E8BE8;
-	Tue, 30 Jul 2024 16:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7C3187FEC;
+	Tue, 30 Jul 2024 16:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355394; cv=none; b=ejT2G9PvTREFmMqkYe/m0SeYqNLDh0JQhXmVxlKnftf5/mXqR/ARKg8qPbiScpSH/mvbDVd0brWUDRlm35Nt1EvlJlklzjesADkxKVVddEqiTEwTSO8NzyKQ2MM1rb2KHyHZyVXKouHsygHKT2n1umT+y7Yim/p0VTMtEYA6Id0=
+	t=1722355405; cv=none; b=i1Mu/V1JshWB6MZTZl1AsbF4CUpc6KDUvHchvw/y/TmsvcVGlIhOHj+aEGvwDJEY5iamrluOZovtAKMdR5ZH8fsmsVPdtH4RuMv6gGp0VC0yYnhPWIHu9QQwXScUFu3XhtUVVzLgM2sCT7enLh9STKUhxoQx3Pc0+RAYV7kuc/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355394; c=relaxed/simple;
-	bh=QAEzm+tKrm7Ih6fVZg1RdspvRh2uNXmWAk8XKmt/g8I=;
+	s=arc-20240116; t=1722355405; c=relaxed/simple;
+	bh=R1UbsZEzHD/a99RTLrZUf7W/N2z0+3DZ8bbj1yuqSsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQ3DQiu+rcyNUzixl1ayir4Ap3pjOWmHjB/qRXcW9R/dM57Fp+dJadozffMkC0cgNdUAFWLTbeGUOMdqgcaogLCQdR1YWTUBii0x7STUIm5edkAaVR1rzi9sey6xb63AhGiPzZn98R5It8J0eS0qdxQosIlTf56+NZNRA/wdGqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCun9iVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44914C32782;
-	Tue, 30 Jul 2024 16:03:13 +0000 (UTC)
+	 MIME-Version; b=Ko1zRglMYZgZLrVRmDJiKi0/38DsCwRzPQyrNIycRlsy8KgBBFM3z+Gy35rRX+DDgh1Vv9LrXFL/6Z1cEM8QO/wD5tfJFr17rIQkaK9LAbJTLrFOOMD0SdoNklr5iiDFsOaMAC9zhFginT8JZk6SBf3ygNVxFr1Mx5mCTZztM20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CJi5Vk5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDC1C32782;
+	Tue, 30 Jul 2024 16:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355394;
-	bh=QAEzm+tKrm7Ih6fVZg1RdspvRh2uNXmWAk8XKmt/g8I=;
+	s=korg; t=1722355405;
+	bh=R1UbsZEzHD/a99RTLrZUf7W/N2z0+3DZ8bbj1yuqSsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCun9iVeZApJgHcndpLt+kssIAKWAJqb3zoXTPBFO0m/AwaW7fziu2L81fkZSOn9O
-	 1rw3vTb7QuSVb3IO3c0YgVrZktjIv/8Yo50hZOX7eMuRVPWyFQV7uh/rIu4SodFL2l
-	 WolETpM4kGtR7lolG1pBmpJGJPkHOnKFyaw5uUqM=
+	b=0CJi5Vk5Z40K7VKCzxKKD9/wx2MHSFXrY8OLCgaTZAnXnFwqiBCTaHQ/WQst6+Kyo
+	 oCy9PTZyQwwJwr7gC8H5qXXT4JJF3MkNrI0hU3oDBsnre2qIy9HKrPgv0DsFfb0011
+	 2tyuiTuCxbbHTQWFmJrARocvHT6niKIu08flIxp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Esben Haabendal <esben@geanix.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/568] OPP: ti: Fix ti_opp_supply_probe wrong return values
-Date: Tue, 30 Jul 2024 17:42:41 +0200
-Message-ID: <20240730151641.951812575@linuxfoundation.org>
+Subject: [PATCH 6.6 055/568] memory: fsl_ifc: Make FSL_IFC config visible and selectable
+Date: Tue, 30 Jul 2024 17:42:42 +0200
+Message-ID: <20240730151641.999005798@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,41 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Primoz Fiser <primoz.fiser@norik.com>
+From: Esben Haabendal <esben@geanix.com>
 
-[ Upstream commit 3a1ac6b8f603a9310274990a0ad563a5fb709f59 ]
+[ Upstream commit 9ba0cae3cac07c21c583f9ff194f74043f90d29c ]
 
-Function ti_opp_supply_probe() since commit 6baee034cb55 ("OPP: ti:
-Migrate to dev_pm_opp_set_config_regulators()") returns wrong values
-when all goes well and hence driver probing eventually fails.
+While use of fsl_ifc driver with NAND flash is fine, as the fsl_ifc_nand
+driver selects FSL_IFC automatically, we need the CONFIG_FSL_IFC option to
+be selectable for platforms using fsl_ifc with NOR flash.
 
-Fixes: 6baee034cb55 ("OPP: ti: Migrate to dev_pm_opp_set_config_regulators()")
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: ea0c0ad6b6eb ("memory: Enable compile testing for most of the drivers")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+Link: https://lore.kernel.org/r/20240530-fsl-ifc-config-v3-1-1fd2c3d233dd@geanix.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/ti-opp-supply.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/memory/Kconfig       | 2 +-
+ drivers/mtd/nand/raw/Kconfig | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/opp/ti-opp-supply.c b/drivers/opp/ti-opp-supply.c
-index 8f3f13fbbb25a..a8a696d2e03ab 100644
---- a/drivers/opp/ti-opp-supply.c
-+++ b/drivers/opp/ti-opp-supply.c
-@@ -400,10 +400,12 @@ static int ti_opp_supply_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
+index 8efdd1f971395..c82d8d8a16eaf 100644
+--- a/drivers/memory/Kconfig
++++ b/drivers/memory/Kconfig
+@@ -167,7 +167,7 @@ config FSL_CORENET_CF
+ 	  represents a coherency violation.
  
- 	ret = dev_pm_opp_set_config_regulators(cpu_dev, ti_opp_config_regulators);
--	if (ret < 0)
-+	if (ret < 0) {
- 		_free_optimized_voltages(dev, &opp_data);
-+		return ret;
-+	}
+ config FSL_IFC
+-	bool "Freescale IFC driver" if COMPILE_TEST
++	bool "Freescale IFC driver"
+ 	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
+ 	depends on HAS_IOMEM
  
--	return ret;
-+	return 0;
- }
- 
- static struct platform_driver ti_opp_supply_driver = {
+diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
+index cbf8ae85e1ae0..6142573085169 100644
+--- a/drivers/mtd/nand/raw/Kconfig
++++ b/drivers/mtd/nand/raw/Kconfig
+@@ -234,8 +234,7 @@ config MTD_NAND_FSL_IFC
+ 	tristate "Freescale IFC NAND controller"
+ 	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
+ 	depends on HAS_IOMEM
+-	select FSL_IFC
+-	select MEMORY
++	depends on FSL_IFC
+ 	help
+ 	  Various Freescale chips e.g P1010, include a NAND Flash machine
+ 	  with built-in hardware ECC capabilities.
 -- 
 2.43.0
 
