@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-63078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBF7941730
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:08:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA96A941741
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFF4FB20BA3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:08:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329141F2442B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDBC3DAC16;
-	Tue, 30 Jul 2024 16:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB6418B49A;
+	Tue, 30 Jul 2024 16:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeGV+9Rq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcyXttrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20B73DAC15;
-	Tue, 30 Jul 2024 16:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCA48BE8;
+	Tue, 30 Jul 2024 16:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355591; cv=none; b=Z/7Nei0s3YoDQD3usOh4CsCMGGhqeHuxqoeuRii+a/PwMXr+mhQKbbcF6R36YPX2e7HAc2mOih+MU3zyX/vCtEJZLM/LqZjT1aapIECxOmpQxtvbaLgF6ane4jwnsfWB2Sg0bNfPnlPbAmwcb1200m4eHU9amctVg98tUVvMrV4=
+	t=1722355640; cv=none; b=XoBvVm1CVN6JStpNVA5yVQxSs+sBFrnDMtE5sr/X9vdDNmTRjcw3DnyB769EVF9ABGDpOGwXz/IgyIkmZP8R7MxqWdDxBOROMqAgrBNhn0mzDb/UKpvEMkJQ3b9UfBtwGAPWJg1vL6RKueOhAeBfJwVSECpiv2nuo/pveHhbXE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355591; c=relaxed/simple;
-	bh=4B/x6oOvg44ANdWndCWA0XpnqZh+kwHazcPDQHLflSs=;
+	s=arc-20240116; t=1722355640; c=relaxed/simple;
+	bh=SyQhWZetFOFSRiRIfn3cOsnXpH0DvMmu3fWir6yH4IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMkxTWsygVAxSE0fkw+GQbBSfvEC3Me5svN/hcAoq5Rex41EwO0hks3NseSWzM+rSjXYI2HdSoY24nojoxF0rCVWRFbVhGkxAIESYsyiTN7hTbg8CGIaWY7padLLPTJ1WFihNz2Hna8OvcOObUOSHCnRGe59imLcY6uMT7+CNPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeGV+9Rq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FABC32782;
-	Tue, 30 Jul 2024 16:06:31 +0000 (UTC)
+	 MIME-Version; b=Ld4T2shrv/82K8Oto4l+37SNPMRqn9igwq+YKTR5kgxlQRQ4RSpvXj9C38syoNcMThhquPaLYEZ7lKGhJILn1GKQYDK5vrNIIDEnzXKgyPJWlQg0ej4VX6senr/SC47dWSiZUXP2IaGjKbYr5DMI2GogNjX1yF5Flprg9oOhhz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcyXttrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE6DC32782;
+	Tue, 30 Jul 2024 16:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355591;
-	bh=4B/x6oOvg44ANdWndCWA0XpnqZh+kwHazcPDQHLflSs=;
+	s=korg; t=1722355640;
+	bh=SyQhWZetFOFSRiRIfn3cOsnXpH0DvMmu3fWir6yH4IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IeGV+9Rq/bTHHFC7daZhGz1KiKHdV5NYv+dx28W1Mz3mcLyhdcrKSw/nRbFZXDhyA
-	 Ry/6QrGKQLbIPcXS1zsvEKgT4PK0kv7LPAQNQ6Uge9qmdAp+fqPSYvMPl0YgEaDn1z
-	 tjFe2bXAsGrJXKjWUVCcd+Saw6YBnBOzQ5s5nVcs=
+	b=HcyXttrRnweYmPdvZHvEdRFCuQ4DKAdjrYwLoUZpZR8M1zYsao69ghaRXgqiCx1rh
+	 MUwYmOKi41/JrPjJl2gvD6bOZ1ROMSrE9You954LAn/wXit9du6B8/FSnnpiPJR+4b
+	 qIAxbYflBttehgdgJYc31qo/c2sInKWe67ApWFZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marc Gonzalez <mgonzalez@freebox.fr>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 054/809] arm64: dts: qcom: sdm850-lenovo-yoga-c630: fix IPA firmware path
-Date: Tue, 30 Jul 2024 17:38:50 +0200
-Message-ID: <20240730151726.781083598@linuxfoundation.org>
+Subject: [PATCH 6.10 055/809] arm64: dts: qcom: msm8998: enable adreno_smmu by default
+Date: Tue, 30 Jul 2024 17:38:51 +0200
+Message-ID: <20240730151726.819143471@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,35 +69,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Marc Gonzalez <mgonzalez@freebox.fr>
 
-[ Upstream commit cae4c862d8b2d7debb07e6d831e079520163ac4f ]
+[ Upstream commit 98a0c4f2278b4d6c1c7722735c20b2247de6293f ]
 
-Specify firmware path for the IPA network controller on the Lenovo Yoga
-C630 laptop. Without this property IPA tries to load firmware from the
-default location, which likely will fail.
+15 qcom platform DTSI files define an adreno_smmu node.
+msm8998 is the only one with adreno_smmu disabled by default.
 
-Fixes: 2e01e0c21459 ("arm64: dts: qcom: sdm850-yoga: Enable IPA")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240527-yoga-ipa-fw-v1-1-99ac1f5db283@linaro.org
+There's no reason why this SMMU should be disabled by default,
+it doesn't need any further configuration.
+
+Bring msm8998 in line with the 14 other platforms.
+
+This fixes GPU init failing with ENODEV:
+msm_dpu c901000.display-controller: failed to load adreno gpu
+msm_dpu c901000.display-controller: failed to bind 5000000.gpu (ops a3xx_ops): -19
+
+Fixes: 87cd46d68aeac8 ("Configure Adreno GPU and related IOMMU")
+Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://lore.kernel.org/r/be51d1a4-e8fc-48d1-9afb-a42b1d6ca478@freebox.fr
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts b/arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts
-index 47dc42f6e936c..8e30f8cc0916c 100644
---- a/arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm850-lenovo-yoga-c630.dts
-@@ -494,6 +494,7 @@ ecsh: hid@5c {
- &ipa {
- 	qcom,gsi-loader = "self";
- 	memory-region = <&ipa_fw_mem>;
-+	firmware-name = "qcom/sdm850/LENOVO/81JL/ipa_fws.elf";
- 	status = "okay";
- };
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 2dbef4b526ab7..a88bff737d173 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -1590,7 +1590,6 @@ adreno_smmu: iommu@5040000 {
+ 			 * SoC VDDMX RPM Power Domain in the Adreno driver.
+ 			 */
+ 			power-domains = <&gpucc GPU_GX_GDSC>;
+-			status = "disabled";
+ 		};
  
+ 		gpucc: clock-controller@5065000 {
 -- 
 2.43.0
 
