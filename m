@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C45941BAB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87634941864
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C84A81C23025
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C8A1C23AE4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B621898EB;
-	Tue, 30 Jul 2024 16:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2928187FF9;
+	Tue, 30 Jul 2024 16:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7p6txcG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUxZh81P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6018018801A;
-	Tue, 30 Jul 2024 16:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEA71A617E;
+	Tue, 30 Jul 2024 16:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358654; cv=none; b=GrgwKzGDJaQ+ASStZndg6xsDAG2ggfoGFgsd6Ed4GXZOLsAd+wiHULSiHzi4QADi+0YziKe7WnutlB5jAR64hjFN5YUttQluXW4oTuw8/Ahqw04mnYJ4dJLoVtvhTAdt3v8BT/EHR8p+gF1NuvcGAgAtKvN0ozGlyPJhzswEWPA=
+	t=1722356468; cv=none; b=WCPjZxcs10ZTJOpACBGPVv2EdMMjXxiAe+7s/Uq22lb9MAeS0VIDDGoGQpqd3loGGDiDAMswjRuX7cTzukohWtf+9cjq80jgS6v6V5horm6TVQ2W9/18DXHxNokXmOxlCZ7LWg6byYXUuKw9L84ExEAEDK/AB/wMp/u1SOlnpsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358654; c=relaxed/simple;
-	bh=8daS3+DknWohxtBMsSL8oFHBtgBL1y4+j/aR+Jo0jmY=;
+	s=arc-20240116; t=1722356468; c=relaxed/simple;
+	bh=iw1Da3RteKPLxQ97mzAQojzZ51ef/KGLdJNEO4gm2ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HFbe647yWk/6+InsWMXferEu1cJylvj2PxznvjgSSWWJnW4ouN+a3NmADvu/A819UzHHhj3ndX7tclx8JVt6FSekP9eRXLgbQ7wp0MTHVNiPiRtNRj4HMab+1yrvLCrl+rYfCeerKUNWG9/B3Gx6556igczipJYAhhPHSp5HnTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7p6txcG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6EFC32782;
-	Tue, 30 Jul 2024 16:57:33 +0000 (UTC)
+	 MIME-Version; b=fMqa5gEMp5HB9HJvmAp7ynWDxa57ktiNVKyC0KxQhLskITwzwiKZ+XCR/z65JqA2NgAJzFNz8N22ZeQP7lu4WuLDxYd+Y9029IUDYBnoT2b5eO2/pvA/YVOLYHbcZlQt29S5oWESS1NfrZn3mQiELhFJxm+iMwph5xYQLCgSTNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUxZh81P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC0BC32782;
+	Tue, 30 Jul 2024 16:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358654;
-	bh=8daS3+DknWohxtBMsSL8oFHBtgBL1y4+j/aR+Jo0jmY=;
+	s=korg; t=1722356468;
+	bh=iw1Da3RteKPLxQ97mzAQojzZ51ef/KGLdJNEO4gm2ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7p6txcG/e13TzxO+BBFadezekZ5ahIOgiL4AVzFDa5zUu382ZVv/7tH+tLQqCptc
-	 Azuazlu6FI5lTi20lCkwI1bCHs0mrzqveen1l5i1bQ4Zm/dtx+Q7CQhE0EY7Z2RNmx
-	 40pMeD0gtih4OjiYE4lp5R1RQmvBCMQTIV7iXFgI=
+	b=UUxZh81P/0FQak7TPgZhJdRbUn8Ek9cpnNrJA4tNKjcnehHaG23PKYqTEJhRfg8+/
+	 GjjZWoHX6H6OjkQ5pyoRZdBPKj4hyhxVDYOCo89bP5LV3sFccdHr9qSnQwlCCkAQPQ
+	 naa9Z1jYXmLUJKYDaA1h7IihVEzwdmqugV8pvwRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lidong Wang <lidong.wang@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 382/809] PCI: Fix resource double counting on remove & rescan
+Subject: [PATCH 6.6 151/568] perf/x86/intel/cstate: Fix Alderlake/Raptorlake/Meteorlake
 Date: Tue, 30 Jul 2024 17:44:18 +0200
-Message-ID: <20240730151739.755401589@linuxfoundation.org>
+Message-ID: <20240730151645.779204767@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 903534fa7d30214d8ba840ab1cd9e917e0c88e41 ]
+[ Upstream commit 2c3aedd9db6295619d21e50ad29efda614023bf1 ]
 
-pbus_size_mem() keeps the size of the optional resources in
-children_add_size. When calculating the PCI bridge window size,
-calculate_memsize() lower bounds size by old_size before adding
-children_add_size and performing the window size alignment. This
-results in double counting for the resources in children_add_size
-because old_size may be based on the previous size of the bridge
-window after it has already included children_add_size (that is,
-size1 in pbus_size_mem() from an earlier invocation of that
-function).
+For Alderlake, the spec changes after the patch submitted and PC7/PC9
+are removed.
 
-As a result, on repeated remove of the bus & rescan cycles the resource
-size keeps increasing when children_add_size is non-zero as can be seen
-from this extract:
+Raptorlake and Meteorlake, which copy the Alderlake cstate PMU, also
+don't have PC7/PC9.
 
-  iomem0:  23fffd00000-23fffdfffff : PCI Bus 0000:03    # 1MiB
-  iomem1:  20000000000-200001fffff : PCI Bus 0000:03    # 2MiB
-  iomem2:  20000000000-200002fffff : PCI Bus 0000:03    # 3MiB
-  iomem3:  20000000000-200003fffff : PCI Bus 0000:03    # 4MiB
-  iomem4:  20000000000-200004fffff : PCI Bus 0000:03    # 5MiB
+Remove PC7/PC9 support for Alderlake/Raptorlake/Meteorlake.
 
-Solve the double counting by moving old_size check later in
-calculate_memsize() so that children_add_size is already accounted for.
-
-After the patch, the bridge window retains its size as expected:
-
-  iomem0:  23fffd00000-23fffdfffff : PCI Bus 0000:03    # 1MiB
-  iomem1:  20000000000-200000fffff : PCI Bus 0000:03    # 1MiB
-  iomem2:  20000000000-200000fffff : PCI Bus 0000:03    # 1MiB
-
-Fixes: a4ac9fea016f ("PCI : Calculate right add_size")
-Link: https://lore.kernel.org/r/20240507102523.57320-2-ilpo.jarvinen@linux.intel.com
-Tested-by: Lidong Wang <lidong.wang@intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: d0ca946bcf84 ("perf/x86/cstate: Add Alder Lake CPU support")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/r/20240628031758.43103-2-rui.zhang@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/cstate.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 909e6a7c3cc31..141d6b31959be 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -829,11 +829,9 @@ static resource_size_t calculate_memsize(resource_size_t size,
- 		size = min_size;
- 	if (old_size == 1)
- 		old_size = 0;
--	if (size < old_size)
--		size = old_size;
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 96fffb2d521d2..cc6609cbfc8da 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -80,7 +80,7 @@
+  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
+  *			       perf code: 0x03
+  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,CNL,
+- *						KBL,CML,ICL,TGL,RKL,ADL,RPL,MTL
++ *						KBL,CML,ICL,TGL,RKL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C8_RESIDENCY:  Package C8 Residency Counter.
+  *			       perf code: 0x04
+@@ -89,8 +89,7 @@
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C9_RESIDENCY:  Package C9 Residency Counter.
+  *			       perf code: 0x05
+- *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
+- *						ADL,RPL,MTL
++ *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL
+  *			       Scope: Package (physical package)
+  *	MSR_PKG_C10_RESIDENCY: Package C10 Residency Counter.
+  *			       perf code: 0x06
+@@ -582,9 +581,7 @@ static const struct cstate_model adl_cstates __initconst = {
+ 	.pkg_events		= BIT(PERF_CSTATE_PKG_C2_RES) |
+ 				  BIT(PERF_CSTATE_PKG_C3_RES) |
+ 				  BIT(PERF_CSTATE_PKG_C6_RES) |
+-				  BIT(PERF_CSTATE_PKG_C7_RES) |
+ 				  BIT(PERF_CSTATE_PKG_C8_RES) |
+-				  BIT(PERF_CSTATE_PKG_C9_RES) |
+ 				  BIT(PERF_CSTATE_PKG_C10_RES),
+ };
  
--	size = ALIGN(max(size, add_size) + children_add_size, align);
--	return size;
-+	size = max(size, add_size) + children_add_size;
-+	return ALIGN(max(size, old_size), align);
- }
- 
- resource_size_t __weak pcibios_window_alignment(struct pci_bus *bus,
 -- 
 2.43.0
 
