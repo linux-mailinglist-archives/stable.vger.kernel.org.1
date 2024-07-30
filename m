@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAA4941D3D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C98A941B7E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7602DB27524
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 218961F225B4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977B018A6D2;
-	Tue, 30 Jul 2024 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04901898F8;
+	Tue, 30 Jul 2024 16:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSBnjkoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyRv7jYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B5418A6CB;
-	Tue, 30 Jul 2024 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5672C1A6195;
+	Tue, 30 Jul 2024 16:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359604; cv=none; b=PtfFjRgOd8ea0rJK0nxdyAACWDbkLziEKYFHRoYSx3fQQoTL3VN7XKMuFUvllUffVFR5wqbq6gaVXhQyGJLML2kBL+zYBYqGmmQtHPfsyZi1pnPYibn7B6FvGc5WhDmrk3bfAlJXp8fBZ5MC7xa57DxhrTCPcGnbxGAo5j+r5uI=
+	t=1722358544; cv=none; b=SKUi3zcBfa6IMgSz6zoqIDFvYjWs2tA7B0SiADfaHgDFHXxNK9FJs7jk1E1EfR8YVPBlRJvKpP+LsSL9kb/aTL6C+EJxOEVun1MPDdHYsOrOLKpfvYCPsmwdQk6UtqKYp9eyDTyCZw5BYhJds3Wimx7Rl8cGqN26otOF4RARW+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359604; c=relaxed/simple;
-	bh=L9EDOO3MR3/A3rryBB+Xwrh4Lelhc8q70sND1JgrpAc=;
+	s=arc-20240116; t=1722358544; c=relaxed/simple;
+	bh=mAddqH/W5sexrSWnAtR2YNlFv7kXjziZRkM2cQJ4a7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCkHjnoersywSLFLWfNz2Opt52fV7asDp6A6gVnO+61joMlllCQgIAJ4ZktQdnvM3kg79DDqDI2e7SXj0o3poki3CkjoNFAljnMCuvaHPEaWexOy0Nd4oD6pxzw7KKmbu3+C8JHk+GVnWBZPfdR62kq0BrEmaQTgUBEtHkRnEmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSBnjkoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D218EC4AF0E;
-	Tue, 30 Jul 2024 17:13:23 +0000 (UTC)
+	 MIME-Version; b=Ei6IflfocfFGhVlNxEVVrMA6Bqpet3GhAgY1V/U2tpqvdOvtpqfKtTmttxEPG52uSG6w94Y3DE1VjX4p23lI96VR47TzbuacUQNbiBgoXlKVY+cgWqI0puB5D2Yw2P4qNH/bUM1FFaGzPhP5MJabQacGleZ/c7LPl/4iLkSEImU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyRv7jYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929E3C32782;
+	Tue, 30 Jul 2024 16:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359604;
-	bh=L9EDOO3MR3/A3rryBB+Xwrh4Lelhc8q70sND1JgrpAc=;
+	s=korg; t=1722358544;
+	bh=mAddqH/W5sexrSWnAtR2YNlFv7kXjziZRkM2cQJ4a7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSBnjkoW317GdklboyLUy7VXzfBkwUyPDpqRiRSt9e8rZwCmREhFnkCubVSiEt8Q6
-	 efoJ/k6kriLOhEfMY8KEez1MHT5raEqG4d9WoTovdCNJd+2kjPs/m0/aSN0w95PX+e
-	 FBO4wU80B3qcf581MMxIlXh53usXI1STEq5wKT+4=
+	b=PyRv7jYTP+75Z+K4nvVbPixaYhDspJdCB+VAFQOqbP89WbzN3PJepYn5GCVHIPge/
+	 wrhwgVlufLpBeAySacxNkZuNpXNxTgxx9GBoM24qlDnKcTnkJZTlAr+2jOf6JlDCLD
+	 XLSvZS+k/uBJn++XHK75W2fceVBGVKPLK4DV2Rok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Guan <guanwentao@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Erpeng Xu <xuerpeng@uniontech.com>
-Subject: [PATCH 6.6 507/568] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x13d3:0x3591
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.1 381/440] rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
 Date: Tue, 30 Jul 2024 17:50:14 +0200
-Message-ID: <20240730151659.842300644@linuxfoundation.org>
+Message-ID: <20240730151630.690135953@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 473a89b4ed7fd52a419340f7c540d5c8fc96fc75 upstream.
+commit f5c466a0fdb2d9f3650d2e3911b0735f17ba00cf upstream.
 
-Add the support ID(0x13d3, 0x3591) to usb_device_id table for
-Realtek RTL8852BE.
+... to RBD_LOCK_STATE_QUIESCING and quiescing_wait to recognize that
+this state and the associated completion are backing rbd_quiesce_lock(),
+which isn't specific to releasing the lock.
 
-The device table is as follows:
+While exclusive lock does get quiesced before it's released, it also
+gets quiesced before an attempt to update the cookie is made and there
+the lock is not released as long as ceph_cls_set_cookie() succeeds.
 
-T:  Bus=01 Lev=02 Prnt=03 Port=00 Cnt=01 Dev#=  5 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=13d3 ProdID=3591 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Erpeng Xu <xuerpeng@uniontech.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/rbd.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -551,6 +551,8 @@ static const struct usb_device_id quirks
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -362,7 +362,7 @@ enum rbd_watch_state {
+ enum rbd_lock_state {
+ 	RBD_LOCK_STATE_UNLOCKED,
+ 	RBD_LOCK_STATE_LOCKED,
+-	RBD_LOCK_STATE_RELEASING,
++	RBD_LOCK_STATE_QUIESCING,
+ };
+ 
+ /* WatchNotify::ClientId */
+@@ -422,7 +422,7 @@ struct rbd_device {
+ 	struct list_head	running_list;
+ 	struct completion	acquire_wait;
+ 	int			acquire_err;
+-	struct completion	releasing_wait;
++	struct completion	quiescing_wait;
+ 
+ 	spinlock_t		object_map_lock;
+ 	u8			*object_map;
+@@ -525,7 +525,7 @@ static bool __rbd_is_lock_owner(struct r
+ 	lockdep_assert_held(&rbd_dev->lock_rwsem);
+ 
+ 	return rbd_dev->lock_state == RBD_LOCK_STATE_LOCKED ||
+-	       rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING;
++	       rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING;
+ }
+ 
+ static bool rbd_is_lock_owner(struct rbd_device *rbd_dev)
+@@ -3459,12 +3459,12 @@ static void rbd_lock_del_request(struct
+ 	spin_lock(&rbd_dev->lock_lists_lock);
+ 	if (!list_empty(&img_req->lock_item)) {
+ 		list_del_init(&img_req->lock_item);
+-		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING &&
++		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
+ 			       list_empty(&rbd_dev->running_list));
+ 	}
+ 	spin_unlock(&rbd_dev->lock_lists_lock);
+ 	if (need_wakeup)
+-		complete(&rbd_dev->releasing_wait);
++		complete(&rbd_dev->quiescing_wait);
+ }
+ 
+ static int rbd_img_exclusive_lock(struct rbd_img_request *img_req)
+@@ -4182,16 +4182,16 @@ static bool rbd_quiesce_lock(struct rbd_
+ 	/*
+ 	 * Ensure that all in-flight IO is flushed.
+ 	 */
+-	rbd_dev->lock_state = RBD_LOCK_STATE_RELEASING;
+-	rbd_assert(!completion_done(&rbd_dev->releasing_wait));
++	rbd_dev->lock_state = RBD_LOCK_STATE_QUIESCING;
++	rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
+ 	if (list_empty(&rbd_dev->running_list))
+ 		return true;
+ 
+ 	up_write(&rbd_dev->lock_rwsem);
+-	wait_for_completion(&rbd_dev->releasing_wait);
++	wait_for_completion(&rbd_dev->quiescing_wait);
+ 
+ 	down_write(&rbd_dev->lock_rwsem);
+-	if (rbd_dev->lock_state != RBD_LOCK_STATE_RELEASING)
++	if (rbd_dev->lock_state != RBD_LOCK_STATE_QUIESCING)
+ 		return false;
+ 
+ 	rbd_assert(list_empty(&rbd_dev->running_list));
+@@ -5383,7 +5383,7 @@ static struct rbd_device *__rbd_dev_crea
+ 	INIT_LIST_HEAD(&rbd_dev->acquiring_list);
+ 	INIT_LIST_HEAD(&rbd_dev->running_list);
+ 	init_completion(&rbd_dev->acquire_wait);
+-	init_completion(&rbd_dev->releasing_wait);
++	init_completion(&rbd_dev->quiescing_wait);
+ 
+ 	spin_lock_init(&rbd_dev->object_map_lock);
  
 
 
