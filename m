@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611BC941971
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B39B9419F9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92AFE1C23730
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3EA2B247B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0F7189900;
-	Tue, 30 Jul 2024 16:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886AF4EB2B;
+	Tue, 30 Jul 2024 16:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiuHrK9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tp4ytx/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E5B189535;
-	Tue, 30 Jul 2024 16:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E271A617E;
+	Tue, 30 Jul 2024 16:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357136; cv=none; b=D8/FcoXuA+rMqYduRWHR3my1IUy5I5iJ9BGCTAHE+nk/pq2EPW6A13VZ4cHfARjCmsvqsX4L9C5Dtn/Bv39Ao5ORoqt9vDiCKmJuHU12Ti/nAAoNv2s9uwX8ndiSEdE0YodFImC927OsKyB1SiCl98JZRzEKyHUXSfzR9yq2V+A=
+	t=1722357171; cv=none; b=m0n73eDvSXGQKl/EssNC6UDeHMPhZH9Z+jrcnMWRtaqEUA12ONZFoxcXybxNfrD3wHTVGuPxg+GnYYDuaVqD5zSwCv42ZuB9bqg9uAGnnlNIhxjRoO4iu8dqkFhL2qfA426GEtSeK+lsLJK6ComH5QbB+TyVa8Xtpfpep/Npj/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357136; c=relaxed/simple;
-	bh=/GnFvHZ3+oT9tOLeFRwAf9nrDIgHjtC8lJIl0dLdr0g=;
+	s=arc-20240116; t=1722357171; c=relaxed/simple;
+	bh=DH8KMcV9ouPpWl1nlWAlUc6/3ROecUiO6WzvHhh3Kzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tUnuH+hBMKhKXLhBTjWxYleiif54exGikxOJMt0JQEk20/vj2NBZeBGcK1ijeHJNzcGYzq5e+ykdhNLOxi1ZNV1QpFu2i63KeSn+hUOmZWZhq3oDS6gKcuwTdMaaEHQe+SYoXJl6GhGEJExzV5DfSUaagE1oNkE4LSrWf+eb4sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiuHrK9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D500BC32782;
-	Tue, 30 Jul 2024 16:32:15 +0000 (UTC)
+	 MIME-Version; b=oEX+g7qeakShhaa82YiU//4PNqppbgo9Lwir72EbWBfOB1WA6jogvq/UrscMbHX45YKyGyCGmQdBvawzGctKKfWDK/6XOvNuGDtqL7BO13IXgWrKyZbQ4lkLVV8RSJmJKDf9WvSdJPKVVZrrZ+PPD9TvFMA9q573EzBM346HJk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tp4ytx/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C647AC32782;
+	Tue, 30 Jul 2024 16:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357136;
-	bh=/GnFvHZ3+oT9tOLeFRwAf9nrDIgHjtC8lJIl0dLdr0g=;
+	s=korg; t=1722357171;
+	bh=DH8KMcV9ouPpWl1nlWAlUc6/3ROecUiO6WzvHhh3Kzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiuHrK9b5THrQ9HLccMCLUfyZ9XCUXcPdtvxcc3d5hgYkX8UyGFlTjcWowXqfnLfn
-	 aIjjAd/PNKCxyybX6WFTmQfjcbTzB2UWVXfcLV6ytglLJOW7Fn8S/Vsey0D/0jMlSp
-	 9UUilTGf37+2oiH/4w4GmFsQaDCyuCh4hSWgtDaI=
+	b=tp4ytx/D4M7xCQMM3n+HPi7pFv9+PWBl2HLDcy/SQeFpggdJIpj3Po6U50pe0D/Sm
+	 yzAjS6pynNf2j3MwVOyiycn76BCFuNHClgwyyirOYgaSlyb9b4vge/xpXV1eSePgpQ
+	 5l55jybWit+lClNE9vIc2U871zguMbPMlNQ1l+Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 221/809] bpf: Fix atomic probe zero-extension
-Date: Tue, 30 Jul 2024 17:41:37 +0200
-Message-ID: <20240730151733.336647020@linuxfoundation.org>
+Subject: [PATCH 6.10 222/809] perf/x86/intel/pt: Fix pt_topa_entry_for_page() address calculation
+Date: Tue, 30 Jul 2024 17:41:38 +0200
+Message-ID: <20240730151733.375876758@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,41 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit df34ec9db6f521118895f22795da49f2ec01f8cf ]
+[ Upstream commit 3520b251dcae2b4a27b95cd6f745c54fd658bda5 ]
 
-Zero-extending results of atomic probe operations fails with:
+Currently, perf allocates an array of page pointers which is limited in
+size by MAX_PAGE_ORDER. That in turn limits the maximum Intel PT buffer
+size to 2GiB. Should that limitation be lifted, the Intel PT driver can
+support larger sizes, except for one calculation in
+pt_topa_entry_for_page(), which is limited to 32-bits.
 
-    verifier bug. zext_dst is set, but no reg is defined
+Fix pt_topa_entry_for_page() address calculation by adding a cast.
 
-The problem is that insn_def_regno() handles BPF_ATOMICs, but not
-BPF_PROBE_ATOMICs. Fix by adding the missing condition.
-
-Fixes: d503a04f8bc0 ("bpf: Add support for certain atomics in bpf_arena to x86 JIT")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240701234304.14336-2-iii@linux.ibm.com
+Fixes: 39152ee51b77 ("perf/x86/intel/pt: Get rid of reverse lookup table for ToPA")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240624201101.60186-4-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/pt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 214a9fa8c6fb7..e1e08e62a2f2f 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3215,7 +3215,8 @@ static int insn_def_regno(const struct bpf_insn *insn)
- 	case BPF_ST:
- 		return -1;
- 	case BPF_STX:
--		if (BPF_MODE(insn->code) == BPF_ATOMIC &&
-+		if ((BPF_MODE(insn->code) == BPF_ATOMIC ||
-+		     BPF_MODE(insn->code) == BPF_PROBE_ATOMIC) &&
- 		    (insn->imm & BPF_FETCH)) {
- 			if (insn->imm == BPF_CMPXCHG)
- 				return BPF_REG_0;
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index 14db6d9d318b3..c3259164a8e46 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -990,7 +990,7 @@ pt_topa_entry_for_page(struct pt_buffer *buf, unsigned int pg)
+ 	 * order allocations, there shouldn't be many of these.
+ 	 */
+ 	list_for_each_entry(topa, &buf->tables, list) {
+-		if (topa->offset + topa->size > pg << PAGE_SHIFT)
++		if (topa->offset + topa->size > (unsigned long)pg << PAGE_SHIFT)
+ 			goto found;
+ 	}
+ 
 -- 
 2.43.0
 
