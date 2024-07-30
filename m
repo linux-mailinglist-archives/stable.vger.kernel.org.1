@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2BF941848
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2A1941D83
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 265F81F211B7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65059B2622D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF0618455C;
-	Tue, 30 Jul 2024 16:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D201B1A76A9;
+	Tue, 30 Jul 2024 17:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jO6iYgWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRynI2Vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFFA1A617E;
-	Tue, 30 Jul 2024 16:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FAC1A76A4;
+	Tue, 30 Jul 2024 17:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356378; cv=none; b=KAZA4LJIhytzVc7wA1EQc74/8U7kSVrgj0HTYBhbXnEEnOQDxnI6eziSSalCZJJfiZTyIdho+byEdOIwa8r10135CUZq6KbwZwiXdvYBy8N//U9aR0G4VDY4Em3qhfSFZxvZ6tRsPfQPD0kiLzehVowgdgvz58QQ9EpGgI5KVRY=
+	t=1722359840; cv=none; b=C51YPCpXMMgyQLlZQgxbdlOxXwemnxScAWNgPulmMmy1izGCMFUvy1eT/yrmXtXJvbau1+lIwRMNIV6QzCYvdpbAWWey+kRfEm1AZlOBHAlUMaGd3hkMZf3Z7Y8+AoREu6eV2hE6HSwPtfUQe89zRYdPHQkVNAX5+djZ7up43vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356378; c=relaxed/simple;
-	bh=s+Pg4eub4TGFin7pM4uqTkPgu4JNtOAQOYV3n32vkQE=;
+	s=arc-20240116; t=1722359840; c=relaxed/simple;
+	bh=K3zmFeQ4+ulanYOjIA5zCzR05hnxpqDoPHEs4SGe3U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YgmmwIaUg2nLmt+tMWi42NrURnGrzqIoDv9eC542y5j3NkgqpQBnXKBnvEB7u9xNloviPERFLs3zsF6x0clEgUoqCgIX21+ohKv9qV+qs7lYXpwdaSvrUTURoBwiME+dOxrBDxSvbauFRMKo/j80PjI58jha4o1TXrLN0LBvAsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jO6iYgWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71374C32782;
-	Tue, 30 Jul 2024 16:19:37 +0000 (UTC)
+	 MIME-Version; b=UTypHgu2whoBcQ4dzSFR1jlbCECTOnpfGMvsILQ8L+RiAdIliIFMVSedtnH9/YzAgpKEt+m4GTBfEZXrhjgU2q6WfaINbm8DPbaeg+L1W5pblETD/Pr8Z+3qk/+Wl1+9zaxMjM0MWcOTjhh17FJX0EqROAStY7OzeVyj1S8Dhds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRynI2Vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150C0C4AF0A;
+	Tue, 30 Jul 2024 17:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356378;
-	bh=s+Pg4eub4TGFin7pM4uqTkPgu4JNtOAQOYV3n32vkQE=;
+	s=korg; t=1722359840;
+	bh=K3zmFeQ4+ulanYOjIA5zCzR05hnxpqDoPHEs4SGe3U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jO6iYgWKb9B925eV8WthmFElr3tB4objuKy8UIo7N7sw/o9Q+0ULLS5GABrUKeTrY
-	 Cjn42UPLSMriPQ0n6W37d0O7qmoalKEhqXI37RbiCBuAAqDk56fN0NZ0P8M+Yitv8S
-	 CbGLPwiLJpg4jFgkj9yLBJIGw0r3oBhVSXPH40Nw=
+	b=qRynI2Vddv20NVCnO7Kc7SaHgjh9WDhDqHDffEE0TB7umDP0bdvDlLnMSw0325r5T
+	 RAaS+isIg7HgAUW7QBJ2zGFWGpGVuiuKbrt+udDF78iGZyTm1IfVM9/si6DKgQGk7G
+	 Q08HJKSOYcy0dcpu0F0SVel/CnTF9LNmTeL8o/+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/440] coresight: Fix ref leak when of_coresight_parse_endpoint() fails
+	Christian Heusel <christian@heusel.eu>,
+	mavrix#kernel@simplelogin.com,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.10 543/809] x86/efistub: Revert to heap allocated boot_params for PE entrypoint
 Date: Tue, 30 Jul 2024 17:46:59 +0200
-Message-ID: <20240730151623.139918592@linuxfoundation.org>
+Message-ID: <20240730151746.197873753@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 7fcb9cb2fe47294e16067c3cfd25332c8662a115 ]
+commit ae835a96d72cd025421910edb0e8faf706998727 upstream.
 
-of_graph_get_next_endpoint() releases the reference to the previous
-endpoint on each iteration, but when parsing fails the loop exits
-early meaning the last reference is never dropped.
+This is a partial revert of commit
 
-Fix it by dropping the refcount in the exit condition.
+  8117961d98f ("x86/efi: Disregard setup header of loaded image")
 
-Fixes: d375b356e687 ("coresight: Fix support for sparsely populated ports")
-Signed-off-by: James Clark <james.clark@arm.com>
-Reported-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20240529133626.90080-1-james.clark@arm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+which triggers boot issues on older Dell laptops. As it turns out,
+switching back to a heap allocation for the struct boot_params
+constructed by the EFI stub works around this, even though it is unclear
+why.
+
+Cc: Christian Heusel <christian@heusel.eu>
+Reported-by: <mavrix#kernel@simplelogin.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/coresight/coresight-platform.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/x86-stub.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-platform.c b/drivers/hwtracing/coresight/coresight-platform.c
-index 4758997141046..3f82ae07a18e5 100644
---- a/drivers/hwtracing/coresight/coresight-platform.c
-+++ b/drivers/hwtracing/coresight/coresight-platform.c
-@@ -323,8 +323,10 @@ static int of_get_coresight_platform_data(struct device *dev,
- 			continue;
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -469,11 +469,12 @@ void __noreturn efi_stub_entry(efi_handl
+ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 				   efi_system_table_t *sys_table_arg)
+ {
+-	static struct boot_params boot_params __page_aligned_bss;
+-	struct setup_header *hdr = &boot_params.hdr;
+ 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
++	struct boot_params *boot_params;
++	struct setup_header *hdr;
+ 	int options_size = 0;
+ 	efi_status_t status;
++	unsigned long alloc;
+ 	char *cmdline_ptr;
  
- 		ret = of_coresight_parse_endpoint(dev, ep, pdata);
--		if (ret)
-+		if (ret) {
-+			of_node_put(ep);
- 			return ret;
-+		}
+ 	if (efi_is_native())
+@@ -491,6 +492,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
+ 		efi_exit(handle, status);
  	}
  
- 	return 0;
--- 
-2.43.0
-
++	status = efi_allocate_pages(PARAM_SIZE, &alloc, ULONG_MAX);
++	if (status != EFI_SUCCESS)
++		efi_exit(handle, status);
++
++	boot_params = memset((void *)alloc, 0x0, PARAM_SIZE);
++	hdr	    = &boot_params->hdr;
++
+ 	/* Assign the setup_header fields that the kernel actually cares about */
+ 	hdr->root_flags	= 1;
+ 	hdr->vid_mode	= 0xffff;
+@@ -500,13 +508,15 @@ efi_status_t __efiapi efi_pe_entry(efi_h
+ 
+ 	/* Convert unicode cmdline to ascii */
+ 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
+-	if (!cmdline_ptr)
++	if (!cmdline_ptr) {
++		efi_free(PARAM_SIZE, alloc);
+ 		efi_exit(handle, EFI_OUT_OF_RESOURCES);
++	}
+ 
+ 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
+-			  &boot_params.ext_cmd_line_ptr);
++			  &boot_params->ext_cmd_line_ptr);
+ 
+-	efi_stub_entry(handle, sys_table_arg, &boot_params);
++	efi_stub_entry(handle, sys_table_arg, boot_params);
+ 	/* not reached */
+ }
+ 
 
 
 
