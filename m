@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F408941D10
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C66F941A03
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6A11F215CD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CB47283906
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8D41898F3;
-	Tue, 30 Jul 2024 17:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91301A619B;
+	Tue, 30 Jul 2024 16:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdbeAvLF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rc4J4/c+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9F3189502;
-	Tue, 30 Jul 2024 17:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F131A619E;
+	Tue, 30 Jul 2024 16:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359547; cv=none; b=tabNathD5SLofzJsodkZWhcHOVrfs/Om5OhzJz7H1c7hhSZ/pNikAFoh3B4x9BWmx/w7hZ3D12wMvMl8CxS5gnmoPYHkPBQqoyuuQ2fkNQu6J1u0Yzno4vrVnLrFJ/I/ddmG4NPlkFmam+bIp29RSQQYK6jQFxU0FwR6AvYvdWU=
+	t=1722357545; cv=none; b=jINGlVRVzAGLpy44EhMUAzJ1gwPvNyv6NsOCfkqGOL5w0jD5wE8eARfDr8Anx/f/zas8QmpzZ4TLwE5rUrhA6PIjBQYIXrE3dTKUTRnhSy+2WUL9jF/ZPw1Hz53MCZtqCkdsVfMM4VyrBHs2PrvAWrVMrs0QH234dkXoQMuDlxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359547; c=relaxed/simple;
-	bh=wdTFm9PLeWR/KCWTjTRYF8xj1O2aY9ofhIdVfvtzebc=;
+	s=arc-20240116; t=1722357545; c=relaxed/simple;
+	bh=G2cAH4NAdVvwcLnnh0m/3QnGNS8hkQ6VtEK/ik+Q91k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hz9Z48hPQANDV19WWxg71CP8Am+rMJGrteQTVhC4BeXJTJ/eSu/5BGzs4eLSPQMeiKJY3N0kTB/W4T+jd3/rAHsU41jds5aBM44F43FVlaXD09BpG1JhRVpFBgDHcRdOP36Hq55bQvdbs0UH/xp/6A2ObwuNJXfrUYDxOfkXjZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdbeAvLF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDE0C4AF12;
-	Tue, 30 Jul 2024 17:12:26 +0000 (UTC)
+	 MIME-Version; b=dKl1Fm5RISMDF7wbqOCbwVWvrsQyLkwrqgXHj23owPZaMWDTbQ6i1i2CMR6EgdkvNnKJeN1XDQzjwNQTD3oEcCuYTmVwLmL+JP2B1poDuhq/7VaQWa1rIXRhwqKU31smQybjG+o7fYbP7txD3dW4tsRTMhVzaNbFYyVpD8uMKpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rc4J4/c+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12CFC32782;
+	Tue, 30 Jul 2024 16:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359546;
-	bh=wdTFm9PLeWR/KCWTjTRYF8xj1O2aY9ofhIdVfvtzebc=;
+	s=korg; t=1722357545;
+	bh=G2cAH4NAdVvwcLnnh0m/3QnGNS8hkQ6VtEK/ik+Q91k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdbeAvLFVHUDFpJCZX9Tvu6tnR9liDMhZKkex5Bym/RyrkBtXzgGgbRdnBfN6ayiC
-	 uYXFkH2D9p0GeoUdbvj93mENZhSYMOcoZYh99Nv++pfrk2DXFW59Vd2XiVFGcWLcyb
-	 yRXgqRhjSEh1TJN3uVb/9ja/HuLij3jkBUKp+anA=
+	b=Rc4J4/c+ku965qZBWximFlXRwC/uARYfQ63PggcwrQK1ss0mLkWoDdYZ2cQxiGT1l
+	 /AuU3qdzHN8nXDK8nTdNWHb2An/S2sThxGoeoOfllB39osQ1tGhIAmBSPLcFBq99P1
+	 54PzzvF7HEVPiZNHa/Etpez4MfhaKjJkuXkATLAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 499/809] rtc: tps6594: Fix memleak in probe
+Subject: [PATCH 6.6 268/568] clk: qcom: gpucc-sa8775p: Park RCGs clk source at XO during disable
 Date: Tue, 30 Jul 2024 17:46:15 +0200
-Message-ID: <20240730151744.445422109@linuxfoundation.org>
+Message-ID: <20240730151650.356226125@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 94d4154792abf30ee6081d35beaeef035816e294 ]
+[ Upstream commit dff68b2f74547617dbb75d0d12f404877ec8f8ce ]
 
-struct rtc_device is allocated twice in probe(), once with
-devm_kzalloc(), and then with devm_rtc_allocate_device().
+The RCG's clk src has to be parked at XO while disabling as per the
+HW recommendation, hence use clk_rcg2_shared_ops to achieve the same.
+Also gpu_cc_cb_clk is recommended to be kept always ON, hence use
+clk_branch2_aon_ops to keep the clock always ON.
 
-The allocation with devm_kzalloc() is lost and superfluous.
-
-Fixes: 9f67c1e63976 ("rtc: tps6594: Add driver for TPS6594 RTC")
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Link: https://lore.kernel.org/r/20240618141851.1810000-2-richard.genoud@bootlin.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 0afa16afc36d ("clk: qcom: add the GPUCC driver for sa8775p")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-5-adcc756a23df@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-tps6594.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/clk/qcom/gpucc-sa8775p.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-tps6594.c b/drivers/rtc/rtc-tps6594.c
-index 838ae8562a351..bc8dc735aa238 100644
---- a/drivers/rtc/rtc-tps6594.c
-+++ b/drivers/rtc/rtc-tps6594.c
-@@ -360,10 +360,6 @@ static int tps6594_rtc_probe(struct platform_device *pdev)
- 	int irq;
- 	int ret;
+diff --git a/drivers/clk/qcom/gpucc-sa8775p.c b/drivers/clk/qcom/gpucc-sa8775p.c
+index 3f05b44c13c53..abcaefa01e386 100644
+--- a/drivers/clk/qcom/gpucc-sa8775p.c
++++ b/drivers/clk/qcom/gpucc-sa8775p.c
+@@ -161,7 +161,7 @@ static struct clk_rcg2 gpu_cc_ff_clk_src = {
+ 		.name = "gpu_cc_ff_clk_src",
+ 		.parent_data = gpu_cc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_0),
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_shared_ops,
+ 	},
+ };
  
--	rtc = devm_kzalloc(dev, sizeof(*rtc), GFP_KERNEL);
--	if (!rtc)
--		return -ENOMEM;
--
- 	rtc = devm_rtc_allocate_device(dev);
- 	if (IS_ERR(rtc))
- 		return PTR_ERR(rtc);
+@@ -181,7 +181,7 @@ static struct clk_rcg2 gpu_cc_gmu_clk_src = {
+ 		.parent_data = gpu_cc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_1),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_shared_ops,
+ 	},
+ };
+ 
+@@ -200,7 +200,7 @@ static struct clk_rcg2 gpu_cc_hub_clk_src = {
+ 		.name = "gpu_cc_hub_clk_src",
+ 		.parent_data = gpu_cc_parent_data_2,
+ 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_2),
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_shared_ops,
+ 	},
+ };
+ 
+@@ -294,7 +294,7 @@ static struct clk_branch gpu_cc_cb_clk = {
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data){
+ 			.name = "gpu_cc_cb_clk",
+-			.ops = &clk_branch2_ops,
++			.ops = &clk_branch2_aon_ops,
+ 		},
+ 	},
+ };
 -- 
 2.43.0
 
