@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-63253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37843941814
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285AC941A74
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 691051C22FC1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D57AF28422E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C1B184535;
-	Tue, 30 Jul 2024 16:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70DD18454A;
+	Tue, 30 Jul 2024 16:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4AW1HiY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5gdMlKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCDD1A6189;
-	Tue, 30 Jul 2024 16:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4DE187FF9;
+	Tue, 30 Jul 2024 16:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356224; cv=none; b=qYcSF93poc6kw7hkV94i9GA/Xteb7qeS0YvzMYwCJdI0qLUPc3hw2zQ6Y7Jy/6AjlXsnoxQCIJKrzns72SbhLvPNgmw112QlvTzFALSyhvhBs2VvhfL99KsTke+D4wY9XWM39MixVSBjDU/s3uXToecE5eTrWc1NuNWPH6Yj6jc=
+	t=1722357834; cv=none; b=qSUrPbTEiOrvtO21FxDPkxxYPIsEOkQCYwHII2EIga778d8PaJCfbDssUu8tGBZO88+dfIrRXdsKTFV3YjJwJnEqf06f9AB0l8hrMyyhc2drMdncEQ3hrhNN+fHeVmq9NRQgIqFqgGSjhClAbVeJORvu/mFBzUkZbwZAXTGbImk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356224; c=relaxed/simple;
-	bh=V3InshDAA1+YvbJgV7xBnfSHdK7NdwGf6vqquoPp64E=;
+	s=arc-20240116; t=1722357834; c=relaxed/simple;
+	bh=iUDBcfGIY9wUDLyFCP+qzxEKIsxKdkq7rNwicOy/QAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eolTUgkzrLrppEWQey4v4gam0nQ2zH/U/XLSDdUyPmTdbzUcvEN/mytLwIrSD6zCqcMv0TuwSF/vmQoxxmfd9/BlVIiXECRIBBoLFhmDWNbp+oUjLuMmB8MsqdTMhonNjPOzXJYnwqFnP9f8/RnhK70+erHy4ZmUevIrvuRBG64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4AW1HiY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAFBC32782;
-	Tue, 30 Jul 2024 16:17:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=slYGo0LseqlHwkMzSyQpdXtb23/FcT8zIJ1Y/oNVh/aMj2kCZtjkz20Z9/Gz4s7JyEPoewmqkngnT75ExNQk1BfvAwcMYogEYQdv6uXm+niUrDdmkQxzgwD2ICyBwUjiHaZSGqPd69s8SEKEakbrAn499Sz4je1JHBDfUSyfxXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5gdMlKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE57C32782;
+	Tue, 30 Jul 2024 16:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356223;
-	bh=V3InshDAA1+YvbJgV7xBnfSHdK7NdwGf6vqquoPp64E=;
+	s=korg; t=1722357834;
+	bh=iUDBcfGIY9wUDLyFCP+qzxEKIsxKdkq7rNwicOy/QAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4AW1HiYSkMRkSfHrX5PBQllB2/KyV3e+RKGo1SMvWtIivAa24bI7hU7M56AtvTDS
-	 +5pyW9U9S72iyeOqul1mN1I9i2QCfxECe8aGbM3p43xYLAeGvkMITJkceDt3QYkIDa
-	 jHqNF2TSWXfRP9TLvXrtySXNbpmB2enTce7ziUj4=
+	b=x5gdMlKoQ51zrQtXdNujg6UelVVAGVD/vV3IWZBwxQ8VEmU/oxLS4/10d5fIQ8lVm
+	 SMOrd4Ziv98kOhR0SuTfYFK8BrpqJcuCW1CiNSd2CI0gFNhXiJLHEp3dYKXaGju+r9
+	 U7lcZBtytvT3dajX3ECyAOi6ULV5eel4pSQ2ZRtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Niklas Cassel <Niklas.Cassel@wdc.com>,
+	Niklas Cassel <niklas.cassel@wdc.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 170/440] xprtrdma: Fix rpcrdma_reqs_reset()
+Subject: [PATCH 6.6 296/568] PCI: dwc: Fix index 0 incorrectly being interpreted as a free ATU slot
 Date: Tue, 30 Jul 2024 17:46:43 +0200
-Message-ID: <20240730151622.509206283@linuxfoundation.org>
+Message-ID: <20240730151651.447125181@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +64,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit acd9f2dd23c632568156217aac7a05f5a0313152 ]
+[ Upstream commit c2a57ee0f2f1ad8c970ff58b78a43e85abbdeb7f ]
 
-Avoid FastReg operations getting MW_BIND_ERR after a reconnect.
+When PERST# assert and deassert happens on the PERST# supported platforms,
+both iATU0 and iATU6 will map inbound window to BAR0. DMA will access the
+area that was previously allocated (iATU0) for BAR0, instead of the new
+area (iATU6) for BAR0.
 
-rpcrdma_reqs_reset() is called on transport tear-down to get each
-rpcrdma_req back into a clean state.
+Right now, this isn't an issue because both iATU0 and iATU6 should
+translate inbound accesses to BAR0 to the same allocated memory area.
+However, having two separate inbound mappings for the same BAR is a
+disaster waiting to happen.
 
-MRs on req->rl_registered are waiting for a FastReg, are already
-registered, or are waiting for invalidation. If the transport is
-being torn down when reqs_reset() is called, the matching LocalInv
-might never be posted. That leaves these MR registered /and/ on
-req->rl_free_mrs, where they can be re-used for the next
-connection.
+The mappings between PCI BAR and iATU inbound window are maintained in the
+dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
+a BAR, dw_pcie_ep_inbound_atu() API checks for the availability of the
+existing mapping in the array and if it is not found (i.e., value in the
+array indexed by the BAR is found to be 0), it allocates a new map value
+using find_first_zero_bit().
 
-Since xprtrdma does not keep specific track of the MR state, it's
-not possible to know what state these MRs are in, so the only safe
-thing to do is release them immediately.
+The issue is the existing logic failed to consider the fact that the map
+value '0' is a valid value for BAR0, so find_first_zero_bit() will return
+'0' as the map value for BAR0 (note that it returns the first zero bit
+position).
 
-Fixes: 5de55ce951a1 ("xprtrdma: Release in-flight MRs on disconnect")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Due to this, when PERST# assert + deassert happens on the PERST# supported
+platforms, the inbound window allocation restarts from BAR0 and the
+existing logic to find the BAR mapping will return '6' for BAR0 instead of
+'0' due to the fact that it considers '0' as an invalid map value.
+
+Fix this issue by always incrementing the map value before assigning to
+bar_to_atu[] array and then decrementing it while fetching. This will make
+sure that the map value '0' always represents the invalid mapping."
+
+Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
+Closes: https://lore.kernel.org/linux-pci/ZXsRp+Lzg3x%2Fnhk3@x1-carbon/
+Link: https://lore.kernel.org/linux-pci/20240412160841.925927-1-Frank.Li@nxp.com
+Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
+Tested-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/frwr_ops.c |  3 ++-
- net/sunrpc/xprtrdma/verbs.c    | 16 +++++++++++++++-
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/frwr_ops.c b/net/sunrpc/xprtrdma/frwr_ops.c
-index ffbf99894970e..47f33bb7bff81 100644
---- a/net/sunrpc/xprtrdma/frwr_ops.c
-+++ b/net/sunrpc/xprtrdma/frwr_ops.c
-@@ -92,7 +92,8 @@ static void frwr_mr_put(struct rpcrdma_mr *mr)
- 	rpcrdma_mr_push(mr, &mr->mr_req->rl_free_mrs);
- }
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index ad6516a3ae6ea..f2e5feba55267 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -163,7 +163,7 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 	if (!ep->bar_to_atu[bar])
+ 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
+ 	else
+-		free_win = ep->bar_to_atu[bar];
++		free_win = ep->bar_to_atu[bar] - 1;
  
--/* frwr_reset - Place MRs back on the free list
-+/**
-+ * frwr_reset - Place MRs back on @req's free list
-  * @req: request to reset
-  *
-  * Used after a failed marshal. For FRWR, this means the MRs
-diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
-index 4f71627ba39ce..cb909329a5039 100644
---- a/net/sunrpc/xprtrdma/verbs.c
-+++ b/net/sunrpc/xprtrdma/verbs.c
-@@ -897,6 +897,8 @@ static int rpcrdma_reqs_setup(struct rpcrdma_xprt *r_xprt)
+ 	if (free_win >= pci->num_ib_windows) {
+ 		dev_err(pci->dev, "No free inbound window\n");
+@@ -177,7 +177,11 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
+ 		return ret;
+ 	}
  
- static void rpcrdma_req_reset(struct rpcrdma_req *req)
- {
-+	struct rpcrdma_mr *mr;
-+
- 	/* Credits are valid for only one connection */
- 	req->rl_slot.rq_cong = 0;
- 
-@@ -906,7 +908,19 @@ static void rpcrdma_req_reset(struct rpcrdma_req *req)
- 	rpcrdma_regbuf_dma_unmap(req->rl_sendbuf);
- 	rpcrdma_regbuf_dma_unmap(req->rl_recvbuf);
- 
--	frwr_reset(req);
-+	/* The verbs consumer can't know the state of an MR on the
-+	 * req->rl_registered list unless a successful completion
-+	 * has occurred, so they cannot be re-used.
+-	ep->bar_to_atu[bar] = free_win;
++	/*
++	 * Always increment free_win before assignment, since value 0 is used to identify
++	 * unallocated mapping.
 +	 */
-+	while ((mr = rpcrdma_mr_pop(&req->rl_registered))) {
-+		struct rpcrdma_buffer *buf = &mr->mr_xprt->rx_buf;
-+
-+		spin_lock(&buf->rb_lock);
-+		list_del(&mr->mr_all);
-+		spin_unlock(&buf->rb_lock);
-+
-+		frwr_mr_release(mr);
-+	}
- }
++	ep->bar_to_atu[bar] = free_win + 1;
+ 	set_bit(free_win, ep->ib_window_map);
  
- /* ASSUMPTION: the rb_allreqs list is stable for the duration,
+ 	return 0;
+@@ -214,7 +218,10 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	enum pci_barno bar = epf_bar->barno;
+-	u32 atu_index = ep->bar_to_atu[bar];
++	u32 atu_index = ep->bar_to_atu[bar] - 1;
++
++	if (!ep->bar_to_atu[bar])
++		return;
+ 
+ 	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
+ 
 -- 
 2.43.0
 
