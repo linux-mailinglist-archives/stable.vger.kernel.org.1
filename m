@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588D39418D0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 964F6941DA2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 893A91C20ACE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54C6228C96A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0A118455F;
-	Tue, 30 Jul 2024 16:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C969E1A76B1;
+	Tue, 30 Jul 2024 17:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWzdee8N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YI3/J1Qo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF9B1A6160;
-	Tue, 30 Jul 2024 16:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858731A76A9;
+	Tue, 30 Jul 2024 17:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356715; cv=none; b=F+k7V63yPoCf5roPba9j63xZIIacQXXBaa49novWBqz4RzNrMuKhmmaCRGNmsQxcCglYTkVS9bBee9QtZjcJdq+TZkBupSYTsYAVl5+sQUVJet4dJ9VN75RsNMcNv8FXrN/EWr3PWg67jCKXZFBM/n6ocnf6PGaDJfaB1lvOds4=
+	t=1722359974; cv=none; b=pcszcWCB0ZpJnh8UpF0FA/MLgPFLoSriNRwBqQgxKZ/qFboLlZ4M5bfby2JY5UUrY7ig324u0EZlKtrfFTWwlnI2jT7bsF2xh3CUeFbwXqchsupbDgX99bolPqeYGcxExLRHO2LapmiVadc1jbjx4jhNiuOS5MmMCgRbTQQreVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356715; c=relaxed/simple;
-	bh=KcpAaH95uQ02thuR/XppWSQGbic739iFf0bd9AsjQoA=;
+	s=arc-20240116; t=1722359974; c=relaxed/simple;
+	bh=b7YbQ0+/Iw7nSJ+aNomQhcxDTz4b6ZXeoZzeIIgg2V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaSHSfPdavUlFpkrjV7QteDxKMTKZTEt5uoIZ+myA3PRtPirOph1gS2xo2NowcgzJiv1dJdvr+a/LPePbTWTLUzFHbGCImOx9NzzDbHzQhXvKVRjDgtvnZgtxULwVHvog8PUIbmVgoJHgsubxh3B1V8cwZ4UL7fRA9XCJ9ARYNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWzdee8N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFED9C4AF0A;
-	Tue, 30 Jul 2024 16:25:14 +0000 (UTC)
+	 MIME-Version; b=njVEvHXVvVdJXXuPQ6afNKquBMn95h8C1kkg6/DYV1TVMXQ1IDvrESt/wiIb2lputQDwCshco3fCHsggIbw99//b7Us45D+9iSfEWdxC+BZuq2XE3nEPYo8nXNk6XWvga8Y7l+SwGUZg7GNVsUyHDlHbC+0WL+MgA1vwWKdK5x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YI3/J1Qo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9027AC32782;
+	Tue, 30 Jul 2024 17:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356715;
-	bh=KcpAaH95uQ02thuR/XppWSQGbic739iFf0bd9AsjQoA=;
+	s=korg; t=1722359974;
+	bh=b7YbQ0+/Iw7nSJ+aNomQhcxDTz4b6ZXeoZzeIIgg2V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AWzdee8N1SkXbar+nFHxfrtuf6Z5lQXAFk+HCvon6+TyvZ5T1R2xhzF3n5RzWJXCO
-	 ANKnuj7mMgPrTJuW4cA2ZpY4AxIcQqf3/OUHfo8sBfjQ7IMY4+PSnXUgUp5g3eIe1O
-	 y2dbw5IkzBcHOqkRRQIs535k33byXL6G6u08XgiE=
+	b=YI3/J1Qogvxf6KHO1R8BkOPFzzpRn5QdcQkCT0L7mwlS1y7ybk7Gn8PoNGJkOeEAU
+	 EcVXB2fiLWnkQzpzrI4u7UTbiq+99qcMFFEZBkXClKUQS+aj8SlXE8minfSnMvU64u
+	 LaN0uxMQQGXGQXjOVWerzYSjfJinGIMVGd4RqcOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 203/440] powerpc/prom: Add CPU info to hardware description string later
-Date: Tue, 30 Jul 2024 17:47:16 +0200
-Message-ID: <20240730151623.798867587@linuxfoundation.org>
+	Eric Sandeen <sandeen@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>
+Subject: [PATCH 6.10 561/809] fuse: verify {g,u}id mount options correctly
+Date: Tue, 30 Jul 2024 17:47:17 +0200
+Message-ID: <20240730151746.920677237@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 7bdd1c6c87de758750d419eedab7285b95b66417 ]
+commit 525bd65aa759ec320af1dc06e114ed69733e9e23 upstream.
 
-cur_cpu_spec->cpu_name is appended to ppc_hw_desc before cur_cpu_spec
-has taken on its final value. This is illustrated on pseries by
-comparing the CPU name as reported at boot ("POWER8E (raw)") to the
-contents of /proc/cpuinfo ("POWER8 (architected)"):
+As was done in
+0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
+we need to validate that the requested uid and/or gid is representable in
+the filesystem's idmapping.
 
-  $ dmesg | grep Hardware
-  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 \
-    of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
+Cribbing from the above commit log,
 
-  $ grep -m 1 ^cpu /proc/cpuinfo
-  cpu             : POWER8 (architected), altivec supported
+The contract for {g,u}id mount options and {g,u}id values in general set
+from userspace has always been that they are translated according to the
+caller's idmapping. In so far, fuse has been doing the correct thing.
+But since fuse is mountable in unprivileged contexts it is also
+necessary to verify that the resulting {k,g}uid is representable in the
+namespace of the superblock.
 
-Some 44x models would appear to be affected as well; see
-identical_pvr_fixup().
-
-This results in incorrect CPU information in stack dumps --
-ppc_hw_desc is an input to dump_stack_set_arch_desc().
-
-Delay gathering the CPU name until after all potential calls to
-identify_cpu().
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: bd649d40e0f2 ("powerpc: Add PVR & CPU name to hardware description")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240603-fix-cpu-hwdesc-v1-1-945f2850fcaa@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
+Cc: stable@vger.kernel.org # 5.4+
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Link: https://lore.kernel.org/r/8f07d45d-c806-484d-a2e3-7a2199df1cd2@redhat.com
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/prom.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/fuse/inode.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 9531ab90feb8a..e5b90d67cd536 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -324,6 +324,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 					  void *data)
- {
- 	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
-+	const __be32 *cpu_version = NULL;
- 	const __be32 *prop;
- 	const __be32 *intserv;
- 	int i, nthreads;
-@@ -404,7 +405,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 		prop = of_get_flat_dt_prop(node, "cpu-version", NULL);
- 		if (prop && (be32_to_cpup(prop) & 0xff000000) == 0x0f000000) {
- 			identify_cpu(0, be32_to_cpup(prop));
--			seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(prop));
-+			cpu_version = prop;
- 		}
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -755,6 +755,8 @@ static int fuse_parse_param(struct fs_co
+ 	struct fs_parse_result result;
+ 	struct fuse_fs_context *ctx = fsc->fs_private;
+ 	int opt;
++	kuid_t kuid;
++	kgid_t kgid;
  
- 		check_cpu_feature_properties(node);
-@@ -415,6 +416,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
- 	}
+ 	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
+ 		/*
+@@ -799,16 +801,30 @@ static int fuse_parse_param(struct fs_co
+ 		break;
  
- 	identical_pvr_fixup(node);
-+
-+	// We can now add the CPU name & PVR to the hardware description
-+	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
-+	if (cpu_version)
-+		seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(cpu_version));
-+
- 	init_mmu_slb_size(node);
+ 	case OPT_USER_ID:
+-		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
+-		if (!uid_valid(ctx->user_id))
++		kuid =  make_kuid(fsc->user_ns, result.uint_32);
++		if (!uid_valid(kuid))
+ 			return invalfc(fsc, "Invalid user_id");
++		/*
++		 * The requested uid must be representable in the
++		 * filesystem's idmapping.
++		 */
++		if (!kuid_has_mapping(fsc->user_ns, kuid))
++			return invalfc(fsc, "Invalid user_id");
++		ctx->user_id = kuid;
+ 		ctx->user_id_present = true;
+ 		break;
  
- #ifdef CONFIG_PPC64
-@@ -852,9 +859,6 @@ void __init early_init_devtree(void *params)
+ 	case OPT_GROUP_ID:
+-		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
+-		if (!gid_valid(ctx->group_id))
++		kgid = make_kgid(fsc->user_ns, result.uint_32);;
++		if (!gid_valid(kgid))
++			return invalfc(fsc, "Invalid group_id");
++		/*
++		 * The requested gid must be representable in the
++		 * filesystem's idmapping.
++		 */
++		if (!kgid_has_mapping(fsc->user_ns, kgid))
+ 			return invalfc(fsc, "Invalid group_id");
++		ctx->group_id = kgid;
+ 		ctx->group_id_present = true;
+ 		break;
  
- 	dt_cpu_ftrs_scan();
- 
--	// We can now add the CPU name & PVR to the hardware description
--	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
--
- 	/* Retrieve CPU related informations from the flat tree
- 	 * (altivec support, boot CPU ID, ...)
- 	 */
--- 
-2.43.0
-
 
 
 
