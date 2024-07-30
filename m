@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDE3941707
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F2A941B01
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5536B22AF5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3235FB26B19
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D9718C90D;
-	Tue, 30 Jul 2024 16:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C02F18801C;
+	Tue, 30 Jul 2024 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IF4DPym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUItgJPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A3618C903;
-	Tue, 30 Jul 2024 16:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3DC154C18;
+	Tue, 30 Jul 2024 16:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355507; cv=none; b=l4lAqvULT/qFhXkTkjhe3r7aACjHSl4vaNYgZFlvbbQ9qPj71yd88vUVvKlhUGNY2Lg5eMRBHP0/p5oWqiYgQOWCoVvHbyxf1y9clNaqeuNMKh8Oe94xUUiV+RcLynZDGvMlMfMTIALa4/Nqlk03n+bkIaDxk2octHzTovPjqKA=
+	t=1722357819; cv=none; b=p6W947J15cPkVTWilrUk8TZlYXoIeHP/bpj8Od1Crwgga2qYL5MExczDWUldXI152KTEOZHQ3BgG7RXhP8f/Sw1dV8hsCR2Kl1XiblPrTrcW3EN988HEq0OHVh//jxFCSe3FBOJ1Y1vzZFdKSIV2OR1dHgWWe16kFi8Bw294R0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355507; c=relaxed/simple;
-	bh=8rRsalH//nBjkoac6H1e3H34pnV1bRjUXGU045LY1vE=;
+	s=arc-20240116; t=1722357819; c=relaxed/simple;
+	bh=SEn2FhF9aHwMF4sCMJgHMF0KhcC3QvQUEMf3ZbWEXa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLRVgOC+t0EK9x/rV1DWQTlTMFR0A0l3BOPj5IjrrLn4DaKK3yvDySpOhwPQQ9mhuJrNBu7qHtBapTtftJXPTYq0x8BuN8RDF1pZsWX3zX+vAFunZ05jJeO404uPay1Fy053ScKuuZEsoGQqj0FfCix/J2jwZ+UujIoRCYGvBGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IF4DPym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1366AC4AF0A;
-	Tue, 30 Jul 2024 16:05:06 +0000 (UTC)
+	 MIME-Version; b=rvFvPygqrV95FvVkpUEwZrWuVlXZmyrgG+gmrG2xlPB73gl99Ed5sH6QfmWTkAMjdlE/O5KX/M7VFDTBRevFuOCmpz/JXxuYlZomrH9hMrB+HIl5F2Oi+W8qugEFKji7bzzWhYBrzfaAQRLAWVxjURe5m+FiB7FogtWq2Cnaqzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUItgJPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59BB0C32782;
+	Tue, 30 Jul 2024 16:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355507;
-	bh=8rRsalH//nBjkoac6H1e3H34pnV1bRjUXGU045LY1vE=;
+	s=korg; t=1722357818;
+	bh=SEn2FhF9aHwMF4sCMJgHMF0KhcC3QvQUEMf3ZbWEXa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1IF4DPymJTO+vpAnpRZxU5BsYQAhpfIL7ax51EsVWPnXNmaUVei+KXKjIQXLwtMeu
-	 OdiNc8utLvF2n78Wgo3JqwspJJx6di+O3Jp8pPBhyMF6UeqxHIqRf04eKTzVQCpFdH
-	 qh3oGXTLX3SGevswDjvLc0ZXiAoIGPBci3aZsfmI=
+	b=oUItgJPJgcFmByBx+rOhnLm4pUrXPSfJdTtGrGDFdueiDbPf/fc9lzl4HUFNNm44h
+	 w07trP4xgzmrZaFeWyuBWxqzKHLP/m0fTI7VTCYIBtNGag90x62pNlcC6cEg167TDe
+	 nBN0nSGlve5fGqabHCFlViGXxcRgN+rCXFgJ4ls4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/568] arm64: dts: rockchip: Increase VOP clk rate on RK3328
+Subject: [PATCH 6.10 295/809] s390/uv: Dont call folio_wait_writeback() without a folio reference
 Date: Tue, 30 Jul 2024 17:42:51 +0200
-Message-ID: <20240730151642.362675326@linuxfoundation.org>
+Message-ID: <20240730151736.245686299@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 0f2ddb128fa20f8441d903285632f2c69e90fae1 ]
+[ Upstream commit 3f29f6537f54d74e64bac0a390fb2e26da25800d ]
 
-The VOP on RK3328 needs to run at a higher rate in order to produce a
-proper 3840x2160 signal.
+folio_wait_writeback() requires that no spinlocks are held and that
+a folio reference is held, as documented. After we dropped the PTL, the
+folio could get freed concurrently. So grab a temporary reference.
 
-Change to use 300MHz for VIO clk and 400MHz for VOP clk, same rates used
-by vendor 4.4 kernel.
-
-Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240615170417.3134517-2-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 214d9bbcd3a6 ("s390/mm: provide memory management functions for protected KVM guests")
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/20240508182955.358628-2-david@redhat.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/kernel/uv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index 3778fe5c42a4b..126165ba1ea26 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -822,8 +822,8 @@ cru: clock-controller@ff440000 {
- 			<0>, <24000000>,
- 			<24000000>, <24000000>,
- 			<15000000>, <15000000>,
--			<100000000>, <100000000>,
--			<100000000>, <100000000>,
-+			<300000000>, <100000000>,
-+			<400000000>, <100000000>,
- 			<50000000>, <100000000>,
- 			<100000000>, <100000000>,
- 			<50000000>, <50000000>,
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 265fea37e0308..016993e9eb72f 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -318,6 +318,13 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 			rc = make_folio_secure(folio, uvcb);
+ 			folio_unlock(folio);
+ 		}
++
++		/*
++		 * Once we drop the PTL, the folio may get unmapped and
++		 * freed immediately. We need a temporary reference.
++		 */
++		if (rc == -EAGAIN)
++			folio_get(folio);
+ 	}
+ unlock:
+ 	pte_unmap_unlock(ptep, ptelock);
+@@ -330,6 +337,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 		 * completion, this is just a useless check, but it is safe.
+ 		 */
+ 		folio_wait_writeback(folio);
++		folio_put(folio);
+ 	} else if (rc == -EBUSY) {
+ 		/*
+ 		 * If we have tried a local drain and the folio refcount
 -- 
 2.43.0
 
