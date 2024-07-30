@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F7F94185F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE135941862
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BB13281E6D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A2FA1C235F4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0B6184535;
-	Tue, 30 Jul 2024 16:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693FC18455D;
+	Tue, 30 Jul 2024 16:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V00qzvLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMa1pXyT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CECB1A6193;
-	Tue, 30 Jul 2024 16:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273C31A617E;
+	Tue, 30 Jul 2024 16:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356452; cv=none; b=lV93KhuI7XMPFEspmGxPtFadD0yTbbm70GVltY+arXlESNjQmENEY5YWJbpyTHcmGx5frELpt6ABBDCBk4340xwNWVfyHZW8C84hBBqWkoIaNDeSi/iy9BJkf4+al+/xSJdme0vhf/LJ8GPm6QBE/Fsf6CgzcHYDsUAvs2pcoYU=
+	t=1722356462; cv=none; b=Ga0THGWMpbHAaMSwK4AO9PE+NcfWaH3loJflScYeU5rAZGONNEEtNvvekAg6EkoKcmFvy0urM9qN+SgoTxbHt1Rc6vUHZI4YSW+MVwzCf19MMuRYWw30uc1G/VGDsYs/24yDJz2U9VF8ndJerh9Vlfhbd+WnVGxC05/zK7jNbAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356452; c=relaxed/simple;
-	bh=n769Ex+m99MeL5jPai4A3chGXA8wzZG6q7U97KBK71U=;
+	s=arc-20240116; t=1722356462; c=relaxed/simple;
+	bh=cH+qFVW1GSTNIC+kaqAP2sXfNXM+P7vyTP6fl758/fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7n1nnRW+OemleTcKPloc0aNFBXFD9mquWuS+kZFiid00ccz+cbE2VA6MXF0BlGHWYW7ExOa6GOCT4A0fGr6hvfLCzqh+6LcKv415nKnKbJYkcHYRBqN4AM8Wn8MgZUmaQEZuivmZankSuLF/1wvpH5+iFWUVaohHJEfJxDBWgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V00qzvLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC84C32782;
-	Tue, 30 Jul 2024 16:20:51 +0000 (UTC)
+	 MIME-Version; b=gEQg3oZA4CWinWR6DGpM7Aq3mPX8WEhXrvXRbZsPcKA7HrZ3Nl48hHSv28CeQXV+mjRvmgo+BQXBW16ATZbCu/J8iL9n2V7oAGtXuqRvlWzwQK44/omNOgKrIza6026CAInt0YU5Id37aJaY1DYV1OKkzvXT4DkyFX24q7+qGik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMa1pXyT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935FEC32782;
+	Tue, 30 Jul 2024 16:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356452;
-	bh=n769Ex+m99MeL5jPai4A3chGXA8wzZG6q7U97KBK71U=;
+	s=korg; t=1722356462;
+	bh=cH+qFVW1GSTNIC+kaqAP2sXfNXM+P7vyTP6fl758/fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V00qzvLCZEShFfC+qraQHTf7t1NEQdtIRVruDa+0BvhUWd55S4G5H4uf4VaRv4S7N
-	 jhn+a+QDM3JHg9AozbvUy0vLXFWG8uNHF8DmRgCxgWjoXTd7QnAFDXxhOH6IkBueux
-	 u9KsinS1OXsi15oYvhLjxqtJ9KmbEI7HU7EfyXdQ=
+	b=qMa1pXyT/ACI+mo28r5hRUJzM9Oca9bchzWdW8v+p5KGX1v9VlvPn6W4x6n8BEBcT
+	 ym0NNy0M8y3uBQeC3FUzj7V7/GNiAGtpxYDkfxzr+NTS2HvRmHY1vDfy+M6plo/9ov
+	 p9RMDyaZOT1c8K5+NT2tGOMu/df+ITrr7tsmdULQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 151/809] wifi: brcmsmac: LCN PHY code is used for BCM4313 2G-only device
-Date: Tue, 30 Jul 2024 17:40:27 +0200
-Message-ID: <20240730151730.569832877@linuxfoundation.org>
+Subject: [PATCH 6.10 152/809] wifi: ath12k: Correct 6 GHz frequency value in rx status
+Date: Tue, 30 Jul 2024 17:40:28 +0200
+Message-ID: <20240730151730.608687906@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,73 +67,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
 
-[ Upstream commit c636fa85feb450ca414a10010ed05361a73c93a6 ]
+[ Upstream commit c3c84a74bd797f76d7da036c9fef947d674bbc18 ]
 
-The band_idx variable in the function wlc_lcnphy_tx_iqlo_cal() will
-never be set to 1 as BCM4313 is the only device for which the LCN PHY
-code is used. This is a 2G-only device.
+The frequency in the rx status is currently being filled
+incorrectly for the 6 GHz band. The channel number received is
+invalid in this case, resulting in packet drops. Fix this
+issue by correcting the frequency calculation.
 
-Fixes: 5b435de0d786 ("net: wireless: add brcm80211 drivers")
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240509231037.2014109-1-samasth.norway.ananda@oracle.com
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240508173655.22191-3-quic_pradeepc@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c  | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c |  9 ++++++---
+ drivers/net/wireless/ath/ath12k/wmi.c   | 10 +++++++---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-index aae2cf95fe958..e472591f321bd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
-@@ -2567,7 +2567,6 @@ wlc_lcnphy_tx_iqlo_cal(struct brcms_phy *pi,
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 75df622f25d85..e5fb5cb000f04 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2383,8 +2383,10 @@ void ath12k_dp_rx_h_ppdu(struct ath12k *ar, struct hal_rx_desc *rx_desc,
+ 	channel_num = meta_data;
+ 	center_freq = meta_data >> 16;
  
- 	struct lcnphy_txgains cal_gains, temp_gains;
- 	u16 hash;
--	u8 band_idx;
- 	int j;
- 	u16 ncorr_override[5];
- 	u16 syst_coeffs[] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000,
-@@ -2599,6 +2598,9 @@ wlc_lcnphy_tx_iqlo_cal(struct brcms_phy *pi,
- 	u16 *values_to_save;
- 	struct brcms_phy_lcnphy *pi_lcn = pi->u.pi_lcnphy;
+-	if (center_freq >= 5935 && center_freq <= 7105) {
++	if (center_freq >= ATH12K_MIN_6G_FREQ &&
++	    center_freq <= ATH12K_MAX_6G_FREQ) {
+ 		rx_status->band = NL80211_BAND_6GHZ;
++		rx_status->freq = center_freq;
+ 	} else if (channel_num >= 1 && channel_num <= 14) {
+ 		rx_status->band = NL80211_BAND_2GHZ;
+ 	} else if (channel_num >= 36 && channel_num <= 173) {
+@@ -2402,8 +2404,9 @@ void ath12k_dp_rx_h_ppdu(struct ath12k *ar, struct hal_rx_desc *rx_desc,
+ 				rx_desc, sizeof(*rx_desc));
+ 	}
  
-+	if (WARN_ON(CHSPEC_IS5G(pi->radio_chanspec)))
-+		return;
+-	rx_status->freq = ieee80211_channel_to_frequency(channel_num,
+-							 rx_status->band);
++	if (rx_status->band != NL80211_BAND_6GHZ)
++		rx_status->freq = ieee80211_channel_to_frequency(channel_num,
++								 rx_status->band);
+ 
+ 	ath12k_dp_rx_h_rate(ar, rx_desc, rx_status);
+ }
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 7a52d2082b792..e88ec9e1201a9 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -6022,8 +6022,10 @@ static void ath12k_mgmt_rx_event(struct ath12k_base *ab, struct sk_buff *skb)
+ 	if (rx_ev.status & WMI_RX_STATUS_ERR_MIC)
+ 		status->flag |= RX_FLAG_MMIC_ERROR;
+ 
+-	if (rx_ev.chan_freq >= ATH12K_MIN_6G_FREQ) {
++	if (rx_ev.chan_freq >= ATH12K_MIN_6G_FREQ &&
++	    rx_ev.chan_freq <= ATH12K_MAX_6G_FREQ) {
+ 		status->band = NL80211_BAND_6GHZ;
++		status->freq = rx_ev.chan_freq;
+ 	} else if (rx_ev.channel >= 1 && rx_ev.channel <= 14) {
+ 		status->band = NL80211_BAND_2GHZ;
+ 	} else if (rx_ev.channel >= 36 && rx_ev.channel <= ATH12K_MAX_5G_CHAN) {
+@@ -6044,8 +6046,10 @@ static void ath12k_mgmt_rx_event(struct ath12k_base *ab, struct sk_buff *skb)
+ 
+ 	sband = &ar->mac.sbands[status->band];
+ 
+-	status->freq = ieee80211_channel_to_frequency(rx_ev.channel,
+-						      status->band);
++	if (status->band != NL80211_BAND_6GHZ)
++		status->freq = ieee80211_channel_to_frequency(rx_ev.channel,
++							      status->band);
 +
- 	values_to_save = kmalloc_array(20, sizeof(u16), GFP_ATOMIC);
- 	if (NULL == values_to_save)
- 		return;
-@@ -2662,20 +2664,18 @@ wlc_lcnphy_tx_iqlo_cal(struct brcms_phy *pi,
- 	hash = (target_gains->gm_gain << 8) |
- 	       (target_gains->pga_gain << 4) | (target_gains->pad_gain);
+ 	status->signal = rx_ev.snr + ATH12K_DEFAULT_NOISE_FLOOR;
+ 	status->rate_idx = ath12k_mac_bitrate_to_idx(sband, rx_ev.rate / 100);
  
--	band_idx = (CHSPEC_IS5G(pi->radio_chanspec) ? 1 : 0);
--
- 	cal_gains = *target_gains;
- 	memset(ncorr_override, 0, sizeof(ncorr_override));
--	for (j = 0; j < iqcal_gainparams_numgains_lcnphy[band_idx]; j++) {
--		if (hash == tbl_iqcal_gainparams_lcnphy[band_idx][j][0]) {
-+	for (j = 0; j < iqcal_gainparams_numgains_lcnphy[0]; j++) {
-+		if (hash == tbl_iqcal_gainparams_lcnphy[0][j][0]) {
- 			cal_gains.gm_gain =
--				tbl_iqcal_gainparams_lcnphy[band_idx][j][1];
-+				tbl_iqcal_gainparams_lcnphy[0][j][1];
- 			cal_gains.pga_gain =
--				tbl_iqcal_gainparams_lcnphy[band_idx][j][2];
-+				tbl_iqcal_gainparams_lcnphy[0][j][2];
- 			cal_gains.pad_gain =
--				tbl_iqcal_gainparams_lcnphy[band_idx][j][3];
-+				tbl_iqcal_gainparams_lcnphy[0][j][3];
- 			memcpy(ncorr_override,
--			       &tbl_iqcal_gainparams_lcnphy[band_idx][j][3],
-+			       &tbl_iqcal_gainparams_lcnphy[0][j][3],
- 			       sizeof(ncorr_override));
- 			break;
- 		}
 -- 
 2.43.0
 
