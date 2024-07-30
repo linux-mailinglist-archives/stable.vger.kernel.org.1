@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-64143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F11F941C49
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FBC941C19
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC822280EBA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 060BD2857CF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B403187FF6;
-	Tue, 30 Jul 2024 17:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34251A6192;
+	Tue, 30 Jul 2024 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPqB52kU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4HYKJqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588B51A6192;
-	Tue, 30 Jul 2024 17:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A92283A17;
+	Tue, 30 Jul 2024 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359136; cv=none; b=LdRUMQyhN4yLgODq1CM5JioYGqf26s15/Q+c36nDiD7ChtdTCDzTUuFDviFwFvJgRulDP0S0AeGzKp6LphUo8kMzn7iUJZa5KufgzXko2I6tzFy18TDw8KYU/HNWHglFUkg2I9BxaVORMuA3PZPqLdfnZU7N2XPHt8//zxQw5r4=
+	t=1722358980; cv=none; b=WZ4RJFFNs7chMbqnh76cXKJ3sHj1VVBBH16/x58c04THySE8BXBxyEN5lH6katpdjjJObgB+BA1MdEEUDPNknSFqMWsTl3bqGdIPyLZ9e532ePpt1I21xVljJtQF2xYwH63XMX/cibGadDUZLhTUMjCvTMWgJmQbMG+m+e3ppRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359136; c=relaxed/simple;
-	bh=coh/iGgDO0f/42m29oDdeuwmQHtACBWYiQgowOXfD84=;
+	s=arc-20240116; t=1722358980; c=relaxed/simple;
+	bh=LaiDfFqcl40I3B0D0o3COPR2D65F3gGPWhoj3ZM1pnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPQZcWgc7rZWDl6zO+rbdcI5/0jixMhnH98ZaMcaMjB1mtpDWURMJ4D/uEPcDM+4y844RgnuxHfUL+G6yhTGXrxBEfdbuBGQ9sAX54mvYPRmw40lWD9hbfieGUPIPApONOV5IMlKsAjtQdj24EbXc8OZwiTGkLC3DD+CzPJMESc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPqB52kU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3A4C32782;
-	Tue, 30 Jul 2024 17:05:35 +0000 (UTC)
+	 MIME-Version; b=u+MMJvspRYQi63PtEWwevdskd8y9asPl6hj+rnb1PfPUhjcg66DEZ3Tskoa0vOTEKPlSvv0hbXeE+VRJwFM7t11r7VEbAHAqdYDlLMGztHIWbuoNUYIgRpmfXH45JPZtuKKPI3mC/Drq2vLBOeHilra1zPXmbfF6bVrwGFqQedM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4HYKJqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08167C32782;
+	Tue, 30 Jul 2024 17:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359136;
-	bh=coh/iGgDO0f/42m29oDdeuwmQHtACBWYiQgowOXfD84=;
+	s=korg; t=1722358980;
+	bh=LaiDfFqcl40I3B0D0o3COPR2D65F3gGPWhoj3ZM1pnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPqB52kUC43uEOf5ARgwoe+k9YYeOHke5jdMSpPhByN9XBaRegnp6upT32AIlNsDr
-	 yOToshxFhZJIaIhd4ZQXAuDjZeGjT5ds7DTyyrLNHFE3t3iIXwNhV7QUdnM+okJbcJ
-	 G1jPtbmG0Ajryx2Kv3HyvrTknxbmxN0EzpglN200=
+	b=W4HYKJqILO52ASpRoaRT5LvjqWFYJ8uITcj46h2PgloqxG2ryZcS/vE0W7Ci3DmfM
+	 w6Is2FmU9Y91sVvMs53Vj+WJq0r6B48jvAG7MKbE1OIMDbdkCokM9cG2/WcgMzgvUE
+	 9ainx1Mhu/V8oIhCJ8Hy/IyHeZvaVwaNLdbWOyA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 415/568] KVM: VMX: Split out the non-virtualization part of vmx_interrupt_blocked()
-Date: Tue, 30 Jul 2024 17:48:42 +0200
-Message-ID: <20240730151656.093389952@linuxfoundation.org>
+Subject: [PATCH 6.6 416/568] KVM: nVMX: Request immediate exit iff pending nested event needs injection
+Date: Tue, 30 Jul 2024 17:48:43 +0200
+Message-ID: <20240730151656.131347569@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,59 +66,79 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <seanjc@google.com>
 
-commit 322a569c4b4188a0da2812f9e952780ce09b74ba upstream.
+commit 32f55e475ce2c4b8b124d335fcfaf1152ba977a1 upstream.
 
-Move the non-VMX chunk of the "interrupt blocked" checks to a separate
-helper so that KVM can reuse the code to detect if interrupts are blocked
-for L2, e.g. to determine if a virtual interrupt _for L2_ is a valid wake
-event.  If L1 disables HLT-exiting for L2, nested APICv is enabled, and L2
-HLTs, then L2 virtual interrupts are valid wake events, but if and only if
-interrupts are unblocked for L2.
+When requesting an immediate exit from L2 in order to inject a pending
+event, do so only if the pending event actually requires manual injection,
+i.e. if and only if KVM actually needs to regain control in order to
+deliver the event.
+
+Avoiding the "immediate exit" isn't simply an optimization, it's necessary
+to make forward progress, as the "already expired" VMX preemption timer
+trick that KVM uses to force a VM-Exit has higher priority than events
+that aren't directly injected.
+
+At present time, this is a glorified nop as all events processed by
+vmx_has_nested_events() require injection, but that will not hold true in
+the future, e.g. if there's a pending virtual interrupt in vmcs02.RVI.
+I.e. if KVM is trying to deliver a virtual interrupt to L2, the expired
+VMX preemption timer will trigger VM-Exit before the virtual interrupt is
+delivered, and KVM will effectively hang the vCPU in an endless loop of
+forced immediate VM-Exits (because the pending virtual interrupt never
+goes away).
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-4-seanjc@google.com
+Link: https://lore.kernel.org/r/20240607172609.3205077-3-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c |   11 ++++++++---
- arch/x86/kvm/vmx/vmx.h |    1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h |    2 +-
+ arch/x86/kvm/vmx/nested.c       |    2 +-
+ arch/x86/kvm/x86.c              |    4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5048,14 +5048,19 @@ static int vmx_nmi_allowed(struct kvm_vc
- 	return !vmx_nmi_blocked(vcpu);
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1758,7 +1758,7 @@ struct kvm_x86_nested_ops {
+ 	bool (*is_exception_vmexit)(struct kvm_vcpu *vcpu, u8 vector,
+ 				    u32 error_code);
+ 	int (*check_events)(struct kvm_vcpu *vcpu);
+-	bool (*has_events)(struct kvm_vcpu *vcpu);
++	bool (*has_events)(struct kvm_vcpu *vcpu, bool for_injection);
+ 	void (*triple_fault)(struct kvm_vcpu *vcpu);
+ 	int (*get_state)(struct kvm_vcpu *vcpu,
+ 			 struct kvm_nested_state __user *user_kvm_nested_state,
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3962,7 +3962,7 @@ static bool nested_vmx_preemption_timer_
+ 	       to_vmx(vcpu)->nested.preemption_timer_expired;
  }
  
-+bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
-+{
-+	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
-+	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
-+		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
-+}
-+
- bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
+-static bool vmx_has_nested_events(struct kvm_vcpu *vcpu)
++static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
  {
- 	if (is_guest_mode(vcpu) && nested_exit_on_intr(vcpu))
- 		return false;
+ 	return nested_vmx_preemption_timer_pending(vcpu) ||
+ 	       to_vmx(vcpu)->nested.mtf_pending;
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10254,7 +10254,7 @@ static int kvm_check_and_inject_events(s
  
--	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
--	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
--		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
-+	return __vmx_interrupt_blocked(vcpu);
- }
+ 	if (is_guest_mode(vcpu) &&
+ 	    kvm_x86_ops.nested_ops->has_events &&
+-	    kvm_x86_ops.nested_ops->has_events(vcpu))
++	    kvm_x86_ops.nested_ops->has_events(vcpu, true))
+ 		*req_immediate_exit = true;
  
- static int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -400,6 +400,7 @@ u64 construct_eptp(struct kvm_vcpu *vcpu
- bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
- void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
- bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
-+bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
- bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
- bool vmx_get_nmi_mask(struct kvm_vcpu *vcpu);
- void vmx_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked);
+ 	/*
+@@ -12882,7 +12882,7 @@ static inline bool kvm_vcpu_has_events(s
+ 
+ 	if (is_guest_mode(vcpu) &&
+ 	    kvm_x86_ops.nested_ops->has_events &&
+-	    kvm_x86_ops.nested_ops->has_events(vcpu))
++	    kvm_x86_ops.nested_ops->has_events(vcpu, false))
+ 		return true;
+ 
+ 	if (kvm_xen_has_pending_events(vcpu))
 
 
 
