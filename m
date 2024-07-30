@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-63987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FE9941B97
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8AB941B9B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 756B01C231E0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 047591F24256
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1A5189537;
-	Tue, 30 Jul 2024 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD981898EB;
+	Tue, 30 Jul 2024 16:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfAfpNja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2r7AiZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31562184549;
-	Tue, 30 Jul 2024 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80B4184549;
+	Tue, 30 Jul 2024 16:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358605; cv=none; b=UqKPdEFZ+QCLfGxCxOIHvHuoyK9iX+eI7blUqzMzcFgWYxy9fXy5oc8AxhcvxFMkmmE/bE1Vl9GKoCwMs3cBw26GORMMdpTwm9qoBOofeqJvhKBqMkFEg06PriQEXBD6i2/bYx46Ox2FVjbn9Ztu8r3Hlnh/aAaPMYd3OanufDQ=
+	t=1722358615; cv=none; b=HDlvkhgcPlEcVXUOIrKLArXasmtfsIcGCbf3M3vN+DzW/7JIYc2iqiLSI/cbOyn8aI/GGvbnpXyF3QZXeoY2GVNyA3lo+Ke0WXZtIFcDAXEdQKyqQKCCabGEP2sL7dShE2JOUgcbOq22vjakrRZOGCmnsbC2BP5QW4qYq3pK6YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358605; c=relaxed/simple;
-	bh=U81QzIDRW9gJ1TrbbYApO5o5FlYW1ThMCA0Ekltb0Qo=;
+	s=arc-20240116; t=1722358615; c=relaxed/simple;
+	bh=M1DvRi1PiKKvsLtaoemoYAG2gmDggzhXU0zbTGsTobU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ri3N62cQ/7u946JTfhEQMSFYUtdqYOG0pIIOCTHzGaZVzDkK4iAXGWJrdhJAIxEeCsY74ipxPhwTg6Cei+/q+MCxBk37Mhl+FZBUejr79eFOcA14mk6eqDRPq/CIUavNjJIXrRHmtqhrhfsXbzIUkFa1npmti3b2OtQPAdwisis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfAfpNja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF431C32782;
-	Tue, 30 Jul 2024 16:56:43 +0000 (UTC)
+	 MIME-Version; b=MXkYZWSsdiwcYIWTw2bVZMNuAt6BrJPXZtn6tOWwARBUfYdFbuYAdF9Ms0IYbJZypMr+NSX2YWx9geAuoC1i9VPbG4vz93bduZu7JgG7bgbmeuJWopvTOtHXeRHP2RORBeUXjB43gihnMuoWSB4eOoJjBuhqD0I9Ht+YwMXQ17k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2r7AiZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24609C4AF0F;
+	Tue, 30 Jul 2024 16:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358605;
-	bh=U81QzIDRW9gJ1TrbbYApO5o5FlYW1ThMCA0Ekltb0Qo=;
+	s=korg; t=1722358614;
+	bh=M1DvRi1PiKKvsLtaoemoYAG2gmDggzhXU0zbTGsTobU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xfAfpNjaGJuSPIhOWm/BYdIlD8IS7UHJcJir8xWoUoZfBCJSUJhrC78btVe/ZLwuj
-	 IHFh39Sq4YJx4v5OLPObXexaCaFTn51P5m4ZqJlwhmrt3IFM36AlGPNvTb3fzwu8Lq
-	 ekb1KGzhIf2ztoSVtmAsueXfrAtTkfJQ+TO6rueY=
+	b=u2r7AiZCy47d8LPmLwkJij07S/ffJHT9Mu2/ye2WujgxVCtMJWFQkNQ6hfgGWfVFO
+	 4+9Pk74vGMT3dJ9Y89qJC3BEYlwjiE7zWxxKZK/RZmogqT8/ftkfdkb07xBxd+FziR
+	 C0sbygGrxn9VAWkeefKWc6eiMzXLL0XX0/R4cJ04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.6 378/568] char: tpm: Fix possible memory leak in tpm_bios_measurements_open()
-Date: Tue, 30 Jul 2024 17:48:05 +0200
-Message-ID: <20240730151654.639188160@linuxfoundation.org>
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 379/568] media: venus: fix use after free in vdec_close
+Date: Tue, 30 Jul 2024 17:48:06 +0200
+Message-ID: <20240730151654.680197290@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -65,36 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit 5d8e2971e817bb64225fc0b6327a78752f58a9aa upstream.
+commit a0157b5aa34eb43ec4c5510f9c260bbb03be937e upstream.
 
-In tpm_bios_measurements_open(), get_device() is called on the device
-embedded in struct tpm_chip. In the error path, however, put_device() is
-not called. This results in a reference count leak, which prevents the
-device from being properly released. This commit makes sure to call
-put_device() when the seq_open() call fails.
+There appears to be a possible use after free with vdec_close().
+The firmware will add buffer release work to the work queue through
+HFI callbacks as a normal part of decoding. Randomly closing the
+decoder device from userspace during normal decoding can incur
+a read after free for inst.
 
-Cc: stable@vger.kernel.org # +v4.18
-Fixes: 9b01b5356629 ("tpm: Move shared eventlog functions to common.c")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fix it by cancelling the work in vdec_close.
+
+Cc: stable@vger.kernel.org
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/eventlog/common.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/platform/qcom/venus/vdec.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/char/tpm/eventlog/common.c
-+++ b/drivers/char/tpm/eventlog/common.c
-@@ -47,6 +47,8 @@ static int tpm_bios_measurements_open(st
- 	if (!err) {
- 		seq = file->private_data;
- 		seq->private = chip;
-+	} else {
-+		put_device(&chip->dev);
- 	}
+--- a/drivers/media/platform/qcom/venus/vdec.c
++++ b/drivers/media/platform/qcom/venus/vdec.c
+@@ -1747,6 +1747,7 @@ static int vdec_close(struct file *file)
  
- 	return err;
+ 	vdec_pm_get(inst);
+ 
++	cancel_work_sync(&inst->delayed_process_work);
+ 	v4l2_m2m_ctx_release(inst->m2m_ctx);
+ 	v4l2_m2m_release(inst->m2m_dev);
+ 	vdec_ctrl_deinit(inst);
 
 
 
