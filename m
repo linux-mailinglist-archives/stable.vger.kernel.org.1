@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-62944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F22F94165F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2692E941662
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70B791C230F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C0E1C22EAB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FC91BC086;
-	Tue, 30 Jul 2024 15:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C151BC088;
+	Tue, 30 Jul 2024 15:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2S99XWv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oL7NlgAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6C11BA888;
-	Tue, 30 Jul 2024 15:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2331BBBE5;
+	Tue, 30 Jul 2024 15:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355147; cv=none; b=rnaQgsMtM0tO8zKNhEVEbNtdxDOoWPNQ8VXmab5stcPnfK8qvJUAVPBG3/ERaNgvyhehOW7m8BQARwhN6wX4Cfxkt9cKRcgO6E1IpIeKa0SJ9S7w3hZ4NlnDR+ups2SGrx2hNJONC9ZMKpxP2xZAt8UUdns+Lb6c+NMvsxRsLqs=
+	t=1722355157; cv=none; b=ct8vfu5w/PjQ5UKt/6E/ZU582ts1teKeVMcDs8hpAcHQ2b6QhrwcOdljNM1+XSkAcMLPr/nFHeO9iQTAjulBF+OZfNP4pNtbEPjc1HwgZpWH5lObjM6HlY+96RTETBj8hTLRWUGarJSk+4geb2ikd9GWs5/oqjlq7t+42crxK0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355147; c=relaxed/simple;
-	bh=XAJVmN9SffD0SglGsQ218TPvmNh+O2ZLdAzRLgaVf3E=;
+	s=arc-20240116; t=1722355157; c=relaxed/simple;
+	bh=+l1qB5LZ56181m4lfgWIJvGvC9ri9XAC1muRsr/ZeBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BySM1dfHgDPP/jDkuYeOALGXciX5ob0LplVmrLZcJkGcdteaVD8prTyRO8yGCxbCpvFPMU+3cW7eJcoZADdv8uAtiKhiiatHCauxhIle0KnOwUyyK/0uTqANeqaRPEJttQmhttPLBbYcj65K4glNJnpk+GtiQNPeXo/T4LtJHI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2S99XWv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDDBC32782;
-	Tue, 30 Jul 2024 15:59:05 +0000 (UTC)
+	 MIME-Version; b=I+GoVaQ5p2BAsH6ORGGb5YJTg838zlZt+3lsSdJa4nkfyTi6wM0Els66MyEhfIahgOaAfZPZ8gf7uQadO7Wcmh+NJbzsmDutvL8iPLBgK1G+IMxVgIDAZ2E6PS69XFWnTQQgVhET6vJJaKY6TlLUhBD26TX9lm08218it1IaGns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oL7NlgAG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FFFC32782;
+	Tue, 30 Jul 2024 15:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355147;
-	bh=XAJVmN9SffD0SglGsQ218TPvmNh+O2ZLdAzRLgaVf3E=;
+	s=korg; t=1722355156;
+	bh=+l1qB5LZ56181m4lfgWIJvGvC9ri9XAC1muRsr/ZeBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2S99XWvt2Bjh5tTZsf1Puqwe5fxJb8fxnjaA+xejk9KmHYVIGC03nJo/B8usx0Tp
-	 PDZ4dkzzr5HNA3JfXf8xdY7CYwNpCWLl8aCx4ueNkaCl9sbUcHuIhA+YZTpe7gCL46
-	 dilrWgKyfZFnhQ3gtVA9TutegVhvguLMZk2YULe0=
+	b=oL7NlgAGpCifg/7gQIpizROVyCqkx2p+5wRlbtIdq29WhFRuXSvvIpi1FC4xepA2C
+	 CkqJ8ulICpp2+L5Ika+tsMEIGiEqZsG2SM/Rfa/U2OVIH8i1t7yuZPuRyL3dYR3Fek
+	 WTCGBK64mmh2h5z5Oa+H4o7uX1hWCkCsfIgdmWtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/440] arm64: dts: rockchip: Fix mic-in-differential usage on rk3568-evb1-v10
-Date: Tue, 30 Jul 2024 17:44:55 +0200
-Message-ID: <20240730151618.188231169@linuxfoundation.org>
+Subject: [PATCH 6.1 063/440] arm64: dts: renesas: r8a779g0: Add L3 cache controller
+Date: Tue, 30 Jul 2024 17:44:56 +0200
+Message-ID: <20240730151618.225964140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,42 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit ec03073888ad23223ebb986e62583c20a9ed3c07 ]
+[ Upstream commit f08407210db921a4c9eaeaa92d0c434858b9c6c4 ]
 
-The 'mic-in-differential' DT property supported by the RK809/RK817 audio
-codec driver is actually valid if prefixed with 'rockchip,':
+Describe the cache configuration for the first Cortex-A76 CPU core on
+the Renesas R-Car V4H (R8A779G0) SoC.
 
-  DTC_CHK arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dtb
+Extracted from a larger patch in the BSP by Takeshi Kihara.
 
-  rk3568-evb1-v10.dtb: pmic@20: codec: 'mic-in-differential' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/mfd/rockchip,rk809.yaml#
-
-Make use of the correct property name.
-
-Fixes: 3e4c629ca680 ("arm64: dts: rockchip: enable rk809 audio codec on the rk3568 evb1-v10")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20240622-rk809-fixes-v2-5-c0db420d3639@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/dfd743b32198295afb78bc0ac337ef283fa3879a.1668429870.git.geert+renesas@glider.be
+Stable-dep-of: 6fca24a07e1d ("arm64: dts: renesas: r8a779a0: Add missing hypervisor virtual timer IRQ")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r8a779g0.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-index 674792567fa6e..4fc8354e069a7 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-@@ -478,7 +478,7 @@ regulator-state-mem {
- 		};
- 
- 		codec {
--			mic-in-differential;
-+			rockchip,mic-in-differential;
+diff --git a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
+index 868d1a3cbdf61..9f6a30cf315f2 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a779g0.dtsi
+@@ -23,6 +23,14 @@ a76_0: cpu@0 {
+ 			reg = <0>;
+ 			device_type = "cpu";
+ 			power-domains = <&sysc R8A779G0_PD_A1E0D0C0>;
++			next-level-cache = <&L3_CA76_0>;
++		};
++
++		L3_CA76_0: cache-controller-0 {
++			compatible = "cache";
++			power-domains = <&sysc R8A779G0_PD_A2E0D0>;
++			cache-unified;
++			cache-level = <3>;
  		};
  	};
- };
+ 
 -- 
 2.43.0
 
