@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0B794184E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D4E941D72
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0846F1F21E8F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1357A28B9BA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2058189513;
-	Tue, 30 Jul 2024 16:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8445A1A76AE;
+	Tue, 30 Jul 2024 17:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfBRe25h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvxUXJhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E55E189503;
-	Tue, 30 Jul 2024 16:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418F51A76A7;
+	Tue, 30 Jul 2024 17:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356401; cv=none; b=KGNuWD8ato5TNXZNvl1vGkdvMNBshuPb9QC0EvUSHFYy9T2LarjomIHej0BOpPnb/Fkw/SDux2O3KbV9H4OL9p6+2sj0BHM+NlbWLz4WeRbmCj4FVQD14pp6GdtL0K2I/BdUlQzhq5dn8yfrJ4+7L/G0AUoM3TtdVJ97SCEcs0s=
+	t=1722359853; cv=none; b=lXrWP0nKEjCKX0tWoRfsuFfaVMfd/pxrnQ9aGTMA4bnKNAo8VBKiNSKbAiRIbSZ3X6AeIM6to07jABfSzz4ycN4CL6qdcvEC+qB+HakJkC86cxW0/Ea1qH1t9S534JaeTW94HUO9fmemMnZzNw1Dk4kT7ToHYrv/rqMX6LEd0bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356401; c=relaxed/simple;
-	bh=PJyBwxIxh4dWqkpdxlZyxwqrJex1L7O9MVJ04LHKHFw=;
+	s=arc-20240116; t=1722359853; c=relaxed/simple;
+	bh=ahx8Vdp9NlT6ovlhRKbsb6BjhKiK1USLNOsqvBJ506g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/QhJyYNFtrUlMH6cUWfKaViNUD3frHBv5ahl2tZUW9Z+7BsHT3gIvPNw2ZBexMQFWeQnFwaOuuFTGL0dhQq1lF/suWusMpD2dyTkZVPB8BbOFaZsJnoMy/oxA/hpdi4FWDpIL7NQFU2DSPjY+U07NKx0suYe+TSSj/9bax0+Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfBRe25h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FACC32782;
-	Tue, 30 Jul 2024 16:20:00 +0000 (UTC)
+	 MIME-Version; b=KsKtHWnIDdBFZx23TEbaaJOX66JEr5vtdQJqZrvn7y5LmCIwFYLbaSH5RWYWotNGTdLZ+aAsJsVQbBgbKi4V6LyYNfQ0r2Xvf5cC6xZ/sbT+FxLFAsSivLgFbA3U6UbIIzf6sGl3cVbKvT6AQSMdOP8AkrI6bD7tNXB4YHk69SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvxUXJhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9430C32782;
+	Tue, 30 Jul 2024 17:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356401;
-	bh=PJyBwxIxh4dWqkpdxlZyxwqrJex1L7O9MVJ04LHKHFw=;
+	s=korg; t=1722359853;
+	bh=ahx8Vdp9NlT6ovlhRKbsb6BjhKiK1USLNOsqvBJ506g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RfBRe25hdtGq8wXnE1v5nuGRHi6EExvkATcsGJiH8ncqQvUX0UdeBpoZcVOCwx2GU
-	 NVzJywO7PE1cV2CcyndM3c5f2bpY5nZT+Fn+S4T9/Rt5hCayQyIaecI6GbddNRlNnp
-	 Q9CuZ7MwaiLKLJK1ngK5f2ZdhsHoow+CeFdurDb8=
+	b=cvxUXJhnL6uWc/F9YzdpzNyAeDUv7yEcDn6S9ciTTEBWDl3byxiR4QZhYsk6ol5g3
+	 eqaS9F553gSYjLyGDO/6pO7ntd84bDbYWjl233FEBUKq26lKSRxKHSjCmI0TjENIPT
+	 b6hQNkNECe8JJ07qUBVbbdP6yZrfJbkTopqtHoTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Russell Currey <ruscur@russell.cc>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 188/440] powerpc/pseries: Fix alignment of PLPKS structures and buffers
+	syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.10 545/809] exfat: fix potential deadlock on __exfat_get_dentry_set
 Date: Tue, 30 Jul 2024 17:47:01 +0200
-Message-ID: <20240730151623.217205054@linuxfoundation.org>
+Message-ID: <20240730151746.278683112@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Donnellan <ajd@linux.ibm.com>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-[ Upstream commit fcf63d6b8ab9b12c2ce1b4bde12a3c391029c998 ]
+commit 89fc548767a2155231128cb98726d6d2ea1256c9 upstream.
 
-A number of structures and buffers passed to PKS hcalls have alignment
-requirements, which could on occasion cause problems:
+When accessing a file with more entries than ES_MAX_ENTRY_NUM, the bh-array
+is allocated in __exfat_get_entry_set. The problem is that the bh-array is
+allocated with GFP_KERNEL. It does not make sense. In the following cases,
+a deadlock for sbi->s_lock between the two processes may occur.
 
-- Authorisation structures must be 16-byte aligned and must not cross a
-  page boundary
+       CPU0                CPU1
+       ----                ----
+  kswapd
+   balance_pgdat
+    lock(fs_reclaim)
+                      exfat_iterate
+                       lock(&sbi->s_lock)
+                       exfat_readdir
+                        exfat_get_uniname_from_ext_entry
+                         exfat_get_dentry_set
+                          __exfat_get_dentry_set
+                           kmalloc_array
+                            ...
+                            lock(fs_reclaim)
+    ...
+    evict
+     exfat_evict_inode
+      lock(&sbi->s_lock)
 
-- Label structures must not cross page boundaries
+To fix this, let's allocate bh-array with GFP_NOFS.
 
-- Password output buffers must not cross page boundaries
-
-To ensure correct alignment, we adjust the allocation size of each of
-these structures/buffers to be the closest power of 2 that is at least the
-size of the structure/buffer (since kmalloc() guarantees that an
-allocation of a power of 2 size will be aligned to at least that size).
-
-Reported-by: Benjamin Gray <bgray@linux.ibm.com>
-Fixes: 2454a7af0f2a ("powerpc/pseries: define driver for Platform KeyStore")
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-Reviewed-by: Russell Currey <ruscur@russell.cc>
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230210080401.345462-3-ajd@linux.ibm.com
-Stable-dep-of: 932bed412170 ("powerpc/kexec_file: fix cpus node update to FDT")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
+Cc: stable@vger.kernel.org # v6.2+
+Reported-by: syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000fef47e0618c0327f@google.com
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/plpks.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/exfat/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
-index 25f95440a773b..d54188a355c9c 100644
---- a/arch/powerpc/platforms/pseries/plpks.c
-+++ b/arch/powerpc/platforms/pseries/plpks.c
-@@ -113,7 +113,8 @@ static int plpks_gen_password(void)
- 	u8 *password, consumer = PLPKS_OS_OWNER;
- 	int rc;
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -813,7 +813,7 @@ static int __exfat_get_dentry_set(struct
  
--	password = kzalloc(maxpwsize, GFP_KERNEL);
-+	// The password must not cross a page boundary, so we align to the next power of 2
-+	password = kzalloc(roundup_pow_of_two(maxpwsize), GFP_KERNEL);
- 	if (!password)
- 		return -ENOMEM;
- 
-@@ -149,7 +150,9 @@ static struct plpks_auth *construct_auth(u8 consumer)
- 	if (consumer > PLPKS_OS_OWNER)
- 		return ERR_PTR(-EINVAL);
- 
--	auth = kzalloc(struct_size(auth, password, maxpwsize), GFP_KERNEL);
-+	// The auth structure must not cross a page boundary and must be
-+	// 16 byte aligned. We align to the next largest power of 2
-+	auth = kzalloc(roundup_pow_of_two(struct_size(auth, password, maxpwsize)), GFP_KERNEL);
- 	if (!auth)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -183,7 +186,8 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
- 	if (component && slen > sizeof(label->attr.prefix))
- 		return ERR_PTR(-EINVAL);
- 
--	label = kzalloc(sizeof(*label), GFP_KERNEL);
-+	// The label structure must not cross a page boundary, so we align to the next power of 2
-+	label = kzalloc(roundup_pow_of_two(sizeof(*label)), GFP_KERNEL);
- 	if (!label)
- 		return ERR_PTR(-ENOMEM);
- 
--- 
-2.43.0
-
+ 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
+ 	if (num_bh > ARRAY_SIZE(es->__bh)) {
+-		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
++		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_NOFS);
+ 		if (!es->bh) {
+ 			brelse(bh);
+ 			return -ENOMEM;
 
 
 
