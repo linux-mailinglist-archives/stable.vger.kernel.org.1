@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AE9941E05
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9EE39419F2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FBC31F2122F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26B1C1C23656
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EF41A76BA;
-	Tue, 30 Jul 2024 17:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9924E1898E4;
+	Tue, 30 Jul 2024 16:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtGLdaVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVDt7MNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA811A76A1;
-	Tue, 30 Jul 2024 17:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FA7188013;
+	Tue, 30 Jul 2024 16:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360288; cv=none; b=iJSDSlUIn1Zjnqtoda+nxyXTWGdKz++aClUVvaOk8QttbmmvE2OJV13yeDWoOw6n0jPgjtwTkYe45t1WwWBWjwUvQaSwl+4mtiz2FpDMlGMIRa9VO97GRMMr7LAWpHH2VeQLSJfwrBg5hJPYCvaF0IC61zn1+KvxYmI55cW+JwM=
+	t=1722357489; cv=none; b=SBh3TUh+nTTGgr0GHYH1RXrQx6Hl2w5hkG8q6vGoiOUibJntYwLm+NNwJYxoDLfQtPvbYrJ/m/zFb2BgQ+6AByalxkqSr3gchFD0m7SO13lJ6wHnrAl18La7WDdni/FY47Uc4uR9iVcxtrm2gLF6aa/qtyYTEFurPNc7vei0J/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360288; c=relaxed/simple;
-	bh=wVLudJPZpQCFZpqcq3vacVJbMP5NFsW8pFYv1EaolbY=;
+	s=arc-20240116; t=1722357489; c=relaxed/simple;
+	bh=dAN6IrJRn1tP7gR1oPk0IlOKpf5pfoHMbTP3lUmnQYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJYndd3r21gDY6ZGiA6HmilSfawtutjXWjyMeNLRTdeL2V1Q3jacRfFRoE27eI7dwH0SzS1ElCg94Ot9zYk14f6JZ/OssC4WRpFBQL+r1ST//2AQYr6KJoASG4kgEvaKUDzXo6kalESYbRD2bkpmh1FnHeBP8QdvmQbRDQ73BBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtGLdaVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB334C32782;
-	Tue, 30 Jul 2024 17:24:47 +0000 (UTC)
+	 MIME-Version; b=ED6UaV3p/e7rJa36s5DN6Y1hUtEBpmJCEbrGsXWh3VLDsH9U3Bj9gV8wM0NGzHVcsvlia36E5Y9Amv4vDRhiGqwOwSwTg+I5JhJjOpAKvVqH2lphDgR6PfhsPddKnFhGt0MQRNMzw5me5ymYrYOiPWS+iun6Xq48Jb6qq8PzFQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVDt7MNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B5EC32782;
+	Tue, 30 Jul 2024 16:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360288;
-	bh=wVLudJPZpQCFZpqcq3vacVJbMP5NFsW8pFYv1EaolbY=;
+	s=korg; t=1722357489;
+	bh=dAN6IrJRn1tP7gR1oPk0IlOKpf5pfoHMbTP3lUmnQYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtGLdaVyW2pjCHSKMk1QkOx+0J643dhd3u9VYPrmShwcgF0u6mD3hZRULJYewgbFv
-	 FkvCN0tXFT97BPcYDNeMAg0euy03PFDQ5De+k86gRjXzMBDvza1FONHsYR1mUJWG/8
-	 OILUAmNrX6fHNxW2jugpOVPuww+/0biyncRncJt0=
+	b=XVDt7MNVY0fwpvBh7YAEF7FG1f2a9tHl2RvrawLlEL4xCIFFaQ1DtmQd9see1cDMW
+	 HVTsL6/LNvKFhzsZvjMlH0wbTMNGQ7O4fqdB38dixYvYvob1nTRm9D4r1jKtCBbrSY
+	 h4iE+Td3tSvKKJkn9mdIov7DpCovCWZ8bSGJ5SxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.10 653/809] f2fs: fix to dont dirty inode for readonly filesystem
-Date: Tue, 30 Jul 2024 17:48:49 +0200
-Message-ID: <20240730151750.671340648@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 297/440] cifs: fix reconnect with SMB1 UNIX Extensions
+Date: Tue, 30 Jul 2024 17:48:50 +0200
+Message-ID: <20240730151627.429363771@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit 192b8fb8d1c8ca3c87366ebbef599fa80bb626b8 upstream.
+commit a214384ce26b6111ea8c8d58fa82a1ca63996c38 upstream.
 
-syzbot reports f2fs bug as below:
-
-kernel BUG at fs/f2fs/inode.c:933!
-RIP: 0010:f2fs_evict_inode+0x1576/0x1590 fs/f2fs/inode.c:933
-Call Trace:
- evict+0x2a4/0x620 fs/inode.c:664
- dispose_list fs/inode.c:697 [inline]
- evict_inodes+0x5f8/0x690 fs/inode.c:747
- generic_shutdown_super+0x9d/0x2c0 fs/super.c:675
- kill_block_super+0x44/0x90 fs/super.c:1667
- kill_f2fs_super+0x303/0x3b0 fs/f2fs/super.c:4894
- deactivate_locked_super+0xc1/0x130 fs/super.c:484
- cleanup_mnt+0x426/0x4c0 fs/namespace.c:1256
- task_work_run+0x24a/0x300 kernel/task_work.c:180
- ptrace_notify+0x2cd/0x380 kernel/signal.c:2399
- ptrace_report_syscall include/linux/ptrace.h:411 [inline]
- ptrace_report_syscall_exit include/linux/ptrace.h:473 [inline]
- syscall_exit_work kernel/entry/common.c:251 [inline]
- syscall_exit_to_user_mode_prepare kernel/entry/common.c:278 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:283 [inline]
- syscall_exit_to_user_mode+0x15c/0x280 kernel/entry/common.c:296
- do_syscall_64+0x50/0x110 arch/x86/entry/common.c:88
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-The root cause is:
-- do_sys_open
- - f2fs_lookup
-  - __f2fs_find_entry
-   - f2fs_i_depth_write
-    - f2fs_mark_inode_dirty_sync
-     - f2fs_dirty_inode
-      - set_inode_flag(inode, FI_DIRTY_INODE)
-
-- umount
- - kill_f2fs_super
-  - kill_block_super
-   - generic_shutdown_super
-    - sync_filesystem
-    : sb is readonly, skip sync_filesystem()
-    - evict_inodes
-     - iput
-      - f2fs_evict_inode
-       - f2fs_bug_on(sbi, is_inode_flag_set(inode, FI_DIRTY_INODE))
-       : trigger kernel panic
-
-When we try to repair i_current_depth in readonly filesystem, let's
-skip dirty inode to avoid panic in later f2fs_evict_inode().
+When mounting with the SMB1 Unix Extensions (e.g. mounts
+to Samba with vers=1.0), reconnects no longer reset the
+Unix Extensions (SetFSInfo SET_FILE_UNIX_BASIC) after tcon so most
+operations (e.g. stat, ls, open, statfs) will fail continuously
+with:
+        "Operation not supported"
+if the connection ever resets (e.g. due to brief network disconnect)
 
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000e890bc0609a55cff@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/connect.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -29,6 +29,9 @@ void f2fs_mark_inode_dirty_sync(struct i
- 	if (is_inode_flag_set(inode, FI_NEW_INODE))
- 		return;
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3975,6 +3975,7 @@ error:
+ }
+ #endif
  
-+	if (f2fs_readonly(F2FS_I_SB(inode)->sb))
-+		return;
-+
- 	if (f2fs_inode_dirtied(inode, sync))
- 		return;
++#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ /*
+  * Issue a TREE_CONNECT request.
+  */
+@@ -4096,11 +4097,25 @@ CIFSTCon(const unsigned int xid, struct
+ 		else
+ 			tcon->Flags = 0;
+ 		cifs_dbg(FYI, "Tcon flags: 0x%x\n", tcon->Flags);
+-	}
  
++		/*
++		 * reset_cifs_unix_caps calls QFSInfo which requires
++		 * need_reconnect to be false, but we would not need to call
++		 * reset_caps if this were not a reconnect case so must check
++		 * need_reconnect flag here.  The caller will also clear
++		 * need_reconnect when tcon was successful but needed to be
++		 * cleared earlier in the case of unix extensions reconnect
++		 */
++		if (tcon->need_reconnect && tcon->unix_ext) {
++			cifs_dbg(FYI, "resetting caps for %s\n", tcon->tree_name);
++			tcon->need_reconnect = false;
++			reset_cifs_unix_caps(xid, tcon, NULL, NULL);
++		}
++	}
+ 	cifs_buf_release(smb_buffer);
+ 	return rc;
+ }
++#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
+ 
+ static void delayed_free(struct rcu_head *p)
+ {
 
 
 
