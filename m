@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84573941B54
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE92941A99
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58537B28028
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7D01F21057
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51E518991A;
-	Tue, 30 Jul 2024 16:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE3610A1E;
+	Tue, 30 Jul 2024 16:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyntujTy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3HduIeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7382D189905;
-	Tue, 30 Jul 2024 16:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6731A6166;
+	Tue, 30 Jul 2024 16:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357848; cv=none; b=hth/OCvXVizedQMgjye5Hk5HguC/29qHVGQpGVjHHrpQLDYVoFvvAGkvIdYoHy7DqUa0hGlqDkm6cMpFkCRklMyHqGXKnbwvI6OkxV6q5T9GzkdJ5f8kK052MYsJOVeOpYS3iz2ODT4BZrRpx3pLDCMo17Cvg/w013f1dBChAEI=
+	t=1722357934; cv=none; b=N+7diUxCV1rF42ivAD69LPJN5IDJf6H0VkiW39sJVXbtDAXEZ6o8rfNMaD+u3F0ZfRylUEDqUqqg2dDxmtXWv5pB4+jHNAoEes2XT2dlqju7dguIx1G5/qD2XLft/oJjyO1O3WCD+1BjeAA832K0iSknQXr9a4SANNUA6GTA+9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357848; c=relaxed/simple;
-	bh=UHirgUxdaxF+3DOMl54AKD2U+3d0fDVjOicHHBY2osI=;
+	s=arc-20240116; t=1722357934; c=relaxed/simple;
+	bh=A/9hniZrVmr+Wz3pomF39UKYvPLZBtGtEEIvolk2VoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKHix6y//ldbTmIIeZK1u7ANKAOe9nVVpueiTLAM0YV7Yec5bi19Lntc6Jhd5dsuPTQ8bfr9PcW25WmlxoiXjwSnH1utlL/HmwuuUpKw96G3T2J+bD0C6Tro3NYXQ7r1P+jithni13BH9kHiCraFOvnvS92ZcKFvnyVj24ry1cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyntujTy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D955BC4AF0C;
-	Tue, 30 Jul 2024 16:44:07 +0000 (UTC)
+	 MIME-Version; b=e4S9bYp+yN2Md0ZQDMR2otGKXBNF75fLm0Vcb1/TSkDUhPlgry++X5lqpBcSHUW3nDGhjzc6nGkpVIWlGp8/OF+9o3QCailCI/1ylr0B0orZ2nomCb2kIVMHYsgwVmaYdKZcGHLnCzhw+9UKtb0E/aSEWMY5C6af6zA+tlkmUHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3HduIeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC81BC4AF0E;
+	Tue, 30 Jul 2024 16:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357848;
-	bh=UHirgUxdaxF+3DOMl54AKD2U+3d0fDVjOicHHBY2osI=;
+	s=korg; t=1722357934;
+	bh=A/9hniZrVmr+Wz3pomF39UKYvPLZBtGtEEIvolk2VoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NyntujTyLZeriHDPBRaoOJeC3q2PQQMWqzjjUjJE0Y+wlWhslzOT9mkd5C+cYxz6Y
-	 kEmsnyD93g0xhp5luZnDGZM0tAPXaT6Tqcak2MXwppiVmz+M8DcATrSwVM7OHTBEZ/
-	 04KhJT2yZpz5L9zEpXlmMwJnFY7YQVdRjiu7Rj24=
+	b=Y3HduIeFLeWcEduNQT6lUS5v5MOxEsS0LuSyNyQbzG4iyOGbIZcUEJ9/7VorAlabB
+	 /soWOouwV16yx5cYFxNKE7zDtGxUwQeSqR9InKTL6pZm6cVkZL/hRgKZ/OY30FXNPG
+	 qbiBN2gq7+veCKy2IItF/1ZhgI/uuD/PZkbccIj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mikhail Kobuk <m.kobuk@ispras.ru>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 286/809] drm/amd/display: Move struct scaler_data off stack
-Date: Tue, 30 Jul 2024 17:42:42 +0200
-Message-ID: <20240730151735.890911730@linuxfoundation.org>
+Subject: [PATCH 6.10 287/809] media: pci: ivtv: Add check for DMA map result
+Date: Tue, 30 Jul 2024 17:42:43 +0200
+Message-ID: <20240730151735.929588949@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,142 +66,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-[ Upstream commit f8718c482572181ca364ffca3c27365cc83cfe9e ]
+[ Upstream commit 629913d6d79508b166c66e07e4857e20233d85a9 ]
 
-The scaler_data structure is implicitly copied onto the stack twice by
-being returned from a function. This is usually a bad idea, but it
-was not flagged by the compiler until a recent addition that pushed
-it over the 1024 byte function stack limit:
+In case DMA fails, 'dma->SG_length' is 0. This value is later used to
+access 'dma->SGarray[dma->SG_length - 1]', which will cause out of
+bounds access.
 
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml2_translation_helper.c: In function 'populate_dml_plane_cfg_from_plane_state':
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml2_translation_helper.c:1075:1: error: the frame size of 1032 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+Add check to return early on invalid value. Adjust warnings accordingly.
 
-Use an explicit kzalloc() and memcpy() instead here to keep it off the
-stack.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
-Fixes: 7966f319c66d ("drm/amd/display: Introduce DML2")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 1932dc2f4cf6 ("media: pci/ivtv: switch from 'pci_' to 'dma_' API")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/dml2/dml2_translation_helper.c | 56 ++++++++++---------
- 1 file changed, 31 insertions(+), 25 deletions(-)
+ drivers/media/pci/ivtv/ivtv-udma.c | 8 ++++++++
+ drivers/media/pci/ivtv/ivtv-yuv.c  | 6 ++++++
+ drivers/media/pci/ivtv/ivtvfb.c    | 6 +++---
+ 3 files changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index 8ecc972dbffde..edff6b447680c 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -804,7 +804,7 @@ static void populate_dml_surface_cfg_from_plane_state(enum dml_project_id dml2_p
+diff --git a/drivers/media/pci/ivtv/ivtv-udma.c b/drivers/media/pci/ivtv/ivtv-udma.c
+index 99b9f55ca8292..f467a00492f4b 100644
+--- a/drivers/media/pci/ivtv/ivtv-udma.c
++++ b/drivers/media/pci/ivtv/ivtv-udma.c
+@@ -131,6 +131,8 @@ int ivtv_udma_setup(struct ivtv *itv, unsigned long ivtv_dest_addr,
+ 
+ 	/* Fill SG List with new values */
+ 	if (ivtv_udma_fill_sg_list(dma, &user_dma, 0) < 0) {
++		IVTV_DEBUG_WARN("%s: could not allocate bounce buffers for highmem userspace buffers\n",
++				__func__);
+ 		unpin_user_pages(dma->map, dma->page_count);
+ 		dma->page_count = 0;
+ 		return -ENOMEM;
+@@ -139,6 +141,12 @@ int ivtv_udma_setup(struct ivtv *itv, unsigned long ivtv_dest_addr,
+ 	/* Map SG List */
+ 	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
+ 				    dma->page_count, DMA_TO_DEVICE);
++	if (!dma->SG_length) {
++		IVTV_DEBUG_WARN("%s: DMA map error, SG_length is 0\n", __func__);
++		unpin_user_pages(dma->map, dma->page_count);
++		dma->page_count = 0;
++		return -EINVAL;
++	}
+ 
+ 	/* Fill SG Array with new values */
+ 	ivtv_udma_fill_sg_array (dma, ivtv_dest_addr, 0, -1);
+diff --git a/drivers/media/pci/ivtv/ivtv-yuv.c b/drivers/media/pci/ivtv/ivtv-yuv.c
+index 582146f8d70d5..2d9274537725a 100644
+--- a/drivers/media/pci/ivtv/ivtv-yuv.c
++++ b/drivers/media/pci/ivtv/ivtv-yuv.c
+@@ -114,6 +114,12 @@ static int ivtv_yuv_prep_user_dma(struct ivtv *itv, struct ivtv_user_dma *dma,
  	}
- }
+ 	dma->SG_length = dma_map_sg(&itv->pdev->dev, dma->SGlist,
+ 				    dma->page_count, DMA_TO_DEVICE);
++	if (!dma->SG_length) {
++		IVTV_DEBUG_WARN("%s: DMA map error, SG_length is 0\n", __func__);
++		unpin_user_pages(dma->map, dma->page_count);
++		dma->page_count = 0;
++		return -EINVAL;
++	}
  
--static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state *in, struct dc_state *context)
-+static void get_scaler_data_for_plane(const struct dc_plane_state *in, struct dc_state *context, struct scaler_data *out)
- {
- 	int i;
- 	struct pipe_ctx *temp_pipe = &context->res_ctx.temp_pipe;
-@@ -825,7 +825,7 @@ static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state
- 	}
+ 	/* Fill SG Array with new values */
+ 	ivtv_udma_fill_sg_array(dma, y_buffer_offset, uv_buffer_offset, y_size);
+diff --git a/drivers/media/pci/ivtv/ivtvfb.c b/drivers/media/pci/ivtv/ivtvfb.c
+index 410477e3e6216..d1ab7fee0d057 100644
+--- a/drivers/media/pci/ivtv/ivtvfb.c
++++ b/drivers/media/pci/ivtv/ivtvfb.c
+@@ -281,10 +281,10 @@ static int ivtvfb_prep_dec_dma_to_device(struct ivtv *itv,
+ 	/* Map User DMA */
+ 	if (ivtv_udma_setup(itv, ivtv_dest_addr, userbuf, size_in_bytes) <= 0) {
+ 		mutex_unlock(&itv->udma.lock);
+-		IVTVFB_WARN("ivtvfb_prep_dec_dma_to_device, Error with pin_user_pages: %d bytes, %d pages returned\n",
+-			       size_in_bytes, itv->udma.page_count);
++		IVTVFB_WARN("%s, Error in ivtv_udma_setup: %d bytes, %d pages returned\n",
++			       __func__, size_in_bytes, itv->udma.page_count);
  
- 	ASSERT(i < MAX_PIPES);
--	return temp_pipe->plane_res.scl_data;
-+	memcpy(out, &temp_pipe->plane_res.scl_data, sizeof(*out));
- }
- 
- static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_stream_state *in)
-@@ -884,27 +884,31 @@ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned
- 
- static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_plane_state *in, struct dc_state *context)
- {
--	const struct scaler_data scaler_data = get_scaler_data_for_plane(in, context);
-+	struct scaler_data *scaler_data = kzalloc(sizeof(*scaler_data), GFP_KERNEL);
-+	if (!scaler_data)
-+		return;
-+
-+	get_scaler_data_for_plane(in, context, scaler_data);
- 
- 	out->CursorBPP[location] = dml_cur_32bit;
- 	out->CursorWidth[location] = 256;
- 
- 	out->GPUVMMinPageSizeKBytes[location] = 256;
- 
--	out->ViewportWidth[location] = scaler_data.viewport.width;
--	out->ViewportHeight[location] = scaler_data.viewport.height;
--	out->ViewportWidthChroma[location] = scaler_data.viewport_c.width;
--	out->ViewportHeightChroma[location] = scaler_data.viewport_c.height;
--	out->ViewportXStart[location] = scaler_data.viewport.x;
--	out->ViewportYStart[location] = scaler_data.viewport.y;
--	out->ViewportXStartC[location] = scaler_data.viewport_c.x;
--	out->ViewportYStartC[location] = scaler_data.viewport_c.y;
-+	out->ViewportWidth[location] = scaler_data->viewport.width;
-+	out->ViewportHeight[location] = scaler_data->viewport.height;
-+	out->ViewportWidthChroma[location] = scaler_data->viewport_c.width;
-+	out->ViewportHeightChroma[location] = scaler_data->viewport_c.height;
-+	out->ViewportXStart[location] = scaler_data->viewport.x;
-+	out->ViewportYStart[location] = scaler_data->viewport.y;
-+	out->ViewportXStartC[location] = scaler_data->viewport_c.x;
-+	out->ViewportYStartC[location] = scaler_data->viewport_c.y;
- 	out->ViewportStationary[location] = false;
- 
--	out->ScalerEnabled[location] = scaler_data.ratios.horz.value != dc_fixpt_one.value ||
--				scaler_data.ratios.horz_c.value != dc_fixpt_one.value ||
--				scaler_data.ratios.vert.value != dc_fixpt_one.value ||
--				scaler_data.ratios.vert_c.value != dc_fixpt_one.value;
-+	out->ScalerEnabled[location] = scaler_data->ratios.horz.value != dc_fixpt_one.value ||
-+				scaler_data->ratios.horz_c.value != dc_fixpt_one.value ||
-+				scaler_data->ratios.vert.value != dc_fixpt_one.value ||
-+				scaler_data->ratios.vert_c.value != dc_fixpt_one.value;
- 
- 	/* Current driver code base uses LBBitPerPixel as 57. There is a discrepancy
- 	 * from the HW/DML teams about this value. Initialize LBBitPerPixel with the
-@@ -920,25 +924,25 @@ static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out
- 		out->VRatioChroma[location] = 1;
- 	} else {
- 		/* Follow the original dml_wrapper.c code direction to fix scaling issues */
--		out->HRatio[location] = (dml_float_t)scaler_data.ratios.horz.value / (1ULL << 32);
--		out->HRatioChroma[location] = (dml_float_t)scaler_data.ratios.horz_c.value / (1ULL << 32);
--		out->VRatio[location] = (dml_float_t)scaler_data.ratios.vert.value / (1ULL << 32);
--		out->VRatioChroma[location] = (dml_float_t)scaler_data.ratios.vert_c.value / (1ULL << 32);
-+		out->HRatio[location] = (dml_float_t)scaler_data->ratios.horz.value / (1ULL << 32);
-+		out->HRatioChroma[location] = (dml_float_t)scaler_data->ratios.horz_c.value / (1ULL << 32);
-+		out->VRatio[location] = (dml_float_t)scaler_data->ratios.vert.value / (1ULL << 32);
-+		out->VRatioChroma[location] = (dml_float_t)scaler_data->ratios.vert_c.value / (1ULL << 32);
+-		/* pin_user_pages must have failed completely */
++		/* pin_user_pages or DMA must have failed completely */
+ 		return -EIO;
  	}
  
--	if (!scaler_data.taps.h_taps) {
-+	if (!scaler_data->taps.h_taps) {
- 		out->HTaps[location] = 1;
- 		out->HTapsChroma[location] = 1;
- 	} else {
--		out->HTaps[location] = scaler_data.taps.h_taps;
--		out->HTapsChroma[location] = scaler_data.taps.h_taps_c;
-+		out->HTaps[location] = scaler_data->taps.h_taps;
-+		out->HTapsChroma[location] = scaler_data->taps.h_taps_c;
- 	}
--	if (!scaler_data.taps.v_taps) {
-+	if (!scaler_data->taps.v_taps) {
- 		out->VTaps[location] = 1;
- 		out->VTapsChroma[location] = 1;
- 	} else {
--		out->VTaps[location] = scaler_data.taps.v_taps;
--		out->VTapsChroma[location] = scaler_data.taps.v_taps_c;
-+		out->VTaps[location] = scaler_data->taps.v_taps;
-+		out->VTapsChroma[location] = scaler_data->taps.v_taps_c;
- 	}
- 
- 	out->SourceScan[location] = (enum dml_rotation_angle)in->rotation;
-@@ -949,6 +953,8 @@ static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out
- 	out->DynamicMetadataTransmittedBytes[location] = 0;
- 
- 	out->NumberOfCursors[location] = 1;
-+
-+	kfree(scaler_data);
- }
- 
- static unsigned int map_stream_to_dml_display_cfg(const struct dml2_context *dml2,
 -- 
 2.43.0
 
