@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727849417FF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBE4941804
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27E3A1F256FC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 816E01C22AC5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234D81A619E;
-	Tue, 30 Jul 2024 16:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88B71A0706;
+	Tue, 30 Jul 2024 16:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUcJN5iK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deAaQ1Fp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E951A619D;
-	Tue, 30 Jul 2024 16:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68B31917EC;
+	Tue, 30 Jul 2024 16:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356151; cv=none; b=b6kg9oOhvg/r+WkjXJqW/wY2dfqKMU9ULGf3s27VYtSWxAdoaJ0GbDtOULopaopn5i1nrV9CQrGqumQPUzPR4lUrlzexz+ljxaYmu8d/XhpkJgzTx0duuo18naIIGkaLXLuXHLG42kjyPSXKqKVMF7Q6LHR3R96YnekPs2RQLtk=
+	t=1722356164; cv=none; b=Tf0Z2uSGRdFZ/a3+UzEEC/CXV+cDrnh2bShsTPRxGhWE1fFyTducVQ775TT/U3kljwpoT5jrFGshSiUff7CdMuawFABtIWSCfywo08bXUKFhDz9QuM2glY3R4FZLc3TI83hXxUMp6ENQTvXhBPq7O+faIv9unaybLy1d5UXzhxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356151; c=relaxed/simple;
-	bh=dneC8eWXOMLhgc0rjGcT8snXxUE7xgeEQVOEKdSOMuo=;
+	s=arc-20240116; t=1722356164; c=relaxed/simple;
+	bh=7kM3ExjipTvY0spCNTOicwKll77XyQbmQ60dABxfwms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NrhXDAZXgxBspE5SZYoyF+yBtbMowa7YAf4LaU3fAbnmkiSTPJGd4FbOYhfZKW76xYnsyh0vMxXB1rZzkK+SM+rTTF2ykoYvFvKp25sY0JGqOa+2imqsT8DP+dBm40NtdX0mapv8Gt3+Lgg07bpBE6sBGoUYjdgEM7ran59JqZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUcJN5iK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FE9C32782;
-	Tue, 30 Jul 2024 16:15:50 +0000 (UTC)
+	 MIME-Version; b=qh3tu+W4dMxxQSootPdvPExmhgG3uOmXwUkadOegKiGVPZ3mDGRaXh8XOnPD8yrjAvEjteROz1ORF863ciNnVzNW5bTbDZita1M5pilrdLTwC0LaEgflK2RvfbTBZIRH7DmpUEAWkkSFhPuKSxPaSkERKsNy0L2kHpyfsDQX/Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deAaQ1Fp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC65C32782;
+	Tue, 30 Jul 2024 16:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356151;
-	bh=dneC8eWXOMLhgc0rjGcT8snXxUE7xgeEQVOEKdSOMuo=;
+	s=korg; t=1722356164;
+	bh=7kM3ExjipTvY0spCNTOicwKll77XyQbmQ60dABxfwms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUcJN5iKijEG9YCrORsvWRfeku7p5jzA5+4+v9oAp/0tfWEXYgdY7jtDX5YHPbmAn
-	 FmuX4S3ustly1PUwF2Nb6fBvGwxxDwuCUTGl5tvv/byNlgIV698BJdsRwbSyV4y307
-	 y23vJVjRxHdXw+jYUnVK4FTP1cXwi3LIDN+09XtQ=
+	b=deAaQ1Fpzv/UYCrGKLz9dRnCXF1YRuvD7KWIM5HP7xjp24htDs5Kv5WYo5Ai4KMCX
+	 GD/fHIJ5eH1e8xA/vrfDdTgogCyDauPvSRSG1JI8Ip5WQUsJR/G7bpnNb0TmV5kafx
+	 RZU8Z+05MeXotMQDKVE294O33d04MwZr1okF4Jfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nicolas=20Pomar=C3=A8de?= <npomarede@corp.free.fr>,
-	Christian Zietz <czietz@gmx.net>,
-	Eero Tamminen <oak@helsinkinet.fi>,
-	Michael Schmitz <schmitzmic@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Adam Ford <aford173@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Marek Vasut <marex@denx.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 124/809] m68k: atari: Fix TT bootup freeze / unexpected (SCU) interrupt messages
-Date: Tue, 30 Jul 2024 17:40:00 +0200
-Message-ID: <20240730151729.515330613@linuxfoundation.org>
+Subject: [PATCH 6.10 125/809] arm64: dts: imx8mp: Fix pgc_mlmix location
+Date: Tue, 30 Jul 2024 17:40:01 +0200
+Message-ID: <20240730151729.553194897@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -63,59 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eero Tamminen <oak@helsinkinet.fi>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit f70065a9fd988983b2c693631b801f25a615fc04 ]
+[ Upstream commit 106f68fc9da3d4835070b55a2229d2c54ef5cba1 ]
 
-Avoid freeze on Atari TT / MegaSTe boot with continuous messages of:
+The pgc_mlmix shows a power-domain@24, but the reg value is
+IMX8MP_POWER_DOMAIN_MLMIX which is set to 4.
 
-	unexpected interrupt from 112
+The stuff after the @ symbol should match the stuff referenced
+by 'reg' so reorder the pgc_mlmix so it to appear as power-domain@4.
 
-Which was due to VBL interrupt being enabled in SCU sys mask, but there
-being no handler for that any more.
-
-(Bug and fix were first verified on real Atari TT HW by Christian,
- this patch later on in Hatari emulator.)
-
-Fixes: 1fa0b29f3a43f9dd ("fbdev: Kill Atari vblank cursor blinking")
-Reported-by: Nicolas Pomarède <npomarede@corp.free.fr>
-Closes: https://listengine.tuxfamily.org/lists.tuxfamily.org/hatari-devel/2024/06/msg00016.html
-Closes: https://lore.kernel.org/all/9aa793d7-82ed-4fbd-bce5-60810d8a9119@helsinkinet.fi
-Tested-by: Christian Zietz <czietz@gmx.net>
-Signed-off-by: Eero Tamminen <oak@helsinkinet.fi>
-Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/20240624144901.5236-1-oak@helsinkinet.fi
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 834464c8504c ("arm64: dts: imx8mp: add mlmix power domain")
+Fixes: 4bedc468b725 ("arm64: dts: imx8mp: Add NPU Node")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/atari/ataints.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 34 +++++++++++------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/arch/m68k/atari/ataints.c b/arch/m68k/atari/ataints.c
-index 23256434191c3..0465444ceb216 100644
---- a/arch/m68k/atari/ataints.c
-+++ b/arch/m68k/atari/ataints.c
-@@ -301,11 +301,7 @@ void __init atari_init_IRQ(void)
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index b92abb5a5c536..3576d2b89b439 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -789,6 +789,23 @@ pgc_usb2_phy: power-domain@3 {
+ 						reg = <IMX8MP_POWER_DOMAIN_USB2_PHY>;
+ 					};
  
- 	if (ATARIHW_PRESENT(SCU)) {
- 		/* init the SCU if present */
--		tt_scu.sys_mask = 0x10;		/* enable VBL (for the cursor) and
--									 * disable HSYNC interrupts (who
--									 * needs them?)  MFP and SCC are
--									 * enabled in VME mask
--									 */
-+		tt_scu.sys_mask = 0x0;		/* disable all interrupts */
- 		tt_scu.vme_mask = 0x60;		/* enable MFP and SCC ints */
- 	} else {
- 		/* If no SCU and no Hades, the HSYNC interrupt needs to be
++					pgc_mlmix: power-domain@4 {
++						#power-domain-cells = <0>;
++						reg = <IMX8MP_POWER_DOMAIN_MLMIX>;
++						clocks = <&clk IMX8MP_CLK_ML_AXI>,
++							 <&clk IMX8MP_CLK_ML_AHB>,
++							 <&clk IMX8MP_CLK_NPU_ROOT>;
++						assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
++								  <&clk IMX8MP_CLK_ML_AXI>,
++								  <&clk IMX8MP_CLK_ML_AHB>;
++						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
++									 <&clk IMX8MP_SYS_PLL1_800M>,
++									 <&clk IMX8MP_SYS_PLL1_800M>;
++						assigned-clock-rates = <800000000>,
++								       <800000000>,
++								       <300000000>;
++					};
++
+ 					pgc_audio: power-domain@5 {
+ 						#power-domain-cells = <0>;
+ 						reg = <IMX8MP_POWER_DOMAIN_AUDIOMIX>;
+@@ -900,23 +917,6 @@ pgc_vpu_vc8000e: power-domain@22 {
+ 						reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
+ 						clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+ 					};
+-
+-					pgc_mlmix: power-domain@24 {
+-						#power-domain-cells = <0>;
+-						reg = <IMX8MP_POWER_DOMAIN_MLMIX>;
+-						clocks = <&clk IMX8MP_CLK_ML_AXI>,
+-							 <&clk IMX8MP_CLK_ML_AHB>,
+-							 <&clk IMX8MP_CLK_NPU_ROOT>;
+-						assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
+-								  <&clk IMX8MP_CLK_ML_AXI>,
+-								  <&clk IMX8MP_CLK_ML_AHB>;
+-						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
+-									 <&clk IMX8MP_SYS_PLL1_800M>,
+-									 <&clk IMX8MP_SYS_PLL1_800M>;
+-						assigned-clock-rates = <800000000>,
+-								       <800000000>,
+-								       <300000000>;
+-					};
+ 				};
+ 			};
+ 		};
 -- 
 2.43.0
 
