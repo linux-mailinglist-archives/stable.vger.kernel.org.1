@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-63471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46F9941919
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 440E9941C36
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59091C235D5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5A78B2474D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E4418951A;
-	Tue, 30 Jul 2024 16:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33239188017;
+	Tue, 30 Jul 2024 17:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJJ3Ydk+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkyDUTjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42631078F;
-	Tue, 30 Jul 2024 16:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F521E86F;
+	Tue, 30 Jul 2024 17:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356934; cv=none; b=JKePiKTV5Iu62csH/JL1q8kxqMfxGXI997PsDCfugpCuscsaj0axDhb2wRb/qA5Rq/LmokpUK8/ibCtgvlt8YEsvBuiLBbdQy8MKpzjKScfKflVR0xV6+ZpzvidF/0wE04J+QuaU/sS1xx5SIY0epJ6TIfDbYg6AD3mT8IQrOp4=
+	t=1722359069; cv=none; b=QXFr6ROy+mcxZCTYZ31ED9ATD9BZIRNKfKV8RZeAOheswjTG0Rf2RiaaVJmKTGhkQJ0/4QNg7YlwLqci3+NZgV/hW13Ii12loi5dC9DZf6P/EcX6i6b1R58qV5hIcWmyXKI8gVCN8IUDb003uHNFCK1sD1VFwJ/aD+oe0T8APHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356934; c=relaxed/simple;
-	bh=lRsxIDyJbqVyt40B57EtD5DTo38ZzqgiJNp5b/9nD04=;
+	s=arc-20240116; t=1722359069; c=relaxed/simple;
+	bh=2voThsJzKv9toQoS/szQff0ucJFT1VRuV1zqyACnSe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCe6CAhU1ac7VupbjcbKXQCKC+nS3+/m5RyE/nEqOf0gMy644ZvGIB0Wn2WenrojCmUX5vSTZC1At7dq0JeG++n8gpcLNEsfPgsxyrF4FnIBXql38var2r1XhfpT0lucoeZ/3ZGOz4YqoJVq45j4DG5E62gnqz1ROz8/FO3bySw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJJ3Ydk+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9BAC32782;
-	Tue, 30 Jul 2024 16:28:54 +0000 (UTC)
+	 MIME-Version; b=dpt7wtMWWpnlPJtRnu9AUZGhJeOpY9u3jpSGasYAPKUQ4VD3xsdxQyQmvNdP03d7TzAFLzX1ZyZqXDsPWAgALWM84iC0LaTs45W5fCKrO7KIEF8GtJanwPui0uhlkxqW5Ej6FKaVvwzWySaQpf/oT5nyYpkvP5U/Rjre4Ud4UOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkyDUTjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2935C32782;
+	Tue, 30 Jul 2024 17:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356934;
-	bh=lRsxIDyJbqVyt40B57EtD5DTo38ZzqgiJNp5b/9nD04=;
+	s=korg; t=1722359068;
+	bh=2voThsJzKv9toQoS/szQff0ucJFT1VRuV1zqyACnSe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJJ3Ydk+du3bGGRosfEcumTzFJnvu6BjLZE9CluQ8EIrxTvjjkNABiUDXlGLqYTbv
-	 BG8QeSlMkHzAODFY9zcZyxaqT34iHRhAzo91B5IXSQ9HnsoiHznyCpmW52FJxoJOA9
-	 dnsuQwqYQzff0HtxiNKZU+XQqvJ5eWsC6yShiy9s=
+	b=FkyDUTjCQOprefBiEL6foza8Igr9iPxCnVKFnMvJ6ezjOiD7LoEJgT/diw5S6cVWO
+	 +JbW6MI9Gs5cbqmYBegxj3bHJJKWyj9jrDGLemUAg7qj5/L95Tv251rZQK3on21dQA
+	 K130bo/9i8TXANSyVG0yUTVoHHFowYlEVxOCTMfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Matt Ochs <mochs@nvidia.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/568] x86/shstk: Make return uprobe work with shadow stack
+Subject: [PATCH 6.10 429/809] iommufd/selftest: Fix iommufd_test_dirty() to handle <u8 bitmaps
 Date: Tue, 30 Jul 2024 17:45:05 +0200
-Message-ID: <20240730151647.616230949@linuxfoundation.org>
+Message-ID: <20240730151741.644405911@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 1713b63a07a28a475de94664f783b4cfd2e4fa90 ]
+[ Upstream commit 9560393b830b415b2151b3dd8e065257cccbffa7 ]
 
-Currently the application with enabled shadow stack will crash
-if it sets up return uprobe. The reason is the uretprobe kernel
-code changes the user space task's stack, but does not update
-shadow stack accordingly.
+The calculation returns 0 if it sets less than the number of bits per
+byte. For calculating memory allocation from bits, lets round it up to
+one byte.
 
-Adding new functions to update values on shadow stack and using
-them in uprobe code to keep shadow stack in sync with uretprobe
-changes to user stack.
-
-Link: https://lore.kernel.org/all/20240611112158.40795-2-jolsa@kernel.org/
-
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Fixes: 488af8ea7131 ("x86/shstk: Wire in shadow stack interface")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20240627110105.62325-3-joao.m.martins@oracle.com
+Reported-by: Matt Ochs <mochs@nvidia.com>
+Fixes: a9af47e382a4 ("iommufd/selftest: Test IOMMU_HWPT_GET_DIRTY_BITMAP")
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Tested-by: Matt Ochs <mochs@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/shstk.h |  2 ++
- arch/x86/kernel/shstk.c      | 11 +++++++++++
- arch/x86/kernel/uprobes.c    |  7 ++++++-
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/iommu/iommufd/selftest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/shstk.h b/arch/x86/include/asm/shstk.h
-index 42fee8959df7b..896909f306e30 100644
---- a/arch/x86/include/asm/shstk.h
-+++ b/arch/x86/include/asm/shstk.h
-@@ -21,6 +21,7 @@ unsigned long shstk_alloc_thread_stack(struct task_struct *p, unsigned long clon
- void shstk_free(struct task_struct *p);
- int setup_signal_shadow_stack(struct ksignal *ksig);
- int restore_signal_shadow_stack(void);
-+int shstk_update_last_frame(unsigned long val);
- #else
- static inline long shstk_prctl(struct task_struct *task, int option,
- 			       unsigned long arg2) { return -EINVAL; }
-@@ -31,6 +32,7 @@ static inline unsigned long shstk_alloc_thread_stack(struct task_struct *p,
- static inline void shstk_free(struct task_struct *p) {}
- static inline int setup_signal_shadow_stack(struct ksignal *ksig) { return 0; }
- static inline int restore_signal_shadow_stack(void) { return 0; }
-+static inline int shstk_update_last_frame(unsigned long val) { return 0; }
- #endif /* CONFIG_X86_USER_SHADOW_STACK */
+diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/selftest.c
+index 7a2199470f312..654ed33390957 100644
+--- a/drivers/iommu/iommufd/selftest.c
++++ b/drivers/iommu/iommufd/selftest.c
+@@ -1334,7 +1334,7 @@ static int iommufd_test_dirty(struct iommufd_ucmd *ucmd, unsigned int mockpt_id,
+ 	}
  
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index 59e15dd8d0f86..19e4db582fb69 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -577,3 +577,14 @@ long shstk_prctl(struct task_struct *task, int option, unsigned long arg2)
- 		return wrss_control(true);
- 	return -EINVAL;
- }
-+
-+int shstk_update_last_frame(unsigned long val)
-+{
-+	unsigned long ssp;
-+
-+	if (!features_enabled(ARCH_SHSTK_SHSTK))
-+		return 0;
-+
-+	ssp = get_user_shstk_addr();
-+	return write_user_shstk_64((u64 __user *)ssp, (u64)val);
-+}
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 6c07f6daaa227..6402fb3089d26 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1076,8 +1076,13 @@ arch_uretprobe_hijack_return_addr(unsigned long trampoline_vaddr, struct pt_regs
- 		return orig_ret_vaddr;
+ 	max = length / page_size;
+-	bitmap_size = max / BITS_PER_BYTE;
++	bitmap_size = DIV_ROUND_UP(max, BITS_PER_BYTE);
  
- 	nleft = copy_to_user((void __user *)regs->sp, &trampoline_vaddr, rasize);
--	if (likely(!nleft))
-+	if (likely(!nleft)) {
-+		if (shstk_update_last_frame(trampoline_vaddr)) {
-+			force_sig(SIGSEGV);
-+			return -1;
-+		}
- 		return orig_ret_vaddr;
-+	}
- 
- 	if (nleft != rasize) {
- 		pr_err("return address clobbered: pid=%d, %%sp=%#lx, %%ip=%#lx\n",
+ 	tmp = kvzalloc(bitmap_size, GFP_KERNEL_ACCOUNT);
+ 	if (!tmp) {
 -- 
 2.43.0
 
