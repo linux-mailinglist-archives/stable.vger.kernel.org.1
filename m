@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-64216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E20941CE1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2F2941AFF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 201F0289F9A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86BECB233EC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96221917D9;
-	Tue, 30 Jul 2024 17:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A47618801A;
+	Tue, 30 Jul 2024 16:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGuRDjrg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz3v/CKK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787A5189537;
-	Tue, 30 Jul 2024 17:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1B3183CDB;
+	Tue, 30 Jul 2024 16:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359378; cv=none; b=fWmpwBieRKQLRqSTZP+8HYYo+33PFneh67tpHUx2jYXcYKNU01Nb1Q4UCXT0PcWSXJ7e+qKHYcRNhnRhyz4QfRONRntbjielZA1efWOQxpsC9lHkzCUPMGFc7uIBCw+c6SlT0LPETHfNeDUq5Y4dwmsVqsIZwJJRBwERC+iEwp8=
+	t=1722358009; cv=none; b=evbjle1Tq+mbXORuP54EQHDwtDwq3I4dbThH/jKWMlhEwwDe/Yn7qEf4YB97fqjbf+/7T1CiYI1cauPFM3lWnvcp51BuEGO+xkcQPkOdrQbdvw47EGp0ZTVm3w78SoMJMuUk/3WQecDZv4iw0tEP7PaCSaRFIdZYySPbsneifXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359378; c=relaxed/simple;
-	bh=4EmePcw4FB4FMewVjt7Uhdu8mtAbMfynF9t5PSg8f8A=;
+	s=arc-20240116; t=1722358009; c=relaxed/simple;
+	bh=M7WoOCIovlYrDjnNWYZsR1NRfAdTwxdEBfhYfo8qlUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDxVkJRAzkRU4uuRyju2WiiKvRBXJAS9+o4O0QWqZ/uvPeg/HkPqRg/RBcg5p8t2iUWBsnlqgVMdL0RM7OGrqDODfprzjlVYvRUTO0dH4J6Kgf+2zE0cqK/p13QY2cz9IYsMjKlKGHprv5DGo5uYb2jnt6aitRQpV7UNYCiKa7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGuRDjrg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB068C32782;
-	Tue, 30 Jul 2024 17:09:37 +0000 (UTC)
+	 MIME-Version; b=l639PdymMItD4lb8UA9YzBDfZ6XI/SBK8qL1Znv8gsCNot+Bz854m8ILCOTG1ifndvo4Fjdw3j+9eppLioFlJh+HRR+WjZt11Fs+A8qvesm+UYN2T2Hp3AE+Int2YnOC82AZpEjGNEwcRsTm4fua5Alb8nPl+3oPHocCQPFEL68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz3v/CKK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB433C32782;
+	Tue, 30 Jul 2024 16:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359378;
-	bh=4EmePcw4FB4FMewVjt7Uhdu8mtAbMfynF9t5PSg8f8A=;
+	s=korg; t=1722358009;
+	bh=M7WoOCIovlYrDjnNWYZsR1NRfAdTwxdEBfhYfo8qlUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGuRDjrgjeIPLa/e/HGNENoeh1VTL4BjJx5rgEIol1davmFJbtN5nrFIMth+c7eyY
-	 Zdr7WY9dDAQz1F3HQi98ies6RYnaMz/PWIvI4h1HI98jjrpkCJ1kgrxov2QfdW3Z4G
-	 NbZlyGztjIqkh2ERlXqGWRIzTNG3h7Hj5YAU1OVI=
+	b=xz3v/CKKOvkY5Rrnu562f03ybglIPvosA+On3HptyBGu3XG4g6x3lCH7fK3r1SZeN
+	 hk2qzQNqFQyPBcmt3SWnVsIH7pU82rByJENbwNgN/JrA9C/pgQekbg399Hhc6YnnXG
+	 I1aNLb0PukOgqpbRuL+bK0wriIPvSWbms0Jv2buw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@intel.com>,
-	Nitin Gote <nitin.r.gote@intel.com>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.6 474/568] drm/i915/gt: Do not consider preemption during execlists_dequeue for gen8
+	Shreyas Deodhar <sdeodhar@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 348/440] scsi: qla2xxx: Fix for possible memory corruption
 Date: Tue, 30 Jul 2024 17:49:41 +0200
-Message-ID: <20240730151658.549692409@linuxfoundation.org>
+Message-ID: <20240730151629.403945575@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Gote <nitin.r.gote@intel.com>
+From: Shreyas Deodhar <sdeodhar@marvell.com>
 
-commit 65564157ae64cec0f527583f96e32f484f730f92 upstream.
+commit c03d740152f78e86945a75b2ad541bf972fab92a upstream.
 
-We're seeing a GPU hang issue on a CHV platform, which was caused by commit
-bac24f59f454 ("drm/i915/execlists: Enable coarse preemption boundaries for
-Gen8").
+Init Control Block is dereferenced incorrectly.  Correctly dereference ICB
 
-The Gen8 platform only supports timeslicing and doesn't have a preemption
-mechanism, as its engines do not have a preemption timer.
-
-Commit 751f82b353a6 ("drm/i915/gt: Only disable preemption on Gen8 render
-engines") addressed this issue only for render engines. This patch extends
-that fix by ensuring that preemption is not considered for all engines on
-Gen8 platforms.
-
-v4:
- - Use the correct Fixes tag (Rodrigo Vivi)
- - Reworded commit log (Andi Shyti)
-
-v3:
- - Inside need_preempt(), condition of can_preempt() is not required
-   as simplified can_preempt() is enough. (Chris Wilson)
-
-v2: Simplify can_preempt() function (Tvrtko Ursulin)
-
-Fixes: 751f82b353a6 ("drm/i915/gt: Only disable preemption on gen8 render engines")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11396
-Suggested-by: Andi Shyti <andi.shyti@intel.com>
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-CC: <stable@vger.kernel.org> # v5.12+
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240711163208.1355736-1-nitin.r.gote@intel.com
-(cherry picked from commit 7df0be6e6280c6fca01d039864bb123e5e36604b)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-4-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_execlists_submission.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/scsi/qla2xxx/qla_os.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-+++ b/drivers/gpu/drm/i915/gt/intel_execlists_submission.c
-@@ -3315,11 +3315,7 @@ static void remove_from_engine(struct i9
- 
- static bool can_preempt(struct intel_engine_cs *engine)
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -4667,7 +4667,7 @@ static void
+ qla2x00_number_of_exch(scsi_qla_host_t *vha, u32 *ret_cnt, u16 max_cnt)
  {
--	if (GRAPHICS_VER(engine->i915) > 8)
--		return true;
--
--	/* GPGPU on bdw requires extra w/a; not implemented */
--	return engine->class != RENDER_CLASS;
-+	return GRAPHICS_VER(engine->i915) > 8;
- }
+ 	u32 temp;
+-	struct init_cb_81xx *icb = (struct init_cb_81xx *)&vha->hw->init_cb;
++	struct init_cb_81xx *icb = (struct init_cb_81xx *)vha->hw->init_cb;
+ 	*ret_cnt = FW_DEF_EXCHANGES_CNT;
  
- static void kick_execlists(const struct i915_request *rq, int prio)
+ 	if (max_cnt > vha->hw->max_exchg)
 
 
 
