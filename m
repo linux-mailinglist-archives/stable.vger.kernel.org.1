@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3353F941945
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D76F941A32
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF759282631
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 055CAB2C757
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF3D156F53;
-	Tue, 30 Jul 2024 16:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1031A6192;
+	Tue, 30 Jul 2024 16:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5IoiKiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gYb6jFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7421A619A;
-	Tue, 30 Jul 2024 16:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6531A619B;
+	Tue, 30 Jul 2024 16:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357040; cv=none; b=UzAtgEDmNWtL0bUM/U6uDrMCmLN1a1htr/3/Ht8PHoPFs/BynTUoDTGVoaPkX0kl9MnD3Jxdv4rwaHCjBYxev8G8iLMMxrwX5eidCELJFUCmiv+ye3cM/sldWVI9L2zrT82Fy2OiyK90dJfsRon+j8gvAa2nBdof3lhCe8H8KlQ=
+	t=1722357053; cv=none; b=iFZ6v7AZiErsDYQ3LEPWvKsLzQGi4kyDK9qS/1lkH2Mx705PP4TdkUe05xYPtntrClL2+45ji84/FrZNbkh2m2BmOGpKcz59cjFstdkM5smcSYZMCBO8/G2JYGmwxSqA4sMIaaxMjvS5Uc2RfqCHctCbXmpvogE4u/sSgEP9XU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357040; c=relaxed/simple;
-	bh=Eunncti6CP74i9Nnfg1clnoMKkBIL8nYKDHyE6NDBQE=;
+	s=arc-20240116; t=1722357053; c=relaxed/simple;
+	bh=/lsUdpE1I3TfOGjBL1t/BDQfHKyKJTsdiApDYp0PYjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aD7cxstPpPPg+KIp3d8SBpvdh9TH9PxGGl0D4KKc3MOiuj82OGlhczii+8mWSNWLuo+d3IXKN/Pn9Rgc91+QR5v490F1TVJMUh+2CYy5vPSn97vMAXCG970QxVDCh4Ny4NxiRwrXg7MuTmKT+nKLbSrRToOtEfQLA/iYKQAKIgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5IoiKiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3A3C32782;
-	Tue, 30 Jul 2024 16:30:39 +0000 (UTC)
+	 MIME-Version; b=qmI4lVaoXRR+HvNV0J2m8+J2Ey2vPjK6je+dJnXIpCT88Cw7J9cgTR0y18wDEpnqzx+zg3stwF4xScYo4ZShV2we0XkbnbFqr/yhF8gGUwW2PFe84gtWhsVAvLWdEsIpRIqL2MbfkE0rUA3A0YKr2gudtfLoxvBOuPyg2V4H8Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gYb6jFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8254FC4AF0A;
+	Tue, 30 Jul 2024 16:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357040;
-	bh=Eunncti6CP74i9Nnfg1clnoMKkBIL8nYKDHyE6NDBQE=;
+	s=korg; t=1722357053;
+	bh=/lsUdpE1I3TfOGjBL1t/BDQfHKyKJTsdiApDYp0PYjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5IoiKiUNcUgDnMwlI6H+QhpSuY9WqVqpXcWbuv4UY2K8RtaMtDlx4ok5GNL5+npt
-	 zpjDAXWQYcQXfev0IXRNKd4J9BEehOUcOIKfOC0ADkVQXHS4C8/sj5TcTRmkzuIp0O
-	 mZGr1Ea7jTWMWsu62x+zkyQaNOp0l3o0qNGdP9ms=
+	b=1gYb6jFzk90wAn1u8VcshPN28xKTKofqxEiu2Qb9P6sWMHRwfM318Vj5RAojRG9/a
+	 aUqrPRHMOdPQ0OcQ4SZ8mhWOMfFAQTOu54u8A9LvcbM2N2Hvh66/pJpLSHU7saAupB
+	 HzHNfIfRgkPfH9o6BnMHWF2RLIorX2NEs2k4r1K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 212/568] media: renesas: vsp1: Store RPF partition configuration per RPF instance
-Date: Tue, 30 Jul 2024 17:45:19 +0200
-Message-ID: <20240730151648.159336103@linuxfoundation.org>
+Subject: [PATCH 6.6 213/568] drm/mediatek: Add missing plane settings when async update
+Date: Tue, 30 Jul 2024 17:45:20 +0200
+Message-ID: <20240730151648.198357395@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,63 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit a213bc09b1025c771ee722ee341af1d84375db8a ]
+[ Upstream commit 86b89dc669c400576dc23aa923bcf302f99e8e3a ]
 
-The vsp1_partition structure stores the RPF partition configuration in a
-single field for all RPF instances, while each RPF can have its own
-configuration. Fix it by storing the configuration separately for each
-RPF instance.
+Fix an issue that plane coordinate was not saved when
+calling async update.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Fixes: ab45e8585182 ("media: v4l: vsp1: Allow entities to participate in the partition algorithm")
-Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+Fixes: 920fffcc8912 ("drm/mediatek: update cursors by using async atomic update")
+
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-1-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/vsp1/vsp1_pipe.h | 2 +-
- drivers/media/platform/renesas/vsp1/vsp1_rpf.c  | 8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_plane.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-index 674b5748d929e..85ecd53cda495 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-@@ -73,7 +73,7 @@ struct vsp1_partition_window {
-  * @wpf: The WPF partition window configuration
-  */
- struct vsp1_partition {
--	struct vsp1_partition_window rpf;
-+	struct vsp1_partition_window rpf[VSP1_MAX_RPF];
- 	struct vsp1_partition_window uds_sink;
- 	struct vsp1_partition_window uds_source;
- 	struct vsp1_partition_window sru;
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-index ea12c3f12c92a..78b6cefc5a019 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-@@ -315,8 +315,8 @@ static void rpf_configure_partition(struct vsp1_entity *entity,
- 	 * 'width' need to be adjusted.
- 	 */
- 	if (pipe->partitions > 1) {
--		crop.width = pipe->partition->rpf.width;
--		crop.left += pipe->partition->rpf.left;
-+		crop.width = pipe->partition->rpf[rpf->entity.index].width;
-+		crop.left += pipe->partition->rpf[rpf->entity.index].left;
- 	}
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_plane.c b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
+index ddc9355b06d51..f10d4cc6c2234 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_plane.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
+@@ -227,6 +227,8 @@ static void mtk_plane_atomic_async_update(struct drm_plane *plane,
+ 	plane->state->src_y = new_state->src_y;
+ 	plane->state->src_h = new_state->src_h;
+ 	plane->state->src_w = new_state->src_w;
++	plane->state->dst.x1 = new_state->dst.x1;
++	plane->state->dst.y1 = new_state->dst.y1;
  
- 	if (pipe->interlaced) {
-@@ -371,7 +371,9 @@ static void rpf_partition(struct vsp1_entity *entity,
- 			  unsigned int partition_idx,
- 			  struct vsp1_partition_window *window)
- {
--	partition->rpf = *window;
-+	struct vsp1_rwpf *rpf = to_rwpf(&entity->subdev);
-+
-+	partition->rpf[rpf->entity.index] = *window;
- }
- 
- static const struct vsp1_entity_operations rpf_entity_ops = {
+ 	mtk_plane_update_new_state(new_state, new_plane_state);
+ 	swap(plane->state->fb, new_state->fb);
 -- 
 2.43.0
 
