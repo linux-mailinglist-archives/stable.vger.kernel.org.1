@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B849417B7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:15:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CCB941AF4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DD841C2342D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:15:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5384E1C20810
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B24F1A6161;
-	Tue, 30 Jul 2024 16:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EB818455E;
+	Tue, 30 Jul 2024 16:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/kLZaRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdqLS8sf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF651BA88C;
-	Tue, 30 Jul 2024 16:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E9714831F;
+	Tue, 30 Jul 2024 16:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355885; cv=none; b=jZ35dmOjXmniW1a6taLNLWhEmtWJCg9yo1A2lxvGdJgxrOxeppRQUKgatHO16tju1tjTSd7Rc6r8g0sid/imPTZccnLRMhuaVDQNMuNX2btYL2LTJzvh4SinWhWlRWTSEyEo2WNkm0cZP9I9OvwiBclpP26H80yilZjD/o/yRZU=
+	t=1722358168; cv=none; b=eCQfHiLzvGIPocS9y9RSTItRJThY8fISPAKN2IYmfZvkA054s7wmpT9xe9vBIiCoe7L/o3my4CYgcGSJdSz3O1qgVFZRT5BLE3q8wBMIm0V9w2SKlsnC8Yck5t9Okz92Ot5BgvUQtCJWF/qdDUylZac3hxeJ/NzhMKOGvcCFmkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355885; c=relaxed/simple;
-	bh=hoSv/QjRQTsn9LFWwvKHkaJutyLuXs5cQNglhUnE4rk=;
+	s=arc-20240116; t=1722358168; c=relaxed/simple;
+	bh=CB5SEluRPgoJVTDc3+RMSxyRxSe1e5NqiRdNpWFr3HU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kjjPLzLHx3V/MnULxOGkI91W4wcQ+QmXEo3BWoC/Ri6fwndLdi6VixZUI3eHzDbRavv1QZpZ6qFkErByCyJ2g4z67iq68CFAi9nBfeyLqdKojYrxSCf2OxJ/qAJ+skUm+tiheQ+6c9ZxaugHOCXtaQ+iV0F9LzgsIIwpbWOibRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/kLZaRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6E2C4AF0C;
-	Tue, 30 Jul 2024 16:11:24 +0000 (UTC)
+	 MIME-Version; b=NMPlLZ4aL2FYJVEd8lloGIm9COsMLHCSszkBvMc6YsP4NiAaSp5ccBJD0qREfQFToI0aa5Vu7EZVsssBEywRExAxPfFbTUoXpcGi74okzadq5MG97whkBWKe7ZlxiiaD4rWzz8ot9UWZvxWs0EyU4SkwTujo1zEx9Ro/a7iOE7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdqLS8sf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E8FC32782;
+	Tue, 30 Jul 2024 16:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355884;
-	bh=hoSv/QjRQTsn9LFWwvKHkaJutyLuXs5cQNglhUnE4rk=;
+	s=korg; t=1722358168;
+	bh=CB5SEluRPgoJVTDc3+RMSxyRxSe1e5NqiRdNpWFr3HU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/kLZaRPBsFq/tIf0frlfZkHroJvbnGBvOUFwQiS9u90wLmGfNFz3RVOZWjgLWzda
-	 xPidsnqeCgIcxvyByg3TPERk0ak7siMGrmsOY9KRVyh3WfnG4Jlx0bD6+M20YXawF1
-	 L/BgZpwxyWnSqaXJ1Iw+spoeoTZNVApGyA5vhhss=
+	b=MdqLS8sfeQE0E4QOdJfkfUDDJvswTgRe87sIOW0oUUXjRVz6nDUcYnRIACm5nB13G
+	 BMkWBIKtHwzgQqniaQImOi12z3YIc3DjxiEgV9Fhqtv/d6fqvBxnuL+sAaq4SKeBMO
+	 YRWBMODZ4hFo5OYYyDaaWnTu0g65eaDoPUzi4Vxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Heiko Stuebner <heiko@sntech.de>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/568] arm64: dts: rockchip: remove unused usb2 nodes for Lunzn Fastrhino R6xS
-Date: Tue, 30 Jul 2024 17:43:26 +0200
-Message-ID: <20240730151643.745414514@linuxfoundation.org>
+Subject: [PATCH 6.10 331/809] drm/mediatek: Add DRM_MODE_ROTATE_0 to rotation property
+Date: Tue, 30 Jul 2024 17:43:27 +0200
+Message-ID: <20240730151737.689315188@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit cd77139a307fbabe75e6b5cb8a3753e3c700f394 ]
+[ Upstream commit 74608d8feefd1675388f23362aac8df4ac3af931 ]
 
-Fix the following error when booting:
-[   15.851853] platform fd800000.usb: deferred probe pending
-[   15.852384] platform fd840000.usb: deferred probe pending
-[   15.852881] platform fd880000.usb: deferred probe pending
+Always add DRM_MODE_ROTATE_0 to rotation property to meet
+IGT's (Intel GPU Tools) requirement.
 
-This is due to usb2phy1 is not enabled. There is no USB 2.0
-port on the board, just remove it.
-
-Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20240630150010.55729-5-amadeus@jmu.edu.cn
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-8-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 16 ----------------
- 1 file changed, 16 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_ddp_comp.h |  6 +++++-
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 17 +++++------------
+ drivers/gpu/drm/mediatek/mtk_plane.c    |  2 +-
+ 3 files changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-index 82577eba31eb5..e08c9eab6f170 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-@@ -421,28 +421,12 @@ &uart2 {
- 	status = "okay";
- };
+diff --git a/drivers/gpu/drm/mediatek/mtk_ddp_comp.h b/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
+index 26236691ce4c2..f7fe2e08dc8e2 100644
+--- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
++++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
+@@ -192,7 +192,11 @@ unsigned int mtk_ddp_comp_supported_rotations(struct mtk_ddp_comp *comp)
+ 	if (comp->funcs && comp->funcs->supported_rotations)
+ 		return comp->funcs->supported_rotations(comp->dev);
  
--&usb_host0_ehci {
--	status = "okay";
--};
--
--&usb_host0_ohci {
--	status = "okay";
--};
--
- &usb_host0_xhci {
- 	dr_mode = "host";
- 	extcon = <&usb2phy0>;
- 	status = "okay";
- };
+-	return 0;
++	/*
++	 * In order to pass IGT tests, DRM_MODE_ROTATE_0 is required when
++	 * rotation is not supported.
++	 */
++	return DRM_MODE_ROTATE_0;
+ }
  
--&usb_host1_ehci {
--	status = "okay";
--};
+ static inline unsigned int mtk_ddp_comp_layer_nr(struct mtk_ddp_comp *comp)
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+index 693560fa34e8b..26b598b9f71f2 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+@@ -305,27 +305,20 @@ int mtk_ovl_layer_check(struct device *dev, unsigned int idx,
+ 			struct mtk_plane_state *mtk_state)
+ {
+ 	struct drm_plane_state *state = &mtk_state->base;
+-	unsigned int rotation = 0;
+ 
+-	rotation = drm_rotation_simplify(state->rotation,
+-					 DRM_MODE_ROTATE_0 |
+-					 DRM_MODE_REFLECT_X |
+-					 DRM_MODE_REFLECT_Y);
+-	rotation &= ~DRM_MODE_ROTATE_0;
 -
--&usb_host1_ohci {
--	status = "okay";
--};
+-	/* We can only do reflection, not rotation */
+-	if ((rotation & DRM_MODE_ROTATE_MASK) != 0)
++	/* check if any unsupported rotation is set */
++	if (state->rotation & ~mtk_ovl_supported_rotations(dev))
+ 		return -EINVAL;
+ 
+ 	/*
+ 	 * TODO: Rotating/reflecting YUV buffers is not supported at this time.
+ 	 *	 Only RGB[AX] variants are supported.
++	 *	 Since DRM_MODE_ROTATE_0 means "no rotation", we should not
++	 *	 reject layers with this property.
+ 	 */
+-	if (state->fb->format->is_yuv && rotation != 0)
++	if (state->fb->format->is_yuv && (state->rotation & ~DRM_MODE_ROTATE_0))
+ 		return -EINVAL;
+ 
+-	state->rotation = rotation;
 -
- &usb_host1_xhci {
- 	status = "okay";
- };
+ 	return 0;
+ }
+ 
+diff --git a/drivers/gpu/drm/mediatek/mtk_plane.c b/drivers/gpu/drm/mediatek/mtk_plane.c
+index a74b26d359857..1723d4333f371 100644
+--- a/drivers/gpu/drm/mediatek/mtk_plane.c
++++ b/drivers/gpu/drm/mediatek/mtk_plane.c
+@@ -338,7 +338,7 @@ int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
+ 		return err;
+ 	}
+ 
+-	if (supported_rotations & ~DRM_MODE_ROTATE_0) {
++	if (supported_rotations) {
+ 		err = drm_plane_create_rotation_property(plane,
+ 							 DRM_MODE_ROTATE_0,
+ 							 supported_rotations);
 -- 
 2.43.0
 
