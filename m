@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-62956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0487994166B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3C094166E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 361131C23065
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B224F1F2164E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F271BBBDB;
-	Tue, 30 Jul 2024 15:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA01B1BBBD9;
+	Tue, 30 Jul 2024 15:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icOb0SE2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyEIzDWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479B41BA87E;
-	Tue, 30 Jul 2024 15:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12DA19F467;
+	Tue, 30 Jul 2024 15:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355188; cv=none; b=CF7ZQGaEhIY68c3Qw21KbXTPb28l8YOgZnADEohwZF68V9JjIVbtEBEc97ZHTa0DuWAyY2qL7AWHVJpd+gFqVyTJn+KwY7wMN5I/8IfvC0PERWluBmr305GzRXKu61uZNZPWRaPIvws90L80gy14wHvh1kWL1ENp7Rhh5aZJjJ0=
+	t=1722355198; cv=none; b=FZ9gn77OxzN1tlNZqub91CFP/sh7ErW6951WQZBEKXnzov6uSpNes3AbpvDy4Ee5kAea0QHIVBfPVXDDM2gXKjH1Vzaex15tr2n4iVJYhmUas/cyv7vSVUZpbnEl9BGaPjxkGWx9mFsa4ORek2cmyrxVUosCDRlbzud5PS7vMGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355188; c=relaxed/simple;
-	bh=PhXW4m3m8wTrxWINJD6Y0dzs5PxhB9EG+4aXmibQ7xA=;
+	s=arc-20240116; t=1722355198; c=relaxed/simple;
+	bh=8wd0vQZZLRftox+AoKj5ACFE8CXrRVRI61iiPoBZ8ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sb9ovfMDP6RoYzBNIcpp38AyVvMYZAfIEa5cCiJUkSX5c+b6fbPHsX83NM1Mq23eRg017/7TD3Tnk0ZUEgVECxqC0rWjPLwA4UFMRw+zzHD6p3LDYDaQYEVcsy+ikXVmQO22UduyFGAa1jIAIwj5KQX6yxcLMTCKKLcwlNVlVjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icOb0SE2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA33C32782;
-	Tue, 30 Jul 2024 15:59:46 +0000 (UTC)
+	 MIME-Version; b=DlVgH31+2SvBHn1Up0R2MPARppJCVUtmIJ1jQFmeM8zbik+lvk0d31zbnu90mdu/LXjWH4nXWfr5GRhv4T+9n9zp2CiHopNBVSVWG96vJY1TGx2PfNZ2ywgNXvzBAaXYtTUzI9LNp4ew43Da0ENXmz/Ree5KGIGo2xJuxYm//o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyEIzDWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE1EC32782;
+	Tue, 30 Jul 2024 15:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355188;
-	bh=PhXW4m3m8wTrxWINJD6Y0dzs5PxhB9EG+4aXmibQ7xA=;
+	s=korg; t=1722355198;
+	bh=8wd0vQZZLRftox+AoKj5ACFE8CXrRVRI61iiPoBZ8ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icOb0SE2UKRlqiN6AM1F/3nGeYArrQooYj8KOcf7EaxS5WyhxCr1S9xhKr98PKaL7
-	 e0Bq5WIdghA6n6ERRdjciuPjLz1S3cXmOldG5l2n16oTxdlCR/qdM8VqTiGYS8XyZS
-	 wqwCGr2VqCnTVE2pz0lXS1/3mgjxzwQuAgLBmdfE=
+	b=OyEIzDWg+MDlkNIPsjvNGK3r1en1/kJ2sOExIvWvwuTqh78cRwFnmKZ6qe024CXVp
+	 EFyWDWj8Qm0f791laZidjfNm8uC3Nz9FJWfaZnQVYselFoJzszCvnSqQJLhV/Z55+5
+	 xLEB9ctGwdHoU0oZHcuC4f+Ns6YzlLb2rCGKmoC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rusty Bird <rustybird@net-c.com>,
-	Christoph Hellwig <hch@lst.de>,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 027/809] xen-blkfront: fix sector_size propagation to the block layer
-Date: Tue, 30 Jul 2024 17:38:23 +0200
-Message-ID: <20240730151725.729423470@linuxfoundation.org>
+Subject: [PATCH 6.10 028/809] perf: arm_pmuv3: Avoid assigning fixed cycle counter with threshold
+Date: Tue, 30 Jul 2024 17:38:24 +0200
+Message-ID: <20240730151725.768524448@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -62,98 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit 98d34c087249d39838874b83e17671e7d5eb1ca7 ]
+[ Upstream commit 81e15ca3e523a508d62806fe681c1d289361ca16 ]
 
-Ensure that info->sector_size and info->physical_sector_size are set
-before the call to blkif_set_queue_limits by doing away with the
-local variables and arguments that propagate them.
+If the user has requested a counting threshold for the CPU cycles event,
+then the fixed cycle counter can't be assigned as it lacks threshold
+support. Currently, the thresholds will work or not randomly depending
+on which counter the event is assigned.
 
-Thanks to Marek Marczykowski-Górecki and Jürgen Groß for root causing
-the issue.
+While using thresholds for CPU cycles doesn't make much sense, it can be
+useful for testing purposes.
 
-Fixes: ba3f67c11638 ("xen-blkfront: atomically update queue limits")
-Reported-by: Rusty Bird <rustybird@net-c.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Roger Pau Monné <roger.pau@citrix.com>
-Link: https://lore.kernel.org/r/20240625055238.7934-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 816c26754447 ("arm64: perf: Add support for event counting threshold")
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20240626-arm-pmu-3-9-icntr-v2-1-c9784b4f4065@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/xen-blkfront.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/perf/arm_pmuv3.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/xen-blkfront.c b/drivers/block/xen-blkfront.c
-index fd7c0ff2139ce..67aa63dabcff1 100644
---- a/drivers/block/xen-blkfront.c
-+++ b/drivers/block/xen-blkfront.c
-@@ -1063,8 +1063,7 @@ static char *encode_disk_name(char *ptr, unsigned int n)
+diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
+index 23fa6c5da82c4..8ed5c3358920a 100644
+--- a/drivers/perf/arm_pmuv3.c
++++ b/drivers/perf/arm_pmuv3.c
+@@ -338,6 +338,11 @@ static bool armv8pmu_event_want_user_access(struct perf_event *event)
+ 	return ATTR_CFG_GET_FLD(&event->attr, rdpmc);
  }
  
- static int xlvbd_alloc_gendisk(blkif_sector_t capacity,
--		struct blkfront_info *info, u16 sector_size,
--		unsigned int physical_sector_size)
-+		struct blkfront_info *info)
++static u32 armv8pmu_event_get_threshold(struct perf_event_attr *attr)
++{
++	return ATTR_CFG_GET_FLD(attr, threshold);
++}
++
+ static u8 armv8pmu_event_threshold_control(struct perf_event_attr *attr)
  {
- 	struct queue_limits lim = {};
- 	struct gendisk *gd;
-@@ -1159,8 +1158,6 @@ static int xlvbd_alloc_gendisk(blkif_sector_t capacity,
+ 	u8 th_compare = ATTR_CFG_GET_FLD(attr, threshold_compare);
+@@ -941,7 +946,8 @@ static int armv8pmu_get_event_idx(struct pmu_hw_events *cpuc,
+ 	unsigned long evtype = hwc->config_base & ARMV8_PMU_EVTYPE_EVENT;
  
- 	info->rq = gd->queue;
- 	info->gd = gd;
--	info->sector_size = sector_size;
--	info->physical_sector_size = physical_sector_size;
- 
- 	xlvbd_flush(info);
- 
-@@ -2315,8 +2312,6 @@ static void blkfront_gather_backend_features(struct blkfront_info *info)
- static void blkfront_connect(struct blkfront_info *info)
- {
- 	unsigned long long sectors;
--	unsigned long sector_size;
--	unsigned int physical_sector_size;
- 	int err, i;
- 	struct blkfront_ring_info *rinfo;
- 
-@@ -2355,7 +2350,7 @@ static void blkfront_connect(struct blkfront_info *info)
- 	err = xenbus_gather(XBT_NIL, info->xbdev->otherend,
- 			    "sectors", "%llu", &sectors,
- 			    "info", "%u", &info->vdisk_info,
--			    "sector-size", "%lu", &sector_size,
-+			    "sector-size", "%lu", &info->sector_size,
- 			    NULL);
- 	if (err) {
- 		xenbus_dev_fatal(info->xbdev, err,
-@@ -2369,9 +2364,9 @@ static void blkfront_connect(struct blkfront_info *info)
- 	 * provide this. Assume physical sector size to be the same as
- 	 * sector_size in that case.
+ 	/* Always prefer to place a cycle counter into the cycle counter. */
+-	if (evtype == ARMV8_PMUV3_PERFCTR_CPU_CYCLES) {
++	if ((evtype == ARMV8_PMUV3_PERFCTR_CPU_CYCLES) &&
++	    !armv8pmu_event_get_threshold(&event->attr)) {
+ 		if (!test_and_set_bit(ARMV8_IDX_CYCLE_COUNTER, cpuc->used_mask))
+ 			return ARMV8_IDX_CYCLE_COUNTER;
+ 		else if (armv8pmu_event_is_64bit(event) &&
+@@ -1033,7 +1039,7 @@ static int armv8pmu_set_event_filter(struct hw_perf_event *event,
+ 	 * If FEAT_PMUv3_TH isn't implemented, then THWIDTH (threshold_max) will
+ 	 * be 0 and will also trigger this check, preventing it from being used.
  	 */
--	physical_sector_size = xenbus_read_unsigned(info->xbdev->otherend,
-+	info->physical_sector_size = xenbus_read_unsigned(info->xbdev->otherend,
- 						    "physical-sector-size",
--						    sector_size);
-+						    info->sector_size);
- 	blkfront_gather_backend_features(info);
- 	for_each_rinfo(info, rinfo, i) {
- 		err = blkfront_setup_indirect(rinfo);
-@@ -2383,8 +2378,7 @@ static void blkfront_connect(struct blkfront_info *info)
- 		}
- 	}
- 
--	err = xlvbd_alloc_gendisk(sectors, info, sector_size,
--				  physical_sector_size);
-+	err = xlvbd_alloc_gendisk(sectors, info);
- 	if (err) {
- 		xenbus_dev_fatal(info->xbdev, err, "xlvbd_add at %s",
- 				 info->xbdev->otherend);
+-	th = ATTR_CFG_GET_FLD(attr, threshold);
++	th = armv8pmu_event_get_threshold(attr);
+ 	if (th > threshold_max(cpu_pmu)) {
+ 		pr_debug("PMU event threshold exceeds max value\n");
+ 		return -EINVAL;
 -- 
 2.43.0
 
