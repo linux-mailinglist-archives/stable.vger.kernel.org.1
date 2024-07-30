@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3662294183E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31317941B34
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55A97B29724
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E61EF28248A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB2E18E056;
-	Tue, 30 Jul 2024 16:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642CE1898F8;
+	Tue, 30 Jul 2024 16:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9bqtFkP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeSOpmQk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CD718E044;
-	Tue, 30 Jul 2024 16:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD6618801C;
+	Tue, 30 Jul 2024 16:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356104; cv=none; b=UNteWB5OZsERryNpMkS1AjecnbIHvNbM7WrRGtqA5CPEsNpxoqxcatIdAHJ0KDJ2t2HYKn00M1iBBbIeh/HdSTAr+vUpyhk95z7qMKsjxaxN2Yf3RQRkRtY6OnsAhymXC/0Q9FWCiMLD8MCIdi9ClkGH7KEdLKuqN3t3O2/50lQ=
+	t=1722358319; cv=none; b=H+haY4jJb6Uh/aQkq95P3B+l6lnPML9+AtGZlYmHZMCZRxQSFX2aMluSDJP2JFt0UgCx3kDNJdnVRkJNFNiq4V3VdLqzZv33bfKCE1cZMaG8bJdpAp2ZeZl1FeVOG1N7cU52UjfFyyHYMo1ssH570SivyNHSA+Lp5htX1vAGw60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356104; c=relaxed/simple;
-	bh=W+G/rtZ3CM9If/VANW+RtUIWHlucI9HPljsT1RykWTo=;
+	s=arc-20240116; t=1722358319; c=relaxed/simple;
+	bh=r0pcj4sOrjLIp7XW4OTEQCYt0chtG3YmPErpmuc/RRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnN/e3KwGkDZTg6L319I3D/gCtBAPn0bipJZtLXVk1LadDyv5XCpVt7R74fJo+Y/7xlfG3QZ0G+eAeXWv+pZ1/FrEAhZ6GVPhOZVgmoVvQtU4dY/S7TuGzY7+HqviabF50erAo56yCpdYZN+Ngy3mYuvA3baEh7D+2OAgM5PR2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9bqtFkP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28AAC32782;
-	Tue, 30 Jul 2024 16:15:03 +0000 (UTC)
+	 MIME-Version; b=DdAvLOJ0ou9Cf6HgTOKDFJSr08d4jNRF8syh9yf0WC+zL+OPjar67OpEaT87DoiGjoOYv5Tde/djyGwVMMU39uuh5wCgTu8OHDTrhfxQESOQlkMR3N/HI7Xz4+SgDdFo9UR46/eybJJiJN9f4u9KvLHGnfv/JcNvdxXXb/ntwic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeSOpmQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B4FC32782;
+	Tue, 30 Jul 2024 16:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356104;
-	bh=W+G/rtZ3CM9If/VANW+RtUIWHlucI9HPljsT1RykWTo=;
+	s=korg; t=1722358319;
+	bh=r0pcj4sOrjLIp7XW4OTEQCYt0chtG3YmPErpmuc/RRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9bqtFkPG3tIVlbGjW9abyRld0GZBCh40BDTppnTG+8N6NQ7hbE2qWH65Gg1lRHS0
-	 uspYXffXZNGKULXix+RscEI1WgAAhfzSb2tZpLcI9iBeDNVOWJKbNxs6xhiSbUkQiM
-	 f69h4JVFyZoJfi06SkHVnjjQPq9pYcRWFOxXjxRM=
+	b=CeSOpmQkc6a2bs61Lc5HJXagxqykWWL1IZeSJ0BxBP/Yj0LjZ/RWiDYmOrvEnN/HM
+	 XCsibEPD9QChoddyXBf/f/LyS/EgSOVpvdTQx7Hz/8Kxw9+fuhoszyWBRsOrtYxhod
+	 rI0wYuci9qxMu1xaRgCvl9/Fh1pCF8N6Bq7o2s4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Heiko Stuebner <heiko@sntech.de>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/568] arm64: dts: rockchip: fix regulator name for Lunzn Fastrhino R6xS
+Subject: [PATCH 6.10 327/809] drm/mediatek: Fix XRGB setting error in Mixer
 Date: Tue, 30 Jul 2024 17:43:23 +0200
-Message-ID: <20240730151643.628777575@linuxfoundation.org>
+Message-ID: <20240730151737.535931974@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit 2dad31528de9ea8b05245ce6ac4f76ebf8dae947 ]
+[ Upstream commit 8e418bee401b7cfd0bc40d187afea2c6b08b44ec ]
 
-Make the regulator name the same as those marked by schematics.
+Although the alpha channel in XRGB formats can be ignored, ALPHA_CON
+must be configured accordingly when using XRGB formats or it will still
+affects CRC generation.
 
-Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20240630150010.55729-2-amadeus@jmu.edu.cn
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: d886c0009bd0 ("drm/mediatek: Add ETHDR support for MT8195")
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-4-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_ethdr.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-index 89e84e3a92629..93987c8740f7b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-@@ -39,9 +39,9 @@ status_led: led-status {
- 		};
- 	};
+diff --git a/drivers/gpu/drm/mediatek/mtk_ethdr.c b/drivers/gpu/drm/mediatek/mtk_ethdr.c
+index d7d16482c9473..5c52e514ae301 100644
+--- a/drivers/gpu/drm/mediatek/mtk_ethdr.c
++++ b/drivers/gpu/drm/mediatek/mtk_ethdr.c
+@@ -153,6 +153,7 @@ void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
+ 	unsigned int offset = (pending->x & 1) << 31 | pending->y << 16 | pending->x;
+ 	unsigned int align_width = ALIGN_DOWN(pending->width, 2);
+ 	unsigned int alpha_con = 0;
++	bool replace_src_a = false;
  
--	dc_12v: dc-12v-regulator {
-+	vcc12v_dcin: vcc12v-dcin-regulator {
- 		compatible = "regulator-fixed";
--		regulator-name = "dc_12v";
-+		regulator-name = "vcc12v_dcin";
- 		regulator-always-on;
- 		regulator-boot-on;
- 		regulator-min-microvolt = <12000000>;
-@@ -65,7 +65,7 @@ vcc3v3_sys: vcc3v3-sys-regulator {
- 		regulator-boot-on;
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
--		vin-supply = <&dc_12v>;
-+		vin-supply = <&vcc12v_dcin>;
- 	};
+ 	dev_dbg(dev, "%s+ idx:%d", __func__, idx);
  
- 	vcc5v0_sys: vcc5v0-sys-regulator {
-@@ -75,7 +75,7 @@ vcc5v0_sys: vcc5v0-sys-regulator {
- 		regulator-boot-on;
- 		regulator-min-microvolt = <5000000>;
- 		regulator-max-microvolt = <5000000>;
--		vin-supply = <&dc_12v>;
-+		vin-supply = <&vcc12v_dcin>;
- 	};
+@@ -167,7 +168,15 @@ void mtk_ethdr_layer_config(struct device *dev, unsigned int idx,
+ 	if (state->base.fb && state->base.fb->format->has_alpha)
+ 		alpha_con = MIXER_ALPHA_AEN | MIXER_ALPHA;
  
- 	vcc5v0_usb_host: vcc5v0-usb-host-regulator {
+-	mtk_mmsys_mixer_in_config(priv->mmsys_dev, idx + 1, alpha_con ? false : true,
++	if (state->base.fb && !state->base.fb->format->has_alpha) {
++		/*
++		 * Mixer doesn't support CONST_BLD mode,
++		 * use a trick to make the output equivalent
++		 */
++		replace_src_a = true;
++	}
++
++	mtk_mmsys_mixer_in_config(priv->mmsys_dev, idx + 1, replace_src_a,
+ 				  MIXER_ALPHA,
+ 				  pending->x & 1 ? MIXER_INX_MODE_EVEN_EXTEND :
+ 				  MIXER_INX_MODE_BYPASS, align_width / 2 - 1, cmdq_pkt);
 -- 
 2.43.0
 
