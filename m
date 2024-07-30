@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D40A9417FB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2518941B5E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F0DA1C22AC5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8D901F21138
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE121A6197;
-	Tue, 30 Jul 2024 16:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDCC1898F8;
+	Tue, 30 Jul 2024 16:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDcLOr3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgzwB3Kx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8381A6189;
-	Tue, 30 Jul 2024 16:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530681A6195;
+	Tue, 30 Jul 2024 16:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356135; cv=none; b=a7HAxozKKX7ADkRVZN3ihNNwDUeV03iyNaqqd1Y5fQbazXnr7joyRQ8JpXHJqEQ2AlUpezjzq7q2bqWNbMAb2TBB8nDPLtzL0og7Pn4IL0dAgQW89ui0uEgjnQi/LONXVlB1ZOVslqYPiUd7aw0ptecwdHzODscy0tVtX9qdFOM=
+	t=1722358451; cv=none; b=GPiQhz+Wm8pp5PDQhEiolCetRPbbb25SI80zOiO3mpIfQzi9duGgUGX8kUYWtUVsHBNU2D5vmfjvLm5bPOa9NRDrOcPjyyPrbxdYpvR8yPTmD02BNObl5BTHhyG8leGKeJbE4JCEWjfIkOMtsMlL4cRt3Pvd2+bOHDgiBmEtvQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356135; c=relaxed/simple;
-	bh=VoKOR1l6DmIlZreRY7lxldOD9UBSW+gOGDfr7sywx+E=;
+	s=arc-20240116; t=1722358451; c=relaxed/simple;
+	bh=RI8b7cusEt5oNG50Ndco6yJGZoDvpMFxxVOivFPAI8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQ00Z5yaLGmwrNY+izaP8Ik73YJb9Gb/s3VzvZ+u0HeHLMz6hbUfA1ewYwG8uAOICwR+MBhJ9TmrK3RQkimi3AdCp7wrC2DtM4nbpNzchMeCHQZ/1aRZsrS6WqqTKdHLAPT5ggtZ/aIvOkrGr/WNMsVkt7JYwZEgDR/WZUtEFyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDcLOr3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705FBC32782;
-	Tue, 30 Jul 2024 16:15:34 +0000 (UTC)
+	 MIME-Version; b=inmKed1fxa4fb+HUTtAl0B8XlaFkEtjiZOQqfTEiOslbBSy1Ithmu+dCj0ej+lpRM3zmvj9wPglyBStlQcWv0y0vW7nhpN8rhL/PcJQVZfx7V5VN0pPkh7yhnatScnxBpvOwrGhOg4WVEhUQiQVIxpH+QC7FG3qjNpVKtKtE+u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgzwB3Kx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9375C32782;
+	Tue, 30 Jul 2024 16:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356134;
-	bh=VoKOR1l6DmIlZreRY7lxldOD9UBSW+gOGDfr7sywx+E=;
+	s=korg; t=1722358451;
+	bh=RI8b7cusEt5oNG50Ndco6yJGZoDvpMFxxVOivFPAI8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bDcLOr3ipDGU7A8R3VfiEkxkWQS7QJ7ofZMH/uD0WTy6ANH6/0cINCwejX42a5dNv
-	 V5/xCfqttsq4xQQ4yovufT6x5aiHTSX0tqApSCOrk9exUlmZAj1J8qwfN2W32NqwPJ
-	 WPNare+C501KPvXAyo/fj4c63DbI3iQwoLPjssoI=
+	b=DgzwB3KxLAqhaEA1ty/5JFhwQtOBHOd+/9/o068hutiHN9/r5Su9+8sJKgWviG6j8
+	 KDmjpNBIhKfEIxHpJS+1+9YaB4wt49+9kKx8vYaLZmoeTBbr8BFHvJScXdDJktjjcR
+	 LWK07TUvWcK9ScVAUHISiqajOFcNOiv3Hu7j0fzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/568] wifi: ath12k: fix invalid memory access while processing fragmented packets
+Subject: [PATCH 6.10 348/809] drm/etnaviv: fix DMA direction handling for cached RW buffers
 Date: Tue, 30 Jul 2024 17:43:44 +0200
-Message-ID: <20240730151644.447208069@linuxfoundation.org>
+Message-ID: <20240730151738.380461249@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit 073f9f249eecd64ab9d59c91c4a23cfdcc02afe4 ]
+[ Upstream commit 58979ad6330a70450ed78837be3095107d022ea9 ]
 
-The monitor ring and the reo reinject ring share the same ring mask index.
-When the driver receives an interrupt for the reo reinject ring, the
-monitor ring is also processed, leading to invalid memory access. Since
-monitor support is not yet enabled in ath12k, the ring mask for the monitor
-ring should be removed.
+The dma sync operation needs to be done with DMA_BIDIRECTIONAL when
+the BO is prepared for both read and write operations.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00209-QCAHKSWPL_SILICONZ-1
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240520070045.631029-3-quic_ppranees@quicinc.com
+Fixes: a8c21a5451d8 ("drm/etnaviv: add initial etnaviv DRM driver")
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/hw.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gem.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index 96ad8807a9a88..dafd7c34d7465 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -540,9 +540,6 @@ static const struct ath12k_hw_ring_mask ath12k_hw_ring_mask_qcn9274 = {
- 	},
- 	.rx_mon_dest = {
- 		0, 0, 0,
--		ATH12K_RX_MON_RING_MASK_0,
--		ATH12K_RX_MON_RING_MASK_1,
--		ATH12K_RX_MON_RING_MASK_2,
- 	},
- 	.rx = {
- 		0, 0, 0, 0,
-@@ -568,8 +565,7 @@ static const struct ath12k_hw_ring_mask ath12k_hw_ring_mask_qcn9274 = {
- 		ATH12K_HOST2RXDMA_RING_MASK_0,
- 	},
- 	.tx_mon_dest = {
--		ATH12K_TX_MON_RING_MASK_0,
--		ATH12K_TX_MON_RING_MASK_1,
-+		0, 0, 0,
- 	},
- };
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+index 71a6d2b1c80f5..5c0c9d4e3be18 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+@@ -355,9 +355,11 @@ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
  
+ static inline enum dma_data_direction etnaviv_op_to_dma_dir(u32 op)
+ {
+-	if (op & ETNA_PREP_READ)
++	op &= ETNA_PREP_READ | ETNA_PREP_WRITE;
++
++	if (op == ETNA_PREP_READ)
+ 		return DMA_FROM_DEVICE;
+-	else if (op & ETNA_PREP_WRITE)
++	else if (op == ETNA_PREP_WRITE)
+ 		return DMA_TO_DEVICE;
+ 	else
+ 		return DMA_BIDIRECTIONAL;
 -- 
 2.43.0
 
