@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4663941DF0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B35941B72
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EADB1F251A3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0AD4282392
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266E81A76BB;
-	Tue, 30 Jul 2024 17:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CBA1898F8;
+	Tue, 30 Jul 2024 16:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFoYxpDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghfNkdkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60F51A76AB;
-	Tue, 30 Jul 2024 17:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CAE1A6195;
+	Tue, 30 Jul 2024 16:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360208; cv=none; b=LquwC0xrVLQujLx9F1usgXoHTjMKvQuuOMHvbfnZ6rHHabLp2AZsOVxGATc0Mum2kw0ICC1Y6LnTlenxGlnkSX9dUu7qy7TMIfpLpHUJR8j0O8Put6MqkOjoVKIf/vGrfFRoi7EcX2DMgtbhPZp/Zgr4VoSULGkRcItJDJBZjUo=
+	t=1722358498; cv=none; b=cXu2BpeAu0zfRz73KivwBOgZaUbFkFdAxB+yuCi0UKy9Pe3mszJVTU0BnYjcRDE3PqlOD1oDDzl/Uto/J2fknfdTaj2MqXs52VsP9tKyrL5eR2sGiepLyxlsfeHtx7wbzCAQyW9BHqFavuiYIBYNfo82iflrkqcghiUpMq8uDEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360208; c=relaxed/simple;
-	bh=bWc724DrjUrb2KLticBYE0xMmEqBZXYUNbSvMNZRfZY=;
+	s=arc-20240116; t=1722358498; c=relaxed/simple;
+	bh=MA9TbvHeP8vYx7CBp2uVRM6KhmgibFF+7sSTBuxWsYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSaGYdFRWuCGAycyoLT2TQ61BOh5mmoqmvAQIJdrAGZCocrmTQWDlkQmK0T+49WjegYINvF0eZydnRnVt1rFGQClZxbcgoqxxJsgxWgULjtI6o+TkJ2eeEZZ7delWMvaBUXMc3WoWikBFpW4DnInyqUneTcCutwNx49m8LNbVws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFoYxpDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4360C32782;
-	Tue, 30 Jul 2024 17:23:27 +0000 (UTC)
+	 MIME-Version; b=OSpJsth+JeAylsMEX/nBnhcNxa5IxZyhJKapLmem2wG7iJv97XBa27ohPQIFOryozqxTmSXc2XxvnMVthnJ+XH15xC/O06EZ97JLYhlzn1VuiNCYnJ//q+D4wQlgraFwfK9mdCllSuvgS6nl7zk5bi3N/r7WSUI8PRyha7VFhmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghfNkdkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA75C4AF0E;
+	Tue, 30 Jul 2024 16:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360208;
-	bh=bWc724DrjUrb2KLticBYE0xMmEqBZXYUNbSvMNZRfZY=;
+	s=korg; t=1722358498;
+	bh=MA9TbvHeP8vYx7CBp2uVRM6KhmgibFF+7sSTBuxWsYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SFoYxpDDDRl5K8E4DnLGYS9sBgfM4/3+roHGnWezAWZZGSpEq+OotiLH4lDmCGwUw
-	 AXmNvH1wtG7Da5ZhWdLgBFLKkMDavsqjjjxL8DkkQIR+6aBdaizBBdbP+gUyZiXytX
-	 CCeCozLD/XvEbE4GvHbuk170XW6HRbGPVpY1s08c=
+	b=ghfNkdkOlmqIuUkXaRPqSp7PeMUAX7PZJXl8XQ8gnzfRRJmuNVqfKcR1EDOiFTF/9
+	 CWgcK18PWKtb17z1uj7k3UQRAah+yE+Ed1QYRmWGF3UvTt6QrgoQ6PUDiLfZKMCnxH
+	 /HRNREWWXngPiL+pmrRmU5APcGOYwfEaHTRG10oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Seyfried <stefan.seyfried@googlemail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	stable@vger.kerel.org
-Subject: [PATCH 6.10 598/809] genirq: Set IRQF_COND_ONESHOT in request_irq()
+	Yu Liao <liaoyu15@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 367/568] tick/broadcast: Make takeover of broadcast hrtimer reliable
 Date: Tue, 30 Jul 2024 17:47:54 +0200
-Message-ID: <20240730151748.449682777@linuxfoundation.org>
+Message-ID: <20240730151654.205311188@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Yu Liao <liaoyu15@huawei.com>
 
-commit c37927a203fa283950f6045602b9f71328ad786c upstream.
+commit f7d43dd206e7e18c182f200e67a8db8c209907fa upstream.
 
-The callers of request_irq() don't care about IRQF_ONESHOT because they
-don't provide threaded handlers, but if they happen to share the IRQ with
-the ACPI SCI, which has a threaded handler and sets IRQF_ONESHOT,
-request_irq() will fail for them due to a flags mismatch.
+Running the LTP hotplug stress test on a aarch64 machine results in
+rcu_sched stall warnings when the broadcast hrtimer was owned by the
+un-plugged CPU. The issue is the following:
 
-Address this by making request_irq() add IRQF_COND_ONESHOT to the flags
-passed to request_threaded_irq() for all of its callers.
+CPU1 (owns the broadcast hrtimer)	CPU2
 
-Fixes: 7a36b901a6eb ("ACPI: OSL: Use a threaded interrupt handler for SCI")
-Reported-by: Stefan Seyfried <stefan.seyfried@googlemail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+				tick_broadcast_enter()
+				  // shutdown local timer device
+				  broadcast_shutdown_local()
+				...
+				tick_broadcast_exit()
+				  clockevents_switch_state(dev, CLOCK_EVT_STATE_ONESHOT)
+				  // timer device is not programmed
+				  cpumask_set_cpu(cpu, tick_broadcast_force_mask)
+
+				initiates offlining of CPU1
+take_cpu_down()
+/*
+ * CPU1 shuts down and does not
+ * send broadcast IPI anymore
+ */
+				takedown_cpu()
+				  hotplug_cpu__broadcast_tick_pull()
+				    // move broadcast hrtimer to this CPU
+				    clockevents_program_event()
+				      bc_set_next()
+					hrtimer_start()
+					/*
+					 * timer device is not programmed
+					 * because only the first expiring
+					 * timer will trigger clockevent
+					 * device reprogramming
+					 */
+
+What happens is that CPU2 exits broadcast mode with force bit set, then the
+local timer device is not reprogrammed and CPU2 expects to receive the
+expired event by the broadcast IPI. But this does not happen because CPU1
+is offlined by CPU2. CPU switches the clockevent device to ONESHOT state,
+but does not reprogram the device.
+
+The subsequent reprogramming of the hrtimer broadcast device does not
+program the clockevent device of CPU2 either because the pending expiry
+time is already in the past and the CPU expects the event to be delivered.
+As a consequence all CPUs which wait for a broadcast event to be delivered
+are stuck forever.
+
+Fix this issue by reprogramming the local timer device if the broadcast
+force bit of the CPU is set so that the broadcast hrtimer is delivered.
+
+[ tglx: Massage comment and change log. Add Fixes tag ]
+
+Fixes: 989dcb645ca7 ("tick: Handle broadcast wakeup of multiple cpus")
+Signed-off-by: Yu Liao <liaoyu15@huawei.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Stefan Seyfried <stefan.seyfried@googlemail.com>
-Cc: stable@vger.kerel.org
-Link: https://lore.kernel.org/r/5800834.DvuYhMxLoT@rjwysocki.net
-Closes: https://lore.kernel.org/lkml/205bd84a-fe8e-4963-968e-0763285f35ba@message-id.googlemail.com
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240711124843.64167-1-liaoyu15@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/interrupt.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/tick-broadcast.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index 5c9bdd3ffccc..dac7466de5f3 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -168,7 +168,7 @@ static inline int __must_check
- request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags,
- 	    const char *name, void *dev)
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -1141,6 +1141,7 @@ void tick_broadcast_switch_to_oneshot(vo
+ #ifdef CONFIG_HOTPLUG_CPU
+ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
  {
--	return request_threaded_irq(irq, handler, NULL, flags, name, dev);
-+	return request_threaded_irq(irq, handler, NULL, flags | IRQF_COND_ONESHOT, name, dev);
- }
++	struct tick_device *td = this_cpu_ptr(&tick_cpu_device);
+ 	struct clock_event_device *bc;
+ 	unsigned long flags;
  
- extern int __must_check
--- 
-2.45.2
-
+@@ -1148,6 +1149,28 @@ void hotplug_cpu__broadcast_tick_pull(in
+ 	bc = tick_broadcast_device.evtdev;
+ 
+ 	if (bc && broadcast_needs_cpu(bc, deadcpu)) {
++		/*
++		 * If the broadcast force bit of the current CPU is set,
++		 * then the current CPU has not yet reprogrammed the local
++		 * timer device to avoid a ping-pong race. See
++		 * ___tick_broadcast_oneshot_control().
++		 *
++		 * If the broadcast device is hrtimer based then
++		 * programming the broadcast event below does not have any
++		 * effect because the local clockevent device is not
++		 * running and not programmed because the broadcast event
++		 * is not earlier than the pending event of the local clock
++		 * event device. As a consequence all CPUs waiting for a
++		 * broadcast event are stuck forever.
++		 *
++		 * Detect this condition and reprogram the cpu local timer
++		 * device to avoid the starvation.
++		 */
++		if (tick_check_broadcast_expired()) {
++			cpumask_clear_cpu(smp_processor_id(), tick_broadcast_force_mask);
++			tick_program_event(td->evtdev->next_event, 1);
++		}
++
+ 		/* This moves the broadcast assignment to this CPU: */
+ 		clockevents_program_event(bc, bc->next_event, 1);
+ 	}
 
 
 
