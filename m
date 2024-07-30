@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-62854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDDC9415E6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:54:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4299415D8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 273B2B23169
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:54:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 743D21F25392
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911E81B5831;
-	Tue, 30 Jul 2024 15:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD331A38DF;
+	Tue, 30 Jul 2024 15:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNHdR41N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hy8u8JMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4657D29A2;
-	Tue, 30 Jul 2024 15:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED431B5831;
+	Tue, 30 Jul 2024 15:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354851; cv=none; b=MHxTvk/TtzZRvsWqDYaxVMdu0KnoKCQeV8Us2bxeRDfoSXMenghS3jhpxR+C5bFhp7NABrnCRIuUusKxx55SXYceKPGUnvIXqnDMVHPTvNHFAsGlBQDX3AJ3UB5ZlGDzNYx7gwn7qeSPcVUfODe6UqpkoTIOE7A35wuBD+Ubr1w=
+	t=1722354815; cv=none; b=i9acevf34XfpATB5YDfToJTHPh4xSPHk80+sEWBImO8rbyBDd/bKhbHABXzqUi/25jT2oWbe3lT0voc9vnfwD05UbvBm5dkdzL6YlVpisR73e5LQ7Oe06VBkkeu7pxVLTb5AX1JpWD7u305fFbVAoBzRDj03JWVNl8Is/U08RXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354851; c=relaxed/simple;
-	bh=w2Wb77Vm8h0doNx6PX58ymXObvSbBKt5e6M2v9Ywp24=;
+	s=arc-20240116; t=1722354815; c=relaxed/simple;
+	bh=01jojIx2AnvQEPlSOtnMgoMi27hQsVse/zCf3pEwmsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/WYLzWYuwQt6BX2cqa9Tv6QPJLS4Zk81WGDPs4Rbu+RCGJO167E5qRdkP4wiac0/Z6ZcFXsqWCRQatwOVgdcWpfCOlc457iF4/5lzIbeRKQdMdroOS7z7qcSYIwtm9qHBzrwpTChh75uHudQ/xjFHYDy+/Xsq39c9hujq8Q1t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNHdR41N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92556C32782;
-	Tue, 30 Jul 2024 15:54:10 +0000 (UTC)
+	 MIME-Version; b=PNynUPQWKzYvpevBVRyxgfgEtA/jc28n/PS35RrixQroUy3YuJqCFLCOp2OGy6J/5mfMrIlRuwRMmkT1Icdc09bxn9C0T2SnKo35i8awytq/t8pphqSY2vi66KhLBfUrQrx28lsdpHfzeW8cWO2Efa346L0V1ft6P7AziSJEtQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hy8u8JMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7D1C4AF0A;
+	Tue, 30 Jul 2024 15:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354851;
-	bh=w2Wb77Vm8h0doNx6PX58ymXObvSbBKt5e6M2v9Ywp24=;
+	s=korg; t=1722354814;
+	bh=01jojIx2AnvQEPlSOtnMgoMi27hQsVse/zCf3pEwmsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNHdR41NolQe45ZyeeoDcF/EWzTd79/x8N6BdQpHGY+ITVMEJqkvBa5+fKOghnhph
-	 g2u5QI4s+cgLuN9bZFj48O9ifUaBsH8AXu9calXQSttzYpenXFxiWiaVbW9wBVPc6S
-	 ZnTx21msr8hpVEu8rUedar7oHEF9FHJGC3qJulF0=
+	b=Hy8u8JMgPmtRdP9glH2w0HMqhTdaJsBJQGAaUETYeRC0cUXvW+B4LWRn+qPvYtWv+
+	 czwHdJ/DZI/oK+dM9T2e9bHAKy1VI7eGOT4Hf2GnglnkZqVlMOTD2gLDH2vzW0UbHL
+	 YstyrIWAZh9Q2l6iL0RXpOBgkbUv5nE4UArMnBDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Li Nan <linan122@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/440] rcu/tasks: Fix stale task snaphot for Tasks Trace
-Date: Tue, 30 Jul 2024 17:43:57 +0200
-Message-ID: <20240730151615.932536964@linuxfoundation.org>
+Subject: [PATCH 6.1 005/440] md: fix deadlock between mddev_suspend and flush bio
+Date: Tue, 30 Jul 2024 17:43:58 +0200
+Message-ID: <20240730151615.971212510@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,109 +66,142 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 399ced9594dfab51b782798efe60a2376cd5b724 ]
+[ Upstream commit 611d5cbc0b35a752e657a83eebadf40d814d006b ]
 
-When RCU-TASKS-TRACE pre-gp takes a snapshot of the current task running
-on all online CPUs, no explicit ordering synchronizes properly with a
-context switch.  This lack of ordering can permit the new task to miss
-pre-grace-period update-side accesses.  The following diagram, courtesy
-of Paul, shows the possible bad scenario:
+Deadlock occurs when mddev is being suspended while some flush bio is in
+progress. It is a complex issue.
 
-        CPU 0                                           CPU 1
-        -----                                           -----
+T1. the first flush is at the ending stage, it clears 'mddev->flush_bio'
+    and tries to submit data, but is blocked because mddev is suspended
+    by T4.
+T2. the second flush sets 'mddev->flush_bio', and attempts to queue
+    md_submit_flush_data(), which is already running (T1) and won't
+    execute again if on the same CPU as T1.
+T3. the third flush inc active_io and tries to flush, but is blocked because
+    'mddev->flush_bio' is not NULL (set by T2).
+T4. mddev_suspend() is called and waits for active_io dec to 0 which is inc
+    by T3.
 
-        // Pre-GP update side access
-        WRITE_ONCE(*X, 1);
-        smp_mb();
-        r0 = rq->curr;
-                                                        RCU_INIT_POINTER(rq->curr, TASK_B)
-                                                        spin_unlock(rq)
-                                                        rcu_read_lock_trace()
-                                                        r1 = X;
-        /* ignore TASK_B */
+  T1		T2		T3		T4
+  (flush 1)	(flush 2)	(third 3)	(suspend)
+  md_submit_flush_data
+   mddev->flush_bio = NULL;
+   .
+   .	 	md_flush_request
+   .	  	 mddev->flush_bio = bio
+   .	  	 queue submit_flushes
+   .		 .
+   .		 .		md_handle_request
+   .		 .		 active_io + 1
+   .		 .		 md_flush_request
+   .		 .		  wait !mddev->flush_bio
+   .		 .
+   .		 .				mddev_suspend
+   .		 .				 wait !active_io
+   .		 .
+   .		 submit_flushes
+   .		 queue_work md_submit_flush_data
+   .		 //md_submit_flush_data is already running (T1)
+   .
+   md_handle_request
+    wait resume
 
-Either r0==TASK_B or r1==1 is needed but neither is guaranteed.
+The root issue is non-atomic inc/dec of active_io during flush process.
+active_io is dec before md_submit_flush_data is queued, and inc soon
+after md_submit_flush_data() run.
+  md_flush_request
+    active_io + 1
+    submit_flushes
+      active_io - 1
+      md_submit_flush_data
+        md_handle_request
+        active_io + 1
+          make_request
+        active_io - 1
 
-One possible solution to solve this is to wait for an RCU grace period
-at the beginning of the RCU-tasks-trace grace period before taking the
-current tasks snaphot. However this would introduce large additional
-latencies to RCU-tasks-trace grace periods.
+If active_io is dec after md_handle_request() instead of within
+submit_flushes(), make_request() can be called directly intead of
+md_handle_request() in md_submit_flush_data(), and active_io will
+only inc and dec once in the whole flush process. Deadlock will be
+fixed.
 
-Another solution is to lock the target runqueue while taking the current
-task snapshot. This ensures that the update side sees the latest context
-switch and subsequent context switches will see the pre-grace-period
-update side accesses.
+Additionally, the only difference between fixing the issue and before is
+that there is no return error handling of make_request(). But after
+previous patch cleaned md_write_start(), make_requst() only return error
+in raid5_make_request() by dm-raid, see commit 41425f96d7aa ("dm-raid456,
+md/raid456: fix a deadlock for dm-raid456 while io concurrent with
+reshape)". Since dm always splits data and flush operation into two
+separate io, io size of flush submitted by dm always is 0, make_request()
+will not be called in md_submit_flush_data(). To prevent future
+modifications from introducing issues, add WARN_ON to ensure
+make_request() no error is returned in this context.
 
-This commit therefore adds runqueue locking to cpu_curr_snapshot().
-
-Fixes: e386b6725798 ("rcu-tasks: Eliminate RCU Tasks Trace IPIs to online CPUs")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Fixes: fa2bbff7b0b4 ("md: synchronize flush io with array reconfiguration")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240525185257.3896201-3-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tasks.h  | 10 ++++++++++
- kernel/sched/core.c | 14 +++++++-------
- 2 files changed, 17 insertions(+), 7 deletions(-)
+ drivers/md/md.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 6f48f565e3acb..456c956f481ef 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -1531,6 +1531,16 @@ static void rcu_tasks_trace_pregp_step(struct list_head *hop)
- 	// allow safe access to the hop list.
- 	for_each_online_cpu(cpu) {
- 		rcu_read_lock();
-+		// Note that cpu_curr_snapshot() picks up the target
-+		// CPU's current task while its runqueue is locked with
-+		// an smp_mb__after_spinlock().  This ensures that either
-+		// the grace-period kthread will see that task's read-side
-+		// critical section or the task will see the updater's pre-GP
-+		// accesses.  The trailing smp_mb() in cpu_curr_snapshot()
-+		// does not currently play a role other than simplify
-+		// that function's ordering semantics.  If these simplified
-+		// ordering semantics continue to be redundant, that smp_mb()
-+		// might be removed.
- 		t = cpu_curr_snapshot(cpu);
- 		if (rcu_tasks_trace_pertask_prep(t, true))
- 			trc_add_holdout(t, hop);
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index cac41c49bd2f5..753d7208123bb 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4318,12 +4318,7 @@ int task_call_func(struct task_struct *p, task_call_f func, void *arg)
-  * @cpu: The CPU on which to snapshot the task.
-  *
-  * Returns the task_struct pointer of the task "currently" running on
-- * the specified CPU.  If the same task is running on that CPU throughout,
-- * the return value will be a pointer to that task's task_struct structure.
-- * If the CPU did any context switches even vaguely concurrently with the
-- * execution of this function, the return value will be a pointer to the
-- * task_struct structure of a randomly chosen task that was running on
-- * that CPU somewhere around the time that this function was executing.
-+ * the specified CPU.
-  *
-  * If the specified CPU was offline, the return value is whatever it
-  * is, perhaps a pointer to the task_struct structure of that CPU's idle
-@@ -4337,11 +4332,16 @@ int task_call_func(struct task_struct *p, task_call_f func, void *arg)
-  */
- struct task_struct *cpu_curr_snapshot(int cpu)
- {
-+	struct rq *rq = cpu_rq(cpu);
- 	struct task_struct *t;
-+	struct rq_flags rf;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 506c998c0ca59..7dc1c42accccd 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -527,13 +527,9 @@ static void md_end_flush(struct bio *bio)
  
--	smp_mb(); /* Pairing determined by caller's synchronization design. */
-+	rq_lock_irqsave(rq, &rf);
-+	smp_mb__after_spinlock(); /* Pairing determined by caller's synchronization design. */
- 	t = rcu_dereference(cpu_curr(cpu));
-+	rq_unlock_irqrestore(rq, &rf);
- 	smp_mb(); /* Pairing determined by caller's synchronization design. */
-+
- 	return t;
+ 	rdev_dec_pending(rdev, mddev);
+ 
+-	if (atomic_dec_and_test(&mddev->flush_pending)) {
+-		/* The pair is percpu_ref_get() from md_flush_request() */
+-		percpu_ref_put(&mddev->active_io);
+-
++	if (atomic_dec_and_test(&mddev->flush_pending))
+ 		/* The pre-request flush has finished */
+ 		queue_work(md_wq, &mddev->flush_work);
+-	}
  }
  
+ static void md_submit_flush_data(struct work_struct *ws);
+@@ -564,12 +560,8 @@ static void submit_flushes(struct work_struct *ws)
+ 			rcu_read_lock();
+ 		}
+ 	rcu_read_unlock();
+-	if (atomic_dec_and_test(&mddev->flush_pending)) {
+-		/* The pair is percpu_ref_get() from md_flush_request() */
+-		percpu_ref_put(&mddev->active_io);
+-
++	if (atomic_dec_and_test(&mddev->flush_pending))
+ 		queue_work(md_wq, &mddev->flush_work);
+-	}
+ }
+ 
+ static void md_submit_flush_data(struct work_struct *ws)
+@@ -594,8 +586,20 @@ static void md_submit_flush_data(struct work_struct *ws)
+ 		bio_endio(bio);
+ 	} else {
+ 		bio->bi_opf &= ~REQ_PREFLUSH;
+-		md_handle_request(mddev, bio);
++
++		/*
++		 * make_requst() will never return error here, it only
++		 * returns error in raid5_make_request() by dm-raid.
++		 * Since dm always splits data and flush operation into
++		 * two separate io, io size of flush submitted by dm
++		 * always is 0, make_request() will not be called here.
++		 */
++		if (WARN_ON_ONCE(!mddev->pers->make_request(mddev, bio)))
++			bio_io_error(bio);;
+ 	}
++
++	/* The pair is percpu_ref_get() from md_flush_request() */
++	percpu_ref_put(&mddev->active_io);
+ }
+ 
+ /*
 -- 
 2.43.0
 
