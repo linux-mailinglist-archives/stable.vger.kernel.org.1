@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-63006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E669416A9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23ED89416AD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B75A2286F01
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3DF3286EC8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100A018801C;
-	Tue, 30 Jul 2024 16:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6919918801E;
+	Tue, 30 Jul 2024 16:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4ECZZzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLLcASN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5F1188006;
-	Tue, 30 Jul 2024 16:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF66183CCA;
+	Tue, 30 Jul 2024 16:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355350; cv=none; b=b/7B1nUm6X4OmUSZ6YCCZh4Hx2pCPJdnCctGfQxAX/ZGdGu6DcTZ27ZWzAPRz5vEG6D7nIfVfiGse+U0ReTVqo4ELo9ATzWyrWBG+wVHbyDR3t4tN9IUISSnnATNsEb+U71deLfxFOTEysYjl5dCUAIlazGfvt06A50WI90MhmQ=
+	t=1722355361; cv=none; b=II79Z7mGJw8ZJVEDv/JEgjud6m4Lg2Cx/TrLkVjPG0Vgn4H1QDkxW3ptSSJPZ544DNDxMX61YlCRql9jMGCmAzdjdey2DLqFfz5CewwXBzBmYhmj0z4Hjv7tDVNbXSGtvrBDVi27+LcbML9aA6OeLY1uc1E35kPXByFWO7D0ORs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355350; c=relaxed/simple;
-	bh=5zKTWmcVlTla0EQRS51iX3kUj+tzKqvkI8byEy/wxZ4=;
+	s=arc-20240116; t=1722355361; c=relaxed/simple;
+	bh=JmqfSiPWK1IEC8X7LpB3NuZAnAEByLdghiIuDoyHa7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kTIAUqBEncq5nqiiOpb8CVS8xRm6M4d3IYNwnSH35URNz72S5Mgwad6y7u0ttSOT5/lRDemmB3GXNI1fExCe2aVjkGIGxdcCU35TTzy6e2sky3olkveVJwl4FkeR38fclxcrUetL3tKGORh5z78H0y+bV1ZwelYXZJbyx+DhcYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4ECZZzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEECC4AF0C;
-	Tue, 30 Jul 2024 16:02:29 +0000 (UTC)
+	 MIME-Version; b=fTZLGTR7FElzv4IS7yTfgncXbVm0y/Ptfa+uQ7TN6/DLOxWgqsACBcG++cjK4jxun55q4aR+5+7jivfTIR6i5shEBGfJvq9Dd6YlcfEe3YGEtX5Mji7sfqSJmpVhrE99Rk7T9txZ25Cb6MOafVKTGXTnwrQKP9tkRLUsoeAXI84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLLcASN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D460C32782;
+	Tue, 30 Jul 2024 16:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355350;
-	bh=5zKTWmcVlTla0EQRS51iX3kUj+tzKqvkI8byEy/wxZ4=;
+	s=korg; t=1722355360;
+	bh=JmqfSiPWK1IEC8X7LpB3NuZAnAEByLdghiIuDoyHa7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4ECZZzCGtkJ1miAbGVm8wVED1THyKkmzvhdbssaXEjop3jH82ax8nlv4tyqbG+KJ
-	 GiBNPDns0GDIT0lkoPNJbKU/rzMnBXqtCPCjTgjA8b1i6tVDzQNHOmfhlvGa4cEFgi
-	 Hsy69PwrvBOCXMk8RlNfNnbcOFvYdETmFuQ+LBGs=
+	b=FLLcASN2QOaoRvR8QJGDgdPt9dMw4aflS02JhU0Zsh6I7xViuAhwRYoFQ61PPUvDJ
+	 PzIU1KMCMgK1iue0S5qXCbidFDpJMMjcNTXWtEpCgWM7O02ovXEgGFPjskPSZUD27k
+	 Pqg2yAix/NMjFo48uZb40s5dI6I4eAwaCavzwaJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pavel=20L=C3=B6bl?= <pavel@loebl.cz>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Marek Vasut <marex@denx.de>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/568] ARM: dts: sunxi: remove duplicated entries in makefile
-Date: Tue, 30 Jul 2024 17:42:37 +0200
-Message-ID: <20240730151641.795642776@linuxfoundation.org>
+Subject: [PATCH 6.6 051/568] ARM: dts: stm32: Add arm,no-tick-in-suspend to STM32MP15xx STGEN timer
+Date: Tue, 30 Jul 2024 17:42:38 +0200
+Message-ID: <20240730151641.834490870@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -62,104 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Löbl <pavel@loebl.cz>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit bba474656dd85b13e4c5d5bdb73ca08d9136df21 ]
+[ Upstream commit 4306c047415a227bc72f0e7ba9bde1ccdac10435 ]
 
-During introduction of DTS vendor subdirectories in 724ba6751532, sun8i
-section of the makefile got duplicated. Clean that up.
+STM32MP15xx RM0436 Rev 6 section 46.3 System timer generator (STGEN) states
+"
+Arm recommends that the system counter is in an always-on power domain.
+This is not supported in the current implementation, therefore STGEN should
+be saved and restored before Standby mode entry, and restored at Standby
+exit by secure software.
+...
+"
+Instead of piling up workarounds in the firmware which is difficult to
+update, add "arm,no-tick-in-suspend" DT property into the timer node to
+indicate the timer is stopped in suspend, and let the kernel fix the
+timer up.
 
-Fixes: 724ba6751532 ("ARM: dts: Move .dts files to vendor sub-directories")
-Signed-off-by: Pavel Löbl <pavel@loebl.cz>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Link: https://lore.kernel.org/r/20240320061027.4078852-1-pavel@loebl.cz
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: 8471a20253eb ("ARM: dts: stm32: add stm32mp157c initial support")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/allwinner/Makefile | 62 ----------------------------
- 1 file changed, 62 deletions(-)
+ arch/arm/boot/dts/st/stm32mp151.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/allwinner/Makefile b/arch/arm/boot/dts/allwinner/Makefile
-index eebb5a0c873ad..296be33ec9346 100644
---- a/arch/arm/boot/dts/allwinner/Makefile
-+++ b/arch/arm/boot/dts/allwinner/Makefile
-@@ -259,68 +259,6 @@ dtb-$(CONFIG_MACH_SUN8I) += \
- 	sun8i-v3s-licheepi-zero.dtb \
- 	sun8i-v3s-licheepi-zero-dock.dtb \
- 	sun8i-v40-bananapi-m2-berry.dtb
--dtb-$(CONFIG_MACH_SUN8I) += \
--	sun8i-a23-evb.dtb \
--	sun8i-a23-gt90h-v4.dtb \
--	sun8i-a23-inet86dz.dtb \
--	sun8i-a23-ippo-q8h-v5.dtb \
--	sun8i-a23-ippo-q8h-v1.2.dtb \
--	sun8i-a23-polaroid-mid2407pxe03.dtb \
--	sun8i-a23-polaroid-mid2809pxe04.dtb \
--	sun8i-a23-q8-tablet.dtb \
--	sun8i-a33-et-q8-v1.6.dtb \
--	sun8i-a33-ga10h-v1.1.dtb \
--	sun8i-a33-inet-d978-rev2.dtb \
--	sun8i-a33-ippo-q8h-v1.2.dtb \
--	sun8i-a33-olinuxino.dtb \
--	sun8i-a33-q8-tablet.dtb \
--	sun8i-a33-sinlinx-sina33.dtb \
--	sun8i-a83t-allwinner-h8homlet-v2.dtb \
--	sun8i-a83t-bananapi-m3.dtb \
--	sun8i-a83t-cubietruck-plus.dtb \
--	sun8i-a83t-tbs-a711.dtb \
--	sun8i-h2-plus-bananapi-m2-zero.dtb \
--	sun8i-h2-plus-libretech-all-h3-cc.dtb \
--	sun8i-h2-plus-orangepi-r1.dtb \
--	sun8i-h2-plus-orangepi-zero.dtb \
--	sun8i-h3-bananapi-m2-plus.dtb \
--	sun8i-h3-bananapi-m2-plus-v1.2.dtb \
--	sun8i-h3-beelink-x2.dtb \
--	sun8i-h3-libretech-all-h3-cc.dtb \
--	sun8i-h3-mapleboard-mp130.dtb \
--	sun8i-h3-nanopi-duo2.dtb \
--	sun8i-h3-nanopi-m1.dtb\
--	\
--	sun8i-h3-nanopi-m1-plus.dtb \
--	sun8i-h3-nanopi-neo.dtb \
--	sun8i-h3-nanopi-neo-air.dtb \
--	sun8i-h3-nanopi-r1.dtb \
--	sun8i-h3-orangepi-2.dtb \
--	sun8i-h3-orangepi-lite.dtb \
--	sun8i-h3-orangepi-one.dtb \
--	sun8i-h3-orangepi-pc.dtb \
--	sun8i-h3-orangepi-pc-plus.dtb \
--	sun8i-h3-orangepi-plus.dtb \
--	sun8i-h3-orangepi-plus2e.dtb \
--	sun8i-h3-orangepi-zero-plus2.dtb \
--	sun8i-h3-rervision-dvk.dtb \
--	sun8i-h3-zeropi.dtb \
--	sun8i-h3-emlid-neutis-n5h3-devboard.dtb \
--	sun8i-r16-bananapi-m2m.dtb \
--	sun8i-r16-nintendo-nes-classic.dtb \
--	sun8i-r16-nintendo-super-nes-classic.dtb \
--	sun8i-r16-parrot.dtb \
--	sun8i-r40-bananapi-m2-ultra.dtb \
--	sun8i-r40-oka40i-c.dtb \
--	sun8i-s3-elimo-initium.dtb \
--	sun8i-s3-lichee-zero-plus.dtb \
--	sun8i-s3-pinecube.dtb \
--	sun8i-t113s-mangopi-mq-r-t113.dtb \
--	sun8i-t3-cqa3t-bv3.dtb \
--	sun8i-v3-sl631-imx179.dtb \
--	sun8i-v3s-licheepi-zero.dtb \
--	sun8i-v3s-licheepi-zero-dock.dtb \
--	sun8i-v40-bananapi-m2-berry.dtb
- dtb-$(CONFIG_MACH_SUN9I) += \
- 	sun9i-a80-optimus.dtb \
- 	sun9i-a80-cubieboard4.dtb
+diff --git a/arch/arm/boot/dts/st/stm32mp151.dtsi b/arch/arm/boot/dts/st/stm32mp151.dtsi
+index 61508917521c3..aec7fa5ab5d8c 100644
+--- a/arch/arm/boot/dts/st/stm32mp151.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp151.dtsi
+@@ -50,6 +50,7 @@ timer {
+ 			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
+ 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>;
+ 		interrupt-parent = <&intc>;
++		arm,no-tick-in-suspend;
+ 	};
+ 
+ 	clocks {
 -- 
 2.43.0
 
