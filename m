@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F9F941CC7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAB0941928
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 471071C212E1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759151F21261
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30D618801A;
-	Tue, 30 Jul 2024 17:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BA41A619A;
+	Tue, 30 Jul 2024 16:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWZND7/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrICEk/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728E883A17;
-	Tue, 30 Jul 2024 17:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86E41A616E;
+	Tue, 30 Jul 2024 16:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359315; cv=none; b=atSEUEbUS+q/24SN0KRfNAAaMq+xjUKUuXRfOJWNMHcqNvBXtPOM08bJBVKmLBReXnMPTyVBJH9iqMpW6/XZ1c3Zp3rc9JJ93KAmJavjf4CNfMF+erT+NL3t6sov8iGIC7SVB10I6iO8AanitPuAiZwQZHUyIcj1o/el1pOhBKY=
+	t=1722356978; cv=none; b=RSx5bcjLXy7n8g/RDyPLWixEWpGDNBIdtbnVqjqWD8VD/7N5VhqFv6rvkYFMLaU2EDQvZwZXGEE69DsjwvOsAoTKxfhMCzHShqGxZOCji3GhHwMKOQKg/4kD5RSpmIyj+zqjUzApsbHFfB3No0q4kZwW2Im4fa+iiVD4AV/a4f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359315; c=relaxed/simple;
-	bh=o/5nrUtKEsG7fgjqOn6hf2btpX9z3vXa0Ui1fFG3LtU=;
+	s=arc-20240116; t=1722356978; c=relaxed/simple;
+	bh=mWlqL2V0lev3yt8VPURIunx+Lz0G178hk6RtAhvKPkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFLfblDkSzXEYXyO1M3+CMBI+WDSjaaA4f9LnpbBiO4ZFzSemXraXvB1VBsz0JzTRaargspbqmd1ZSWNuQWpfpQxvBIwW0lnBzZAm57Mr9I/LZy7WW0JmdzSWRJ0Z1VtqlZ6mEtiVox50OabEtfssaTzrA9v/n3INjaPqiTBS5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWZND7/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B99C32782;
-	Tue, 30 Jul 2024 17:08:34 +0000 (UTC)
+	 MIME-Version; b=gR8T3hgW5Q1xmS9hfCdZWQhmi0mwIjN6oFCPindTAIUKuDoaCR9EEuZwtOMvW4AwXuO+uB+EE/ll/78CClXpzfjkYq64aJOLkCtRdlmIs/Og7EmKytgtqDxVcEZ+fBLQpTDwxzhKYGH6sHKWW5mNYlSy7BE/Mapvgsae8c9wvHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrICEk/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6D2C4AF0A;
+	Tue, 30 Jul 2024 16:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359315;
-	bh=o/5nrUtKEsG7fgjqOn6hf2btpX9z3vXa0Ui1fFG3LtU=;
+	s=korg; t=1722356977;
+	bh=mWlqL2V0lev3yt8VPURIunx+Lz0G178hk6RtAhvKPkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fWZND7/GMYk2MUQHKb6VW3z716x0CgNU1ezJqrppFHcwiDKXQq3Xcn8oGs5zbz8aF
-	 8f+F7fAOifMuvN1X2x+ZGTKmHoK1fIJKCAq5/J+vtKKH0l0tXYuGKLuTcao2MJwT3/
-	 G3Va7HYUA7ObRbTn1arA2AlEOBPOMi1qUCqoa+A4=
+	b=VrICEk/zMw3Sb8fT+JgwuuVeNloG36fsc6aZA1DlXwSYXFLUkCYA9Sk5MFCuFg70j
+	 zN5NcIFDtlvcWK0rmZ2ioiqGCU0Skfq2IZSCfl5fSxNXD2zfzC4iUX1s9lTfp5ZMNZ
+	 LA7DGlE6bGbxNGTU3/EGpFnYFpUtMmcpb0J5XCRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Sean Anderson <sean.anderso@linux.dev>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 437/809] dm-raid: Fix WARN_ON_ONCE check for sync_thread in raid_resume
+Subject: [PATCH 6.6 206/568] drm: zynqmp_dpsub: Fix an error handling path in zynqmp_dpsub_probe()
 Date: Tue, 30 Jul 2024 17:45:13 +0200
-Message-ID: <20240730151741.963550782@linuxfoundation.org>
+Message-ID: <20240730151647.925225341@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 3199a34bfaf7561410e0be1e33a61eba870768fc ]
+[ Upstream commit 4ea3deda1341fef7b923ad9cfe5dd46b1b51bfa8 ]
 
-rm-raid devices will occasionally trigger the following warning when
-being resumed after a table load because DM_RECOVERY_RUNNING is set:
+If zynqmp_dpsub_drm_init() fails, we must undo the previous
+drm_bridge_add() call.
 
-WARNING: CPU: 7 PID: 5660 at drivers/md/dm-raid.c:4105 raid_resume+0xee/0x100 [dm_raid]
-
-The failing check is:
-WARN_ON_ONCE(test_bit(MD_RECOVERY_RUNNING, &mddev->recovery));
-
-This check is designed to make sure that the sync thread isn't
-registered, but md_check_recovery can set MD_RECOVERY_RUNNING without
-the sync_thread ever getting registered. Instead of checking if
-MD_RECOVERY_RUNNING is set, check if sync_thread is non-NULL.
-
-Fixes: 16c4770c75b1 ("dm-raid: really frozen sync_thread during suspend")
-Suggested-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: be3f3042391d ("drm: zynqmp_dpsub: Always register bridge")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Sean Anderson <sean.anderso@linux.dev>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/974d1b062d7c61ee6db00d16fa7c69aa1218ee02.1716198025.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xlnx/zynqmp_dpsub.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index abe88d1e67358..b149ac46a990e 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -4101,10 +4101,11 @@ static void raid_resume(struct dm_target *ti)
- 		if (mddev->delta_disks < 0)
- 			rs_set_capacity(rs);
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+index face8d6b2a6fb..f5781939de9c3 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+@@ -269,6 +269,7 @@ static int zynqmp_dpsub_probe(struct platform_device *pdev)
+ 	return 0;
  
-+		mddev_lock_nointr(mddev);
- 		WARN_ON_ONCE(!test_bit(MD_RECOVERY_FROZEN, &mddev->recovery));
--		WARN_ON_ONCE(test_bit(MD_RECOVERY_RUNNING, &mddev->recovery));
-+		WARN_ON_ONCE(rcu_dereference_protected(mddev->sync_thread,
-+						       lockdep_is_held(&mddev->reconfig_mutex)));
- 		clear_bit(RT_FLAG_RS_FROZEN, &rs->runtime_flags);
--		mddev_lock_nointr(mddev);
- 		mddev->ro = 0;
- 		mddev->in_sync = 0;
- 		md_unfrozen_sync_thread(mddev);
+ err_disp:
++	drm_bridge_remove(dpsub->bridge);
+ 	zynqmp_disp_remove(dpsub);
+ err_dp:
+ 	zynqmp_dp_remove(dpsub);
 -- 
 2.43.0
 
