@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80624941B80
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F7E941E8C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54671B245F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1D261F2530F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405F918801A;
-	Tue, 30 Jul 2024 16:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72951189918;
+	Tue, 30 Jul 2024 17:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVKz3rUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gh5OjsaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE091A6195;
-	Tue, 30 Jul 2024 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D3D166315;
+	Tue, 30 Jul 2024 17:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358478; cv=none; b=Rp0gD0RsZ+Xdh8xykU/cFOcWK0+mHkgHMyispdZNFABwzgbGdXXvae1nx3ZicugivJvancItqqWU1ajZ5Q+ngS54uogcOoPrByOC6xPNACfJLmZKrf1ixyVVCL+atDnupJ2tRMdfSy+MulpbwtTY7mch7kIupeNP9POYku/H6yA=
+	t=1722360609; cv=none; b=jk5lTSIoSrWtPZybvxc5fWSRqLWNRPBeiUdrY093oXpqN3XWfjhBpTeJZdTXrZSvWpKV/0up6gH6d5lR75JCIIirwmvEj/pwTqYliaOdohKQqeeUfJri7Oj2v9j8JXL9+tYOHsjxuf65bF+9Hxo+wFBdSXOCi6v2HjJkmoU+0F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358478; c=relaxed/simple;
-	bh=6arCJgFr3DhUtOVG2e/si+fouwI5P9oV40+DkifwVLU=;
+	s=arc-20240116; t=1722360609; c=relaxed/simple;
+	bh=oZ/dVQxdOG6KQQiRZYKi1dbfh8SKNhozUxA9rngDeFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbsus+3KXgvyq/5aqm7xpgPb+XK5Rz/smO/ecskUW1j919N4jWtdQzc0lsZR7FLZw+w2sF6EUHaYAvBaTSa6FNcqjRyIUF/mCvdIa3CiQNjYAohgj/L7v2U8t+yCQv0F3UucwWbDykOCMAOC4N1bPDEXYzKW8len/UoKg3+ftFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVKz3rUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549ADC32782;
-	Tue, 30 Jul 2024 16:54:37 +0000 (UTC)
+	 MIME-Version; b=YVyUSrxV2lUPEq36MOcVFRsFkubPNhmZIi9VrzGzCT1E3Sq1oDfSXpXOJ+INOo8XYCBv/d04PPr/ZNyfgEoMKlSF0AwGPB0gk+PnEboCIMZLcP0zP6lOUGLdkUeY0CrA0MBDzcB3J5gO7VVso5QStx8iT6HHXb7ZtJC5isrWIVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gh5OjsaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993C7C4AF13;
+	Tue, 30 Jul 2024 17:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358477;
-	bh=6arCJgFr3DhUtOVG2e/si+fouwI5P9oV40+DkifwVLU=;
+	s=korg; t=1722360609;
+	bh=oZ/dVQxdOG6KQQiRZYKi1dbfh8SKNhozUxA9rngDeFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVKz3rUvUYo6wv6QFUg4QgHsQ9l+c5p4OTG7E4trBChdJORVtvBWWqsMNtVb+53rh
-	 +w5ib36V7xaWk2mOoGNVzlE7vfegieVy3z6VTDH/g6tS3CCq7y7l9B34afA5F9JqmK
-	 DtBv7Jlz150MZqD+lXeMMM7GY8a42WEWsTJxVRjg=
+	b=gh5OjsaTR7H0o3JgSFkS1ruhbLnUyFiyJYqTnUnzth5U27AEEQtu2+hy5c8s/ZBFO
+	 MHbOrG0UAgxUXewN4aho/KqLMjZFUCUn8+uQbutYynFvnvi/+7o2rRGnDefO91zc43
+	 /ajoKAh0QDDbP+zkdbbJOxWHCKy1u5RT7c8fX+/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
+	Daejun Park <daejun7.park@samsung.com>,
+	Chao Yu <chao@kernel.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 394/440] kdb: Use the passed prompt in kdb_position_cursor()
+Subject: [PATCH 6.10 751/809] f2fs: fix null reference error when checking end of zone
 Date: Tue, 30 Jul 2024 17:50:27 +0200
-Message-ID: <20240730151631.193422870@linuxfoundation.org>
+Message-ID: <20240730151754.620892439@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Daejun Park <daejun7.park@samsung.com>
 
-[ Upstream commit e2e821095949cde46256034975a90f88626a2a73 ]
+[ Upstream commit c82bc1ab2a8a5e73d9728e80c4c2ed87e8921a38 ]
 
-The function kdb_position_cursor() takes in a "prompt" parameter but
-never uses it. This doesn't _really_ matter since all current callers
-of the function pass the same value and it's a global variable, but
-it's a bit ugly. Let's clean it up.
+This patch fixes a potentially null pointer being accessed by
+is_end_zone_blkaddr() that checks the last block of a zone
+when f2fs is mounted as a single device.
 
-Found by code inspection. This patch is expected to functionally be a
-no-op.
-
-Fixes: 09b35989421d ("kdb: Use format-strings rather than '\0' injection in kdb_read()")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240528071144.1.I0feb49839c6b6f4f2c4bf34764f5e95de3f55a66@changeid
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Fixes: e067dc3c6b9c ("f2fs: maintain six open zones for zoned devices")
+Signed-off-by: Daejun Park <daejun7.park@samsung.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/debug/kdb/kdb_io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/data.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
-index fbbe198b056d4..d545abe080876 100644
---- a/kernel/debug/kdb/kdb_io.c
-+++ b/kernel/debug/kdb/kdb_io.c
-@@ -193,7 +193,7 @@ char kdb_getchar(void)
-  */
- static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index b9b0debc6b3d3..1a6873cf9651f 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -925,6 +925,7 @@ int f2fs_merge_page_bio(struct f2fs_io_info *fio)
+ #ifdef CONFIG_BLK_DEV_ZONED
+ static bool is_end_zone_blkaddr(struct f2fs_sb_info *sbi, block_t blkaddr)
  {
--	kdb_printf("\r%s", kdb_prompt_str);
-+	kdb_printf("\r%s", prompt);
- 	if (cp > buffer)
- 		kdb_printf("%.*s", (int)(cp - buffer), buffer);
++	struct block_device *bdev = sbi->sb->s_bdev;
+ 	int devi = 0;
+ 
+ 	if (f2fs_is_multi_device(sbi)) {
+@@ -935,8 +936,9 @@ static bool is_end_zone_blkaddr(struct f2fs_sb_info *sbi, block_t blkaddr)
+ 			return false;
+ 		}
+ 		blkaddr -= FDEV(devi).start_blk;
++		bdev = FDEV(devi).bdev;
+ 	}
+-	return bdev_is_zoned(FDEV(devi).bdev) &&
++	return bdev_is_zoned(bdev) &&
+ 		f2fs_blkz_is_seq(sbi, devi, blkaddr) &&
+ 		(blkaddr % sbi->blocks_per_blkz == sbi->blocks_per_blkz - 1);
  }
 -- 
 2.43.0
