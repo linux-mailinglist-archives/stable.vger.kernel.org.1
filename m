@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337B79418E4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28183941C48
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6544B1C22AD1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6C6B1F23FA9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC58F1A6192;
-	Tue, 30 Jul 2024 16:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C618188017;
+	Tue, 30 Jul 2024 17:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjCZpgnv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rn+vD0g6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B14C1A6166;
-	Tue, 30 Jul 2024 16:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191B41A6192;
+	Tue, 30 Jul 2024 17:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356786; cv=none; b=d9u0mYt4t7k0vc6EbK+GG20Wg/GGcoivrt2jpXK/mlaMLtEPQGoLrGDPIiSrGeEMx9zqf2Qiwdp2THammqEMdLX61LU79zs48uSHU3m3kB+pscfGMZuMi4JLYGPiikH/tQyRYXgJLu8Ny9oAYwaIiES/V2Onxs9vTcRnWKjzTUM=
+	t=1722359133; cv=none; b=qyxrVkl7pNTKp9RUxvUKbUiqbZMspUorwvmRcs0c0gu3A4tJVgM0kAGjOxW9k6902i9ShSzfW93QKomLMZNnR9y4i7roSNWPntYbMsk7UVuLzo2opxvorm9I2aA3vCFuc9K2RiFuZ1eHI3XbWDtatSWEH9Z7iHVhKx0PtSxA2dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356786; c=relaxed/simple;
-	bh=6ioOyHVe54/2hU3nPGTcCCIMeMLkI6ewvzyYq0ZWDDc=;
+	s=arc-20240116; t=1722359133; c=relaxed/simple;
+	bh=w0Oj7KzR6oBJkPhFxeLHaA8gpxtLGp0bzIwy8uxFUdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7Vlc39XQFB/EXDcDrHqZcJ2U1nET8wFVKHJ1nlzNnwZLzGvPZLGu1fwZH7GdWxIQjF/fWqT3fXVyoyZa83Bw1O55FQr/da4aTiAfKLSiEgZb5dxqW/FWg2guJyMB+0WCZ7yzc+tcoS5nOetrD7sHRR9jAr8CdoQajmtJHs8yN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjCZpgnv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1089DC32782;
-	Tue, 30 Jul 2024 16:26:25 +0000 (UTC)
+	 MIME-Version; b=o6oyJDJ4J8Sv3K64K5msq2Zoy6y29c60OWY+Z5omgfagAU+jI2vLRn0lUfDaeQeUpXfbYOA7AvCPHWwB6t3kBPgdXscbiRDIBVrt01S+HW2FZ422S6k0cdoT3NucLJjdOgVhhaj5x+3te6hzk1kgK41HMqa9hdTcxb9poda9PJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rn+vD0g6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1FBC32782;
+	Tue, 30 Jul 2024 17:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356786;
-	bh=6ioOyHVe54/2hU3nPGTcCCIMeMLkI6ewvzyYq0ZWDDc=;
+	s=korg; t=1722359133;
+	bh=w0Oj7KzR6oBJkPhFxeLHaA8gpxtLGp0bzIwy8uxFUdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RjCZpgnvB3diMAgC8N5lK4t5KoobVDUgJZJcjOu+xJKvIWR1DZs27s9Dvqd+mTeuA
-	 Xl+Icuf9hqECOOFMWaCyp/pbDE7XicGnV8aZzMh3e0kdItiT4wS30dxN1pQnByF+Q7
-	 kQR5XnaPamaB16zWZNrffrywrLoF9U7f8I40fqko=
+	b=Rn+vD0g6Lrd3wTBSeItexA8xljbwox7Fca5DqJsovVIT57rgflBZIfz78g7kwClnK
+	 3AGg/Y7Slho8ifavxJGg8igHj2mQ9CVNsV/BwrQaOlmn7Vid4h1akN4ch3UeuS0GcQ
+	 a+qV+fcwIGs5PHXSi5DdMNoXSeVgg+gdA+U33xIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/568] drm/panel: himax-hx8394: Handle errors from mipi_dsi_dcs_set_display_on() better
-Date: Tue, 30 Jul 2024 17:44:51 +0200
-Message-ID: <20240730151647.071131155@linuxfoundation.org>
+Subject: [PATCH 6.10 416/809] clk: qcom: gpucc-sa8775p: Update wait_val fields for GPU GDSCs
+Date: Tue, 30 Jul 2024 17:44:52 +0200
+Message-ID: <20240730151741.126793172@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit cc2db2ef8d9eebc0df03808ac0dadbdb96733499 ]
+[ Upstream commit 211681998d706d1e0fff6b62f89efcdf29c24978 ]
 
-If mipi_dsi_dcs_set_display_on() returned an error then we'd store
-that in the "ret" variable and jump to error handling. We'd then
-attempt an orderly poweroff. Unfortunately we then blew away the value
-stored in "ret". That means that if the orderly poweroff actually
-worked then we're return 0 (no error) from hx8394_enable() even though
-the panel wasn't enabled.
+Update wait_val fields as per the default hardware values of the GDSC as
+otherwise it would lead to GDSC FSM state stuck causing power on/off
+failures of the GSDC.
 
-Fix this by not blowing away "ret".
-
-Found by code inspection.
-
-Fixes: 65dc9360f741 ("drm: panel: Add Himax HX8394 panel controller driver")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240517143643.1.I0a6836fffd8d7620f353becb3df2370d2898f803@changeid
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.1.I0a6836fffd8d7620f353becb3df2370d2898f803@changeid
+Fixes: 0afa16afc36d ("clk: qcom: add the GPUCC driver for sa8775p")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-6-adcc756a23df@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-himax-hx8394.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clk/qcom/gpucc-sa8775p.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-himax-hx8394.c b/drivers/gpu/drm/panel/panel-himax-hx8394.c
-index c73243d85de71..631420d28be4c 100644
---- a/drivers/gpu/drm/panel/panel-himax-hx8394.c
-+++ b/drivers/gpu/drm/panel/panel-himax-hx8394.c
-@@ -234,8 +234,7 @@ static int hx8394_enable(struct drm_panel *panel)
+diff --git a/drivers/clk/qcom/gpucc-sa8775p.c b/drivers/clk/qcom/gpucc-sa8775p.c
+index 1f7a02a7503d4..3deabf8333883 100644
+--- a/drivers/clk/qcom/gpucc-sa8775p.c
++++ b/drivers/clk/qcom/gpucc-sa8775p.c
+@@ -523,6 +523,9 @@ static struct clk_regmap *gpu_cc_sa8775p_clocks[] = {
  
- sleep_in:
- 	/* This will probably fail, but let's try orderly power off anyway. */
--	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
--	if (!ret)
-+	if (!mipi_dsi_dcs_enter_sleep_mode(dsi))
- 		msleep(50);
+ static struct gdsc cx_gdsc = {
+ 	.gdscr = 0x9108,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.gds_hw_ctrl = 0x953c,
+ 	.pd = {
+ 		.name = "cx_gdsc",
+@@ -533,6 +536,9 @@ static struct gdsc cx_gdsc = {
  
- 	return ret;
+ static struct gdsc gx_gdsc = {
+ 	.gdscr = 0x905c,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "gx_gdsc",
+ 		.power_on = gdsc_gx_do_nothing_enable,
 -- 
 2.43.0
 
