@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FD5941E74
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A19B941D08
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3388A286C06
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B6701C23B4F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29163188016;
-	Tue, 30 Jul 2024 17:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8101A76CA;
+	Tue, 30 Jul 2024 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEHn+8iy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCahxMYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F591A76BE;
-	Tue, 30 Jul 2024 17:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA6B1A76A5;
+	Tue, 30 Jul 2024 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360546; cv=none; b=Sj/V7AY4Ee2AUMKYJEYA5qlIBdzF6eywWpSycVvHJ/CHGQYwJYrRpRREwluyRO4kY1LKeEExFd+rY6+W0xUqusOrXEABJEgFUMBm58zbws4Dv4YykcIhNG2brxwVBJ2YBMFypX0NP8ZSNT73oxEMD4o2M3lAdXERTq5gcDI53TM=
+	t=1722359512; cv=none; b=jK8/K4Z9ymOuZscuG8GDVSIAqGniOXbPyXbMY3MpehLPXYdydyiWAFNxkFZyi5hAOZTTCzrDTPN1fAsP+W4FQw53ZmMCYJJPu2nLsAUqtn2dacMHEF8KGXiEM9gX41UAGlU5vE2lo07doJAOQ6Buryb8sYBIktP8BuuFIx7tGOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360546; c=relaxed/simple;
-	bh=ROJfa4ojSNi7MKNmIUezUdpmfIvNKXk9CKUqbREW9n8=;
+	s=arc-20240116; t=1722359512; c=relaxed/simple;
+	bh=CMqw7h2oW4BEo97qFZIJT71FPU5I6OpmpIkzqZ2r0Js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MiTlfIKtBdfGpZTiNtPVaQoQAt4dz09OPyZHsVAOPCR+kBmS8ubuO/TJApX6P9uVErkbt5HOHqHtLZhrJmnkU0Agr67yRsHCj9gDq0KeQGYdEoQUPjrveleqFph0oJonYozAe0lY0G472fCBhor21dF4Boyby7pVzXZrotPunpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEHn+8iy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B799C4AF0C;
-	Tue, 30 Jul 2024 17:29:06 +0000 (UTC)
+	 MIME-Version; b=lbJuf3C4x6UDD7xKVCc/vUwSz1LYjzclrzeSJOZ4bGp7oVE3Dv0MP2W/NXaJD+SvCrPJ8zwwgoHIEDbv+Ez94Mkb+oBdJN4UQFV6smvUFHrXJvTmuOsoOQZYTBe1n9uHfOBRerOkbk7UAGvUyIBrBeL0aFPNMvVwClPQ8oXfSkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCahxMYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917C6C32782;
+	Tue, 30 Jul 2024 17:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360546;
-	bh=ROJfa4ojSNi7MKNmIUezUdpmfIvNKXk9CKUqbREW9n8=;
+	s=korg; t=1722359512;
+	bh=CMqw7h2oW4BEo97qFZIJT71FPU5I6OpmpIkzqZ2r0Js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEHn+8iyXcc6T23zbb/Qcsw0ZWuTLC0G4Wbv7Lr3WZHT+TTQefO7wLk0hIytNuZR8
-	 EK2w4G0iFme4ov9r4VigH/xbR1XYqKSNoecJb7z0nK/sb9T5VwGXEwaAOYQbG20Zht
-	 zbFOTPvbIzU5KC2k2ctZCfQ+OdudQb/a7ExJM61Q=
+	b=TCahxMYCIvbKT+Mklx4n337xh257goq08vJJ6T2/qZSM9RE5vQ05LmiB+qor1UPOA
+	 zYvPKz244yqF7AAc0SufJW4NK66D2hkX1RaY3lxFHu4+s+tdoeHcXjZ8ZbZO/aZVoJ
+	 j9Fa3gJv0H4BtsCkGLidW7DJFIBXQCnifEKAB9hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.10 725/809] MIPS: Loongson64: env: Hook up Loongsson-2K
-Date: Tue, 30 Jul 2024 17:50:01 +0200
-Message-ID: <20240730151753.573933570@linuxfoundation.org>
+Subject: [PATCH 6.6 495/568] MIPS: dts: loongson: Fix GMAC phy node
+Date: Tue, 30 Jul 2024 17:50:02 +0200
+Message-ID: <20240730151659.375738565@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 77543269ff23c75bebfb8e6e9a1177b350908ea7 upstream.
+commit 813c18d1ca1987afaf47e035152e1baa1375b1b2 upstream.
 
-Somehow those enablement bits were left over when we were
-adding initial Loongson-2K support.
+phy-mode should be rgmii-id to match hardware configuration.
 
-Set up basic information and select proper builtin DTB for
-Loongson-2K.
+Also there should be a phy-handle to reference phy node.
 
+Fixes: f8a11425075f ("MIPS: Loongson64: Add GMAC support for Loongson-2K1000")
 Cc: stable@vger.kernel.org
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/mach-loongson64/boot_param.h |    2 ++
- arch/mips/loongson64/env.c                         |    8 ++++++++
- 2 files changed, 10 insertions(+)
+ arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -42,12 +42,14 @@ enum loongson_cpu_type {
- 	Legacy_1B = 0x5,
- 	Legacy_2G = 0x6,
- 	Legacy_2H = 0x7,
-+	Legacy_2K = 0x8,
- 	Loongson_1A = 0x100,
- 	Loongson_1B = 0x101,
- 	Loongson_2E = 0x200,
- 	Loongson_2F = 0x201,
- 	Loongson_2G = 0x202,
- 	Loongson_2H = 0x203,
-+	Loongson_2K = 0x204,
- 	Loongson_3A = 0x300,
- 	Loongson_3B = 0x301
- };
---- a/arch/mips/loongson64/env.c
-+++ b/arch/mips/loongson64/env.c
-@@ -88,6 +88,12 @@ void __init prom_lefi_init_env(void)
- 	cpu_clock_freq = ecpu->cpu_clock_freq;
- 	loongson_sysconf.cputype = ecpu->cputype;
- 	switch (ecpu->cputype) {
-+	case Legacy_2K:
-+	case Loongson_2K:
-+		smp_group[0] = 0x900000001fe11000;
-+		loongson_sysconf.cores_per_node = 2;
-+		loongson_sysconf.cores_per_package = 2;
-+		break;
- 	case Legacy_3A:
- 	case Loongson_3A:
- 		loongson_sysconf.cores_per_node = 4;
-@@ -221,6 +227,8 @@ void __init prom_lefi_init_env(void)
- 		default:
- 			break;
- 		}
-+	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64R) {
-+		loongson_fdt_blob = __dtb_loongson64_2core_2k1000_begin;
- 	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64G) {
- 		if (loongson_sysconf.bridgetype == LS7A)
- 			loongson_fdt_blob = __dtb_loongson64g_4core_ls7a_begin;
+--- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+@@ -144,7 +144,8 @@
+ 					     <13 IRQ_TYPE_LEVEL_LOW>;
+ 				interrupt-names = "macirq", "eth_lpi";
+ 				interrupt-parent = <&liointc0>;
+-				phy-mode = "rgmii";
++				phy-mode = "rgmii-id";
++				phy-handle = <&phy1>;
+ 				mdio {
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
+@@ -167,7 +168,8 @@
+ 					     <15 IRQ_TYPE_LEVEL_LOW>;
+ 				interrupt-names = "macirq", "eth_lpi";
+ 				interrupt-parent = <&liointc0>;
+-				phy-mode = "rgmii";
++				phy-mode = "rgmii-id";
++				phy-handle = <&phy1>;
+ 				mdio {
+ 					#address-cells = <1>;
+ 					#size-cells = <0>;
 
 
 
