@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E9294170B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 650F9941CBD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C8301F24A1C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F6241F2451C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A3818C91A;
-	Tue, 30 Jul 2024 16:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E93C18C911;
+	Tue, 30 Jul 2024 17:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4hnWtRR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cID5nqga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22ED18C90A;
-	Tue, 30 Jul 2024 16:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA3518C909;
+	Tue, 30 Jul 2024 17:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355524; cv=none; b=luEE5dwfeduiyFhzLfiu+3+qD9vvcziynXvvio8fXNYo4rYc0LIpMHl7POMh8BGpGinDX572Lf6w1keY7FDffnV1uISKWThpvkRaNRptpG0CBR0FzprXdH+Mgo6SbpFWlTorb7fxwv10pli2k/QZnZ1TUn1DkPr3IGsn4gIAlKc=
+	t=1722359267; cv=none; b=a9ZWY04Pukr/TdhAiL1aI/2G1VTcz8fjae1CXufZxY9fKKG/gtY/G5w0FRITsc3GqOrGmhP1F6xhybce637Pf2ruohH398/xOsDGlVVu9xv3w0iTjVcbvyAKefns9IpAMDaYRzO298TIo3q5wwE/L95XwDDOxYq8YQJ9rSdFN3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355524; c=relaxed/simple;
-	bh=DG1nch64xJ1vuX0McYcyTuqyroXt/Xe/Cf+k/r9Mwg4=;
+	s=arc-20240116; t=1722359267; c=relaxed/simple;
+	bh=CX6txlQYiDeM8G+MJlMIvV23Jpa9zeq4BYqnxL3QU0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvxghWO3a5Wst1gHtO0mFXqSHe+Jhn0H+35YNuhzbjxuuzibpKXONw3xHLb2N0wbWZv8AASj+BXlQHyAs/ysBkONAJu94fUACfaeUpi9lp9+aS8yHPlnsE3IKStmjR1nfBZcJFld7YRg2YvVVI4FuQKWL2+BDcMHCbYxU2eWTx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4hnWtRR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F4EC32782;
-	Tue, 30 Jul 2024 16:05:23 +0000 (UTC)
+	 MIME-Version; b=ZdRmHMlWbJVtr/1O7mLBSCBCUb5dlLMrO95oqZy2858aRXBC96Eb8t5plGDF6F8l/ZDTI3vDoXFt7AVh9CRl82P9Dg1UMOrZaeuWSAvd3zRgU74eDc4hl/80MF9YC5oMBAbg7QDdtajLff/KAEcB9oOoBaOrH8j/I+j8bllcQDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cID5nqga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57567C32782;
+	Tue, 30 Jul 2024 17:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355524;
-	bh=DG1nch64xJ1vuX0McYcyTuqyroXt/Xe/Cf+k/r9Mwg4=;
+	s=korg; t=1722359266;
+	bh=CX6txlQYiDeM8G+MJlMIvV23Jpa9zeq4BYqnxL3QU0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4hnWtRRCmOEh0hrlbEQbr7NWDD7rlMfJv1InF/PGPb0SPrU7mYVwQNwT2PSCuvs/
-	 VaMmfh5VEbkS+2o9GuYBlM/TIVBYfAyyO0pYh5JbgZO7VkEMDK5+hIODonDhGA6evy
-	 ElatJoK35eqbGO0u6r4QW5vCRM2ChOQ7W7LiIHug=
+	b=cID5nqgaDcPVAm2OKMytPLJLIPKYbZhiU2YWzxX39uojb9w3jumEm/hQfabTCTfZq
+	 5WbDuPu5CVfrk0477YwE9TiACayaVX6yP+g79XN+b30Mf5rivwcIc8wPKeF33q+jnP
+	 logEdgnQq+91FFxF1KGwCn8i4l5boixj25PVPvcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Nick Bowler <nbowler@draconx.ca>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/440] wifi: cfg80211: handle 2x996 RU allocation in cfg80211_calculate_bitrate_he()
+Subject: [PATCH 6.10 459/809] macintosh/therm_windtunnel: fix module unload.
 Date: Tue, 30 Jul 2024 17:45:35 +0200
-Message-ID: <20240730151619.874294143@linuxfoundation.org>
+Message-ID: <20240730151742.856545157@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Nick Bowler <nbowler@draconx.ca>
 
-[ Upstream commit bcbd771cd5d68c0c52567556097d75f9fc4e7cd6 ]
+[ Upstream commit fd748e177194ebcbbaf98df75152a30e08230cc6 ]
 
-Currently NL80211_RATE_INFO_HE_RU_ALLOC_2x996 is not handled in
-cfg80211_calculate_bitrate_he(), leading to below warning:
+The of_device_unregister call in therm_windtunnel's module_exit procedure
+does not fully reverse the effects of of_platform_device_create in the
+module_init prodedure.  Once you unload this module, it is impossible
+to load it ever again since only the first of_platform_device_create
+call on the fan node succeeds.
 
-kernel: invalid HE MCS: bw:6, ru:6
-kernel: WARNING: CPU: 0 PID: 2312 at net/wireless/util.c:1501 cfg80211_calculate_bitrate_he+0x22b/0x270 [cfg80211]
+This driver predates first git commit, and it turns out back then
+of_platform_device_create worked differently than it does today.
+So this is actually an old regression.
 
-Fix it by handling 2x996 RU allocation in the same way as 160 MHz bandwidth.
+The appropriate function to undo of_platform_device_create now appears
+to be of_platform_device_destroy, and switching to use this makes it
+possible to unload and load the module as expected.
 
-Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://msgid.link/20240606020653.33205-3-quic_bqiang@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Nick Bowler <nbowler@draconx.ca>
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240711035428.16696-1-nbowler@draconx.ca
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/macintosh/therm_windtunnel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 37ea62f83cb56..1665320d22146 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1393,7 +1393,9 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 	if (WARN_ON_ONCE(rate->nss < 1 || rate->nss > 8))
- 		return 0;
+diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
+index 37cdc6931f6d0..2576a53f247ea 100644
+--- a/drivers/macintosh/therm_windtunnel.c
++++ b/drivers/macintosh/therm_windtunnel.c
+@@ -549,7 +549,7 @@ g4fan_exit( void )
+ 	platform_driver_unregister( &therm_of_driver );
  
--	if (rate->bw == RATE_INFO_BW_160)
-+	if (rate->bw == RATE_INFO_BW_160 ||
-+	    (rate->bw == RATE_INFO_BW_HE_RU &&
-+	     rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_2x996))
- 		result = rates_160M[rate->he_gi];
- 	else if (rate->bw == RATE_INFO_BW_80 ||
- 		 (rate->bw == RATE_INFO_BW_HE_RU &&
+ 	if( x.of_dev )
+-		of_device_unregister( x.of_dev );
++		of_platform_device_destroy(&x.of_dev->dev, NULL);
+ }
+ 
+ module_init(g4fan_init);
 -- 
 2.43.0
 
