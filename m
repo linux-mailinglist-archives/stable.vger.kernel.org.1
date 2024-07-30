@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-62781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009AF94123C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:46:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E174F94124B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 324E41C22BF3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:46:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 535CDB29EB3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0F71A0704;
-	Tue, 30 Jul 2024 12:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262D71A0720;
+	Tue, 30 Jul 2024 12:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hpa6EnPt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="crcuVciV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCC41A00FE;
-	Tue, 30 Jul 2024 12:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59EC19F47A;
+	Tue, 30 Jul 2024 12:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722343531; cv=none; b=geegGPVZUC/NOKGM6gnHSFsqWLUtv/XJg6+4j5zxHlcc13aZp1dHyHkHXX8Kz5vpgeW+aP4IlzHfQ8oleweqO+C5L6Dv2QVsnsvPZQU//KQjXYCwS5x5GIWZX06IQ7scxNJw1t4Et093ehKCFxqH3rCHtxD/Y1SGmuHPO6KTLBk=
+	t=1722343534; cv=none; b=p1GwWAwnqPmkuMpisruKyAIIWZXjUFfcyoxkI4XFJTvxLRWF7ozEgW7fBrU7y5FzTAnBcOB7QHgLadi9wgZ//GleRf3lfhcrlETsaF4W9TtEHFLC7tDAXje0ZtBXwHIho+yxxAyq7bPxk/cK4bizMUoXeoV/4En6WbPIAGtWhLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722343531; c=relaxed/simple;
-	bh=MVz/znc9I233RgIM9zDHWcICToeODo3lTIKp9s5T8N4=;
+	s=arc-20240116; t=1722343534; c=relaxed/simple;
+	bh=dj3ZUdCBqrSs5hApOQfY89TE70ROrZ696r/pf9VlDAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ih4ABGJTyMIJJO1anW4F5d8/BSdUXqtcpiJz+n6xkQcVyjJ78+iI5BDbPh6oYav4KHgbdBjhombfWqs3LK3ZCgyLvguIQfiSorWpcpLsUJlCg2lrbDDnnU0yLRVVM2z0OwnE1Nr2YPpGCwVUTLxTuMNwENerOtOr6aJmn4LiKWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hpa6EnPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AE8C32782;
-	Tue, 30 Jul 2024 12:45:29 +0000 (UTC)
+	 MIME-Version; b=TqunODFsNtqgZW+yDBemLr2bRRQsV/xtJEGOVWxz9hz18gvVydKgdTcNfyYA7zGAwxStFK2S5rVFHv6buKoGeeCgOp5MoRHzJDGlTgUNmMBc/ddDNqfHROgvykfNa12cgDwhcis3Aff2mCS7tOW8rsSexidAtk0v7Sh4ez2cR6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=crcuVciV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB7AC4AF09;
+	Tue, 30 Jul 2024 12:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722343530;
-	bh=MVz/znc9I233RgIM9zDHWcICToeODo3lTIKp9s5T8N4=;
+	s=k20201202; t=1722343534;
+	bh=dj3ZUdCBqrSs5hApOQfY89TE70ROrZ696r/pf9VlDAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hpa6EnPtv0o8XsL1vgvHCX0M0rDgfM8glsjeNS8RfMsidA3AQtY953nxWB6WxEgTO
-	 bkyzKdCnpgN4+SPY1+VyEfXIk4KRRDwW3yM4NAN9Hg6x3CqwWKRQSUXvFekNiDKMLG
-	 tU/5sJnN7PIAGXga7PO3VG+8iRdPF5vspWUth4wr7dJd9T2mT3Nw3nzSVjoa8ecToF
-	 lRnyYsBAgpbit8g7NZOB1RfMgFcI3XOvlO/AarsW1Voe4KhEItraIgaTZYpQ0AZpGa
-	 G3u2iiiYZe47VuPXWp02OqK3ZjKKmYbG+7Pq7961geqsWAqOjSlOWJd0DZF5Bp8Q5r
-	 O3RgMX3kGSsNw==
+	b=crcuVciVHq5ToUAF6rseBBn0DKLrnqpVniSsUCDq2vYt4VECYWFp+L37c3SdsUNvL
+	 wUthBQvIFuGM2X7ShFi1ypiD8ZwXd32M4Ha/tDJF67E7V4BrfUVnwce4XJ53vBTmrI
+	 lvda12X/fXnMRVpkx2Ze+WA5VjeJRkjfLEUdIRTYxZZtEtccibYt0eKLoBRwmsQWWk
+	 tHgBfSjuk3kFxFYm7dl+jJD9gmBbv5QIJrW8wIgds/Yk7O0p25ohdmdxtYyGd40QQk
+	 qUD4BLYrhcPIyP/iuoLeWNpz2D8xcmA/APsp9tmp58BoOH745S2mdKCShwfz+c1Nfz
+	 uiSk8XWeEtejg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+bba84aef3a26fb93deb9@syzkaller.appspotmail.com,
+Cc: Pei Li <peili.dev@gmail.com>,
+	syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com,
 	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
 	shaggy@kernel.org,
-	osmtendev@gmail.com,
 	ghandatmanas@gmail.com,
+	juntong.deng@outlook.com,
+	osmtendev@gmail.com,
 	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.10 5/7] jfs: fix null ptr deref in dtInsertEntry
-Date: Tue, 30 Jul 2024 08:45:11 -0400
-Message-ID: <20240730124519.3093607-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 6/7] jfs: Fix shift-out-of-bounds in dbDiscardAG
+Date: Tue, 30 Jul 2024 08:45:12 -0400
+Message-ID: <20240730124519.3093607-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240730124519.3093607-1-sashal@kernel.org>
 References: <20240730124519.3093607-1-sashal@kernel.org>
@@ -69,49 +70,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Pei Li <peili.dev@gmail.com>
 
-[ Upstream commit ce6dede912f064a855acf6f04a04cbb2c25b8c8c ]
+[ Upstream commit 7063b80268e2593e58bee8a8d709c2f3ff93e2f2 ]
 
-[syzbot reported]
-general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 0 PID: 5061 Comm: syz-executor404 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-RIP: 0010:dtInsertEntry+0xd0c/0x1780 fs/jfs/jfs_dtree.c:3713
-...
-[Analyze]
-In dtInsertEntry(), when the pointer h has the same value as p, after writing
-name in UniStrncpy_to_le(), p->header.flag will be cleared. This will cause the
-previously true judgment "p->header.flag & BT-LEAF" to change to no after writing
-the name operation, this leads to entering an incorrect branch and accessing the
-uninitialized object ih when judging this condition for the second time.
+When searching for the next smaller log2 block, BLKSTOL2() returned 0,
+causing shift exponent -1 to be negative.
 
-[Fix]
-After got the page, check freelist first, if freelist == 0 then exit dtInsert()
-and return -EINVAL.
+This patch fixes the issue by exiting the loop directly when negative
+shift is found.
 
-Reported-by: syzbot+bba84aef3a26fb93deb9@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=61be3359d2ee3467e7e4
+Signed-off-by: Pei Li <peili.dev@gmail.com>
 Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c | 2 ++
+ fs/jfs/jfs_dmap.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 031d8f570f581..5d3127ca68a42 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -834,6 +834,8 @@ int dtInsert(tid_t tid, struct inode *ip,
- 	 * the full page.
- 	 */
- 	DT_GETSEARCH(ip, btstack->top, bn, mp, p, index);
-+	if (p->header.freelist == 0)
-+		return -EINVAL;
- 
- 	/*
- 	 *	insert entry for new key
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index cb3cda1390adb..5713994328cbc 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1626,6 +1626,8 @@ s64 dbDiscardAG(struct inode *ip, int agno, s64 minlen)
+ 		} else if (rc == -ENOSPC) {
+ 			/* search for next smaller log2 block */
+ 			l2nb = BLKSTOL2(nblocks) - 1;
++			if (unlikely(l2nb < 0))
++				break;
+ 			nblocks = 1LL << l2nb;
+ 		} else {
+ 			/* Trim any already allocated blocks */
 -- 
 2.43.0
 
