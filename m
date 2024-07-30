@@ -1,122 +1,106 @@
-Return-Path: <stable+bounces-62697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4D7940D67
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:25:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333CA940DD2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E8DC1C24487
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:25:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 173A3B284C8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A228194C6F;
-	Tue, 30 Jul 2024 09:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF39194159;
+	Tue, 30 Jul 2024 09:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yr1xtkXE"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="BDkdyyN1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACC9194AF2
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:25:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095CD188CC7;
+	Tue, 30 Jul 2024 09:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722331543; cv=none; b=TwNb3e/CIY6GeUkCbhNLr/6UUeE5UcHNB1tybjc/rIsDGNoGeGRtyDX6t1Lhp4ZK2g59CJHdaO2sg6Ws6jmoXUXG1MU0ssR7IekU7AAKQFQuX9MPLyTRLjWbjQT/WX21ZGnpFvdBOP1CNjLTHlGoszTutH9hZv1SPIA8I6L5Fl4=
+	t=1722331822; cv=none; b=r1DHyGfWgTAObTTLnTStxEglEgo874eGBen2nVvSGYZjhICUqBgOA8N4ENft7+vC6p8QoHkXNSSKp96C8p3KY5j2hNK5mv2ENRO+Zc8+9C3PqWG1KN5rDq6xSi0yEUspUfBMfah6Ie9ocUR1wLMv7CsqZ+RvchV4DNi5Q6+SbEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722331543; c=relaxed/simple;
-	bh=eKgLf+gF+78cpWoYSNOQPGF8PfOtnlsPtfmyjREDSFA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=G126BcJwHQCNRggRLxD7/OU7zcn2jFpMbMlXoQKMGtQAuNHeybDyn3HwofX4cEYqlGhAf47jRRWeiUEj1XOMU0xkCR3+Q0m9PWNWvVdNu4g53gvyPVm7bXwz3iRZ7zZZriIHbAc+2OCwlB9kJXd5PVeQYwSdve9Hsy7kACSkeF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yr1xtkXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D71C32782;
-	Tue, 30 Jul 2024 09:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722331543;
-	bh=eKgLf+gF+78cpWoYSNOQPGF8PfOtnlsPtfmyjREDSFA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Yr1xtkXEUcrVH3LkucU1NQsR7nHagG6e91hn39iN/M3I46d18ERR9xxzQsmP/EwVA
-	 8MG2mwYOD7ZyoKOQO5HeiJ8Jp+XVqGn5Z1xyj5iqMOUuuRy2mYtCU3YHahkQdD1vFN
-	 Q+j8J8wuU2hCqOP+pHuJQWpo5kSdmO8nCU3YhRJc=
-Subject: FAILED: patch "[PATCH] mm: optimize the redundant loop of mm_update_owner_next()" failed to apply to 4.19-stable tree
-To: alexjlzheng@tencent.com,akpm@linux-foundation.org,axboe@kernel.dk,brauner@kernel.org,mhocko@suse.com,mjguzik@gmail.com,oleg@redhat.com,stable@vger.kernel.org,tandersen@netflix.com,willy@infradead.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:24:58 +0200
-Message-ID: <2024073058-game-plant-575c@gregkh>
+	s=arc-20240116; t=1722331822; c=relaxed/simple;
+	bh=vavhuKswM/3UJ7RKw8cXf3oDRdQ9aHvYMqr5DHYL9qs=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=RVoOSCUMijASsVTFTHRImR/Q2QOUAd3enwzEaXmAy3qquypQGtwyuXl/ZmJsRKjenWOFKFmYM/w3aqw6V2jE+y6eQRhhNbpxBfkO5RC93++WZZrUv0JF0pbA4u0PB7gJTadbgKTBdAu80SPEBBaJ94PORyv7j/uL0anTFKnVyCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=BDkdyyN1; arc=none smtp.client-ip=203.205.221.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1722331517; bh=60gLN9JdTKEP1C1p1aBTRlyiT21+gnTSf3rmZ1dVFz4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BDkdyyN1CoKwFdjDbkuPpTRfLbvI39D9poAOg9i/6JpkXFZZu01QkcNPMf95FWlkY
+	 tFhkknT5kAQfTFJDoOIRHjFDiDksgtInVQhbD5OEdFKxLQcdd6/xl0I9WmvzzrNaph
+	 Ah2eMXusay2E3OM1DGozSokk0r2kRl7YtEOLHWqE=
+Received: from localhost.localdomain ([36.111.64.84])
+	by newxmesmtplogicsvrszc5-2.qq.com (NewEsmtp) with SMTP
+	id 64E37C5C; Tue, 30 Jul 2024 17:25:14 +0800
+X-QQ-mid: xmsmtpt1722331514ti2mdsjo0
+Message-ID: <tencent_A7A264C6C6F9289CAE6046759239DCB45A0A@qq.com>
+X-QQ-XMAILINFO: MR/iVh5QLeienvsCx/U4UbqmyHgJAqVZxMmDyd7UbZm0Jje+Yv/zxqQ1QnJIzJ
+	 ZqVopIGUHbDdybBNKbul9/nw/sc3vmNfwgdoIf0EqoIQEp6hXpg3qs5SFegTswut74bOq46z1kkr
+	 ndnQ+nD/YsFRJmqpwKrQi8HVjahzD1wPDZjr6WHWHAekrjVtkV7kvNdzz7ZpCJ/OEGixLEcpV4zs
+	 jcEapJgjSAaPq8KW/+xBSBf9CvrkiHTg7/LRDbtcltFQhb6NyYp5RBp2bG54eyk1BaXE4HcNREmi
+	 HfEnlp/EZn0UYs9p7ACh3QOoNsExQS/TXLe250aYIsYNvOgQkBC4qPKpy1Csc16JJ9ovdRfgIqxh
+	 7lly1vbtgbZgHRoinmZrEL4IBsj7JVzohxqNXp8Dwk5Wge00G54H5BFIiiOqnOxaoh6hKFJdKQhh
+	 P14SjGPRVkd819d8FRHOosO7Mb+5zwlIlTMQiUgNBYDLvMuZQSDOlCFsQxsLG3lNjGByFBxVIXyU
+	 QhWnDXC2BS6JJwoEXLD9aseicAJqHBcNSq1jPzJzfdP9vx+YJP6kSQJjKHd+4lpA/GtO/0lgD1S3
+	 SRymxWEW2vLmCatg0k8FbZauP0SPbXHhqmLBx7D/A0G/6dwIUHjoquIkyXsOBvD+Y5MvBFB8l9bo
+	 2+NfgvEuPmTyHNHjj/HkPNNAKkhJerFdL2IoPJ5GkhIHVXpab6InfWzEvWQoLfSrICk3alMRnzx/
+	 HK0ngfTon/aaT6qWIY7ugzHBA3ea8pCz9e+V4B9AtqEpiyfQ7thPR6mSC1oJE8+EPRT5Ml2bTAyA
+	 km51CM9aEojt/yzJJ5fSSnCHyXeOHl4mTaRHwNEKEb1tO4Le4vyZcRy3uRtUhJAQEGb9PtJZK2z2
+	 FGKF66sq63zLECPLcysYur7ZZ3l2448RtxUJjp5gIYVCc3KkgSuxNxYlhby1iSndWw+TyEytvUL7
+	 T8DOvEHBScHZ8tzrlLWOTGymeh+sMKGTG0DFWA/3g72CI+y1ve/I6BzeKiojsZ+cEgPY2AB5Qyyi
+	 qAJAYJ0A==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+From: wujing <realwujing@qq.com>
+To: gregkh@linuxfoundation.org
+Cc: dongml2@chinatelecom.cn,
+	linux-kernel@vger.kernel.org,
+	menglong8.dong@gmail.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	realwujing@qq.com,
+	stable@vger.kernel.org,
+	yuanql9@chinatelecom.cn
+Subject: Re: Re: [PATCH] sched/fair: Correct CPU selection from isolated domain
+Date: Tue, 30 Jul 2024 17:25:13 +0800
+X-OQ-MSGID: <20240730092513.37979-1-realwujing@qq.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024073032-ferret-obtrusive-3ce4@gregkh>
+References: <2024073032-ferret-obtrusive-3ce4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+> What "current patch"?
+>
+> confused,
+>
+> greg k-h
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+```bash
+git remote -v
+stable  git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git (fetch)
+stable  git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git (push)
+```
 
-To reproduce the conflict and resubmit, you may use the following commands:
+```bash
+git branch
+*master
+```
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 76ba6acfcce871db13ad51c6dc8f56fec2e92853
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073058-game-plant-575c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-76ba6acfcce8 ("mm: optimize the redundant loop of mm_update_owner_next()")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 76ba6acfcce871db13ad51c6dc8f56fec2e92853 Mon Sep 17 00:00:00 2001
-From: Jinliang Zheng <alexjlzheng@tencent.com>
-Date: Thu, 20 Jun 2024 20:21:24 +0800
-Subject: [PATCH] mm: optimize the redundant loop of mm_update_owner_next()
-
-When mm_update_owner_next() is racing with swapoff (try_to_unuse()) or
-/proc or ptrace or page migration (get_task_mm()), it is impossible to
-find an appropriate task_struct in the loop whose mm_struct is the same as
-the target mm_struct.
-
-If the above race condition is combined with the stress-ng-zombie and
-stress-ng-dup tests, such a long loop can easily cause a Hard Lockup in
-write_lock_irq() for tasklist_lock.
-
-Recognize this situation in advance and exit early.
-
-Link: https://lkml.kernel.org/r/20240620122123.3877432-1-alexjlzheng@tencent.com
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Tycho Andersen <tandersen@netflix.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/kernel/exit.c b/kernel/exit.c
-index f95a2c1338a8..81fcee45d630 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -484,6 +484,8 @@ void mm_update_next_owner(struct mm_struct *mm)
- 	 * Search through everything else, we should not get here often.
- 	 */
- 	for_each_process(g) {
-+		if (atomic_read(&mm->mm_users) <= 1)
-+			break;
- 		if (g->flags & PF_KTHREAD)
- 			continue;
- 		for_each_thread(g, c) {
+In the git repository information provided above, 8aeaffef8c6e is one of the
+output items from the command `git log -S 'cpumask_test_cpu(cpu, \
+sched_domain_span(sd))' --oneline kernel/sched/fair.c`.
 
 
