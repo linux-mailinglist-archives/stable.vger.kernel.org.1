@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49859941BAA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 919A9941B42
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DAE0B23906
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 479DD280C9C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61A71898E0;
-	Tue, 30 Jul 2024 16:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8398189502;
+	Tue, 30 Jul 2024 16:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IifFBoWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXtXiOM1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D131A619E;
-	Tue, 30 Jul 2024 16:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D181A619E;
+	Tue, 30 Jul 2024 16:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358354; cv=none; b=BOEkPhEdlWAF3KnD57HkQvrOczscoHxv9X7Kr5CtGg1o2hycRfZxAXKXlzJvA+wE12s7/Ny9AfNrQip5eIwg2wDbtbL59vrUTV0H97k/GctpfXTlTNIyHbMqNeRxIv7nv4LshvJeSkg4RIq4DCU20N+qNovwa125vH36tn92E5w=
+	t=1722358364; cv=none; b=H5ePCLFVKq3gaAEmxWKWseCUI06XkaKozlnTFLoo5Rz99U5Dhf9m6WHpnWbN5m9ZaqMqcEqr5vEmFWUQmp0GWwTzScVA643JNo5EsYo//mBXjpn+zeDgl4WOdP5k+8wSfjkBz7U9kWYJuf27ivJ4hEAS1UUw4Y8ers4uZlneS1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358354; c=relaxed/simple;
-	bh=D3yevytANEwQe6x4oE720RuexFSZN9folyPdDgidZK0=;
+	s=arc-20240116; t=1722358364; c=relaxed/simple;
+	bh=CmugAf6stNtlQOr5oZD6ig92G7i7jwYODeN2eI/E4n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oR2CkPRKkmoonEasLNtvcw4clj375clU6ydgwOKi3yn/Fz6yVTS3YyZ5VmpbDGY/HNtLLdVU7M006+NWn778AmPqoss+P6IMqO+yBFpF4QZuBJo9iQ5k2nQ2uyBCBYRDyqG/zyI/nJBFkfiyBO5Ygb0ppDRIVKF6gHbNs8eS4Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IifFBoWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21F1C32782;
-	Tue, 30 Jul 2024 16:52:33 +0000 (UTC)
+	 MIME-Version; b=h0YARVqzBJ6triNsRPAN6WXVmjr1Rt508b679bshPo9ckioX4e3xBPbddVw7hVHSZvniADOMFib0BsfExgZXakgABxFzhi5VFGxWv0wPsOG14m6NA4Q2A2TE3Rk24kClFJ7xyJbciHh7XH4YYXY41Q5tz8igEgZCIFQNX43Hvtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXtXiOM1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3748C32782;
+	Tue, 30 Jul 2024 16:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358354;
-	bh=D3yevytANEwQe6x4oE720RuexFSZN9folyPdDgidZK0=;
+	s=korg; t=1722358364;
+	bh=CmugAf6stNtlQOr5oZD6ig92G7i7jwYODeN2eI/E4n0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IifFBoWmOs4L257bObUcWVeCUx9+ZddrCJM0HJi6TambFdP6GJklDBOFjuD3UkvIC
-	 QdTAQ8rlAeSOmWcfHkp3ZpeBBwEZbWJGA9E0gEAgbeFGl1M4cuI50LzTl1bME/2+q1
-	 a5K6hmixAkLi5EdZiowmza4OnKq8XYGTSbz5NSQ0=
+	b=UXtXiOM17QEqbTpbFbfLT8nQCXb9cMK1zgbHFAcfgdJpp7XqfaF58EFzoXCl2xG1l
+	 AMI/hLvc+wZ7b9b8tgrmLqVyGz58/IAZ/WHq3Shi0TsRLOvSIyFdcavVLnt7RhptKg
+	 OUQmL+MLTu0kluZvV8+rSPJVyvjTAfoypJbIr/DI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linke li <lilinke99@qq.com>,
+	Yang Yang <yang.yang@vivo.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 354/568] sbitmap: use READ_ONCE to access map->word
-Date: Tue, 30 Jul 2024 17:47:41 +0200
-Message-ID: <20240730151653.702927655@linuxfoundation.org>
+Subject: [PATCH 6.6 355/568] sbitmap: fix io hung due to race on sbitmap_word::cleared
+Date: Tue, 30 Jul 2024 17:47:42 +0200
+Message-ID: <20240730151653.740870903@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,55 +68,160 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: linke li <lilinke99@qq.com>
+From: Yang Yang <yang.yang@vivo.com>
 
-[ Upstream commit 6ad0d7e0f4b68f87a98ea2b239123b7d865df86b ]
+[ Upstream commit 72d04bdcf3f7d7e07d82f9757946f68802a7270a ]
 
-In __sbitmap_queue_get_batch(), map->word is read several times, and
-update atomically using atomic_long_try_cmpxchg(). But the first two read
-of map->word is not protected.
+Configuration for sbq:
+  depth=64, wake_batch=6, shift=6, map_nr=1
 
-This patch moves the statement val = READ_ONCE(map->word) forward,
-eliminating unprotected accesses to map->word within the function.
-It is aimed at reducing the number of benign races reported by KCSAN in
-order to focus future debugging effort on harmful races.
+1. There are 64 requests in progress:
+  map->word = 0xFFFFFFFFFFFFFFFF
+2. After all the 64 requests complete, and no more requests come:
+  map->word = 0xFFFFFFFFFFFFFFFF, map->cleared = 0xFFFFFFFFFFFFFFFF
+3. Now two tasks try to allocate requests:
+  T1:                                       T2:
+  __blk_mq_get_tag                          .
+  __sbitmap_queue_get                       .
+  sbitmap_get                               .
+  sbitmap_find_bit                          .
+  sbitmap_find_bit_in_word                  .
+  __sbitmap_get_word  -> nr=-1              __blk_mq_get_tag
+  sbitmap_deferred_clear                    __sbitmap_queue_get
+  /* map->cleared=0xFFFFFFFFFFFFFFFF */     sbitmap_find_bit
+    if (!READ_ONCE(map->cleared))           sbitmap_find_bit_in_word
+      return false;                         __sbitmap_get_word -> nr=-1
+    mask = xchg(&map->cleared, 0)           sbitmap_deferred_clear
+    atomic_long_andnot()                    /* map->cleared=0 */
+                                              if (!(map->cleared))
+                                                return false;
+                                     /*
+                                      * map->cleared is cleared by T1
+                                      * T2 fail to acquire the tag
+                                      */
 
-Signed-off-by: linke li <lilinke99@qq.com>
-Link: https://lore.kernel.org/r/tencent_0B517C25E519D3D002194E8445E86C04AD0A@qq.com
+4. T2 is the sole tag waiter. When T1 puts the tag, T2 cannot be woken
+up due to the wake_batch being set at 6. If no more requests come, T1
+will wait here indefinitely.
+
+This patch achieves two purposes:
+1. Check on ->cleared and update on both ->cleared and ->word need to
+be done atomically, and using spinlock could be the simplest solution.
+2. Add extra check in sbitmap_deferred_clear(), to identify whether
+->word has free bits.
+
+Fixes: ea86ea2cdced ("sbitmap: ammortize cost of clearing bits")
+Signed-off-by: Yang Yang <yang.yang@vivo.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240716082644.659566-1-yang.yang@vivo.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 72d04bdcf3f7 ("sbitmap: fix io hung due to race on sbitmap_word::cleared")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/sbitmap.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/sbitmap.h |  5 +++++
+ lib/sbitmap.c           | 36 +++++++++++++++++++++++++++++-------
+ 2 files changed, 34 insertions(+), 7 deletions(-)
 
+diff --git a/include/linux/sbitmap.h b/include/linux/sbitmap.h
+index d662cf136021d..c09cdcc99471e 100644
+--- a/include/linux/sbitmap.h
++++ b/include/linux/sbitmap.h
+@@ -36,6 +36,11 @@ struct sbitmap_word {
+ 	 * @cleared: word holding cleared bits
+ 	 */
+ 	unsigned long cleared ____cacheline_aligned_in_smp;
++
++	/**
++	 * @swap_lock: serializes simultaneous updates of ->word and ->cleared
++	 */
++	spinlock_t swap_lock;
+ } ____cacheline_aligned_in_smp;
+ 
+ /**
 diff --git a/lib/sbitmap.c b/lib/sbitmap.c
-index d0a5081dfd122..d1247f34d584e 100644
+index d1247f34d584e..9307bf17a8175 100644
 --- a/lib/sbitmap.c
 +++ b/lib/sbitmap.c
-@@ -499,18 +499,18 @@ unsigned long __sbitmap_queue_get_batch(struct sbitmap_queue *sbq, int nr_tags,
- 		struct sbitmap_word *map = &sb->map[index];
- 		unsigned long get_mask;
+@@ -60,12 +60,30 @@ static inline void update_alloc_hint_after_get(struct sbitmap *sb,
+ /*
+  * See if we have deferred clears that we can batch move
+  */
+-static inline bool sbitmap_deferred_clear(struct sbitmap_word *map)
++static inline bool sbitmap_deferred_clear(struct sbitmap_word *map,
++		unsigned int depth, unsigned int alloc_hint, bool wrap)
+ {
+-	unsigned long mask;
++	unsigned long mask, word_mask;
+ 
+-	if (!READ_ONCE(map->cleared))
+-		return false;
++	guard(spinlock_irqsave)(&map->swap_lock);
++
++	if (!map->cleared) {
++		if (depth == 0)
++			return false;
++
++		word_mask = (~0UL) >> (BITS_PER_LONG - depth);
++		/*
++		 * The current behavior is to always retry after moving
++		 * ->cleared to word, and we change it to retry in case
++		 * of any free bits. To avoid an infinite loop, we need
++		 * to take wrap & alloc_hint into account, otherwise a
++		 * soft lockup may occur.
++		 */
++		if (!wrap && alloc_hint)
++			word_mask &= ~((1UL << alloc_hint) - 1);
++
++		return (READ_ONCE(map->word) & word_mask) != word_mask;
++	}
+ 
+ 	/*
+ 	 * First get a stable cleared mask, setting the old mask to 0.
+@@ -85,6 +103,7 @@ int sbitmap_init_node(struct sbitmap *sb, unsigned int depth, int shift,
+ 		      bool alloc_hint)
+ {
+ 	unsigned int bits_per_word;
++	int i;
+ 
+ 	if (shift < 0)
+ 		shift = sbitmap_calculate_shift(depth);
+@@ -116,6 +135,9 @@ int sbitmap_init_node(struct sbitmap *sb, unsigned int depth, int shift,
+ 		return -ENOMEM;
+ 	}
+ 
++	for (i = 0; i < sb->map_nr; i++)
++		spin_lock_init(&sb->map[i].swap_lock);
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(sbitmap_init_node);
+@@ -126,7 +148,7 @@ void sbitmap_resize(struct sbitmap *sb, unsigned int depth)
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < sb->map_nr; i++)
+-		sbitmap_deferred_clear(&sb->map[i]);
++		sbitmap_deferred_clear(&sb->map[i], 0, 0, 0);
+ 
+ 	sb->depth = depth;
+ 	sb->map_nr = DIV_ROUND_UP(sb->depth, bits_per_word);
+@@ -179,7 +201,7 @@ static int sbitmap_find_bit_in_word(struct sbitmap_word *map,
+ 					alloc_hint, wrap);
+ 		if (nr != -1)
+ 			break;
+-		if (!sbitmap_deferred_clear(map))
++		if (!sbitmap_deferred_clear(map, depth, alloc_hint, wrap))
+ 			break;
+ 	} while (1);
+ 
+@@ -501,7 +523,7 @@ unsigned long __sbitmap_queue_get_batch(struct sbitmap_queue *sbq, int nr_tags,
  		unsigned int map_depth = __map_depth(sb, index);
-+		unsigned long val;
+ 		unsigned long val;
  
- 		sbitmap_deferred_clear(map);
--		if (map->word == (1UL << (map_depth - 1)) - 1)
-+		val = READ_ONCE(map->word);
-+		if (val == (1UL << (map_depth - 1)) - 1)
+-		sbitmap_deferred_clear(map);
++		sbitmap_deferred_clear(map, 0, 0, 0);
+ 		val = READ_ONCE(map->word);
+ 		if (val == (1UL << (map_depth - 1)) - 1)
  			goto next;
- 
--		nr = find_first_zero_bit(&map->word, map_depth);
-+		nr = find_first_zero_bit(&val, map_depth);
- 		if (nr + nr_tags <= map_depth) {
- 			atomic_long_t *ptr = (atomic_long_t *) &map->word;
--			unsigned long val;
- 
- 			get_mask = ((1UL << nr_tags) - 1) << nr;
--			val = READ_ONCE(map->word);
- 			while (!atomic_long_try_cmpxchg(ptr, &val,
- 							  get_mask | val))
- 				;
 -- 
 2.43.0
 
