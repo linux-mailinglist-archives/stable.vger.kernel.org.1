@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594F3941BEA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F36941EAE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12C66282204
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C4DC1F242DE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D577C188003;
-	Tue, 30 Jul 2024 17:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E73188017;
+	Tue, 30 Jul 2024 17:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oN1JX6d5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuNebQHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C681156F30;
-	Tue, 30 Jul 2024 17:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4636D1A76A5;
+	Tue, 30 Jul 2024 17:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358847; cv=none; b=tgpi9JdDT0zIN0A2v7rcpI6XqD4LYuPFtcek2hh3LHjRAPAlslf1eGlrX7KGhC8SXz8j2g6L2LgUnDOXzl66UmWemgzetRD5Eml0rCiGqupSiUF9rxNqfC57T4AsAIGe/DfFM9B0jM6ZtCCqkQQQ6nONVAl9yrg6qxGyHT2P94M=
+	t=1722360713; cv=none; b=AR2Hre1wtB9JywRfYkHvGV45RyGGgk755Hd+CBmZSGqufoi4/WQZysMYHCSPfcKdFX+3WCgv8uyiV5vK8J78F3qkqBQrwWa8m1rrYr4JWj8S80ogIofvODul5xtKwtcS0CAtb/NwLjafm0HwxRuDNgCsBWP6cUXhD4ujDt5IVqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358847; c=relaxed/simple;
-	bh=mKscQO2xYEsYfI1DW0T2D53skK1EmJWDq+jngWmlHyw=;
+	s=arc-20240116; t=1722360713; c=relaxed/simple;
+	bh=qyX+leFfbhUSvHQh85pFzt6Kl3eMQDTxLujDaitYNnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blHA1YMN9KsA8UsNIrt+k3tUL7UVGwl4t8FfRoOcN9Erm3QKm/foGr6+3AUxkxbzcr4hRkLtldflpnA86wXloIKB5ZoIJt1LinXN6vifXyiNDHeGLiCXGoVUZaDQz1OqZmoH5bQTQQ4uqCWsn0KHdwhNnZ/G6gSGHZ+INrzeqa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oN1JX6d5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C86C32782;
-	Tue, 30 Jul 2024 17:00:46 +0000 (UTC)
+	 MIME-Version; b=d0AbSjIlI908gZvBBprytVHr6zgqVBf7LJXhj3tu+WuQmq+FwH361UtXZ7GZi50W+nnvPsNV34eSoWXOnZSqeuz+jqQcKMaeO1ELAP8YqrbaaM7RGzRnLT5k896XYu2sS6XSpaL5120jDCx+xP8hcQ5knn9UxHoWo/QBO1eTF6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuNebQHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1943C4AF0A;
+	Tue, 30 Jul 2024 17:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358847;
-	bh=mKscQO2xYEsYfI1DW0T2D53skK1EmJWDq+jngWmlHyw=;
+	s=korg; t=1722360713;
+	bh=qyX+leFfbhUSvHQh85pFzt6Kl3eMQDTxLujDaitYNnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oN1JX6d5Lkxvdn6PVP03/gCc9JHG/hGrZ7B+nLpE4/dty69/3sVgO8yFRr36bfUJZ
-	 Z5MplZ0n1sUXtSzRHMqeBZF3IASOUkYGVzMv0qXjP+CsgmhoklIr51JykqynnVQqO3
-	 ZxDf7y4a4uRA5Nti2sibw9s/0640hX8UC1qP5ABw=
+	b=JuNebQHkBaaITs4NUUY9qg4dP8WIDH5EjArbT8f8d/tSD8SNczPRp4Ya8NfqttFVd
+	 ZtTyUeIsjfuDIrtF4r7QyAswzVBT0UyBBjx+kzQIgBVY/uWbGu3rk2N3rCCvicjgII
+	 YND+rrPJ8UeG5Spy8z0qCtN3lt0SbQINDLIe/qYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Wilkins <steve.wilkins@raymarine.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Bart Van Assche <bvanassche@acm.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 427/440] spi: microchip-core: fix init function not setting the master and motorola modes
+Subject: [PATCH 6.10 784/809] nvme-pci: Fix the instructions for disabling power management
 Date: Tue, 30 Jul 2024 17:51:00 +0200
-Message-ID: <20240730151632.458718078@linuxfoundation.org>
+Message-ID: <20240730151755.932652339@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Wilkins <steve.wilkins@raymarine.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 3a5e76283672efddf47cea39ccfe9f5735cc91d5 ]
+[ Upstream commit 92fc2c469eb26060384e9b2cd4cb0cc228aba582 ]
 
-mchp_corespi_init() reads the CONTROL register, sets the master and
-motorola bits, but doesn't write the value back to the register. The
-function also doesn't ensure the controller is disabled at the start,
-which may present a problem if the controller was used by an
-earlier boot stage as some settings (including the mode) can only be
-modified while the controller is disabled.
+pcie_aspm=off tells the kernel not to modify the ASPM configuration. This
+setting does not guarantee that ASPM (Active State Power Management) is
+disabled. Hence add pcie_port_pm=off. This disables power management for
+all PCIe ports.
 
-Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-Signed-off-by: Steve Wilkins <steve.wilkins@raymarine.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20240715-designing-thus-05f7c26e1da7@wendy
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This patch has been tested on a workstation with a Samsung SSD 970 EVO Plus
+NVMe SSD.
+
+Fixes: 4641a8e6e145 ("nvme-pci: add trouble shooting steps for timeouts")
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-microchip-core.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index a5173d820ac2e..bfad0fe743ad7 100644
---- a/drivers/spi/spi-microchip-core.c
-+++ b/drivers/spi/spi-microchip-core.c
-@@ -289,17 +289,13 @@ static void mchp_corespi_init(struct spi_controller *host, struct mchp_corespi *
- 	unsigned long clk_hz;
- 	u32 control = mchp_corespi_read(spi, REG_CONTROL);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 102a9fb0c65ff..9e9b05e79c474 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1274,7 +1274,7 @@ static void nvme_warn_reset(struct nvme_dev *dev, u32 csts)
+ 	dev_warn(dev->ctrl.device,
+ 		 "Does your device have a faulty power saving mode enabled?\n");
+ 	dev_warn(dev->ctrl.device,
+-		 "Try \"nvme_core.default_ps_max_latency_us=0 pcie_aspm=off\" and report a bug\n");
++		 "Try \"nvme_core.default_ps_max_latency_us=0 pcie_aspm=off pcie_port_pm=off\" and report a bug\n");
+ }
  
--	control |= CONTROL_MASTER;
-+	control &= ~CONTROL_ENABLE;
-+	mchp_corespi_write(spi, REG_CONTROL, control);
- 
-+	control |= CONTROL_MASTER;
- 	control &= ~CONTROL_MODE_MASK;
- 	control |= MOTOROLA_MODE;
- 
--	mchp_corespi_set_framesize(spi, DEFAULT_FRAMESIZE);
--
--	/* max. possible spi clock rate is the apb clock rate */
--	clk_hz = clk_get_rate(spi->clk);
--	host->max_speed_hz = clk_hz;
--
- 	/*
- 	 * The controller must be configured so that it doesn't remove Chip
- 	 * Select until the entire message has been transferred, even if at
-@@ -308,11 +304,16 @@ static void mchp_corespi_init(struct spi_controller *host, struct mchp_corespi *
- 	 * BIGFIFO mode is also enabled, which sets the fifo depth to 32 frames
- 	 * for the 8 bit transfers that this driver uses.
- 	 */
--	control = mchp_corespi_read(spi, REG_CONTROL);
- 	control |= CONTROL_SPS | CONTROL_BIGFIFO;
- 
- 	mchp_corespi_write(spi, REG_CONTROL, control);
- 
-+	mchp_corespi_set_framesize(spi, DEFAULT_FRAMESIZE);
-+
-+	/* max. possible spi clock rate is the apb clock rate */
-+	clk_hz = clk_get_rate(spi->clk);
-+	host->max_speed_hz = clk_hz;
-+
- 	mchp_corespi_enable_ints(spi);
- 
- 	/*
+ static enum blk_eh_timer_return nvme_timeout(struct request *req)
 -- 
 2.43.0
 
