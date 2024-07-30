@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-62961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D9A941671
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C99F941675
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01D821C22A74
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E7451F242BA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D862154C14;
-	Tue, 30 Jul 2024 16:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700AA1BE853;
+	Tue, 30 Jul 2024 16:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEVbktQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUylv2gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BD91A38CF;
-	Tue, 30 Jul 2024 16:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2740C1BE85E;
+	Tue, 30 Jul 2024 16:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355206; cv=none; b=Z+0JN5aJED6LOt4fABT2w7DLSYIkYABdCvfHOSZ3Ldg0iKtoSkae03SH3UjCnCJc/sx1LTFxcGu3eJuH8plVBjn/EHCXGN8E/c4uM+muVgurS9LW30dADZpK3IxHK5eFeTBhl8aZbbn6AWyIfNQIVp6cJEWfQv4c28LKyjBb7ZQ=
+	t=1722355219; cv=none; b=BmZtBh03u5yP3zlHuSkiFJSAxhp0tFEywfDP3p4xCrce7+4gYN3RxBbV6srV30z6QwVwrBA12/HoC4/HCJUPkfiRyGbPdYlxm5BGEz/TeC+yxeC/gb81gmhWBRNaVJiWUfJiLP9KYRZFgtfPPSy05TMpqIkJcLd2I2chJUp25Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355206; c=relaxed/simple;
-	bh=3OXJbIy8+WRGibA1YqmaRbsCWUabRLof9cwCMbkXvRs=;
+	s=arc-20240116; t=1722355219; c=relaxed/simple;
+	bh=8l/j04e2zT1t6onVuWds8Jtbh2geGRHJ7u8O7yUu47o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThZy/qG2DqW810CzVme8tpTIhxZDKEIzag6MJkBWMnkBLsL+NMVn7oTxDc9/cMUJG1pdyFTH1ignOuECzA2UZQBEEagi5z15inQxGVCw9re4mBgWC9wXMfknBf81qRwbZsKgzwSxUfuMxMGMvCPb4dRA3uP+KJGMfRjSg0A9ebA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEVbktQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E36C32782;
-	Tue, 30 Jul 2024 16:00:04 +0000 (UTC)
+	 MIME-Version; b=jW4PNy7eABt+cublq3jNpRlu/0oVgEpSFujzAvXlWem/eWtvF2U16rRhrBqKPWSxeqiZ6Y64cAh7R7Rhbkw8A3qdTVSQPQJhILTj8vptFVpWpq8yoJvQtayvIs9n6hb4GYqMm50NWCnWVho/a6f/mX5JOc80QfFJyPliRqN53Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUylv2gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C71CC32782;
+	Tue, 30 Jul 2024 16:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355205;
-	bh=3OXJbIy8+WRGibA1YqmaRbsCWUabRLof9cwCMbkXvRs=;
+	s=korg; t=1722355219;
+	bh=8l/j04e2zT1t6onVuWds8Jtbh2geGRHJ7u8O7yUu47o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MEVbktQ6ik+9RhOf0npV0uaUfuE0JWn+Ll5n2qNZaTbLaRs0USYZE5VF47jfzvT6q
-	 DZCLkgjoxrkOtDGtl2AMuzTdEWtORzjzATiEFFhkcTNGA7hW2JnyoYQtUdRYkVWaeK
-	 52zwHBYlxVZTsx/+JtKyUitJpG6mqT7wXFfDbcxU=
+	b=PUylv2gcSv2Nk/A9P+EzH2Euwaet7/81Ab4bdE68n6EQYPzKB5DxkO7PFPFn7e438
+	 mdfhJe1lJRftLQ2PrbuFDBXpE/S3whHNiJNbZ0gpTwO5Z8gi4K3+XIE8kYdoQNnsoe
+	 kRIZKh4lFcdNX7UaxIKpuwMYqILyK4HfNZKe8bfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Kusiak <mateusz.kusiak@linux.intel.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
 	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 029/809] md: Dont wait for MD_RECOVERY_NEEDED for HOT_REMOVE_DISK ioctl
-Date: Tue, 30 Jul 2024 17:38:25 +0200
-Message-ID: <20240730151725.807475597@linuxfoundation.org>
+Subject: [PATCH 6.10 030/809] md/raid5: recheck if reshape has finished with device_lock held
+Date: Tue, 30 Jul 2024 17:38:26 +0200
+Message-ID: <20240730151725.845727290@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,55 +66,133 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit a1fd37f97808db4fa1bf55da0275790c42521e45 ]
+[ Upstream commit 25b3a8237a03ec0b67b965b52d74862e77ef7115 ]
 
-Commit 90f5f7ad4f38 ("md: Wait for md_check_recovery before attempting
-device removal.") explained in the commit message that failed device
-must be reomoved from the personality first by md_check_recovery(),
-before it can be removed from the array. That's the reason the commit
-add the code to wait for MD_RECOVERY_NEEDED.
+When handling an IO request, MD checks if a reshape is currently
+happening, and if so, where the IO sector is in relation to the reshape
+progress. MD uses conf->reshape_progress for both of these tasks.  When
+the reshape finishes, conf->reshape_progress is set to MaxSector.  If
+this occurs after MD checks if the reshape is currently happening but
+before it calls ahead_of_reshape(), then ahead_of_reshape() will end up
+comparing the IO sector against MaxSector. During a backwards reshape,
+this will make MD think the IO sector is in the area not yet reshaped,
+causing it to use the previous configuration, and map the IO to the
+sector where that data was before the reshape.
 
-However, this is not the case now, because remove_and_add_spares() is
-called directly from hot_remove_disk() from ioctl path, hence failed
-device(marked faulty) can be removed from the personality by ioctl.
+This bug can be triggered by running the lvm2
+lvconvert-raid-reshape-linear_to_raid6-single-type.sh test in a loop,
+although it's very hard to reproduce.
 
-On the other hand, the commit introduced a performance problem that
-if MD_RECOVERY_NEEDED is set and the array is not running, ioctl will
-wait for 5s before it can return failure to user.
+Fix this by factoring the code that checks where the IO sector is in
+relation to the reshape out to a helper called get_reshape_loc(),
+which reads reshape_progress and reshape_safe while holding the
+device_lock, and then rechecks if the reshape has finished before
+calling ahead_of_reshape with the saved values.
 
-Since the waiting is not needed now, fix the problem by removing the
-waiting.
+Also use the helper during the REQ_NOWAIT check to see if the location
+is inside of the reshape region.
 
-Fixes: 90f5f7ad4f38 ("md: Wait for md_check_recovery before attempting device removal.")
-Reported-by: Mateusz Kusiak <mateusz.kusiak@linux.intel.com>
-Closes: https://lore.kernel.org/all/814ff6ee-47a2-4ba0-963e-cf256ee4ecfa@linux.intel.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Fixes: fef9c61fdfabf ("md/raid5: change reshape-progress measurement to cope with reshaping backwards.")
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
 Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240627112321.3044744-1-yukuai1@huaweicloud.com
+Link: https://lore.kernel.org/r/20240702151802.1632010-1-bmarzins@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/md/raid5.c | 64 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 41 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 3a02b8903d626..9c5be016e5073 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -7746,12 +7746,6 @@ static int md_ioctl(struct block_device *bdev, blk_mode_t mode,
- 		return get_bitmap_file(mddev, argp);
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 2bd1ce9b39226..36d6764a1b25c 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5899,6 +5899,39 @@ static int add_all_stripe_bios(struct r5conf *conf,
+ 	return ret;
+ }
+ 
++enum reshape_loc {
++	LOC_NO_RESHAPE,
++	LOC_AHEAD_OF_RESHAPE,
++	LOC_INSIDE_RESHAPE,
++	LOC_BEHIND_RESHAPE,
++};
++
++static enum reshape_loc get_reshape_loc(struct mddev *mddev,
++		struct r5conf *conf, sector_t logical_sector)
++{
++	sector_t reshape_progress, reshape_safe;
++	/*
++	 * Spinlock is needed as reshape_progress may be
++	 * 64bit on a 32bit platform, and so it might be
++	 * possible to see a half-updated value
++	 * Of course reshape_progress could change after
++	 * the lock is dropped, so once we get a reference
++	 * to the stripe that we think it is, we will have
++	 * to check again.
++	 */
++	spin_lock_irq(&conf->device_lock);
++	reshape_progress = conf->reshape_progress;
++	reshape_safe = conf->reshape_safe;
++	spin_unlock_irq(&conf->device_lock);
++	if (reshape_progress == MaxSector)
++		return LOC_NO_RESHAPE;
++	if (ahead_of_reshape(mddev, logical_sector, reshape_progress))
++		return LOC_AHEAD_OF_RESHAPE;
++	if (ahead_of_reshape(mddev, logical_sector, reshape_safe))
++		return LOC_INSIDE_RESHAPE;
++	return LOC_BEHIND_RESHAPE;
++}
++
+ static enum stripe_result make_stripe_request(struct mddev *mddev,
+ 		struct r5conf *conf, struct stripe_request_ctx *ctx,
+ 		sector_t logical_sector, struct bio *bi)
+@@ -5913,28 +5946,14 @@ static enum stripe_result make_stripe_request(struct mddev *mddev,
+ 	seq = read_seqcount_begin(&conf->gen_lock);
+ 
+ 	if (unlikely(conf->reshape_progress != MaxSector)) {
+-		/*
+-		 * Spinlock is needed as reshape_progress may be
+-		 * 64bit on a 32bit platform, and so it might be
+-		 * possible to see a half-updated value
+-		 * Of course reshape_progress could change after
+-		 * the lock is dropped, so once we get a reference
+-		 * to the stripe that we think it is, we will have
+-		 * to check again.
+-		 */
+-		spin_lock_irq(&conf->device_lock);
+-		if (ahead_of_reshape(mddev, logical_sector,
+-				     conf->reshape_progress)) {
+-			previous = 1;
+-		} else {
+-			if (ahead_of_reshape(mddev, logical_sector,
+-					     conf->reshape_safe)) {
+-				spin_unlock_irq(&conf->device_lock);
+-				ret = STRIPE_SCHEDULE_AND_RETRY;
+-				goto out;
+-			}
++		enum reshape_loc loc = get_reshape_loc(mddev, conf,
++						       logical_sector);
++		if (loc == LOC_INSIDE_RESHAPE) {
++			ret = STRIPE_SCHEDULE_AND_RETRY;
++			goto out;
+ 		}
+-		spin_unlock_irq(&conf->device_lock);
++		if (loc == LOC_AHEAD_OF_RESHAPE)
++			previous = 1;
  	}
  
--	if (cmd == HOT_REMOVE_DISK)
--		/* need to ensure recovery thread has run */
--		wait_event_interruptible_timeout(mddev->sb_wait,
--						 !test_bit(MD_RECOVERY_NEEDED,
--							   &mddev->recovery),
--						 msecs_to_jiffies(5000));
- 	if (cmd == STOP_ARRAY || cmd == STOP_ARRAY_RO) {
- 		/* Need to flush page cache, and ensure no-one else opens
- 		 * and writes
+ 	new_sector = raid5_compute_sector(conf, logical_sector, previous,
+@@ -6113,8 +6132,7 @@ static bool raid5_make_request(struct mddev *mddev, struct bio * bi)
+ 	/* Bail out if conflicts with reshape and REQ_NOWAIT is set */
+ 	if ((bi->bi_opf & REQ_NOWAIT) &&
+ 	    (conf->reshape_progress != MaxSector) &&
+-	    !ahead_of_reshape(mddev, logical_sector, conf->reshape_progress) &&
+-	    ahead_of_reshape(mddev, logical_sector, conf->reshape_safe)) {
++	    get_reshape_loc(mddev, conf, logical_sector) == LOC_INSIDE_RESHAPE) {
+ 		bio_wouldblock_error(bi);
+ 		if (rw == WRITE)
+ 			md_write_end(mddev);
 -- 
 2.43.0
 
