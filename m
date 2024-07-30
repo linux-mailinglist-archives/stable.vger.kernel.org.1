@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6901C941DB8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DD09418CC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EABD1F279E7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 584711C20E8E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7CC1A76B2;
-	Tue, 30 Jul 2024 17:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772FD1A617E;
+	Tue, 30 Jul 2024 16:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgCBpD29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubw8IUg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1D51A76A9;
-	Tue, 30 Jul 2024 17:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E3D1A6160;
+	Tue, 30 Jul 2024 16:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360042; cv=none; b=Jvs4Oj9q/QUnXHpHCtQvjJePMfeZKpGwQkUgdWoticehdhszAGdHNjjAztxWPEndMsIkQcYl79C/wqaKavYnEKCSvCLp0iM2OAaNJdSXLOr0XMyFSF1tPmu3fxGTmFLSj/DZVeAzW0aq1mpBMyRTzZe72n5PoVu2o6/AIXxRUsY=
+	t=1722356709; cv=none; b=pM6M7C6bgq0mRHweKAL6RGjdAjG7AYJjszmTcx47P0IzveCog2gxAsxv1/kZDrIlBH3upWRcEfWIOjuo3CWnt+OB5GWsRelu1CXVuApCaPGr6BG37ObDJ/9IuxfYGM4CgA68Rrkw3qsz3MN2c3xJ7HnloMhGSYLq/U+fFPOhC6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360042; c=relaxed/simple;
-	bh=6mn5b8b9nG/IXhcvH+EJ/u3N+Dmw/AQRcIOFCgFE+6s=;
+	s=arc-20240116; t=1722356709; c=relaxed/simple;
+	bh=cLCb3FfBzrNFU6aAUsC+wLNjf2A0pf4l0yRuz1tpWo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBqwnXq+XkxQR4pqQN5lVK6BoL06PcZt/s64KMrlpaoHLWS6LWdK/Cscrl6Md7CdElNsHtaPGxPOARHRSB6X3C9h15xWwNZvOjn3ddwOr/kL0Apt9ih1BZK9mRDgScF9YYs0HY3WSywyfg6RgVOGDp9m5KdkrWcWAQm1rWeh52o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgCBpD29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81246C32782;
-	Tue, 30 Jul 2024 17:20:41 +0000 (UTC)
+	 MIME-Version; b=D4+Fa9f8Hy+Ci0DJHVsAvzVUWyowJG+TU/9mt0IOvOOkxSVIN1llK/g6l3ulwmA4CYIA9p69VnyfRm2XwYKmOm45z1aOUkS7hFXLpyzXU67ZWEmacUVf5iNgkWfLZsgpnNLh4gfKyPD56dcTZrhUjiwtIRH0nlUCgBWeda7ZuOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubw8IUg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D3FC32782;
+	Tue, 30 Jul 2024 16:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360042;
-	bh=6mn5b8b9nG/IXhcvH+EJ/u3N+Dmw/AQRcIOFCgFE+6s=;
+	s=korg; t=1722356708;
+	bh=cLCb3FfBzrNFU6aAUsC+wLNjf2A0pf4l0yRuz1tpWo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgCBpD29XrVwh2suuiK+crW+PdM7UTw8xZaQJTFNVZmR53ozJBlF/BPK8Jno24B5t
-	 ilalfPzcX7E8snP9U8RrfmYosoleZp9aZBwkdybQbQp5Um7RqXezQ23L+5ht8+FrNs
-	 B5aFuLWOtq38FHHz/Zn5oHU/xqr+m2khjxdhuRao=
+	b=ubw8IUg1061AwItPAK8qiNfuSlfUm5qOqPpzvm60ys4zvgKBUPSrdvFzORo/WlzuL
+	 gtYA3xAGL8lm8cQQbB0UROeJ7PyoRx7kiOQeOZwT7YDCByYQOCpMS22QbNzqlOcKiz
+	 8xSaVZtxjhGnw/tKhERSthyY6LL6OycttplfhYPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 6.10 578/809] drm/gma500: fix null pointer dereference in cdv_intel_lvds_get_modes
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 221/440] RDMA/hns: Check atomic wr length
 Date: Tue, 30 Jul 2024 17:47:34 +0200
-Message-ID: <20240730151747.608320123@linuxfoundation.org>
+Message-ID: <20240730151624.492574117@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit cb520c3f366c77e8d69e4e2e2781a8ce48d98e79 upstream.
+[ Upstream commit 6afa2c0bfb8ef69f65715ae059e5bd5f9bbaf03b ]
 
-In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
-is assigned to mode, which will lead to a NULL pointer dereference on
-failure of drm_mode_duplicate(). Add a check to avoid npd.
+8 bytes is the only supported length of atomic. Add this check in
+set_rc_wqe(). Besides, stop processing WQEs and return from
+set_rc_wqe() if there is any error.
 
-Cc: stable@vger.kernel.org
-Fixes: 6a227d5fd6c4 ("gma500: Add support for Cedarview")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709113311.37168-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 384f88185112 ("RDMA/hns: Add atomic support")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-2-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/cdv_intel_lvds.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_device.h | 2 ++
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c  | 9 +++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/gma500/cdv_intel_lvds.c
-+++ b/drivers/gpu/drm/gma500/cdv_intel_lvds.c
-@@ -311,6 +311,9 @@ static int cdv_intel_lvds_get_modes(stru
- 	if (mode_dev->panel_fixed_mode != NULL) {
- 		struct drm_display_mode *mode =
- 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
-+		if (!mode)
-+			return 0;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
+index 8748b65c87ea7..0a4c046cdfac4 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_device.h
++++ b/drivers/infiniband/hw/hns/hns_roce_device.h
+@@ -90,6 +90,8 @@
+ /* Configure to HW for PAGE_SIZE larger than 4KB */
+ #define PG_SHIFT_OFFSET				(PAGE_SHIFT - 12)
+ 
++#define ATOMIC_WR_LEN				8
 +
- 		drm_mode_probed_add(connector, mode);
- 		return 1;
- 	}
+ #define HNS_ROCE_IDX_QUE_ENTRY_SZ		4
+ #define SRQ_DB_REG				0x230
+ 
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index c931cce50d50d..176d75f2514eb 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -602,11 +602,16 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
+ 		     (wr->send_flags & IB_SEND_SIGNALED) ? 1 : 0);
+ 
+ 	if (wr->opcode == IB_WR_ATOMIC_CMP_AND_SWP ||
+-	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD)
++	    wr->opcode == IB_WR_ATOMIC_FETCH_AND_ADD) {
++		if (msg_len != ATOMIC_WR_LEN)
++			return -EINVAL;
+ 		set_atomic_seg(wr, rc_sq_wqe, valid_num_sge);
+-	else if (wr->opcode != IB_WR_REG_MR)
++	} else if (wr->opcode != IB_WR_REG_MR) {
+ 		ret = set_rwqe_data_seg(&qp->ibqp, wr, rc_sq_wqe,
+ 					&curr_idx, valid_num_sge);
++		if (ret)
++			return ret;
++	}
+ 
+ 	/*
+ 	 * The pipeline can sequentially post all valid WQEs into WQ buffer,
+-- 
+2.43.0
+
 
 
 
