@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9521C941B79
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1241941B81
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C66C51C2122D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 661771F2360E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64F81898F8;
-	Tue, 30 Jul 2024 16:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA65A18990A;
+	Tue, 30 Jul 2024 16:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZglTuaZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ht4TcCrn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0B31A6195;
-	Tue, 30 Jul 2024 16:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784B918801A;
+	Tue, 30 Jul 2024 16:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358526; cv=none; b=ktCi3mUZcgblQ7ksoucIoESWDcEi9f+iOSbGGguO1FMZvT0Zzb0GGkCxh8VtSqSb98Y8sd6De2vKrpAHMlaVOo+m/dJNaBlCcaeCqhJ1gyAZdchyf8oMxtcYKz8zkt3CmBCNsh03qEDrIbL9lCwdLZpfZDM8pwpdZQe7c3ljg7I=
+	t=1722358547; cv=none; b=rLm9Q6TyOTVCPTesUTPrLLuP5iWqVb6E///zLLx2KmWILECg61pDUvQL9DiNE+T0Zcwc8zvCuSVooba2EFj0zGPkBFJX/3RO9FjiE8LNPRBiI1ffSdzIFMyG1Cj4CYIIEgThddpcdcWKaPFsMS+u93Fxu23reuNCrgnGLz1kfDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358526; c=relaxed/simple;
-	bh=kCnHrEHIo+M62bUDUFfM+FUFjI//s56qPAcvGAPXTas=;
+	s=arc-20240116; t=1722358547; c=relaxed/simple;
+	bh=IQfRzZL0GmHVQ4o/nLrMWZYb6llT/1ehKBNR2Onx9to=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hu5dF/z0fXbspbHPu83wEpt3E3dC7pPl852exYZB7+C5mpZaDXk0I77DaU5v9uIkZCagNma4f/OW5SPmx2TwAEr3CujLpTpGonHm1cFsaILrivIk+tLYuYKY+eA4ig6OCaEeq3fRIOYyuax+cf3hGAP7lsBKQZGiq8qkPxN+4XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZglTuaZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5001C4AF0C;
-	Tue, 30 Jul 2024 16:55:25 +0000 (UTC)
+	 MIME-Version; b=TcA/uBAGHNk8MdnbJvKYuUyawc8KamNZ4TFjfjJxGrxecNy75/xsZlo8mb1/mHRAllWNMaP7jtx/NqAGC+g9a/mBF3LH5/n79paha6ajidYmCTCNaOqw6wLlcc4hgvrcb0TgzmJXxzeEhhI2Zu3O7tM5j1GtAlxm4l4n29gtk2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ht4TcCrn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B887DC32782;
+	Tue, 30 Jul 2024 16:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358526;
-	bh=kCnHrEHIo+M62bUDUFfM+FUFjI//s56qPAcvGAPXTas=;
+	s=korg; t=1722358547;
+	bh=IQfRzZL0GmHVQ4o/nLrMWZYb6llT/1ehKBNR2Onx9to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZglTuaZ6rim+KA/qVF2FdZz1FVl4+xJdNr6KjICsT4LVqT+mxkVKkGsKAlSs3iim0
-	 tf3L8zgjj18EErkfvACFkIibHFfPZYacUeWYOLqHpCitmsVKlMWHT4awRgKsBwkSWx
-	 17vdtebfj6+tMSLFYvcsz9pPzpa6S3YMQ5y7Um9U=
+	b=Ht4TcCrnJN+jRWovoUsgrPbnpzZ7INUFjFYxH5O7GR6NIcoR1rv6uLj5NspiI/5hY
+	 28Joppaym5zKHF5P6OYQKVQgWKaqSWy3DgU+KSgjD29H68lBu+f8HPuYAdbov06+47
+	 hhihMml72/tt1ut648bsl0f1cxk/LGsFI3OqiM1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Anjelique Melendez <quic_amelende@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 349/809] drm/qxl: Add check for drm_cvt_mode
-Date: Tue, 30 Jul 2024 17:43:45 +0200
-Message-ID: <20240730151738.419639956@linuxfoundation.org>
+Subject: [PATCH 6.10 350/809] leds: rgb: leds-qcom-lpg: Add PPG check for setting/clearing PBS triggers
+Date: Tue, 30 Jul 2024 17:43:46 +0200
+Message-ID: <20240730151738.458952092@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,37 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Anjelique Melendez <quic_amelende@quicinc.com>
 
-[ Upstream commit 7bd09a2db0f617377027a2bb0b9179e6959edff3 ]
+[ Upstream commit 7e776e21255bf4c271e0df0a7d289a4963580e61 ]
 
-Add check for the return value of drm_cvt_mode() and return the error if
-it fails in order to avoid NULL pointer dereference.
+Currently, all LED LPG devices will call lpg_{set,clear}_pbs_trigger()
+when setting brightness regardless of if they support PPG and have PBS
+triggers. Check if device supports PPG before setting/clearing PBS
+triggers.
 
-Fixes: 1b043677d4be ("drm/qxl: add qxl_add_mode helper function")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621071031.1987974-1-nichen@iscas.ac.cn
+Fixes: 6ab1f766a80a ("leds: rgb: leds-qcom-lpg: Add support for PPG through single SDAM")
+Fixes: 5e9ff626861a ("leds: rgb: leds-qcom-lpg: Include support for PPG with dedicated LUT SDAM")
+Signed-off-by: Anjelique Melendez <quic_amelende@quicinc.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20240607005250.4047135-1-quic_amelende@quicinc.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/qxl/qxl_display.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/leds/rgb/leds-qcom-lpg.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/qxl/qxl_display.c b/drivers/gpu/drm/qxl/qxl_display.c
-index c6d35c33d5d63..86a5dea710c0f 100644
---- a/drivers/gpu/drm/qxl/qxl_display.c
-+++ b/drivers/gpu/drm/qxl/qxl_display.c
-@@ -236,6 +236,9 @@ static int qxl_add_mode(struct drm_connector *connector,
- 		return 0;
+diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+index 9467c796bd041..e74b2ceed1c26 100644
+--- a/drivers/leds/rgb/leds-qcom-lpg.c
++++ b/drivers/leds/rgb/leds-qcom-lpg.c
+@@ -2,7 +2,7 @@
+ /*
+  * Copyright (c) 2017-2022 Linaro Ltd
+  * Copyright (c) 2010-2012, The Linux Foundation. All rights reserved.
+- * Copyright (c) 2023, Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ #include <linux/bits.h>
+ #include <linux/bitfield.h>
+@@ -254,6 +254,9 @@ static int lpg_clear_pbs_trigger(struct lpg *lpg, unsigned int lut_mask)
+ 	u8 val = 0;
+ 	int rc;
  
- 	mode = drm_cvt_mode(dev, width, height, 60, false, false, false);
-+	if (!mode)
++	if (!lpg->lpg_chan_sdam)
 +		return 0;
 +
- 	if (preferred)
- 		mode->type |= DRM_MODE_TYPE_PREFERRED;
- 	mode->hdisplay = width;
+ 	lpg->pbs_en_bitmap &= (~lut_mask);
+ 	if (!lpg->pbs_en_bitmap) {
+ 		rc = nvmem_device_write(lpg->lpg_chan_sdam, SDAM_REG_PBS_SEQ_EN, 1, &val);
+@@ -276,6 +279,9 @@ static int lpg_set_pbs_trigger(struct lpg *lpg, unsigned int lut_mask)
+ 	u8 val = PBS_SW_TRIG_BIT;
+ 	int rc;
+ 
++	if (!lpg->lpg_chan_sdam)
++		return 0;
++
+ 	if (!lpg->pbs_en_bitmap) {
+ 		rc = nvmem_device_write(lpg->lpg_chan_sdam, SDAM_REG_PBS_SEQ_EN, 1, &val);
+ 		if (rc < 0)
 -- 
 2.43.0
 
