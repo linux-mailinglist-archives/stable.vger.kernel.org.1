@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0A2941E66
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51ACF941AF1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 971F028638B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11F282815F4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EB81A76DE;
-	Tue, 30 Jul 2024 17:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8492118455D;
+	Tue, 30 Jul 2024 16:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZz151ci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/DCiLF9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2891A76B4;
-	Tue, 30 Jul 2024 17:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4322114831F;
+	Tue, 30 Jul 2024 16:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360505; cv=none; b=MQUgtCxkJptetLsLbYJKiX5O/yYwOGpCvQiqULcmoDFhRNvUl+UfKWU6PEp1B3BoWlRWzpppiiuD3e4JxwpMkaisgyzCG0FAheImYotir7z4Bi7DTCr3NfV+2escLfbkTBdS5xt1Nl0y87M3TxVuyRVwREFm9UduMa38pHkhrds=
+	t=1722358162; cv=none; b=ENCmAVYJH7XItr4HImxMelFguo3L7DufrRHNbEQo9ZmZFVZXPxVsCcCPyETX2qIZlhkl1oWCkEt0VpwQXqyYMz6d5YIuQRa/cQAYN7g9XrlspICnUWU3Ym0GOpQNBn2hRaYoK/+t73pgbuZAA+XHKsbS+Loee8Q9VC5QCMnX2Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360505; c=relaxed/simple;
-	bh=12cZHpEVMTa6aQUh5Dg+SwQL01wOLkrmMPvzA3H1YBE=;
+	s=arc-20240116; t=1722358162; c=relaxed/simple;
+	bh=2S9rpcZr1Qi7AsHu/lB+TJXRNzjFxj+Era6vfMoru6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXpASxXL3b0Wotytow0JO5dw/YxTmf8qJN9wtnbouu+CLfOWzLNCuf+jTpOJReIOBoC344XgnF9GUYn2t7B2c09aiL1SKuANLwUZwd8n4UFdCRVUJ5VFG9KDy7fc6mpNYDxJ0KcPiQ/dM+IfebDPHvDQPRP7LhNRWZWCff3h150=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZz151ci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0090C32782;
-	Tue, 30 Jul 2024 17:28:24 +0000 (UTC)
+	 MIME-Version; b=sqjusf/wBOW8O5czDrqK5BtAOp1JrYNIBJDLMS2g0pJpKiuF+acknQh+rSQ4uUQ2NTQ4hCidGslwjx2LseFxnj3qdJYLmpAkSLegQxZ9o3vIW1k67O4NacVaj7XXMgWhH8Mp8c1iONCS+rQRmFKcV2isbCBH6UcHpgBJV0f94rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/DCiLF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0A7C4AF0C;
+	Tue, 30 Jul 2024 16:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360505;
-	bh=12cZHpEVMTa6aQUh5Dg+SwQL01wOLkrmMPvzA3H1YBE=;
+	s=korg; t=1722358161;
+	bh=2S9rpcZr1Qi7AsHu/lB+TJXRNzjFxj+Era6vfMoru6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZz151ciB7ptoYbI/8XBbrorAVlLduJOg4n7bHbxOg+2qcIQsyHHhuafiBDn91HI+
-	 9I53PVqt/DvaEVxZGWYqqJz+gA0WH8i8KioF9Ir3RLPwsDh3X0igg1JhuqilNKBu6p
-	 gWVFt26uYO3TFtpCiqLt2hjEaCggRMNohYcS0dfU=
+	b=0/DCiLF9DRlNnRGC1jMGOmiBu6Ecxj4XQMWlj1/Je5n/u/eVZoZIyUnmHiS3Qzxnm
+	 lo63a7n7w0aHwhLojh7L7gnbcCdeO3oOarPN4x5xyFpUA6pJ/ZQKt5rmnM+c4y2PqV
+	 eVm14Y4IYTk/oAfomFH/0XwMxripp2ReaW3auXQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwenael Treuveur <gwenael.treuveur@foss.st.com>,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.10 719/809] remoteproc: stm32_rproc: Fix mailbox interrupts queuing
+	Joy Chakraborty <joychakr@google.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 362/440] rtc: isl1208: Fix return value of nvmem callbacks
 Date: Tue, 30 Jul 2024 17:49:55 +0200
-Message-ID: <20240730151753.338017693@linuxfoundation.org>
+Message-ID: <20240730151629.953748839@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gwenael Treuveur <gwenael.treuveur@foss.st.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-commit c3281abea67c9c0dc6219bbc41d1feae05a16da3 upstream.
+commit 70f1ae5f0e7f44edf842444044615da7b59838c1 upstream.
 
-Manage interrupt coming from coprocessor also when state is
-ATTACHED.
+Read/write callbacks registered with nvmem core expect 0 to be returned
+on success and a negative value to be returned on failure.
 
-Fixes: 35bdafda40cc ("remoteproc: stm32_rproc: Add mutex protection for workqueue")
+isl1208_nvmem_read()/isl1208_nvmem_write() currently return the number of
+bytes read/written on success, fix to return 0 on success and negative on
+failure.
+
+Fixes: c3544f6f51ed ("rtc: isl1208: Add new style nvmem support to driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gwenael Treuveur <gwenael.treuveur@foss.st.com>
-Acked-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Link: https://lore.kernel.org/r/20240521162316.156259-1-gwenael.treuveur@foss.st.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Link: https://lore.kernel.org/r/20240612080831.1227131-1-joychakr@google.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/stm32_rproc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-isl1208.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/drivers/remoteproc/stm32_rproc.c
-+++ b/drivers/remoteproc/stm32_rproc.c
-@@ -294,7 +294,7 @@ static void stm32_rproc_mb_vq_work(struc
+--- a/drivers/rtc/rtc-isl1208.c
++++ b/drivers/rtc/rtc-isl1208.c
+@@ -743,14 +743,13 @@ static int isl1208_nvmem_read(void *priv
+ {
+ 	struct isl1208_state *isl1208 = priv;
+ 	struct i2c_client *client = to_i2c_client(isl1208->rtc->dev.parent);
+-	int ret;
  
- 	mutex_lock(&rproc->lock);
+ 	/* nvmem sanitizes offset/count for us, but count==0 is possible */
+ 	if (!count)
+ 		return count;
+-	ret = isl1208_i2c_read_regs(client, ISL1208_REG_USR1 + off, buf,
++
++	return isl1208_i2c_read_regs(client, ISL1208_REG_USR1 + off, buf,
+ 				    count);
+-	return ret == 0 ? count : ret;
+ }
  
--	if (rproc->state != RPROC_RUNNING)
-+	if (rproc->state != RPROC_RUNNING && rproc->state != RPROC_ATTACHED)
- 		goto unlock_mutex;
+ static int isl1208_nvmem_write(void *priv, unsigned int off, void *buf,
+@@ -758,15 +757,13 @@ static int isl1208_nvmem_write(void *pri
+ {
+ 	struct isl1208_state *isl1208 = priv;
+ 	struct i2c_client *client = to_i2c_client(isl1208->rtc->dev.parent);
+-	int ret;
  
- 	if (rproc_vq_interrupt(rproc, mb->vq_id) == IRQ_NONE)
+ 	/* nvmem sanitizes off/count for us, but count==0 is possible */
+ 	if (!count)
+ 		return count;
+-	ret = isl1208_i2c_set_regs(client, ISL1208_REG_USR1 + off, buf,
+-				   count);
+ 
+-	return ret == 0 ? count : ret;
++	return isl1208_i2c_set_regs(client, ISL1208_REG_USR1 + off, buf,
++				   count);
+ }
+ 
+ static const struct nvmem_config isl1208_nvmem_config = {
 
 
 
