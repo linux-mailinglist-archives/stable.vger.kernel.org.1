@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3E4941C09
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC31941D9E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF0B7285011
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1605028C8BB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8111418801A;
-	Tue, 30 Jul 2024 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5101A76B1;
+	Tue, 30 Jul 2024 17:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiH2hhLF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmeVVMnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DA71A6192;
-	Tue, 30 Jul 2024 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7071A76A4;
+	Tue, 30 Jul 2024 17:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358928; cv=none; b=inz0s2B1MhUe2hL9K9j8GytSFJd4xWtGO7qVYArfY3s49Qhw2S78ojL3R8wL4j2m03mbmgjrmWkh3k45dQQhOMT/x7x4uPh2fdGcNFyAsqvjf5ntS0Va8SNjGuyQSqqsYFRScOoEfaDFKRo75DuI1P6O7GuA1zc76T6EQaxHBfA=
+	t=1722359961; cv=none; b=vDuPuDiJfgVKqceS5pZsOViNInYtOz6W9Ki2ZluhgmcYkmtefe0XSEngDs90RmVya1xq52A/MHCyxH3RxERUdskCwySTt9NgnqinnPcKRetZVxg5HEtRfnnZIqk3munCV8tH7mhFPrrpjXH0VfHCiVG5mjeE96io4ZwmErQPWSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358928; c=relaxed/simple;
-	bh=95pEBND/DwZnF3G+cncTCIEiBjmM3OOrgtHnA4UNFQ0=;
+	s=arc-20240116; t=1722359961; c=relaxed/simple;
+	bh=HRNuX7dyhhuYJQA7lDUNFppedP8tK17TdvOmqZhWVk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pm10F4G3PLq5UwboCeLBGJUUoztqP/xzCe+6GWgkmJYgy03+6tuaHwYWGcaFqHUtvJ7crST3m9Y/t1nf0Gbe8VwDPnCRmfFd5qW1zIKt3DcBN+0Sny5lXlwTVozVKUisbicbTzbzzYDcs/sV1w66PcaCySdzy0y8DjIhgEKHD8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiH2hhLF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F9DC32782;
-	Tue, 30 Jul 2024 17:02:07 +0000 (UTC)
+	 MIME-Version; b=k5+zn91wPHh+B3aBb7ARSIk/Jwa0mZB0AtXaK9gZorW4od6hRQlaZiYHMW1tK5VH3z/E7I7p5deJ3biLx91t3dunhuqeZ0RUaqml505vcg6EHImck8vShbLK+rnNzJ69RcNftlCGXf3djenep7p36wbH1KV5Kx1oDBXNAXcwjz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmeVVMnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EE6C32782;
+	Tue, 30 Jul 2024 17:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358928;
-	bh=95pEBND/DwZnF3G+cncTCIEiBjmM3OOrgtHnA4UNFQ0=;
+	s=korg; t=1722359961;
+	bh=HRNuX7dyhhuYJQA7lDUNFppedP8tK17TdvOmqZhWVk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FiH2hhLFMPP0zeKaTftqHYnZXwWbeaQomf0pZrXfpwrmGj4ihfkV3PaIw2bd6Ba5j
-	 /mpcPb3ffN07EdbxYOXdrWche+XmEKcyi26WCqK6dFKGdqf5q959RpiaAka/PVtWGi
-	 HkysnyL7S5w9xIH14cC0TXBuHzbU0VKlfagwMh6U=
+	b=WmeVVMnYYJJJvRucOuOFJfkmQ3P6ytyi8d4p32iIrnNSTntXVZYBiVN34mKKNW86m
+	 nBHJ7rpHQ9kYM5uSz9Gha5OqTn3u708PqF/mdee/xbR3E2zWwnBepK9Ykst4tD7E3M
+	 3Dd2lwHI4uLAZ9jAQvgK+LZXwoNZ1O1LQDCbSwtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	ethanwu <ethanwu@synology.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 434/440] s390/pci: Refactor arch_setup_msi_irqs()
-Date: Tue, 30 Jul 2024 17:51:07 +0200
-Message-ID: <20240730151632.727018796@linuxfoundation.org>
+Subject: [PATCH 6.6 561/568] ceph: fix incorrect kmalloc size of pagevec mempool
+Date: Tue, 30 Jul 2024 17:51:08 +0200
+Message-ID: <20240730151702.084099256@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: ethanwu <ethanwu@synology.com>
 
-[ Upstream commit 5fd11b96b43708f2f6e3964412c301c1bd20ec0f ]
+[ Upstream commit 03230edb0bd831662a7c08b6fef66b2a9a817774 ]
 
-Factor out adapter interrupt allocation from arch_setup_msi_irqs() in
-preparation for enabling registration of multiple MSIs. Code movement
-only, no change of functionality intended.
+The kmalloc size of pagevec mempool is incorrectly calculated.
+It misses the size of page pointer and only accounts the number for the array.
 
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
+Fixes: a0102bda5bc0 ("ceph: move sb->wb_pagevec_pool to be a global mempool")
+Signed-off-by: ethanwu <ethanwu@synology.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 54 ++++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
+ fs/ceph/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 04c19ab93a329..e5322432276b1 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -268,33 +268,20 @@ static void zpci_floating_irq_handler(struct airq_struct *airq,
- 	}
- }
+diff --git a/fs/ceph/super.c b/fs/ceph/super.c
+index 52af90beab000..ec51e398562c6 100644
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -958,7 +958,8 @@ static int __init init_caches(void)
+ 	if (!ceph_mds_request_cachep)
+ 		goto bad_mds_req;
  
--int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
-+			unsigned long *bit)
- {
--	struct zpci_dev *zdev = to_zpci(pdev);
--	unsigned int hwirq, msi_vecs, cpu;
--	unsigned long bit;
--	struct msi_desc *msi;
--	struct msi_msg msg;
--	int cpu_addr;
--	int rc, irq;
--
--	zdev->aisb = -1UL;
--	zdev->msi_first_bit = -1U;
--	if (type == PCI_CAP_ID_MSI && nvec > 1)
--		return 1;
--	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
--
- 	if (irq_delivery == DIRECTED) {
- 		/* Allocate cpu vector bits */
--		bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
-+		if (*bit == -1UL)
- 			return -EIO;
- 	} else {
- 		/* Allocate adapter summary indicator bit */
--		bit = airq_iv_alloc_bit(zpci_sbv);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc_bit(zpci_sbv);
-+		if (*bit == -1UL)
- 			return -EIO;
--		zdev->aisb = bit;
-+		zdev->aisb = *bit;
+-	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10, CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT);
++	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10,
++	    (CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT) * sizeof(struct page *));
+ 	if (!ceph_wb_pagevec_pool)
+ 		goto bad_pagevec_pool;
  
- 		/* Create adapter interrupt vector */
- 		zdev->aibv = airq_iv_create(msi_vecs, AIRQ_IV_DATA | AIRQ_IV_BITLOCK, NULL);
-@@ -302,10 +289,33 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
- 			return -ENOMEM;
- 
- 		/* Wire up shortcut pointer */
--		zpci_ibv[bit] = zdev->aibv;
-+		zpci_ibv[*bit] = zdev->aibv;
- 		/* Each function has its own interrupt vector */
--		bit = 0;
-+		*bit = 0;
- 	}
-+	return 0;
-+}
-+
-+int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+{
-+	struct zpci_dev *zdev = to_zpci(pdev);
-+	unsigned int hwirq, msi_vecs, cpu;
-+	struct msi_desc *msi;
-+	struct msi_msg msg;
-+	unsigned long bit;
-+	int cpu_addr;
-+	int rc, irq;
-+
-+	zdev->aisb = -1UL;
-+	zdev->msi_first_bit = -1U;
-+
-+	if (type == PCI_CAP_ID_MSI && nvec > 1)
-+		return 1;
-+	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
-+
-+	rc = __alloc_airq(zdev, msi_vecs, &bit);
-+	if (rc < 0)
-+		return rc;
- 
- 	/* Request MSI interrupts */
- 	hwirq = bit;
 -- 
 2.43.0
 
