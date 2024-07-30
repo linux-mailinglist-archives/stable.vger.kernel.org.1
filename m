@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-64245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2186941D01
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AC3941A98
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D2771F24BA6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF901C22E46
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA761A76B1;
-	Tue, 30 Jul 2024 17:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83ABE757FC;
+	Tue, 30 Jul 2024 16:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH77UQma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJsPdvq7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0BB1A76A1;
-	Tue, 30 Jul 2024 17:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DD41A6166;
+	Tue, 30 Jul 2024 16:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359479; cv=none; b=I1TYjBtyMIJrWEyvstMENgDwQrCeYWDVshjKpfIVLfaUP7n8YeGHZCn/ZnfGLEjJh9o0EhHUs2YEoGTNjmLOcRBctBVzwT6qwxLvn8kHTWtcptqpZ5KzlD0oyxuxs0R81zsMVcAOfHHy8HMj4yMUnifkhsKXF8O77EzXZJjUjhk=
+	t=1722357931; cv=none; b=JPtwPPclqiFrGQoAPGbmFNwmTK3CojwBKlbFhESu6jceAgQMqjKCXGQzRNjOS2zuHxfSY3UHm5S/tL3ulJ5UhuthdgFIJCkvgHendLERINSZW7+jQ8YIO20qpnhi0+c3TycHkBSzEf6fQDPIA8U2Rqc6Id1QyUNn9rGMfBEo1g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359479; c=relaxed/simple;
-	bh=OIFrUfEZpmjaoTqT05HMjcvzT1HpdXeIORdW38+hEdo=;
+	s=arc-20240116; t=1722357931; c=relaxed/simple;
+	bh=35jQ8mJAONIFePkPHNUTT6fiGea48KRKfg6lrdjEOHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/JCjvBnb1BE+EtI3dY+JxYKvuG2Eif9QbCJTL6Wu11zBfUcsQXU1mK0afeoPE0puC0yaGT27gtdH14z6GQ5s02BprApSzEx9+O12uByPc6ZkVUOEQ4Ihp87/dossTwdkz8sAEWkHVmU0NzRXNjoUZkIvh3/vHhut3ZzzriSSp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VH77UQma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57C5C4AF0E;
-	Tue, 30 Jul 2024 17:11:18 +0000 (UTC)
+	 MIME-Version; b=pFqvLeMCdcrMNIThmT/4PzPXiOLtm631qTphvGZTO3UCvKw0d6a38PZalTvVNwhF5rQJAq+1OXHMRc9zMRVSd0LiyJYXbj1zY5dtL354upVrhAuISvJ7iTfS+4Z2fQrT+5/GzysU57lPO9kpaX8xTRb2q/63zoXysXDYzmZgn+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJsPdvq7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE534C32782;
+	Tue, 30 Jul 2024 16:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359479;
-	bh=OIFrUfEZpmjaoTqT05HMjcvzT1HpdXeIORdW38+hEdo=;
+	s=korg; t=1722357931;
+	bh=35jQ8mJAONIFePkPHNUTT6fiGea48KRKfg6lrdjEOHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VH77UQmaLzZcYhHSagYrwU37FbQkXJQiOG3BijhzgxV7wn1yzrSGsNzriZDpMcOjV
-	 UaetRW7i39BIra55pOm/GdbKJZKl3HlnEz9eyEePpenEPlyCCXZf1XNX0QyOHyYOAr
-	 bQzT0UsPf8Lf3lvZyXah7U4yaUSIoS3PCM8jkaJs=
+	b=hJsPdvq7p/YxsOR7Mm4D8u6cGzPfxej3zb4fngdhAmtm9t9Oq9VawZdv9aMyJrWta
+	 rpoks3iyuEoZO8UwsPKiOkkyPuChUacEQh8iAWiEqJ/ItxsKBa/dYjXaP01n16fQz/
+	 Rui+0eRjiMkffHMTYn+N/UGKxndoDlzk9X1oVY4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shreyas Deodhar <sdeodhar@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 465/568] scsi: qla2xxx: Complete command early within lock
-Date: Tue, 30 Jul 2024 17:49:32 +0200
-Message-ID: <20240730151658.195618606@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 340/440] ice: Add a per-VF limit on number of FDIR filters
+Date: Tue, 30 Jul 2024 17:49:33 +0200
+Message-ID: <20240730151629.095193848@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +65,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shreyas Deodhar <sdeodhar@marvell.com>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-commit 4475afa2646d3fec176fc4d011d3879b26cb26e3 upstream.
+commit 6ebbe97a488179f5dc85f2f1e0c89b486e99ee97 upstream.
 
-A crash was observed while performing NPIV and FW reset,
+While the iavf driver adds a s/w limit (128) on the number of FDIR
+filters that the VF can request, a malicious VF driver can request more
+than that and exhaust the resources for other VFs.
 
- BUG: kernel NULL pointer dereference, address: 000000000000001c
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: 0000 1 PREEMPT_RT SMP NOPTI
- RIP: 0010:dma_direct_unmap_sg+0x51/0x1e0
- RSP: 0018:ffffc90026f47b88 EFLAGS: 00010246
- RAX: 0000000000000000 RBX: 0000000000000021 RCX: 0000000000000002
- RDX: 0000000000000021 RSI: 0000000000000000 RDI: ffff8881041130d0
- RBP: ffff8881041130d0 R08: 0000000000000000 R09: 0000000000000034
- R10: ffffc90026f47c48 R11: 0000000000000031 R12: 0000000000000000
- R13: 0000000000000000 R14: ffff8881565e4a20 R15: 0000000000000000
- FS: 00007f4c69ed3d00(0000) GS:ffff889faac80000(0000) knlGS:0000000000000000
- CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000000000000001c CR3: 0000000288a50002 CR4: 00000000007706e0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
- <TASK>
- ? __die_body+0x1a/0x60
- ? page_fault_oops+0x16f/0x4a0
- ? do_user_addr_fault+0x174/0x7f0
- ? exc_page_fault+0x69/0x1a0
- ? asm_exc_page_fault+0x22/0x30
- ? dma_direct_unmap_sg+0x51/0x1e0
- ? preempt_count_sub+0x96/0xe0
- qla2xxx_qpair_sp_free_dma+0x29f/0x3b0 [qla2xxx]
- qla2xxx_qpair_sp_compl+0x60/0x80 [qla2xxx]
- __qla2x00_abort_all_cmds+0xa2/0x450 [qla2xxx]
+Add a similar limit in ice.
 
-The command completion was done early while aborting the commands in driver
-unload path but outside lock to avoid the WARN_ON condition of performing
-dma_free_attr within the lock. However this caused race condition while
-command completion via multiple paths causing system crash.
-
-Hence complete the command early in unload path but within the lock to
-avoid race condition.
-
-Fixes: 0367076b0817 ("scsi: qla2xxx: Perform lockless command completion in abort path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+CC: stable@vger.kernel.org
+Fixes: 1f7ea1cd6a37 ("ice: Enable FDIR Configure for AVF")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Suggested-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c  |    2 +-
+ drivers/net/ethernet/intel/ice/ice_fdir.h          |    3 +++
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c |   16 ++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h |    1 +
+ 4 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -1874,14 +1874,9 @@ __qla2x00_abort_all_cmds(struct qla_qpai
- 	for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
- 		sp = req->outstanding_cmds[cnt];
- 		if (sp) {
--			/*
--			 * perform lockless completion during driver unload
--			 */
- 			if (qla2x00_chip_is_down(vha)) {
- 				req->outstanding_cmds[cnt] = NULL;
--				spin_unlock_irqrestore(qp->qp_lock_ptr, flags);
- 				sp->done(sp, res);
--				spin_lock_irqsave(qp->qp_lock_ptr, flags);
- 				continue;
- 			}
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+@@ -531,7 +531,7 @@ ice_parse_rx_flow_user_data(struct ethto
+  *
+  * Returns the number of available flow director filters to this VSI
+  */
+-static int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
++int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
+ {
+ 	u16 vsi_num = ice_get_hw_vsi_num(hw, vsi->idx);
+ 	u16 num_guar;
+--- a/drivers/net/ethernet/intel/ice/ice_fdir.h
++++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
+@@ -202,6 +202,8 @@ struct ice_fdir_base_pkt {
+ 	const u8 *tun_pkt;
+ };
  
++struct ice_vsi;
++
+ int ice_alloc_fd_res_cntr(struct ice_hw *hw, u16 *cntr_id);
+ int ice_free_fd_res_cntr(struct ice_hw *hw, u16 cntr_id);
+ int ice_alloc_fd_guar_item(struct ice_hw *hw, u16 *cntr_id, u16 num_fltr);
+@@ -213,6 +215,7 @@ int
+ ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
+ 			  u8 *pkt, bool frag, bool tun);
+ int ice_get_fdir_cnt_all(struct ice_hw *hw);
++int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi);
+ bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
+ bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
+ struct ice_fdir_fltr *
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+@@ -551,6 +551,8 @@ static void ice_vc_fdir_reset_cnt_all(st
+ 		fdir->fdir_fltr_cnt[flow][0] = 0;
+ 		fdir->fdir_fltr_cnt[flow][1] = 0;
+ 	}
++
++	fdir->fdir_fltr_cnt_total = 0;
+ }
+ 
+ /**
+@@ -1567,6 +1569,7 @@ ice_vc_add_fdir_fltr_post(struct ice_vf
+ 	resp->status = status;
+ 	resp->flow_id = conf->flow_id;
+ 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]++;
++	vf->fdir.fdir_fltr_cnt_total++;
+ 
+ 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
+ 				    (u8 *)resp, len);
+@@ -1631,6 +1634,7 @@ ice_vc_del_fdir_fltr_post(struct ice_vf
+ 	resp->status = status;
+ 	ice_vc_fdir_remove_entry(vf, conf, conf->flow_id);
+ 	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]--;
++	vf->fdir.fdir_fltr_cnt_total--;
+ 
+ 	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
+ 				    (u8 *)resp, len);
+@@ -1797,6 +1801,7 @@ int ice_vc_add_fdir_fltr(struct ice_vf *
+ 	struct virtchnl_fdir_add *stat = NULL;
+ 	struct virtchnl_fdir_fltr_conf *conf;
+ 	enum virtchnl_status_code v_ret;
++	struct ice_vsi *vf_vsi;
+ 	struct device *dev;
+ 	struct ice_pf *pf;
+ 	int is_tun = 0;
+@@ -1805,6 +1810,17 @@ int ice_vc_add_fdir_fltr(struct ice_vf *
+ 
+ 	pf = vf->pf;
+ 	dev = ice_pf_to_dev(pf);
++	vf_vsi = ice_get_vf_vsi(vf);
++
++#define ICE_VF_MAX_FDIR_FILTERS	128
++	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
++	    vf->fdir.fdir_fltr_cnt_total >= ICE_VF_MAX_FDIR_FILTERS) {
++		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++		dev_err(dev, "Max number of FDIR filters for VF %d is reached\n",
++			vf->vf_id);
++		goto err_exit;
++	}
++
+ 	ret = ice_vc_fdir_param_check(vf, fltr->vsi_id);
+ 	if (ret) {
+ 		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
+@@ -29,6 +29,7 @@ struct ice_vf_fdir_ctx {
+ struct ice_vf_fdir {
+ 	u16 fdir_fltr_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
+ 	int prof_entry_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
++	u16 fdir_fltr_cnt_total;
+ 	struct ice_fd_hw_prof **fdir_prof;
+ 
+ 	struct idr fdir_rule_idr;
 
 
 
