@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303B8941BE7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C983941A6E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53675B2213B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A947B2620E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932C7188017;
-	Tue, 30 Jul 2024 17:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E921A619A;
+	Tue, 30 Jul 2024 16:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kk7dCuqx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYnI+7Q1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CF3161901;
-	Tue, 30 Jul 2024 17:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730738BE8;
+	Tue, 30 Jul 2024 16:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358838; cv=none; b=cUMMEJUxDqcQ9odXM7SklqNKUsQixLgRkShRlRwx3rTmA55FVLMvBiv77eSW6fJ6Q16InUGyw3ZZuSoMIwAVQtSm1YH5IGvjasVV6ECL4BjCfZ21N+/uB3UtqUpGvqW5qST5WcyojxSoRsLiRGQJ3Nr2K3jwtc25KJpNKmphHGs=
+	t=1722357177; cv=none; b=N2Ko0F7vo+TP4iCoF9VCFyIpJNIjJmavJM8jiSXqtQBe/+6Jo84cm+BJjIEYAFtXTVMgfOQOsqrgcMxIIXMQxnDapgtdeuwQgdBzMb7+9ykO8Oc8yRb1JoScZNm1tQ4w+Vkfah3JPad8RwmLK66Aekp0vNsTu/UHNVGQLpqZN4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358838; c=relaxed/simple;
-	bh=nqmALTEx261NS8LkCpSTQ8S9NEFqjnf6MfcEnLodOSc=;
+	s=arc-20240116; t=1722357177; c=relaxed/simple;
+	bh=UQ/sblWXFAAjbaiIILxHmlXhBov052se6edV5/DsQAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COvW2e6XCw+UZJUL1REpqdcj7uhfyAvi4ZilA3R1J8cSZTW3rarukAyBgdjKND1kcURqblGaOCXxiUDMpI/CEYc/o/5+gFRixbvlehaxu+aoI10PCnkg1FuRuO9TjiGhRMDUEFL5qPYWjJvoA3b2PU3cpVuJADP/KxaENzAvvuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kk7dCuqx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8591C32782;
-	Tue, 30 Jul 2024 17:00:37 +0000 (UTC)
+	 MIME-Version; b=bOw7PubU5LemKeJNLkHamArVPw/QfGgrZo8gAewG9z7K4JOKtyKQlK7sqeWkcJ8+gV3ELaIwlUDC3uFz5OqL+POuRWL5rCrtcLm53eQ1ZXgaCEbdJzirLrPG5v9zXnmJ/uLDJDUswABFR6b12Esf4FkOMsTMwENAxpWbRQgi1Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYnI+7Q1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBD1C32782;
+	Tue, 30 Jul 2024 16:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358838;
-	bh=nqmALTEx261NS8LkCpSTQ8S9NEFqjnf6MfcEnLodOSc=;
+	s=korg; t=1722357177;
+	bh=UQ/sblWXFAAjbaiIILxHmlXhBov052se6edV5/DsQAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kk7dCuqxl47Kmt/Q30DM6AxWNXfZ+uZh+M6t+9bo+5QEfTCEprbvv3xbj+LLoG1Pw
-	 nG2wJv2eeRgWZx+2p0P/N+8wNySu0BqZKEZIM0r3YWxZNwKCrOSo5g7J1hzE5B7ARx
-	 u2/v6RTkmoJIBYfgC5q9+sstz6fGXrySDMCnX+5g=
+	b=NYnI+7Q13tNqIY7MN6kDvYrWdPL/b/M/aoLPEgHc/iwFT3XZ5zC5QoYxYMLo/chfm
+	 kQ24RVhvWjCMWfPzYZLQZWP8eUDxpE1wEhpFmSCHDYvXZdBByxL9J5o3wVG93/x72p
+	 HHdpx3iwOWRK5RYueQarJUw+X1vllloTme8ohbOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowell@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 392/568] cifs: mount with "unix" mount option for SMB1 incorrectly handled
+	Jan Kara <jack@suse.cz>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 266/440] sbitmap: remove unnecessary calculation of alloc_hint in __sbitmap_get_shallow
 Date: Tue, 30 Jul 2024 17:48:19 +0200
-Message-ID: <20240730151655.185195609@linuxfoundation.org>
+Message-ID: <20240730151626.229436870@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-commit 0e314e452687ce0ec5874e42cdb993a34325d3d2 upstream.
+[ Upstream commit f1591a8bb3e02713f4ee2efe20df0d84ed80da48 ]
 
-Although by default we negotiate CIFS Unix Extensions for SMB1 mounts to
-Samba (and they work if the user does not specify "unix" or "posix" or
-"linux" on mount), and we do properly handle when a user turns them off
-with "nounix" mount parm.  But with the changes to the mount API we
-broke cases where the user explicitly specifies the "unix" option (or
-equivalently "linux" or "posix") on mount with vers=1.0 to Samba or other
-servers which support the CIFS Unix Extensions.
+Updates to alloc_hint in the loop in __sbitmap_get_shallow() are mostly
+pointless and equivalent to setting alloc_hint to zero (because
+SB_NR_TO_BIT() considers only low sb->shift bits from alloc_hint). So
+simplify the logic.
 
- "mount error(95): Operation not supported"
-
-and logged:
-
- "CIFS: VFS: Check vers= mount option. SMB3.11 disabled but required for POSIX extensions"
-
-even though CIFS Unix Extensions are supported for vers=1.0  This patch fixes
-the case where the user specifies both "unix" (or equivalently "posix" or
-"linux") and "vers=1.0" on mount to a server which supports the
-CIFS Unix Extensions.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: David Howells <dhowell@redhat.com>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://lore.kernel.org/r/20230116205059.3821738-2-shikemeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 72d04bdcf3f7 ("sbitmap: fix io hung due to race on sbitmap_word::cleared")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/sbitmap.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2614,6 +2614,13 @@ cifs_get_tcon(struct cifs_ses *ses, stru
- 			cifs_dbg(VFS, "Server does not support mounting with posix SMB3.11 extensions\n");
- 			rc = -EOPNOTSUPP;
- 			goto out_fail;
-+		} else if (ses->server->vals->protocol_id == SMB10_PROT_ID)
-+			if (cap_unix(ses))
-+				cifs_dbg(FYI, "Unix Extensions requested on SMB1 mount\n");
-+			else {
-+				cifs_dbg(VFS, "SMB1 Unix Extensions not supported by server\n");
-+				rc = -EOPNOTSUPP;
-+				goto out_fail;
- 		} else {
- 			cifs_dbg(VFS,
- 				"Check vers= mount option. SMB3.11 disabled but required for POSIX extensions\n");
+diff --git a/lib/sbitmap.c b/lib/sbitmap.c
+index c515072eca296..b9dd0a0a28f89 100644
+--- a/lib/sbitmap.c
++++ b/lib/sbitmap.c
+@@ -243,6 +243,7 @@ static int __sbitmap_get_shallow(struct sbitmap *sb,
+ 	int nr = -1;
+ 
+ 	index = SB_NR_TO_INDEX(sb, alloc_hint);
++	alloc_hint = SB_NR_TO_BIT(sb, alloc_hint);
+ 
+ 	for (i = 0; i < sb->map_nr; i++) {
+ again:
+@@ -250,7 +251,7 @@ static int __sbitmap_get_shallow(struct sbitmap *sb,
+ 					min_t(unsigned int,
+ 					      __map_depth(sb, index),
+ 					      shallow_depth),
+-					SB_NR_TO_BIT(sb, alloc_hint), true);
++					alloc_hint, true);
+ 		if (nr != -1) {
+ 			nr += index << sb->shift;
+ 			break;
+@@ -260,13 +261,9 @@ static int __sbitmap_get_shallow(struct sbitmap *sb,
+ 			goto again;
+ 
+ 		/* Jump to next index. */
+-		index++;
+-		alloc_hint = index << sb->shift;
+-
+-		if (index >= sb->map_nr) {
++		alloc_hint = 0;
++		if (++index >= sb->map_nr)
+ 			index = 0;
+-			alloc_hint = 0;
+-		}
+ 	}
+ 
+ 	return nr;
+-- 
+2.43.0
+
 
 
 
