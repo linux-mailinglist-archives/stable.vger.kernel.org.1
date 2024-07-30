@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-63089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EB694173D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9DF941CAA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9AB41C22F67
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E31931F220A1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E6F18B490;
-	Tue, 30 Jul 2024 16:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A14D1A76C9;
+	Tue, 30 Jul 2024 17:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQkA5oKI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnIJpDTi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B858BE8;
-	Tue, 30 Jul 2024 16:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FED1A76C6;
+	Tue, 30 Jul 2024 17:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355627; cv=none; b=TzaGxxlPNCanGUnjQa3wr5ATNcxM08Bs0mFA16CVxSPqfTRQGBVfnWcieLAOWTFM3AMzphka5AIDpYc5EaXd8E8sWAfdoPgymjtKWXzPnrBfGar2mS6bhh2IBMeQRQMWm8LvI/N92qJVQAHO1Cn0HfHe+sIur/bSHm0uioHOC0k=
+	t=1722359207; cv=none; b=MkBsKd2Egvoh8xgmlBnBudJ9oyJpPUchY4AobH6uAVRolegQroT43DntArHtPKmcNSZ6MPdfLkhBvxn1DeI8Vk4q8F5ItPEpcH4lSKfhTHK5+ZlRr6dsgbWST22raA1RPnGkmRXhgNcwfG5tYPLsVFWitJVmlfq3H7eOnSke6AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355627; c=relaxed/simple;
-	bh=Y8ZRbhimvKiAOcup50nnev4Jy0sRPc7jABJVTxXWyAw=;
+	s=arc-20240116; t=1722359207; c=relaxed/simple;
+	bh=sQky1SS4Z6TNj2Zu73K3nPw8TlQzPlm/Rj5bF0O6I0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+ha8+xDt7fWG8kohsbiP+9osCsARydrTrh1+Ct7MKIqTUYoosxPDrEJtsOojv+yHMYulGHGGgzE+u73g6Y+oWwrfA2O5x2sCu/wqMNlentErzPCqImughm0MK5PTqcOYuSAhQ9ghvSmFMpchJDP+pW9pMrp3Ue5+kV6jwjDJNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQkA5oKI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C99C32782;
-	Tue, 30 Jul 2024 16:07:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BfiTBOdM44cgEDNlwIazCtGyztzjEGHQTqZ6flsS5DSFlxm7EK1BjolJL2bQCw7S+w3PT8oU1lEux1emFgdfOm+hupmulSK9n76mxBtG2G98lq8YsqeEJa6wpjJc4dP9NBm/3TB97rFo/+aFsF6fHZk2z3RK4G0Gu3vqCPwhk34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnIJpDTi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E453C32782;
+	Tue, 30 Jul 2024 17:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355627;
-	bh=Y8ZRbhimvKiAOcup50nnev4Jy0sRPc7jABJVTxXWyAw=;
+	s=korg; t=1722359207;
+	bh=sQky1SS4Z6TNj2Zu73K3nPw8TlQzPlm/Rj5bF0O6I0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQkA5oKIHX2NPwiL0cm12mka6nuBjQjRc1GuUVXt1q96sHY2qHqC1cJHyYKKfwYkf
-	 lXjZz5gityTuOQqzwIN7hkN3+XR9UDfelpLSuibJA+/0M9xXQAgwlMVHyz5PcEU+/b
-	 pa8Pz7MlNW3ojJN4SWlr8HgTZzQ6W4yaqa/+V95U=
+	b=XnIJpDTiM4okIR9jSpbs7KtKGP1m+aDSkD/NUSFLvCiNFA+vdRiVwQ9q/sN+Rbbs5
+	 +9+waZsjBq061mNqQmHJzZbZj2OYrLw4CXdE3yCUILirGXgxGMhq0OnQrB8FDXj3QH
+	 9i1WDR/CkrAJ9wFrFP0BDhxz2lYB0KXj5P5UpuaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Alexander Zubkov <green@qrator.net>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Laura Nao <laura.nao@collabora.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/440] mlxsw: spectrum_acl_erp: Fix object nesting warning
+Subject: [PATCH 6.10 451/809] clk: qcom: Park shared RCGs upon registration
 Date: Tue, 30 Jul 2024 17:45:27 +0200
-Message-ID: <20240730151619.429141570@linuxfoundation.org>
+Message-ID: <20240730151742.520141196@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,188 +66,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit 97d833ceb27dc19f8777d63f90be4a27b5daeedf ]
+[ Upstream commit 01a0a6cc8cfd9952e72677d48d56cf6bc4e3a561 ]
 
-ACLs in Spectrum-2 and newer ASICs can reside in the algorithmic TCAM
-(A-TCAM) or in the ordinary circuit TCAM (C-TCAM). The former can
-contain more ACLs (i.e., tc filters), but the number of masks in each
-region (i.e., tc chain) is limited.
+There's two problems with shared RCGs.
 
-In order to mitigate the effects of the above limitation, the device
-allows filters to share a single mask if their masks only differ in up
-to 8 consecutive bits. For example, dst_ip/25 can be represented using
-dst_ip/24 with a delta of 1 bit. The C-TCAM does not have a limit on the
-number of masks being used (and therefore does not support mask
-aggregation), but can contain a limited number of filters.
+The first problem is that they incorrectly report the parent after
+commit 703db1f5da1e ("clk: qcom: rcg2: Cache CFG register updates for
+parked RCGs"). That's because the cached CFG register value needs to be
+populated when the clk is registered. clk_rcg2_shared_enable() writes
+the cached CFG register value 'parked_cfg'. This value is initially zero
+due to static initializers. If a driver calls clk_enable() before
+setting a rate or parent, it will set the parent to '0' which is
+(almost?) always XO, and may not reflect the parent at registration. In
+the worst case, this switches the RCG from sourcing a fast PLL to the
+slow crystal speed.
 
-The driver uses the "objagg" library to perform the mask aggregation by
-passing it objects that consist of the filter's mask and whether the
-filter is to be inserted into the A-TCAM or the C-TCAM since filters in
-different TCAMs cannot share a mask.
+The second problem is that the force enable bit isn't cleared. The force
+enable bit is only used during parking and unparking of shared RCGs.
+Otherwise it shouldn't be set because it keeps the RCG enabled even when
+all the branches on the output of the RCG are disabled (the hardware has
+a feedback mechanism so that any child branches keep the RCG enabled
+when the branch enable bit is set). This problem wastes power if the clk
+is unused, and is harmful in the case that the clk framework disables
+the parent of the force enabled RCG. In the latter case, the GDSC the
+shared RCG is associated with will get wedged if the RCG's source clk is
+disabled and the GDSC tries to enable the RCG to do "housekeeping" while
+powering on.
 
-The set of created objects is dependent on the insertion order of the
-filters and is not necessarily optimal. Therefore, the driver will
-periodically ask the library to compute a more optimal set ("hints") by
-looking at all the existing objects.
+Both of these problems combined with incorrect runtime PM usage in the
+display driver lead to a black screen on Qualcomm sc7180 Trogdor
+chromebooks. What happens is that the bootloader leaves the
+'disp_cc_mdss_rot_clk' enabled and the 'disp_cc_mdss_rot_clk_src' force
+enabled and parented to 'disp_cc_pll0'. The mdss driver probes and
+runtime suspends, disabling the mdss_gdsc which uses the
+'disp_cc_mdss_rot_clk_src' for "housekeeping". The
+'disp_cc_mdss_rot_clk' is disabled during late init because the clk is
+unused, but the parent 'disp_cc_mdss_rot_clk_src' is still force enabled
+because the force enable bit was never cleared. Then 'disp_cc_pll0' is
+disabled because it is also unused. That's because the clk framework
+believes the parent of the RCG is XO when it isn't. A child device of
+the mdss device (e.g. DSI) runtime resumes mdss which powers on the
+mdss_gdsc. This wedges the GDSC because 'disp_cc_mdss_rot_clk_src' is
+parented to 'disp_cc_pll0' and that PLL is off. With the GDSC wedged,
+mdss_runtime_resume() tries to enable 'disp_cc_mdss_mdp_clk' but it
+can't because the GDSC has wedged all the clks associated with the GDSC
+causing clks to stay stuck off.
 
-When the library asks the driver whether two objects can be aggregated
-the driver only compares the provided masks and ignores the A-TCAM /
-C-TCAM indication. This is the right thing to do since the goal is to
-move as many filters as possible to the A-TCAM. The driver also forbids
-two identical masks from being aggregated since this can only happen if
-one was intentionally put in the C-TCAM to avoid a conflict in the
-A-TCAM.
+This leads to the following warning seen at boot and a black screen
+because the display driver fails to probe.
 
-The above can result in the following set of hints:
+ disp_cc_mdss_mdp_clk status stuck at 'off'
+ WARNING: CPU: 1 PID: 81 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x114/0x168
+ Modules linked in:
+ CPU: 1 PID: 81 Comm: kworker/u16:4 Not tainted 6.7.0-g0dd3ee311255 #1 f5757d475795053fd2ad52247a070cd50dd046f2
+ Hardware name: Google Lazor (rev1 - 2) with LTE (DT)
+ Workqueue: events_unbound deferred_probe_work_func
+ pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : clk_branch_toggle+0x114/0x168
+ lr : clk_branch_toggle+0x110/0x168
+ sp : ffffffc08084b670
+ pmr_save: 00000060
+ x29: ffffffc08084b680 x28: ffffff808006de00 x27: 0000000000000001
+ x26: ffffff8080dbd4f4 x25: 0000000000000000 x24: 0000000000000000
+ x23: 0000000000000000 x22: ffffffd838461198 x21: ffffffd838007997
+ x20: ffffffd837541d5c x19: 0000000000000001 x18: 0000000000000004
+ x17: 0000000000000000 x16: 0000000000000010 x15: ffffffd837070fac
+ x14: 0000000000000003 x13: 0000000000000004 x12: 0000000000000001
+ x11: c0000000ffffdfff x10: ffffffd838347aa0 x9 : 08dadf92e516c000
+ x8 : 08dadf92e516c000 x7 : 0000000000000000 x6 : 0000000000000027
+ x5 : ffffffd8385a61f2 x4 : 0000000000000000 x3 : ffffffc08084b398
+ x2 : ffffffc08084b3a0 x1 : 00000000ffffdfff x0 : 00000000fffffff0
+ Call trace:
+  clk_branch_toggle+0x114/0x168
+  clk_branch2_enable+0x24/0x30
+  clk_core_enable+0x5c/0x1c8
+  clk_enable+0x38/0x58
+  clk_bulk_enable+0x40/0xb0
+  mdss_runtime_resume+0x68/0x258
+  pm_generic_runtime_resume+0x30/0x44
+  __genpd_runtime_resume+0x30/0x80
+  genpd_runtime_resume+0x124/0x214
+  __rpm_callback+0x7c/0x15c
+  rpm_callback+0x30/0x88
+  rpm_resume+0x390/0x4d8
+  rpm_resume+0x43c/0x4d8
+  __pm_runtime_resume+0x54/0x98
+  __device_attach+0xe0/0x170
+  device_initial_probe+0x1c/0x28
+  bus_probe_device+0x48/0xa4
+  device_add+0x52c/0x6fc
+  mipi_dsi_device_register_full+0x104/0x1a8
+  devm_mipi_dsi_device_register_full+0x28/0x78
+  ti_sn_bridge_probe+0x1dc/0x2bc
+  auxiliary_bus_probe+0x4c/0x94
+  really_probe+0xf8/0x270
+  __driver_probe_device+0xa8/0x130
+  driver_probe_device+0x44/0x104
+  __device_attach_driver+0xa4/0xcc
+  bus_for_each_drv+0x94/0xe8
+  __device_attach+0xf8/0x170
+  device_initial_probe+0x1c/0x28
+  bus_probe_device+0x48/0xa4
+  deferred_probe_work_func+0x9c/0xd8
 
-H1: {mask X, A-TCAM} -> H2: {mask Y, A-TCAM} // X is Y + delta
-H3: {mask Y, C-TCAM} -> H4: {mask Z, A-TCAM} // Y is Z + delta
+Fix these problems by parking shared RCGs at boot. This will properly
+initialize the parked_cfg struct member so that the parent is reported
+properly and ensure that the clk won't get stuck on or off because the
+RCG is parented to the safe source (XO).
 
-After getting the hints from the library the driver will start migrating
-filters from one region to another while consulting the computed hints
-and instructing the device to perform a lookup in both regions during
-the transition.
-
-Assuming a filter with mask X is being migrated into the A-TCAM in the
-new region, the hints lookup will return H1. Since H2 is the parent of
-H1, the library will try to find the object associated with it and
-create it if necessary in which case another hints lookup (recursive)
-will be performed. This hints lookup for {mask Y, A-TCAM} will either
-return H2 or H3 since the driver passes the library an object comparison
-function that ignores the A-TCAM / C-TCAM indication.
-
-This can eventually lead to nested objects which are not supported by
-the library [1].
-
-Fix by removing the object comparison function from both the driver and
-the library as the driver was the only user. That way the lookup will
-only return exact matches.
-
-I do not have a reliable reproducer that can reproduce the issue in a
-timely manner, but before the fix the issue would reproduce in several
-minutes and with the fix it does not reproduce in over an hour.
-
-Note that the current usefulness of the hints is limited because they
-include the C-TCAM indication and represent aggregation that cannot
-actually happen. This will be addressed in net-next.
-
-[1]
-WARNING: CPU: 0 PID: 153 at lib/objagg.c:170 objagg_obj_parent_assign+0xb5/0xd0
-Modules linked in:
-CPU: 0 PID: 153 Comm: kworker/0:18 Not tainted 6.9.0-rc6-custom-g70fbc2c1c38b #42
-Hardware name: Mellanox Technologies Ltd. MSN3700C/VMOD0008, BIOS 5.11 10/10/2018
-Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
-RIP: 0010:objagg_obj_parent_assign+0xb5/0xd0
-[...]
-Call Trace:
- <TASK>
- __objagg_obj_get+0x2bb/0x580
- objagg_obj_get+0xe/0x80
- mlxsw_sp_acl_erp_mask_get+0xb5/0xf0
- mlxsw_sp_acl_atcam_entry_add+0xe8/0x3c0
- mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
- mlxsw_sp_acl_tcam_vchunk_migrate_one+0x16b/0x270
- mlxsw_sp_acl_tcam_vregion_rehash_work+0xbe/0x510
- process_one_work+0x151/0x370
-
-Fixes: 9069a3817d82 ("lib: objagg: implement optimization hints assembly and use hints for object creation")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Amit Cohen <amcohen@nvidia.com>
-Tested-by: Alexander Zubkov <green@qrator.net>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 703db1f5da1e ("clk: qcom: rcg2: Cache CFG register updates for parked RCGs")
+Reported-by: Stephen Boyd <sboyd@kernel.org>
+Closes: https://lore.kernel.org/r/1290a5a0f7f584fcce722eeb2a1fd898.sboyd@kernel.org
+Closes: https://issuetracker.google.com/319956935
+Reported-by: Laura Nao <laura.nao@collabora.com>
+Closes: https://lore.kernel.org/r/20231218091806.7155-1-laura.nao@collabora.com
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20240502224703.103150-1-swboyd@chromium.org
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxsw/spectrum_acl_erp.c    | 13 -------------
- include/linux/objagg.h                            |  1 -
- lib/objagg.c                                      | 15 ---------------
- 3 files changed, 29 deletions(-)
+ drivers/clk/qcom/clk-rcg2.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-index d231f4d2888be..9eee229303cce 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-@@ -1217,18 +1217,6 @@ static bool mlxsw_sp_acl_erp_delta_check(void *priv, const void *parent_obj,
- 	return err ? false : true;
+diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
+index 9b3aaa7f20ac2..30b19bd39d087 100644
+--- a/drivers/clk/qcom/clk-rcg2.c
++++ b/drivers/clk/qcom/clk-rcg2.c
+@@ -1304,7 +1304,39 @@ clk_rcg2_shared_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	return clk_rcg2_recalc_rate(hw, parent_rate);
  }
  
--static int mlxsw_sp_acl_erp_hints_obj_cmp(const void *obj1, const void *obj2)
--{
--	const struct mlxsw_sp_acl_erp_key *key1 = obj1;
--	const struct mlxsw_sp_acl_erp_key *key2 = obj2;
--
--	/* For hints purposes, two objects are considered equal
--	 * in case the masks are the same. Does not matter what
--	 * the "ctcam" value is.
--	 */
--	return memcmp(key1->mask, key2->mask, sizeof(key1->mask));
--}
--
- static void *mlxsw_sp_acl_erp_delta_create(void *priv, void *parent_obj,
- 					   void *obj)
- {
-@@ -1308,7 +1296,6 @@ static void mlxsw_sp_acl_erp_root_destroy(void *priv, void *root_priv)
- static const struct objagg_ops mlxsw_sp_acl_erp_objagg_ops = {
- 	.obj_size = sizeof(struct mlxsw_sp_acl_erp_key),
- 	.delta_check = mlxsw_sp_acl_erp_delta_check,
--	.hints_obj_cmp = mlxsw_sp_acl_erp_hints_obj_cmp,
- 	.delta_create = mlxsw_sp_acl_erp_delta_create,
- 	.delta_destroy = mlxsw_sp_acl_erp_delta_destroy,
- 	.root_create = mlxsw_sp_acl_erp_root_create,
-diff --git a/include/linux/objagg.h b/include/linux/objagg.h
-index 78021777df462..6df5b887dc547 100644
---- a/include/linux/objagg.h
-+++ b/include/linux/objagg.h
-@@ -8,7 +8,6 @@ struct objagg_ops {
- 	size_t obj_size;
- 	bool (*delta_check)(void *priv, const void *parent_obj,
- 			    const void *obj);
--	int (*hints_obj_cmp)(const void *obj1, const void *obj2);
- 	void * (*delta_create)(void *priv, void *parent_obj, void *obj);
- 	void (*delta_destroy)(void *priv, void *delta_priv);
- 	void * (*root_create)(void *priv, void *obj, unsigned int root_id);
-diff --git a/lib/objagg.c b/lib/objagg.c
-index 90f3aa68c30a0..1608895b009c8 100644
---- a/lib/objagg.c
-+++ b/lib/objagg.c
-@@ -906,20 +906,6 @@ static const struct objagg_opt_algo *objagg_opt_algos[] = {
- 	[OBJAGG_OPT_ALGO_SIMPLE_GREEDY] = &objagg_opt_simple_greedy,
- };
- 
--static int objagg_hints_obj_cmp(struct rhashtable_compare_arg *arg,
--				const void *obj)
--{
--	struct rhashtable *ht = arg->ht;
--	struct objagg_hints *objagg_hints =
--			container_of(ht, struct objagg_hints, node_ht);
--	const struct objagg_ops *ops = objagg_hints->ops;
--	const char *ptr = obj;
--
--	ptr += ht->p.key_offset;
--	return ops->hints_obj_cmp ? ops->hints_obj_cmp(ptr, arg->key) :
--				    memcmp(ptr, arg->key, ht->p.key_len);
--}
--
- /**
-  * objagg_hints_get - obtains hints instance
-  * @objagg:		objagg instance
-@@ -958,7 +944,6 @@ struct objagg_hints *objagg_hints_get(struct objagg *objagg,
- 				offsetof(struct objagg_hints_node, obj);
- 	objagg_hints->ht_params.head_offset =
- 				offsetof(struct objagg_hints_node, ht_node);
--	objagg_hints->ht_params.obj_cmpfn = objagg_hints_obj_cmp;
- 
- 	err = rhashtable_init(&objagg_hints->node_ht, &objagg_hints->ht_params);
- 	if (err)
++static int clk_rcg2_shared_init(struct clk_hw *hw)
++{
++	/*
++	 * This does a few things:
++	 *
++	 *  1. Sets rcg->parked_cfg to reflect the value at probe so that the
++	 *     proper parent is reported from clk_rcg2_shared_get_parent().
++	 *
++	 *  2. Clears the force enable bit of the RCG because we rely on child
++	 *     clks (branches) to turn the RCG on/off with a hardware feedback
++	 *     mechanism and only set the force enable bit in the RCG when we
++	 *     want to make sure the clk stays on for parent switches or
++	 *     parking.
++	 *
++	 *  3. Parks shared RCGs on the safe source at registration because we
++	 *     can't be certain that the parent clk will stay on during boot,
++	 *     especially if the parent is shared. If this RCG is enabled at
++	 *     boot, and the parent is turned off, the RCG will get stuck on. A
++	 *     GDSC can wedge if is turned on and the RCG is stuck on because
++	 *     the GDSC's controller will hang waiting for the clk status to
++	 *     toggle on when it never does.
++	 *
++	 * The safest option here is to "park" the RCG at init so that the clk
++	 * can never get stuck on or off. This ensures the GDSC can't get
++	 * wedged.
++	 */
++	clk_rcg2_shared_disable(hw);
++
++	return 0;
++}
++
+ const struct clk_ops clk_rcg2_shared_ops = {
++	.init = clk_rcg2_shared_init,
+ 	.enable = clk_rcg2_shared_enable,
+ 	.disable = clk_rcg2_shared_disable,
+ 	.get_parent = clk_rcg2_shared_get_parent,
 -- 
 2.43.0
 
