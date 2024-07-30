@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60DE8941B35
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82309941E75
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E9CE1F22FDB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0FF286C11
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89111189514;
-	Tue, 30 Jul 2024 16:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A22A1A76CB;
+	Tue, 30 Jul 2024 17:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y87qDs12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2o+SQV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E6C18801A;
-	Tue, 30 Jul 2024 16:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B791A76BE;
+	Tue, 30 Jul 2024 17:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358322; cv=none; b=gnLitc5Tl6QjhUgZJVfzIok+yhsDpI9dnRB4a03hM6cT2ZXQu/YS8GG8QljaxNyhGNiSXjNJUOjBONGicUrvYYtITYNeTAB25kD1hjbmWAy0TH1IH30XwgPvjjruKA7TulDdSMp/fIyRsTgukliUpv5ZH/md2KCzywD4EOEN1k4=
+	t=1722360550; cv=none; b=CRgDpD4E6vcferGWh135gjp1Y5Yk9FKTDkEC4wuBfAvIlfZoQ43oPFTzTyFZh/wnhYA+riCzvqexdDX4H9bayQBcqoWgHaLI/59383pm7WmY6rQancKWDbYHQR2Ogzbipuqq2zc47szxmofusuSkThAQw5/hHffqFipHdgYAyDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358322; c=relaxed/simple;
-	bh=NdXxuRrX2TzKEchvMEhBMbOi2oC3W0qutnQ+jI7kov0=;
+	s=arc-20240116; t=1722360550; c=relaxed/simple;
+	bh=gIVEkYy7pyysUDIUEmxdLZ6uRh4IAgfcCksr9OHIy+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxRmjYjhTbD85Cf4o7RrhBVpJ4IVbPhqJZnCMwKAmYWMKbymvhTV7qZotOIei7cFwx99l5j4sSg1v7uzH2MyuZ2IfT+WYcvC0nu8OVph7OZSJT533rhxkTMdyOR2InhH8Z8jAL04FkBlzYepw/gEZfMCR83l5sQjVXwB5Uek9fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y87qDs12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4E9C32782;
-	Tue, 30 Jul 2024 16:52:01 +0000 (UTC)
+	 MIME-Version; b=MSxhYHjgzb9oCxMyWPaDP2FWjlltxfHnxCNUIXY5IDzHl65rV+vjdTEsU04wGeSmV5aBqw/QCCJtczG5AxPWNl54zHFwdI3pTpiHN9yGdGcAe87oCZ9FwwS2aNX9rhm1k0Z+J/A/wyMi02YN9YyB+tL1MJ+u1eVCDXLiFPXoxkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2o+SQV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8337CC32782;
+	Tue, 30 Jul 2024 17:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358322;
-	bh=NdXxuRrX2TzKEchvMEhBMbOi2oC3W0qutnQ+jI7kov0=;
+	s=korg; t=1722360549;
+	bh=gIVEkYy7pyysUDIUEmxdLZ6uRh4IAgfcCksr9OHIy+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y87qDs123wp7p+/qlWfee3XNMq4Lsh9yKbkUloYvfF5IRAa4pjNFlMgmhubZ8asWs
-	 nPu2O0Mj8ULet7pR6ieBCLPdG8T9mB7rhLiS2WX9y74FhIRSf6D7BBSxzasgBpxUvA
-	 +OLZFj0dJjiiNS0po9dDv3pfBhh+psgJzoSl2IVw=
+	b=b2o+SQV2a8ZRqBQfh/KlNVR/uRrNhRWdRdi+TJsMZUktqO1iQAMLcdR1sNlxKAeRT
+	 j3I07WPyenbrxa/baldlKQJMbvq6o8GIwskF8UpjmxDzRixU/FpLRL9ILuTqm8i7Zl
+	 fdEEd39gmP3f/DF1nTmPSrS5z3T84pmW1hDN4ixw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 377/440] MIPS: Loongson64: reset: Prioritise firmware service
+	Wentao Guan <guanwentao@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Erpeng Xu <xuerpeng@uniontech.com>
+Subject: [PATCH 6.10 734/809] Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x13d3:0x3591
 Date: Tue, 30 Jul 2024 17:50:10 +0200
-Message-ID: <20240730151630.536569987@linuxfoundation.org>
+Message-ID: <20240730151753.938496845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 4e7ca0b57f3bc09ba3e4ab86bf6b7c35134bfd04 upstream.
+commit 473a89b4ed7fd52a419340f7c540d5c8fc96fc75 upstream.
 
-We should always use firmware's poweroff & reboot service
-if it's available as firmware may need to perform more task
-than platform's syscon etc.
+Add the support ID(0x13d3, 0x3591) to usb_device_id table for
+Realtek RTL8852BE.
 
-However _machine_restart & poweroff hooks are registered at
-low priority, which means platform reboot driver can override
-them.
+The device table is as follows:
 
-Register firmware based reboot/poweroff implementation with
-register_sys_off_handler with appropriate priority so that
-they will be prioritised. Remove _machine_halt hook as it's
-deemed to be unnecessary.
+T:  Bus=01 Lev=02 Prnt=03 Port=00 Cnt=01 Dev#=  5 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=13d3 ProdID=3591 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Erpeng Xu <xuerpeng@uniontech.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/loongson64/reset.c |   38 ++++++++++++++++----------------------
- 1 file changed, 16 insertions(+), 22 deletions(-)
+ drivers/bluetooth/btusb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/loongson64/reset.c
-+++ b/arch/mips/loongson64/reset.c
-@@ -11,6 +11,7 @@
- #include <linux/init.h>
- #include <linux/kexec.h>
- #include <linux/pm.h>
-+#include <linux/reboot.h>
- #include <linux/slab.h>
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -555,6 +555,8 @@ static const struct usb_device_id quirks
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3572), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
- #include <asm/bootinfo.h>
-@@ -21,36 +22,21 @@
- #include <loongson.h>
- #include <boot_param.h>
- 
--static void loongson_restart(char *command)
-+static int firmware_restart(struct sys_off_data *unusedd)
- {
- 
- 	void (*fw_restart)(void) = (void *)loongson_sysconf.restart_addr;
- 
- 	fw_restart();
--	while (1) {
--		if (cpu_wait)
--			cpu_wait();
--	}
-+	return NOTIFY_DONE;
- }
- 
--static void loongson_poweroff(void)
-+static int firmware_poweroff(struct sys_off_data *unused)
- {
- 	void (*fw_poweroff)(void) = (void *)loongson_sysconf.poweroff_addr;
- 
- 	fw_poweroff();
--	while (1) {
--		if (cpu_wait)
--			cpu_wait();
--	}
--}
--
--static void loongson_halt(void)
--{
--	pr_notice("\n\n** You can safely turn off the power now **\n\n");
--	while (1) {
--		if (cpu_wait)
--			cpu_wait();
--	}
-+	return NOTIFY_DONE;
- }
- 
- #ifdef CONFIG_KEXEC
-@@ -154,9 +140,17 @@ static void loongson_crash_shutdown(stru
- 
- static int __init mips_reboot_setup(void)
- {
--	_machine_restart = loongson_restart;
--	_machine_halt = loongson_halt;
--	pm_power_off = loongson_poweroff;
-+	if (loongson_sysconf.restart_addr) {
-+		register_sys_off_handler(SYS_OFF_MODE_RESTART,
-+				 SYS_OFF_PRIO_FIRMWARE,
-+				 firmware_restart, NULL);
-+	}
-+
-+	if (loongson_sysconf.poweroff_addr) {
-+		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
-+				 SYS_OFF_PRIO_FIRMWARE,
-+				 firmware_poweroff, NULL);
-+	}
- 
- #ifdef CONFIG_KEXEC
- 	kexec_argv = kmalloc(KEXEC_ARGV_SIZE, GFP_KERNEL);
 
 
 
