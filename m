@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-63212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BD0941856
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2231941B2B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18515B29671
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0801F21608
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C2218E025;
-	Tue, 30 Jul 2024 16:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57831898E0;
+	Tue, 30 Jul 2024 16:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOLzSTgQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoe9Bkjp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A4218B46F;
-	Tue, 30 Jul 2024 16:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7050B188013;
+	Tue, 30 Jul 2024 16:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356088; cv=none; b=AO+VT2okFgavQlSzZ/ogA3AKmS7nKX7LOOzPyrXq6iP64WrHCnCsbyE4H7DJ+R/M8WWFvFarmh/zkeRg4/lUtRIQGk8xYE0mVJ7YJCMK+zivZZzyPhSK4yODV6BOpqXyNqGNguLE+JVWtRKwx/Y6685OhE0Pq+Y4x00DTMINMIY=
+	t=1722358306; cv=none; b=uuwWTZdawp/qYLBoHv+G8ARL9t/YVcG08P342WQMQYMt9QvScOIbyyc1WW1nT7XonMXK3cUjsxUyoIi6PmbLrlLTGIpd+eLtM8kl9GWCtrzrYiwqvYLv0AnNiXEqwy4jVa4BI56Dr3lBDOxX1OZjrBYb56fItb8I/TnzSkEv5YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356088; c=relaxed/simple;
-	bh=upIoB+PE0gxQ94D3ZzO7yl8SrVSIumKrTwhSePvLGbQ=;
+	s=arc-20240116; t=1722358306; c=relaxed/simple;
+	bh=oPiDfVBpsK18ztKbSO78GGcuSm/Ffa1jT5GEvftHcJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POm4pA/ho7NaBxfORP9B46t9yHcJ3yHstOi8W7uvZpHHDBgo66Uzgn1NG5n0j8tS1p3juyedCklRTHWCJ48pqiR2o0COAONdKhd2P4mopkbXYYMsAXZUQNfl0EoPRG7GVEsHI4j9owQPkjx/vt7TYJ9t7JNJz/Kg8ThJA4mQQqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOLzSTgQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA1FC32782;
-	Tue, 30 Jul 2024 16:14:47 +0000 (UTC)
+	 MIME-Version; b=BYXrlxbIJkbV40pFcXz1XxVnNKqu/YWurj/+yEbeGIZZlHj76cn748Fqt/ZDDIe1ORb97ZAmoztG6jJOLHkR4Xd5ZWDRInw2vREaAlyQlT/n26XLJ6nxbiSZ38OF6aAI4q7g6O1+WUYWiAgi7bQTyhkIoRZ7Eq2trTBJSgWM5q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoe9Bkjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA77C4AF0A;
+	Tue, 30 Jul 2024 16:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356088;
-	bh=upIoB+PE0gxQ94D3ZzO7yl8SrVSIumKrTwhSePvLGbQ=;
+	s=korg; t=1722358306;
+	bh=oPiDfVBpsK18ztKbSO78GGcuSm/Ffa1jT5GEvftHcJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOLzSTgQQps09GpBvks/M+uGeNkibecsuWhzOx2cBPEp0/S3J7/tWPRHNifm2iHJC
-	 sQ/hKQtotpLqvmvHD22yCfuqU7XLHh/nmouNN8sjJ9IlaxsfGpspyGfv7GhXWiNjAZ
-	 rJu3ncmhcemCdkWmJvoDuPc+kApnNtNaYMmQoHus=
+	b=xoe9Bkjpig9vUT+2u1q+dm1ikEJjo2tpSvR6nKj1HyBIZUIye2AtkI77ZgapwvOGB
+	 srTsKVUSbofAA3s4BCxQoS6kweIUPAobiUYoAkHdke8nlG0nKvL2RcxoENlMe8aU+f
+	 PUNus6KvBA86lggBnWRHt86S2byHRW/xTY23qPlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Babrou <ivan@cloudflare.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	James Clark <james.clark@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	German Gomez <german.gomez@arm.com>,
+	Spoorthy S <spoorts2@in.ibm.com>,
+	Kajol Jain <kjain@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/568] bpftool: Un-const bpf_func_info to fix it for llvm 17 and newer
+Subject: [PATCH 6.10 344/809] perf test: Make test_arm_callgraph_fp.sh more robust
 Date: Tue, 30 Jul 2024 17:43:40 +0200
-Message-ID: <20240730151644.291495308@linuxfoundation.org>
+Message-ID: <20240730151738.220452901@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +65,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Babrou <ivan@cloudflare.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit f4aba3471cfb9ccf69b476463f19b4c50fef6b14 ]
+[ Upstream commit ff16aeb9b83441b8458d4235496cf320189a0c60 ]
 
-LLVM 17 started treating const structs as constants:
+The 2 second sleep can cause the test to fail on very slow network file
+systems because Perf ends up being killed before it finishes starting
+up.
 
-* https://github.com/llvm/llvm-project/commit/0b2d5b967d98
+Fix it by making the leafloop workload end after a fixed time like the
+other workloads so there is no need to kill it after 2 seconds.
 
-Combined with pointer laundering via ptr_to_u64, which takes a const ptr,
-but in reality treats the underlying memory as mutable, this makes clang
-always pass zero to btf__type_by_id, which breaks full name resolution.
+Also remove the 1 second start sampling delay because it is similarly
+fragile. Instead, search through all samples for a matching one, rather
+than just checking the first sample and hoping it's in the right place.
 
-Disassembly before (LLVM 16) and after (LLVM 17):
-
-    -    8b 75 cc                 mov    -0x34(%rbp),%esi
-    -    e8 47 8d 02 00           call   3f5b0 <btf__type_by_id>
-    +    31 f6                    xor    %esi,%esi
-    +    e8 a9 8c 02 00           call   3f510 <btf__type_by_id>
-
-It's a bigger project to fix this properly (and a question whether LLVM
-itself should detect this), but for right now let's just fix bpftool.
-
-For more information, see this thread in bpf mailing list:
-
-* https://lore.kernel.org/bpf/CABWYdi0ymezpYsQsPv7qzpx2fWuTkoD1-wG1eT-9x-TSREFrQg@mail.gmail.com/T/
-
-Fixes: b662000aff84 ("bpftool: Adding support for BTF program names")
-Signed-off-by: Ivan Babrou <ivan@cloudflare.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20240520225149.5517-1-ivan@cloudflare.com
+Fixes: cd6382d82752 ("perf test arm64: Test unwinding using fame-pointer (fp) mode")
+Signed-off-by: James Clark <james.clark@arm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Spoorthy S <spoorts2@in.ibm.com>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240612140316.3006660-1-james.clark@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../perf/tests/shell/test_arm_callgraph_fp.sh | 27 +++++++------------
+ tools/perf/tests/workloads/leafloop.c         | 20 +++++++++++---
+ 2 files changed, 26 insertions(+), 21 deletions(-)
 
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index 958e92acca8e2..9b75639434b81 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -410,7 +410,7 @@ void get_prog_full_name(const struct bpf_prog_info *prog_info, int prog_fd,
+diff --git a/tools/perf/tests/shell/test_arm_callgraph_fp.sh b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
+index 61898e2566160..9caa361301759 100755
+--- a/tools/perf/tests/shell/test_arm_callgraph_fp.sh
++++ b/tools/perf/tests/shell/test_arm_callgraph_fp.sh
+@@ -28,28 +28,21 @@ cleanup_files()
+ 
+ trap cleanup_files EXIT TERM INT
+ 
+-# Add a 1 second delay to skip samples that are not in the leaf() function
+ # shellcheck disable=SC2086
+-perf record -o "$PERF_DATA" --call-graph fp -e cycles//u -D 1000 --user-callchains -- $TEST_PROGRAM 2> /dev/null &
+-PID=$!
++perf record -o "$PERF_DATA" --call-graph fp -e cycles//u --user-callchains -- $TEST_PROGRAM
+ 
+-echo " + Recording (PID=$PID)..."
+-sleep 2
+-echo " + Stopping perf-record..."
+-
+-kill $PID
+-wait $PID
++# Try opening the file so any immediate errors are visible in the log
++perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4
+ 
+-# expected perf-script output:
++# expected perf-script output if 'leaf' has been inserted correctly:
+ #
+-# program
++# perf
+ # 	728 leaf
+ # 	753 parent
+ # 	76c leafloop
+-# ...
++# ... remaining stack to main() ...
+ 
+-perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4
+-perf script -i "$PERF_DATA" -F comm,ip,sym | head -n4 | \
+-	awk '{ if ($2 != "") sym[i++] = $2 } END { if (sym[0] != "leaf" ||
+-						       sym[1] != "parent" ||
+-						       sym[2] != "leafloop") exit 1 }'
++# Each frame is separated by a tab, some spaces and an address
++SEP="[[:space:]]+ [[:xdigit:]]+"
++perf script -i "$PERF_DATA" -F comm,ip,sym | tr '\n' ' ' | \
++	grep -E -q "perf $SEP leaf $SEP parent $SEP leafloop"
+diff --git a/tools/perf/tests/workloads/leafloop.c b/tools/perf/tests/workloads/leafloop.c
+index 1bf5cc97649b0..f7561767e32cd 100644
+--- a/tools/perf/tests/workloads/leafloop.c
++++ b/tools/perf/tests/workloads/leafloop.c
+@@ -1,6 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#include <signal.h>
+ #include <stdlib.h>
+ #include <linux/compiler.h>
++#include <unistd.h>
+ #include "../tests.h"
+ 
+ /* We want to check these symbols in perf script */
+@@ -8,10 +10,16 @@ noinline void leaf(volatile int b);
+ noinline void parent(volatile int b);
+ 
+ static volatile int a;
++static volatile sig_atomic_t done;
++
++static void sighandler(int sig __maybe_unused)
++{
++	done = 1;
++}
+ 
+ noinline void leaf(volatile int b)
  {
- 	const char *prog_name = prog_info->name;
- 	const struct btf_type *func_type;
--	const struct bpf_func_info finfo = {};
-+	struct bpf_func_info finfo = {};
- 	struct bpf_prog_info info = {};
- 	__u32 info_len = sizeof(info);
- 	struct btf *prog_btf = NULL;
+-	for (;;)
++	while (!done)
+ 		a += b;
+ }
+ 
+@@ -22,12 +30,16 @@ noinline void parent(volatile int b)
+ 
+ static int leafloop(int argc, const char **argv)
+ {
+-	int c = 1;
++	int sec = 1;
+ 
+ 	if (argc > 0)
+-		c = atoi(argv[0]);
++		sec = atoi(argv[0]);
++
++	signal(SIGINT, sighandler);
++	signal(SIGALRM, sighandler);
++	alarm(sec);
+ 
+-	parent(c);
++	parent(sec);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
