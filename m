@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BFD941D91
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B95394186F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30FF128C6D0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 174B3283171
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3875C1A76CE;
-	Tue, 30 Jul 2024 17:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D523189505;
+	Tue, 30 Jul 2024 16:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8hgbKeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kigT9bXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0ED1A76A4;
-	Tue, 30 Jul 2024 17:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B10D1A6164;
+	Tue, 30 Jul 2024 16:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359921; cv=none; b=shkwuohjMllGfEpNQQkdXG4CIqPNmWCs4NU4uIbfGHJGO8kssz5zXzZdcMKByRvrRfgrCVnmCPO4FFHYabhrbvkQA4FTTafZtxV2+T6wKM3EvU9CwsnaBadaMpjcDexd0d5+u7+xCcx9gKHoRNsGY2jxus2C6LXk9Cb7MaS6Rig=
+	t=1722356499; cv=none; b=c3C/USYR4dInWZAJgb4/dqnXutxuvKiaiNzWKrlYbNWTevRseaI1m20E6zHVLk1FTEGq8YTBn2B4Dr2zXBdxOyoHoxFuBV/VE3MvUm+bo7FM1LV1SuIUKWYvE85T0NtBu3loZ2gLYyZHqnohcSbAvVt/s78HlTV+TUFARDgl28c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359921; c=relaxed/simple;
-	bh=L6xaosuBU2XGKbbpMvctjMwOOrxHpWP3+ZW9z5EF9GA=;
+	s=arc-20240116; t=1722356499; c=relaxed/simple;
+	bh=Iv4N6TNJdcYvYkFJbvkhxe1kc8xGBsOJ9Uu1/0c9IcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWTcxTWi1BFQMNZpMDPlr5cSqx1Cny6D7B2qEapgKRKFiTjs2OtQArNz6q+WPnTAtsymhZBhT2m3fd930U6K+AwlanN/qQQJStWMmaQrpO8rXKVCzgKQPYFc1HzRdDAnVglV6z6H4uyiw4PXUg4JPxmopBfEZVC+UruycCFKids=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8hgbKeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2EDC4AF0C;
-	Tue, 30 Jul 2024 17:18:39 +0000 (UTC)
+	 MIME-Version; b=pXRIB2PHiLY4JoL+/oxYx0JzeObznH7tm5Ch1PFREPlpnZd6ivAzSfnY+AjcTCJGKc1Fb6kRL+ZOCpIvY/sG0k31ibMRSl5eZarShh8459eyR0SPNDUzextPRn5UlvYo46VGXNBSMsTfrlGTqrkfCx345YbSx96mZHNFLNDKdtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kigT9bXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84BDC32782;
+	Tue, 30 Jul 2024 16:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359920;
-	bh=L6xaosuBU2XGKbbpMvctjMwOOrxHpWP3+ZW9z5EF9GA=;
+	s=korg; t=1722356499;
+	bh=Iv4N6TNJdcYvYkFJbvkhxe1kc8xGBsOJ9Uu1/0c9IcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8hgbKeGFTs9hrMt6dcDrSXHVSjk/7BfN8VuZ6hGAlxKIeJDrr2gEKSoNWWxPYknY
-	 4IyEGToc2F/+53NMh4U1WFPaWUXYOwJ7LtXEAOgeoJJcHt6MkoQQCfHO6MtqOhfm0G
-	 MU6rT1R8AJ5zuUtvi7ddwovbqBy8qxIwMqanPbRc=
+	b=kigT9bXlBfQaLBY6+Q4OmBtIy9NUI9OuXZSN7HwlrrtFmWWOjxUg6X7tEy/RRk3y1
+	 T4EpwiH4jziJ04z/8jV6Yn9NCi224P07I3L+Gn+nm3U4E1x0O5Vqw7pKtHxnz0OqsO
+	 wgUNNlXzmftdD+mpGaMPAOWoyUaHhnGJmLdnbzxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 554/809] ipv6: fix source address selection with route leak
+	Andrei Lalaev <andrei.lalaev@anton-paar.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 197/440] Input: qt1050 - handle CHIP_ID reading error
 Date: Tue, 30 Jul 2024 17:47:10 +0200
-Message-ID: <20240730151746.639524422@linuxfoundation.org>
+Message-ID: <20240730151623.568447072@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Andrei Lalaev <andrei.lalaev@anton-paar.com>
 
-commit 252442f2ae317d109ef0b4b39ce0608c09563042 upstream.
+[ Upstream commit 866a5c7e2781cf1b019072288f1f5c64186dcb63 ]
 
-By default, an address assigned to the output interface is selected when
-the source address is not specified. This is problematic when a route,
-configured in a vrf, uses an interface from another vrf (aka route leak).
-The original vrf does not own the selected source address.
+If the device is missing, we get the following error:
 
-Let's add a check against the output interface and call the appropriate
-function to select the source address.
+  qt1050 3-0041: ID -1340767592 not supported
 
-CC: stable@vger.kernel.org
-Fixes: 0d240e7811c4 ("net: vrf: Implement get_saddr for IPv6")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://patch.msgid.link/20240710081521.3809742-3-nicolas.dichtel@6wind.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's handle this situation and print more informative error
+when reading of CHIP_ID fails:
+
+  qt1050 3-0041: Failed to read chip ID: -6
+
+Fixes: cbebf5addec1 ("Input: qt1050 - add Microchip AT42QT1050 support")
+Signed-off-by: Andrei Lalaev <andrei.lalaev@anton-paar.com>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Link: https://lore.kernel.org/r/20240617183018.916234-1-andrey.lalaev@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip6_route.h |   20 ++++++++++++++------
- net/ipv6/ip6_output.c   |    1 +
- net/ipv6/route.c        |    2 +-
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ drivers/input/keyboard/qt1050.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -127,18 +127,26 @@ void rt6_age_exceptions(struct fib6_info
+diff --git a/drivers/input/keyboard/qt1050.c b/drivers/input/keyboard/qt1050.c
+index 403060d05c3b3..7193a4198e214 100644
+--- a/drivers/input/keyboard/qt1050.c
++++ b/drivers/input/keyboard/qt1050.c
+@@ -226,7 +226,12 @@ static bool qt1050_identify(struct qt1050_priv *ts)
+ 	int err;
  
- static inline int ip6_route_get_saddr(struct net *net, struct fib6_info *f6i,
- 				      const struct in6_addr *daddr,
--				      unsigned int prefs,
-+				      unsigned int prefs, int l3mdev_index,
- 				      struct in6_addr *saddr)
- {
-+	struct net_device *l3mdev;
-+	struct net_device *dev;
-+	bool same_vrf;
- 	int err = 0;
- 
--	if (f6i && f6i->fib6_prefsrc.plen) {
-+	rcu_read_lock();
+ 	/* Read Chip ID */
+-	regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
++	err = regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
++	if (err) {
++		dev_err(&ts->client->dev, "Failed to read chip ID: %d\n", err);
++		return false;
++	}
 +
-+	l3mdev = dev_get_by_index_rcu(net, l3mdev_index);
-+	if (!f6i || !f6i->fib6_prefsrc.plen || l3mdev)
-+		dev = f6i ? fib6_info_nh_dev(f6i) : NULL;
-+	same_vrf = !l3mdev || l3mdev_master_dev_rcu(dev) == l3mdev;
-+	if (f6i && f6i->fib6_prefsrc.plen && same_vrf)
- 		*saddr = f6i->fib6_prefsrc.addr;
--	} else {
--		struct net_device *dev = f6i ? fib6_info_nh_dev(f6i) : NULL;
-+	else
-+		err = ipv6_dev_get_saddr(net, same_vrf ? dev : l3mdev, daddr, prefs, saddr);
- 
--		err = ipv6_dev_get_saddr(net, dev, daddr, prefs, saddr);
--	}
-+	rcu_read_unlock();
- 
- 	return err;
- }
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1124,6 +1124,7 @@ static int ip6_dst_lookup_tail(struct ne
- 		from = rt ? rcu_dereference(rt->from) : NULL;
- 		err = ip6_route_get_saddr(net, from, &fl6->daddr,
- 					  sk ? READ_ONCE(inet6_sk(sk)->srcprefs) : 0,
-+					  fl6->flowi6_l3mdev,
- 					  &fl6->saddr);
- 		rcu_read_unlock();
- 
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5689,7 +5689,7 @@ static int rt6_fill_node(struct net *net
- 				goto nla_put_failure;
- 	} else if (dest) {
- 		struct in6_addr saddr_buf;
--		if (ip6_route_get_saddr(net, rt, dest, 0, &saddr_buf) == 0 &&
-+		if (ip6_route_get_saddr(net, rt, dest, 0, 0, &saddr_buf) == 0 &&
- 		    nla_put_in6_addr(skb, RTA_PREFSRC, &saddr_buf))
- 			goto nla_put_failure;
- 	}
+ 	if (val != QT1050_CHIP_ID_VER) {
+ 		dev_err(&ts->client->dev, "ID %d not supported\n", val);
+ 		return false;
+-- 
+2.43.0
+
 
 
 
