@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-63252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26528941813
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADF9941B55
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0C1D1F25596
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7361F22F39
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FC818C902;
-	Tue, 30 Jul 2024 16:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB1D189B93;
+	Tue, 30 Jul 2024 16:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgoUtLad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uW7w38+7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0357E184556;
-	Tue, 30 Jul 2024 16:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C3A189919;
+	Tue, 30 Jul 2024 16:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356221; cv=none; b=fuoUvGZ9D8tM1cA+NBjykmTNBv/wObRx1+EV5aEitl77SQjjF31C6e08H3iGd3qIPMzPJiDdCJdtSCzfTd9LjWpMn3vKgt37Qy5s82UaT15OofwRSvGwFOcWTgBQAOllKJ4uby/ZCvJTWbagoyEGt6+mmi+8trc4qbkSIpyhNdc=
+	t=1722358417; cv=none; b=POIKH2xUecgpgEl67ccVU2BfgjTiGdzEtoTk05ihYjVtr0umZhOcPP2PQ4hZM7conredCZxs/gRHAvpn5KZicj6xANrya9ixxus28x+3xQ4mq42oNLlNa57xSq49krUfV/rx502eQv1lvg204o9WNg567XViNsFPmS/uKFGbexE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356221; c=relaxed/simple;
-	bh=0o8f3YYG5o4Oq5HZsKAozNn5VyvEzrW2RG12XAIuuqc=;
+	s=arc-20240116; t=1722358417; c=relaxed/simple;
+	bh=oYwHLgkLyF0CFdrzFV7ZD/OABm4vXX7Mbh7/eNdQPXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkmtcRwsZIA5PYom7EvLuGpzwIh571FfUZLPNGMNyw/E4v9q8Byo1eMeYxCpnBp3lSJ6P8SjwHMHGDMRe5+8N39Gesv0cXIqHbjvWd5daOcYVizIAGFprmj0gqFylm4H+CPmvSeV5tCiJorulblADS+vXwRp3nUC1d4RQVXN468=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgoUtLad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1885AC4AF0C;
-	Tue, 30 Jul 2024 16:16:59 +0000 (UTC)
+	 MIME-Version; b=AUYQmWZDCf1LZJjA4pNotd5AnbCEkFt/jayPtL0uOXebrIrykW4uveqe69X8bIIzBXvSMF/0lZ1RAorzbYia6Q6EuRCM7OiTSc944jMxfla20pQAGWAsGh9VjEkVxQmVbV4LuvkJMk8dWib2Rwk4unYDQpfJymAkjQYefeeqSMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uW7w38+7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B968C32782;
+	Tue, 30 Jul 2024 16:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356220;
-	bh=0o8f3YYG5o4Oq5HZsKAozNn5VyvEzrW2RG12XAIuuqc=;
+	s=korg; t=1722358417;
+	bh=oYwHLgkLyF0CFdrzFV7ZD/OABm4vXX7Mbh7/eNdQPXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IgoUtLadBBRpkfDRJIyNAPgWzkEPQe60NcoG7bzpkNkvRbrSoXHJjg2ne4SlCSVW3
-	 xkgYPgm0JPlaFJ+vGhSKg7KKSBnhoEVBTVGGMD7UH1iF9tTY2SKZy5yH3FclRU78Ay
-	 CtV2wKaSEjpZFtWFaYSfAcDRxGGQ06HZskqYYek8=
+	b=uW7w38+7om2UNTbX/dnOdxoWOI/azJhCKIqBzrqGGLLLvDNyJr+yOuUSgXlhP7G4c
+	 APmWoLxrU9XxVv6qolkHAZ6VLfvTgZQzMjcUi0hC+AG9+NUyPAlo0Sz4msav/a4M2P
+	 dvjXyVFum84/Wnmq9YRgXykLZRZw7P/QS8CBgQ84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	James Clark <james.clark@arm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Stephane Eranian <eranian@google.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Bhaskara Budiredla <bbudiredla@marvell.com>,
+	Tuan Phan <tuanphan@os.amperecomputing.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/568] net/smc: set rmbs SG_MAX_SINGLE_ALLOC limitation only when CONFIG_ARCH_NO_SG_CHAIN is defined
-Date: Tue, 30 Jul 2024 17:43:52 +0200
-Message-ID: <20240730151644.759063188@linuxfoundation.org>
+Subject: [PATCH 6.10 357/809] perf tests: Add some pmu core functionality tests
+Date: Tue, 30 Jul 2024 17:43:53 +0200
+Message-ID: <20240730151738.744687028@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +71,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 3ac14b9dfbd345e891d48d89f6c2fa519848f0f4 ]
+[ Upstream commit 678be1ca30cc939e0180c85b4cc9150b3d5ef0c8 ]
 
-SG_MAX_SINGLE_ALLOC is used to limit maximum number of entries that
-will be allocated in one piece of scatterlist. When the entries of
-scatterlist exceeds SG_MAX_SINGLE_ALLOC, sg chain will be used. From
-commit 7c703e54cc71 ("arch: switch the default on ARCH_HAS_SG_CHAIN"),
-we can know that the macro CONFIG_ARCH_NO_SG_CHAIN is used to identify
-whether sg chain is supported. So, SMC-R's rmb buffer should be limited
-by SG_MAX_SINGLE_ALLOC only when the macro CONFIG_ARCH_NO_SG_CHAIN is
-defined.
+Test behavior of PMU names and comparisons wrt suffixes using Intel
+uncore_cha, marvell mrvl_ddr_pmu and S390's cpum_cf as examples.
 
-Fixes: a3fe3d01bd0d ("net/smc: introduce sg-logic for RMBs")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Co-developed-by: Wen Gu <guwen@linux.alibaba.com>
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Bharat Bhushan <bbhushan2@marvell.com>
+Cc: Bhaskara Budiredla <bbudiredla@marvell.com>
+Cc: Tuan Phan <tuanphan@os.amperecomputing.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240515060114.3268149-3-irogers@google.com
+Stable-dep-of: 3e0bf9fde298 ("perf pmu: Restore full PMU name wildcard support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/perf/tests/pmu.c | 99 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 99 insertions(+)
 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index d520ee62c8ecd..f99bb9d0adcc6 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1974,7 +1974,6 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
-  */
- static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
- {
--	const unsigned int max_scat = SG_MAX_SINGLE_ALLOC * PAGE_SIZE;
- 	u8 compressed;
- 
- 	if (size <= SMC_BUF_MIN_SIZE)
-@@ -1984,9 +1983,11 @@ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
- 	compressed = min_t(u8, ilog2(size) + 1,
- 			   is_smcd ? SMCD_DMBE_SIZES : SMCR_RMBE_SIZES);
- 
-+#ifdef CONFIG_ARCH_NO_SG_CHAIN
- 	if (!is_smcd && is_rmb)
- 		/* RMBs are backed by & limited to max size of scatterlists */
--		compressed = min_t(u8, compressed, ilog2(max_scat >> 14));
-+		compressed = min_t(u8, compressed, ilog2((SG_MAX_SINGLE_ALLOC * PAGE_SIZE) >> 14));
-+#endif
- 
- 	return compressed;
+diff --git a/tools/perf/tests/pmu.c b/tools/perf/tests/pmu.c
+index 06cc0e46cb289..cc88b5920c3e2 100644
+--- a/tools/perf/tests/pmu.c
++++ b/tools/perf/tests/pmu.c
+@@ -3,6 +3,7 @@
+ #include "evsel.h"
+ #include "parse-events.h"
+ #include "pmu.h"
++#include "pmus.h"
+ #include "tests.h"
+ #include "debug.h"
+ #include "fncache.h"
+@@ -340,10 +341,108 @@ static int test__pmu_event_names(struct test_suite *test __maybe_unused,
+ 	return ret;
  }
+ 
++static const char * const uncore_chas[] = {
++	"uncore_cha_0",
++	"uncore_cha_1",
++	"uncore_cha_2",
++	"uncore_cha_3",
++	"uncore_cha_4",
++	"uncore_cha_5",
++	"uncore_cha_6",
++	"uncore_cha_7",
++	"uncore_cha_8",
++	"uncore_cha_9",
++	"uncore_cha_10",
++	"uncore_cha_11",
++	"uncore_cha_12",
++	"uncore_cha_13",
++	"uncore_cha_14",
++	"uncore_cha_15",
++	"uncore_cha_16",
++	"uncore_cha_17",
++	"uncore_cha_18",
++	"uncore_cha_19",
++	"uncore_cha_20",
++	"uncore_cha_21",
++	"uncore_cha_22",
++	"uncore_cha_23",
++	"uncore_cha_24",
++	"uncore_cha_25",
++	"uncore_cha_26",
++	"uncore_cha_27",
++	"uncore_cha_28",
++	"uncore_cha_29",
++	"uncore_cha_30",
++	"uncore_cha_31",
++};
++
++static const char * const mrvl_ddrs[] = {
++	"mrvl_ddr_pmu_87e1b0000000",
++	"mrvl_ddr_pmu_87e1b1000000",
++	"mrvl_ddr_pmu_87e1b2000000",
++	"mrvl_ddr_pmu_87e1b3000000",
++	"mrvl_ddr_pmu_87e1b4000000",
++	"mrvl_ddr_pmu_87e1b5000000",
++	"mrvl_ddr_pmu_87e1b6000000",
++	"mrvl_ddr_pmu_87e1b7000000",
++	"mrvl_ddr_pmu_87e1b8000000",
++	"mrvl_ddr_pmu_87e1b9000000",
++	"mrvl_ddr_pmu_87e1ba000000",
++	"mrvl_ddr_pmu_87e1bb000000",
++	"mrvl_ddr_pmu_87e1bc000000",
++	"mrvl_ddr_pmu_87e1bd000000",
++	"mrvl_ddr_pmu_87e1be000000",
++	"mrvl_ddr_pmu_87e1bf000000",
++};
++
++static int test__name_len(struct test_suite *test __maybe_unused, int subtest __maybe_unused)
++{
++	TEST_ASSERT_VAL("cpu", pmu_name_len_no_suffix("cpu") == strlen("cpu"));
++	TEST_ASSERT_VAL("i915", pmu_name_len_no_suffix("i915") == strlen("i915"));
++	TEST_ASSERT_VAL("cpum_cf", pmu_name_len_no_suffix("cpum_cf") == strlen("cpum_cf"));
++	for (size_t i = 0; i < ARRAY_SIZE(uncore_chas); i++) {
++		TEST_ASSERT_VAL("Strips uncore_cha suffix",
++				pmu_name_len_no_suffix(uncore_chas[i]) ==
++				strlen("uncore_cha"));
++	}
++	for (size_t i = 0; i < ARRAY_SIZE(mrvl_ddrs); i++) {
++		TEST_ASSERT_VAL("Strips mrvl_ddr_pmu suffix",
++				pmu_name_len_no_suffix(mrvl_ddrs[i]) ==
++				strlen("mrvl_ddr_pmu"));
++	}
++	return TEST_OK;
++}
++
++static int test__name_cmp(struct test_suite *test __maybe_unused, int subtest __maybe_unused)
++{
++	TEST_ASSERT_EQUAL("cpu", pmu_name_cmp("cpu", "cpu"), 0);
++	TEST_ASSERT_EQUAL("i915", pmu_name_cmp("i915", "i915"), 0);
++	TEST_ASSERT_EQUAL("cpum_cf", pmu_name_cmp("cpum_cf", "cpum_cf"), 0);
++	TEST_ASSERT_VAL("i915", pmu_name_cmp("cpu", "i915") < 0);
++	TEST_ASSERT_VAL("i915", pmu_name_cmp("i915", "cpu") > 0);
++	TEST_ASSERT_VAL("cpum_cf", pmu_name_cmp("cpum_cf", "cpum_ce") > 0);
++	TEST_ASSERT_VAL("cpum_cf", pmu_name_cmp("cpum_cf", "cpum_d0") < 0);
++	for (size_t i = 1; i < ARRAY_SIZE(uncore_chas); i++) {
++		TEST_ASSERT_VAL("uncore_cha suffixes ordered lt",
++				pmu_name_cmp(uncore_chas[i-1], uncore_chas[i]) < 0);
++		TEST_ASSERT_VAL("uncore_cha suffixes ordered gt",
++				pmu_name_cmp(uncore_chas[i], uncore_chas[i-1]) > 0);
++	}
++	for (size_t i = 1; i < ARRAY_SIZE(mrvl_ddrs); i++) {
++		TEST_ASSERT_VAL("mrvl_ddr_pmu suffixes ordered lt",
++				pmu_name_cmp(mrvl_ddrs[i-1], mrvl_ddrs[i]) < 0);
++		TEST_ASSERT_VAL("mrvl_ddr_pmu suffixes ordered gt",
++				pmu_name_cmp(mrvl_ddrs[i], mrvl_ddrs[i-1]) > 0);
++	}
++	return TEST_OK;
++}
++
+ static struct test_case tests__pmu[] = {
+ 	TEST_CASE("Parsing with PMU format directory", pmu_format),
+ 	TEST_CASE("Parsing with PMU event", pmu_events),
+ 	TEST_CASE("PMU event names", pmu_event_names),
++	TEST_CASE("PMU name combining", name_len),
++	TEST_CASE("PMU name comparison", name_cmp),
+ 	{	.name = NULL, }
+ };
+ 
 -- 
 2.43.0
 
