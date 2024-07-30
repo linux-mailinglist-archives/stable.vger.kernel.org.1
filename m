@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-63529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2432D94196C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64528941DE0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F74286A09
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950DA1C23AD9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44361898E0;
-	Tue, 30 Jul 2024 16:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C316C1A76B2;
+	Tue, 30 Jul 2024 17:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eja4nb+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDVCBgMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637C21A6192;
-	Tue, 30 Jul 2024 16:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A621A76A9;
+	Tue, 30 Jul 2024 17:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357120; cv=none; b=STj+gP7FL5zMIme0cyODcLuSt1/zZ5KYZHLB7cQY4iTASzo+VEfJXnqpJHgY95ZOwRnu+5k5CgR42v5z9aDmn3cu4c4JUdKs86oDf/hH23iG8nZxR0jqt7DjhESon0w+F3X29EW96IqQfP3dbKIrcSTzchozZ/24nAwPrQpv6wY=
+	t=1722360171; cv=none; b=aL5KRrs8O+7faQLpVPaBJksvTPQhNkFIQ1dHc44tuLLxjEQasDRjoeDN/Cylux+HEjw6EeNktyJThon8NPnKPwQjYBXx7zfhbVZSowD9xLSsW/JqhWmKnP22vPkRAsihw02XV/3Hn6I0UHkPnnd8+IN1RVXZutAr+jDZ8oP0nyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357120; c=relaxed/simple;
-	bh=SIZxUNk42M6J6KljToRMe0efIYhbSK6qFKfRfi2iGFA=;
+	s=arc-20240116; t=1722360171; c=relaxed/simple;
+	bh=df56HXy2M8cY18rj59i8gCvsr7ahf928b/sV+YxxnwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bULbApj91BH/nPg4PMNb9kXQ0W4n2uECqXkmpR+GBe5BwxTGnrzoc/wwzstfAY7fcUKKbOHhRdDeNleRvsb9y3072YrwSs94VN7ptkF07qCrjihrBHqBU9hEpAy7pNqnd+0yMmo8KRstawPAoKyGlB5c6G2SKJPyAwyxi7s0isc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eja4nb+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF89BC32782;
-	Tue, 30 Jul 2024 16:31:59 +0000 (UTC)
+	 MIME-Version; b=YHeRabHxw7LatFcRfyC3d3UzLAEP9Jx6F3IFNWWxY4synt8dAvPMZZLMVqPSmYp0gGJ/+UUibVv6Pp0kDHCk+IkHAeTZlPhZbw9o9/Cr9k9jx0pGQlugrNoluR2SL6JXP9lvg97FqEQcr3OOlGS4YVpgEfDZNUn/C2Zk0gdNJqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDVCBgMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82C1C4AF0E;
+	Tue, 30 Jul 2024 17:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357120;
-	bh=SIZxUNk42M6J6KljToRMe0efIYhbSK6qFKfRfi2iGFA=;
+	s=korg; t=1722360171;
+	bh=df56HXy2M8cY18rj59i8gCvsr7ahf928b/sV+YxxnwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eja4nb+m5bSDHxiANpBfx4BAwY9GtPvCkCAfL0WoxLXjkZnzKxrkvzW23qq+yuzf4
-	 vCGy4Uf2DsSfXSNKzqp51oDn0BeauTYuhyHjn1sGtYOBl5upVNcLUS/EwZ1EY773MK
-	 sV10C86xBWel/sJKIFy8G6mzF5fYC6Xt2bCqgjdQ=
+	b=yDVCBgMtorGZ7xlC5R+h+plzoQoseQbWg9NxSSzBc7RggRL/okg0dDtF554dRppFq
+	 5IkdI9gDutcwkAp9D37CVuNDGlsNvCWluFIW/mYEapBm1LTCAaQ7dJqG65S/GyA/gl
+	 kCe07uOghVYKChEXqX7I1K1sfAwgMsfn0wLZKB6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Lance Yang <ioworker0@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 260/440] fs/proc/task_mmu: indicate PM_FILE for PMD-mapped file THP
-Date: Tue, 30 Jul 2024 17:48:13 +0200
-Message-ID: <20240730151625.997268965@linuxfoundation.org>
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.10 618/809] KVM: PPC: Book3S HV nestedv2: Fix doorbell emulation
+Date: Tue, 30 Jul 2024 17:48:14 +0200
+Message-ID: <20240730151749.249856693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Gautam Menghani <gautam@linux.ibm.com>
 
-[ Upstream commit 3f9f022e975d930709848a86a1c79775b0585202 ]
+commit 54ec2bd9e0173b75daf84675d07c56584f96564b upstream.
 
-Patch series "fs/proc: move page_mapcount() to fs/proc/internal.h".
+Doorbell emulation is broken for KVM on PAPR guests as support for DPDES
+was not added in the initial patch series. Due to this, a KVM on PAPR
+guest with SMT > 1 cannot be booted with the XICS interrupt controller
+as doorbells are setup in the initial probe path when using XICS
+(pSeries_smp_probe()).
 
-With all other page_mapcount() users in the tree gone, move
-page_mapcount() to fs/proc/internal.h, rename it and extend the
-documentation to prevent future (ab)use.
+Command to replicate the above bug:
 
-... of course, I find some issues while working on that code that I sort
-first ;)
+qemu-system-ppc64 \
+	-drive file=rhel.qcow2,format=qcow2 \
+	-m 20G \
+	-smp 8,cores=1,threads=8 \
+	-cpu  host \
+	-nographic \
+	-machine pseries,ic-mode=xics -accel kvm
 
-We'll now only end up calling page_mapcount() [now
-folio_precise_page_mapcount()] on pages mapped via present page table
-entries.  Except for /proc/kpagecount, that still does questionable
-things, but we'll leave that legacy interface as is for now.
+Add doorbell state handling support in the host KVM code to fix doorbell
+emulation.
 
-Did a quick sanity check.  Likely we would want some better selfestest for
-/proc/$/pagemap + smaps.  I'll see if I can find some time to write some
-more.
-
-This patch (of 6):
-
-Looks like we never taught pagemap_pmd_range() about the existence of
-PMD-mapped file THPs.  Seems to date back to the times when we first added
-support for non-anon THPs in the form of shmem THP.
-
-Link: https://lkml.kernel.org/r/20240607122357.115423-1-david@redhat.com
-Link: https://lkml.kernel.org/r/20240607122357.115423-2-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Lance Yang <ioworker0@gmail.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240605113913.83715-3-gautam@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_mmu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kvm/book3s_hv.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index a954305fbc31b..484886cdd272c 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1513,6 +1513,8 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 		}
- #endif
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4116,6 +4116,11 @@ static int kvmhv_vcpu_entry_nestedv2(str
+ 	int trap;
+ 	long rc;
  
-+		if (page && !PageAnon(page))
-+			flags |= PM_FILE;
- 		if (page && !migration && page_mapcount(page) == 1)
- 			flags |= PM_MMAP_EXCLUSIVE;
++	if (vcpu->arch.doorbell_request) {
++		vcpu->arch.doorbell_request = 0;
++		kvmppc_set_dpdes(vcpu, 1);
++	}
++
+ 	io = &vcpu->arch.nestedv2_io;
  
--- 
-2.43.0
-
+ 	msr = mfmsr();
 
 
 
