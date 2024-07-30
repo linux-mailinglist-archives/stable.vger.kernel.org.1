@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-64458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23C1941DE8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DCB94197A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74A891F27BD7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BCA2284CDA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F481A76C3;
-	Tue, 30 Jul 2024 17:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A061A6199;
+	Tue, 30 Jul 2024 16:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s18RgRbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HerHzkTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825531A76B4;
-	Tue, 30 Jul 2024 17:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271C58BE8;
+	Tue, 30 Jul 2024 16:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360188; cv=none; b=Jn8QYgwbnJHni1ueNx+qbEKrqCyQBIChgE/eVdyBn812vWaYJW+WIBPqo2YkiD6MfSaDdcjkSMcQI4Jq/Nr75fhvCNdzlxR6dWWJHfUyD98daFpcjrum9inJ+A9ftpNsqKe7dGsWQuHnGIs2ZBxgcm0kaZRIoBm/24ExfQkDuYg=
+	t=1722357165; cv=none; b=mUgtYZR/YkKOceNd3U39F01sB2f3GOsZM9kDK8E7Ygou60d/PF61mV8NcktRd40C4Z19BWcSUZHxmYsEK1IEchycT3YX3zPhnvsYcw5Qf7F2Uxfo+M/n3+eXp4yKqQEo0L3nmBfYhxmSNef67i8b4+0skTo/cKnDKa3b+qypA7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360188; c=relaxed/simple;
-	bh=SKuT1tWdaY00XBNp49SPcpsKsVKeMmo6fs0UQv5P4yo=;
+	s=arc-20240116; t=1722357165; c=relaxed/simple;
+	bh=UTxYB8KIecEcOueIKsAF9qrYyWOamen8DAUxKaMi+RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M07azdUjPGqmJKMWaAt2GRaEhszxc1j63LTH+p0BHKQvmAu+MDO2IdBKwHaounX/sOUQ5zMvpDacJH03BC0kChi3lNOdmgHjYgAUZB8UR+EpaZCZ30YNqFlbsY4gufNdrdU8SJOt3Ho9mtcbT/qD4BbWeg5BVDTwZMPZVinzsvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s18RgRbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC00C32782;
-	Tue, 30 Jul 2024 17:23:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cTcauhd+mktxJPpWCySIldIK42l5Uf/kGFZkoHvQPGvlhHMMmw+5saepXlVxuL2xXsOjQanmR8jpfeo49Oxg+WLSXUrgLzSm48PyGBCNal/qB8e2x3gaE6C09mSuUYYleib7WXSv8R/GjJnbpfRlla6nbFdGh9oAuZbYW+WYX/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HerHzkTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D69C32782;
+	Tue, 30 Jul 2024 16:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360188;
-	bh=SKuT1tWdaY00XBNp49SPcpsKsVKeMmo6fs0UQv5P4yo=;
+	s=korg; t=1722357165;
+	bh=UTxYB8KIecEcOueIKsAF9qrYyWOamen8DAUxKaMi+RE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s18RgRbqKYlaDJXOq2UQXj8Nh7OSPsVGzZhe6ZIeB3S9xq48KCSJUtGrkjbVoJjPD
-	 CeCy1nio1IOhLiJOILAO1VzpZNFPll3IW0H4XJ4nPLQqKU0w2MXOdkDDlGu+gs31sr
-	 Yly3gUv8pcBEGttgmUaXY5Fs17uVfcE3wShh/22s=
+	b=HerHzkTd8BhnKDPpKt8o0LJu5K99nXeTlZRiZH1t6FleEoOGfjaHAZ2p6QUav4ryR
+	 uO2pIDuH/423geFuP4bxu1K9z5GCKUiIXMpL/KJwpdIuLYI/Dc/FtiGXkoRFsYS9vI
+	 lOEYZvHtDjZHfsNWhyXkAlxLULFXX+PMhoGaQU/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.10 622/809] KVM: nVMX: Request immediate exit iff pending nested event needs injection
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 265/440] s390/dasd: fix error checks in dasd_copy_pair_store()
 Date: Tue, 30 Jul 2024 17:48:18 +0200
-Message-ID: <20240730151749.409334062@linuxfoundation.org>
+Message-ID: <20240730151626.191087202@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,87 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Carlos López <clopez@suse.de>
 
-commit 32f55e475ce2c4b8b124d335fcfaf1152ba977a1 upstream.
+[ Upstream commit 8e64d2356cbc800b4cd0e3e614797f76bcf0cdb8 ]
 
-When requesting an immediate exit from L2 in order to inject a pending
-event, do so only if the pending event actually requires manual injection,
-i.e. if and only if KVM actually needs to regain control in order to
-deliver the event.
+dasd_add_busid() can return an error via ERR_PTR() if an allocation
+fails. However, two callsites in dasd_copy_pair_store() do not check
+the result, potentially resulting in a NULL pointer dereference. Fix
+this by checking the result with IS_ERR() and returning the error up
+the stack.
 
-Avoiding the "immediate exit" isn't simply an optimization, it's necessary
-to make forward progress, as the "already expired" VMX preemption timer
-trick that KVM uses to force a VM-Exit has higher priority than events
-that aren't directly injected.
-
-At present time, this is a glorified nop as all events processed by
-vmx_has_nested_events() require injection, but that will not hold true in
-the future, e.g. if there's a pending virtual interrupt in vmcs02.RVI.
-I.e. if KVM is trying to deliver a virtual interrupt to L2, the expired
-VMX preemption timer will trigger VM-Exit before the virtual interrupt is
-delivered, and KVM will effectively hang the vCPU in an endless loop of
-forced immediate VM-Exits (because the pending virtual interrupt never
-goes away).
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a91ff09d39f9b ("s390/dasd: add copy pair setup")
+Signed-off-by: Carlos López <clopez@suse.de>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240715112434.2111291-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |    2 +-
- arch/x86/kvm/vmx/nested.c       |    2 +-
- arch/x86/kvm/x86.c              |    4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/s390/block/dasd_devmap.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1819,7 +1819,7 @@ struct kvm_x86_nested_ops {
- 	bool (*is_exception_vmexit)(struct kvm_vcpu *vcpu, u8 vector,
- 				    u32 error_code);
- 	int (*check_events)(struct kvm_vcpu *vcpu);
--	bool (*has_events)(struct kvm_vcpu *vcpu);
-+	bool (*has_events)(struct kvm_vcpu *vcpu, bool for_injection);
- 	void (*triple_fault)(struct kvm_vcpu *vcpu);
- 	int (*get_state)(struct kvm_vcpu *vcpu,
- 			 struct kvm_nested_state __user *user_kvm_nested_state,
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4032,7 +4032,7 @@ static bool nested_vmx_preemption_timer_
- 	       to_vmx(vcpu)->nested.preemption_timer_expired;
- }
+diff --git a/drivers/s390/block/dasd_devmap.c b/drivers/s390/block/dasd_devmap.c
+index b2a4c34330573..1129f6ae98b57 100644
+--- a/drivers/s390/block/dasd_devmap.c
++++ b/drivers/s390/block/dasd_devmap.c
+@@ -2135,13 +2135,19 @@ static ssize_t dasd_copy_pair_store(struct device *dev,
  
--static bool vmx_has_nested_events(struct kvm_vcpu *vcpu)
-+static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
- {
- 	return nested_vmx_preemption_timer_pending(vcpu) ||
- 	       to_vmx(vcpu)->nested.mtf_pending;
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10516,7 +10516,7 @@ static int kvm_check_and_inject_events(s
+ 	/* allocate primary devmap if needed */
+ 	prim_devmap = dasd_find_busid(prim_busid);
+-	if (IS_ERR(prim_devmap))
++	if (IS_ERR(prim_devmap)) {
+ 		prim_devmap = dasd_add_busid(prim_busid, DASD_FEATURE_DEFAULT);
++		if (IS_ERR(prim_devmap))
++			return PTR_ERR(prim_devmap);
++	}
  
- 	if (is_guest_mode(vcpu) &&
- 	    kvm_x86_ops.nested_ops->has_events &&
--	    kvm_x86_ops.nested_ops->has_events(vcpu))
-+	    kvm_x86_ops.nested_ops->has_events(vcpu, true))
- 		*req_immediate_exit = true;
+ 	/* allocate secondary devmap if needed */
+ 	sec_devmap = dasd_find_busid(sec_busid);
+-	if (IS_ERR(sec_devmap))
++	if (IS_ERR(sec_devmap)) {
+ 		sec_devmap = dasd_add_busid(sec_busid, DASD_FEATURE_DEFAULT);
++		if (IS_ERR(sec_devmap))
++			return PTR_ERR(sec_devmap);
++	}
  
- 	/*
-@@ -13146,7 +13146,7 @@ static inline bool kvm_vcpu_has_events(s
- 
- 	if (is_guest_mode(vcpu) &&
- 	    kvm_x86_ops.nested_ops->has_events &&
--	    kvm_x86_ops.nested_ops->has_events(vcpu))
-+	    kvm_x86_ops.nested_ops->has_events(vcpu, false))
- 		return true;
- 
- 	if (kvm_xen_has_pending_events(vcpu))
+ 	/* setting copy relation is only allowed for offline secondary */
+ 	if (sec_devmap->device)
+-- 
+2.43.0
+
 
 
 
