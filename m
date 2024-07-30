@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-64596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD671941E95
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:30:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C95B941D12
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C06628644B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:30:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46A701F24C59
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE14166315;
-	Tue, 30 Jul 2024 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8667E18991F;
+	Tue, 30 Jul 2024 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNbopZO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUvyj8xb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3E21A76AD;
-	Tue, 30 Jul 2024 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A77189522;
+	Tue, 30 Jul 2024 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360641; cv=none; b=ZmiJAZjOTh+wyQU4D95ZJdeqAYw0YNJcRXlv0vXvUkBYkiHsobF2sVx6iv6YBx9gTvfIDStwRHkqx0pxLYqJZHy+fkAVX6oP6Ik5khd5wB2RP9X6XQl4ZwA2FBSEWjSFQnphZxM+oP+MJ7MnN6eN0dorsGMzyTcUmmEep8oOtLI=
+	t=1722359550; cv=none; b=BsuItyrpVin4X74lMfNQvWW3RjS+aht4WMLxxf0z31VUTGenLL3DlbLsLOCBHc7+Tkv1OSHkvX0PzENLOIFkcFJZGFaATne8KerIlf8NuMvD9ODlVKpuLI1NLa0MCeqtFA0iLnS77AmXFENQK+N4ZRjuERWM3PWUiyRRB4VlOiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360641; c=relaxed/simple;
-	bh=b8KQBRw4bPNcWVxUINxcQlWW9sYFQo496DizVVih//s=;
+	s=arc-20240116; t=1722359550; c=relaxed/simple;
+	bh=FnQZ0johRZ5uUntPPn7Bs9ufV0JKehBeVukCaZVl4QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MyYy4Sd9dwjGXHYj6jtQsp9a0g36775ePobq0VzhwvBtltboM938VisGO19I95g3x2J6i1x6AqSzF+Lrzm+ClCBTsvxOR+v9cuvyy3wlBfzk/m8cwS/NyqW1olyZPqbU6OAaLoKdjk6ypKHBewl/OPjNgQDMf+/HUn5ZEBSnWfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNbopZO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755E9C32782;
-	Tue, 30 Jul 2024 17:30:40 +0000 (UTC)
+	 MIME-Version; b=Iu9rtOV00j4bWy9dssaAcPSWe4elynYMskDqFWC3P1rsr5MAcRazGdIbDI7lwB5ieDVWpjCTj5mCmp/nDJ8q+qMk3df5v73QWJI9RwD+u+21lxpBPExtFjsSQEPFxE92GhRnrxnNFjmHde/sL47PrHey/6tlRt48Gj7Ad9AZ1Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUvyj8xb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94CCC32782;
+	Tue, 30 Jul 2024 17:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360640;
-	bh=b8KQBRw4bPNcWVxUINxcQlWW9sYFQo496DizVVih//s=;
+	s=korg; t=1722359550;
+	bh=FnQZ0johRZ5uUntPPn7Bs9ufV0JKehBeVukCaZVl4QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNbopZO5lnMOf1WV2Cz/ASubT5sHKaxxT1VpiUN7aa9QMgE5VZCJjlovVi+OUuiJq
-	 lejKW/s977/vhEu1FhVCrmM4NQM1a21WpTLwpZoHEiRNGqyIpmSiKYwBLEHGl+JvQr
-	 cF6VuT8xcFQ/gSRwYoaf9p6Pp0EzsRuzP6YAbWjA=
+	b=sUvyj8xbljXKm4rVMJaH0Mfspy7BQ0kEPuRCdvdqqqxzBAkbnr0200a7KDQ2dYxjB
+	 4yfVDcBbMgfTVrGwMrbSIRG3jZfCyjLKNP+Zwf9yLSjEZ6fHolJx+s7ajMfYtQ4LJ/
+	 DZ1QK+8ziE/9iZFVWJwFw7WlC+JtSvwSVsJfg8Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Furkan Kardame <f.kardame@manjaro.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>
-Subject: [PATCH 6.10 730/809] drm/panfrost: Mark simple_ondemand governor as softdep
-Date: Tue, 30 Jul 2024 17:50:06 +0200
-Message-ID: <20240730151753.777577866@linuxfoundation.org>
+	Lucas Stach <l.stach@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Christian Gmeiner <cgmeiner@igalia.com>
+Subject: [PATCH 6.6 500/568] drm/etnaviv: dont block scheduler when GPU is still active
+Date: Tue, 30 Jul 2024 17:50:07 +0200
+Message-ID: <20240730151659.569640556@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-commit 80f4e62730a91572b7fdc657f7bb747e107ae308 upstream.
+commit 704d3d60fec451f37706368d9d3e320322978986 upstream.
 
-Panfrost DRM driver uses devfreq to perform DVFS, while using simple_ondemand
-devfreq governor by default.  This causes driver initialization to fail on
-boot when simple_ondemand governor isn't built into the kernel statically,
-as a result of the missing module dependency and, consequently, the required
-governor module not being included in the initial ramdisk.  Thus, let's mark
-simple_ondemand governor as a softdep for Panfrost, to have its kernel module
-included in the initial ramdisk.
+Since 45ecaea73883 ("drm/sched: Partial revert of 'drm/sched: Keep
+s_fence->parent pointer'") still active jobs aren't put back in the
+pending list on drm_sched_start(), as they don't have a active
+parent fence anymore, so if the GPU is still working and the timeout
+is extended, all currently active jobs will be freed.
 
-This is a rather longstanding issue that has forced distributions to build
-devfreq governors statically into their kernels, [1][2] or has forced users
-to introduce some unnecessary workarounds. [3]
+To avoid prematurely freeing jobs that are still active on the GPU,
+don't block the scheduler until we are fully committed to actually
+reset the GPU.
 
-For future reference, not having support for the simple_ondemand governor in
-the initial ramdisk produces errors in the kernel log similar to these below,
-which were taken from a Pine64 RockPro64:
+As the current job is already removed from the pending list and
+will not be put back when drm_sched_start() isn't called, we must
+make sure to put the job back on the pending list when extending
+the timeout.
 
-  panfrost ff9a0000.gpu: [drm:panfrost_devfreq_init [panfrost]] *ERROR* Couldn't initialize GPU devfreq
-  panfrost ff9a0000.gpu: Fatal error during GPU init
-  panfrost: probe of ff9a0000.gpu failed with error -22
-
-Having simple_ondemand marked as a softdep for Panfrost may not resolve this
-issue for all Linux distributions.  In particular, it will remain unresolved
-for the distributions whose utilities for the initial ramdisk generation do
-not handle the available softdep information [4] properly yet.  However, some
-Linux distributions already handle softdeps properly while generating their
-initial ramdisks, [5] and this is a prerequisite step in the right direction
-for the distributions that don't handle them properly yet.
-
-[1] https://gitlab.manjaro.org/manjaro-arm/packages/core/linux/-/blob/linux61/config?ref_type=heads#L8180
-[2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/1066
-[3] https://forum.pine64.org/showthread.php?tid=15458
-[4] https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
-[5] https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
-
-Cc: Diederik de Haas <didi.debian@cknow.org>
-Cc: Furkan Kardame <f.kardame@manjaro.org>
-Cc: stable@vger.kernel.org
-Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org
+Cc: stable@vger.kernel.org #6.0
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/etnaviv/etnaviv_sched.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/panfrost/panfrost_drv.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
-@@ -828,3 +828,4 @@ module_platform_driver(panfrost_driver);
- MODULE_AUTHOR("Panfrost Project Developers");
- MODULE_DESCRIPTION("Panfrost DRM Driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_SOFTDEP("pre: governor_simpleondemand");
+--- a/drivers/gpu/drm/etnaviv/etnaviv_sched.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_sched.c
+@@ -38,9 +38,6 @@ static enum drm_gpu_sched_stat etnaviv_s
+ 	u32 dma_addr;
+ 	int change;
+ 
+-	/* block scheduler */
+-	drm_sched_stop(&gpu->sched, sched_job);
+-
+ 	/*
+ 	 * If the GPU managed to complete this jobs fence, the timout is
+ 	 * spurious. Bail out.
+@@ -63,6 +60,9 @@ static enum drm_gpu_sched_stat etnaviv_s
+ 		goto out_no_timeout;
+ 	}
+ 
++	/* block scheduler */
++	drm_sched_stop(&gpu->sched, sched_job);
++
+ 	if(sched_job)
+ 		drm_sched_increase_karma(sched_job);
+ 
+@@ -76,8 +76,7 @@ static enum drm_gpu_sched_stat etnaviv_s
+ 	return DRM_GPU_SCHED_STAT_NOMINAL;
+ 
+ out_no_timeout:
+-	/* restart scheduler after GPU is usable again */
+-	drm_sched_start(&gpu->sched, true);
++	list_add(&sched_job->list, &sched_job->sched->pending_list);
+ 	return DRM_GPU_SCHED_STAT_NOMINAL;
+ }
+ 
 
 
 
