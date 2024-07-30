@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-63724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3079C941A50
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 688B7941E2E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6182A1C23505
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 231B428362E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F5C189514;
-	Tue, 30 Jul 2024 16:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF5E1A76C1;
+	Tue, 30 Jul 2024 17:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyFhFSaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRdHez0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC1B183CD5;
-	Tue, 30 Jul 2024 16:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685EC1A76BE;
+	Tue, 30 Jul 2024 17:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357750; cv=none; b=QLnvsipmaaHFqZSbQnFkqADdpt97UDlUcpsfKsvC+saHEPJKpvN3qHaTKy7RUICh5jp0fX0NwWL5wpM0tGCMOKZbXpjffUA2n0ZpOQyXCsY4/ed9gh+GvQ1NhFOd8R72fOeVuhu0i0jn1PtP6i/QG6ttZHKSOU5lz8ywuvE0Y/g=
+	t=1722360379; cv=none; b=aHKO9dI2HlDiVN3KYxlDRZ5t7bUID6/CXqSmAW7jnrRDGu/Doo+W7c0/wtc5R/gystdLyGCOym2NROqsjBdD2VS9AK2GwiWaeSs8GQQNCTzB7XhWq2TfoNiVY4EBG9rhXixFj+HqMbxnzGRlRoR3Pct73o4HdHHIs+nHaSIqsn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357750; c=relaxed/simple;
-	bh=0hiLsT0tC9EoUu9m2toFTFbqYBzwRo8DiKtHRaiwWW0=;
+	s=arc-20240116; t=1722360379; c=relaxed/simple;
+	bh=Kk5jbjeUi2dnDxQjtrFtnWCQvCYxfFcnIUvL0RPMsgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DVIr3gx3Cru5JBmNxluVHmXb8ypfK+3vmj2NV/zAoYGBKNPOYfNkMgXAFHzPRH1oC5/pNbCtZ91dE4xZzBkc1MBHER2B2bCw9z3OW5JOD1vcDYm3OpVusJoT9rtykS2xdzb8rDR9//7P7TeNRGiw+xdLl6QdKWBCgPzWwNT99Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyFhFSaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167E9C32782;
-	Tue, 30 Jul 2024 16:42:29 +0000 (UTC)
+	 MIME-Version; b=qmmEq/FCbvL1MAZm3/KD0xJ0a8LC1B+dhnWLXPNr13cOle0osUt1Vy2LwSHAgwCjRVbb19l5++IfROTEeQuwR4ldG9Mqoz9H9zgy1GqQj6092aSVcWFYKzlGq1D75mvtY9HyYHwPLLZbum78Dki0giwVJXCH+kQOPV6O52TvsbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRdHez0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A187C32782;
+	Tue, 30 Jul 2024 17:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357750;
-	bh=0hiLsT0tC9EoUu9m2toFTFbqYBzwRo8DiKtHRaiwWW0=;
+	s=korg; t=1722360379;
+	bh=Kk5jbjeUi2dnDxQjtrFtnWCQvCYxfFcnIUvL0RPMsgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyFhFSaL7iiH3/ZEFbyz7HTbrOzFGSyyIK+Bk2eOy9f0UCIvrntLq+4GMZxfJM4DH
-	 oi0w22Y3b/mPGlxRRNgE9UUvvS5+kThir650yrE/5GePn7rwHrKEDVv5R8ET4lkow1
-	 SsFs/10l5KP11hpQfbvhm05c7S44UZ8SxymWznXo=
+	b=hRdHez0TyH/GDM7e8NOdV3mje6RU3LfGDdi7aSrvnPqic4DH67mv+o9eNnAOQiVWF
+	 lFJI4+7IBfcieXVePPXSWVb9zGiE4Px8BVb78Swz+QkIlM+sS5FLxMC7Pne6069CXF
+	 7KRnGgxOT4642U9nV+MMsWSKo2KJ90yPjyXh8Ww4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Jianfeng Liu <liujianfeng1994@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.1 323/440] PCI: dw-rockchip: Fix initial PERST# GPIO value
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 680/809] mm/numa_balancing: teach mpol_to_str about the balancing mode
 Date: Tue, 30 Jul 2024 17:49:16 +0200
-Message-ID: <20240730151628.435038197@linuxfoundation.org>
+Message-ID: <20240730151751.765543195@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +70,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-commit 28b8d7793b8573563b3d45321376f36168d77b1e upstream.
+commit af649773fb25250cd22625af021fb6275c56a3ee upstream.
 
-PERST# is active low according to the PCIe specification.
+Since balancing mode was added in bda420b98505 ("numa balancing: migrate
+on fault among multiple bound nodes"), it was possible to set this mode
+but it wouldn't be shown in /proc/<pid>/numa_maps since there was no
+support for it in the mpol_to_str() helper.
 
-However, the existing pcie-dw-rockchip.c driver does:
+Furthermore, because the balancing mode sets the MPOL_F_MORON flag, it
+would be displayed as 'default' due a workaround introduced a few years
+earlier in 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in
+numa_maps").
 
-  gpiod_set_value(..., 0); msleep(100); gpiod_set_value(..., 1);
+To tidy this up we implement two changes:
 
-when asserting + deasserting PERST#.
+Replace the MPOL_F_MORON check by pointer comparison against the
+preferred_node_policy array.  By doing this we generalise the current
+special casing and replace the incorrect 'default' with the correct 'bind'
+for the mode.
 
-This is of course wrong, but because all the device trees for this
-compatible string have also incorrectly marked this GPIO as ACTIVE_HIGH:
+Secondly, we add a string representation and corresponding handling for
+the MPOL_F_NUMA_BALANCING flag.
 
-  $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3568*
-  $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3588*
+With the two changes together we start showing the balancing flag when it
+is set and therefore complete the fix.
 
-The actual toggling of PERST# is correct, and we cannot change it anyway,
-since that would break device tree compatibility.
+Representation format chosen is to separate multiple flags with vertical
+bars, following what existed long time ago in kernel 2.6.25.  But as
+between then and now there wasn't a way to display multiple flags, this
+patch does not change the format in practice.
 
-However, this driver does request the GPIO to be initialized as
-GPIOD_OUT_HIGH, which does cause a silly sequence where PERST# gets
-toggled back and forth for no good reason.
+Some /proc/<pid>/numa_maps output examples:
 
-Fix this by requesting the GPIO to be initialized as GPIOD_OUT_LOW (which
-for this driver means PERST# asserted).
+ 555559580000 bind=balancing:0-1,3 file=...
+ 555585800000 bind=balancing|static:0,2 file=...
+ 555635240000 prefer=relative:0 file=
 
-This will avoid an unnecessary signal change where PERST# gets deasserted
-(by devm_gpiod_get_optional()) and then gets asserted (by
-rockchip_pcie_start_link()) just a few instructions later.
-
-Before patch, debug prints on EP side, when booting RC:
-
-  [  845.606810] pci: PERST# asserted by host!
-  [  852.483985] pci: PERST# de-asserted by host!
-  [  852.503041] pci: PERST# asserted by host!
-  [  852.610318] pci: PERST# de-asserted by host!
-
-After patch, debug prints on EP side, when booting RC:
-
-  [  125.107921] pci: PERST# asserted by host!
-  [  132.111429] pci: PERST# de-asserted by host!
-
-This extra, very short, PERST# assertion + deassertion has been reported to
-cause issues with certain WLAN controllers, e.g. RTL8822CE.
-
-Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
-Link: https://lore.kernel.org/linux-pci/20240417164227.398901-1-cassel@kernel.org
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: Jianfeng Liu <liujianfeng1994@gmail.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org	# v5.15+
+Link: https://lkml.kernel.org/r/20240708075632.95857-1-tursulin@igalia.com
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: bda420b98505 ("numa balancing: migrate on fault among multiple bound nodes")
+References: 8790c71a18e5 ("mm/mempolicy.c: fix mempolicy printing in numa_maps")
+Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: <stable@vger.kernel.org>	[5.12+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/mempolicy.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-+++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-@@ -240,7 +240,7 @@ static int rockchip_pcie_resource_get(st
- 		return PTR_ERR(rockchip->apb_base);
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -3293,8 +3293,9 @@ out:
+  * @pol:  pointer to mempolicy to be formatted
+  *
+  * Convert @pol into a string.  If @buffer is too short, truncate the string.
+- * Recommend a @maxlen of at least 32 for the longest mode, "interleave", the
+- * longest flag, "relative", and to display at least a few node ids.
++ * Recommend a @maxlen of at least 51 for the longest mode, "weighted
++ * interleave", plus the longest flag flags, "relative|balancing", and to
++ * display at least a few node ids.
+  */
+ void mpol_to_str(char *buffer, int maxlen, struct mempolicy *pol)
+ {
+@@ -3303,7 +3304,10 @@ void mpol_to_str(char *buffer, int maxle
+ 	unsigned short mode = MPOL_DEFAULT;
+ 	unsigned short flags = 0;
  
- 	rockchip->rst_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
--						     GPIOD_OUT_HIGH);
-+						     GPIOD_OUT_LOW);
- 	if (IS_ERR(rockchip->rst_gpio))
- 		return PTR_ERR(rockchip->rst_gpio);
+-	if (pol && pol != &default_policy && !(pol->flags & MPOL_F_MORON)) {
++	if (pol &&
++	    pol != &default_policy &&
++	    !(pol >= &preferred_node_policy[0] &&
++	      pol <= &preferred_node_policy[ARRAY_SIZE(preferred_node_policy) - 1])) {
+ 		mode = pol->mode;
+ 		flags = pol->flags;
+ 	}
+@@ -3331,12 +3335,18 @@ void mpol_to_str(char *buffer, int maxle
+ 		p += snprintf(p, buffer + maxlen - p, "=");
  
+ 		/*
+-		 * Currently, the only defined flags are mutually exclusive
++		 * Static and relative are mutually exclusive.
+ 		 */
+ 		if (flags & MPOL_F_STATIC_NODES)
+ 			p += snprintf(p, buffer + maxlen - p, "static");
+ 		else if (flags & MPOL_F_RELATIVE_NODES)
+ 			p += snprintf(p, buffer + maxlen - p, "relative");
++
++		if (flags & MPOL_F_NUMA_BALANCING) {
++			if (!is_power_of_2(flags & MPOL_MODE_FLAGS))
++				p += snprintf(p, buffer + maxlen - p, "|");
++			p += snprintf(p, buffer + maxlen - p, "balancing");
++		}
+ 	}
+ 
+ 	if (!nodes_empty(nodes))
 
 
 
