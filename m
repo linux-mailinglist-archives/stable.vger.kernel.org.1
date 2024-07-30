@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D569941955
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AA0941C16
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFF5AB2B1D2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 828001C20C6D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E75184547;
-	Tue, 30 Jul 2024 16:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671B518801A;
+	Tue, 30 Jul 2024 17:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FboG5+ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhlw0jIg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA2D1A6160;
-	Tue, 30 Jul 2024 16:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E06D1A6192;
+	Tue, 30 Jul 2024 17:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356564; cv=none; b=WnneQ7muS5FbEk+jKfnBg3yFh1pGP4uyb1iDtNZlQZ6OnTMaGIiptevnlRpRUus+D/psyUUO4ghxI+u+aSfRXYHHzQIBzbVKfLrIMzL8hTeVV5xSAIJ+Vt3n2HiI0nKPZtl3f1EaVF5aOlZB6k4aVw23RnDB5hr6vhvjJt66ha4=
+	t=1722358971; cv=none; b=tzyA3wYWmGEKflT7LJoXrSB+laDNDML+VK0hKny3OuC29N3qOiJmi0Lml16RWIhtdJTEDIe8YkK8vy9NR+idZfwt6MPwDNIw7J9Vhj7a11s3WRKxPtJC2CjHvKbMHs9oiJb1CcTJ4+1cY8RhOqGdELjANF5FpuhH3jKBk3zEsrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356564; c=relaxed/simple;
-	bh=EvqNMh3taTE6PZyh5/48SvI4poRFYNAus5wCvr4CiNY=;
+	s=arc-20240116; t=1722358971; c=relaxed/simple;
+	bh=b2GTWfKcjijhyMeQu9TnZcv1JAapQQidBT5Qyixb+XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LWvjsD/icDm3pbupgQump5fuQ/m4d5BqmRhPX6w60XQnYnawxDNdYrhA1vs5c8wrC/hAivRf0/pmqrAJA/BI/LceJloZr4SdPaIX7THrcFZpJ9Rjyb68H8km3WZhqCfMPspT1CqR6vkljdmoa1ZgQJ0Q45CErmuUdWGRHljfzCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FboG5+ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD114C32782;
-	Tue, 30 Jul 2024 16:22:43 +0000 (UTC)
+	 MIME-Version; b=plvQQFk4WobjU2TRqGbo8eb03CYxPY/uEJgqNQKGngyes+IzauA0mRuhiPlSn+AYZpLjnk5YaDKihA30UYgTaCgLeSbwaWwZrUf48rN+GjNGYBxCG4OYTIBsrP+dgo1rWyz4dAxEvn8Dpjd9jpKlkP3m91o0kFzpMTiF6f9GSd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhlw0jIg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9B2C32782;
+	Tue, 30 Jul 2024 17:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356564;
-	bh=EvqNMh3taTE6PZyh5/48SvI4poRFYNAus5wCvr4CiNY=;
+	s=korg; t=1722358971;
+	bh=b2GTWfKcjijhyMeQu9TnZcv1JAapQQidBT5Qyixb+XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FboG5+okN2kQdfBoOVjudN3kRogPBcGX+CYgAN80NIS07wL0XnpQrX+6DacYMIMMN
-	 /XZCfZGKTRl+N/L8PwejaxroihL4FcuvCxn6/DpTVnL0k+bvi5FsCdIktCYewPpqmm
-	 4unzq7vOrAcGY4HKRq+daQktI1ugV4v9X9dYVuJA=
+	b=jhlw0jIg2EqKjRGJ7pR+1dRIca6iuf0iaNZtecIqT+krRbSrZuUNYlYyPiHxlHo0I
+	 +7vgIY3oDNXVxULQ8kW7lz/XpY0B8ieAmA4wp8bzGbnZwy+NzZlYg6Gu8ISuBt3P/j
+	 BFi/YVq52R0181rJivssE355lWGTP/sEAc/tomNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/568] selftests/resctrl: Move run_benchmark() to a more fitting file
-Date: Tue, 30 Jul 2024 17:44:29 +0200
-Message-ID: <20240730151646.217303746@linuxfoundation.org>
+Subject: [PATCH 6.10 394/809] clk: meson: s4: fix fixed_pll_dco clock
+Date: Tue, 30 Jul 2024 17:44:30 +0200
+Message-ID: <20240730151740.242709597@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,179 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-[ Upstream commit 508934b5d15ab79fd5895cc2a6063bc9d95f6a55 ]
+[ Upstream commit c1380adf2e8680a00dedaf1b25c19beadbbe5bbd ]
 
-resctrlfs.c contains mostly functions that interact in some way with
-resctrl FS entries while functions inside resctrl_val.c deal with
-measurements and benchmarking.
+The fixed_pll_dco output frequency is not accurate,
+add frac factor for fixed_pll_dco clk to fix it.
 
-run_benchmark() is located in resctrlfs.c even though it's purpose
-is not interacting with the resctrl FS but to execute cache checking
-logic.
-
-Move run_benchmark() to resctrl_val.c just before resctrl_val() that
-makes use of run_benchmark(). Make run_benchmark() static since it's
-not used between multiple files anymore.
-
-Remove return comment from kernel-doc since the function is type void.
-
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: c44000b6535d ("selftests/resctrl: Fix closing IMC fds on error and open-code R+W instead of loops")
+Fixes: 57b55c76aaf1 ("clk: meson: S4: add support for Amlogic S4 SoC peripheral clock controller")
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Link: https://lore.kernel.org/r/20240603-s4_fixedpll-v1-1-2b2a98630841@amlogic.com
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/resctrl.h     |  1 -
- tools/testing/selftests/resctrl/resctrl_val.c | 50 ++++++++++++++++++
- tools/testing/selftests/resctrl/resctrlfs.c   | 52 -------------------
- 3 files changed, 50 insertions(+), 53 deletions(-)
+ drivers/clk/meson/s4-pll.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/resctrl/resctrl.h b/tools/testing/selftests/resctrl/resctrl.h
-index 8578a8b4e1459..a33f414f60199 100644
---- a/tools/testing/selftests/resctrl/resctrl.h
-+++ b/tools/testing/selftests/resctrl/resctrl.h
-@@ -86,7 +86,6 @@ int validate_bw_report_request(char *bw_report);
- bool validate_resctrl_feature_request(const char *resource, const char *feature);
- char *fgrep(FILE *inf, const char *str);
- int taskset_benchmark(pid_t bm_pid, int cpu_no);
--void run_benchmark(int signum, siginfo_t *info, void *ucontext);
- int write_schemata(char *ctrlgrp, char *schemata, int cpu_no,
- 		   char *resctrl_val);
- int write_bm_pid_to_resctrl(pid_t bm_pid, char *ctrlgrp, char *mongrp,
-diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
-index b8ca6fa40b3bf..88789678917b6 100644
---- a/tools/testing/selftests/resctrl/resctrl_val.c
-+++ b/tools/testing/selftests/resctrl/resctrl_val.c
-@@ -625,6 +625,56 @@ measure_vals(struct resctrl_val_param *param, unsigned long *bw_resc_start)
- 	return 0;
- }
- 
-+/*
-+ * run_benchmark - Run a specified benchmark or fill_buf (default benchmark)
-+ *		   in specified signal. Direct benchmark stdio to /dev/null.
-+ * @signum:	signal number
-+ * @info:	signal info
-+ * @ucontext:	user context in signal handling
-+ */
-+static void run_benchmark(int signum, siginfo_t *info, void *ucontext)
-+{
-+	int operation, ret, memflush;
-+	char **benchmark_cmd;
-+	size_t span;
-+	bool once;
-+	FILE *fp;
-+
-+	benchmark_cmd = info->si_ptr;
-+
-+	/*
-+	 * Direct stdio of child to /dev/null, so that only parent writes to
-+	 * stdio (console)
-+	 */
-+	fp = freopen("/dev/null", "w", stdout);
-+	if (!fp)
-+		PARENT_EXIT("Unable to direct benchmark status to /dev/null");
-+
-+	if (strcmp(benchmark_cmd[0], "fill_buf") == 0) {
-+		/* Execute default fill_buf benchmark */
-+		span = strtoul(benchmark_cmd[1], NULL, 10);
-+		memflush =  atoi(benchmark_cmd[2]);
-+		operation = atoi(benchmark_cmd[3]);
-+		if (!strcmp(benchmark_cmd[4], "true"))
-+			once = true;
-+		else if (!strcmp(benchmark_cmd[4], "false"))
-+			once = false;
-+		else
-+			PARENT_EXIT("Invalid once parameter");
-+
-+		if (run_fill_buf(span, memflush, operation, once))
-+			fprintf(stderr, "Error in running fill buffer\n");
-+	} else {
-+		/* Execute specified benchmark */
-+		ret = execvp(benchmark_cmd[0], benchmark_cmd);
-+		if (ret)
-+			perror("wrong\n");
-+	}
-+
-+	fclose(stdout);
-+	PARENT_EXIT("Unable to run specified benchmark");
-+}
-+
- /*
-  * resctrl_val:	execute benchmark and measure memory bandwidth on
-  *			the benchmark
-diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
-index 3a8111362d262..9ac19acaf781d 100644
---- a/tools/testing/selftests/resctrl/resctrlfs.c
-+++ b/tools/testing/selftests/resctrl/resctrlfs.c
-@@ -293,58 +293,6 @@ int taskset_benchmark(pid_t bm_pid, int cpu_no)
- 	return 0;
- }
- 
--/*
-- * run_benchmark - Run a specified benchmark or fill_buf (default benchmark)
-- *		   in specified signal. Direct benchmark stdio to /dev/null.
-- * @signum:	signal number
-- * @info:	signal info
-- * @ucontext:	user context in signal handling
-- *
-- * Return: void
-- */
--void run_benchmark(int signum, siginfo_t *info, void *ucontext)
--{
--	int operation, ret, memflush;
--	char **benchmark_cmd;
--	size_t span;
--	bool once;
--	FILE *fp;
--
--	benchmark_cmd = info->si_ptr;
--
--	/*
--	 * Direct stdio of child to /dev/null, so that only parent writes to
--	 * stdio (console)
--	 */
--	fp = freopen("/dev/null", "w", stdout);
--	if (!fp)
--		PARENT_EXIT("Unable to direct benchmark status to /dev/null");
--
--	if (strcmp(benchmark_cmd[0], "fill_buf") == 0) {
--		/* Execute default fill_buf benchmark */
--		span = strtoul(benchmark_cmd[1], NULL, 10);
--		memflush =  atoi(benchmark_cmd[2]);
--		operation = atoi(benchmark_cmd[3]);
--		if (!strcmp(benchmark_cmd[4], "true"))
--			once = true;
--		else if (!strcmp(benchmark_cmd[4], "false"))
--			once = false;
--		else
--			PARENT_EXIT("Invalid once parameter");
--
--		if (run_fill_buf(span, memflush, operation, once))
--			fprintf(stderr, "Error in running fill buffer\n");
--	} else {
--		/* Execute specified benchmark */
--		ret = execvp(benchmark_cmd[0], benchmark_cmd);
--		if (ret)
--			perror("wrong\n");
--	}
--
--	fclose(stdout);
--	PARENT_EXIT("Unable to run specified benchmark");
--}
--
- /*
-  * create_grp - Create a group only if one doesn't exist
-  * @grp_name:	Name of the group
+diff --git a/drivers/clk/meson/s4-pll.c b/drivers/clk/meson/s4-pll.c
+index d2650d96400cf..707c107a52918 100644
+--- a/drivers/clk/meson/s4-pll.c
++++ b/drivers/clk/meson/s4-pll.c
+@@ -38,6 +38,11 @@ static struct clk_regmap s4_fixed_pll_dco = {
+ 			.shift   = 0,
+ 			.width   = 8,
+ 		},
++		.frac = {
++			.reg_off = ANACTRL_FIXPLL_CTRL1,
++			.shift   = 0,
++			.width   = 17,
++		},
+ 		.n = {
+ 			.reg_off = ANACTRL_FIXPLL_CTRL0,
+ 			.shift   = 10,
 -- 
 2.43.0
 
