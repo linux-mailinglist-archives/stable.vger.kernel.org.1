@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D42941D61
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE116941BAD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FF181F26164
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 941351F23421
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6091A76AC;
-	Tue, 30 Jul 2024 17:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A904E1898EB;
+	Tue, 30 Jul 2024 16:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sj0+LVks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIVLkEIJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348C91A76A7;
-	Tue, 30 Jul 2024 17:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEA118801A;
+	Tue, 30 Jul 2024 16:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359790; cv=none; b=rlgvjUbXEHvyAP1Iu0Yh7apDer9e+M6NLA18CpCtL++tTORP6SsUSQqAPSDHIBvq/NUa5fzoXz4SAynNr3su2Yb8rrYboOedcJl5wdPbHVe2zXtdI13mGjCZ9M+p10K+cXUu5NasoQIk7E/xu+W4DfNd7R4LxGZ7YmWPDdv3FEs=
+	t=1722358661; cv=none; b=Vvbp5UTAjcIv1S03pW3UoaRnZO/OZ7GTf9sdmRaksm7psGCeDFW7VMOyHfnCcD+NEWgrLnK+Wk5s6SaKbghCZ85cdDPLiFwHwfujd135bmyMnYEEZ6L8pOO6irUP4BijLqi2W4eMYQCAuDNwZfvZRizDopsKiWauY0sd3eD8/bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359790; c=relaxed/simple;
-	bh=zXA+Ekarzfms4edwPT9+oDFp4STHBLLzug/k7/kxYiw=;
+	s=arc-20240116; t=1722358661; c=relaxed/simple;
+	bh=5KFz7BC5A5eghGGgmeLwh4kUwkszbGod5NwuZwhx3gI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p23GnXu9pBZ/jvEXfbcfftCVUojDigN2YWFMSLa7ZaU3Cei2wRfPyVzOX+ZH0dCj+3CXy+FJU5J0VTxTO6tvsDDWLBxRT8CsptmNjaEHdPsIzesnDUZ8IbixGRwmNoDp4k5wNRh87f8u83GKKsnS46MWSXCsnbSU43VfzYWrtwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sj0+LVks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB440C32782;
-	Tue, 30 Jul 2024 17:16:29 +0000 (UTC)
+	 MIME-Version; b=XW/CiQzYkQ+mR/2szMvUMPr9G+qy46ld5DwZ5uHkScMYXdBjozOv4vjYNC6ynWom+t4hI/9Dza72jbyJdVjPEsolCK62u1Ip8ucHtu1wlVSaFjSoMDIvRbB6sYJqs9oPp5U58Luup0r1RJJ1+2ZBls/fSFCCA2VmpcCX41EteO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIVLkEIJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89B3C32782;
+	Tue, 30 Jul 2024 16:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359790;
-	bh=zXA+Ekarzfms4edwPT9+oDFp4STHBLLzug/k7/kxYiw=;
+	s=korg; t=1722358661;
+	bh=5KFz7BC5A5eghGGgmeLwh4kUwkszbGod5NwuZwhx3gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sj0+LVksHtsd3h4EUgz4SYtH1BknB2L43iAhPZGg4b6drtYR08L4kjPqUAtv7Lx1F
-	 j5v1R/VX0mAPEOOmUK6SUPMTtVPOtZLUwi6/8jeMNtqgGBlErPZQQ6eLbR30rCExB1
-	 7551KMVOaoMjG8yOZyu+UYYJHUuj7ZE8LhdHPTzA=
+	b=VIVLkEIJOekuotm8SJt3FsN5ShyxPcFkHaPuYg7u2s4GIHOh3Wnqnqoupuczgro+1
+	 bYLQ/zAO7Yz94TFHCQIkJ3eR3nkd3iNmF/DXVe1XUEifSmDTN3cnjz9M5grL5TUPpv
+	 SfyqmSHdG5nhg+vKogBiCQZNrRmrz0xKb6e3PoBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Guillaume Nault <gnault@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 536/568] ipv4: Fix incorrect source address in Record Route option
-Date: Tue, 30 Jul 2024 17:50:43 +0200
-Message-ID: <20240730151701.103254766@linuxfoundation.org>
+Subject: [PATCH 6.1 411/440] ipv4: Fix incorrect source address in Record Route option
+Date: Tue, 30 Jul 2024 17:50:44 +0200
+Message-ID: <20240730151631.846418343@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -96,7 +96,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 4d169573148f6..285482060082f 100644
+index da193840fc007..fda88894d0205 100644
 --- a/net/ipv4/route.c
 +++ b/net/ipv4/route.c
 @@ -1275,7 +1275,7 @@ void ip_rt_get_source(u8 *addr, struct sk_buff *skb, struct rtable *rt)
