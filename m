@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0B2941B53
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F42941E79
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B89A22829E9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78E221C23C2A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8791618B466;
-	Tue, 30 Jul 2024 16:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB8F1A76DB;
+	Tue, 30 Jul 2024 17:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6MYHnYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Q5Bi3Yi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8C518991C;
-	Tue, 30 Jul 2024 16:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6717C183CD5;
+	Tue, 30 Jul 2024 17:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358414; cv=none; b=n1lFUuQjMLPVOtHwMgLm5VNBEf76LqB5yhuLZAuIdCUaJj/Kx1Z7SpuPX8VpUZ3y7HlDzSRKp/99RBPKj4eATbdqsD8kGkBN0R/Bd4yQmeyTbdap/E2PJ8P2BlZSWYVJsqdrpjY9Quy61ViKRZ0MdJGTXjTSbQzIo820kMlPAkE=
+	t=1722360557; cv=none; b=gHw3hrZcBsiB02wm5fkUyQGMbMx6VHD/iZIf9lJig4AsKOAluInvKNu5MbFfU9QcE+80179/C7H/IG258mUCfeVwNggFCZe656GK07umKBUPfhM2IZrgDcnE9fvRnWEnHG+Du+hMa3LqnayknMfUyl4BqHmJ5oRmyh6qYpXGqYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358414; c=relaxed/simple;
-	bh=eSgXsE+uoclQNH84Q0NeZ4Byj1HI/2VWbTw2+muIK9M=;
+	s=arc-20240116; t=1722360557; c=relaxed/simple;
+	bh=uJBjkboGo0hayDS4EbBPOMWacSi3DgPYIBiFM7aMwSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOT4dGIsOsL3+02YnxXm6n4KE/oy601f/fsdE8uRwiFINxiv1OA2iKeCaoTzr/W4FkuvXNUfhq3slknDO5OucJ0XozgnBrmFJbbYcX1sZSt8JMJz1SBtCVMeRz4GaDnl5FTdUE3rZ+RE0A8JweqGjGdGkoAdc2CROCvhFR2nK48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6MYHnYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6C4C32782;
-	Tue, 30 Jul 2024 16:53:33 +0000 (UTC)
+	 MIME-Version; b=YqnsvdVmf/1bWtRRK8xOCyakCrRZo+KuqdnfUToteHuY2dvx9SWNkvQMhy4289rvF2jlB5+m07fO1GEjXcN35+hVKgJ1wYOsdTSvqF/MsXCnikda8fC3RjYGMiRv9CWGhy+w9dIljbdUTHdGAqkuUJsCV0Ef0b+ypoAsxoSVMtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Q5Bi3Yi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B336C32782;
+	Tue, 30 Jul 2024 17:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358413;
-	bh=eSgXsE+uoclQNH84Q0NeZ4Byj1HI/2VWbTw2+muIK9M=;
+	s=korg; t=1722360557;
+	bh=uJBjkboGo0hayDS4EbBPOMWacSi3DgPYIBiFM7aMwSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A6MYHnYLDtS35Chc5NyMUzLuAvzcpUKvio8tOKGqUtNJmGk43MycVPBAINxC3w3Km
-	 /Yw/xYNNcAkOcqTOd9X86AgPogx4mp/biJTouepZEV0nMwGfb1OWBsgat09OBPRyyf
-	 LJK1fn032pNsPjhl2wSWgwwRhBp/UO6wEr1Q1e8I=
+	b=0Q5Bi3YiqhjTFHuSCOwP/MTHjzG8H1+5Xa6MRdygWeHoWrJCuqKcotUF9CWn9WgfG
+	 dNLnYgxiMRsyy3jsHVroSL0AnGwvdUIX50NrF0G55uPR94tyN86zQwPDVlFQpbjEKg
+	 27GBc8nCJi85ab+M9w6dkZNq2XClOj660qnphDcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Christian Gmeiner <cgmeiner@igalia.com>
-Subject: [PATCH 6.1 379/440] drm/etnaviv: dont block scheduler when GPU is still active
+	chenyuwen <yuwen.chen@xjmz.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 736/809] f2fs: fix to truncate preallocated blocks in f2fs_file_open()
 Date: Tue, 30 Jul 2024 17:50:12 +0200
-Message-ID: <20240730151630.612594605@linuxfoundation.org>
+Message-ID: <20240730151754.018670556@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Chao Yu <chao@kernel.org>
 
-commit 704d3d60fec451f37706368d9d3e320322978986 upstream.
+[ Upstream commit 298b1e4182d657c3e388adcc29477904e9600ed5 ]
 
-Since 45ecaea73883 ("drm/sched: Partial revert of 'drm/sched: Keep
-s_fence->parent pointer'") still active jobs aren't put back in the
-pending list on drm_sched_start(), as they don't have a active
-parent fence anymore, so if the GPU is still working and the timeout
-is extended, all currently active jobs will be freed.
+chenyuwen reports a f2fs bug as below:
 
-To avoid prematurely freeing jobs that are still active on the GPU,
-don't block the scheduler until we are fully committed to actually
-reset the GPU.
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000011
+ fscrypt_set_bio_crypt_ctx+0x78/0x1e8
+ f2fs_grab_read_bio+0x78/0x208
+ f2fs_submit_page_read+0x44/0x154
+ f2fs_get_read_data_page+0x288/0x5f4
+ f2fs_get_lock_data_page+0x60/0x190
+ truncate_partial_data_page+0x108/0x4fc
+ f2fs_do_truncate_blocks+0x344/0x5f0
+ f2fs_truncate_blocks+0x6c/0x134
+ f2fs_truncate+0xd8/0x200
+ f2fs_iget+0x20c/0x5ac
+ do_garbage_collect+0x5d0/0xf6c
+ f2fs_gc+0x22c/0x6a4
+ f2fs_disable_checkpoint+0xc8/0x310
+ f2fs_fill_super+0x14bc/0x1764
+ mount_bdev+0x1b4/0x21c
+ f2fs_mount+0x20/0x30
+ legacy_get_tree+0x50/0xbc
+ vfs_get_tree+0x5c/0x1b0
+ do_new_mount+0x298/0x4cc
+ path_mount+0x33c/0x5fc
+ __arm64_sys_mount+0xcc/0x15c
+ invoke_syscall+0x60/0x150
+ el0_svc_common+0xb8/0xf8
+ do_el0_svc+0x28/0xa0
+ el0_svc+0x24/0x84
+ el0t_64_sync_handler+0x88/0xec
 
-As the current job is already removed from the pending list and
-will not be put back when drm_sched_start() isn't called, we must
-make sure to put the job back on the pending list when extending
-the timeout.
+It is because inode.i_crypt_info is not initialized during below path:
+- mount
+ - f2fs_fill_super
+  - f2fs_disable_checkpoint
+   - f2fs_gc
+    - f2fs_iget
+     - f2fs_truncate
 
-Cc: stable@vger.kernel.org #6.0
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, let's relocate truncation of preallocated blocks to f2fs_file_open(),
+after fscrypt_file_open().
+
+Fixes: d4dd19ec1ea0 ("f2fs: do not expose unwritten blocks to user by DIO")
+Reported-by: chenyuwen <yuwen.chen@xjmz.com>
+Closes: https://lore.kernel.org/linux-kernel/20240517085327.1188515-1-yuwen.chen@xjmz.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_sched.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/f2fs/f2fs.h  |    1 +
+ fs/f2fs/file.c  |   42 +++++++++++++++++++++++++++++++++++++++++-
+ fs/f2fs/inode.c |    8 --------
+ 3 files changed, 42 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/etnaviv/etnaviv_sched.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_sched.c
-@@ -38,9 +38,6 @@ static enum drm_gpu_sched_stat etnaviv_s
- 	u32 dma_addr;
- 	int change;
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -803,6 +803,7 @@ enum {
+ 	FI_COW_FILE,		/* indicate COW file */
+ 	FI_ATOMIC_COMMITTED,	/* indicate atomic commit completed except disk sync */
+ 	FI_ATOMIC_REPLACE,	/* indicate atomic replace */
++	FI_OPENED_FILE,		/* indicate file has been opened */
+ 	FI_MAX,			/* max flag, never be used */
+ };
  
--	/* block scheduler */
--	drm_sched_stop(&gpu->sched, sched_job);
--
- 	/*
- 	 * If the GPU managed to complete this jobs fence, the timout is
- 	 * spurious. Bail out.
-@@ -62,6 +59,9 @@ static enum drm_gpu_sched_stat etnaviv_s
- 		goto out_no_timeout;
- 	}
- 
-+	/* block scheduler */
-+	drm_sched_stop(&gpu->sched, sched_job);
-+
- 	if(sched_job)
- 		drm_sched_increase_karma(sched_job);
- 
-@@ -75,8 +75,7 @@ static enum drm_gpu_sched_stat etnaviv_s
- 	return DRM_GPU_SCHED_STAT_NOMINAL;
- 
- out_no_timeout:
--	/* restart scheduler after GPU is usable again */
--	drm_sched_start(&gpu->sched, true);
-+	list_add(&sched_job->list, &sched_job->sched->pending_list);
- 	return DRM_GPU_SCHED_STAT_NOMINAL;
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -554,6 +554,42 @@ static int f2fs_file_mmap(struct file *f
+ 	return 0;
  }
  
++static int finish_preallocate_blocks(struct inode *inode)
++{
++	int ret;
++
++	inode_lock(inode);
++	if (is_inode_flag_set(inode, FI_OPENED_FILE)) {
++		inode_unlock(inode);
++		return 0;
++	}
++
++	if (!file_should_truncate(inode)) {
++		set_inode_flag(inode, FI_OPENED_FILE);
++		inode_unlock(inode);
++		return 0;
++	}
++
++	f2fs_down_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
++	filemap_invalidate_lock(inode->i_mapping);
++
++	truncate_setsize(inode, i_size_read(inode));
++	ret = f2fs_truncate(inode);
++
++	filemap_invalidate_unlock(inode->i_mapping);
++	f2fs_up_write(&F2FS_I(inode)->i_gc_rwsem[WRITE]);
++
++	if (!ret)
++		set_inode_flag(inode, FI_OPENED_FILE);
++
++	inode_unlock(inode);
++	if (ret)
++		return ret;
++
++	file_dont_truncate(inode);
++	return 0;
++}
++
+ static int f2fs_file_open(struct inode *inode, struct file *filp)
+ {
+ 	int err = fscrypt_file_open(inode, filp);
+@@ -571,7 +607,11 @@ static int f2fs_file_open(struct inode *
+ 	filp->f_mode |= FMODE_NOWAIT;
+ 	filp->f_mode |= FMODE_CAN_ODIRECT;
+ 
+-	return dquot_file_open(inode, filp);
++	err = dquot_file_open(inode, filp);
++	if (err)
++		return err;
++
++	return finish_preallocate_blocks(inode);
+ }
+ 
+ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -613,14 +613,6 @@ make_now:
+ 	}
+ 	f2fs_set_inode_flags(inode);
+ 
+-	if (file_should_truncate(inode) &&
+-			!is_sbi_flag_set(sbi, SBI_POR_DOING)) {
+-		ret = f2fs_truncate(inode);
+-		if (ret)
+-			goto bad_inode;
+-		file_dont_truncate(inode);
+-	}
+-
+ 	unlock_new_inode(inode);
+ 	trace_f2fs_iget(inode);
+ 	return inode;
 
 
 
