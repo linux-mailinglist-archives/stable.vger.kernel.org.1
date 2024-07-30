@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4747941D98
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2413D9418D4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D66491C23CF4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55AD21C2287B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A543D1A76BC;
-	Tue, 30 Jul 2024 17:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D9218951A;
+	Tue, 30 Jul 2024 16:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4/LwBQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paW46zKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651E11A76A4;
-	Tue, 30 Jul 2024 17:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1511A6190;
+	Tue, 30 Jul 2024 16:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359937; cv=none; b=NksHJ0b9tyXNdxMyNaVZJEWfgo5iUGLNkDRNRTkqDPZk0TR4pi6HwzG3XtpCocQKFMOQSztmjhjo05+7VkCQpgFWJrQ15ogq+tixpbuNSi9WYzdMi/y2KiJT1OFGTGVQOxrEy26RkaCRqUltBnbIMc3hApslB1FUK3Eqsd37AP8=
+	t=1722356736; cv=none; b=eoiRd6i4hhVlxMlvN1MYfxSyeS7D3VSMxk/dtWkRmBlCVeMoVwEZUSFaHy2kUcO4p2NQiCFiitrbpjd8moGP5KFbHRKggQKo0utqdy4kKl642moX4C8eoPqhPeyZVP3UYtFSuEesoszQBSjs+MVXjx+cFMt6ywVe/m1X6QMkEa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359937; c=relaxed/simple;
-	bh=yaKc2pihzlzotMImQyVibWjAQFjGPB+fdyCFs+bvknU=;
+	s=arc-20240116; t=1722356736; c=relaxed/simple;
+	bh=r1KtwNsca5ZZYOAuXRcu0Q8tPPLj4ev4/JzmS5urC9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8WoSbK8WVMkwZ3jXVNpmD0rGvIbL7fJm+vUzqzUin8BfPH+ADHZEs0V3zOT+x6Sicrm8bkU60DF7nqlokyYEfOCgaj0s65zOY2rlK0Am7SMT5qDyHGoOBU/wZPewM6EFd78Wj2FuiPxrIU7KUj6C54qeDyIimULQ7NSEZjm5VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4/LwBQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0E9C32782;
-	Tue, 30 Jul 2024 17:18:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EyNVpqWJnwDYPW8G67jmr3jqqY5uoLQjc0N5QEG+FsPp9G3YwmesMor73/QyI9A8zvUEPHeT4mBK9lz6V8uA1hesA30RVUcDungxrcsTG5NKsHpstw9JyJrk/y1PFq6sGYzYimwfuVPEunGUSxnKjK5CE2bMBU8m/E8aiF2+atE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paW46zKA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16E0C32782;
+	Tue, 30 Jul 2024 16:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359937;
-	bh=yaKc2pihzlzotMImQyVibWjAQFjGPB+fdyCFs+bvknU=;
+	s=korg; t=1722356736;
+	bh=r1KtwNsca5ZZYOAuXRcu0Q8tPPLj4ev4/JzmS5urC9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4/LwBQBnqRtkyVaEsxrnIwpWNhHdDOcQJV5Yt9kCQp7RogA4cso9G+W+oGHL5kPe
-	 S4JsjS2PFJo+NLgDZNeOoYIUPpQaTcbwAeCvXb1BN8Ow9uDpcL7zBDOCQY24PrpSjq
-	 PU3dgK4PJNm7y+Ht/kBE56i882e0dtMWTaGOuZsQ=
+	b=paW46zKANNPu2sD85YsOBHQ3MuRBkknNijityv3jnIYg3P0pwpZd3c/nnBueWSSI/
+	 xL4MVbjYnO8/R0e5O/qhZNOIJ2wgEqQg1YxaI6xX1X5IYMPFsKVnJNfD55lTpHRjOY
+	 r5NVzO6yYvRWMpd6YNmQYdSY1XCj9f9wBYzxDTD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 556/809] ipv6: take care of scope when choosing the src addr
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 199/440] RDMA/mlx4: Fix truncated output warning in alias_GUID.c
 Date: Tue, 30 Jul 2024 17:47:12 +0200
-Message-ID: <20240730151746.718006353@linuxfoundation.org>
+Message-ID: <20240730151623.645721925@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit abb9a68d2c64dd9b128ae1f2e635e4d805e7ce64 upstream.
+[ Upstream commit 5953e0647cec703ef436ead37fed48943507b433 ]
 
-When the source address is selected, the scope must be checked. For
-example, if a loopback address is assigned to the vrf device, it must not
-be chosen for packets sent outside.
+drivers/infiniband/hw/mlx4/alias_GUID.c: In function ‘mlx4_ib_init_alias_guid_service’:
+drivers/infiniband/hw/mlx4/alias_GUID.c:878:74: error: ‘%d’ directive
+output may be truncated writing between 1 and 11 bytes into a region of
+size 5 [-Werror=format-truncation=]
+  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
+      |                                                                          ^~
+drivers/infiniband/hw/mlx4/alias_GUID.c:878:63: note: directive argument in the range [-2147483641, 2147483646]
+  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
+      |                                                               ^~~~~~~~~~~~~~
+drivers/infiniband/hw/mlx4/alias_GUID.c:878:17: note: ‘snprintf’ output
+between 12 and 22 bytes into a destination of size 15
+  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-CC: stable@vger.kernel.org
-Fixes: afbac6010aec ("net: ipv6: Address selection needs to consider L3 domains")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240710081521.3809742-4-nicolas.dichtel@6wind.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a0c64a17aba8 ("mlx4: Add alias_guid mechanism")
+Link: https://lore.kernel.org/r/1951c9500109ca7e36dcd523f8a5f2d0d2a608d1.1718554641.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx4/alias_GUID.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1873,7 +1873,8 @@ int ipv6_dev_get_saddr(struct net *net,
- 							    master, &dst,
- 							    scores, hiscore_idx);
+diff --git a/drivers/infiniband/hw/mlx4/alias_GUID.c b/drivers/infiniband/hw/mlx4/alias_GUID.c
+index 111fa88a3be44..9a439569ffcf3 100644
+--- a/drivers/infiniband/hw/mlx4/alias_GUID.c
++++ b/drivers/infiniband/hw/mlx4/alias_GUID.c
+@@ -829,7 +829,7 @@ void mlx4_ib_destroy_alias_guid_service(struct mlx4_ib_dev *dev)
  
--			if (scores[hiscore_idx].ifa)
-+			if (scores[hiscore_idx].ifa &&
-+			    scores[hiscore_idx].scopedist >= 0)
- 				goto out;
- 		}
- 
+ int mlx4_ib_init_alias_guid_service(struct mlx4_ib_dev *dev)
+ {
+-	char alias_wq_name[15];
++	char alias_wq_name[22];
+ 	int ret = 0;
+ 	int i, j;
+ 	union ib_gid gid;
+-- 
+2.43.0
+
 
 
 
