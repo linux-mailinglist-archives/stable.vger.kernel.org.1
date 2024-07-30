@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-63386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C9E941A23
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9193D941B19
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AADBAB2A4A6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51107282307
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C8D187FF9;
-	Tue, 30 Jul 2024 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E4C18991C;
+	Tue, 30 Jul 2024 16:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDewoVnk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdYsvoAN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D539187FED;
-	Tue, 30 Jul 2024 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8571189537;
+	Tue, 30 Jul 2024 16:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356666; cv=none; b=DrtYzEjsEq7jnOP1fXBc4EhMsiEr0pc0B/hR8UHNAvjw23Q2bbzrMRSMkIWgd7OupMhfZR5pWZYMzhrfc+0h+jdr8gAY+q6FlZ9P0SKbhtqQgbobXZJ2Vp2iQnUouCWtj2vRCj5EzD6TdjruRL5SOqWY7EAm7eEZQnlUdMlTytY=
+	t=1722358252; cv=none; b=porkitgK3ZIB684RjO1NyzAHQL7WFOie3kg8Ndav6bEbhRfdPAl5Ny8RBjYP4zgLnNymz+WyKO+OD7DyB2/jshp3eRHEoJKm2GwHEYkzEM5ffdvFd2lGyExKTP3ggIJxr7EUvFdjGu69shnomRIHVmYn6tcW9J58Z4R/R9UXdb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356666; c=relaxed/simple;
-	bh=o1GADJyBo0Z9lfEpgztHBP8GTA9ttMoZjBkEFuPSaww=;
+	s=arc-20240116; t=1722358252; c=relaxed/simple;
+	bh=19FQBswi54ayhvbM4aPGa98LT5XkLfEqnKTsZWCvqF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fEk1J5X2xhwZXP+gRote0DFpd9yb4tUOv88iHeBSH/5QVVG+59Y720+WDYbBEnv2ki45ClrueAPlc+qnXYvRHn0BHXIjJpcbEYtlT0Y9d8g3icu1HQe8uQ2yKXJB5frs3DoJVwEa5GukwPStQ3xCFv8QPm6kmwOa/t3ugvgIsh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDewoVnk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59E8C4AF14;
-	Tue, 30 Jul 2024 16:24:25 +0000 (UTC)
+	 MIME-Version; b=quD+vKdX6KQ0HKfNh2QROJETvh+dWryfupnutSm2voyE7pbhTI5ka18NyexbRJ5v1UwG+PuieL7RAvOcesjwCrzqpLWiwq9MMQt9WUjMWE4X/wWEb3iXbtwIbjXzAqUCAoOBAuYRWuAoXHmaIMOc1hXqq7fP+XMPJPenUp2bSkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdYsvoAN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB6FC32782;
+	Tue, 30 Jul 2024 16:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356666;
-	bh=o1GADJyBo0Z9lfEpgztHBP8GTA9ttMoZjBkEFuPSaww=;
+	s=korg; t=1722358252;
+	bh=19FQBswi54ayhvbM4aPGa98LT5XkLfEqnKTsZWCvqF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rDewoVnkyPhIsY41u2kdeWJyI1k2/zRQAzp42eu35/a9wDWGUWW7dzyXYx1AJn0hx
-	 wuZut9Qy8qxKy3DQY9sHr3AflFHDnbK9+6p6ufDAVo3o44joSDlOpe46CLhFOM0bgC
-	 GvL1z48YK23O2z5MOMdOyY32Av5ZO8C2A4QV1Uj4=
+	b=WdYsvoAN6ZYbi9X0Fi27ljPW8QBoFTwfhqSkc5t1W3gtKmxpO1duRLx6eqIaRplQM
+	 1KWx74ZJn3wF8D2/A3PkBs5YMP7VhTN8IQFC7LxpHNZVduLtZgWAhciBhBI1/TmThH
+	 SOnz1R1ZzDpgD3s8+bSSapUm44ziuPys2UyuvGcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Hui Zhu <teawater@antgroup.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrei Vagin <avagin@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/440] PCI: qcom-ep: Disable resources unconditionally during PERST# assert
-Date: Tue, 30 Jul 2024 17:47:30 +0200
-Message-ID: <20240730151624.337401186@linuxfoundation.org>
+Subject: [PATCH 6.6 344/568] fs/proc/task_mmu.c: add_to_pagemap: remove useless parameter addr
+Date: Tue, 30 Jul 2024 17:47:31 +0200
+Message-ID: <20240730151653.316178434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +69,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Hui Zhu <teawater@antgroup.com>
 
-[ Upstream commit 912315715d7b74f7abdb6f063ebace44ee288af9 ]
+[ Upstream commit cabbb6d51e2af4fc2f3c763f58a12c628f228987 ]
 
-All EP specific resources are enabled during PERST# deassert. As a counter
-operation, all resources should be disabled during PERST# assert. There is
-no point in skipping that if the link was not enabled.
+Function parameter addr of add_to_pagemap() is useless.  Remove it.
 
-This will also result in enablement of the resources twice if PERST# got
-deasserted again. So remove the check from qcom_pcie_perst_assert() and
-disable all the resources unconditionally.
-
-Fixes: f55fee56a631 ("PCI: qcom-ep: Add Qualcomm PCIe Endpoint controller driver")
-Link: https://lore.kernel.org/linux-pci/20240430-pci-epf-rework-v4-1-22832d0d456f@linaro.org
-Tested-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Link: https://lkml.kernel.org/r/20240111084533.40038-1-teawaterz@linux.alibaba.com
+Signed-off-by: Hui Zhu <teawater@antgroup.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Andrei Vagin <avagin@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 2c1f057e5be6 ("fs/proc/task_mmu: properly detect PM_MMAP_EXCLUSIVE per page of PMD-mapped THPs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom-ep.c | 6 ------
- 1 file changed, 6 deletions(-)
+ fs/proc/task_mmu.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-index 1c7fd05ce0280..f2bf3eba2254e 100644
---- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-@@ -446,12 +446,6 @@ static int qcom_pcie_perst_deassert(struct dw_pcie *pci)
- static void qcom_pcie_perst_assert(struct dw_pcie *pci)
- {
- 	struct qcom_pcie_ep *pcie_ep = to_pcie_ep(pci);
--	struct device *dev = pci->dev;
--
--	if (pcie_ep->link_status == QCOM_PCIE_EP_LINK_DISABLED) {
--		dev_dbg(dev, "Link is already disabled\n");
--		return;
--	}
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 0f5c06b8bb342..e327d1c77de88 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1358,8 +1358,7 @@ static inline pagemap_entry_t make_pme(u64 frame, u64 flags)
+ 	return (pagemap_entry_t) { .pme = (frame & PM_PFRAME_MASK) | flags };
+ }
  
- 	qcom_pcie_disable_resources(pcie_ep);
- 	pcie_ep->link_status = QCOM_PCIE_EP_LINK_DISABLED;
+-static int add_to_pagemap(unsigned long addr, pagemap_entry_t *pme,
+-			  struct pagemapread *pm)
++static int add_to_pagemap(pagemap_entry_t *pme, struct pagemapread *pm)
+ {
+ 	pm->buffer[pm->pos++] = *pme;
+ 	if (pm->pos >= pm->len)
+@@ -1386,7 +1385,7 @@ static int pagemap_pte_hole(unsigned long start, unsigned long end,
+ 			hole_end = end;
+ 
+ 		for (; addr < hole_end; addr += PAGE_SIZE) {
+-			err = add_to_pagemap(addr, &pme, pm);
++			err = add_to_pagemap(&pme, pm);
+ 			if (err)
+ 				goto out;
+ 		}
+@@ -1398,7 +1397,7 @@ static int pagemap_pte_hole(unsigned long start, unsigned long end,
+ 		if (vma->vm_flags & VM_SOFTDIRTY)
+ 			pme = make_pme(0, PM_SOFT_DIRTY);
+ 		for (; addr < min(end, vma->vm_end); addr += PAGE_SIZE) {
+-			err = add_to_pagemap(addr, &pme, pm);
++			err = add_to_pagemap(&pme, pm);
+ 			if (err)
+ 				goto out;
+ 		}
+@@ -1527,7 +1526,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		for (; addr != end; addr += PAGE_SIZE) {
+ 			pagemap_entry_t pme = make_pme(frame, flags);
+ 
+-			err = add_to_pagemap(addr, &pme, pm);
++			err = add_to_pagemap(&pme, pm);
+ 			if (err)
+ 				break;
+ 			if (pm->show_pfn) {
+@@ -1555,7 +1554,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		pagemap_entry_t pme;
+ 
+ 		pme = pte_to_pagemap_entry(pm, vma, addr, ptep_get(pte));
+-		err = add_to_pagemap(addr, &pme, pm);
++		err = add_to_pagemap(&pme, pm);
+ 		if (err)
+ 			break;
+ 	}
+@@ -1605,7 +1604,7 @@ static int pagemap_hugetlb_range(pte_t *ptep, unsigned long hmask,
+ 	for (; addr != end; addr += PAGE_SIZE) {
+ 		pagemap_entry_t pme = make_pme(frame, flags);
+ 
+-		err = add_to_pagemap(addr, &pme, pm);
++		err = add_to_pagemap(&pme, pm);
+ 		if (err)
+ 			return err;
+ 		if (pm->show_pfn && (flags & PM_PRESENT))
 -- 
 2.43.0
 
