@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-63933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4C0941B56
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44E7941DD4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 276C1282808
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B48F1F27B58
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0DD1898F8;
-	Tue, 30 Jul 2024 16:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205D61A76C6;
+	Tue, 30 Jul 2024 17:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3T/4LHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUt5LfM1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74B81898ED;
-	Tue, 30 Jul 2024 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13671A76B2;
+	Tue, 30 Jul 2024 17:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358421; cv=none; b=OS19CFeeERyMDnbb6dN0zAqWqyLR5t/wR01F0p4kVymgZ0RCm7HWxhzwD1XkaZ0D5dK9ysyy67Gm9hKdwmqcN4AkGSZM74BRmZIu+3COp837lqgTJtehOiReeeqNy+BGWv4BCXdhut58uFuKo6nsUl3PnN+HrPfDbT4PGOo0Ndw=
+	t=1722360105; cv=none; b=Y+PP86M/vFAyp99NMnkCVtQD4GmEXfCV2je/07Bmre4ErANeNQBTvRBoSpYWfQKKOAe0VagkigsyoUnznsMn88WFNhHATk+jWPbeZRi9SAbk+gn4biimFuP6MRJIsfKI/IXio+LYhpsAuwwFHsa2K3/6av7hQizWyAHujFeGQMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358421; c=relaxed/simple;
-	bh=mOae/5y2kMwBMVSYcJblxIR+zKVTqbp11L0WfN8N/QM=;
+	s=arc-20240116; t=1722360105; c=relaxed/simple;
+	bh=bpmOFINXbdc9rD1hA1iiZf/ApQV0AOFONhaqn7INBM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDjk227kupUw+w4E038C49Od3BbP670lUMHrSpKiP1Mdyo4v6WLTM9frrkTUZ6Q40hCwyGRpE2Q+c4KfWU5NGcNjCafMHkTrjaCXHsDLGRTGyG43a27XPOesM6SsoR84/CxX4oUr4mSDPF8RQbA8lc+4UZHXukMuFaVtqxnRO50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3T/4LHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22366C32782;
-	Tue, 30 Jul 2024 16:53:39 +0000 (UTC)
+	 MIME-Version; b=S6sjRom1kBp97FjrxWbRYWbGFuPmJQHPXQqAdzzf1IWvSGlhklYj3tfjl2PrME9WAbQLg4wq5UQrxjaAv+sDDtpIsRvgxqE1iv2oukryC1N6L5ER/POCilhpzAr3kOIFyemsoZHGWpgvuV0egGu1InyPJckzDBIYzM5/1pk+nng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUt5LfM1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7DAC32782;
+	Tue, 30 Jul 2024 17:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358420;
-	bh=mOae/5y2kMwBMVSYcJblxIR+zKVTqbp11L0WfN8N/QM=;
+	s=korg; t=1722360105;
+	bh=bpmOFINXbdc9rD1hA1iiZf/ApQV0AOFONhaqn7INBM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3T/4LHPpqS3JGGAxC7zyYHsCg/IjAJZUrpGBUTmSbonWkTi4z5SruN3iuKewGfJG
-	 jp8HCVVYCEdE72RrZHoiYIM93bYV+ZwXAEy+h9z7s9O3ifQ5cktPXRIO4BTl0xBiYA
-	 rljQDZkUHkh2rNCN1oOPhnDq4pvRbQ0B0evfp7ng=
+	b=KUt5LfM1hPTLjybhbCrh+IhhZV5gtTT7GZ9r/F1UOdsxZKfNQ496HPoBNzoKlkrvD
+	 Xxx07SanBIxz+FtA51zSOvz6cyF0/aNQIeRmW00ikhqowEOxWhTMCJ2hZqSWF4RGtD
+	 ekJVcrEXXpnY/O3RWJcTlxFw2yr7fQM1kkQ7CQQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Xu <weixugc@google.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Alexander Motin <mav@ixsystems.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 360/568] mm/mglru: fix div-by-zero in vmpressure_calc_level()
+	Yi Zhang <yi.zhang@redhat.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Ye Bin <yebin10@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 591/809] block: check bio alignment in blk_mq_submit_bio
 Date: Tue, 30 Jul 2024 17:47:47 +0200
-Message-ID: <20240730151653.933500582@linuxfoundation.org>
+Message-ID: <20240730151748.172496192@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Zhao <yuzhao@google.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 8b671fe1a879923ecfb72dda6caf01460dd885ef upstream.
+commit 0676c434a99be42f3bacca4adfd27df65edbf903 upstream.
 
-evict_folios() uses a second pass to reclaim folios that have gone through
-page writeback and become clean before it finishes the first pass, since
-folio_rotate_reclaimable() cannot handle those folios due to the
-isolation.
+IO logical block size is one fundamental queue limit, and every IO has
+to be aligned with logical block size because our bio split can't deal
+with unaligned bio.
 
-The second pass tries to avoid potential double counting by deducting
-scan_control->nr_scanned.  However, this can result in underflow of
-nr_scanned, under a condition where shrink_folio_list() does not increment
-nr_scanned, i.e., when folio_trylock() fails.
+The check has to be done with queue usage counter grabbed because device
+reconfiguration may change logical block size, and we can prevent the
+reconfiguration from happening by holding queue usage counter.
 
-The underflow can cause the divisor, i.e., scale=scanned+reclaimed in
-vmpressure_calc_level(), to become zero, resulting in the following crash:
+logical_block_size stays in the 1st cache line of queue_limits, and this
+cache line is always fetched in fast path via bio_may_exceed_limits(),
+so IO perf won't be affected by this check.
 
-  [exception RIP: vmpressure_work_fn+101]
-  process_one_work at ffffffffa3313f2b
-
-Since scan_control->nr_scanned has no established semantics, the potential
-double counting has minimal risks.  Therefore, fix the problem by not
-deducting scan_control->nr_scanned in evict_folios().
-
-Link: https://lkml.kernel.org/r/20240711191957.939105-1-yuzhao@google.com
-Fixes: 359a5e1416ca ("mm: multi-gen LRU: retry folios written back while isolated")
-Reported-by: Wei Xu <weixugc@google.com>
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Cc: Alexander Motin <mav@ixsystems.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yi Zhang <yi.zhang@redhat.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Ye Bin <yebin10@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240620030631.3114026-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |    1 -
- 1 file changed, 1 deletion(-)
+ block/blk-mq.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5226,7 +5226,6 @@ retry:
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2914,6 +2914,17 @@ static void blk_mq_use_cached_rq(struct
+ 	INIT_LIST_HEAD(&rq->queuelist);
+ }
  
- 		/* retry folios that may have missed folio_rotate_reclaimable() */
- 		list_move(&folio->lru, &clean);
--		sc->nr_scanned -= folio_nr_pages(folio);
++static bool bio_unaligned(const struct bio *bio, struct request_queue *q)
++{
++	unsigned int bs_mask = queue_logical_block_size(q) - 1;
++
++	/* .bi_sector of any zero sized bio need to be initialized */
++	if ((bio->bi_iter.bi_size & bs_mask) ||
++	    ((bio->bi_iter.bi_sector << SECTOR_SHIFT) & bs_mask))
++		return true;
++	return false;
++}
++
+ /**
+  * blk_mq_submit_bio - Create and send a request to block device.
+  * @bio: Bio pointer.
+@@ -2966,6 +2977,15 @@ void blk_mq_submit_bio(struct bio *bio)
+ 			return;
  	}
  
- 	spin_lock_irq(&lruvec->lru_lock);
++	/*
++	 * Device reconfiguration may change logical block size, so alignment
++	 * check has to be done with queue usage counter held
++	 */
++	if (unlikely(bio_unaligned(bio, q))) {
++		bio_io_error(bio);
++		goto queue_exit;
++	}
++
+ 	if (unlikely(bio_may_exceed_limits(bio, &q->limits))) {
+ 		bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
+ 		if (!bio)
 
 
 
