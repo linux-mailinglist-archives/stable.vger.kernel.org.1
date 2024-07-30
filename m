@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603FB941909
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D909A941C2D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20E8028596D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 752291F23383
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73CA1A618F;
-	Tue, 30 Jul 2024 16:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A3B188017;
+	Tue, 30 Jul 2024 17:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gH5FR7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAzcV6xE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2A91A6160;
-	Tue, 30 Jul 2024 16:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5D01A6192;
+	Tue, 30 Jul 2024 17:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356900; cv=none; b=VZHL91T1Dcg/8RG212NRgep5t+3E2cA5qM49nauHFgGvjRqyhOABzOwtxRQgfgBA/8jBPqr8/6CKEeFhHBdSXDNZoj+qlNgZ8aHNkSON+W6MIH/KLO5/uX+IHtmhuuCtak4Tb8JYOokCxJrTzrasZOwyK+5XZ3Pm3wfaCRLGLpo=
+	t=1722359045; cv=none; b=TmB8ceyxGxelGLMWXjeNHgWMh+WxXF7CZ/bW2lpamfw04xwZrSsPdvb5VQDGsywhjhEMqR+7bk4EQtr7maPARuXm10LzP0V+UA4gK6BH+ht7Z5MENOlMBUclJAZnHOqelsuonCMDHhFeHA4No6kux2ejQgtJkxcTzajgRdtU3Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356900; c=relaxed/simple;
-	bh=p+U57iSCG7DfZ8G+pt/m4vYP3NKnmfMmPcW6qoSRAfc=;
+	s=arc-20240116; t=1722359045; c=relaxed/simple;
+	bh=B0b1ieHt1y1n3wjmzFQ2IA8TI9KLafZSt8gGlwH6AVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEsYfCz19/lvAlZUpU+VNe9zUk/JbF9ojjVcPKgPe0W9fY4PmI7IhPREl4W0fi3XDPOhKyNmVSC1NKH9uETpMM6FwC99gWUUxSBdetGTz8B1B5+Bi/nzk2ZYgp+ZNBWfzudBVlqfDzgIiVGmTGSDGnDiJWLheSHLH7/5s0w+LMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gH5FR7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07961C32782;
-	Tue, 30 Jul 2024 16:28:19 +0000 (UTC)
+	 MIME-Version; b=URCPlzyvJfGLb7wg1Ec+KWJ6T+0qa4sXEtoOnZnIPwm7jXFsSBiwv3oldtoxU32hnafflaqwZvD4ifh+sNCZePunY3F798wW1ajncqLjiuJnHWrxuiRrg0Izo9gz/9U28/wUyUlY73MrxpIXV+mzCZbPmVjnUGeVV/VEM3Dxw0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAzcV6xE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0CBC32782;
+	Tue, 30 Jul 2024 17:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356900;
-	bh=p+U57iSCG7DfZ8G+pt/m4vYP3NKnmfMmPcW6qoSRAfc=;
+	s=korg; t=1722359045;
+	bh=B0b1ieHt1y1n3wjmzFQ2IA8TI9KLafZSt8gGlwH6AVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2gH5FR7BMwvjBRe/KPE4C/Ps+tdvaOZtVMmbJgvwHAmBDxawMkYHRZNCbQEDzRBfO
-	 qNwmUm6QNyyKAmm1UJcgdjRZXcCpYcjgEWxgJ6jlPcIed9H0b4xRrgbDmZ/+vTHUF8
-	 GgZd7RLYXVoXkHzVZncuQ57DcCUMIpEg7qs7K8Dw=
+	b=CAzcV6xEvU/kMAdo9m1gw9WhqmZGhytR903RilRDh2L5jxpor2rR5vyAYAd8Jtc3w
+	 5p5NwRYLuFVaQs7h9iIFJMFTfri+WZG9CtiYgN5gYEzTdZucfrpkovfNMKIvstIgOx
+	 +u0zljrRIDskadCNrVsHyHnjrm/GTeJiiLOXbVB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 195/568] s390/mm: Convert gmap_make_secure to use a folio
+Subject: [PATCH 6.10 426/809] powerpc/prom: Add CPU info to hardware description string later
 Date: Tue, 30 Jul 2024 17:45:02 +0200
-Message-ID: <20240730151647.499682280@linuxfoundation.org>
+Message-ID: <20240730151741.521785918@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit d35c34bb32f2cc4ec0b52e91ad7a8fcab55d7856 ]
+[ Upstream commit 7bdd1c6c87de758750d419eedab7285b95b66417 ]
 
-Remove uses of deprecated page APIs, and move the check for large
-folios to here to avoid taking the folio lock if the folio is too large.
-We could do better here by attempting to split the large folio, but I'll
-leave that improvement for someone who can test it.
+cur_cpu_spec->cpu_name is appended to ppc_hw_desc before cur_cpu_spec
+has taken on its final value. This is illustrated on pseries by
+comparing the CPU name as reported at boot ("POWER8E (raw)") to the
+contents of /proc/cpuinfo ("POWER8 (architected)"):
 
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20240322161149.2327518-3-willy@infradead.org
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
+  $ dmesg | grep Hardware
+  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 \
+    of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
+
+  $ grep -m 1 ^cpu /proc/cpuinfo
+  cpu             : POWER8 (architected), altivec supported
+
+Some 44x models would appear to be affected as well; see
+identical_pvr_fixup().
+
+This results in incorrect CPU information in stack dumps --
+ppc_hw_desc is an input to dump_stack_set_arch_desc().
+
+Delay gathering the CPU name until after all potential calls to
+identify_cpu().
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: bd649d40e0f2 ("powerpc: Add PVR & CPU name to hardware description")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240603-fix-cpu-hwdesc-v1-1-945f2850fcaa@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/uv.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ arch/powerpc/kernel/prom.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index 0634448698b03..2aed5af7c4e52 100644
---- a/arch/s390/kernel/uv.c
-+++ b/arch/s390/kernel/uv.c
-@@ -201,13 +201,10 @@ static int expected_folio_refs(struct folio *folio)
- 	return res;
- }
- 
--static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
-+static int make_folio_secure(struct folio *folio, struct uv_cb_header *uvcb)
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 60819751e55e6..0be07ed407c70 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -331,6 +331,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 					  void *data)
  {
--	struct folio *folio = page_folio(page);
- 	int expected, cc = 0;
- 
--	if (folio_test_large(folio))
--		return -EINVAL;
- 	if (folio_test_writeback(folio))
- 		return -EAGAIN;
- 	expected = expected_folio_refs(folio);
-@@ -280,7 +277,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 	bool local_drain = false;
- 	spinlock_t *ptelock;
- 	unsigned long uaddr;
--	struct page *page;
-+	struct folio *folio;
- 	pte_t *ptep;
- 	int rc;
- 
-@@ -309,15 +306,19 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 	if (!ptep)
- 		goto out;
- 	if (pte_present(*ptep) && !(pte_val(*ptep) & _PAGE_INVALID) && pte_write(*ptep)) {
--		page = pte_page(*ptep);
-+		folio = page_folio(pte_page(*ptep));
-+		rc = -EINVAL;
-+		if (folio_test_large(folio))
-+			goto unlock;
- 		rc = -EAGAIN;
--		if (trylock_page(page)) {
-+		if (folio_trylock(folio)) {
- 			if (should_export_before_import(uvcb, gmap->mm))
--				uv_convert_from_secure(page_to_phys(page));
--			rc = make_page_secure(page, uvcb);
--			unlock_page(page);
-+				uv_convert_from_secure(PFN_PHYS(folio_pfn(folio)));
-+			rc = make_folio_secure(folio, uvcb);
-+			folio_unlock(folio);
+ 	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
++	const __be32 *cpu_version = NULL;
+ 	const __be32 *prop;
+ 	const __be32 *intserv;
+ 	int i, nthreads;
+@@ -420,7 +421,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 		prop = of_get_flat_dt_prop(node, "cpu-version", NULL);
+ 		if (prop && (be32_to_cpup(prop) & 0xff000000) == 0x0f000000) {
+ 			identify_cpu(0, be32_to_cpup(prop));
+-			seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(prop));
++			cpu_version = prop;
  		}
+ 
+ 		check_cpu_feature_properties(node);
+@@ -431,6 +432,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
  	}
-+unlock:
- 	pte_unmap_unlock(ptep, ptelock);
- out:
- 	mmap_read_unlock(gmap->mm);
-@@ -327,10 +328,10 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 		 * If we are here because the UVC returned busy or partial
- 		 * completion, this is just a useless check, but it is safe.
- 		 */
--		wait_on_page_writeback(page);
-+		folio_wait_writeback(folio);
- 	} else if (rc == -EBUSY) {
- 		/*
--		 * If we have tried a local drain and the page refcount
-+		 * If we have tried a local drain and the folio refcount
- 		 * still does not match our expected safe value, try with a
- 		 * system wide drain. This is needed if the pagevecs holding
- 		 * the page are on a different CPU.
-@@ -341,7 +342,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 			return -EAGAIN;
- 		}
- 		/*
--		 * We are here if the page refcount does not match the
-+		 * We are here if the folio refcount does not match the
- 		 * expected safe value. The main culprits are usually
- 		 * pagevecs. With lru_add_drain() we drain the pagevecs
- 		 * on the local CPU so that hopefully the refcount will
+ 
+ 	identical_pvr_fixup(node);
++
++	// We can now add the CPU name & PVR to the hardware description
++	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
++	if (cpu_version)
++		seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(cpu_version));
++
+ 	init_mmu_slb_size(node);
+ 
+ #ifdef CONFIG_PPC64
+@@ -881,9 +888,6 @@ void __init early_init_devtree(void *params)
+ 
+ 	dt_cpu_ftrs_scan();
+ 
+-	// We can now add the CPU name & PVR to the hardware description
+-	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
+-
+ 	/* Retrieve CPU related informations from the flat tree
+ 	 * (altivec support, boot CPU ID, ...)
+ 	 */
 -- 
 2.43.0
 
