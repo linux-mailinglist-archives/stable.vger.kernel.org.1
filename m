@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-63383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F469418BD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285FB941B68
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF98E287E81
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACBA1B2697E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E083E184556;
-	Tue, 30 Jul 2024 16:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB3E1078F;
+	Tue, 30 Jul 2024 16:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHh1c8KM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJsWJxDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6661A6166;
-	Tue, 30 Jul 2024 16:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E318455E;
+	Tue, 30 Jul 2024 16:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356656; cv=none; b=PzulMGrMmwKI5ojoGcxAKw2YsAdyiIRKthgZkXvryWDOBiP2N9Pb5ahNoQSxmVh52ODN1j0Izv83FYYX4KQhhy3oVOtA18kZafA0KzeQj/8fvEDhRk/dG8GFzZOa/AyyadCa4r7rj8UANvxRIKJjkWY8QGyG4E8qC3Dc0pGgpt8=
+	t=1722358241; cv=none; b=JSQ/s0iVpV0mDzaQK2BmMHQm6s98A3EJ4nC92odL3oDsSrf/j4nGTP9I3G1emWAtBdh5J6WlJ5DPecqv+WVfwG53Gmkp6d+YndjolRKNe2zQBhBFaAVXMkpsVJrRpmVbrHizaCRQI0EjMIrJLZb8HVWU0YV5ME5Q7a95xCIY1Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356656; c=relaxed/simple;
-	bh=7t7yVgcQTFzkfizSe0zU5O4OwGjknqUuaqDfrvRr1U4=;
+	s=arc-20240116; t=1722358241; c=relaxed/simple;
+	bh=lxzB9Ci9yK4N1+EqvyCk9AbmvHNCeP1NGtk2cSWfs34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLgFbxc8pfk1i9R7NQLOXxnXd773cseBUsS/qlnD5jK/dO1ozcRhwA/kUDLHN9YJIpDQRhHPDTZ9ejw5bx8i0TeLNkUkaEMYJ2TawFM+GHEvQHtXdYyiisrVkelPYFbDS6unvbASdWpohMh+XDP1RwPxSkwgXewTpW3Huq6kZNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHh1c8KM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221A1C32782;
-	Tue, 30 Jul 2024 16:24:15 +0000 (UTC)
+	 MIME-Version; b=DwEIvpUYkSTvlXZrj5iqqSbgRcEnAW9EN2Qf32kULPVNYkcPIXJ9Wn9lVL1UmXeC5So3iRIcxLS+/A+yeDKraiEN8St+rQnDiwME54KV0nWNf5AS4UJx68rqERt3ZmSLJ6GXajyPmq7f9HxGNrXhbmRUbWDsbHklloHIwyfJarg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJsWJxDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EA6C32782;
+	Tue, 30 Jul 2024 16:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356656;
-	bh=7t7yVgcQTFzkfizSe0zU5O4OwGjknqUuaqDfrvRr1U4=;
+	s=korg; t=1722358240;
+	bh=lxzB9Ci9yK4N1+EqvyCk9AbmvHNCeP1NGtk2cSWfs34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHh1c8KMPTbOv2UiEMTIL13lUnj6LuxcolY4OhiXLzRujJpsYGmc/X673A+g4P/Nl
-	 1n41KvXiemBkmu1ro3Al1GugnnIaGtjY0gWajlJFna5rWUVLyVd3oGGDl44JXCXQab
-	 17H3eQRCHFY7zQLtT2OhNNOXvIiEyFUr6Rrwmv3k=
+	b=rJsWJxDDftZmvkccKr1EyKxa9M6l3d6D6Nr9RqeTnk4zbGYbLO2neL12qLuoHCO+6
+	 BbmRmy6fmqgHAfbupzXLvMlXa6cd2YLuP6r/G50D+gvNnje5fIYsITE32L1oXgFoVX
+	 28opmUXjMyRfl0NR4agjMVWwxu91xhXsY0DioOOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	David Hildenbrand <david@redhat.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 216/440] MIPS: Octeron: remove source file executable bit
-Date: Tue, 30 Jul 2024 17:47:29 +0200
-Message-ID: <20240730151624.298763320@linuxfoundation.org>
+Subject: [PATCH 6.6 343/568] fs/proc/task_mmu: indicate PM_FILE for PMD-mapped file THP
+Date: Tue, 30 Jul 2024 17:47:30 +0200
+Message-ID: <20240730151653.276108678@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,29 +67,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 89c7f5078935872cf47a713a645affb5037be694 ]
+[ Upstream commit 3f9f022e975d930709848a86a1c79775b0585202 ]
 
-This does not matter the least, but there is no other .[ch] file in the
-repo that is executable, so clean this up.
+Patch series "fs/proc: move page_mapcount() to fs/proc/internal.h".
 
-Fixes: 29b83a64df3b ("MIPS: Octeon: Add PCIe link status check")
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+With all other page_mapcount() users in the tree gone, move
+page_mapcount() to fs/proc/internal.h, rename it and extend the
+documentation to prevent future (ab)use.
+
+... of course, I find some issues while working on that code that I sort
+first ;)
+
+We'll now only end up calling page_mapcount() [now
+folio_precise_page_mapcount()] on pages mapped via present page table
+entries.  Except for /proc/kpagecount, that still does questionable
+things, but we'll leave that legacy interface as is for now.
+
+Did a quick sanity check.  Likely we would want some better selfestest for
+/proc/$/pagemap + smaps.  I'll see if I can find some time to write some
+more.
+
+This patch (of 6):
+
+Looks like we never taught pagemap_pmd_range() about the existence of
+PMD-mapped file THPs.  Seems to date back to the times when we first added
+support for non-anon THPs in the form of shmem THP.
+
+Link: https://lkml.kernel.org/r/20240607122357.115423-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20240607122357.115423-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Lance Yang <ioworker0@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/pcie-octeon.c | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- mode change 100755 => 100644 arch/mips/pci/pcie-octeon.c
+ fs/proc/task_mmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-old mode 100755
-new mode 100644
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index ac605f143762f..0f5c06b8bb342 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1519,6 +1519,8 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		}
+ #endif
+ 
++		if (page && !PageAnon(page))
++			flags |= PM_FILE;
+ 		if (page && !migration && page_mapcount(page) == 1)
+ 			flags |= PM_MMAP_EXCLUSIVE;
+ 
 -- 
 2.43.0
 
