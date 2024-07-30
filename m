@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-62896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B6494161D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C387B941624
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 861ADB24F07
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F8BF1F23E84
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A1F1B583F;
-	Tue, 30 Jul 2024 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E521BA862;
+	Tue, 30 Jul 2024 15:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYYshR4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpdcuYsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B671E29A2;
-	Tue, 30 Jul 2024 15:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ECA29A2;
+	Tue, 30 Jul 2024 15:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354988; cv=none; b=VhbaaYwHL/o/xJhP5nrdn/zk35fHTtcgsKosbzUVsspX6MIAr4lA2G+4XxennIvn/iNCevME6X8/G963fL/HqgKtVlWDC6hVqKGkEuoN3CcheguFuwFy/u6N9PTLZ7YGrb/qGf28IjNSvmEeS+0XXLRqCXZJVoAHcxjTQWbnouk=
+	t=1722355001; cv=none; b=V50XGnFaBjNirDgh+PbeLVfNSxgC+YDrfLAEhwI4Jx3ZylPcCs7bw5uEcSRDJPsR72mYsifiP9Rk1PLuWfu8WdriT5jHZ7trbOu3lWdjtzeSuQ4MpuwEt2wloXA3S6SMSunOy22amNhN7Lk5O/DxhVXpaVPeCfbryEkedhamumo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354988; c=relaxed/simple;
-	bh=z3fIHwPMVGC3J3W+RrQ0wpE6e3m6c17+NvUfszEZLZc=;
+	s=arc-20240116; t=1722355001; c=relaxed/simple;
+	bh=bVGXpzrz6J4x37nWY3vwyO8TMenM+QiryQBWrL8l+wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=maj5QZHI4O95m8qZCIgqF6jKuUMdypy13D/bLGYnXnRfzw3PiyXliuCHQok6BQvLr+JEFPpgPIA48xXHykea78pl47xSlz/LdpqxsjTcYnXTcoQCla53OsHKe15E6Zel2ezKRFrOBOLFWQxML1PESpqyzEFHzyBz9NHfK4+RiZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYYshR4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FEFC32782;
-	Tue, 30 Jul 2024 15:56:27 +0000 (UTC)
+	 MIME-Version; b=uooP5uZWd7W2+9Mtgok0mqhQiOcKKichkHBl+AmH8mCwU6c1zMe1j1ZUpeAuByCj4yvta63CHnuNzQWKyFd6C57rPKq5+6P0LkS136UyxHVPcdKvepDmx+nlw1saoVkWxGF4kb76Bhwav1KFQ1q3cjzJ5GfIix/fvF9ArQGST/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpdcuYsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9458C4AF0A;
+	Tue, 30 Jul 2024 15:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354988;
-	bh=z3fIHwPMVGC3J3W+RrQ0wpE6e3m6c17+NvUfszEZLZc=;
+	s=korg; t=1722355001;
+	bh=bVGXpzrz6J4x37nWY3vwyO8TMenM+QiryQBWrL8l+wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DYYshR4y0OIz1VFOB/IDoL9DZc2PkrtMa5kcgBRdxl6PTHG4n3muRWEoo2uxpHvZO
-	 deeI0sP70CIE/V+buqWfccmZqrX/lsW+mYgk1DNNgWGr2BN+z/Z8D5kwjodgbYDZRp
-	 9pxkI+Guu1uBxV47Yu1xnAk9UEmpGhrDLHEaHP7A=
+	b=dpdcuYsvEm3Uh+yUP7n/45BnhN+IqsDp9s29VVKsQHmPpWSvqKvWI1yxoLB1xv6Xe
+	 4nSbtFooIO8/iNkASW+vC1QSeiG8GDTB+5lS4Iwsipn54wHn/ltxHnpVZacCbt2MMT
+	 4ncBLVxhQClwghLfqcv2IKbGLeMxejHpB6kYHX6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <groeck@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 008/809] platform/chrome: cros_ec_debugfs: fix wrong EC message version
-Date: Tue, 30 Jul 2024 17:38:04 +0200
-Message-ID: <20240730151724.985370102@linuxfoundation.org>
+Subject: [PATCH 6.10 009/809] ubd: refactor the interrupt handler
+Date: Tue, 30 Jul 2024 17:38:05 +0200
+Message-ID: <20240730151725.024117431@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,36 +68,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit c2a28647bbb4e0894e8824362410f72b06ac57a4 ]
+[ Upstream commit 5db755fbb1a0de4a4cfd5d5edfaa19853b9c56e6 ]
 
-ec_read_version_supported() uses ec_params_get_cmd_versions_v1 but it
-wrongly uses message version 0.
+Instead of a separate handler function that leaves no work in the
+interrupt hanler itself, split out a per-request end I/O helper and
+clean up the coding style and variable naming while we're at it.
 
-Fix it.
-
-Fixes: e86264595225 ("mfd: cros_ec: add debugfs, console log file")
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Link: https://lore.kernel.org/r/20240611113110.16955-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://lore.kernel.org/r/20240531074837.1648501-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 31ade7d4fdcf ("ubd: untagle discard vs write zeroes not support handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_debugfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/um/drivers/ubd_kern.c | 49 ++++++++++++++------------------------
+ 1 file changed, 18 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_debugfs.c b/drivers/platform/chrome/cros_ec_debugfs.c
-index e1d313246beb5..5996e9d53c387 100644
---- a/drivers/platform/chrome/cros_ec_debugfs.c
-+++ b/drivers/platform/chrome/cros_ec_debugfs.c
-@@ -330,6 +330,7 @@ static int ec_read_version_supported(struct cros_ec_dev *ec)
- 	if (!msg)
- 		return 0;
+diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
+index ef805eaa9e013..0c9542d58c01b 100644
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -447,43 +447,30 @@ static int bulk_req_safe_read(
+ 	return n;
+ }
  
-+	msg->version = 1;
- 	msg->command = EC_CMD_GET_CMD_VERSIONS + ec->cmd_offset;
- 	msg->outsize = sizeof(*params);
- 	msg->insize = sizeof(*response);
+-/* Called without dev->lock held, and only in interrupt context. */
+-static void ubd_handler(void)
++static void ubd_end_request(struct io_thread_req *io_req)
+ {
+-	int n;
+-	int count;
+-
+-	while(1){
+-		n = bulk_req_safe_read(
+-			thread_fd,
+-			irq_req_buffer,
+-			&irq_remainder,
+-			&irq_remainder_size,
+-			UBD_REQ_BUFFER_SIZE
+-		);
+-		if (n < 0) {
+-			if(n == -EAGAIN)
+-				break;
+-			printk(KERN_ERR "spurious interrupt in ubd_handler, "
+-			       "err = %d\n", -n);
+-			return;
+-		}
+-		for (count = 0; count < n/sizeof(struct io_thread_req *); count++) {
+-			struct io_thread_req *io_req = (*irq_req_buffer)[count];
+-
+-			if ((io_req->error == BLK_STS_NOTSUPP) && (req_op(io_req->req) == REQ_OP_DISCARD)) {
+-				blk_queue_max_discard_sectors(io_req->req->q, 0);
+-				blk_queue_max_write_zeroes_sectors(io_req->req->q, 0);
+-			}
+-			blk_mq_end_request(io_req->req, io_req->error);
+-			kfree(io_req);
+-		}
++	if (io_req->error == BLK_STS_NOTSUPP &&
++	    req_op(io_req->req) == REQ_OP_DISCARD) {
++		blk_queue_max_discard_sectors(io_req->req->q, 0);
++		blk_queue_max_write_zeroes_sectors(io_req->req->q, 0);
+ 	}
++	blk_mq_end_request(io_req->req, io_req->error);
++	kfree(io_req);
+ }
+ 
+ static irqreturn_t ubd_intr(int irq, void *dev)
+ {
+-	ubd_handler();
++	int len, i;
++
++	while ((len = bulk_req_safe_read(thread_fd, irq_req_buffer,
++			&irq_remainder, &irq_remainder_size,
++			UBD_REQ_BUFFER_SIZE)) >= 0) {
++		for (i = 0; i < len / sizeof(struct io_thread_req *); i++)
++			ubd_end_request((*irq_req_buffer)[i]);
++	}
++
++	if (len < 0 && len != -EAGAIN)
++		pr_err("spurious interrupt in %s, err = %d\n", __func__, len);
+ 	return IRQ_HANDLED;
+ }
+ 
 -- 
 2.43.0
 
