@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BBA9419EC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005EC941790
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3D661F27680
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF41A286E9A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E6D18991F;
-	Tue, 30 Jul 2024 16:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254731898ED;
+	Tue, 30 Jul 2024 16:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOUahgOA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEYu0Uex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF7A1A619E;
-	Tue, 30 Jul 2024 16:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47E818952F;
+	Tue, 30 Jul 2024 16:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357470; cv=none; b=F05Pvq8lR5laiIxCTovurJccHsWTdXq6VSK6HYu673tpSOS2YTEkPRfkLBsf7tGvf/2W5HtY5sWLgt9PLEgB5JInSQdI+Eq4G65NaBhryqeAUs39pZIsUKJ02n0jidSTWUX9MKIy2xtRMPEPFl7MnvBltg8XHQQ+bw6qvttqjMQ=
+	t=1722355809; cv=none; b=Y12dphXJGDjM3V1+16CDTmYQn9WQMNC2sb9tyNwpZfmJrszgTexOkqqvVkC5IVXz8REQMBg1D0HHINC7jt9nXfoaCeVMtHngzL76dhO+ioysucMu0jroCnSQua/tNmhmGNZ21Al2ngDVzWOyPSBFkkDtd+j3cHbGoNU+ST97npI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357470; c=relaxed/simple;
-	bh=mnh2fBvmE+Y/+kJh5P7gBnGOppYaH2ECI28tvQkJbNQ=;
+	s=arc-20240116; t=1722355809; c=relaxed/simple;
+	bh=08zS3mtTfmb3jYX7BYgkaayCv+xluqfjPIYi8L582iQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckBgVpg5qeW8hH1quIk07kqss6Jdac2D5KrICPHq6BTwzmNp/TbqduF3r/J+sRuiMpSA0CMDtZy5qf+A8rMCDelX7aA5MpPSLBvYbW6hsyBOpk+q1x9S/X4J0IIgSSdl7XRcHlOW1Z9Zbnu4rynfDu9lBNp/WYpH7K8qVA/RhQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOUahgOA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1D4C32782;
-	Tue, 30 Jul 2024 16:37:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VvHHhgmo5HXNwPMvTXABO4SA1Gxvhs7ON+QySeHZJiYC4wNGi1a+hZX4qB0cyVFN07jYvJOQXmYdtZzk9oulb/sXq3Uev5NQyrweXE7e+iL5GAMPdeAm8QezJssvOgqkK/lwWuxVzkPXaJ9QNNTYYJ/jBlT2vJfQ/5PiMIpzh+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEYu0Uex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452BAC32782;
+	Tue, 30 Jul 2024 16:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357469;
-	bh=mnh2fBvmE+Y/+kJh5P7gBnGOppYaH2ECI28tvQkJbNQ=;
+	s=korg; t=1722355809;
+	bh=08zS3mtTfmb3jYX7BYgkaayCv+xluqfjPIYi8L582iQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOUahgOAgpWBhhjqT5ypRnImjd+mZSsRfqZbjc1rajlvZuXHwLIsEHEMufxJ9fS6a
-	 NMqLHbfQbw0mFf5QIodzT5ujp2asid65Ew0Pu+bUXojmw97wISgtubsY55oVYps7s8
-	 KGTMVNTgNi6n8fzKbArZ7WaOM5vvH9T/At6ECN8E=
+	b=zEYu0UexY01w18eYQFQiyzoDuLmkba1t64pkajxHIYOINH3d7aSgZpIVTrk/HhM2F
+	 RRQyo2/DG1HAqT4OgkToG/qPj3rHBImpjNzLunB9Q+4RPGPjKMzo9Igta8Kit07abr
+	 iBUoQ9Y//OjdjHK5RbRnTzMAbiASZEuEnoVhUZ/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 258/568] KVM: PPC: Book3S HV: Fix the get_one_reg of SDAR
+Subject: [PATCH 6.1 132/440] drm/amdgpu: Check if NBIO funcs are NULL in amdgpu_device_baco_exit
 Date: Tue, 30 Jul 2024 17:46:05 +0200
-Message-ID: <20240730151649.961821709@linuxfoundation.org>
+Message-ID: <20240730151621.038726681@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+From: Friedrich Vock <friedrich.vock@gmx.de>
 
-[ Upstream commit 009f6f42c67e9de737d6d3d199f92b21a8cb9622 ]
+[ Upstream commit 0cdb3f9740844b9d95ca413e3fcff11f81223ecf ]
 
-The kvmppc_get_one_reg_hv() for SDAR is wrongly getting the SIAR
-instead of SDAR, possibly a paste error emanating from the previous
-refactoring.
+The special case for VM passthrough doesn't check adev->nbio.funcs
+before dereferencing it. If GPUs that don't have an NBIO block are
+passed through, this leads to a NULL pointer dereference on startup.
 
-Patch fixes the wrong get_one_reg() for the same.
-
-Fixes: ebc88ea7a6ad ("KVM: PPC: Book3S HV: Use accessors for VCPU registers")
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/171759278410.1480.16404209606556979576.stgit@linux.ibm.com
+Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
+Fixes: 1bece222eabe ("drm/amdgpu: Clear doorbell interrupt status for Sienna Cichlid")
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 1e668e238a288..1bb00c7215440 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -2249,7 +2249,7 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
- 		*val = get_reg_val(id, kvmppc_get_siar_hv(vcpu));
- 		break;
- 	case KVM_REG_PPC_SDAR:
--		*val = get_reg_val(id, kvmppc_get_siar_hv(vcpu));
-+		*val = get_reg_val(id, kvmppc_get_sdar_hv(vcpu));
- 		break;
- 	case KVM_REG_PPC_SIER:
- 		*val = get_reg_val(id, kvmppc_get_sier_hv(vcpu, 0));
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 157441dd07041..d4faa489bd5fa 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5815,7 +5815,7 @@ int amdgpu_device_baco_exit(struct drm_device *dev)
+ 	    adev->nbio.funcs->enable_doorbell_interrupt)
+ 		adev->nbio.funcs->enable_doorbell_interrupt(adev, true);
+ 
+-	if (amdgpu_passthrough(adev) &&
++	if (amdgpu_passthrough(adev) && adev->nbio.funcs &&
+ 	    adev->nbio.funcs->clear_doorbell_interrupt)
+ 		adev->nbio.funcs->clear_doorbell_interrupt(adev);
+ 
 -- 
 2.43.0
 
