@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277D0941756
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:10:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CC8941CEA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6411286E2B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:10:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C9141F24534
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B080218991E;
-	Tue, 30 Jul 2024 16:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34FF18A6C5;
+	Tue, 30 Jul 2024 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYuG3YxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhI6m0fO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F0D18800D;
-	Tue, 30 Jul 2024 16:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C2118A6BE;
+	Tue, 30 Jul 2024 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355697; cv=none; b=NPgpxcidRPdN9dnWdsvSMPEAbt/PqFetJgybIa+YIvZaeO/xZoVLumiabd2UrdpixapD6xJCe2Nlfgz89L+ACAgyQ+YWbE7ic3/j1qfh/7jV3Z1qhzqH6Jh2Ff9OI2/I5DgK2rlU91t7LDMQIyr/QANVMF7rwzAcsVxnS+ENSSA=
+	t=1722359404; cv=none; b=G3kSrbASuxV7Hh5S0iKlSMxdtBYTD20y9WBcKcrOUcZ6QRwD1IwxBOGfG1xkjNk1PHqju/r4bwVGH8xVPuXMO34DxPE37WwsYUR5FIY5k1mCybt/BFwpjziinEwUWmSb/sK6s52OH5j5zouIYvgBIJ4UjN+i6keDQPddGsUjgxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355697; c=relaxed/simple;
-	bh=GJK7Y57cVIZ6Q6vx6yXiIfnjeiZ7ecm0a5nvAOMsglc=;
+	s=arc-20240116; t=1722359404; c=relaxed/simple;
+	bh=Ivj+xCfeGIv9lT+TtuorXwFiZ11tzdtyrvEwFKsm9pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ooka/9Pw70HzBlemOaGg8pKpOL1je5fWBDn9gVUegl8j3v0r2mxXUg+q1BlN1Cbprde5oDNRki36t/uV1GDGz6mV5ygLdOKAFeEN3fupNMOsQwG6YefKJqOPWOrMWebL62N/kDuU7pVm7jRdAqAosgqGBVSwZVfO/5clkCgTom8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYuG3YxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E41C32782;
-	Tue, 30 Jul 2024 16:08:16 +0000 (UTC)
+	 MIME-Version; b=UiKaGujzCQhjhGF0Xn+G6iQ2uPPcKI2AiiLjrqVWD66ds1Lw5mcwH76E6V0AiSVuLI4Mn7hNZPSc8p8ao7zxcEXujJ5WLBSW8HkUt/gvhgex/vWmVkKgSlW4QA2VQPJxKq29dSlG2af/BwwN6zeWwfxkvclAZY6wzcH+t255s7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhI6m0fO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25098C32782;
+	Tue, 30 Jul 2024 17:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355697;
-	bh=GJK7Y57cVIZ6Q6vx6yXiIfnjeiZ7ecm0a5nvAOMsglc=;
+	s=korg; t=1722359404;
+	bh=Ivj+xCfeGIv9lT+TtuorXwFiZ11tzdtyrvEwFKsm9pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYuG3YxPLLKrNTLoHFiMbPQXiMFoC312kTdHv66IOXm34iyScwo+ao0lxlDryz8mn
-	 RRovbvFhecgi/lXc55n33Muk5nUOCXeefH901UuIjtbYKkli+1CPruD+jivWyhN91f
-	 NQCUtK6c7y8r9vxPawc7N/rGoFpD9Me6u9ZTWJps=
+	b=HhI6m0fOIa1/UXwdYuDWw/fOIUTSEPaeVMJCmdL4DFE93yCPuuJORzOYUJH8JjmPu
+	 8CtWqrbM/WG6/R32uXSeu9Kj6cdeuEbQI0w9G62SyvoQeaQs/V+6O6FAf2Sb7uuiZE
+	 vWrOrkqP2Jg2pebeagvaLypPcuMh87GZ3E/Vw4Q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/440] bna: adjust name buf size of bna_tcb and bna_ccb structures
+Subject: [PATCH 6.10 479/809] net: flow_dissector: use DEBUG_NET_WARN_ON_ONCE
 Date: Tue, 30 Jul 2024 17:45:55 +0200
-Message-ID: <20240730151620.652858363@linuxfoundation.org>
+Message-ID: <20240730151743.654927643@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit c9741a03dc8e491e57b95fba0058ab46b7e506da ]
+[ Upstream commit 120f1c857a73e52132e473dee89b340440cb692b ]
 
-To have enough space to write all possible sprintf() args. Currently
-'name' size is 16, but the first '%s' specifier may already need at
-least 16 characters, since 'bnad->netdev->name' is used there.
+The following splat is easy to reproduce upstream as well as in -stable
+kernels. Florian Westphal provided the following commit:
 
-For '%d' specifiers, assume that they require:
- * 1 char for 'tx_id + tx_info->tcb[i]->id' sum, BNAD_MAX_TXQ_PER_TX is 8
- * 2 chars for 'rx_id + rx_info->rx_ctrl[i].ccb->id', BNAD_MAX_RXP_PER_RX
-   is 16
+  d1dab4f71d37 ("net: add and use __skb_get_hash_symmetric_net")
 
-And replace sprintf with snprintf.
+but this complementary fix has been also suggested by Willem de Bruijn
+and it can be easily backported to -stable kernel which consists in
+using DEBUG_NET_WARN_ON_ONCE instead to silence the following splat
+given __skb_get_hash() is used by the nftables tracing infrastructure to
+to identify packets in traces.
 
-Detected using the static analysis tool - Svace.
+[69133.561393] ------------[ cut here ]------------
+[69133.561404] WARNING: CPU: 0 PID: 43576 at net/core/flow_dissector.c:1104 __skb_flow_dissect+0x134f/
+[...]
+[69133.561944] CPU: 0 PID: 43576 Comm: socat Not tainted 6.10.0-rc7+ #379
+[69133.561959] RIP: 0010:__skb_flow_dissect+0x134f/0x2ad0
+[69133.561970] Code: 83 f9 04 0f 84 b3 00 00 00 45 85 c9 0f 84 aa 00 00 00 41 83 f9 02 0f 84 81 fc ff
+ff 44 0f b7 b4 24 80 00 00 00 e9 8b f9 ff ff <0f> 0b e9 20 f3 ff ff 41 f6 c6 20 0f 84 e4 ef ff ff 48 8d 7b 12 e8
+[69133.561979] RSP: 0018:ffffc90000006fc0 EFLAGS: 00010246
+[69133.561988] RAX: 0000000000000000 RBX: ffffffff82f33e20 RCX: ffffffff81ab7e19
+[69133.561994] RDX: dffffc0000000000 RSI: ffffc90000007388 RDI: ffff888103a1b418
+[69133.562001] RBP: ffffc90000007310 R08: 0000000000000000 R09: 0000000000000000
+[69133.562007] R10: ffffc90000007388 R11: ffffffff810cface R12: ffff888103a1b400
+[69133.562013] R13: 0000000000000000 R14: ffffffff82f33e2a R15: ffffffff82f33e28
+[69133.562020] FS:  00007f40f7131740(0000) GS:ffff888390800000(0000) knlGS:0000000000000000
+[69133.562027] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[69133.562033] CR2: 00007f40f7346ee0 CR3: 000000015d200001 CR4: 00000000001706f0
+[69133.562040] Call Trace:
+[69133.562044]  <IRQ>
+[69133.562049]  ? __warn+0x9f/0x1a0
+[ 1211.841384]  ? __skb_flow_dissect+0x107e/0x2860
+[...]
+[ 1211.841496]  ? bpf_flow_dissect+0x160/0x160
+[ 1211.841753]  __skb_get_hash+0x97/0x280
+[ 1211.841765]  ? __skb_get_hash_symmetric+0x230/0x230
+[ 1211.841776]  ? mod_find+0xbf/0xe0
+[ 1211.841786]  ? get_stack_info_noinstr+0x12/0xe0
+[ 1211.841798]  ? bpf_ksym_find+0x56/0xe0
+[ 1211.841807]  ? __rcu_read_unlock+0x2a/0x70
+[ 1211.841819]  nft_trace_init+0x1b9/0x1c0 [nf_tables]
+[ 1211.841895]  ? nft_trace_notify+0x830/0x830 [nf_tables]
+[ 1211.841964]  ? get_stack_info+0x2b/0x80
+[ 1211.841975]  ? nft_do_chain_arp+0x80/0x80 [nf_tables]
+[ 1211.842044]  nft_do_chain+0x79c/0x850 [nf_tables]
 
-Fixes: 8b230ed8ec96 ("bna: Brocade 10Gb Ethernet device driver")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 9b52e3f267a6 ("flow_dissector: handle no-skb use case")
+Suggested-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240715141442.43775-1-pablo@netfilter.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/brocade/bna/bna_types.h |  2 +-
- drivers/net/ethernet/brocade/bna/bnad.c      | 11 ++++++-----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ net/core/flow_dissector.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/brocade/bna/bna_types.h b/drivers/net/ethernet/brocade/bna/bna_types.h
-index 666b6922e24db..ebf54d74c2bbe 100644
---- a/drivers/net/ethernet/brocade/bna/bna_types.h
-+++ b/drivers/net/ethernet/brocade/bna/bna_types.h
-@@ -410,7 +410,7 @@ struct bna_ib {
- /* Tx object */
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index f82e9a7d3b379..7b54f44f5372a 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1101,7 +1101,7 @@ bool __skb_flow_dissect(const struct net *net,
+ 		}
+ 	}
  
- /* Tx datapath control structure */
--#define BNA_Q_NAME_SIZE		16
-+#define BNA_Q_NAME_SIZE		(IFNAMSIZ + 6)
- struct bna_tcb {
- 	/* Fast path */
- 	void			**sw_qpt;
-diff --git a/drivers/net/ethernet/brocade/bna/bnad.c b/drivers/net/ethernet/brocade/bna/bnad.c
-index d6d90f9722a7e..aecdb98f8a9c1 100644
---- a/drivers/net/ethernet/brocade/bna/bnad.c
-+++ b/drivers/net/ethernet/brocade/bna/bnad.c
-@@ -1535,8 +1535,9 @@ bnad_tx_msix_register(struct bnad *bnad, struct bnad_tx_info *tx_info,
- 
- 	for (i = 0; i < num_txqs; i++) {
- 		vector_num = tx_info->tcb[i]->intr_vector;
--		sprintf(tx_info->tcb[i]->name, "%s TXQ %d", bnad->netdev->name,
--				tx_id + tx_info->tcb[i]->id);
-+		snprintf(tx_info->tcb[i]->name, BNA_Q_NAME_SIZE, "%s TXQ %d",
-+			 bnad->netdev->name,
-+			 tx_id + tx_info->tcb[i]->id);
- 		err = request_irq(bnad->msix_table[vector_num].vector,
- 				  (irq_handler_t)bnad_msix_tx, 0,
- 				  tx_info->tcb[i]->name,
-@@ -1586,9 +1587,9 @@ bnad_rx_msix_register(struct bnad *bnad, struct bnad_rx_info *rx_info,
- 
- 	for (i = 0; i < num_rxps; i++) {
- 		vector_num = rx_info->rx_ctrl[i].ccb->intr_vector;
--		sprintf(rx_info->rx_ctrl[i].ccb->name, "%s CQ %d",
--			bnad->netdev->name,
--			rx_id + rx_info->rx_ctrl[i].ccb->id);
-+		snprintf(rx_info->rx_ctrl[i].ccb->name, BNA_Q_NAME_SIZE,
-+			 "%s CQ %d", bnad->netdev->name,
-+			 rx_id + rx_info->rx_ctrl[i].ccb->id);
- 		err = request_irq(bnad->msix_table[vector_num].vector,
- 				  (irq_handler_t)bnad_msix_rx, 0,
- 				  rx_info->rx_ctrl[i].ccb->name,
+-	WARN_ON_ONCE(!net);
++	DEBUG_NET_WARN_ON_ONCE(!net);
+ 	if (net) {
+ 		enum netns_bpf_attach_type type = NETNS_BPF_FLOW_DISSECTOR;
+ 		struct bpf_prog_array *run_array;
 -- 
 2.43.0
 
