@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04388941AEF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD80941889
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AED441F222ED
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18F25285B1C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530A718455B;
-	Tue, 30 Jul 2024 16:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9157184556;
+	Tue, 30 Jul 2024 16:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCn2nDix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nozq4Y63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1326514831F;
-	Tue, 30 Jul 2024 16:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865111A6197;
+	Tue, 30 Jul 2024 16:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358155; cv=none; b=Wv9wjfU9avVbolPrWy9DRCWQqD7O0rIRr2K1R0osTWhJANJltjUus/E/htKeEBEZxXhwMT4USCifo4Q3lAG8rPTNKpq231bb/6/NuclCs6JvZUuaoaNkJ/ouDtSrJfjh6O4GTkqnSS1zREMqi6aN6IMFQRSSHOglmYpc/RbyUUI=
+	t=1722356579; cv=none; b=b4h033iZuOD1FnhHIEJXOoXtDZjd12UiQaAAaqchy35GOxtVFn/HqSGcHpb+cPwh+yNQCp35CpAjuYTVzmA2dSiAJ1xa74pbhCH1bzgdW+MpThStvBRkoFJWZTgtF0I1lK2h0sCyfNDIvlACkLCaIApCRs2GzW7L0k2HJV2JqcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358155; c=relaxed/simple;
-	bh=Oe3/miXESfy9blb9UGjqyvAABoWBle9g8SJw/JF/pDw=;
+	s=arc-20240116; t=1722356579; c=relaxed/simple;
+	bh=wnY5JqX3buzkCVhHWRAzCA/dni9AjDekmU6QC/gGEZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWyNY5OOzuGR2nND3Ii5jQ/cMttPMDrzBrvJrHijhIs34SAHbbx0rc1wfZcxPYZBL6chkvCUE9O64q3OQ/9894OW9FJyhcMNQHoX3CaV1nw4BHniVsqAmsnlmHBi7S1kiLzi5hLW2A84lv4sdwSLkaNWZsmLhEKeqrJXDEvFJIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCn2nDix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAEAC32782;
-	Tue, 30 Jul 2024 16:49:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tMiSnsz/W9SqNjvy5+PuoOcenS1fg2nM+7PGCG+Z8ls64/3uLYa+3Rvghp0XhI/FExXIaUa+itqzQGft674+dOAxkrTTul94DJSyQBOVpCXv/xkGXUlYBj/tBPwo8ZImUG939Vj46pRzeWYC2ADiM2QgPeTyLgdnY6mLb+W12P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nozq4Y63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECF2C32782;
+	Tue, 30 Jul 2024 16:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358155;
-	bh=Oe3/miXESfy9blb9UGjqyvAABoWBle9g8SJw/JF/pDw=;
+	s=korg; t=1722356579;
+	bh=wnY5JqX3buzkCVhHWRAzCA/dni9AjDekmU6QC/gGEZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCn2nDixuJntWMgz9CINTVy0sk2qKVm9Fx5TI74PzlKloZ7gFvxw4UsZiNyfbZHkZ
-	 KurJmUikwnmI3svViGCdMXF1P6g2CEcgS2rC4USy4u2LZyblQEhoI9eR7mR9rZkg6Q
-	 4ggQKt1LmXvRDXL4WuZDzRuImgzqJztK25LX2o+M=
+	b=nozq4Y63ENrEdWDBqbdz/3MTDas+lLkWtT4fsbCFsjR9UwzdDOWtCKvkHYg1bZIGd
+	 1NYsCx7zSoYTEGN+iJRzkR8uIhEvljvUm2m1r8PKjEz4+ObY1KJ6KM+vmTpA8keVJV
+	 Zem1/qjuTAdXkE/wSNB+rzq2MtHAdnAFoOU6+OzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 335/568] pinctrl: renesas: r8a779g0: Fix CANFD5 suffix
+Subject: [PATCH 6.1 209/440] PCI: endpoint: Clean up error handling in vpci_scan_bus()
 Date: Tue, 30 Jul 2024 17:47:22 +0200
-Message-ID: <20240730151652.964277594@linuxfoundation.org>
+Message-ID: <20240730151624.029528121@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,100 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 77fa9007ac31e80674beadc452d3f3614f283e18 ]
+[ Upstream commit 8e0f5a96c534f781e8c57ca30459448b3bfe5429 ]
 
-CAN-FD instance 5 has two alternate pin groups: "canfd5" and "canfd5_b".
-Rename the former to "canfd5_a" to increase uniformity.
+Smatch complains about inconsistent NULL checking in vpci_scan_bus():
 
-While at it, remove the unneeded separator.
+    drivers/pci/endpoint/functions/pci-epf-vntb.c:1024 vpci_scan_bus() error: we previously assumed 'vpci_bus' could be null (see line 1021)
 
-Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
-Fixes: 050442ae4c74f830 ("pinctrl: renesas: r8a779g0: Add pins, groups and functions")
-Fixes: c2b4b2cd632d17e7 ("pinctrl: renesas: r8a779g0: Add missing CANFD5_B")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/10b22d54086ed11cdfeb0004583029ccf249bdb9.1717754960.git.geert+renesas@glider.be
+Instead of printing an error message and then crashing we should return
+an error code and clean up.
+
+Also the NULL check is reversed so it prints an error for success
+instead of failure.
+
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Link: https://lore.kernel.org/linux-pci/68e0f6a4-fd57-45d0-945b-0876f2c8cb86@moroto.mountain
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pfc-r8a779g0.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-index d2de526a3b588..d90ba8b6b4b42 100644
---- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
-+++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-@@ -341,8 +341,8 @@
- /* IP0SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
- #define IP0SR2_3_0	FM(FXR_TXDA)		FM(CANFD1_TX)		FM(TPU0TO2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_7_4	FM(FXR_TXENA_N)		FM(CANFD1_RX)		FM(TPU0TO3_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_11_8	FM(RXDA_EXTFXR)		FM(CANFD5_TX_A)		FM(IRQ5)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP0SR2_15_12	FM(CLK_EXTFXR)		FM(CANFD5_RX_A)		FM(IRQ4_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_19_16	FM(RXDB_EXTFXR)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_23_20	FM(FXR_TXENB_N)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP0SR2_27_24	FM(FXR_TXDB)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-@@ -896,11 +896,11 @@ static const u16 pinmux_data[] = {
- 	PINMUX_IPSR_GPSR(IP0SR2_7_4,	TPU0TO3_A),
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index b4c1a4f6029d4..3725cdfae1efa 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -1032,8 +1032,10 @@ static int vpci_scan_bus(void *sysdata)
+ 	struct epf_ntb *ndev = sysdata;
  
- 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	RXDA_EXTFXR),
--	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX),
-+	PINMUX_IPSR_GPSR(IP0SR2_11_8,	CANFD5_TX_A),
- 	PINMUX_IPSR_GPSR(IP0SR2_11_8,	IRQ5),
+ 	vpci_bus = pci_scan_bus(ndev->vbus_number, &vpci_ops, sysdata);
+-	if (vpci_bus)
+-		pr_err("create pci bus\n");
++	if (!vpci_bus) {
++		pr_err("create pci bus failed\n");
++		return -EINVAL;
++	}
  
- 	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CLK_EXTFXR),
--	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CANFD5_RX),
-+	PINMUX_IPSR_GPSR(IP0SR2_15_12,	CANFD5_RX_A),
- 	PINMUX_IPSR_GPSR(IP0SR2_15_12,	IRQ4_B),
+ 	pci_bus_add_devices(vpci_bus);
  
- 	PINMUX_IPSR_GPSR(IP0SR2_19_16,	RXDB_EXTFXR),
-@@ -1531,15 +1531,14 @@ static const unsigned int canfd4_data_mux[] = {
- };
+@@ -1355,10 +1357,14 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ 		goto err_bar_alloc;
+ 	}
  
- /* - CANFD5 ----------------------------------------------------------------- */
--static const unsigned int canfd5_data_pins[] = {
--	/* CANFD5_TX, CANFD5_RX */
-+static const unsigned int canfd5_data_a_pins[] = {
-+	/* CANFD5_TX_A, CANFD5_RX_A */
- 	RCAR_GP_PIN(2, 2), RCAR_GP_PIN(2, 3),
- };
--static const unsigned int canfd5_data_mux[] = {
--	CANFD5_TX_MARK, CANFD5_RX_MARK,
-+static const unsigned int canfd5_data_a_mux[] = {
-+	CANFD5_TX_A_MARK, CANFD5_RX_A_MARK,
- };
+-	vpci_scan_bus(ntb);
++	ret = vpci_scan_bus(ntb);
++	if (ret)
++		goto err_unregister;
  
--/* - CANFD5_B ----------------------------------------------------------------- */
- static const unsigned int canfd5_data_b_pins[] = {
- 	/* CANFD5_TX_B, CANFD5_RX_B */
- 	RCAR_GP_PIN(1, 8), RCAR_GP_PIN(1, 9),
-@@ -2578,8 +2577,8 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
- 	SH_PFC_PIN_GROUP(canfd2_data),
- 	SH_PFC_PIN_GROUP(canfd3_data),
- 	SH_PFC_PIN_GROUP(canfd4_data),
--	SH_PFC_PIN_GROUP(canfd5_data),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(canfd5_data_b),	/* suffix might be updated */
-+	SH_PFC_PIN_GROUP(canfd5_data_a),
-+	SH_PFC_PIN_GROUP(canfd5_data_b),
- 	SH_PFC_PIN_GROUP(canfd6_data),
- 	SH_PFC_PIN_GROUP(canfd7_data),
- 	SH_PFC_PIN_GROUP(can_clk),
-@@ -2788,8 +2787,7 @@ static const char * const canfd4_groups[] = {
- };
+ 	return 0;
  
- static const char * const canfd5_groups[] = {
--	/* suffix might be updated */
--	"canfd5_data",
-+	"canfd5_data_a",
- 	"canfd5_data_b",
- };
++err_unregister:
++	pci_unregister_driver(&vntb_pci_driver);
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
  
 -- 
 2.43.0
