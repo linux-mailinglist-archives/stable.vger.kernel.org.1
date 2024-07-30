@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-63419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4D09418DD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809789418F7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D84283FC6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20A21C22FEF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7FB1A618E;
-	Tue, 30 Jul 2024 16:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F5C183CDA;
+	Tue, 30 Jul 2024 16:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rI2JDFnn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSZkyj3j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C57B1A6160;
-	Tue, 30 Jul 2024 16:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D921A6160;
+	Tue, 30 Jul 2024 16:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356774; cv=none; b=BqctTFG+jNd/L3/A/hqR9BQoqYD0stOnEHtCTiC3Sa57xVEsYbUx/KkpVnf9MC8qlKU7UI/3rL9oEW/r5GSYVN0SY+eUzLMvOgoDeQrkHwUIiIc36D1NLbj5QFxInVmUJ6J+PPxrPHr/Chj2YYVVzSyHT4HUuIWaiyqRi5EXptg=
+	t=1722356843; cv=none; b=GstBt2BXcQQq00PWOj9/XBfHPgqKTQaU0iaKlsXL+qThzkm158e9I7IkQZuE7vPy4UKZSuHrncF1z08kTRXX1fBWQ1FYdBIC6GTpAVAEGfhMN6VFj/JQ6p+tnSQE1KIwNQun+GI029KvgQl+/x6uzP0joyLgEavGkEQEFZf4Aj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356774; c=relaxed/simple;
-	bh=pO+rpmkqMgS8rzw1ZTii3IGImyLH/fn0nmfG+yBFw14=;
+	s=arc-20240116; t=1722356843; c=relaxed/simple;
+	bh=soFiei8msYq+4Fw65ZL+LX7fOEA/hWfn64QyCzqL1sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhvjrZ/cd4Ii9xCjDuKGqDapCJGIszA2gySgXzRwzhthiO3BjoRHRezoOjki283MOEy0PfckzMbW9oHrXXFlGfYJWoXRhmO+qhNuUbdw3KfBe19SAl0DMcWhjfEHE8YQ3rzr3VBlY3HCky3GvZrHdu/9eEqAxdtcG4nzu+tp+ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rI2JDFnn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3673C32782;
-	Tue, 30 Jul 2024 16:26:13 +0000 (UTC)
+	 MIME-Version; b=GtIKlHhX8Qtjv7K5pMkvdKe3Wv+WYKC8twi/0HZ3PWP1viyNxZrgm1IA6B0JjMctO1Zl72G2enOQ4dlmLj15NUVhcX21fDVwoXzfnuEpmIN/i2tRW5Jhwjul1jDzADVwdGt7kPv5w9NxYoc70YHR/Iy7nSHTbajaKwyjbVkJrsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSZkyj3j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F79C32782;
+	Tue, 30 Jul 2024 16:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356774;
-	bh=pO+rpmkqMgS8rzw1ZTii3IGImyLH/fn0nmfG+yBFw14=;
+	s=korg; t=1722356842;
+	bh=soFiei8msYq+4Fw65ZL+LX7fOEA/hWfn64QyCzqL1sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rI2JDFnn7nr8kH2qxlaDneBu+HE+l8S+gZdeyDHnEifkEfajW1pC6OeoTKSCHrzQO
-	 I9lQOODyYIbAVBTNesuEEhfFZceqrMPGlvSBfyxsk1F8Y1ZirzXdOodDPCjMBeueTW
-	 IYZkjbUEvfwzp22d29GbVu8IIKBk17I2QEr1fvYE=
+	b=LSZkyj3jIcWd9gIpMlZJXF8Pkmbtp4C3Hjp6k3AvViDUGxcwTpvEoHJY7ADlvmTip
+	 qbS0Ls1WhHnSLkqFAhspbw0HLR9P+5z2lnAuCWX+9hIr5jEnunE7bDjdqitjknHu//
+	 VMI2wiQ2Bm1BLoMChwhgoiP4MowqpE/Mhpu3Iyv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 179/809] net/smc: set rmbs SG_MAX_SINGLE_ALLOC limitation only when CONFIG_ARCH_NO_SG_CHAIN is defined
-Date: Tue, 30 Jul 2024 17:40:55 +0200
-Message-ID: <20240730151731.681761682@linuxfoundation.org>
+Subject: [PATCH 6.10 180/809] selftests/bpf: Check length of recv in test_sockmap
+Date: Tue, 30 Jul 2024 17:40:56 +0200
+Message-ID: <20240730151731.720140313@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,54 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 3ac14b9dfbd345e891d48d89f6c2fa519848f0f4 ]
+[ Upstream commit de1b5ea789dc28066cc8dc634b6825bd6148f38b ]
 
-SG_MAX_SINGLE_ALLOC is used to limit maximum number of entries that
-will be allocated in one piece of scatterlist. When the entries of
-scatterlist exceeds SG_MAX_SINGLE_ALLOC, sg chain will be used. From
-commit 7c703e54cc71 ("arch: switch the default on ARCH_HAS_SG_CHAIN"),
-we can know that the macro CONFIG_ARCH_NO_SG_CHAIN is used to identify
-whether sg chain is supported. So, SMC-R's rmb buffer should be limited
-by SG_MAX_SINGLE_ALLOC only when the macro CONFIG_ARCH_NO_SG_CHAIN is
-defined.
+The value of recv in msg_loop may be negative, like EWOULDBLOCK, so it's
+necessary to check if it is positive before accumulating it to bytes_recvd.
 
-Fixes: a3fe3d01bd0d ("net/smc: introduce sg-logic for RMBs")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Co-developed-by: Wen Gu <guwen@linux.alibaba.com>
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 16962b2404ac ("bpf: sockmap, add selftests")
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/5172563f7c7b2a2e953cef02e89fc34664a7b190.1716446893.git.tanggeliang@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index fafdb97adfad9..acca3b1a068f0 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -2015,7 +2015,6 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
-  */
- static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
- {
--	const unsigned int max_scat = SG_MAX_SINGLE_ALLOC * PAGE_SIZE;
- 	u8 compressed;
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 4499b3cfc3a68..a709911cddd2f 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -680,7 +680,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 				}
+ 			}
  
- 	if (size <= SMC_BUF_MIN_SIZE)
-@@ -2025,9 +2024,11 @@ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
- 	compressed = min_t(u8, ilog2(size) + 1,
- 			   is_smcd ? SMCD_DMBE_SIZES : SMCR_RMBE_SIZES);
+-			s->bytes_recvd += recv;
++			if (recv > 0)
++				s->bytes_recvd += recv;
  
-+#ifdef CONFIG_ARCH_NO_SG_CHAIN
- 	if (!is_smcd && is_rmb)
- 		/* RMBs are backed by & limited to max size of scatterlists */
--		compressed = min_t(u8, compressed, ilog2(max_scat >> 14));
-+		compressed = min_t(u8, compressed, ilog2((SG_MAX_SINGLE_ALLOC * PAGE_SIZE) >> 14));
-+#endif
- 
- 	return compressed;
- }
+ 			if (opt->check_recved_len && s->bytes_recvd > total_bytes) {
+ 				errno = EMSGSIZE;
 -- 
 2.43.0
 
