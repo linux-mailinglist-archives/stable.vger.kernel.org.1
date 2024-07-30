@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991ED941BE3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DCA5941D7E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD13D1C2320D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F3CE1C20DB7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D050188003;
-	Tue, 30 Jul 2024 17:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802931A76BD;
+	Tue, 30 Jul 2024 17:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEhxNGbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDdsb5UT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C151FBA;
-	Tue, 30 Jul 2024 17:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD3B1A76B4;
+	Tue, 30 Jul 2024 17:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358824; cv=none; b=brAamqr26t85J98XhN3Q871R4c0co1FVlwt2qYTfHJXXkSzm8nyG2iauGau2s6FG2zA7pJ5fGqeIjnPVdbeVqEs7x7FcA6Zx1EjaLnWuBL6YpRvydlpdYj7vz5lPF4ocsgldza2YJfvLwsJPIbl64BXPMtXjKLisQvji/E5vCgc=
+	t=1722359886; cv=none; b=cenQ4Fc/X7WF5X4wjzMFg8b3Onj6zQeACWnsiNeke2oFBrXTzUt3Qz+7XAj27Zt0eRwKZpAtOOEc/BlsCVv8/4cJ04hhnikkBrpdYKZNMLZenNTnZZbhd0Pu4FnLkI7zzma2+rZ43AIkYe7LjVTJ7u6FMXzf59xNGmAijAZ8Yio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358824; c=relaxed/simple;
-	bh=Mlm9wFUBsY9SAkmkv2O93BS/gQPDs7/kBaUXCRP3fkU=;
+	s=arc-20240116; t=1722359886; c=relaxed/simple;
+	bh=qJgmBYWAeiuwYfnU5vVWMVSNXxOkn9q7IOkHNANXDpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCQlljIHE6yo3gj3kyq6ApMtjyaKGjWQ2Yp2Htil2qGAgukEl2n04jYk30G38AOGYLRNknDE0bP9pQ5xqNLH0GXfK1+QIku/P9QUAA3WOrNF4pfu+XoYAPG5q2HEbhzDzPTVqdqYByEsQ+Lh2cJbtAaotK/aT3/f9ujm29umGU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEhxNGbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18061C32782;
-	Tue, 30 Jul 2024 17:00:23 +0000 (UTC)
+	 MIME-Version; b=Fm0d9dduFDu3voAuwddvRBmOKtXvsPM4Z0bJPctuwJavzz8iTEB2+DJmBQlwC8tqaL09ov/17CKL8K9PVgHR9kEaflBN8jHdleSRudLajTCJt3gtR+GLM7jdLuT3goPYcmU0T5eKzBT+D0kZSSSEec90dYFRXhohjPuek7PbMow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDdsb5UT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A473DC32782;
+	Tue, 30 Jul 2024 17:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358824;
-	bh=Mlm9wFUBsY9SAkmkv2O93BS/gQPDs7/kBaUXCRP3fkU=;
+	s=korg; t=1722359886;
+	bh=qJgmBYWAeiuwYfnU5vVWMVSNXxOkn9q7IOkHNANXDpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEhxNGbWnxttrA5jOS58yCVYL3LZQOfnKWb2NdHranj0MEvxAz3hvzx7Ei3RF4ZGw
-	 cIDPQQ79L/BdbngyTIeecbHx7c2LLzX4xNbZB868CxCVOLSwpI7SsMFInTl/euUNiz
-	 68CkT1GyldN2WpDF8s3zsOorqug0SPCa5g21m5Qg=
+	b=JDdsb5UT7DCAsjioUcCB6UGHbLcXibBxsaXVEwhADoMG4Nor2VAyvfAcM+8/SQWFl
+	 9tNqe8eMr0wzRcommSjfluIdvmX7ncTdm+b+ql3iVBjIaDZXGWdFXZ6f2xsUqJl1Cq
+	 g6BmzZ8MEQSOMxsW7a5cXZNpfoaSxk1ktlvQNs00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Conor Dooley <conor.dooley@microchip.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 425/440] spi: microchip-core: only disable SPI controller when register value change requires it
+Subject: [PATCH 6.6 551/568] spi: microchip-core: defer asserting chip select until just before write to TX FIFO
 Date: Tue, 30 Jul 2024 17:50:58 +0200
-Message-ID: <20240730151632.382584813@linuxfoundation.org>
+Message-ID: <20240730151701.696368526@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,210 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Steve Wilkins <steve.wilkins@raymarine.com>
 
-[ Upstream commit de9850b5c606b754dd7861678d6e2874b96b04f8 ]
+[ Upstream commit 22fd98c107c792e35db7abe45298bc3a29bf4723 ]
 
-Setting up many of the registers for a new SPI transfer involves
-unconditionally disabling the SPI controller, writing the register
-value and re-enabling the controller. This is being done for registers
-even when the value is unchanged and is also done for registers that
-don't require the controller to be disabled for the change to take
-effect. Make an effort to detect changes to the register values, and
-only disables the controller if the new register value is different
-and disabling the controller is required. This stops the controller
-being repeated disabled and the bus going tristate before every
-transfer.
+Setting up many of the registers for a new SPI transfer requires the
+SPI controller to be disabled after set_cs() has been called to assert
+the chip select line. However, disabling the controller results in the
+SCLK and MOSI output pins being tristate, which can cause clock
+transitions to be seen by a slave device whilst SS is active. To fix
+this, the CS is only set to inactive inline, whilst setting it active
+is deferred until all registers are set up and the any controller
+disables have been completed.
 
 Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
 Signed-off-by: Steve Wilkins <steve.wilkins@raymarine.com>
-Co-developed-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20240715-depict-twirl-7e592eeabaad@wendy
+Link: https://patch.msgid.link/20240715-sanitizer-recant-dd96b7a97048@wendy
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-microchip-core.c | 79 +++++++++++++++++---------------
- 1 file changed, 41 insertions(+), 38 deletions(-)
+ drivers/spi/spi-microchip-core.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index 202ac889b5ae2..13de3095ef817 100644
+index 1a19701cc6118..b49843f0c2e8e 100644
 --- a/drivers/spi/spi-microchip-core.c
 +++ b/drivers/spi/spi-microchip-core.c
-@@ -75,6 +75,7 @@
+@@ -103,6 +103,7 @@ struct mchp_corespi {
+ 	u8 *rx_buf;
+ 	u32 clk_gen; /* divider for spi output clock generated by the controller */
+ 	u32 clk_mode;
++	u32 pending_slave_select;
+ 	int irq;
+ 	int tx_len;
+ 	int rx_len;
+@@ -249,8 +250,18 @@ static void mchp_corespi_set_cs(struct spi_device *spi, bool disable)
+ 	reg = mchp_corespi_read(corespi, REG_SLAVE_SELECT);
+ 	reg &= ~BIT(spi_get_chipselect(spi, 0));
+ 	reg |= !disable << spi_get_chipselect(spi, 0);
++	corespi->pending_slave_select = reg;
  
- #define REG_CONTROL		(0x00)
- #define REG_FRAME_SIZE		(0x04)
-+#define  FRAME_SIZE_MASK	GENMASK(5, 0)
- #define REG_STATUS		(0x08)
- #define REG_INT_CLEAR		(0x0c)
- #define REG_RX_DATA		(0x10)
-@@ -89,6 +90,7 @@
- #define REG_RIS			(0x24)
- #define REG_CONTROL2		(0x28)
- #define REG_COMMAND		(0x2c)
-+#define  COMMAND_CLRFRAMECNT	BIT(4)
- #define REG_PKTSIZE		(0x30)
- #define REG_CMD_SIZE		(0x34)
- #define REG_HWSTATUS		(0x38)
-@@ -157,62 +159,59 @@ static inline void mchp_corespi_read_fifo(struct mchp_corespi *spi)
- 
- static void mchp_corespi_enable_ints(struct mchp_corespi *spi)
- {
--	u32 control, mask = INT_ENABLE_MASK;
--
--	mchp_corespi_disable(spi);
--
--	control = mchp_corespi_read(spi, REG_CONTROL);
--
--	control |= mask;
--	mchp_corespi_write(spi, REG_CONTROL, control);
-+	u32 control = mchp_corespi_read(spi, REG_CONTROL);
- 
--	control |= CONTROL_ENABLE;
-+	control |= INT_ENABLE_MASK;
- 	mchp_corespi_write(spi, REG_CONTROL, control);
+-	mchp_corespi_write(corespi, REG_SLAVE_SELECT, reg);
++	/*
++	 * Only deassert chip select immediately. Writing to some registers
++	 * requires the controller to be disabled, which results in the
++	 * output pins being tristated and can cause the SCLK and MOSI lines
++	 * to transition. Therefore asserting the chip select is deferred
++	 * until just before writing to the TX FIFO, to ensure the device
++	 * doesn't see any spurious clock transitions whilst CS is enabled.
++	 */
++	if (((spi->mode & SPI_CS_HIGH) == 0) == disable)
++		mchp_corespi_write(corespi, REG_SLAVE_SELECT, reg);
  }
  
- static void mchp_corespi_disable_ints(struct mchp_corespi *spi)
- {
--	u32 control, mask = INT_ENABLE_MASK;
--
--	mchp_corespi_disable(spi);
--
--	control = mchp_corespi_read(spi, REG_CONTROL);
--	control &= ~mask;
--	mchp_corespi_write(spi, REG_CONTROL, control);
-+	u32 control = mchp_corespi_read(spi, REG_CONTROL);
- 
--	control |= CONTROL_ENABLE;
-+	control &= ~INT_ENABLE_MASK;
- 	mchp_corespi_write(spi, REG_CONTROL, control);
- }
- 
- static inline void mchp_corespi_set_xfer_size(struct mchp_corespi *spi, int len)
- {
- 	u32 control;
--	u16 lenpart;
-+	u32 lenpart;
-+	u32 frames = mchp_corespi_read(spi, REG_FRAMESUP);
- 
- 	/*
--	 * Disable the SPI controller. Writes to transfer length have
--	 * no effect when the controller is enabled.
-+	 * Writing to FRAMECNT in REG_CONTROL will reset the frame count, taking
-+	 * a shortcut requires an explicit clear.
- 	 */
--	mchp_corespi_disable(spi);
-+	if (frames == len) {
-+		mchp_corespi_write(spi, REG_COMMAND, COMMAND_CLRFRAMECNT);
-+		return;
-+	}
- 
- 	/*
- 	 * The lower 16 bits of the frame count are stored in the control reg
- 	 * for legacy reasons, but the upper 16 written to a different register:
- 	 * FRAMESUP. While both the upper and lower bits can be *READ* from the
--	 * FRAMESUP register, writing to the lower 16 bits is a NOP
-+	 * FRAMESUP register, writing to the lower 16 bits is (supposedly) a NOP.
-+	 *
-+	 * The driver used to disable the controller while modifying the frame
-+	 * count, and mask off the lower 16 bits of len while writing to
-+	 * FRAMES_UP. When the driver was changed to disable the controller as
-+	 * infrequently as possible, it was discovered that the logic of
-+	 * lenpart = len & 0xffff_0000
-+	 * write(REG_FRAMESUP, lenpart)
-+	 * would actually write zeros into the lower 16 bits on an mpfs250t-es,
-+	 * despite documentation stating these bits were read-only.
-+	 * Writing len unmasked into FRAMES_UP ensures those bits aren't zeroed
-+	 * on an mpfs250t-es and will be a NOP for the lower 16 bits on hardware
-+	 * that matches the documentation.
- 	 */
- 	lenpart = len & 0xffff;
--
- 	control = mchp_corespi_read(spi, REG_CONTROL);
- 	control &= ~CONTROL_FRAMECNT_MASK;
- 	control |= lenpart << CONTROL_FRAMECNT_SHIFT;
- 	mchp_corespi_write(spi, REG_CONTROL, control);
--
--	lenpart = len & 0xffff0000;
--	mchp_corespi_write(spi, REG_FRAMESUP, lenpart);
--
--	control |= CONTROL_ENABLE;
--	mchp_corespi_write(spi, REG_CONTROL, control);
-+	mchp_corespi_write(spi, REG_FRAMESUP, len);
- }
- 
- static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
-@@ -235,17 +234,22 @@ static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
- 
- static inline void mchp_corespi_set_framesize(struct mchp_corespi *spi, int bt)
- {
-+	u32 frame_size = mchp_corespi_read(spi, REG_FRAME_SIZE);
- 	u32 control;
- 
-+	if ((frame_size & FRAME_SIZE_MASK) == bt)
-+		return;
-+
- 	/*
- 	 * Disable the SPI controller. Writes to the frame size have
- 	 * no effect when the controller is enabled.
- 	 */
--	mchp_corespi_disable(spi);
-+	control = mchp_corespi_read(spi, REG_CONTROL);
-+	control &= ~CONTROL_ENABLE;
-+	mchp_corespi_write(spi, REG_CONTROL, control);
- 
- 	mchp_corespi_write(spi, REG_FRAME_SIZE, bt);
- 
--	control = mchp_corespi_read(spi, REG_CONTROL);
- 	control |= CONTROL_ENABLE;
- 	mchp_corespi_write(spi, REG_CONTROL, control);
- }
-@@ -330,8 +334,6 @@ static inline void mchp_corespi_set_clk_gen(struct mchp_corespi *spi)
- {
- 	u32 control;
- 
--	mchp_corespi_disable(spi);
--
- 	control = mchp_corespi_read(spi, REG_CONTROL);
- 	if (spi->clk_mode)
- 		control |= CONTROL_CLKMODE;
-@@ -340,12 +342,12 @@ static inline void mchp_corespi_set_clk_gen(struct mchp_corespi *spi)
- 
- 	mchp_corespi_write(spi, REG_CLK_GEN, spi->clk_gen);
- 	mchp_corespi_write(spi, REG_CONTROL, control);
--	mchp_corespi_write(spi, REG_CONTROL, control | CONTROL_ENABLE);
- }
- 
- static inline void mchp_corespi_set_mode(struct mchp_corespi *spi, unsigned int mode)
- {
--	u32 control, mode_val;
-+	u32 mode_val;
-+	u32 control = mchp_corespi_read(spi, REG_CONTROL);
- 
- 	switch (mode & SPI_MODE_X_MASK) {
- 	case SPI_MODE_0:
-@@ -363,12 +365,13 @@ static inline void mchp_corespi_set_mode(struct mchp_corespi *spi, unsigned int
+ static int mchp_corespi_setup(struct spi_device *spi)
+@@ -266,6 +277,7 @@ static int mchp_corespi_setup(struct spi_device *spi)
+ 	if (spi->mode & SPI_CS_HIGH) {
+ 		reg = mchp_corespi_read(corespi, REG_SLAVE_SELECT);
+ 		reg |= BIT(spi_get_chipselect(spi, 0));
++		corespi->pending_slave_select = reg;
+ 		mchp_corespi_write(corespi, REG_SLAVE_SELECT, reg);
  	}
- 
- 	/*
--	 * Disable the SPI controller. Writes to the frame size have
-+	 * Disable the SPI controller. Writes to the frame protocol have
- 	 * no effect when the controller is enabled.
+ 	return 0;
+@@ -307,7 +319,8 @@ static void mchp_corespi_init(struct spi_master *master, struct mchp_corespi *sp
+ 	 * select is relinquished to the hardware. SSELOUT is enabled too so we
+ 	 * can deal with active high slaves.
  	 */
--	mchp_corespi_disable(spi);
+-	mchp_corespi_write(spi, REG_SLAVE_SELECT, SSELOUT | SSEL_DIRECT);
++	spi->pending_slave_select = SSELOUT | SSEL_DIRECT;
++	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
  
--	control = mchp_corespi_read(spi, REG_CONTROL);
-+	control &= ~CONTROL_ENABLE;
-+	mchp_corespi_write(spi, REG_CONTROL, control);
+ 	control = mchp_corespi_read(spi, REG_CONTROL);
+ 
+@@ -476,6 +489,8 @@ static int mchp_corespi_transfer_one(struct spi_master *master,
+ 	mchp_corespi_set_xfer_size(spi, (spi->tx_len > FIFO_DEPTH)
+ 				   ? FIFO_DEPTH : spi->tx_len);
+ 
++	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
 +
- 	control &= ~(SPI_MODE_X_MASK << MODE_X_MASK_SHIFT);
- 	control |= mode_val;
+ 	while (spi->tx_len)
+ 		mchp_corespi_write_fifo(spi);
  
 -- 
 2.43.0
