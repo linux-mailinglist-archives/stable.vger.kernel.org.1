@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23ED89416AD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACDC9416B0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3DF3286EC8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 355FF1F23DEF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6919918801E;
-	Tue, 30 Jul 2024 16:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C626187FF2;
+	Tue, 30 Jul 2024 16:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLLcASN2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcphNvGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF66183CCA;
-	Tue, 30 Jul 2024 16:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028BE8BE8;
+	Tue, 30 Jul 2024 16:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355361; cv=none; b=II79Z7mGJw8ZJVEDv/JEgjud6m4Lg2Cx/TrLkVjPG0Vgn4H1QDkxW3ptSSJPZ544DNDxMX61YlCRql9jMGCmAzdjdey2DLqFfz5CewwXBzBmYhmj0z4Hjv7tDVNbXSGtvrBDVi27+LcbML9aA6OeLY1uc1E35kPXByFWO7D0ORs=
+	t=1722355371; cv=none; b=HzFN5b3FsWsjkiExaOiV+/SHcGrEHkQwPYg9S+Pj07JfESfjBgy8F8KEUYm7M9afCzUTsklJ7MvEkqIYfcq7G2QZmV5vXrTI1g7O4+824z0nkDiKdBWBDqc4V04s6dADbvHQa/zPXyUScc/5lHb2VNPPgi1XVGcUZMg+ZEnE/qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355361; c=relaxed/simple;
-	bh=JmqfSiPWK1IEC8X7LpB3NuZAnAEByLdghiIuDoyHa7s=;
+	s=arc-20240116; t=1722355371; c=relaxed/simple;
+	bh=ZHTqqNBOVUoy9Fmax3b0xNTKFMfWP6cs68Mgqe1M7J8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTZLGTR7FElzv4IS7yTfgncXbVm0y/Ptfa+uQ7TN6/DLOxWgqsACBcG++cjK4jxun55q4aR+5+7jivfTIR6i5shEBGfJvq9Dd6YlcfEe3YGEtX5Mji7sfqSJmpVhrE99Rk7T9txZ25Cb6MOafVKTGXTnwrQKP9tkRLUsoeAXI84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLLcASN2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D460C32782;
-	Tue, 30 Jul 2024 16:02:40 +0000 (UTC)
+	 MIME-Version; b=k9jsLuo7rfg0gwS9Tb48ApAOdKQmEG8klCVRierjGwSB7UpFR/MkIHxmd0bZp42l6eqUK4y58hQyv2Vm5tNzkSDwZzk+y7OVzsMMnTGMB/Q3qoOun9SGWyhi38iWe3aWQhUwC6yiT0zJUDgUek/VubmAwxN7ayvgoJpBDeO/bY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcphNvGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6C8C32782;
+	Tue, 30 Jul 2024 16:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355360;
-	bh=JmqfSiPWK1IEC8X7LpB3NuZAnAEByLdghiIuDoyHa7s=;
+	s=korg; t=1722355370;
+	bh=ZHTqqNBOVUoy9Fmax3b0xNTKFMfWP6cs68Mgqe1M7J8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLLcASN2QOaoRvR8QJGDgdPt9dMw4aflS02JhU0Zsh6I7xViuAhwRYoFQ61PPUvDJ
-	 PzIU1KMCMgK1iue0S5qXCbidFDpJMMjcNTXWtEpCgWM7O02ovXEgGFPjskPSZUD27k
-	 Pqg2yAix/NMjFo48uZb40s5dI6I4eAwaCavzwaJQ=
+	b=dcphNvGmbHiJcYOkeq9kXXg0W5pI3CPFdiCTdyqJZ6/wL8XI6Ne8Q27fhNG01zgdT
+	 BOK/qlaAZ4o7WrVrBlJHQTAuoFmfyWu9Pyl2zy2QZI3/RUQmdyAZ0T7q23nhA57grj
+	 eluqw5J42fBMeEjP0PLM2RAbYRUOS1H73U2vH8vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/568] ARM: dts: stm32: Add arm,no-tick-in-suspend to STM32MP15xx STGEN timer
-Date: Tue, 30 Jul 2024 17:42:38 +0200
-Message-ID: <20240730151641.834490870@linuxfoundation.org>
+Subject: [PATCH 6.6 052/568] arm64: dts: qcom: qrb4210-rb2: make L9A always-on
+Date: Tue, 30 Jul 2024 17:42:39 +0200
+Message-ID: <20240730151641.873812730@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,43 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 4306c047415a227bc72f0e7ba9bde1ccdac10435 ]
+[ Upstream commit d6c6b85bf5582bbe2efefa9a083178b5f7eef439 ]
 
-STM32MP15xx RM0436 Rev 6 section 46.3 System timer generator (STGEN) states
-"
-Arm recommends that the system counter is in an always-on power domain.
-This is not supported in the current implementation, therefore STGEN should
-be saved and restored before Standby mode entry, and restored at Standby
-exit by secure software.
-...
-"
-Instead of piling up workarounds in the firmware which is difficult to
-update, add "arm,no-tick-in-suspend" DT property into the timer node to
-indicate the timer is stopped in suspend, and let the kernel fix the
-timer up.
+The L9A regulator is used to further control voltage regulators on the
+board. It can be used to disable VBAT_mains, 1.8V, 3.3V, 5V rails). Make
+sure that is stays always on to prevent undervolting of these volage
+rails.
 
-Fixes: 8471a20253eb ("ARM: dts: stm32: add stm32mp157c initial support")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: 8d58a8c0d930 ("arm64: dts: qcom: Add base qrb4210-rb2 board dts")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240605-rb2-l9a-aon-v2-1-0d493d0d107c@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/st/stm32mp151.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/qrb4210-rb2.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp151.dtsi b/arch/arm/boot/dts/st/stm32mp151.dtsi
-index 61508917521c3..aec7fa5ab5d8c 100644
---- a/arch/arm/boot/dts/st/stm32mp151.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp151.dtsi
-@@ -50,6 +50,7 @@ timer {
- 			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
- 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>;
- 		interrupt-parent = <&intc>;
-+		arm,no-tick-in-suspend;
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+index c8e80bb405e71..5def8c1154ceb 100644
+--- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
++++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+@@ -364,6 +364,8 @@ vreg_l8a_0p664: l8 {
+ 		vreg_l9a_1p8: l9 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <2000000>;
++			regulator-always-on;
++			regulator-boot-on;
+ 		};
  
- 	clocks {
+ 		vreg_l10a_1p8: l10 {
 -- 
 2.43.0
 
