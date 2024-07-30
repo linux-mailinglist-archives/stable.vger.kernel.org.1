@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D69941794
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF19941797
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52A491C20FDF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0671F22128
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3371898E4;
-	Tue, 30 Jul 2024 16:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15D2189905;
+	Tue, 30 Jul 2024 16:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNDUQS9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rus7w9cD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E8C189505;
-	Tue, 30 Jul 2024 16:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE12189902;
+	Tue, 30 Jul 2024 16:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355819; cv=none; b=Sc3H1UfgJXA5GzKlGSFDvkFklE9ByCTXahnKR9XOJs/20xOqNJpFyR3GaFqRgvVNmr/FkezEGOwuHDCEMaiw/6VQg9SreupW1bxerl9aCBSLwlOXkRS+VqvmufWN4DwWjVyNqGggjOIfjUoGa3TsLCb6izABcgumjLSfX1UxM08=
+	t=1722355829; cv=none; b=AchPka8HjN9H+Q1D0/puBSzS61qgQUMEg/aaeMrymJr/grz0U4s3cbWct5BVQljpphxLvGFvyRzesgKAVNS/pluXFUBdY/JkvL/ygmO/+5q19Zi3PSmAEjpFEby+xE5CMLv5Jb0EFAue2jg5aRCci9aAS+1jSk+mZRCs3TjnHvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355819; c=relaxed/simple;
-	bh=feB9LbGvMEGT7hAG9vyxlgxdq0Dc84HGDx5kb+jf22U=;
+	s=arc-20240116; t=1722355829; c=relaxed/simple;
+	bh=itqwuvuZZeYG6jEYho+F45xCOmyPapLBLGQZAS5m1Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CH8W2M6+OFefHWYfwPwC8wZmpLbcCm/LNW3I6EP0osg7LXvfNKCNT0dLwFb/hmbnhlQjcRpPy9zRaYXupeLbRjhc0N3n1qe3tQbWMW1SiHY6SS+lzfXxOyWd6vBPNJy0OY2R/R7N2P7kjXBx3J23DdB+HWIgq4SACIMGToGv4Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNDUQS9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3ABC32782;
-	Tue, 30 Jul 2024 16:10:18 +0000 (UTC)
+	 MIME-Version; b=IbRKOQiSqBuam7+xKg3ApuCsZc91bkNVBntbyghMjiWdezP/f49xfdrra1BJTg1jC90yMIG0cc39wtUgfARuY6gIy8nzhwgB/EVbIfCRxH2n6W8eAA5AR+EkFQhmLdMLn+PuGTYJM33MkkYE40dDUQaSLTL7VNbO/3gZF1bh2jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rus7w9cD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD6AC32782;
+	Tue, 30 Jul 2024 16:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355819;
-	bh=feB9LbGvMEGT7hAG9vyxlgxdq0Dc84HGDx5kb+jf22U=;
+	s=korg; t=1722355829;
+	bh=itqwuvuZZeYG6jEYho+F45xCOmyPapLBLGQZAS5m1Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HNDUQS9gKP+XIMTY9rJaZ7KE0qk374q0S2fSEvZMQWPhzy5OQMCBBNdrI0gQUEXNe
-	 9sdpfpQg/Ul7jTqzTJgVvTRkBxcaagschMAM89S5NDgpNne24xSlGMyU5SNwaZWxu6
-	 Y+0L1aPXizQ2iCs2fa9oFcYC8kJ7IEs80pQrMJ1M=
+	b=rus7w9cD2qFi1qp44THQdo1CinNbyeKHf5MKM5TERmM7hK1rT6g/8MjwuNUvmf52Z
+	 0iFa8c516N8zY+pT+Q1aE8Vh1IkXmD5EdJLwCNSoYgE55lLLUAtbeopVsJmxmtT4zo
+	 TpM6CaZ22vWUEyEVxPs3QJB+G/fukAaJw7JBwDbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Van Patten <timvp@google.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/440] drm/amdgpu: Remove GC HW IP 9.3.0 from noretry=1
-Date: Tue, 30 Jul 2024 17:46:06 +0200
-Message-ID: <20240730151621.077656766@linuxfoundation.org>
+Subject: [PATCH 6.1 134/440] drm/panel: boe-tv101wum-nl6: If prepare fails, disable GPIO before regulators
+Date: Tue, 30 Jul 2024 17:46:07 +0200
+Message-ID: <20240730151621.117125079@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,39 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tim Van Patten <timvp@google.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 1446226d32a45bb7c4f63195a59be8c08defe658 ]
+[ Upstream commit 587c48f622374e5d47b1d515c6006a4df4dee882 ]
 
-The following commit updated gmc->noretry from 0 to 1 for GC HW IP
-9.3.0:
+The enable GPIO should clearly be set low before turning off
+regulators. That matches both the inverse order that things were
+enabled and also the order in unprepare().
 
-    commit 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
-
-This causes the device to hang when a page fault occurs, until the
-device is rebooted. Instead, revert back to gmc->noretry=0 so the device
-is still responsive.
-
-Fixes: 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
-Signed-off-by: Tim Van Patten <timvp@google.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a869b9db7adf ("drm/panel: support for boe tv101wum-nl6 wuxga dsi video mode panel")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240517143643.2.Ieac346cd0f1606948ba39ceea06b55359fe972b6@changeid
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.2.Ieac346cd0f1606948ba39ceea06b55359fe972b6@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index ea0fb079f942a..fd98d2508a22a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -583,7 +583,6 @@ void amdgpu_gmc_noretry_set(struct amdgpu_device *adev)
- 	struct amdgpu_gmc *gmc = &adev->gmc;
- 	uint32_t gc_ver = adev->ip_versions[GC_HWIP][0];
- 	bool noretry_default = (gc_ver == IP_VERSION(9, 0, 1) ||
--				gc_ver == IP_VERSION(9, 3, 0) ||
- 				gc_ver == IP_VERSION(9, 4, 0) ||
- 				gc_ver == IP_VERSION(9, 4, 1) ||
- 				gc_ver == IP_VERSION(9, 4, 2) ||
+diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+index 1c008bd9102ff..b26c4a09d0912 100644
+--- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
++++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+@@ -1292,13 +1292,13 @@ static int boe_panel_prepare(struct drm_panel *panel)
+ 	return 0;
+ 
+ poweroff:
++	gpiod_set_value(boe->enable_gpio, 0);
+ 	regulator_disable(boe->avee);
+ poweroffavdd:
+ 	regulator_disable(boe->avdd);
+ poweroff1v8:
+ 	usleep_range(5000, 7000);
+ 	regulator_disable(boe->pp1800);
+-	gpiod_set_value(boe->enable_gpio, 0);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
