@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F13941860
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5DB941B6A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79C0E282AAE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B64B7B28515
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0D3184556;
-	Tue, 30 Jul 2024 16:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA33F188018;
+	Tue, 30 Jul 2024 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jdw05GgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KXpFnuP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F411078F;
-	Tue, 30 Jul 2024 16:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694CD155CB3;
+	Tue, 30 Jul 2024 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356455; cv=none; b=I1ej3KzdEnXt0twCYjhcnE8Wjx6Fd1cxtgvSKCaHJxZVEKz7yIBXRGohImM6V0mt9sq2VZcft3WtDv/HT5AXg80fGHudiX8YWcwZ7l6EloSyCNtxUlTOlsw6quOSqSHtogKt66nqKwNPAuLtWpT4wP838KVdeb2rGQapM8PWX4Q=
+	t=1722358034; cv=none; b=oYTouSHP6hbxcn+600KaPWeFlHZaWYz5/TpQmJKMOMGvHRK/1vUKVbkJRZc0zTYD68Ds+iyOGGzdfDy876c8k/oyT57UUzt+MscO8pcEkO7CU+3yapmAelNHEBGE19hIaoTB3rpwkLq8iz9RBlWneO78HX7cdPyTTCIf4hwxpFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356455; c=relaxed/simple;
-	bh=sQTW3zME5rvavWF+szgR/ihuleU8q4Jzw17eBz4T6t4=;
+	s=arc-20240116; t=1722358034; c=relaxed/simple;
+	bh=+Of3zykkiT7ouIYD2u2SRrf/0jxOMex287SuvQ4MDck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdAQWGmJfom5wxZmMARzp1SLQXwCeKytSgCilqQ6ceMqLmuoZOF7fi8Bv722gx3vm4IjPkL8GVGLIv8JRjRAEb2w6z7FiZaGxWapyeFxw46Kproo1uLEHWVF3i8Vn0cIUt994Vt5TYDt0dv0E+62ZEQhCcQXEL8ZLEpiQ8IBuQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jdw05GgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52412C32782;
-	Tue, 30 Jul 2024 16:20:55 +0000 (UTC)
+	 MIME-Version; b=aBJtXhIEemtga3782DcjkTX4yV3a5W2fxZNhQetROkjYvsGKfhtRl/CsMJ+PpufBuSRF4iHTsrQ4AgGb1z4ng++3LCfYPIsjiOZEt5FCsNXC2sTAJzVyFCNStfSA04RP99Qglkii3c2LORRNiEDyHwc8Wpoe6TufRZSjvMCsDiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KXpFnuP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E55C4AF0C;
+	Tue, 30 Jul 2024 16:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356455;
-	bh=sQTW3zME5rvavWF+szgR/ihuleU8q4Jzw17eBz4T6t4=;
+	s=korg; t=1722358034;
+	bh=+Of3zykkiT7ouIYD2u2SRrf/0jxOMex287SuvQ4MDck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jdw05GgWvIeEVHPpD18TlR0L9ubHBqDWPDlqlprkZzJQgwqFMNvAduvl68wKVRqYJ
-	 XLqUIuDYkOGS58w4vN5rkggkcHSbbiXwBbiy6eSlMKOtzuopLPETqNGke68fVPMw5B
-	 2+4zaIw2MaPcGNbkWeTOPH6bdhaWUMJpS24qyxhU=
+	b=2KXpFnuPUlDpR9tMb7bLKgy6HygjzJGxrf5AE2Hrd//7GXu9COmmlTGRJwY23G4Aa
+	 ntlLgaTgwL1axgHY5mfRn83QGag6709bGqn3dx+HYwIiL/Qf7GZUGxaIj/okWevKfd
+	 u1pq9jwwS8y3ZJStGCIoAKOXM7hANl6h78DD4wBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/440] powerpc/kexec_file: fix cpus node update to FDT
+Subject: [PATCH 6.6 319/568] fs/ntfs3: Merge synonym COMPRESSION_UNIT and NTFS_LZNT_CUNIT
 Date: Tue, 30 Jul 2024 17:47:06 +0200
-Message-ID: <20240730151623.408097627@linuxfoundation.org>
+Message-ID: <20240730151652.345272563@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 932bed41217059638c78a75411b7893b121d2162 ]
+[ Upstream commit 487f8d482a7e51a640b8f955a398f906a4f83951 ]
 
-While updating the cpus node, commit 40c753993e3a ("powerpc/kexec_file:
- Use current CPU info while setting up FDT") first deletes all subnodes
-under the /cpus node. However, while adding sub-nodes back, it missed
-adding cpus subnodes whose device_type != "cpu", such as l2-cache*,
-l3-cache*, ibm,powerpc-cpu-features.
+COMPRESSION_UNIT and NTFS_LZNT_CUNIT mean the same thing
+(1u<<NTFS_LZNT_CUNIT) determines the size for compression (in clusters).
 
-Fix this by only deleting cpus sub-nodes of device_type == "cpus" and
-then adding all available nodes with device_type == "cpu".
+COMPRESS_MAX_CLUSTER is not used in the code.
 
-Fixes: 40c753993e3a ("powerpc/kexec_file: Use current CPU info while setting up FDT")
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240510102235.2269496-3-sourabhjain@linux.ibm.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Stable-dep-of: 25610ff98d4a ("fs/ntfs3: Fix transform resident to nonresident for compressed files")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/core_64.c | 53 +++++++++++++++++++++++++-----------
- 1 file changed, 37 insertions(+), 16 deletions(-)
+ fs/ntfs3/attrib.c  | 2 +-
+ fs/ntfs3/frecord.c | 2 +-
+ fs/ntfs3/fslog.c   | 2 +-
+ fs/ntfs3/inode.c   | 2 +-
+ fs/ntfs3/ntfs.h    | 3 ---
+ 5 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 8a33de499316e..653b3c8c6a530 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -468,9 +468,15 @@ static int add_node_props(void *fdt, int node_offset, const struct device_node *
-  * @fdt:              Flattened device tree of the kernel.
-  *
-  * Returns 0 on success, negative errno on error.
-+ *
-+ * Note: expecting no subnodes under /cpus/<node> with device_type == "cpu".
-+ * If this changes, update this function to include them.
-  */
- int update_cpus_node(void *fdt)
- {
-+	int prev_node_offset;
-+	const char *device_type;
-+	const struct fdt_property *prop;
- 	struct device_node *cpus_node, *dn;
- 	int cpus_offset, cpus_subnode_offset, ret = 0;
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 7aadf50109994..47d388699f5f0 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -254,7 +254,7 @@ int attr_make_nonresident(struct ntfs_inode *ni, struct ATTRIB *attr,
  
-@@ -481,30 +487,44 @@ int update_cpus_node(void *fdt)
- 		return cpus_offset;
+ 	align = sbi->cluster_size;
+ 	if (is_attr_compressed(attr))
+-		align <<= COMPRESSION_UNIT;
++		align <<= NTFS_LZNT_CUNIT;
+ 	len = (rsize + align - 1) >> sbi->cluster_bits;
+ 
+ 	run_init(run);
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 22fe7f58ad638..424865dfca74b 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1501,7 +1501,7 @@ int ni_insert_nonresident(struct ntfs_inode *ni, enum ATTR_TYPE type,
+ 
+ 	if (is_ext) {
+ 		if (flags & ATTR_FLAG_COMPRESSED)
+-			attr->nres.c_unit = COMPRESSION_UNIT;
++			attr->nres.c_unit = NTFS_LZNT_CUNIT;
+ 		attr->nres.total_size = attr->nres.alloc_size;
  	}
  
--	if (cpus_offset > 0) {
--		ret = fdt_del_node(fdt, cpus_offset);
-+	prev_node_offset = cpus_offset;
-+	/* Delete sub-nodes of /cpus node with device_type == "cpu" */
-+	for (cpus_subnode_offset = fdt_first_subnode(fdt, cpus_offset); cpus_subnode_offset >= 0;) {
-+		/* Ignore nodes that do not have a device_type property or device_type != "cpu" */
-+		prop = fdt_get_property(fdt, cpus_subnode_offset, "device_type", NULL);
-+		if (!prop || strcmp(prop->data, "cpu")) {
-+			prev_node_offset = cpus_subnode_offset;
-+			goto next_node;
-+		}
-+
-+		ret = fdt_del_node(fdt, cpus_subnode_offset);
- 		if (ret < 0) {
--			pr_err("Error deleting /cpus node: %s\n", fdt_strerror(ret));
--			return -EINVAL;
-+			pr_err("Failed to delete a cpus sub-node: %s\n", fdt_strerror(ret));
-+			return ret;
- 		}
-+next_node:
-+		if (prev_node_offset == cpus_offset)
-+			cpus_subnode_offset = fdt_first_subnode(fdt, cpus_offset);
-+		else
-+			cpus_subnode_offset = fdt_next_subnode(fdt, prev_node_offset);
- 	}
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index c14ab9d5cfc70..75b594769b367 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -2996,7 +2996,7 @@ static struct ATTRIB *attr_create_nonres_log(struct ntfs_sb_info *sbi,
+ 	if (is_ext) {
+ 		attr->name_off = SIZEOF_NONRESIDENT_EX_LE;
+ 		if (is_attr_compressed(attr))
+-			attr->nres.c_unit = COMPRESSION_UNIT;
++			attr->nres.c_unit = NTFS_LZNT_CUNIT;
  
--	/* Add cpus node to fdt */
--	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"), "cpus");
--	if (cpus_offset < 0) {
--		pr_err("Error creating /cpus node: %s\n", fdt_strerror(cpus_offset));
-+	cpus_node = of_find_node_by_path("/cpus");
-+	/* Fail here to avoid kexec/kdump kernel boot hung */
-+	if (!cpus_node) {
-+		pr_err("No /cpus node found\n");
- 		return -EINVAL;
- 	}
+ 		attr->nres.run_off =
+ 			cpu_to_le16(SIZEOF_NONRESIDENT_EX + name_size);
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 6af705ccba65a..fab86300eb8a2 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1498,7 +1498,7 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+ 			attr->size = cpu_to_le32(SIZEOF_NONRESIDENT_EX + 8);
+ 			attr->name_off = SIZEOF_NONRESIDENT_EX_LE;
+ 			attr->flags = ATTR_FLAG_COMPRESSED;
+-			attr->nres.c_unit = COMPRESSION_UNIT;
++			attr->nres.c_unit = NTFS_LZNT_CUNIT;
+ 			asize = SIZEOF_NONRESIDENT_EX + 8;
+ 		} else {
+ 			attr->size = cpu_to_le32(SIZEOF_NONRESIDENT + 8);
+diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
+index b70288cc5f6fa..5bd69049227bf 100644
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -82,9 +82,6 @@ typedef u32 CLST;
+ #define RESIDENT_LCN   ((CLST)-2)
+ #define COMPRESSED_LCN ((CLST)-3)
  
--	/* Add cpus node properties */
--	cpus_node = of_find_node_by_path("/cpus");
--	ret = add_node_props(fdt, cpus_offset, cpus_node);
--	of_node_put(cpus_node);
--	if (ret < 0)
--		return ret;
-+	/* Add all /cpus sub-nodes of device_type == "cpu" to FDT */
-+	for_each_child_of_node(cpus_node, dn) {
-+		/* Ignore device nodes that do not have a device_type property
-+		 * or device_type != "cpu".
-+		 */
-+		device_type = of_get_property(dn, "device_type", NULL);
-+		if (!device_type || strcmp(device_type, "cpu"))
-+			continue;
- 
--	/* Loop through all subnodes of cpus and add them to fdt */
--	for_each_node_by_type(dn, "cpu") {
- 		cpus_subnode_offset = fdt_add_subnode(fdt, cpus_offset, dn->full_name);
- 		if (cpus_subnode_offset < 0) {
- 			pr_err("Unable to add %s subnode: %s\n", dn->full_name,
-@@ -518,6 +538,7 @@ int update_cpus_node(void *fdt)
- 			goto out;
- 	}
- out:
-+	of_node_put(cpus_node);
- 	of_node_put(dn);
- 	return ret;
- }
+-#define COMPRESSION_UNIT     4
+-#define COMPRESS_MAX_CLUSTER 0x1000
+-
+ enum RECORD_NUM {
+ 	MFT_REC_MFT		= 0,
+ 	MFT_REC_MIRR		= 1,
 -- 
 2.43.0
 
