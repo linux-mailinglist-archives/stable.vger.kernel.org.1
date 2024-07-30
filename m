@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EC0941A29
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8449B941E14
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AB671C23B29
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B63F91C22D29
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FCD183CDB;
-	Tue, 30 Jul 2024 16:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246FC1A76B6;
+	Tue, 30 Jul 2024 17:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUIQRMz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfVHXT5N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650FB1A619B;
-	Tue, 30 Jul 2024 16:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67A81A76AA;
+	Tue, 30 Jul 2024 17:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357649; cv=none; b=iWpv2Q3cJCh2JgHosxMtXyMj2t8/HHn3TkHDFtSfcs5dPIMyMDtAZMO2E+QX9eQAbIZulqxtu2bhOZQo8Jug5/G1luZULQEE7WJXj7Hn4wBgrv2qZoILV3R8+rWAwEUFEzdHaLP/loPSkE8IeiFhBZsCnrij4u6GAEV9VQhayuU=
+	t=1722360339; cv=none; b=XUXOznxRa48d6y8YdF94s85+8jkRVPgy8OsI7CcOtF4UorYUxzfarLYC+RI7ncgzifkuU8tLppEYVqk834ZAPhWiauEQz+dBRva/0SEamIQTeB7oQIzJi9WkDP9xr7hlubIOmJTIVfWHVP93CTKEMZukxUO4LTpy2lHzDLGAQJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357649; c=relaxed/simple;
-	bh=7B8O22AoniCIRXftuFI/RcWHrMwnOODh00RqIvLhnb4=;
+	s=arc-20240116; t=1722360339; c=relaxed/simple;
+	bh=z52mnZLsxMBtEHm00sIdRq5CEeXpxv0kURuvUczYnAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsxjFGJHZ31LMamqwokpPZi21FppBhopEoQMh0C6onPLpq2ZyGEMFpDpFTizjqCDd1tuXMaEBhRNVyxZXzDiwUIaIFkA2fXMTqehG1Dlwsn1zroTw0GM6x7jVkXAgKwdnlL1Pj6qWWGbwptQeqWLeolpm8Qp9d1kTQpUWlWrQXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUIQRMz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0669C32782;
-	Tue, 30 Jul 2024 16:40:48 +0000 (UTC)
+	 MIME-Version; b=flLSMMm2kL/EcuIiI6z63d5tZGNsWguoGKoKYs8weLbweUxSZhwu58e191rZMOz1/67aELng8d0kZEC/MO48xUZVHlZzwjIibvMp5XC1eUo4cijMQ23m1zapu4DlF1+JMUacIpVZoEbowpL/XHpE+BsMxTnYqwbVl0IMVrE/i54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfVHXT5N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A53BC32782;
+	Tue, 30 Jul 2024 17:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357649;
-	bh=7B8O22AoniCIRXftuFI/RcWHrMwnOODh00RqIvLhnb4=;
+	s=korg; t=1722360339;
+	bh=z52mnZLsxMBtEHm00sIdRq5CEeXpxv0kURuvUczYnAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUIQRMz+SBGRjqnV2/wPkKnOf/sDuLSd2yi/z7LAzWCJfbBzAdabd7iBmYPG52FB5
-	 v/GoLxsdoEAft5dAlivH5f/PeNyDU2Dy8eugpP8HDjzYv6GnEiyxBaAZJPhnVBaiQI
-	 iHJ5GbfFJCtgTjNY2PnD9vGyPKBPOXdm5ZORYZUE=
+	b=UfVHXT5NGdqSOv0ygzeYUNFbmZOePynN8mVkN97aKzUHA89ZKL9vdZxc88FGcPGxT
+	 KkW9GKVyM+5fypYB9Ev7v8QjH/Y/CxlWd8WTmqMh9wB9pE1/saUr8YHTFtqzlP8tiQ
+	 mHuuH8BCZIEgGnceOREjP+9+LCbkqVH+g61pDZEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 312/440] jbd2: make jbd2_journal_get_max_txn_bufs() internal
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.10 669/809] ASoC: amd: yc: Support mic on Lenovo Thinkpad E16 Gen 2
 Date: Tue, 30 Jul 2024 17:49:05 +0200
-Message-ID: <20240730151628.010002584@linuxfoundation.org>
+Message-ID: <20240730151751.327388933@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 4aa99c71e42ad60178c1154ec24e3df9c684fb67 upstream.
+commit 1d9ce4440414c92acb17eece3218fe5c92b141e3 upstream.
 
-There's no reason to have jbd2_journal_get_max_txn_bufs() public
-function. Currently all users are internal and can use
-journal->j_max_transaction_buffers instead. This saves some unnecessary
-recomputations of the limit as a bonus which becomes important as this
-function gets more complex in the following patch.
+Lenovo Thinkpad E16 Gen 2 AMD model (model 21M5) needs a corresponding
+quirk entry for making the internal mic working.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20240624170127.3253-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1228269
+Cc: stable@vger.kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20240725065442.9293-1-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/commit.c     |    2 +-
- fs/jbd2/journal.c    |    5 +++++
- include/linux/jbd2.h |    5 -----
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -801,7 +801,7 @@ start_journal_io:
- 		if (first_block < journal->j_tail)
- 			freed += journal->j_last - journal->j_first;
- 		/* Update tail only if we free significant amount of space */
--		if (freed < jbd2_journal_get_max_txn_bufs(journal))
-+		if (freed < journal->j_max_transaction_buffers)
- 			update_tail = 0;
- 	}
- 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1532,6 +1532,11 @@ static void journal_fail_superblock(jour
- 	journal->j_sb_buffer = NULL;
- }
- 
-+static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
-+{
-+	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
-+}
-+
- /*
-  * Given a journal_t structure, initialise the various fields for
-  * startup of a new journaling session.  We use this both when creating
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1665,11 +1665,6 @@ int jbd2_wait_inode_data(journal_t *jour
- int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
- int jbd2_fc_release_bufs(journal_t *journal);
- 
--static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
--{
--	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
--}
--
- /*
-  * is_journal_abort
-  *
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -224,6 +224,13 @@ static const struct dmi_system_id yc_acp
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21M5"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
+ 		}
+ 	},
 
 
 
