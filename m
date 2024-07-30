@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B27941E83
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF58F941D35
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6F01F24F2B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89EBC28B3DA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5D41A76C9;
-	Tue, 30 Jul 2024 17:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451F81A76BA;
+	Tue, 30 Jul 2024 17:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KSugPHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjk3fUSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485F21A76C2;
-	Tue, 30 Jul 2024 17:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031071A76A2;
+	Tue, 30 Jul 2024 17:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360586; cv=none; b=WxiLSQcM1ngd2RrqLT+pr6E9rJK5cx9MUx9KS5hJUjxP0NwFva2sWrVm0kJiT2lSkubfFbeG+4NWQLW5N1PWnkMDqH8uuZBA2HhqBtQOBt7qdGC62A5v01VMuo96Gxlp+lqcIdPV2uMvX+HHUzNXzRXvC6iazNtl69nqQR19umg=
+	t=1722359658; cv=none; b=YUkq2Qe3zlzB2mE1Iy7DrBFwi8E1XA90Tx61usecnyGh3aKaxb2tsXRbkLw32AKxz1lorjz+yGGIv2KqBW2AIrpczZ9PHefDgVk5TxifwpHBgO55dNBGO6HIwVn/K1EuU7G4Oo6TcWV6tGi7cbX4F8Kb8oU645qrypA6CYsuFog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360586; c=relaxed/simple;
-	bh=RuMIp+c8pcrpxJf2L9HZPmUlpKJGmwHiO338x2Q94Nk=;
+	s=arc-20240116; t=1722359658; c=relaxed/simple;
+	bh=qirtiAbOtOn2glX0HEhrrXETy/mlVVFiM4Rrv/qFW4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofFl1lNe0sZnE37/RtAsVznccO0zSzpduvrBDKKld9LrH0E1wxhFWnM8ZvjAL7hr/JoKaGW6dnm/GKg0/51MjJWzNgmjiITfIBJf7xiNEqcqr/A5iAhRWKxdwT6OvasVvb51gCdHeBuymAA72wioBWjOt+3MFdMlPRvQcQOwlyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KSugPHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA039C4AF0E;
-	Tue, 30 Jul 2024 17:29:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D4eX0NtxZanRkGmyY65jT9l4vTI3CNvUfFThoEye+udH9Hw9qTiZxHoOfMI7+S/d+yRNw1Os9DSlmQHt1qlzYse+Bsce14mTqdPr8XyuJNXlwROigKgm9UR1DBlmTLKa+VWhgMma03d+46Gx7EsB7qkLyFGkMwEGi0NgGUwWvEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjk3fUSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66431C32782;
+	Tue, 30 Jul 2024 17:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360586;
-	bh=RuMIp+c8pcrpxJf2L9HZPmUlpKJGmwHiO338x2Q94Nk=;
+	s=korg; t=1722359657;
+	bh=qirtiAbOtOn2glX0HEhrrXETy/mlVVFiM4Rrv/qFW4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KSugPHPJ/1o03Hl6WVntOk8p9jWimDOCsFKIiLceA1vmrvpwtbfqLV6bKzB05wwx
-	 2yqMQzHCGWq4tIF1GsWGnxijpjx9r8lwiiZjGvYeh/cU1OdcL5oMyDjEv022SfMOKd
-	 M91FLJFgI7TR/tyf7hl8nVpV1cHAxkc3UUeNy3IM=
+	b=gjk3fUSqEKR9CjSgFOj/YksbTCSjy4yhXmxanI8QjPPsY/dqcXP4Lxr1p1B7TXcd1
+	 qt73r4rOy13nKrx/RDq9e5oVGQnWnnsvkuhbawOXs17z6kggK3cHOwu1r6YBASNLEK
+	 tYQDOUCWw8RFE1hQCi53x8WZmW5qwdo/oMZ/Dmhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 744/809] phy: zynqmp: Enable reference clock correctly
+	Keith Busch <kbusch@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.6 513/568] PCI/DPC: Fix use-after-free on concurrent DPC and hot-removal
 Date: Tue, 30 Jul 2024 17:50:20 +0200
-Message-ID: <20240730151754.341720248@linuxfoundation.org>
+Message-ID: <20240730151700.073384565@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 687d6bccb28238fcfa65f7c1badfdfeac498c428 ]
+commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
 
-Lanes can use other lanes' reference clocks, as determined by refclk.
-Use refclk to determine the clock to enable/disable instead of always
-using the lane's own reference clock. This ensures the clock selected in
-xpsgtr_configure_pll is the one enabled.
+Keith reports a use-after-free when a DPC event occurs concurrently to
+hot-removal of the same portion of the hierarchy:
 
-For the other half of the equation, always program REF_CLK_SEL even when
-we are selecting the lane's own clock. This ensures that Linux's idea of
-the reference clock matches the hardware. We use the "local" clock mux
-for this instead of going through the ref clock network.
+The dpc_handler() awaits readiness of the secondary bus below the
+Downstream Port where the DPC event occurred.  To do so, it polls the
+config space of the first child device on the secondary bus.  If that
+child device is concurrently removed, accesses to its struct pci_dev
+cause the kernel to oops.
 
-Fixes: 25d700833513 ("phy: xilinx: phy-zynqmp: dynamic clock support for power-save")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://lore.kernel.org/r/20240628205540.3098010-2-sean.anderson@linux.dev
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
+reference on the child device.  Before v6.3, the function was only
+called on resume from system sleep or on runtime resume.  Holding a
+reference wasn't necessary back then because the pciehp IRQ thread
+could never run concurrently.  (On resume from system sleep, IRQs are
+not enabled until after the resume_noirq phase.  And runtime resume is
+always awaited before a PCI device is removed.)
+
+However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
+called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
+of secondary bus after reset"), which introduced that, failed to
+appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
+reference on the child device because dpc_handler() and pciehp may
+indeed run concurrently.  The commit was backported to v5.10+ stable
+kernels, so that's the oldest one affected.
+
+Add the missing reference acquisition.
+
+Abridged stack trace:
+
+  BUG: unable to handle page fault for address: 00000000091400c0
+  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
+  RIP: pci_bus_read_config_dword+0x17/0x50
+  pci_dev_wait()
+  pci_bridge_wait_for_secondary_bus()
+  dpc_reset_link()
+  pcie_do_recovery()
+  dpc_handler()
+
+Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
+Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
+Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
+Reported-by: Keith Busch <kbusch@kernel.org>
+Tested-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/xilinx/phy-zynqmp.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/pci/pci.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/xilinx/phy-zynqmp.c b/drivers/phy/xilinx/phy-zynqmp.c
-index dc8319bda43d7..f2bff7f25f05a 100644
---- a/drivers/phy/xilinx/phy-zynqmp.c
-+++ b/drivers/phy/xilinx/phy-zynqmp.c
-@@ -80,7 +80,8 @@
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5123,7 +5123,7 @@ static int pci_bus_max_d3cold_delay(cons
+  */
+ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type)
+ {
+-	struct pci_dev *child;
++	struct pci_dev *child __free(pci_dev_put) = NULL;
+ 	int delay;
  
- /* Reference clock selection parameters */
- #define L0_Ln_REF_CLK_SEL(n)		(0x2860 + (n) * 4)
--#define L0_REF_CLK_SEL_MASK		0x8f
-+#define L0_REF_CLK_LCL_SEL		BIT(7)
-+#define L0_REF_CLK_SEL_MASK		0x9f
+ 	if (pci_dev_is_disconnected(dev))
+@@ -5152,8 +5152,8 @@ int pci_bridge_wait_for_secondary_bus(st
+ 		return 0;
+ 	}
  
- /* Calibration digital logic parameters */
- #define L3_TM_CALIB_DIG19		0xec4c
-@@ -349,11 +350,12 @@ static void xpsgtr_configure_pll(struct xpsgtr_phy *gtr_phy)
- 		       PLL_FREQ_MASK, ssc->pll_ref_clk);
+-	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
+-				 bus_list);
++	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
++					     struct pci_dev, bus_list));
+ 	up_read(&pci_bus_sem);
  
- 	/* Enable lane clock sharing, if required */
--	if (gtr_phy->refclk != gtr_phy->lane) {
--		/* Lane3 Ref Clock Selection Register */
-+	if (gtr_phy->refclk == gtr_phy->lane)
-+		xpsgtr_clr_set(gtr_phy->dev, L0_Ln_REF_CLK_SEL(gtr_phy->lane),
-+			       L0_REF_CLK_SEL_MASK, L0_REF_CLK_LCL_SEL);
-+	else
- 		xpsgtr_clr_set(gtr_phy->dev, L0_Ln_REF_CLK_SEL(gtr_phy->lane),
- 			       L0_REF_CLK_SEL_MASK, 1 << gtr_phy->refclk);
--	}
- 
- 	/* SSC step size [7:0] */
- 	xpsgtr_clr_set_phy(gtr_phy, L0_PLL_SS_STEP_SIZE_0_LSB,
-@@ -573,7 +575,7 @@ static int xpsgtr_phy_init(struct phy *phy)
- 	mutex_lock(&gtr_dev->gtr_mutex);
- 
- 	/* Configure and enable the clock when peripheral phy_init call */
--	if (clk_prepare_enable(gtr_dev->clk[gtr_phy->lane]))
-+	if (clk_prepare_enable(gtr_dev->clk[gtr_phy->refclk]))
- 		goto out;
- 
- 	/* Skip initialization if not required. */
-@@ -625,7 +627,7 @@ static int xpsgtr_phy_exit(struct phy *phy)
- 	gtr_phy->skip_phy_init = false;
- 
- 	/* Ensure that disable clock only, which configure for lane */
--	clk_disable_unprepare(gtr_dev->clk[gtr_phy->lane]);
-+	clk_disable_unprepare(gtr_dev->clk[gtr_phy->refclk]);
- 
- 	return 0;
- }
--- 
-2.43.0
-
+ 	/*
 
 
 
