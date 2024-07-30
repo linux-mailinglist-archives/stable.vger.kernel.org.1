@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-62968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B0394167B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC64A941630
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C2711C2331B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821E01F25540
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AE01BE87D;
-	Tue, 30 Jul 2024 16:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF88F1BA862;
+	Tue, 30 Jul 2024 15:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xICogF45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOeaSXGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4691C0DF1;
-	Tue, 30 Jul 2024 16:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF211B583F;
+	Tue, 30 Jul 2024 15:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355229; cv=none; b=JPgJwrt+Wi1zFeApjtoi2/c6tYSv59V/jjhfGizqodaqDggRdQ8mNqfQ3Reoq2AusW/F2b/IwuKLQgiLlGEftOJpNsKTjWrgIIbmgljtFihFvhvvQFgPpjfhpFkxxvKZ7E6zKK9Dn2cwPLDUclL+dFWGwVfX1//FC0XpWFH4mkE=
+	t=1722355031; cv=none; b=dcm92H0OC54m8q9/p39rsAmlldgiMAWcWqC0Qj8uSTRV1WoNQFPgQLBUFxclfeB2VADvdqrqi6SoidcrpVT0P37Yacgii98h3jO0v3A4rpWTU8OHOo7XD/fuCDjVk/Q1H4NxuZUY2dFA3QA4b1INTiN31nyeZPNMiu6r91HY4wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355229; c=relaxed/simple;
-	bh=VycRwp4Sp6uV3CVsFhUQ06NrfVDBIuYr8PZkc1kzWUA=;
+	s=arc-20240116; t=1722355031; c=relaxed/simple;
+	bh=PnjnShrL1rDisI8QQ+dVD9CPN0kaPXW7zKObTk6I7zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLkUKDQgywaM6yY8Esw9cwStfJNueHUksAO8wleaEa6LYP+l6JqxoTpvMpUt+tsF9X/BlrdZVilNSZ+kQWqpfIKVbXE/NZMXdlBe6NnlM6whsHS0Ks/m/1G+9xVTEGyMNmU4fbMA/YAMPBMhMTiG4T7/hM3G8fi290OtmgyksJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xICogF45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B72C4AF0E;
-	Tue, 30 Jul 2024 16:00:28 +0000 (UTC)
+	 MIME-Version; b=IGRxhZh2sFmzIRrPrm/p3vTNFfEERZiMixTzQiggMsL4Ur+vKYWzZOUk4nCwoPDmOaExeo1nTYguFyv3DffX8hDjoxzsIbogI//HDkKsotG9FJUT/p/XW0DpUkHUNa1IBH9oA0q6Y1W4+PfZPXCbVHKsmrJsKbkPXQT3VsOHtms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOeaSXGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33669C4AF0F;
+	Tue, 30 Jul 2024 15:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355228;
-	bh=VycRwp4Sp6uV3CVsFhUQ06NrfVDBIuYr8PZkc1kzWUA=;
+	s=korg; t=1722355031;
+	bh=PnjnShrL1rDisI8QQ+dVD9CPN0kaPXW7zKObTk6I7zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xICogF45PyeJmAen6lFFW/JmuhdQXLm8Imq3KGciPzVAldL4Opmm+2hZBdor6+jJ3
-	 3zhr4Lfu7eiO91CQW9ChlLNHH5SLwu0qk8UbuZ4X8jfJvFYBeAe5Tmd/T5Ql9BTWUA
-	 D8ptWPJPNjK+OtrWf41drCBE02K2+B0GrDkd1oPI=
+	b=UOeaSXGDzLTD41ezromRZllEUm4znDIRzBcuIfwaVwF6vjwIjA/3lkZ0vNOrbdlKJ
+	 DS/GvARx8E7KE3MsQ7TZGbyXqIgyqLffMyoWEHQPtLYHsQXEwZ+kvkLThy52wk5TRl
+	 XGVZ3bQswNy/vWzObdKV9j5R5qtU+wcp0WL5gTR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 012/809] dm: Call dm_revalidate_zones() after setting the queue limits
-Date: Tue, 30 Jul 2024 17:38:08 +0200
-Message-ID: <20240730151725.144063073@linuxfoundation.org>
+Subject: [PATCH 6.10 013/809] io_uring: Fix probe of disabled operations
+Date: Tue, 30 Jul 2024 17:38:09 +0200
+Message-ID: <20240730151725.182900251@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,140 +66,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit 7f91ccd8a608dbe39b97a6e43d635378d493f77e ]
+[ Upstream commit 3e05b222382ec67dce7358d50b6006e91d028d8b ]
 
-dm_revalidate_zones() is called from dm_set_zone_restrictions() when the
-mapped device queue limits are not yet set. However,
-dm_revalidate_zones() calls blk_revalidate_disk_zones() and this
-function consults and modifies the mapped device queue limits. Thus,
-currently, blk_revalidate_disk_zones() operates on limits that are not
-yet initialized.
+io_probe checks io_issue_def->not_supported, but we never really set
+that field, as we mark non-supported functions through a specific ->prep
+handler.  This means we end up returning IO_URING_OP_SUPPORTED, even for
+disabled operations.  Fix it by just checking the prep handler itself.
 
-Fix this by moving the call to dm_revalidate_zones() out of
-dm_set_zone_restrictions() and into dm_table_set_restrictions() after
-executing queue_limits_set().
-
-To further cleanup dm_set_zones_restrictions(), the message about the
-type of zone append (native or emulated) is also moved inside
-dm_revalidate_zones().
-
-Fixes: 1c0e720228ad ("dm: use queue_limits_set")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20240611023639.89277-3-dlemoal@kernel.org
+Fixes: 66f4af93da57 ("io_uring: add support for probing opcodes")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://lore.kernel.org/r/20240619020620.5301-2-krisman@suse.de
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c | 15 +++++++++++----
- drivers/md/dm-zone.c  | 25 ++++++++++---------------
- drivers/md/dm.h       |  1 +
- 3 files changed, 22 insertions(+), 19 deletions(-)
+ io_uring/opdef.c    | 8 ++++++++
+ io_uring/opdef.h    | 4 ++--
+ io_uring/register.c | 2 +-
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index b2d5246cff210..2fc847af254de 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -2028,10 +2028,7 @@ int dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
- 	    dm_table_any_dev_attr(t, device_is_not_random, NULL))
- 		blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, q);
+diff --git a/io_uring/opdef.c b/io_uring/opdef.c
+index 2e3b7b16effb3..760006ccc4083 100644
+--- a/io_uring/opdef.c
++++ b/io_uring/opdef.c
+@@ -725,6 +725,14 @@ const char *io_uring_get_opcode(u8 opcode)
+ 	return "INVALID";
+ }
  
--	/*
--	 * For a zoned target, setup the zones related queue attributes
--	 * and resources necessary for zone append emulation if necessary.
--	 */
-+	/* For a zoned table, setup the zone related queue attributes. */
- 	if (IS_ENABLED(CONFIG_BLK_DEV_ZONED) && limits->zoned) {
- 		r = dm_set_zones_restrictions(t, q, limits);
- 		if (r)
-@@ -2042,6 +2039,16 @@ int dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
- 	if (r)
- 		return r;
- 
-+	/*
-+	 * Now that the limits are set, check the zones mapped by the table
-+	 * and setup the resources for zone append emulation if necessary.
-+	 */
-+	if (IS_ENABLED(CONFIG_BLK_DEV_ZONED) && limits->zoned) {
-+		r = dm_revalidate_zones(t, q);
-+		if (r)
-+			return r;
-+	}
++bool io_uring_op_supported(u8 opcode)
++{
++	if (opcode < IORING_OP_LAST &&
++	    io_issue_defs[opcode].prep != io_eopnotsupp_prep)
++		return true;
++	return false;
++}
 +
- 	dm_update_crypto_profile(q, t);
- 
- 	/*
-diff --git a/drivers/md/dm-zone.c b/drivers/md/dm-zone.c
-index 5d66d916730ef..75d0019a0649d 100644
---- a/drivers/md/dm-zone.c
-+++ b/drivers/md/dm-zone.c
-@@ -166,14 +166,22 @@ static int dm_check_zoned_cb(struct blk_zone *zone, unsigned int idx,
-  * blk_revalidate_disk_zones() function here as the mapped device is suspended
-  * (this is called from __bind() context).
-  */
--static int dm_revalidate_zones(struct mapped_device *md, struct dm_table *t)
-+int dm_revalidate_zones(struct dm_table *t, struct request_queue *q)
+ void __init io_uring_optable_init(void)
  {
-+	struct mapped_device *md = t->md;
- 	struct gendisk *disk = md->disk;
- 	int ret;
+ 	int i;
+diff --git a/io_uring/opdef.h b/io_uring/opdef.h
+index 7ee6f5aa90aa3..14456436ff74a 100644
+--- a/io_uring/opdef.h
++++ b/io_uring/opdef.h
+@@ -17,8 +17,6 @@ struct io_issue_def {
+ 	unsigned		poll_exclusive : 1;
+ 	/* op supports buffer selection */
+ 	unsigned		buffer_select : 1;
+-	/* opcode is not supported by this kernel */
+-	unsigned		not_supported : 1;
+ 	/* skip auditing */
+ 	unsigned		audit_skip : 1;
+ 	/* supports ioprio */
+@@ -47,5 +45,7 @@ struct io_cold_def {
+ extern const struct io_issue_def io_issue_defs[];
+ extern const struct io_cold_def io_cold_defs[];
  
-+	if (!get_capacity(disk))
-+		return 0;
++bool io_uring_op_supported(u8 opcode);
 +
- 	/* Revalidate only if something changed. */
--	if (!disk->nr_zones || disk->nr_zones != md->nr_zones)
-+	if (!disk->nr_zones || disk->nr_zones != md->nr_zones) {
-+		DMINFO("%s using %s zone append",
-+		       disk->disk_name,
-+		       queue_emulates_zone_append(q) ? "emulated" : "native");
- 		md->nr_zones = 0;
-+	}
+ void io_uring_optable_init(void);
+ #endif
+diff --git a/io_uring/register.c b/io_uring/register.c
+index c0010a66a6f2c..11517b34cfc8f 100644
+--- a/io_uring/register.c
++++ b/io_uring/register.c
+@@ -113,7 +113,7 @@ static __cold int io_probe(struct io_ring_ctx *ctx, void __user *arg,
  
- 	if (md->nr_zones)
- 		return 0;
-@@ -240,9 +248,6 @@ int dm_set_zones_restrictions(struct dm_table *t, struct request_queue *q,
- 		lim->max_zone_append_sectors = 0;
+ 	for (i = 0; i < nr_args; i++) {
+ 		p->ops[i].op = i;
+-		if (!io_issue_defs[i].not_supported)
++		if (io_uring_op_supported(i))
+ 			p->ops[i].flags = IO_URING_OP_SUPPORTED;
  	}
- 
--	if (!get_capacity(md->disk))
--		return 0;
--
- 	/*
- 	 * Count conventional zones to check that the mapped device will indeed 
- 	 * have sequential write required zones.
-@@ -269,16 +274,6 @@ int dm_set_zones_restrictions(struct dm_table *t, struct request_queue *q,
- 		return 0;
- 	}
- 
--	if (!md->disk->nr_zones) {
--		DMINFO("%s using %s zone append",
--		       md->disk->disk_name,
--		       queue_emulates_zone_append(q) ? "emulated" : "native");
--	}
--
--	ret = dm_revalidate_zones(md, t);
--	if (ret < 0)
--		return ret;
--
- 	if (!static_key_enabled(&zoned_enabled.key))
- 		static_branch_enable(&zoned_enabled);
- 	return 0;
-diff --git a/drivers/md/dm.h b/drivers/md/dm.h
-index 53ef8207fe2c1..c984ecb64b1e8 100644
---- a/drivers/md/dm.h
-+++ b/drivers/md/dm.h
-@@ -103,6 +103,7 @@ int dm_setup_md_queue(struct mapped_device *md, struct dm_table *t);
-  */
- int dm_set_zones_restrictions(struct dm_table *t, struct request_queue *q,
- 		struct queue_limits *lim);
-+int dm_revalidate_zones(struct dm_table *t, struct request_queue *q);
- void dm_zone_endio(struct dm_io *io, struct bio *clone);
- #ifdef CONFIG_BLK_DEV_ZONED
- int dm_blk_report_zones(struct gendisk *disk, sector_t sector,
+ 	p->ops_len = i;
 -- 
 2.43.0
 
