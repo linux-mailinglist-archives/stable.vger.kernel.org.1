@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E41A941A75
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17112941C26
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A88F2B2D6E9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C451F284279
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B2C189502;
-	Tue, 30 Jul 2024 16:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5D4188017;
+	Tue, 30 Jul 2024 17:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTSUGsG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaseMITB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C454C1A619E;
-	Tue, 30 Jul 2024 16:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B591E86F;
+	Tue, 30 Jul 2024 17:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357466; cv=none; b=F5gKoHXECLsye3HGUBG5AMIRb/zXOjkouWlCHxl8Wcj0Ng9DYMXhD4nXnSdHtNyzOxMuHLJ0ZNaISHksAf6czhsIvn4wQ8qZ+U/rAF5N60r/dZvjxEbAAp2uzhoy6RYrhTnEdrjlSlrIJz34+Jh/d5z94O080MkvHQal4V87WcY=
+	t=1722359023; cv=none; b=stRvrGLlP/mUx6dWMC0SMnHiP4dPHAfsGA/edJpIqatQeqjG+hrIgElrutJIgQeafjrX6avK42HynsiliS6AxBRF+M7CBS8S2zxsxWtR441FugJlflTbEnJ0YMWzpbU35wzRYKH/edhuQoutVeNJzOvf7szlfs2J0lKIjBmldN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357466; c=relaxed/simple;
-	bh=ldDOgJY/7chqjIxSfHDmrnFEzbR3PkuHOW72bWytBDU=;
+	s=arc-20240116; t=1722359023; c=relaxed/simple;
+	bh=MjNGzKcqtOJmF8vSpxJ2OLYzg+Wy3V3LNYgmbW/Lsxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I82c9XlYQwg/73sIneGwuG6F70i1vA5qxJMdX5gNulF3eVighputXceOjYoWMrGzsInIeBhSA2p9jP5dR6bOljLwORtlVxBWasq2fIH2bpvxCUHPkul9Hi+zkHQZfiZOnkb+DV8oOiTBaJ5vPLhFjX3tdqw7+ftT50CYsNSb1w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTSUGsG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071BAC4AF0C;
-	Tue, 30 Jul 2024 16:37:45 +0000 (UTC)
+	 MIME-Version; b=lGu0zUM5t6Ahq7wmJIQC39DvDbFrS6pxngUeO3Pwrgxwy1YycHpQsekbjQodVmQuESwNxDtbPA5BiHQXuaAe9SvrcY8B1Q8owfTIZVBlYkDMJSPK8izO2FpJqu19zImwNEkPWio2ATP6Q6Ln+kg2plX2K1im4NcxYI88IpqRBno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaseMITB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAAFC32782;
+	Tue, 30 Jul 2024 17:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357466;
-	bh=ldDOgJY/7chqjIxSfHDmrnFEzbR3PkuHOW72bWytBDU=;
+	s=korg; t=1722359022;
+	bh=MjNGzKcqtOJmF8vSpxJ2OLYzg+Wy3V3LNYgmbW/Lsxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTSUGsG9W/GSd0O+CUkjZYLhpm06Ao4iLFwIIuF6sCLGE45jvjHBGlMzyY5C/RPvN
-	 cFA1cVUI91K7/8TXLE943j9jE7gfRwUzHfSE0PbHR3WVgXJu8jgOBdaGh9JramaOKt
-	 I98BF3tG5fUQKDKfFDoN4ZgbuTUNLlj6Nv6RTqcE=
+	b=zaseMITBL53uCoJgsG9qbUPC6JESZFgeRoy2T+8AF5tYu0MT0YwPBAuaEv0Ryo4au
+	 wML/48gczXH9u+oAA4G/aHHosOVDsWJtirrADPUxpYKNiFzs3HbYVP3Pz6TiZrvnHr
+	 m5797rFidIWdflMPAI7p0923SvBrR/62mNFL+npc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.1 295/440] apparmor: use kvfree_sensitive to free data->data
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 421/568] ALSA: usb-audio: Add a quirk for Sonix HD USB Camera
 Date: Tue, 30 Jul 2024 17:48:48 +0200
-Message-ID: <20240730151627.352319869@linuxfoundation.org>
+Message-ID: <20240730151656.323379180@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-commit 2bc73505a5cd2a18a7a542022722f136c19e3b87 upstream.
+commit 21451dfd853e7d8e6e3fbd7ef1fbdb2f2ead12f5 upstream.
 
-Inside unpack_profile() data->data is allocated using kvmemdup() so it
-should be freed with the corresponding kvfree_sensitive().
+Sonix HD USB Camera does not support reading the sample rate which leads
+to many lines of "cannot get freq at ep 0x84".
+This patch adds the USB ID to quirks.c and avoids those error messages.
 
-Also add missing data->data release for rhashtable insertion failure path
-in unpack_profile().
+(snip)
+[1.789698] usb 3-3: new high-speed USB device number 2 using xhci_hcd
+[1.984121] usb 3-3: New USB device found, idVendor=0c45, idProduct=6340, bcdDevice= 0.00
+[1.984124] usb 3-3: New USB device strings: Mfr=2, Product=1, SerialNumber=0
+[1.984127] usb 3-3: Product: USB 2.0 Camera
+[1.984128] usb 3-3: Manufacturer: Sonix Technology Co., Ltd.
+[5.440957] usb 3-3: 3:1: cannot get freq at ep 0x84
+[12.130679] usb 3-3: 3:1: cannot get freq at ep 0x84
+[12.175065] usb 3-3: 3:1: cannot get freq at ep 0x84
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: e025be0f26d5 ("apparmor: support querying extended trusted helper extra data")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240722084822.31620-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy.c        |    2 +-
- security/apparmor/policy_unpack.c |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -187,7 +187,7 @@ static void aa_free_data(void *ptr, void
- {
- 	struct aa_data *data = ptr;
- 
--	kfree_sensitive(data->data);
-+	kvfree_sensitive(data->data, data->size);
- 	kfree_sensitive(data->key);
- 	kfree_sensitive(data);
- }
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -898,6 +898,7 @@ static struct aa_profile *unpack_profile
- 
- 			if (rhashtable_insert_fast(profile->data, &data->head,
- 						   profile->data->p)) {
-+				kvfree_sensitive(data->data, data->size);
- 				kfree_sensitive(data->key);
- 				kfree_sensitive(data);
- 				info = "failed to insert data to table";
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2085,6 +2085,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x0b0e, 0x0349, /* Jabra 550a */
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
++	DEVICE_FLG(0x0c45, 0x6340, /* Sonix HD USB Camera */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x0ecb, 0x205c, /* JBL Quantum610 Wireless */
+ 		   QUIRK_FLAG_FIXED_RATE),
+ 	DEVICE_FLG(0x0ecb, 0x2069, /* JBL Quantum810 Wireless */
 
 
 
