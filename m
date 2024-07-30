@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-62997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978BF9416A0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A947D9416A4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D841C237DE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FC8E1F25356
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5C4189BB1;
-	Tue, 30 Jul 2024 16:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B49187FF6;
+	Tue, 30 Jul 2024 16:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAxYoAg4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPlwt8rE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3966189BB7;
-	Tue, 30 Jul 2024 16:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3887E187FED;
+	Tue, 30 Jul 2024 16:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355320; cv=none; b=r61pta77oN8supxg+bqtI9/3cChxN4PIH8Jx1uxZaMVus2JT3ZKP/tXMooJhaRJaFDIOQ1jdRJn8a9L96cOCi7G/cHFJbaDA8ZCPniuRY8grefcinSF9A6aRExDZ0y6q67KHLC0iLhPv6U4nzt+TzACsO7NnWNTp5KjKGOHKJyw=
+	t=1722355330; cv=none; b=diTdGyXOh4BvnA1pC3qlNlhVjhZ/YP9zmWP8HDcMEq3BgID5iLc12DXGe8gizc1PohjYHAuqLgZYhbuKUTaiT7AjEa6Wpj4FZKCuu+Z8N0UbfM/fJr/bqRd6gifMpEvMOGfXoLmD5U3A1rr1vc1VjJK8jEI49B7XBa4Zk/s0BzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355320; c=relaxed/simple;
-	bh=quuIlEap8gUmCHtyH35B7qcp/15L3bYdZJDdC+8SRXs=;
+	s=arc-20240116; t=1722355330; c=relaxed/simple;
+	bh=19jz7nuKmqrVRu1ab9vtmJwGsl50NjIr49LlWIJFd94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCCCu0vaq6FxJFQSZHjCUEB0gTOU8jccQu/XKADimmCaeM1VNzeKN1QVjxqm7zt9OFpjuGNPrcqsmpyUrfjRmbPqWL3MXizPADxpCnJlbLntn01aXbFODpxU4mq9sHY6EmQDTH33vqP4JTZeoJfYCeZ4plD+ODNP/4MuEwKl7Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAxYoAg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03231C32782;
-	Tue, 30 Jul 2024 16:01:59 +0000 (UTC)
+	 MIME-Version; b=i+dOjOrHsw3bOjSJyFS5ITiTPmuDEs17lMu4iABChWfOi/o+h3LV7xpvUcwiBSnbOAGZOpbBIHHEeSikLvnuVhHS0Xf0p4yWOWRLl2mlV5FUWOwsc7o/+zmW7VAsHQ1fHoxzY/iGco3zcX7ajMEDArc4zPIvSqbTGeQM38I383c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPlwt8rE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994C7C32782;
+	Tue, 30 Jul 2024 16:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355320;
-	bh=quuIlEap8gUmCHtyH35B7qcp/15L3bYdZJDdC+8SRXs=;
+	s=korg; t=1722355330;
+	bh=19jz7nuKmqrVRu1ab9vtmJwGsl50NjIr49LlWIJFd94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vAxYoAg4NjeSNhmr6jVhGXlRL63K5eKX3enFOWy07XvG7GBHKEytQdP7PW0pAGX5o
-	 IcpE/7vftqa8V75+zFXFpavuimkQHj7c/9rwGatJ3uoFdYO8L+fIYaonVr8ie0vfQ+
-	 zx/bYfXL1rCwtvnAgkfYc0LnDO/gAwCtFU6vrGbg=
+	b=UPlwt8rEbwPty/CFD8tK1dRxksee/fp59xzjkIKMZJdXMjbbu94MbcmPrKECp709/
+	 ZMuM+nanTvxzPuTmdKeanVnHvf0ZATQKiHJEFWdYm0WCN/Ft2DJmpm7t77UCZzbnS0
+	 2HfkbnjaQTA7cLladPCyp3LFxX3mF6GToMoOOq/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 040/809] hwmon: (max6697) Fix swapped temp{1,8} critical alarms
-Date: Tue, 30 Jul 2024 17:38:36 +0200
-Message-ID: <20240730151726.232680680@linuxfoundation.org>
+Subject: [PATCH 6.10 041/809] soc: qcom: socinfo: Update X1E PMICs
+Date: Tue, 30 Jul 2024 17:38:37 +0200
+Message-ID: <20240730151726.271557790@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,46 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 1ea3fd1eb9869fcdcbc9c68f9728bfc47b9503f1 ]
+[ Upstream commit 85f5656a4f3f188cb950cf8dc88f3f0e4e656bae ]
 
-The critical alarm bit for the local temperature sensor (temp1) is in
-bit 7 of register 0x45 (not bit 6), and the critical alarm bit for remote
-temperature sensor 7 (temp8) is in bit 6 (not bit 7).
+Assign the correct name to ID 82 and fix the ID of SMB2360.
 
-This only affects MAX6581 since all other chips supported by this driver
-do not support those critical alarms.
-
-Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: e025171d1ab1 ("soc: qcom: socinfo: Add SMB2360 PMIC")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240522-topic-x1e_pmics_socinfo-v1-1-da8a097e5134@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max6697.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/socinfo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
-index 978476b632752..8aac8278193f0 100644
---- a/drivers/hwmon/max6697.c
-+++ b/drivers/hwmon/max6697.c
-@@ -429,14 +429,14 @@ static SENSOR_DEVICE_ATTR_RO(temp6_max_alarm, alarm, 20);
- static SENSOR_DEVICE_ATTR_RO(temp7_max_alarm, alarm, 21);
- static SENSOR_DEVICE_ATTR_RO(temp8_max_alarm, alarm, 23);
+diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
+index 277c07a6603d4..41342c37916ae 100644
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -133,7 +133,8 @@ static const char *const pmic_models[] = {
+ 	[72] = "PMR735D",
+ 	[73] = "PM8550",
+ 	[74] = "PMK8550",
+-	[82] = "SMB2360",
++	[82] = "PMC8380",
++	[83] = "SMB2360",
+ };
  
--static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 14);
-+static SENSOR_DEVICE_ATTR_RO(temp1_crit_alarm, alarm, 15);
- static SENSOR_DEVICE_ATTR_RO(temp2_crit_alarm, alarm, 8);
- static SENSOR_DEVICE_ATTR_RO(temp3_crit_alarm, alarm, 9);
- static SENSOR_DEVICE_ATTR_RO(temp4_crit_alarm, alarm, 10);
- static SENSOR_DEVICE_ATTR_RO(temp5_crit_alarm, alarm, 11);
- static SENSOR_DEVICE_ATTR_RO(temp6_crit_alarm, alarm, 12);
- static SENSOR_DEVICE_ATTR_RO(temp7_crit_alarm, alarm, 13);
--static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 15);
-+static SENSOR_DEVICE_ATTR_RO(temp8_crit_alarm, alarm, 14);
- 
- static SENSOR_DEVICE_ATTR_RO(temp2_fault, alarm, 1);
- static SENSOR_DEVICE_ATTR_RO(temp3_fault, alarm, 2);
+ struct socinfo_params {
 -- 
 2.43.0
 
