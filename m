@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-64341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6225941D63
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9D4941E9D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232E51C23C4D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B54A1C236A6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1265E1A76B6;
-	Tue, 30 Jul 2024 17:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041DE166315;
+	Tue, 30 Jul 2024 17:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoDKOgFS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzToabFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50501A76A4;
-	Tue, 30 Jul 2024 17:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B726D1A76A5;
+	Tue, 30 Jul 2024 17:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359802; cv=none; b=K1MIMtOwM4s5f8Gtralxf2pMLF2BRJmmyHGKdPw2gXl0mzQYPeNOAIkrayM75kbdG0o5Lwvxl/CBzXYjebWmOtU8BpNZq1SGkfAgmgJrvw7Bk9vYKyL0wCKQgIkz/TTLj7YMdn7FMkBJh2d0Iodt6GH6VVl5aLd9tsyX/gZe3sM=
+	t=1722360662; cv=none; b=txa+9u39ATpjKh6xaabeLyBHnWQO3RGxXhdHxdmgrTYk5KgAhPOKRr6Jm0ULdG0Qup4yLCzUtZ8Woc8TAu8csXpJddqYKp7HuONrhD5DIgStaF9/9MiHdhwRF5zmTMehQoLI/rN1hwd0FCk4+RIOpr3h7UvJn12ruvvUwUho9ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359802; c=relaxed/simple;
-	bh=BKolV4D9jRkK2M1Xj9zgzXHRwQrbRLmKlU1Xw1nbr88=;
+	s=arc-20240116; t=1722360662; c=relaxed/simple;
+	bh=cYS5dOs7NyhPfpXSn47fAIiFXSlv639fmw/BNv80JmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwguwDcmNnYRPaA3mIAl6nYBV94HLpqP6ZTKSpg+Uv6iXCDDXtZRLTFMiz8IXcdUIjXAWzGzMUNCTkDYFUDqZ5etrigHKHem3upMg5RNZQqQUQDe+yHwzLVB+1wRiPxzKJI/q8GUZE3yuCWx2wcx2perdatMzotNMyoETHuGCR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoDKOgFS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4408CC32782;
-	Tue, 30 Jul 2024 17:16:42 +0000 (UTC)
+	 MIME-Version; b=YnWWTpcsTZC22fB1BN6LHWQDT7l2SBx7cIfaONArX/e1u1NOwAjhRY7eXcFbL8EAMVbetp0IbMoNcKrHgNUjk0FkNPTPzh555DkoG5yt8TG0mUFNhwwLoeA3D1RkHPicpDR6WBX2yUbtceA3f+zzJtN0ah//c51XZeqTserEgoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzToabFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5CCC32782;
+	Tue, 30 Jul 2024 17:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359802;
-	bh=BKolV4D9jRkK2M1Xj9zgzXHRwQrbRLmKlU1Xw1nbr88=;
+	s=korg; t=1722360662;
+	bh=cYS5dOs7NyhPfpXSn47fAIiFXSlv639fmw/BNv80JmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XoDKOgFSF+3xh5DPsk2AlMJNWPJDdAdSjRq9Ig1YOGNhdm6MRzPCnR2q3ahzzBYKZ
-	 +XhhQbM4hkrKTLME/4buiycVAcVEAP51Rx7N2qt/H+Q11qIXy+TYQLI98BavZT5hyv
-	 zenJs5VXjVbvJyKMPSUYe++wCqXFaUnvtVMen/iw=
+	b=GzToabFxWCg0jbsapRqdI6554OoHV/dpBAmQM5/V+egD/uwwR7kYvlJHSsfwgUK2J
+	 u2ttp+RCERKt6aSKxECQ+WBTuuFwOU4S0HbLSOjBOldXxnS5IZCkmxUNBG0ztynzGX
+	 s2f/X5fXWJijSu6mJFWGhOwUGaOqgU89GKPWC7k8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 538/568] ice: Fix recipe read procedure
+Subject: [PATCH 6.10 769/809] net: nexthop: Initialize all fields in dumped nexthops
 Date: Tue, 30 Jul 2024 17:50:45 +0200
-Message-ID: <20240730151701.186305202@linuxfoundation.org>
+Message-ID: <20240730151755.339330892@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Drewek <wojciech.drewek@intel.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 19abb9c2b900bad59e0a9818d6c83bb4cc875437 ]
+[ Upstream commit 6d745cd0e9720282cd291d36b9db528aea18add2 ]
 
-When ice driver reads recipes from firmware information about
-need_pass_l2 and allow_pass_l2 flags is not stored correctly.
-Those flags are stored as one bit each in ice_sw_recipe structure.
-Because of that, the result of checking a flag has to be casted to bool.
-Note that the need_pass_l2 flag currently works correctly, because
-it's stored in the first bit.
+struct nexthop_grp contains two reserved fields that are not initialized by
+nla_put_nh_group(), and carry garbage. This can be observed e.g. with
+strace (edited for clarity):
 
-Fixes: bccd9bce29e0 ("ice: Add guard rule when creating FDB in switchdev")
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+    # ip nexthop add id 1 dev lo
+    # ip nexthop add id 101 group 1
+    # strace -e recvmsg ip nexthop get id 101
+    ...
+    recvmsg(... [{nla_len=12, nla_type=NHA_GROUP},
+                 [{id=1, weight=0, resvd1=0x69, resvd2=0x67}]] ...) = 52
+
+The fields are reserved and therefore not currently used. But as they are, they
+leak kernel memory, and the fact they are not just zero complicates repurposing
+of the fields for new ends. Initialize the full structure.
+
+Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/nexthop.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index d2a2388d4fa0a..88ee2491312a5 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -2271,10 +2271,10 @@ ice_get_recp_frm_fw(struct ice_hw *hw, struct ice_sw_recipe *recps, u8 rid,
- 		/* Propagate some data to the recipe database */
- 		recps[idx].is_root = !!is_root;
- 		recps[idx].priority = root_bufs.content.act_ctrl_fwd_priority;
--		recps[idx].need_pass_l2 = root_bufs.content.act_ctrl &
--					  ICE_AQ_RECIPE_ACT_NEED_PASS_L2;
--		recps[idx].allow_pass_l2 = root_bufs.content.act_ctrl &
--					   ICE_AQ_RECIPE_ACT_ALLOW_PASS_L2;
-+		recps[idx].need_pass_l2 = !!(root_bufs.content.act_ctrl &
-+					     ICE_AQ_RECIPE_ACT_NEED_PASS_L2);
-+		recps[idx].allow_pass_l2 = !!(root_bufs.content.act_ctrl &
-+					      ICE_AQ_RECIPE_ACT_ALLOW_PASS_L2);
- 		bitmap_zero(recps[idx].res_idxs, ICE_MAX_FV_WORDS);
- 		if (root_bufs.content.result_indx & ICE_AQ_RECIPE_RESULT_EN) {
- 			recps[idx].chain_idx = root_bufs.content.result_indx &
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 535856b0f0edc..6b9787ee86017 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -888,9 +888,10 @@ static int nla_put_nh_group(struct sk_buff *skb, struct nexthop *nh,
+ 
+ 	p = nla_data(nla);
+ 	for (i = 0; i < nhg->num_nh; ++i) {
+-		p->id = nhg->nh_entries[i].nh->id;
+-		p->weight = nhg->nh_entries[i].weight - 1;
+-		p += 1;
++		*p++ = (struct nexthop_grp) {
++			.id = nhg->nh_entries[i].nh->id,
++			.weight = nhg->nh_entries[i].weight - 1,
++		};
+ 	}
+ 
+ 	if (nhg->resilient && nla_put_nh_group_res(skb, nhg))
 -- 
 2.43.0
 
