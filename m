@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-63614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9537C9419CE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAAD4941770
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8F8D1C228EC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757D4281F3E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247741A6192;
-	Tue, 30 Jul 2024 16:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA801A302B;
+	Tue, 30 Jul 2024 16:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqBeCVkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGM9POdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D657B433A9;
-	Tue, 30 Jul 2024 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680111A4B2C;
+	Tue, 30 Jul 2024 16:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357395; cv=none; b=IyFlUm6F8iKig1ZsddwpoEYFjvgwS64D+2eF2d7KETFFwpuVgXKqv2WvSKaErZ9998P3UjhIO0t3upTNKxloK1e2OhAnvWBFdNyBowlui4mwgD85+oJjFTYo7TZ+bJhXrZCD0poilzfES7Fi4zUCyQKrZrNdydgoBAIe8iQ7pbI=
+	t=1722355731; cv=none; b=Jq3MeNFcRW2Rphc/au/qdlIa2l/ezxBUI8Qhj6pxFStL5Z/0PimZUDsYOuSgVqgEPBqMprEfkkfB+aOZ47oY6BYYksSydUSrPvEct0i56OWqX4igjvJe6oBzgbZJZQMti779HHtUCd3GATw85U7FZULDr+C990uB6dae9t4nebU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357395; c=relaxed/simple;
-	bh=AKAmI5LQmQw7fVwIsFiVQ7VXc3jH9N7HtiCDxTYDBm0=;
+	s=arc-20240116; t=1722355731; c=relaxed/simple;
+	bh=+arpm3ShQR3X561bB8P4N52Kbb4gbwg7xVbrX9dsIt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZxqYXFDTrXpPQ9kaoxjPU22m2nYzCgmnzRGbpN8Ys6Hy2H0qtFLx4bJcyyT0KACm4jclO1uCXwdoLzYF+hfRpUIZXM6AELFNSxanMqHH75OXMo3tWJag4KSECLyekLbdjqFrCQ2Lkd4E8B2Yi9cqretC48f58GhKFdtkFcpfYss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqBeCVkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1DBC32782;
-	Tue, 30 Jul 2024 16:36:35 +0000 (UTC)
+	 MIME-Version; b=WPL3+M9rVmlsJWEBcWcvzQc917Tqy//2drSrQ2o8cArIHl0H07xtB6o5z63JyZAISk4/Pw9qGEGIXJloev4P/btYrOeueEBexKLsVjn/X74BYtT/uhb9A6AY1xESU/2EOY/x0E/FMmwFx55ICP5Tr7JfTMTpXtLQIfb02AxGIRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGM9POdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A966EC32782;
+	Tue, 30 Jul 2024 16:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357395;
-	bh=AKAmI5LQmQw7fVwIsFiVQ7VXc3jH9N7HtiCDxTYDBm0=;
+	s=korg; t=1722355731;
+	bh=+arpm3ShQR3X561bB8P4N52Kbb4gbwg7xVbrX9dsIt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqBeCVkgCU6TFYY2k/8H3oXJgERCgi6Xo5MZqDiSQahKkBkeK5wvjDUDnzHkR+ki0
-	 xs9bajPSWTdUQ88FL4PxQZ8/sUwVuV2RfQKQthIX6qxgMYWIQ6T64GM0g7YPjGabjE
-	 /C4AeRCSZ1i11pbWcNqE6qO5MrmswUn/A9EqBwCA=
+	b=JGM9POdGZswMZ4saVAn76X16o4iq0tyHb7/v5+x9fJwSpfK8KHvv2FCklU/rJaCwB
+	 PRBpl6251CJwE3oPvg4mjB0tBdvZPGyA7Dr6wpI4Xt4PmMh1IXESpfxzSZ2rYPMhDM
+	 l8h0idLJsNGrd5spyZrbvnf4kdoCMuPCKzVp3b3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 251/568] PCI: keystone: Fix NULL pointer dereference in case of DT error in ks_pcie_setup_rc_app_regs()
+Subject: [PATCH 6.1 125/440] selftests: forwarding: devlink_lib: Wait for udev events after reloading
 Date: Tue, 30 Jul 2024 17:45:58 +0200
-Message-ID: <20240730151649.691096064@linuxfoundation.org>
+Message-ID: <20240730151620.769127691@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit a231707a91f323af1e5d9f1722055ec2fc1c7775 ]
+[ Upstream commit f67a90a0c8f5b3d0acc18f10650d90fec44775f9 ]
 
-If IORESOURCE_MEM is not provided in Device Tree due to
-any error, resource_list_first_type() will return NULL and
-pci_parse_request_of_pci_ranges() will just emit a warning.
+Lately, an additional locking was added by commit c0a40097f0bc
+("drivers: core: synchronize really_probe() and dev_uevent()"). The
+locking protects dev_uevent() calling. This function is used to send
+messages from the kernel to user space. Uevent messages notify user space
+about changes in device states, such as when a device is added, removed,
+or changed. These messages are used by udev (or other similar user-space
+tools) to apply device-specific rules.
 
-This will cause a NULL pointer dereference. Fix this bug by adding NULL
-return check.
+After reloading devlink instance, udev events should be processed. This
+locking causes a short delay of udev events handling.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+One example for useful udev rule is renaming ports. 'forwading.config'
+can be configured to use names after udev rules are applied. Some tests run
+devlink_reload() and immediately use the updated names. This worked before
+the above mentioned commit was pushed, but now the delay of uevent messages
+causes that devlink_reload() returns before udev events are handled and
+tests fail.
 
-Fixes: 0f71c60ffd26 ("PCI: dwc: Remove storing of PCI resources")
-Link: https://lore.kernel.org/linux-pci/20240505061517.11527-1-amishin@t-argos.ru
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Adjust devlink_reload() to not assume that udev events are already
+processed when devlink reload is done, instead, wait for udev events to
+ensure they are processed before returning from the function.
+
+Without this patch:
+TESTS='rif_mac_profile' ./resource_scale.sh
+TEST: 'rif_mac_profile' 4                                           [ OK ]
+sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
+sysctl: cannot stat /proc/sys/net/ipv6/conf/swp1/disable_ipv6: No such file or directory
+sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
+sysctl: cannot stat /proc/sys/net/ipv6/conf/swp2/disable_ipv6: No such file or directory
+Cannot find device "swp1"
+Cannot find device "swp2"
+TEST: setup_wait_dev (: Interface swp1 does not come up.) [FAIL]
+
+With this patch:
+$ TESTS='rif_mac_profile' ./resource_scale.sh
+TEST: 'rif_mac_profile' 4                                           [ OK ]
+TEST: 'rif_mac_profile' overflow 5                                  [ OK ]
+
+This is relevant not only for this test.
+
+Fixes: bc7cbb1e9f4c ("selftests: forwarding: Add devlink_lib.sh")
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/89367666e04b38a8993027f1526801ca327ab96a.1720709333.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/forwarding/devlink_lib.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 9886fdd415039..54a3c7f29f78a 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -402,17 +402,22 @@ static const struct irq_domain_ops ks_pcie_legacy_irq_domain_ops = {
- 	.xlate = irq_domain_xlate_onetwocell,
- };
- 
--static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
-+static int ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
- {
- 	u32 val;
- 	u32 num_viewport = ks_pcie->num_viewport;
- 	struct dw_pcie *pci = ks_pcie->pci;
- 	struct dw_pcie_rp *pp = &pci->pp;
--	u64 start, end;
-+	struct resource_entry *entry;
- 	struct resource *mem;
-+	u64 start, end;
- 	int i;
- 
--	mem = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM)->res;
-+	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
-+	if (!entry)
-+		return -ENODEV;
+diff --git a/tools/testing/selftests/net/forwarding/devlink_lib.sh b/tools/testing/selftests/net/forwarding/devlink_lib.sh
+index 601990c6881bf..4c555fab9e755 100644
+--- a/tools/testing/selftests/net/forwarding/devlink_lib.sh
++++ b/tools/testing/selftests/net/forwarding/devlink_lib.sh
+@@ -122,6 +122,8 @@ devlink_reload()
+ 	still_pending=$(devlink resource show "$DEVLINK_DEV" | \
+ 			grep -c "size_new")
+ 	check_err $still_pending "Failed reload - There are still unset sizes"
 +
-+	mem = entry->res;
- 	start = mem->start;
- 	end = mem->end;
- 
-@@ -423,7 +428,7 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
- 	ks_pcie_clear_dbi_mode(ks_pcie);
- 
- 	if (ks_pcie->is_am6)
--		return;
-+		return 0;
- 
- 	val = ilog2(OB_WIN_SIZE);
- 	ks_pcie_app_writel(ks_pcie, OB_SIZE, val);
-@@ -440,6 +445,8 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
- 	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
- 	val |= OB_XLAT_EN_VAL;
- 	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
-+
-+	return 0;
++	udevadm settle
  }
  
- static void __iomem *ks_pcie_other_map_bus(struct pci_bus *bus,
-@@ -801,7 +808,10 @@ static int __init ks_pcie_host_init(struct dw_pcie_rp *pp)
- 		return ret;
- 
- 	ks_pcie_stop_link(pci);
--	ks_pcie_setup_rc_app_regs(ks_pcie);
-+	ret = ks_pcie_setup_rc_app_regs(ks_pcie);
-+	if (ret)
-+		return ret;
-+
- 	writew(PCI_IO_RANGE_TYPE_32 | (PCI_IO_RANGE_TYPE_32 << 8),
- 			pci->dbi_base + PCI_IO_BASE);
- 
+ declare -A DEVLINK_ORIG
 -- 
 2.43.0
 
