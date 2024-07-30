@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-63935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E34941B59
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 186D894181F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD441F23231
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B76251F22C39
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA691898EB;
-	Tue, 30 Jul 2024 16:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C369E189522;
+	Tue, 30 Jul 2024 16:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKoWm3nH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCR4R3jg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C053A18801A;
-	Tue, 30 Jul 2024 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7B91A616E;
+	Tue, 30 Jul 2024 16:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358427; cv=none; b=a3JO74U6evZ+OY3TqGf3GNbiAaIW6V1Qlg+R3vZXQAdoCejEwOZdgbgKambSO4dlpfTpfUVbcT+F0UwSh9QFSyXTShbd+rradxBZlkBzROIPGQjRVL/AcOlmMfdzrNGJmoBVfLPWnG4GTdQ6Q9XlGK0EDkI9uYWaODdFnEyIjpc=
+	t=1722356252; cv=none; b=mWI3ZogDmIFkIOscJCHP9IqzbANGrxFg/kkBMh8f+qmSiUsG0VnzCD4qWEc5yudtz1HklHCOwx9OuiuaxQe584Ber+X8Gch/fCsb1E0YRunhQPBafYj37ZzIDCvFdEVre4inuGYGYigsbB/Gk4LH+uTtZkS7HDjOcU+zjzu2Qns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358427; c=relaxed/simple;
-	bh=/xKMJ/n70afPwS2m2dKbkTd+ngjcxbB3I0HIDD8bIqY=;
+	s=arc-20240116; t=1722356252; c=relaxed/simple;
+	bh=kJv8hKUPVBgmnIbKIqEz8CGLzuQQj1Ec1UlBFCjW5sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YzJbW75814yH8Zd3zo4pSxIjaN4E+AgcJyF8bU8bUeePJohAJiYuHOibqDs4Kj5cwm2C+xECIEOo1rP94THofzIMOLQqxWjhuHROrTklW9Jube3F0B/5+y+oiqsGjchEV30BExrHjq7+3vZSzQrgTRTkipICh8ma7T2bAsIWaiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKoWm3nH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D600DC32782;
-	Tue, 30 Jul 2024 16:53:46 +0000 (UTC)
+	 MIME-Version; b=FSKxO0/0bEqwaODqoXH/kUzSzfEvML0FZVXrKrRUBHLfJoHdO+NBqbOf1sBVMH2h+PdAju66EonUuaukEg+w1ennbQZgYvnctedMIgvm1a50puvRpsG+HWteRoJRLXNIu+8D2Rsw7SUkpf/VKP80O5Nozwc9Ch7oOcqwbVh5ZNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCR4R3jg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0917EC32782;
+	Tue, 30 Jul 2024 16:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358427;
-	bh=/xKMJ/n70afPwS2m2dKbkTd+ngjcxbB3I0HIDD8bIqY=;
+	s=korg; t=1722356252;
+	bh=kJv8hKUPVBgmnIbKIqEz8CGLzuQQj1Ec1UlBFCjW5sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKoWm3nHfQJFZE4q7rcZOlYM1TAEB+DfSd7ActcdQ06kaAWCF26VEsLwIXhh7cNvv
-	 PGjUIwd5e6bfWeIzg0PfJqoVI2PpVu7l7uITOm9CC5W5RHaraXWCW8UCM/MCfLty2R
-	 CJiaZg9W3m11az0wgaydAbSmn4h+VI0TNzyADd5g=
+	b=dCR4R3jgGrJl6D1nL622UrOuVCrRKgBCEAEr/xXIgBNSH+1XFv3+agJduFbFwtcGX
+	 RMIhsE6Ts6tE/uDwLFUoOcIJzYXx74ofW55ZloBT76HRsNcGVb1aveukqcKDVT17gL
+	 NLllVf9RLOpBjAw+3iX6Sah9T4Rx43Ol/JqpUgSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
-	Ian Rogers <irogers@google.com>,
-	robin.murphy@arm.com,
-	Namhyung Kim <namhyung@kernel.org>,
+	Alexander Zubkov <green@qrator.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 358/809] perf pmu: Restore full PMU name wildcard support
-Date: Tue, 30 Jul 2024 17:43:54 +0200
-Message-ID: <20240730151738.785389417@linuxfoundation.org>
+Subject: [PATCH 6.6 128/568] lib: objagg: Fix general protection fault
+Date: Tue, 30 Jul 2024 17:43:55 +0200
+Message-ID: <20240730151644.874917222@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,155 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 3e0bf9fde29844694ad9912aa290fbdb2c3fa767 ]
+[ Upstream commit b4a3a89fffcdf09702b1f161b914e52abca1894d ]
 
-Commit b2b9d3a3f021 ("perf pmu: Support wildcards on pmu name in dynamic
-pmu events") gives the following example for wildcarding a subset of
-PMUs:
+The library supports aggregation of objects into other objects only if
+the parent object does not have a parent itself. That is, nesting is not
+supported.
 
-  E.g., in a system with the following dynamic pmus:
+Aggregation happens in two cases: Without and with hints, where hints
+are a pre-computed recommendation on how to aggregate the provided
+objects.
 
-        mypmu_0
-        mypmu_1
-        mypmu_2
-        mypmu_4
+Nesting is not possible in the first case due to a check that prevents
+it, but in the second case there is no check because the assumption is
+that nesting cannot happen when creating objects based on hints. The
+violation of this assumption leads to various warnings and eventually to
+a general protection fault [1].
 
-  perf stat -e mypmu_[01]/<config>/
+Before fixing the root cause, error out when nesting happens and warn.
 
-Since commit f91fa2ae6360 ("perf pmu: Refactor perf_pmu__match()"), only
-"*" has been supported, removing the ability to subset PMUs, even though
-parse-events.l still supports ? and [] characters.
+[1]
+general protection fault, probably for non-canonical address 0xdead000000000d90: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 1083 Comm: kworker/1:9 Tainted: G        W          6.9.0-rc6-custom-gd9b4f1cca7fb #7
+Hardware name: Mellanox Technologies Ltd. MSN3700/VMOD0005, BIOS 5.11 01/06/2019
+Workqueue: mlxsw_core mlxsw_sp_acl_tcam_vregion_rehash_work
+RIP: 0010:mlxsw_sp_acl_erp_bf_insert+0x25/0x80
+[...]
+Call Trace:
+ <TASK>
+ mlxsw_sp_acl_atcam_entry_add+0x256/0x3c0
+ mlxsw_sp_acl_tcam_entry_create+0x5e/0xa0
+ mlxsw_sp_acl_tcam_vchunk_migrate_one+0x16b/0x270
+ mlxsw_sp_acl_tcam_vregion_rehash_work+0xbe/0x510
+ process_one_work+0x151/0x370
+ worker_thread+0x2cb/0x3e0
+ kthread+0xd0/0x100
+ ret_from_fork+0x34/0x50
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Fix it by using fnmatch() when any glob character is detected and add a
-test which covers that and other scenarios of
-perf_pmu__match_ignoring_suffix().
-
-Fixes: f91fa2ae6360 ("perf pmu: Refactor perf_pmu__match()")
-Signed-off-by: James Clark <james.clark@arm.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: robin.murphy@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240626145448.896746-2-james.clark@arm.com
+Fixes: 9069a3817d82 ("lib: objagg: implement optimization hints assembly and use hints for object creation")
+Reported-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Tested-by: Alexander Zubkov <green@qrator.net>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/pmu.c | 78 ++++++++++++++++++++++++++++++++++++++++++
- tools/perf/util/pmu.c  |  2 +-
- 2 files changed, 79 insertions(+), 1 deletion(-)
+ lib/objagg.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/perf/tests/pmu.c b/tools/perf/tests/pmu.c
-index cc88b5920c3e2..fd07331b2d6e6 100644
---- a/tools/perf/tests/pmu.c
-+++ b/tools/perf/tests/pmu.c
-@@ -437,12 +437,90 @@ static int test__name_cmp(struct test_suite *test __maybe_unused, int subtest __
- 	return TEST_OK;
- }
- 
-+/**
-+ * Test perf_pmu__match() that's used to search for a PMU given a name passed
-+ * on the command line. The name that's passed may also be a filename type glob
-+ * match.
-+ */
-+static int test__pmu_match(struct test_suite *test __maybe_unused, int subtest __maybe_unused)
-+{
-+	struct perf_pmu test_pmu;
-+
-+	test_pmu.name = "pmuname";
-+	TEST_ASSERT_EQUAL("Exact match", perf_pmu__match(&test_pmu, "pmuname"),	     true);
-+	TEST_ASSERT_EQUAL("Longer token", perf_pmu__match(&test_pmu, "longertoken"), false);
-+	TEST_ASSERT_EQUAL("Shorter token", perf_pmu__match(&test_pmu, "pmu"),	     false);
-+
-+	test_pmu.name = "pmuname_10";
-+	TEST_ASSERT_EQUAL("Diff suffix_", perf_pmu__match(&test_pmu, "pmuname_2"),  false);
-+	TEST_ASSERT_EQUAL("Sub suffix_",  perf_pmu__match(&test_pmu, "pmuname_1"),  true);
-+	TEST_ASSERT_EQUAL("Same suffix_", perf_pmu__match(&test_pmu, "pmuname_10"), true);
-+	TEST_ASSERT_EQUAL("No suffix_",   perf_pmu__match(&test_pmu, "pmuname"),    true);
-+	TEST_ASSERT_EQUAL("Underscore_",  perf_pmu__match(&test_pmu, "pmuname_"),   true);
-+	TEST_ASSERT_EQUAL("Substring_",   perf_pmu__match(&test_pmu, "pmuna"),      false);
-+
-+	test_pmu.name = "pmuname_ab23";
-+	TEST_ASSERT_EQUAL("Diff suffix hex_", perf_pmu__match(&test_pmu, "pmuname_2"),    false);
-+	TEST_ASSERT_EQUAL("Sub suffix hex_",  perf_pmu__match(&test_pmu, "pmuname_ab"),   true);
-+	TEST_ASSERT_EQUAL("Same suffix hex_", perf_pmu__match(&test_pmu, "pmuname_ab23"), true);
-+	TEST_ASSERT_EQUAL("No suffix hex_",   perf_pmu__match(&test_pmu, "pmuname"),      true);
-+	TEST_ASSERT_EQUAL("Underscore hex_",  perf_pmu__match(&test_pmu, "pmuname_"),     true);
-+	TEST_ASSERT_EQUAL("Substring hex_",   perf_pmu__match(&test_pmu, "pmuna"),	 false);
-+
-+	test_pmu.name = "pmuname10";
-+	TEST_ASSERT_EQUAL("Diff suffix", perf_pmu__match(&test_pmu, "pmuname2"),  false);
-+	TEST_ASSERT_EQUAL("Sub suffix",  perf_pmu__match(&test_pmu, "pmuname1"),  true);
-+	TEST_ASSERT_EQUAL("Same suffix", perf_pmu__match(&test_pmu, "pmuname10"), true);
-+	TEST_ASSERT_EQUAL("No suffix",   perf_pmu__match(&test_pmu, "pmuname"),   true);
-+	TEST_ASSERT_EQUAL("Underscore",  perf_pmu__match(&test_pmu, "pmuname_"),  false);
-+	TEST_ASSERT_EQUAL("Substring",   perf_pmu__match(&test_pmu, "pmuna"),     false);
-+
-+	test_pmu.name = "pmunameab23";
-+	TEST_ASSERT_EQUAL("Diff suffix hex", perf_pmu__match(&test_pmu, "pmuname2"),    false);
-+	TEST_ASSERT_EQUAL("Sub suffix hex",  perf_pmu__match(&test_pmu, "pmunameab"),   true);
-+	TEST_ASSERT_EQUAL("Same suffix hex", perf_pmu__match(&test_pmu, "pmunameab23"), true);
-+	TEST_ASSERT_EQUAL("No suffix hex",   perf_pmu__match(&test_pmu, "pmuname"),     true);
-+	TEST_ASSERT_EQUAL("Underscore hex",  perf_pmu__match(&test_pmu, "pmuname_"),    false);
-+	TEST_ASSERT_EQUAL("Substring hex",   perf_pmu__match(&test_pmu, "pmuna"),	false);
-+
-+	/*
-+	 * 2 hex chars or less are not considered suffixes so it shouldn't be
-+	 * possible to wildcard by skipping the suffix. Therefore there are more
-+	 * false results here than above.
-+	 */
-+	test_pmu.name = "pmuname_a3";
-+	TEST_ASSERT_EQUAL("Diff suffix 2 hex_", perf_pmu__match(&test_pmu, "pmuname_2"),  false);
-+	/*
-+	 * This one should be false, but because pmuname_a3 ends in 3 which is
-+	 * decimal, it's not possible to determine if it's a short hex suffix or
-+	 * a normal decimal suffix following text. And we want to match on any
-+	 * length of decimal suffix. Run the test anyway and expect the wrong
-+	 * result. And slightly fuzzy matching shouldn't do too much harm.
-+	 */
-+	TEST_ASSERT_EQUAL("Sub suffix 2 hex_",  perf_pmu__match(&test_pmu, "pmuname_a"),  true);
-+	TEST_ASSERT_EQUAL("Same suffix 2 hex_", perf_pmu__match(&test_pmu, "pmuname_a3"), true);
-+	TEST_ASSERT_EQUAL("No suffix 2 hex_",   perf_pmu__match(&test_pmu, "pmuname"),    false);
-+	TEST_ASSERT_EQUAL("Underscore 2 hex_",  perf_pmu__match(&test_pmu, "pmuname_"),   false);
-+	TEST_ASSERT_EQUAL("Substring 2 hex_",   perf_pmu__match(&test_pmu, "pmuna"),	  false);
-+
-+	test_pmu.name = "pmuname_5";
-+	TEST_ASSERT_EQUAL("Glob 1", perf_pmu__match(&test_pmu, "pmu*"),		   true);
-+	TEST_ASSERT_EQUAL("Glob 2", perf_pmu__match(&test_pmu, "nomatch*"),	   false);
-+	TEST_ASSERT_EQUAL("Seq 1",  perf_pmu__match(&test_pmu, "pmuname_[12345]"), true);
-+	TEST_ASSERT_EQUAL("Seq 2",  perf_pmu__match(&test_pmu, "pmuname_[67890]"), false);
-+	TEST_ASSERT_EQUAL("? 1",    perf_pmu__match(&test_pmu, "pmuname_?"),	   true);
-+	TEST_ASSERT_EQUAL("? 2",    perf_pmu__match(&test_pmu, "pmuname_1?"),	   false);
-+
-+	return TEST_OK;
-+}
-+
- static struct test_case tests__pmu[] = {
- 	TEST_CASE("Parsing with PMU format directory", pmu_format),
- 	TEST_CASE("Parsing with PMU event", pmu_events),
- 	TEST_CASE("PMU event names", pmu_event_names),
- 	TEST_CASE("PMU name combining", name_len),
- 	TEST_CASE("PMU name comparison", name_cmp),
-+	TEST_CASE("PMU cmdline match", pmu_match),
- 	{	.name = NULL, }
- };
- 
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 888ce99122759..22291f48e4da1 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -2143,7 +2143,7 @@ void perf_pmu__warn_invalid_config(struct perf_pmu *pmu, __u64 config,
- bool perf_pmu__match(const struct perf_pmu *pmu, const char *tok)
+diff --git a/lib/objagg.c b/lib/objagg.c
+index 1e248629ed643..90f3aa68c30a0 100644
+--- a/lib/objagg.c
++++ b/lib/objagg.c
+@@ -167,6 +167,9 @@ static int objagg_obj_parent_assign(struct objagg *objagg,
  {
- 	const char *name = pmu->name;
--	bool need_fnmatch = strchr(tok, '*') != NULL;
-+	bool need_fnmatch = strisglob(tok);
+ 	void *delta_priv;
  
- 	if (!strncmp(tok, "uncore_", 7))
- 		tok += 7;
++	if (WARN_ON(!objagg_obj_is_root(parent)))
++		return -EINVAL;
++
+ 	delta_priv = objagg->ops->delta_create(objagg->priv, parent->obj,
+ 					       objagg_obj->obj);
+ 	if (IS_ERR(delta_priv))
 -- 
 2.43.0
 
