@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-64205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8691941CD4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4672D941E44
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59441C231AC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F034A1F24BCE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A221917C0;
-	Tue, 30 Jul 2024 17:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC161A76C3;
+	Tue, 30 Jul 2024 17:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tARp0g/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPdHu5zN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4803F18EFD2;
-	Tue, 30 Jul 2024 17:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092E01A76B2;
+	Tue, 30 Jul 2024 17:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359342; cv=none; b=Hou2m7D/WpHC7V8KgZA4AVJjyj05CtXmDnPsfT5UIbEORpT5V1Zz07SW5nH2UY46uGVhc0pwO6TMJ+ESB9x+XZuhA3sV24nr099ToZnZA8k5i9K4dOJr6Uavqq6CCWJ+yN2JZxOcW7jpp6KpHav1p/hLaJecrhjzbykj/M5IjEI=
+	t=1722360444; cv=none; b=fr9M9G2yAF/s5D7WEQirssC210EmHMgqMll135HBloYnkCreR9RuefOqXgOqISngvgO6Zl6u3P8ZzkbzBZp0U59TdFq2tTINlgPiwSiXWb1NYt7qViolia7nCPIfNiC9wzQcVtpO/rdQ10jCMh7T/K0kwJihvI7X5MFdHM8kwLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359342; c=relaxed/simple;
-	bh=/K8/dB4HmBHKIKJh2mC33EhqxaeBv5k7Ci+xT+EDiBI=;
+	s=arc-20240116; t=1722360444; c=relaxed/simple;
+	bh=c0zlRqV1n/fnmCDX5ZZTsNMc3RkcyOaIC6B5SWSockM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9pLihsuCUTM5vbd8AyXMsdMsD4Ap8zO5B0wJmkEA1lWTmUcagVpMg/YGqEogz3mptGWHZolzvazwCzlnCzySzg/GZQuYSyfV/ywWhO/LWAwKc3wfeyO4GxUBc01a72ZH6vOgc60sLPXYd69RIryLKvoRd66lpoXksrcCV3FbHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tARp0g/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02B0C4AF0F;
-	Tue, 30 Jul 2024 17:09:01 +0000 (UTC)
+	 MIME-Version; b=dNs6W5yijp1eg18e2NzczCiTQFtxb6iT7ObUMJI6eP2+T+CFsta56y5opCCc+BJvgnF3m7FjQYBXmIBYR8GjLUmhS9nR0iWeGvVVTMUDRYHJz1vYM2ahbUGy5aMmoJaW5KHf52i9S0GoR2c95SpWlZM6gxFyeAIbcqKiUUg+wgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPdHu5zN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3C1C32782;
+	Tue, 30 Jul 2024 17:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359342;
-	bh=/K8/dB4HmBHKIKJh2mC33EhqxaeBv5k7Ci+xT+EDiBI=;
+	s=korg; t=1722360443;
+	bh=c0zlRqV1n/fnmCDX5ZZTsNMc3RkcyOaIC6B5SWSockM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2tARp0g//hQv4KgCUm9Y8OYO4qKzim6RTuPMi2RWXSsG5F+j1nxgu23S4UI1ET1l2
-	 N4GIwBoqmVYM8jzrdmA3/16AyVb8iiEn/eSxnPr09mk28D3aWP6z91fqAvVcp5XNZv
-	 6UqUOYnEwnu0yB3UI0/FK2iACo0I/WZzWjlF3XQU=
+	b=dPdHu5zNdIkL7BUNALmL5zvphp1ZHo3F8DFMn8db98SLnZZxoOUND2SEj4ILl9AL/
+	 z6Y+Uh1Y11qsslLxylK6ODn3MwG6Nfw/glHFZnzo8RreldOm3l+70uX5USeq8T2Z6B
+	 O+DGGRhj2NiufFs6va8HIPTTuoMmFQ03jdTA2CKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, "Khalil, Amiri" <amiri.khalil@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>, Khalil@web.codeaurora.org
-Subject: [PATCH 6.6 469/568] perf stat: Fix the hard-coded metrics calculation on the hybrid
-Date: Tue, 30 Jul 2024 17:49:36 +0200
-Message-ID: <20240730151658.356807784@linuxfoundation.org>
+	patches@lists.linux.dev,
+	Lyude Paul <lyude@redhat.com>,
+	Harry Wentland <hwentlan@amd.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Wayne Lin <Wayne.Lin@amd.com>
+Subject: [PATCH 6.10 701/809] drm/dp_mst: Fix all mstb marked as not probed after suspend/resume
+Date: Tue, 30 Jul 2024 17:49:37 +0200
+Message-ID: <20240730151752.612660702@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 3612ca8e2935c4c142d99e33b8effa7045ce32b5 upstream.
+commit d63d81094d208abb20fc444514b2d9ec2f4b7c4e upstream.
 
-The hard-coded metrics is wrongly calculated on the hybrid machine.
+[Why]
+After supend/resume, with topology unchanged, observe that
+link_address_sent of all mstb are marked as false even the topology probing
+is done without any error.
 
-$ perf stat -e cycles,instructions -a sleep 1
+It is caused by wrongly also include "ret == 0" case as a probing failure
+case.
 
- Performance counter stats for 'system wide':
+[How]
+Remove inappropriate checking conditions.
 
-        18,205,487      cpu_atom/cycles/
-         9,733,603      cpu_core/cycles/
-         9,423,111      cpu_atom/instructions/     #  0.52  insn per cycle
-         4,268,965      cpu_core/instructions/     #  0.23  insn per cycle
-
-The insn per cycle for cpu_core should be 4,268,965 / 9,733,603 = 0.44.
-
-When finding the metric events, the find_stat() doesn't take the PMU
-type into account. The cpu_atom/cycles/ is wrongly used to calculate
-the IPC of the cpu_core.
-
-In the hard-coded metrics, the events from a different PMU are only
-SW_CPU_CLOCK and SW_TASK_CLOCK. They both have the stat type,
-STAT_NSECS. Except the SW CLOCK events, check the PMU type as well.
-
-Fixes: 0a57b910807a ("perf stat: Use counts rather than saved_value")
-Reported-by: Khalil, Amiri <amiri.khalil@intel.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Harry Wentland <hwentlan@amd.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
 Cc: stable@vger.kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240606180316.4122904-1-kan.liang@linux.intel.com
+Fixes: 37dfdc55ffeb ("drm/dp_mst: Cleanup drm_dp_send_link_address() a bit")
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240626084825.878565-2-Wayne.Lin@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/stat-shadow.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/perf/util/stat-shadow.c
-+++ b/tools/perf/util/stat-shadow.c
-@@ -176,6 +176,13 @@ static double find_stat(const struct evs
- 		if (type != evsel__stat_type(cur))
- 			continue;
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -2929,7 +2929,7 @@ static int drm_dp_send_link_address(stru
  
-+		/*
-+		 * Except the SW CLOCK events,
-+		 * ignore if not the PMU we're looking for.
-+		 */
-+		if ((type != STAT_NSECS) && (evsel->pmu != cur->pmu))
-+			continue;
-+
- 		aggr = &cur->stats->aggr[aggr_idx];
- 		if (type == STAT_NSECS)
- 			return aggr->counts.val;
+ 	/* FIXME: Actually do some real error handling here */
+ 	ret = drm_dp_mst_wait_tx_reply(mstb, txmsg);
+-	if (ret <= 0) {
++	if (ret < 0) {
+ 		drm_err(mgr->dev, "Sending link address failed with %d\n", ret);
+ 		goto out;
+ 	}
+@@ -2981,7 +2981,7 @@ static int drm_dp_send_link_address(stru
+ 	mutex_unlock(&mgr->lock);
+ 
+ out:
+-	if (ret <= 0)
++	if (ret < 0)
+ 		mstb->link_address_sent = false;
+ 	kfree(txmsg);
+ 	return ret < 0 ? ret : changed;
 
 
 
