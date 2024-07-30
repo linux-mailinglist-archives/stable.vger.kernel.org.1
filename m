@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F9B941B90
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E29941EB2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC7C32837C7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2719283A24
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85145189907;
-	Tue, 30 Jul 2024 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B285189522;
+	Tue, 30 Jul 2024 17:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zo08a/2a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B46sMls0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD4018801A;
-	Tue, 30 Jul 2024 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8A41A76A5;
+	Tue, 30 Jul 2024 17:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358584; cv=none; b=bHRrufYLd3NNPxOm9tS9nds0KwdyOFpXp5xCrAdjjCPnumLkK+8pVNS8y300joQ7jR+a3CxLvdsUHeYOTFt6vUFbD0hP84Bmkqscgescu+DKxUeJiFczHotCv6ugIDN6HZiZBxBOsRvheFxB44OFzc3PnFT6jbYWjjPby4of7Iw=
+	t=1722360726; cv=none; b=sHRxw0yM1nz4GQ+zCiNaEhRe6WSH8gsd1dDPTOlCZNVwQ4MwU7mbZTVmVqJgCzY9wauAHl54EMJ1KQchWV3l/DdSBYlzYCeSgErlU4lMVy8D1t3N6Bv7LVpkzgTLVKdDHeQxi5BbteWsmvRvafxV/MpaXLVWzsflRiYHGGSHyLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358584; c=relaxed/simple;
-	bh=byM563PhxmBytqiq2D+vCBPCWNulBlQCQNo/tRfZaqc=;
+	s=arc-20240116; t=1722360726; c=relaxed/simple;
+	bh=fjfjLKa/rclr7PJJz9yL5jes5wrf5iEbkuWFpUsSzmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsgjUP0EeXj9Cx/k9mucTtKcoH1rZijafyyuaHafSSWPunqPY/sAEMJ8CcCeRDawqBfezx2pEC58dkEUUTToSUOyVXyhOEyYcpqxj4DqDzohTftMMxJYsiNDtIHHHHa89YxgO8EHlNS44hanLJJEmFtJ1vLZmjgj1jVmqBX2U0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zo08a/2a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6989FC32782;
-	Tue, 30 Jul 2024 16:56:23 +0000 (UTC)
+	 MIME-Version; b=PnnHgKVDdsjcNvEnmsyBTG20wHiZbY/kIayKOGcGgGRNWt1ZUckgEbJuYWei/rqYaYUe2/LKI2MEuEGJmNwxTNdho4/nZcifo1tWFzrQQ2FiB2mxviVwsAoR1WTqSLUtnSeD8GPRkHnfHmh4JFraweGXkfaIzvMQdsUzHw71w2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B46sMls0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7216FC32782;
+	Tue, 30 Jul 2024 17:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358584;
-	bh=byM563PhxmBytqiq2D+vCBPCWNulBlQCQNo/tRfZaqc=;
+	s=korg; t=1722360725;
+	bh=fjfjLKa/rclr7PJJz9yL5jes5wrf5iEbkuWFpUsSzmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zo08a/2aar37W+X13QH61qnhDSIDlti3Mdb0mhXGexgU0QBNAZER40KelG1XOyCgs
-	 7MXesJb3b9/LLyGKJ6RP246m9JfXWW2MNvtz7ozWWT9mU9L39Q7MMVJ2XUJlCeh9Aj
-	 /LGeGdbaO37hHzo1jMY7OPRNRw5bbzOMTqItFPVw=
+	b=B46sMls0J3rAIe0WRve4GjnNRrPRJ8AhAjiFV0Se+VGdKSDnwZ4GxtUMWb5JiTj/2
+	 rCV8lhi7YR9NYHi3NqG2d0vdTCGCSQ2MwVWxCo1MsrmOjiTT0edOkAa126W6370nVc
+	 qRZnETLxDl4bz10dNELMSArMnTIge9ZNc9BFBQ6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 404/440] kbuild: avoid build error when single DTB is turned into composite DTB
+Subject: [PATCH 6.10 761/809] ipv4: Fix incorrect source address in Record Route option
 Date: Tue, 30 Jul 2024 17:50:37 +0200
-Message-ID: <20240730151631.578911910@linuxfoundation.org>
+Message-ID: <20240730151755.020444490@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 712aba5543b88996bc4682086471076fbf048927 ]
+[ Upstream commit cc73bbab4b1fb8a4f53a24645871dafa5f81266a ]
 
-As commit afa974b77128 ("kbuild: add real-prereqs shorthand for
-$(filter-out FORCE,$^)") explained, $(real-prereqs) is not just a list
-of objects when linking a multi-object module. If a single-object module
-is turned into a multi-object module, $^ (and therefore $(real-prereqs)
-as well) contains header files recorded in the *.cmd file. Such headers
-must be filtered out.
+The Record Route IP option records the addresses of the routers that
+routed the packet. In the case of forwarded packets, the kernel performs
+a route lookup via fib_lookup() and fills in the preferred source
+address of the matched route.
 
-Now that a DTB can be built either from a single source or multiple
-source files, the same issue can occur.
+The lookup is performed with the DS field of the forwarded packet, but
+using the RT_TOS() macro which only masks one of the two ECN bits. If
+the packet is ECT(0) or CE, the matched route might be different than
+the route via which the packet was forwarded as the input path masks
+both of the ECN bits, resulting in the wrong address being filled in the
+Record Route option.
 
-Consider the following scenario:
+Fix by masking both of the ECN bits.
 
-First, foo.dtb is implemented as a single-blob device tree.
-
-The code looks something like this:
-
-[Sample Code 1]
-
-  Makefile:
-
-      dtb-y += foo.dtb
-
-  foo.dts:
-
-    #include <dt-bindings/gpio/gpio.h>
-    /dts-v1/;
-    / { };
-
-When it is compiled, .foo.dtb.cmd records that foo.dtb depends on
-scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h.
-
-Later, foo.dtb is split into a base and an overlay. The code looks
-something like this:
-
-[Sample Code 2]
-
-  Makefile:
-
-      dtb-y += foo.dtb
-      foo-dtbs := foo-base.dtb foo-addon.dtbo
-
-  foo-base.dts:
-
-    #include <dt-bindings/gpio/gpio.h>
-    /dts-v1/;
-    / { };
-
-  foo-addon.dtso:
-
-    /dts-v1/;
-    /plugin/;
-    / { };
-
-If you rebuild foo.dtb without 'make clean', you will get this error:
-
-    Overlay 'scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h' is incomplete
-
-$(real-prereqs) contains not only foo-base.dtb and foo-addon.dtbo but
-also scripts/dtc/include-prefixes/dt-bindings/gpio/gpio.h, which is
-passed to scripts/dtc/fdtoverlay.
-
-Fixes: 15d16d6dadf6 ("kbuild: Add generic rule to apply fdtoverlay")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 8e36360ae876 ("ipv4: Remove route key identity dependencies in ip_rt_get_source().")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://patch.msgid.link/20240718123407.434778-1-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.lib | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv4/route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 3aa384cec76b8..d236e5658f9b1 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -382,8 +382,12 @@ cmd_dtc = $(HOSTCC) -E $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) $< ;
- 		-d $(depfile).dtc.tmp $(dtc-tmp) ; \
- 	cat $(depfile).pre.tmp $(depfile).dtc.tmp > $(depfile)
- 
-+# NOTE:
-+# Do not replace $(filter %.dtb %.dtbo, $^) with $(real-prereqs). When a single
-+# DTB is turned into a multi-blob DTB, $^ will contain header file dependencies
-+# recorded in the .*.cmd file.
- quiet_cmd_fdtoverlay = DTOVL   $@
--      cmd_fdtoverlay = $(objtree)/scripts/dtc/fdtoverlay -o $@ -i $(real-prereqs)
-+      cmd_fdtoverlay = $(objtree)/scripts/dtc/fdtoverlay -o $@ -i $(filter %.dtb %.dtbo, $^)
- 
- $(multi-dtb-y): FORCE
- 	$(call if_changed,fdtoverlay)
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 3473e0105e299..990912fa18e85 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1263,7 +1263,7 @@ void ip_rt_get_source(u8 *addr, struct sk_buff *skb, struct rtable *rt)
+ 		struct flowi4 fl4 = {
+ 			.daddr = iph->daddr,
+ 			.saddr = iph->saddr,
+-			.flowi4_tos = RT_TOS(iph->tos),
++			.flowi4_tos = iph->tos & IPTOS_RT_MASK,
+ 			.flowi4_oif = rt->dst.dev->ifindex,
+ 			.flowi4_iif = skb->dev->ifindex,
+ 			.flowi4_mark = skb->mark,
 -- 
 2.43.0
 
