@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04D5941E24
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0EA941BF9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95AA8B252A4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E0361C215B4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1076E1A76BD;
-	Tue, 30 Jul 2024 17:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F22E18801A;
+	Tue, 30 Jul 2024 17:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBRBsdaq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfQu+Dmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10B11A76A1;
-	Tue, 30 Jul 2024 17:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56200156F30;
+	Tue, 30 Jul 2024 17:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360227; cv=none; b=F4/7HTFB/XumFcVqIIRdwlDQcxQp80T+leZmi5a1Cg8hI9BcoPG8eFivicZC+/3H9SG2BQ/PFgElnKmtRbFBrH+Ny4xOKwaw7L8DX8xVcPk7mGmOC9Wx+h2yZ1UXcOcIDdNeHCY7QTDdPcoEBqRFSe5L0WBgFIytoGt61TxRJJQ=
+	t=1722358892; cv=none; b=c2leCcos5k7qQaiJGOheKX3C9oH6J459UybRgH+yPhcIjSSZIo32nyxoj40H7U/9AS2FO45ddoS93HXPM29y6TCz0sjlIYuvw3vs0P6343lE41EgmMBsowLepFu12/IhipPFzFQdoIsn+4mnlHfv8j902TI+oBufYB+LA//qC6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360227; c=relaxed/simple;
-	bh=kShYshOLKEqY1KpN4dqxf2ECvMPSpEaPss4hF0MTGKA=;
+	s=arc-20240116; t=1722358892; c=relaxed/simple;
+	bh=8QvjdALhuOHdvXrsVZ5blaPz2kLwPlw/hlLjXvjrliM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNqbmcl+QBgSXO+/YW2ClFUEPy6JqCLxxq5FKy5kIoMW83O577OWqUP6HNI7hCG1Vvug0mj4Xx/OpMNqIVZ9EKANxwiRXi3TdctBXa5RCoSw/bqfQ8+4S9bJwCLkEbisHjk3fpPjl4QFmT+gr3u8a8WCHHdWc2gkNKXuLR+Q0+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBRBsdaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A8AC32782;
-	Tue, 30 Jul 2024 17:23:46 +0000 (UTC)
+	 MIME-Version; b=upoNJvqLXBqQKDf8ocD8CRpKeMNDmuedyyWAX/gmOE/nZdL83zds/oGjfHQuKiOwNUVC3kFFGi2/wTx9J3wZEag7a+40JwXcgUWRzI75rVUahTKVY8JGSVkGUDU2l29dDMvaXP0+PSfErA3pGsl5KvJFhnxD5YFY97/QTYXuv7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfQu+Dmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12F0C32782;
+	Tue, 30 Jul 2024 17:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360227;
-	bh=kShYshOLKEqY1KpN4dqxf2ECvMPSpEaPss4hF0MTGKA=;
+	s=korg; t=1722358892;
+	bh=8QvjdALhuOHdvXrsVZ5blaPz2kLwPlw/hlLjXvjrliM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBRBsdaqKxoemqMFLR4pSWWiXuvLR7R1tugIQZU5CZLtkaSnKec9JHjJ/zwd3XBpf
-	 SHre+efIvwYb4nJGaI+ni28If61JPZQqnzJdyfMUIWRrltkGZ6vN1QZfou6ZhmRpDs
-	 ziCYs05CtPkV/Adbld4r2Zn0bRf5PLiEjE72KmUo=
+	b=SfQu+Dmgg53PnWuO1An7HptV1g+u8SSIDRPncjmqWetqnn5Jbf3EBETvniVrOSq/E
+	 /26W4eRZ9bFTegsl7+eOrSNMUQJg0cTLtnIJW1nDAxce7feTkr4wo0iddS2u/fdXeE
+	 zC7sFVyC0b99m+/ZO4SvyTs2DmO2SIAlKJRhUVeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.10 636/809] parisc: Fix warning at drivers/pci/msi/msi.h:121
-Date: Tue, 30 Jul 2024 17:48:32 +0200
-Message-ID: <20240730151749.965565131@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Ofir Gal <ofir.gal@volumez.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.6 406/568] md/md-bitmap: fix writing non bitmap pages
+Date: Tue, 30 Jul 2024 17:48:33 +0200
+Message-ID: <20240730151655.738441011@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave@mx3210.local>
+From: Ofir Gal <ofir.gal@volumez.com>
 
-commit 4c29ab84cfec17081aae7a7a28f8d2c93c42dcae upstream.
+commit ab99a87542f194f28e2364a42afbf9fb48b1c724 upstream.
 
-Fix warning at drivers/pci/msi/msi.h:121.
+__write_sb_page() rounds up the io size to the optimal io size if it
+doesn't exceed the data offset, but it doesn't check the final size
+exceeds the bitmap length.
 
-Recently, I added a PCI to PCIe bridge adaptor and a PCIe NVME card
-to my rp3440. Then, I noticed this warning at boot:
+For example:
+page count      - 1
+page size       - 4K
+data offset     - 1M
+optimal io size - 256K
 
- WARNING: CPU: 0 PID: 10 at drivers/pci/msi/msi.h:121 pci_msi_setup_msi_irqs+0x68/0x90
- CPU: 0 PID: 10 Comm: kworker/u32:0 Not tainted 6.9.7-parisc64 #1  Debian 6.9.7-1
- Hardware name: 9000/800/rp3440
- Workqueue: async async_run_entry_fn
+The final io size would be 256K (64 pages) but md_bitmap_storage_alloc()
+allocated 1 page, the IO would write 1 valid page and 63 pages that
+happens to be allocated afterwards. This leaks memory to the raid device
+superblock.
 
-We need to select PCI_MSI_ARCH_FALLBACKS when PCI_MSI is selected.
+This issue caused a data transfer failure in nvme-tcp. The network
+drivers checks the first page of an IO with sendpage_ok(), it returns
+true if the page isn't a slabpage and refcount >= 1. If the page
+!sendpage_ok() the network driver disables MSG_SPLICE_PAGES.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Cc: stable@vger.kernel.org	# v6.0+
-Signed-off-by: Helge Deller <deller@gmx.de>
+As of now the network layer assumes all the pages of the IO are
+sendpage_ok() when MSG_SPLICE_PAGES is on.
+
+The bitmap pages aren't slab pages, the first page of the IO is
+sendpage_ok(), but the additional pages that happens to be allocated
+after the bitmap pages might be !sendpage_ok(). That cause
+skb_splice_from_iter() to stop the data transfer, in the case below it
+hangs 'mdadm --create'.
+
+The bug is reproducible, in order to reproduce we need nvme-over-tcp
+controllers with optimal IO size bigger than PAGE_SIZE. Creating a raid
+with bitmap over those devices reproduces the bug.
+
+In order to simulate large optimal IO size you can use dm-stripe with a
+single device.
+Script to reproduce the issue on top of brd devices using dm-stripe is
+attached below (will be added to blktest).
+
+I have added some logs to test the theory:
+...
+md: created bitmap (1 pages) for device md127
+__write_sb_page before md_super_write offset: 16, size: 262144. pfn: 0x53ee
+=== __write_sb_page before md_super_write. logging pages ===
+pfn: 0x53ee, slab: 0 <-- the only page that allocated for the bitmap
+pfn: 0x53ef, slab: 1
+pfn: 0x53f0, slab: 0
+pfn: 0x53f1, slab: 0
+pfn: 0x53f2, slab: 0
+pfn: 0x53f3, slab: 1
+...
+nvme_tcp: sendpage_ok - pfn: 0x53ee, len: 262144, offset: 0
+skbuff: before sendpage_ok() - pfn: 0x53ee
+skbuff: before sendpage_ok() - pfn: 0x53ef
+WARNING at net/core/skbuff.c:6848 skb_splice_from_iter+0x142/0x450
+skbuff: !sendpage_ok - pfn: 0x53ef. is_slab: 1, page_count: 1
+...
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Ofir Gal <ofir.gal@volumez.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240607072748.3182199-1-ofir.gal@volumez.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/md-bitmap.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -86,6 +86,7 @@ config PARISC
- 	select HAVE_SOFTIRQ_ON_OWN_STACK if IRQSTACKS
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select HAVE_FUNCTION_DESCRIPTORS if 64BIT
-+	select PCI_MSI_ARCH_FALLBACKS if PCI_MSI
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -227,6 +227,8 @@ static int __write_sb_page(struct md_rde
+ 	struct block_device *bdev;
+ 	struct mddev *mddev = bitmap->mddev;
+ 	struct bitmap_storage *store = &bitmap->storage;
++	unsigned int bitmap_limit = (bitmap->storage.file_pages - pg_index) <<
++		PAGE_SHIFT;
+ 	loff_t sboff, offset = mddev->bitmap_info.offset;
+ 	sector_t ps = pg_index * PAGE_SIZE / SECTOR_SIZE;
+ 	unsigned int size = PAGE_SIZE;
+@@ -269,11 +271,9 @@ static int __write_sb_page(struct md_rde
+ 		if (size == 0)
+ 			/* bitmap runs in to data */
+ 			return -EINVAL;
+-	} else {
+-		/* DATA METADATA BITMAP - no problems */
+ 	}
  
- 	help
- 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
+-	md_super_write(mddev, rdev, sboff + ps, (int) size, page);
++	md_super_write(mddev, rdev, sboff + ps, (int)min(size, bitmap_limit), page);
+ 	return 0;
+ }
+ 
 
 
 
