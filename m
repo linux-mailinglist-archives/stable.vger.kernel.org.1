@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-63527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD27941A2D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBB6941C3F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA41EB2D05C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81CF4B262B2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376AC189514;
-	Tue, 30 Jul 2024 16:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B2C1898E0;
+	Tue, 30 Jul 2024 17:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGcD6peF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bz60Kii2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91A41A6199;
-	Tue, 30 Jul 2024 16:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31981188017;
+	Tue, 30 Jul 2024 17:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357114; cv=none; b=L01sdLruUeRXnluZD59oYU4vwKVgRJzo/sMrhG0jYrz/5CBkUWLQuWu2DLoDNJVNbLCH+1/eDXzbYzOOHfW4Y3bOSAgjAXB05fBSG4/AFSPRm0F6MWRDsYBRMQT7rUK/IZi2/eqTidq9fxlgbx969UwYsq5niKmbuUI+hbUlj94=
+	t=1722359091; cv=none; b=nFPtLPVmUO3C09GqjN12z+DeP5PkW1r/XCR/ztmXXtI2ZUhbRp53E44q8IebZFjcT3JsEnz8rAVCn72e5Dxqm9wz1kzeewbNY+B6yfO7CrHvjzEn1aMo8cheP4z4QDeIMjTo1DbcPrMboenhn98skM6gorgUMjZvg6wSOdSnYAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357114; c=relaxed/simple;
-	bh=jH2HVD34jCmJnHSpKEdQbS8qiJCtYbXHb5jLh3NXf3w=;
+	s=arc-20240116; t=1722359091; c=relaxed/simple;
+	bh=7Fn+ojY5+p+0A6AtYxa2SscUJbFn1UGh2TvHOtxgGPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pypSNJFRSOKQ+dY5ekZxIXOV8j0hvWBhFMwJdKHIrOQ3p3W6PU5dTDFVb8SjoeUp+ij+IcOzqBLo4QzgbEGXfBCKvHiOIf0ctaVtpcMH7vVutOos7wQBqdgovvULBu/HE84YHRJdrcv2TN/gl1EQvO2FX9CuBA0HII5+9EIfVUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGcD6peF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59092C32782;
-	Tue, 30 Jul 2024 16:31:53 +0000 (UTC)
+	 MIME-Version; b=P+V8QX+XKu32B0VP5184UH1iIw0M/DOF4gZELFbfeOwWzcPbDAKR0PEj1ZJLiZK9mbwU0Ct8GDbEs2mgQeWtnV3P0F3RvuY54AeXlJ9ZUS08iNRzNdlFpoxXrewH84Cq/zF+VYkvM4rcfhKl3qniNxebquRSNR73uTMPJdj1LC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bz60Kii2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9043C32782;
+	Tue, 30 Jul 2024 17:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357113;
-	bh=jH2HVD34jCmJnHSpKEdQbS8qiJCtYbXHb5jLh3NXf3w=;
+	s=korg; t=1722359091;
+	bh=7Fn+ojY5+p+0A6AtYxa2SscUJbFn1UGh2TvHOtxgGPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGcD6peF9YHi8fCpVJUSjG79GWtJmeTTF4IYFPcEpKui9bcLCTzTO3HFQEa3x7C0c
-	 rtBZWH2pqo6gFilJU09yd38U5oB50znN67bBy+7/PZmwV2FANB6JEcb5YHYoJ8Zq2P
-	 VKfW3npXKtv0uyT279uDg2XFUkJ/RCEtovSANyLI=
+	b=bz60Kii2g0TYz/LaJTjSlGdnA31tRSmYktFSd2Aiy6TA+5SkON3ThO0Jh4oOxcIQD
+	 26Leo+H6d1b5o2+Q+1u2H2jdf+PWkuUzmhV//FgyJqR7mQuzSayVx8iGv30Xte7YUP
+	 GlFF4+WhtU6LF+QuGnM1twQWWphyy27mI+E8PyyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>,
-	Adam Ford <aford173@gmail.com>
-Subject: [PATCH 6.6 201/568] media: i2c: imx219: fix msr access command sequence
+	Joao Martins <joao.m.martins@oracle.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Matt Ochs <mochs@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 432/809] iommufd/iova_bitmap: Check iova_bitmap_done() after set ahead
 Date: Tue, 30 Jul 2024 17:45:08 +0200
-Message-ID: <20240730151647.732989347@linuxfoundation.org>
+Message-ID: <20240730151741.764499657@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 3cdc776e0a5f1784c3ae5d3371b64215c228bf1f ]
+[ Upstream commit 792583656f554e35383d6b2325371c8fe056a56b ]
 
-It was reported to me that the imx219 didn't work on one of our
-development kits partly because the access sequence is incorrect.
-The datasheet I could find [1] for this camera has the access sequence:
-Seq. No. Address (Hex) data
-1        30EB          05
-2        30EB          0C
-3        300A          FF
-4        300B          FF
-5        30EB          05
-6        30EB          09
+After iova_bitmap_set_ahead() returns it may be at the end of the range.
+Move iova_bitmap_set_ahead() earlier to avoid unnecessary attempt in
+trying to pin the next pages by reusing iova_bitmap_done() check.
 
-but the driver swaps the first two elements. Laurent pointed out on IRC
-that the original code used the correct sequence for 1920x1080 but the
-current sequence for 3280x2464 and 1640x1232. During refactoring of the
-init sequence the current order was used for all formats.
-
-Switch to using the documented sequence.
-
-Link: https://www.opensourceinstruments.com/Electronics/Data/IMX219PQ.pdf [1]
-Fixes: 8508455961d5 ("media: i2c: imx219: Split common registers from mode tables")
-Fixes: 1283b3b8f82b ("media: i2c: Add driver for Sony IMX219 sensor")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Tested-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon-kit
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 2780025e01e2 ("iommufd/iova_bitmap: Handle recording beyond the mapped pages")
+Link: https://lore.kernel.org/r/20240627110105.62325-7-joao.m.martins@oracle.com
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Tested-by: Matt Ochs <mochs@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx219.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/iommufd/iova_bitmap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
-index 3afa3f79c8a26..a9a8cd148f4fc 100644
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -188,8 +188,8 @@ static const struct cci_reg_sequence imx219_common_regs[] = {
- 	{ IMX219_REG_MODE_SELECT, 0x00 },	/* Mode Select */
+diff --git a/drivers/iommu/iommufd/iova_bitmap.c b/drivers/iommu/iommufd/iova_bitmap.c
+index db8c46bee1559..e33ddfc239b5b 100644
+--- a/drivers/iommu/iommufd/iova_bitmap.c
++++ b/drivers/iommu/iommufd/iova_bitmap.c
+@@ -384,8 +384,6 @@ static int iova_bitmap_advance(struct iova_bitmap *bitmap)
+ 	bitmap->mapped_base_index += count;
  
- 	/* To Access Addresses 3000-5fff, send the following commands */
--	{ CCI_REG8(0x30eb), 0x0c },
- 	{ CCI_REG8(0x30eb), 0x05 },
-+	{ CCI_REG8(0x30eb), 0x0c },
- 	{ CCI_REG8(0x300a), 0xff },
- 	{ CCI_REG8(0x300b), 0xff },
- 	{ CCI_REG8(0x30eb), 0x05 },
+ 	iova_bitmap_put(bitmap);
+-	if (iova_bitmap_done(bitmap))
+-		return 0;
+ 
+ 	/* Iterate, set and skip any bits requested for next iteration */
+ 	if (bitmap->set_ahead_length) {
+@@ -396,6 +394,9 @@ static int iova_bitmap_advance(struct iova_bitmap *bitmap)
+ 			return ret;
+ 	}
+ 
++	if (iova_bitmap_done(bitmap))
++		return 0;
++
+ 	/* When advancing the index we pin the next set of bitmap pages */
+ 	return iova_bitmap_get(bitmap);
+ }
 -- 
 2.43.0
 
