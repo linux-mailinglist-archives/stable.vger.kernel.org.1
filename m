@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-64060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7897C941BEC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA25941DF5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB08E1C20CBD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72AB01F252B7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A3A156F30;
-	Tue, 30 Jul 2024 17:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC211A76BA;
+	Tue, 30 Jul 2024 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkhBfqHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zOafbWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6C2183CC3;
-	Tue, 30 Jul 2024 17:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC921A76AF;
+	Tue, 30 Jul 2024 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358853; cv=none; b=uXx5kJWua9AWnqa1FiogGMwqSw9wAUGLsKBUWWfONM9oZElTkcSXrRN8xFfmlTmNNd/iGGX0VEVhBH3pnbcrkUbCA2v5W4xiuSCzHWEifdPtmBJztfispJ+ePysxOM50bo0PvwYYuU0fjoKL12iETewd4Q/W1DiXGNNlxjtXXEs=
+	t=1722360221; cv=none; b=ByNp6+mL8axYQ25K8pvhCxoEvtDiYNHyCCHkF7+ZmdLmjzFqRkdXjh1D8hx2+VZuwH3ZD8LboYhjP+wPnk91DD4BdLqLarPvO0Wde0I0lo0CuFcrhQpRjXTdw9X3o2z5fJ7KLY/oDyfMo8uNwR0MGAKnBMCaGSuWoSd+S0iCPkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358853; c=relaxed/simple;
-	bh=oYXTDAgXcWAynT89s4onkLbFPaCu5RnzPYBHueZXFbA=;
+	s=arc-20240116; t=1722360221; c=relaxed/simple;
+	bh=kk/w0boIX4z1xrykrSiNiGxw2TbqpWeb8cn6g3leiAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxtAOx4wz0HG6izb/YEwAG5gVUw97KFevbte/hvjcHKBPUS8JRNQnoiQBeJMcQLuA6Qmqt5aasSjCvnDwAaxQHli4jjbxjt9vmPJK1DV05L/ySjv2A8PLX5tasS2ALPZx5uFELdcv5/9PE7dy9zA26e1sPW3Xng2SBD5QgXWJoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkhBfqHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304DBC32782;
-	Tue, 30 Jul 2024 17:00:53 +0000 (UTC)
+	 MIME-Version; b=YCvxaDWTAOvQnpcy9Py22zAJ+53AxoYw5xXTghEBow73qHrtyyGZH3Qq3YXyGg1Xukx0DQSTTIpoWCqIqCMD+84qCTlijW2q55NzKp9DuOcKdl801Njy6THPV2HOM5NUf6KfZoxR7uWj/qdVF7NSjgrdQl2+QRbWGMP0ATk/UeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zOafbWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B919DC32782;
+	Tue, 30 Jul 2024 17:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358853;
-	bh=oYXTDAgXcWAynT89s4onkLbFPaCu5RnzPYBHueZXFbA=;
+	s=korg; t=1722360221;
+	bh=kk/w0boIX4z1xrykrSiNiGxw2TbqpWeb8cn6g3leiAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkhBfqHx6JW9+mouCAGirBx7s8oHQMY3IoCxlLU9q/fblusL1xQhz1Mpc+NO0Lq63
-	 QPWONcnzMHW/nD2vTOCS/nQYE6Rsevv+/O6iJPEp03CP8yIL/Py+tOnemf8KzLCiVe
-	 +MhDrr92Y9UkyMq/d9cwm6oFnSP/jPSvg5JjwzF0=
+	b=1zOafbWHmv5zGUAoRvC8menXc9a5rabdOStmSpubxPHWj2GnR4kaUWuN7h76jEad+
+	 pxvqCrA6Ka4CeHBXs8dTbfO01MBZ/LmJJIqrJ/Iukg7clD2t7l44ylhW4FAYH0+COu
+	 ZJSDbDP8aGMeaNV5UIQQWo5KN14LQIFdSUWRrDpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 403/568] wifi: rtw88: usb: Fix disconnection after beacon loss
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Thomas Huth <thuth@redhat.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>
+Subject: [PATCH 6.10 634/809] drm/fbdev-dma: Fix framebuffer mode for big endian devices
 Date: Tue, 30 Jul 2024 17:48:30 +0200
-Message-ID: <20240730151655.622112743@linuxfoundation.org>
+Message-ID: <20240730151749.883723357@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +66,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
 
-commit 28818b4d871bc93cc4f5c7c7d7c526a6a096c09c upstream.
+commit cb31c58e8c294ff31ea842ee1fa2c06c9a9f1cc3 upstream.
 
-When there is beacon loss, for example due to unrelated Bluetooth
-devices transmitting music nearby, the wifi connection dies soon
-after the first beacon loss message:
+The drm_mode_legacy_fb_format() function only generates formats suitable
+for little endian devices. switch to drm_driver_legacy_fb_format() here
+instead to take the device endianness into consideration, too.
 
-Apr 28 20:47:14 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-BEACON-LOSS
-Apr 28 20:47:15 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
-
-Apr 28 20:47:24 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-BEACON-LOSS
-Apr 28 20:47:25 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
-
-Apr 28 20:47:34 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-BEACON-LOSS
-Apr 28 20:47:35 ideapad2 wpa_supplicant[1161]: wlp3s0f3u4:
- CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
-
-When the beacon loss happens, mac80211 makes rtw88 transmit a QOS
-NULL frame and asks to confirm the ACK status. Even though rtw88
-confirms to mac80211 that the QOS NULL was transmitted successfully,
-the connection still dies. This is because rtw88 is handing the QOS
-NULL back to mac80211 with skb->data pointing to the headroom (the
-TX descriptor) instead of ieee80211_hdr.
-
-Fix the disconnection by moving skb->data to the correct position
-before ieee80211_tx_status_irqsafe().
-
-The problem was observed with RTL8811AU (TP-Link Archer T2U Nano)
-and the potential future rtw88_8821au driver. Also tested with
-RTL8811CU (Tenda U9).
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/ecbf0601-810d-4609-b8fc-8b0e38d2948d@gmail.com
+Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 6ae2ff23aa43 ("drm/client: Convert drm_client_buffer_addfb() to drm_mode_addfb2()")
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: <stable@vger.kernel.org> # v6.7+
+Link: https://patchwork.freedesktop.org/patch/msgid/20240702121737.522878-1-thuth@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/usb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_fbdev_dma.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -273,6 +273,8 @@ static void rtw_usb_write_port_tx_comple
- 		info = IEEE80211_SKB_CB(skb);
- 		tx_data = rtw_usb_get_tx_data(skb);
+--- a/drivers/gpu/drm/drm_fbdev_dma.c
++++ b/drivers/gpu/drm/drm_fbdev_dma.c
+@@ -90,7 +90,8 @@ static int drm_fbdev_dma_helper_fb_probe
+ 		    sizes->surface_width, sizes->surface_height,
+ 		    sizes->surface_bpp);
  
-+		skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
-+
- 		/* enqueue to wait for tx report */
- 		if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
- 			rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
+-	format = drm_mode_legacy_fb_format(sizes->surface_bpp, sizes->surface_depth);
++	format = drm_driver_legacy_fb_format(dev, sizes->surface_bpp,
++					     sizes->surface_depth);
+ 	buffer = drm_client_framebuffer_create(client, sizes->surface_width,
+ 					       sizes->surface_height, format);
+ 	if (IS_ERR(buffer))
 
 
 
