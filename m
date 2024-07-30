@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53055941986
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E55794199A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8432D1C2343B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53FA41F26097
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78BF1A619E;
-	Tue, 30 Jul 2024 16:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07EB148848;
+	Tue, 30 Jul 2024 16:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9NDiIil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgUfI9Bv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77641A6195;
-	Tue, 30 Jul 2024 16:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957221A619E;
+	Tue, 30 Jul 2024 16:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357206; cv=none; b=KZKP+fmbt0S5AmL0B9hbi3oiqWCu7iXQDSuglxr0rJrdyia4sByG/t6VZdAHjrJwJ5sTa/LaCsU/KhoTvUnKuAD08mROAxxdEli6Npw19XP3U1FsynJURJE7c/fD7Qiv+uiuhKKiBfAJwGSqJqXboaGylS4AzvVI/nCTxR3vLB0=
+	t=1722357278; cv=none; b=B9bYdmQC2hD5nVk1JwkfcazNASmqD/IMHmA+nVB4D8GNGIpZSK05RWqWilDr/UY4iid8g8qgDgI8Nsh2ZdckvCz1yzQ+ZDwIL4KKY8BURmUJ+tCGKOjI7Np+6kmwvvbSZMstTky6PS7MjYDa8upqElqvL2V9bpuHH2s9azl5Dug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357206; c=relaxed/simple;
-	bh=nO0oqTKwu3YIwxEjdAkFz9eg6CwbYjeP2He3iX5WPyw=;
+	s=arc-20240116; t=1722357278; c=relaxed/simple;
+	bh=l8mAyWG9By/MPXtKtWLfeDnAnLzJ+VhTpSMOJvuDao4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kf53muhu/zwUZ20BTl8KcMF2r1pg4uWxinBbPpJctoEbUpRnsYZjQ0iM7l6KTUMYSpL3F0LOdfegoPkWyV9+Kfmw7P/ene6ZA78gnxWinLkgTt6cYGg3Y82NwzY8x7owGfyZ0QIcbqsd4/752fIl+Wo12+h4pmhJhCZQiW6hQOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9NDiIil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E89C32782;
-	Tue, 30 Jul 2024 16:33:25 +0000 (UTC)
+	 MIME-Version; b=WLccxk8KvRrfaZs363sScaU/FKxoKjbuY1fPaNPnNgLCWwBL9oLk/RVybh9hRIeL9Auj0btzixA0LAQyip/TshsQT5CRdWQ92oLIi07meDyMTuO4VzCxCzN+Y5xcI2twpE2MIVqHpoUIIMDiGnveknKMoDAZVw1ALkfEdE3P0yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgUfI9Bv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059AFC32782;
+	Tue, 30 Jul 2024 16:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357206;
-	bh=nO0oqTKwu3YIwxEjdAkFz9eg6CwbYjeP2He3iX5WPyw=;
+	s=korg; t=1722357278;
+	bh=l8mAyWG9By/MPXtKtWLfeDnAnLzJ+VhTpSMOJvuDao4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9NDiIiliVkJZEJtHfmbq9FaMvuk2wuJMN6i7b80lmBnhOOE/OZfJ/OFCkYxQBOUH
-	 /Lrb0+nGYJWKlwJFa9Vt1ImPWbUkQ+uZQ7JuvMvLA1It27yESD9/9JDsorD83UPDmm
-	 C+MxRv4omVEVeJVZtKQqn18ABFVmaP9jkMGZiAfg=
+	b=xgUfI9BvEREQ+8VwqAmoB1T1SOMGcRcyfeRhAxQ2j4DWSHslcq5Fvhy+mrogfCVuV
+	 7WXhs1kZotUW0r+ileVQqyBL8nNw+dzISCHGhF3ErkjbYEOb/v+6D/UrlijagID7Y9
+	 ojOoVs+tkS2oWZedY11g755rlbWG4jJmZPWETS3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 223/809] perf: Fix perf_aux_size() for greater-than 32-bit size
-Date: Tue, 30 Jul 2024 17:41:39 +0200
-Message-ID: <20240730151733.417989059@linuxfoundation.org>
+Subject: [PATCH 6.10 224/809] perf: Prevent passing zero nr_pages to rb_alloc_aux()
+Date: Tue, 30 Jul 2024 17:41:40 +0200
+Message-ID: <20240730151733.456651209@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,48 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
+[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
 
-perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
-calculate a 64-bit size.
+nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
+and is stored as an int.
+
+Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
+will be passed to rb_alloc_aux() as zero.
+
+That is not ideal because:
+ 1. the value is incorrect
+ 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
+ return -ENOMEM in that case, it is a result of passing zero to get_order()
+ even though the get_order() result is documented to be undefined in that
+ case.
+
+Fix by simply validating the maximum supported value in the first place.
+Use -ENOMEM error code for consistency with the current error code that
+is returned in that case.
 
 Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
+Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/internal.h b/kernel/events/internal.h
-index 5150d5f84c033..386d21c7edfa0 100644
---- a/kernel/events/internal.h
-+++ b/kernel/events/internal.h
-@@ -128,7 +128,7 @@ static inline unsigned long perf_data_size(struct perf_buffer *rb)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 8f908f0779354..053e546d5bf07 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6509,6 +6509,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 			return -EINVAL;
  
- static inline unsigned long perf_aux_size(struct perf_buffer *rb)
- {
--	return rb->aux_nr_pages << PAGE_SHIFT;
-+	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
- }
+ 		nr_pages = vma_size / PAGE_SIZE;
++		if (nr_pages > INT_MAX)
++			return -ENOMEM;
  
- #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
--- 
-2.43.0
-
-
-
-rt_streaming(struct vb2_queue *q, unsigned int count)
- 	dev_dbg(ctx->mxc_jpeg->dev, "Start streaming ctx=%p", ctx);
- 	q_data->sequence = 0;
- 
-+	if (V4L2_TYPE_IS_CAPTURE(q->type))
-+		ctx->need_initial_source_change_evt = false;
-+
- 	ret = pm_runtime_resume_and_get(ctx->mxc_jpeg->dev);
- 	if (ret < 0) {
- 		dev_err(ctx->mxc_jpeg->dev, "Failed to power up jpeg\n");
+ 		mutex_lock(&event->mmap_mutex);
+ 		ret = -EINVAL;
 -- 
 2.43.0
 
