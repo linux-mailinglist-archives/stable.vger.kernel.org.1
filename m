@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151AD941A0B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92016941A28
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46FCA1C20AC9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C348B1C2390E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37283184535;
-	Tue, 30 Jul 2024 16:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2779184553;
+	Tue, 30 Jul 2024 16:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAACiqCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdz2yv0s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9696757FC;
-	Tue, 30 Jul 2024 16:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B019D1A6192;
+	Tue, 30 Jul 2024 16:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357575; cv=none; b=pPO4DM3BSmTZ63zwfMM2GSB2IlLIWbjaPWwmNsm71iGuoRxI8MOv1eTPWp6LHp+s2Rsdlm6LQTcwqvezRyM+k/1NAtAyXAusug2g5AZO0P3IYg30/pQvNt/JB0fOEa+zwvqwyQT8K15bwvo70It1BfNLKk3EYpD8d9+WzL+eo58=
+	t=1722357646; cv=none; b=Zn2sCCFJzemovyhkHE3M1boE1UiqK38nVHSXPucTdIrBLwkytlQ0Lg5n057DbLh0P9WMlR2qVQhajrW6DMvdv4mV+ICbqxgaPbaWPRa7mkCkqGM6f8dzntPo81jdpFvOeSGXcaZyLRc5heyGJ0csu1P2coqyarPfoJIUXBkkwZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357575; c=relaxed/simple;
-	bh=jXunQIRuMulQDKw4kSWklYT4pnECJqj2bVtifJ1yULY=;
+	s=arc-20240116; t=1722357646; c=relaxed/simple;
+	bh=VljxlKQdyEKvkzSbOn7hCT5RI++9UxE29+KbJRFlNYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TX2eqgLshkUay70ln4Gvr7Go+wt/HDUODAr+Kp0vUYVamErvn+3x5lybZ4hHilX2MKyftaQePW9f6sfhxzwLycAf4yTEiKzqo5sk/az4Cdr8e3Y0BWt5tvWRX9OD78fFEm7s5/d57TRqOgbVLiXcsDo6d1/VYlvoMH8Pr8IMEUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAACiqCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64126C4AF0C;
-	Tue, 30 Jul 2024 16:39:34 +0000 (UTC)
+	 MIME-Version; b=u6dWB+b8Bqgkr/BhXcuoeA3vjokc2+Grfe8Ku/J0jRn0dGyof7jSKcFtjmsD+12CdcudlY3+WBsDelhTfGEmh+YZ3VEEUO2hwe9madjNA66t/p+rVggytHAZfEr66qB+HTggKCMqqLEntinuj3zzGQxrThEDpiI5K2Kb03nunRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdz2yv0s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5127C4AF0C;
+	Tue, 30 Jul 2024 16:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357574;
-	bh=jXunQIRuMulQDKw4kSWklYT4pnECJqj2bVtifJ1yULY=;
+	s=korg; t=1722357646;
+	bh=VljxlKQdyEKvkzSbOn7hCT5RI++9UxE29+KbJRFlNYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAACiqCPBVrbZ+6Tk0Krh1qD8aPS0EzuQq9t7frhw4QSLKpmWiTWi40nARmrEeniy
-	 7Rk3U2ekq1PJrv16UHENQLXP2laH7qPosSh+v60VQnjqfXBEQMNk8BnX8MqVH5lEyM
-	 RjCwnyeIFq9EaswG7eeEM17Cy/HNwCD8Bl2dacgY=
+	b=cdz2yv0s+PhxXpbG6hWyO+IcjmF8Bckm/4Umf+BuXZN5EyJojKnzCDijcGX0nG7QB
+	 U9asWKdNgvOwL2WmSG4xamf+JIoWnZMiP0uuMifEc46zRb3nre6bQ6N53B9RiyVauE
+	 908Li96jSHrmfczB9Gl7si3pEWWKWeBoui2wc4FM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 262/809] net: bridge: mst: Check vlan state for egress decision
-Date: Tue, 30 Jul 2024 17:42:18 +0200
-Message-ID: <20240730151734.941441473@linuxfoundation.org>
+Subject: [PATCH 6.10 263/809] Bluetooth: Fix usage of __hci_cmd_sync_status
+Date: Tue, 30 Jul 2024 17:42:19 +0200
+Message-ID: <20240730151734.979429257@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,43 +66,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 0a1868b93fad5938dbcca77286b25bf211c49f7a ]
+[ Upstream commit 87be7b189b2c50d4b51512f59e4e97db4eedee8a ]
 
-If a port is blocking in the common instance but forwarding in an MST
-instance, traffic egressing the bridge will be dropped because the
-state of the common instance is overriding that of the MST instance.
+__hci_cmd_sync_status shall only be used if hci_req_sync_lock is _not_
+required which is not the case of hci_dev_cmd so it needs to use
+hci_cmd_sync_status which uses hci_req_sync_lock internally.
 
-Fix this by skipping the port state check in MST mode to allow
-checking the vlan state via br_allowed_egress(). This is similar to
-what happens in br_handle_frame_finish() when checking ingress
-traffic, which was introduced in the change below.
-
-Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
-Signed-off-by: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f1a8f402f13f ("Bluetooth: L2CAP: Fix deadlock")
+Reported-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_forward.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_core.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index d97064d460dc7..e19b583ff2c6d 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -25,8 +25,8 @@ static inline int should_deliver(const struct net_bridge_port *p,
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index c644b30977bd8..7ae118a6d947b 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -718,8 +718,8 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
  
- 	vg = nbp_vlan_group_rcu(p);
- 	return ((p->flags & BR_HAIRPIN_MODE) || skb->dev != p->dev) &&
--		p->state == BR_STATE_FORWARDING && br_allowed_egress(vg, skb) &&
--		nbp_switchdev_allowed_egress(p, skb) &&
-+		(br_mst_is_enabled(p->br) || p->state == BR_STATE_FORWARDING) &&
-+		br_allowed_egress(vg, skb) && nbp_switchdev_allowed_egress(p, skb) &&
- 		!br_skb_isolated(p, skb);
- }
+ 	switch (cmd) {
+ 	case HCISETAUTH:
+-		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_AUTH_ENABLE,
+-					    1, &dr.dev_opt, HCI_CMD_TIMEOUT);
++		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_AUTH_ENABLE,
++					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
+ 		break;
  
+ 	case HCISETENCRYPT:
+@@ -730,23 +730,21 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
+ 
+ 		if (!test_bit(HCI_AUTH, &hdev->flags)) {
+ 			/* Auth must be enabled first */
+-			err = __hci_cmd_sync_status(hdev,
+-						    HCI_OP_WRITE_AUTH_ENABLE,
+-						    1, &dr.dev_opt,
+-						    HCI_CMD_TIMEOUT);
++			err = hci_cmd_sync_status(hdev,
++						  HCI_OP_WRITE_AUTH_ENABLE,
++						  1, &dr.dev_opt,
++						  HCI_CMD_TIMEOUT);
+ 			if (err)
+ 				break;
+ 		}
+ 
+-		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_ENCRYPT_MODE,
+-					    1, &dr.dev_opt,
+-					    HCI_CMD_TIMEOUT);
++		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_ENCRYPT_MODE,
++					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
+ 		break;
+ 
+ 	case HCISETSCAN:
+-		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_SCAN_ENABLE,
+-					    1, &dr.dev_opt,
+-					    HCI_CMD_TIMEOUT);
++		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_SCAN_ENABLE,
++					  1, &dr.dev_opt, HCI_CMD_TIMEOUT);
+ 
+ 		/* Ensure that the connectable and discoverable states
+ 		 * get correctly modified as this was a non-mgmt change.
+@@ -758,9 +756,8 @@ int hci_dev_cmd(unsigned int cmd, void __user *arg)
+ 	case HCISETLINKPOL:
+ 		policy = cpu_to_le16(dr.dev_opt);
+ 
+-		err = __hci_cmd_sync_status(hdev, HCI_OP_WRITE_DEF_LINK_POLICY,
+-					    2, &policy,
+-					    HCI_CMD_TIMEOUT);
++		err = hci_cmd_sync_status(hdev, HCI_OP_WRITE_DEF_LINK_POLICY,
++					  2, &policy, HCI_CMD_TIMEOUT);
+ 		break;
+ 
+ 	case HCISETLINKMODE:
 -- 
 2.43.0
 
