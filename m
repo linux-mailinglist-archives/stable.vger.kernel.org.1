@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D411E941E19
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54FEC941B88
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52925B256DA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C2DDB2469B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B1C184556;
-	Tue, 30 Jul 2024 17:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01D518801C;
+	Tue, 30 Jul 2024 16:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0sejVra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bk2VPjZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3091A76AE;
-	Tue, 30 Jul 2024 17:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB061078F;
+	Tue, 30 Jul 2024 16:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360089; cv=none; b=suqMTVn9mPFZd1K/oaFs5iNm4Nl3ASdWa1bFxB/5n/wcQZUapTZL0hgntjxUEmZZNHOjVgUoB522l6swDWD1//8ZPgx1JzfnIM1Ous7jlXY8NjwkLBRKI9CFl6y83MHCfoo0ntVtUw/4vm1uR7bTKss1pOoYv9Cwj9DSQcGXwn0=
+	t=1722358284; cv=none; b=p8rQ+kYwP//qsoUudq2zo8pzk8NFMHUTNZ4Ijzl5eHf1kqvuGUdKkabpXAVqxrVcylaVDD4OAM2g9lek7HEmLhLwz6p2+IuHmPjFEKo+JkfnmTsrPpNFnUrl/AvXKggZwsBenKLuJJa8Qth529bcYo9aNVZU0ealNwX1Yd3GuB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360089; c=relaxed/simple;
-	bh=qvqIuwkDNBL42UZZteZ4KJ3diOM8D1IDPdP2oqzOx7I=;
+	s=arc-20240116; t=1722358284; c=relaxed/simple;
+	bh=Q8t0Skx2mRR8MkFpPF2jJ4zXoAyw3v7Pd79Y6NtF06Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYrxDfg/QwBlsytqg9y6MHTevneoLzPCgV6g93P8NKxAg3Q8WXnafbFyyUrgTdRaiOEej7tq/vJgg87LhRQBbj5B9RfvbqxfzQ4osiQM0K6mNGapksNNNQIuMc2DrG8KlaKZ+iIj9ENPfFps+/0G65IbxWi+IY27p31ODAaHqT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0sejVra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2165CC4AF0A;
-	Tue, 30 Jul 2024 17:21:28 +0000 (UTC)
+	 MIME-Version; b=o4iQ5lNwwvuSQoeegUUfF5lwbGNg5WbBTORVWLtltLR/nIXJggLnKOJ9edNZTGtirS73iGzXEbKgw5z2i85CDjb6nppokf+/LUk/qSC34ya2yv869tRtdhFFCE5nS670qpbhp7OcXiT/Pgt61RIpCH2GSH2iCrjqZWQaZLI6gfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bk2VPjZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5899C32782;
+	Tue, 30 Jul 2024 16:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360089;
-	bh=qvqIuwkDNBL42UZZteZ4KJ3diOM8D1IDPdP2oqzOx7I=;
+	s=korg; t=1722358284;
+	bh=Q8t0Skx2mRR8MkFpPF2jJ4zXoAyw3v7Pd79Y6NtF06Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0sejVraLnzrzV4vrmLv+ai72ihO6Ek8K247Gso0tP8wiaeNb21FzFuuXjAlxM74H
-	 99SNIxhyZaeorSB4jVWsM8jnukUndd7FrWYaKgIo/JAg1vSxFGlNk8I84jz8xnSy7n
-	 w+whpphjdNZN8f3FbxCUiwIQnqtUTzUGRLaj7ekc=
+	b=Bk2VPjZNj2kEX4SKgX0bVE3kA+PU34kM5ZeBH4ijeT0BSjzotRSJwxB6aaQHsTYFh
+	 yM3kTHj6Bm23DTwA59ZzHI9fab5juJlzbivF4y4PBmXOwj+oB1d+3hWYb3Wf2PY67f
+	 3QXOnEFUPPAOBaCXHdKGhiM5D8swHz6kyaZhWlNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH 6.10 563/809] media: stm32: dcmipp: correct error handling in dcmipp_create_subdevs
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 332/568] fs/ntfs3: Correct undo if ntfs_create_inode failed
 Date: Tue, 30 Jul 2024 17:47:19 +0200
-Message-ID: <20240730151747.003602205@linuxfoundation.org>
+Message-ID: <20240730151652.847349760@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit a7351f0d3668b449fdc2cfd90403b1cb1f03ed6d upstream.
+[ Upstream commit f28d0866d8ff798aa497971f93d0cc58f442d946 ]
 
-Correct error handling within the dcmipp_create_subdevs by properly
-decrementing the i counter when releasing the subdevs.
+Clusters allocated for Extended Attributes, must be freed
+when rolling back inode creation.
 
-Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-[hverkuil: correct the indices: it's [i], not [i - 1].]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/inode.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-@@ -202,8 +202,8 @@ static int dcmipp_create_subdevs(struct
- 	return 0;
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 86ade4a9ec8f3..1545262995da2 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1652,7 +1652,9 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+ 	 * The packed size of extended attribute is stored in direntry too.
+ 	 * 'fname' here points to inside new_de.
+ 	 */
+-	ntfs_save_wsl_perm(inode, &fname->dup.ea_size);
++	err = ntfs_save_wsl_perm(inode, &fname->dup.ea_size);
++	if (err)
++		goto out6;
  
- err_init_entity:
--	while (i > 0)
--		dcmipp->pipe_cfg->ents[i - 1].release(dcmipp->entity[i - 1]);
-+	while (i-- > 0)
-+		dcmipp->pipe_cfg->ents[i].release(dcmipp->entity[i]);
- 	return ret;
- }
+ 	/*
+ 	 * update ea_size in file_name attribute too.
+@@ -1694,6 +1696,12 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+ 	goto out2;
  
+ out6:
++	attr = ni_find_attr(ni, NULL, NULL, ATTR_EA, NULL, 0, NULL, NULL);
++	if (attr && attr->non_res) {
++		/* Delete ATTR_EA, if non-resident. */
++		attr_set_size(ni, ATTR_EA, NULL, 0, NULL, 0, NULL, false, NULL);
++	}
++
+ 	if (rp_inserted)
+ 		ntfs_remove_reparse(sbi, IO_REPARSE_TAG_SYMLINK, &new_de->ref);
+ 
+-- 
+2.43.0
+
 
 
 
