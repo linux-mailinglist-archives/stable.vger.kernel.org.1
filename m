@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8223C941D73
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9C1941A9F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3C2F1C213CE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0028B1C20EBF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD74E1A76B1;
-	Tue, 30 Jul 2024 17:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314C6155CB3;
+	Tue, 30 Jul 2024 16:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZY2CQee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8utiGXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6C01A76A7;
-	Tue, 30 Jul 2024 17:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E297778276;
+	Tue, 30 Jul 2024 16:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359859; cv=none; b=hM1rs0Ogg4JrzYsFwj16HYvWaXD+Yx2sToTon6SyI0PrZevbte64QVRIiTXaP6BQXfq5uVRxgFoNI2/clbK6vlcLiZPxluQUPHJHuuaXpVV9Z1XMGawO/x/c98kkJSW3RMEjVeLLbYAztZU6F/tstt6cNqy4/AlnxpoRnDfQhb4=
+	t=1722357947; cv=none; b=ZLgAP5SEVd/WFeNGOiqzMOhKaCDmbgd26QOaoTIzT+i1dkZw6P1thheR98+8/cZ4NjhvuZ5spwPD7/7VJ9i3r/tArGpdhVPCF3T89TZibwr6zIHH4TrA5s4doESPnI8N9na+Ds8JGJvjj1f3ucJKYtE1qKGMBpIbDH0l+PoulME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359859; c=relaxed/simple;
-	bh=JOjFEmw679C50v8ILDMoypGBeetsDOmpJmIJnzOpd/4=;
+	s=arc-20240116; t=1722357947; c=relaxed/simple;
+	bh=P8FgoCmZJrF4tzeRomy1cUWWmUIqmt4mX8+5GgJtYxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sR6mL3O9rBsKzr4KlspIyThaDYP4UcCJXZurWZ1jVm86aAF69AVVfEL+3aHdc64nw0tc9UVB7gP+FtxBBw7SLGPYbrEYzuLch6l0xgGQCPwzMutK+eicm0WbR1yAt5OEt2CTX7/5dRDsU26aanzY+m2QJ4ZtpHWo6T07QyDZFdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZY2CQee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D85AC4AF0E;
-	Tue, 30 Jul 2024 17:17:38 +0000 (UTC)
+	 MIME-Version; b=NqQ/PLU/eEa08BEGJg+RnzR7Ce9FYQDtrLM2I+GEAaC0euZV9l/nCbOD2VOwLUcEsTpw5+arcoEHdBFseqj4maI8aL/+P2ucUXcS41Wz4lSvk5MYAnt5XWQkuSX5FtIBlcH6HPrMnYL9oN0CqkhtKgAmoHGvh4AUfFOIqsXlua4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8utiGXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B6FC32782;
+	Tue, 30 Jul 2024 16:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359859;
-	bh=JOjFEmw679C50v8ILDMoypGBeetsDOmpJmIJnzOpd/4=;
+	s=korg; t=1722357946;
+	bh=P8FgoCmZJrF4tzeRomy1cUWWmUIqmt4mX8+5GgJtYxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZY2CQeeYYtBkYw5wW0CYODZXKjidfAod7QmH+rmIgY47i8A5lnQi7+bVp6fOFmdP
-	 VSif9Vsu608pF7lG01+U57hWco/oeZYCmlN5110OawvWbG9sju/aTXOlj9GjlvodQZ
-	 1VEKrcfk+9hOJdS4R9qgybj+mUXwjdzbhlu0ROcI=
+	b=R8utiGXEndP7WFCUlZ5lcZeWGzx0MR4uqgkNx6ZRiZVhGuRSPI0yqUq5NeCaaPCOo
+	 kSkz0eua+2DW5sEpvsdhYcc5j7L921aVYFIGtYtxDrzUP5nyllI7yxDOWkMjT8q8XE
+	 OHCAByVxAqGqIPuy1vWk0JElw6JluQhOWMO9slSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 537/809] mm/hugetlb: fix possible recursive locking detected warning
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Yang Li <yang.lee@linux.alibaba.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 306/568] RDMA/core: Remove NULL check before dev_{put, hold}
 Date: Tue, 30 Jul 2024 17:46:53 +0200
-Message-ID: <20240730151745.951612596@linuxfoundation.org>
+Message-ID: <20240730151651.835201557@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Jules Irenge <jbi.octave@gmail.com>
 
-commit 667574e873b5f77a220b2a93329689f36fb56d5d upstream.
+[ Upstream commit 7a1c2abf9a2be7d969b25e8d65567933335ca88e ]
 
-When tries to demote 1G hugetlb folios, a lockdep warning is observed:
+The call netdev_{put, hold} of dev_{put, hold} will check NULL,
+so there is no need to check before using dev_{put, hold},
+remove it to silence the warning:
 
-============================================
-WARNING: possible recursive locking detected
-6.10.0-rc6-00452-ga4d0275fa660-dirty #79 Not tainted
---------------------------------------------
-bash/710 is trying to acquire lock:
-ffffffff8f0a7850 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0x244/0x460
+./drivers/infiniband/core/nldev.c:375:2-9: WARNING: NULL check before dev_{put, hold} functions is not needed.
 
-but task is already holding lock:
-ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&h->resize_lock);
-  lock(&h->resize_lock);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by bash/710:
- #0: ffff8f118439c3f0 (sb_writers#5){.+.+}-{0:0}, at: ksys_write+0x64/0xe0
- #1: ffff8f11893b9e88 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0xf8/0x1d0
- #2: ffff8f1183dc4428 (kn->active#98){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x100/0x1d0
- #3: ffffffff8f0a6f48 (&h->resize_lock){+.+.}-{3:3}, at: demote_store+0xae/0x460
-
-stack backtrace:
-CPU: 3 PID: 710 Comm: bash Not tainted 6.10.0-rc6-00452-ga4d0275fa660-dirty #79
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x68/0xa0
- __lock_acquire+0x10f2/0x1ca0
- lock_acquire+0xbe/0x2d0
- __mutex_lock+0x6d/0x400
- demote_store+0x244/0x460
- kernfs_fop_write_iter+0x12c/0x1d0
- vfs_write+0x380/0x540
- ksys_write+0x64/0xe0
- do_syscall_64+0xb9/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa61db14887
-RSP: 002b:00007ffc56c48358 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000002 RCX: 00007fa61db14887
-RDX: 0000000000000002 RSI: 000055a030050220 RDI: 0000000000000001
-RBP: 000055a030050220 R08: 00007fa61dbd1460 R09: 000000007fffffff
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
-R13: 00007fa61dc1b780 R14: 00007fa61dc17600 R15: 00007fa61dc16a00
- </TASK>
-
-Lockdep considers this an AA deadlock because the different resize_lock
-mutexes reside in the same lockdep class, but this is a false positive.
-Place them in distinct classes to avoid these warnings.
-
-Link: https://lkml.kernel.org/r/20240712031314.2570452-1-linmiaohe@huawei.com
-Fixes: 8531fc6f52f5 ("hugetlb: add hugetlb demote page support")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=7047
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20231024003815.89742-1-yang.lee@linux.alibaba.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 2043a14fb3de ("RDMA: Fix netdev tracker in ib_device_set_netdev")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hugetlb.h |    1 +
- mm/hugetlb.c            |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/device.c        | 10 +++-------
+ drivers/infiniband/core/lag.c           |  3 +--
+ drivers/infiniband/core/roce_gid_mgmt.c |  3 +--
+ 3 files changed, 5 insertions(+), 11 deletions(-)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -681,6 +681,7 @@ HPAGEFLAG(RawHwpUnreliable, raw_hwp_unre
- /* Defines one hugetlb page size */
- struct hstate {
- 	struct mutex resize_lock;
-+	struct lock_class_key resize_key;
- 	int next_nid_to_alloc;
- 	int next_nid_to_free;
- 	unsigned int order;
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4643,7 +4643,7 @@ void __init hugetlb_add_hstate(unsigned
- 	BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
- 	BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
- 	h = &hstates[hugetlb_max_hstate++];
--	mutex_init(&h->resize_lock);
-+	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
- 	h->order = order;
- 	h->mask = ~(huge_page_size(h) - 1);
- 	for (i = 0; i < MAX_NUMNODES; ++i)
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index d1b5908c70cdc..e70804d8de828 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -2174,8 +2174,7 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
+ 	spin_unlock_irqrestore(&pdata->netdev_lock, flags);
+ 
+ 	add_ndev_hash(pdata);
+-	if (old_ndev)
+-		__dev_put(old_ndev);
++	__dev_put(old_ndev);
+ 
+ 	return 0;
+ }
+@@ -2235,8 +2234,7 @@ struct net_device *ib_device_get_netdev(struct ib_device *ib_dev,
+ 		spin_lock(&pdata->netdev_lock);
+ 		res = rcu_dereference_protected(
+ 			pdata->netdev, lockdep_is_held(&pdata->netdev_lock));
+-		if (res)
+-			dev_hold(res);
++		dev_hold(res);
+ 		spin_unlock(&pdata->netdev_lock);
+ 	}
+ 
+@@ -2311,9 +2309,7 @@ void ib_enum_roce_netdev(struct ib_device *ib_dev,
+ 
+ 			if (filter(ib_dev, port, idev, filter_cookie))
+ 				cb(ib_dev, port, idev, cookie);
+-
+-			if (idev)
+-				dev_put(idev);
++			dev_put(idev);
+ 		}
+ }
+ 
+diff --git a/drivers/infiniband/core/lag.c b/drivers/infiniband/core/lag.c
+index c77d7d2559a11..66c7e1e6600dc 100644
+--- a/drivers/infiniband/core/lag.c
++++ b/drivers/infiniband/core/lag.c
+@@ -93,8 +93,7 @@ static struct net_device *rdma_get_xmit_slave_udp(struct ib_device *device,
+ 	slave = netdev_get_xmit_slave(master, skb,
+ 				      !!(device->lag_flags &
+ 					 RDMA_LAG_FLAGS_HASH_ALL_SLAVES));
+-	if (slave)
+-		dev_hold(slave);
++	dev_hold(slave);
+ 	rcu_read_unlock();
+ 	kfree_skb(skb);
+ 	return slave;
+diff --git a/drivers/infiniband/core/roce_gid_mgmt.c b/drivers/infiniband/core/roce_gid_mgmt.c
+index e958c43dd28fd..d5131b3ba8ab0 100644
+--- a/drivers/infiniband/core/roce_gid_mgmt.c
++++ b/drivers/infiniband/core/roce_gid_mgmt.c
+@@ -601,8 +601,7 @@ static void del_netdev_default_ips_join(struct ib_device *ib_dev, u32 port,
+ 
+ 	rcu_read_lock();
+ 	master_ndev = netdev_master_upper_dev_get_rcu(rdma_ndev);
+-	if (master_ndev)
+-		dev_hold(master_ndev);
++	dev_hold(master_ndev);
+ 	rcu_read_unlock();
+ 
+ 	if (master_ndev) {
+-- 
+2.43.0
+
 
 
 
