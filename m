@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478129419D9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E100941C37
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFF31B2D1EC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1471F243A9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBE118953C;
-	Tue, 30 Jul 2024 16:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5477E188017;
+	Tue, 30 Jul 2024 17:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xspapBfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJ6UJOU9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED49F1A616E;
-	Tue, 30 Jul 2024 16:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EA71E86F;
+	Tue, 30 Jul 2024 17:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356971; cv=none; b=s1hejV4trCQP7SCKt2eAjDxrJg3NT+ixE3Vj79WCnMLMetpar75t+3AOTdkSmrBcg/gptbPJF+HarnBBhbcCSEaKxtdZ2Y81tFnIW6tFNihQ8cHu6yY94aTeGW2G/UqdKD8cQr/PV9ytoRsiRBPhQMk30pgW/aBFCG8t09dM7z8=
+	t=1722359075; cv=none; b=KRECmEC+L0iimh4mX4MhO8BSSe/oN9yQAEZ9YK5CdvUQ3o2qFakCqy0Ubf50fSGOlwdSJSWd+sgW9Ou0802fckyF0iPNVCK8hT1fBdfEQ4SPl7xU4L3tDVRF+RKI7XIAeneeCcdZtsZBRXLD602VJxqzALMqmLBu+vZvDQw5OGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356971; c=relaxed/simple;
-	bh=5nMAECznsFeoFL3BaB/Fr8rcEoRvktGRbJs8Iu0nVNM=;
+	s=arc-20240116; t=1722359075; c=relaxed/simple;
+	bh=4H+Gvd/XUxU8LnvCm4KNlX0msCyuMvGk6DG/cX1h4Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3ZOHn7NSJfOVGPBOIBlfx9NySnRiunU3JDsXOt2Ef3WGqF6iFG6VRWDdvoHqCJYmAgS5ZiAUqYmyi2J+aM+vL/3BBzEBY5rw2lU2gsm41j2P9frcmlkGgo75tN8Mezij/Frm1hpRvO4kHev4MThCXzSKYflmV7Apju9FVkDJcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xspapBfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72303C32782;
-	Tue, 30 Jul 2024 16:29:30 +0000 (UTC)
+	 MIME-Version; b=PEgZtkdS0qGaGYWdCu4dkbpwxsU9fDRfb2wGP7Zo7771YOHNk1E5B6gqK2d6oAVWcOuGspUeNWYvlKHOXtTgZX4WNqODSbFkWGHtkSnyWMrkzaXUDDiMYvNdxmt9bJV+xBvwkN9M8kPkaTogFuG1JokVGYzFpGbTuh0oZHyZhwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJ6UJOU9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8719EC32782;
+	Tue, 30 Jul 2024 17:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356970;
-	bh=5nMAECznsFeoFL3BaB/Fr8rcEoRvktGRbJs8Iu0nVNM=;
+	s=korg; t=1722359074;
+	bh=4H+Gvd/XUxU8LnvCm4KNlX0msCyuMvGk6DG/cX1h4Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xspapBfS+bSa24mBKDEe2byG/dUWLefVkhjKWYeR+1Y8+BsnAQ1KWaOhptQu/s3xP
-	 pUw4h4QkKhRngArd/HTl32/cV2lFvZvoGKm0oLpurUHbbW5J0i4PFnwsPOtZpJmI8l
-	 Msx8U3j26tHcb3IKbDg0ZliByPHbsXXMy9tf4nOQ=
+	b=jJ6UJOU99YL5rkYRXY0ZZY7FROxaz062BTTvRv2YrPRI+T2igHBYTO0YSnvMYEbJE
+	 7O6ePZorI/CB3YV7AyS/3mLXvoHmVJuqQGfhaPMb1qlvKaK4upP7f3czJfPQqVW6nk
+	 qDK7V5WjC22P4qhSWN1L9MkByoHmYBXRcaK+bBWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Corey Minyard <corey@minyard.net>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Matt Ochs <mochs@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/568] ipmi: ssif_bmc: prevent integer overflow on 32bit systems
+Subject: [PATCH 6.10 430/809] iommufd/selftest: Add tests for <= u8 bitmap sizes
 Date: Tue, 30 Jul 2024 17:45:06 +0200
-Message-ID: <20240730151647.654710704@linuxfoundation.org>
+Message-ID: <20240730151741.684477703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 0627cef36145c9ff9845bdfd7ddf485bbac1f981 ]
+[ Upstream commit 33335584eb78c0bda21ff8d759c39e035abb48ac ]
 
-There are actually two bugs here.  First, we need to ensure that count
-is at least sizeof(u32) or msg.len will be uninitialized data.
+Add more tests for bitmaps smaller than or equal to an u8, though skip the
+tests if the IOVA buffer size is smaller than the mock page size.
 
-The "msg.len" variable is a u32 that comes from the user.  On 32bit
-systems the "sizeof_field(struct ipmi_ssif_msg, len) + msg.len"
-addition can overflow if "msg.len" is greater than U32_MAX - 4.
-
-Valid lengths for "msg.len" are 1-254.  Add a check for that to
-prevent the integer overflow.
-
-Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-Id: <1431ca2e-4e9c-4520-bfc0-6879313c30e9@moroto.mountain>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Link: https://lore.kernel.org/r/20240627110105.62325-4-joao.m.martins@oracle.com
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Tested-by: Matt Ochs <mochs@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: ffa3c799ce15 ("iommufd/selftest: Fix tests to use MOCK_PAGE_SIZE based buffer sizes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ssif_bmc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/iommu/iommufd.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
-index 56346fb328727..ab4e87a99f087 100644
---- a/drivers/char/ipmi/ssif_bmc.c
-+++ b/drivers/char/ipmi/ssif_bmc.c
-@@ -177,13 +177,15 @@ static ssize_t ssif_bmc_write(struct file *file, const char __user *buf, size_t
- 	unsigned long flags;
- 	ssize_t ret;
+diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
+index 0b04d782a19fc..61189215e1ab7 100644
+--- a/tools/testing/selftests/iommu/iommufd.c
++++ b/tools/testing/selftests/iommu/iommufd.c
+@@ -1727,6 +1727,12 @@ FIXTURE_SETUP(iommufd_dirty_tracking)
+ 	void *vrc;
+ 	int rc;
  
--	if (count > sizeof(struct ipmi_ssif_msg))
-+	if (count < sizeof(msg.len) ||
-+	    count > sizeof(struct ipmi_ssif_msg))
- 		return -EINVAL;
++	if (variant->buffer_size < MOCK_PAGE_SIZE) {
++		SKIP(return,
++		     "Skipping buffer_size=%lu, less than MOCK_PAGE_SIZE=%lu",
++		     variant->buffer_size, MOCK_PAGE_SIZE);
++	}
++
+ 	self->fd = open("/dev/iommu", O_RDWR);
+ 	ASSERT_NE(-1, self->fd);
  
- 	if (copy_from_user(&msg, buf, count))
- 		return -EFAULT;
+@@ -1779,6 +1785,18 @@ FIXTURE_TEARDOWN(iommufd_dirty_tracking)
+ 	teardown_iommufd(self->fd, _metadata);
+ }
  
--	if (!msg.len || count < sizeof_field(struct ipmi_ssif_msg, len) + msg.len)
-+	if (!msg.len || msg.len > IPMI_SSIF_PAYLOAD_MAX ||
-+	    count < sizeof_field(struct ipmi_ssif_msg, len) + msg.len)
- 		return -EINVAL;
- 
- 	spin_lock_irqsave(&ssif_bmc->lock, flags);
++FIXTURE_VARIANT_ADD(iommufd_dirty_tracking, domain_dirty8k)
++{
++	/* half of an u8 index bitmap */
++	.buffer_size = 8UL * 1024UL,
++};
++
++FIXTURE_VARIANT_ADD(iommufd_dirty_tracking, domain_dirty16k)
++{
++	/* one u8 index bitmap */
++	.buffer_size = 16UL * 1024UL,
++};
++
+ FIXTURE_VARIANT_ADD(iommufd_dirty_tracking, domain_dirty128k)
+ {
+ 	/* one u32 index bitmap */
 -- 
 2.43.0
 
