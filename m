@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-62996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E48A94169F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 730DB9416A3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B191F23DCC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3F1C1C23663
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B42D183CA0;
-	Tue, 30 Jul 2024 16:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A748E18455B;
+	Tue, 30 Jul 2024 16:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOYzaS6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTNk4KrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EFF189524;
-	Tue, 30 Jul 2024 16:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E303184551;
+	Tue, 30 Jul 2024 16:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355317; cv=none; b=qdubTKugWAOC8i5uEazUzBxRznM92zTDUl0YPO+PNLLDe3oAM1xT7QtD/X/wtJOVD57D0tVBm5JEr9TKb33GETe09W+EtZxcMizcDF8aQt/i6QfC7ih7oTZJrcoCrOYvKtaMenAuAZL3aGlCe+QzFMDK8X9MbnTbIO9iqE4NICM=
+	t=1722355327; cv=none; b=JhJGhRrPWq8EwbwwceqgvG9bTadqkehPCd0gq0sx1aLrJqaK60A6q1z58/jeIO8+50QKbRbDVIJUg7mnLVNmaRtKgqdVCDWNNF9sbLUJzPp5uK2dFFgClM5tf4p02aeHkiwGQ/FWJEaWRcCjjGWK1TVjF2PkbLAq+36XE50dnA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355317; c=relaxed/simple;
-	bh=iWFcGHy5pQGs0yP1vgDcysPu3dymNTW7GecmC0oDGDY=;
+	s=arc-20240116; t=1722355327; c=relaxed/simple;
+	bh=zFPjQIlTxEC9ZY6kXyrzK4IAaYOBsqsWZSTbl0oIn8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZiDhjBw3UI5lPk9MScBap92SvA1OBuHCQZbG4k2tdvGBEWSkAEGAnZAL8FlOnKkM0u3bCi39+IObbnusjARRJqFyJ59jrVARJEF0szhJRsOL18rmaxcJDHitcU3/Yt5g7uyjHOygGjP+qA0/ZGof2Smsq5a3nK0J4ALFMHZH1uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOYzaS6O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8121EC32782;
-	Tue, 30 Jul 2024 16:01:56 +0000 (UTC)
+	 MIME-Version; b=g0OIxDsxbamZzc9cfiBrBLLx+lno1f7BIZGyjiCQQrO5V9+6gHKOnVS4WGqdFozhq+9oWD+vWUPYwZ6hIueN8rZxKUojLIAgbOBFWf/ZJqletotJhiPPGXzxMdJoKusvjA1qNolEpJcYqpeL+980eq8X9bMxaPh7pBCwNOx8w48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTNk4KrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B037C4AF0C;
+	Tue, 30 Jul 2024 16:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355317;
-	bh=iWFcGHy5pQGs0yP1vgDcysPu3dymNTW7GecmC0oDGDY=;
+	s=korg; t=1722355326;
+	bh=zFPjQIlTxEC9ZY6kXyrzK4IAaYOBsqsWZSTbl0oIn8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XOYzaS6O4iiQ5dxA3oeN9vRjM+3j919v/MuShYPcW8kbj8tEladxDO2gakNXn9Sgs
-	 GpEbbKZNQPRGCPxV2KUk62Ea92tQ3fL0hATCDIgXlCeIcCBLXgW01V/FzCVfL0hhN+
-	 5TbVyH2glJLlaZobqDzSe91k6ThVOWLfOUX8LjHc=
+	b=iTNk4KrSmozNXhYGnM+H8T9uDKdwi8nR0sNJPhu1W0m/yT2hI23Z6+8/qDqBRmNDO
+	 dTAPaK1pgHiFJVR0m4pMW5mrsivHbSaovaGn3kHKhmN+aRJ+eI6nJ7wqnWxOxlbmr6
+	 t2r6PPO7z/i8p5DwjRTlIbn7jaWKkb/7eyGFVxOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Rawat <quic_nitirawa@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sagar Cheluvegowda <quic_scheluve@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/568] arm64: dts: qcom: msm8996: specify UFS core_clk frequencies
-Date: Tue, 30 Jul 2024 17:42:34 +0200
-Message-ID: <20240730151641.678202460@linuxfoundation.org>
+Subject: [PATCH 6.6 048/568] arm64: dts: qcom: sa8775p: mark ethernet devices as DMA-coherent
+Date: Tue, 30 Jul 2024 17:42:35 +0200
+Message-ID: <20240730151641.716345168@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -69,40 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
 
-[ Upstream commit 02f838b7f8cdfb7a96b7f08e7f6716f230bdecba ]
+[ Upstream commit 49cc31f8ab44e60d8109da7e18c0983a917d4d74 ]
 
-Follow the example of other platforms and specify core_clk frequencies
-in the frequency table in addition to the core_clk_src frequencies. The
-driver should be setting the leaf frequency instead of some interim
-clock freq.
+Ethernet devices are cache coherent, mark it as such in the dtsi.
 
-Suggested-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-Fixes: 57fc67ef0d35 ("arm64: dts: qcom: msm8996: Add ufs related nodes")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240408-msm8996-fix-ufs-v4-1-ee1a28bf8579@linaro.org
+Fixes: ff499a0fbb23 ("arm64: dts: qcom: sa8775p: add the first 1Gb ethernet interface")
+Fixes: e952348a7cc7 ("arm64: dts: qcom: sa8775p: add a node for EMAC1")
+Signed-off-by: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
+Link: https://lore.kernel.org/r/20240514-mark_ethernet_devices_dma_coherent-v4-1-04e1198858c5@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sa8775p.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index dd407aa3abfb9..1f7cbb35886db 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -2090,7 +2090,7 @@ ufshc: ufshc@624000 {
- 				<&gcc GCC_UFS_RX_SYMBOL_0_CLK>;
- 			freq-table-hz =
- 				<100000000 200000000>,
--				<0 0>,
-+				<100000000 200000000>,
- 				<0 0>,
- 				<0 0>,
- 				<0 0>,
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+index 88ef3b5d374b3..44bea063aedba 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+@@ -2350,6 +2350,7 @@ ethernet1: ethernet@23000000 {
+ 			phy-names = "serdes";
+ 
+ 			iommus = <&apps_smmu 0x140 0xf>;
++			dma-coherent;
+ 
+ 			snps,tso;
+ 			snps,pbl = <32>;
+@@ -2383,6 +2384,7 @@ ethernet0: ethernet@23040000 {
+ 			phy-names = "serdes";
+ 
+ 			iommus = <&apps_smmu 0x120 0xf>;
++			dma-coherent;
+ 
+ 			snps,tso;
+ 			snps,pbl = <32>;
 -- 
 2.43.0
 
