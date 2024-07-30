@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00D7941CEC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 569C7941AD0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 969851F22429
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 884191C20A18
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537D818A6D2;
-	Tue, 30 Jul 2024 17:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA9C189B85;
+	Tue, 30 Jul 2024 16:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctMkK4go"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vM/KklAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B34618454A;
-	Tue, 30 Jul 2024 17:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED95A1A6166;
+	Tue, 30 Jul 2024 16:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359408; cv=none; b=VpMLWO6Mtnftd+3VvPr9hGjZQHFIW3md4Ne4xx0qoswkOda4VDNOcHCj8UtWzNVW+ogOc2FVuCE7GQaXhUBP0LDbxDX6uYpmtZFtT4YI+h+kBSDlcG2h09YVVjRHApFc+YF+CCjJyKLyl9O4YHgtRFgXD1JDDs41Z52yYFF26I0=
+	t=1722358053; cv=none; b=KYAM9gforBbIwAOx0nKi8PMYb1ouyfA0vLjzcx0Gvg88ckshOilXcmxqYWs9ysObdsG65OE8iyT4m4H7wTVfqcP7R/BV6mvBA4XLQvE2KNaSKZgsoCgWH/hD2ftlO+IQXepTeXrjp1f403xo5Hd/0LXOcw2MA3Nu8BRksBRVlSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359408; c=relaxed/simple;
-	bh=3R8QMWuHa1yu0N/mkvjAsdXFXoHKbk6UI3+oeGnJm3A=;
+	s=arc-20240116; t=1722358053; c=relaxed/simple;
+	bh=3Bpmbg6EBA4FPfdKu7lOxVVu7k/FVnZ52zL3CkCoofI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JoELBmo7XheQ5t9JcjKm3zokSCLSDvQVDqzUGH/6oOigx+sv0NrjDFNZUMXlVDCCP80qUaJC8YQuZieK5/rtch/IouMe8TZLmV1IbslJgIH641Z1A7oMlo/Ev7biS1Q71aiT5YwmdecSzfXDgerdo72f12Jk4MFnfJiYABYJtfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctMkK4go; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70863C32782;
-	Tue, 30 Jul 2024 17:10:07 +0000 (UTC)
+	 MIME-Version; b=So5maeIvGm8A6xSfAPemel5fc6Z90VF6+uEjx+DItCDvUwe6EpCyBcGkSr7J+TNC0DWETER+1AXMjzOdMF0jkP9zwWuGL7TgAYDLlTwbRLS7Xom9qkzwI/OjH2PUyTS+0YfsjE2Uf5e/thQKLsXwEQIkErfatWsbgdDijwGBiFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vM/KklAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C17BC32782;
+	Tue, 30 Jul 2024 16:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359407;
-	bh=3R8QMWuHa1yu0N/mkvjAsdXFXoHKbk6UI3+oeGnJm3A=;
+	s=korg; t=1722358052;
+	bh=3Bpmbg6EBA4FPfdKu7lOxVVu7k/FVnZ52zL3CkCoofI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctMkK4goRS1oG1M4tX263m/30G0r9NMwwZgCWcp/E8QUSkPgzc42k/+JQ9tBGKLFK
-	 5BMbzXzeRo0OdXNDLUIoERR/4xC4PEeUAWM12oEfypzUBP5ML2vMQa5yDUqUNALrqS
-	 quU+mhu8P5TkcsoXUqUQtBf6hAfCe8a4IxUP/cA0=
+	b=vM/KklAFLYEf+DlZI+sIZnJiXWkn+YZZrS7ThaWGYWxpc3vIQspUZt+I99K5k48wY
+	 YUEShUCSc8CDvg+uZqdK9wmy1UdMdZCeKL9ExqbczfuyXcYxgE3JQZaT6ZqCoWv0uz
+	 qRRbGGYwno0F24NvUWFAWCu6lw6Ov+V7AiFVORdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhenGuo Yin <zhenguo.yin@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 478/568] drm/amdgpu: reset vm state machine after gpu reset(vram lost)
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 352/440] scsi: qla2xxx: validate nvme_local_port correctly
 Date: Tue, 30 Jul 2024 17:49:45 +0200
-Message-ID: <20240730151658.709325125@linuxfoundation.org>
+Message-ID: <20240730151629.568251128@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhenGuo Yin <zhenguo.yin@amd.com>
+From: Nilesh Javali <njavali@marvell.com>
 
-commit 5659b0c93a1ea02c662a030b322093203f299185 upstream.
+commit eb1d4ce2609584eeb7694866f34d4b213caa3af9 upstream.
 
-[Why]
-Page table of compute VM in the VRAM will lost after gpu reset.
-VRAM won't be restored since compute VM has no shadows.
+The driver load failed with error message,
 
-[How]
-Use higher 32-bit of vm->generation to record a vram_lost_counter.
-Reset the VM state machine when vm->genertaion is not equal to
-the new generation token.
+qla2xxx [0000:04:00.0]-ffff:0: register_localport failed: ret=ffffffef
 
-v2: Check vm->generation instead of calling drm_sched_entity_error
-in amdgpu_vm_validate.
-v3: Use new generation token instead of vram_lost_counter for check.
+and with a kernel crash,
 
-Signed-off-by: ZhenGuo Yin <zhenguo.yin@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+	BUG: unable to handle kernel NULL pointer dereference at 0000000000000070
+	Workqueue: events_unbound qla_register_fcport_fn [qla2xxx]
+	RIP: 0010:nvme_fc_register_remoteport+0x16/0x430 [nvme_fc]
+	RSP: 0018:ffffaaa040eb3d98 EFLAGS: 00010282
+	RAX: 0000000000000000 RBX: ffff9dfb46b78c00 RCX: 0000000000000000
+	RDX: ffff9dfb46b78da8 RSI: ffffaaa040eb3e08 RDI: 0000000000000000
+	RBP: ffff9dfb612a0a58 R08: ffffffffaf1d6270 R09: 3a34303a30303030
+	R10: 34303a303030305b R11: 2078787832616c71 R12: ffff9dfb46b78dd4
+	R13: ffff9dfb46b78c24 R14: ffff9dfb41525300 R15: ffff9dfb46b78da8
+	FS:  0000000000000000(0000) GS:ffff9dfc67c00000(0000) knlGS:0000000000000000
+	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+	CR2: 0000000000000070 CR3: 000000018da10004 CR4: 00000000000206f0
+	Call Trace:
+	qla_nvme_register_remote+0xeb/0x1f0 [qla2xxx]
+	? qla2x00_dfs_create_rport+0x231/0x270 [qla2xxx]
+	qla2x00_update_fcport+0x2a1/0x3c0 [qla2xxx]
+	qla_register_fcport_fn+0x54/0xc0 [qla2xxx]
+
+Exit the qla_nvme_register_remote() function when qla_nvme_register_hba()
+fails and correctly validate nvme_local_port.
+
 Cc: stable@vger.kernel.org
-(cherry picked from commit 47c0388b0589cb481c294dcb857d25a214c46eb3)
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-3-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/scsi/qla2xxx/qla_nvme.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -418,7 +418,7 @@ uint64_t amdgpu_vm_generation(struct amd
- 	if (!vm)
- 		return result;
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -29,7 +29,10 @@ int qla_nvme_register_remote(struct scsi
+ 		return 0;
+ 	}
  
--	result += vm->generation;
-+	result += lower_32_bits(vm->generation);
- 	/* Add one if the page tables will be re-generated on next CS */
- 	if (drm_sched_entity_error(&vm->delayed))
- 		++result;
-@@ -443,13 +443,14 @@ int amdgpu_vm_validate_pt_bos(struct amd
- 			      int (*validate)(void *p, struct amdgpu_bo *bo),
- 			      void *param)
- {
-+	uint64_t new_vm_generation = amdgpu_vm_generation(adev, vm);
- 	struct amdgpu_vm_bo_base *bo_base;
- 	struct amdgpu_bo *shadow;
- 	struct amdgpu_bo *bo;
- 	int r;
+-	if (!vha->nvme_local_port && qla_nvme_register_hba(vha))
++	if (qla_nvme_register_hba(vha))
++		return 0;
++
++	if (!vha->nvme_local_port)
+ 		return 0;
  
--	if (drm_sched_entity_error(&vm->delayed)) {
--		++vm->generation;
-+	if (vm->generation != new_vm_generation) {
-+		vm->generation = new_vm_generation;
- 		amdgpu_vm_bo_reset_state_machine(vm);
- 		amdgpu_vm_fini_entities(vm);
- 		r = amdgpu_vm_init_entities(adev, vm);
-@@ -2192,7 +2193,7 @@ int amdgpu_vm_init(struct amdgpu_device
- 	vm->last_update = dma_fence_get_stub();
- 	vm->last_unlocked = dma_fence_get_stub();
- 	vm->last_tlb_flush = dma_fence_get_stub();
--	vm->generation = 0;
-+	vm->generation = amdgpu_vm_generation(adev, NULL);
- 
- 	mutex_init(&vm->eviction_lock);
- 	vm->evicting = false;
+ 	if (!(fcport->nvme_prli_service_param &
 
 
 
