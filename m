@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4A19418A5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B8B941865
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3B94B29BF7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B43F5280DCB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C52618950C;
-	Tue, 30 Jul 2024 16:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99B618800A;
+	Tue, 30 Jul 2024 16:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8c8QiJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4TeQC5U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EA1189503;
-	Tue, 30 Jul 2024 16:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C221A617E;
+	Tue, 30 Jul 2024 16:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356398; cv=none; b=fku4wLhvwGzVxAkYhKQItEYG4QA8UEekM2vOpCBnD4+5ihYYVhwuoWQiXOLeMGO+0jMdxffdYNhmnbcPE/dQIv1wB4pgRGJevacopEolmMU0sU5zxpCvz8D/cibSNT9372NZBm/Z2AfUD5/0ECZJO5ssNXyZbDcDw8zqKcY3jaQ=
+	t=1722356471; cv=none; b=ltipCexs4Bw9RL1SPZQdfW4N912VA3BwPc6PSetnhLzS7/wRR12HQ3pCkJdBFFBAjKK5Oy5DLaNh61cP/VvLxtwDgat6ogdKQIUpa3SM1bGmWItS4GNN4Xvfi0KYYKEafc4LP7DI9zfa1277br+7+UzZMYtPGqKIjYrrZk01CIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356398; c=relaxed/simple;
-	bh=9bQIiTJTColinOsBOUqDTy88nBQutxRSJ6XEyouNB3I=;
+	s=arc-20240116; t=1722356471; c=relaxed/simple;
+	bh=ekHbwnfq+iPpcBnREENs2OM2lWW/Kw6Wm2DdG9/N4Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SgubvFMwGO01XEITbx+3InDoyPKxoAyqmFPINpaE8fJ/yhBLcpuBMTh32SdfeaWFKXrbkvQP6BLlA6/kpgVO2qsv/oz/6HmsL4Spiwp53NK5uoOMEUZEmO2I9uQGy5mo5EdCfpxrXQbvkx9DCZK7psX/a0RMqlScyMYR8KKbkfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8c8QiJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E83AC32782;
-	Tue, 30 Jul 2024 16:19:57 +0000 (UTC)
+	 MIME-Version; b=hEal0In2rfkAZjI5mrSPy3rRqbqDxyGBXTl9kTDrRoWmvmUym+mvMlZ7zumFvZFi3YMxjiaK/vs4Wrt+qintqRxQdfTaRHMg6KEOxWUVOOOoj7Ek+USc2VebOmAojaL/7figP0b693pCVgWTlw/uSAvWCWmZsEHBw971cVoLvm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4TeQC5U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E41AC32782;
+	Tue, 30 Jul 2024 16:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356398;
-	bh=9bQIiTJTColinOsBOUqDTy88nBQutxRSJ6XEyouNB3I=;
+	s=korg; t=1722356471;
+	bh=ekHbwnfq+iPpcBnREENs2OM2lWW/Kw6Wm2DdG9/N4Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8c8QiJRmi/8fC5Hafuqyq4OtCppu7xXeE8XLE9OZKmSsiMVSxXRc8AD+Ci6ej3Zu
-	 sCF6aC2I+Mz9+bCVKC+j9nZFyRboxSK4QcfKPX1olqAXPl5HbXz+LA/DjM6D79YMrM
-	 yWL/U1hJzoBfff/TrK3xMU8b/Nozo8F7IGyE9mtI=
+	b=F4TeQC5UMaDb5BhqVFjmw5Xqi8aO1g0Q60XjniDk7CmknYO8NmUH5su++tvO86Cdg
+	 oeR2FpBr7//p8jYcFbBgqq0J5BhY2VFCfnSOuP9183ru1touruabIpj6YhIXVjN/1F
+	 4whX5RGbP23ARQJwuaWebWk/mKjs/pMPwc5O2J/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+d31185aa54170f7fc1f5@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/568] wifi: cfg80211: handle 2x996 RU allocation in cfg80211_calculate_bitrate_he()
-Date: Tue, 30 Jul 2024 17:44:02 +0200
-Message-ID: <20240730151645.149303431@linuxfoundation.org>
+Subject: [PATCH 6.6 136/568] udf: Fix bogus checksum computation in udf_rename()
+Date: Tue, 30 Jul 2024 17:44:03 +0200
+Message-ID: <20240730151645.190551901@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,42 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit bcbd771cd5d68c0c52567556097d75f9fc4e7cd6 ]
+[ Upstream commit 27ab33854873e6fb958cb074681a0107cc2ecc4c ]
 
-Currently NL80211_RATE_INFO_HE_RU_ALLOC_2x996 is not handled in
-cfg80211_calculate_bitrate_he(), leading to below warning:
+Syzbot reports uninitialized memory access in udf_rename() when updating
+checksum of '..' directory entry of a moved directory. This is indeed
+true as we pass on-stack diriter.fi to the udf_update_tag() and because
+that has only struct fileIdentDesc included in it and not the impUse or
+name fields, the checksumming function is going to checksum random stack
+contents beyond the end of the structure. This is actually harmless
+because the following udf_fiiter_write_fi() will recompute the checksum
+from on-disk buffers where everything is properly included. So all that
+is needed is just removing the bogus calculation.
 
-kernel: invalid HE MCS: bw:6, ru:6
-kernel: WARNING: CPU: 0 PID: 2312 at net/wireless/util.c:1501 cfg80211_calculate_bitrate_he+0x22b/0x270 [cfg80211]
-
-Fix it by handling 2x996 RU allocation in the same way as 160 MHz bandwidth.
-
-Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://msgid.link/20240606020653.33205-3-quic_bqiang@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e9109a92d2a9 ("udf: Convert udf_rename() to new directory iteration code")
+Link: https://lore.kernel.org/all/000000000000cf405f060d8f75a9@google.com/T/
+Link: https://patch.msgid.link/20240617154201.29512-1-jack@suse.cz
+Reported-by: syzbot+d31185aa54170f7fc1f5@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/udf/namei.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 187e29a30c2af..7acd8d0db61a7 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1480,7 +1480,9 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 	if (WARN_ON_ONCE(rate->nss < 1 || rate->nss > 8))
- 		return 0;
+diff --git a/fs/udf/namei.c b/fs/udf/namei.c
+index ae55ab8859b6d..605f182da42cb 100644
+--- a/fs/udf/namei.c
++++ b/fs/udf/namei.c
+@@ -874,8 +874,6 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	if (has_diriter) {
+ 		diriter.fi.icb.extLocation =
+ 					cpu_to_lelb(UDF_I(new_dir)->i_location);
+-		udf_update_tag((char *)&diriter.fi,
+-			       udf_dir_entry_len(&diriter.fi));
+ 		udf_fiiter_write_fi(&diriter, NULL);
+ 		udf_fiiter_release(&diriter);
  
--	if (rate->bw == RATE_INFO_BW_160)
-+	if (rate->bw == RATE_INFO_BW_160 ||
-+	    (rate->bw == RATE_INFO_BW_HE_RU &&
-+	     rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_2x996))
- 		result = rates_160M[rate->he_gi];
- 	else if (rate->bw == RATE_INFO_BW_80 ||
- 		 (rate->bw == RATE_INFO_BW_HE_RU &&
 -- 
 2.43.0
 
