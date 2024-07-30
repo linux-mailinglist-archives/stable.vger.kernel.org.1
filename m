@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04175941A9A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFA0941E2D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A31571F26125
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13FDE1F222A6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2134D155CB3;
-	Tue, 30 Jul 2024 16:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54ECD1A76DB;
+	Tue, 30 Jul 2024 17:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aMsx/T9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvvkY8kK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03931A618F;
-	Tue, 30 Jul 2024 16:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADE41A76D9;
+	Tue, 30 Jul 2024 17:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357937; cv=none; b=Zg/4YuJMqTWK7gh2eHbFcXreoAyxJ+LZeLU24gboLkz3Y7R93l4i3X2+5TT1FWVnEQ4qgqPoZR71+xhqxHfdYzF4CtGXdfcU6pSyYVLPGT0em9Xs7DHs0Ez6FOmU8z2+lrSpxMJ88tqWbYRwvqQDmPhQLr48QCPhjDLYgY3lqII=
+	t=1722360376; cv=none; b=aIP/T7oVUN6yOyj/VlnR3kLautleis69KHCctJXahMA5e7Wf1wa5ktS7S4QHpkxfu1rOuId1BPbXGv27DVyTaYObAMe8Hhy+jGkCT13k7irbkcGpWrmD8Y/jtcpoDjX0V8T2tdZi4fx1RoYUvx1QwxIgfhA7VHxnvWA1DBVl6Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357937; c=relaxed/simple;
-	bh=SCdon+1jEO4K4k++SvFKhwBLhdqpKPhojeGA1qLafY8=;
+	s=arc-20240116; t=1722360376; c=relaxed/simple;
+	bh=oA+YatxUXbhLJvWofNM7r0CYIHz8p/WnJIPwKVw05z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OWjOG1PGCH/3NMqlH/9UoyXZvd6E5zadaZwOy33k3q/c2E3bp2JuvC9ftat6XUlZpobCFm2MzF5IUpDIIQl6G63Zn4SjvK2uUIp4uKA3guJqP6DeCHrVvGY5yPCiqlUSmuVRiPTVok3CQ1HnI4Jl6gjhmR3ee4yjE227X15ZQRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aMsx/T9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3CDC32782;
-	Tue, 30 Jul 2024 16:45:36 +0000 (UTC)
+	 MIME-Version; b=Qe1LA5rLVDVtbTENVhGiC6rVTLNZKbMTS0PsKN2xZ3udspQgbPsTSzf9wayYsn1qEJMBWvcfMd8D3WSHtJy3RLOxljJTS/TXVzwdUTu7W5VZ2+oL0VQciKH0xJTwtZavMlGUEygN3Gr2t/NR1vyLQJGkiHO/OnNDx0fnr75yrMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvvkY8kK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F216C32782;
+	Tue, 30 Jul 2024 17:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357937;
-	bh=SCdon+1jEO4K4k++SvFKhwBLhdqpKPhojeGA1qLafY8=;
+	s=korg; t=1722360375;
+	bh=oA+YatxUXbhLJvWofNM7r0CYIHz8p/WnJIPwKVw05z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0aMsx/T9mAMLs+JoT6Z3xZ7CUR1Xfaa/r5YlavQFroVJlWlVgHlCqocqZ4lW5fRy1
-	 rwtHS0DjccnasfQ1udHfxZvHFIygiINdZlmJt0a15X00MZwTebY1+kETT9i/RAX/6m
-	 7pTpJ5jxTD3S3ehZz5q7tDWux5tTlxCw9ORaCNAk=
+	b=WvvkY8kKhD5WuAba6mjMeY8QP00XvuJSLayUyK81ULyvMfUPFtAKfc1tyO9SwQbhM
+	 4le2WJcB45zr6decMk56wZEYfWPqFJIIc+6x3dsYqrPgG8YpypSibIHAe1wbJiWryN
+	 aN4TLeWM2wjGoLY6Ij57MR0C6yiQi2fCvKBwjgKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Liu <wei.liu@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 322/440] PCI: hv: Return zero, not garbage, when reading PCI_INTERRUPT_PIN
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.10 679/809] irqchip/imx-irqsteer: Handle runtime power management correctly
 Date: Tue, 30 Jul 2024 17:49:15 +0200
-Message-ID: <20240730151628.395680815@linuxfoundation.org>
+Message-ID: <20240730151751.724366470@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +59,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Liu <wei.liu@kernel.org>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-commit fea93a3e5d5e6a09eb153866d2ce60ea3287a70d upstream.
+commit 33b1c47d1fc0b5f06a393bb915db85baacba18ea upstream.
 
-The intent of the code snippet is to always return 0 for both
-PCI_INTERRUPT_LINE and PCI_INTERRUPT_PIN.
+The power domain is automatically activated from clk_prepare(). However, on
+certain platforms like i.MX8QM and i.MX8QXP, the power-on handling invokes
+sleeping functions, which triggers the 'scheduling while atomic' bug in the
+context switch path during device probing:
 
-The check misses PCI_INTERRUPT_PIN. This patch fixes that.
+ BUG: scheduling while atomic: kworker/u13:1/48/0x00000002
+ Call trace:
+  __schedule_bug+0x54/0x6c
+  __schedule+0x7f0/0xa94
+  schedule+0x5c/0xc4
+  schedule_preempt_disabled+0x24/0x40
+  __mutex_lock.constprop.0+0x2c0/0x540
+  __mutex_lock_slowpath+0x14/0x20
+  mutex_lock+0x48/0x54
+  clk_prepare_lock+0x44/0xa0
+  clk_prepare+0x20/0x44
+  imx_irqsteer_resume+0x28/0xe0
+  pm_generic_runtime_resume+0x2c/0x44
+  __genpd_runtime_resume+0x30/0x80
+  genpd_runtime_resume+0xc8/0x2c0
+  __rpm_callback+0x48/0x1d8
+  rpm_callback+0x6c/0x78
+  rpm_resume+0x490/0x6b4
+  __pm_runtime_resume+0x50/0x94
+  irq_chip_pm_get+0x2c/0xa0
+  __irq_do_set_handler+0x178/0x24c
+  irq_set_chained_handler_and_data+0x60/0xa4
+  mxc_gpio_probe+0x160/0x4b0
 
-This is discovered by this call in VFIO:
+Cure this by implementing the irq_bus_lock/sync_unlock() interrupt chip
+callbacks and handle power management in them as they are invoked from
+non-atomic context.
 
-    pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+[ tglx: Rewrote change log, added Fixes tag ]
 
-The old code does not set *val to 0 because it misses the check for
-PCI_INTERRUPT_PIN. Garbage is returned in that case.
-
-Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
-Link: https://lore.kernel.org/linux-pci/20240701202606.129606-1-wei.liu@kernel.org
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Cc: stable@kernel.org
+Fixes: 0136afa08967 ("irqchip: Add driver for imx-irqsteer controller")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240703163250.47887-1-shenwei.wang@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-hyperv.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-imx-irqsteer.c |   24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -1092,8 +1092,8 @@ static void _hv_pcifront_read_config(str
- 		   PCI_CAPABILITY_LIST) {
- 		/* ROM BARs are unimplemented */
- 		*val = 0;
--	} else if (where >= PCI_INTERRUPT_LINE && where + size <=
--		   PCI_INTERRUPT_PIN) {
-+	} else if ((where >= PCI_INTERRUPT_LINE && where + size <= PCI_INTERRUPT_PIN) ||
-+		   (where >= PCI_INTERRUPT_PIN && where + size <= PCI_MIN_GNT)) {
- 		/*
- 		 * Interrupt Line and Interrupt PIN are hard-wired to zero
- 		 * because this front-end only supports message-signaled
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -36,6 +36,7 @@ struct irqsteer_data {
+ 	int			channel;
+ 	struct irq_domain	*domain;
+ 	u32			*saved_reg;
++	struct device		*dev;
+ };
+ 
+ static int imx_irqsteer_get_reg_index(struct irqsteer_data *data,
+@@ -72,10 +73,26 @@ static void imx_irqsteer_irq_mask(struct
+ 	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
+ 
++static void imx_irqsteer_irq_bus_lock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_get_sync(data->dev);
++}
++
++static void imx_irqsteer_irq_bus_sync_unlock(struct irq_data *d)
++{
++	struct irqsteer_data *data = d->chip_data;
++
++	pm_runtime_put_autosuspend(data->dev);
++}
++
+ static const struct irq_chip imx_irqsteer_irq_chip = {
+-	.name		= "irqsteer",
+-	.irq_mask	= imx_irqsteer_irq_mask,
+-	.irq_unmask	= imx_irqsteer_irq_unmask,
++	.name			= "irqsteer",
++	.irq_mask		= imx_irqsteer_irq_mask,
++	.irq_unmask		= imx_irqsteer_irq_unmask,
++	.irq_bus_lock		= imx_irqsteer_irq_bus_lock,
++	.irq_bus_sync_unlock	= imx_irqsteer_irq_bus_sync_unlock,
+ };
+ 
+ static int imx_irqsteer_irq_map(struct irq_domain *h, unsigned int irq,
+@@ -150,6 +167,7 @@ static int imx_irqsteer_probe(struct pla
+ 	if (!data)
+ 		return -ENOMEM;
+ 
++	data->dev = &pdev->dev;
+ 	data->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(data->regs)) {
+ 		dev_err(&pdev->dev, "failed to initialize reg\n");
 
 
 
