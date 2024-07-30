@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-64089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22B9941C11
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EAB9418D5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E4AB1F23DBF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BC5B28396F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83235187FF6;
-	Tue, 30 Jul 2024 17:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BEC183CD5;
+	Tue, 30 Jul 2024 16:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfhcV37K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flP91TGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395201A6192;
-	Tue, 30 Jul 2024 17:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EA21A618F;
+	Tue, 30 Jul 2024 16:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358955; cv=none; b=kvoQDYskyekA4jfa/Vh2HhLQnCVkn7mvMRZ6LhKMcsUY4NNMcD8HtfDUK6q5ECvYjUjIShW7HthrZZ8PKQm4wJXfI+OTQHWrQIy3N9qDZVAd3+hcWSyftDRfQGI4gdvFxWn5IwNP/FOIIvxeAaW2vlzhuJ0eEHoqlPRL50eIcjQ=
+	t=1722356746; cv=none; b=lohfV7pSe2x1ie/VgiByRq1KRUd4AaZ/DTo/PzkGITI+eyNBJmtwOiYQqqoMcf4+0rsJHsTLMoOZtDgGzPwLNhtLXbZB/t33JAy0HyZGQOcML6Ai432uqEAHiM5oGqsaROZ7brdyFnfVJ2EjTzxw+CDQHf0ETyiYSCBY4WwD2us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358955; c=relaxed/simple;
-	bh=gZdl/+Y9usrDAduarSntyMOhRHABcKLnF0hHrzdUPBw=;
+	s=arc-20240116; t=1722356746; c=relaxed/simple;
+	bh=Og2s7msII++0rDHy9u2ffAo1zI5iobW3M56lReIvoUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f693j65iLy7Qsfc3/STrCEcxAq+PveczgMTWgXAsCuyyF7k9TG/WKzq7F7Xiu+6xjCu5Z3patHodvBAQcmSSY2mqQmywPEAqn1s+BsiWT1h++jXW2sK2Qb1t1DCjOulQpKrhAbTAs/bK1yGT5/tlEX3XVwoMH0suCAFiLOQIyTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfhcV37K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2078EC32782;
-	Tue, 30 Jul 2024 17:02:33 +0000 (UTC)
+	 MIME-Version; b=mDgl34WNEJOBb4OaQpHODBlWI+OYU0f4fJ0kTWisHdKAaPfXgWxTvHASFSBV1jZjMxhELRyol0cp9BAQv/jLtFSgiAKODbCeBh4cZf+km+7Be6LZNvfRYNAb8wG5P7IskOkluyB7kPvC27O6OXz8aYugZXKQi0xEaYOMPxM/uFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flP91TGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37ED5C32782;
+	Tue, 30 Jul 2024 16:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358954;
-	bh=gZdl/+Y9usrDAduarSntyMOhRHABcKLnF0hHrzdUPBw=;
+	s=korg; t=1722356746;
+	bh=Og2s7msII++0rDHy9u2ffAo1zI5iobW3M56lReIvoUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfhcV37K/MmINrTHSnnWz4wGvv7rvsjzCMBUlyadnG9DC6pxhn8+CHuiP7wdt/ZT4
-	 TUWEzyr+nh5eDvabFO5GVoXDAXqq7ijPgBTEr9RkeFCA2xFVMB0/KRHzgxv92pCfqK
-	 HfyGqYDJrHrKj0/pNEoG0zC1iebgtrF5CS8ZHSPA=
+	b=flP91TGPCsBXc2FQjsY8RFK8GTtIDol2AHpcOI4dgISbILaVPsjckqal+J4oLJFcB
+	 VlaxJMFXzvLgy20X4mysfh3vCCdpVrF0idVINFWwGiphqQsZ1aj6Q87GJAqsIdNtMc
+	 J7unXEHH80MKfk3SeaIDHt2xt942BvNI76jGuueY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hartmut Birr <e9hack@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Esben Haabendal <esben@geanix.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 411/809] mtd: spi-nor: winbond: fix w25q128 regression
+Subject: [PATCH 6.6 180/568] drm/amd/pm: Fix aldebaran pcie speed reporting
 Date: Tue, 30 Jul 2024 17:44:47 +0200
-Message-ID: <20240730151740.923725268@linuxfoundation.org>
+Message-ID: <20240730151646.915415695@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit d35df77707bf5ae1221b5ba1c8a88cf4fcdd4901 ]
+[ Upstream commit b6420021e17e262c57bb289d0556ee181b014f9c ]
 
-Commit 83e824a4a595 ("mtd: spi-nor: Correct flags for Winbond w25q128")
-removed the flags for non-SFDP devices. It was assumed that it wasn't in
-use anymore. This wasn't true. Add the no_sfdp_flags as well as the size
-again.
+Fix the field definitions for LC_CURRENT_DATA_RATE.
 
-We add the additional flags for dual and quad read because they have
-been reported to work properly by Hartmut using both older and newer
-versions of this flash, the similar flashes with 64Mbit and 256Mbit
-already have these flags and because it will (luckily) trigger our
-legacy SFDP parsing, so newer versions with SFDP support will still get
-the parameters from the SFDP tables.
-
-Reported-by: Hartmut Birr <e9hack@gmail.com>
-Closes: https://lore.kernel.org/r/CALxbwRo_-9CaJmt7r7ELgu+vOcgk=xZcGHobnKf=oT2=u4d4aA@mail.gmail.com/
-Fixes: 83e824a4a595 ("mtd: spi-nor: Correct flags for Winbond w25q128")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Esben Haabendal <esben@geanix.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Link: https://lore.kernel.org/r/20240621120929.2670185-1-mwalle@kernel.org
+Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/winbond.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/winbond.c b/drivers/mtd/spi-nor/winbond.c
-index 142fb27b2ea9a..e065e4fd42a33 100644
---- a/drivers/mtd/spi-nor/winbond.c
-+++ b/drivers/mtd/spi-nor/winbond.c
-@@ -105,7 +105,9 @@ static const struct flash_info winbond_nor_parts[] = {
- 	}, {
- 		.id = SNOR_ID(0xef, 0x40, 0x18),
- 		.name = "w25q128",
-+		.size = SZ_16M,
- 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB,
-+		.no_sfdp_flags = SECT_4K | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ,
- 	}, {
- 		.id = SNOR_ID(0xef, 0x40, 0x19),
- 		.name = "w25q256",
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index c097aed4722b9..c0adfa46ac789 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -79,8 +79,8 @@ MODULE_FIRMWARE("amdgpu/smu_13_0_10.bin");
+ #define PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD_MASK 0x00000070L
+ #define PCIE_LC_LINK_WIDTH_CNTL__LC_LINK_WIDTH_RD__SHIFT 0x4
+ #define smnPCIE_LC_SPEED_CNTL			0x11140290
+-#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE_MASK 0xC000
+-#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE__SHIFT 0xE
++#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE_MASK 0xE0
++#define PCIE_LC_SPEED_CNTL__LC_CURRENT_DATA_RATE__SHIFT 0x5
+ 
+ static const int link_width[] = {0, 1, 2, 4, 8, 12, 16};
+ 
 -- 
 2.43.0
 
