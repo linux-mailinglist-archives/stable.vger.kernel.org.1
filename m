@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBC2941CCB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B9894198F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEABFB28249
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A5C81F25F4F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8326618C933;
-	Tue, 30 Jul 2024 17:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15364EB2B;
+	Tue, 30 Jul 2024 16:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU1HjCOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqS5cc3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC7D189901;
-	Tue, 30 Jul 2024 17:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF458BE8;
+	Tue, 30 Jul 2024 16:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359298; cv=none; b=XNb/fHY7UHfjuOcPdUZ/OLwjqwLxM1Dn9UG6340FYKdROIJUS4Tv6K8uJQERk0fFOVck03BkTQ9Typypr+h2XjuGXOWWUkbUASUf8CyEl7D+w5zy8b9ePxtbVN4UdorzHC+pqVMvCFsMbTc0BLPBywTSAr0gnSKvBLziMcWNDuY=
+	t=1722357249; cv=none; b=BgqR82ZcM2MJ5ccH7Rk3ksQIdESWUgxXzPdR8LvV8KzTV77+Nzs820J4wK9Zx2kIVFAm+HG5dXEjILeQAhI2b1Qe9UovRE0Mk4/XywIKpeTXM2pK7gCtlZe3P43RyL1W2ncdo/cOIUgEezakuaSNLgWIr/66r7EWwnql3rMVhQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359298; c=relaxed/simple;
-	bh=HThQ36L3xwnJiTcoQ7WPzt55k8koJSlSpfA0ZSOKnuE=;
+	s=arc-20240116; t=1722357249; c=relaxed/simple;
+	bh=Ig3uoltJ1QiiNV4+VrrjtzHP8DIedBvTR3vcFEi0jts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EAiDfuAn4axl2+4ea+IJ0R0QWgSQIJ+7j98h/RoUnHWSO7x6FM1e3QeC9CxZHHtA+Th8ErFifYXoXFuuA5vIc/31VgO6r9KF18Spg3Gj0LRfPWmZjvQMgYqEK56sv1TJQTppCn32+GtZK5acabNZdghadLRY8a4jIH3z37v18qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU1HjCOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747BBC32782;
-	Tue, 30 Jul 2024 17:08:17 +0000 (UTC)
+	 MIME-Version; b=XcMHqcHU6K5qdGIN4rqYyLTuJWSJaG/6QmLgAnG1xM1kMCrDnyplTqnc06w5rmshk3I8i+LLjXka/3cSXSHPBaMxMTB7chV9apykUklek9YuMhvpJhfPYwrKctpLyJ0Cq7gOC+c85UKa8g+1/zaEoDGxn3zYjcd+arbOZQ1fokA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqS5cc3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07B0C32782;
+	Tue, 30 Jul 2024 16:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359298;
-	bh=HThQ36L3xwnJiTcoQ7WPzt55k8koJSlSpfA0ZSOKnuE=;
+	s=korg; t=1722357249;
+	bh=Ig3uoltJ1QiiNV4+VrrjtzHP8DIedBvTR3vcFEi0jts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EU1HjCOUnUFqAODMFhc6sbUUOvW7x0awn5xtu9xSABoNozihQ/v39vvKxQSghLHKL
-	 WebBMMoDFhMVYTYFRyf9mEVMjmeioVFRDrDwlGDZmQCvyziAEAAPK1nCH4J2jBkDuh
-	 6CmmYEp8GSVkPF/0mQGIsxQDBDgm2TssH+bi/9y8=
+	b=TqS5cc3ppEZCPH7kS1iU8hbJa1exVE5l8YhhMCXRrIywYEb078yERBWmTMAAWDoju
+	 JUgEtmRR3stsaefuxdbA0lBhXSuTybhSbbVNiL3b9YhOYhHiUY7gYS5rrDcTju4f/t
+	 nJ+/t4No1jrcQnKuws1mUuR9TnJb3EM3fBBiUiGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 463/809] RDMA/hns: Fix missing pagesize and alignment check in FRMR
-Date: Tue, 30 Jul 2024 17:45:39 +0200
-Message-ID: <20240730151743.016815774@linuxfoundation.org>
+Subject: [PATCH 6.6 233/568] drm/mediatek/dp: Fix spurious kfree()
+Date: Tue, 30 Jul 2024 17:45:40 +0200
+Message-ID: <20240730151648.987878456@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit d387d4b54eb84208bd4ca13572e106851d0a0819 ]
+[ Upstream commit 8ad49a92cff4bab13eb2f2725243f5f31eff3f3b ]
 
-The offset requires 128B alignment and the page size ranges from
-4K to 128M.
+drm_edid_to_sad() might return an error or just zero. If that is the
+case, we must not free the SADs because there was no allocation in
+the first place.
 
-Fixes: 68a997c5d28c ("RDMA/hns: Add FRMR support for hip08")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20240710133705.896445-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: dab12fa8d2bd ("drm/mediatek/dp: fix memory leak on ->get_edid callback audio detection")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20240604083337.1879188-1-mwalle@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h | 4 ++++
- drivers/infiniband/hw/hns/hns_roce_mr.c     | 5 +++++
- 2 files changed, 9 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
-index f8451e5ab107e..7d5931872f8a7 100644
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -83,6 +83,7 @@
- #define MR_TYPE_DMA				0x03
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index ff8436fb6e0d8..48a4defbc66cc 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -2058,9 +2058,15 @@ static const struct drm_edid *mtk_dp_edid_read(struct drm_bridge *bridge,
+ 		 */
+ 		const struct edid *edid = drm_edid_raw(drm_edid);
+ 		struct cea_sad *sads;
++		int ret;
  
- #define HNS_ROCE_FRMR_MAX_PA			512
-+#define HNS_ROCE_FRMR_ALIGN_SIZE		128
+-		audio_caps->sad_count = drm_edid_to_sad(edid, &sads);
+-		kfree(sads);
++		ret = drm_edid_to_sad(edid, &sads);
++		/* Ignore any errors */
++		if (ret < 0)
++			ret = 0;
++		if (ret)
++			kfree(sads);
++		audio_caps->sad_count = ret;
  
- #define PKEY_ID					0xffff
- #define NODE_DESC_SIZE				64
-@@ -189,6 +190,9 @@ enum {
- #define HNS_HW_PAGE_SHIFT			12
- #define HNS_HW_PAGE_SIZE			(1 << HNS_HW_PAGE_SHIFT)
- 
-+#define HNS_HW_MAX_PAGE_SHIFT			27
-+#define HNS_HW_MAX_PAGE_SIZE			(1 << HNS_HW_MAX_PAGE_SHIFT)
-+
- struct hns_roce_uar {
- 	u64		pfn;
- 	unsigned long	index;
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index 1a61dceb33197..846da8c78b8b7 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -443,6 +443,11 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
- 	int ret, sg_num = 0;
- 
-+	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
-+	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
-+	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
-+		return sg_num;
-+
- 	mr->npages = 0;
- 	mr->page_list = kvcalloc(mr->pbl_mtr.hem_cfg.buf_pg_count,
- 				 sizeof(dma_addr_t), GFP_KERNEL);
+ 		/*
+ 		 * FIXME: This should use connector->display_info.has_audio from
 -- 
 2.43.0
 
