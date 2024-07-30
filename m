@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-64023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15EF6941BC5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4083E941DE6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 481B31C228CE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F329A2895DA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C8D189903;
-	Tue, 30 Jul 2024 16:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F571A76BD;
+	Tue, 30 Jul 2024 17:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+v1rAsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAlopz+6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEC517D8BB;
-	Tue, 30 Jul 2024 16:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E661A76A1;
+	Tue, 30 Jul 2024 17:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358727; cv=none; b=tfqqrtCU5Uv8ggcVTMZ18rDPoLxC5qHKU2A1vVVbTQ0SjGw0gzQif+2YrshFn7zNWDBziuwof1w/PY3UgG6KPcAJDh9VuYwcQA6FnQXHtepS17u4Lxo/H2Madv+FcrWmVimDHhljrLey0GfcxOyuLfAz6gvA/qQerdbUGA4sf4s=
+	t=1722360182; cv=none; b=IROzayMom57bFEkcectSDF9MrXvvR1Wp2iLZxV9RYAJ2N3Muu22oKLdiaCIAW3R8K0Ou30kGcI8f7sUyWwiLYotzbmEMupCPx0qEBtS3eHAB1KRKJzult/NCSRLJp9CjlEEXJq8fAIqoWdZWwgcqA+WRUxZKpI+TtlaqaW/qvls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358727; c=relaxed/simple;
-	bh=n2Xi1QV0deJyNFjxJy+dUuQX7P9pMgvse5M530eYwt8=;
+	s=arc-20240116; t=1722360182; c=relaxed/simple;
+	bh=SFmNJp3ug2FsIzR1B+DY7EIb++L4pLncWhMNGd+OQwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkLkmTnwAF+zvlhaxY4Ky8ebk7p80HV2Q7E8Q4nV4TPoMdTqxsvlsfeX+Rj++lEBC5d49CErk2Kn+XkQ5s5kGS9N2bpSPKBINS2C1kyY3wI/4QdxG/dNtFBxGOpdhRyWqc4F1W0doso8dnJpffBNW//MF5NV94m7a+T1vtTIdWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+v1rAsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19392C32782;
-	Tue, 30 Jul 2024 16:58:46 +0000 (UTC)
+	 MIME-Version; b=Oti2NbtmpO5sA8MxSyxrTx5h7fysidv3CoJrw1ARZ3pG5YPeT1/ESBrS2w9kK+1BqFh7FyhC7nIBlBPPYL5sZUyf1N7EyrY3LGRFrbLAXX+xh1L4uQi4l+trb09m5zWH8BIKr7RbaNPRtsCGmTb8MwMame1xJxZOCnUThAZ1g+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAlopz+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8815AC32782;
+	Tue, 30 Jul 2024 17:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358727;
-	bh=n2Xi1QV0deJyNFjxJy+dUuQX7P9pMgvse5M530eYwt8=;
+	s=korg; t=1722360182;
+	bh=SFmNJp3ug2FsIzR1B+DY7EIb++L4pLncWhMNGd+OQwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+v1rAsXS0sK9CnHXfowWDbHoQVQrP1DF8+grKw4zbe4Nq3lVMwL1LZsJPWEh2KX0
-	 l006dC+1biWwAcbwst1txLbo9nt5heT8d5sCKrQkY/eWBjYxudw9uMwwrOIrso9M2v
-	 ff/oRDAdKi0OK/VmymvXsPWUOk2bxljOFFKx6R0U=
+	b=SAlopz+6tTQZ5w5/WKAj419G32EP50AbxDjH9hCPtjPmMETSK+6oXHkoKYG6yZd/u
+	 K13Leyspl//rSRxKU1N0wQbLlwqS76FWDf7PtPEhwBC6hlXGqAB41aYwDvY5YrnhsA
+	 edjbMKBSzFFL/vhY0HSPlwMMh8eOvTBVDKAW/+us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.6 389/568] apparmor: use kvfree_sensitive to free data->data
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.10 620/809] KVM: VMX: Split out the non-virtualization part of vmx_interrupt_blocked()
 Date: Tue, 30 Jul 2024 17:48:16 +0200
-Message-ID: <20240730151655.068268895@linuxfoundation.org>
+Message-ID: <20240730151749.331261330@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 2bc73505a5cd2a18a7a542022722f136c19e3b87 upstream.
+commit 322a569c4b4188a0da2812f9e952780ce09b74ba upstream.
 
-Inside unpack_profile() data->data is allocated using kvmemdup() so it
-should be freed with the corresponding kvfree_sensitive().
+Move the non-VMX chunk of the "interrupt blocked" checks to a separate
+helper so that KVM can reuse the code to detect if interrupts are blocked
+for L2, e.g. to determine if a virtual interrupt _for L2_ is a valid wake
+event.  If L1 disables HLT-exiting for L2, nested APICv is enabled, and L2
+HLTs, then L2 virtual interrupts are valid wake events, but if and only if
+interrupts are unblocked for L2.
 
-Also add missing data->data release for rhashtable insertion failure path
-in unpack_profile().
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: e025be0f26d5 ("apparmor: support querying extended trusted helper extra data")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Link: https://lore.kernel.org/r/20240607172609.3205077-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy.c        |    2 +-
- security/apparmor/policy_unpack.c |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/vmx.c |   11 ++++++++---
+ arch/x86/kvm/vmx/vmx.h |    1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -188,7 +188,7 @@ static void aa_free_data(void *ptr, void
- {
- 	struct aa_data *data = ptr;
- 
--	kfree_sensitive(data->data);
-+	kvfree_sensitive(data->data, data->size);
- 	kfree_sensitive(data->key);
- 	kfree_sensitive(data);
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5052,14 +5052,19 @@ int vmx_nmi_allowed(struct kvm_vcpu *vcp
+ 	return !vmx_nmi_blocked(vcpu);
  }
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -1081,6 +1081,7 @@ static struct aa_profile *unpack_profile
  
- 			if (rhashtable_insert_fast(profile->data, &data->head,
- 						   profile->data->p)) {
-+				kvfree_sensitive(data->data, data->size);
- 				kfree_sensitive(data->key);
- 				kfree_sensitive(data);
- 				info = "failed to insert data to table";
++bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
++{
++	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
++	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
++		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
++}
++
+ bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
+ {
+ 	if (is_guest_mode(vcpu) && nested_exit_on_intr(vcpu))
+ 		return false;
+ 
+-	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
+-	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
+-		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
++	return __vmx_interrupt_blocked(vcpu);
+ }
+ 
+ int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -406,6 +406,7 @@ u64 construct_eptp(struct kvm_vcpu *vcpu
+ bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
+ void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
+ bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
++bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
+ bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
+ bool vmx_get_nmi_mask(struct kvm_vcpu *vcpu);
+ void vmx_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked);
 
 
 
