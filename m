@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06570941DB1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E71941AFE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A47C1C23D6C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A810281CC9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78B91A76C8;
-	Tue, 30 Jul 2024 17:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE74188018;
+	Tue, 30 Jul 2024 16:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIwXAfG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1G0tVnCL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956B71A76BE;
-	Tue, 30 Jul 2024 17:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C186F18455B;
+	Tue, 30 Jul 2024 16:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360012; cv=none; b=HfSGUc9pLpAoRq4hv44gSqnpu+RvI3BWXtjY30E49cPPl6cbp3If95JEDDBCguVKMtMwTo4phN8oMJYxSfUL1lwynTmNduNy4Y4wfrnM4jv78QAHNxs3qvejH8/gOYaAf61P1StFvzGysHWcGy0w4ex0SkUb187q8hffl999+D4=
+	t=1722358197; cv=none; b=X2vESFjWnJyDaA1EymjH2LmRsEDU6+uhLNfYHlOqauo+QV+LlIr47PeUvHXufXjxu0EbBZ/JS6aOX3OJB8jNMOMXYLRvK4yvn8oHsHcIIJTn86kxqCnvSDKYPByiTtOairgWrP0NkiNozees0Vj839s1yQUspEjNHL6rBtROLqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360012; c=relaxed/simple;
-	bh=tiR67ydGT35z19Agq5RKgQc/SsHgoqOqrL5g9JN8CJo=;
+	s=arc-20240116; t=1722358197; c=relaxed/simple;
+	bh=J0CrVmn8e0Zg8GJqyIaoSTGDYqBKwV7gvvnUqTJxHNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDitGE8ombWCG19m9lwc2P9BxoEW6Con4/02/wMmfpw8BbclZhSe25x8ROZ20Ahr3ixXAEUdV3KLNnSRHhW4xT5WK1ucGLOkmqe7fDh+Nd+cmDfFgRzf9cf1ifLxuuM7YsSNo+2gqjmOUJQesUeJrCGEfJmpYZBNpyMMRdxYaUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIwXAfG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B198BC32782;
-	Tue, 30 Jul 2024 17:20:11 +0000 (UTC)
+	 MIME-Version; b=sUZYxuh2OTsAQZGwgfGzI8IMcqk81+zbnGOyD8k2JeM5GRLoH1jgporZ7p06eIVv4imJtUb+ihwdOBH+mda+89joKBcLCRSfgZsA4VAwHrXaWdDGriPHIkk16HpYwAByHJdNOeakzfXKJzCajXybehcA1TrAVfQE0WUjAG9/2Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1G0tVnCL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453C1C4AF10;
+	Tue, 30 Jul 2024 16:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360012;
-	bh=tiR67ydGT35z19Agq5RKgQc/SsHgoqOqrL5g9JN8CJo=;
+	s=korg; t=1722358197;
+	bh=J0CrVmn8e0Zg8GJqyIaoSTGDYqBKwV7gvvnUqTJxHNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIwXAfG4Ua36MZuim72Ba8XsHnY9FlkS77LJDjvlmrKh9LiE9Mn8NP988QBNgyeoU
-	 9Xxmg/TbSq0u3gQJWYo3hC3Q4NVwVdZ9T6J5jTxEU1NJNtM6NTKQcjO52Oevj+Imm5
-	 5iopRJJziNJ4aAUZzX9vTBE9qm/xMV1/IM3oJxWI=
+	b=1G0tVnCLZVGlFmPblt+TekuySykue11FZYkdMawXD7rwgOqkwenol9oF/1b0Qn4+0
+	 V2npP9WFsCKeoscHQMK0LNHpakDkRtHWTGA84/33MM6h99ENVCIGKq8sFpte+4Pz/a
+	 mEcI5oO09D6/9V1yS0QGwfk81SbUQGknVp0pDmN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>
-Subject: [PATCH 6.10 570/809] ata: libata-scsi: Do not overwrite valid sense data when CK_COND=1
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 339/568] pinctrl: renesas: r8a779g0: Fix IRQ suffixes
 Date: Tue, 30 Jul 2024 17:47:26 +0200
-Message-ID: <20240730151747.287933603@linuxfoundation.org>
+Message-ID: <20240730151653.118831428@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,267 +61,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 97981926224afe17ba3e22e0c2b7dd8b516ee574 upstream.
+[ Upstream commit c391dcde3884dbbea37f57dd2625225d8661da97 ]
 
-Current ata_gen_passthru_sense() code performs two actions:
-1. Generates sense data based on the ATA 'status' and ATA 'error' fields.
-2. Populates "ATA Status Return sense data descriptor" / "Fixed format
-   sense data" with ATA taskfile fields.
+The suffixes of the IRQ identifiers for external interrupts 0-3
+are inconsistent:
+  - "IRQ0" and "IRQ0_A",
+  - "IRQ1" and "IRQ1_A",
+  - "IRQ2" and "IRQ2_A",
+  - "IRQ3" and "IRQ3_B".
+The suffixes for external interrupts 4 and 5 do follow conventional
+naming:
+  - "IRQ4A" and IRQ4_B",
+  - "IRQ5".
 
-The problem is that #1 generates sense data even when a valid sense data
-is already present (ATA_QCFLAG_SENSE_VALID is set). Factoring out #2 into
-a separate function allows us to generate sense data only when there is
-no valid sense data (ATA_QCFLAG_SENSE_VALID is not set).
+Fix this by adopting R-Car V4M naming:
+  - Rename "IRQ[0-2]_A" to "IRQ[0-2]_B",
+  - Rename "IRQ[0-3]" to "IRQ[0-3]_A".
 
-As a bonus, we can now delete a FIXME comment in atapi_qc_complete()
-which states that we don't want to translate taskfile registers into
-sense descriptors for ATAPI.
-
-Additionally, always set SAM_STAT_CHECK_CONDITION when CK_COND=1 because
-SAT specification mandates that SATL shall return CHECK CONDITION if
-the CK_COND bit is set.
-
-The ATA PASS-THROUGH handling logic in ata_scsi_qc_complete() is hard
-to read/understand. Improve the readability of the code by moving checks
-into self-explanatory boolean variables.
-
-Cc: stable@vger.kernel.org # 4.19+
-Co-developed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Link: https://lore.kernel.org/r/20240702024735.1152293-3-ipylypiv@google.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad9bb2fec66262b0 ("pinctrl: renesas: Initial R8A779G0 (R-Car V4H) PFC support")
+Fixes: 1b23d8a478bea9d1 ("pinctrl: renesas: r8a779g0: Add missing IRQx_A/IRQx_B")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/8ce9baf0a0f9346544a3ac801fd962c7c12fd247.1717754960.git.geert+renesas@glider.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |  169 +++++++++++++++++++++++++---------------------
- 1 file changed, 92 insertions(+), 77 deletions(-)
+ drivers/pinctrl/renesas/pfc-r8a779g0.c | 36 +++++++++++++-------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -230,6 +230,80 @@ void ata_scsi_set_sense_information(stru
- 				   SCSI_SENSE_BUFFERSIZE, information);
- }
+diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+index e3c720ea76e32..f9f650f232e6e 100644
+--- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
++++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
+@@ -68,10 +68,10 @@
+ #define GPSR0_9		F_(MSIOF5_SYNC,		IP1SR0_7_4)
+ #define GPSR0_8		F_(MSIOF5_SS1,		IP1SR0_3_0)
+ #define GPSR0_7		F_(MSIOF5_SS2,		IP0SR0_31_28)
+-#define GPSR0_6		F_(IRQ0,		IP0SR0_27_24)
+-#define GPSR0_5		F_(IRQ1,		IP0SR0_23_20)
+-#define GPSR0_4		F_(IRQ2,		IP0SR0_19_16)
+-#define GPSR0_3		F_(IRQ3,		IP0SR0_15_12)
++#define GPSR0_6		F_(IRQ0_A,		IP0SR0_27_24)
++#define GPSR0_5		F_(IRQ1_A,		IP0SR0_23_20)
++#define GPSR0_4		F_(IRQ2_A,		IP0SR0_19_16)
++#define GPSR0_3		F_(IRQ3_A,		IP0SR0_15_12)
+ #define GPSR0_2		F_(GP0_02,		IP0SR0_11_8)
+ #define GPSR0_1		F_(GP0_01,		IP0SR0_7_4)
+ #define GPSR0_0		F_(GP0_00,		IP0SR0_3_0)
+@@ -278,10 +278,10 @@
+ #define IP0SR0_3_0	F_(0, 0)		FM(ERROROUTC_N_B)	FM(TCLK2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR0_7_4	F_(0, 0)		FM(MSIOF3_SS1)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR0_11_8	F_(0, 0)		FM(MSIOF3_SS2)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR0_15_12	FM(IRQ3)		FM(MSIOF3_SCK)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR0_19_16	FM(IRQ2)		FM(MSIOF3_TXD)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR0_23_20	FM(IRQ1)		FM(MSIOF3_RXD)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP0SR0_27_24	FM(IRQ0)		FM(MSIOF3_SYNC)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR0_15_12	FM(IRQ3_A)		FM(MSIOF3_SCK)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR0_19_16	FM(IRQ2_A)		FM(MSIOF3_TXD)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR0_23_20	FM(IRQ1_A)		FM(MSIOF3_RXD)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP0SR0_27_24	FM(IRQ0_A)		FM(MSIOF3_SYNC)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP0SR0_31_28	FM(MSIOF5_SS2)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
  
-+/**
-+ *	ata_scsi_set_passthru_sense_fields - Set ATA fields in sense buffer
-+ *	@qc: ATA PASS-THROUGH command.
-+ *
-+ *	Populates "ATA Status Return sense data descriptor" / "Fixed format
-+ *	sense data" with ATA taskfile fields.
-+ *
-+ *	LOCKING:
-+ *	None.
-+ */
-+static void ata_scsi_set_passthru_sense_fields(struct ata_queued_cmd *qc)
-+{
-+	struct scsi_cmnd *cmd = qc->scsicmd;
-+	struct ata_taskfile *tf = &qc->result_tf;
-+	unsigned char *sb = cmd->sense_buffer;
-+
-+	if ((sb[0] & 0x7f) >= 0x72) {
-+		unsigned char *desc;
-+		u8 len;
-+
-+		/* descriptor format */
-+		len = sb[7];
-+		desc = (char *)scsi_sense_desc_find(sb, len + 8, 9);
-+		if (!desc) {
-+			if (SCSI_SENSE_BUFFERSIZE < len + 14)
-+				return;
-+			sb[7] = len + 14;
-+			desc = sb + 8 + len;
-+		}
-+		desc[0] = 9;
-+		desc[1] = 12;
-+		/*
-+		 * Copy registers into sense buffer.
-+		 */
-+		desc[2] = 0x00;
-+		desc[3] = tf->error;
-+		desc[5] = tf->nsect;
-+		desc[7] = tf->lbal;
-+		desc[9] = tf->lbam;
-+		desc[11] = tf->lbah;
-+		desc[12] = tf->device;
-+		desc[13] = tf->status;
-+
-+		/*
-+		 * Fill in Extend bit, and the high order bytes
-+		 * if applicable.
-+		 */
-+		if (tf->flags & ATA_TFLAG_LBA48) {
-+			desc[2] |= 0x01;
-+			desc[4] = tf->hob_nsect;
-+			desc[6] = tf->hob_lbal;
-+			desc[8] = tf->hob_lbam;
-+			desc[10] = tf->hob_lbah;
-+		}
-+	} else {
-+		/* Fixed sense format */
-+		sb[0] |= 0x80;
-+		sb[3] = tf->error;
-+		sb[4] = tf->status;
-+		sb[5] = tf->device;
-+		sb[6] = tf->nsect;
-+		if (tf->flags & ATA_TFLAG_LBA48)  {
-+			sb[8] |= 0x80;
-+			if (tf->hob_nsect)
-+				sb[8] |= 0x40;
-+			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
-+				sb[8] |= 0x20;
-+		}
-+		sb[9] = tf->lbal;
-+		sb[10] = tf->lbam;
-+		sb[11] = tf->lbah;
-+	}
-+}
-+
- static void ata_scsi_set_invalid_field(struct ata_device *dev,
- 				       struct scsi_cmnd *cmd, u16 field, u8 bit)
- {
-@@ -837,10 +911,8 @@ static void ata_to_sense_error(unsigned
-  *	ata_gen_passthru_sense - Generate check condition sense block.
-  *	@qc: Command that completed.
-  *
-- *	This function is specific to the ATA descriptor format sense
-- *	block specified for the ATA pass through commands.  Regardless
-- *	of whether the command errored or not, return a sense
-- *	block. Copy all controller registers into the sense
-+ *	This function is specific to the ATA pass through commands.
-+ *	Regardless of whether the command errored or not, return a sense
-  *	block. If there was no error, we get the request from an ATA
-  *	passthrough command, so we use the following sense data:
-  *	sk = RECOVERED ERROR
-@@ -875,63 +947,6 @@ static void ata_gen_passthru_sense(struc
- 		 */
- 		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
- 	}
--
--	if ((sb[0] & 0x7f) >= 0x72) {
--		unsigned char *desc;
--		u8 len;
--
--		/* descriptor format */
--		len = sb[7];
--		desc = (char *)scsi_sense_desc_find(sb, len + 8, 9);
--		if (!desc) {
--			if (SCSI_SENSE_BUFFERSIZE < len + 14)
--				return;
--			sb[7] = len + 14;
--			desc = sb + 8 + len;
--		}
--		desc[0] = 9;
--		desc[1] = 12;
--		/*
--		 * Copy registers into sense buffer.
--		 */
--		desc[2] = 0x00;
--		desc[3] = tf->error;
--		desc[5] = tf->nsect;
--		desc[7] = tf->lbal;
--		desc[9] = tf->lbam;
--		desc[11] = tf->lbah;
--		desc[12] = tf->device;
--		desc[13] = tf->status;
--
--		/*
--		 * Fill in Extend bit, and the high order bytes
--		 * if applicable.
--		 */
--		if (tf->flags & ATA_TFLAG_LBA48) {
--			desc[2] |= 0x01;
--			desc[4] = tf->hob_nsect;
--			desc[6] = tf->hob_lbal;
--			desc[8] = tf->hob_lbam;
--			desc[10] = tf->hob_lbah;
--		}
--	} else {
--		/* Fixed sense format */
--		sb[0] |= 0x80;
--		sb[3] = tf->error;
--		sb[4] = tf->status;
--		sb[5] = tf->device;
--		sb[6] = tf->nsect;
--		if (tf->flags & ATA_TFLAG_LBA48)  {
--			sb[8] |= 0x80;
--			if (tf->hob_nsect)
--				sb[8] |= 0x40;
--			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
--				sb[8] |= 0x20;
--		}
--		sb[9] = tf->lbal;
--		sb[10] = tf->lbam;
--		sb[11] = tf->lbah;
--	}
- }
+ /* IP1SR0 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
+@@ -290,7 +290,7 @@
+ #define IP1SR0_11_8	FM(MSIOF5_TXD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR0_15_12	FM(MSIOF5_SCK)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR0_19_16	FM(MSIOF5_RXD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP1SR0_23_20	FM(MSIOF2_SS2)		FM(TCLK1)		FM(IRQ2_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP1SR0_23_20	FM(MSIOF2_SS2)		FM(TCLK1)		FM(IRQ2_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR0_27_24	FM(MSIOF2_SS1)		FM(HTX1_A)		FM(TX1_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP1SR0_31_28	FM(MSIOF2_SYNC)		FM(HRX1_A)		FM(RX1_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
  
- /**
-@@ -1632,26 +1647,32 @@ static void ata_scsi_qc_complete(struct
- {
- 	struct scsi_cmnd *cmd = qc->scsicmd;
- 	u8 *cdb = cmd->cmnd;
--	int need_sense = (qc->err_mask != 0) &&
--		!(qc->flags & ATA_QCFLAG_SENSE_VALID);
-+	bool have_sense = qc->flags & ATA_QCFLAG_SENSE_VALID;
-+	bool is_ata_passthru = cdb[0] == ATA_16 || cdb[0] == ATA_12;
-+	bool is_ck_cond_request = cdb[2] & 0x20;
-+	bool is_error = qc->err_mask != 0;
+@@ -325,8 +325,8 @@
+ #define IP2SR1_7_4	FM(SCIF_CLK)		FM(IRQ4_A)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP2SR1_11_8	FM(SSI_SCK)		FM(TCLK3)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP2SR1_15_12	FM(SSI_WS)		FM(TCLK4)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP2SR1_19_16	FM(SSI_SD)		FM(IRQ0_A)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+-#define IP2SR1_23_20	FM(AUDIO_CLKOUT)	FM(IRQ1_A)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP2SR1_19_16	FM(SSI_SD)		FM(IRQ0_B)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
++#define IP2SR1_23_20	FM(AUDIO_CLKOUT)	FM(IRQ1_B)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP2SR1_27_24	FM(AUDIO_CLKIN)		FM(PWM3_A)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+ #define IP2SR1_31_28	F_(0, 0)		FM(TCLK2)		FM(MSIOF4_SS1)		FM(IRQ3_B)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
  
- 	/* For ATA pass thru (SAT) commands, generate a sense block if
- 	 * user mandated it or if there's an error.  Note that if we
--	 * generate because the user forced us to [CK_COND =1], a check
-+	 * generate because the user forced us to [CK_COND=1], a check
- 	 * condition is generated and the ATA register values are returned
- 	 * whether the command completed successfully or not. If there
--	 * was no error, we use the following sense data:
-+	 * was no error, and CK_COND=1, we use the following sense data:
- 	 * sk = RECOVERED ERROR
- 	 * asc,ascq = ATA PASS-THROUGH INFORMATION AVAILABLE
- 	 */
--	if (((cdb[0] == ATA_16) || (cdb[0] == ATA_12)) &&
--	    ((cdb[2] & 0x20) || need_sense))
--		ata_gen_passthru_sense(qc);
--	else if (need_sense)
-+	if (is_ata_passthru && (is_ck_cond_request || is_error || have_sense)) {
-+		if (!have_sense)
-+			ata_gen_passthru_sense(qc);
-+		ata_scsi_set_passthru_sense_fields(qc);
-+		if (is_ck_cond_request)
-+			set_status_byte(qc->scsicmd, SAM_STAT_CHECK_CONDITION);
-+	} else if (is_error && !have_sense) {
- 		ata_gen_ata_sense(qc);
--	else
-+	} else {
- 		/* Keep the SCSI ML and status byte, clear host byte. */
- 		cmd->result &= 0x0000ffff;
-+	}
+@@ -724,16 +724,16 @@ static const u16 pinmux_data[] = {
  
- 	ata_qc_done(qc);
- }
-@@ -2590,14 +2611,8 @@ static void atapi_qc_complete(struct ata
- 	/* handle completion from EH */
- 	if (unlikely(err_mask || qc->flags & ATA_QCFLAG_SENSE_VALID)) {
+ 	PINMUX_IPSR_GPSR(IP0SR0_11_8,	MSIOF3_SS2),
  
--		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID)) {
--			/* FIXME: not quite right; we don't want the
--			 * translation of taskfile registers into a
--			 * sense descriptors, since that's only
--			 * correct for ATA, not ATAPI
--			 */
-+		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID))
- 			ata_gen_passthru_sense(qc);
--		}
+-	PINMUX_IPSR_GPSR(IP0SR0_15_12,	IRQ3),
++	PINMUX_IPSR_GPSR(IP0SR0_15_12,	IRQ3_A),
+ 	PINMUX_IPSR_GPSR(IP0SR0_15_12,	MSIOF3_SCK),
  
- 		/* SCSI EH automatically locks door if sdev->locked is
- 		 * set.  Sometimes door lock request continues to
+-	PINMUX_IPSR_GPSR(IP0SR0_19_16,	IRQ2),
++	PINMUX_IPSR_GPSR(IP0SR0_19_16,	IRQ2_A),
+ 	PINMUX_IPSR_GPSR(IP0SR0_19_16,	MSIOF3_TXD),
+ 
+-	PINMUX_IPSR_GPSR(IP0SR0_23_20,	IRQ1),
++	PINMUX_IPSR_GPSR(IP0SR0_23_20,	IRQ1_A),
+ 	PINMUX_IPSR_GPSR(IP0SR0_23_20,	MSIOF3_RXD),
+ 
+-	PINMUX_IPSR_GPSR(IP0SR0_27_24,	IRQ0),
++	PINMUX_IPSR_GPSR(IP0SR0_27_24,	IRQ0_A),
+ 	PINMUX_IPSR_GPSR(IP0SR0_27_24,	MSIOF3_SYNC),
+ 
+ 	PINMUX_IPSR_GPSR(IP0SR0_31_28,	MSIOF5_SS2),
+@@ -751,7 +751,7 @@ static const u16 pinmux_data[] = {
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR0_23_20,	MSIOF2_SS2),
+ 	PINMUX_IPSR_GPSR(IP1SR0_23_20,	TCLK1),
+-	PINMUX_IPSR_GPSR(IP1SR0_23_20,	IRQ2_A),
++	PINMUX_IPSR_GPSR(IP1SR0_23_20,	IRQ2_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP1SR0_27_24,	MSIOF2_SS1),
+ 	PINMUX_IPSR_GPSR(IP1SR0_27_24,	HTX1_A),
+@@ -851,10 +851,10 @@ static const u16 pinmux_data[] = {
+ 	PINMUX_IPSR_GPSR(IP2SR1_15_12,	TCLK4),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR1_19_16,	SSI_SD),
+-	PINMUX_IPSR_GPSR(IP2SR1_19_16,	IRQ0_A),
++	PINMUX_IPSR_GPSR(IP2SR1_19_16,	IRQ0_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR1_23_20,	AUDIO_CLKOUT),
+-	PINMUX_IPSR_GPSR(IP2SR1_23_20,	IRQ1_A),
++	PINMUX_IPSR_GPSR(IP2SR1_23_20,	IRQ1_B),
+ 
+ 	PINMUX_IPSR_GPSR(IP2SR1_27_24,	AUDIO_CLKIN),
+ 	PINMUX_IPSR_GPSR(IP2SR1_27_24,	PWM3_A),
+-- 
+2.43.0
+
 
 
 
