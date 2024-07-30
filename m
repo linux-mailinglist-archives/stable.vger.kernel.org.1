@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6A0941D5B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C38941A3A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F26E28B4A1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E031C22AD3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B42187FF6;
-	Tue, 30 Jul 2024 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDCA183CDB;
+	Tue, 30 Jul 2024 16:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrCHb+RZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJ//xtWL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607B11A76D4;
-	Tue, 30 Jul 2024 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBEE1A6192;
+	Tue, 30 Jul 2024 16:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359769; cv=none; b=trbfvecd42ePLmknRs5qPYFl+SZGsBPJTvj3VPva2sKxlZSnTn9AZWoyfDMHa9kE7M7mAUZY4HSywLwUYCJY68+A4vqjokCNIYX+IO9/I+waFhe9eKBxF5l9RWQcvtUiYQDwt0N1g2rtnuKbs8UyLSw8NLwFIp+K3i0nKftJwXU=
+	t=1722357686; cv=none; b=MKY++1rhI9uOR9VPiJ2f1T9cq9+MYQQEVaBQiYwzLlRz3hjzRpXe+/HDHtHKwwLKqTanEwgmIx5cW1VX3tr740hSCa2g261RbBYnnGmvOqPWnLrYqmAT1egeUOUFIxx0HExJZTRnQa43eXkwWH041LooszkF9QlTviOZ9/8r9zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359769; c=relaxed/simple;
-	bh=eOXpORnj1imNLTzZkqENoIP8nKq/ESldcXRF8Ha2Z/E=;
+	s=arc-20240116; t=1722357686; c=relaxed/simple;
+	bh=OLuDiMZDrbBtj2/U5Fmzk0dcyO3E7S0rRIsBMJEW+Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7QJNKH6n1pZ3Ctljdalsq6meLEdp4ISzn1USamzi11CE8y2oI6o5n8hriewwwpzzYkHixDxHhjumLd5WmIYrB6BpNVN7gOwqhG/QkUFXgCliJFaS8Vmd4OunVYg/4q6kspBDFmmTkFYyFdu2/MVrEEbAD3ORYf01SZLK40ZNKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrCHb+RZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA0FC32782;
-	Tue, 30 Jul 2024 17:16:08 +0000 (UTC)
+	 MIME-Version; b=RuVHEGBikWou1x8v8+ENWN2PmGZ/Lyo3fKFiGMQ5nWXugExQVH7nxg/jAi4GkLFI+J+Wl4hANGjdwXkj8tjO7gCkRFx8cvgYKP/OgopXUv5QJtISSYoRIzoB2U360tXXwqjIIV2aVlST17JgaKQS4LKi5GcYtM2Gq42gY6LV2QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJ//xtWL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF39EC32782;
+	Tue, 30 Jul 2024 16:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359769;
-	bh=eOXpORnj1imNLTzZkqENoIP8nKq/ESldcXRF8Ha2Z/E=;
+	s=korg; t=1722357686;
+	bh=OLuDiMZDrbBtj2/U5Fmzk0dcyO3E7S0rRIsBMJEW+Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrCHb+RZfPsa47YUi/ndYo3pVLdB1RT+/Ke7Hrhxwadueg076GXlBfOddcNxHc8qH
-	 nMFYM9uv3i1NN8srHEtob++/0nC3S/kdU8AIV/SwLUZbMZig1XXLoBR7SF+BPqL7JE
-	 S3r4IXfvhhjqz+/X1vXd/iKUDhvvi6C6Hj/GIlU8=
+	b=jJ//xtWLDRcpVefhPnIoFKH+kaM4ZpO7+1vWbHi2sMFB2rAUegi0qnLh4n28UiLDR
+	 NvKTMt3XYG6vENTqYDMCqUkjzaoYFN27lHXuRUceklTERJQkNjmD7M8gl6y445rmmZ
+	 UQRIwww9P6Wm+dfOQdQ+ai1gg6hFqCfrBkHEJnQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 512/809] nilfs2: avoid undefined behavior in nilfs_cnt32_ge macro
+Subject: [PATCH 6.6 281/568] mtd: make mtd_test.c a separate module
 Date: Tue, 30 Jul 2024 17:46:28 +0200
-Message-ID: <20240730151744.959268614@linuxfoundation.org>
+Message-ID: <20240730151650.857775187@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 0f3819e8c483771a59cf9d3190cd68a7a990083c ]
+[ Upstream commit a5cf054d325e6f362e82fe6d124a1871a4af8174 ]
 
-According to the C standard 3.4.3p3, the result of signed integer overflow
-is undefined.  The macro nilfs_cnt32_ge(), which compares two sequence
-numbers, uses signed integer subtraction that can overflow, and therefore
-the result of the calculation may differ from what is expected due to
-undefined behavior in different environments.
+This file gets linked into nine different modules, which causes a warning:
 
-Similar to an earlier change to the jiffies-related comparison macros in
-commit 5a581b367b5d ("jiffies: Avoid undefined behavior from signed
-overflow"), avoid this potential issue by changing the definition of the
-macro to perform the subtraction as unsigned integers, then cast the
-result to a signed integer for comparison.
+scripts/Makefile.build:236: drivers/mtd/tests/Makefile: mtd_test.o is added to multiple modules: mtd_nandbiterrs mtd_oobtest mtd_pagetest mtd_readtest mtd_speedtest mtd_stresstest mtd_subpagetest mtd_torturetest
 
-Link: https://lkml.kernel.org/r/20130727225828.GA11864@linux.vnet.ibm.com
-Link: https://lkml.kernel.org/r/20240702183512.6390-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Make it a separate module instead.
+
+Fixes: a995c792280d ("mtd: tests: rename sources in order to link a helper object")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20240529095049.1915393-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/tests/Makefile   | 34 +++++++++++++++++-----------------
+ drivers/mtd/tests/mtd_test.c |  9 +++++++++
+ 2 files changed, 26 insertions(+), 17 deletions(-)
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 6ea81f1d50944..d02fd92cdb432 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -136,7 +136,7 @@ static void nilfs_dispose_list(struct the_nilfs *, struct list_head *, int);
+diff --git a/drivers/mtd/tests/Makefile b/drivers/mtd/tests/Makefile
+index 5de0378f90dbd..7dae831ee8b6b 100644
+--- a/drivers/mtd/tests/Makefile
++++ b/drivers/mtd/tests/Makefile
+@@ -1,19 +1,19 @@
+ # SPDX-License-Identifier: GPL-2.0
+-obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o
+-obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o
++obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o mtd_test.o
++obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o mtd_test.o
  
- #define nilfs_cnt32_ge(a, b)   \
- 	(typecheck(__u32, a) && typecheck(__u32, b) && \
--	 ((__s32)(a) - (__s32)(b) >= 0))
-+	 ((__s32)((a) - (b)) >= 0))
+-mtd_oobtest-objs := oobtest.o mtd_test.o
+-mtd_pagetest-objs := pagetest.o mtd_test.o
+-mtd_readtest-objs := readtest.o mtd_test.o
+-mtd_speedtest-objs := speedtest.o mtd_test.o
+-mtd_stresstest-objs := stresstest.o mtd_test.o
+-mtd_subpagetest-objs := subpagetest.o mtd_test.o
+-mtd_torturetest-objs := torturetest.o mtd_test.o
+-mtd_nandbiterrs-objs := nandbiterrs.o mtd_test.o
++mtd_oobtest-objs := oobtest.o
++mtd_pagetest-objs := pagetest.o
++mtd_readtest-objs := readtest.o
++mtd_speedtest-objs := speedtest.o
++mtd_stresstest-objs := stresstest.o
++mtd_subpagetest-objs := subpagetest.o
++mtd_torturetest-objs := torturetest.o
++mtd_nandbiterrs-objs := nandbiterrs.o
+diff --git a/drivers/mtd/tests/mtd_test.c b/drivers/mtd/tests/mtd_test.c
+index c84250beffdc9..f391e0300cdc9 100644
+--- a/drivers/mtd/tests/mtd_test.c
++++ b/drivers/mtd/tests/mtd_test.c
+@@ -25,6 +25,7 @@ int mtdtest_erase_eraseblock(struct mtd_info *mtd, unsigned int ebnum)
  
- static int nilfs_prepare_segment_lock(struct super_block *sb,
- 				      struct nilfs_transaction_info *ti)
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_erase_eraseblock);
+ 
+ static int is_block_bad(struct mtd_info *mtd, unsigned int ebnum)
+ {
+@@ -57,6 +58,7 @@ int mtdtest_scan_for_bad_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_scan_for_bad_eraseblocks);
+ 
+ int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 				unsigned int eb, int ebcnt)
+@@ -75,6 +77,7 @@ int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_erase_good_eraseblocks);
+ 
+ int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
+ {
+@@ -92,6 +95,7 @@ int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
+ 
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_read);
+ 
+ int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
+ 		const void *buf)
+@@ -107,3 +111,8 @@ int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
+ 
+ 	return err;
+ }
++EXPORT_SYMBOL_GPL(mtdtest_write);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("MTD function test helpers");
++MODULE_AUTHOR("Akinobu Mita");
 -- 
 2.43.0
 
