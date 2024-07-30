@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-63214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7EC9417F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4AA9417F5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CE01F24C30
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18A0B1C22ADB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABFD18E02B;
-	Tue, 30 Jul 2024 16:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF46418E052;
+	Tue, 30 Jul 2024 16:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwVuEf53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yf9qSnaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF6718E028;
-	Tue, 30 Jul 2024 16:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C70F1917DF;
+	Tue, 30 Jul 2024 16:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356095; cv=none; b=cW9eOwQdsNJjUUz5pJRg0xpmgISfoSgMT1EttLtpSYOhtIsh8f98SQdGxcd89MkROb1zvTFLmdW/LJnUi49XW5MDzC81QxPGc1QtJqAaxLQ9nIRrfECpg9CcxyQGlLYE4Wl9CqIHck8VQGL3VWG+t5e5zt7GqKU0w2O4QJhUhrI=
+	t=1722356111; cv=none; b=O8bgAI0mtX4N3XhAwYAHmiB+KHexfEgAue6pPvVqY5Nn78IxaFD0XR5iSyKfqr11KqJbb73wruXAXiiB1+tA+FnInFe3wX1ewq24boxGlqzQO5Mnx0XCLufVzCpobl3DNWZSRHmnks8S49RqNc1W9Zmpr++HxD11ausMWBxQlH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356095; c=relaxed/simple;
-	bh=YmvbVkV+PUVlbp5CfGGrgSAzwDvEpCwqRgp5gSKzofM=;
+	s=arc-20240116; t=1722356111; c=relaxed/simple;
+	bh=txyCNnTqPZmG0Cfc6XTAUtr3V78GlXmaBJ1noHDjKRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJbl9Tt/sk1OEPA0tGVslw5l1aTJ4w/x/qFYeFdkpaj+8CSBIQWi52jxq6zGA6VivQIS5bNdXR+NNbxCU526th+J3DODo/ePJ5jFwJHvyTX7azGTi8QfUAR+4Xa7fixwhcEoMu8FBceXVSZ0ep7A7yHhyYImcIZM9jeGn7g4JJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwVuEf53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F05C32782;
-	Tue, 30 Jul 2024 16:14:53 +0000 (UTC)
+	 MIME-Version; b=bEOMgcydG1xwZxoQkz34pLbui1F8wAl/yosDQ6yTlE86JKsLkF5OdQncYyjGMaXVT/1qCJx3HuDTFkStLSsTgDsnPtpoi5VuGtqujKxRqYE5uLN0Q4Nf2SNP5H8ym4BHv+ZTt8FgH9bCaZProtsvVncaggCP27XDsaYhr6tjRxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yf9qSnaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B62C32782;
+	Tue, 30 Jul 2024 16:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356094;
-	bh=YmvbVkV+PUVlbp5CfGGrgSAzwDvEpCwqRgp5gSKzofM=;
+	s=korg; t=1722356111;
+	bh=txyCNnTqPZmG0Cfc6XTAUtr3V78GlXmaBJ1noHDjKRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwVuEf53ZUkKH9eSjUPtRY+UGkcKRfeqUc3dqJFVF4+Z+gOa/H0yl4CViYv0hBFVB
-	 339VeYftqqeUZ6m0kMQOtFkYnjmPUA6Wmd+ETROs0tJr/6VI7zNa/4twq0KJuBB1EZ
-	 vmZxcv3EUbgbOBa3TnhDZH8VJlWYS+2Fw1dLQOFc=
+	b=Yf9qSnaMKw18y2T4r+z8KxEvvfCyDihxLLNHhiInsoq+3TpsDQAKdGZf8uTSVj2AG
+	 IwFmdfnM9vsYk3eRLwTpiHnn1uWhp8pwtpsJ/aH8qdThVwX97te9rhPzjQcdVzvhXx
+	 oKeSEXsCTfjUldPIdxrcD2xv9maTDIQM+he0AYeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 098/809] ARM: dts: imx6qdl-kontron-samx6i: fix PCIe reset polarity
-Date: Tue, 30 Jul 2024 17:39:34 +0200
-Message-ID: <20240730151728.503556736@linuxfoundation.org>
+Subject: [PATCH 6.10 099/809] arm64: dts: mediatek: mt8195: Fix GPU thermal zone name for SVS
+Date: Tue, 30 Jul 2024 17:39:35 +0200
+Message-ID: <20240730151728.541662328@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,33 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit df35c6e9027cf9affe699e632a48082ab1bbba4c ]
+[ Upstream commit b2b6f2edb82a08abe8942535bc77da55a0f43e14 ]
 
-The PCIe reset line is active low. Fix it.
+This SoC has two GPU related thermal zones: the primary zone must be
+called "gpu-thermal" for SVS to pick it up.
 
-Fixes: 2a51f9dae13d ("ARM: dts: imx6qdl-kontron-samx6i: Add iMX6-based Kontron SMARC-sAMX6i module")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 1e5b6725199f ("arm64: dts: mediatek: mt8195: Add AP domain thermal zones")
+Link: https://lore.kernel.org/r/20240410083002.1357857-2-angelogioacchino.delregno@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi | 2 +-
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-index 78cbc2df279e6..668d33d1ff0c1 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-kontron-samx6i.dtsi
-@@ -732,7 +732,7 @@ &pcie {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pcie>;
- 	wake-up-gpio = <&gpio6 18 GPIO_ACTIVE_HIGH>;
--	reset-gpio = <&gpio3 13 GPIO_ACTIVE_HIGH>;
-+	reset-gpio = <&gpio3 13 GPIO_ACTIVE_LOW>;
- };
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 5d8b68f86ce44..2ee45752583c0 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -3880,7 +3880,7 @@ vpu1_crit: trip-crit {
+ 			};
+ 		};
  
- /* LCD_BKLT_PWM */
+-		gpu0-thermal {
++		gpu-thermal {
+ 			polling-delay = <1000>;
+ 			polling-delay-passive = <250>;
+ 			thermal-sensors = <&lvts_ap MT8195_AP_GPU0>;
 -- 
 2.43.0
 
