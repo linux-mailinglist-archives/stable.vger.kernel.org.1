@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-65363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91970947536
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 08:26:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6991947533
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 08:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C00B1F220BB
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 06:26:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81CBC28133F
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 06:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FB21442EA;
-	Mon,  5 Aug 2024 06:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B5413D539;
+	Mon,  5 Aug 2024 06:26:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC32A13C9D3
-	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 06:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE35712B6C
+	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 06:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722839196; cv=none; b=JKgi337iUDPsj1PKBCvVMbGLGc8L6+l4MkDbT85hWwieSdSa9evllwn6LTfFpknkI/wvd8JBCzLYmHrEsH3DX9bxdKA2K3iuCdlJx3MvN4D3r9qp2V9KJU4/0NpsqUYouSj77ET+kNsZtWRA40bnE/ap+5MnEWgMtL0NUSXamq8=
+	t=1722839195; cv=none; b=PtBJykASzxTPOgGI2gBY7ZfKQfleQzKkKZK7McCdO7vH5GpX2+qFZqWvpoSgAZo2H68pCWkF5Bwnd9wDCspzEMYT6QWAs2rddIbInYW8P7OyANPo+MLB2R0v+TIB85cPRNgGZge7y/0p8n97siLcpPHZXs+C8sCFP1BCzg48KAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722839196; c=relaxed/simple;
-	bh=N2+iCGDYJfTdiEpdWHRP0smTrjMquasS56upJlS2lF0=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=KvMRgzzQPonWnKgLoUwTU5df2msH8ycEGCNRXtWrengcFX1K7AzE89dmZnsipzVVbUU4b2VdUYSl79j9eTHxeXJ61QZLzv/pv+0qtdD/tir0RSa7N1qvwcLd3AH3plCUkNwVd/PQSb7mhMuY+njYRxK7Y6fDWf44FKMYX7hhFW4=
+	s=arc-20240116; t=1722839195; c=relaxed/simple;
+	bh=Awm1fFQDvWV5VbT0FBx9hUxkBQAPtZX3NZ7G+hrUqzY=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=OIx0aCm3MWfAj0zSLVm6BhDJr9UIPkVvBo2Gu6vWNoJZG7xCVsV/ECgQo3djVNB6m6X2IaVa5qomOH+J45EJOg8Wj0H/nIq2/4LQaC1R8ljwaHOb3eEb1PZAQ6eZZ/oi6UWqezxoQQQ8O6Ar5OQ0F95IiH521sR5KTSSZlOsJiY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
 Received: from mchehab by linuxtv.org with local (Exim 4.96)
 	(envelope-from <mchehab@linuxtv.org>)
-	id 1sarAv-0000fl-1J;
-	Mon, 05 Aug 2024 06:26:33 +0000
+	id 1sarAu-0000ey-0O;
+	Mon, 05 Aug 2024 06:26:32 +0000
 From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Date: Tue, 30 Jul 2024 06:36:29 +0000
-Subject: [git:media_stage/master] media: ipu-bridge: fix ipu6 Kconfig dependencies
+Subject: [git:media_stage/master] media: v4l: Fix missing tabular column hint for Y14P format
 To: linuxtv-commits@linuxtv.org
-Cc: Arnd Bergmann <arnd@arndb.de>, Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org
+Cc: stable@vger.kernel.org, Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 Mail-followup-to: linux-media@vger.kernel.org
 Forward-to: linux-media@vger.kernel.org
 Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1sarAv-0000fl-1J@linuxtv.org>
+Message-Id: <E1sarAu-0000ey-0O@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,52 +49,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: ipu-bridge: fix ipu6 Kconfig dependencies
-Author:  Arnd Bergmann <arnd@arndb.de>
-Date:    Fri Jul 19 11:53:50 2024 +0200
+Subject: media: v4l: Fix missing tabular column hint for Y14P format
+Author:  Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+Date:    Sat Jun 8 18:41:27 2024 +0200
 
-Commit 4670c8c3fb04 ("media: ipu-bridge: Fix Kconfig dependencies") changed
-how IPU_BRIDGE dependencies are handled for all drivers, but the IPU6
-variant was added the old way, which causes build time warnings when I2C is
-turned off:
+The original patch added two columns in the flat-table of Luma-Only
+Image Formats, without updating hints to latex: above it.  This results
+in wrong column count in the output of Sphinx's latex builder.
 
-WARNING: unmet direct dependencies detected for IPU_BRIDGE
-  Depends on [n]: MEDIA_SUPPORT [=m] && PCI [=y] && MEDIA_PCI_SUPPORT [=y] && (ACPI [=y] || COMPILE_TEST [=y]) && I2C [=n]
-  Selected by [m]:
-  - VIDEO_INTEL_IPU6 [=m] && MEDIA_SUPPORT [=m] && PCI [=y] && MEDIA_PCI_SUPPORT [=y] && (ACPI [=y] || COMPILE_TEST [=y]) && VIDEO_DEV [=m] && X86 [=y] && X86_64 [=y] && HAS_DMA [=y]
+Fix it.
 
-To make it consistent with the other IPU drivers as well as avoid this
-warning, change the 'select' into 'depends on'.
-
-Fixes: c70281cc83d6 ("media: intel/ipu6: add Kconfig and Makefile")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-[Sakari Ailus: Alternatively depend on !IPU_BRIDGE.]
+Reported-by: Akira Yokosawa <akiyks@gmail.com>
+Closes: https://lore.kernel.org/linux-media/bdbc27ba-5098-49fb-aabf-753c81361cc7@gmail.com/
+Fixes: adb1d4655e53 ("media: v4l: Add V4L2-PIX-FMT-Y14P format")
 Cc: stable@vger.kernel.org # for v6.10
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
- drivers/media/pci/intel/ipu6/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 ---
 
-diff --git a/drivers/media/pci/intel/ipu6/Kconfig b/drivers/media/pci/intel/ipu6/Kconfig
-index 154343080c82..b7ab24b89836 100644
---- a/drivers/media/pci/intel/ipu6/Kconfig
-+++ b/drivers/media/pci/intel/ipu6/Kconfig
-@@ -3,13 +3,13 @@ config VIDEO_INTEL_IPU6
- 	depends on ACPI || COMPILE_TEST
- 	depends on VIDEO_DEV
- 	depends on X86 && X86_64 && HAS_DMA
-+	depends on IPU_BRIDGE || !IPU_BRIDGE
- 	select DMA_OPS
- 	select IOMMU_IOVA
- 	select VIDEO_V4L2_SUBDEV_API
- 	select MEDIA_CONTROLLER
- 	select VIDEOBUF2_DMA_CONTIG
- 	select V4L2_FWNODE
--	select IPU_BRIDGE
- 	help
- 	  This is the 6th Gen Intel Image Processing Unit, found in Intel SoCs
- 	  and used for capturing images and video from camera sensors.
+diff --git a/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst b/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
+index f02e6cf3516a..74df19be91f6 100644
+--- a/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
++++ b/Documentation/userspace-api/media/v4l/pixfmt-yuv-luma.rst
+@@ -21,9 +21,9 @@ are often referred to as greyscale formats.
+ 
+ .. raw:: latex
+ 
+-    \scriptsize
++    \tiny
+ 
+-.. tabularcolumns:: |p{3.6cm}|p{3.0cm}|p{1.3cm}|p{2.6cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|
++.. tabularcolumns:: |p{3.6cm}|p{2.4cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|p{1.3cm}|
+ 
+ .. flat-table:: Luma-Only Image Formats
+     :header-rows: 1
 
