@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC9F941912
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2A794193A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9F93283071
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C168B2A222
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692BD1A618F;
-	Tue, 30 Jul 2024 16:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3CB1A617E;
+	Tue, 30 Jul 2024 16:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7Aw/IIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTTtjxn6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EA91A6160;
-	Tue, 30 Jul 2024 16:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC571A6186;
+	Tue, 30 Jul 2024 16:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356929; cv=none; b=JuW5s8eJPGlrtIPhdS5LGmfDQMxsbUiDuVlEj3kgHzF3XoqVgD1k6KsbnSBGQdbwQD0uNLVb5MzpFl8iz0oTgTYrRQjEhTrNAzfyhIOiZqpIm46QM/bGuCsvcEGtDtKMasBzCY6VNo9QX50pIzm8gInTvleEJzcbrrMxhM39hG8=
+	t=1722356749; cv=none; b=k3jkSxjlt5dxU5S9CF3uHWVLPLH0Oqmbxl7gOK8gJv/rymU5onZmZHQlLPDwtDKqpV1/iBr1O0DemZ1DpTxoB5VTAnU+qONPDjik9Qk7oL95jJPKMnkpweF6gE2l1SjQzGzL4fj6Ujn/cIXmqyIjNOyJy/zs0cRMa6batb/Ay3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356929; c=relaxed/simple;
-	bh=LKYkrMmt2fCV5jOONjAMns314v2ShM9VLqMUk4SBQwA=;
+	s=arc-20240116; t=1722356749; c=relaxed/simple;
+	bh=JH4s/yhWp/+98X7XYRD9o6f+b8QAekrFQhtvde//lrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlV5nzZ1bs/4GEkbFXDMmvIkdGIgNJ8XBsp/Cx78kbuXUW4eea1N07mSYw7USuyvjZQ1BDCzQVNY8KxWFVSkpbXxCrOGT169X33h3LgSZ0EsXWEO56U6G3Nt7qpc0oFwvG8KUaw1Yly9fc+j9yVBCxCm1ten0MkkEh/Hnhgclnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7Aw/IIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C07EC4AF0E;
-	Tue, 30 Jul 2024 16:28:48 +0000 (UTC)
+	 MIME-Version; b=FHSkL8XTVW1QvleZNczTSsQN37L01/XiyD9Eybg/bGaGGHW/s5Ykqu0FC4IPTsStG05hwoJSyzcLw1qUBSfJP8qBdhKOe48Mb6JXZtMjnrqbjfvGY1CM13ZTnhEsoQHESipzNtsbfRVhcEXV7ab6mArTIBMx4NBGUDQWQUUWSso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTTtjxn6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4DFC32782;
+	Tue, 30 Jul 2024 16:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356928;
-	bh=LKYkrMmt2fCV5jOONjAMns314v2ShM9VLqMUk4SBQwA=;
+	s=korg; t=1722356749;
+	bh=JH4s/yhWp/+98X7XYRD9o6f+b8QAekrFQhtvde//lrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7Aw/IIYuP0rotV8mLVhAphLh+Mni7QMSofXZ+vK7eVW0ZH2nSWrfea/jYJEe8IkI
-	 iQZ+7DpMauU1NUPkDn9ANCXIqL6M3toUaHEXxGTz3QsWRJ+eGHmpB2EKyvY6/si5RM
-	 1GstL0+nURxGo8fhqEuiuBXgOMKWzquSF8co2/PE=
+	b=hTTtjxn65PrDTPxlxjhPpaIXqy7IEvZhOfbQocX96T2fFOvZYUR8GIIP9Lu9wBIP0
+	 wEwgSF3oSGiZ6hObVxyMXmJkIlb+AjsukGBlAjnjc6pCb/MhKA9OtpjeHNpzIiEU0O
+	 28ocfa3omGPVs1dBdv/+o8TqKG+Xs/Lr2v635lgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,10 +45,11 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sean Christopherson <seanjc@google.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Ankur Arora <ankur.a.arora@oracle.com>,
+	Chen Yu <yu.c.chen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 182/809] sched/core: Move preempt_model_*() helpers from sched.h to preempt.h
-Date: Tue, 30 Jul 2024 17:40:58 +0200
-Message-ID: <20240730151731.798941125@linuxfoundation.org>
+Subject: [PATCH 6.10 183/809] sched/core: Drop spinlocks on contention iff kernel is preemptible
+Date: Tue, 30 Jul 2024 17:40:59 +0200
+Message-ID: <20240730151731.837995462@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,127 +70,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit f0dc887f21d18791037c0166f652c67da761f16f ]
+[ Upstream commit c793a62823d1ce8f70d9cfc7803e3ea436277cda ]
 
-Move the declarations and inlined implementations of the preempt_model_*()
-helpers to preempt.h so that they can be referenced in spinlock.h without
-creating a potential circular dependency between spinlock.h and sched.h.
+Use preempt_model_preemptible() to detect a preemptible kernel when
+deciding whether or not to reschedule in order to drop a contended
+spinlock or rwlock.  Because PREEMPT_DYNAMIC selects PREEMPTION, kernels
+built with PREEMPT_DYNAMIC=y will yield contended locks even if the live
+preemption model is "none" or "voluntary".  In short, make kernels with
+dynamically selected models behave the same as kernels with statically
+selected models.
 
-No functional change intended.
+Somewhat counter-intuitively, NOT yielding a lock can provide better
+latency for the relevant tasks/processes.  E.g. KVM x86's mmu_lock, a
+rwlock, is often contended between an invalidation event (takes mmu_lock
+for write) and a vCPU servicing a guest page fault (takes mmu_lock for
+read).  For _some_ setups, letting the invalidation task complete even
+if there is mmu_lock contention provides lower latency for *all* tasks,
+i.e. the invalidation completes sooner *and* the vCPU services the guest
+page fault sooner.
 
+But even KVM's mmu_lock behavior isn't uniform, e.g. the "best" behavior
+can vary depending on the host VMM, the guest workload, the number of
+vCPUs, the number of pCPUs in the host, why there is lock contention, etc.
+
+In other words, simply deleting the CONFIG_PREEMPTION guard (or doing the
+opposite and removing contention yielding entirely) needs to come with a
+big pile of data proving that changing the status quo is a net positive.
+
+Opportunistically document this side effect of preempt=full, as yielding
+contended spinlocks can have significant, user-visible impact.
+
+Fixes: c597bfddc9e9 ("sched: Provide Kconfig support for default dynamic preempt mode")
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Ankur Arora <ankur.a.arora@oracle.com>
-Link: https://lkml.kernel.org/r/20240528003521.979836-2-ankur.a.arora@oracle.com
-Stable-dep-of: c793a62823d1 ("sched/core: Drop spinlocks on contention iff kernel is preemptible")
+Reviewed-by: Chen Yu <yu.c.chen@intel.com>
+Link: https://lore.kernel.org/kvm/ef81ff36-64bb-4cfe-ae9b-e3acf47bff24@proxmox.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/preempt.h | 41 +++++++++++++++++++++++++++++++++++++++++
- include/linux/sched.h   | 41 -----------------------------------------
- 2 files changed, 41 insertions(+), 41 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  4 +++-
+ include/linux/spinlock.h                        | 14 ++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index 7233e9cf1bab6..ce76f1a457225 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -481,4 +481,45 @@ DEFINE_LOCK_GUARD_0(preempt, preempt_disable(), preempt_enable())
- DEFINE_LOCK_GUARD_0(preempt_notrace, preempt_disable_notrace(), preempt_enable_notrace())
- DEFINE_LOCK_GUARD_0(migrate, migrate_disable(), migrate_enable())
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 27ec49af1bf27..2569e7f19b476 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -4749,7 +4749,9 @@
+ 			none - Limited to cond_resched() calls
+ 			voluntary - Limited to cond_resched() and might_sleep() calls
+ 			full - Any section that isn't explicitly preempt disabled
+-			       can be preempted anytime.
++			       can be preempted anytime.  Tasks will also yield
++			       contended spinlocks (if the critical section isn't
++			       explicitly preempt disabled beyond the lock itself).
  
-+#ifdef CONFIG_PREEMPT_DYNAMIC
-+
-+extern bool preempt_model_none(void);
-+extern bool preempt_model_voluntary(void);
-+extern bool preempt_model_full(void);
-+
-+#else
-+
-+static inline bool preempt_model_none(void)
-+{
-+	return IS_ENABLED(CONFIG_PREEMPT_NONE);
-+}
-+static inline bool preempt_model_voluntary(void)
-+{
-+	return IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY);
-+}
-+static inline bool preempt_model_full(void)
-+{
-+	return IS_ENABLED(CONFIG_PREEMPT);
-+}
-+
-+#endif
-+
-+static inline bool preempt_model_rt(void)
-+{
-+	return IS_ENABLED(CONFIG_PREEMPT_RT);
-+}
-+
-+/*
-+ * Does the preemption model allow non-cooperative preemption?
-+ *
-+ * For !CONFIG_PREEMPT_DYNAMIC kernels this is an exact match with
-+ * CONFIG_PREEMPTION; for CONFIG_PREEMPT_DYNAMIC this doesn't work as the
-+ * kernel is *built* with CONFIG_PREEMPTION=y but may run with e.g. the
-+ * PREEMPT_NONE model.
-+ */
-+static inline bool preempt_model_preemptible(void)
-+{
-+	return preempt_model_full() || preempt_model_rt();
-+}
-+
- #endif /* __LINUX_PREEMPT_H */
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index a5f4b48fca184..76214d7c819de 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -2064,47 +2064,6 @@ extern int __cond_resched_rwlock_write(rwlock_t *lock);
- 	__cond_resched_rwlock_write(lock);					\
- })
- 
--#ifdef CONFIG_PREEMPT_DYNAMIC
--
--extern bool preempt_model_none(void);
--extern bool preempt_model_voluntary(void);
--extern bool preempt_model_full(void);
--
--#else
--
--static inline bool preempt_model_none(void)
--{
--	return IS_ENABLED(CONFIG_PREEMPT_NONE);
--}
--static inline bool preempt_model_voluntary(void)
--{
--	return IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY);
--}
--static inline bool preempt_model_full(void)
--{
--	return IS_ENABLED(CONFIG_PREEMPT);
--}
--
--#endif
--
--static inline bool preempt_model_rt(void)
--{
--	return IS_ENABLED(CONFIG_PREEMPT_RT);
--}
--
--/*
-- * Does the preemption model allow non-cooperative preemption?
-- *
-- * For !CONFIG_PREEMPT_DYNAMIC kernels this is an exact match with
-- * CONFIG_PREEMPTION; for CONFIG_PREEMPT_DYNAMIC this doesn't work as the
-- * kernel is *built* with CONFIG_PREEMPTION=y but may run with e.g. the
-- * PREEMPT_NONE model.
-- */
--static inline bool preempt_model_preemptible(void)
--{
--	return preempt_model_full() || preempt_model_rt();
--}
--
- static __always_inline bool need_resched(void)
+ 	print-fatal-signals=
+ 			[KNL] debug: print fatal signals
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index 3fcd20de6ca88..63dd8cf3c3c2b 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -462,11 +462,10 @@ static __always_inline int spin_is_contended(spinlock_t *lock)
+  */
+ static inline int spin_needbreak(spinlock_t *lock)
  {
- 	return unlikely(tif_need_resched());
+-#ifdef CONFIG_PREEMPTION
++	if (!preempt_model_preemptible())
++		return 0;
++
+ 	return spin_is_contended(lock);
+-#else
+-	return 0;
+-#endif
+ }
+ 
+ /*
+@@ -479,11 +478,10 @@ static inline int spin_needbreak(spinlock_t *lock)
+  */
+ static inline int rwlock_needbreak(rwlock_t *lock)
+ {
+-#ifdef CONFIG_PREEMPTION
++	if (!preempt_model_preemptible())
++		return 0;
++
+ 	return rwlock_is_contended(lock);
+-#else
+-	return 0;
+-#endif
+ }
+ 
+ /*
 -- 
 2.43.0
 
