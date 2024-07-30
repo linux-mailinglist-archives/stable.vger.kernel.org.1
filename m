@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046A2941B08
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E352941B0B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E08D1C20E34
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 491E11F22E54
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0244189537;
-	Tue, 30 Jul 2024 16:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406BC18801C;
+	Tue, 30 Jul 2024 16:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMZhyRjN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTTHFx5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D45A18455B;
-	Tue, 30 Jul 2024 16:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FE0155CB3;
+	Tue, 30 Jul 2024 16:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358210; cv=none; b=dYlWDe2e/ZkS35SzDB0vTwegdtxS1UDzjlP0TeTvmhYzDQwwQZotjNtq6e4aPcCREHTkF3qHUpGu2BBKv2s++gptAuu6ZvaUNyOr+pyMx+S0xgAirWzagtQHz4HE1QznFgkigZhUVDK0UOlA7MIwCTGAFm0NXvJIdoGR0cafi34=
+	t=1722358224; cv=none; b=F9rI1GUfijINVyEqzkRqE+TJejiOSmdBK3oePaFMstD1/DDRy0VgAD0dBf5YiUNsWfiLeMmfjZXgHDnzE09oCldD2SYf7Dexo3/wmCoX2DbZ1w4LzqmJnns93mxQuc6snRAkyNg2eJonqiItZvnI49gmbIZVIKMENnHizB2cAlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358210; c=relaxed/simple;
-	bh=/Ps/9J053VdsrQg8TnYfJCDPaUT15O3RmQMeANz5xNY=;
+	s=arc-20240116; t=1722358224; c=relaxed/simple;
+	bh=Qb7LhAj6/u0/VYPrn689WskuckX4HYjqPze7suqTWRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fwc3y9dC7RQsZeyUFjHEjuwynuTypZzEd7uZyYD29jeKgsHV8iZIz2wQZm8HYq8whzrA3BRbWx5tvyRNdTn9oNiySzoVbY9jjNc2VO1m3n8YSjxNDNoi1LQvRrn9+9PVH3sb0tzJSZowGBajcYLv+ohC+kQfyGyWhIzOEaAZyls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMZhyRjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D97C32782;
-	Tue, 30 Jul 2024 16:50:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V0y7I7JsdY8i8EDLMjWMeTUeCv0Lfb9IK+dre67+otjh6+6CPZ7wZXFhzp/QIGYbyF+K+nTECS5M4p6u5DaOabTyvU66Dq3zN/yYhBGU/ckwUJSsBUjXirEiIP13IkkiyJwx4oVEVf7BfsG8E5ZZi4bOWbi2aZssD5fHtbIIET0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTTHFx5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A89C4AF0C;
+	Tue, 30 Jul 2024 16:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358210;
-	bh=/Ps/9J053VdsrQg8TnYfJCDPaUT15O3RmQMeANz5xNY=;
+	s=korg; t=1722358223;
+	bh=Qb7LhAj6/u0/VYPrn689WskuckX4HYjqPze7suqTWRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KMZhyRjNUa8u1vTs9h7WcCKfYWscZCuhtYoNiXsgd8/v+eAcQhHMLZQj6expaJnJF
-	 JBhD7f4rUXo0PmOwffjcP5hUA4Z761ww4jLx4j12uX9cy9j4SLW1P82QXBF88mP1pD
-	 Vz7YA56uV0jwhwGOkerh5xtVktO/gDx31a0krsx0=
+	b=KTTHFx5S784oNZamLvaBYuvcqDTRh0J2CasL+tcq9dwF2/sx9cKuvtQl/NlszXHll
+	 QzqDZgqTBkcIxz2UjpftNHW2FOG5N49O4xmFGao1pOCo+VK4hRcBNVksNbWe4Gt+O3
+	 SttM+2JV48WphrhrEHx3Ffsb6WwMD3nrJtVCnznE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@nxp.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 335/809] media: imx-jpeg: Drop initial source change event if capture has been setup
-Date: Tue, 30 Jul 2024 17:43:31 +0200
-Message-ID: <20240730151737.851100708@linuxfoundation.org>
+Subject: [PATCH 6.10 336/809] leds: trigger: Unregister sysfs attributes before calling deactivate()
+Date: Tue, 30 Jul 2024 17:43:32 +0200
+Message-ID: <20240730151737.891247560@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -60,46 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit a8fb5fce7a441d37d106c82235e1f1b57f70f5b9 ]
+[ Upstream commit c0dc9adf9474ecb7106e60e5472577375aedaed3 ]
 
-In section 4.5.1.5. Initialization, the step 4 may be skipped and
-continue with the Capture Setup sequence, so if the capture has been
-setup, there is no need to trigger the initial source change event, just
-start decoding, and follow the dynamic resolution change flow if the
-configured values do not match those parsed by the decoder.
+Triggers which have trigger specific sysfs attributes typically store
+related data in trigger-data allocated by the activate() callback and
+freed by the deactivate() callback.
 
-And it won't fail the gstreamer pipeline.
+Calling device_remove_groups() after calling deactivate() leaves a window
+where the sysfs attributes show/store functions could be called after
+deactivation and then operate on the just freed trigger-data.
 
-Fixes: b833b178498d ("media: imx-jpeg: notify source chagne event when the first picture parsed")
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Move the device_remove_groups() call to before deactivate() to close
+this race window.
+
+This also makes the deactivation path properly do things in reverse order
+of the activation path which calls the activate() callback before calling
+device_add_groups().
+
+Fixes: a7e7a3156300 ("leds: triggers: add device attribute support")
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240504162533.76780-1-hdegoede@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/leds/led-triggers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index cc97790ed30f6..b1300f15e5020 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -1634,6 +1634,9 @@ static int mxc_jpeg_start_streaming(struct vb2_queue *q, unsigned int count)
- 	dev_dbg(ctx->mxc_jpeg->dev, "Start streaming ctx=%p", ctx);
- 	q_data->sequence = 0;
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index b1b323b19301d..19e4866b00298 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -179,9 +179,9 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
  
-+	if (V4L2_TYPE_IS_CAPTURE(q->type))
-+		ctx->need_initial_source_change_evt = false;
-+
- 	ret = pm_runtime_resume_and_get(ctx->mxc_jpeg->dev);
- 	if (ret < 0) {
- 		dev_err(ctx->mxc_jpeg->dev, "Failed to power up jpeg\n");
+ 		cancel_work_sync(&led_cdev->set_brightness_work);
+ 		led_stop_software_blink(led_cdev);
++		device_remove_groups(led_cdev->dev, led_cdev->trigger->groups);
+ 		if (led_cdev->trigger->deactivate)
+ 			led_cdev->trigger->deactivate(led_cdev);
+-		device_remove_groups(led_cdev->dev, led_cdev->trigger->groups);
+ 		led_cdev->trigger = NULL;
+ 		led_cdev->trigger_data = NULL;
+ 		led_cdev->activated = false;
 -- 
 2.43.0
 
