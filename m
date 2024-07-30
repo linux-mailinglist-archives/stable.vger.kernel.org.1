@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-63840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E26941AE5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B22941AEB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DE05281886
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93AC1C229BC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F9D18455E;
-	Tue, 30 Jul 2024 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE66B155CB3;
+	Tue, 30 Jul 2024 16:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQh+Fg0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3gxKn/p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A0E155CB3;
-	Tue, 30 Jul 2024 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7C014831F;
+	Tue, 30 Jul 2024 16:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358120; cv=none; b=qDNfBVcj1RfJunwq+t7e96sXCWTjkQK1zQjnKMZCuiDdyj54F3eXX4a1jHaEyk/pkSMWzLu1P9zURc0mEeMRaN12m44XRxelP1jE/jzIyPEoTjVW2LrQ2VcWmHmgffAAwL91NVlB6x4t0N3RRf+IeuHVIFSYRleQ0acd24GVI9g=
+	t=1722358135; cv=none; b=dTGLVlRp+3Fi0IiLMhkv3AfFBEd/5yQAYqEfQz4TjuoY6gXZt9zhBIOaSOPogNWfSjP5Tr7CMzBV5ylvhssJA4N3qgX9vd7bpfU1d6ogn23BlEaWYMsnSy0gp5N1GCP1GspFi7gbmgTGXXFK48wla2OfNUaZQIEAryQWZXOq0rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358120; c=relaxed/simple;
-	bh=HhILBDp2QZS3oPotZbHEX54Ez2Vj7vnYddc/euh0Bwc=;
+	s=arc-20240116; t=1722358135; c=relaxed/simple;
+	bh=Ue++hnAzbXuS+/GXxeMAdcWFlPMfD/PcO+liEdccaT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHJ7oJto1ml3PHRuHVPzIUePyESzEMHYrbYlZY51KIk3SlfQmkw1HN/VHgEXvInKCzCBmt6AXVWvBn/XHo/6iDT2gyIq2FFJGgeOE2h8qUevX9+z4/QCIBps/46IgDFyjDjqf6W5wnNrTXqVBtqI+CM6jIF040k+oSnedzu7xXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQh+Fg0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6E7C4AF0E;
-	Tue, 30 Jul 2024 16:48:39 +0000 (UTC)
+	 MIME-Version; b=DTewY3O4eSi4H3loXLe5AqgnN+1Jd4xJlPuhgDHAS/EAhpdQHMPYurNA35NqGxUPyKN225c4jumZWEHxDttbUONT+Jnh5LN5efVLJGJaQ4vfiGmsT2LX03gEw5vZevaYAhPKVjf9ZTIH0JEsP38NskNixVzzYQ36dwPwu59nH4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3gxKn/p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17275C4AF0C;
+	Tue, 30 Jul 2024 16:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358120;
-	bh=HhILBDp2QZS3oPotZbHEX54Ez2Vj7vnYddc/euh0Bwc=;
+	s=korg; t=1722358135;
+	bh=Ue++hnAzbXuS+/GXxeMAdcWFlPMfD/PcO+liEdccaT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQh+Fg0wxKkaPWBEKQqzRVCZBY88jDgAfmOqmLCKLAytpHSHLF/NC9fmzgRXvmSIx
-	 9mYey2rgXOcsc1Zxop2gSfe7TQHGDD8PxeEIiDNc8KB4D+o7IGQl9VaEHFixZTBTX+
-	 2ew89PU49F4jPKJZk9YloBfxt5/1McQGtFc6n/wY=
+	b=A3gxKn/p1ZOVoz23rFbJ1ZMiJANfLzGmc4TexDbMDlI2fJa2LWnRmDQZK0g11uZbT
+	 5MS1XqPubagsnz1lS966tRCnnmKf47pWDkhgNgkCjOAJbtvjj4Db+6osSvn3pvOZiV
+	 D/ggnFDRQG3SnWsQkDQ0QvfsWCjoXpNVQx+IudFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 307/809] ipmi: ssif_bmc: prevent integer overflow on 32bit systems
-Date: Tue, 30 Jul 2024 17:43:03 +0200
-Message-ID: <20240730151736.725020872@linuxfoundation.org>
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	George Zhang <george.zhang@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	Sasha Levin <sashal@kernel.org>,
+	George Zhang <George.zhang@amd.com>
+Subject: [PATCH 6.10 308/809] drm/amd/display: use pre-allocated temp structure for bounding box
+Date: Tue, 30 Jul 2024 17:43:04 +0200
+Message-ID: <20240730151736.763458353@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,51 +72,109 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 0627cef36145c9ff9845bdfd7ddf485bbac1f981 ]
+[ Upstream commit afe9555e79fcd0d758e3796ad00fd6292d99361b ]
 
-There are actually two bugs here.  First, we need to ensure that count
-is at least sizeof(u32) or msg.len will be uninitialized data.
+This mirrors what the driver does for older DCN generations.
 
-The "msg.len" variable is a u32 that comes from the user.  On 32bit
-systems the "sizeof_field(struct ipmi_ssif_msg, len) + msg.len"
-addition can overflow if "msg.len" is greater than U32_MAX - 4.
+Should fix:
 
-Valid lengths for "msg.len" are 1-254.  Add a check for that to
-prevent the integer overflow.
+BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 449, name: kworker/u64:8
+preempt_count: 2, expected: 0
+RCU nest depth: 0, expected: 0
+Preemption disabled at:
+ffffffffc0ce1580>] dc_fpu_begin+0x30/0xd0 [amdgpu]
+CPU: 5 PID: 449 Comm: kworker/u64:8 Tainted: G        W          6.8.0+ #35
+Hardware name: System manufacturer System Product Name/ROG STRIX X570-E GAMING WIFI II, BIOS 4204 02/24/2022
+Workqueue: events_unbound async_run_entry_fn
 
-Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-Id: <1431ca2e-4e9c-4520-bfc0-6879313c30e9@moroto.mountain>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+v2: drop extra memcpy
+
+Fixes: 88c61827cedc ("drm/amd/display: dynamically allocate dml2_configuration_options structures")
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Tested-by: George Zhang <George.zhang@amd.com> (v1)
+Suggested-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: George Zhang <george.zhang@amd.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: harry.wentland@amd.com
+Cc: sunpeng.li@amd.com
+Cc: Rodrigo.Siqueira@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ssif_bmc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc.h                       | 1 +
+ .../drm/amd/display/dc/resource/dcn32/dcn32_resource.c    | 8 ++------
+ .../drm/amd/display/dc/resource/dcn321/dcn321_resource.c  | 8 ++------
+ 3 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
-index 56346fb328727..ab4e87a99f087 100644
---- a/drivers/char/ipmi/ssif_bmc.c
-+++ b/drivers/char/ipmi/ssif_bmc.c
-@@ -177,13 +177,15 @@ static ssize_t ssif_bmc_write(struct file *file, const char __user *buf, size_t
- 	unsigned long flags;
- 	ssize_t ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index 3c33c3bcbe2cb..4362fca1f15ad 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -1392,6 +1392,7 @@ struct dc {
+ 	} scratch;
  
--	if (count > sizeof(struct ipmi_ssif_msg))
-+	if (count < sizeof(msg.len) ||
-+	    count > sizeof(struct ipmi_ssif_msg))
- 		return -EINVAL;
+ 	struct dml2_configuration_options dml2_options;
++	struct dml2_configuration_options dml2_tmp;
+ 	enum dc_acpi_cm_power_state power_state;
  
- 	if (copy_from_user(&msg, buf, count))
- 		return -EFAULT;
+ };
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+index 957002967d691..d84c8e0e5c2f0 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn32/dcn32_resource.c
+@@ -2006,11 +2006,9 @@ void dcn32_calculate_wm_and_dlg(struct dc *dc, struct dc_state *context,
  
--	if (!msg.len || count < sizeof_field(struct ipmi_ssif_msg, len) + msg.len)
-+	if (!msg.len || msg.len > IPMI_SSIF_PAYLOAD_MAX ||
-+	    count < sizeof_field(struct ipmi_ssif_msg, len) + msg.len)
- 		return -EINVAL;
+ static void dcn32_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params)
+ {
+-	struct dml2_configuration_options *dml2_opt;
++	struct dml2_configuration_options *dml2_opt = &dc->dml2_tmp;
  
- 	spin_lock_irqsave(&ssif_bmc->lock, flags);
+-	dml2_opt = kmemdup(&dc->dml2_options, sizeof(dc->dml2_options), GFP_KERNEL);
+-	if (!dml2_opt)
+-		return;
++	memcpy(dml2_opt, &dc->dml2_options, sizeof(dc->dml2_options));
+ 
+ 	DC_FP_START();
+ 
+@@ -2025,8 +2023,6 @@ static void dcn32_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw
+ 		dml2_reinit(dc, dml2_opt, &dc->current_state->bw_ctx.dml2_dc_power_source);
+ 
+ 	DC_FP_END();
+-
+-	kfree(dml2_opt);
+ }
+ 
+ static struct resource_funcs dcn32_res_pool_funcs = {
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
+index 07ca6f58447d6..9a3cc0514a36e 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
+@@ -1581,11 +1581,9 @@ static struct dc_cap_funcs cap_funcs = {
+ 
+ static void dcn321_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_params)
+ {
+-	struct dml2_configuration_options *dml2_opt;
++	struct dml2_configuration_options *dml2_opt = &dc->dml2_tmp;
+ 
+-	dml2_opt = kmemdup(&dc->dml2_options, sizeof(dc->dml2_options), GFP_KERNEL);
+-	if (!dml2_opt)
+-		return;
++	memcpy(dml2_opt, &dc->dml2_options, sizeof(dc->dml2_options));
+ 
+ 	DC_FP_START();
+ 
+@@ -1600,8 +1598,6 @@ static void dcn321_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *b
+ 		dml2_reinit(dc, dml2_opt, &dc->current_state->bw_ctx.dml2_dc_power_source);
+ 
+ 	DC_FP_END();
+-
+-	kfree(dml2_opt);
+ }
+ 
+ static struct resource_funcs dcn321_res_pool_funcs = {
 -- 
 2.43.0
 
