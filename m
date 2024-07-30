@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-63668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62451941A0A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21397941E3D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ACDF285BB1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B698C1F213C2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC976183CD5;
-	Tue, 30 Jul 2024 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABC31A76C2;
+	Tue, 30 Jul 2024 17:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRd/a2VU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kh+VW6Rt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C301A6192;
-	Tue, 30 Jul 2024 16:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF161A76AB;
+	Tue, 30 Jul 2024 17:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357571; cv=none; b=NX29z+m9kRhPsCs85va0TcK3AMBaLN+LdoOyu5BP+hY3/4+x4ZD/6VEYGki9P4SFEpc7Q9denrsgGJuf5CgwbRDKgMZeLOuxavAKS1yXQjvIkzMs/qS1LyGtMv92xpS58Dxlx+CANn5SXAz7/PftY+GdCR6z4GJliomYjxR1XkU=
+	t=1722360421; cv=none; b=qkjQWZTntjp5f3B9CtfBFyJpo9anzNtnxJ/EGQdwVz0udweaOq7zUp10UWOWA6e79YaLl9MZS31URYAWSr+ZJHo8LPU1yTC/oUO0sPdqbCMevoGcR5qQLsU+xYYcmWCfIqSedoecZtVcenRyD0mWmVfkD+FCuOaNsQIaDUudajU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357571; c=relaxed/simple;
-	bh=vKYYdkyu6Sijp23fDx5wJ9DLJ7HM8yrYaRbJq6fFDUk=;
+	s=arc-20240116; t=1722360421; c=relaxed/simple;
+	bh=f/ZQD4tj4LLD21zwCpV9aryLw8tjwdqwQpIcz2s8Rhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifmFDNyhApg1i4owapKVmajx+8J54U1VUCU5YPZa97X5hHOuN81b2YYuyUXYHd3koNCTyUMymIDOHGKv9uo9rvzUDQq1WYsRuWBQ3f4F+BhWNbzIrnkxo9PTAjdFpb+CPstiNQuxdfACRUF8/tWUfiztjQXITYZvYt3ahDj5qsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRd/a2VU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12818C32782;
-	Tue, 30 Jul 2024 16:39:30 +0000 (UTC)
+	 MIME-Version; b=j2zJok2DlUaTJS2UYndpet9WTigH03j88NqZEiW7q2LpYgWGwIRGHO/h1gST2KGhwNJVjlpYAd3QoWRmYCFj9jjgzvJo+zSJFVHWsUEjI4Ugpw7Kvu0IIWJ/gj59ZboAf98ctlypw8bpzPkQ+y0Eyj6IjAnlD1O6i4/ck5Buito=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kh+VW6Rt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649DCC4AF0C;
+	Tue, 30 Jul 2024 17:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357571;
-	bh=vKYYdkyu6Sijp23fDx5wJ9DLJ7HM8yrYaRbJq6fFDUk=;
+	s=korg; t=1722360420;
+	bh=f/ZQD4tj4LLD21zwCpV9aryLw8tjwdqwQpIcz2s8Rhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sRd/a2VUirpNHo6hdCxckjBHh24wmTG7Hzng/lRybGdAA8k7+owM3qeGb4hVoMtiu
-	 Dh3GNztEnj9YsbCn3S0UGw7RotfH0aabcPIn8Nh46H7Vod5NNc5jqQlncmuYCFXjtE
-	 O7ePDuvSC7JFPKmOvyM5M+EGjgWzRnWLmAcBXt2Y=
+	b=kh+VW6RtR0ZwKE/M4PPsHNQhKYcDz6T8lydGjjNBod1yS7xvayFjmi9latbV/d9e4
+	 CWbet1klNPERY8hvGqX/UkqVQ/AHLSOx5kEjVdGLr4RQ8/e5xvceeVL0dmgDTVBUSl
+	 UgHxNQd2GDg5xk6yrTzvA+yKKrSYzGjhHleFzxJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 305/440] io_uring: tighten task exit cancellations
-Date: Tue, 30 Jul 2024 17:48:58 +0200
-Message-ID: <20240730151627.737121595@linuxfoundation.org>
+	Ram Tummala <rtummala@nvidia.com>,
+	Yin Fengwei <fengwei.yin@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 663/809] mm: fix old/young bit handling in the faulting path
+Date: Tue, 30 Jul 2024 17:48:59 +0200
+Message-ID: <20240730151751.088384681@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Ram Tummala <rtummala@nvidia.com>
 
-commit f8b632e89a101dae349a7b212c1771d7925f441b upstream.
+commit 4cd7ba16a0afb36550eed7690e73d3e7a743fa96 upstream.
 
-io_uring_cancel_generic() should retry if any state changes like a
-request is completed, however in case of a task exit it only goes for
-another loop and avoids schedule() if any tracked (i.e. REQ_F_INFLIGHT)
-request got completed.
+Commit 3bd786f76de2 ("mm: convert do_set_pte() to set_pte_range()")
+replaced do_set_pte() with set_pte_range() and that introduced a
+regression in the following faulting path of non-anonymous vmas which
+caused the PTE for the faulting address to be marked as old instead of
+young.
 
-Let's assume we have a non-tracked request executing in iowq and a
-tracked request linked to it. Let's also assume
-io_uring_cancel_generic() fails to find and cancel the request, i.e.
-via io_run_local_work(), which may happen as io-wq has gaps.
-Next, the request logically completes, io-wq still hold a ref but queues
-it for completion via tw, which happens in
-io_uring_try_cancel_requests(). After, right before prepare_to_wait()
-io-wq puts the request, grabs the linked one and tries executes it, e.g.
-arms polling. Finally the cancellation loop calls prepare_to_wait(),
-there are no tw to run, no tracked request was completed, so the
-tctx_inflight() check passes and the task is put to indefinite sleep.
+handle_pte_fault()
+  do_pte_missing()
+    do_fault()
+      do_read_fault() || do_cow_fault() || do_shared_fault()
+        finish_fault()
+          set_pte_range()
 
-Cc: stable@vger.kernel.org
-Fixes: 3f48cf18f886c ("io_uring: unify files and task cancel")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/acac7311f4e02ce3c43293f8f1fda9c705d158f1.1721819383.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The polarity of prefault calculation is incorrect.  This leads to prefault
+being incorrectly set for the faulting address.  The following check will
+incorrectly mark the PTE old rather than young.  On some architectures
+this will cause a double fault to mark it young when the access is
+retried.
+
+    if (prefault && arch_wants_old_prefaulted_pte())
+        entry = pte_mkold(entry);
+
+On a subsequent fault on the same address, the faulting path will see a
+non NULL vmf->pte and instead of reaching the do_pte_missing() path, PTE
+will then be correctly marked young in handle_pte_fault() itself.
+
+Due to this bug, performance degradation in the fault handling path will
+be observed due to unnecessary double faulting.
+
+Link: https://lkml.kernel.org/r/20240710014539.746200-1-rtummala@nvidia.com
+Fixes: 3bd786f76de2 ("mm: convert do_set_pte() to set_pte_range()")
+Signed-off-by: Ram Tummala <rtummala@nvidia.com>
+Reviewed-by: Yin Fengwei <fengwei.yin@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Yin Fengwei <fengwei.yin@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/memory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3000,8 +3000,11 @@ __cold void io_uring_cancel_generic(bool
- 		bool loop = false;
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4681,7 +4681,7 @@ void set_pte_range(struct vm_fault *vmf,
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	bool write = vmf->flags & FAULT_FLAG_WRITE;
+-	bool prefault = in_range(vmf->address, addr, nr * PAGE_SIZE);
++	bool prefault = !in_range(vmf->address, addr, nr * PAGE_SIZE);
+ 	pte_t entry;
  
- 		io_uring_drop_tctx_refs(current);
-+		if (!tctx_inflight(tctx, !cancel_all))
-+			break;
-+
- 		/* read completions before cancelations */
--		inflight = tctx_inflight(tctx, !cancel_all);
-+		inflight = tctx_inflight(tctx, false);
- 		if (!inflight)
- 			break;
- 
+ 	flush_icache_pages(vma, page, nr);
 
 
 
