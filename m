@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0831C94180F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE568941BB5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6E8428787B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93DFEB25869
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659C8189B83;
-	Tue, 30 Jul 2024 16:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7228118991C;
+	Tue, 30 Jul 2024 16:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttAP1Jca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhKdsvhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2296C183CA1;
-	Tue, 30 Jul 2024 16:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF68189915;
+	Tue, 30 Jul 2024 16:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356201; cv=none; b=gdPMXXum2v2VQ3XonsjRMR3vapoXv2vc1MbsAyE7SjkoRCjQdF2kSgdnGRedZrMMwkkC3D9Qia3Vm5mVhH9aDX2rZUtlxHunYxUQq9RqtkAZ5qZ+MHuHsOjdD/YOBhVVBvqSHxPmMQc61PC1sZ5d5iV1sgNLh80n9Kl/d/EjYq4=
+	t=1722358384; cv=none; b=RiTFtuQz6iR0tYtubFAEjgZ3CR8nwZ3hHlXzsuHobBaPVr/OPyLlb/5VqlBl+KJ5a2tOIOSzkc1soaJqxhuJ4Vf2fq6/8VaPlP2QvWlLbkTN7fl7/Ayoi1Kqv/UCMuidOp+XxzmWyIvqwdA5zIPbJUq1mJHpqim2gQjK2/xp5YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356201; c=relaxed/simple;
-	bh=/RXngYNjbZb8oerpv/Pq1bmWag9SS2DptyNpLx7o3QA=;
+	s=arc-20240116; t=1722358384; c=relaxed/simple;
+	bh=K0k+Cyh2aJ2W9rayyaRxOXqLiKmSizJTQrRP6UTEZfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iuHwXGGYVTU2Lu2S9OXVLzRRu0cTx7suSJhJ1l2WyKmHUyhk/xeZWbTz3TAPs42Xe4yqWdqD9ZA3ef39fVqnr29cmYC/ANDaxBUEE/tnJfCno3rFXCM0h4kHUX4dO15LAUtty4z4IYPwf0j23ItNUYm2r1p/FbFpILxe9vy5yQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttAP1Jca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B02C32782;
-	Tue, 30 Jul 2024 16:16:40 +0000 (UTC)
+	 MIME-Version; b=R34lPDZCJR9mMVFQSvdBVRi+Irlzt6B57HkQAICO8V6sijGbXafyWBZ2h+w7k0BG9iInJHOiur5pjAFXUd+voUM3MeiNApYT1a8oHIpxTVeSmE98pc46Orre/ThtcAiyX+8u1WisdH77MVlEj2uuZBy40M+JYVxrd1kUwZlo7pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhKdsvhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAD4C4AF10;
+	Tue, 30 Jul 2024 16:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356201;
-	bh=/RXngYNjbZb8oerpv/Pq1bmWag9SS2DptyNpLx7o3QA=;
+	s=korg; t=1722358384;
+	bh=K0k+Cyh2aJ2W9rayyaRxOXqLiKmSizJTQrRP6UTEZfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttAP1JcaW7fTMfUDX1kY11nsKJCaJAEf4rnDG7HvD+GXeruzS3XNQ0rfrSvakxE51
-	 sSbhLIzHodNMJHm2Fyo8fvzrvT0GabYRDVj6W21qoV+dl5jdjLq+H0DxyqvnW/ulnV
-	 Ga+Fx2xOZ+wWaKhma4rhEnK/zPYZ/qXQNnly3+68=
+	b=vhKdsvheaUk8x54SH/DSNQwt94QxCUMRAXGZyHTOUd32p3pabr66RW4ejg16zPPxH
+	 LiO+HX/OGzO33SHi5u334O5Cie+4Oura4KpD69RF1f9N4TSJRtP/VRSkTcNA4waNhG
+	 ifISX09Fd9/nUHarKd6ICfPcD4etcF1izTITWxp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/568] tcp: fix race in tcp_write_err()
+Subject: [PATCH 6.10 354/809] drm/mediatek: Remove less-than-zero comparison of an unsigned value
 Date: Tue, 30 Jul 2024 17:43:50 +0200
-Message-ID: <20240730151644.682675476@linuxfoundation.org>
+Message-ID: <20240730151738.619474029@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit 853c3bd7b7917670224c9fe5245bd045cac411dd ]
+[ Upstream commit 4ed9dd7fde22ed614384c03f8049723cbe7e6a58 ]
 
-I noticed flakes in a packetdrill test, expecting an epoll_wait()
-to return EPOLLERR | EPOLLHUP on a failed connect() attempt,
-after multiple SYN retransmits. It sometimes return EPOLLERR only.
+Fix a Coverity error that less-than-zero comparison of an unsigned value
+is never true.
 
-The issue is that tcp_write_err():
- 1) writes an error in sk->sk_err,
- 2) calls sk_error_report(),
- 3) then calls tcp_done().
-
-tcp_done() is writing SHUTDOWN_MASK into sk->sk_shutdown,
-among other things.
-
-Problem is that the awaken user thread (from 2) sk_error_report())
-might call tcp_poll() before tcp_done() has written sk->sk_shutdown.
-
-tcp_poll() only sees a non zero sk->sk_err and returns EPOLLERR.
-
-This patch fixes the issue by making sure to call sk_error_report()
-after tcp_done().
-
-tcp_write_err() also lacks an smp_wmb().
-
-We can reuse tcp_done_with_error() to factor out the details,
-as Neal suggested.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20240528125253.1966136-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240614034937.23978-1-shawn.sung@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_timer.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_ddp_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index 87ebe958a642f..64bcf384e9ddc 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -69,11 +69,7 @@ u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
+diff --git a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
+index 17b0364112922..a66e46d0b45eb 100644
+--- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
++++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
+@@ -593,7 +593,7 @@ int mtk_ddp_comp_init(struct device_node *node, struct mtk_ddp_comp *comp,
+ 	int ret;
+ #endif
  
- static void tcp_write_err(struct sock *sk)
- {
--	WRITE_ONCE(sk->sk_err, READ_ONCE(sk->sk_err_soft) ? : ETIMEDOUT);
--	sk_error_report(sk);
--
--	tcp_write_queue_purge(sk);
--	tcp_done(sk);
-+	tcp_done_with_error(sk, READ_ONCE(sk->sk_err_soft) ? : ETIMEDOUT);
- 	__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPABORTONTIMEOUT);
- }
+-	if (comp_id < 0 || comp_id >= DDP_COMPONENT_DRM_ID_MAX)
++	if (comp_id >= DDP_COMPONENT_DRM_ID_MAX)
+ 		return -EINVAL;
  
+ 	type = mtk_ddp_matches[comp_id].type;
 -- 
 2.43.0
 
