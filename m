@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDD7941805
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B97B941B41
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A6D2874CE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB8E7281B25
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380181A01DB;
-	Tue, 30 Jul 2024 16:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420171898EB;
+	Tue, 30 Jul 2024 16:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+IkqSrL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A055Fj8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96FF1917EC;
-	Tue, 30 Jul 2024 16:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F233218801C;
+	Tue, 30 Jul 2024 16:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356168; cv=none; b=G8ixIYJL/zdk5vhaRvll7YvEKQUujP8ZzP2CRU0F+GAayhvzBA+Sked8m1MH8CTwXha4VZW0GF/6FD0m/mkmPJtMZfO50ADniwoiq8fjkLBV2XZ8/NQJXAEcpZQi7nCzeX0gKpyrVNGUwo3Djq2hxuzEfAjS/DCWTVFWdSEK118=
+	t=1722358361; cv=none; b=K5YHnhUhctvfi5rHmG1pq0DFiBqNW+LxZDWkRGeZ6tsH1yeYs6l1kEJ9tAiEFLyb60HYyTpB9RzQf2jRQBI+T0xjzkLkqFW9hqQx4gjVbOmVSm3/n49h3/tzSlsuuiXksZhmCoJxxyihkc4zwAA0bl3wv5kH7qAmuQE1oZf6d0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356168; c=relaxed/simple;
-	bh=iPcodd5ejGTo2aII8bjhhP2KsSXc7oRLuDZlolU49pg=;
+	s=arc-20240116; t=1722358361; c=relaxed/simple;
+	bh=yRFkhwYiUrHZ45xyWsiq83+vAwMK88rm0BI/28RJfsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qI1GLkT470u1TetCc5ysQ83zfZjGhXt7UHNUifSPqdXi8ikmvYzpMwsZHnaEE+hyr4BISp5qzKFs5vDae4THxjfbtePgdTmHjqLoApEyWojWKmuSfIezEY/fku+LVRf6k9fg57Jtmfm04+0DgUR0BLrEOw+bg7YQ69saCCjw4Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+IkqSrL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69804C32782;
-	Tue, 30 Jul 2024 16:16:07 +0000 (UTC)
+	 MIME-Version; b=ZcNo11s75xyzwblSK3r0h+xzynriVHsmudHNGhzB2ly20811PKuA7ZQtN0Ckwie2LOQNWZ3KtOyZyeLYYhQvxylfKOAoR0rsfayw0fqKIAHN2qrSDltv2LTPbP2LdGx3a0rQgWPgr0bPdpDG1hgR2XrmQgI1J0pcoUvafgyuk5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A055Fj8k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767DFC32782;
+	Tue, 30 Jul 2024 16:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356167;
-	bh=iPcodd5ejGTo2aII8bjhhP2KsSXc7oRLuDZlolU49pg=;
+	s=korg; t=1722358360;
+	bh=yRFkhwYiUrHZ45xyWsiq83+vAwMK88rm0BI/28RJfsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+IkqSrLh7/OI2TrmC/ym8AN/Td5nyhUBApiq4XfDAfpT50QtrVZlYcyWKpnYA4KS
-	 AkkEn0LfSlFQOwiwzcfgjpm+shrX06fCfIXcZ9lLNjcMwozCniFbyT5O0FImTfb1yE
-	 QEv2t8PXLQdkebNfkLAAFEVVWS3dKH5618P9MKio=
+	b=A055Fj8kFDv3GySEhBHwGXxL3GfvN6poNJKbXeqqimi0vqZJ3gI6QyVnhS3hd07sb
+	 EGco8GKCRuxf2vd4N9NDpTR+mAR3sEXAnxIf6iQ55bUycmpglYqSQyyBsiQVZq0G2d
+	 dsuNG1l6rd8pcvVE0u0eWG7S6TLXj4hCGLje5dBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/568] wifi: ath11k: fix wrong definition of CE rings base address
-Date: Tue, 30 Jul 2024 17:43:47 +0200
-Message-ID: <20240730151644.567159601@linuxfoundation.org>
+Subject: [PATCH 6.10 352/809] drm/panic: depends on !VT_CONSOLE
+Date: Tue, 30 Jul 2024 17:43:48 +0200
+Message-ID: <20240730151738.540154891@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 
-[ Upstream commit 5714e25f1d1875b300fb337dadfaa75324c1161a ]
+[ Upstream commit 1ac6ac9ec069ed0cfdb1c207ae23f6c40ac57437 ]
 
-Base address of CE ring is defined as u32, currently this works
-because coherent DMA mask configured as 32 bit:
+The race condition between fbcon and drm_panic can only occurs if
+VT_CONSOLE is set. So update drm_panic dependency accordingly.
+This will make it easier for Linux distributions to enable drm_panic
+by disabling VT_CONSOLE, and keeping fbcon terminal.
+The only drawback is that fbcon won't display the boot kmsg, so it
+should rely on userspace to do that.
+At least plymouth already handle this case with
+https://gitlab.freedesktop.org/plymouth/plymouth/-/merge_requests/224
 
-	#define ATH11K_PCI_COHERENT_DMA_MASK	32
-
-However this mask could be changed once firmware bugs are fixed
-to fully support 36 bit DMA addressing. So to protect against any
-future changes to the DMA mask, change the type of the fields that
-are dependent upon it.
-
-This is found during code review. Compile tested only.
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240524021558.34452-1-quic_bqiang@quicinc.com
+Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240613154041.325964-1-jfalempe@redhat.com
+Stable-dep-of: e044e707fc97 ("drm/panic: Do not select DRM_KMS_HELPER")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/ce.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ce.h b/drivers/net/wireless/ath/ath11k/ce.h
-index 69946fc700777..bcde2fcf02cf7 100644
---- a/drivers/net/wireless/ath/ath11k/ce.h
-+++ b/drivers/net/wireless/ath/ath11k/ce.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index d0aa277fc3bff..3e286236aa430 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -106,7 +106,7 @@ config DRM_KMS_HELPER
  
- #ifndef ATH11K_CE_H
-@@ -146,7 +146,7 @@ struct ath11k_ce_ring {
- 	/* Host address space */
- 	void *base_addr_owner_space_unaligned;
- 	/* CE address space */
--	u32 base_addr_ce_space_unaligned;
-+	dma_addr_t base_addr_ce_space_unaligned;
- 
- 	/* Actual start of descriptors.
- 	 * Aligned to descriptor-size boundary.
-@@ -156,7 +156,7 @@ struct ath11k_ce_ring {
- 	void *base_addr_owner_space;
- 
- 	/* CE address space */
--	u32 base_addr_ce_space;
-+	dma_addr_t base_addr_ce_space;
- 
- 	/* HAL ring id */
- 	u32 hal_ring_id;
+ config DRM_PANIC
+ 	bool "Display a user-friendly message when a kernel panic occurs"
+-	depends on DRM && !FRAMEBUFFER_CONSOLE
++	depends on DRM && !(FRAMEBUFFER_CONSOLE && VT_CONSOLE)
+ 	select DRM_KMS_HELPER
+ 	select FONT_SUPPORT
+ 	help
 -- 
 2.43.0
 
