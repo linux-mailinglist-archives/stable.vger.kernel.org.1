@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-63919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194BA941B4A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9321F941B4B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03236B28A17
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3CF51C22AC4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70161189918;
-	Tue, 30 Jul 2024 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09A41898EB;
+	Tue, 30 Jul 2024 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4czmV1l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvmbYc1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E56118990F;
-	Tue, 30 Jul 2024 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897BB189915;
+	Tue, 30 Jul 2024 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358374; cv=none; b=ujt4023BW6hsQlGuAL4iLyVYPbgb6A1sRkm0OrnvyCrwIYw0+peiJRoLDsmNv19k8Lqaev899jqTx6gq6pZayLj5bq3nYnVd5RpssEh6zKhEx+2E5S8GSm9OpDS/5j08KBMsKwhVqlp5YfCEjqOdUh4AWuBRBYn+bb6XTAyl1WI=
+	t=1722358387; cv=none; b=ANuP6DCv+763/xiFtCdIMpC4Aru1rWAs80O8yhujTE0ayS5TgCeJerx3sZ5ysUV8kOG0ugpvxGIZYAHY6yGthF5MtXVPzX2UkNGOtWee4OiS1RSiGgz6HM+s6nPyELtyv025vbdKGgt9Xvu2ME+3+FpLcOqiRXUdFQGmSACNyzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358374; c=relaxed/simple;
-	bh=g08NX8RCgw5QWkW6V4z6kfHEWHEezv5hbrbXcQZTlKo=;
+	s=arc-20240116; t=1722358387; c=relaxed/simple;
+	bh=Pe7EhJ4XpkIH7JWPyXZOHdR04MUkMSM8tGZyxaWpl4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6KTDckBer5ak6uPpvl0RNOdFRDFWeIt/Mz4CQmDYF35lBfTH3J/0Af/4EnDN8k0+rsysEtC+cb7aifIbCv+4IMuyg9dbEvG0OLETLUeZHNEwGrqESF4kIRgxJfb6xqHbkQXQ1asQ5wAmmQySW4YfJQuHIRlRf0Nv0GOq+iY/y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4czmV1l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F73BC4AF0C;
-	Tue, 30 Jul 2024 16:52:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SrJy/7EQcVJkGOc0Nh6K0f/EnA8Y6oK1to2rmIp45HOqf25lvwaOihlbHkgQX5qRIkRsjIsZE6BkNLT7q5QVEq9LPfCpqHsdwbc6PvA4zq1LP//Hl9kBojiIOzcyxnPtOIHob8TSgn7KI9KVY8NRu7hhCoj+PqV5fNIXeZ/6/Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvmbYc1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ED9C32782;
+	Tue, 30 Jul 2024 16:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358374;
-	bh=g08NX8RCgw5QWkW6V4z6kfHEWHEezv5hbrbXcQZTlKo=;
+	s=korg; t=1722358387;
+	bh=Pe7EhJ4XpkIH7JWPyXZOHdR04MUkMSM8tGZyxaWpl4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4czmV1l5HU/ZsqifW4WRth0/uqURQYaHIshndMZBLgUG1+TkeMPuMFD3cUDzcs0C
-	 tvcIzHf5GdaSqzHjfLTIrkCcO1NMy9GAsaCIhhu+h1avrcIhxKVSarFKXCSsV/i4d2
-	 Cj7HELRXh4h4gU9y4yEtZG7ugJr4jl9Vk88S2y7w=
+	b=PvmbYc1Xjf4OcNfq+Kbk10R+CXLzxnnWTjYk56QUq6amuriFiD/N1JJxmJcRv6zXs
+	 O7lIIvT/WjlNAxlDRgh+CZ+QUxWfLmABX6D/HpnxMdR59HffQf0+rSpmZIYFeuZVy9
+	 a1Dazm/HCm0KCWwyYCo+LdwcnociMH1aubk2XGrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 356/568] LoongArch: Check TIF_LOAD_WATCH to enable user space watchpoint
-Date: Tue, 30 Jul 2024 17:47:43 +0200
-Message-ID: <20240730151653.778918299@linuxfoundation.org>
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.6 357/568] landlock: Dont lose track of restrictions on cred_transfer
+Date: Tue, 30 Jul 2024 17:47:44 +0200
+Message-ID: <20240730151653.817521353@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -60,70 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 3892b11eac5aaaeefbf717f1953288b77759d9e2 ]
+commit 39705a6c29f8a2b93cf5b99528a55366c50014d1 upstream.
 
-Currently, there are some places to set CSR.PRMD.PWE, the first one is
-in hw_breakpoint_thread_switch() to enable user space singlestep via
-checking TIF_SINGLESTEP, the second one is in hw_breakpoint_control() to
-enable user space watchpoint. For the latter case, it should also check
-TIF_LOAD_WATCH to make the logic correct and clear.
+When a process' cred struct is replaced, this _almost_ always invokes
+the cred_prepare LSM hook; but in one special case (when
+KEYCTL_SESSION_TO_PARENT updates the parent's credentials), the
+cred_transfer LSM hook is used instead.  Landlock only implements the
+cred_prepare hook, not cred_transfer, so KEYCTL_SESSION_TO_PARENT causes
+all information on Landlock restrictions to be lost.
 
-Fixes: c8e57ab0995c ("LoongArch: Trigger user-space watchpoints correctly")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This basically means that a process with the ability to use the fork()
+and keyctl() syscalls can get rid of all Landlock restrictions on
+itself.
+
+Fix it by adding a cred_transfer hook that does the same thing as the
+existing cred_prepare hook. (Implemented by having hook_cred_prepare()
+call hook_cred_transfer() so that the two functions are less likely to
+accidentally diverge in the future.)
+
+Cc: stable@kernel.org
+Fixes: 385975dca53e ("landlock: Set up the security framework and manage credentials")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240724-landlock-houdini-fix-v1-1-df89a4560ca3@google.com
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/hw_breakpoint.c | 2 +-
- arch/loongarch/kernel/ptrace.c        | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ security/landlock/cred.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/kernel/hw_breakpoint.c b/arch/loongarch/kernel/hw_breakpoint.c
-index 621ad7634df71..a6e4b605bfa8d 100644
---- a/arch/loongarch/kernel/hw_breakpoint.c
-+++ b/arch/loongarch/kernel/hw_breakpoint.c
-@@ -221,7 +221,7 @@ static int hw_breakpoint_control(struct perf_event *bp,
- 		}
- 		enable = csr_read64(LOONGARCH_CSR_CRMD);
- 		csr_write64(CSR_CRMD_WE | enable, LOONGARCH_CSR_CRMD);
--		if (bp->hw.target)
-+		if (bp->hw.target && test_tsk_thread_flag(bp->hw.target, TIF_LOAD_WATCH))
- 			regs->csr_prmd |= CSR_PRMD_PWE;
- 		break;
- 	case HW_BREAKPOINT_UNINSTALL:
-diff --git a/arch/loongarch/kernel/ptrace.c b/arch/loongarch/kernel/ptrace.c
-index 200109de1971a..19dc6eff45ccc 100644
---- a/arch/loongarch/kernel/ptrace.c
-+++ b/arch/loongarch/kernel/ptrace.c
-@@ -589,6 +589,7 @@ static int ptrace_hbp_set_ctrl(unsigned int note_type,
- 	struct perf_event *bp;
- 	struct perf_event_attr attr;
- 	struct arch_hw_breakpoint_ctrl ctrl;
-+	struct thread_info *ti = task_thread_info(tsk);
+--- a/security/landlock/cred.c
++++ b/security/landlock/cred.c
+@@ -14,8 +14,8 @@
+ #include "ruleset.h"
+ #include "setup.h"
  
- 	bp = ptrace_hbp_get_initialised_bp(note_type, tsk, idx);
- 	if (IS_ERR(bp))
-@@ -613,8 +614,10 @@ static int ptrace_hbp_set_ctrl(unsigned int note_type,
- 		if (err)
- 			return err;
- 		attr.disabled = 0;
-+		set_ti_thread_flag(ti, TIF_LOAD_WATCH);
- 	} else {
- 		attr.disabled = 1;
-+		clear_ti_thread_flag(ti, TIF_LOAD_WATCH);
+-static int hook_cred_prepare(struct cred *const new,
+-			     const struct cred *const old, const gfp_t gfp)
++static void hook_cred_transfer(struct cred *const new,
++			       const struct cred *const old)
+ {
+ 	struct landlock_ruleset *const old_dom = landlock_cred(old)->domain;
+ 
+@@ -23,6 +23,12 @@ static int hook_cred_prepare(struct cred
+ 		landlock_get_ruleset(old_dom);
+ 		landlock_cred(new)->domain = old_dom;
  	}
++}
++
++static int hook_cred_prepare(struct cred *const new,
++			     const struct cred *const old, const gfp_t gfp)
++{
++	hook_cred_transfer(new, old);
+ 	return 0;
+ }
  
- 	return modify_user_hw_breakpoint(bp, &attr);
--- 
-2.43.0
-
+@@ -36,6 +42,7 @@ static void hook_cred_free(struct cred *
+ 
+ static struct security_hook_list landlock_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(cred_prepare, hook_cred_prepare),
++	LSM_HOOK_INIT(cred_transfer, hook_cred_transfer),
+ 	LSM_HOOK_INIT(cred_free, hook_cred_free),
+ };
+ 
 
 
 
