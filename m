@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FEB941DF7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800449419D1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2911F252CB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3631B1F26EB2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554111A76B4;
-	Tue, 30 Jul 2024 17:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FA9146D6B;
+	Tue, 30 Jul 2024 16:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9+cse+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4D1obkN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA521A76A1;
-	Tue, 30 Jul 2024 17:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856BF1A6192;
+	Tue, 30 Jul 2024 16:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360231; cv=none; b=Ka6NTBken4LH45qk1Jq/Q3k35kXTdMb1N6z5j1hi7uk3IP47mVScFgf86/HTSoTWrzPYoeb78RL4I6DzOCJUP4r6qxTzqrhu0FNuTssy43nNb+zFA4b3TvV+1NQ4lXDPF0Lsr2hv6GldAxNc1wNUaqz1MbCemFiqLXp0l5dMn0A=
+	t=1722357408; cv=none; b=drFNRvFoq2L4yAHhhmUiYlgHQvWBZmRA6Sg2PJHK0Jq7AoKxC7jYx7O4mY3B5vc7p9WL87W4r7hHdmN2/IziCrZDA49qlUNaF1wEwSXjHPGVhq3663iGJEsjgENywxfeEk8suHNnHhEKj9voUcfnE5d6mPNKCkqEtv2wYH5MreE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360231; c=relaxed/simple;
-	bh=3GuqdPMTXjSeF05eEsxUzJ2YH4IhSUbIt8HdNoO4nc8=;
+	s=arc-20240116; t=1722357408; c=relaxed/simple;
+	bh=hNZP02e7uo7whl4Hzfktj1HOKHnOb+EeRnizwHlt7uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S6WJgGS5S7M6Ixh+Swl12kmUsfl8ViE7Y+qMSE2tX/rCynJM1lWGOac1uSM/dSfQ8FnaHOB4G2NFZ+8yE8IH+ImTlEdKQZgB/Qu+JIR/g2uXSscSPl11/PJ8KlFFutWP6NwoLEUdnQnzZVCrpbfx8WKhbSF/YE9v6cN9nrRhY+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9+cse+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC27C32782;
-	Tue, 30 Jul 2024 17:23:50 +0000 (UTC)
+	 MIME-Version; b=aIN4Lo+axJaPyHuvJ+3JrtB+M5V4xoqxsr0A+/66x/+wTKUkjIngGc5/If2zRoyS0eV/35Z0fdMBFJGfI0dS6/9r/7aAcr6ndP+z+J6ULY1NtJJdBCLaivZkvtrdryn8oKdB63IuD2/mBVG4nbmontoFuUAOPF6sZ9p5zNboLFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4D1obkN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC923C4AF0A;
+	Tue, 30 Jul 2024 16:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360230;
-	bh=3GuqdPMTXjSeF05eEsxUzJ2YH4IhSUbIt8HdNoO4nc8=;
+	s=korg; t=1722357408;
+	bh=hNZP02e7uo7whl4Hzfktj1HOKHnOb+EeRnizwHlt7uA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q9+cse+ub+p07Wci+VMbb3QKDlzK+Bat/+MRP5M9NKizSYL+xpjrK+TT6JpXmZHST
-	 sbZ2hWiWC/5l2eTAo+YCfjJwq+mJ2HgeEDNmpS/AOBl7nPTc6I2NFmuWxH5qXKLBub
-	 0J/o9yFkD95qaII2aNerpOK8TqZazBaDXYK3u6F0=
+	b=v4D1obkN36CvZU7p6nrAGBSAgm4uwZl7F6PgVa/pBvKTBONNTqD9WxtFOHLtksqZ6
+	 68oh9YSstywdh8+DMreW/Awv8SExR6hfBN9yrvm6ERPDXMpsZamKewomXgX7+pEUrL
+	 J+ab+q5tz/lFUxjj9s8IN6NUj6Bg+i3V41KznTpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.10 637/809] PCI/DPC: Fix use-after-free on concurrent DPC and hot-removal
+	Julian Orth <ju.orth@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 280/440] kernel: rerun task_work while freezing in get_signal()
 Date: Tue, 30 Jul 2024 17:48:33 +0200
-Message-ID: <20240730151750.006343258@linuxfoundation.org>
+Message-ID: <20240730151626.767694336@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
+commit 943ad0b62e3c21f324c4884caa6cb4a871bca05c upstream.
 
-Keith reports a use-after-free when a DPC event occurs concurrently to
-hot-removal of the same portion of the hierarchy:
+io_uring can asynchronously add a task_work while the task is getting
+freezed. TIF_NOTIFY_SIGNAL will prevent the task from sleeping in
+do_freezer_trap(), and since the get_signal()'s relock loop doesn't
+retry task_work, the task will spin there not being able to sleep
+until the freezing is cancelled / the task is killed / etc.
 
-The dpc_handler() awaits readiness of the secondary bus below the
-Downstream Port where the DPC event occurred.  To do so, it polls the
-config space of the first child device on the secondary bus.  If that
-child device is concurrently removed, accesses to its struct pci_dev
-cause the kernel to oops.
+Run task_works in the freezer path. Keep the patch small and simple
+so it can be easily back ported, but we might need to do some cleaning
+after and look if there are other places with similar problems.
 
-That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
-reference on the child device.  Before v6.3, the function was only
-called on resume from system sleep or on runtime resume.  Holding a
-reference wasn't necessary back then because the pciehp IRQ thread
-could never run concurrently.  (On resume from system sleep, IRQs are
-not enabled until after the resume_noirq phase.  And runtime resume is
-always awaited before a PCI device is removed.)
-
-However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
-called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
-of secondary bus after reset"), which introduced that, failed to
-appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
-reference on the child device because dpc_handler() and pciehp may
-indeed run concurrently.  The commit was backported to v5.10+ stable
-kernels, so that's the oldest one affected.
-
-Add the missing reference acquisition.
-
-Abridged stack trace:
-
-  BUG: unable to handle page fault for address: 00000000091400c0
-  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
-  RIP: pci_bus_read_config_dword+0x17/0x50
-  pci_dev_wait()
-  pci_bridge_wait_for_secondary_bus()
-  dpc_reset_link()
-  pcie_do_recovery()
-  dpc_handler()
-
-Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
-Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
-Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
-Reported-by: Keith Busch <kbusch@kernel.org>
-Tested-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.10+
+Cc: stable@vger.kernel.org
+Link: https://github.com/systemd/systemd/issues/33626
+Fixes: 12db8b690010c ("entry: Add support for TIF_NOTIFY_SIGNAL")
+Reported-by: Julian Orth <ju.orth@gmail.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/89ed3a52933370deaaf61a0a620a6ac91f1e754d.1720634146.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/signal.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4753,7 +4753,7 @@ static int pci_bus_max_d3cold_delay(cons
-  */
- int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type)
- {
--	struct pci_dev *child;
-+	struct pci_dev *child __free(pci_dev_put) = NULL;
- 	int delay;
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -2558,6 +2558,14 @@ static void do_freezer_trap(void)
+ 	spin_unlock_irq(&current->sighand->siglock);
+ 	cgroup_enter_frozen();
+ 	schedule();
++
++	/*
++	 * We could've been woken by task_work, run it to clear
++	 * TIF_NOTIFY_SIGNAL. The caller will retry if necessary.
++	 */
++	clear_notify_signal();
++	if (unlikely(task_work_pending(current)))
++		task_work_run();
+ }
  
- 	if (pci_dev_is_disconnected(dev))
-@@ -4782,8 +4782,8 @@ int pci_bridge_wait_for_secondary_bus(st
- 		return 0;
- 	}
- 
--	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
--				 bus_list);
-+	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
-+					     struct pci_dev, bus_list));
- 	up_read(&pci_bus_sem);
- 
- 	/*
+ static int ptrace_signal(int signr, kernel_siginfo_t *info, enum pid_type type)
 
 
 
