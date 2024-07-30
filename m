@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-64019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90675941BC0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DC394189D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C11091C23201
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1256E1C230B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B009189903;
-	Tue, 30 Jul 2024 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0943818455B;
+	Tue, 30 Jul 2024 16:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJG/qql3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgXQpv5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D621817D8BB;
-	Tue, 30 Jul 2024 16:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB671078F;
+	Tue, 30 Jul 2024 16:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358714; cv=none; b=b2BY+l9JDw+bbZNQYKDUCp6HFJW9CilUH0VmaDqoKKXJZ/YzVPfTJRIe7AK0utsWA/6aaGp1ONE+HiHBdQYxUKlVj20097hlCxFiidYZdxmkMDnFX7t0jfDURQFgIELRGEekFw45KYs2e5h0LYtfpSzX8Dve8V/5tGUdTpqOixc=
+	t=1722356605; cv=none; b=Fn1LrRjUgWOu0RAYcMEJ/dLeQUJJumEbAU9z669R1UI6sCDQW477F/EssynZeU7XbmqvvFtwXXmBCAP9n3G4BzEBwwPLFW9v/qSdDaEC/bxqzV/kxvRI57cFk0vQlv4ZlZxJGT+H7Ma191KdYmCneoCSoI1ZyvPkA8FR+/RyY/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358714; c=relaxed/simple;
-	bh=eoAeIMOkDzgoMwIOl3Gc3NlK4/nKsWXfYmXDijdl8Yk=;
+	s=arc-20240116; t=1722356605; c=relaxed/simple;
+	bh=4Wu+eG9lLYnJp2xHmalmeUH9hbGRM9Vj3x+KJnxFN8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FFLw76zkI1jXpU3PttwiThj5mogGWwXtABAogMUBfF82lu9XIuCmsZefVf+XyiTJw+IY47FQNkEqemXfIeqgmB0d5MyiwWz6UMEtAxXhqi9+sgsNRB0QzZnalNetOBDq4Ur6WKu32PbTDoDm+FQ61ZvqBmboanJ/Z+pU86FcTiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJG/qql3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446B3C32782;
-	Tue, 30 Jul 2024 16:58:33 +0000 (UTC)
+	 MIME-Version; b=D4VJ9QvnafouTUKkLxq3812DhRSPMdOAtZwUj10OKRH+s1p5Ojum7RpYclAsnaIZQTu+1NNByZ1grJ2gXBRewtVVfIDE7oO1TPyspCTi3104NqgvSsOX7Vk21kdLS5cCxUEIk1X+tQicj3Rbm90W1tF3fE+RQGyDRASgR/ZHKeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgXQpv5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C85DC32782;
+	Tue, 30 Jul 2024 16:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358713;
-	bh=eoAeIMOkDzgoMwIOl3Gc3NlK4/nKsWXfYmXDijdl8Yk=;
+	s=korg; t=1722356605;
+	bh=4Wu+eG9lLYnJp2xHmalmeUH9hbGRM9Vj3x+KJnxFN8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJG/qql32FbSvCil6paMFDU7CGpPh7paTZk8dd8WzB+cjTd2FdZgxcWDf/3rBfvu8
-	 4nyIT5oVbL7PjIUclhRG28dgCfKrLJZfllZX+osZHs/aZKOiLXIAdbvjMUH+ffeVYl
-	 uWzi5419EYA5/maVnKbfQP0pg4IW7FBTvWndJeG4=
+	b=qgXQpv5dZAEyD1K6xEJCducfF01eEVRwZFGN9hvXKY9BI5jRicw3aZScSB8KRRHeF
+	 45cfIcJwtLPAMwzqrIxkTIMJ22cPfLfdMOl5zLsgkiA0WjTixn+JEVyUaj7/41pDHh
+	 EAslGSDjBH3TlnPSC+8UDuOaCGgOsSoCi2JQMono=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 387/809] PCI: tegra194: Set EP alignment restriction for inbound ATU
+Subject: [PATCH 6.6 156/568] gss_krb5: Fix the error handling path for crypto_sync_skcipher_setkey
 Date: Tue, 30 Jul 2024 17:44:23 +0200
-Message-ID: <20240730151739.955631749@linuxfoundation.org>
+Message-ID: <20240730151645.977654992@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit d19a86d584e04191cdab7ced24d7ed791075697a ]
+[ Upstream commit a3123341dc358952ce2bf8067fbdfb7eaadf71bb ]
 
-Tegra194 and Tegra234 PCIe EP controllers have 64K alignment restriction
-for the inbound ATU. Set the endpoint inbound ATU alignment to 64kB in the
-Tegra194 PCIe driver.
+If we fail to call crypto_sync_skcipher_setkey, we should free the
+memory allocation for cipher, replace err_return with err_free_cipher
+to free the memory of cipher.
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Suggested-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Link: https://lore.kernel.org/linux-pci/20240508092207.337063-1-jonathanh@nvidia.com
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 4891f2d008e4 ("gss_krb5: import functionality to derive keys into the kernel")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sunrpc/auth_gss/gss_krb5_keys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 93f5433c5c550..4537313ef37a9 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -2015,6 +2015,7 @@ static const struct pci_epc_features tegra_pcie_epc_features = {
- 	.bar[BAR_3] = { .type = BAR_RESERVED, },
- 	.bar[BAR_4] = { .type = BAR_RESERVED, },
- 	.bar[BAR_5] = { .type = BAR_RESERVED, },
-+	.align = SZ_64K,
- };
+diff --git a/net/sunrpc/auth_gss/gss_krb5_keys.c b/net/sunrpc/auth_gss/gss_krb5_keys.c
+index 06d8ee0db000f..4eb19c3a54c70 100644
+--- a/net/sunrpc/auth_gss/gss_krb5_keys.c
++++ b/net/sunrpc/auth_gss/gss_krb5_keys.c
+@@ -168,7 +168,7 @@ static int krb5_DK(const struct gss_krb5_enctype *gk5e,
+ 		goto err_return;
+ 	blocksize = crypto_sync_skcipher_blocksize(cipher);
+ 	if (crypto_sync_skcipher_setkey(cipher, inkey->data, inkey->len))
+-		goto err_return;
++		goto err_free_cipher;
  
- static const struct pci_epc_features*
+ 	ret = -ENOMEM;
+ 	inblockdata = kmalloc(blocksize, gfp_mask);
 -- 
 2.43.0
 
