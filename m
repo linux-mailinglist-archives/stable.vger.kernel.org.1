@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99799417A4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86D0941B17
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748991F2348F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 987CE282269
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D85F1A305F;
-	Tue, 30 Jul 2024 16:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB62A1078F;
+	Tue, 30 Jul 2024 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZSDHtVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovEsTYqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC371A305E;
-	Tue, 30 Jul 2024 16:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E28189900;
+	Tue, 30 Jul 2024 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355847; cv=none; b=Xp/5Ws4cD6Uz8LhNLHX+x7ELIMz6IR8G9H8OQLLdoonjV5tQoRfcpjgrdmsNe7uAlcJbR/qutwezeRBVmgJvDHdHZTfwjzuGvraa3oLW15fBQ3HJGbZTBw3mSwbPzt3KYQ7n709BpXl+mTPW5DOIPYFGEVkglhrGyCcdK8u7K5k=
+	t=1722358249; cv=none; b=a/aH3TCvHaszP+reCYC/m6lcTrgKkEeh2RfAJVMpDAiLL328AvZN500WCqwwPZNC8Ye4fWM9mq/SLcXUWcdHjM+XM5VGbmE8Ads2wKWQI6RMhhGpSgAy6Am1kNOyULYVpUF3axMyxKcpLdF0ZzzHP9Bx6VSzZRjXpQmEYByUkI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355847; c=relaxed/simple;
-	bh=M5r9S0CAUqCayyDBsNroeaEMn31LDDP5dSs0NQ2HoQg=;
+	s=arc-20240116; t=1722358249; c=relaxed/simple;
+	bh=+M2qcTYhGU6HAVRIVow4FQB5AGY2oAr3EJDa2+CzQew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rc9l7I5I6NWrKpFMZAFv8cVKYDL1tzYQcAy+uXrs47E383Qp8/JOAaM4hJ0kowiiNbv5XoXSZeumGlDv/rVrZoErWC44s15fYt0eSe9h5M2D9DWqesd99XK4o82sROKLg2Tf57SyOtV/SFcD8QsdyoEsaIaDWx8xnStnIfbQPVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZSDHtVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4790FC4AF0E;
-	Tue, 30 Jul 2024 16:10:45 +0000 (UTC)
+	 MIME-Version; b=BCnUmGZG4DTHF9DJG/1UUuWby0wMdo3cr7i90STe5AQNW0XbB/ynUZ2RUgVuc0S0eETNG1e6ZzuKxZjVi1F+ZpOFgyfcMyiCKa3yB4DqWhSzKbpDeZpbuVJEkXhp5Hasu28+cVcx3tvug6oVgt2tprRRGMmUTKpE6iLuViqpSBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovEsTYqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2973BC4AF0A;
+	Tue, 30 Jul 2024 16:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355846;
-	bh=M5r9S0CAUqCayyDBsNroeaEMn31LDDP5dSs0NQ2HoQg=;
+	s=korg; t=1722358249;
+	bh=+M2qcTYhGU6HAVRIVow4FQB5AGY2oAr3EJDa2+CzQew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZSDHtVk+y/t03SocS604OX5zo9Vue/UyNCyQY9Jj9czPPVW9q76G2Ubyl+PRonb2
-	 +1sDPiMaxxu/ZfabFfIotLj+OsRgAQ/CuAJR1NbwCKPA2JcFMQp17CnxW4lZ0xs0rP
-	 YslaUnDX3MbBqBY98Rx6ISmhfs9oy/Ps/Oa4ZILI=
+	b=ovEsTYqu4fv6mIIaKHu7Ay8jiTe3cvTVqjOFtbceMHD/dxxAZq2kxmhAt8OKO158r
+	 K2sYM65a5TC9AOFuVE5yIhcvpHSIM5q3lB0dv4An3jxzuxM2IGSEo3nJ0ztZD167wp
+	 xcgeyHuDyQ5wqHPdp9qsR6drifwprQT6Q6P7y3Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/568] arm64: dts: rockchip: Add missing power-domains for rk356x vop_mmu
+Subject: [PATCH 6.10 326/809] drm/mediatek: Fix XRGB setting error in OVL
 Date: Tue, 30 Jul 2024 17:43:22 +0200
-Message-ID: <20240730151643.589779583@linuxfoundation.org>
+Message-ID: <20240730151737.481144848@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit 9d42c3ee3ce37cdad6f98c9e77bfbd0d791ac7da ]
+[ Upstream commit 765f284f1fe172573021056f7e337ee53f252969 ]
 
-The iommu@fe043e00 on RK356x SoC shares the VOP power domain, but the
-power-domains property was not provided when the node has been added.
+CONST_BLD must be enabled for XRGB formats although the alpha channel
+can be ignored, or OVL will still read the value from memory.
+This error only affects CRC generation.
 
-The consequence is that an attempt to reload the rockchipdrm module will
-freeze the entire system.  That is because on probe time,
-pm_runtime_get_suppliers() gets called for vop@fe040000, which blocks
-when pm_runtime_get_sync() is being invoked for iommu@fe043e00.
-
-Fix the issue by adding the missing property.
-
-Fixes: 9d6c6d978f97 ("arm64: dts: rockchip: rk356x: Add VOP2 nodes")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20240702-rk356x-fix-vop-mmu-v1-1-a66d1a0c45ea@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-3-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk356x.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-index 820c98dbccc0a..2f885bc3665b5 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-@@ -749,6 +749,7 @@ vop_mmu: iommu@fe043e00 {
- 		clocks = <&cru ACLK_VOP>, <&cru HCLK_VOP>;
- 		clock-names = "aclk", "iface";
- 		#iommu-cells = <0>;
-+		power-domains = <&power RK3568_PD_VO>;
- 		status = "disabled";
- 	};
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+index b552a02d7eae7..bd00e5e85deba 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
+@@ -38,6 +38,7 @@
+ #define DISP_REG_OVL_PITCH_MSB(n)		(0x0040 + 0x20 * (n))
+ #define OVL_PITCH_MSB_2ND_SUBBUF			BIT(16)
+ #define DISP_REG_OVL_PITCH(n)			(0x0044 + 0x20 * (n))
++#define OVL_CONST_BLEND					BIT(28)
+ #define DISP_REG_OVL_RDMA_CTRL(n)		(0x00c0 + 0x20 * (n))
+ #define DISP_REG_OVL_RDMA_GMC(n)		(0x00c8 + 0x20 * (n))
+ #define DISP_REG_OVL_ADDR_MT2701		0x0040
+@@ -407,6 +408,7 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 	unsigned int fmt = pending->format;
+ 	unsigned int offset = (pending->y << 16) | pending->x;
+ 	unsigned int src_size = (pending->height << 16) | pending->width;
++	unsigned int ignore_pixel_alpha = 0;
+ 	unsigned int con;
+ 	bool is_afbc = pending->modifier != DRM_FORMAT_MOD_LINEAR;
+ 	union overlay_pitch {
+@@ -428,6 +430,14 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 	if (state->base.fb && state->base.fb->format->has_alpha)
+ 		con |= OVL_CON_AEN | OVL_CON_ALPHA;
  
++	/* CONST_BLD must be enabled for XRGB formats although the alpha channel
++	 * can be ignored, or OVL will still read the value from memory.
++	 * For RGB888 related formats, whether CONST_BLD is enabled or not won't
++	 * affect the result. Therefore we use !has_alpha as the condition.
++	 */
++	if (state->base.fb && !state->base.fb->format->has_alpha)
++		ignore_pixel_alpha = OVL_CONST_BLEND;
++
+ 	if (pending->rotation & DRM_MODE_REFLECT_Y) {
+ 		con |= OVL_CON_VIRT_FLIP;
+ 		addr += (pending->height - 1) * pending->pitch;
+@@ -443,8 +453,8 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+ 
+ 	mtk_ddp_write_relaxed(cmdq_pkt, con, &ovl->cmdq_reg, ovl->regs,
+ 			      DISP_REG_OVL_CON(idx));
+-	mtk_ddp_write_relaxed(cmdq_pkt, overlay_pitch.split_pitch.lsb, &ovl->cmdq_reg, ovl->regs,
+-			      DISP_REG_OVL_PITCH(idx));
++	mtk_ddp_write_relaxed(cmdq_pkt, overlay_pitch.split_pitch.lsb | ignore_pixel_alpha,
++			      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH(idx));
+ 	mtk_ddp_write_relaxed(cmdq_pkt, src_size, &ovl->cmdq_reg, ovl->regs,
+ 			      DISP_REG_OVL_SRC_SIZE(idx));
+ 	mtk_ddp_write_relaxed(cmdq_pkt, offset, &ovl->cmdq_reg, ovl->regs,
 -- 
 2.43.0
 
