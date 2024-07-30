@@ -1,179 +1,243 @@
-Return-Path: <stable+bounces-62754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE33940F4F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:30:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 866ED940F6D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425C12890DE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:30:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC695B28240
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D9B199E80;
-	Tue, 30 Jul 2024 10:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D041A2570;
+	Tue, 30 Jul 2024 10:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuaaAs/t"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE3A1993A4;
-	Tue, 30 Jul 2024 10:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7762E19FA82
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 10:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722335220; cv=none; b=emu5si1RqQx8KQkgBWXlrnXNd8xNJvfKP97IX9pbHQjRe3/eCF5jqrFsfox1HszJVtBnDvVABsRUAakYWHh0Hb6QW6HBlIolLiT04iXOBxzmjRPbYqPRroxPqbggPdoXD+6rg3UamvpBEHTRRnOmy/0G8sAHPPmSXpyq0mzeTJ8=
+	t=1722335277; cv=none; b=YN/mDup1N4X/l4obwvDVTSGUGcP2nmWX6rMxHjyp6IhsRq4p4Gcc1offc3esL2YS8pR2J7gasDdT+8/3tt+s/coJeAzB5e/37a8BYGlTbku2YP0zfOBuxaPVL/kKinq/aaHZa9Mio/tBWJ2J8RHKS6/s9ie4JKRGHChQjStZP5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722335220; c=relaxed/simple;
-	bh=SeMhm/249KMHkoxDrL9fdexhBto+hEl1x7aVk0yhivc=;
-	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=Hs5VAEl4mY3kTLIcNaOdPOm9Qbu8keYwihzvVMwZ1NLAcF4dNsj3fIkGzC8N0uhzyqfkDeyPzPGa1UWrrJnrKAauKSzrV+sBMB+Ltq2D4scPuuMarHGDvwR7eWHw+I9EseQDXER55Q61xPkQVbkfsXUh0jD4dwdKzjyTInUf+Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout2.hostsharing.net (Postfix) with ESMTPS id BC76110189E0F;
-	Tue, 30 Jul 2024 12:26:55 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id 8E4A460FA4AF;
-	Tue, 30 Jul 2024 12:26:55 +0200 (CEST)
-X-Mailbox-Line: From 4d4ac43578f9aad9d7eee85a51833ae5e4b7cdb3 Mon Sep 17 00:00:00 2001
-Message-ID: <4d4ac43578f9aad9d7eee85a51833ae5e4b7cdb3.1722335040.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Tue, 30 Jul 2024 12:26:55 +0200
-Subject: [PATCH 5.10-stable] PCI/DPC: Fix use-after-free on concurrent DPC and
- hot-removal
+	s=arc-20240116; t=1722335277; c=relaxed/simple;
+	bh=0/weN4hzDGHrShieXYR13uJo1YdYTfVo0zqb40G/Twk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Zk9Cy8b5ybHX2nD1/fARJRNJU2yRF0HAqqmUmcHsQa7TMc8NZwzIfLdPKL/gimQe0+Vg8G49G1CkLPeXzzpffa0kCyy2PTH2tVHPZrvU5lsTYALRIUva76udkGznHLJ1DxC308YofR3DPfFL0TKkEIVznm6BXf8d6OH/bQOQoUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuaaAs/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA17BC4AF09;
+	Tue, 30 Jul 2024 10:27:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722335277;
+	bh=0/weN4hzDGHrShieXYR13uJo1YdYTfVo0zqb40G/Twk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=FuaaAs/t1AYXrtDYAv6uJEN2nohn2DikQXcQLIA+o3cXZ1TNDM5nyFnyAIAaqcsj5
+	 z6GtYQnZsEMNVWSnyK0HyOC19000DEyjIoIqdpegBi7IIs70hSyLvoQ0IAVvrZYOT+
+	 5hNRcYq4cJSwCAO7TDrZKs7Lx0XWEy44ymYElH2Q=
+Subject: FAILED: patch "[PATCH] MIPS: dts: loongson: Fix liointc IRQ polarity" failed to apply to 6.10-stable tree
+To: jiaxun.yang@flygoat.com,tsbogend@alpha.franken.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 30 Jul 2024 12:27:54 +0200
+Message-ID: <2024073054-estate-stylishly-6520@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, linux-pci@vger.kernel.org, Keith Busch <kbusch@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Bjorn Helgaas <helgaas@kernel.org>, Krzysztof Wilczynski <kwilczynski@kernel.org>
 
-commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
 
-Keith reports a use-after-free when a DPC event occurs concurrently to
-hot-removal of the same portion of the hierarchy:
+The patch below does not apply to the 6.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-The dpc_handler() awaits readiness of the secondary bus below the
-Downstream Port where the DPC event occurred.  To do so, it polls the
-config space of the first child device on the secondary bus.  If that
-child device is concurrently removed, accesses to its struct pci_dev
-cause the kernel to oops.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
-reference on the child device.  Before v6.3, the function was only
-called on resume from system sleep or on runtime resume.  Holding a
-reference wasn't necessary back then because the pciehp IRQ thread
-could never run concurrently.  (On resume from system sleep, IRQs are
-not enabled until after the resume_noirq phase.  And runtime resume is
-always awaited before a PCI device is removed.)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x dbb69b9d6234aad23b3ecd33e5bc8a8ae1485b7d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073054-estate-stylishly-6520@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
-However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
-called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
-of secondary bus after reset"), which introduced that, failed to
-appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
-reference on the child device because dpc_handler() and pciehp may
-indeed run concurrently.  The commit was backported to v5.10+ stable
-kernels, so that's the oldest one affected.
+Possible dependencies:
 
-Add the missing reference acquisition.
+dbb69b9d6234 ("MIPS: dts: loongson: Fix liointc IRQ polarity")
+d89a415ff8d5 ("MIPS: Loongson64: DTS: Fix PCIe port nodes for ls7a")
 
-Abridged stack trace:
+thanks,
 
-  BUG: unable to handle page fault for address: 00000000091400c0
-  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
-  RIP: pci_bus_read_config_dword+0x17/0x50
-  pci_dev_wait()
-  pci_bridge_wait_for_secondary_bus()
-  dpc_reset_link()
-  pcie_do_recovery()
-  dpc_handler()
+greg k-h
 
-Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
-Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
-Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
-Reported-by: Keith Busch <kbusch@kernel.org>
-Tested-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.10+
----
- drivers/pci/pci.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+------------------ original commit in Linus's tree ------------------
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 530ced8f7abd..09d5fa637b98 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4817,7 +4817,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 				      int timeout)
- {
- 	struct pci_dev *child;
--	int delay;
-+	int delay, ret = 0;
+From dbb69b9d6234aad23b3ecd33e5bc8a8ae1485b7d Mon Sep 17 00:00:00 2001
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date: Fri, 14 Jun 2024 16:40:10 +0100
+Subject: [PATCH] MIPS: dts: loongson: Fix liointc IRQ polarity
+
+All internal liointc interrupts are high level triggered.
+
+Fixes: b1a792601f26 ("MIPS: Loongson64: DeviceTree for Loongson-2K1000")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+
+diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+index f5a74338bf05..3f5255584c30 100644
+--- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+@@ -93,7 +93,7 @@ rtc0: rtc@1fe07800 {
+ 			compatible = "loongson,ls2k1000-rtc";
+ 			reg = <0 0x1fe07800 0 0x78>;
+ 			interrupt-parent = <&liointc0>;
+-			interrupts = <60 IRQ_TYPE_LEVEL_LOW>;
++			interrupts = <60 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
  
- 	if (pci_dev_is_disconnected(dev))
- 		return 0;
-@@ -4845,8 +4845,8 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 		return 0;
- 	}
+ 		uart0: serial@1fe00000 {
+@@ -101,7 +101,7 @@ uart0: serial@1fe00000 {
+ 			reg = <0 0x1fe00000 0 0x8>;
+ 			clock-frequency = <125000000>;
+ 			interrupt-parent = <&liointc0>;
+-			interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++			interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+ 			no-loopback-test;
+ 		};
  
--	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
--				 bus_list);
-+	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
-+					     struct pci_dev, bus_list));
- 	up_read(&pci_bus_sem);
+@@ -124,8 +124,8 @@ gmac@3,0 {
+ 						   "pciclass0c03";
  
- 	/*
-@@ -4856,7 +4856,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 	if (!pci_is_pcie(dev)) {
- 		pci_dbg(dev, "waiting %d ms for secondary bus\n", 1000 + delay);
- 		msleep(1000 + delay);
--		return 0;
-+		goto put_child;
- 	}
+ 				reg = <0x1800 0x0 0x0 0x0 0x0>;
+-				interrupts = <12 IRQ_TYPE_LEVEL_LOW>,
+-					     <13 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
++					     <13 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "macirq", "eth_lpi";
+ 				interrupt-parent = <&liointc0>;
+ 				phy-mode = "rgmii";
+@@ -147,8 +147,8 @@ gmac@3,1 {
+ 						   "loongson, pci-gmac";
  
- 	/*
-@@ -4877,7 +4877,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 	 * until the timeout expires.
- 	 */
- 	if (!pcie_downstream_port(dev))
--		return 0;
-+		goto put_child;
+ 				reg = <0x1900 0x0 0x0 0x0 0x0>;
+-				interrupts = <14 IRQ_TYPE_LEVEL_LOW>,
+-					     <15 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <14 IRQ_TYPE_LEVEL_HIGH>,
++					     <15 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "macirq", "eth_lpi";
+ 				interrupt-parent = <&liointc0>;
+ 				phy-mode = "rgmii";
+@@ -169,7 +169,7 @@ ehci@4,1 {
+ 						   "pciclass0c03";
  
- 	if (pcie_get_speed_cap(dev) <= PCIE_SPEED_5_0GT) {
- 		pci_dbg(dev, "waiting %d ms for downstream link\n", delay);
-@@ -4888,11 +4888,16 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
- 		if (!pcie_wait_for_link_delay(dev, true, delay)) {
- 			/* Did not train, no need to wait any further */
- 			pci_info(dev, "Data Link Layer Link Active not set in 1000 msec\n");
--			return -ENOTTY;
-+			ret = -ENOTTY;
-+			goto put_child;
- 		}
- 	}
+ 				reg = <0x2100 0x0 0x0 0x0 0x0>;
+-				interrupts = <18 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <18 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 			};
  
--	return pci_dev_wait(child, reset_type, timeout - delay);
-+	ret = pci_dev_wait(child, reset_type, timeout - delay);
-+
-+put_child:
-+	pci_dev_put(child);
-+	return ret;
- }
+@@ -180,7 +180,7 @@ ohci@4,2 {
+ 						   "pciclass0c03";
  
- void pci_reset_secondary_bus(struct pci_dev *dev)
--- 
-2.43.0
+ 				reg = <0x2200 0x0 0x0 0x0 0x0>;
+-				interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 			};
+ 
+@@ -191,7 +191,7 @@ sata@8,0 {
+ 						   "pciclass0106";
+ 
+ 				reg = <0x4000 0x0 0x0 0x0 0x0>;
+-				interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc0>;
+ 			};
+ 
+@@ -206,10 +206,10 @@ pcie@9,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 0 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 0 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -225,10 +225,10 @@ pcie@a,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 1 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 1 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -244,10 +244,10 @@ pcie@b,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <2 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 2 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 2 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -263,10 +263,10 @@ pcie@c,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <3 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 3 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 3 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -282,10 +282,10 @@ pcie@d,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <4 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 4 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 4 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
+@@ -301,10 +301,10 @@ pcie@e,0 {
+ 				#size-cells = <2>;
+ 				device_type = "pci";
+ 				#interrupt-cells = <1>;
+-				interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
++				interrupts = <5 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&liointc1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+-				interrupt-map = <0 0 0 0 &liointc1 5 IRQ_TYPE_LEVEL_LOW>;
++				interrupt-map = <0 0 0 0 &liointc1 5 IRQ_TYPE_LEVEL_HIGH>;
+ 				ranges;
+ 				external-facing;
+ 			};
 
 
