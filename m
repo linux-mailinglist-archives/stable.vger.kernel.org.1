@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33931941ECF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:33:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E46941C4A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2A00285781
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:33:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4A3D1C22852
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B57189522;
-	Tue, 30 Jul 2024 17:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ABE1A6192;
+	Tue, 30 Jul 2024 17:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySUhSXWT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmJgR2K+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21485166315;
-	Tue, 30 Jul 2024 17:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C273718801A;
+	Tue, 30 Jul 2024 17:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360798; cv=none; b=kwCJizWWgcAxAanMU7xBoohb0ldirD52Yg7VvcNtIDstQwfNTX6aXDFRffc++4VVtO/lNskM+WmZWuE2FAOz0k15PtAzGGivSfd134KdGdd9ZuCKRV/r06N5LU9wwYCyxJBzHNq/t4drjYWT1n5c9kINZG/hXOxfcVxiySdO3/8=
+	t=1722359139; cv=none; b=o/4hNmC2J03BVI2ZKYLrEsgTSlbNfoR2rx0X0ZFhupU8HbFZjn37TW/NFp0xqzLuWlOV7tTmLW+17jqmiODAM0FJK2LuOMHpygd4KSbwxbBwznSXqzfndVmAKgCN6pnL1IFYmjQ7HB21dJBUZMaCnCd4uIY5TdOJ3Gad/gsYOqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360798; c=relaxed/simple;
-	bh=NkiTyx4aXI1lodrmLOeFOyyrZRJ6YJGk9urdnJIVdpY=;
+	s=arc-20240116; t=1722359139; c=relaxed/simple;
+	bh=9+L4T1MQNu+F11eoTnLaBdXVeoE7/IcN+JgGyE5KefM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeGyqjtmj+19V9RmEXemd8YLmoZp/Uze1OIWwN7BNgtKUK+Oc4Z2lV57onuW9dAnXA02lLPJFI3rPBmVEpr6eMgAbcqrfDTvXtHTJX+W5oKswlRFgjTvndX4nscRnFm/mzDH+aiZ+r1k3c358o/tdl2Mv5wjYMTyINmoZnQ4MrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySUhSXWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCBDC32782;
-	Tue, 30 Jul 2024 17:33:17 +0000 (UTC)
+	 MIME-Version; b=JjaGY+U+u0K3PL+RTr+Ry2+o0R9qdSubTgt64XCOlg78CPSQtgCDqYW2orCl6P5mPRW+sbM61dO+vWaztMWAg/a8cz1jF6b8LCs7UR7NRMtdQ5VYS91Sv1QMRwsPI9r4tfeYBHgReIFZ6FYVIr4ziJ4gSI3ADskq7LHBg7aFW4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmJgR2K+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10615C32782;
+	Tue, 30 Jul 2024 17:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360797;
-	bh=NkiTyx4aXI1lodrmLOeFOyyrZRJ6YJGk9urdnJIVdpY=;
+	s=korg; t=1722359139;
+	bh=9+L4T1MQNu+F11eoTnLaBdXVeoE7/IcN+JgGyE5KefM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySUhSXWT5jTGuEtgQPzF6yfRfc/+Lf7yFBKPvqsk3VczZcuqi14GAtBCfv+SB4yQN
-	 Em95Z1IaaggKGSj8Lz2LzYEbblyqtP/fu3phGXdvUmw+Io+bP5DD4wdU9eLOFncxRM
-	 DeeGAcAyIrC/wAuG2tkt47Jl8PSzIsefF8yhMTZA=
+	b=jmJgR2K+63AMUx1ZH1dda4kp3Al7gDMvCaDAn2SwMBpkD7quJx4fvqzn9u/aEZh20
+	 SLsIqjPB2kfz+xDl2UGRjkp/neq7Am4APloTebyzJt5SuVbD3TnIQ1O8LqzmNzMBPK
+	 JwAFp8GNUglwKXpk64Tm+MozDGLp8u7k5ljqiUII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 795/809] s390/pci: Refactor arch_setup_msi_irqs()
+Subject: [PATCH 6.1 438/440] io_uring: fix io_match_task must_hold
 Date: Tue, 30 Jul 2024 17:51:11 +0200
-Message-ID: <20240730151756.373564622@linuxfoundation.org>
+Message-ID: <20240730151632.881328509@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 5fd11b96b43708f2f6e3964412c301c1bd20ec0f ]
+[ Upstream commit e142e9cd8891b0c6f277ac2c2c254199a6aa56e3 ]
 
-Factor out adapter interrupt allocation from arch_setup_msi_irqs() in
-preparation for enabling registration of multiple MSIs. Code movement
-only, no change of functionality intended.
+The __must_hold annotation in io_match_task() uses a non existing
+parameter "req", fix it.
 
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
+Fixes: 6af3f48bf6156 ("io_uring: fix link traversal locking")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/3e65ee7709e96507cef3d93291746f2c489f2307.1721819383.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 54 ++++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
+ io_uring/timeout.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 0ef83b6ac0db7..979f776b09b8d 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -268,33 +268,20 @@ static void zpci_floating_irq_handler(struct airq_struct *airq,
- 	}
- }
+diff --git a/io_uring/timeout.c b/io_uring/timeout.c
+index b0cf05ebcbcc3..7cdc234c5f53f 100644
+--- a/io_uring/timeout.c
++++ b/io_uring/timeout.c
+@@ -601,7 +601,7 @@ void io_queue_linked_timeout(struct io_kiocb *req)
  
--int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
-+			unsigned long *bit)
+ static bool io_match_task(struct io_kiocb *head, struct task_struct *task,
+ 			  bool cancel_all)
+-	__must_hold(&req->ctx->timeout_lock)
++	__must_hold(&head->ctx->timeout_lock)
  {
--	struct zpci_dev *zdev = to_zpci(pdev);
--	unsigned int hwirq, msi_vecs, cpu;
--	unsigned long bit;
--	struct msi_desc *msi;
--	struct msi_msg msg;
--	int cpu_addr;
--	int rc, irq;
--
--	zdev->aisb = -1UL;
--	zdev->msi_first_bit = -1U;
--	if (type == PCI_CAP_ID_MSI && nvec > 1)
--		return 1;
--	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
--
- 	if (irq_delivery == DIRECTED) {
- 		/* Allocate cpu vector bits */
--		bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
-+		if (*bit == -1UL)
- 			return -EIO;
- 	} else {
- 		/* Allocate adapter summary indicator bit */
--		bit = airq_iv_alloc_bit(zpci_sbv);
--		if (bit == -1UL)
-+		*bit = airq_iv_alloc_bit(zpci_sbv);
-+		if (*bit == -1UL)
- 			return -EIO;
--		zdev->aisb = bit;
-+		zdev->aisb = *bit;
+ 	struct io_kiocb *req;
  
- 		/* Create adapter interrupt vector */
- 		zdev->aibv = airq_iv_create(msi_vecs, AIRQ_IV_DATA | AIRQ_IV_BITLOCK, NULL);
-@@ -302,10 +289,33 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
- 			return -ENOMEM;
- 
- 		/* Wire up shortcut pointer */
--		zpci_ibv[bit] = zdev->aibv;
-+		zpci_ibv[*bit] = zdev->aibv;
- 		/* Each function has its own interrupt vector */
--		bit = 0;
-+		*bit = 0;
- 	}
-+	return 0;
-+}
-+
-+int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
-+{
-+	struct zpci_dev *zdev = to_zpci(pdev);
-+	unsigned int hwirq, msi_vecs, cpu;
-+	struct msi_desc *msi;
-+	struct msi_msg msg;
-+	unsigned long bit;
-+	int cpu_addr;
-+	int rc, irq;
-+
-+	zdev->aisb = -1UL;
-+	zdev->msi_first_bit = -1U;
-+
-+	if (type == PCI_CAP_ID_MSI && nvec > 1)
-+		return 1;
-+	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
-+
-+	rc = __alloc_airq(zdev, msi_vecs, &bit);
-+	if (rc < 0)
-+		return rc;
- 
- 	/* Request MSI interrupts */
- 	hwirq = bit;
 -- 
 2.43.0
 
