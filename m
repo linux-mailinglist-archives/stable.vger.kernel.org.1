@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66810941863
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A59941D8B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1441F287502
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474E41F26D2A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF5A187FEC;
-	Tue, 30 Jul 2024 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E711A76B8;
+	Tue, 30 Jul 2024 17:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsLUMtdC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xC5o2v1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD811A617E;
-	Tue, 30 Jul 2024 16:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B743C1A76A4;
+	Tue, 30 Jul 2024 17:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356465; cv=none; b=YuV0g5Qdj02BHDABjgcI9cZQ20Rhb0Pkb6MYo136Kq622+/cumvxW9gstzjeKbu3Lbpv0W04lIWpez5MpwYHGIDE4g1z19neBPNGA3piL+oUm7Vloy8HXWKtOgINhZDGSLHEqiHFLhxaPGAL0eVPsiACYQF96kaOlsP8ujeyanw=
+	t=1722359906; cv=none; b=g0WUjHMsPRprHsHlbIqAHtfiGriunMmGvn4OvyPLY5xdMLpQhiMGojEjeZCt/IKwkXWG2kLBVxR+YTs2zuJvDofEO4AGOgNvE2YOQhhyIqDn1OUbpuolAf1VLWXv8xcqQGzFfmKqThxaryBMXQcwLPRrS02Pdk0hacUGWDCzXw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356465; c=relaxed/simple;
-	bh=iupP99qE3w6T4VRl7oxiK5i5nb0kizAFML0BEjnfxxg=;
+	s=arc-20240116; t=1722359906; c=relaxed/simple;
+	bh=sGj2YVFjmvK54wXb425TaR8UU37j4RgbebOvZi2g7uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQSCLVVfhV45ObuSqbzZtkVE8SCZU5uOSaTBZSMCRAMvph5hWkfpsI/GSA/QESwkmgyD8LsHWxWEM+4lDx2+6IGYZzxZExKNI5LzGxp5WcyIWAty5Wag7pum6muzkAn1yFMlUcY0+76hXFF/iO45TCzDSpADuh/od0CkYMN2wFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsLUMtdC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE17EC32782;
-	Tue, 30 Jul 2024 16:21:04 +0000 (UTC)
+	 MIME-Version; b=YuupRcCZgZ2VJLVQpHRVJeTV9PNugq4LuaErk6d1oon48oRW0QabWu5w7K9MkNWhUM+Fln2/xBa5AjWczjpUAc6/OuCL9ddgEuFrwgWyQ29nBtA5t3etUuMBQs1C/DJ2oDtvvUx8YcSwsWcuDpvrPUW2IHsxSbtcyUVRfYWSuxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xC5o2v1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251BBC32782;
+	Tue, 30 Jul 2024 17:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356465;
-	bh=iupP99qE3w6T4VRl7oxiK5i5nb0kizAFML0BEjnfxxg=;
+	s=korg; t=1722359906;
+	bh=sGj2YVFjmvK54wXb425TaR8UU37j4RgbebOvZi2g7uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CsLUMtdCe/dCKVLNuBWmQtd3ClCY/Qv9KZi3/2u4H7Anr5arK0ei3r9uMweJMRXnh
-	 LGWKxq8PLNxXNj8pIrVQ061aeMj14MXz2ZyGExwSq2uIUo+Nn1mWbcYVHm/xOHAU1M
-	 AnauMmK6jVr6DzYQl+bqbn62ZbP0jyyXLFxvxj9k=
+	b=xC5o2v1QQExNQC8R/Qfal7HTw+4BzXGy1lXWvgsduUyKKTIqCy7jUpuUVTrM4sE9o
+	 VCZgKTU+hmCicTk4t/92PNP2jHrwoKxY5A2EmYMkdaXA4PVPty2hIsKFWQXV8MujmA
+	 KTRR9zaCSIGu7qdKHFI+dCHNw5JRKmFMLk0ToGOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 194/440] RDMA/cache: Release GID table even if leak is detected
-Date: Tue, 30 Jul 2024 17:47:07 +0200
-Message-ID: <20240730151623.446618224@linuxfoundation.org>
+	syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.10 552/809] btrfs: fix extent map use-after-free when adding pages to compressed bio
+Date: Tue, 30 Jul 2024 17:47:08 +0200
+Message-ID: <20240730151746.558908502@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit a92fbeac7e94a420b55570c10fe1b90e64da4025 ]
+commit 8e7860543a94784d744c7ce34b78a2e11beefa5c upstream.
 
-When the table is released, we nullify pointer to GID table, it means
-that in case GID entry leak is detected, we will leak table too.
+At add_ra_bio_pages() we are accessing the extent map to calculate
+'add_size' after we dropped our reference on the extent map, resulting
+in a use-after-free. Fix this by computing 'add_size' before dropping our
+extent map reference.
 
-Delete code that prevents table destruction.
-
-Fixes: b150c3862d21 ("IB/core: Introduce GID entry reference counts")
-Link: https://lore.kernel.org/r/a62560af06ba82c88ef9194982bfa63d14768ff9.1716900410.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+853d80cba98ce1157ae6@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/000000000000038144061c6d18f2@google.com/
+Fixes: 6a4049102055 ("btrfs: subpage: make add_ra_bio_pages() compatible")
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/cache.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ fs/btrfs/compression.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
-index 4084d05a45102..c319664ca74b3 100644
---- a/drivers/infiniband/core/cache.c
-+++ b/drivers/infiniband/core/cache.c
-@@ -794,7 +794,6 @@ static struct ib_gid_table *alloc_gid_table(int sz)
- static void release_gid_table(struct ib_device *device,
- 			      struct ib_gid_table *table)
- {
--	bool leak = false;
- 	int i;
+--- a/fs/btrfs/compression.c
++++ b/fs/btrfs/compression.c
+@@ -514,6 +514,7 @@ static noinline int add_ra_bio_pages(str
+ 			put_page(page);
+ 			break;
+ 		}
++		add_size = min(em->start + em->len, page_end + 1) - cur;
+ 		free_extent_map(em);
  
- 	if (!table)
-@@ -803,15 +802,12 @@ static void release_gid_table(struct ib_device *device,
- 	for (i = 0; i < table->sz; i++) {
- 		if (is_gid_entry_free(table->data_vec[i]))
- 			continue;
--		if (kref_read(&table->data_vec[i]->kref) > 1) {
--			dev_err(&device->dev,
--				"GID entry ref leak for index %d ref=%u\n", i,
--				kref_read(&table->data_vec[i]->kref));
--			leak = true;
--		}
-+
-+		WARN_ONCE(true,
-+			  "GID entry ref leak for dev %s index %d ref=%u\n",
-+			  dev_name(&device->dev), i,
-+			  kref_read(&table->data_vec[i]->kref));
- 	}
--	if (leak)
--		return;
+ 		if (page->index == end_index) {
+@@ -526,7 +527,6 @@ static noinline int add_ra_bio_pages(str
+ 			}
+ 		}
  
- 	mutex_destroy(&table->lock);
- 	kfree(table->data_vec);
--- 
-2.43.0
-
+-		add_size = min(em->start + em->len, page_end + 1) - cur;
+ 		ret = bio_add_page(orig_bio, page, add_size, offset_in_page(cur));
+ 		if (ret != add_size) {
+ 			unlock_extent(tree, cur, page_end, NULL);
 
 
 
