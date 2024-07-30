@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009AB941DD2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72604941B37
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3081E1C2366F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8291F23126
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEC61A76BB;
-	Tue, 30 Jul 2024 17:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD9A18990C;
+	Tue, 30 Jul 2024 16:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTFC0k3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwXcMeGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A48B1A76B3;
-	Tue, 30 Jul 2024 17:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6EF189502;
+	Tue, 30 Jul 2024 16:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360096; cv=none; b=kjMNtanK7U79V07ARaaAvLPKfN2aRTysDEqdvmURdb4MEadO9vs1R0H+oTlbRZ1TJP4yD12hbpQKfDMXBfNZ98fv+zVaMt5KsQSXVVjstZVs0sZHimnXKdZTj1Vd+bNv2kf80OAaa3ARyluhmndg/hAXJJKnBKzxr51GdI4kc5A=
+	t=1722358328; cv=none; b=NDOGF5gwKf4qByD4or4h5uKWX5c8MxpaHa7q3Kiev7g/RCt9HHgcvyRUqT9nKTTUkfa9F5skSSc4aZekz4cfZ0DLyMGmLymTIl8p6WMuAw409qP3quz9tJ3aFS9p3xqGOzMJjiAfmmMx6RrolMBlU5Ht8lRMpEmIo9uU3Rp8bqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360096; c=relaxed/simple;
-	bh=UDA6KJWPsk6BZmAnXlX3fArIE7FnsVa8hRAWjRkqDCc=;
+	s=arc-20240116; t=1722358328; c=relaxed/simple;
+	bh=wuhInRNvmZhob7vemhY8TyUCL0Hr7yN/EwCBGi17SGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VmmkQG5VJYSxNFgu3QMFsIdC2eApMSTtY639w2EiPNqKonsYwzUud92VXsDUxbIKBYoEYNZnaaEkY9K44UWdjNDeHSAhoNPzNZNs1PZDMzkuilD69lDYhmSRy5REbwfBf6JkDP9q86bx3BqoHw74cm8fKpBuTkBvWaWSs+X4f4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTFC0k3w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46BBC32782;
-	Tue, 30 Jul 2024 17:21:35 +0000 (UTC)
+	 MIME-Version; b=CzMhVnIrxAm9KfOfW/fo3NXIhmhfwyxGt0kK/YG/exUg4hvz0SmOKk5chCyzw8A9lGTYSwkkRjPnZqC56p8DePbUkqVUjsdBLajD47WhSMxz1T3xIhFkHtE6LdbVCMkULRbs+oUkxdUr2bf1Yp6NgAomdiA5/DyxE6O2TY3LBBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwXcMeGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7D8C32782;
+	Tue, 30 Jul 2024 16:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360096;
-	bh=UDA6KJWPsk6BZmAnXlX3fArIE7FnsVa8hRAWjRkqDCc=;
+	s=korg; t=1722358328;
+	bh=wuhInRNvmZhob7vemhY8TyUCL0Hr7yN/EwCBGi17SGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTFC0k3wWtvXsHHxeLTeNZ7CPE8ZfytuPNYYXqHndXcA+wnNYAUH/ewgFc3wdNtZx
-	 ABskA7kxw6DGlKoh9N16eG8RZpfofzAzU1Vxf8f2Vdm8DXpBeBt8zyKxTC5iuj6x56
-	 nQCE6sJ085ljTog5AM2k/mXaA1ERtegFL5d60p9o=
+	b=AwXcMeGA9q9NSUbTRU/3VoH3WH6jYQZIeBYz7cDZrY9yw7INIDvBOkWXF2lBuw/Y/
+	 HdNNNCkCqD2Z/CLfAc/oGu+UOefviSEo4TNpKXIZvajNaS5ve1+EJ+15ZzWlJuimdy
+	 V/EZr7sT9gL0mUCfPlTB2ZTbHfp0tUi7fN2Xnw+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 564/809] null_blk: Fix description of the fua parameter
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 333/568] fs/ntfs3: Drop stray \ (backslash) in formatting string
 Date: Tue, 30 Jul 2024 17:47:20 +0200
-Message-ID: <20240730151747.043062600@linuxfoundation.org>
+Message-ID: <20240730151652.886463910@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 1c0b3fca381bf879e2168b362692f83808677f95 upstream.
+[ Upstream commit b366809dd151e8abb29decda02fd6a78b498831f ]
 
-The description of the fua module parameter is defined using
-MODULE_PARM_DESC() with the first argument passed being "zoned". That is
-the wrong name, obviously. Fix that by using the correct "fua" parameter
-name so that "modinfo null_blk" displays correct information.
+CHECK   /home/andy/prj/linux-topic-uart/fs/ntfs3/super.c
+fs/ntfs3/super.c:471:23: warning: unknown escape sequence: '\%'
 
-Fixes: f4f84586c8b9 ("null_blk: Introduce fua attribute")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Link: https://lore.kernel.org/r/20240702073234.206458-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Drop stray '\' (backslash) in formatting string.
+
+Fixes: d27e202b9ac4 ("fs/ntfs3: Add more info into /proc/fs/ntfs3/<dev>/volinfo")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 2 +-
+ fs/ntfs3/super.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 83a4ebe4763a..5de9ca4eceb4 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -227,7 +227,7 @@ MODULE_PARM_DESC(mbps, "Cache size in MiB for memory-backed device. Default: 0 (
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 10659817f98c7..79ebe62f00017 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -463,7 +463,7 @@ static int ntfs3_volinfo(struct seq_file *m, void *o)
+ 	struct super_block *sb = m->private;
+ 	struct ntfs_sb_info *sbi = sb->s_fs_info;
  
- static bool g_fua = true;
- module_param_named(fua, g_fua, bool, 0444);
--MODULE_PARM_DESC(zoned, "Enable/disable FUA support when cache_size is used. Default: true");
-+MODULE_PARM_DESC(fua, "Enable/disable FUA support when cache_size is used. Default: true");
- 
- static unsigned int g_mbps;
- module_param_named(mbps, g_mbps, uint, 0444);
+-	seq_printf(m, "ntfs%d.%d\n%u\n%zu\n\%zu\n%zu\n%s\n%s\n",
++	seq_printf(m, "ntfs%d.%d\n%u\n%zu\n%zu\n%zu\n%s\n%s\n",
+ 		   sbi->volume.major_ver, sbi->volume.minor_ver,
+ 		   sbi->cluster_size, sbi->used.bitmap.nbits,
+ 		   sbi->mft.bitmap.nbits,
 -- 
-2.45.2
+2.43.0
 
 
 
