@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3580941CDA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88065941E56
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FE371C239E9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4244228147E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7631D1917E9;
-	Tue, 30 Jul 2024 17:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0FD1A76C2;
+	Tue, 30 Jul 2024 17:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZ5Y/VR9"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zz98eQUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3322D1917E1;
-	Tue, 30 Jul 2024 17:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C161A76B2;
+	Tue, 30 Jul 2024 17:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359355; cv=none; b=XU7ziX/V6Q2eOqg0cFLYmOSTvYa71nfNdKrYTRaxgD38+/7jlzbiJP3tdiuMz5vHHl/UFG9zQOaB8tU8PSCwL/lD6WcJuebCorxE1mIXJ7q94JW2GWM/M+oyPwXXhaO/tyIKsaHHBIO8TmiVQfdgQHzhJ8vkq2uFxUeDqxtLZfk=
+	t=1722360477; cv=none; b=jPt13bdAGtTnFPPXyHVWp44Y08QzBZZZ7JFGpWqp9BRxwwKkso5UWR+1WRUaMZ6DPxCPf2d5w1pXhdzvr1pZiZuTo3Y7+em7qOgu8QUcDfhMgbR0Yr7S6s/nb8hHpKdTqnnmNQb72K6Ect4O1SG4hKPe74dgmfyzetVHgGuhm4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359355; c=relaxed/simple;
-	bh=yzFcYEaAIvdgWD2JdQgbITumAzDfBWbRbvCnbNb7mUQ=;
+	s=arc-20240116; t=1722360477; c=relaxed/simple;
+	bh=oM06HYlrx5ufMzad7B/D9ZOyjtyaPVqF/h74ijOooTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0rsj6rlxVjuUu8tYHTsQfhOFF1r2Wk5XIEhHSm1xVu+/bDswR8O5OJWwstyOmxq4mBJE+5P189Q98ZBvFtfYNPMeWjPVZlXwBpWhyV4euFrH5zEqXoZ8ZS+UJxU+k1DdXcUnHBqYhNdYK0HAOCyh2Yz1l9C8696pF6W/O/k9Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZ5Y/VR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97217C32782;
-	Tue, 30 Jul 2024 17:09:14 +0000 (UTC)
+	 MIME-Version; b=E6rlJNtJWSdMI8SYiHC+WjdLc2Mj3kKuGKtsS6+xLPhqthqMoJayBpN1f4pTSwKsuDA3lmUTnQjkJtjdeeVDQ9TcoE87rUshfX6jueCNcZ/RqBxiBriSqLncWGcV2SbxKQE62gk5Nk1WmcQU/61EKrlcw+TetXrXv52sWzxQlHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz98eQUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F37C32782;
+	Tue, 30 Jul 2024 17:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359355;
-	bh=yzFcYEaAIvdgWD2JdQgbITumAzDfBWbRbvCnbNb7mUQ=;
+	s=korg; t=1722360476;
+	bh=oM06HYlrx5ufMzad7B/D9ZOyjtyaPVqF/h74ijOooTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZ5Y/VR908bVoM2LC2OCpx5L8aETj2Z4h/Li5ZYxPiBtwH7bX4/OPpk+r0w1ou/Bo
-	 frGKxdu1vi1KJoei8voBQjwWTCsXpC9e+56lWQZZhNooMSwukkAKOZMj6PVS5fxBG2
-	 1v9aVerQ3YsxLn96Gr44qw3YgjQXTysioIsvkXo8=
+	b=zz98eQUrW6mBuhUT2BE64ZF9vzdaF/ptdw7vMSxFD945Ebb/mQ1OdRvTrJh4k8RSj
+	 IclrYQ8DZbqOfuLHcZikt0nrCoL3vwugGzFsoWi2uGgdMSV/GIgzl39JkdcAtuMLFT
+	 wrrMAd3OszRsL1tXe4GpDbhNN21DMi63YoQfD2+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 462/568] scsi: qla2xxx: Use QP lock to search for bsg
+	patches@lists.linux.dev, "Khalil, Amiri" <amiri.khalil@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>, Khalil@web.codeaurora.org
+Subject: [PATCH 6.10 693/809] perf stat: Fix the hard-coded metrics calculation on the hybrid
 Date: Tue, 30 Jul 2024 17:49:29 +0200
-Message-ID: <20240730151658.077729898@linuxfoundation.org>
+Message-ID: <20240730151752.286991253@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,154 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit c449b4198701d828e40d60a2abd30970b74a1d75 upstream.
+commit 3612ca8e2935c4c142d99e33b8effa7045ce32b5 upstream.
 
-On bsg timeout, hardware_lock is used as part of search for the srb.
-Instead, qpair lock should be used to iterate through different qpair.
+The hard-coded metrics is wrongly calculated on the hybrid machine.
 
+$ perf stat -e cycles,instructions -a sleep 1
+
+ Performance counter stats for 'system wide':
+
+        18,205,487      cpu_atom/cycles/
+         9,733,603      cpu_core/cycles/
+         9,423,111      cpu_atom/instructions/     #  0.52  insn per cycle
+         4,268,965      cpu_core/instructions/     #  0.23  insn per cycle
+
+The insn per cycle for cpu_core should be 4,268,965 / 9,733,603 = 0.44.
+
+When finding the metric events, the find_stat() doesn't take the PMU
+type into account. The cpu_atom/cycles/ is wrongly used to calculate
+the IPC of the cpu_core.
+
+In the hard-coded metrics, the events from a different PMU are only
+SW_CPU_CLOCK and SW_TASK_CLOCK. They both have the stat type,
+STAT_NSECS. Except the SW CLOCK events, check the PMU type as well.
+
+Fixes: 0a57b910807a ("perf stat: Use counts rather than saved_value")
+Reported-by: Khalil, Amiri <amiri.khalil@intel.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-11-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240606180316.4122904-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |   96 ++++++++++++++++++++++++-----------------
- 1 file changed, 57 insertions(+), 39 deletions(-)
+ tools/perf/util/stat-shadow.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -3059,17 +3059,61 @@ skip_chip_chk:
- 	return ret;
- }
- 
--int
--qla24xx_bsg_timeout(struct bsg_job *bsg_job)
-+static bool qla_bsg_found(struct qla_qpair *qpair, struct bsg_job *bsg_job)
- {
-+	bool found = false;
- 	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
- 	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
- 	struct qla_hw_data *ha = vha->hw;
--	srb_t *sp;
--	int cnt, que;
-+	srb_t *sp = NULL;
-+	int cnt;
- 	unsigned long flags;
- 	struct req_que *req;
- 
-+	spin_lock_irqsave(qpair->qp_lock_ptr, flags);
-+	req = qpair->req;
-+
-+	for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
-+		sp = req->outstanding_cmds[cnt];
-+		if (sp &&
-+		    (sp->type == SRB_CT_CMD ||
-+		     sp->type == SRB_ELS_CMD_HST ||
-+		     sp->type == SRB_ELS_CMD_HST_NOLOGIN) &&
-+		    sp->u.bsg_job == bsg_job) {
-+			req->outstanding_cmds[cnt] = NULL;
-+			spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
-+
-+			if (!ha->flags.eeh_busy && ha->isp_ops->abort_command(sp)) {
-+				ql_log(ql_log_warn, vha, 0x7089,
-+						"mbx abort_command failed.\n");
-+				bsg_reply->result = -EIO;
-+			} else {
-+				ql_dbg(ql_dbg_user, vha, 0x708a,
-+						"mbx abort_command success.\n");
-+				bsg_reply->result = 0;
-+			}
-+			/* ref: INIT */
-+			kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+
-+			found = true;
-+			goto done;
-+		}
-+	}
-+	spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
-+
-+done:
-+	return found;
-+}
-+
-+int
-+qla24xx_bsg_timeout(struct bsg_job *bsg_job)
-+{
-+	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
-+	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
-+	struct qla_hw_data *ha = vha->hw;
-+	int i;
-+	struct qla_qpair *qpair;
-+
- 	ql_log(ql_log_info, vha, 0x708b, "%s CMD timeout. bsg ptr %p.\n",
- 	    __func__, bsg_job);
- 
-@@ -3079,48 +3123,22 @@ qla24xx_bsg_timeout(struct bsg_job *bsg_
- 		qla_pci_set_eeh_busy(vha);
- 	}
- 
-+	if (qla_bsg_found(ha->base_qpair, bsg_job))
-+		goto done;
-+
- 	/* find the bsg job from the active list of commands */
--	spin_lock_irqsave(&ha->hardware_lock, flags);
--	for (que = 0; que < ha->max_req_queues; que++) {
--		req = ha->req_q_map[que];
--		if (!req)
-+	for (i = 0; i < ha->max_qpairs; i++) {
-+		qpair = vha->hw->queue_pair_map[i];
-+		if (!qpair)
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -176,6 +176,13 @@ static double find_stat(const struct evs
+ 		if (type != evsel__stat_type(cur))
  			continue;
--
--		for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
--			sp = req->outstanding_cmds[cnt];
--			if (sp &&
--			    (sp->type == SRB_CT_CMD ||
--			     sp->type == SRB_ELS_CMD_HST ||
--			     sp->type == SRB_ELS_CMD_HST_NOLOGIN ||
--			     sp->type == SRB_FXIOCB_BCMD) &&
--			    sp->u.bsg_job == bsg_job) {
--				req->outstanding_cmds[cnt] = NULL;
--				spin_unlock_irqrestore(&ha->hardware_lock, flags);
--
--				if (!ha->flags.eeh_busy && ha->isp_ops->abort_command(sp)) {
--					ql_log(ql_log_warn, vha, 0x7089,
--					    "mbx abort_command failed.\n");
--					bsg_reply->result = -EIO;
--				} else {
--					ql_dbg(ql_dbg_user, vha, 0x708a,
--					    "mbx abort_command success.\n");
--					bsg_reply->result = 0;
--				}
--				spin_lock_irqsave(&ha->hardware_lock, flags);
--				goto done;
--
--			}
--		}
-+		if (qla_bsg_found(qpair, bsg_job))
-+			goto done;
- 	}
--	spin_unlock_irqrestore(&ha->hardware_lock, flags);
+ 
++		/*
++		 * Except the SW CLOCK events,
++		 * ignore if not the PMU we're looking for.
++		 */
++		if ((type != STAT_NSECS) && (evsel->pmu != cur->pmu))
++			continue;
 +
- 	ql_log(ql_log_info, vha, 0x708b, "SRB not found to abort.\n");
- 	bsg_reply->result = -ENXIO;
--	return 0;
- 
- done:
--	spin_unlock_irqrestore(&ha->hardware_lock, flags);
--	/* ref: INIT */
--	kref_put(&sp->cmd_kref, qla2x00_sp_release);
- 	return 0;
- }
- 
+ 		aggr = &cur->stats->aggr[aggr_idx];
+ 		if (type == STAT_NSECS)
+ 			return aggr->counts.val;
 
 
 
