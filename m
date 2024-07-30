@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-63341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA329418A9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B209418E9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CC90B2AC89
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BFECB2BA14
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08491A619A;
-	Tue, 30 Jul 2024 16:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3852A1A6166;
+	Tue, 30 Jul 2024 16:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7pY+Tgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0cbMpwf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7F11A6160;
-	Tue, 30 Jul 2024 16:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E962618455E;
+	Tue, 30 Jul 2024 16:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356518; cv=none; b=h7j2pt/y2puUQIUNRZNaHcEsp99Bl7T02Y82DDaBT/uGVhacRm45+R10FjdcULvZFo4ovcTWVQVTBReulupV8NBbyGnJD2uljKL5OQU3bKJZqmsgf2Zd/+MpxtZaOnm3x0UkPNzKpCBSsaIfDVXMmOhYfn+96ZWc1jQsZVCFKkE=
+	t=1722356726; cv=none; b=aIi/iV2U/F6GZ1gEKZXwZ785Zm4ucot1k2UfjV0Qp6FTJxbWltVicoXxrid1tGxKPYiPcCwdvFkCen1pXt/qgnKRZMD4nW/mnisNuNzMWoJn0c/lwpvZKs39sLtQCOKoTJwVSYuMZ9UU/76KoprYGIbqUCMXrzwaU6qb3aHA+hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356518; c=relaxed/simple;
-	bh=gUVLNwTQe3ItUazMinidKMPO1MzpyxexCqhvQ90vChU=;
+	s=arc-20240116; t=1722356726; c=relaxed/simple;
+	bh=YHcksEueiBxFP8vZcPgtnNeXTNK4RwV8kA8VPycS5d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUkdpvrD8jznRHb3skI5G8oRzxXeXOHNGK3nRN/+GcYZH24H8eF3i3WlI+AhgnxPxo6IIHPVSVM3dv2rzdTN2v5V1WeOctAuUTwzGqiSarsw0s1MMd3H3SLAaUKLIBaYj2t2hUns6vvUijkGjUfEH7CnhwgigVuS6w9R44Rc0d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7pY+Tgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4EFC32782;
-	Tue, 30 Jul 2024 16:21:57 +0000 (UTC)
+	 MIME-Version; b=hASpewTCAG7IJgouUOHvNUxu18l+YcsS/DiMojoWAYMokmqwLNfdOP/z/doNmgV2lpIvXCi3+2dkKFriP8g50S1oo1vqw5lARBDHT9J2+nA4Zg4FoAyRvm1HBOkHG8wCWCknjUHbYUeZlkVHG0Hiundr8kv346Zw2zAXbCn4wiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0cbMpwf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B30C4AF0F;
+	Tue, 30 Jul 2024 16:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356518;
-	bh=gUVLNwTQe3ItUazMinidKMPO1MzpyxexCqhvQ90vChU=;
+	s=korg; t=1722356725;
+	bh=YHcksEueiBxFP8vZcPgtnNeXTNK4RwV8kA8VPycS5d0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7pY+TgnII0ZpJfuVU0iUTZYbByTxbZnvNsVaAE+NnFP9E3dDWUfFa/jTlXnySQU8
-	 XYSE6VtvgW6r4GOUA+c1Gln8O0Qvc7Spt1Tg9JgsGd2eWg4QpCZMiuCzZtX90mZu8y
-	 QKBgglcBNMoHIxG2Rn41RmRzxNiwEFcBEyzyO6lI=
+	b=Z0cbMpwfw59rI3Pf8YUeqA9z73stEhIATu3Y0iWtHfcZEi7FaoOgRA5ybJhcBxTR5
+	 VQFHY0jGODe+1FMstSbpfRVHNit7DSOw6HqXLOA5vhMOHlVvhKVQvrtIXH8ry+2G8b
+	 VMkPs4qCgjFA3gVrc0vLYpvLltZSNr8+0+2xDVU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 157/809] wifi: rtw89: 8852b: restore setting for RFE type 5 after device resume
-Date: Tue, 30 Jul 2024 17:40:33 +0200
-Message-ID: <20240730151730.805123019@linuxfoundation.org>
+Subject: [PATCH 6.10 158/809] net: esp: cleanup esp_output_tail_tcp() in case of unsupported ESPINTCP
+Date: Tue, 30 Jul 2024 17:40:34 +0200
+Message-ID: <20240730151730.844365816@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -65,46 +66,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit 2c1fc7c24cd47396580c5a7b238673da618aeedd ]
+[ Upstream commit 96f887a612e4cda89efc3f54bc10c1997e3ab0e9 ]
 
-The RFE type 5 set SPS analog parameters only once at probe stage, but the
-setting is missing after suspend/resume, so remove restriction and set the
-value when card power on/off.
+xmit() functions should consume skb or return error codes in error
+paths.
+When the configuration "CONFIG_INET_ESPINTCP" is not set, the
+implementation of the function "esp_output_tail_tcp" violates this rule.
+The function frees the skb and returns the error code.
+This change removes the kfree_skb from both functions, for both
+esp4 and esp6.
+WARN_ON is added because esp_output_tail_tcp() should never be called if
+CONFIG_INET_ESPINTCP is not set.
 
-Fixes: 3ef60f44830a ("wifi: rtw89: 8852b: update hardware parameters for RFE type 5")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240517013543.11533-1-pkshih@realtek.com
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
+
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv4/esp4.c | 3 +--
+ net/ipv6/esp6.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index d351096fa4b41..767de9a2de7e4 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -403,6 +403,8 @@ static int rtw8852b_pwr_on_func(struct rtw89_dev *rtwdev)
- 	u32 val32;
- 	u32 ret;
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 3968d3f98e083..619a4df7be1e8 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -239,8 +239,7 @@ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
+ #else
+ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
+ {
+-	kfree_skb(skb);
+-
++	WARN_ON(1);
+ 	return -EOPNOTSUPP;
+ }
+ #endif
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index 34a9a5b9ed00b..3920e8aa1031e 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -256,8 +256,7 @@ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
+ #else
+ static int esp_output_tail_tcp(struct xfrm_state *x, struct sk_buff *skb)
+ {
+-	kfree_skb(skb);
+-
++	WARN_ON(1);
+ 	return -EOPNOTSUPP;
+ }
+ #endif
+-- 
+2.43.0
+
+
+
+ inline int __down_read_trylock(struct rw_semaphore *sem)
+ /*
+  * lock for writing
+  */
+-static inline int __down_write_common(struct rw_semaphore *sem, int state)
++static __always_inline int __down_write_common(struct rw_semaphore *sem, int state)
+ {
+ 	int ret = 0;
  
-+	rtw8852b_pwr_sps_ana(rtwdev);
-+
- 	rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_AFSM_WLSUS_EN |
- 						    B_AX_AFSM_PCIE_SUS_EN);
- 	rtw89_write32_set(rtwdev, R_AX_SYS_PW_CTRL, B_AX_DIS_WLBT_PDNSUSEN_SOPC);
-@@ -530,9 +532,7 @@ static int rtw8852b_pwr_off_func(struct rtw89_dev *rtwdev)
- 	u32 val32;
- 	u32 ret;
+@@ -1310,12 +1310,12 @@ static inline int __down_write_common(struct rw_semaphore *sem, int state)
+ 	return ret;
+ }
  
--	/* Only do once during probe stage after reading efuse */
--	if (!test_bit(RTW89_FLAG_PROBE_DONE, rtwdev->flags))
--		rtw8852b_pwr_sps_ana(rtwdev);
-+	rtw8852b_pwr_sps_ana(rtwdev);
+-static inline void __down_write(struct rw_semaphore *sem)
++static __always_inline void __down_write(struct rw_semaphore *sem)
+ {
+ 	__down_write_common(sem, TASK_UNINTERRUPTIBLE);
+ }
  
- 	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, XTAL_SI_RFC2RF,
- 				      XTAL_SI_RFC2RF);
+-static inline int __down_write_killable(struct rw_semaphore *sem)
++static __always_inline int __down_write_killable(struct rw_semaphore *sem)
+ {
+ 	return __down_write_common(sem, TASK_KILLABLE);
+ }
 -- 
 2.43.0
 
