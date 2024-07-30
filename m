@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEA39417F9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7636941B47
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 586B32855BD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D411F2363B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02501917F4;
-	Tue, 30 Jul 2024 16:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77ED1898F8;
+	Tue, 30 Jul 2024 16:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozD9JtgG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FohXil6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4C61917F9;
-	Tue, 30 Jul 2024 16:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DFA189502;
+	Tue, 30 Jul 2024 16:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356124; cv=none; b=UEe5P3rkf2F3Xf1zV1EXa270isWU8pY22Fkz/SQi4aj0UJVBOxliAfKTYpdTpJEq+RJig2pshF+S8SoSojVMopcZIBX6nTbL7+Dn9PAy0ealiQBMRoi2GlDlLFv1V/6PNDMHR+l/dEhhvbKjbybA+4/7fUbdwAfFsZ/SwsaxXpw=
+	t=1722358377; cv=none; b=H7LCkGPSXrN8CGFLp+reYQzu22nLoEm9NpNSZuNQg1mj5nDCMAnqnv+NMOgmK7Rlv79wcOLs1qUkeEqUzKAATXzSk2fipyhBX4D8ol0YmDZb3XpoeUaYrmtB+Q5WkDDg2RYL758qMEwRXEzAnyC2BoqSlNvmEsxDFm+7s5Tpo9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356124; c=relaxed/simple;
-	bh=WuS6s15iNhqrcK+OmmQF80jAGrwLd0C5DsXBz6ee1gA=;
+	s=arc-20240116; t=1722358377; c=relaxed/simple;
+	bh=DU9PdZ6M3qRHVGhWiGr1BBgMHTeSFwMQWqU4LcJRzHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fU79oRczAXfEYjqPoik1loZZMS4o/t5oAfk92L9323Os9anjbf9sL+Dnd3WYpRBKAnqfJG7vnYCUA4npKDg5R2XiLhjP4e8uehFbhq0s5nJ8LrLI2DkJHsg7FGuPOIT+DQqf9ubOGZ2sxyzvar+tlh3HMqZUp6TvVPRLphEo+Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozD9JtgG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B19C32782;
-	Tue, 30 Jul 2024 16:15:23 +0000 (UTC)
+	 MIME-Version; b=tvXSNxuoH2k3fIy/vMytjz+m6Sk+/OCRgu/CroCQ7DDRN/gM4C9eX4ekkbl3fK8k9RfWQxheivgLGT9g4fhOzxRImiLgk6DafRDO9u9ArpwJcJFZknaLXJ+dstItAnmrRaSnlryDdwrr37chOI1H3CtLiejUpO+PvwkQG3emZbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FohXil6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F3BC4AF0A;
+	Tue, 30 Jul 2024 16:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356124;
-	bh=WuS6s15iNhqrcK+OmmQF80jAGrwLd0C5DsXBz6ee1gA=;
+	s=korg; t=1722358377;
+	bh=DU9PdZ6M3qRHVGhWiGr1BBgMHTeSFwMQWqU4LcJRzHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ozD9JtgGo6s7F4khFhiyTBrbrHIlucz44lUu3eFREPwQ5GfFycR3bSz6mw5DUFIKN
-	 eYzwUkyZDhBK5GyYJkEbND71QD1ASzopLUQxLad2dT2+sl2BwFFqzsbHGHMF1I63X6
-	 /E9W2KXz2hQjX+sMKoDDrS9qqllcGEzulz5FGs2g=
+	b=FohXil6vqk9/xgdXm2G4zrExRZ08d81mipdjolGiPO2E7FFiS4hBM2az7cuezDjIm
+	 pT/dXXRrLU2JQhuqfbuV0Bm41bN3zRSmUwcmOP4dI0P62TDfpPuiUAJq5xv5KHmZhC
+	 V1TrMqXJSobh/u/ZyeQfaXHg2SpRSaJuTkFl7W44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/568] wifi: ath12k: change DMA direction while mapping reinjected packets
+Subject: [PATCH 6.10 347/809] perf report: Fix condition in sort__sym_cmp()
 Date: Tue, 30 Jul 2024 17:43:43 +0200
-Message-ID: <20240730151644.409230312@linuxfoundation.org>
+Message-ID: <20240730151738.339509772@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 33322e3ef07409278a18c6919c448e369d66a18e ]
+[ Upstream commit cb39d05e67dc24985ff9f5150e71040fa4d60ab8 ]
 
-For fragmented packets, ath12k reassembles each fragment as a normal
-packet and then reinjects it into HW ring. In this case, the DMA
-direction should be DMA_TO_DEVICE, not DMA_FROM_DEVICE. Otherwise,
-an invalid payload may be reinjected into the HW and
-subsequently delivered to the host.
+It's expected that both hist entries are in the same hists when
+comparing two.  But the current code in the function checks one without
+dso sort key and other with the key.  This would make the condition true
+in any case.
 
-Given that arbitrary memory can be allocated to the skb buffer,
-knowledge about the data contained in the reinjected buffer is lacking.
-Consequently, there’s a risk of private information being leaked.
+I guess the intention of the original commit was to add '!' for the
+right side too.  But as it should be the same, let's just remove it.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00209-QCAHKSWPL_SILICONZ-1
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Co-developed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240520070045.631029-2-quic_ppranees@quicinc.com
+Fixes: 69849fc5d2119 ("perf hists: Move sort__has_dso into struct perf_hpp_list")
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240621170528.608772-2-namhyung@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/sort.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index a2d1ee1d51884..fb51cab23b623 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -3024,7 +3024,7 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
- 
- 	buf_paddr = dma_map_single(ab->dev, defrag_skb->data,
- 				   defrag_skb->len + skb_tailroom(defrag_skb),
--				   DMA_FROM_DEVICE);
-+				   DMA_TO_DEVICE);
- 	if (dma_mapping_error(ab->dev, buf_paddr))
- 		return -ENOMEM;
- 
-@@ -3110,7 +3110,7 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
- 	spin_unlock_bh(&dp->rx_desc_lock);
- err_unmap_dma:
- 	dma_unmap_single(ab->dev, buf_paddr, defrag_skb->len + skb_tailroom(defrag_skb),
--			 DMA_FROM_DEVICE);
-+			 DMA_TO_DEVICE);
- 	return ret;
- }
- 
+diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
+index cd39ea9721937..ab7c7ff35f9bb 100644
+--- a/tools/perf/util/sort.c
++++ b/tools/perf/util/sort.c
+@@ -334,7 +334,7 @@ sort__sym_cmp(struct hist_entry *left, struct hist_entry *right)
+ 	 * comparing symbol address alone is not enough since it's a
+ 	 * relative address within a dso.
+ 	 */
+-	if (!hists__has(left->hists, dso) || hists__has(right->hists, dso)) {
++	if (!hists__has(left->hists, dso)) {
+ 		ret = sort__dso_cmp(left, right);
+ 		if (ret != 0)
+ 			return ret;
 -- 
 2.43.0
 
