@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-64581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253B0941E85
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E77D941BB1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEAF21F2502F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78D6EB26C62
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE80C1A76DA;
-	Tue, 30 Jul 2024 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A94718800A;
+	Tue, 30 Jul 2024 16:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEGYaX6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7hZYF3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881341A76C4;
-	Tue, 30 Jul 2024 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547FE18801C;
+	Tue, 30 Jul 2024 16:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360592; cv=none; b=P4c8G4N8uvovq/rmUqkjXLLm5X+OXyxDj761UL4NiQlDfbDZ8O3LkR6MDwV/7vEEFf43a0t9Ghaq/2tqIO6asd4xITKSZ1D9n13geXpope+X9Uv0ErJfgqJxFvCTB3w6JKnPgmVzpbZ6wrEhS/bK3CxC/zA1su50WUkJV4rl738=
+	t=1722358434; cv=none; b=aAcvQ3ihRv6ADFBbQVXjdnd1fINu68hVpb03QMZ8FShj/nWPXf2IQpZIFw2r3Tbhm/Vs2D64/gPSIF5ZhNCW/tYv9kjGJJwQNTcMSSQyZByz7ROVEng4Wz1lqVzssEENZ5pm81zaSDaUPeVQCpOxdEni5ewprHlI5VxkbGPWvK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360592; c=relaxed/simple;
-	bh=FyBYpvMSruWe9eEbMd+LDl+FDra+y9obzM+3ykBauTo=;
+	s=arc-20240116; t=1722358434; c=relaxed/simple;
+	bh=4DzYK3dtGfH/zMbybc9d9eQ/Yz6sROOJoliebTeQlOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaQcNcNhPMk1uJ/OLfSjaPzWX7+mV6/g/IFIwBv5SDb1oaguMC/U6taJXtMwa52jMMyzmqhtSFFcu8HEFrLbEKKlYJRIBH601hIWODaGOsXJAxyxafYR3g5YYEVC5YxTridGzyz1sgTt+3FA66RpyEzN96AhRwxLdsFPHgcehgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEGYaX6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DB5C32782;
-	Tue, 30 Jul 2024 17:29:51 +0000 (UTC)
+	 MIME-Version; b=MAwhvd5jiFKSmoT5NLsbLqTGZuNoA2Gw8r0PDS3FBl8bPRh/xIgYaUWtLi/HRIsFv4N6mn3ejIaK5MXjT2bXI7wylrdm5/3BNKub/ThORZwFWBAVIE8lRhZYfqEvFlaB0dDhRzp8XQ1ymzEnkX4RKMv474ojEaFzp4BriTztd2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7hZYF3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAE9C32782;
+	Tue, 30 Jul 2024 16:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360592;
-	bh=FyBYpvMSruWe9eEbMd+LDl+FDra+y9obzM+3ykBauTo=;
+	s=korg; t=1722358433;
+	bh=4DzYK3dtGfH/zMbybc9d9eQ/Yz6sROOJoliebTeQlOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEGYaX6pG9oxB0fAEYIvqnBX1cPkSK3XJdcL0KDzw3ehVgEJc11wdnn0MA+oXyG5S
-	 NvD2Ii5xeH/uJR+nraNGrczAOnMoqPwSt4jIToGpELD+L/TuBVM8fi9P0YBZZH5GPm
-	 m4BbVsLAO68GSDgB70jOqq9b/mY1RPjEMkP9A3fo=
+	b=m7hZYF3h43fJwiPsjMU+MRGwauC0vScZtY2GaEhEOZI6PLh7nMzpymahHJSkj4f2a
+	 eLSLzepf8/CpZup2UIv4E/ieI5JohdZhKj4Hn+6XHj5ow5wD4S6MPOGx6vEXyB+47W
+	 Yal+mLuefyJOQIF+8pl5DbtdmXrL6tWAkT2oEcxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <davidgow@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Rameshkumar Sundaram <quic_ramess@quicinc.com>,
 	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 746/809] arch: um: rust: Use the generated target.json again
-Date: Tue, 30 Jul 2024 17:50:22 +0200
-Message-ID: <20240730151754.420384107@linuxfoundation.org>
+	Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 6.1 390/440] wifi: mac80211: Allow NSS change only up to capability
+Date: Tue, 30 Jul 2024 17:50:23 +0200
+Message-ID: <20240730151631.036728149@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <davidgow@google.com>
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 
-[ Upstream commit 9a2123b397bbe0da5e853273369d63779ac97c8c ]
+commit 57b341e9ab13e5688491bfd54f8b5502416c8905 upstream.
 
-The Rust compiler can take a target config from 'target.json', which is
-generated by scripts/generate_rust_target.rs. It used to be that all
-Linux architectures used this to generate a target.json, but now
-architectures must opt-in to this, or they will default to the Rust
-compiler's built-in target definition.
+Stations can update bandwidth/NSS change in
+VHT action frame with action type Operating Mode Notification.
+(IEEE Std 802.11-2020 - 9.4.1.53 Operating Mode field)
 
-This is mostly okay for (64-bit) x86 and UML, except that it can
-generate SSE instructions, which we can't use in the kernel. So
-re-instate the custom target.json, which disables SSE (and generally
-enables the 'soft-float' feature). This fixes the following compile
-error:
+For Operating Mode Notification, an RX NSS change to a value
+greater than AP's maximum NSS should not be allowed.
+During fuzz testing, by forcefully sending VHT Op. mode notif.
+frames from STA with random rx_nss values, it is found that AP
+accepts rx_nss values greater that APs maximum NSS instead of
+discarding such NSS change.
 
-error: <unknown>:0:0: in function _RNvMNtCs5QSdWC790r4_4core3f32f7next_up float (float): SSE register return with SSE disabled
+Hence allow NSS change only up to maximum NSS that is negotiated
+and capped to AP's capability during association.
 
-Fixes: f82811e22b48 ("rust: Refactor the build target to allow the use of builtin targets")
-Signed-off-by: David Gow <davidgow@google.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://patch.msgid.link/20240529093336.4075206-1-davidgow@google.com
+Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Link: https://lore.kernel.org/r/20230207114146.10567-1-quic_ramess@quicinc.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Makefile.um | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/vht.c |   25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
-index 2106a2bd152bf..a46b1397ad01c 100644
---- a/arch/x86/Makefile.um
-+++ b/arch/x86/Makefile.um
-@@ -9,6 +9,7 @@ core-y += arch/x86/crypto/
- #
- ifeq ($(CONFIG_CC_IS_CLANG),y)
- KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
-+KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
- KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
- endif
+--- a/net/mac80211/vht.c
++++ b/net/mac80211/vht.c
+@@ -637,7 +637,7 @@ u32 __ieee80211_vht_handle_opmode(struct
+ 	enum ieee80211_sta_rx_bandwidth new_bw;
+ 	struct sta_opmode_info sta_opmode = {};
+ 	u32 changed = 0;
+-	u8 nss;
++	u8 nss, cur_nss;
  
--- 
-2.43.0
-
+ 	/* ignore - no support for BF yet */
+ 	if (opmode & IEEE80211_OPMODE_NOTIF_RX_NSS_TYPE_BF)
+@@ -648,10 +648,25 @@ u32 __ieee80211_vht_handle_opmode(struct
+ 	nss += 1;
+ 
+ 	if (link_sta->pub->rx_nss != nss) {
+-		link_sta->pub->rx_nss = nss;
+-		sta_opmode.rx_nss = nss;
+-		changed |= IEEE80211_RC_NSS_CHANGED;
+-		sta_opmode.changed |= STA_OPMODE_N_SS_CHANGED;
++		cur_nss = link_sta->pub->rx_nss;
++		/* Reset rx_nss and call ieee80211_sta_set_rx_nss() which
++		 * will set the same to max nss value calculated based on capability.
++		 */
++		link_sta->pub->rx_nss = 0;
++		ieee80211_sta_set_rx_nss(link_sta);
++		/* Do not allow an nss change to rx_nss greater than max_nss
++		 * negotiated and capped to APs capability during association.
++		 */
++		if (nss <= link_sta->pub->rx_nss) {
++			link_sta->pub->rx_nss = nss;
++			sta_opmode.rx_nss = nss;
++			changed |= IEEE80211_RC_NSS_CHANGED;
++			sta_opmode.changed |= STA_OPMODE_N_SS_CHANGED;
++		} else {
++			link_sta->pub->rx_nss = cur_nss;
++			pr_warn_ratelimited("Ignoring NSS change in VHT Operating Mode Notification from %pM with invalid nss %d",
++					    link_sta->pub->addr, nss);
++		}
+ 	}
+ 
+ 	switch (opmode & IEEE80211_OPMODE_NOTIF_CHANWIDTH_MASK) {
 
 
 
