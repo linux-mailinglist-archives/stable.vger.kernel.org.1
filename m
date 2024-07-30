@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482C0941937
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E66941941
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06FF128173C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A5F81F23F6D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A8A1898E9;
-	Tue, 30 Jul 2024 16:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BFD183CD5;
+	Tue, 30 Jul 2024 16:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfd1ckjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ue72Rnhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8931A6195;
-	Tue, 30 Jul 2024 16:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C631A6161;
+	Tue, 30 Jul 2024 16:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357020; cv=none; b=DxlZEwsZS6V77AmFN2eIp8MMjdB30Z26S2VWhtCV6YktXMvbMwqLNK7IzU7hmH5f1VS6Koa3hecxLCRpkGfeUDtjEQNknJy36CyiPBTLVvAq3ApjIewFUXrCPYTPDAqa495Yv5imECapY3dcHtkkbbJltdfpODO7IJdD4vrKnEY=
+	t=1722357030; cv=none; b=OcfFVAsVwzHanKggRBruls410Al/MW7cGJn9vOEDmJb/3midD6gfZ6x4orP4yDn1craO+rtcBtvYWRlRivGRjHwvuMz+YwuxiPTKfNMs+qOwFlAwHHlLhYUmoxcC9FaCFx78EdwyBtlufcu+vT0iQI1iQCP7p/OhHHrYOxBYsV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357020; c=relaxed/simple;
-	bh=hbe4W0zHHOmniCnhC9dAMZPJS4kyC2PhcZKgNDlMJyA=;
+	s=arc-20240116; t=1722357030; c=relaxed/simple;
+	bh=H25K7Q5HR4YduEhBm6l/AWjVhQqlVA7agysHq4nz1Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QhdlGN0vuanYqL/vWUUiGf0cLxCvQZVWFge/4HcAS6Ji8Py/gX1Gp31vg0hYnvvmQlZYspv97D5JBatOnjTYosTxilribq1STz6XXqBd0+8kAATKhPhA4hf6I95A6hGfVJyBp28q2YyM2t4qqQWZudqBypo1i5E0Vn0hjOScXOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfd1ckjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130B4C4AF0C;
-	Tue, 30 Jul 2024 16:30:19 +0000 (UTC)
+	 MIME-Version; b=dM4ibTYRJw6tNg5+e4oKOsnHV+s7zv12qgsR3qc5G1boOa7WYpmIK9+eou4BJy+7DbwQ8acA9OOayOkSnJ4sHec9HlhRww9Z04FSZXgfkLiT8Uo61czZgCaf72pDQ4BEhjlIBDyBTFt61yKnK7P3gwHBDnqRpRYn1cIO6j7apo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ue72Rnhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4A0C32782;
+	Tue, 30 Jul 2024 16:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357020;
-	bh=hbe4W0zHHOmniCnhC9dAMZPJS4kyC2PhcZKgNDlMJyA=;
+	s=korg; t=1722357030;
+	bh=H25K7Q5HR4YduEhBm6l/AWjVhQqlVA7agysHq4nz1Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cfd1ckjV9huWRmzpIBViptg+mkRoSxCtp2wj//iaEsL8xW3oUKyyQ9ST8VMSQHrJM
-	 bX1ifstgqd9lXGUF+G75MqP96fXMEHnOV10nFXLxB01uh597fpx819j4IDvVSaF23Y
-	 FqY+wA8vu8nw2xmPxvLqYgupcYGFrmVxmBCqWJaw=
+	b=Ue72Rnhjvty19e/s+roZzf9bsjeKKyycjd2A0QdnLFKoRxLn2F6L1eTjYtKJvy1HD
+	 hIoDrZ46mQor4ja9CB3FVM4D9+5iyNb9sYH0IFZ3x+oYmCngXKnbJN68LsOKDnI+Ae
+	 KqUeM0SEh2stUoumPSG7X2a1geYU21NJm89r3u8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
 	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 210/568] media: rcar-csi2: Cleanup subdevice in remove()
-Date: Tue, 30 Jul 2024 17:45:17 +0200
-Message-ID: <20240730151648.081985735@linuxfoundation.org>
+Subject: [PATCH 6.6 211/568] media: renesas: vsp1: Fix _irqsave and _irq mix
+Date: Tue, 30 Jul 2024 17:45:18 +0200
+Message-ID: <20240730151648.121137947@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -61,45 +61,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-[ Upstream commit f6d64d0d2897ed4e85ac00afe43e45c8b8fc0c44 ]
+[ Upstream commit 57edbbcf5258c378a9b9d0c80d33b03a010b22c8 ]
 
-Cleanup the V4L2 subdevice in the driver's remove function to
-ensure its async connection are freed, and guarantee in future that
-the subdev active state is cleaned up.
+The histogram support mixes _irqsave and _irq, causing the following
+smatch warning:
 
-Fixes: 769afd212b16 ("media: rcar-csi2: add Renesas R-Car MIPI CSI-2 receiver driver")
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://lore.kernel.org/r/20240617161135.130719-4-jacopo.mondi@ideasonboard.com
+     drivers/media/platform/renesas/vsp1/vsp1_histo.c:153 histo_stop_streaming()
+     warn: mixing irqsave and irq
+
+The histo_stop_streaming() calls spin_lock_irqsave() followed by
+wait_event_lock_irq(). The former hints that interrupts may be disabled
+by the caller, while the latter reenables interrupts unconditionally.
+This doesn't cause any real bug, as the function is always called with
+interrupts enabled, but the pattern is still incorrect.
+
+Fix the problem by using spin_lock_irq() instead of spin_lock_irqsave()
+in histo_stop_streaming(). While at it, switch to spin_lock_irq() and
+spin_lock() as appropriate elsewhere.
+
+Fixes: 99362e32332b ("[media] v4l: vsp1: Add histogram support")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-renesas-soc/164d74ff-312c-468f-be64-afa7182cd2f4@moroto.mountain/
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
 Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/rcar-vin/rcar-csi2.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../media/platform/renesas/vsp1/vsp1_histo.c  | 20 ++++++++-----------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c b/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
-index 2fc15882a6976..109cca91f733a 100644
---- a/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
-@@ -1938,6 +1938,7 @@ static void rcsi2_remove(struct platform_device *pdev)
- 	v4l2_async_nf_unregister(&priv->notifier);
- 	v4l2_async_nf_cleanup(&priv->notifier);
- 	v4l2_async_unregister_subdev(&priv->subdev);
-+	v4l2_subdev_cleanup(&priv->subdev);
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_histo.c b/drivers/media/platform/renesas/vsp1/vsp1_histo.c
+index f22449dd654cb..c0f1002f4ecf1 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_histo.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_histo.c
+@@ -36,9 +36,8 @@ struct vsp1_histogram_buffer *
+ vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
+ {
+ 	struct vsp1_histogram_buffer *buf = NULL;
+-	unsigned long flags;
  
- 	pm_runtime_disable(&pdev->dev);
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock(&histo->irqlock);
  
+ 	if (list_empty(&histo->irqqueue))
+ 		goto done;
+@@ -49,7 +48,7 @@ vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
+ 	histo->readout = true;
+ 
+ done:
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock(&histo->irqlock);
+ 	return buf;
+ }
+ 
+@@ -58,7 +57,6 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
+ 				    size_t size)
+ {
+ 	struct vsp1_pipeline *pipe = histo->entity.pipe;
+-	unsigned long flags;
+ 
+ 	/*
+ 	 * The pipeline pointer is guaranteed to be valid as this function is
+@@ -70,10 +68,10 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
+ 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, size);
+ 	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
+ 
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock(&histo->irqlock);
+ 	histo->readout = false;
+ 	wake_up(&histo->wait_queue);
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock(&histo->irqlock);
+ }
+ 
+ /* -----------------------------------------------------------------------------
+@@ -124,11 +122,10 @@ static void histo_buffer_queue(struct vb2_buffer *vb)
+ 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
+ 	struct vsp1_histogram *histo = vb2_get_drv_priv(vb->vb2_queue);
+ 	struct vsp1_histogram_buffer *buf = to_vsp1_histogram_buffer(vbuf);
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock_irq(&histo->irqlock);
+ 	list_add_tail(&buf->queue, &histo->irqqueue);
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock_irq(&histo->irqlock);
+ }
+ 
+ static int histo_start_streaming(struct vb2_queue *vq, unsigned int count)
+@@ -140,9 +137,8 @@ static void histo_stop_streaming(struct vb2_queue *vq)
+ {
+ 	struct vsp1_histogram *histo = vb2_get_drv_priv(vq);
+ 	struct vsp1_histogram_buffer *buffer;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&histo->irqlock, flags);
++	spin_lock_irq(&histo->irqlock);
+ 
+ 	/* Remove all buffers from the IRQ queue. */
+ 	list_for_each_entry(buffer, &histo->irqqueue, queue)
+@@ -152,7 +148,7 @@ static void histo_stop_streaming(struct vb2_queue *vq)
+ 	/* Wait for the buffer being read out (if any) to complete. */
+ 	wait_event_lock_irq(histo->wait_queue, !histo->readout, histo->irqlock);
+ 
+-	spin_unlock_irqrestore(&histo->irqlock, flags);
++	spin_unlock_irq(&histo->irqlock);
+ }
+ 
+ static const struct vb2_ops histo_video_queue_qops = {
 -- 
 2.43.0
 
