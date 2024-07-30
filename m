@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-62989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852C4941692
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF09941696
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 406732870F0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9729DB23737
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8711D2139A4;
-	Tue, 30 Jul 2024 16:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9442721C19E;
+	Tue, 30 Jul 2024 16:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNcHU7H0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOrz6csj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FD92101B8;
-	Tue, 30 Jul 2024 16:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB4C21C198;
+	Tue, 30 Jul 2024 16:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355297; cv=none; b=CUYRjaZ3OSq7ZV2aSgAGRrNEbwLiXjclWWiKMLVfZ5BQqbhspp7u/P1WRx9XCVW13M9Q3qihV6Pp5gJPlCylu9W4o7UYg0cE2AKqP1Qw2rzQxbtKQKBSpqq5k3QByHKiCtZaljTKwn74Qiss494pxv9hCoNhp1K5MC9f96gzzTA=
+	t=1722355307; cv=none; b=rbGWU2DRlxWLwM+t3prI86Nq/d5fEvT/CZFhmHHrGZnh/01U3CM8wEOwJkK6e7r1BQRVpVu0ejTMV4X1h+RVFXrDezu4/K9gWJUlu5iNCmgGSW5hbCvKgCJ2FakB6CU4bcrd4/Gqou0J6xGotXV7qUdwp1ewxIeo4HZfpMmqMo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355297; c=relaxed/simple;
-	bh=rnAqj1S5ic/JXaCqQSv6dcXWS9nxJxXWlifCHEt35x0=;
+	s=arc-20240116; t=1722355307; c=relaxed/simple;
+	bh=51DdB8l2g4LKLlL/hnx7KIv7XuRKnDv5975XwoRq598=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFQyq+UAVMF54ax4NZFUUt9XPe2Fx/7kf8xB931KET5D70C3FVn1OMkGSNLTPp48Cfeuisn4bh/1DUnURCtief+VThD9QqEygBTPX6s8YOasSAZYrHfNbpKLoanWjpfaTVtL7RINIoUXwdKOW9jG5uei3Bp70JmcrMn2SZA1CZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNcHU7H0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D36C32782;
-	Tue, 30 Jul 2024 16:01:35 +0000 (UTC)
+	 MIME-Version; b=ciaMugdq7p6CoEijXxz6l2pkx863DPv4VeOv0hvnI0eUPxdCzdl/Bxaw5M8ijxArOa8SdxBt7ZZQLmWfNZFoBgmHA3J16pP0r+lQzMT36ezbrSkcrqA5Ul9hVgi4O3IjUbc18s7gEUUkp1mlGX0uGGVYBrmwBN2Cvh+Spl1Qu8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOrz6csj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1968C32782;
+	Tue, 30 Jul 2024 16:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355296;
-	bh=rnAqj1S5ic/JXaCqQSv6dcXWS9nxJxXWlifCHEt35x0=;
+	s=korg; t=1722355307;
+	bh=51DdB8l2g4LKLlL/hnx7KIv7XuRKnDv5975XwoRq598=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dNcHU7H0Uyh0OY4qc3xPxgkvIGky3F8+Fr4DWxsWOW37Mo4UNqlUfTJcbq/nnJXdc
-	 xAa5ogkNHwf9pnWUkJ3ZbqrAjOpYJhJ6HOvlYYDG+fju3TNAV2qLy5cUEsRXOoeTXF
-	 ocNquT7U3DKInuWVrq3GOSmBNGnYYwjXB3+5+KqA=
+	b=eOrz6csjwEPnqpveePJC8DXmcHtCuVUWuYpvsOLdt0EgrsYNP+VHLBbyY4rHqXz4K
+	 WfnINJ0/C5VGJnHEByYgG7epSIvRIjNUQV4ZTz3m0gmKx8MDxke1WkYjRGYCxiHHxF
+	 ib+boTeUs7oAw7Ax8oFq6GlPtaWIZo7xOUTc3H4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Arun R Murthy <arun.r.murthy@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 038/809] drm/xe/display/xe_hdcp_gsc: Free arbiter on driver removal
-Date: Tue, 30 Jul 2024 17:38:34 +0200
-Message-ID: <20240730151726.155741208@linuxfoundation.org>
+Subject: [PATCH 6.10 039/809] hwmon: (max6697) Fix underflow when writing limit attributes
+Date: Tue, 30 Jul 2024 17:38:35 +0200
+Message-ID: <20240730151726.194097109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,52 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 609458abd5a10180f513ca364d6c0ae30128c821 ]
+[ Upstream commit cbf7467828cd4ec7ceac7a8b5b5ddb2f69f07b0e ]
 
-Free arbiter allocated in intel_hdcp_gsc_init().
+Using DIV_ROUND_CLOSEST() on an unbound value can result in underflows.
+Indeed, module test scripts report:
 
-Fixes: 152f2df954d8 ("drm/xe/hdcp: Enable HDCP for XE")
-Cc: Suraj Kandpal <suraj.kandpal@intel.com>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240708125918.23573-1-nirmoy.das@intel.com
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-(cherry picked from commit 33891539f9d6f245e93a76e3fb5791338180374f)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+temp1_max: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
+temp1_crit: Suspected underflow: [min=0, read 255000, written -9223372036854775808]
+
+Fix by introducing an extra set of clamping.
+
+Fixes: 5372d2d71c46 ("hwmon: Driver for Maxim MAX6697 and compatibles")
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_hdcp_gsc.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/hwmon/max6697.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-index d46f87a039f20..b3d3c065dd9d8 100644
---- a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-+++ b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-@@ -159,12 +159,16 @@ void intel_hdcp_gsc_fini(struct xe_device *xe)
- {
- 	struct intel_hdcp_gsc_message *hdcp_message =
- 					xe->display.hdcp.hdcp_message;
-+	struct i915_hdcp_arbiter *arb = xe->display.hdcp.arbiter;
+diff --git a/drivers/hwmon/max6697.c b/drivers/hwmon/max6697.c
+index d161ba0e7813c..978476b632752 100644
+--- a/drivers/hwmon/max6697.c
++++ b/drivers/hwmon/max6697.c
+@@ -311,6 +311,7 @@ static ssize_t temp_store(struct device *dev,
+ 		return ret;
  
--	if (!hdcp_message)
--		return;
-+	if (hdcp_message) {
-+		xe_bo_unpin_map_no_vm(hdcp_message->hdcp_bo);
-+		kfree(hdcp_message);
-+		xe->display.hdcp.hdcp_message = NULL;
-+	}
- 
--	xe_bo_unpin_map_no_vm(hdcp_message->hdcp_bo);
--	kfree(hdcp_message);
-+	kfree(arb);
-+	xe->display.hdcp.arbiter = NULL;
- }
- 
- static int xe_gsc_send_sync(struct xe_device *xe,
+ 	mutex_lock(&data->update_lock);
++	temp = clamp_val(temp, -1000000, 1000000);	/* prevent underflow */
+ 	temp = DIV_ROUND_CLOSEST(temp, 1000) + data->temp_offset;
+ 	temp = clamp_val(temp, 0, data->type == max6581 ? 255 : 127);
+ 	data->temp[nr][index] = temp;
 -- 
 2.43.0
 
