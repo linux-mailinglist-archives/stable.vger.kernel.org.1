@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41F2941D66
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CEE941A3D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DE31284A47
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3B592822DB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A4A1A76BE;
-	Tue, 30 Jul 2024 17:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5DD189503;
+	Tue, 30 Jul 2024 16:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j24jsTYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcRWdHDE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85B21A76A4;
-	Tue, 30 Jul 2024 17:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABEA183CD5;
+	Tue, 30 Jul 2024 16:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359809; cv=none; b=Ob9uudv19oB7WeeVxVyvJuaUVSKCtbWGg4PGm6BzuXDUKs0KQb6AT/o/TqfXdkq1spEj978FtuFG5V9dg+WMOBmwEQM0aajXzvCjcVGMbSPTFhVW4Ega7UCpRidmUVSfQroOnfUv7ITW8Bzj6xJjjFrR+1eMOAfO2SMKE5TDA0o=
+	t=1722357697; cv=none; b=fADdewWvUifstkmm4vn2IxjUVX2gSSPPp5V1tBwVIoXGWTOEUmPegSb5zAUtwZx1DvLGK9qQqE1Lz7ECsfg+RAgJUjUKPPdW8/BN10Y8TAgc7nTDJWHmoNMWEifj+QcDFm29ZvDyfjn+Z42FFh9E1hf7Hyd0Tp/0ZZ3h0mvAzoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359809; c=relaxed/simple;
-	bh=pGbBrexbyea6SbFFQFvw+5MtneppeL60d4/2gIeP2A0=;
+	s=arc-20240116; t=1722357697; c=relaxed/simple;
+	bh=SGfLjqopNp6PSQXV2MbYGBis9U+FB7ihUw9a1otlYZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RM7hPsdyoUaJ6vK145mXApGzPzQMqoAHDwWWz0BoqZiAhpbARaQhCcyrwWIW9fyOrLZkabTuCDURHtYghZ0F+hfrW2jJ5+da6In0iZVD8no7N/c45Rn+QmrAO9YJdcSL/v8+Ur8d0thT8XmdWAEuH4iGxgzpGBsPNXyGS5nPsW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j24jsTYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70269C32782;
-	Tue, 30 Jul 2024 17:16:48 +0000 (UTC)
+	 MIME-Version; b=RUseEaP/TTJTF5JVHhluAvJq+2fnQteoUmsYpj5i8eoMKuixUUSbpkfGXQXI2H/AnBqdk08RaCFLsvRKHfHeJFgibRqO5tVJFTu2FXBr8g6Xn3OFydOxQ2jMeyMj3GYiwgjNcPzLlqiSIbY6m4ZdCbxp1ZToZ2FJ+oQZAO0oXIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcRWdHDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C5CC4AF0A;
+	Tue, 30 Jul 2024 16:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359808;
-	bh=pGbBrexbyea6SbFFQFvw+5MtneppeL60d4/2gIeP2A0=;
+	s=korg; t=1722357697;
+	bh=SGfLjqopNp6PSQXV2MbYGBis9U+FB7ihUw9a1otlYZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j24jsTYE+3h9QSFVMzHKuIXjxAlv/W3pwy1n6jrY9eRlhtJvGUaWaPTCxdE01ClnX
-	 UjWDYdSY06bzmcdMO6g1PBJy/yCx0fXLi6Bkr3ScGwh8ICQ/gYJ2HR1p7nBc3hr97T
-	 CIIfW+vPVhnd9QpIz9EqVynijZkPc65bACtuouKo=
+	b=wcRWdHDEKYRr+Y6TmwQcEBh2Q1rSiQW0cgEhv2qdpX4gvbgONrzMcqZxkQDs5ZpDK
+	 /R31lNsgSRSMkVen/Wl1gnCxSdqLfB+yQmbBpJaCwpO0Pb048hiipbtRK3zivhCetk
+	 lW47FOZFdgNlPz2djkIVNdR3rnJLv6qdudIgrNJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>, Csókás@web.codeaurora.org
-Subject: [PATCH 6.10 513/809] rtc: interface: Add RTC offset to alarm after fix-up
+	Leon Romanovsky <leonro@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 282/568] RDMA/device: Return error earlier if port in not valid
 Date: Tue, 30 Jul 2024 17:46:29 +0200
-Message-ID: <20240730151744.997765883@linuxfoundation.org>
+Message-ID: <20240730151650.897335005@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 463927a8902a9f22c3633960119410f57d4c8920 ]
+[ Upstream commit 917918f57a7b139c043e78c502876f2c286f4f0a ]
 
-`rtc_add_offset()` is called by `__rtc_read_time()`
-and `__rtc_read_alarm()` to add the RTC's offset to
-the raw read-outs from the device drivers. However,
-in the latter case, a fix-up algorithm is run if
-the RTC device does not report a full `struct rtc_time`
-alarm value. In that case, the offset was forgot to be
-added.
+There is no need to allocate port data if port provided is not valid.
 
-Fixes: fd6792bb022e ("rtc: fix alarm read and set offset")
-
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://lore.kernel.org/r/20240619140451.2800578-1-csokas.bence@prolan.hu
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: c2261dd76b54 ("RDMA/device: Add ib_device_set_netdev() as an alternative to get_netdev")
+Link: https://lore.kernel.org/r/022047a8b16988fc88d4426da50bf60a4833311b.1719235449.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/interface.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/infiniband/core/device.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index 5faafb4aa55cc..cca650b2e0b94 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -274,10 +274,9 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 			return err;
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index db0a58c82838d..d1b5908c70cdc 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -2146,6 +2146,9 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
+ 	unsigned long flags;
+ 	int ret;
  
- 		/* full-function RTCs won't have such missing fields */
--		if (rtc_valid_tm(&alarm->time) == 0) {
--			rtc_add_offset(rtc, &alarm->time);
--			return 0;
--		}
-+		err = rtc_valid_tm(&alarm->time);
-+		if (!err)
-+			goto done;
++	if (!rdma_is_port_valid(ib_dev, port))
++		return -EINVAL;
++
+ 	/*
+ 	 * Drivers wish to call this before ib_register_driver, so we have to
+ 	 * setup the port data early.
+@@ -2154,9 +2157,6 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
+ 	if (ret)
+ 		return ret;
  
- 		/* get the "after" timestamp, to detect wrapped fields */
- 		err = rtc_read_time(rtc, &now);
-@@ -379,6 +378,8 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 	if (err && alarm->enabled)
- 		dev_warn(&rtc->dev, "invalid alarm value: %ptR\n",
- 			 &alarm->time);
-+	else
-+		rtc_add_offset(rtc, &alarm->time);
- 
- 	return err;
- }
+-	if (!rdma_is_port_valid(ib_dev, port))
+-		return -EINVAL;
+-
+ 	pdata = &ib_dev->port_data[port];
+ 	spin_lock_irqsave(&pdata->netdev_lock, flags);
+ 	old_ndev = rcu_dereference_protected(
 -- 
 2.43.0
 
