@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B39B9419F9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53055941986
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3EA2B247B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8432D1C2343B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886AF4EB2B;
-	Tue, 30 Jul 2024 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78BF1A619E;
+	Tue, 30 Jul 2024 16:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tp4ytx/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9NDiIil"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E271A617E;
-	Tue, 30 Jul 2024 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77641A6195;
+	Tue, 30 Jul 2024 16:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357171; cv=none; b=m0n73eDvSXGQKl/EssNC6UDeHMPhZH9Z+jrcnMWRtaqEUA12ONZFoxcXybxNfrD3wHTVGuPxg+GnYYDuaVqD5zSwCv42ZuB9bqg9uAGnnlNIhxjRoO4iu8dqkFhL2qfA426GEtSeK+lsLJK6ComH5QbB+TyVa8Xtpfpep/Npj/w=
+	t=1722357206; cv=none; b=KZKP+fmbt0S5AmL0B9hbi3oiqWCu7iXQDSuglxr0rJrdyia4sByG/t6VZdAHjrJwJ5sTa/LaCsU/KhoTvUnKuAD08mROAxxdEli6Npw19XP3U1FsynJURJE7c/fD7Qiv+uiuhKKiBfAJwGSqJqXboaGylS4AzvVI/nCTxR3vLB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357171; c=relaxed/simple;
-	bh=DH8KMcV9ouPpWl1nlWAlUc6/3ROecUiO6WzvHhh3Kzw=;
+	s=arc-20240116; t=1722357206; c=relaxed/simple;
+	bh=nO0oqTKwu3YIwxEjdAkFz9eg6CwbYjeP2He3iX5WPyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEX+g7qeakShhaa82YiU//4PNqppbgo9Lwir72EbWBfOB1WA6jogvq/UrscMbHX45YKyGyCGmQdBvawzGctKKfWDK/6XOvNuGDtqL7BO13IXgWrKyZbQ4lkLVV8RSJmJKDf9WvSdJPKVVZrrZ+PPD9TvFMA9q573EzBM346HJk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tp4ytx/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C647AC32782;
-	Tue, 30 Jul 2024 16:32:50 +0000 (UTC)
+	 MIME-Version; b=kf53muhu/zwUZ20BTl8KcMF2r1pg4uWxinBbPpJctoEbUpRnsYZjQ0iM7l6KTUMYSpL3F0LOdfegoPkWyV9+Kfmw7P/ene6ZA78gnxWinLkgTt6cYGg3Y82NwzY8x7owGfyZ0QIcbqsd4/752fIl+Wo12+h4pmhJhCZQiW6hQOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9NDiIil; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E89C32782;
+	Tue, 30 Jul 2024 16:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357171;
-	bh=DH8KMcV9ouPpWl1nlWAlUc6/3ROecUiO6WzvHhh3Kzw=;
+	s=korg; t=1722357206;
+	bh=nO0oqTKwu3YIwxEjdAkFz9eg6CwbYjeP2He3iX5WPyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tp4ytx/D4M7xCQMM3n+HPi7pFv9+PWBl2HLDcy/SQeFpggdJIpj3Po6U50pe0D/Sm
-	 yzAjS6pynNf2j3MwVOyiycn76BCFuNHClgwyyirOYgaSlyb9b4vge/xpXV1eSePgpQ
-	 5l55jybWit+lClNE9vIc2U871zguMbPMlNQ1l+Us=
+	b=V9NDiIiliVkJZEJtHfmbq9FaMvuk2wuJMN6i7b80lmBnhOOE/OZfJ/OFCkYxQBOUH
+	 /Lrb0+nGYJWKlwJFa9Vt1ImPWbUkQ+uZQ7JuvMvLA1It27yESD9/9JDsorD83UPDmm
+	 C+MxRv4omVEVeJVZtKQqn18ABFVmaP9jkMGZiAfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 222/809] perf/x86/intel/pt: Fix pt_topa_entry_for_page() address calculation
-Date: Tue, 30 Jul 2024 17:41:38 +0200
-Message-ID: <20240730151733.375876758@linuxfoundation.org>
+Subject: [PATCH 6.10 223/809] perf: Fix perf_aux_size() for greater-than 32-bit size
+Date: Tue, 30 Jul 2024 17:41:39 +0200
+Message-ID: <20240730151733.417989059@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,38 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 3520b251dcae2b4a27b95cd6f745c54fd658bda5 ]
+[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
 
-Currently, perf allocates an array of page pointers which is limited in
-size by MAX_PAGE_ORDER. That in turn limits the maximum Intel PT buffer
-size to 2GiB. Should that limitation be lifted, the Intel PT driver can
-support larger sizes, except for one calculation in
-pt_topa_entry_for_page(), which is limited to 32-bits.
+perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
+calculate a 64-bit size.
 
-Fix pt_topa_entry_for_page() address calculation by adding a cast.
-
-Fixes: 39152ee51b77 ("perf/x86/intel/pt: Get rid of reverse lookup table for ToPA")
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-4-adrian.hunter@intel.com
+Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 2 +-
+ kernel/events/internal.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index 14db6d9d318b3..c3259164a8e46 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -990,7 +990,7 @@ pt_topa_entry_for_page(struct pt_buffer *buf, unsigned int pg)
- 	 * order allocations, there shouldn't be many of these.
- 	 */
- 	list_for_each_entry(topa, &buf->tables, list) {
--		if (topa->offset + topa->size > pg << PAGE_SHIFT)
-+		if (topa->offset + topa->size > (unsigned long)pg << PAGE_SHIFT)
- 			goto found;
- 	}
+diff --git a/kernel/events/internal.h b/kernel/events/internal.h
+index 5150d5f84c033..386d21c7edfa0 100644
+--- a/kernel/events/internal.h
++++ b/kernel/events/internal.h
+@@ -128,7 +128,7 @@ static inline unsigned long perf_data_size(struct perf_buffer *rb)
  
+ static inline unsigned long perf_aux_size(struct perf_buffer *rb)
+ {
+-	return rb->aux_nr_pages << PAGE_SHIFT;
++	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
+ }
+ 
+ #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
+-- 
+2.43.0
+
+
+
+rt_streaming(struct vb2_queue *q, unsigned int count)
+ 	dev_dbg(ctx->mxc_jpeg->dev, "Start streaming ctx=%p", ctx);
+ 	q_data->sequence = 0;
+ 
++	if (V4L2_TYPE_IS_CAPTURE(q->type))
++		ctx->need_initial_source_change_evt = false;
++
+ 	ret = pm_runtime_resume_and_get(ctx->mxc_jpeg->dev);
+ 	if (ret < 0) {
+ 		dev_err(ctx->mxc_jpeg->dev, "Failed to power up jpeg\n");
 -- 
 2.43.0
 
