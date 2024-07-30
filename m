@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-64314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF50941D4B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5EC941A5D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B9C11F25C57
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8DB61F2484D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E6F18455F;
-	Tue, 30 Jul 2024 17:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E9218454A;
+	Tue, 30 Jul 2024 16:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AmnqEd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y987XWa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A57A18A6D9;
-	Tue, 30 Jul 2024 17:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FD71A619E;
+	Tue, 30 Jul 2024 16:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359710; cv=none; b=SgjrsUmM+mf5TpiCVC4lNhWr7Ojr5eyU8VtDM57UAqX9aaU/Msoab8ctUiy9WYykIAeTcyVE12z+q0iibklvTjuMrpBgLRvHu0+iJlfH/jClsjGMO+N+0FrhN8PfJt8M4MjHBH4e6+gx2HSq7wQaTTnEcWmYwhZHU6wa684svkc=
+	t=1722357784; cv=none; b=I6l1m3ogsehVuakFmqwmEQMs/gMDdfd49nuaFyQ6KGcOCouoPcDqyOSZ3E7fFKDxRcx2fnkEnCPLtrp8jpZ5RlLv40ABS1Geo0XSHCd+9S20hmclhDMbxTn2dSPLQX7fFdK/3gRt8sqiXhyIoDmDzf+KX2O/KD4kdBTeBcLwkNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359710; c=relaxed/simple;
-	bh=FRvHyH+a19ySFVQRsj8nRj5aGcMASmcUepwXwQblZ8Q=;
+	s=arc-20240116; t=1722357784; c=relaxed/simple;
+	bh=JTCs2ZyDvyG9w0XHGRY/g55fnNWjkLMB2C6jeTl4+/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtIhqRCN4YYwv4QR1W6G2Ex4UfJilAcGFB0JkNa6gCEcgoSTgsLi2Jed1IVtEYi0CeOqDlt7C1I0IUxkaAcblNlIEY+521cihfmbP2GCdPurdDxxPA6RNhy7zolrMLV4QcX3v7Ri0Es5QFCXkAuiWDxXAODMO8QRxbaogRLoqr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AmnqEd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C666C32782;
-	Tue, 30 Jul 2024 17:15:09 +0000 (UTC)
+	 MIME-Version; b=PvajayHANqdFMNHGq/WAHNQfxwYgylchIvjET6HDaXlCR3zIfzuIRA8O6J8z7PsVph///A15pdWi8kxnCY1NSqkG1mRt/MRiM/uPxQ46e+k1WtsWn06e6mQxkmo5OVWhIi51ESTJBsJkEq8crKgimSsbj8B8OjjfWW+WPxAPJSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y987XWa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF68C32782;
+	Tue, 30 Jul 2024 16:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359709;
-	bh=FRvHyH+a19ySFVQRsj8nRj5aGcMASmcUepwXwQblZ8Q=;
+	s=korg; t=1722357784;
+	bh=JTCs2ZyDvyG9w0XHGRY/g55fnNWjkLMB2C6jeTl4+/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0AmnqEd7JmgxLfik+zsAxWIgf2xQUF6MawOzqXFeb7fzThOSil4qFXNWqpiarEduW
-	 c6lHSzaR0HAEivxAh0cIpPCarUHol5/D5qUgJeFauH8BaNRINb2Yy5UFgR5EcKf7JU
-	 jMNzgBkRf5LTNMhlz2yFsSmsHUWOp+ukUKqOSLyg=
+	b=y987XWa0D15hZ4Myz9DcE8LVK18aqdocaQQqFtWkGI52eUFmkSyUE34Hc1gx0RrfJ
+	 4FzVKjERWRGfY78Uy6Fb71PVIdcyuvSmzL7MLnNOmtjyThY3Nb92aM/eRQyCgn68r3
+	 rTPx+TbwAgOPq4v9soWVyBy18qaaav4fBkYOKxaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Sourav Panda <souravpanda@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 522/809] alloc_tag: fix page_ext_get/page_ext_put sequence during page splitting
+Subject: [PATCH 6.6 291/568] clk: qcom: kpss-xcc: Return of_clk_add_hw_provider to transfer the error
 Date: Tue, 30 Jul 2024 17:46:38 +0200
-Message-ID: <20240730151745.356260946@linuxfoundation.org>
+Message-ID: <20240730151651.247908083@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,64 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 6ab42fe21c84d72da752923b4bd7075344f4a362 ]
+[ Upstream commit 9db4585eca22fcd0422a94ac792f87dcbf74b643 ]
 
-pgalloc_tag_sub() might call page_ext_put() using a page different from
-the one used in page_ext_get() call.  This does not pose an issue since
-page_ext_put() ignores this parameter as long as it's non-NULL but
-technically this is wrong.  Fix it by storing the original page used in
-page_ext_get() and passing it to page_ext_put().
+Return of_clk_add_hw_provider() in order to transfer the error if it
+fails.
 
-Link: https://lkml.kernel.org/r/20240711220457.1751071-3-surenb@google.com
-Fixes: be25d1d4e822 ("mm: create new codetag references during page splitting")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 09be1a39e685 ("clk: qcom: kpss-xcc: register it as clk provider")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240704073606.1976936-1-nichen@iscas.ac.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pgalloc_tag.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/kpss-xcc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/linux/pgalloc_tag.h b/include/linux/pgalloc_tag.h
-index acb1e9ce79815..18cd0c0c73d93 100644
---- a/include/linux/pgalloc_tag.h
-+++ b/include/linux/pgalloc_tag.h
-@@ -71,6 +71,7 @@ static inline void pgalloc_tag_sub(struct page *page, unsigned int nr)
- static inline void pgalloc_tag_split(struct page *page, unsigned int nr)
- {
- 	int i;
-+	struct page_ext *first_page_ext;
- 	struct page_ext *page_ext;
- 	union codetag_ref *ref;
- 	struct alloc_tag *tag;
-@@ -78,7 +79,7 @@ static inline void pgalloc_tag_split(struct page *page, unsigned int nr)
- 	if (!mem_alloc_profiling_enabled())
- 		return;
+diff --git a/drivers/clk/qcom/kpss-xcc.c b/drivers/clk/qcom/kpss-xcc.c
+index 97358c98c6c98..d8c1f2b41eeb3 100644
+--- a/drivers/clk/qcom/kpss-xcc.c
++++ b/drivers/clk/qcom/kpss-xcc.c
+@@ -63,9 +63,7 @@ static int kpss_xcc_driver_probe(struct platform_device *pdev)
+ 	if (IS_ERR(hw))
+ 		return PTR_ERR(hw);
  
--	page_ext = page_ext_get(page);
-+	first_page_ext = page_ext = page_ext_get(page);
- 	if (unlikely(!page_ext))
- 		return;
- 
-@@ -94,7 +95,7 @@ static inline void pgalloc_tag_split(struct page *page, unsigned int nr)
- 		page_ext = page_ext_next(page_ext);
- 	}
- out:
--	page_ext_put(page_ext);
-+	page_ext_put(first_page_ext);
+-	of_clk_add_hw_provider(dev->of_node, of_clk_hw_simple_get, hw);
+-
+-	return 0;
++	return of_clk_add_hw_provider(dev->of_node, of_clk_hw_simple_get, hw);
  }
  
- static inline struct alloc_tag *pgalloc_tag_get(struct page *page)
+ static struct platform_driver kpss_xcc_driver = {
 -- 
 2.43.0
 
