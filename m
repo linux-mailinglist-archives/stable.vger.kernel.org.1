@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-62946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603CF941661
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AD6941664
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9282F1C230F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 628301C23175
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191121BA883;
-	Tue, 30 Jul 2024 15:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEA21BBBE2;
+	Tue, 30 Jul 2024 15:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5YLrBiB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOJNwnBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43BA1BC093;
-	Tue, 30 Jul 2024 15:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822B91BA87E;
+	Tue, 30 Jul 2024 15:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355153; cv=none; b=j0ghf57Q8BkgpSDH/JTDoy1KTJfEa/GVLzQxd9nk9lV6YjYns29btpJIfZzfEUk0U6woOkQWPBTqvJXoPfyt8JNDACBtTWPGhOpTSEt0KvKhAdSheujmuwjQvVH1eVxE7EHBa9SDUPD1bHEC1KcMlMnCgMCjJsXYcJS6wbKOUag=
+	t=1722355163; cv=none; b=TR6zALQ+PXheP2oiht7vasX8tATvXTmVPZxG6K0lF6o6t3tXwvldx/pUe5aLz6/tHndChTmnPjG4yPkaXretkzEt4V4WWJCGmKVlvNSAJvuYJPp44rs4GYtQbbrcQr3uTOI6k4o7Gh1aZ8jk/jmzDBcThZkdKLdK0w9cKtVdH+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355153; c=relaxed/simple;
-	bh=VRpuWLPuaaVTcB41U3EvN7frrX1z2rJ0vzz6FC7oCHI=;
+	s=arc-20240116; t=1722355163; c=relaxed/simple;
+	bh=I8hyjo+IapU3UboB16BLYTRq6bfnx6vV3jAaj8v7/co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uy76cEcYRekE9oqd4hYrhIbxemOlU/WXFFYGeltrI25askZoxY/w+HnUZYLhRAoxBG5igulKkgxtCcRfao+mxFr0+e6scte8tIn6eAgpbEN45W9+V4i/aWXn5lDwHJQf7y3YZPnLcSi+V2qN3kiuVanbk2iMkjGu/pNbEc4ZETk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5YLrBiB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178A6C32782;
-	Tue, 30 Jul 2024 15:59:12 +0000 (UTC)
+	 MIME-Version; b=Z0SJ8yauNbHo9SqI67zuO8uKIkatzieKdjaWlCoZUOejbGbnydjUAp/p9rVuCZrM87t9FyOozMo8/dyh/bN5hmQld7Ft/91kibRjKqqbKzjcoXUpWvMNGcLHrAqqrdQiiFk17ej1p23m0uiXYVrVfJvkqfsL0FmaTvinyTyBCWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOJNwnBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09BFC32782;
+	Tue, 30 Jul 2024 15:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355153;
-	bh=VRpuWLPuaaVTcB41U3EvN7frrX1z2rJ0vzz6FC7oCHI=;
+	s=korg; t=1722355163;
+	bh=I8hyjo+IapU3UboB16BLYTRq6bfnx6vV3jAaj8v7/co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L5YLrBiBsNKg7M40pPmTdhehRtNuUB/dpBPxEdPK8AYHWozC55AVrc9y8O3b0GWKx
-	 7Td/JNBaI0LqqhSDXYsJ/mIj1O34wKQGdligpxTkM+IQwtD9ZyisTnerH4+qZYwKuZ
-	 aPCzwX3oZ7Ky8mVUy4jTvyerkDVu1V5fBm3evki8=
+	b=oOJNwnBXKTia/zpmrBuxbKUcHTk+uR2wdWzSi3c37tI33L3eHH2x1orAIECn2JmPo
+	 5FNz5x69nMcYG6j7smHU5WwK+28E8y1ofAsk1993g+6oJuRrEa6UXUtBbPCesx/ILl
+	 PQfGIiVBKHN0QAhx5TMvpqpy0f+ruPUjC/11e2r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Tung <chineweff@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 024/809] hwmon: (adt7475) Fix default duty on fan is disabled
-Date: Tue, 30 Jul 2024 17:38:20 +0200
-Message-ID: <20240730151725.613245480@linuxfoundation.org>
+Subject: [PATCH 6.10 025/809] block: Call .limit_depth() after .hctx has been set
+Date: Tue, 30 Jul 2024 17:38:21 +0200
+Message-ID: <20240730151725.651838201@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,36 +69,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wayne Tung <chineweff@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 39b24cced70fdc336dbc0070f8b3bde61d8513a8 ]
+[ Upstream commit 6259151c04d4e0085e00d2dcb471ebdd1778e72e ]
 
-According to the comments on fan is disabled, we change to manual mode
-and set the duty cycle to 0.
-For setting the duty cycle part, the register is wrong. Fix it.
+Call .limit_depth() after data->hctx has been set such that data->hctx can
+be used in .limit_depth() implementations.
 
-Fixes: 1c301fc5394f ("hwmon: Add a driver for the ADT7475 hardware monitoring chip")
-Signed-off-by: Wayne Tung <chineweff@gmail.com>
-Link: https://lore.kernel.org/r/20240701073252.317397-1-chineweff@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Fixes: 07757588e507 ("block/mq-deadline: Reserve 25% of scheduler tags for synchronous requests")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Tested-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240509170149.7639-2-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/adt7475.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-mq.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hwmon/adt7475.c b/drivers/hwmon/adt7475.c
-index 4224ffb304832..ec3336804720e 100644
---- a/drivers/hwmon/adt7475.c
-+++ b/drivers/hwmon/adt7475.c
-@@ -1900,7 +1900,7 @@ static void adt7475_read_pwm(struct i2c_client *client, int index)
- 		data->pwm[CONTROL][index] &= ~0xE0;
- 		data->pwm[CONTROL][index] |= (7 << 5);
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 3b4df8e5ac9e5..7831af29aadaf 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -448,6 +448,10 @@ static struct request *__blk_mq_alloc_requests(struct blk_mq_alloc_data *data)
+ 	if (data->cmd_flags & REQ_NOWAIT)
+ 		data->flags |= BLK_MQ_REQ_NOWAIT;
  
--		i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(index),
-+		i2c_smbus_write_byte_data(client, PWM_REG(index),
- 					  data->pwm[INPUT][index]);
++retry:
++	data->ctx = blk_mq_get_ctx(q);
++	data->hctx = blk_mq_map_queue(q, data->cmd_flags, data->ctx);
++
+ 	if (q->elevator) {
+ 		/*
+ 		 * All requests use scheduler tags when an I/O scheduler is
+@@ -469,13 +473,9 @@ static struct request *__blk_mq_alloc_requests(struct blk_mq_alloc_data *data)
+ 			if (ops->limit_depth)
+ 				ops->limit_depth(data->cmd_flags, data);
+ 		}
+-	}
+-
+-retry:
+-	data->ctx = blk_mq_get_ctx(q);
+-	data->hctx = blk_mq_map_queue(q, data->cmd_flags, data->ctx);
+-	if (!(data->rq_flags & RQF_SCHED_TAGS))
++	} else {
+ 		blk_mq_tag_busy(data->hctx);
++	}
  
- 		i2c_smbus_write_byte_data(client, PWM_CONFIG_REG(index),
+ 	if (data->flags & BLK_MQ_REQ_RESERVED)
+ 		data->rq_flags |= RQF_RESV;
 -- 
 2.43.0
 
