@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3982B941847
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07EA894184A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF901285626
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7C4C1F21A2C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C54B18454F;
-	Tue, 30 Jul 2024 16:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41079187FF9;
+	Tue, 30 Jul 2024 16:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9LGF1L6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLczkUpc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8C11A617E;
-	Tue, 30 Jul 2024 16:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB341A617E;
+	Tue, 30 Jul 2024 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356375; cv=none; b=Hm0Rr4YWWyAgRnCuqnW+JZ6Vebjp/YCqQAsDreFccWZmw4nefNCij0hTJyM4EgY+Tu2hLa5FrtgYZ0P7rWVkq6Sn7EbllfkARyRP1sJ7RJjPRaNVqBtU6XFFDXzTR4XOyuqCHrczB/nzgmZbMh8079guQEFSzGTHFU59MeVCUnY=
+	t=1722356385; cv=none; b=Q5hkupG3lr5fSglAxtU+kKyJ7SN2C4K81q+hz+lrcFad/xP0r00xupNWkskmO7JZA9/ZCF9QFv9VFAD6MyJaoxUqLtVuleecPCDgAZekPdwDBTtRRMDgxVqzqbV+IMN3r1TJx7yr3PD107jQZl0YaRLBkxbeaJSvWWKTdTj0gGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356375; c=relaxed/simple;
-	bh=1JOEIrKwI0T7RewW6vC0/D/7U78oenVmqIZWHUhYNmA=;
+	s=arc-20240116; t=1722356385; c=relaxed/simple;
+	bh=t0nqM5ioZ9JIKtlKaGz7M8LajSL+GaGAV5kkljiaFxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGdqIAVQn5zQllZnEh51vwcWvlw3T3yhuZ7WWu/wuWOjY6Y6AvqFu3Wj7I6NozuXIb3nmD/Xtz1GxJa4vVVrH4L7hZJsc6gQ9kdFjQikvOYB6GkjtQm4SprCL+W+kvOUo1d3P74P3zLTO9ZbEj5Bmmq0bbBqHHOI2yJEfrAablc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9LGF1L6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD47C32782;
-	Tue, 30 Jul 2024 16:19:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mwr2k3YfkSqAsTEuYR/kki/EqX4j+ihA6080nxBogVTgVDWiJP3oWjPEO1WxPFbiZShUDm2aviCX1rc+MhpW4rfRBJeALTcPEjM4V9Ie2sFBfXp6HOqpKRII+KxtIWnrP+ymRcSozO9QbRZbOgVioqnGgX1VimNhttG4pocxZno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLczkUpc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69222C32782;
+	Tue, 30 Jul 2024 16:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356374;
-	bh=1JOEIrKwI0T7RewW6vC0/D/7U78oenVmqIZWHUhYNmA=;
+	s=korg; t=1722356384;
+	bh=t0nqM5ioZ9JIKtlKaGz7M8LajSL+GaGAV5kkljiaFxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9LGF1L6e7xxK7bRBodZgXbNz/5PQEHWsB/qlqZHQr9pRydxZtYCtZFxFuNP8BJIw
-	 y6vbJTB4rJkJOo5+GOMH/yQVBI4dasubm3a7RN4TtBp/3MdQy4yNq/pTiwuWKWJvbq
-	 1xjNhQ0EjBG0duEEhIQjLdaQXk+o8n6NUE4KL0fc=
+	b=ZLczkUpcnzBTZQMLmYSdNEvr92CtvdTG1OVHvBgnczwYXaBeE9GYYHe0uDmk2Z+Vf
+	 Q9ZJkR3tUwKJqwiR6kuTYJFA5AkYkPNszepfMkBl7SHQFMx672nAxk9wE5SMGSZXQ/
+	 AMMHG7m6JjWWr7PirAybS+YOTD/qFYrUm3/pH/ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	kernel test robot <lkp@intel.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 144/809] vmlinux.lds.h: catch .bss..L* sections into BSS")
-Date: Tue, 30 Jul 2024 17:40:20 +0200
-Message-ID: <20240730151730.294812630@linuxfoundation.org>
+Subject: [PATCH 6.10 145/809] firmware: turris-mox-rwtm: Do not complete if there are no waiters
+Date: Tue, 30 Jul 2024 17:40:21 +0200
+Message-ID: <20240730151730.333741540@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -61,61 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 1a7b7326d587c9a5e8ff067e70d6aaf0333f4bb3 ]
+[ Upstream commit 0bafb172b111ab27251af0eb684e7bde9570ce4c ]
 
-Commit 9a427556fb8e ("vmlinux.lds.h: catch compound literals into
-data and BSS") added catches for .data..L* and .rodata..L* but missed
-.bss..L*
+Do not complete the "command done" completion if there are no waiters.
+This can happen if a wait_for_completion() timed out or was interrupted.
 
-Since commit 5431fdd2c181 ("ptrace: Convert ptrace_attach() to use
-lock guards") the following appears at build:
-
-  LD      .tmp_vmlinux.kallsyms1
-powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
-  NM      .tmp_vmlinux.kallsyms1.syms
-  KSYMS   .tmp_vmlinux.kallsyms1.S
-  AS      .tmp_vmlinux.kallsyms1.S
-  LD      .tmp_vmlinux.kallsyms2
-powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
-  NM      .tmp_vmlinux.kallsyms2.syms
-  KSYMS   .tmp_vmlinux.kallsyms2.S
-  AS      .tmp_vmlinux.kallsyms2.S
-  LD      vmlinux
-powerpc64-linux-ld: warning: orphan section `.bss..Lubsan_data33' from `kernel/ptrace.o' being placed in section `.bss..Lubsan_data33'
-
-Lets add .bss..L* to BSS_MAIN macro to catch those sections into BSS.
-
-Fixes: 9a427556fb8e ("vmlinux.lds.h: catch compound literals into data and BSS")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202404031349.nmKhyuUG-lkp@intel.com/
+Fixes: 389711b37493 ("firmware: Add Turris Mox rWTM firmware driver")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/vmlinux.lds.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/turris-mox-rwtm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 5703526d6ebf1..70bf1004076b2 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -103,7 +103,7 @@
- #define DATA_MAIN .data .data.[0-9a-zA-Z_]* .data..L* .data..compoundliteral* .data.$__unnamed_* .data.$L*
- #define SDATA_MAIN .sdata .sdata.[0-9a-zA-Z_]*
- #define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]* .rodata..L*
--#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..compoundliteral*
-+#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..L* .bss..compoundliteral*
- #define SBSS_MAIN .sbss .sbss.[0-9a-zA-Z_]*
- #else
- #define TEXT_MAIN .text
+diff --git a/drivers/firmware/turris-mox-rwtm.c b/drivers/firmware/turris-mox-rwtm.c
+index 31d962cdd6eb2..f1f9160c4195f 100644
+--- a/drivers/firmware/turris-mox-rwtm.c
++++ b/drivers/firmware/turris-mox-rwtm.c
+@@ -2,7 +2,7 @@
+ /*
+  * Turris Mox rWTM firmware driver
+  *
+- * Copyright (C) 2019 Marek Behún <kabel@kernel.org>
++ * Copyright (C) 2019, 2024 Marek Behún <kabel@kernel.org>
+  */
+ 
+ #include <linux/armada-37xx-rwtm-mailbox.h>
+@@ -174,6 +174,9 @@ static void mox_rwtm_rx_callback(struct mbox_client *cl, void *data)
+ 	struct mox_rwtm *rwtm = dev_get_drvdata(cl->dev);
+ 	struct armada_37xx_rwtm_rx_msg *msg = data;
+ 
++	if (completion_done(&rwtm->cmd_done))
++		return;
++
+ 	rwtm->reply = *msg;
+ 	complete(&rwtm->cmd_done);
+ }
 -- 
 2.43.0
 
