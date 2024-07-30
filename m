@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-62926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF4C941647
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF18941649
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 885581C22FC7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1AD61C23070
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB361BD034;
-	Tue, 30 Jul 2024 15:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998BF1BBBF0;
+	Tue, 30 Jul 2024 15:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leAClG7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAaRkhSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B2E1BA878;
-	Tue, 30 Jul 2024 15:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542951B583E;
+	Tue, 30 Jul 2024 15:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355085; cv=none; b=V71iZPsOnQliDf9jnKdWGcCQH2zXKcFYEktYop10/oJo4tnSSuiOvoZ5cRVXwQDAouDuT4UOOpJK/yw9Pxcdwi49gOaPhEVvsHcmqTc3jO1SnVlub5DBT45PxU0RQRF75WxNuraAxHyzYnhF91vqyvOH1vEtIf8rk5P3GL98jr4=
+	t=1722355096; cv=none; b=A6zG3X+HemorhaUf33htZZB4sywDSV26776XcLxsZ8F3mzV/X4u8/xOTY7YGvoXKe+RtR5F4gukXy799/dduvzUg92IBMWduGlCV8w3iuiUnh1aAHG9QCYQW11ZX/kIO7vgO0Xqku+UtutFUm9RLcL/CanEe2YLXWA3OOSpgS9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355085; c=relaxed/simple;
-	bh=59MRUePm4TqHZ6mYR+1fAB0XUnRk1K7haHK2+4vE0yc=;
+	s=arc-20240116; t=1722355096; c=relaxed/simple;
+	bh=RTCvWoswbUTb95cxWSp+ZdNqT66n+NrhhgPMbauNR04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=snDterO3K6FuNrUiL3Ya/ihuEetmWx/D2YEddrSMgD+jFl14Ys23t6Z7gTUqZ+gRqsYNA2oFZS+nBu5DTHiS/il9n0YrviEEhaYPrSvuRuy9Fon/F8rcfddXw/e6IYnrjBtO1muSGUzwcS1AixAPJ9DEahJH2uOpSQaumjZCO3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leAClG7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1980C32782;
-	Tue, 30 Jul 2024 15:58:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XHaGUZM8BaV2fHv7UP+7/iSY6qwiom06+BlJipBoWPxhBvuOgpDv7hb0oZvyQnRGPGXQx+wBoeL9iZU8MiiYzLt16gjHqF/ic5IJWnveDXp6U5DPp/t2Y5HYXYT1EWq6U3LqirRmLshZCp4Hoeh8m1nWa+0vWQf1lOwjNhasW6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAaRkhSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71F6C4AF0A;
+	Tue, 30 Jul 2024 15:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355085;
-	bh=59MRUePm4TqHZ6mYR+1fAB0XUnRk1K7haHK2+4vE0yc=;
+	s=korg; t=1722355096;
+	bh=RTCvWoswbUTb95cxWSp+ZdNqT66n+NrhhgPMbauNR04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leAClG7HTcIinwUODojJ+APXGrq0djtUEORBxiFYqQ1FDPmXt5F+5QblObfEB4LKI
-	 ULJGdILiPqrWoxIOARpVaLIyDYmOdnulmmO4DpEgBoBcyGacIp1hrIpipGZshrFOo3
-	 dzomyjvlW8MShdGESAOYh2q/UQSLBc8aPpgqLez0=
+	b=qAaRkhSbnxKL6WSTrz1IuWnEBM94jLK+TUqs5fsyXRfrVQyGxGWkj/zZBdDYHXQI5
+	 +VMhyq0nXpooqxZ2ifgrxkohTMYfaDAtf7eFy/jhg9Mk4AnJvvmDnHsr8/Z1WEN323
+	 5LUMlW99oo+NvKaHdTC69fOMjqp/va5EK+LFxxz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 018/809] x86/of: Return consistent error type from x86_of_pci_irq_enable()
-Date: Tue, 30 Jul 2024 17:38:14 +0200
-Message-ID: <20240730151725.379563896@linuxfoundation.org>
+Subject: [PATCH 6.10 019/809] x86/pci/intel_mid_pci: Fix PCIBIOS_* return code handling
+Date: Tue, 30 Jul 2024 17:38:15 +0200
+Message-ID: <20240730151725.419086452@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,38 +70,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit ec0b4c4d45cf7cf9a6c9626a494a89cb1ae7c645 ]
+[ Upstream commit 724852059e97c48557151b3aa4af424614819752 ]
 
-x86_of_pci_irq_enable() returns PCIBIOS_* code received from
-pci_read_config_byte() directly and also -EINVAL which are not
-compatible error types. x86_of_pci_irq_enable() is used as
-(*pcibios_enable_irq) function which should not return PCIBIOS_* codes.
+intel_mid_pci_irq_enable() uses pci_read_config_byte() that returns
+PCIBIOS_* codes. The error handling, however, assumes the codes are
+normal errnos because it checks for < 0.
 
-Convert the PCIBIOS_* return code from pci_read_config_byte() into
-normal errno using pcibios_err_to_errno().
+intel_mid_pci_irq_enable() also returns the PCIBIOS_* code back to the
+caller but the function is used as the (*pcibios_enable_irq) function
+which should return normal errnos.
 
-Fixes: 96e0a0797eba ("x86: dtb: Add support for PCI devices backed by dtb nodes")
+Convert the error check to plain non-zero check which works for
+PCIBIOS_* return codes and convert the PCIBIOS_* return code using
+pcibios_err_to_errno() into normal errno before returning it.
+
+Fixes: 5b395e2be6c4 ("x86/platform/intel-mid: Make IRQ allocation a bit more flexible")
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240527125538.13620-1-ilpo.jarvinen@linux.intel.com
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240527125538.13620-2-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/devicetree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/pci/intel_mid_pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index 8e3c53b4d070e..64280879c68c0 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -83,7 +83,7 @@ static int x86_of_pci_irq_enable(struct pci_dev *dev)
- 
- 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 	if (!pin)
+diff --git a/arch/x86/pci/intel_mid_pci.c b/arch/x86/pci/intel_mid_pci.c
+index 8edd622066044..722a33be08a18 100644
+--- a/arch/x86/pci/intel_mid_pci.c
++++ b/arch/x86/pci/intel_mid_pci.c
+@@ -233,9 +233,9 @@ static int intel_mid_pci_irq_enable(struct pci_dev *dev)
  		return 0;
  
+ 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_LINE, &gsi);
+-	if (ret < 0) {
++	if (ret) {
+ 		dev_warn(&dev->dev, "Failed to read interrupt line: %d\n", ret);
+-		return ret;
++		return pcibios_err_to_errno(ret);
+ 	}
+ 
+ 	id = x86_match_cpu(intel_mid_cpu_ids);
 -- 
 2.43.0
 
