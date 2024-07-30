@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082159416E3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB4C9416E6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B73B2286E51
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A836D286F44
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85ACD18801C;
-	Tue, 30 Jul 2024 16:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9461718801A;
+	Tue, 30 Jul 2024 16:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZA/73Uf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WijdtRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43450188013;
-	Tue, 30 Jul 2024 16:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A32187FF6;
+	Tue, 30 Jul 2024 16:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355469; cv=none; b=ZqZFqm1Tg2KWNa7cqgAXr3OJ6ypu9CIwcTXdcw9YpbhQAclHdQ1B4XtGBumJuds2AuJIlDGfm/qpQrlPRGDEJHdYcgQSBjLTsjzjasO3c24LnQ5RIE+UBPl4SbGRQEzgg7xDtqpe8qrsYOl5u9hKmovJYFMZsOHb+n5GArPEJ7s=
+	t=1722355479; cv=none; b=ldihNIsTYcjOzHV/k1Gg1TncVE1/Zh8Pz3PyB5AP2XIGnlwIRCdwxGVZ+wkvIXQRHypm7i2bvhskh7IUTFGf+tE2ajZVTk1Ok2DBsKabUIjp8wmLbEqIx5oZshAs8UkObljstMveamFY/0HBId8WP+uXQj/qb1VV+hiP09eoUrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355469; c=relaxed/simple;
-	bh=rguCctayzjS5q5GH1w3ggBYFYqWFOFI65hMULtinD6Q=;
+	s=arc-20240116; t=1722355479; c=relaxed/simple;
+	bh=frVpXnU3YNP6lwrMP2O/jjSaBvgBLkzKiaI1tBN47ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUeJ784i+DOdvnqZaxJFca5PV7vGTQEmPmTEt74DzJXBSs8Hbl8ZDc487hoKa1zwtGBMNqG6ltCb6xawxa8fviNxMHdf1weOVLPUiDbZJEVlLtLsDfXNUeoozoBfBiW4Hai5pe5YROISlDKPXbV6tzMfCr0lb66jVe/g4zLOY34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZA/73Uf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92A4C4AF0E;
-	Tue, 30 Jul 2024 16:04:28 +0000 (UTC)
+	 MIME-Version; b=Xnk1HfpXV0DzHsmZRxqi08Jc0U/qGcA1siQF0FezrlIPbsrTzSU8twyiljZ6Q44QorPZXdbpS7rHBj6SzrHF6W/DmwwVSV38CzAa5IeucEU0zWSVknidI9UykbZg1qvfXjWm21bo1HPRFHNtna+/721EWVFZTqAd7EbfC7WXGlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WijdtRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BF1C4AF0F;
+	Tue, 30 Jul 2024 16:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355469;
-	bh=rguCctayzjS5q5GH1w3ggBYFYqWFOFI65hMULtinD6Q=;
+	s=korg; t=1722355479;
+	bh=frVpXnU3YNP6lwrMP2O/jjSaBvgBLkzKiaI1tBN47ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZA/73Ufv/aZfqhdWKjjpzbjDEfne6iERCG2wa5kTz2zcdT9b61ctP3iBUNc8nJuq
-	 +tOlf+76GkmMpHqdjcKARKrGI3yZuXP6Isd0f2fVPJDvh4LQbSdQZ4A1QO0ABEOUzH
-	 aMG6nueBUAmaD5a7O/ktcsrP2j5b5YjN41c8UxCU=
+	b=2WijdtRaJoNzPHM4IGKiTBOpgdFOSTz4NORilgdmazSINw8JE6rNQTY3IPZJwMLsJ
+	 guYLuc7n32gqjciibD2qgwfW7233nyknl/C5iLjybCmz+ws5SfUNk6B4uEGzE6WN42
+	 mBRrTtXq0bzV0yfVMST2JWfsbBVItOMJDUNaUXrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jonas Karlman <jonas@kwiboo.se>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 058/809] arm64: dts: rockchip: Add sdmmc related properties on rk3308-rock-pi-s
-Date: Tue, 30 Jul 2024 17:38:54 +0200
-Message-ID: <20240730151726.935768828@linuxfoundation.org>
+Subject: [PATCH 6.10 059/809] arm64: dts: rockchip: Add pinctrl for UART0 to rk3308-rock-pi-s
+Date: Tue, 30 Jul 2024 17:38:55 +0200
+Message-ID: <20240730151726.975559723@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,34 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit fc0daeccc384233eadfa9d5ddbd00159653c6bdc ]
+[ Upstream commit 7affb86ef62581e3475ce3e0a7640da1f2ee29f8 ]
 
-Add cap-mmc-highspeed to allow use of high speed MMC mode using an eMMC
-to uSD board. Use disable-wp to signal that no physical write-protect
-line is present. Also add vcc_io used for card and IO line power as
-vmmc-supply.
+UAR0 CTS/RTS is not wired to any pin and is not used for the default
+serial console use of UART0 on ROCK Pi S.
+
+Override the SoC defined pinctrl props to limit configuration of the
+two xfer pins wired to one of the GPIO pin headers.
 
 Fixes: 2e04c25b1320 ("arm64: dts: rockchip: add ROCK Pi S DTS support")
 Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240521211029.1236094-5-jonas@kwiboo.se
+Link: https://lore.kernel.org/r/20240521211029.1236094-6-jonas@kwiboo.se
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-index 079101cddd65f..8ea9849064032 100644
+index 8ea9849064032..d4cf6026241c4 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
 +++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-pi-s.dts
-@@ -272,7 +272,10 @@ &sdio {
+@@ -294,6 +294,8 @@ u2phy_otg: otg-port {
  };
  
- &sdmmc {
-+	cap-mmc-highspeed;
- 	cap-sd-highspeed;
-+	disable-wp;
-+	vmmc-supply = <&vcc_io>;
+ &uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_xfer>;
  	status = "okay";
  };
  
