@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590E3941DB9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40C2941B2A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13C3228CFC3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2194D1C210B1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A2C1A76BB;
-	Tue, 30 Jul 2024 17:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8351F189514;
+	Tue, 30 Jul 2024 16:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwnOoHQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7Zo8vrN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F501A76B2;
-	Tue, 30 Jul 2024 17:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEB6188013;
+	Tue, 30 Jul 2024 16:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360045; cv=none; b=EqOa3YcwF0d4dwAOpssCH2L5ssdj2GbFwTBBGlTLwkZqihHPP678dGZ3RGR2vxunZHmLTJDo8dYsTcb59JG7X4TrCdbEWbKtUdqPqlAT+0tlWjh35Q5LUnplcvCiZoDFqO8HwF92vYepNGgJqbGbC/CxXaMlJX4QZkUf7rnF7VQ=
+	t=1722358303; cv=none; b=NuAcrqOHpHCUst7UPJSK8CaBt92rJB5leQ5sTRXfmB5JlMbjuaR0V2Y3fd6hFuj6dpzS9oKpc4HFFJrI4J6P/deJ0dtX+kjNv8yWRUQrlhM2n+NwQuI3aWQy/v1Y/lqNzD6S+iIyXMcmRtPUXcp9vPPr9A4gLNX/TK58iAsZreI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360045; c=relaxed/simple;
-	bh=ZgrPRf0flEbtqCDLINURLq6+hmIjdYlTTeifhHaX+Lw=;
+	s=arc-20240116; t=1722358303; c=relaxed/simple;
+	bh=XzMxX4KHPiKblPE1P5I5lvIrZ4c8y9B5CXp3XerSrxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNtnjwaDaK//wrHmCHqoRpxDa+HsW0QCL3CEwB0FSu56VAokQqQL27nAIHkI2gFTq2LnhZV79p8TtR6CGuGZcUxHc5q9ypK0DPOBa43q+GjFUZGFjtYKdN9VDQ1GNnJxGCCn0heX4N6FZIPbNUkPtyZeG5DtTuNNJZ6h7Nc1pr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwnOoHQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91939C4AF0E;
-	Tue, 30 Jul 2024 17:20:44 +0000 (UTC)
+	 MIME-Version; b=KEVhbrlNpMMXyB5ZMOB3iWgd/2EzYk5fIEioLesz3gMYs0eXvoM1wImlB92BA6InsONPBBuY1oJgD8P+sNrTiYczxStKmmaC4tfLWvRmDQLTMsg2BR2O5lkgX5qxSf2VOld+DkInZjO/RDE5jOKK5SrJxJBIEBOcsM4R6ACtxug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7Zo8vrN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5318C32782;
+	Tue, 30 Jul 2024 16:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360045;
-	bh=ZgrPRf0flEbtqCDLINURLq6+hmIjdYlTTeifhHaX+Lw=;
+	s=korg; t=1722358303;
+	bh=XzMxX4KHPiKblPE1P5I5lvIrZ4c8y9B5CXp3XerSrxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwnOoHQOgyDEgkd/zsd7eGZEX+qBEz8jaxh3/uK780Jjcs+y6gzUUv/VD11MbPzLW
-	 XKFKzxdLaMFzIlGitb+zN1tPsJDZ9TUnMGs09PSVVn6KegocV2YFIHDU0bVG28QnI1
-	 YLjWJOwAW2MQ5f+vd+GA9ABW761kqTDZFn/GOaWw=
+	b=o7Zo8vrN9tak+zFcaGqmnq9K4yxtxuHfx7nCQ5EXYHY2obmWhEe6UEgNrWeFsI9Vx
+	 qnXFa+Mp8jrG/R7ByLR3Bnkf1IdXR0nn5K5pgTso7gwrpx1h0bpZOEFJxAq2YRBCVv
+	 YoGXY45dkkV2K3du9pOWifq7bXwYWy+q+2ETAhj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 6.10 579/809] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
-Date: Tue, 30 Jul 2024 17:47:35 +0200
-Message-ID: <20240730151747.649476999@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 349/568] fs/ntfs3: Fix the format of the "nocase" mount option
+Date: Tue, 30 Jul 2024 17:47:36 +0200
+Message-ID: <20240730151653.510189557@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 2df7aac81070987b0f052985856aa325a38debf6 upstream.
+[ Upstream commit d392e85fd1e8d58e460c17ca7d0d5c157848d9c1 ]
 
-In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+The 'nocase' option was mistakenly added as fsparam_flag_no
+with the 'no' prefix, causing the case-insensitive mode to require
+the 'nonocase' option to be enabled.
 
-Cc: stable@vger.kernel.org
-Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240709092011.3204970-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a3a956c78efa ("fs/ntfs3: Add option "nocase"")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/psb_intel_lvds.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ntfs3/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
-+++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
-@@ -504,6 +504,9 @@ static int psb_intel_lvds_get_modes(stru
- 	if (mode_dev->panel_fixed_mode != NULL) {
- 		struct drm_display_mode *mode =
- 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
-+		if (!mode)
-+			return 0;
-+
- 		drm_mode_probed_add(connector, mode);
- 		return 1;
- 	}
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 79ebe62f00017..d47cfa215a367 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -276,7 +276,7 @@ static const struct fs_parameter_spec ntfs_fs_parameters[] = {
+ 	fsparam_flag_no("acl",			Opt_acl),
+ 	fsparam_string("iocharset",		Opt_iocharset),
+ 	fsparam_flag_no("prealloc",		Opt_prealloc),
+-	fsparam_flag_no("nocase",		Opt_nocase),
++	fsparam_flag_no("case",		Opt_nocase),
+ 	{}
+ };
+ // clang-format on
+-- 
+2.43.0
+
 
 
 
