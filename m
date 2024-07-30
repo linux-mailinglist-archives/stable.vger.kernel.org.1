@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FD5941EAD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617E5941D18
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DF0EB27753
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71DADB25F4D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96D61A76BE;
-	Tue, 30 Jul 2024 17:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C581A2558;
+	Tue, 30 Jul 2024 17:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EM5AfXmT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKSOnt9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D4D1A76B2;
-	Tue, 30 Jul 2024 17:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7203E1A0733;
+	Tue, 30 Jul 2024 17:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360486; cv=none; b=qhswWP36WcKTze1y3c3qXHg5rlpDo3LIq1tnFsfYIQSzed/9cgHIqsOrvgkKjp606KpvCaED8segpbRrVaMj7VhdraVwjZhtGpoi5Ad89GJX0yZxQtj/vUrzNqWUbjyMUp18wzshih0ycetqZ5G6rDYev4ce8BTW8+l3C1xgSHs=
+	t=1722359444; cv=none; b=Ik22cMyo22iqRlec7nrMwZYFvn9nY9vej4jehXfxRgpZWOyEk8PoANp2QjT1d/AOjJYFwu6kDHgPO8uctcBOespGv5dpbc5LXNiVXmxZyLZW/YrEsxvuuMQfY1RBk7AYcE6gHKi3G+HfaUe8tuwdr9i/AlJMfJnuynL2+ZVQmec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360486; c=relaxed/simple;
-	bh=y7JHbMFn0veQ6VrSyRMyQ+cjXr7VUEOuIwxL8vdh7RI=;
+	s=arc-20240116; t=1722359444; c=relaxed/simple;
+	bh=wyE/XZALZS/utTiOT+AuVPA/pzE32aisoZWQ3sYRJ9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNacW1qj2YQ3BMlZYBtHlSejlIuuZGJXs9LDrimPTPrsOntbvUziXuq9FsT/o3Rsnj1uRvbP19kdQs8xOPuAkDcf35eLEOlUPvnGu77Dv/TrRs1ppWVZmxXpgUZwIP+0hNJsqZ52OXgnrAI9ofKGzG7csZ2H9w1ahrhC8D/ajkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EM5AfXmT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2992C32782;
-	Tue, 30 Jul 2024 17:28:05 +0000 (UTC)
+	 MIME-Version; b=fzh+1tJxjWIjPEhe6oAVLGAbq3Hg55aVmuc/rUdnvfZe1kNQujgXMdO/OuK4W80mRBMckJkQ2LSzc5wfJb7X959oRa0l+phDG5SbiR2LAN0iTOYgwPz6CQsVd0gmNmqC0nXs/7lgbduSKtTLTzJ/UOXQlQW4R0zwa1TZp2tY8As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKSOnt9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE77C32782;
+	Tue, 30 Jul 2024 17:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360486;
-	bh=y7JHbMFn0veQ6VrSyRMyQ+cjXr7VUEOuIwxL8vdh7RI=;
+	s=korg; t=1722359444;
+	bh=wyE/XZALZS/utTiOT+AuVPA/pzE32aisoZWQ3sYRJ9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EM5AfXmTPTD3yR0PEk4MRp78tKFOr7mOR+wJpfFMfA96eOm5w58t5ok8aRCV3+hZJ
-	 8a7q9NsISJEpEQOLabmw3X9IOFkJlKoHSu8JMOkI8Gys63VlxXxUTqLyUTkN0Zl1Y8
-	 GCtvGklEIpV1QhF3pgLhN0mGuWvMYIJghohyEAWY=
+	b=mKSOnt9MkhUcjsnNjIAyj+n3I5aoUodRED7fuVhB9autiHez6eWsgKdvtGa+w8xil
+	 cKSCrHhr86qBWheZ7pVHiJx8u4BQBlUtDtpRwJNjIEo1xngGCI/ViZPKhnZ4k3pj3E
+	 IO0yT7UWd6ltw/w8S6u852EJuEw4Qw38JV+WemPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.10 713/809] platform: mips: cpu_hwmon: Disable driver on unsupported hardware
-Date: Tue, 30 Jul 2024 17:49:49 +0200
-Message-ID: <20240730151753.096256006@linuxfoundation.org>
+	Joy Chakraborty <joychakr@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sean Anderson <sean.anderson@seco.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 483/568] rtc: abx80x: Fix return value of nvmem callback on read
+Date: Tue, 30 Jul 2024 17:49:50 +0200
+Message-ID: <20240730151658.905763513@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Joy Chakraborty <joychakr@google.com>
 
-commit f4d430db17b4ef4e9c3c352a04b2fe3c93011978 upstream.
+commit fc82336b50e7652530bc32caec80be0f8792513b upstream.
 
-cpu_hwmon is unsupported on CPUs without loongson_chiptemp
-register and csr.
+Read callbacks registered with nvmem core expect 0 to be returned on
+success and a negative value to be returned on failure.
 
+abx80x_nvmem_xfer() on read calls i2c_smbus_read_i2c_block_data() which
+returns the number of bytes read on success as per its api description,
+this return value is handled as an error and returned to nvmem even on
+success.
+
+Fix to handle all possible values that would be returned by
+i2c_smbus_read_i2c_block_data().
+
+Fixes: e90ff8ede777 ("rtc: abx80x: Add nvmem support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Joy Chakraborty <joychakr@google.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Link: https://lore.kernel.org/r/20240613120750.1455209-1-joychakr@google.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mips/cpu_hwmon.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/rtc/rtc-abx80x.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/platform/mips/cpu_hwmon.c
-+++ b/drivers/platform/mips/cpu_hwmon.c
-@@ -139,6 +139,9 @@ static int __init loongson_hwmon_init(vo
- 		csr_temp_enable = csr_readl(LOONGSON_CSR_FEATURES) &
- 				  LOONGSON_CSRF_TEMP;
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -705,14 +705,18 @@ static int abx80x_nvmem_xfer(struct abx8
+ 		if (ret)
+ 			return ret;
  
-+	if (!csr_temp_enable && !loongson_chiptemp[0])
-+		return -ENODEV;
-+
- 	nr_packages = loongson_sysconf.nr_cpus /
- 		loongson_sysconf.cores_per_package;
+-		if (write)
++		if (write) {
+ 			ret = i2c_smbus_write_i2c_block_data(priv->client, reg,
+ 							     len, val);
+-		else
++			if (ret)
++				return ret;
++		} else {
+ 			ret = i2c_smbus_read_i2c_block_data(priv->client, reg,
+ 							    len, val);
+-		if (ret)
+-			return ret;
++			if (ret <= 0)
++				return ret ? ret : -EIO;
++			len = ret;
++		}
  
+ 		offset += len;
+ 		val += len;
 
 
 
