@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E61941998
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:34:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C74941BE9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05A281C23715
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B3611F2258F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505EA4EB2B;
-	Tue, 30 Jul 2024 16:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5652187FF6;
+	Tue, 30 Jul 2024 17:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCvm8/E+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTk9h+y+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4EE1A6195;
-	Tue, 30 Jul 2024 16:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7CF161901;
+	Tue, 30 Jul 2024 17:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357272; cv=none; b=W/ntgdDaWxpYpQKFmvKKw9wzDsStqiyVRN6z1q9AYaC/cFcOP1aqUQlTWwcY+M+zmChLGS4UJA6hcuJ4GDaT64dvVnvz3gIiswf3VpmvHU3RyZOctWBIgyGUh9quYDoOshAm064Na8qkpbIMGhMLTEEJjYDT9ChiCG6f2gilbcI=
+	t=1722358844; cv=none; b=h/JshrY9wddXHMm5hAEhUHTCGgnryyRQlEVQn1onx5ov+LIskgSRan3J//BPrk9TOeJR5whLqnhTiZF0fRFyuP7fZnZZ1oaOoQDBS090m7SjYAOq2Dkq/43LGXmkB5H6hn31nkYYhONbQPRq1m+5IowfM0600d6674eK4s+qqQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357272; c=relaxed/simple;
-	bh=C4ZVLqMsx8hvnY6VbM5orTldkmrdGOxk47Jl+BRg6Oc=;
+	s=arc-20240116; t=1722358844; c=relaxed/simple;
+	bh=lLbFnYOS9rv3ISwjD7D+up6tQ5OTxGZKT3a2Z2Y6UQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUajHwq13e6OhjfeEeLcFr11x+w405AHYYJVNefTQrWV08zbNeG4IzjM+Sfdeuxa5pOxfjHT/J8M79OaNPNFuJlje4r/xfiMu319NQFv/VkP1HE5vQwloCltKWVUbg4a90JAfseKN4+LAKgl53uUL29oLUmG2w8+fQd5R3bIrjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCvm8/E+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA82C32782;
-	Tue, 30 Jul 2024 16:34:31 +0000 (UTC)
+	 MIME-Version; b=qZHUonChvIAjleVay53ETYtPnC0bPNtx2+qxvUGijbpyjDxnpllgsprXmf8y6MKcoVn5W7SxDXrcXzipXSFr/D+mOpIQPSWosD72DaJIQvsKJmMvL1SZ7sw6QTHhsWmzZ8xj51MzG4Xk0MkWRgc3XJUE0Vkk1GdJOIqSK51TZfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTk9h+y+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1325EC32782;
+	Tue, 30 Jul 2024 17:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357271;
-	bh=C4ZVLqMsx8hvnY6VbM5orTldkmrdGOxk47Jl+BRg6Oc=;
+	s=korg; t=1722358844;
+	bh=lLbFnYOS9rv3ISwjD7D+up6tQ5OTxGZKT3a2Z2Y6UQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCvm8/E+EMrEG5PYIUbtdAo8l65yO+4nEngy9T4Jq8qk7Gk6ifel+jcgoPmr7RP+L
-	 3S8gZ4naDfPfo+1eY0hLM3oJNo/N4RcuPu754kAZ04uWQwz9LFpzzTPcjEUMfxZ8wt
-	 EN4sT4k3lidczTxPaILqMCVkrhxdp+hGLaACcPOQ=
+	b=cTk9h+y+ZUSrsaJQtVQgBDq3WdMfxhEPT0PSrn3wKxKquH6T0JjBv0cwpKuTfk7O/
+	 OQO8a4nZFAldoK7R7WMwXNaGkgHeLkaXgRGWC89PGbpvTwrzZQfYYP9XUTFhemPXDp
+	 K+zV/riF4DeSqkAGtIATfG0raMmcHEOySTCNLRms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Heusel <christian@heusel.eu>,
-	mavrix#kernel@simplelogin.com,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 275/440] x86/efistub: Revert to heap allocated boot_params for PE entrypoint
-Date: Tue, 30 Jul 2024 17:48:28 +0200
-Message-ID: <20240730151626.574004219@linuxfoundation.org>
+	Rafael Beims <rafael.beims@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.6 402/568] wifi: mwifiex: Fix interface type change
+Date: Tue, 30 Jul 2024 17:48:29 +0200
+Message-ID: <20240730151655.581423671@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Rafael Beims <rafael.beims@toradex.com>
 
-commit ae835a96d72cd025421910edb0e8faf706998727 upstream.
+commit a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272 upstream.
 
-This is a partial revert of commit
+When changing the interface type we also need to update the bss_num, the
+driver private data is searched based on a unique (bss_type, bss_num)
+tuple, therefore every time bss_type changes, bss_num must also change.
 
-  8117961d98f ("x86/efi: Disregard setup header of loaded image")
+This fixes for example an issue in which, after the mode changed, a
+wireless scan on the changed interface would not finish, leading to
+repeated -EBUSY messages to userspace when other scan requests were
+sent.
 
-which triggers boot issues on older Dell laptops. As it turns out,
-switching back to a heap allocation for the struct boot_params
-constructed by the EFI stub works around this, even though it is unclear
-why.
-
-Cc: Christian Heusel <christian@heusel.eu>
-Reported-by: <mavrix#kernel@simplelogin.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240510110458.15475-1-francesco@dolcini.it
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -435,11 +435,12 @@ void __noreturn efi_stub_entry(efi_handl
- efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 				   efi_system_table_t *sys_table_arg)
- {
--	static struct boot_params boot_params __page_aligned_bss;
--	struct setup_header *hdr = &boot_params.hdr;
- 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
-+	struct boot_params *boot_params;
-+	struct setup_header *hdr;
- 	int options_size = 0;
- 	efi_status_t status;
-+	unsigned long alloc;
- 	char *cmdline_ptr;
- 
- 	if (efi_is_native())
-@@ -457,6 +458,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 		efi_exit(handle, status);
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -926,6 +926,8 @@ mwifiex_init_new_priv_params(struct mwif
+ 		return -EOPNOTSUPP;
  	}
  
-+	status = efi_allocate_pages(PARAM_SIZE, &alloc, ULONG_MAX);
-+	if (status != EFI_SUCCESS)
-+		efi_exit(handle, status);
++	priv->bss_num = mwifiex_get_unused_bss_num(adapter, priv->bss_type);
 +
-+	boot_params = memset((void *)alloc, 0x0, PARAM_SIZE);
-+	hdr	    = &boot_params->hdr;
-+
- 	/* Assign the setup_header fields that the kernel actually cares about */
- 	hdr->root_flags	= 1;
- 	hdr->vid_mode	= 0xffff;
-@@ -466,13 +474,15 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
--	if (!cmdline_ptr)
-+	if (!cmdline_ptr) {
-+		efi_free(PARAM_SIZE, alloc);
- 		efi_exit(handle, EFI_OUT_OF_RESOURCES);
-+	}
- 
- 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
--			  &boot_params.ext_cmd_line_ptr);
-+			  &boot_params->ext_cmd_line_ptr);
- 
--	efi_stub_entry(handle, sys_table_arg, &boot_params);
-+	efi_stub_entry(handle, sys_table_arg, boot_params);
- 	/* not reached */
- }
- 
+ 	spin_lock_irqsave(&adapter->main_proc_lock, flags);
+ 	adapter->main_locked = false;
+ 	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
 
 
 
