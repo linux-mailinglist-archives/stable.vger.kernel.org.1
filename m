@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184DF941CAB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04175941A9A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49B7C1C23521
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A31571F26125
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A641A76CD;
-	Tue, 30 Jul 2024 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2134D155CB3;
+	Tue, 30 Jul 2024 16:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUSF8PK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aMsx/T9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7818C1A76C6;
-	Tue, 30 Jul 2024 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03931A618F;
+	Tue, 30 Jul 2024 16:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359210; cv=none; b=H6P+hKTDIhuG9QAPsCNdat7cNjmsyNBluNHQxwTnUDuLpcLALE5MAfXbVfZkVqNlxAFGB8aFmJ9W+nfRAQIOpvOv9mV5Lwlu5vMWAPurJ/8t4B0YT/AZm4wibo7nl/1g5vg/XUWK9fc2yuk630xlQe2Q0elB6RewlYsom67gIWE=
+	t=1722357937; cv=none; b=Zg/4YuJMqTWK7gh2eHbFcXreoAyxJ+LZeLU24gboLkz3Y7R93l4i3X2+5TT1FWVnEQ4qgqPoZR71+xhqxHfdYzF4CtGXdfcU6pSyYVLPGT0em9Xs7DHs0Ez6FOmU8z2+lrSpxMJ88tqWbYRwvqQDmPhQLr48QCPhjDLYgY3lqII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359210; c=relaxed/simple;
-	bh=8OBHAFF4YbMOgFZDpkKo9N5TdUBZ4323cO5LCw37mFI=;
+	s=arc-20240116; t=1722357937; c=relaxed/simple;
+	bh=SCdon+1jEO4K4k++SvFKhwBLhdqpKPhojeGA1qLafY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmorM1+x4iNCAmBmpMeWg605yliUQhgRktTi9nidqygdxnUr3DBetOfFq46LgxjiVGabqih59iOnudOJRG0MJcr1WN4FNTbt10XiKaDSnAwd8/JA/4GyUCB6PVTgaH5V9H1/3LsCQKpMXUjHZ4LnEzoZqW3wnyB1t2v/n5H51JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUSF8PK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50A2C4AF0E;
-	Tue, 30 Jul 2024 17:06:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OWjOG1PGCH/3NMqlH/9UoyXZvd6E5zadaZwOy33k3q/c2E3bp2JuvC9ftat6XUlZpobCFm2MzF5IUpDIIQl6G63Zn4SjvK2uUIp4uKA3guJqP6DeCHrVvGY5yPCiqlUSmuVRiPTVok3CQ1HnI4Jl6gjhmR3ee4yjE227X15ZQRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aMsx/T9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3CDC32782;
+	Tue, 30 Jul 2024 16:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359210;
-	bh=8OBHAFF4YbMOgFZDpkKo9N5TdUBZ4323cO5LCw37mFI=;
+	s=korg; t=1722357937;
+	bh=SCdon+1jEO4K4k++SvFKhwBLhdqpKPhojeGA1qLafY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUSF8PK7R8Q07GPsYH7gETSgIIDCFxJZB+UIRavQacaUQVMr01Lpf2c5KbWIrW9dE
-	 iYyDtwDxHjl0qk1nCjk1/Ae1jjgTqBColWjhV/YyoMWrgiO8ZLVQpIXvSNlqNQvoN2
-	 7DQ8VVbLZgzscIkNR/2EqGIePs6yGvvPxWqwpndo=
+	b=0aMsx/T9mAMLs+JoT6Z3xZ7CUR1Xfaa/r5YlavQFroVJlWlVgHlCqocqZ4lW5fRy1
+	 rwtHS0DjccnasfQ1udHfxZvHFIygiINdZlmJt0a15X00MZwTebY1+kETT9i/RAX/6m
+	 7pTpJ5jxTD3S3ehZz5q7tDWux5tTlxCw9ORaCNAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 448/568] ASoC: amd: yc: Support mic on Lenovo Thinkpad E16 Gen 2
+	Wei Liu <wei.liu@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 322/440] PCI: hv: Return zero, not garbage, when reading PCI_INTERRUPT_PIN
 Date: Tue, 30 Jul 2024 17:49:15 +0200
-Message-ID: <20240730151657.518802577@linuxfoundation.org>
+Message-ID: <20240730151628.395680815@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Wei Liu <wei.liu@kernel.org>
 
-commit 1d9ce4440414c92acb17eece3218fe5c92b141e3 upstream.
+commit fea93a3e5d5e6a09eb153866d2ce60ea3287a70d upstream.
 
-Lenovo Thinkpad E16 Gen 2 AMD model (model 21M5) needs a corresponding
-quirk entry for making the internal mic working.
+The intent of the code snippet is to always return 0 for both
+PCI_INTERRUPT_LINE and PCI_INTERRUPT_PIN.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1228269
-Cc: stable@vger.kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20240725065442.9293-1-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The check misses PCI_INTERRUPT_PIN. This patch fixes that.
+
+This is discovered by this call in VFIO:
+
+    pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+
+The old code does not set *val to 0 because it misses the check for
+PCI_INTERRUPT_PIN. Garbage is returned in that case.
+
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+Link: https://lore.kernel.org/linux-pci/20240701202606.129606-1-wei.liu@kernel.org
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/pci/controller/pci-hyperv.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -224,6 +224,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M5"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
- 		}
- 	},
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -1092,8 +1092,8 @@ static void _hv_pcifront_read_config(str
+ 		   PCI_CAPABILITY_LIST) {
+ 		/* ROM BARs are unimplemented */
+ 		*val = 0;
+-	} else if (where >= PCI_INTERRUPT_LINE && where + size <=
+-		   PCI_INTERRUPT_PIN) {
++	} else if ((where >= PCI_INTERRUPT_LINE && where + size <= PCI_INTERRUPT_PIN) ||
++		   (where >= PCI_INTERRUPT_PIN && where + size <= PCI_MIN_GNT)) {
+ 		/*
+ 		 * Interrupt Line and Interrupt PIN are hard-wired to zero
+ 		 * because this front-end only supports message-signaled
 
 
 
