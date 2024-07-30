@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15229417B0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9670F941AF0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEE01C23635
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52BA7281B93
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0413718E046;
-	Tue, 30 Jul 2024 16:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0230718455E;
+	Tue, 30 Jul 2024 16:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EI5/kV9Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6hk7l3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B772F1917DB;
-	Tue, 30 Jul 2024 16:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58EA14831F;
+	Tue, 30 Jul 2024 16:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355875; cv=none; b=jHEzbK6KJ4CcsZh7tLHxSuY990NpnK2oV2z0jJ4HWn0u6PxAg8WTthqU+TAnWR3LfgYHV1ajtK4kGp966ERDWq5wc5rNphWDVvwENncuqo25EPMyMu1NpmWB0iCkHlNJIEAK3gfu3U/b6F+Dq4IsAnd7Er35s0jB1B/A67dfEGk=
+	t=1722358158; cv=none; b=EhbYCsdbmdpxk9JwAWHOS4KJBt8f6nRHLgBNAFFJu+mku90B+/kL2lSGpHx9j5JLr2oCowXqAYoL3hgfprebXtkYUT93H4RaZC+q6uGnuT+5fPjH9fbUREKn0TvqYhkFlU52wLlbR+lRV9EjGnZolMU9oRx6D2zBKNT41D0tqeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355875; c=relaxed/simple;
-	bh=DRiDqLy0PT6MT422iL1Z/bWJ8nZ9uiX8574SO9OPoW0=;
+	s=arc-20240116; t=1722358158; c=relaxed/simple;
+	bh=XJanFXhNs3fm4m05ECeonMW5fBbG5L077jU3OZO4A+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnSGvKbGb/JxkXDIHYYKtGcJ1CqjpJ9w2nb3p2KsLjAFxBRptSsDR51klVWfk4S0s3Tn6ZSbLC/PRFIH3BAr0q5xT6jJyGsl3VjH+obaVPRmVewZP9syQtjI2mJVSYgrOeM9vagha1Y4OmTBOlUjsyRsWaDj7NkerKFW4Pghy0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EI5/kV9Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27801C32782;
-	Tue, 30 Jul 2024 16:11:14 +0000 (UTC)
+	 MIME-Version; b=mD3fivMZdxxymqNIW13dNBKvfqLLu0GQu0FBr8AN904d9PCK4pmSkTy7fzUX8axcTX+UitU+qS142tSh+5Q1DtLU/G7z65Ws5wFoFGAS5Kt48b/oH8TZSZgnCRrc1jxtZ/ZewB+DRFIuyzyAjmajOlWP6C+aG40IInjFuUTu3es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6hk7l3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4193AC4AF0E;
+	Tue, 30 Jul 2024 16:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355875;
-	bh=DRiDqLy0PT6MT422iL1Z/bWJ8nZ9uiX8574SO9OPoW0=;
+	s=korg; t=1722358158;
+	bh=XJanFXhNs3fm4m05ECeonMW5fBbG5L077jU3OZO4A+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EI5/kV9YXwYIMmtN10MF9Rhse+SNUNXiV1FiLn6TqIzD9DfazoEMXUs7dcCHL0oT/
-	 P75nxrFQaaRa02F6hKZicWu3MbaZlb2/NGc22quvFOfkcXMhG5k+Ppt37oWYe1zsia
-	 Ed+4pWi22LxXB/Hr6U80CPo077BHV33FlatwDKo0=
+	b=p6hk7l3aRrG7WcxGyLhyS+LbRUuL4QyFMH/Df1rp+k6MiH9FwAH2CMDBHqScOqeIE
+	 G/j7P6+Q+j7zHKADwi7Iemz2W0+195/GKpsj/trUrR4QJ4WECLk8b3egS0H7q1Tudc
+	 IeSiBus6nFJGV/8uH/cf3y/kJOYIgNkQ/+NeI+kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Heiko Stuebner <heiko@sntech.de>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/568] arm64: dts: rockchip: fix pmu_io supply for Lunzn Fastrhino R6xS
-Date: Tue, 30 Jul 2024 17:43:25 +0200
-Message-ID: <20240730151643.707310267@linuxfoundation.org>
+Subject: [PATCH 6.10 330/809] drm/mediatek: Add OVL compatible name for MT8195
+Date: Tue, 30 Jul 2024 17:43:26 +0200
+Message-ID: <20240730151737.650015362@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit cfeac8e5d05815521f5c5568680735a92ee91fe4 ]
+[ Upstream commit 6fb7a0985fd16868b5d72eb3e3de7524a6000e6e ]
 
-Fixes pmu_io_domains supply according to the schematic. Among them,
-the vccio3 is responsible for the io voltage of sdcard. There is no
-sdcard slot on the R68S, and it's connected to vcc_3v3, so describe
-the supply of vccio3 separately.
+Add OVL compatible name for MT8195.
+Without this commit, DRM won't work after modifying the device tree.
 
-Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
-Fixes: b9f8ca655d80 ("arm64: dts: rockchip: Add Lunzn Fastrhino R68S")
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20240630150010.55729-4-amadeus@jmu.edu.cn
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-7-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts  | 4 ++++
- arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 4 ++--
- arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts  | 4 ++++
- 3 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
-index 58ab7e9971dbc..b5e67990dd0f8 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dts
-@@ -11,6 +11,10 @@ aliases {
- 	};
- };
- 
-+&pmu_io_domains {
-+	vccio3-supply = <&vccio_sd>;
-+};
-+
- &sdmmc0 {
- 	bus-width = <4>;
- 	cap-mmc-highspeed;
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-index 8f587978fa3b6..82577eba31eb5 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
-@@ -397,8 +397,8 @@ vcc5v0_usb_otg_en: vcc5v0-usb-otg-en {
- &pmu_io_domains {
- 	pmuio1-supply = <&vcc3v3_pmu>;
- 	pmuio2-supply = <&vcc3v3_pmu>;
--	vccio1-supply = <&vccio_acodec>;
--	vccio3-supply = <&vccio_sd>;
-+	vccio1-supply = <&vcc_3v3>;
-+	vccio2-supply = <&vcc_1v8>;
- 	vccio4-supply = <&vcc_1v8>;
- 	vccio5-supply = <&vcc_3v3>;
- 	vccio6-supply = <&vcc_1v8>;
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-index e1fe5e442689a..a3339186e89c8 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r68s.dts
-@@ -102,6 +102,10 @@ eth_phy1_reset_pin: eth-phy1-reset-pin {
- 	};
- };
- 
-+&pmu_io_domains {
-+	vccio3-supply = <&vcc_3v3>;
-+};
-+
- &sdhci {
- 	bus-width = <8>;
- 	max-frequency = <200000000>;
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index de811e2265da7..8c403bf566856 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -743,6 +743,8 @@ static const struct of_device_id mtk_ddp_comp_dt_ids[] = {
+ 	  .data = (void *)MTK_DISP_OVL },
+ 	{ .compatible = "mediatek,mt8192-disp-ovl",
+ 	  .data = (void *)MTK_DISP_OVL },
++	{ .compatible = "mediatek,mt8195-disp-ovl",
++	  .data = (void *)MTK_DISP_OVL },
+ 	{ .compatible = "mediatek,mt8183-disp-ovl-2l",
+ 	  .data = (void *)MTK_DISP_OVL_2L },
+ 	{ .compatible = "mediatek,mt8192-disp-ovl-2l",
 -- 
 2.43.0
 
