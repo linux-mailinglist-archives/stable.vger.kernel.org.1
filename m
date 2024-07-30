@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA589417E2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F50E941A26
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 135381F21831
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 593BD1C234D6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D521898E5;
-	Tue, 30 Jul 2024 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D74184535;
+	Tue, 30 Jul 2024 16:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKnRDl5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jyq2hRSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF111898E0;
-	Tue, 30 Jul 2024 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454351A6192;
+	Tue, 30 Jul 2024 16:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356038; cv=none; b=RD4Oc6cDnUkbl1Ql2Ov7m93/AZiZ3QgWkxqnEHLCIhvEbfEFSRP4xb455ZC61Fd93eCO7AFPqkCdnYiSk7ThJo4u13gHnxY+HXTVFXE0+ykZihiQdN/LZ73ACc5ifXg4pwS3TFgD+qf8b2dwHxfa4iv8pwnQA7p1bvf7pQrGYCE=
+	t=1722357640; cv=none; b=TgVMSyhz3M+SZ60jduxaHRT+p+dI365alPBTzmmZqN6/EpbgsNUIvuqAZLi9tejT0UV514Ras107aOe6+kAYqT4eKtzJE5h3z+yHZORJfkREN65sFoesduf7ZgQm2Cz0mcO03Zl4EBxW/XV3ZUGkRK6hJKj3EaEnJazIlZIq9+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356038; c=relaxed/simple;
-	bh=/rxvhRbvuwWZJxBxLpIRwakGkVuw0u022pXLh8rqL54=;
+	s=arc-20240116; t=1722357640; c=relaxed/simple;
+	bh=dODyhXslc3jf7ieDPhZraeW1hjjlWI+a+QDDmWb4aRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGtK9EaD56mDHlfZC2isxd0in4lJldx8y4TCGiR9PP4+Ni0coSCtcZoR/GbX6W4Oq947Jl3uwG6YvMcei3NfK9NrEDp2+76KOuurB7SovFICRGW4WlJeh3JzCsnK/zIyYO5VppEl4BGOp8cLhznsRATYzlqTQU4qT0juKmAyK7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKnRDl5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BD1C32782;
-	Tue, 30 Jul 2024 16:13:57 +0000 (UTC)
+	 MIME-Version; b=pbXWAxnkANI7hw5mqqvmgDV7YWPgt4KVRwLEgMHcV9iXmTeXL4+0BZ4UT3AyO2EtUENCdEDlyGOsZPR4c/y5Z14j7VxyuVF8xB/aKe/1Fx79l0aikgzhlLOow50wCtPRUCcsFFmEDdqFs/1fw6HSd9VUK8LJ52nr/sTboYJ+ytk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jyq2hRSh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD164C32782;
+	Tue, 30 Jul 2024 16:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356038;
-	bh=/rxvhRbvuwWZJxBxLpIRwakGkVuw0u022pXLh8rqL54=;
+	s=korg; t=1722357640;
+	bh=dODyhXslc3jf7ieDPhZraeW1hjjlWI+a+QDDmWb4aRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKnRDl5zrTucGVO0V0sRSnbQENLfP+EHkCWi3Uk3w34ZUizPMSVdUpXRAx5FX2dC8
-	 /Gi7pyrm2RoI/P/X/EpjphLc7FVFdHxO3KHheRY11y52jjXS2V4fCOrCSd3cvzZEH2
-	 wKfekfVqj6tz6ZfJBlCdDyGCOEM1IktFUuP6Gck4=
+	b=Jyq2hRShLFJutbFvjgTs53nMzB6uqSNjV5w+9W4Es99ZUgAmVe/SzjwtBW1vahYg8
+	 GWPTVqxMVhSuTm98BIr8RynokkqJptBehfhM/HM1847VxkwdPdlWsyxBkqIKAHlDRm
+	 7BZg/+rEoyMIFddpm09DXX0+ZxwW7DGh+JFmpD1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+	Huai-Yuan Liu <qq810974084@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/440] media: renesas: vsp1: Store RPF partition configuration per RPF instance
-Date: Tue, 30 Jul 2024 17:46:23 +0200
-Message-ID: <20240730151621.738110578@linuxfoundation.org>
+Subject: [PATCH 6.6 277/568] scsi: lpfc: Fix a possible null pointer dereference
+Date: Tue, 30 Jul 2024 17:46:24 +0200
+Message-ID: <20240730151650.704957162@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Huai-Yuan Liu <qq810974084@gmail.com>
 
-[ Upstream commit a213bc09b1025c771ee722ee341af1d84375db8a ]
+[ Upstream commit 5e0bf3e8aec2cbc51123f84b29aaacbd91fc56fa ]
 
-The vsp1_partition structure stores the RPF partition configuration in a
-single field for all RPF instances, while each RPF can have its own
-configuration. Fix it by storing the configuration separately for each
-RPF instance.
+In function lpfc_xcvr_data_show, the memory allocation with kmalloc might
+fail, thereby making rdp_context a null pointer. In the following context
+and functions that use this pointer, there are dereferencing operations,
+leading to null pointer dereference.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Fixes: ab45e8585182 ("media: v4l: vsp1: Allow entities to participate in the partition algorithm")
-Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+To fix this issue, a null pointer check should be added. If it is null,
+use scnprintf to notify the user and return len.
+
+Fixes: 479b0917e447 ("scsi: lpfc: Create a sysfs entry called lpfc_xcvr_data for transceiver info")
+Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
+Link: https://lore.kernel.org/r/20240621082545.449170-1-qq810974084@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/vsp1/vsp1_pipe.h | 2 +-
- drivers/media/platform/renesas/vsp1/vsp1_rpf.c  | 8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/scsi/lpfc/lpfc_attr.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-index ae646c9ef3373..15daf35bda216 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-@@ -73,7 +73,7 @@ struct vsp1_partition_window {
-  * @wpf: The WPF partition window configuration
-  */
- struct vsp1_partition {
--	struct vsp1_partition_window rpf;
-+	struct vsp1_partition_window rpf[VSP1_MAX_RPF];
- 	struct vsp1_partition_window uds_sink;
- 	struct vsp1_partition_window uds_source;
- 	struct vsp1_partition_window sru;
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-index 75083cb234fe3..996a3058d5b76 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-@@ -271,8 +271,8 @@ static void rpf_configure_partition(struct vsp1_entity *entity,
- 	 * 'width' need to be adjusted.
- 	 */
- 	if (pipe->partitions > 1) {
--		crop.width = pipe->partition->rpf.width;
--		crop.left += pipe->partition->rpf.left;
-+		crop.width = pipe->partition->rpf[rpf->entity.index].width;
-+		crop.left += pipe->partition->rpf[rpf->entity.index].left;
- 	}
+diff --git a/drivers/scsi/lpfc/lpfc_attr.c b/drivers/scsi/lpfc/lpfc_attr.c
+index 79b45ea5fdb5e..8123062ec2faf 100644
+--- a/drivers/scsi/lpfc/lpfc_attr.c
++++ b/drivers/scsi/lpfc/lpfc_attr.c
+@@ -1904,6 +1904,11 @@ lpfc_xcvr_data_show(struct device *dev, struct device_attribute *attr,
  
- 	if (pipe->interlaced) {
-@@ -327,7 +327,9 @@ static void rpf_partition(struct vsp1_entity *entity,
- 			  unsigned int partition_idx,
- 			  struct vsp1_partition_window *window)
- {
--	partition->rpf = *window;
-+	struct vsp1_rwpf *rpf = to_rwpf(&entity->subdev);
-+
-+	partition->rpf[rpf->entity.index] = *window;
- }
+ 	/* Get transceiver information */
+ 	rdp_context = kmalloc(sizeof(*rdp_context), GFP_KERNEL);
++	if (!rdp_context) {
++		len = scnprintf(buf, PAGE_SIZE - len,
++				"SPF info NA: alloc failure\n");
++		return len;
++	}
  
- static const struct vsp1_entity_operations rpf_entity_ops = {
+ 	rc = lpfc_get_sfp_info_wait(phba, rdp_context);
+ 	if (rc) {
 -- 
 2.43.0
 
