@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1190941A7D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3741941A81
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6667E2851E9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78B9D1F25E28
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCDD18801C;
-	Tue, 30 Jul 2024 16:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1348C1898F8;
+	Tue, 30 Jul 2024 16:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9fFGc4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlWdPQrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD210187FF6;
-	Tue, 30 Jul 2024 16:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5059757FC;
+	Tue, 30 Jul 2024 16:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357851; cv=none; b=ePMd6dBEH3eBhXkbbqIXFFYlI6DTSuRH5+cjRBpUYpSHE396CQESzHaMoXH6+oEAF5SBbLh3bUp/177pW0003IFYEZb8xK+SDSsQtzKUajTHPBirm17Se3VJ4NeCPanIjoBUqAoRuFrocOTtZNX8RtN83gvp370tKGjiRnCwyfw=
+	t=1722357861; cv=none; b=ixabfWudJwl9Aiw808Vv9rABQ9LEeNpdfzcWedWk4u068HmyTX8Q+a66ix8O7guWG1OVui8TpAtJxNkKstjrkm6tyJvWLgrzf8U4pt7ToQYOptynZsmAc72hMN4VCL53tkLSPuaMJiCGX/nvM1eTBnnimWN7yB+Nxs2epPnkR8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357851; c=relaxed/simple;
-	bh=CjZQqRUX+H3XDlOqNIbd1R7ON0TTMLz0+3B5s0eeq+w=;
+	s=arc-20240116; t=1722357861; c=relaxed/simple;
+	bh=wHw8lOWsJwjLiHq1+/LdUp57Suv1SO+mFEPyCqsa+Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEwWiuk3nMUHx5/sg/FNCO7jOrrtnh6MK4MrpcAw5L8JRP8W25QKA3cN9F4100ljSwGGdxCxyyZTfsJKtPJX4ETo2nLdVgTV8bzHdBQcfi2hKM0FUmcr6DCHtKP1HV4sOx1mq2sZT01P0edF0nsyLK3TajsziC3Q/6Dw/zNl5PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9fFGc4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40784C4AF0C;
-	Tue, 30 Jul 2024 16:44:11 +0000 (UTC)
+	 MIME-Version; b=PQzQun9QJYdFD5cGxOt5m9XFxaSikNkKcasW0fxk+tYYvI75DRVzyXnp1fcVZdmCmIGi0HoOVJSJVQY/gHwJWGZOhpjPgQj+6uv7tEhcxV8kUQdGjxkSM72O3HfRHJt7G1vqCTEq57zh0gLmhokEajwQNweMSo8HzOuuX9PKqQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlWdPQrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A6BC4AF0E;
+	Tue, 30 Jul 2024 16:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357851;
-	bh=CjZQqRUX+H3XDlOqNIbd1R7ON0TTMLz0+3B5s0eeq+w=;
+	s=korg; t=1722357861;
+	bh=wHw8lOWsJwjLiHq1+/LdUp57Suv1SO+mFEPyCqsa+Tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9fFGc4dKaOuATZrK1WLmToZYqW+TxyvG1m5c8S1WwgKJdHRJwEVOG+eEm6YDd/mh
-	 1RaHYWGq4pVek1Zt7yPDEhbTXiTCgLmQFNjGMspu/YmHG6UTKrjnq9MBcviofye61U
-	 MOGYoGLrO/FvDRo1v+dt/i+0lNk8JqZjJL9w4tWo=
+	b=rlWdPQrdb2qSyLBVUA9x06inwGJDDxozDGWHTjOfzkPO7pzIYFzZJoAli1/6hqKKT
+	 V/nZ8FDm/D1AlYPz6rbkyBSFV3K6xF264U0y1i3WCId9y6I5cKUXidqxcDYL/QCsQV
+	 rgqnyCQkopeXhkabjVspmy2kBVYKMNVhyYRcO0Y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao Xie <bigfoot@classfun.cn>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Stephen Boyd <swboyd@chromium.org>,
 	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 298/809] drm/msm/dpu: drop duplicate drm formats from wb2_formats arrays
-Date: Tue, 30 Jul 2024 17:42:54 +0200
-Message-ID: <20240730151736.363443929@linuxfoundation.org>
+Subject: [PATCH 6.10 299/809] drm/msm/dp: fix runtime_pm handling in dp_wait_hpd_asserted
+Date: Tue, 30 Jul 2024 17:42:55 +0200
+Message-ID: <20240730151736.403100423@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -69,61 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junhao Xie <bigfoot@classfun.cn>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 6ed817592638348e83facfe6a4deedb8d5e83357 ]
+[ Upstream commit aeacc39e2088a15ee31c8af4f68c84981fa08eb7 ]
 
-There are duplicate items in wb2_formats_rgb and wb2_formats_rgb_yuv,
-which cause weston assertions failed.
+The function dp_wait_hpd_asserted() uses pm_runtime_get_sync() and
+doesn't care about the return value. Potentially this can lead to
+unclocked access if for some reason resuming of the DP controller fails.
 
-weston: libweston/drm-formats.c:131: weston_drm_format_array_add_format:
-Assertion `!weston_drm_format_array_find_format(formats, format)' failed.
+Change the function to use pm_runtime_resume_and_get() and return an
+error if resume fails.
 
-Signed-off-by: Junhao Xie <bigfoot@classfun.cn>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Fixes: 8c16b988ba2d ("drm/msm/dpu: introduce separate wb2_format arrays for rgb and yuv")
-Fixes: 53324b99bd7b ("drm/msm/dpu: add writeback blocks to the sm8250 DPU catalog")
+Fixes: e2969ee30252 ("drm/msm/dp: move of_dp_aux_populate_bus() to eDP probe()")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/596847/
-Link: https://lore.kernel.org/r/20240524150128.1878297-2-bigfoot@classfun.cn
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/580137/
+Link: https://lore.kernel.org/r/20240226223446.4194079-1-dmitry.baryshkov@linaro.org
+[quic_abhinavk@quicinc.com: resolved trivial conflict while rebase]
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_aux.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-index f2b6eac7601dd..9b72977feafa4 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-@@ -220,12 +220,9 @@ static const u32 wb2_formats_rgb[] = {
- 	DRM_FORMAT_RGBA4444,
- 	DRM_FORMAT_RGBX4444,
- 	DRM_FORMAT_XRGB4444,
--	DRM_FORMAT_BGR565,
- 	DRM_FORMAT_BGR888,
--	DRM_FORMAT_ABGR8888,
- 	DRM_FORMAT_BGRA8888,
- 	DRM_FORMAT_BGRX8888,
--	DRM_FORMAT_XBGR8888,
- 	DRM_FORMAT_ABGR1555,
- 	DRM_FORMAT_BGRA5551,
- 	DRM_FORMAT_XBGR1555,
-@@ -254,12 +251,9 @@ static const u32 wb2_formats_rgb_yuv[] = {
- 	DRM_FORMAT_RGBA4444,
- 	DRM_FORMAT_RGBX4444,
- 	DRM_FORMAT_XRGB4444,
--	DRM_FORMAT_BGR565,
- 	DRM_FORMAT_BGR888,
--	DRM_FORMAT_ABGR8888,
- 	DRM_FORMAT_BGRA8888,
- 	DRM_FORMAT_BGRX8888,
--	DRM_FORMAT_XBGR8888,
- 	DRM_FORMAT_ABGR1555,
- 	DRM_FORMAT_BGRA5551,
- 	DRM_FORMAT_XBGR1555,
+diff --git a/drivers/gpu/drm/msm/dp/dp_aux.c b/drivers/gpu/drm/msm/dp/dp_aux.c
+index da46a433bf747..00dfafbebe0e5 100644
+--- a/drivers/gpu/drm/msm/dp/dp_aux.c
++++ b/drivers/gpu/drm/msm/dp/dp_aux.c
+@@ -513,7 +513,10 @@ static int dp_wait_hpd_asserted(struct drm_dp_aux *dp_aux,
+ 
+ 	aux = container_of(dp_aux, struct dp_aux_private, dp_aux);
+ 
+-	pm_runtime_get_sync(aux->dev);
++	ret = pm_runtime_resume_and_get(aux->dev);
++	if (ret)
++		return ret;
++
+ 	ret = dp_catalog_aux_wait_for_hpd_connect_state(aux->catalog, wait_us);
+ 	pm_runtime_put_sync(aux->dev);
+ 
 -- 
 2.43.0
 
