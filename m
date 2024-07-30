@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E25094193D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558139418EC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3257B2B9B4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 873FB1C208CC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A40187FF9;
-	Tue, 30 Jul 2024 16:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4651A6195;
+	Tue, 30 Jul 2024 16:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whsmKt9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8TRNv8T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94EA1A6160;
-	Tue, 30 Jul 2024 16:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B54A1078F;
+	Tue, 30 Jul 2024 16:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356718; cv=none; b=e7ksyqHOdsBTtd3BCminQbZDIW10GCrruO6GYULWzDFWhjwuyAB4CaBvaecQMETHEmfj99a/C2X7oOiJ1BCvtTATCKGZUHDkr8oozTkj+c/HRPvkqTGidmVgGdLNwWd0Jc2NmNffXIG5IecjhAT4KoVqC/SmMeVTtMUQ526iuP0=
+	t=1722356809; cv=none; b=I5cLdOvmHDlsnfN1F9mwaKM3avpSDYNwuvICqLHgy6Ss3fyaIU+C9BQqaxhVBhBdicJlMst55aqlqXl1pkuPhSGe42hqfus4SkG4OXKgY3i+E5vq2fPHTcQWhAtjs+fxnCyH/Ap8lkYXezNi2SIHa5AtYDlJK812/WpQ/0NG7yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356718; c=relaxed/simple;
-	bh=njzlPlunTj+ux/EiRfaDLyUKB2iuei0vGSk1jtg8mqw=;
+	s=arc-20240116; t=1722356809; c=relaxed/simple;
+	bh=hqAccKhctMg1Sp4HjDiEExcxBaLSG7DDYUhIMvMp5bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihrsgKLfveaKq5bq+dXob+9A5BaM3Y2//vMiKZhMBbcZr7yRTopCKyvd14HdGMOXsATS1WFhL2zuL5byJSZ3FShFcdJ5urLmj0TicBk95uvJFo1VvDBPL0dsJKXtILnTVq/1nsHyAsqmp43ezq/d7sd/nF7Jk4rhIIu6xfnZ/Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whsmKt9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619F2C32782;
-	Tue, 30 Jul 2024 16:25:18 +0000 (UTC)
+	 MIME-Version; b=NO83VWCW1YGcToHbtmXvMo4xrbzxibtvm6Vky8ugyFKN5mRCn9EkdreOyYkrjxC5kleUtJN2efk/fhduB3iPW3ATtbgOlfEaBDb5XU2/40CB/17F8eWMSkrP8RrF21RPlqJLQP1XQzCtAY5pYgjBaU08ln+Pg9gG4OZI3bqMq6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8TRNv8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CE0C32782;
+	Tue, 30 Jul 2024 16:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356718;
-	bh=njzlPlunTj+ux/EiRfaDLyUKB2iuei0vGSk1jtg8mqw=;
+	s=korg; t=1722356809;
+	bh=hqAccKhctMg1Sp4HjDiEExcxBaLSG7DDYUhIMvMp5bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=whsmKt9DvDxjXZsqT2SUpVrD2ySrPcA44H2IJvesN/YF/tXjhVcDG3UTJ5IjHbMpA
-	 5Ehl8ThKCb1X60K9YeA1l61HOO/tr/LltjLsWE32ARcxE9ahdDnG3zYXVLVIRTFFrw
-	 wGphbD5NNXZt7asvLEebv6XDK4vp9HQzWHqBMC0s=
+	b=Y8TRNv8TYq5bKOxwS3C9m0ewb39PfEk+ime6fOqBPkgbWT4NquQ4uwETgYlIvOTm9
+	 6/1nYubkSvYFfxWm3hOCufM3VbyzLCIgpYN3y1yx5+UvNW7zGRPB+soqoP10TUkNjn
+	 pYRG0Wn6lHh16akyBW6zpGpumntskKh0fM0ItQYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faiz Abbas <faiz.abbas@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
+	Mukul Joshi <mukul.joshi@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/568] drm/arm/komeda: Fix komeda probe failing if there are no links in the secondary pipeline
-Date: Tue, 30 Jul 2024 17:44:43 +0200
-Message-ID: <20240730151646.760405661@linuxfoundation.org>
+Subject: [PATCH 6.6 177/568] drm/amdkfd: Fix CU Masking for GFX 9.4.3
+Date: Tue, 30 Jul 2024 17:44:44 +0200
+Message-ID: <20240730151646.798385788@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,111 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Faiz Abbas <faiz.abbas@arm.com>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-[ Upstream commit 9054c46d479b55768adae31031a1afa1b7d62228 ]
+[ Upstream commit 85cf43c554e438e2e12b0fe109688c9533e4d93f ]
 
-Since commit 4cfe5cc02e3f ("drm/arm/komeda: Remove component framework and
-add a simple encoder"), the devm_drm_of_get_bridge() call happens
-regardless of whether any remote nodes are available on the pipeline. Fix
-this by moving the bridge attach to its own function and calling it
-conditional on there being an output link.
+We are incorrectly passing the first XCC's MQD when
+updating CU masks for other XCCs in the partition. Fix
+this by passing the MQD for the XCC currently being
+updated with CU mask to update_cu_mask function.
 
-Fixes: 4cfe5cc02e3f ("drm/arm/komeda: Remove component framework and add a simple encoder")
-Signed-off-by: Faiz Abbas <faiz.abbas@arm.com>
-[Corrected Commit-id of the fixed patch to match mainline]
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240219100915.192475-2-faiz.abbas@arm.com
+Fixes: fc6efed2c728 ("drm/amdkfd: Update CU masking for GFX 9.4.3")
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/arm/display/komeda/komeda_crtc.c  | 43 ++++++++++++++-----
- 1 file changed, 32 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
-index 2c661f28410ed..b645c5998230b 100644
---- a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
-@@ -5,6 +5,7 @@
-  *
-  */
- #include <linux/clk.h>
-+#include <linux/of.h>
- #include <linux/pm_runtime.h>
- #include <linux/spinlock.h>
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+index 42d881809dc70..1ac66c5337df4 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+@@ -686,7 +686,7 @@ static void update_mqd_v9_4_3(struct mqd_manager *mm, void *mqd,
+ 		m = get_mqd(mqd + size * xcc);
+ 		update_mqd(mm, m, q, minfo);
  
-@@ -610,12 +611,34 @@ get_crtc_primary(struct komeda_kms_dev *kms, struct komeda_crtc *crtc)
- 	return NULL;
- }
+-		update_cu_mask(mm, mqd, minfo, xcc);
++		update_cu_mask(mm, m, minfo, xcc);
  
-+static int komeda_attach_bridge(struct device *dev,
-+				struct komeda_pipeline *pipe,
-+				struct drm_encoder *encoder)
-+{
-+	struct drm_bridge *bridge;
-+	int err;
-+
-+	bridge = devm_drm_of_get_bridge(dev, pipe->of_node,
-+					KOMEDA_OF_PORT_OUTPUT, 0);
-+	if (IS_ERR(bridge))
-+		return dev_err_probe(dev, PTR_ERR(bridge), "remote bridge not found for pipe: %s\n",
-+				     of_node_full_name(pipe->of_node));
-+
-+	err = drm_bridge_attach(encoder, bridge, NULL, 0);
-+	if (err)
-+		dev_err(dev, "bridge_attach() failed for pipe: %s\n",
-+			of_node_full_name(pipe->of_node));
-+
-+	return err;
-+}
-+
- static int komeda_crtc_add(struct komeda_kms_dev *kms,
- 			   struct komeda_crtc *kcrtc)
- {
- 	struct drm_crtc *crtc = &kcrtc->base;
- 	struct drm_device *base = &kms->base;
--	struct drm_bridge *bridge;
-+	struct komeda_pipeline *pipe = kcrtc->master;
-+	struct drm_encoder *encoder = &kcrtc->encoder;
- 	int err;
- 
- 	err = drm_crtc_init_with_planes(base, crtc,
-@@ -626,27 +649,25 @@ static int komeda_crtc_add(struct komeda_kms_dev *kms,
- 
- 	drm_crtc_helper_add(crtc, &komeda_crtc_helper_funcs);
- 
--	crtc->port = kcrtc->master->of_output_port;
-+	crtc->port = pipe->of_output_port;
- 
- 	/* Construct an encoder for each pipeline and attach it to the remote
- 	 * bridge
- 	 */
- 	kcrtc->encoder.possible_crtcs = drm_crtc_mask(crtc);
--	err = drm_simple_encoder_init(base, &kcrtc->encoder,
--				      DRM_MODE_ENCODER_TMDS);
-+	err = drm_simple_encoder_init(base, encoder, DRM_MODE_ENCODER_TMDS);
- 	if (err)
- 		return err;
- 
--	bridge = devm_drm_of_get_bridge(base->dev, kcrtc->master->of_node,
--					KOMEDA_OF_PORT_OUTPUT, 0);
--	if (IS_ERR(bridge))
--		return PTR_ERR(bridge);
--
--	err = drm_bridge_attach(&kcrtc->encoder, bridge, NULL, 0);
-+	if (pipe->of_output_links[0]) {
-+		err = komeda_attach_bridge(base->dev, pipe, encoder);
-+		if (err)
-+			return err;
-+	}
- 
- 	drm_crtc_enable_color_mgmt(crtc, 0, true, KOMEDA_COLOR_LUT_SIZE);
- 
--	return err;
-+	return 0;
- }
- 
- int komeda_kms_add_crtcs(struct komeda_kms_dev *kms, struct komeda_dev *mdev)
+ 		if (q->format == KFD_QUEUE_FORMAT_AQL) {
+ 			switch (xcc) {
 -- 
 2.43.0
 
