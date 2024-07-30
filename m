@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-64170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2429941CAF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9DD9419B5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D1D31F231BD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C22FC287AD5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C33B1A76DB;
-	Tue, 30 Jul 2024 17:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBF616131C;
+	Tue, 30 Jul 2024 16:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMInluf6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIvQ239Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1481A76C5;
-	Tue, 30 Jul 2024 17:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6871A619E;
+	Tue, 30 Jul 2024 16:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359223; cv=none; b=HLJH7HgNoTTGxPHC4tRWHWGoPqsbmGiah6dMlRv7T2lV8Mb+EG1q4XeXcYCRbsK2DgK4Gefvy1b796fYJPHgHsHLKc66SaKMGg/Y5Fe1NUH/gttJM/hbWcapOAJdi0DvZANhLqvu8Oj/aRlaUsMcACnwxlWkU38dQFL6Aix6Hys=
+	t=1722357324; cv=none; b=r9q61bvarMYdA9EYeuWvuGtIPcWrOdQ1sOXQIl4X/Zk6yws1wIYt4nNxoiYE8pPODA1P7P5WxkhIMLfG3SrxYnLw3JV8owARwVbI65N9B5pNQMsVSRA6ALSJCxDOAAvZ7b42w9OBx7x7Jsy1f4CLCXgx27+N74tafvlZ/qJqIUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359223; c=relaxed/simple;
-	bh=Xge0ZkupSJjSIOKD1jc7WS7+IPoq405yaZqMyhR9Huk=;
+	s=arc-20240116; t=1722357324; c=relaxed/simple;
+	bh=DM1dKYG21kbJHoNYHcz2N/p6e738jfET+QXBzPsWsA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEmlFmPEjBxCKh5DgWDI7C6qmNNyKvGFKsQIns+LmlaYESVk6qK6KQwnW5OCGpM1LT+kFzQ+br/f3AzzOgt0cBArmZFIjjzCPi2dsGKBEGsyRBP/IL7VGpFXMany2YUiaffbNACqSqXZrlY1s0m6Acaqj3I2EJPHZC5Tm3g13D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMInluf6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8125FC32782;
-	Tue, 30 Jul 2024 17:07:02 +0000 (UTC)
+	 MIME-Version; b=LEH7NN2NP0MgxykljTgY/Yrj21T+PWmcdSqNmV9haRcblRbOMFLWEPmLTovaFDfFjT6te2ccXbO/Uv5yIrAGw+PL1CsR/Wgsr5PalVYHtPXYBJP9+A6hRCO6Dj8htVWAKngD3l25RO2gmE0rv9KlJ+oTHqhJu08V9RMFYgzZXZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIvQ239Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BA8C32782;
+	Tue, 30 Jul 2024 16:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359223;
-	bh=Xge0ZkupSJjSIOKD1jc7WS7+IPoq405yaZqMyhR9Huk=;
+	s=korg; t=1722357324;
+	bh=DM1dKYG21kbJHoNYHcz2N/p6e738jfET+QXBzPsWsA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMInluf6c7j3ea5SuCakX8Tu8kwtq/GbkNv7JtLiJf+s+MVt0OTBU8bPUWMizRZQJ
-	 5B2qVOcTQcJr2/9hPHmgD/Gd0ad8macd/CGGMKUIeDKXh7HisV2+Vq/EcA1+gvjOUl
-	 leeHaVlrZ0P5BJOJmALrcl7srN3JvGIuJRuH+y+s=
+	b=UIvQ239QMkYbcMbw61C+BRaAy9KT4lWeXH6NZCeoqRUb29zFHh7a9R4Jt5Rj30/qp
+	 wQRY2mBKYgiel8A94IYPUQAxYyOrZaTJkoUSfO1BnbrrVoL+jgT9qTQrsjRU1Uy0s4
+	 udYceGXyeXEbSu7Z9eSKULtxQg7QlJj4G3k+4dyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominique Martinet <dominique.martinet@atmark-techno.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 453/809] MIPS: Octeron: remove source file executable bit
+	Jonathan Marek <jonathan@marek.ca>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jun Nie <jun.nie@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.6 222/568] drm/msm/dsi: set VIDEO_COMPRESSION_MODE_CTRL_WC
 Date: Tue, 30 Jul 2024 17:45:29 +0200
-Message-ID: <20240730151742.600090081@linuxfoundation.org>
+Message-ID: <20240730151648.558544386@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,29 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit 89c7f5078935872cf47a713a645affb5037be694 ]
+[ Upstream commit 9ecd0ddd223b68b4603e4766a1d51f6c6cda346e ]
 
-This does not matter the least, but there is no other .[ch] file in the
-repo that is executable, so clean this up.
+Video mode DSC won't work if this field is not set correctly. Set it to fix
+video mode DSC (for slice_per_pkt==1 cases at least).
 
-Fixes: 29b83a64df3b ("MIPS: Octeon: Add PCIe link status check")
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jun Nie <jun.nie@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/596234/
+Link: https://lore.kernel.org/r/20240530-msm-drm-dsc-dsi-video-upstream-4-v6-5-2ab1d334c657@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/pcie-octeon.c | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- mode change 100755 => 100644 arch/mips/pci/pcie-octeon.c
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-old mode 100755
-new mode 100644
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index ab393bdaba6cd..77b805eacb1b1 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -832,6 +832,7 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
+ 	u32 slice_per_intf, total_bytes_per_intf;
+ 	u32 pkt_per_line;
+ 	u32 eol_byte_num;
++	u32 bytes_per_pkt;
+ 
+ 	/* first calculate dsc parameters and then program
+ 	 * compress mode registers
+@@ -839,6 +840,7 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
+ 	slice_per_intf = msm_dsc_get_slices_per_intf(dsc, hdisplay);
+ 
+ 	total_bytes_per_intf = dsc->slice_chunk_size * slice_per_intf;
++	bytes_per_pkt = dsc->slice_chunk_size; /* * slice_per_pkt; */
+ 
+ 	eol_byte_num = total_bytes_per_intf % 3;
+ 
+@@ -876,6 +878,7 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
+ 		dsi_write(msm_host, REG_DSI_COMMAND_COMPRESSION_MODE_CTRL, reg_ctrl);
+ 		dsi_write(msm_host, REG_DSI_COMMAND_COMPRESSION_MODE_CTRL2, reg_ctrl2);
+ 	} else {
++		reg |= DSI_VIDEO_COMPRESSION_MODE_CTRL_WC(bytes_per_pkt);
+ 		dsi_write(msm_host, REG_DSI_VIDEO_COMPRESSION_MODE_CTRL, reg);
+ 	}
+ }
 -- 
 2.43.0
 
