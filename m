@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4656941CF6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FD5941EAD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 673F028A667
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DF0EB27753
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4839618A6DC;
-	Tue, 30 Jul 2024 17:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96D61A76BE;
+	Tue, 30 Jul 2024 17:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpO3GZff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EM5AfXmT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B571FBA;
-	Tue, 30 Jul 2024 17:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D4D1A76B2;
+	Tue, 30 Jul 2024 17:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359438; cv=none; b=Zwk6xhQGuT4t2MeRCVe5EKgCOBR0o8zFvScfM6i8OEWWb0c5k0i61Hnmq2CWhJzk4n6jefU9349FdGuAt8wuWDgVLDobpqoveW8uO/jRScQCegS5yfAlmbAE73lvLp6M7ZiGCxtyhztDJdI9/C1qVEDOEimAvFTxahrSYWfeAJM=
+	t=1722360486; cv=none; b=qhswWP36WcKTze1y3c3qXHg5rlpDo3LIq1tnFsfYIQSzed/9cgHIqsOrvgkKjp606KpvCaED8segpbRrVaMj7VhdraVwjZhtGpoi5Ad89GJX0yZxQtj/vUrzNqWUbjyMUp18wzshih0ycetqZ5G6rDYev4ce8BTW8+l3C1xgSHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359438; c=relaxed/simple;
-	bh=DHa5SJJD7XPHgtVurZoGS6qC1HY40mcaDej4bm0ZLgc=;
+	s=arc-20240116; t=1722360486; c=relaxed/simple;
+	bh=y7JHbMFn0veQ6VrSyRMyQ+cjXr7VUEOuIwxL8vdh7RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJmukETXjO+PejXMOVQrH7TmkLhfTEDBogN8M+mUoeM5cBSXrnvWkqIxL2SbxRlSBpHI0qH68KMrismHwu2lBAikdLJ90YHon/QZqA90A+CbuaDtNAWu7oi4534ycj+MVr4w3OmeqlLgDCSp2nvhgNJk2KVobMIzHGKXV+yxcdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpO3GZff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B523C32782;
-	Tue, 30 Jul 2024 17:10:36 +0000 (UTC)
+	 MIME-Version; b=VNacW1qj2YQ3BMlZYBtHlSejlIuuZGJXs9LDrimPTPrsOntbvUziXuq9FsT/o3Rsnj1uRvbP19kdQs8xOPuAkDcf35eLEOlUPvnGu77Dv/TrRs1ppWVZmxXpgUZwIP+0hNJsqZ52OXgnrAI9ofKGzG7csZ2H9w1ahrhC8D/ajkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EM5AfXmT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2992C32782;
+	Tue, 30 Jul 2024 17:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359437;
-	bh=DHa5SJJD7XPHgtVurZoGS6qC1HY40mcaDej4bm0ZLgc=;
+	s=korg; t=1722360486;
+	bh=y7JHbMFn0veQ6VrSyRMyQ+cjXr7VUEOuIwxL8vdh7RI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IpO3GZffDeMG9q6uLoN3IVfbUwYFM8QwW/vj6psyDC3Tx8sCjtrW6mOc8gusz9ewO
-	 dLARp4MFwGneQscg983JmXaTYdbqfRg2u5NpUfmHjYmI+4Hq040RcfAixbatkJDIeQ
-	 VoixlnDnpYHdLIECAGuyhaa6AYJ2b/0cA1XHKaSs=
+	b=EM5AfXmTPTD3yR0PEk4MRp78tKFOr7mOR+wJpfFMfA96eOm5w58t5ok8aRCV3+hZJ
+	 8a7q9NsISJEpEQOLabmw3X9IOFkJlKoHSu8JMOkI8Gys63VlxXxUTqLyUTkN0Zl1Y8
+	 GCtvGklEIpV1QhF3pgLhN0mGuWvMYIJghohyEAWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 482/568] rtc: isl1208: Fix return value of nvmem callbacks
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.10 713/809] platform: mips: cpu_hwmon: Disable driver on unsupported hardware
 Date: Tue, 30 Jul 2024 17:49:49 +0200
-Message-ID: <20240730151658.866392774@linuxfoundation.org>
+Message-ID: <20240730151753.096256006@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 70f1ae5f0e7f44edf842444044615da7b59838c1 upstream.
+commit f4d430db17b4ef4e9c3c352a04b2fe3c93011978 upstream.
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+cpu_hwmon is unsupported on CPUs without loongson_chiptemp
+register and csr.
 
-isl1208_nvmem_read()/isl1208_nvmem_write() currently return the number of
-bytes read/written on success, fix to return 0 on success and negative on
-failure.
-
-Fixes: c3544f6f51ed ("rtc: isl1208: Add new style nvmem support to driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Link: https://lore.kernel.org/r/20240612080831.1227131-1-joychakr@google.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-isl1208.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/platform/mips/cpu_hwmon.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/rtc/rtc-isl1208.c
-+++ b/drivers/rtc/rtc-isl1208.c
-@@ -775,14 +775,13 @@ static int isl1208_nvmem_read(void *priv
- {
- 	struct isl1208_state *isl1208 = priv;
- 	struct i2c_client *client = to_i2c_client(isl1208->rtc->dev.parent);
--	int ret;
+--- a/drivers/platform/mips/cpu_hwmon.c
++++ b/drivers/platform/mips/cpu_hwmon.c
+@@ -139,6 +139,9 @@ static int __init loongson_hwmon_init(vo
+ 		csr_temp_enable = csr_readl(LOONGSON_CSR_FEATURES) &
+ 				  LOONGSON_CSRF_TEMP;
  
- 	/* nvmem sanitizes offset/count for us, but count==0 is possible */
- 	if (!count)
- 		return count;
--	ret = isl1208_i2c_read_regs(client, ISL1208_REG_USR1 + off, buf,
++	if (!csr_temp_enable && !loongson_chiptemp[0])
++		return -ENODEV;
 +
-+	return isl1208_i2c_read_regs(client, ISL1208_REG_USR1 + off, buf,
- 				    count);
--	return ret == 0 ? count : ret;
- }
+ 	nr_packages = loongson_sysconf.nr_cpus /
+ 		loongson_sysconf.cores_per_package;
  
- static int isl1208_nvmem_write(void *priv, unsigned int off, void *buf,
-@@ -790,15 +789,13 @@ static int isl1208_nvmem_write(void *pri
- {
- 	struct isl1208_state *isl1208 = priv;
- 	struct i2c_client *client = to_i2c_client(isl1208->rtc->dev.parent);
--	int ret;
- 
- 	/* nvmem sanitizes off/count for us, but count==0 is possible */
- 	if (!count)
- 		return count;
--	ret = isl1208_i2c_set_regs(client, ISL1208_REG_USR1 + off, buf,
--				   count);
- 
--	return ret == 0 ? count : ret;
-+	return isl1208_i2c_set_regs(client, ISL1208_REG_USR1 + off, buf,
-+				   count);
- }
- 
- static const struct nvmem_config isl1208_nvmem_config = {
 
 
 
