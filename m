@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-64268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF0C941D15
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70515941B29
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB6428ADEB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19F781F230F2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D973A18B466;
-	Tue, 30 Jul 2024 17:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7DC18455E;
+	Tue, 30 Jul 2024 16:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3H1l2/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upDEO7sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9740318B465;
-	Tue, 30 Jul 2024 17:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29029188018;
+	Tue, 30 Jul 2024 16:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359557; cv=none; b=k/59JWrszo2OUfF4JuAhfYEZpqfhzUWVO/Ennai+Vdql3R3aBasUl4DA50zRVZS/BpMzKHA05KWdXl2dwwa2/T2KJxA1XsuHlZPyfCVkC3gPQn6UbkiK9nxdc9bCklbIR6JoUSEU9SS7cHOQqI4VRZ1r1hG9V61uBgqIFPzpEJU=
+	t=1722358300; cv=none; b=fud9bhs0Dm3QYyihjSHT1KYcJYlXrlKPJxRor6djC1iTdyi6K0yqjBt6SZ7388/36qdQ+AcXb5adaWAF3FepBUXIl9OGh5A6FKHT7vdu/m5fnTeD9KyMcgTGHt2eTInJs2LUFP7e8HH2X0fK10NrIeEWRRZ/OBPAVrNGZOkVzu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359557; c=relaxed/simple;
-	bh=wiPhJs73bBT6/LC31h7r3gKllB0vqrUBJBBbt635T4M=;
+	s=arc-20240116; t=1722358300; c=relaxed/simple;
+	bh=+iJOcnB+Zofj1WXR1MNbMVwuCZBHLWnvl3Rg/JHRsro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRuVPforzHS/BwhKRjoURS9cVoCenEQT9nzPDiqWsskKGuIuN+aTlv9uGgL9i8ZWcz0e7s7qDJgxlpX2IFumR3SV+xQlyH98D4yi7nT2s7JpQoUEU6y9me1+7bfop1yssgGiGRTW7cUkioeL0owpL26if+pvUr/o4453kIbZle0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3H1l2/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F6DC4AF0C;
-	Tue, 30 Jul 2024 17:12:36 +0000 (UTC)
+	 MIME-Version; b=LF4GZcoKNk0AcExxAmvwWpI93Otzzdn2mYbV4wCnQakgnXIgVC3DWK4w57YVWVCBMNEmcPvotlgkuTXvyrbfzW6DLQ0HUi6SZ/Uwf9kL5SnCpLm9XSA5dUK8xAIIOZUfPZT4UBRaxOvAksYCFmxpDGSx7IeJK0kAKU+DrMZygAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upDEO7sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B567C32782;
+	Tue, 30 Jul 2024 16:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359557;
-	bh=wiPhJs73bBT6/LC31h7r3gKllB0vqrUBJBBbt635T4M=;
+	s=korg; t=1722358300;
+	bh=+iJOcnB+Zofj1WXR1MNbMVwuCZBHLWnvl3Rg/JHRsro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3H1l2/13eWnvTUuQ+h6e2xZqM/oMdMVP2R13xaCusOHlvLkRLoS3fNtEbIFP9UWd
-	 nQkGODZFBA0GecH7cSQIbZ/8zrgpKoTLz+wYvE4PKqkhswz85BVzuQh0boFzpy0vIi
-	 cMTQcSKvTMs+8K5vGCXNmyc84tD3WYOIWJOu4W1Y=
+	b=upDEO7sjV4ntGpFrLZjT7iQC5cwZtf/RJnRPRwO4rvXTuUSGRKXexlB/REIcEePaq
+	 jiaGVuWdgSLWDazKoBTt4QBZ8zdNnIvrs+t3BXIg2lXkVtwuo8yX7mrlqN2P5f6FIq
+	 cdQ+YnACOKObuWOxrDpKuuSZn5yfY2uJvwxszpHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Furkan Kardame <f.kardame@manjaro.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>
-Subject: [PATCH 6.6 501/568] drm/panfrost: Mark simple_ondemand governor as softdep
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 375/440] MIPS: Loongson64: env: Hook up Loongsson-2K
 Date: Tue, 30 Jul 2024 17:50:08 +0200
-Message-ID: <20240730151659.609558502@linuxfoundation.org>
+Message-ID: <20240730151630.459871732@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 80f4e62730a91572b7fdc657f7bb747e107ae308 upstream.
+commit 77543269ff23c75bebfb8e6e9a1177b350908ea7 upstream.
 
-Panfrost DRM driver uses devfreq to perform DVFS, while using simple_ondemand
-devfreq governor by default.  This causes driver initialization to fail on
-boot when simple_ondemand governor isn't built into the kernel statically,
-as a result of the missing module dependency and, consequently, the required
-governor module not being included in the initial ramdisk.  Thus, let's mark
-simple_ondemand governor as a softdep for Panfrost, to have its kernel module
-included in the initial ramdisk.
+Somehow those enablement bits were left over when we were
+adding initial Loongson-2K support.
 
-This is a rather longstanding issue that has forced distributions to build
-devfreq governors statically into their kernels, [1][2] or has forced users
-to introduce some unnecessary workarounds. [3]
+Set up basic information and select proper builtin DTB for
+Loongson-2K.
 
-For future reference, not having support for the simple_ondemand governor in
-the initial ramdisk produces errors in the kernel log similar to these below,
-which were taken from a Pine64 RockPro64:
-
-  panfrost ff9a0000.gpu: [drm:panfrost_devfreq_init [panfrost]] *ERROR* Couldn't initialize GPU devfreq
-  panfrost ff9a0000.gpu: Fatal error during GPU init
-  panfrost: probe of ff9a0000.gpu failed with error -22
-
-Having simple_ondemand marked as a softdep for Panfrost may not resolve this
-issue for all Linux distributions.  In particular, it will remain unresolved
-for the distributions whose utilities for the initial ramdisk generation do
-not handle the available softdep information [4] properly yet.  However, some
-Linux distributions already handle softdeps properly while generating their
-initial ramdisks, [5] and this is a prerequisite step in the right direction
-for the distributions that don't handle them properly yet.
-
-[1] https://gitlab.manjaro.org/manjaro-arm/packages/core/linux/-/blob/linux61/config?ref_type=heads#L8180
-[2] https://salsa.debian.org/kernel-team/linux/-/merge_requests/1066
-[3] https://forum.pine64.org/showthread.php?tid=15458
-[4] https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
-[5] https://github.com/archlinux/mkinitcpio/commit/97ac4d37aae084a050be512f6d8f4489054668ad
-
-Cc: Diederik de Haas <didi.debian@cknow.org>
-Cc: Furkan Kardame <f.kardame@manjaro.org>
 Cc: stable@vger.kernel.org
-Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/mach-loongson64/boot_param.h |    2 ++
+ arch/mips/loongson64/env.c                         |    8 ++++++++
+ 2 files changed, 10 insertions(+)
 
---- a/drivers/gpu/drm/panfrost/panfrost_drv.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
-@@ -731,3 +731,4 @@ module_platform_driver(panfrost_driver);
- MODULE_AUTHOR("Panfrost Project Developers");
- MODULE_DESCRIPTION("Panfrost DRM Driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_SOFTDEP("pre: governor_simpleondemand");
+--- a/arch/mips/include/asm/mach-loongson64/boot_param.h
++++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+@@ -42,12 +42,14 @@ enum loongson_cpu_type {
+ 	Legacy_1B = 0x5,
+ 	Legacy_2G = 0x6,
+ 	Legacy_2H = 0x7,
++	Legacy_2K = 0x8,
+ 	Loongson_1A = 0x100,
+ 	Loongson_1B = 0x101,
+ 	Loongson_2E = 0x200,
+ 	Loongson_2F = 0x201,
+ 	Loongson_2G = 0x202,
+ 	Loongson_2H = 0x203,
++	Loongson_2K = 0x204,
+ 	Loongson_3A = 0x300,
+ 	Loongson_3B = 0x301
+ };
+--- a/arch/mips/loongson64/env.c
++++ b/arch/mips/loongson64/env.c
+@@ -88,6 +88,12 @@ void __init prom_lefi_init_env(void)
+ 	cpu_clock_freq = ecpu->cpu_clock_freq;
+ 	loongson_sysconf.cputype = ecpu->cputype;
+ 	switch (ecpu->cputype) {
++	case Legacy_2K:
++	case Loongson_2K:
++		smp_group[0] = 0x900000001fe11000;
++		loongson_sysconf.cores_per_node = 2;
++		loongson_sysconf.cores_per_package = 2;
++		break;
+ 	case Legacy_3A:
+ 	case Loongson_3A:
+ 		loongson_sysconf.cores_per_node = 4;
+@@ -221,6 +227,8 @@ void __init prom_lefi_init_env(void)
+ 		default:
+ 			break;
+ 		}
++	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64R) {
++		loongson_fdt_blob = __dtb_loongson64_2core_2k1000_begin;
+ 	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64G) {
+ 		if (loongson_sysconf.bridgetype == LS7A)
+ 			loongson_fdt_blob = __dtb_loongson64g_4core_ls7a_begin;
 
 
 
