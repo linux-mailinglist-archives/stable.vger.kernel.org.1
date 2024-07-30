@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-64230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC43941CF2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9537C9419CE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:36:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42BE81F2410D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8F8D1C228EC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54A01A01C1;
-	Tue, 30 Jul 2024 17:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247741A6192;
+	Tue, 30 Jul 2024 16:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZMnkBjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqBeCVkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9C01A01C0;
-	Tue, 30 Jul 2024 17:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D657B433A9;
+	Tue, 30 Jul 2024 16:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359424; cv=none; b=XB/CEOjyky57sQdi0kBm+87cD2yYZN3RoBcUniJ/WOwexLAeoJ/2ZPDJ+wvBNqP1cIjig/NOTymPE5Y75WZYMN+LU6afIXxnNcoaZhcZeCEhy8+4bV6fSRL7hFgPXErTWTqpNEsYIwkkFuBfVsoA9/1TfnmSlZ+1WEAFquA2rAs=
+	t=1722357395; cv=none; b=IyFlUm6F8iKig1ZsddwpoEYFjvgwS64D+2eF2d7KETFFwpuVgXKqv2WvSKaErZ9998P3UjhIO0t3upTNKxloK1e2OhAnvWBFdNyBowlui4mwgD85+oJjFTYo7TZ+bJhXrZCD0poilzfES7Fi4zUCyQKrZrNdydgoBAIe8iQ7pbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359424; c=relaxed/simple;
-	bh=0IHRJ7MVnnZgCw9Tdjl3AJ2anIEal3qzzIs0BZljTLg=;
+	s=arc-20240116; t=1722357395; c=relaxed/simple;
+	bh=AKAmI5LQmQw7fVwIsFiVQ7VXc3jH9N7HtiCDxTYDBm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqDXc/W5cjiXyABWCrm0RuaaWFehDqhQWf1bBMHMSSK+mD/Nc8NYhc2Big1h5G+alRCwe4j7E1xxEpPC+RVOpp/lprIvVGbIucLFsph71Q32vJ99J5qpqVMheFe5bBcnXYfRtadbNTPr6x//QnOaBuZSgkd3/NvV+QjUERQJrRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZMnkBjy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2357BC32782;
-	Tue, 30 Jul 2024 17:10:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZxqYXFDTrXpPQ9kaoxjPU22m2nYzCgmnzRGbpN8Ys6Hy2H0qtFLx4bJcyyT0KACm4jclO1uCXwdoLzYF+hfRpUIZXM6AELFNSxanMqHH75OXMo3tWJag4KSECLyekLbdjqFrCQ2Lkd4E8B2Yi9cqretC48f58GhKFdtkFcpfYss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqBeCVkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1DBC32782;
+	Tue, 30 Jul 2024 16:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359424;
-	bh=0IHRJ7MVnnZgCw9Tdjl3AJ2anIEal3qzzIs0BZljTLg=;
+	s=korg; t=1722357395;
+	bh=AKAmI5LQmQw7fVwIsFiVQ7VXc3jH9N7HtiCDxTYDBm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZMnkBjyVKHQK9tvLxejxUHIUXvRBH+2QcUVZ9xIMg0NWYWLPz9isoMgKa8/kUM9w
-	 CKWFdkbW9JnF2wzPybA1cjgG5iwZmCjrl8/ZrqUeMxt5tM7/mcSEom8MAwPDB1CN4Y
-	 TYv8ioK0zkg4kwwpde6c9aK/dn3rHI9xzBq0GOlc=
+	b=qqBeCVkgCU6TFYY2k/8H3oXJgERCgi6Xo5MZqDiSQahKkBkeK5wvjDUDnzHkR+ki0
+	 xs9bajPSWTdUQ88FL4PxQZ8/sUwVuV2RfQKQthIX6qxgMYWIQ6T64GM0g7YPjGabjE
+	 /C4AeRCSZ1i11pbWcNqE6qO5MrmswUn/A9EqBwCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Martin Willi <martin@strongswan.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 482/809] net: dsa: mv88e6xxx: Limit chip-wide frame size config to CPU ports
+Subject: [PATCH 6.6 251/568] PCI: keystone: Fix NULL pointer dereference in case of DT error in ks_pcie_setup_rc_app_regs()
 Date: Tue, 30 Jul 2024 17:45:58 +0200
-Message-ID: <20240730151743.774604960@linuxfoundation.org>
+Message-ID: <20240730151649.691096064@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Willi <martin@strongswan.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 66b6095c264e1b4e0a441c6329861806504e06c6 ]
+[ Upstream commit a231707a91f323af1e5d9f1722055ec2fc1c7775 ]
 
-Marvell chips not supporting per-port jumbo frame size configurations use
-a chip-wide frame size configuration. In the commit referenced with the
-Fixes tag, the setting is applied just for the last port changing its MTU.
+If IORESOURCE_MEM is not provided in Device Tree due to
+any error, resource_list_first_type() will return NULL and
+pci_parse_request_of_pci_ranges() will just emit a warning.
 
-While configuring CPU ports accounts for tagger overhead, user ports do
-not. When setting the MTU for a user port, the chip-wide setting is
-reduced to not include the tagger overhead, resulting in an potentially
-insufficient maximum frame size for the CPU port. Specifically, sending
-full-size frames from the CPU port on a MV88E6097 having a user port MTU
-of 1500 bytes results in dropped frames.
+This will cause a NULL pointer dereference. Fix this bug by adding NULL
+return check.
 
-As, by design, the CPU port MTU is adjusted for any user port change,
-apply the chip-wide setting only for CPU ports.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 1baf0fac10fb ("net: dsa: mv88e6xxx: Use chip-wide max frame size for MTU")
-Suggested-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Martin Willi <martin@strongswan.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0f71c60ffd26 ("PCI: dwc: Remove storing of PCI resources")
+Link: https://lore.kernel.org/linux-pci/20240505061517.11527-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 07c897b13de13..5b4e2ce5470d9 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3626,7 +3626,8 @@ static int mv88e6xxx_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
- 	mv88e6xxx_reg_lock(chip);
- 	if (chip->info->ops->port_set_jumbo_size)
- 		ret = chip->info->ops->port_set_jumbo_size(chip, port, new_mtu);
--	else if (chip->info->ops->set_max_frame_size)
-+	else if (chip->info->ops->set_max_frame_size &&
-+		 dsa_is_cpu_port(ds, port))
- 		ret = chip->info->ops->set_max_frame_size(chip, new_mtu);
- 	mv88e6xxx_reg_unlock(chip);
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index 9886fdd415039..54a3c7f29f78a 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -402,17 +402,22 @@ static const struct irq_domain_ops ks_pcie_legacy_irq_domain_ops = {
+ 	.xlate = irq_domain_xlate_onetwocell,
+ };
+ 
+-static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
++static int ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ {
+ 	u32 val;
+ 	u32 num_viewport = ks_pcie->num_viewport;
+ 	struct dw_pcie *pci = ks_pcie->pci;
+ 	struct dw_pcie_rp *pp = &pci->pp;
+-	u64 start, end;
++	struct resource_entry *entry;
+ 	struct resource *mem;
++	u64 start, end;
+ 	int i;
+ 
+-	mem = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM)->res;
++	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
++	if (!entry)
++		return -ENODEV;
++
++	mem = entry->res;
+ 	start = mem->start;
+ 	end = mem->end;
+ 
+@@ -423,7 +428,7 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ 	ks_pcie_clear_dbi_mode(ks_pcie);
+ 
+ 	if (ks_pcie->is_am6)
+-		return;
++		return 0;
+ 
+ 	val = ilog2(OB_WIN_SIZE);
+ 	ks_pcie_app_writel(ks_pcie, OB_SIZE, val);
+@@ -440,6 +445,8 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ 	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
+ 	val |= OB_XLAT_EN_VAL;
+ 	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
++
++	return 0;
+ }
+ 
+ static void __iomem *ks_pcie_other_map_bus(struct pci_bus *bus,
+@@ -801,7 +808,10 @@ static int __init ks_pcie_host_init(struct dw_pcie_rp *pp)
+ 		return ret;
+ 
+ 	ks_pcie_stop_link(pci);
+-	ks_pcie_setup_rc_app_regs(ks_pcie);
++	ret = ks_pcie_setup_rc_app_regs(ks_pcie);
++	if (ret)
++		return ret;
++
+ 	writew(PCI_IO_RANGE_TYPE_32 | (PCI_IO_RANGE_TYPE_32 << 8),
+ 			pci->dbi_base + PCI_IO_BASE);
  
 -- 
 2.43.0
