@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-64533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400B3941E41
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F62B941E11
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDC1C285814
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC7F52888E3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29581A76DE;
-	Tue, 30 Jul 2024 17:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E79E1A76B6;
+	Tue, 30 Jul 2024 17:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLiPgM9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10csClss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEF41A76D9;
-	Tue, 30 Jul 2024 17:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7CB1A76A1;
+	Tue, 30 Jul 2024 17:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360437; cv=none; b=DtEBvbQSMsjpLxJ/kwQd1K0Jvudhfm9QdRNDKkDeMvt7mlAXSabwy5hqwIhsonbfJutQEyMDNgiu7q//K7IWWdypu7kCjt9PXCnes5YlI890OuWR3zsG/ft9zwecjFC8Ljr6euK4bcgr5shkiCqur15rV1X57MckIKiDlm05yGs=
+	t=1722360332; cv=none; b=Zs9Hdt+LG23AHTtYPoQvBu4xrFfgyW1GE4qJUjAWcADz6Cu+QfFVCHgjPxwtK7D/C3C75vy+Gme1VsQ38QFBAHv2r/3CUEx8VHwS9KnTB5u2Guks3lG2TVqSCpZgcdi0EUdYxv/faCfOi5QaidFaWSWbfTg70SWWyhTGG2YN/tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360437; c=relaxed/simple;
-	bh=bAUu+vb47xmKDHMXKVxRr++CVOLpxUWhCOz1zhfFazY=;
+	s=arc-20240116; t=1722360332; c=relaxed/simple;
+	bh=ArkT5sQJ8woeTfXUZdNFQdlxdx5xBNlMRn1dfpKaoz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=joZv1pxSXh5jP3JQG/626qrZCP4BOPseP5ktOZ3UjLdMDVHGTI5P+1ZByz03vFchpssIKiYOZL2n+OA20+gu8pNjT3Jzja3Lvs3pT38q6amJy2VzEhbuoC5MEAwwHRTxJTnpyXfu0w5Ix1BcSXTci1nDSROy/jlxioQPE42S1vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLiPgM9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F407CC4AF0E;
-	Tue, 30 Jul 2024 17:27:16 +0000 (UTC)
+	 MIME-Version; b=MYm4xh8i7QyVGcKjulb+3YiIB2iG1Qg/dcw3jrzOmjdu/vJY/MfFRjzHiDfGQj6LTmTE9ybpy2RLXykjStSghpbF+nEla4Eme668omx6RpOvQQfShyNA6tHqAMlyXi6Awxv74HVDpsC+W2PCCyP1UGzf/6oLQttIxyOB1SLeGp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10csClss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925B5C4AF0E;
+	Tue, 30 Jul 2024 17:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360437;
-	bh=bAUu+vb47xmKDHMXKVxRr++CVOLpxUWhCOz1zhfFazY=;
+	s=korg; t=1722360332;
+	bh=ArkT5sQJ8woeTfXUZdNFQdlxdx5xBNlMRn1dfpKaoz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLiPgM9s6GfeWdirkf0HYzUXrtQUreaNHZqxvOPIPCB1wP6BbwVe6WnyuoYGpUaGX
-	 rLqjxaIcCWTJ7UglstxCVZ1fGyzNCPe5XUBESfNFgtVXobLeIATjgr6u1TL2Q4RRmg
-	 y8HnYEAaEeuM/SOkz3gq75NhzHAEQJWg0dZWZvBI=
+	b=10csClssPJtDteZC3FBmhzkdb+Fn+v1J2BiQTsAXeaTbkg4tE+4xDdi0+ZicvyzwN
+	 G6JX5QS73AoFzIukKAjpl7U9lfG6zHuiwzeRBC61GL8agDLGzYelcMOHu9JE2Gyo5E
+	 nTXzhoFNpkuIlDxFcvsHxs8z2X9BiLLZhb4U9Zg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 658/809] nilfs2: handle inconsistent state in nilfs_btnode_create_block()
-Date: Tue, 30 Jul 2024 17:48:54 +0200
-Message-ID: <20240730151750.880620976@linuxfoundation.org>
+	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	David Lechner <david@lechnology.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.10 659/809] clk: davinci: da8xx-cfgchip: Initialize clk_init_data before use
+Date: Tue, 30 Jul 2024 17:48:55 +0200
+Message-ID: <20240730151750.919564922@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,98 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 
-commit 4811f7af6090e8f5a398fbdd766f903ef6c0d787 upstream.
+commit a83b22754e351f13fb46596c85f667dc33da71ec upstream.
 
-Syzbot reported that a buffer state inconsistency was detected in
-nilfs_btnode_create_block(), triggering a kernel bug.
+The flag attribute of the struct clk_init_data isn't initialized before
+the devm_clk_hw_register() call. This can lead to unexpected behavior
+during registration.
 
-It is not appropriate to treat this inconsistency as a bug; it can occur
-if the argument block address (the buffer index of the newly created
-block) is a virtual block number and has been reallocated due to
-corruption of the bitmap used to manage its allocation state.
+Initialize the entire clk_init_data to zero at declaration.
 
-So, modify nilfs_btnode_create_block() and its callers to treat it as a
-possible filesystem error, rather than triggering a kernel bug.
-
-Link: https://lkml.kernel.org/r/20240725052007.4562-1-konishi.ryusuke@gmail.com
-Fixes: a60be987d45d ("nilfs2: B-tree node cache")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+89cc4f2324ed37988b60@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=89cc4f2324ed37988b60
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 58e1e2d2cd89 ("clk: davinci: cfgchip: Add TI DA8XX USB PHY clocks")
+Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Reviewed-by: David Lechner <david@lechnology.com>
+Link: https://lore.kernel.org/r/20240718115534.41513-1-bastien.curutchet@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/btnode.c |   25 ++++++++++++++++++++-----
- fs/nilfs2/btree.c  |    4 ++--
- 2 files changed, 22 insertions(+), 7 deletions(-)
+ drivers/clk/davinci/da8xx-cfgchip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/btnode.c
-+++ b/fs/nilfs2/btnode.c
-@@ -51,12 +51,21 @@ nilfs_btnode_create_block(struct address
+--- a/drivers/clk/davinci/da8xx-cfgchip.c
++++ b/drivers/clk/davinci/da8xx-cfgchip.c
+@@ -508,7 +508,7 @@ da8xx_cfgchip_register_usb0_clk48(struct
+ 	const char * const parent_names[] = { "usb_refclkin", "pll0_auxclk" };
+ 	struct clk *fck_clk;
+ 	struct da8xx_usb0_clk48 *usb0;
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	int ret;
  
- 	bh = nilfs_grab_buffer(inode, btnc, blocknr, BIT(BH_NILFS_Node));
- 	if (unlikely(!bh))
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
+ 	fck_clk = devm_clk_get(dev, "fck");
+@@ -583,7 +583,7 @@ da8xx_cfgchip_register_usb1_clk48(struct
+ {
+ 	const char * const parent_names[] = { "usb0_clk48", "usb_refclkin" };
+ 	struct da8xx_usb1_clk48 *usb1;
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	int ret;
  
- 	if (unlikely(buffer_mapped(bh) || buffer_uptodate(bh) ||
- 		     buffer_dirty(bh))) {
--		brelse(bh);
--		BUG();
-+		/*
-+		 * The block buffer at the specified new address was already
-+		 * in use.  This can happen if it is a virtual block number
-+		 * and has been reallocated due to corruption of the bitmap
-+		 * used to manage its allocation state (if not, the buffer
-+		 * clearing of an abandoned b-tree node is missing somewhere).
-+		 */
-+		nilfs_error(inode->i_sb,
-+			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
-+			    (unsigned long long)blocknr, inode->i_ino);
-+		goto failed;
- 	}
- 	memset(bh->b_data, 0, i_blocksize(inode));
- 	bh->b_bdev = inode->i_sb->s_bdev;
-@@ -67,6 +76,12 @@ nilfs_btnode_create_block(struct address
- 	folio_unlock(bh->b_folio);
- 	folio_put(bh->b_folio);
- 	return bh;
-+
-+failed:
-+	folio_unlock(bh->b_folio);
-+	folio_put(bh->b_folio);
-+	brelse(bh);
-+	return ERR_PTR(-EIO);
- }
- 
- int nilfs_btnode_submit_block(struct address_space *btnc, __u64 blocknr,
-@@ -217,8 +232,8 @@ retry:
- 	}
- 
- 	nbh = nilfs_btnode_create_block(btnc, newkey);
--	if (!nbh)
--		return -ENOMEM;
-+	if (IS_ERR(nbh))
-+		return PTR_ERR(nbh);
- 
- 	BUG_ON(nbh == obh);
- 	ctxt->newbh = nbh;
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -63,8 +63,8 @@ static int nilfs_btree_get_new_block(con
- 	struct buffer_head *bh;
- 
- 	bh = nilfs_btnode_create_block(btnc, ptr);
--	if (!bh)
--		return -ENOMEM;
-+	if (IS_ERR(bh))
-+		return PTR_ERR(bh);
- 
- 	set_buffer_nilfs_volatile(bh);
- 	*bhp = bh;
+ 	usb1 = devm_kzalloc(dev, sizeof(*usb1), GFP_KERNEL);
 
 
 
