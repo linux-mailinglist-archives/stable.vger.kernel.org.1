@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-62986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3E8941691
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 852C4941692
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C7B0B23701
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 406732870F0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A8E20FA84;
-	Tue, 30 Jul 2024 16:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8711D2139A4;
+	Tue, 30 Jul 2024 16:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OChfNWHO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNcHU7H0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6F4200129;
-	Tue, 30 Jul 2024 16:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FD92101B8;
+	Tue, 30 Jul 2024 16:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355287; cv=none; b=UdkwN9xUdLagx0NdYTpY6XykGTqomNkvtbD+y6gHTxWM8asxDA2XfPzKAPXy5JfsOX1bp6mQG5VVnxTD9Xnu9T9qwyNMi0Kg9GMTnHKm6ZWe7H0L7ksSXBHo5JjtHXsMitNaQOzfJ7IodB2P0fB/PPuArmfFx7599Hn9w4czs4E=
+	t=1722355297; cv=none; b=CUYRjaZ3OSq7ZV2aSgAGRrNEbwLiXjclWWiKMLVfZ5BQqbhspp7u/P1WRx9XCVW13M9Q3qihV6Pp5gJPlCylu9W4o7UYg0cE2AKqP1Qw2rzQxbtKQKBSpqq5k3QByHKiCtZaljTKwn74Qiss494pxv9hCoNhp1K5MC9f96gzzTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355287; c=relaxed/simple;
-	bh=OJxZz3AEtz8DPmbiKyw+anxaA+m+8VSC35wicn53m4M=;
+	s=arc-20240116; t=1722355297; c=relaxed/simple;
+	bh=rnAqj1S5ic/JXaCqQSv6dcXWS9nxJxXWlifCHEt35x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mmtOYxJ07cDZnnJ70m/XRXd7MUIDz/sz7xAUcrjSemU/Jz0saFvs5onx3dz2kcFlKt8/DGVmY7GlKZTeCxeX5tXhYovvawgTCacJreAfyg+j+LglVfX20NpC5Ve/BDXkIC1s6j0azCeKdGXqDIZLmF1ngYN8HTyWJKPwUVeTodQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OChfNWHO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F833C32782;
-	Tue, 30 Jul 2024 16:01:26 +0000 (UTC)
+	 MIME-Version; b=fFQyq+UAVMF54ax4NZFUUt9XPe2Fx/7kf8xB931KET5D70C3FVn1OMkGSNLTPp48Cfeuisn4bh/1DUnURCtief+VThD9QqEygBTPX6s8YOasSAZYrHfNbpKLoanWjpfaTVtL7RINIoUXwdKOW9jG5uei3Bp70JmcrMn2SZA1CZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNcHU7H0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D36C32782;
+	Tue, 30 Jul 2024 16:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355286;
-	bh=OJxZz3AEtz8DPmbiKyw+anxaA+m+8VSC35wicn53m4M=;
+	s=korg; t=1722355296;
+	bh=rnAqj1S5ic/JXaCqQSv6dcXWS9nxJxXWlifCHEt35x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OChfNWHO0vZEYx+VbKe623SMprQpR8QsmFdTFGYQGqiwMyCXRPWERZwfCA0+osBR+
-	 BWYSdcjKfReKRhhL+/zyjiuQnMhYNafAq4lfEaA4m1HA6okUaqslM+dv/UwCxVzoQ/
-	 2o/RwxGOVom9cpQtwsAni+9kzEeFgnQhcEnjCAYE=
+	b=dNcHU7H0Uyh0OY4qc3xPxgkvIGky3F8+Fr4DWxsWOW37Mo4UNqlUfTJcbq/nnJXdc
+	 xAa5ogkNHwf9pnWUkJ3ZbqrAjOpYJhJ6HOvlYYDG+fju3TNAV2qLy5cUEsRXOoeTXF
+	 ocNquT7U3DKInuWVrq3GOSmBNGnYYwjXB3+5+KqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Arun R Murthy <arun.r.murthy@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 037/809] pwm: atmel-tcb: Fix race condition and convert to guards
-Date: Tue, 30 Jul 2024 17:38:33 +0200
-Message-ID: <20240730151726.116862799@linuxfoundation.org>
+Subject: [PATCH 6.10 038/809] drm/xe/display/xe_hdcp_gsc: Free arbiter on driver removal
+Date: Tue, 30 Jul 2024 17:38:34 +0200
+Message-ID: <20240730151726.155741208@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -61,107 +63,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Nirmoy Das <nirmoy.das@intel.com>
 
-[ Upstream commit 37f7707077f5ea2515bf4b1dc7fad43f8e12993e ]
+[ Upstream commit 609458abd5a10180f513ca364d6c0ae30128c821 ]
 
-The hardware only supports a single period length for both PWM outputs. So
-atmel_tcb_pwm_config() checks the configuration of the other output if it's
-compatible with the currently requested setting. The register values are
-then actually updated in atmel_tcb_pwm_enable(). To make this race free
-the lock must be held during the whole process, so grab the lock in
-.apply() instead of individually in atmel_tcb_pwm_disable() and
-atmel_tcb_pwm_enable() which then also covers atmel_tcb_pwm_config().
+Free arbiter allocated in intel_hdcp_gsc_init().
 
-To simplify handling, use the guard helper to let the compiler care for
-unlocking. Otherwise unlocking would be more difficult as there is more
-than one exit path in atmel_tcb_pwm_apply().
-
-Fixes: 9421bade0765 ("pwm: atmel: add Timer Counter Block PWM driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20240709101806.52394-3-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 152f2df954d8 ("drm/xe/hdcp: Enable HDCP for XE")
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240708125918.23573-1-nirmoy.das@intel.com
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+(cherry picked from commit 33891539f9d6f245e93a76e3fb5791338180374f)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-atmel-tcb.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/xe/display/xe_hdcp_gsc.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
-index 528e54c5999d8..aca11493239a5 100644
---- a/drivers/pwm/pwm-atmel-tcb.c
-+++ b/drivers/pwm/pwm-atmel-tcb.c
-@@ -81,7 +81,8 @@ static int atmel_tcb_pwm_request(struct pwm_chip *chip,
- 	tcbpwm->period = 0;
- 	tcbpwm->div = 0;
- 
--	spin_lock(&tcbpwmc->lock);
-+	guard(spinlock)(&tcbpwmc->lock);
-+
- 	regmap_read(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), &cmr);
- 	/*
- 	 * Get init config from Timer Counter registers if
-@@ -107,7 +108,6 @@ static int atmel_tcb_pwm_request(struct pwm_chip *chip,
- 
- 	cmr |= ATMEL_TC_WAVE | ATMEL_TC_WAVESEL_UP_AUTO | ATMEL_TC_EEVT_XC0;
- 	regmap_write(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), cmr);
--	spin_unlock(&tcbpwmc->lock);
- 
- 	return 0;
- }
-@@ -137,7 +137,6 @@ static void atmel_tcb_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm,
- 	if (tcbpwm->duty == 0)
- 		polarity = !polarity;
- 
--	spin_lock(&tcbpwmc->lock);
- 	regmap_read(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), &cmr);
- 
- 	/* flush old setting and set the new one */
-@@ -172,8 +171,6 @@ static void atmel_tcb_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm,
- 			     ATMEL_TC_SWTRG);
- 		tcbpwmc->bkup.enabled = 0;
- 	}
--
--	spin_unlock(&tcbpwmc->lock);
- }
- 
- static int atmel_tcb_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm,
-@@ -194,7 +191,6 @@ static int atmel_tcb_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm,
- 	if (tcbpwm->duty == 0)
- 		polarity = !polarity;
- 
--	spin_lock(&tcbpwmc->lock);
- 	regmap_read(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), &cmr);
- 
- 	/* flush old setting and set the new one */
-@@ -256,7 +252,6 @@ static int atmel_tcb_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm,
- 	regmap_write(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CCR),
- 		     ATMEL_TC_SWTRG | ATMEL_TC_CLKEN);
- 	tcbpwmc->bkup.enabled = 1;
--	spin_unlock(&tcbpwmc->lock);
- 	return 0;
- }
- 
-@@ -341,9 +336,12 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- static int atmel_tcb_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			       const struct pwm_state *state)
+diff --git a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
+index d46f87a039f20..b3d3c065dd9d8 100644
+--- a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
++++ b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
+@@ -159,12 +159,16 @@ void intel_hdcp_gsc_fini(struct xe_device *xe)
  {
-+	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
- 	int duty_cycle, period;
- 	int ret;
+ 	struct intel_hdcp_gsc_message *hdcp_message =
+ 					xe->display.hdcp.hdcp_message;
++	struct i915_hdcp_arbiter *arb = xe->display.hdcp.arbiter;
  
-+	guard(spinlock)(&tcbpwmc->lock);
-+
- 	if (!state->enabled) {
- 		atmel_tcb_pwm_disable(chip, pwm, state->polarity);
- 		return 0;
+-	if (!hdcp_message)
+-		return;
++	if (hdcp_message) {
++		xe_bo_unpin_map_no_vm(hdcp_message->hdcp_bo);
++		kfree(hdcp_message);
++		xe->display.hdcp.hdcp_message = NULL;
++	}
+ 
+-	xe_bo_unpin_map_no_vm(hdcp_message->hdcp_bo);
+-	kfree(hdcp_message);
++	kfree(arb);
++	xe->display.hdcp.arbiter = NULL;
+ }
+ 
+ static int xe_gsc_send_sync(struct xe_device *xe,
 -- 
 2.43.0
 
