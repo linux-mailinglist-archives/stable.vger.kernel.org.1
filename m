@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-64362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBB2941DA3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66CC94192C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9ACC8B2872D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D76B9B2A609
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E551D1A76B8;
-	Tue, 30 Jul 2024 17:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7141189903;
+	Tue, 30 Jul 2024 16:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYtU054O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jfxo0Lnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46621A76B1;
-	Tue, 30 Jul 2024 17:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661161A6186;
+	Tue, 30 Jul 2024 16:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359869; cv=none; b=lrbz7MIZDpDjIxso0suGFii3n8lStT8FZQ2vPUWIBfVqjemeFjqlZaTz/xWV/0UBOlDU/DEPC8KfswCBTU9LTTyPJy7feDEtCJpqGBUqC6ew3+v6H8C5B8CRt0dZm3v6tyMw9Xbt+ekGZsQToH6qX8+O9TIbba+tFLmdg9QxC3Y=
+	t=1722356421; cv=none; b=PysXidiSgt5pzo11hY0yj/gyoq0UBj62imjILd/l89O5Nws9FQBd7GzSgV7fv/UdxS8KdB3KwOIcV/WH0D1t9acWLga6d2gjF7tGEhCB3kNR5yEJUNPyEsQttCpjAm58xz2u28NEiu11iQs0dF87HT/6ekrbkl0VCFVBYobX2pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359869; c=relaxed/simple;
-	bh=PM+Jpe9f8/YbFjXYi6+YtkX/I1j6FrclMQMcmNh0Mkg=;
+	s=arc-20240116; t=1722356421; c=relaxed/simple;
+	bh=zDAjgR3bSFhJPBmFdbmuDTkiihQPBBgI+tFk47qXwLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPzs0oo5U4lfuZCIN0owmi9WmttiqUvGBaDSocJSluedOzuPhphUqEB4s/wD1yqxGF/5PsKfESIZf68rHKblvNKGI9+FyfedzxlRok558DM0zR8Szu3E7iW61qMND/zfCGOpW2uAEGwqIWl08oPjllPL6vl5oAjpSnLmxW89mtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYtU054O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D34C4AF0C;
-	Tue, 30 Jul 2024 17:17:48 +0000 (UTC)
+	 MIME-Version; b=RNFmko/54lXdEOAJ2k9tT9+/Zrn9Ii3lF/RyVzsi57aiiYSuF5XDjdj/nP/srqPZvlm6dLUQUhCbFdsR8V8c4T0YjS1apeCD5Eyx9CXCYpY3PqiqIrGCwfWY002WAdfDngyTfKUVUFkwAq4Lv0kG8PUC8cT4q4N+gYrNjXERhRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jfxo0Lnf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9127C32782;
+	Tue, 30 Jul 2024 16:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359869;
-	bh=PM+Jpe9f8/YbFjXYi6+YtkX/I1j6FrclMQMcmNh0Mkg=;
+	s=korg; t=1722356421;
+	bh=zDAjgR3bSFhJPBmFdbmuDTkiihQPBBgI+tFk47qXwLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYtU054OLs62WxDUty0Pa4sLdYUpow4Laur8BSLgPd5DJScYqYZypIVkROv3Qb9sW
-	 9pMEpoYKmzjq/cHaV20FcUeu7Z6500/fKP7b+mTYCFf3NAQJHjIzGqVBdGgkJwzrEp
-	 hu1HW2ARbTbHZDYd6VEzHaiega9WLbZWm3vOoTIo=
+	b=Jfxo0LnfTgnL0hKr+OOse1UUzyEyZq2qAkxsOpAnLMXzkxcTR15cUjH/nPY61OpGZ
+	 z/SgVHG9FCZffbM+79KJ6BaA4KPBHWguSnrnPIrvBxZI8ReyUqxwDAEO9b8yzIobN+
+	 RtE05ygB9TATaCijrk6bqF/PrM5M4ppHlZ4eoyhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.10 547/809] dt-bindings: thermal: correct thermal zone node name limit
+	Nayna Jain <nayna@linux.ibm.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	Russell Currey <ruscur@russell.cc>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 190/440] powerpc/pseries: Expose PLPKS config values, support additional fields
 Date: Tue, 30 Jul 2024 17:47:03 +0200
-Message-ID: <20240730151746.359528600@linuxfoundation.org>
+Message-ID: <20240730151623.294442877@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,295 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Nayna Jain <nayna@linux.ibm.com>
 
-commit 97e32381d0fc6c2602a767b0c46e15eb2b75971d upstream.
+[ Upstream commit 119da30d037dced29118fb90afe683ff50313386 ]
 
-Linux kernel uses thermal zone node name during registering thermal
-zones and has a hard-coded limit of 20 characters, including terminating
-NUL byte.  The bindings expect node names to finish with '-thermal'
-which is eight bytes long, thus we have only 11 characters for the reset
-of the node name (thus 10 for the pattern after leading fixed character).
+The plpks driver uses the H_PKS_GET_CONFIG hcall to retrieve configuration
+and status information about the PKS from the hypervisor.
 
-Reported-by: Rob Herring <robh@kernel.org>
-Closes: https://lore.kernel.org/all/CAL_JsqKogbT_4DPd1n94xqeHaU_J8ve5K09WOyVsRX3jxxUW3w@mail.gmail.com/
-Fixes: 1202a442a31f ("dt-bindings: thermal: Add yaml bindings for thermal zones")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240702145248.47184-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Update _plpks_get_config() to handle some additional fields. Add getter
+functions to allow the PKS configuration information to be accessed from
+other files. Validate that the values we're getting comply with the spec.
+
+While we're here, move the config struct in _plpks_get_config() off the
+stack - it's getting large and we also need to make sure it doesn't cross
+a page boundary.
+
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+[ajd: split patch, extend to support additional v3 API fields, minor fixes]
+Co-developed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20230210080401.345462-17-ajd@linux.ibm.com
+Stable-dep-of: 932bed412170 ("powerpc/kexec_file: fix cpus node update to FDT")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/thermal/thermal-zones.yaml |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/plpks.h       |  58 ++++++++++
+ arch/powerpc/platforms/pseries/plpks.c | 149 +++++++++++++++++++++++--
+ 2 files changed, 195 insertions(+), 12 deletions(-)
 
---- a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-+++ b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-@@ -49,7 +49,10 @@ properties:
-       to take when the temperature crosses those thresholds.
+diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
+index 44c3d93fb5e7d..8dab5c26c1e41 100644
+--- a/arch/powerpc/include/asm/plpks.h
++++ b/arch/powerpc/include/asm/plpks.h
+@@ -95,6 +95,64 @@ int plpks_read_fw_var(struct plpks_var *var);
+  */
+ int plpks_read_bootloader_var(struct plpks_var *var);
  
- patternProperties:
--  "^[a-zA-Z][a-zA-Z0-9\\-]{1,12}-thermal$":
-+  # Node name is limited in size due to Linux kernel requirements - 19
-+  # characters in total (see THERMAL_NAME_LENGTH, including terminating NUL
-+  # byte):
-+  "^[a-zA-Z][a-zA-Z0-9\\-]{1,10}-thermal$":
-     type: object
-     description:
-       Each thermal zone node contains information about how frequently it
++/**
++ * Returns if PKS is available on this LPAR.
++ */
++bool plpks_is_available(void);
++
++/**
++ * Returns version of the Platform KeyStore.
++ */
++u8 plpks_get_version(void);
++
++/**
++ * Returns hypervisor storage overhead per object, not including the size of
++ * the object or label. Only valid for config version >= 2
++ */
++u16 plpks_get_objoverhead(void);
++
++/**
++ * Returns maximum password size. Must be >= 32 bytes
++ */
++u16 plpks_get_maxpwsize(void);
++
++/**
++ * Returns maximum object size supported by Platform KeyStore.
++ */
++u16 plpks_get_maxobjectsize(void);
++
++/**
++ * Returns maximum object label size supported by Platform KeyStore.
++ */
++u16 plpks_get_maxobjectlabelsize(void);
++
++/**
++ * Returns total size of the configured Platform KeyStore.
++ */
++u32 plpks_get_totalsize(void);
++
++/**
++ * Returns used space from the total size of the Platform KeyStore.
++ */
++u32 plpks_get_usedspace(void);
++
++/**
++ * Returns bitmask of policies supported by the hypervisor.
++ */
++u32 plpks_get_supportedpolicies(void);
++
++/**
++ * Returns maximum byte size of a single object supported by the hypervisor.
++ * Only valid for config version >= 3
++ */
++u32 plpks_get_maxlargeobjectsize(void);
++
++/**
++ * Returns bitmask of signature algorithms supported for signed updates.
++ * Only valid for config version >= 3
++ */
++u64 plpks_get_signedupdatealgorithms(void);
++
+ #endif // CONFIG_PSERIES_PLPKS
+ 
+ #endif // _ASM_POWERPC_PLPKS_H
+diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
+index 1c43c4febd3da..2b659f2b01214 100644
+--- a/arch/powerpc/platforms/pseries/plpks.c
++++ b/arch/powerpc/platforms/pseries/plpks.c
+@@ -24,8 +24,16 @@ static u8 *ospassword;
+ static u16 ospasswordlength;
+ 
+ // Retrieved with H_PKS_GET_CONFIG
++static u8 version;
++static u16 objoverhead;
+ static u16 maxpwsize;
+ static u16 maxobjsize;
++static s16 maxobjlabelsize;
++static u32 totalsize;
++static u32 usedspace;
++static u32 supportedpolicies;
++static u32 maxlargeobjectsize;
++static u64 signedupdatealgorithms;
+ 
+ struct plpks_auth {
+ 	u8 version;
+@@ -206,32 +214,149 @@ static struct label *construct_label(char *component, u8 varos, u8 *name,
+ static int _plpks_get_config(void)
+ {
+ 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = { 0 };
+-	struct {
++	struct config {
+ 		u8 version;
+ 		u8 flags;
+-		__be32 rsvd0;
++		__be16 rsvd0;
++		__be16 objoverhead;
+ 		__be16 maxpwsize;
+ 		__be16 maxobjlabelsize;
+ 		__be16 maxobjsize;
+ 		__be32 totalsize;
+ 		__be32 usedspace;
+ 		__be32 supportedpolicies;
+-		__be64 rsvd1;
+-	} __packed config;
++		__be32 maxlargeobjectsize;
++		__be64 signedupdatealgorithms;
++		u8 rsvd1[476];
++	} __packed * config;
+ 	size_t size;
+-	int rc;
++	int rc = 0;
++
++	size = sizeof(*config);
++
++	// Config struct must not cross a page boundary. So long as the struct
++	// size is a power of 2, this should be fine as alignment is guaranteed
++	config = kzalloc(size, GFP_KERNEL);
++	if (!config) {
++		rc = -ENOMEM;
++		goto err;
++	}
++
++	rc = plpar_hcall(H_PKS_GET_CONFIG, retbuf, virt_to_phys(config), size);
++
++	if (rc != H_SUCCESS) {
++		rc = pseries_status_to_err(rc);
++		goto err;
++	}
++
++	version = config->version;
++	objoverhead = be16_to_cpu(config->objoverhead);
++	maxpwsize = be16_to_cpu(config->maxpwsize);
++	maxobjsize = be16_to_cpu(config->maxobjsize);
++	maxobjlabelsize = be16_to_cpu(config->maxobjlabelsize);
++	totalsize = be32_to_cpu(config->totalsize);
++	usedspace = be32_to_cpu(config->usedspace);
++	supportedpolicies = be32_to_cpu(config->supportedpolicies);
++	maxlargeobjectsize = be32_to_cpu(config->maxlargeobjectsize);
++	signedupdatealgorithms = be64_to_cpu(config->signedupdatealgorithms);
++
++	// Validate that the numbers we get back match the requirements of the spec
++	if (maxpwsize < 32) {
++		pr_err("Invalid Max Password Size received from hypervisor (%d < 32)\n", maxpwsize);
++		rc = -EIO;
++		goto err;
++	}
++
++	if (maxobjlabelsize < 255) {
++		pr_err("Invalid Max Object Label Size received from hypervisor (%d < 255)\n",
++		       maxobjlabelsize);
++		rc = -EIO;
++		goto err;
++	}
+ 
+-	size = sizeof(config);
++	if (totalsize < 4096) {
++		pr_err("Invalid Total Size received from hypervisor (%d < 4096)\n", totalsize);
++		rc = -EIO;
++		goto err;
++	}
++
++	if (version >= 3 && maxlargeobjectsize >= 65536 && maxobjsize != 0xFFFF) {
++		pr_err("Invalid Max Object Size (0x%x != 0xFFFF)\n", maxobjsize);
++		rc = -EIO;
++		goto err;
++	}
++
++err:
++	kfree(config);
++	return rc;
++}
++
++u8 plpks_get_version(void)
++{
++	return version;
++}
+ 
+-	rc = plpar_hcall(H_PKS_GET_CONFIG, retbuf, virt_to_phys(&config), size);
++u16 plpks_get_objoverhead(void)
++{
++	return objoverhead;
++}
+ 
+-	if (rc != H_SUCCESS)
+-		return pseries_status_to_err(rc);
++u16 plpks_get_maxpwsize(void)
++{
++	return maxpwsize;
++}
+ 
+-	maxpwsize = be16_to_cpu(config.maxpwsize);
+-	maxobjsize = be16_to_cpu(config.maxobjsize);
++u16 plpks_get_maxobjectsize(void)
++{
++	return maxobjsize;
++}
++
++u16 plpks_get_maxobjectlabelsize(void)
++{
++	return maxobjlabelsize;
++}
++
++u32 plpks_get_totalsize(void)
++{
++	return totalsize;
++}
++
++u32 plpks_get_usedspace(void)
++{
++	// Unlike other config values, usedspace regularly changes as objects
++	// are updated, so we need to refresh.
++	int rc = _plpks_get_config();
++	if (rc) {
++		pr_err("Couldn't get config, rc: %d\n", rc);
++		return 0;
++	}
++	return usedspace;
++}
++
++u32 plpks_get_supportedpolicies(void)
++{
++	return supportedpolicies;
++}
++
++u32 plpks_get_maxlargeobjectsize(void)
++{
++	return maxlargeobjectsize;
++}
++
++u64 plpks_get_signedupdatealgorithms(void)
++{
++	return signedupdatealgorithms;
++}
++
++bool plpks_is_available(void)
++{
++	int rc;
++
++	rc = _plpks_get_config();
++	if (rc)
++		return false;
+ 
+-	return 0;
++	return true;
+ }
+ 
+ static int plpks_confirm_object_flushed(struct label *label,
+-- 
+2.43.0
+
 
 
 
