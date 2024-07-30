@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-63882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D93941B1A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AEA9417E1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB481C22176
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E63A1C227C3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8031898ED;
-	Tue, 30 Jul 2024 16:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBD41898E1;
+	Tue, 30 Jul 2024 16:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qo6KH1Mt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyfiRH8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2CF155CB3;
-	Tue, 30 Jul 2024 16:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF24418800D;
+	Tue, 30 Jul 2024 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358255; cv=none; b=QMITfDf+FK9RU7B7xfQGKQgNA8zwolve1dHsTdcUoNafxStB+HolEPmJPDwrbJ9K5+8jqwlg14aFQOIWSS5dult2NGI3C2QXfKHIx9pLTFETV+sFwthSqETb659arY46A4eNTTh84FMJt6BX9aXBo3A2Iad5IqhYhfLeOUM0el4=
+	t=1722356034; cv=none; b=KSpM6aOtSqJBiKBPTD2FeDUGycPjpyfWuG/yxvJ8ms+Cu6CFTKVB1pmW+C9i2TI3iM+nanfy3lOxnNlaGoljmSqxvRDU9S5EYp9hjzQHUki3M+NyqVuAoeQWISzGQuKLTVA/+v0BFAJv+tMZxSvSJ5P16uV3MDKhKsc/X0zvgWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358255; c=relaxed/simple;
-	bh=QvTBFMZDBkVgYH4bvZcp79ePTr059fJyCpfEajQEtnc=;
+	s=arc-20240116; t=1722356034; c=relaxed/simple;
+	bh=OaFfzLIIXi229kP/zwqAxTXJxEuhEs/votJnIVD3KnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJVWpcvdMF2uyVTxz2Ss4/A+x1l2KXR26ydnIjgziU02DbL46CRG2nBlc70H1s+pz6mypALEyHxgFu8fEeKc9W2fbHBq8Jz1z1dmjZq+hgZ9YUWsebggZJN7tn/0JF0uSVEjDaZ40qWHyqiIY3Ba42PYHlS1TfUfvWXt5oMc4sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qo6KH1Mt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CF6C4AF0A;
-	Tue, 30 Jul 2024 16:50:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EXWLUs7Sw3+CANTW8rfy0wEJR6aHh6cEcY36/5jn0aUw1/hpNZ1gmMkMSpmX3wl4xaNjc1Le3JI2e7fhoc8X/loEGaqik68dYMW/mbxNhNA+sj4+KRongnaVctYypGXUGLlw4rCeWwcrUF18ZuEr3BJiv9nvrQ3PYPZr2MpNmsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyfiRH8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BEAC32782;
+	Tue, 30 Jul 2024 16:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358255;
-	bh=QvTBFMZDBkVgYH4bvZcp79ePTr059fJyCpfEajQEtnc=;
+	s=korg; t=1722356034;
+	bh=OaFfzLIIXi229kP/zwqAxTXJxEuhEs/votJnIVD3KnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qo6KH1Mtdzg//ZSbvV6PuD3KGRkaZ9CwIP3MsdXXitkSZdmcwCcaJJAfByKSz9FcP
-	 dNdDJU4o67yh/msUaq2RFcS2zm1k986vywIz+mou0I/Ut/TDisecrxpRpv/dcEPiOl
-	 CkTMqMjMVmDtIu1mmFXjWkyfWupNG0zuLtdzDBWk=
+	b=VyfiRH8rRhz5VsbvEsyj/m2JIYCF2ix+dBjs+YsNL7snGGWb7r8RdABo2gd5bwf62
+	 aA8XuGBw/knD4b760t51gopdlyKmIDH6TqFRdC864WXNCNTtigIk+eNm9GakxY5LGM
+	 RzM1vQ+ASUmY0LUjGvZfkI7YoODBOQzVfeA3p51w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 339/809] drm/msm/dpu: drop validity checks for clear_pending_flush() ctl op
+Subject: [PATCH 6.6 108/568] firmware: turris-mox-rwtm: Fix checking return value of wait_for_completion_timeout()
 Date: Tue, 30 Jul 2024 17:43:35 +0200
-Message-ID: <20240730151738.013398696@linuxfoundation.org>
+Message-ID: <20240730151644.096680276@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 3d68e3dedd4b48f0358bdc187277e3315d8aa559 ]
+[ Upstream commit 8467cfe821ac3526f7598682ad5f90689fa8cc49 ]
 
-clear_pending_flush() ctl op is always assigned irrespective of the DPU
-hardware revision. Hence there is no needed to check whether the op has
-been assigned before calling it.
+The wait_for_completion_timeout() function returns 0 if timed out, and a
+positive value if completed. Fix the usage of this function.
 
-Drop the checks across the driver for clear_pending_flush() and also
-update its documentation that it is always expected to be assigned.
-
-changes in v2:
-	- instead of adding more validity checks just drop the one for clear_pending_flush
-	- update the documentation for clear_pending_flush() ctl op
-	- update the commit text reflecting these changes
-
-changes in v3:
-	- simplify the documentation of clear_pending_flush
-
-Fixes: d7d0e73f7de3 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/464fbd84-0d1c-43c3-a40b-31656ac06456@moroto.mountain/T/
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/600241/
-Link: https://lore.kernel.org/r/20240620201731.3694593-1-quic_abhinavk@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 389711b37493 ("firmware: Add Turris Mox rWTM firmware driver")
+Fixes: 2eab59cf0d20 ("firmware: turris-mox-rwtm: fail probing when firmware does not support hwrng")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c         | 3 +--
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c | 3 +--
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h          | 3 ++-
- 3 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/firmware/turris-mox-rwtm.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 708657598cce4..697ad4a640516 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -1743,8 +1743,7 @@ void dpu_encoder_trigger_kickoff_pending(struct drm_encoder *drm_enc)
- 		phys = dpu_enc->phys_encs[i];
+diff --git a/drivers/firmware/turris-mox-rwtm.c b/drivers/firmware/turris-mox-rwtm.c
+index efd35d308aac9..4b92ac3339872 100644
+--- a/drivers/firmware/turris-mox-rwtm.c
++++ b/drivers/firmware/turris-mox-rwtm.c
+@@ -202,9 +202,8 @@ static int mox_get_board_info(struct mox_rwtm *rwtm)
+ 	if (ret < 0)
+ 		return ret;
  
- 		ctl = phys->hw_ctl;
--		if (ctl->ops.clear_pending_flush)
--			ctl->ops.clear_pending_flush(ctl);
-+		ctl->ops.clear_pending_flush(ctl);
+-	ret = wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2);
+-	if (ret < 0)
+-		return ret;
++	if (!wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2))
++		return -ETIMEDOUT;
  
- 		/* update only for command mode primary ctl */
- 		if ((phys == dpu_enc->cur_master) &&
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-index 356dca5e5ea94..882c717859cec 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-@@ -538,8 +538,7 @@ static void dpu_encoder_phys_wb_disable(struct dpu_encoder_phys *phys_enc)
- 	}
+ 	ret = mox_get_status(MBOX_CMD_BOARD_INFO, reply->retval);
+ 	if (ret == -ENODATA) {
+@@ -238,9 +237,8 @@ static int mox_get_board_info(struct mox_rwtm *rwtm)
+ 	if (ret < 0)
+ 		return ret;
  
- 	/* reset h/w before final flush */
--	if (phys_enc->hw_ctl->ops.clear_pending_flush)
--		phys_enc->hw_ctl->ops.clear_pending_flush(phys_enc->hw_ctl);
-+	phys_enc->hw_ctl->ops.clear_pending_flush(phys_enc->hw_ctl);
+-	ret = wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2);
+-	if (ret < 0)
+-		return ret;
++	if (!wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2))
++		return -ETIMEDOUT;
  
- 	/*
- 	 * New CTL reset sequence from 5.0 MDP onwards.
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
-index ef56280bea932..4401fdc0f3e4f 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_ctl.h
-@@ -83,7 +83,8 @@ struct dpu_hw_ctl_ops {
+ 	ret = mox_get_status(MBOX_CMD_ECDSA_PUB_KEY, reply->retval);
+ 	if (ret == -ENODATA) {
+@@ -277,9 +275,8 @@ static int check_get_random_support(struct mox_rwtm *rwtm)
+ 	if (ret < 0)
+ 		return ret;
  
- 	/**
- 	 * Clear the value of the cached pending_flush_mask
--	 * No effect on hardware
-+	 * No effect on hardware.
-+	 * Required to be implemented.
- 	 * @ctx       : ctl path ctx pointer
- 	 */
- 	void (*clear_pending_flush)(struct dpu_hw_ctl *ctx);
+-	ret = wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2);
+-	if (ret < 0)
+-		return ret;
++	if (!wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2))
++		return -ETIMEDOUT;
+ 
+ 	return mox_get_status(MBOX_CMD_GET_RANDOM, rwtm->reply.retval);
+ }
 -- 
 2.43.0
 
