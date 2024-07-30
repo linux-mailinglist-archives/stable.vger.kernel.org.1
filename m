@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E66941BA9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C8C941EBE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C8EA1C21475
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70CDE284F88
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6982F189907;
-	Tue, 30 Jul 2024 16:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EF7188017;
+	Tue, 30 Jul 2024 17:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI/BepNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIN75mec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D66918801A;
-	Tue, 30 Jul 2024 16:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781411A76C6;
+	Tue, 30 Jul 2024 17:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358651; cv=none; b=gzfpqFdoFNQozkkDf1fyUGwiiaA0gf7sCx3QyBhfo4sIGBEL/v5tO6+v3VoEpoANsiBmSn3zOyb5f8jJM2S0FWVZnkgD0RoSSg6aSgYWLxyBk6OJhmMgJWmU8JhFcm4dSHWjibBF6hQKPz0mzGOyZSKDrqY1f27notW2tmOC/Pc=
+	t=1722360758; cv=none; b=DYAB2ih9TEbRp2XOcqTiZNX+5Geijq56SRxw+72mHI3BR14ELkDblhwl0vFhRecXwibxvUQzkfzuM/582TftMLazq1loB42Sfagahm7Ifmcc3JRogvzyIxxdp+wjl3yCF7Zf6IaScppNmJoQOind0cA6kf7C5NGOPZzBI6I21u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358651; c=relaxed/simple;
-	bh=hcE8Q87pnKE7knxxiCxAntOFPkd+S62rkW8Ay2jfuSA=;
+	s=arc-20240116; t=1722360758; c=relaxed/simple;
+	bh=kM/JvdGRVIbVDGk7JuAdHe6F3JBMqU3e8ZUsVEntq68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5wodbb26rxi8p+VaN7Dw6K34uc/129sHXPVTH05iagYKEbz1tv+3Acbp8w27Uj/H3+Ky/o4GHM/RGIGncdup8gbQjgWTM0oPUf+JDBEYF/NXH6WIHyHMZ56E+mkE4zar1hCy5USNfRxM7LmTxpqdom76dOv3XKTLvstMl38WUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI/BepNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF77C32782;
-	Tue, 30 Jul 2024 16:57:30 +0000 (UTC)
+	 MIME-Version; b=SW7XyoK5p6HSWlRx40MnvaLyibdoHxP2ViRKBmtIWnfhucGRGgNXOjsQaKK76k87cigYV5fIi4Xri9MNYM+6uCXfJLB3bMYdvTN46Bu5VAxgH4Y8orlk0I+z03ekaj5q09GALBpLs0uiGQqFCOBkx9dZLNW6ebo3AGEU+TfbPKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIN75mec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8C7C32782;
+	Tue, 30 Jul 2024 17:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358651;
-	bh=hcE8Q87pnKE7knxxiCxAntOFPkd+S62rkW8Ay2jfuSA=;
+	s=korg; t=1722360758;
+	bh=kM/JvdGRVIbVDGk7JuAdHe6F3JBMqU3e8ZUsVEntq68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XI/BepNCuGteBB09/cjrh2rSPSy6FQlJUnCDR2vW/tDSVYmi+Je6vHWUO+lJDgcpj
-	 vvaz85LxeNphpjp3/WCEBA/XaEEtNLpUVW1xnkIqO0ORjU9IqiopRzu/tW9gnUMDp5
-	 9LCZ2cZn74uSCwJyJkUAJpqQpHa5ZU/TxybupCUY=
+	b=OIN75mecor/KshnWSHKi/C563ULiXdQw6j1sZsY3dSJZOnV8wHRBYvesNd/fNMvPS
+	 AJkVe+pWnL8LXqHAq1u3rUttLSI1SB+1ZCWydrpRHdSFpAEGuTQv5iFjsMZ+WnvTQH
+	 JP1Rq0uVhzVgvPEu7KezYTzuQ6oRjPFlCcv0OwN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Johannes Nixdorf <jnixdorf-oss@avm.de>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 410/440] MIPS: SMP-CPS: Fix address for GCR_ACCESS register for CM3 and later
+Subject: [PATCH 6.10 767/809] selftests: forwarding: skip if kernel not support setting bridge fdb learning limit
 Date: Tue, 30 Jul 2024 17:50:43 +0200
-Message-ID: <20240730151631.808281374@linuxfoundation.org>
+Message-ID: <20240730151755.260114446@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit a263e5f309f32301e1f3ad113293f4e68a82a646 ]
+[ Upstream commit 863ff546fb62a8fa75757a30794ab6ec6cc4bab7 ]
 
-When the CM block migrated from CM2.5 to CM3.0, the address offset for
-the Global CSR Access Privilege register was modified. We saw this in
-the "MIPS64 I6500 Multiprocessing System Programmer's Guide," it is
-stated that "the Global CSR Access Privilege register is located at
-offset 0x0120" in section 5.4. It is at least the same for I6400.
+If the testing kernel doesn't support setting fdb_max_learned or show
+fdb_n_learned, just skip it. Or we will get errors like
 
-This fix allows to use the VP cores in SMP mode if the reset values
-were modified by the bootloader.
+./bridge_fdb_learning_limit.sh: line 218: [: null: integer expression expected
+./bridge_fdb_learning_limit.sh: line 225: [: null: integer expression expected
 
-Based on the work of Vladimir Kondratiev
-<vladimir.kondratiev@mobileye.com> and the feedback from Jiaxun Yang
-<jiaxun.yang@flygoat.com>.
-
-Fixes: 197e89e0984a ("MIPS: mips-cm: Implement mips_cm_revision")
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 6f84090333bb ("selftests: forwarding: bridge_fdb_learning_limit: Add a new selftest")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Johannes Nixdorf <jnixdorf-oss@avm.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h | 4 ++++
- arch/mips/kernel/smp-cps.c      | 5 ++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ .../forwarding/bridge_fdb_learning_limit.sh    | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 23c67c0871b17..696b40beb774f 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -228,6 +228,10 @@ GCR_ACCESSOR_RO(32, 0x0d0, gic_status)
- GCR_ACCESSOR_RO(32, 0x0f0, cpc_status)
- #define CM_GCR_CPC_STATUS_EX			BIT(0)
+diff --git a/tools/testing/selftests/net/forwarding/bridge_fdb_learning_limit.sh b/tools/testing/selftests/net/forwarding/bridge_fdb_learning_limit.sh
+index 0760a34b71146..a21b7085da2e9 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_fdb_learning_limit.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_fdb_learning_limit.sh
+@@ -178,6 +178,22 @@ fdb_del()
+ 	check_err $? "Failed to remove a FDB entry of type ${type}"
+ }
  
-+/* GCR_ACCESS - Controls core/IOCU access to GCRs */
-+GCR_ACCESSOR_RW(32, 0x120, access_cm3)
-+#define CM_GCR_ACCESS_ACCESSEN			GENMASK(7, 0)
++check_fdb_n_learned_support()
++{
++	if ! ip link help bridge 2>&1 | grep -q "fdb_max_learned"; then
++		echo "SKIP: iproute2 too old, missing bridge max learned support"
++		exit $ksft_skip
++	fi
 +
- /* GCR_L2_CONFIG - Indicates L2 cache configuration when Config5.L2C=1 */
- GCR_ACCESSOR_RW(32, 0x130, l2_config)
- #define CM_GCR_L2_CONFIG_BYPASS			BIT(20)
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index bcd6a944b8397..739997e6fd655 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -230,7 +230,10 @@ static void boot_core(unsigned int core, unsigned int vpe_id)
- 	write_gcr_co_reset_ext_base(CM_GCR_Cx_RESET_EXT_BASE_UEB);
++	ip link add dev br0 type bridge
++	local learned=$(fdb_get_n_learned)
++	ip link del dev br0
++	if [ "$learned" == "null" ]; then
++		echo "SKIP: kernel too old; bridge fdb_n_learned feature not supported."
++		exit $ksft_skip
++	fi
++}
++
+ check_accounting_one_type()
+ {
+ 	local type=$1 is_counted=$2 overrides_learned=$3
+@@ -274,6 +290,8 @@ check_limit()
+ 	done
+ }
  
- 	/* Ensure the core can access the GCRs */
--	set_gcr_access(1 << core);
-+	if (mips_cm_revision() < CM_REV_CM3)
-+		set_gcr_access(1 << core);
-+	else
-+		set_gcr_access_cm3(1 << core);
++check_fdb_n_learned_support
++
+ trap cleanup EXIT
  
- 	if (mips_cpc_present()) {
- 		/* Reset the core */
+ setup_prepare
 -- 
 2.43.0
 
