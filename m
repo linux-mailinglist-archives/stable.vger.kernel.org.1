@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27358941BCE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7047941874
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C47861F23463
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D425283D70
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DF51898E0;
-	Tue, 30 Jul 2024 16:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30631A619C;
+	Tue, 30 Jul 2024 16:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfqgdQx8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsD2/PTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3F41898ED;
-	Tue, 30 Jul 2024 16:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713331A6160;
+	Tue, 30 Jul 2024 16:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358759; cv=none; b=CAFGVdrULoC+IzC2DNZFAgBCKXq1iDPDsKj1KSZRXgXiI1iqSbvB4+URzvtQmJW8JV9G1cE+9jbVtsZ68O8wggFQ/FQn1o9QqkNTEm3TyLBAy1QgqwJhQmQDusHdTJxQ24i/8TSrfs63ESv2QOgFntYajSwCxkcqmY8k29hnPvo=
+	t=1722356521; cv=none; b=qtGP8fC2ny9Ho2nxUI4B2Zylap992EzJKZkMs/ayh8c5vWZqzj/SXk//ZYcDiQQUAvKwSiRZifZPJNx1qnvcM0LtMgORcNOVG9clSHB61V99Ut0kD+Zr3seBEwU319sOU1PVv+Cm7gPn+oFkdVOFqMwMAEB6PIHYLB6RkglsgvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358759; c=relaxed/simple;
-	bh=5X4maXJGYAF+3HHNxZ4SWAhlXsrxrGu4oJYCuzBMlyw=;
+	s=arc-20240116; t=1722356521; c=relaxed/simple;
+	bh=IvPKmq9lsOJ7s9u0d6xT7kZZ36myknibkSQw64LjUzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKCi2lu/aNFhbUHoVgD+CagUf1BPAJxPBGaWPURxktiIIt50C+Yg4Vz4eDyYvR3rjNgBJbPL1l53NugqkxvBqeRHj+FqhMuwm7SKbtksPROlcOPPuRjcTyFUgsmTZ0cQP9kL2OpS2dVTSfODdVeDf07VvBznlLvgWgQTMXdasQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfqgdQx8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAE9C32782;
-	Tue, 30 Jul 2024 16:59:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A2Jbhbh0xc3KBWjeYd4U2mX4fhcDUMyUBm3kjiIFtciF+GtyyR2S6y4ziu0rqE2LnoYGExp7D73G3niwbhnOwwVqF1jB/U9Of5ymqH7N3d2VnpOMEbZUXqeJ2Nq/v7R3VtngQGUamzJtmqyO5WOOSEztxYV+Y927l9k5IW3z4Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsD2/PTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7FEC32782;
+	Tue, 30 Jul 2024 16:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358758;
-	bh=5X4maXJGYAF+3HHNxZ4SWAhlXsrxrGu4oJYCuzBMlyw=;
+	s=korg; t=1722356521;
+	bh=IvPKmq9lsOJ7s9u0d6xT7kZZ36myknibkSQw64LjUzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfqgdQx8UAkJfeN0kbrEIOuChiSMToqeWtGZREUbCjPWUQFWztM9MoIHkl+PvhPQE
-	 tRd6ojgLlcJ6CLZMlTjclcmBpD03QYaF04uc5FPOskxnaUCGORD5yANwqFz0ftOIbD
-	 uYXJlNgjBduFgJRu1nBHOxUvs9kEcs0hT2LrrXfo=
+	b=SsD2/PTWILVulMkyF41gHrX/N+bod6keFmASTeTfOkQ/BTvzJQJlp7jAJ54j5mKfM
+	 eB0cKoGPbqk+EzNioDxy2R+mCc2nGvFzRXnT82S17WgqbQIqP9i8f6G9cYF2BvgD1a
+	 UxnKLwpHF5/Zs4XnJbXmiBpckuxqjulIsde6+jrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 368/809] xprtrdma: Fix rpcrdma_reqs_reset()
+Subject: [PATCH 6.6 137/568] net: fec: Refactor: #define magic constants
 Date: Tue, 30 Jul 2024 17:44:04 +0200
-Message-ID: <20240730151739.190262375@linuxfoundation.org>
+Message-ID: <20240730151645.230876808@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +61,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Csókás Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit acd9f2dd23c632568156217aac7a05f5a0313152 ]
+[ Upstream commit ff049886671ccd4e624a30ec464cb20e4c39a313 ]
 
-Avoid FastReg operations getting MW_BIND_ERR after a reconnect.
+Add defines for bits of ECR, RCR control registers, TX watermark etc.
 
-rpcrdma_reqs_reset() is called on transport tear-down to get each
-rpcrdma_req back into a clean state.
-
-MRs on req->rl_registered are waiting for a FastReg, are already
-registered, or are waiting for invalidation. If the transport is
-being torn down when reqs_reset() is called, the matching LocalInv
-might never be posted. That leaves these MR registered /and/ on
-req->rl_free_mrs, where they can be re-used for the next
-connection.
-
-Since xprtrdma does not keep specific track of the MR state, it's
-not possible to know what state these MRs are in, so the only safe
-thing to do is release them immediately.
-
-Fixes: 5de55ce951a1 ("xprtrdma: Release in-flight MRs on disconnect")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Csókás Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20240212153717.10023-1-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c32fe1986f27 ("net: fec: Fix FEC_ECR_EN1588 being cleared on link-down")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/frwr_ops.c |  3 ++-
- net/sunrpc/xprtrdma/verbs.c    | 16 +++++++++++++++-
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 46 +++++++++++++++--------
+ 1 file changed, 30 insertions(+), 16 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/frwr_ops.c b/net/sunrpc/xprtrdma/frwr_ops.c
-index ffbf99894970e..47f33bb7bff81 100644
---- a/net/sunrpc/xprtrdma/frwr_ops.c
-+++ b/net/sunrpc/xprtrdma/frwr_ops.c
-@@ -92,7 +92,8 @@ static void frwr_mr_put(struct rpcrdma_mr *mr)
- 	rpcrdma_mr_push(mr, &mr->mr_req->rl_free_mrs);
- }
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index d675f9d5f3612..08d6d7a6ac42e 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -283,8 +283,8 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC address");
+ #define PKT_MINBUF_SIZE		64
  
--/* frwr_reset - Place MRs back on the free list
-+/**
-+ * frwr_reset - Place MRs back on @req's free list
-  * @req: request to reset
-  *
-  * Used after a failed marshal. For FRWR, this means the MRs
-diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
-index 432557a553e7e..a0b071089e159 100644
---- a/net/sunrpc/xprtrdma/verbs.c
-+++ b/net/sunrpc/xprtrdma/verbs.c
-@@ -897,6 +897,8 @@ static int rpcrdma_reqs_setup(struct rpcrdma_xprt *r_xprt)
+ /* FEC receive acceleration */
+-#define FEC_RACC_IPDIS		(1 << 1)
+-#define FEC_RACC_PRODIS		(1 << 2)
++#define FEC_RACC_IPDIS		BIT(1)
++#define FEC_RACC_PRODIS		BIT(2)
+ #define FEC_RACC_SHIFT16	BIT(7)
+ #define FEC_RACC_OPTIONS	(FEC_RACC_IPDIS | FEC_RACC_PRODIS)
  
- static void rpcrdma_req_reset(struct rpcrdma_req *req)
+@@ -316,8 +316,23 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC address");
+ #define FEC_MMFR_TA		(2 << 16)
+ #define FEC_MMFR_DATA(v)	(v & 0xffff)
+ /* FEC ECR bits definition */
+-#define FEC_ECR_MAGICEN		(1 << 2)
+-#define FEC_ECR_SLEEP		(1 << 3)
++#define FEC_ECR_RESET           BIT(0)
++#define FEC_ECR_ETHEREN         BIT(1)
++#define FEC_ECR_MAGICEN         BIT(2)
++#define FEC_ECR_SLEEP           BIT(3)
++#define FEC_ECR_EN1588          BIT(4)
++#define FEC_ECR_BYTESWP         BIT(8)
++/* FEC RCR bits definition */
++#define FEC_RCR_LOOP            BIT(0)
++#define FEC_RCR_HALFDPX         BIT(1)
++#define FEC_RCR_MII             BIT(2)
++#define FEC_RCR_PROMISC         BIT(3)
++#define FEC_RCR_BC_REJ          BIT(4)
++#define FEC_RCR_FLOWCTL         BIT(5)
++#define FEC_RCR_RMII            BIT(8)
++#define FEC_RCR_10BASET         BIT(9)
++/* TX WMARK bits */
++#define FEC_TXWMRK_STRFWD       BIT(8)
+ 
+ #define FEC_MII_TIMEOUT		30000 /* us */
+ 
+@@ -1041,7 +1056,7 @@ fec_restart(struct net_device *ndev)
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+ 	u32 temp_mac[2];
+ 	u32 rcntl = OPT_FRAME_SIZE | 0x04;
+-	u32 ecntl = 0x2; /* ETHEREN */
++	u32 ecntl = FEC_ECR_ETHEREN;
+ 
+ 	/* Whack a reset.  We should wait for this.
+ 	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
+@@ -1116,18 +1131,18 @@ fec_restart(struct net_device *ndev)
+ 		    fep->phy_interface == PHY_INTERFACE_MODE_RGMII_TXID)
+ 			rcntl |= (1 << 6);
+ 		else if (fep->phy_interface == PHY_INTERFACE_MODE_RMII)
+-			rcntl |= (1 << 8);
++			rcntl |= FEC_RCR_RMII;
+ 		else
+-			rcntl &= ~(1 << 8);
++			rcntl &= ~FEC_RCR_RMII;
+ 
+ 		/* 1G, 100M or 10M */
+ 		if (ndev->phydev) {
+ 			if (ndev->phydev->speed == SPEED_1000)
+ 				ecntl |= (1 << 5);
+ 			else if (ndev->phydev->speed == SPEED_100)
+-				rcntl &= ~(1 << 9);
++				rcntl &= ~FEC_RCR_10BASET;
+ 			else
+-				rcntl |= (1 << 9);
++				rcntl |= FEC_RCR_10BASET;
+ 		}
+ 	} else {
+ #ifdef FEC_MIIGSK_ENR
+@@ -1186,13 +1201,13 @@ fec_restart(struct net_device *ndev)
+ 
+ 	if (fep->quirks & FEC_QUIRK_ENET_MAC) {
+ 		/* enable ENET endian swap */
+-		ecntl |= (1 << 8);
++		ecntl |= FEC_ECR_BYTESWP;
+ 		/* enable ENET store and forward mode */
+-		writel(1 << 8, fep->hwp + FEC_X_WMRK);
++		writel(FEC_TXWMRK_STRFWD, fep->hwp + FEC_X_WMRK);
+ 	}
+ 
+ 	if (fep->bufdesc_ex)
+-		ecntl |= (1 << 4);
++		ecntl |= FEC_ECR_EN1588;
+ 
+ 	if (fep->quirks & FEC_QUIRK_DELAYED_CLKS_SUPPORT &&
+ 	    fep->rgmii_txc_dly)
+@@ -1291,7 +1306,7 @@ static void
+ fec_stop(struct net_device *ndev)
  {
-+	struct rpcrdma_mr *mr;
-+
- 	/* Credits are valid for only one connection */
- 	req->rl_slot.rq_cong = 0;
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+-	u32 rmii_mode = readl(fep->hwp + FEC_R_CNTRL) & (1 << 8);
++	u32 rmii_mode = readl(fep->hwp + FEC_R_CNTRL) & FEC_RCR_RMII;
+ 	u32 val;
  
-@@ -906,7 +908,19 @@ static void rpcrdma_req_reset(struct rpcrdma_req *req)
- 	rpcrdma_regbuf_dma_unmap(req->rl_sendbuf);
- 	rpcrdma_regbuf_dma_unmap(req->rl_recvbuf);
- 
--	frwr_reset(req);
-+	/* The verbs consumer can't know the state of an MR on the
-+	 * req->rl_registered list unless a successful completion
-+	 * has occurred, so they cannot be re-used.
-+	 */
-+	while ((mr = rpcrdma_mr_pop(&req->rl_registered))) {
-+		struct rpcrdma_buffer *buf = &mr->mr_xprt->rx_buf;
-+
-+		spin_lock(&buf->rb_lock);
-+		list_del(&mr->mr_all);
-+		spin_unlock(&buf->rb_lock);
-+
-+		frwr_mr_release(mr);
-+	}
+ 	/* We cannot expect a graceful transmit stop without link !!! */
+@@ -1310,7 +1325,7 @@ fec_stop(struct net_device *ndev)
+ 		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES) {
+ 			writel(0, fep->hwp + FEC_ECNTRL);
+ 		} else {
+-			writel(1, fep->hwp + FEC_ECNTRL);
++			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
+ 			udelay(10);
+ 		}
+ 	} else {
+@@ -1324,12 +1339,11 @@ fec_stop(struct net_device *ndev)
+ 	/* We have to keep ENET enabled to have MII interrupt stay working */
+ 	if (fep->quirks & FEC_QUIRK_ENET_MAC &&
+ 		!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
+-		writel(2, fep->hwp + FEC_ECNTRL);
++		writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
+ 		writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
+ 	}
  }
  
- /* ASSUMPTION: the rb_allreqs list is stable for the duration,
+-
+ static void
+ fec_timeout(struct net_device *ndev, unsigned int txqueue)
+ {
 -- 
 2.43.0
 
