@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A6D941DC6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:21:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194BA941B4A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FFBD28D50F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:21:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03236B28A17
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D97E1A76BD;
-	Tue, 30 Jul 2024 17:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70161189918;
+	Tue, 30 Jul 2024 16:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebhIrSal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4czmV1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5051A76BB;
-	Tue, 30 Jul 2024 17:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E56118990F;
+	Tue, 30 Jul 2024 16:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360073; cv=none; b=CJvD/ZTDXofUxiuBTF+wWIYM7LGLuEyNlG7ClX28dadAbUgUh5QdAjCEuLqSM86KHuKqXnTelU5vmRQc2thjNUAfNRwIgp+510msBdFMfR4eGWO7pfYvepLaWNU5PPSPFaNy7Rzeeuq8wI9Rhk02gh9FOYbccL0MaaNElfElr5E=
+	t=1722358374; cv=none; b=ujt4023BW6hsQlGuAL4iLyVYPbgb6A1sRkm0OrnvyCrwIYw0+peiJRoLDsmNv19k8Lqaev899jqTx6gq6pZayLj5bq3nYnVd5RpssEh6zKhEx+2E5S8GSm9OpDS/5j08KBMsKwhVqlp5YfCEjqOdUh4AWuBRBYn+bb6XTAyl1WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360073; c=relaxed/simple;
-	bh=T2oZ7DP78vjR2DklgO8PMK9+F7jEXAhQQiJEgb9YM24=;
+	s=arc-20240116; t=1722358374; c=relaxed/simple;
+	bh=g08NX8RCgw5QWkW6V4z6kfHEWHEezv5hbrbXcQZTlKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7CHOlC1FhMzM1iX4Lsg02sGwVOdl5GxeURvfO36+TMFlx4WlO9lA3pdjbsfPBQGlDeUcrA/CoLkrrwohYERn/nTXZ8uQimUBzLKAILoOAOPdFKzWrn8FSTEIxtwoIkH78ZoiQ41pLqzDBahsEh13zOrycacHdq4UdWOuYJEURE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebhIrSal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7E8C32782;
-	Tue, 30 Jul 2024 17:21:12 +0000 (UTC)
+	 MIME-Version; b=f6KTDckBer5ak6uPpvl0RNOdFRDFWeIt/Mz4CQmDYF35lBfTH3J/0Af/4EnDN8k0+rsysEtC+cb7aifIbCv+4IMuyg9dbEvG0OLETLUeZHNEwGrqESF4kIRgxJfb6xqHbkQXQ1asQ5wAmmQySW4YfJQuHIRlRf0Nv0GOq+iY/y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4czmV1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F73BC4AF0C;
+	Tue, 30 Jul 2024 16:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360073;
-	bh=T2oZ7DP78vjR2DklgO8PMK9+F7jEXAhQQiJEgb9YM24=;
+	s=korg; t=1722358374;
+	bh=g08NX8RCgw5QWkW6V4z6kfHEWHEezv5hbrbXcQZTlKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebhIrSalNJG5dOs7MOYQXNfN8l3xsfwzxf/javr4eDO45l722QQYWo7JZAnseZFsZ
-	 csOf1uzqJVc9qDA2GWmFRcwhX1XMTxlOZ1EQA0q5LP7HgwtdRta88JtlC2PK5Y52Xo
-	 FMXgEv6YtQBPWjxmA2J1jaq7O5zMHtWNvbi/LtFA=
+	b=Y4czmV1l5HU/ZsqifW4WRth0/uqURQYaHIshndMZBLgUG1+TkeMPuMFD3cUDzcs0C
+	 tvcIzHf5GdaSqzHjfLTIrkCcO1NMy9GAsaCIhhu+h1avrcIhxKVSarFKXCSsV/i4d2
+	 Cj7HELRXh4h4gU9y4yEtZG7ugJr4jl9Vk88S2y7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.10 587/809] task_work: s/task_work_cancel()/task_work_cancel_func()/
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 356/568] LoongArch: Check TIF_LOAD_WATCH to enable user space watchpoint
 Date: Tue, 30 Jul 2024 17:47:43 +0200
-Message-ID: <20240730151748.016045188@linuxfoundation.org>
+Message-ID: <20240730151653.778918299@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 68cbd415dd4b9c5b9df69f0f091879e56bf5907a upstream.
+[ Upstream commit 3892b11eac5aaaeefbf717f1953288b77759d9e2 ]
 
-A proper task_work_cancel() API that actually cancels a callback and not
-*any* callback pointing to a given function is going to be needed for
-perf events event freeing. Do the appropriate rename to prepare for
-that.
+Currently, there are some places to set CSR.PRMD.PWE, the first one is
+in hw_breakpoint_thread_switch() to enable user space singlestep via
+checking TIF_SINGLESTEP, the second one is in hw_breakpoint_control() to
+enable user space watchpoint. For the latter case, it should also check
+TIF_LOAD_WATCH to make the logic correct and clear.
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240621091601.18227-2-frederic@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8e57ab0995c ("LoongArch: Trigger user-space watchpoints correctly")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/task_work.h |    2 +-
- kernel/irq/manage.c       |    2 +-
- kernel/task_work.c        |   10 +++++-----
- security/keys/keyctl.c    |    2 +-
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ arch/loongarch/kernel/hw_breakpoint.c | 2 +-
+ arch/loongarch/kernel/ptrace.c        | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/linux/task_work.h
-+++ b/include/linux/task_work.h
-@@ -30,7 +30,7 @@ int task_work_add(struct task_struct *ta
+diff --git a/arch/loongarch/kernel/hw_breakpoint.c b/arch/loongarch/kernel/hw_breakpoint.c
+index 621ad7634df71..a6e4b605bfa8d 100644
+--- a/arch/loongarch/kernel/hw_breakpoint.c
++++ b/arch/loongarch/kernel/hw_breakpoint.c
+@@ -221,7 +221,7 @@ static int hw_breakpoint_control(struct perf_event *bp,
+ 		}
+ 		enable = csr_read64(LOONGARCH_CSR_CRMD);
+ 		csr_write64(CSR_CRMD_WE | enable, LOONGARCH_CSR_CRMD);
+-		if (bp->hw.target)
++		if (bp->hw.target && test_tsk_thread_flag(bp->hw.target, TIF_LOAD_WATCH))
+ 			regs->csr_prmd |= CSR_PRMD_PWE;
+ 		break;
+ 	case HW_BREAKPOINT_UNINSTALL:
+diff --git a/arch/loongarch/kernel/ptrace.c b/arch/loongarch/kernel/ptrace.c
+index 200109de1971a..19dc6eff45ccc 100644
+--- a/arch/loongarch/kernel/ptrace.c
++++ b/arch/loongarch/kernel/ptrace.c
+@@ -589,6 +589,7 @@ static int ptrace_hbp_set_ctrl(unsigned int note_type,
+ 	struct perf_event *bp;
+ 	struct perf_event_attr attr;
+ 	struct arch_hw_breakpoint_ctrl ctrl;
++	struct thread_info *ti = task_thread_info(tsk);
  
- struct callback_head *task_work_cancel_match(struct task_struct *task,
- 	bool (*match)(struct callback_head *, void *data), void *data);
--struct callback_head *task_work_cancel(struct task_struct *, task_work_func_t);
-+struct callback_head *task_work_cancel_func(struct task_struct *, task_work_func_t);
- void task_work_run(void);
+ 	bp = ptrace_hbp_get_initialised_bp(note_type, tsk, idx);
+ 	if (IS_ERR(bp))
+@@ -613,8 +614,10 @@ static int ptrace_hbp_set_ctrl(unsigned int note_type,
+ 		if (err)
+ 			return err;
+ 		attr.disabled = 0;
++		set_ti_thread_flag(ti, TIF_LOAD_WATCH);
+ 	} else {
+ 		attr.disabled = 1;
++		clear_ti_thread_flag(ti, TIF_LOAD_WATCH);
+ 	}
  
- static inline void exit_task_work(struct task_struct *task)
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -1337,7 +1337,7 @@ static int irq_thread(void *data)
- 	 * synchronize_hardirq(). So neither IRQTF_RUNTHREAD nor the
- 	 * oneshot mask bit can be set.
- 	 */
--	task_work_cancel(current, irq_thread_dtor);
-+	task_work_cancel_func(current, irq_thread_dtor);
- 	return 0;
- }
- 
---- a/kernel/task_work.c
-+++ b/kernel/task_work.c
-@@ -120,9 +120,9 @@ static bool task_work_func_match(struct
- }
- 
- /**
-- * task_work_cancel - cancel a pending work added by task_work_add()
-- * @task: the task which should execute the work
-- * @func: identifies the work to remove
-+ * task_work_cancel_func - cancel a pending work matching a function added by task_work_add()
-+ * @task: the task which should execute the func's work
-+ * @func: identifies the func to match with a work to remove
-  *
-  * Find the last queued pending work with ->func == @func and remove
-  * it from queue.
-@@ -131,7 +131,7 @@ static bool task_work_func_match(struct
-  * The found work or NULL if not found.
-  */
- struct callback_head *
--task_work_cancel(struct task_struct *task, task_work_func_t func)
-+task_work_cancel_func(struct task_struct *task, task_work_func_t func)
- {
- 	return task_work_cancel_match(task, task_work_func_match, func);
- }
-@@ -168,7 +168,7 @@ void task_work_run(void)
- 		if (!work)
- 			break;
- 		/*
--		 * Synchronize with task_work_cancel(). It can not remove
-+		 * Synchronize with task_work_cancel_match(). It can not remove
- 		 * the first entry == work, cmpxchg(task_works) must fail.
- 		 * But it can remove another entry from the ->next list.
- 		 */
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -1694,7 +1694,7 @@ long keyctl_session_to_parent(void)
- 		goto unlock;
- 
- 	/* cancel an already pending keyring replacement */
--	oldwork = task_work_cancel(parent, key_change_session_keyring);
-+	oldwork = task_work_cancel_func(parent, key_change_session_keyring);
- 
- 	/* the replacement session keyring is applied just prior to userspace
- 	 * restarting */
+ 	return modify_user_hw_breakpoint(bp, &attr);
+-- 
+2.43.0
+
 
 
 
