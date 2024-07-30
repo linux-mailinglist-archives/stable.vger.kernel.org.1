@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-63073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8575941724
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:08:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0401194172A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 934E1285C45
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:08:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32B741C22D4B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13DC189910;
-	Tue, 30 Jul 2024 16:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EC6194C73;
+	Tue, 30 Jul 2024 16:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5COjNaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnKmz5gt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED84189900;
-	Tue, 30 Jul 2024 16:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722F518B470;
+	Tue, 30 Jul 2024 16:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355575; cv=none; b=DG9ctEI/tnN0hGWk+K2/qVoNlfB4XgUn9rxtFOTPiI+m53jZAmeYHVtgGV2Y9sBHIMcXUUFQfKt8i4IX6kxe/fgXiBrg6K6W+gyahO1kumyCmib65/yzdTGlGe9USRHIwmjnLE57a/tshTNF/A/Dg3kWHIe4aWAIl5nltY3Th/Y=
+	t=1722355585; cv=none; b=Aey4wswvNreFizgXQYPbPoB3JqYRqtbGEp7JHf4YqYT2L7z84O5fvjvJ8YaUaTRxZExMfiV/30L0ZoI2CMzm9j4RhLthU+xGJxmGDP60pPEXTzw6Cpg4E29WGp5UJKvqpP8VsjWwAyxhU2sYBFQ95fJfhmp8C+xEE54mSBD98zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355575; c=relaxed/simple;
-	bh=XILw5by/BYZHvCQZtUcb5VI3UNFAUAwVQs9uLu8AiGI=;
+	s=arc-20240116; t=1722355585; c=relaxed/simple;
+	bh=4FCAHjANLrrhqbLpuyEXvK3o7JiL8lY4fCTR7CjDr14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GecKg5eIQUuT1Yltl/+7lZHajU2bRu0CHVVaRGX4HnumQZTdbRdDj7q6taXtEZOV+8FFUWj8kOHc/yzmNOImmiQjJJZbgm7/KKwZm+3rofWjNG8eYeqJLgmZYCwRUVjO9GHy1f9kI3t46wA9WKbEll9mOuTSIhMPMOsEPmnfRz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5COjNaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1535DC32782;
-	Tue, 30 Jul 2024 16:06:14 +0000 (UTC)
+	 MIME-Version; b=D/ilCrlLrI3IUwGZk/TGJqmaHq8LmF+oXuL5iv81czCZzjN0bAFERXqvJ2b7/nN2zhwJ3PrXnvd25QRqe1Eb5R2g1RfCEoAcnbfgAKjIx8DuXrBonUOaF6vP/bs869z1LtP5yw+nPT9JmjjWaCd4fPvBnmmj26SkVmmWpztYqIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnKmz5gt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D62C32782;
+	Tue, 30 Jul 2024 16:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355575;
-	bh=XILw5by/BYZHvCQZtUcb5VI3UNFAUAwVQs9uLu8AiGI=;
+	s=korg; t=1722355585;
+	bh=4FCAHjANLrrhqbLpuyEXvK3o7JiL8lY4fCTR7CjDr14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5COjNaKcHyzz75NjKnyaZ/xGAIHM8fvoztDfoAYM2kOUa5ibi8622NRCSF6y1VAw
-	 0UZ4sGuaPivhPJ0TCiTtHZXr+ap177jWIyzSP7WTK/wHLcFsf7tFZ8YA0PMvKYsR0R
-	 BYTt7lezRPy3UX09s3SZWN4hhOuo954vD7vz5u1c=
+	b=mnKmz5gt+5kMpMALtLv//IevxvJjcQBeHl6UGCheCXy/7RzMfcmvLcbWnOZ773x0p
+	 dfHn11zltzBtxlZnl3oriWNuadAUeqIf5xNp3qItcslqYohF1VSAmO+/p4eawR51or
+	 5p+ZEaoO0SUIOHghqWmIule1XiECEezLRLJoF1cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Tao Chen <chen.dylane@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/440] netfilter: nf_tables: rise cap on SELinux secmark context
-Date: Tue, 30 Jul 2024 17:45:40 +0200
-Message-ID: <20240730151620.069116296@linuxfoundation.org>
+Subject: [PATCH 6.1 108/440] bpftool: Mount bpffs when pinmaps path not under the bpffs
+Date: Tue, 30 Jul 2024 17:45:41 +0200
+Message-ID: <20240730151620.107809132@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -65,32 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Tao Chen <chen.dylane@gmail.com>
 
-[ Upstream commit e29630247be24c3987e2b048f8e152771b32d38b ]
+[ Upstream commit da5f8fd1f0d393d5eaaba9ad8c22d1c26bb2bf9b ]
 
-secmark context is artificially limited 256 bytes, rise it to 4Kbytes.
+As Quentin said [0], BPF map pinning will fail if the pinmaps path is not
+under the bpffs, like:
 
-Fixes: fb961945457f ("netfilter: nf_tables: add SECMARK support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  libbpf: specified path /home/ubuntu/test/sock_ops_map is not on BPF FS
+  Error: failed to pin all maps
+
+  [0] https://github.com/libbpf/bpftool/issues/146
+
+Fixes: 3767a94b3253 ("bpftool: add pinmaps argument to the load/loadall")
+Signed-off-by: Tao Chen <chen.dylane@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Quentin Monnet <qmo@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20240702131150.15622-1-chen.dylane@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/netfilter/nf_tables.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/bpf/bpftool/prog.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
-index 707af820f1a97..672b2e1b47f24 100644
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -1324,7 +1324,7 @@ enum nft_secmark_attributes {
- #define NFTA_SECMARK_MAX	(__NFTA_SECMARK_MAX - 1)
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 7e0b846e17eef..21817eb510396 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -1707,6 +1707,10 @@ static int load_with_options(int argc, char **argv, bool first_prog_only)
+ 	}
  
- /* Max security context length */
--#define NFT_SECMARK_CTX_MAXLEN		256
-+#define NFT_SECMARK_CTX_MAXLEN		4096
- 
- /**
-  * enum nft_reject_types - nf_tables reject expression reject types
+ 	if (pinmaps) {
++		err = create_and_mount_bpffs_dir(pinmaps);
++		if (err)
++			goto err_unpin;
++
+ 		err = bpf_object__pin_maps(obj, pinmaps);
+ 		if (err) {
+ 			p_err("failed to pin all maps");
 -- 
 2.43.0
 
