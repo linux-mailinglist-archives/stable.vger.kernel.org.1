@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AAD941A22
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA589417E2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BAFE1F239F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 135381F21831
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28876184535;
-	Tue, 30 Jul 2024 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D521898E5;
+	Tue, 30 Jul 2024 16:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLL+kjLJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKnRDl5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE1A1A619B;
-	Tue, 30 Jul 2024 16:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF111898E0;
+	Tue, 30 Jul 2024 16:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357630; cv=none; b=MavppEdRUSlPV34xqSaSdND2knx/COStTxNcoz1f4qRsJaHLEKL4c/K3SB7ltaR7t9f1dG66V6mZJZOvTYvKH46/dCludIdk4n7jrFdW5NNxP9KqcB/EUtfp4mtKYJxNVsRdAeRhsrfsbwW+i3wQvJ8kK96uyzD1sHxXnnUEJWQ=
+	t=1722356038; cv=none; b=RD4Oc6cDnUkbl1Ql2Ov7m93/AZiZ3QgWkxqnEHLCIhvEbfEFSRP4xb455ZC61Fd93eCO7AFPqkCdnYiSk7ThJo4u13gHnxY+HXTVFXE0+ykZihiQdN/LZ73ACc5ifXg4pwS3TFgD+qf8b2dwHxfa4iv8pwnQA7p1bvf7pQrGYCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357630; c=relaxed/simple;
-	bh=W4JUBtHfw+o/CMhEqsJm2SCfaUAYtozPjKOM3agHihg=;
+	s=arc-20240116; t=1722356038; c=relaxed/simple;
+	bh=/rxvhRbvuwWZJxBxLpIRwakGkVuw0u022pXLh8rqL54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0jMiU7dj4BW1gsWZcewN/sjTwfphpFcMsumijMtxsMBF1nED9P0UWHgdzgaizeVje/QE7M07Ah4m0EvcoiDeqXZ77lqHsXL1qnGJANGDOfv1MPryO9B9BsWm4xhbQcGx2MjOsoyAjM5q5kyywURfWhTmeBlzzgpJ0y2tPyxUsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLL+kjLJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528BAC4AF0E;
-	Tue, 30 Jul 2024 16:40:30 +0000 (UTC)
+	 MIME-Version; b=qGtK9EaD56mDHlfZC2isxd0in4lJldx8y4TCGiR9PP4+Ni0coSCtcZoR/GbX6W4Oq947Jl3uwG6YvMcei3NfK9NrEDp2+76KOuurB7SovFICRGW4WlJeh3JzCsnK/zIyYO5VppEl4BGOp8cLhznsRATYzlqTQU4qT0juKmAyK7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKnRDl5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BD1C32782;
+	Tue, 30 Jul 2024 16:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357630;
-	bh=W4JUBtHfw+o/CMhEqsJm2SCfaUAYtozPjKOM3agHihg=;
+	s=korg; t=1722356038;
+	bh=/rxvhRbvuwWZJxBxLpIRwakGkVuw0u022pXLh8rqL54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLL+kjLJGZmf7u/MlpP9pR4EMPK3G2X1cksKvB+quQCUxa0447PQPyosOUIaVzGr+
-	 zyCLuQX2ZDutOnziTPVWEgtqFK90HcmMC5FQRTlJlz4FFIBo8vbWWoinU2UqA0Ilc4
-	 a2/jwbXYRn3fk/UV1RZ84cucsqmZ3tb2KFakda8A=
+	b=mKnRDl5zrTucGVO0V0sRSnbQENLfP+EHkCWi3Uk3w34ZUizPMSVdUpXRAx5FX2dC8
+	 /Gi7pyrm2RoI/P/X/EpjphLc7FVFdHxO3KHheRY11y52jjXS2V4fCOrCSd3cvzZEH2
+	 wKfekfVqj6tz6ZfJBlCdDyGCOEM1IktFUuP6Gck4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Mark Brown <broonie@kernel.org>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 276/568] ASoC: qcom: Adjust issues in case of DT error in asoc_qcom_lpass_cpu_platform_probe()
+Subject: [PATCH 6.1 150/440] media: renesas: vsp1: Store RPF partition configuration per RPF instance
 Date: Tue, 30 Jul 2024 17:46:23 +0200
-Message-ID: <20240730151650.667144375@linuxfoundation.org>
+Message-ID: <20240730151621.738110578@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-[ Upstream commit f9f7f29f64454bb20896c7d918c3abc3a1aa487b ]
+[ Upstream commit a213bc09b1025c771ee722ee341af1d84375db8a ]
 
-If IORESOURCE_MEM "lpass-rxtx-cdc-dma-lpm" or "lpass-va-cdc-dma-lpm"
-resources is not provided in Device Tree due to any error,
-platform_get_resource_byname() will return NULL which is later
-dereferenced. According to sound/qcom,lpass-cpu.yaml, these resources
-are provided, but DT can be broken due to any error. In such cases driver
-must be able to protect itself, since the DT is external data for the
-driver.
-Adjust this issues by adding NULL return check.
+The vsp1_partition structure stores the RPF partition configuration in a
+single field for all RPF instances, while each RPF can have its own
+configuration. Fix it by storing the configuration separately for each
+RPF instance.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b138706225c9 ("ASoC: qcom: Add regmap config support for codec dma driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://patch.msgid.link/20240605104953.12072-1-amishin@t-argos.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Fixes: ab45e8585182 ("media: v4l: vsp1: Allow entities to participate in the partition algorithm")
+Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/lpass-cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/platform/renesas/vsp1/vsp1_pipe.h | 2 +-
+ drivers/media/platform/renesas/vsp1/vsp1_rpf.c  | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
-index 39571fed40019..73b42d9ee2447 100644
---- a/sound/soc/qcom/lpass-cpu.c
-+++ b/sound/soc/qcom/lpass-cpu.c
-@@ -1170,9 +1170,13 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
- 		}
- 
- 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpass-rxtx-cdc-dma-lpm");
-+		if (!res)
-+			return -EINVAL;
- 		drvdata->rxtx_cdc_dma_lpm_buf = res->start;
- 
- 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "lpass-va-cdc-dma-lpm");
-+		if (!res)
-+			return -EINVAL;
- 		drvdata->va_cdc_dma_lpm_buf = res->start;
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
+index ae646c9ef3373..15daf35bda216 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
++++ b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
+@@ -73,7 +73,7 @@ struct vsp1_partition_window {
+  * @wpf: The WPF partition window configuration
+  */
+ struct vsp1_partition {
+-	struct vsp1_partition_window rpf;
++	struct vsp1_partition_window rpf[VSP1_MAX_RPF];
+ 	struct vsp1_partition_window uds_sink;
+ 	struct vsp1_partition_window uds_source;
+ 	struct vsp1_partition_window sru;
+diff --git a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
+index 75083cb234fe3..996a3058d5b76 100644
+--- a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
++++ b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
+@@ -271,8 +271,8 @@ static void rpf_configure_partition(struct vsp1_entity *entity,
+ 	 * 'width' need to be adjusted.
+ 	 */
+ 	if (pipe->partitions > 1) {
+-		crop.width = pipe->partition->rpf.width;
+-		crop.left += pipe->partition->rpf.left;
++		crop.width = pipe->partition->rpf[rpf->entity.index].width;
++		crop.left += pipe->partition->rpf[rpf->entity.index].left;
  	}
  
+ 	if (pipe->interlaced) {
+@@ -327,7 +327,9 @@ static void rpf_partition(struct vsp1_entity *entity,
+ 			  unsigned int partition_idx,
+ 			  struct vsp1_partition_window *window)
+ {
+-	partition->rpf = *window;
++	struct vsp1_rwpf *rpf = to_rwpf(&entity->subdev);
++
++	partition->rpf[rpf->entity.index] = *window;
+ }
+ 
+ static const struct vsp1_entity_operations rpf_entity_ops = {
 -- 
 2.43.0
 
