@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E77D941BB1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 810F6941D65
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78D6EB26C62
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37D831F2623D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A94718800A;
-	Tue, 30 Jul 2024 16:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA701A76BB;
+	Tue, 30 Jul 2024 17:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7hZYF3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaEF0ghZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547FE18801C;
-	Tue, 30 Jul 2024 16:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07F91A76A4;
+	Tue, 30 Jul 2024 17:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358434; cv=none; b=aAcvQ3ihRv6ADFBbQVXjdnd1fINu68hVpb03QMZ8FShj/nWPXf2IQpZIFw2r3Tbhm/Vs2D64/gPSIF5ZhNCW/tYv9kjGJJwQNTcMSSQyZByz7ROVEng4Wz1lqVzssEENZ5pm81zaSDaUPeVQCpOxdEni5ewprHlI5VxkbGPWvK0=
+	t=1722359805; cv=none; b=DRFF8LaKOumOo1sv7ot2d+iCWYVXR8HNi7ae/+xUMv/5W7dQN57O+jTO1iREyqn5Wr+NJnEwqOmDm6w99xDQ9UR8XOcsjsMY+1WGSwAZhrLnEcFIxjH7BkdKKztJLTEHRT7JB2gsCHCrgXoCb9+zXpxzrrCU/TwAbFuqu5oLuTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358434; c=relaxed/simple;
-	bh=4DzYK3dtGfH/zMbybc9d9eQ/Yz6sROOJoliebTeQlOs=;
+	s=arc-20240116; t=1722359805; c=relaxed/simple;
+	bh=LNxsCAMEKskTEhWQlHA4TjYfYK3/669gJRfsvnFptxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAwhvd5jiFKSmoT5NLsbLqTGZuNoA2Gw8r0PDS3FBl8bPRh/xIgYaUWtLi/HRIsFv4N6mn3ejIaK5MXjT2bXI7wylrdm5/3BNKub/ThORZwFWBAVIE8lRhZYfqEvFlaB0dDhRzp8XQ1ymzEnkX4RKMv474ojEaFzp4BriTztd2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7hZYF3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAE9C32782;
-	Tue, 30 Jul 2024 16:53:53 +0000 (UTC)
+	 MIME-Version; b=Hj9J/C48qvOpXQgyoljYsvpNWtC5cZ4uAQLByeTcGc3s3xeN769e2NOyJOYz9fqaVagaACnlQx1TaXE+Vj8GLSUkebA1e1+BHGUMtRSsPQ5n86lfBB1HEVoeaUZSuXpzVSnhnckglu7g8IHu7CCQZxEtcGGbfU2+cO/1vY2NFos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaEF0ghZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57195C4AF0C;
+	Tue, 30 Jul 2024 17:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358433;
-	bh=4DzYK3dtGfH/zMbybc9d9eQ/Yz6sROOJoliebTeQlOs=;
+	s=korg; t=1722359805;
+	bh=LNxsCAMEKskTEhWQlHA4TjYfYK3/669gJRfsvnFptxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7hZYF3h43fJwiPsjMU+MRGwauC0vScZtY2GaEhEOZI6PLh7nMzpymahHJSkj4f2a
-	 eLSLzepf8/CpZup2UIv4E/ieI5JohdZhKj4Hn+6XHj5ow5wD4S6MPOGx6vEXyB+47W
-	 Yal+mLuefyJOQIF+8pl5DbtdmXrL6tWAkT2oEcxg=
+	b=IaEF0ghZ7bwdE4LDwagSmuhctaGUMCi+hwoWJvWEO4RFZD+6nbbr3Nua422s1bFzS
+	 Lwk9yshveknGfFsleUhGznzBmjuzqlG0bSkkqYR0dIuxWti/AbRv1DY3LVk550f9Br
+	 2g3uwLhngiKwol3KTqsLaCq9VhpfMHZLD4rqY3PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 6.1 390/440] wifi: mac80211: Allow NSS change only up to capability
+	Arnd Bergmann <arnd@arndb.de>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 516/568] kdb: address -Wformat-security warnings
 Date: Tue, 30 Jul 2024 17:50:23 +0200
-Message-ID: <20240730151631.036728149@linuxfoundation.org>
+Message-ID: <20240730151700.316379884@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 57b341e9ab13e5688491bfd54f8b5502416c8905 upstream.
+[ Upstream commit 70867efacf4370b6c7cdfc7a5b11300e9ef7de64 ]
 
-Stations can update bandwidth/NSS change in
-VHT action frame with action type Operating Mode Notification.
-(IEEE Std 802.11-2020 - 9.4.1.53 Operating Mode field)
+When -Wformat-security is not disabled, using a string pointer
+as a format causes a warning:
 
-For Operating Mode Notification, an RX NSS change to a value
-greater than AP's maximum NSS should not be allowed.
-During fuzz testing, by forcefully sending VHT Op. mode notif.
-frames from STA with random rx_nss values, it is found that AP
-accepts rx_nss values greater that APs maximum NSS instead of
-discarding such NSS change.
+kernel/debug/kdb/kdb_io.c: In function 'kdb_read':
+kernel/debug/kdb/kdb_io.c:365:36: error: format not a string literal and no format arguments [-Werror=format-security]
+  365 |                         kdb_printf(kdb_prompt_str);
+      |                                    ^~~~~~~~~~~~~~
+kernel/debug/kdb/kdb_io.c: In function 'kdb_getstr':
+kernel/debug/kdb/kdb_io.c:456:20: error: format not a string literal and no format arguments [-Werror=format-security]
+  456 |         kdb_printf(kdb_prompt_str);
+      |                    ^~~~~~~~~~~~~~
 
-Hence allow NSS change only up to maximum NSS that is negotiated
-and capped to AP's capability during association.
+Use an explcit "%s" format instead.
 
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Link: https://lore.kernel.org/r/20230207114146.10567-1-quic_ramess@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240528121154.3662553-1-arnd@kernel.org
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/vht.c |   25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ kernel/debug/kdb/kdb_io.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mac80211/vht.c
-+++ b/net/mac80211/vht.c
-@@ -637,7 +637,7 @@ u32 __ieee80211_vht_handle_opmode(struct
- 	enum ieee80211_sta_rx_bandwidth new_bw;
- 	struct sta_opmode_info sta_opmode = {};
- 	u32 changed = 0;
--	u8 nss;
-+	u8 nss, cur_nss;
- 
- 	/* ignore - no support for BF yet */
- 	if (opmode & IEEE80211_OPMODE_NOTIF_RX_NSS_TYPE_BF)
-@@ -648,10 +648,25 @@ u32 __ieee80211_vht_handle_opmode(struct
- 	nss += 1;
- 
- 	if (link_sta->pub->rx_nss != nss) {
--		link_sta->pub->rx_nss = nss;
--		sta_opmode.rx_nss = nss;
--		changed |= IEEE80211_RC_NSS_CHANGED;
--		sta_opmode.changed |= STA_OPMODE_N_SS_CHANGED;
-+		cur_nss = link_sta->pub->rx_nss;
-+		/* Reset rx_nss and call ieee80211_sta_set_rx_nss() which
-+		 * will set the same to max nss value calculated based on capability.
-+		 */
-+		link_sta->pub->rx_nss = 0;
-+		ieee80211_sta_set_rx_nss(link_sta);
-+		/* Do not allow an nss change to rx_nss greater than max_nss
-+		 * negotiated and capped to APs capability during association.
-+		 */
-+		if (nss <= link_sta->pub->rx_nss) {
-+			link_sta->pub->rx_nss = nss;
-+			sta_opmode.rx_nss = nss;
-+			changed |= IEEE80211_RC_NSS_CHANGED;
-+			sta_opmode.changed |= STA_OPMODE_N_SS_CHANGED;
-+		} else {
-+			link_sta->pub->rx_nss = cur_nss;
-+			pr_warn_ratelimited("Ignoring NSS change in VHT Operating Mode Notification from %pM with invalid nss %d",
-+					    link_sta->pub->addr, nss);
-+		}
- 	}
- 
- 	switch (opmode & IEEE80211_OPMODE_NOTIF_CHANWIDTH_MASK) {
+diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
+index 2aeaf9765b248..2d65da509f699 100644
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -371,7 +371,7 @@ static char *kdb_read(char *buffer, size_t bufsize)
+ 			if (i >= dtab_count)
+ 				kdb_printf("...");
+ 			kdb_printf("\n");
+-			kdb_printf(kdb_prompt_str);
++			kdb_printf("%s",  kdb_prompt_str);
+ 			kdb_printf("%s", buffer);
+ 			if (cp != lastchar)
+ 				kdb_position_cursor(kdb_prompt_str, buffer, cp);
+@@ -463,7 +463,7 @@ char *kdb_getstr(char *buffer, size_t bufsize, const char *prompt)
+ {
+ 	if (prompt && kdb_prompt_str != prompt)
+ 		strscpy(kdb_prompt_str, prompt, CMD_BUFLEN);
+-	kdb_printf(kdb_prompt_str);
++	kdb_printf("%s", kdb_prompt_str);
+ 	kdb_nextline = 1;	/* Prompt and input resets line number */
+ 	return kdb_read(buffer, bufsize);
+ }
+-- 
+2.43.0
+
 
 
 
