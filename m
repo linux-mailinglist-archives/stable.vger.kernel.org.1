@@ -1,156 +1,111 @@
-Return-Path: <stable+bounces-62651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6B8940BF3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBD9940C57
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E54F1F2583B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 08:42:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBF781F21B27
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 08:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B721922E9;
-	Tue, 30 Jul 2024 08:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBEC194AC7;
+	Tue, 30 Jul 2024 08:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QO/mbFAQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faJf7yM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C30C55769;
-	Tue, 30 Jul 2024 08:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48C01940B3;
+	Tue, 30 Jul 2024 08:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722328925; cv=none; b=A+WevVGR1pASz2RxAXJeg0zuWUSA6N/VfC48IrJnIX3eQ7ojpvdyOzdrMnjVvjaw29dHE6XVB+VjotYTVrXfvMTp8KbFsApCtz4/S/UC1L7PklPj8GNg7KvochY8geCk7iZHkDAtIjtrw4kMXhmgK5nF6JbbwP965jZDjF4RHZg=
+	t=1722329438; cv=none; b=QnbzlM+os3jXf2jTzgrqF71+za+l6QZrGZ43Q6kp8l38W2CnCdCXHiqCgsX6fyMJKJXc3VN2bqanVAxkckWbnMVCHQ1aMZVp9m3RYtIoBFmSI9XwcwQkYxIkj4v7osvNWlqy0jrCl41O4ILi8+4Jcq2Eb64paiZOk9eqYRtvKwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722328925; c=relaxed/simple;
-	bh=ceVEUmRmcQ4KnLWkgoSmg7JJO06F83rsrdbhNKdWrTg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W2DxwKJ5hM01wegb2APQE7bwPxLybKP+5n7lOJtRUUoqTto/hdrY78hddROhEUzEGqjgdey5z6cGwOyiXgqjbs/i9BMHedw3QMucW2LM4JnBxYpJFtH+0bxeUPnUwInloJBDthtcSXoR4P1NTvC5EtJIQ+8wfZLyqNYvrtJMyd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QO/mbFAQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC77C32782;
-	Tue, 30 Jul 2024 08:42:02 +0000 (UTC)
+	s=arc-20240116; t=1722329438; c=relaxed/simple;
+	bh=7xEjnu+XxywJICOBC6mbxvdShii78kN4dRkz0XvgP/4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fcmk6gxT+lQXyClvR23bXhZt9f4oToFk92VfmRAdQ0J5oiwXE6taDYwi66pZrlFfvCsGKo0r+B8EemBKlVsrR8KknXcSYSY8LJUEZ9TCeNgxe7yb0Yco9xlqVnkrBWVbcrWOLMK4xgw2YbIz8DQIIFwKI+nBZN60Ciggb/Ptqng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faJf7yM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6148AC4AF0B;
+	Tue, 30 Jul 2024 08:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722328925;
-	bh=ceVEUmRmcQ4KnLWkgoSmg7JJO06F83rsrdbhNKdWrTg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QO/mbFAQ3YAQycQa6XyR0vcD2qZ7kafIEX2XbwPtiOd6/i/29U9OIzSK7/cLXKvfX
-	 MVGgYReVY5PYqkZAGXTnlFnQRRZwLj9QMJUWpX3yB81riY0NrCE9WzO6cGWD57Oe5Q
-	 qvgSJob18fmbYXf8GR8X9FdSJRDjFPNnO2ED+PUspX8ZsN0YiAJQZQ3csfkW4Miuwg
-	 CLylTIeaNmerINAnfHg31lEynavO63w4/93Yb9Exyg/R2OOSk7O7GsEzMZ4Ff0XA3l
-	 Q3bTgSBoSnHQZt0CkcxklIK4zLyO+uCnR1UM2cDbc9y6eJIG1eHdyyq+PNPA+MROXB
-	 CrB4djA32ey0A==
-Message-ID: <729280cd-557f-43ba-b1a6-8d319977ca82@kernel.org>
-Date: Tue, 30 Jul 2024 10:42:01 +0200
+	s=k20201202; t=1722329437;
+	bh=7xEjnu+XxywJICOBC6mbxvdShii78kN4dRkz0XvgP/4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=faJf7yM4pW/Z8oVEhOY0PK+6doI9ABS/OqbbgJ8IIBlA0uejeK9fyfJYCK2Y8uoIJ
+	 XeHWOozrBdwiqcjqM9/LPcCk+ac0aWyaz9jE+zHJXuktyX/zkAg8MEUxJnRIkHKOCx
+	 4g65iScziMyJM4vt7SbCyOcq/+7MBcvIp4eE6pX4wLTu4FEB3KTgNXi5a8eSwm4+px
+	 5qtTgBm3FTVRuLUkC5I5gm47Z0QJ+eNTJJh3HQKCTusaFwtbW+g4CiDjKUUjd/FoA+
+	 5Ve4ay9Ff4eQ9vTr42bD/1Al0YVRfvaeCP/knmx7ZIQhzBp3cGDJULprkEms7PCAJ4
+	 TrSFL++L889CQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 512B0C43619;
+	Tue, 30 Jul 2024 08:50:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] media: imx335: Fix reset-gpio handling
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Umang Jain <umang.jain@ideasonboard.com>, linux-media@vger.kernel.org,
- stable@vger.kernel.org, Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
- <20240729110437.199428-3-umang.jain@ideasonboard.com>
- <ef05c39a-ad5c-4751-a758-f73a2d114823@kernel.org>
- <ZqijVf68ZQuFGKhU@kekkonen.localdomain>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <ZqijVf68ZQuFGKhU@kekkonen.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/7] mptcp: fix inconsistent backup usage
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172232943732.24083.9277579847408417971.git-patchwork-notify@kernel.org>
+Date: Tue, 30 Jul 2024 08:50:37 +0000
+References: <20240727-upstream-net-20240727-mptcp-backup-signal-v1-0-f50b31604cf1@kernel.org>
+In-Reply-To: <20240727-upstream-net-20240727-mptcp-backup-signal-v1-0-f50b31604cf1@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ fw@strlen.de, shuah@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org, rostedt@goodmis.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, linux-trace-kernel@vger.kernel.org
 
-On 30/07/2024 10:24, Sakari Ailus wrote:
-> Hi Krzysztof,
-> 
-> On Mon, Jul 29, 2024 at 04:09:39PM +0200, Krzysztof Kozlowski wrote:
->> On 29/07/2024 13:04, Umang Jain wrote:
->>> Rectify the logical value of reset-gpio so that it is set to
->>> 0 (disabled) during power-on and to 1 (enabled) during power-off.
->>>
->>> Meanwhile at it, set the reset-gpio to GPIO_OUT_HIGH at initialization
->>> time to make sure it starts off in reset.
->>>
->>> Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
->>> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
->>> ---
->>>  drivers/media/i2c/imx335.c | 8 ++++----
->>>  1 file changed, 4 insertions(+), 4 deletions(-)
->>>
->>
->> This will break all the users, so no. At least not without mentioning
->> ABI break and some sort of investigating how customers or users are
->> affected.
-> 
-> I know the original authors aren't using the driver anymore and it took
-> quite a bit of time until others started to contribute to it so I suspect
-> the driver hasn't been in use for that long. There are no instances of the
-> device in the in-kernel DTS either.
-> 
-> Any DTS author should have also noticed the issue but of course there's a
-> risk someone could have just changed the polarity and not bothered to chech
-> what it was supposed to be.
-> 
-> I agree the commit message should be more vocal about the effects on
-> existing DTS.
+Hello:
 
-I can imagine that all users (out of tree, in this case) inverted
-polarity in DTS based on what's implemented. You could go with some
-trivial hack, like I did for one of codecs - see 738455858a2d ("ASoC:
-codecs: wsa881x: Use proper shutdown GPIO polarity"), but I remember
-Mark Brown rejected similar commit for newer drivers.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Best regards,
-Krzysztof
+On Sat, 27 Jul 2024 12:01:22 +0200 you wrote:
+> In all the MPTCP backup related tests, the backup flag was set on one
+> side, and the expected behaviour is to have both sides respecting this
+> decision. That's also the "natural" way, and what the users seem to
+> expect.
+> 
+> On the scheduler side, only the 'backup' field was checked, which is
+> supposed to be set only if the other peer flagged a subflow as backup.
+> But in various places, this flag was also set when the local host
+> flagged the subflow as backup, certainly to have the expected behaviour
+> mentioned above.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/7] mptcp: sched: check both directions for backup
+    https://git.kernel.org/netdev/net/c/b6a66e521a20
+  - [net,2/7] mptcp: distinguish rcv vs sent backup flag in requests
+    https://git.kernel.org/netdev/net/c/efd340bf3d77
+  - [net,3/7] mptcp: pm: only set request_bkup flag when sending MP_PRIO
+    https://git.kernel.org/netdev/net/c/4258b94831bb
+  - [net,4/7] mptcp: mib: count MPJ with backup flag
+    https://git.kernel.org/netdev/net/c/4dde0d72ccec
+  - [net,5/7] selftests: mptcp: join: validate backup in MPJ
+    https://git.kernel.org/netdev/net/c/935ff5bb8a1c
+  - [net,6/7] mptcp: pm: fix backup support in signal endpoints
+    https://git.kernel.org/netdev/net/c/6834097fc38c
+  - [net,7/7] selftests: mptcp: join: check backup support in signal endp
+    https://git.kernel.org/netdev/net/c/f833470c2783
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
