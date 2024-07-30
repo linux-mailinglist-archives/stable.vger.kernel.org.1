@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-63429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01179418EB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8527941C4B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B326285268
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62E5E281774
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1966D1A618F;
-	Tue, 30 Jul 2024 16:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A26E188017;
+	Tue, 30 Jul 2024 17:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPc1A/g9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LobD7arE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCCD1A6160;
-	Tue, 30 Jul 2024 16:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCD71E86F;
+	Tue, 30 Jul 2024 17:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356805; cv=none; b=lw3EykhJ9u7a1rTh8tNESLZdQb8zPo3CSLmCriXLzhSCOQX8k6mk5jwzwlrGzNtDY/gjffqTliQYm4VzNbiRQbJ0Wck1DYWsvET84rS47QlE2xzvlj3M0BX8JWB7rXx8hfbdEUHSCC310vjkEXPL4zFrAYsHS72/S4OVXQNKRlc=
+	t=1722359143; cv=none; b=bWQW5nTpYKImlYTzhKMMl7eLpbOgfe6gT4a01Gk+qr/mH8rAjnqtd4WW6i07QnOG+d5ZujEF5F58ly1hwrDk1DZRX7dftmLM2O7Ep7lZqUSFnBHAxX9h6S3X5n0JjgavD4YJVkMtTLp9CatxL74p2q6EvEkKFrIennjJpJDTUsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356805; c=relaxed/simple;
-	bh=7BzC81eZabl4DPcK1JMV2Y0+WeL1ko5EAg0IjOrUKk8=;
+	s=arc-20240116; t=1722359143; c=relaxed/simple;
+	bh=Fm5NsUkbYtcVtH1C2B2zgKSC545EJro4SeJ+bkRyfxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLNxghsyZYo8JNreMdjkx1hLGKCIuw2rrwbsacnGjNTR8h3itOHqFUNz1pNsixnO/DdTOI99KAvNxGe/dxy3LDNwdzXwzpwOWCAPRk6ZO0gQz/5DiUQO85r0n+Eiw9weILd2rwRqgJXHCvjO8SkxEReFYr4FHmB+jYSNXA6r/OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPc1A/g9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B22C32782;
-	Tue, 30 Jul 2024 16:26:45 +0000 (UTC)
+	 MIME-Version; b=MaorbZ/FrfWSR16CA65/UBSwiVBGBsZxIQZv7+kcwyQV3fJI/VJvfF2+Ou2LWaP75Ah4GUrRyAFcWOmCxqqQ7y7Kn9mqlcElCnBeA5ZKnzSvIqsovv9nfTUB3/q2cQIEcyZ/nKiiWTBo59dN95qM+3Y4UwVQR069+hkc/oL0lUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LobD7arE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304A8C32782;
+	Tue, 30 Jul 2024 17:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356805;
-	bh=7BzC81eZabl4DPcK1JMV2Y0+WeL1ko5EAg0IjOrUKk8=;
+	s=korg; t=1722359142;
+	bh=Fm5NsUkbYtcVtH1C2B2zgKSC545EJro4SeJ+bkRyfxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPc1A/g9845/oKxMTJ1Lv2f0lsSjUXh7u1pGmyerG5zUfh9e2aLoaGOYcIeBoJBkr
-	 3FmiyGmBJsLPei4OO7aK8bXOn9fMtFq/omiT0pSHiF3KoOj+5ll2DPLjCM8DWtSPPc
-	 CYGMI/KT7X2E8gcR+isn9rTWUqSYePZnVieh9BtI=
+	b=LobD7arEx3WtrIN57b327LEW72iGPGEfREiO9ZOt6kfwIk0BvZHS/5c8Pk05Kwh29
+	 2VxcpnKhbN4zxrSkni8jmlRhGT89IUCCZYEGzmsYJoD5+Wr5VIoXQmXHV1C9vNWyFU
+	 x+YIi3GnFukBa+TErvbVS0iCun6D8BEuLHZnWnOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/568] drm/panel: boe-tv101wum-nl6: Check for errors on the NOP in prepare()
+Subject: [PATCH 6.10 417/809] interconnect: qcom: qcm2290: Fix mas_snoc_bimc RPM master ID
 Date: Tue, 30 Jul 2024 17:44:53 +0200
-Message-ID: <20240730151647.148736001@linuxfoundation.org>
+Message-ID: <20240730151741.166452356@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 6320b9199dd99622668649c234d4e8a99e44a9c8 ]
+[ Upstream commit cd5ce4589081190281cc2537301edd4275fe55eb ]
 
-The mipi_dsi_dcs_nop() function returns an error but we weren't
-checking it in boe_panel_prepare(). Add a check. This is highly
-unlikely to matter in practice. If the NOP failed then likely later
-MIPI commands would fail too.
+The value was wrong, resulting in misprogramming of the hardware.
+Fix it.
 
-Found by code inspection.
-
-Fixes: 812562b8d881 ("drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240517143643.3.Ibffbaa5b4999ac0e55f43bf353144433b099d727@changeid
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.3.Ibffbaa5b4999ac0e55f43bf353144433b099d727@changeid
+Fixes: 1a14b1ac3935 ("interconnect: qcom: Add QCM2290 driver support")
+Reported-by: Stephan Gerhold <stephan@gerhold.net>
+Closes: https://lore.kernel.org/linux-arm-msm/ZgMs_xZVzWH5uK-v@gerhold.net/
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240618-topic-2290_icc_2-v1-1-64446888a133@linaro.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/interconnect/qcom/qcm2290.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index 688efb2253a16..cfa5b54ed6fe7 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -1847,7 +1847,11 @@ static int boe_panel_prepare(struct drm_panel *panel)
- 	usleep_range(10000, 11000);
- 
- 	if (boe->desc->lp11_before_reset) {
--		mipi_dsi_dcs_nop(boe->dsi);
-+		ret = mipi_dsi_dcs_nop(boe->dsi);
-+		if (ret < 0) {
-+			dev_err(&boe->dsi->dev, "Failed to send NOP: %d\n", ret);
-+			goto poweroff;
-+		}
- 		usleep_range(1000, 2000);
- 	}
- 	gpiod_set_value(boe->enable_gpio, 1);
+diff --git a/drivers/interconnect/qcom/qcm2290.c b/drivers/interconnect/qcom/qcm2290.c
+index ba4cc08684d63..ccbdc6202c07a 100644
+--- a/drivers/interconnect/qcom/qcm2290.c
++++ b/drivers/interconnect/qcom/qcm2290.c
+@@ -166,7 +166,7 @@ static struct qcom_icc_node mas_snoc_bimc = {
+ 	.qos.ap_owned = true,
+ 	.qos.qos_port = 6,
+ 	.qos.qos_mode = NOC_QOS_MODE_BYPASS,
+-	.mas_rpm_id = 164,
++	.mas_rpm_id = 3,
+ 	.slv_rpm_id = -1,
+ 	.num_links = ARRAY_SIZE(mas_snoc_bimc_links),
+ 	.links = mas_snoc_bimc_links,
 -- 
 2.43.0
 
