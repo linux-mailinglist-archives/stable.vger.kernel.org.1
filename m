@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E73941DD8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66119941BCB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C878289221
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 976091C232CE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D2E187FF6;
-	Tue, 30 Jul 2024 17:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C2618801A;
+	Tue, 30 Jul 2024 16:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdCzWl2I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFGUrDFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F77D1A76A9;
-	Tue, 30 Jul 2024 17:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0DA189537;
+	Tue, 30 Jul 2024 16:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360122; cv=none; b=NpQMpK8f1aDzDBDRhn7u1XQXSsG2+Psv1Yjg1vT4H+Uw9jGyljFVgcYtqqx12kUvEpYXl3RFTnMmC/a90uN9ktQci03lKphbNnLEobIrrAZEMP3esLN81mvKtY9yaHNd5/BqpYp5VmLlEa3IRZg8kdW3PN7wKuVnPacePMsmlUc=
+	t=1722358751; cv=none; b=HurqmJU+QosOr8TjGAfwTg2WyaF4/4MuCLDZrLFu7e4xnDftSd1VwzGAxpimMpbSZHhgKPTWwxYyY0uQCQ3+stwgkZN5FOQl1pPd4/b0tFJNXE2KlqLielnPGe5NzGDkP3OqQmon7z6ZeUwzX4BvrhczKhYK1BWLOr2IRHvaBR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360122; c=relaxed/simple;
-	bh=0HiTSvT1hwY+Cwq0cfIj3qXIQzq8+V3iyKyRCiVTZvI=;
+	s=arc-20240116; t=1722358751; c=relaxed/simple;
+	bh=dnBSZLiYe0rcJXblxn5NVVDXHhxucpBP9dXUfv99yLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUSnoyaQN+dfkmi0Z6hbCrue3Tzl4gzMvvXV0KOz1SqLzuzhys9Kc/1HWfDoqXqyRXlVCbxBaCi+Z7BtDzxQQxGH9lVM8hJR3xznmMivLm0IOqquimu8jY796rJzGANEsvlc876+VYdrvtKxirO7TGX+mF/zgM+dbMKpAq68yWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdCzWl2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA4FC32782;
-	Tue, 30 Jul 2024 17:22:01 +0000 (UTC)
+	 MIME-Version; b=A2kiB5asgSHPgra9ekooUuK5TXxmP1XehyU/fGC12JYyKYi7wbHryMmKAwHdxPk8ig47pDseLgXGjVjX7no/xvnOGRiuR+E225WaZMUdHASrOMKwTyFtwAC936M+HmwgqTB76gJQ5OnPIVjHA1KlXGEfNx3QdW4OHVhnb2oL9vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFGUrDFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABB6C32782;
+	Tue, 30 Jul 2024 16:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360121;
-	bh=0HiTSvT1hwY+Cwq0cfIj3qXIQzq8+V3iyKyRCiVTZvI=;
+	s=korg; t=1722358751;
+	bh=dnBSZLiYe0rcJXblxn5NVVDXHhxucpBP9dXUfv99yLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wdCzWl2IwX5y3piwTPFxyCx6vmh/o7HLYAEYM7hFXlSXYxuw0VLhLVmnM1FMGE4pz
-	 994s0Heok/Ejti93b6BKWmZqxJjjRHUbYvIZpGJYv/ZR5wMR/Qk9wb9VXqACndrkyB
-	 suNYlPfWmuRHBt0a6p+IPxKW3IE+2AXp79taPnO0=
+	b=PFGUrDFvWwM3yNIkX/BELCAYjiOPpHzuyxq46o7Km8TKTFfxdyaUMcXbvqYYVtpEb
+	 oGLCGJszw65DIS7Pd3+y0BCqpDvRsdbxKtGr6o96z1z8fUMrA7Owg1RDy7g0js/5kP
+	 X0ys/Q59T6l5zKIDN0763V2EMM78eCQi9ax7zdp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Michal Simek <michal.simek@amd.com>
-Subject: [PATCH 6.10 604/809] drivers: soc: xilinx: check return status of get_api_version()
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 373/568] ipv6: take care of scope when choosing the src addr
 Date: Tue, 30 Jul 2024 17:48:00 +0200
-Message-ID: <20240730151748.690527121@linuxfoundation.org>
+Message-ID: <20240730151654.441932644@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-commit 9b003e14801cf85a8cebeddc87bc9fc77100fdce upstream.
+commit abb9a68d2c64dd9b128ae1f2e635e4d805e7ce64 upstream.
 
-Currently return status is not getting checked for get_api_version
-and because of that for x86 arch we are getting below smatch error.
+When the source address is selected, the scope must be checked. For
+example, if a loopback address is assigned to the vrf device, it must not
+be chosen for packets sent outside.
 
-    CC      drivers/soc/xilinx/zynqmp_power.o
-drivers/soc/xilinx/zynqmp_power.c: In function 'zynqmp_pm_probe':
-drivers/soc/xilinx/zynqmp_power.c:295:12: warning: 'pm_api_version' is
-used uninitialized [-Wuninitialized]
-    295 |         if (pm_api_version < ZYNQMP_PM_VERSION)
-        |            ^
-    CHECK   drivers/soc/xilinx/zynqmp_power.c
-drivers/soc/xilinx/zynqmp_power.c:295 zynqmp_pm_probe() error:
-uninitialized symbol 'pm_api_version'.
-
-So, check return status of pm_get_api_version and return error in case
-of failure to avoid checking uninitialized pm_api_version variable.
-
-Fixes: b9b3a8be28b3 ("firmware: xilinx: Remove eemi ops for get_api_version")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240515112345.24673-1-jay.buddhabhatti@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+CC: stable@vger.kernel.org
+Fixes: afbac6010aec ("net: ipv6: Address selection needs to consider L3 domains")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240710081521.3809742-4-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/xilinx/zynqmp_power.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv6/addrconf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/soc/xilinx/zynqmp_power.c
-+++ b/drivers/soc/xilinx/zynqmp_power.c
-@@ -190,7 +190,9 @@ static int zynqmp_pm_probe(struct platfo
- 	u32 pm_api_version;
- 	struct mbox_client *client;
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1839,7 +1839,8 @@ int ipv6_dev_get_saddr(struct net *net,
+ 							    master, &dst,
+ 							    scores, hiscore_idx);
  
--	zynqmp_pm_get_api_version(&pm_api_version);
-+	ret = zynqmp_pm_get_api_version(&pm_api_version);
-+	if (ret)
-+		return ret;
+-			if (scores[hiscore_idx].ifa)
++			if (scores[hiscore_idx].ifa &&
++			    scores[hiscore_idx].scopedist >= 0)
+ 				goto out;
+ 		}
  
- 	/* Check PM API version number */
- 	if (pm_api_version < ZYNQMP_PM_VERSION)
 
 
 
