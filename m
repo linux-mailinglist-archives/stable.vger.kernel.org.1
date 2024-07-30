@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-63161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D179417AD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:14:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED23A941A1D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC01E1C229D8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:14:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A621E2843D0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18091917D1;
-	Tue, 30 Jul 2024 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885B4184553;
+	Tue, 30 Jul 2024 16:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P64kVqlG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNov5vp6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE4E1917CD;
-	Tue, 30 Jul 2024 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4408618452F;
+	Tue, 30 Jul 2024 16:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355869; cv=none; b=PQ3uUqDNToztFxOl5TBSdWV1DxqXQrXuo4gZ6l7W16MoPGlSmVK3FIvcyz7lDwRf46GGIOhhFA+p8T1uG+mu6q60KGQwSiFB2yTtnybNxDcJhjiUJ+K78k+AnixdsrSzOBxp/tjGy7GFrHxD/ZErSB1V4Ro0y0ng026T+op6vHA=
+	t=1722357610; cv=none; b=RGFfDhgd+el9P0RO80nXYxWIi7606sjalI6uoD7L3Tkc+Xbw612mPlA4QEs77cIraX7TMoV/Ef0QWHEnnyP9fkLS3J76fuZG4yZ5zG3/efoC0ZJXfhfCSqPQ3lgz5uJ8rhD3S1yRGsv+Aqt/6YEb6ixGHlsxKOyREtksz8NP8y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355869; c=relaxed/simple;
-	bh=MAgn2A4UpSwM894RfHTd0Icc9QjoNqdGi1HGzmTR3Ns=;
+	s=arc-20240116; t=1722357610; c=relaxed/simple;
+	bh=EubrcINmNuoW5Oj37cfFbFxcDBFG/r/2Gym4xvwHBQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbindLOsr/kxWibQ39TLWfGSS60gQ6+gArt8zenvrbu/vchCkpOa1Q4ml2hh+UQSBA+8X0yUIS5St1nNNlnAHFFWtbRxBH+iiSFKRD7UzafFBuseoGWJDoFR5ajVqWOtOgMqLgmhTE4R4pCV2558fHfEcLwWwwu7Yk4k2CJOzmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P64kVqlG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62BFC32782;
-	Tue, 30 Jul 2024 16:11:08 +0000 (UTC)
+	 MIME-Version; b=sAMVnUSqToS0N0K1bDrvhcyUwLsomTB4BCZR5ays590DeH5dA3cT9lC6xoi5gZiZqiI/lpokK45Ky2Q0T49KXXStfvQsISZCOuWlaf6z7+HZo4QIFSu7yOI+mxskhf+CxWt4ECLijEwFAz+xUFq4tmQVWxNtyWc72nDS0rwyrAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNov5vp6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61111C4AF0A;
+	Tue, 30 Jul 2024 16:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355869;
-	bh=MAgn2A4UpSwM894RfHTd0Icc9QjoNqdGi1HGzmTR3Ns=;
+	s=korg; t=1722357609;
+	bh=EubrcINmNuoW5Oj37cfFbFxcDBFG/r/2Gym4xvwHBQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P64kVqlGSXu6ERixq4yx0UDg9zlHmZNGpy3ncEEhVIPzI4IL1v8E9phOpcu+N2g6Q
-	 FRw9aTX9tZEfUhPX0Zyc9rDQcswwxxUHWQf2jQb1ED5A302gQ8thCGWrYDtXZ4LtBm
-	 +iRRfwS62jaysfJQbJ5Y3yhytRE/ZKgaMhk3HTC0=
+	b=SNov5vp6yqevNjmSfMKO4l/24Sk7tV5JgZZkpb+tQ42k+wFWkwMtgDVQiEXbu/OBj
+	 EXld0qcd8+dbQfU5bh7mBtNteY1uZkFaKvswIN1e0nDtdK6LeqOwGxOImY/xBYBkSn
+	 jhukf/b/xbuiZO8XuK3cO0YMHeJmQLmpaWdzfOdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Gjorgji Rosikopulos <quic_grosikop@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/440] media: i2c: Fix imx412 exposure control
+Subject: [PATCH 6.6 265/568] clk: qcom: gpucc-sm8350: Park RCGs clk source at XO during disable
 Date: Tue, 30 Jul 2024 17:46:12 +0200
-Message-ID: <20240730151621.310954107@linuxfoundation.org>
+Message-ID: <20240730151650.232768122@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit a1956bf53a2774014ee1768b484af2c38c633a25 ]
+[ Upstream commit 313e2909023bef36ef7b6d1d9ff2d98febcaa28d ]
 
-Currently we have the following algorithm to calculate what value should be
-written to the exposure control of imx412.
+The RCG's clk src has to be parked at XO while disabling as per the
+HW recommendation, hence use clk_rcg2_shared_ops to achieve the same.
 
-lpfr = imx412->vblank + imx412->cur_mode->height;
-shutter = lpfr - exposure;
-
-The 'shutter' value is given to IMX412_REG_EXPOSURE_CIT however, the above
-algorithm will result in the value given to IMX412_REG_EXPOSURE_CIT
-decreasing as the requested exposure value from user-space goes up.
-
-e.g.
-[ 2255.713989] imx412 20-001a: Received exp 1608, analog gain 0
-[ 2255.714002] imx412 20-001a: Set exp 1608, analog gain 0, shutter 1938, lpfr 3546
-[ 2256.302770] imx412 20-001a: Received exp 2586, analog gain 100
-[ 2256.302800] imx412 20-001a: Set exp 2586, analog gain 100, shutter 960, lpfr 3546
-[ 2256.753755] imx412 20-001a: Received exp 3524, analog gain 110
-[ 2256.753772] imx412 20-001a: Set exp 3524, analog gain 110, shutter 22, lpfr 3546
-
-This behaviour results in the image having less exposure as the requested
-exposure value from user-space increases.
-
-Other sensor drivers such as ov5675, imx218, hid556 and others take the
-requested exposure value and use the value directly.
-
-Take the example of the above cited sensor drivers and directly apply the
-requested exposure value from user-space. The 'lpfr' variable still
-functions as before but the 'shutter' variable can be dispensed with as a
-result.
-
-Once done a similar run of the test application requesting higher exposure
-looks like this, with 'exp' written directly to the sensor.
-
-[  133.207884] imx412 20-001a: Received exp 1608, analog gain 0
-[  133.207899] imx412 20-001a: Set exp 1608, analog gain 0, lpfr 3546
-[  133.905309] imx412 20-001a: Received exp 2844, analog gain 100
-[  133.905344] imx412 20-001a: Set exp 2844, analog gain 100, lpfr 3546
-[  134.241705] imx412 20-001a: Received exp 3524, analog gain 110
-[  134.241775] imx412 20-001a: Set exp 3524, analog gain 110, lpfr 3546
-
-The result is then setting the sensor exposure to lower values results in
-darker, less exposure images and vice versa with higher exposure values.
-
-Fixes: 9214e86c0cc1 ("media: i2c: Add imx412 camera sensor driver")
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5165-rb5/imx577
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Gjorgji Rosikopulos <quic_grosikop@quicinc.com>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 160758b05ab1 ("clk: qcom: add support for SM8350 GPUCC")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
+Link: https://lore.kernel.org/r/20240621-sm8350-gpucc-fixes-v1-1-22db60c7c5d3@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx412.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/gpucc-sm8350.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/imx412.c b/drivers/media/i2c/imx412.c
-index 7f6d29e0e7c40..77fa6253ba3e3 100644
---- a/drivers/media/i2c/imx412.c
-+++ b/drivers/media/i2c/imx412.c
-@@ -544,14 +544,13 @@ static int imx412_update_controls(struct imx412 *imx412,
+diff --git a/drivers/clk/qcom/gpucc-sm8350.c b/drivers/clk/qcom/gpucc-sm8350.c
+index 8dc54dff983f3..33c4fb8891caa 100644
+--- a/drivers/clk/qcom/gpucc-sm8350.c
++++ b/drivers/clk/qcom/gpucc-sm8350.c
+@@ -2,6 +2,7 @@
+ /*
+  * Copyright (c) 2019-2020, The Linux Foundation. All rights reserved.
+  * Copyright (c) 2022, Linaro Limited
++ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
   */
- static int imx412_update_exp_gain(struct imx412 *imx412, u32 exposure, u32 gain)
- {
--	u32 lpfr, shutter;
-+	u32 lpfr;
- 	int ret;
  
- 	lpfr = imx412->vblank + imx412->cur_mode->height;
--	shutter = lpfr - exposure;
+ #include <linux/clk.h>
+@@ -147,7 +148,7 @@ static struct clk_rcg2 gpu_cc_gmu_clk_src = {
+ 		.parent_data = gpu_cc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_shared_ops,
+ 	},
+ };
  
--	dev_dbg(imx412->dev, "Set exp %u, analog gain %u, shutter %u, lpfr %u",
--		exposure, gain, shutter, lpfr);
-+	dev_dbg(imx412->dev, "Set exp %u, analog gain %u, lpfr %u",
-+		exposure, gain, lpfr);
- 
- 	ret = imx412_write_reg(imx412, IMX412_REG_HOLD, 1, 1);
- 	if (ret)
-@@ -561,7 +560,7 @@ static int imx412_update_exp_gain(struct imx412 *imx412, u32 exposure, u32 gain)
- 	if (ret)
- 		goto error_release_group_hold;
- 
--	ret = imx412_write_reg(imx412, IMX412_REG_EXPOSURE_CIT, 2, shutter);
-+	ret = imx412_write_reg(imx412, IMX412_REG_EXPOSURE_CIT, 2, exposure);
- 	if (ret)
- 		goto error_release_group_hold;
+@@ -169,7 +170,7 @@ static struct clk_rcg2 gpu_cc_hub_clk_src = {
+ 		.parent_data = gpu_cc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_1),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_shared_ops,
+ 	},
+ };
  
 -- 
 2.43.0
