@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-63211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0ACB941887
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 273F99417F3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C80F8B23E47
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E841F231E4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D530918E021;
-	Tue, 30 Jul 2024 16:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF0318E02A;
+	Tue, 30 Jul 2024 16:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQXZuKOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gau13MZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9259D18C931;
-	Tue, 30 Jul 2024 16:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2901E18B477;
+	Tue, 30 Jul 2024 16:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356084; cv=none; b=XHJxSip+uBeiQU4RFM0Xf6jjd/2EDz2RnjRRlwCQ5yFgLZ7j4SfWaVsSWtzo3VAVrw7JUQ6BR8qDPjMRHRTHAABmGlSJl5DyeryGYOmAafYdjs20JfrpODHCQgSENePGpjXCdqCjOhpxY/1QxSK/wJRt+sSODL8XUVpNOVVUIBk=
+	t=1722356098; cv=none; b=hgdz26ucl1Gd4SGmtzn0QX91uSM1jRO2SeAq8aOSoS1v7RRIGSsuyNqSkac/uyMcx508z4DZjRktBbwRAuPclp4wnvDLGTjvkaPz/LAuYMVVk3ScV/dUGEhA0mZfKauk06cVT2ToXifB6lDVRWzwx7R4MZ8BPvnQDbsmYTSBC5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356084; c=relaxed/simple;
-	bh=21r5Ns4TmXC67ZXSH8mNWuXRKkYtR4Tk8qrepMET1/U=;
+	s=arc-20240116; t=1722356098; c=relaxed/simple;
+	bh=hHzEawoxQT75p3DRdLVnMp32Y7fyLl8Oc0EZacSKzwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7Xm0mzxpxKA6GrnoDbRdxTZme1Xk117mXFQkKzDf3t0A3x0Z9XBC1ZuUTpSBlLjag8H/dnJo7SMZbms1TRI/2oNSnDlYzuPs08fRBPTu0hAogabo8TT/1nwbVf2dG2WiMY0kuCfdqmdS/qgUHKMMiyJP9xAEFDriloKa24WqAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQXZuKOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9906C32782;
-	Tue, 30 Jul 2024 16:14:43 +0000 (UTC)
+	 MIME-Version; b=fkb7D/xbvPvileHWCp0V23zfyO+kMYizooaxnh6E2W9qDIh7VMar3fHxk5xYbBD0LSQRL5mFxkYjeHP/8XzINJSJX0Dbdi8f6+O8f5m6MGmGlteuYca9AcIu8u3StMkwPeTrrAuA8EFj5eb1mjR+b68nGk+CDmhcdcfe5241IJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gau13MZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9AAC32782;
+	Tue, 30 Jul 2024 16:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356084;
-	bh=21r5Ns4TmXC67ZXSH8mNWuXRKkYtR4Tk8qrepMET1/U=;
+	s=korg; t=1722356097;
+	bh=hHzEawoxQT75p3DRdLVnMp32Y7fyLl8Oc0EZacSKzwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQXZuKOqTzX1Tj2W13ER81882AGE59TbXlnipWIdOhDkxk1Nm6nBapX8t5cJ2Jrip
-	 ecqsRDvWbVPANBRWU5W4T5bmtB6wPj4/UEaK7DXR7EotxHyrZCp6tNnjOe20OCF+4r
-	 FogcxW2PPe+ldDmPt3YOLffmLzgBJfQAwPAx41fk=
+	b=Gau13MZcOUfP0UHzYPLoFRV/0DVOvmfS2HYVYEhXEZHIO4LbTVUpZbJ05fivDhYNY
+	 PYfUacJbUBSCimX5UMBCZoNJ2vCL2TKmlNtt4l5TfMqwT9PPEXB7uxyeUa4jPr4JbN
+	 JOnNDppH04bAvFfW5VtE5uWjqgtqKG1WRU+/REiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 115/809] arm64: dts: rockchip: Fix mic-in-differential usage on rk3568-evb1-v10
-Date: Tue, 30 Jul 2024 17:39:51 +0200
-Message-ID: <20240730151729.163785961@linuxfoundation.org>
+Subject: [PATCH 6.10 116/809] arm64: dts: renesas: r8a779h0: Drop "opp-shared" from opp-table-0
+Date: Tue, 30 Jul 2024 17:39:52 +0200
+Message-ID: <20240730151729.203163717@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,42 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit ec03073888ad23223ebb986e62583c20a9ed3c07 ]
+[ Upstream commit f3acb237a17962349b61eed813f62dddf7aead29 ]
 
-The 'mic-in-differential' DT property supported by the RK809/RK817 audio
-codec driver is actually valid if prefixed with 'rockchip,':
+The four Cortex-A76 CPU cores on R-Car V4M share their Operating
+Performance Points (OPP) table, but they have independent clocks.
+All cores in the cluster can switch DVFS states independently, hence
+the cluster's OPP table should not have an "opp-shared" property.
 
-  DTC_CHK arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dtb
-
-  rk3568-evb1-v10.dtb: pmic@20: codec: 'mic-in-differential' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/mfd/rockchip,rk809.yaml#
-
-Make use of the correct property name.
-
-Fixes: 3e4c629ca680 ("arm64: dts: rockchip: enable rk809 audio codec on the rk3568 evb1-v10")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20240622-rk809-fixes-v2-5-c0db420d3639@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 6bd8b0bc444eae56 ("arm64: dts: renesas: r8a779h0: Add CA76 operating points")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/4e0227ff4388485cdb1ca2855ee6df92754e756e.1718890585.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r8a779h0.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-index 19f8fc369b130..8c3ab07d38079 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
-@@ -475,7 +475,7 @@ regulator-state-mem {
- 		};
+diff --git a/arch/arm64/boot/dts/renesas/r8a779h0.dtsi b/arch/arm64/boot/dts/renesas/r8a779h0.dtsi
+index 6d791024cabe1..792afe1a45747 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779h0.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a779h0.dtsi
+@@ -16,7 +16,6 @@ / {
  
- 		codec {
--			mic-in-differential;
-+			rockchip,mic-in-differential;
- 		};
- 	};
- };
+ 	cluster0_opp: opp-table-0 {
+ 		compatible = "operating-points-v2";
+-		opp-shared;
+ 
+ 		opp-500000000 {
+ 			opp-hz = /bits/ 64 <500000000>;
 -- 
 2.43.0
 
