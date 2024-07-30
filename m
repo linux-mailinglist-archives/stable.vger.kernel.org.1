@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AEE9418C3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152D7941BF1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3E3E1C2032B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1E012838E7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F3218990C;
-	Tue, 30 Jul 2024 16:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FB1189537;
+	Tue, 30 Jul 2024 17:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpAGHkub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6Ai8Rag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C8B188012;
-	Tue, 30 Jul 2024 16:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC0A156F30;
+	Tue, 30 Jul 2024 17:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356686; cv=none; b=VpXxbK+zXLbLDLJE6HTdEf/yOitVjhlKJWQ7lin++4v7NXtN8bFU1Fyxwc/gX4j/E8pr5Jx1zAMbmzEhpZ/Sy9EcX+hsIldsQs477C/b2iq6xR+wNdj9txzoHRXb2KFjJ3oih39ssFQsa33vevGh7ULQZNS2y/hbqSnR1EyVh/Q=
+	t=1722358875; cv=none; b=tTF2tT74qUJx4rlppD4WR27PoVdk88WDz630ud1I158plJwz/1WeqR9PWMeNeEoRW7S0oOhIktMpfxFcDneEymgQUrL59/e5F/xq3gbrcTr3kaWcQj8BsCa55ETaf/RoU/u/NXvADWHQTE6sS0EXUgXB/JNdfaSdsKzPtiaDZ6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356686; c=relaxed/simple;
-	bh=ngTY9ln4zDuNKjnfYr+tDE3kBPSLLIXGP6QUYYdjqNY=;
+	s=arc-20240116; t=1722358875; c=relaxed/simple;
+	bh=xdGcYtN8pm/FeQQ1lf7XUZvO7rzt6IPbGdiALeKmDOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fu9SO+zp6bDRZFsudCLbpuYaWRT37BPn1gmycZ3R45JZqs67kSewryuqafwj3Bk2K1/6HBkC94m4ONDl20IU2TY+r5dzWwdSvXLS3tdMqegnYmi5DaduPwRSs+yXPv5j5YWuN3BXBo4rIemQuGTFUhwj8QXd7LHeSBj05Q3vJ4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpAGHkub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67971C32782;
-	Tue, 30 Jul 2024 16:24:45 +0000 (UTC)
+	 MIME-Version; b=Ve3tnNch5qG3tiseC0uRnf9ZkMajqnw9Lr4tuZXlJeIZ3LGWrqNKiI02712jcNVP40RqWoAJu0FHYoqrc7fNltNNKUxAuSGWj6EK6h0wfzAf/qH07gyCkseXIpmVdQIMWZWBxkKFpYwA1b+JeYv8+JoowoWNu339jl3zcveJpDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6Ai8Rag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C323FC32782;
+	Tue, 30 Jul 2024 17:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356685;
-	bh=ngTY9ln4zDuNKjnfYr+tDE3kBPSLLIXGP6QUYYdjqNY=;
+	s=korg; t=1722358875;
+	bh=xdGcYtN8pm/FeQQ1lf7XUZvO7rzt6IPbGdiALeKmDOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YpAGHkubwFD24e1hmVox69/W1bJvwLBaoBsZZpesrhfOqoWH6Bp2n5hMd/281c+9E
-	 LSA2Grp19dNFcEq4NcsNL3vRs35JBAxnE0EeRu1fx4B9O5RRLFhMsr374nZJiSzoeM
-	 PqNBD/OlqpLXTRGIHS9+icQfAMAGw/8TF7t8ZPAo=
+	b=W6Ai8RagPfQrRbsM/i1yuXICX8myD1FFpnuwAd2rPjcpfqBVI5RTdjyXkRPTVpYdV
+	 nZ8TOmxno5gym3XN00QPN6hpHh8CJGTOkTR5zZAaK71VGKEJz7Qe3/oig0h8qbuVk7
+	 FJVr7IY7P5tzAHz9wfE3o5o/f2RNmz8nGYbnz0Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/568] xdp: fix invalid wait context of page_pool_destroy()
+Subject: [PATCH 6.10 404/809] powerpc/kexec_file: fix cpus node update to FDT
 Date: Tue, 30 Jul 2024 17:44:40 +0200
-Message-ID: <20240730151646.644936517@linuxfoundation.org>
+Message-ID: <20240730151740.645289585@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,144 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit 59a931c5b732ca5fc2ca727f5a72aeabaafa85ec ]
+[ Upstream commit 932bed41217059638c78a75411b7893b121d2162 ]
 
-If the driver uses a page pool, it creates a page pool with
-page_pool_create().
-The reference count of page pool is 1 as default.
-A page pool will be destroyed only when a reference count reaches 0.
-page_pool_destroy() is used to destroy page pool, it decreases a
-reference count.
-When a page pool is destroyed, ->disconnect() is called, which is
-mem_allocator_disconnect().
-This function internally acquires mutex_lock().
+While updating the cpus node, commit 40c753993e3a ("powerpc/kexec_file:
+ Use current CPU info while setting up FDT") first deletes all subnodes
+under the /cpus node. However, while adding sub-nodes back, it missed
+adding cpus subnodes whose device_type != "cpu", such as l2-cache*,
+l3-cache*, ibm,powerpc-cpu-features.
 
-If the driver uses XDP, it registers a memory model with
-xdp_rxq_info_reg_mem_model().
-The xdp_rxq_info_reg_mem_model() internally increases a page pool
-reference count if a memory model is a page pool.
-Now the reference count is 2.
+Fix this by only deleting cpus sub-nodes of device_type == "cpus" and
+then adding all available nodes with device_type == "cpu".
 
-To destroy a page pool, the driver should call both page_pool_destroy()
-and xdp_unreg_mem_model().
-The xdp_unreg_mem_model() internally calls page_pool_destroy().
-Only page_pool_destroy() decreases a reference count.
-
-If a driver calls page_pool_destroy() then xdp_unreg_mem_model(), we
-will face an invalid wait context warning.
-Because xdp_unreg_mem_model() calls page_pool_destroy() with
-rcu_read_lock().
-The page_pool_destroy() internally acquires mutex_lock().
-
-Splat looks like:
-=============================
-[ BUG: Invalid wait context ]
-6.10.0-rc6+ #4 Tainted: G W
------------------------------
-ethtool/1806 is trying to lock:
-ffffffff90387b90 (mem_id_lock){+.+.}-{4:4}, at: mem_allocator_disconnect+0x73/0x150
-other info that might help us debug this:
-context-{5:5}
-3 locks held by ethtool/1806:
-stack backtrace:
-CPU: 0 PID: 1806 Comm: ethtool Tainted: G W 6.10.0-rc6+ #4 f916f41f172891c800f2fed
-Hardware name: ASUS System Product Name/PRIME Z690-P D4, BIOS 0603 11/01/2021
-Call Trace:
-<TASK>
-dump_stack_lvl+0x7e/0xc0
-__lock_acquire+0x1681/0x4de0
-? _printk+0x64/0xe0
-? __pfx_mark_lock.part.0+0x10/0x10
-? __pfx___lock_acquire+0x10/0x10
-lock_acquire+0x1b3/0x580
-? mem_allocator_disconnect+0x73/0x150
-? __wake_up_klogd.part.0+0x16/0xc0
-? __pfx_lock_acquire+0x10/0x10
-? dump_stack_lvl+0x91/0xc0
-__mutex_lock+0x15c/0x1690
-? mem_allocator_disconnect+0x73/0x150
-? __pfx_prb_read_valid+0x10/0x10
-? mem_allocator_disconnect+0x73/0x150
-? __pfx_llist_add_batch+0x10/0x10
-? console_unlock+0x193/0x1b0
-? lockdep_hardirqs_on+0xbe/0x140
-? __pfx___mutex_lock+0x10/0x10
-? tick_nohz_tick_stopped+0x16/0x90
-? __irq_work_queue_local+0x1e5/0x330
-? irq_work_queue+0x39/0x50
-? __wake_up_klogd.part.0+0x79/0xc0
-? mem_allocator_disconnect+0x73/0x150
-mem_allocator_disconnect+0x73/0x150
-? __pfx_mem_allocator_disconnect+0x10/0x10
-? mark_held_locks+0xa5/0xf0
-? rcu_is_watching+0x11/0xb0
-page_pool_release+0x36e/0x6d0
-page_pool_destroy+0xd7/0x440
-xdp_unreg_mem_model+0x1a7/0x2a0
-? __pfx_xdp_unreg_mem_model+0x10/0x10
-? kfree+0x125/0x370
-? bnxt_free_ring.isra.0+0x2eb/0x500
-? bnxt_free_mem+0x5ac/0x2500
-xdp_rxq_info_unreg+0x4a/0xd0
-bnxt_free_mem+0x1356/0x2500
-bnxt_close_nic+0xf0/0x3b0
-? __pfx_bnxt_close_nic+0x10/0x10
-? ethnl_parse_bit+0x2c6/0x6d0
-? __pfx___nla_validate_parse+0x10/0x10
-? __pfx_ethnl_parse_bit+0x10/0x10
-bnxt_set_features+0x2a8/0x3e0
-__netdev_update_features+0x4dc/0x1370
-? ethnl_parse_bitset+0x4ff/0x750
-? __pfx_ethnl_parse_bitset+0x10/0x10
-? __pfx___netdev_update_features+0x10/0x10
-? mark_held_locks+0xa5/0xf0
-? _raw_spin_unlock_irqrestore+0x42/0x70
-? __pm_runtime_resume+0x7d/0x110
-ethnl_set_features+0x32d/0xa20
-
-To fix this problem, it uses rhashtable_lookup_fast() instead of
-rhashtable_lookup() with rcu_read_lock().
-Using xa without rcu_read_lock() here is safe.
-xa is freed by __xdp_mem_allocator_rcu_free() and this is called by
-call_rcu() of mem_xa_remove().
-The mem_xa_remove() is called by page_pool_destroy() if a reference
-count reaches 0.
-The xa is already protected by the reference count mechanism well in the
-control plane.
-So removing rcu_read_lock() for page_pool_destroy() is safe.
-
-Fixes: c3f812cea0d7 ("page_pool: do not release pool until inflight == 0.")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20240712095116.3801586-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 40c753993e3a ("powerpc/kexec_file: Use current CPU info while setting up FDT")
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240510102235.2269496-3-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/xdp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/powerpc/kexec/core_64.c | 53 +++++++++++++++++++++++++-----------
+ 1 file changed, 37 insertions(+), 16 deletions(-)
 
-diff --git a/net/core/xdp.c b/net/core/xdp.c
-index 5fe4c099f30a3..5ee3f8f165e5a 100644
---- a/net/core/xdp.c
-+++ b/net/core/xdp.c
-@@ -126,10 +126,8 @@ void xdp_unreg_mem_model(struct xdp_mem_info *mem)
- 		return;
+diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+index 72b12bc10f90b..222aa326dacee 100644
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -467,9 +467,15 @@ static int add_node_props(void *fdt, int node_offset, const struct device_node *
+  * @fdt:              Flattened device tree of the kernel.
+  *
+  * Returns 0 on success, negative errno on error.
++ *
++ * Note: expecting no subnodes under /cpus/<node> with device_type == "cpu".
++ * If this changes, update this function to include them.
+  */
+ int update_cpus_node(void *fdt)
+ {
++	int prev_node_offset;
++	const char *device_type;
++	const struct fdt_property *prop;
+ 	struct device_node *cpus_node, *dn;
+ 	int cpus_offset, cpus_subnode_offset, ret = 0;
  
- 	if (type == MEM_TYPE_PAGE_POOL) {
--		rcu_read_lock();
--		xa = rhashtable_lookup(mem_id_ht, &id, mem_id_rht_params);
-+		xa = rhashtable_lookup_fast(mem_id_ht, &id, mem_id_rht_params);
- 		page_pool_destroy(xa->page_pool);
--		rcu_read_unlock();
+@@ -480,30 +486,44 @@ int update_cpus_node(void *fdt)
+ 		return cpus_offset;
  	}
+ 
+-	if (cpus_offset > 0) {
+-		ret = fdt_del_node(fdt, cpus_offset);
++	prev_node_offset = cpus_offset;
++	/* Delete sub-nodes of /cpus node with device_type == "cpu" */
++	for (cpus_subnode_offset = fdt_first_subnode(fdt, cpus_offset); cpus_subnode_offset >= 0;) {
++		/* Ignore nodes that do not have a device_type property or device_type != "cpu" */
++		prop = fdt_get_property(fdt, cpus_subnode_offset, "device_type", NULL);
++		if (!prop || strcmp(prop->data, "cpu")) {
++			prev_node_offset = cpus_subnode_offset;
++			goto next_node;
++		}
++
++		ret = fdt_del_node(fdt, cpus_subnode_offset);
+ 		if (ret < 0) {
+-			pr_err("Error deleting /cpus node: %s\n", fdt_strerror(ret));
+-			return -EINVAL;
++			pr_err("Failed to delete a cpus sub-node: %s\n", fdt_strerror(ret));
++			return ret;
+ 		}
++next_node:
++		if (prev_node_offset == cpus_offset)
++			cpus_subnode_offset = fdt_first_subnode(fdt, cpus_offset);
++		else
++			cpus_subnode_offset = fdt_next_subnode(fdt, prev_node_offset);
+ 	}
+ 
+-	/* Add cpus node to fdt */
+-	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"), "cpus");
+-	if (cpus_offset < 0) {
+-		pr_err("Error creating /cpus node: %s\n", fdt_strerror(cpus_offset));
++	cpus_node = of_find_node_by_path("/cpus");
++	/* Fail here to avoid kexec/kdump kernel boot hung */
++	if (!cpus_node) {
++		pr_err("No /cpus node found\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Add cpus node properties */
+-	cpus_node = of_find_node_by_path("/cpus");
+-	ret = add_node_props(fdt, cpus_offset, cpus_node);
+-	of_node_put(cpus_node);
+-	if (ret < 0)
+-		return ret;
++	/* Add all /cpus sub-nodes of device_type == "cpu" to FDT */
++	for_each_child_of_node(cpus_node, dn) {
++		/* Ignore device nodes that do not have a device_type property
++		 * or device_type != "cpu".
++		 */
++		device_type = of_get_property(dn, "device_type", NULL);
++		if (!device_type || strcmp(device_type, "cpu"))
++			continue;
+ 
+-	/* Loop through all subnodes of cpus and add them to fdt */
+-	for_each_node_by_type(dn, "cpu") {
+ 		cpus_subnode_offset = fdt_add_subnode(fdt, cpus_offset, dn->full_name);
+ 		if (cpus_subnode_offset < 0) {
+ 			pr_err("Unable to add %s subnode: %s\n", dn->full_name,
+@@ -517,6 +537,7 @@ int update_cpus_node(void *fdt)
+ 			goto out;
+ 	}
+ out:
++	of_node_put(cpus_node);
+ 	of_node_put(dn);
+ 	return ret;
  }
- EXPORT_SYMBOL_GPL(xdp_unreg_mem_model);
 -- 
 2.43.0
 
