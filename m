@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99D3941A16
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 128F99417DB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 747E4286AB8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:40:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4593CB20D59
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9E2187FF9;
-	Tue, 30 Jul 2024 16:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A12184535;
+	Tue, 30 Jul 2024 16:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLALYPPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpWEBMnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E581183CDB;
-	Tue, 30 Jul 2024 16:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19181A6191;
+	Tue, 30 Jul 2024 16:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357597; cv=none; b=IA9JNI7nXTkJIucoCl8KJa4FnjpiWdpzuzY9TDQDBDWmtJDtXtmcz+Pyyw5BpFCGMlRXbt9RPI7nSv0idnrtuaLBY3Ots+PGu4MPXO7i9XJLmGhtV+7sg0/3vKVEi4ffEDimYBy+Ph+yOzShFg7iKdk5MwUNuls61yFpNyX5ie4=
+	t=1722356001; cv=none; b=ZmX3bYSD8y92r+aNyhmtIdNBKTnBniVqm8+gqfXuBZg99E0cDbry6vyHfGFCF6qwa26r5J1Sifl8dC8ZHb7w/GMZG+mGRn3BvBceXJBmJ5K8VKBB+XJnhqICBluBVU/rGTTI/W+Q1ULxhIOWMZpvTosk0SLaUKT4GOMBfPTFXXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357597; c=relaxed/simple;
-	bh=mZdZkJKYGuSWnh1rKucFBvDEcoZoImeAKNvUQdo7BLc=;
+	s=arc-20240116; t=1722356001; c=relaxed/simple;
+	bh=petmXTq+DSxKS+8K6lY9g35x8G7yTTTr1TTHBPnL/Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l5F9Ns0KCL1iXGPxo3tXG1oRI5wvqIhnlpxLhcKaGmY6Slvr3buk9A71UcRAIjbbqkgjj6uzAarsY2QciCmHW3wGneLEBBSsBUXNXFuTxuE9ZtmkEcETdsIPD11EKi/10OJym2QoYdM6cekBp2Q7pwMFcB6AqHZubZN6ATiqGM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLALYPPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B9DC4AF0C;
-	Tue, 30 Jul 2024 16:39:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HiCrT0mNb47N6dMEEUHkmGX/DO6AjhB1/G+j4wcCSUGQrU69C2dnnaIq9Gf3j4tKfCpCNVZuSVrMCgbPQrGi6eIeSLqT24jcepwacOXYVCdv20lrK64+axZ5wv+4vE2BMt80YC3hVMPWLm5RqkZ85v797wfz8SFFThhKyjSDpHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpWEBMnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26321C32782;
+	Tue, 30 Jul 2024 16:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357597;
-	bh=mZdZkJKYGuSWnh1rKucFBvDEcoZoImeAKNvUQdo7BLc=;
+	s=korg; t=1722356001;
+	bh=petmXTq+DSxKS+8K6lY9g35x8G7yTTTr1TTHBPnL/Eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLALYPPxbruRPuNMxUAc4FIgMqQu7WSDkqd3RdwL1z14ylnUr98H8qBA5gTjmbXmo
-	 MhMD4bkQoEh9rfnVKXradp/7o2T/MxtKmQMpWSG4qb9cL69IEw6hpxDRA+SwjLXJ8A
-	 70wBmFScuV/KUR7r3AiYeYolJqJtd15ltEhQZ2YQ=
+	b=zpWEBMnTuPzP/jqe7V81qkL1zWbonTQH7m3WZuQin/Pr4q4pcil7aAn92Mvr4U+wI
+	 fRO3lEt0EG6/j0JVXulGfn6pPrgmqSi29sDQFesFCAGxy9WxBd+o6v0ZjqkmuJP8qA
+	 NlIDN8cMLy9yhV9OL2Sm8RmcMu0FD2NdIjNrAgYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/568] RDMA/mlx4: Fix truncated output warning in alias_GUID.c
+Subject: [PATCH 6.1 147/440] media: rcar-csi2: Disable runtime_pm in probe error
 Date: Tue, 30 Jul 2024 17:46:20 +0200
-Message-ID: <20240730151650.551485033@linuxfoundation.org>
+Message-ID: <20240730151621.621913140@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-[ Upstream commit 5953e0647cec703ef436ead37fed48943507b433 ]
+[ Upstream commit e306183628f7c2e95f9bf853d8fcb86288f606de ]
 
-drivers/infiniband/hw/mlx4/alias_GUID.c: In function ‘mlx4_ib_init_alias_guid_service’:
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:74: error: ‘%d’ directive
-output may be truncated writing between 1 and 11 bytes into a region of
-size 5 [-Werror=format-truncation=]
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                                                                          ^~
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:63: note: directive argument in the range [-2147483641, 2147483646]
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                                                               ^~~~~~~~~~~~~~
-drivers/infiniband/hw/mlx4/alias_GUID.c:878:17: note: ‘snprintf’ output
-between 12 and 22 bytes into a destination of size 15
-  878 |                 snprintf(alias_wq_name, sizeof alias_wq_name, "alias_guid%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+Disable pm_runtime in the probe() function error path.
 
-Fixes: a0c64a17aba8 ("mlx4: Add alias_guid mechanism")
-Link: https://lore.kernel.org/r/1951c9500109ca7e36dcd523f8a5f2d0d2a608d1.1718554641.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 769afd212b16 ("media: rcar-csi2: add Renesas R-Car MIPI CSI-2 receiver driver")
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Link: https://lore.kernel.org/r/20240617161135.130719-3-jacopo.mondi@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx4/alias_GUID.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/renesas/rcar-vin/rcar-csi2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx4/alias_GUID.c b/drivers/infiniband/hw/mlx4/alias_GUID.c
-index 111fa88a3be44..9a439569ffcf3 100644
---- a/drivers/infiniband/hw/mlx4/alias_GUID.c
-+++ b/drivers/infiniband/hw/mlx4/alias_GUID.c
-@@ -829,7 +829,7 @@ void mlx4_ib_destroy_alias_guid_service(struct mlx4_ib_dev *dev)
+diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c b/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
+index 174aa6176f540..001c4b7c59758 100644
+--- a/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
++++ b/drivers/media/platform/renesas/rcar-vin/rcar-csi2.c
+@@ -1559,12 +1559,14 @@ static int rcsi2_probe(struct platform_device *pdev)
  
- int mlx4_ib_init_alias_guid_service(struct mlx4_ib_dev *dev)
- {
--	char alias_wq_name[15];
-+	char alias_wq_name[22];
- 	int ret = 0;
- 	int i, j;
- 	union ib_gid gid;
+ 	ret = v4l2_async_register_subdev(&priv->subdev);
+ 	if (ret < 0)
+-		goto error_async;
++		goto error_pm_runtime;
+ 
+ 	dev_info(priv->dev, "%d lanes found\n", priv->lanes);
+ 
+ 	return 0;
+ 
++error_pm_runtime:
++	pm_runtime_disable(&pdev->dev);
+ error_async:
+ 	v4l2_async_nf_unregister(&priv->notifier);
+ 	v4l2_async_nf_cleanup(&priv->notifier);
 -- 
 2.43.0
 
