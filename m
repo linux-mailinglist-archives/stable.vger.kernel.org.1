@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-64479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A166A941DFB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47816941C2E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B2781F2573D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B22FC1F23E1D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2C61A76BD;
-	Tue, 30 Jul 2024 17:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321EE188003;
+	Tue, 30 Jul 2024 17:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2iNtzeI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmgREx7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E151A76B2;
-	Tue, 30 Jul 2024 17:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E236D1A6192;
+	Tue, 30 Jul 2024 17:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360257; cv=none; b=J1n0ATy8BE4rMqubLSE7jaI1ux8WV8SlvSCCSSxEG7BKFoPHQMthopGjcDfLrK46LymNjNk9nof8dF6th68BQyQx3CrYBpf7KB9miycrfinA5Mp9IRPjVjJJs4mf1bHRlT1NL8ETEn8SgFocKCyTp50ngj+p22LT6SxpiwOJn8E=
+	t=1722359049; cv=none; b=GChl7X1hfMiiidTjJtL9FUf/mstxFJPhR3SqHB7v14BtRvX6sOppw+qxcQknrtik6V5EO3QF3cc7gmhcsWRtB1m7wINI4Z4wtSeXCo8F4yaM25UCfGe8XqSbpRcOMoWsj27pik472GWfWr71/dmLpFF+0/lHYO3pM5yi6frachA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360257; c=relaxed/simple;
-	bh=GFcgtSEb8X4/CCLshYkJg91GBBexpHuW1G6GhiX5D28=;
+	s=arc-20240116; t=1722359049; c=relaxed/simple;
+	bh=ZYzDIZhKvbKFiVHhkyi59DafClDOoJbRVUxvMy2AD7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvQAEjYymhT9+9GQuCa2yjjKMDuYOHPxZhsN/V+Zj8SbLtsTG3UANmtpn8bq3mtCavrx2rr9sOD3fzkdfR4fVYtTe02hpyn8UvXaZFj5z94dkU2Hlyoz4tf3rjj80SNMF1XM8SgTD7RBbjs4+axiMKNrEwsquRKVtCtKKNx8hPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2iNtzeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93CAC4AF0C;
-	Tue, 30 Jul 2024 17:24:16 +0000 (UTC)
+	 MIME-Version; b=ddCSNB4fOwlPSB/J8ODqnbP8bBorgETFmPieT5Rqe829jgCKuomu0juZbK8FFCDw91CPTDOou/Ji81aKDv2bd7SGabQWfNNYyF6hRFHouBWizi4QroR9fhraCBhCUYpwfA1Isd3VJot8DxqpYaRT1OnGzRhEG9nVK3M7S4ptuAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmgREx7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB41C32782;
+	Tue, 30 Jul 2024 17:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360257;
-	bh=GFcgtSEb8X4/CCLshYkJg91GBBexpHuW1G6GhiX5D28=;
+	s=korg; t=1722359048;
+	bh=ZYzDIZhKvbKFiVHhkyi59DafClDOoJbRVUxvMy2AD7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2iNtzeIBgbY5A4BZ4RieFL9Yr4CCSF6C1xk64wZ3f1BCoow4lyf5B83+RvJPMErE
-	 tzrR4xof+F9bpYDjF/FApKVvvNWVWF2O1ksGkqNc+OinBf6F/9mIEJd8ilhvT28q0q
-	 gLmuzoXtYJDyUES8K/qmP59Z5oWvqRscCeXblBIU=
+	b=YmgREx7okG6m309RlpPex9KZxgDJAwX2w3yrPethukLSha2xXBLYYsbQGEDHLsluo
+	 PEWF8EYOILMxYkC2FcAPiHV/O+sISgIjCcy7YohY9pkmzoRDVQDBB+aTxcP9OxeFpE
+	 yF+aw2FM0g+gjdWAgdvN0gFGtG+loLNZG8nWqmU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tuhaowen <tuhaowen@uniontech.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.10 644/809] dev/parport: fix the array out-of-bounds risk
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: [PATCH 6.6 413/568] media: uvcvideo: Fix integer overflow calculating timestamp
 Date: Tue, 30 Jul 2024 17:48:40 +0200
-Message-ID: <20240730151750.302333123@linuxfoundation.org>
+Message-ID: <20240730151656.009008242@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +61,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: tuhaowen <tuhaowen@uniontech.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit ab11dac93d2d568d151b1918d7b84c2d02bacbd5 upstream.
+commit 8676a5e796fa18f55897ca36a94b2adf7f73ebd1 upstream.
 
-Fixed array out-of-bounds issues caused by sprintf
-by replacing it with snprintf for safer data copying,
-ensuring the destination buffer is not overflowed.
+The function uvc_video_clock_update() supports a single SOF overflow. Or
+in other words, the maximum difference between the first ant the last
+timestamp can be 4096 ticks or 4.096 seconds.
 
-Below is the stack trace I encountered during the actual issue:
+This results in a maximum value for y2 of: 0x12FBECA00, that overflows
+32bits.
+y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
 
-[ 66.575408s] [pid:5118,cpu4,QThread,4]Kernel panic - not syncing: stack-protector:
-Kernel stack is corrupted in: do_hardware_base_addr+0xcc/0xd0 [parport]
-[ 66.575408s] [pid:5118,cpu4,QThread,5]CPU: 4 PID: 5118 Comm:
-QThread Tainted: G S W O 5.10.97-arm64-desktop #7100.57021.2
-[ 66.575439s] [pid:5118,cpu4,QThread,6]TGID: 5087 Comm: EFileApp
-[ 66.575439s] [pid:5118,cpu4,QThread,7]Hardware name: HUAWEI HUAWEI QingYun
-PGUX-W515x-B081/SP1PANGUXM, BIOS 1.00.07 04/29/2024
-[ 66.575439s] [pid:5118,cpu4,QThread,8]Call trace:
-[ 66.575469s] [pid:5118,cpu4,QThread,9] dump_backtrace+0x0/0x1c0
-[ 66.575469s] [pid:5118,cpu4,QThread,0] show_stack+0x14/0x20
-[ 66.575469s] [pid:5118,cpu4,QThread,1] dump_stack+0xd4/0x10c
-[ 66.575500s] [pid:5118,cpu4,QThread,2] panic+0x1d8/0x3bc
-[ 66.575500s] [pid:5118,cpu4,QThread,3] __stack_chk_fail+0x2c/0x38
-[ 66.575500s] [pid:5118,cpu4,QThread,4] do_hardware_base_addr+0xcc/0xd0 [parport]
+Extend the size of y2 to u64 to support all its values.
 
-Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240708080430.8221-1-tuhaowen@uniontech.com
+Without this patch:
+ # yavta -s 1920x1080 -f YUYV -t 1/5 -c /dev/video0
+Device /dev/v4l/by-id/usb-Shine-Optics_Integrated_Camera_0001-video-index0 opened.
+Device `Integrated Camera: Integrated C' on `usb-0000:00:14.0-6' (driver 'uvcvideo') supports video, capture, without mplanes.
+Video format set: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
+Video format: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
+Current frame rate: 1/5
+Setting frame rate to: 1/5
+Frame rate set: 1/5
+8 buffers requested.
+length: 4147200 offset: 0 timestamp type/source: mono/SoE
+Buffer 0/0 mapped at address 0x7947ea94c000.
+length: 4147200 offset: 4149248 timestamp type/source: mono/SoE
+Buffer 1/0 mapped at address 0x7947ea557000.
+length: 4147200 offset: 8298496 timestamp type/source: mono/SoE
+Buffer 2/0 mapped at address 0x7947ea162000.
+length: 4147200 offset: 12447744 timestamp type/source: mono/SoE
+Buffer 3/0 mapped at address 0x7947e9d6d000.
+length: 4147200 offset: 16596992 timestamp type/source: mono/SoE
+Buffer 4/0 mapped at address 0x7947e9978000.
+length: 4147200 offset: 20746240 timestamp type/source: mono/SoE
+Buffer 5/0 mapped at address 0x7947e9583000.
+length: 4147200 offset: 24895488 timestamp type/source: mono/SoE
+Buffer 6/0 mapped at address 0x7947e918e000.
+length: 4147200 offset: 29044736 timestamp type/source: mono/SoE
+Buffer 7/0 mapped at address 0x7947e8d99000.
+0 (0) [-] none 0 4147200 B 507.554210 508.874282 242.836 fps ts mono/SoE
+1 (1) [-] none 2 4147200 B 508.886298 509.074289 0.751 fps ts mono/SoE
+2 (2) [-] none 3 4147200 B 509.076362 509.274307 5.261 fps ts mono/SoE
+3 (3) [-] none 4 4147200 B 509.276371 509.474336 5.000 fps ts mono/SoE
+4 (4) [-] none 5 4147200 B 509.476394 509.674394 4.999 fps ts mono/SoE
+5 (5) [-] none 6 4147200 B 509.676506 509.874345 4.997 fps ts mono/SoE
+6 (6) [-] none 7 4147200 B 509.876430 510.074370 5.002 fps ts mono/SoE
+7 (7) [-] none 8 4147200 B 510.076434 510.274365 5.000 fps ts mono/SoE
+8 (0) [-] none 9 4147200 B 510.276421 510.474333 5.000 fps ts mono/SoE
+9 (1) [-] none 10 4147200 B 510.476391 510.674429 5.001 fps ts mono/SoE
+10 (2) [-] none 11 4147200 B 510.676434 510.874283 4.999 fps ts mono/SoE
+11 (3) [-] none 12 4147200 B 510.886264 511.074349 4.766 fps ts mono/SoE
+12 (4) [-] none 13 4147200 B 511.070577 511.274304 5.426 fps ts mono/SoE
+13 (5) [-] none 14 4147200 B 511.286249 511.474301 4.637 fps ts mono/SoE
+14 (6) [-] none 15 4147200 B 511.470542 511.674251 5.426 fps ts mono/SoE
+15 (7) [-] none 16 4147200 B 511.672651 511.874337 4.948 fps ts mono/SoE
+16 (0) [-] none 17 4147200 B 511.873988 512.074462 4.967 fps ts mono/SoE
+17 (1) [-] none 18 4147200 B 512.075982 512.278296 4.951 fps ts mono/SoE
+18 (2) [-] none 19 4147200 B 512.282631 512.482423 4.839 fps ts mono/SoE
+19 (3) [-] none 20 4147200 B 518.986637 512.686333 0.149 fps ts mono/SoE
+20 (4) [-] none 21 4147200 B 518.342709 512.886386 -1.553 fps ts mono/SoE
+21 (5) [-] none 22 4147200 B 517.909812 513.090360 -2.310 fps ts mono/SoE
+22 (6) [-] none 23 4147200 B 517.590775 513.294454 -3.134 fps ts mono/SoE
+23 (7) [-] none 24 4147200 B 513.298465 513.494335 -0.233 fps ts mono/SoE
+24 (0) [-] none 25 4147200 B 513.510273 513.698375 4.721 fps ts mono/SoE
+25 (1) [-] none 26 4147200 B 513.698904 513.902327 5.301 fps ts mono/SoE
+26 (2) [-] none 27 4147200 B 513.895971 514.102348 5.074 fps ts mono/SoE
+27 (3) [-] none 28 4147200 B 514.099091 514.306337 4.923 fps ts mono/SoE
+28 (4) [-] none 29 4147200 B 514.310348 514.510567 4.734 fps ts mono/SoE
+29 (5) [-] none 30 4147200 B 514.509295 514.710367 5.026 fps ts mono/SoE
+30 (6) [-] none 31 4147200 B 521.532513 514.914398 0.142 fps ts mono/SoE
+31 (7) [-] none 32 4147200 B 520.885277 515.118385 -1.545 fps ts mono/SoE
+32 (0) [-] none 33 4147200 B 520.411140 515.318336 -2.109 fps ts mono/SoE
+33 (1) [-] none 34 4147200 B 515.325425 515.522278 -0.197 fps ts mono/SoE
+34 (2) [-] none 35 4147200 B 515.538276 515.726423 4.698 fps ts mono/SoE
+35 (3) [-] none 36 4147200 B 515.720767 515.930373 5.480 fps ts mono/SoE
+
+Cc: stable@vger.kernel.org
+Fixes: 66847ef013cc ("[media] uvcvideo: Add UVC timestamps support")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240610-hwtimestamp-followup-v1-2-f9eaed7be7f0@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/procfs.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/parport/procfs.c
-+++ b/drivers/parport/procfs.c
-@@ -51,12 +51,12 @@ static int do_active_device(struct ctl_t
- 	
- 	for (dev = port->devices; dev ; dev = dev->next) {
- 		if(dev == port->cad) {
--			len += sprintf(buffer, "%s\n", dev->name);
-+			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
- 		}
- 	}
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -720,11 +720,11 @@ void uvc_video_clock_update(struct uvc_s
+ 	unsigned long flags;
+ 	u64 timestamp;
+ 	u32 delta_stc;
+-	u32 y1, y2;
++	u32 y1;
+ 	u32 x1, x2;
+ 	u32 mean;
+ 	u32 sof;
+-	u64 y;
++	u64 y, y2;
  
- 	if(!len) {
--		len += sprintf(buffer, "%s\n", "none");
-+		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
- 	}
+ 	if (!uvc_hw_timestamps_param)
+ 		return;
+@@ -764,7 +764,7 @@ void uvc_video_clock_update(struct uvc_s
+ 	sof = y;
  
- 	if (len > *lenp)
-@@ -87,19 +87,19 @@ static int do_autoprobe(struct ctl_table
- 	}
- 	
- 	if ((str = info->class_name) != NULL)
--		len += sprintf (buffer + len, "CLASS:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
+ 	uvc_dbg(stream->dev, CLOCK,
+-		"%s: PTS %u y %llu.%06llu SOF %u.%06llu (x1 %u x2 %u y1 %u y2 %u SOF offset %u)\n",
++		"%s: PTS %u y %llu.%06llu SOF %u.%06llu (x1 %u x2 %u y1 %u y2 %llu SOF offset %u)\n",
+ 		stream->dev->name, buf->pts,
+ 		y >> 16, div_u64((y & 0xffff) * 1000000, 65536),
+ 		sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
+@@ -779,7 +779,7 @@ void uvc_video_clock_update(struct uvc_s
+ 		goto done;
  
- 	if ((str = info->model) != NULL)
--		len += sprintf (buffer + len, "MODEL:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
+ 	y1 = NSEC_PER_SEC;
+-	y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
++	y2 = ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
  
- 	if ((str = info->mfr) != NULL)
--		len += sprintf (buffer + len, "MANUFACTURER:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
+ 	/*
+ 	 * Interpolated and host SOF timestamps can wrap around at slightly
+@@ -800,7 +800,7 @@ void uvc_video_clock_update(struct uvc_s
+ 	timestamp = ktime_to_ns(first->host_time) + y - y1;
  
- 	if ((str = info->description) != NULL)
--		len += sprintf (buffer + len, "DESCRIPTION:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
- 
- 	if ((str = info->cmdset) != NULL)
--		len += sprintf (buffer + len, "COMMAND SET:%s;\n", str);
-+		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -117,7 +117,7 @@ static int do_hardware_base_addr(struct
- 				 void *result, size_t *lenp, loff_t *ppos)
- {
- 	struct parport *port = (struct parport *)table->extra1;
--	char buffer[20];
-+	char buffer[64];
- 	int len = 0;
- 
- 	if (*ppos) {
-@@ -128,7 +128,7 @@ static int do_hardware_base_addr(struct
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%lu\t%lu\n", port->base, port->base_hi);
-+	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -155,7 +155,7 @@ static int do_hardware_irq(struct ctl_ta
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%d\n", port->irq);
-+	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -182,7 +182,7 @@ static int do_hardware_dma(struct ctl_ta
- 	if (write) /* permissions prevent this anyway */
- 		return -EACCES;
- 
--	len += sprintf (buffer, "%d\n", port->dma);
-+	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
- 
- 	if (len > *lenp)
- 		len = *lenp;
-@@ -213,7 +213,7 @@ static int do_hardware_modes(struct ctl_
- #define printmode(x)							\
- do {									\
- 	if (port->modes & PARPORT_MODE_##x)				\
--		len += sprintf(buffer + len, "%s%s", f++ ? "," : "", #x); \
-+		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
- } while (0)
- 		int f = 0;
- 		printmode(PCSPP);
+ 	uvc_dbg(stream->dev, CLOCK,
+-		"%s: SOF %u.%06llu y %llu ts %llu buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %u)\n",
++		"%s: SOF %u.%06llu y %llu ts %llu buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %llu)\n",
+ 		stream->dev->name,
+ 		sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
+ 		y, timestamp, vbuf->vb2_buf.timestamp,
 
 
 
