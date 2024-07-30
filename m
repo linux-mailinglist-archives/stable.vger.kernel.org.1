@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8B4941905
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF78941907
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7E132864D1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF7D41C2074C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A17D1A619B;
-	Tue, 30 Jul 2024 16:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488B01A618E;
+	Tue, 30 Jul 2024 16:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3e7hVIw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEerTFJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF121078F;
-	Tue, 30 Jul 2024 16:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0635A1078F;
+	Tue, 30 Jul 2024 16:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356881; cv=none; b=FoGIIoUVRE83IWzgv5ukozREvs6EQ37ifpQK83z5XxvS+RK+YivvXNs6CUhYs4SXHqebxDGaLUSHlr3TlsrT4E3gIguPuCp9ltwUEOAuo1EAeN/DgYl8ALbY770Ohxxq74TBhG9wSEO71puODAUNb8l7U0vObbNlxEzGcoGoUgc=
+	t=1722356891; cv=none; b=EkxFXg/PnG1H2pympui6RG46MFMO2BGSwjuQ583QH3Oitcajy/0APesBC+CltlcvXez2lrj1inW+V/lfd66kUp8f97oeQmpnzfcOhn+oWCYmx1FM3WiEPfZPdfmFHfJJYTn1lzOvgyFyQ+BylN8xuTMheWWY0U3y/qmok4YdIbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356881; c=relaxed/simple;
-	bh=fSze8S6ji/qYggCjs/V+g9+B9FjlDFPvuvedDw+F01I=;
+	s=arc-20240116; t=1722356891; c=relaxed/simple;
+	bh=v9A3/X1qNgGQcp9PjMYjVQUrnHG4EurIta2soTLdElY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6AoFRw7DhzacsGwM12iJCerDUW3voDKODqx43HkI+ora1bPIjEffE7L7VsN2X5UIqQ5eXFiQ1VH8h62Q1d5G9KTMMHhvK0u8/WWJECJo4cxXDYeo3R0PXDPAjZQruptWm90zkTdqnJkxDcf+Ylcmw/T1dtLXTy3ETCZ+GqO0RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3e7hVIw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D455BC32782;
-	Tue, 30 Jul 2024 16:28:00 +0000 (UTC)
+	 MIME-Version; b=EhzO8q4mbfe3Z+8DsHkGmLY/LCUsB3VzieNmYXHLAQ0QLH8ZQkt7NDo2ryeZzkkIkBk4DHJTU9021hX9X1KxmCDOJjLJc2aJ6k4fUcPFrQxZ9+TEZJpGoMQeKVRonkXTaD3HT47ipAHpejXN2sxhktcyZ6K1gUHd+t1YNkXLSIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEerTFJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83640C32782;
+	Tue, 30 Jul 2024 16:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356881;
-	bh=fSze8S6ji/qYggCjs/V+g9+B9FjlDFPvuvedDw+F01I=;
+	s=korg; t=1722356890;
+	bh=v9A3/X1qNgGQcp9PjMYjVQUrnHG4EurIta2soTLdElY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3e7hVIwydblLpa9dTGT6mMfvvxkvRd1h5aGJzr6ayD99J7INnoCVQGh/k2XnwQJQ
-	 cUEyj909pp8kQFli/dS0OWwZe9Brjnbz33TsYMTt8RndYV8AT2yde5eCGIsEnMnil7
-	 A8YAH41hSUHK0IgiNUmtUPtle5ecn97z5rDvjrU8=
+	b=sEerTFJluKg3p8iQkUGh3d5DYUZ+TNoQy+/hWEgwCeI/AgV0qFGA/MYlcW8OiefoB
+	 Ksco/9Z7tskbX5aFT6G51k0KOz9SYBJSpI26UmP5qgdelhd7Y3xRfV8J5DHUWcTlXz
+	 Fjr44Q1cWKVAYcH1io75tBVobdNWGVLhfDcb3Lho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChiYuan Huang <cy_huang@richtek.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/568] media: v4l: async: Fix NULL pointer dereference in adding ancillary links
-Date: Tue, 30 Jul 2024 17:45:00 +0200
-Message-ID: <20240730151647.423293838@linuxfoundation.org>
+Subject: [PATCH 6.6 194/568] s390/mm: Convert make_page_secure to use a folio
+Date: Tue, 30 Jul 2024 17:45:01 +0200
+Message-ID: <20240730151647.461912062@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,41 +67,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 9b4667ea67854f0b116fe22ad11ef5628c5b5b5f ]
+[ Upstream commit 259e660d91d0e7261ae0ee37bb37266d6006a546 ]
 
-In v4l2_async_create_ancillary_links(), ancillary links are created for
-lens and flash sub-devices. These are sub-device to sub-device links and
-if the async notifier is related to a V4L2 device, the source sub-device
-of the ancillary link is NULL, leading to a NULL pointer dereference.
-Check the notifier's sd field is non-NULL in
-v4l2_async_create_ancillary_links().
+These page APIs are deprecated, so convert the incoming page to a folio
+and use the folio APIs instead.  The ultravisor API cannot handle large
+folios, so return -EINVAL if one has slipped through.
 
-Fixes: aa4faf6eb271 ("media: v4l2-async: Create links during v4l2_async_match_notify()")
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-[Sakari Ailus: Reword the subject and commit messages slightly.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20240322161149.2327518-2-willy@infradead.org
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-async.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/s390/kernel/uv.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-async.c b/drivers/media/v4l2-core/v4l2-async.c
-index eaa15b8df76df..ac4d987bba255 100644
---- a/drivers/media/v4l2-core/v4l2-async.c
-+++ b/drivers/media/v4l2-core/v4l2-async.c
-@@ -324,6 +324,9 @@ static int v4l2_async_create_ancillary_links(struct v4l2_async_notifier *n,
- 	    sd->entity.function != MEDIA_ENT_F_FLASH)
- 		return 0;
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index fc07bc39e6983..0634448698b03 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -181,21 +181,21 @@ int uv_convert_owned_from_secure(unsigned long paddr)
+ }
  
-+	if (!n->sd)
-+		return 0;
-+
- 	link = media_create_ancillary_link(&n->sd->entity, &sd->entity);
+ /*
+- * Calculate the expected ref_count for a page that would otherwise have no
++ * Calculate the expected ref_count for a folio that would otherwise have no
+  * further pins. This was cribbed from similar functions in other places in
+  * the kernel, but with some slight modifications. We know that a secure
+- * page can not be a huge page for example.
++ * folio can not be a large folio, for example.
+  */
+-static int expected_page_refs(struct page *page)
++static int expected_folio_refs(struct folio *folio)
+ {
+ 	int res;
  
- #endif
+-	res = page_mapcount(page);
+-	if (PageSwapCache(page)) {
++	res = folio_mapcount(folio);
++	if (folio_test_swapcache(folio)) {
+ 		res++;
+-	} else if (page_mapping(page)) {
++	} else if (folio_mapping(folio)) {
+ 		res++;
+-		if (page_has_private(page))
++		if (folio->private)
+ 			res++;
+ 	}
+ 	return res;
+@@ -203,14 +203,17 @@ static int expected_page_refs(struct page *page)
+ 
+ static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
+ {
++	struct folio *folio = page_folio(page);
+ 	int expected, cc = 0;
+ 
+-	if (PageWriteback(page))
++	if (folio_test_large(folio))
++		return -EINVAL;
++	if (folio_test_writeback(folio))
+ 		return -EAGAIN;
+-	expected = expected_page_refs(page);
+-	if (!page_ref_freeze(page, expected))
++	expected = expected_folio_refs(folio);
++	if (!folio_ref_freeze(folio, expected))
+ 		return -EBUSY;
+-	set_bit(PG_arch_1, &page->flags);
++	set_bit(PG_arch_1, &folio->flags);
+ 	/*
+ 	 * If the UVC does not succeed or fail immediately, we don't want to
+ 	 * loop for long, or we might get stall notifications.
+@@ -220,9 +223,9 @@ static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
+ 	 * -EAGAIN and we let the callers deal with it.
+ 	 */
+ 	cc = __uv_call(0, (u64)uvcb);
+-	page_ref_unfreeze(page, expected);
++	folio_ref_unfreeze(folio, expected);
+ 	/*
+-	 * Return -ENXIO if the page was not mapped, -EINVAL for other errors.
++	 * Return -ENXIO if the folio was not mapped, -EINVAL for other errors.
+ 	 * If busy or partially completed, return -EAGAIN.
+ 	 */
+ 	if (cc == UVC_CC_OK)
 -- 
 2.43.0
 
