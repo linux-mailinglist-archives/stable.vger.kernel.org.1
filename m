@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15816941D5F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E66941BA9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41C7F1C2373C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C8EA1C21475
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0541A76DD;
-	Tue, 30 Jul 2024 17:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6982F189907;
+	Tue, 30 Jul 2024 16:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrzZZrip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI/BepNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFF91A76D4;
-	Tue, 30 Jul 2024 17:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D66918801A;
+	Tue, 30 Jul 2024 16:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359783; cv=none; b=C91IESZNDyamaH2ZnNIY9jHdQqers8iy5uhieM/uwIF9v3A8LOjkogqOihtphWI76nKtWw+rZJU8jZx0wC5ijfobJ4bujWwt2kyVisgWkXHphXxmiTL3/pyMHs2YugyYZbDX86Hx51C34so0NEjjqih+hqy7Gaf5bIqWymSYWVQ=
+	t=1722358651; cv=none; b=gzfpqFdoFNQozkkDf1fyUGwiiaA0gf7sCx3QyBhfo4sIGBEL/v5tO6+v3VoEpoANsiBmSn3zOyb5f8jJM2S0FWVZnkgD0RoSSg6aSgYWLxyBk6OJhmMgJWmU8JhFcm4dSHWjibBF6hQKPz0mzGOyZSKDrqY1f27notW2tmOC/Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359783; c=relaxed/simple;
-	bh=FiWDME2kdaPAFUbpQ5E3RK6Hw4HO+FvwW/DiCQyyLMc=;
+	s=arc-20240116; t=1722358651; c=relaxed/simple;
+	bh=hcE8Q87pnKE7knxxiCxAntOFPkd+S62rkW8Ay2jfuSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmOt7fUgJguG6m0Q86C27o6kK7amSbexqVeuVLRNYXvE/xmcOqFMKYiuan9cpD4u8nzlLqJefqtqh4wwUe2RW+d71b4NKr1yo+XR4gnK2tyC29pLOC1KVBoNCHAUox8s+rWdBBKuiUM515o4TOXMBlrDEv3BpOfN/0YrnsZ6kM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrzZZrip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680A4C32782;
-	Tue, 30 Jul 2024 17:16:22 +0000 (UTC)
+	 MIME-Version; b=m5wodbb26rxi8p+VaN7Dw6K34uc/129sHXPVTH05iagYKEbz1tv+3Acbp8w27Uj/H3+Ky/o4GHM/RGIGncdup8gbQjgWTM0oPUf+JDBEYF/NXH6WIHyHMZ56E+mkE4zar1hCy5USNfRxM7LmTxpqdom76dOv3XKTLvstMl38WUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI/BepNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF77C32782;
+	Tue, 30 Jul 2024 16:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359782;
-	bh=FiWDME2kdaPAFUbpQ5E3RK6Hw4HO+FvwW/DiCQyyLMc=;
+	s=korg; t=1722358651;
+	bh=hcE8Q87pnKE7knxxiCxAntOFPkd+S62rkW8Ay2jfuSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrzZZripYP9xK21HPId1+ySu0evo0x5scMShNz/Lje/pVM1wTO/zjMgBKoXkyP6dv
-	 tgIqhdtrz+2ueVP5J7SCtG5PMrvuIGb2gfKTRs3tUj4KQJeHkd9tgKbWhuQkB8LKCn
-	 PkAKcbOURhV1g6+Lr/iIxgPhEorqkbmj0HZwgMIg=
+	b=XI/BepNCuGteBB09/cjrh2rSPSy6FQlJUnCDR2vW/tDSVYmi+Je6vHWUO+lJDgcpj
+	 vvaz85LxeNphpjp3/WCEBA/XaEEtNLpUVW1xnkIqO0ORjU9IqiopRzu/tW9gnUMDp5
+	 9LCZ2cZn74uSCwJyJkUAJpqQpHa5ZU/TxybupCUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 535/568] MIPS: SMP-CPS: Fix address for GCR_ACCESS register for CM3 and later
-Date: Tue, 30 Jul 2024 17:50:42 +0200
-Message-ID: <20240730151701.065163991@linuxfoundation.org>
+Subject: [PATCH 6.1 410/440] MIPS: SMP-CPS: Fix address for GCR_ACCESS register for CM3 and later
+Date: Tue, 30 Jul 2024 17:50:43 +0200
+Message-ID: <20240730151631.808281374@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -110,10 +110,10 @@ index 23c67c0871b17..696b40beb774f 100644
  GCR_ACCESSOR_RW(32, 0x130, l2_config)
  #define CM_GCR_L2_CONFIG_BYPASS			BIT(20)
 diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index dd55d59b88db3..d445f8e849abd 100644
+index bcd6a944b8397..739997e6fd655 100644
 --- a/arch/mips/kernel/smp-cps.c
 +++ b/arch/mips/kernel/smp-cps.c
-@@ -222,7 +222,10 @@ static void boot_core(unsigned int core, unsigned int vpe_id)
+@@ -230,7 +230,10 @@ static void boot_core(unsigned int core, unsigned int vpe_id)
  	write_gcr_co_reset_ext_base(CM_GCR_Cx_RESET_EXT_BASE_UEB);
  
  	/* Ensure the core can access the GCRs */
