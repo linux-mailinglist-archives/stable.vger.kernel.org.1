@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF15941779
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19909941CF7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FE9F28425E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7EB71F2262E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946A218B486;
-	Tue, 30 Jul 2024 16:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A905818B467;
+	Tue, 30 Jul 2024 17:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6qhN0ff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLV2Q7Mp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B9A189538;
-	Tue, 30 Jul 2024 16:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6765B1FBA;
+	Tue, 30 Jul 2024 17:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355752; cv=none; b=BitGeQS+AQ6F12wGA3ZTUX4zLUItU8jWwm/TJH6MV6RtfCmwY3dcxAvDdpgo11OPxeiQTjz62kWAJNXF7ND7S4zDUND0/wUhUREmJ8zGxxxQ4BPccoCWi2Hn7zDQqw1H/Zp9UaUkB6v2a1w/RL5A6yD9HiaPxn3UxSDnF3YQwWM=
+	t=1722359441; cv=none; b=M69UHho7LDgU0CAxKqlDILmIYywm59NJYpFVAFY6hu+eU8qK9hRNqnMSkJLEcDIUqlFpPjHfYRMjxpzyJdy/7E+zfXtiewdlkY9brcphwJU2M9amGip4K/NKpTZ3KQlwaY2e5xKEDMyRdaCqZ1dY3/BiElhSXxDS6NQm4naoD4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355752; c=relaxed/simple;
-	bh=lZTdkFnDiKqI4ywVyRj2/oELBuspEj9/DOxLAWCQo7I=;
+	s=arc-20240116; t=1722359441; c=relaxed/simple;
+	bh=KuqWbI0wG8itLnzn/7VDKu35ZuoENrfVdKBSKZQtnfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XiO1oPCaQSgpC1Gxp5aeZMM9r1/nFoI+0lxyVu2vBJhfi5+QtJ0kq5qpSnzM4LYC8hvadO3uzRVu1NnqiRgeh12alMpkCgxZei89FTq9BC+LrBoVUQ+hhe84V9vUARBtaViioxIkd/N9eJUg2B47jp8aeRR9FEoij5CVd7P9BqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6qhN0ff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C99C32782;
-	Tue, 30 Jul 2024 16:09:11 +0000 (UTC)
+	 MIME-Version; b=HNigkCc3yoUzCOZTTiS3XuwvwpiiwYOu5xWlvVUcohk8WN6YBwJUHQQOOC0gRPqgxmOmS3MKxZkR98KdikehlKInK9ssBIMX+6CTm4Ezaphtnl+6KCY38+9uzRnVCkw6KcK2+JY+n+xCIUYyB1+lR0U5+lDWq//DbSv0RWaFBFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLV2Q7Mp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB864C32782;
+	Tue, 30 Jul 2024 17:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355752;
-	bh=lZTdkFnDiKqI4ywVyRj2/oELBuspEj9/DOxLAWCQo7I=;
+	s=korg; t=1722359441;
+	bh=KuqWbI0wG8itLnzn/7VDKu35ZuoENrfVdKBSKZQtnfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6qhN0ffPgRUeSl8BR72l/+Qu0XihTYBfL0guAmpZsXMVevK3ljU7TYd0nlwYmO8v
-	 dPQtIEvdTpSVUROxWJHK4FitsGSnbeqfomSk8exIsegt9h4lSZW8doNd/ID/FX7bQC
-	 WRIL9HPkC7+akeHJcCByKUuktrq9I58eu9A1CFnI=
+	b=CLV2Q7MpXEfMSHn05+8qQXa4jinz+B0THAUTt8S3gTDLl0Dq7t/jMy++PPR6MaDby
+	 In2lK9turVjK/5/5mrDjQxjMWjbLTth4T/EYLzipOiE2riMSQUGrWjwAEC0euGYXpe
+	 Q9yKFSp5p3yDa1iGILQCwvGIazF5qxWzqU7UnJX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/440] net: bridge: mst: Check vlan state for egress decision
+Subject: [PATCH 6.10 484/809] fs/ntfs3: Merge synonym COMPRESSION_UNIT and NTFS_LZNT_CUNIT
 Date: Tue, 30 Jul 2024 17:46:00 +0200
-Message-ID: <20240730151620.846195535@linuxfoundation.org>
+Message-ID: <20240730151743.854134867@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 0a1868b93fad5938dbcca77286b25bf211c49f7a ]
+[ Upstream commit 487f8d482a7e51a640b8f955a398f906a4f83951 ]
 
-If a port is blocking in the common instance but forwarding in an MST
-instance, traffic egressing the bridge will be dropped because the
-state of the common instance is overriding that of the MST instance.
+COMPRESSION_UNIT and NTFS_LZNT_CUNIT mean the same thing
+(1u<<NTFS_LZNT_CUNIT) determines the size for compression (in clusters).
 
-Fix this by skipping the port state check in MST mode to allow
-checking the vlan state via br_allowed_egress(). This is similar to
-what happens in br_handle_frame_finish() when checking ingress
-traffic, which was introduced in the change below.
+COMPRESS_MAX_CLUSTER is not used in the code.
 
-Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
-Signed-off-by: Elliot Ayrey <elliot.ayrey@alliedtelesis.co.nz>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Stable-dep-of: 25610ff98d4a ("fs/ntfs3: Fix transform resident to nonresident for compressed files")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_forward.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/attrib.c  | 2 +-
+ fs/ntfs3/frecord.c | 2 +-
+ fs/ntfs3/fslog.c   | 2 +-
+ fs/ntfs3/inode.c   | 2 +-
+ fs/ntfs3/ntfs.h    | 3 ---
+ 5 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index 9661698e86e40..a32d73f381558 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -25,8 +25,8 @@ static inline int should_deliver(const struct net_bridge_port *p,
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 8e6bcdf99770f..9ccec45190749 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -254,7 +254,7 @@ int attr_make_nonresident(struct ntfs_inode *ni, struct ATTRIB *attr,
  
- 	vg = nbp_vlan_group_rcu(p);
- 	return ((p->flags & BR_HAIRPIN_MODE) || skb->dev != p->dev) &&
--		p->state == BR_STATE_FORWARDING && br_allowed_egress(vg, skb) &&
--		nbp_switchdev_allowed_egress(p, skb) &&
-+		(br_mst_is_enabled(p->br) || p->state == BR_STATE_FORWARDING) &&
-+		br_allowed_egress(vg, skb) && nbp_switchdev_allowed_egress(p, skb) &&
- 		!br_skb_isolated(p, skb);
- }
+ 	align = sbi->cluster_size;
+ 	if (is_attr_compressed(attr))
+-		align <<= COMPRESSION_UNIT;
++		align <<= NTFS_LZNT_CUNIT;
+ 	len = (rsize + align - 1) >> sbi->cluster_bits;
  
+ 	run_init(run);
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 0008670939a4a..4822cfd6351c2 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1501,7 +1501,7 @@ int ni_insert_nonresident(struct ntfs_inode *ni, enum ATTR_TYPE type,
+ 
+ 	if (is_ext) {
+ 		if (flags & ATTR_FLAG_COMPRESSED)
+-			attr->nres.c_unit = COMPRESSION_UNIT;
++			attr->nres.c_unit = NTFS_LZNT_CUNIT;
+ 		attr->nres.total_size = attr->nres.alloc_size;
+ 	}
+ 
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index 40926bf392d28..e47c2105a24e9 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -2996,7 +2996,7 @@ static struct ATTRIB *attr_create_nonres_log(struct ntfs_sb_info *sbi,
+ 	if (is_ext) {
+ 		attr->name_off = SIZEOF_NONRESIDENT_EX_LE;
+ 		if (is_attr_compressed(attr))
+-			attr->nres.c_unit = COMPRESSION_UNIT;
++			attr->nres.c_unit = NTFS_LZNT_CUNIT;
+ 
+ 		attr->nres.run_off =
+ 			cpu_to_le16(SIZEOF_NONRESIDENT_EX + name_size);
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 0f1664db94ad9..8521238f5448e 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1508,7 +1508,7 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+ 			attr->size = cpu_to_le32(SIZEOF_NONRESIDENT_EX + 8);
+ 			attr->name_off = SIZEOF_NONRESIDENT_EX_LE;
+ 			attr->flags = ATTR_FLAG_COMPRESSED;
+-			attr->nres.c_unit = COMPRESSION_UNIT;
++			attr->nres.c_unit = NTFS_LZNT_CUNIT;
+ 			asize = SIZEOF_NONRESIDENT_EX + 8;
+ 		} else {
+ 			attr->size = cpu_to_le32(SIZEOF_NONRESIDENT + 8);
+diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
+index 3d6143c7abc03..1f2cdb0dbbe1d 100644
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -82,9 +82,6 @@ typedef u32 CLST;
+ #define RESIDENT_LCN   ((CLST)-2)
+ #define COMPRESSED_LCN ((CLST)-3)
+ 
+-#define COMPRESSION_UNIT     4
+-#define COMPRESS_MAX_CLUSTER 0x1000
+-
+ enum RECORD_NUM {
+ 	MFT_REC_MFT		= 0,
+ 	MFT_REC_MIRR		= 1,
 -- 
 2.43.0
 
