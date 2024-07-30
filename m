@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61650941A93
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D506941982
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF48AB2BC7A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0B01F25C56
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937AE1A617E;
-	Tue, 30 Jul 2024 16:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C971A619C;
+	Tue, 30 Jul 2024 16:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkTJSFgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbtGyMQh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5348B1A6199;
-	Tue, 30 Jul 2024 16:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53DB8BE8;
+	Tue, 30 Jul 2024 16:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357184; cv=none; b=GWZNqB1sCGCfUqOQr8N7wxX6IbVbKOoP3LjDIksqjaoxtjAIBx9dK0x/8eUzqv3Mua4ppom54G/9sc5vOeq4uH0rGU72Xma4JK75iuYFgiJIGKzQuAeXW4nb694CJ+D1wAvAsa1f/MJjPckNb7DXZURrWHItYjHND6Z5XhT2FJQ=
+	t=1722357194; cv=none; b=InGjrzBGx99V1hjIvEXG+sfxp5YDWxbL7fj80eT/UzSGP/woO6ZphdFbbEXK2cbhQxYWjFdkAYTDhUteH0v9vkglN+7/DlXUOSPadmTBxZwvbIt+Ka+bfcZjQ0gVDqBPASB6scDtaggJb3ZTMPR+chYkc8xJ10kdGqx3gItL4K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357184; c=relaxed/simple;
-	bh=NcPfSdRI7wYRSJ2cHMfYcuAh8eR9KLxbe5Uz+F5FnSQ=;
+	s=arc-20240116; t=1722357194; c=relaxed/simple;
+	bh=C7uXrt9uCLEubTlnWAQr/ssICyqRW+G6oonkDzsqDT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXZwbvHbdWg0OOmlXkPifeS+IEkZfu1DCBFDMghzT/3vJlafPRu9e0E/XDLuVM1A1VRWEgySfXWiM5lTJrzK2zLML1sCePYX2M2e7YpeRV6g+HULB2H3ouNqEZARyl1HA+qAugHqmWl/+f/ndvyqRTnETlm/RUgIO0D4agsmzOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkTJSFgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8FFC32782;
-	Tue, 30 Jul 2024 16:33:03 +0000 (UTC)
+	 MIME-Version; b=uXOyB/ihSZfwhMFMESy/J3N9e54l7ScIdBp2vQR5Evvw5eC95j7wHSBYo0XTA+aPUBnC3QYcgKZ7c6C+bViQBCAseETeEigwyF6h33xI4J3VnSRwywxH5Xf24g+xRBh3WMtBrbrmlMAjdWF+CAwrIveAZ+L4iDwsK0GcIO0dOvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbtGyMQh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8BFC4AF0A;
+	Tue, 30 Jul 2024 16:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357184;
-	bh=NcPfSdRI7wYRSJ2cHMfYcuAh8eR9KLxbe5Uz+F5FnSQ=;
+	s=korg; t=1722357193;
+	bh=C7uXrt9uCLEubTlnWAQr/ssICyqRW+G6oonkDzsqDT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gkTJSFgRPqBSu+OfIT7vEfRJCErGjalhyE4axIKtbs4DQxm9TDita76Fg2rDYhVPP
-	 nVmQr1iCChkiZBAFPe0KhpQRqREXccT2XePqcma7dawsdiBLarbRkQMG2uFnjfrRy+
-	 1SfeH9KlLyqoSmeuD+Fc8n9SGslSzRkK6JX6RlBw=
+	b=JbtGyMQharPSyWCDbsXNDKxjO2iSfqogY2OzQTtzPIN51fPXVMjuBAvdHJ+r44UYf
+	 Ue7TA+b1AMKRyUKkB25cooRV8XzCWtMg8ovc9ES5CQsR722EM3z2KCI5ROZW9xh6u/
+	 +2uzC7nyf0mrwuBXDUQ/SW9oN8UXsLmvA4QdQNHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/568] drm/etnaviv: fix DMA direction handling for cached RW buffers
-Date: Tue, 30 Jul 2024 17:45:34 +0200
-Message-ID: <20240730151648.756019523@linuxfoundation.org>
+Subject: [PATCH 6.6 228/568] drm/qxl: Add check for drm_cvt_mode
+Date: Tue, 30 Jul 2024 17:45:35 +0200
+Message-ID: <20240730151648.794309458@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,40 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 58979ad6330a70450ed78837be3095107d022ea9 ]
+[ Upstream commit 7bd09a2db0f617377027a2bb0b9179e6959edff3 ]
 
-The dma sync operation needs to be done with DMA_BIDIRECTIONAL when
-the BO is prepared for both read and write operations.
+Add check for the return value of drm_cvt_mode() and return the error if
+it fails in order to avoid NULL pointer dereference.
 
-Fixes: a8c21a5451d8 ("drm/etnaviv: add initial etnaviv DRM driver")
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Fixes: 1b043677d4be ("drm/qxl: add qxl_add_mode helper function")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621071031.1987974-1-nichen@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gem.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/qxl/qxl_display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-index b5f73502e3dd4..69fccbcd92c62 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-@@ -356,9 +356,11 @@ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
+diff --git a/drivers/gpu/drm/qxl/qxl_display.c b/drivers/gpu/drm/qxl/qxl_display.c
+index 404b0483bb7cb..8ee614be9adf3 100644
+--- a/drivers/gpu/drm/qxl/qxl_display.c
++++ b/drivers/gpu/drm/qxl/qxl_display.c
+@@ -236,6 +236,9 @@ static int qxl_add_mode(struct drm_connector *connector,
+ 		return 0;
  
- static inline enum dma_data_direction etnaviv_op_to_dma_dir(u32 op)
- {
--	if (op & ETNA_PREP_READ)
-+	op &= ETNA_PREP_READ | ETNA_PREP_WRITE;
+ 	mode = drm_cvt_mode(dev, width, height, 60, false, false, false);
++	if (!mode)
++		return 0;
 +
-+	if (op == ETNA_PREP_READ)
- 		return DMA_FROM_DEVICE;
--	else if (op & ETNA_PREP_WRITE)
-+	else if (op == ETNA_PREP_WRITE)
- 		return DMA_TO_DEVICE;
- 	else
- 		return DMA_BIDIRECTIONAL;
+ 	if (preferred)
+ 		mode->type |= DRM_MODE_TYPE_PREFERRED;
+ 	mode->hdisplay = width;
 -- 
 2.43.0
 
