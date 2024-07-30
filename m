@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-62983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D736094168D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3E8941691
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9099C28703B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C7B0B23701
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65EA20127B;
-	Tue, 30 Jul 2024 16:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A8E20FA84;
+	Tue, 30 Jul 2024 16:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0ZgzU/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OChfNWHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1F0201270;
-	Tue, 30 Jul 2024 16:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6F4200129;
+	Tue, 30 Jul 2024 16:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355277; cv=none; b=HUlidI+rAH0wsMmOBjtFe7ntQ2OybFqg9YOREWhNrFAiYR/OQ+6F1ukMTF6CnROOm7yr4lca6+KrVkWJFRH9B+Ga/3bT9+wrR+b1JjMq5Dhg5MfErzKmi9RdZQM95dcga8O6VdZLsCaoxj7fqjelC6hEO7NYF6Z08+Js5XDhuvo=
+	t=1722355287; cv=none; b=UdkwN9xUdLagx0NdYTpY6XykGTqomNkvtbD+y6gHTxWM8asxDA2XfPzKAPXy5JfsOX1bp6mQG5VVnxTD9Xnu9T9qwyNMi0Kg9GMTnHKm6ZWe7H0L7ksSXBHo5JjtHXsMitNaQOzfJ7IodB2P0fB/PPuArmfFx7599Hn9w4czs4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355277; c=relaxed/simple;
-	bh=jWAsxuvkehLTmPohvWkaFpQ958o2FlDJHal2HTYsc14=;
+	s=arc-20240116; t=1722355287; c=relaxed/simple;
+	bh=OJxZz3AEtz8DPmbiKyw+anxaA+m+8VSC35wicn53m4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9vz68IYj9KJ4AdS35v7KT8mBCUf3ofOe7WQm1xAeZr7tS4j3n4Y27MjsaKHWuk5vY6q+wC3CrEuGIt5QQ0vtSiju/CyEPbSdIER0aOhjeN4KphZeU0OF0OR3lnr3o0dlzdYzyDbFvTRYN1WGH+7x6kZITyGFSlcG58ZeG2sG2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0ZgzU/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6702C32782;
-	Tue, 30 Jul 2024 16:01:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mmtOYxJ07cDZnnJ70m/XRXd7MUIDz/sz7xAUcrjSemU/Jz0saFvs5onx3dz2kcFlKt8/DGVmY7GlKZTeCxeX5tXhYovvawgTCacJreAfyg+j+LglVfX20NpC5Ve/BDXkIC1s6j0azCeKdGXqDIZLmF1ngYN8HTyWJKPwUVeTodQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OChfNWHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F833C32782;
+	Tue, 30 Jul 2024 16:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355277;
-	bh=jWAsxuvkehLTmPohvWkaFpQ958o2FlDJHal2HTYsc14=;
+	s=korg; t=1722355286;
+	bh=OJxZz3AEtz8DPmbiKyw+anxaA+m+8VSC35wicn53m4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0ZgzU/oXXI7cGQX87Pl9wY/weC3DBWtrbmdFebo6pHTzCzq6D+Kv7hYCdiu6yEDx
-	 NdtACLqkH26NXzNevvHgIcLMpWjc1pYWqbjNNK1wTYvsnAa7wGMPDrSGhkXRvTKtH7
-	 xDEnv6kRlN6wymMyKq2m15j9+r0n0IGEgggCDtGk=
+	b=OChfNWHO0vZEYx+VbKe623SMprQpR8QsmFdTFGYQGqiwMyCXRPWERZwfCA0+osBR+
+	 BWYSdcjKfReKRhhL+/zyjiuQnMhYNafAq4lfEaA4m1HA6okUaqslM+dv/UwCxVzoQ/
+	 2o/RwxGOVom9cpQtwsAni+9kzEeFgnQhcEnjCAYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 036/809] drm/meson: fix canvas release in bind function
-Date: Tue, 30 Jul 2024 17:38:32 +0200
-Message-ID: <20240730151726.078226629@linuxfoundation.org>
+Subject: [PATCH 6.10 037/809] pwm: atmel-tcb: Fix race condition and convert to guards
+Date: Tue, 30 Jul 2024 17:38:33 +0200
+Message-ID: <20240730151726.116862799@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -60,110 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit a695949b2e9bb6b6700a764c704731a306c4bebf ]
+[ Upstream commit 37f7707077f5ea2515bf4b1dc7fad43f8e12993e ]
 
-Allocated canvases may not be released on the error exit path of
-meson_drv_bind_master(), leading to resource leaking. Rewrite exit path
-to release canvases on error.
+The hardware only supports a single period length for both PWM outputs. So
+atmel_tcb_pwm_config() checks the configuration of the other output if it's
+compatible with the currently requested setting. The register values are
+then actually updated in atmel_tcb_pwm_enable(). To make this race free
+the lock must be held during the whole process, so grab the lock in
+.apply() instead of individually in atmel_tcb_pwm_disable() and
+atmel_tcb_pwm_enable() which then also covers atmel_tcb_pwm_config().
 
-Fixes: 2bf6b5b0e374 ("drm/meson: exclusively use the canvas provider module")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240703155826.10385-2-ziyao@disroot.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240703155826.10385-2-ziyao@disroot.org
+To simplify handling, use the guard helper to let the compiler care for
+unlocking. Otherwise unlocking would be more difficult as there is more
+than one exit path in atmel_tcb_pwm_apply().
+
+Fixes: 9421bade0765 ("pwm: atmel: add Timer Counter Block PWM driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20240709101806.52394-3-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_drv.c | 37 +++++++++++++++----------------
- 1 file changed, 18 insertions(+), 19 deletions(-)
+ drivers/pwm/pwm-atmel-tcb.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_drv.c b/drivers/gpu/drm/meson/meson_drv.c
-index 17a5cca007e29..4bd0baa2a4f55 100644
---- a/drivers/gpu/drm/meson/meson_drv.c
-+++ b/drivers/gpu/drm/meson/meson_drv.c
-@@ -250,29 +250,20 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
- 	if (ret)
- 		goto free_drm;
- 	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_0);
--	if (ret) {
--		meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
--		goto free_drm;
--	}
-+	if (ret)
-+		goto free_canvas_osd1;
- 	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_1);
--	if (ret) {
--		meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
--		meson_canvas_free(priv->canvas, priv->canvas_id_vd1_0);
--		goto free_drm;
--	}
-+	if (ret)
-+		goto free_canvas_vd1_0;
- 	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_2);
--	if (ret) {
--		meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
--		meson_canvas_free(priv->canvas, priv->canvas_id_vd1_0);
--		meson_canvas_free(priv->canvas, priv->canvas_id_vd1_1);
--		goto free_drm;
--	}
-+	if (ret)
-+		goto free_canvas_vd1_1;
+diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
+index 528e54c5999d8..aca11493239a5 100644
+--- a/drivers/pwm/pwm-atmel-tcb.c
++++ b/drivers/pwm/pwm-atmel-tcb.c
+@@ -81,7 +81,8 @@ static int atmel_tcb_pwm_request(struct pwm_chip *chip,
+ 	tcbpwm->period = 0;
+ 	tcbpwm->div = 0;
  
- 	priv->vsync_irq = platform_get_irq(pdev, 0);
+-	spin_lock(&tcbpwmc->lock);
++	guard(spinlock)(&tcbpwmc->lock);
++
+ 	regmap_read(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), &cmr);
+ 	/*
+ 	 * Get init config from Timer Counter registers if
+@@ -107,7 +108,6 @@ static int atmel_tcb_pwm_request(struct pwm_chip *chip,
  
- 	ret = drm_vblank_init(drm, 1);
- 	if (ret)
--		goto free_drm;
-+		goto free_canvas_vd1_2;
+ 	cmr |= ATMEL_TC_WAVE | ATMEL_TC_WAVESEL_UP_AUTO | ATMEL_TC_EEVT_XC0;
+ 	regmap_write(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), cmr);
+-	spin_unlock(&tcbpwmc->lock);
  
- 	/* Assign limits per soc revision/package */
- 	for (i = 0 ; i < ARRAY_SIZE(meson_drm_soc_attrs) ; ++i) {
-@@ -288,11 +279,11 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
- 	 */
- 	ret = drm_aperture_remove_framebuffers(&meson_driver);
- 	if (ret)
--		goto free_drm;
-+		goto free_canvas_vd1_2;
+ 	return 0;
+ }
+@@ -137,7 +137,6 @@ static void atmel_tcb_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	if (tcbpwm->duty == 0)
+ 		polarity = !polarity;
  
- 	ret = drmm_mode_config_init(drm);
- 	if (ret)
--		goto free_drm;
-+		goto free_canvas_vd1_2;
- 	drm->mode_config.max_width = 3840;
- 	drm->mode_config.max_height = 2160;
- 	drm->mode_config.funcs = &meson_mode_config_funcs;
-@@ -307,7 +298,7 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
- 	if (priv->afbcd.ops) {
- 		ret = priv->afbcd.ops->init(priv);
- 		if (ret)
--			goto free_drm;
-+			goto free_canvas_vd1_2;
+-	spin_lock(&tcbpwmc->lock);
+ 	regmap_read(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), &cmr);
+ 
+ 	/* flush old setting and set the new one */
+@@ -172,8 +171,6 @@ static void atmel_tcb_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			     ATMEL_TC_SWTRG);
+ 		tcbpwmc->bkup.enabled = 0;
  	}
+-
+-	spin_unlock(&tcbpwmc->lock);
+ }
  
- 	/* Encoder Initialization */
-@@ -371,6 +362,14 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
- exit_afbcd:
- 	if (priv->afbcd.ops)
- 		priv->afbcd.ops->exit(priv);
-+free_canvas_vd1_2:
-+	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_2);
-+free_canvas_vd1_1:
-+	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_1);
-+free_canvas_vd1_0:
-+	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_0);
-+free_canvas_osd1:
-+	meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
- free_drm:
- 	drm_dev_put(drm);
+ static int atmel_tcb_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm,
+@@ -194,7 +191,6 @@ static int atmel_tcb_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	if (tcbpwm->duty == 0)
+ 		polarity = !polarity;
  
+-	spin_lock(&tcbpwmc->lock);
+ 	regmap_read(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CMR), &cmr);
+ 
+ 	/* flush old setting and set the new one */
+@@ -256,7 +252,6 @@ static int atmel_tcb_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	regmap_write(tcbpwmc->regmap, ATMEL_TC_REG(tcbpwmc->channel, CCR),
+ 		     ATMEL_TC_SWTRG | ATMEL_TC_CLKEN);
+ 	tcbpwmc->bkup.enabled = 1;
+-	spin_unlock(&tcbpwmc->lock);
+ 	return 0;
+ }
+ 
+@@ -341,9 +336,12 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ static int atmel_tcb_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			       const struct pwm_state *state)
+ {
++	struct atmel_tcb_pwm_chip *tcbpwmc = to_tcb_chip(chip);
+ 	int duty_cycle, period;
+ 	int ret;
+ 
++	guard(spinlock)(&tcbpwmc->lock);
++
+ 	if (!state->enabled) {
+ 		atmel_tcb_pwm_disable(chip, pwm, state->polarity);
+ 		return 0;
 -- 
 2.43.0
 
