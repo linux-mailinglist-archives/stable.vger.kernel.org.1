@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6440B941AF7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41609418D2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95B811C20D6A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8C21F245A6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DFB18801C;
-	Tue, 30 Jul 2024 16:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83171189505;
+	Tue, 30 Jul 2024 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dU9TzFZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c803+fG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58B614831F;
-	Tue, 30 Jul 2024 16:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF0518455E;
+	Tue, 30 Jul 2024 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358178; cv=none; b=f7t5W04VkUjhxKZxbXmvKK0mOfCqWKas6dmSELgLk7k95opyPaW6Fbdub1rd1423B6KFYKqukfM54uSuZPT6itdsxEw6IZKwZdo6ATYzruLx+aiipdkZ6hJ1gBkW9/qC4Vxy4CJAfB8Kz1DoR1UzkOoUvJ13psczdIxhEN87hsQ=
+	t=1722356729; cv=none; b=U8ZosYB5JfnYWDpq6azPyqEsr40flBp4/OgqK5krhA9eUq8ri5YnKoGLvrVDUPK74L7lUmzVoOWCgyFd+54esJl3zXxwWRF2xe6hrQwsq2nEdjAb3yiG8SjkZ6plW+/7QKbXQxQaE5TFOTavljlrXsN5VxgFEHynqhICd+FqIKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358178; c=relaxed/simple;
-	bh=ZFsF/vOQedZ3U2Opq8kh3cgkUZSB6J2q0rq19uJr0c4=;
+	s=arc-20240116; t=1722356729; c=relaxed/simple;
+	bh=TqppeM0BmbjDuNoAbzQHYn5+nmu0I90aj4DqTHBb1Qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SqF231mwKSfxdVZvictbMkia5PS9XaqsaAYH6s6YI5WQrYAbY4T9+h3xZDVpzwiIF5PcsRoDPFoUGYE/OHqlE87rUo+1ixMAvpZfhz8ubVj3NqH/Uyi9K7r+WfPuTQ6+Z9qNOPnjWZ9xt2HhTHj+bFWHXmBc3/KV/jKzy0VmZ/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dU9TzFZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92910C32782;
-	Tue, 30 Jul 2024 16:49:37 +0000 (UTC)
+	 MIME-Version; b=jZY3emY1YR//dhlPv/Bs5LWzZuPtkWAFOx2p+UhNvoxVPIXx9jJC/MLIGQ1wF/OWUROYSnJxDdTbAowrx49Rq+QxAQ6blvfk8ikdp8KGo9Dl21ZSnWvpBosznh2j+3aPAgVyJEr4hqt/XKSqoupkkXAPHvZuspDCZ6ynWBHhJQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c803+fG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C155C32782;
+	Tue, 30 Jul 2024 16:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358178;
-	bh=ZFsF/vOQedZ3U2Opq8kh3cgkUZSB6J2q0rq19uJr0c4=;
+	s=korg; t=1722356729;
+	bh=TqppeM0BmbjDuNoAbzQHYn5+nmu0I90aj4DqTHBb1Qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dU9TzFZctwpdWhv0KB3AleSBGyyVR1Y2Uqiq2RX6xNeYDtYm4ITBwxshm1DRvwKvw
-	 rbfY0SvrwVnZ8zcImdRauHkClFqnoLkeS0z5lJimvJVNSxE5NnB1K/zlB9OotTh433
-	 Xk6/Ng/w/KlYkfwGd13L48W4/+TCgcMH3WxhICJg=
+	b=c803+fG8BS0hsLL6ZS7sUU4O/cA53ibtRIeIxNNDxiyFYuFk2bYTlOwgxqHZnSkOn
+	 JOIjK16GBrGPz601U2GB6E5B5ZvOjCtNxpPe2eiCqJdIfPodvd3+u86NNv6tXPnTYj
+	 5wk94OgztofU9MAdT/DCi+cjmr/iqldgSdmjBq/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 330/568] pinctrl: freescale: mxs: Fix refcount of child
+Subject: [PATCH 6.1 204/440] ASoC: max98088: Check for clk_prepare_enable() error
 Date: Tue, 30 Jul 2024 17:47:17 +0200
-Message-ID: <20240730151652.770887798@linuxfoundation.org>
+Message-ID: <20240730151623.837680443@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 7f500f2011c0bbb6e1cacab74b4c99222e60248e ]
+[ Upstream commit 1a70579723fde3624a72dfea6e79e55be6e36659 ]
 
-of_get_next_child() will increase refcount of the returned node, need
-use of_node_put() on it when done.
+clk_prepare_enable() may fail, so we should better check its return
+value and propagate it in the case of error.
 
-Per current implementation, 'child' will be override by
-for_each_child_of_node(np, child), so use of_get_child_count to avoid
-refcount leakage.
-
-Fixes: 17723111e64f ("pinctrl: add pinctrl-mxs support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/20240504-pinctrl-cleanup-v2-18-26c5f2dc1181@nxp.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 62a7fc32a628 ("ASoC: max98088: Add master clock handling")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20240628080534.843815-1-nichen@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/freescale/pinctrl-mxs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/max98088.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-mxs.c b/drivers/pinctrl/freescale/pinctrl-mxs.c
-index cf3f4d2e0c168..a53287aaa653d 100644
---- a/drivers/pinctrl/freescale/pinctrl-mxs.c
-+++ b/drivers/pinctrl/freescale/pinctrl-mxs.c
-@@ -408,8 +408,8 @@ static int mxs_pinctrl_probe_dt(struct platform_device *pdev,
- 	int ret;
- 	u32 val;
+diff --git a/sound/soc/codecs/max98088.c b/sound/soc/codecs/max98088.c
+index 405ec16be2b6a..eaabfe2cfd70d 100644
+--- a/sound/soc/codecs/max98088.c
++++ b/sound/soc/codecs/max98088.c
+@@ -1318,6 +1318,7 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
+                                   enum snd_soc_bias_level level)
+ {
+ 	struct max98088_priv *max98088 = snd_soc_component_get_drvdata(component);
++	int ret;
  
--	child = of_get_next_child(np, NULL);
--	if (!child) {
-+	val = of_get_child_count(np);
-+	if (val == 0) {
- 		dev_err(&pdev->dev, "no group is defined\n");
- 		return -ENOENT;
- 	}
+ 	switch (level) {
+ 	case SND_SOC_BIAS_ON:
+@@ -1333,10 +1334,13 @@ static int max98088_set_bias_level(struct snd_soc_component *component,
+ 		 */
+ 		if (!IS_ERR(max98088->mclk)) {
+ 			if (snd_soc_component_get_bias_level(component) ==
+-			    SND_SOC_BIAS_ON)
++			    SND_SOC_BIAS_ON) {
+ 				clk_disable_unprepare(max98088->mclk);
+-			else
+-				clk_prepare_enable(max98088->mclk);
++			} else {
++				ret = clk_prepare_enable(max98088->mclk);
++				if (ret)
++					return ret;
++			}
+ 		}
+ 		break;
+ 
 -- 
 2.43.0
 
