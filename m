@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70C194184C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E8D941D95
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 249F11C23886
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7C0BB27C73
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9442218800A;
-	Tue, 30 Jul 2024 16:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361321A76AF;
+	Tue, 30 Jul 2024 17:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNF2eVsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvX4scDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524181A617E;
-	Tue, 30 Jul 2024 16:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F5F1A76A4;
+	Tue, 30 Jul 2024 17:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356388; cv=none; b=b3z9E15wOeAOX2k68G2XakDn57idQ+7rNsivAn0A8hsvdl8upouENg9xbtjgpgwci1Fc2D+1D+fKDKKbKpUYkEbZGHkkjDdHfD6ihkqqirP6RGjWx1wJaF0w2eACW6MUxEDXL5+zzWV8LSsMrRQAOt8dYsScIz12NUa6c4FY4zY=
+	t=1722359847; cv=none; b=NnJeXqXsO0G+RGZA7vfME1Rzm/VBt1PbB5gprQDBtwRJaf21GArv061+jLZ8VV/AEbxjvXdCTpUBgqSWkvfmPcVwsekBfwhcXZ7aaYw/z1a+wpV5QROuDNdtoddnyXVRbkZQtf3LL7kddFkhBKKin+OMzeyDtsdWPoYPChEsY9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356388; c=relaxed/simple;
-	bh=nKGAiP1IZz2PePzXw4vhF9xsVzKjVx8hF6dCOtzPOo0=;
+	s=arc-20240116; t=1722359847; c=relaxed/simple;
+	bh=YNSKtFr4jPUImlimrVYcX6dlt/5te3jmZl9njyB+opw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jo6vRA4N3H7en15O/4pH7nTTdiUYZ7e0sp17NmUwtAZAeCi7FMx9QZ9e25uxy4Hh0DWsdBtHpWJJi0TzMZ4r2ZsqET66xmLAc6Y165fBwbqF31jl0VCITZERtzLBlYHsCi144SgMO+aNidXcmP8SEcC86fZJflDVjMoFv5pEyG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNF2eVsF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECE6C32782;
-	Tue, 30 Jul 2024 16:19:47 +0000 (UTC)
+	 MIME-Version; b=TPTbjiS+ddPcH5dW5DMuaVrXpnstu30PDCiiMBqRvQRUKMxFXuUm+rWWNjBHXaZSp5JYcJ80/9Cv1eVlM6wQGUIR9f2KgHzx0tIqi3NFvT7vxsPyAUfGtto/1xXkpsxS/QiNRe/klDs2bA6tyXfNyH3Eq11oZXCHcYq87ciJc18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvX4scDN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5588BC32782;
+	Tue, 30 Jul 2024 17:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356388;
-	bh=nKGAiP1IZz2PePzXw4vhF9xsVzKjVx8hF6dCOtzPOo0=;
+	s=korg; t=1722359846;
+	bh=YNSKtFr4jPUImlimrVYcX6dlt/5te3jmZl9njyB+opw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNF2eVsFj8V+u1zSKrrpIU9dmLCKkXxi2BAKPhoGjXmAvv1tVBptJn9zInTq+VCy6
-	 DeO9MuJj3ySXfOeFnzLbRmQOgKsRR3i3K6DebPFbKJuQX4q/zE0VG723pU6Su8eYKI
-	 MY/N9x/l7YUDBU+pndbNR8bNarPcdTVIbHvR3sHI=
+	b=MvX4scDNC6qHRvD6JyEkgeLX/w5SbsuqCg7bH+jizx3BhXk+WtcMRaUhJYXlKMh0Q
+	 YlvcmKMOk/ATjV+ExNn2lIgsPySvWE7Gl622CTLLzhSQkD1DOUP76Uay9jJBnyrTS1
+	 VT5YKvn6Ad5T0r4vbp3A5peqi9RxVJj9HOcm7bH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/440] RDMA/mlx5: Set mkeys for dmabuf at PAGE_SIZE
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 6.10 544/809] Revert "firewire: Annotate struct fw_iso_packet with __counted_by()"
 Date: Tue, 30 Jul 2024 17:47:00 +0200
-Message-ID: <20240730151623.178373488@linuxfoundation.org>
+Message-ID: <20240730151746.238919389@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit a4e540119be565f47c305f295ed43f8e0bc3f5c3 ]
+commit 00e3913b0416fe69d28745c0a2a340e2f76c219c upstream.
 
-Set the mkey for dmabuf at PAGE_SIZE to support any SGL
-after a move operation.
+This reverts commit d3155742db89df3b3c96da383c400e6ff4d23c25.
 
-ib_umem_find_best_pgsz returns 0 on error, so it is
-incorrect to check the returned page_size against PAGE_SIZE
+The header_length field is byte unit, thus it can not express the number of
+elements in header field. It seems that the argument for counted_by
+attribute can have no arithmetic expression, therefore this commit just
+reverts the issued commit.
 
-Fixes: 90da7dc8206a ("RDMA/mlx5: Support dma-buf based userspace memory region")
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://lore.kernel.org/r/1e2289b9133e89f273a4e68d459057d032cbc2ce.1718301631.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20240725161648.130404-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/mlx5_ib.h | 13 +++++++++++++
- drivers/infiniband/hw/mlx5/odp.c     |  6 ++----
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ include/linux/firewire.h |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 8d94e6834e01b..0ef347e91ffeb 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -109,6 +109,19 @@ unsigned long __mlx5_umem_find_best_quantized_pgoff(
- 		__mlx5_bit_sz(typ, page_offset_fld), 0, scale,                 \
- 		page_offset_quantized)
+--- a/include/linux/firewire.h
++++ b/include/linux/firewire.h
+@@ -462,9 +462,8 @@ struct fw_iso_packet {
+ 				/* rx: Sync bit, wait for matching sy	*/
+ 	u32 tag:2;		/* tx: Tag in packet header		*/
+ 	u32 sy:4;		/* tx: Sy in packet header		*/
+-	u32 header_length:8;	/* Length of immediate header		*/
+-				/* tx: Top of 1394 isoch. data_block    */
+-	u32 header[] __counted_by(header_length);
++	u32 header_length:8;	/* Size of immediate header		*/
++	u32 header[];		/* tx: Top of 1394 isoch. data_block	*/
+ };
  
-+static inline unsigned long
-+mlx5_umem_dmabuf_find_best_pgsz(struct ib_umem_dmabuf *umem_dmabuf)
-+{
-+	/*
-+	 * mkeys used for dmabuf are fixed at PAGE_SIZE because we must be able
-+	 * to hold any sgl after a move operation. Ideally the mkc page size
-+	 * could be changed at runtime to be optimal, but right now the driver
-+	 * cannot do that.
-+	 */
-+	return ib_umem_find_best_pgsz(&umem_dmabuf->umem, PAGE_SIZE,
-+				      umem_dmabuf->umem.iova);
-+}
-+
- enum {
- 	MLX5_IB_MMAP_OFFSET_START = 9,
- 	MLX5_IB_MMAP_OFFSET_END = 255,
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index bc97958818bb5..af73c5ebe6ac5 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -706,10 +706,8 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
- 		return err;
- 	}
- 
--	page_size = mlx5_umem_find_best_pgsz(&umem_dmabuf->umem, mkc,
--					     log_page_size, 0,
--					     umem_dmabuf->umem.iova);
--	if (unlikely(page_size < PAGE_SIZE)) {
-+	page_size = mlx5_umem_dmabuf_find_best_pgsz(umem_dmabuf);
-+	if (!page_size) {
- 		ib_umem_dmabuf_unmap_pages(umem_dmabuf);
- 		err = -EINVAL;
- 	} else {
--- 
-2.43.0
-
+ #define FW_ISO_CONTEXT_TRANSMIT			0
 
 
 
