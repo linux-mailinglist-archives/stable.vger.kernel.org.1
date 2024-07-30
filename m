@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C199941CE2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E565941749
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20370289FF0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34DE91F21A98
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAE418A6A4;
-	Tue, 30 Jul 2024 17:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7609C183CC3;
+	Tue, 30 Jul 2024 16:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKSFrhr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtbQjDx5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3AB18454A;
-	Tue, 30 Jul 2024 17:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33361183CCD;
+	Tue, 30 Jul 2024 16:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359381; cv=none; b=JMszh2ic1aR0WbNLgbeNoZvMqnQ0paVBBEE7VURgTs/TK6r1T8XAL64JX885XycL+Js6K67eq7TfE6gFWGWlTeczQSBk0Ad1GbXrYfiO5Xke1e0bML325obFQyOBFkpFpoz8tsb1WrCDHtjOrrBQBD9jSJplml3jYgUAVa4bF7c=
+	t=1722355664; cv=none; b=rppQgoSohgGQ0PEhtPPhPKgdY7ZMD/YZ4zUb9ZySHGCUagkUcAQ4xFk32YIxNgrxr+BupSs594XqY3v99FLfK+MIGY9jbaOrBbsQK5dN4u88G6zQaRhAqdtGXlj37L9E0BEdHFI5Ddzl2Hm2PYlSVmWeLH9gQ5XpAGDR0Nbbuso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359381; c=relaxed/simple;
-	bh=oAAH93viph5+zcwtBOK3aw2OQR5hKk0feJZfvyrcN9Q=;
+	s=arc-20240116; t=1722355664; c=relaxed/simple;
+	bh=TDxNT3gzq0vJ3UAiVil0M3rDtE0POjqY7k5G/1QJNqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/oU8g7k59LEDCJk+cu31axHmxhCRPGEiTnMjwtbdJux+/WZBLy0dj0GcidJNf6GV14nNgblR0LkMXk2J4thGIHKOBRemwXJWjgNXDmwv1Jr36sCuGIkAbKCQF1k1upw5LwMAIROsK2WDgPT4UwRkYrDejdtjb8VXUIDtrm7LEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKSFrhr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E8BC32782;
-	Tue, 30 Jul 2024 17:09:41 +0000 (UTC)
+	 MIME-Version; b=BSiNXThghRZEU+jhod91KuTF9MTUdUnbsx1mIqUyokaVkPxHQdXS1UD1wiKhWyFB+D61hxJEGjHaXDxBMagEqz9irJBPXqgFKb5WWjW8A7gSzJ6iyVlFbcp+ZF9G9EO+zQkgGtg8m/j8ZMst/j91JkrUx+OVyid4IskvXivhyxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtbQjDx5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E6CC32782;
+	Tue, 30 Jul 2024 16:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359381;
-	bh=oAAH93viph5+zcwtBOK3aw2OQR5hKk0feJZfvyrcN9Q=;
+	s=korg; t=1722355663;
+	bh=TDxNT3gzq0vJ3UAiVil0M3rDtE0POjqY7k5G/1QJNqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKSFrhr832Tno/wT2FQX5FKS3n98WauoVgfAsXEFRsAz4S/mTZD8dPeEdnysG5zeV
-	 cCtQYg8W15kxjaXATOfO9vGcmXYj8GA9mKQAPHhFrlp1BW8HlSx443x7xc7oUvHl3z
-	 xp0jtJRF39LHG6njzIjkAOmDoljGSNU+CN8a/3io=
+	b=xtbQjDx5BFnr2/adDaD2P0RCqdzv3wvm+wz0XVf1HK/xDAPls2X2xlpFl0Un/GVku
+	 3CWlIhC2jSsqYGTwyTdtzyplS0OOYUX6BysKiDpUhfgANIYLnWgIotiqRzeA8qxoTc
+	 j3z3KUuU7PzaN1ATAAbm++8bXV7i2dX0wuxZToiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Chen <yiche@redhat.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 476/809] netfilter: nf_set_pipapo: fix initial map fill
+Subject: [PATCH 6.1 119/440] selftests/bpf: Close fd in error path in drop_on_reuseport
 Date: Tue, 30 Jul 2024 17:45:52 +0200
-Message-ID: <20240730151743.536076451@linuxfoundation.org>
+Message-ID: <20240730151620.536771035@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit 791a615b7ad2258c560f91852be54b0480837c93 ]
+[ Upstream commit adae187ebedcd95d02f045bc37dfecfd5b29434b ]
 
-The initial buffer has to be inited to all-ones, but it must restrict
-it to the size of the first field, not the total field size.
+In the error path when update_lookup_map() fails in drop_on_reuseport in
+prog_tests/sk_lookup.c, "server1", the fd of server 1, should be closed.
+This patch fixes this by using "goto close_srv1" lable instead of "detach"
+to close "server1" in this case.
 
-After each round in the map search step, the result and the fill map
-are swapped, so if we have a set where f->bsize of the first element
-is smaller than m->bsize_max, those one-bits are leaked into future
-rounds result map.
-
-This makes pipapo find an incorrect matching results for sets where
-first field size is not the largest.
-
-Followup patch adds a test case to nft_concat_range.sh selftest script.
-
-Thanks to Stefano Brivio for pointing out that we need to zero out
-the remainder explicitly, only correcting memset() argument isn't enough.
-
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Reported-by: Yi Chen <yiche@redhat.com>
-Cc: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 0ab5539f8584 ("selftests/bpf: Tests for BPF_SK_LOOKUP attach point")
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Link: https://lore.kernel.org/r/86aed33b4b0ea3f04497c757845cff7e8e621a2d.1720515893.git.tanggeliang@kylinos.cn
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c      |  4 ++--
- net/netfilter/nft_set_pipapo.h      | 21 +++++++++++++++++++++
- net/netfilter/nft_set_pipapo_avx2.c | 10 ++++++----
- 3 files changed, 29 insertions(+), 6 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/sk_lookup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 15a236bebb46a..eb4c4a4ac7ace 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -434,7 +434,7 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
- 	res_map  = scratch->map + (map_index ? m->bsize_max : 0);
- 	fill_map = scratch->map + (map_index ? 0 : m->bsize_max);
+diff --git a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
+index 597d0467a9267..de2466547efe0 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
++++ b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
+@@ -994,7 +994,7 @@ static void drop_on_reuseport(const struct test *t)
  
--	memset(res_map, 0xff, m->bsize_max * sizeof(*res_map));
-+	pipapo_resmap_init(m, res_map);
+ 	err = update_lookup_map(t->sock_map, SERVER_A, server1);
+ 	if (err)
+-		goto detach;
++		goto close_srv1;
  
- 	nft_pipapo_for_each_field(f, i, m) {
- 		bool last = i == m->field_count - 1;
-@@ -542,7 +542,7 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
- 		goto out;
- 	}
- 
--	memset(res_map, 0xff, m->bsize_max * sizeof(*res_map));
-+	pipapo_resmap_init(m, res_map);
- 
- 	nft_pipapo_for_each_field(f, i, m) {
- 		bool last = i == m->field_count - 1;
-diff --git a/net/netfilter/nft_set_pipapo.h b/net/netfilter/nft_set_pipapo.h
-index 0d2e40e10f7f5..4a2ff85ce1c43 100644
---- a/net/netfilter/nft_set_pipapo.h
-+++ b/net/netfilter/nft_set_pipapo.h
-@@ -278,4 +278,25 @@ static u64 pipapo_estimate_size(const struct nft_set_desc *desc)
- 	return size;
- }
- 
-+/**
-+ * pipapo_resmap_init() - Initialise result map before first use
-+ * @m:		Matching data, including mapping table
-+ * @res_map:	Result map
-+ *
-+ * Initialize all bits covered by the first field to one, so that after
-+ * the first step, only the matching bits of the first bit group remain.
-+ *
-+ * If other fields have a large bitmap, set remainder of res_map to 0.
-+ */
-+static inline void pipapo_resmap_init(const struct nft_pipapo_match *m, unsigned long *res_map)
-+{
-+	const struct nft_pipapo_field *f = m->f;
-+	int i;
-+
-+	for (i = 0; i < f->bsize; i++)
-+		res_map[i] = ULONG_MAX;
-+
-+	for (i = f->bsize; i < m->bsize_max; i++)
-+		res_map[i] = 0ul;
-+}
- #endif /* _NFT_SET_PIPAPO_H */
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index d08407d589eac..8910a5ac7ed12 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1036,6 +1036,7 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
- 
- /**
-  * nft_pipapo_avx2_lookup_slow() - Fallback function for uncommon field sizes
-+ * @mdata:	Matching data, including mapping table
-  * @map:	Previous match result, used as initial bitmap
-  * @fill:	Destination bitmap to be filled with current match result
-  * @f:		Field, containing lookup and mapping tables
-@@ -1051,7 +1052,8 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
-  * Return: -1 on no match, rule index of match if @last, otherwise first long
-  * word index to be checked next (i.e. first filled word).
-  */
--static int nft_pipapo_avx2_lookup_slow(unsigned long *map, unsigned long *fill,
-+static int nft_pipapo_avx2_lookup_slow(const struct nft_pipapo_match *mdata,
-+					unsigned long *map, unsigned long *fill,
- 					const struct nft_pipapo_field *f,
- 					int offset, const u8 *pkt,
- 					bool first, bool last)
-@@ -1060,7 +1062,7 @@ static int nft_pipapo_avx2_lookup_slow(unsigned long *map, unsigned long *fill,
- 	int i, ret = -1, b;
- 
- 	if (first)
--		memset(map, 0xff, bsize * sizeof(*map));
-+		pipapo_resmap_init(mdata, map);
- 
- 	for (i = offset; i < bsize; i++) {
- 		if (f->bb == 8)
-@@ -1186,7 +1188,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 			} else if (f->groups == 16) {
- 				NFT_SET_PIPAPO_AVX2_LOOKUP(8, 16);
- 			} else {
--				ret = nft_pipapo_avx2_lookup_slow(res, fill, f,
-+				ret = nft_pipapo_avx2_lookup_slow(m, res, fill, f,
- 								  ret, rp,
- 								  first, last);
- 			}
-@@ -1202,7 +1204,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 			} else if (f->groups == 32) {
- 				NFT_SET_PIPAPO_AVX2_LOOKUP(4, 32);
- 			} else {
--				ret = nft_pipapo_avx2_lookup_slow(res, fill, f,
-+				ret = nft_pipapo_avx2_lookup_slow(m, res, fill, f,
- 								  ret, rp,
- 								  first, last);
- 			}
+ 	/* second server on destination address we should never reach */
+ 	server2 = make_server(t->sotype, t->connect_to.ip, t->connect_to.port,
 -- 
 2.43.0
 
