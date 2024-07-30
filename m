@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319CE940D5F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:25:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A54E5940D61
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54B9E1C24255
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:25:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56A101F24726
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693191953A3;
-	Tue, 30 Jul 2024 09:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1B9194C71;
+	Tue, 30 Jul 2024 09:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NA9bpyvA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyDGkwZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298D9194AF2
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB1F194AF2
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722331519; cv=none; b=f/QEIkZuMXZrMtDBGu8dbGsksdyMq+DUMY/7ihMWeSlv4ClQ7GsV8gw4z6nY/KbnC682GyPKsgBh5qyqIr4dZU5Ny6IRHWLiXvRETbendRVTB07BnCrJw0u0d0eRZ2V4uxcFlhpQCEU/jEtwYfxJz37sM97RMAZc0wmjFldtvYk=
+	t=1722331522; cv=none; b=MNuKwpWp+QjX4RJCtnzYqjVltIyo2oHsbgZjJJEfxQQ2/P0xcMaRmgFj4N9t7l5ICc2cvnEaMCZTrIJq8AVJZa/y3088uMWlBH7p0Zh1ILjlY5ad9glk8ya4361+PcuJZtIaZWenLVTG/GFuORx2BnztqwV1LqPTi+VNNYTKaPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722331519; c=relaxed/simple;
-	bh=RFDeLNz8gGOJ7sa3pGz7CXZwz7xSnGoK4lw+9bFvkEg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h5ASPHlB+pJHDWmNafdcAdyZSGfOK18uD4mlxPRvhfoYkIycargqXgMSqlJ639IMVOtQt509716sUilNzioizwTSxBvmGH/T7h+SZ1L3wrWYExb9M0SSvqGWDjuRNGDNvItf13yMB7ZoxoNehjVfkuCy7BNSF6vXIFQ3FvawuRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NA9bpyvA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A84C32782;
-	Tue, 30 Jul 2024 09:25:18 +0000 (UTC)
+	s=arc-20240116; t=1722331522; c=relaxed/simple;
+	bh=4Iabp5p8gaH0pPiiXWGNVhHDdtj7SCYhjj46a5A3qU4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eWMuR+VP2Id/lwvVN34ptf2uPitzpFtUAUd1cs8dMYnFqvV1Mk1rlseVlbLuuV/6rQ7z3d+AkToMGHtnP62Egrb6rx28bf/UFF+NyWhkP0VM2YHlkyEWagEhnD0qJtZdJpVbwVTdNr3gaC1rBe6S4uPaL5PhaInNnek2nZQwLms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyDGkwZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0F2C32782;
+	Tue, 30 Jul 2024 09:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722331519;
-	bh=RFDeLNz8gGOJ7sa3pGz7CXZwz7xSnGoK4lw+9bFvkEg=;
+	s=korg; t=1722331522;
+	bh=4Iabp5p8gaH0pPiiXWGNVhHDdtj7SCYhjj46a5A3qU4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NA9bpyvA96euRsN/hRssWg6QhPd1XXguohOmunyjc5D6m9q5eoEn6XoEUQG4B8IhD
-	 UMduf7/T2VQJD7bWtYltzTtQplyPE42u6i6DzpMgnfNB4Hh8fu6Zwp1WptspKLiTTc
-	 K1H3xrfDQR993XWAX6mHdZh9UCuAMnY4Uco6E8q8=
-Subject: FAILED: patch "[PATCH] mm: shmem: rename mTHP shmem counters" failed to apply to 4.19-stable tree
-To: ryan.roberts@arm.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,corbet@lwn.net,da.gomez@samsung.com,david@redhat.com,hughd@google.com,ioworker0@gmail.com,stable@vger.kernel.org,willy@infradead.org,ziy@nvidia.com
+	b=QyDGkwZAF/SGvfHJJ9WmEXU0KbQ2ngq8t7GShPdlelWctZmBUPWd0CCF2AM0Xl4pb
+	 4rvHo/VKpzVYLKpdR1sbwrloQRMpDSLJHejDjwjG0bw0whyc8Z6EncnCMhhiaZtNZd
+	 PDwP6iGFzeGB8BwZd0o0YfKMHrMhuWIyU6rJi+Nc=
+Subject: FAILED: patch "[PATCH] mm: optimize the redundant loop of mm_update_owner_next()" failed to apply to 6.10-stable tree
+To: alexjlzheng@tencent.com,akpm@linux-foundation.org,axboe@kernel.dk,brauner@kernel.org,mhocko@suse.com,mjguzik@gmail.com,oleg@redhat.com,stable@vger.kernel.org,tandersen@netflix.com,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:24:48 +0200
-Message-ID: <2024073048-jurist-stem-a276@gregkh>
+Date: Tue, 30 Jul 2024 11:24:53 +0200
+Message-ID: <2024073053-sterilize-garland-3014@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 63d9866ab01ffd0d0835d5564107283a4afc0a38
+git cherry-pick -x 76ba6acfcce871db13ad51c6dc8f56fec2e92853
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073048-jurist-stem-a276@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073053-sterilize-garland-3014@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-63d9866ab01f ("mm: shmem: rename mTHP shmem counters")
-f216c845f3c7 ("mm: add per-order mTHP split counters")
-66f44583f9b6 ("mm: shmem: add mTHP counters for anonymous shmem")
-e7a2ab7b3bb5 ("mm: shmem: add mTHP support for anonymous shmem")
-3d95bc21cea5 ("mm: shmem: add THP validation for PMD-mapped THP related statistics")
-6f775463d002 ("mm: shmem: use folio_alloc_mpol() in shmem_alloc_folio()")
-0d648dd5c899 ("mm: drop the 'anon_' prefix for swap-out mTHP counters")
-42248b9d34ea ("mm: add docs for per-order mTHP counters and transhuge_page ABI")
-d0f048ac39f6 ("mm: add per-order mTHP anon_swpout and anon_swpout_fallback counters")
-ec33687c6749 ("mm: add per-order mTHP anon_fault_alloc and anon_fault_fallback counters")
-5ed890ce5147 ("mm: vmscan: avoid split during shrink_folio_list()")
-835c3a25aa37 ("mm: huge_memory: add the missing folio_test_pmd_mappable() for THP split statistics")
-085ff35e7636 ("mm: memory: move mem_cgroup_charge() into alloc_anon_folio()")
-19eaf44954df ("mm: thp: support allocation of anonymous multi-size THP")
-3485b88390b0 ("mm: thp: introduce multi-size THP sysfs interface")
-ddc1a5cbc05d ("mempolicy: alloc_pages_mpol() for NUMA policy without vma")
-23e4883248f0 ("mm: add page_rmappable_folio() wrapper")
-c36f6e6dff4d ("mempolicy trivia: slightly more consistent naming")
-7f1ee4e20708 ("mempolicy trivia: delete those ancient pr_debug()s")
-1cb5d11a370f ("mempolicy: fix migrate_pages(2) syscall return nr_failed")
+76ba6acfcce8 ("mm: optimize the redundant loop of mm_update_owner_next()")
 
 thanks,
 
@@ -96,180 +77,46 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 63d9866ab01ffd0d0835d5564107283a4afc0a38 Mon Sep 17 00:00:00 2001
-From: Ryan Roberts <ryan.roberts@arm.com>
-Date: Wed, 10 Jul 2024 10:55:01 +0100
-Subject: [PATCH] mm: shmem: rename mTHP shmem counters
+From 76ba6acfcce871db13ad51c6dc8f56fec2e92853 Mon Sep 17 00:00:00 2001
+From: Jinliang Zheng <alexjlzheng@tencent.com>
+Date: Thu, 20 Jun 2024 20:21:24 +0800
+Subject: [PATCH] mm: optimize the redundant loop of mm_update_owner_next()
 
-The legacy PMD-sized THP counters at /proc/vmstat include thp_file_alloc,
-thp_file_fallback and thp_file_fallback_charge, which rather confusingly
-refer to shmem THP and do not include any other types of file pages.  This
-is inconsistent since in most other places in the kernel, THP counters are
-explicitly separated for anon, shmem and file flavours.  However, we are
-stuck with it since it constitutes a user ABI.
+When mm_update_owner_next() is racing with swapoff (try_to_unuse()) or
+/proc or ptrace or page migration (get_task_mm()), it is impossible to
+find an appropriate task_struct in the loop whose mm_struct is the same as
+the target mm_struct.
 
-Recently, commit 66f44583f9b6 ("mm: shmem: add mTHP counters for anonymous
-shmem") added equivalent mTHP stats for shmem, keeping the same "file_"
-prefix in the names.  But in future, we may want to add extra stats to
-cover actual file pages, at which point, it would all become very
-confusing.
+If the above race condition is combined with the stress-ng-zombie and
+stress-ng-dup tests, such a long loop can easily cause a Hard Lockup in
+write_lock_irq() for tasklist_lock.
 
-So let's take the opportunity to rename these new counters "shmem_" before
-the change makes it upstream and the ABI becomes immutable.  While we are
-at it, let's improve the documentation for the legacy counters to make it
-clear that they count shmem pages only.
+Recognize this situation in advance and exit early.
 
-Link: https://lkml.kernel.org/r/20240710095503.3193901-1-ryan.roberts@arm.com
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Lance Yang <ioworker0@gmail.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Daniel Gomez <da.gomez@samsung.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
+Link: https://lkml.kernel.org/r/20240620122123.3877432-1-alexjlzheng@tencent.com
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Tycho Andersen <tandersen@netflix.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/Documentation/admin-guide/mm/transhuge.rst b/Documentation/admin-guide/mm/transhuge.rst
-index fe237825b95c..058485daf186 100644
---- a/Documentation/admin-guide/mm/transhuge.rst
-+++ b/Documentation/admin-guide/mm/transhuge.rst
-@@ -412,20 +412,23 @@ thp_collapse_alloc_failed
- 	the allocation.
- 
- thp_file_alloc
--	is incremented every time a file huge page is successfully
--	allocated.
-+	is incremented every time a shmem huge page is successfully
-+	allocated (Note that despite being named after "file", the counter
-+	measures only shmem).
- 
- thp_file_fallback
--	is incremented if a file huge page is attempted to be allocated
--	but fails and instead falls back to using small pages.
-+	is incremented if a shmem huge page is attempted to be allocated
-+	but fails and instead falls back to using small pages. (Note that
-+	despite being named after "file", the counter measures only shmem).
- 
- thp_file_fallback_charge
--	is incremented if a file huge page cannot be charged and instead
-+	is incremented if a shmem huge page cannot be charged and instead
- 	falls back to using small pages even though the allocation was
--	successful.
-+	successful. (Note that despite being named after "file", the
-+	counter measures only shmem).
- 
- thp_file_mapped
--	is incremented every time a file huge page is mapped into
-+	is incremented every time a file or shmem huge page is mapped into
- 	user address space.
- 
- thp_split_page
-@@ -496,16 +499,16 @@ swpout_fallback
- 	Usually because failed to allocate some continuous swap space
- 	for the huge page.
- 
--file_alloc
--	is incremented every time a file huge page is successfully
-+shmem_alloc
-+	is incremented every time a shmem huge page is successfully
- 	allocated.
- 
--file_fallback
--	is incremented if a file huge page is attempted to be allocated
-+shmem_fallback
-+	is incremented if a shmem huge page is attempted to be allocated
- 	but fails and instead falls back to using small pages.
- 
--file_fallback_charge
--	is incremented if a file huge page cannot be charged and instead
-+shmem_fallback_charge
-+	is incremented if a shmem huge page cannot be charged and instead
- 	falls back to using small pages even though the allocation was
- 	successful.
- 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index acb6ac24a07e..cff002be83eb 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -269,9 +269,9 @@ enum mthp_stat_item {
- 	MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE,
- 	MTHP_STAT_SWPOUT,
- 	MTHP_STAT_SWPOUT_FALLBACK,
--	MTHP_STAT_FILE_ALLOC,
--	MTHP_STAT_FILE_FALLBACK,
--	MTHP_STAT_FILE_FALLBACK_CHARGE,
-+	MTHP_STAT_SHMEM_ALLOC,
-+	MTHP_STAT_SHMEM_FALLBACK,
-+	MTHP_STAT_SHMEM_FALLBACK_CHARGE,
- 	MTHP_STAT_SPLIT,
- 	MTHP_STAT_SPLIT_FAILED,
- 	MTHP_STAT_SPLIT_DEFERRED,
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9ec64aa2be94..f9696c94e211 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -568,9 +568,9 @@ DEFINE_MTHP_STAT_ATTR(anon_fault_fallback, MTHP_STAT_ANON_FAULT_FALLBACK);
- DEFINE_MTHP_STAT_ATTR(anon_fault_fallback_charge, MTHP_STAT_ANON_FAULT_FALLBACK_CHARGE);
- DEFINE_MTHP_STAT_ATTR(swpout, MTHP_STAT_SWPOUT);
- DEFINE_MTHP_STAT_ATTR(swpout_fallback, MTHP_STAT_SWPOUT_FALLBACK);
--DEFINE_MTHP_STAT_ATTR(file_alloc, MTHP_STAT_FILE_ALLOC);
--DEFINE_MTHP_STAT_ATTR(file_fallback, MTHP_STAT_FILE_FALLBACK);
--DEFINE_MTHP_STAT_ATTR(file_fallback_charge, MTHP_STAT_FILE_FALLBACK_CHARGE);
-+DEFINE_MTHP_STAT_ATTR(shmem_alloc, MTHP_STAT_SHMEM_ALLOC);
-+DEFINE_MTHP_STAT_ATTR(shmem_fallback, MTHP_STAT_SHMEM_FALLBACK);
-+DEFINE_MTHP_STAT_ATTR(shmem_fallback_charge, MTHP_STAT_SHMEM_FALLBACK_CHARGE);
- DEFINE_MTHP_STAT_ATTR(split, MTHP_STAT_SPLIT);
- DEFINE_MTHP_STAT_ATTR(split_failed, MTHP_STAT_SPLIT_FAILED);
- DEFINE_MTHP_STAT_ATTR(split_deferred, MTHP_STAT_SPLIT_DEFERRED);
-@@ -581,9 +581,9 @@ static struct attribute *stats_attrs[] = {
- 	&anon_fault_fallback_charge_attr.attr,
- 	&swpout_attr.attr,
- 	&swpout_fallback_attr.attr,
--	&file_alloc_attr.attr,
--	&file_fallback_attr.attr,
--	&file_fallback_charge_attr.attr,
-+	&shmem_alloc_attr.attr,
-+	&shmem_fallback_attr.attr,
-+	&shmem_fallback_charge_attr.attr,
- 	&split_attr.attr,
- 	&split_failed_attr.attr,
- 	&split_deferred_attr.attr,
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 921d59c3d669..f24dfbd387ba 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1777,7 +1777,7 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 			if (pages == HPAGE_PMD_NR)
- 				count_vm_event(THP_FILE_FALLBACK);
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--			count_mthp_stat(order, MTHP_STAT_FILE_FALLBACK);
-+			count_mthp_stat(order, MTHP_STAT_SHMEM_FALLBACK);
- #endif
- 			order = next_order(&suitable_orders, order);
- 		}
-@@ -1804,8 +1804,8 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
- 				count_vm_event(THP_FILE_FALLBACK_CHARGE);
- 			}
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--			count_mthp_stat(folio_order(folio), MTHP_STAT_FILE_FALLBACK);
--			count_mthp_stat(folio_order(folio), MTHP_STAT_FILE_FALLBACK_CHARGE);
-+			count_mthp_stat(folio_order(folio), MTHP_STAT_SHMEM_FALLBACK);
-+			count_mthp_stat(folio_order(folio), MTHP_STAT_SHMEM_FALLBACK_CHARGE);
- #endif
- 		}
- 		goto unlock;
-@@ -2181,7 +2181,7 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
- 			if (folio_test_pmd_mappable(folio))
- 				count_vm_event(THP_FILE_ALLOC);
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--			count_mthp_stat(folio_order(folio), MTHP_STAT_FILE_ALLOC);
-+			count_mthp_stat(folio_order(folio), MTHP_STAT_SHMEM_ALLOC);
- #endif
- 			goto alloced;
- 		}
+diff --git a/kernel/exit.c b/kernel/exit.c
+index f95a2c1338a8..81fcee45d630 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -484,6 +484,8 @@ void mm_update_next_owner(struct mm_struct *mm)
+ 	 * Search through everything else, we should not get here often.
+ 	 */
+ 	for_each_process(g) {
++		if (atomic_read(&mm->mm_users) <= 1)
++			break;
+ 		if (g->flags & PF_KTHREAD)
+ 			continue;
+ 		for_each_thread(g, c) {
 
 
