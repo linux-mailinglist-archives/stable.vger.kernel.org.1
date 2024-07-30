@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-63346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5E2941875
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 027E5941AE1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 610D728428B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34B7F1C20D44
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D741A6160;
-	Tue, 30 Jul 2024 16:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0346188013;
+	Tue, 30 Jul 2024 16:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAOhF2hn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ov7KxUua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A021D183CDB;
-	Tue, 30 Jul 2024 16:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD691A6166;
+	Tue, 30 Jul 2024 16:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356534; cv=none; b=FdCvS6ErX3Ozpxb1gPbsg7Z5l4y4dsM5o/YcZqs/hFQBZNPS053JauXAuWhxqCDpseMlteY2nbvxJB+BXEms1m5kyKDn7xpAV34Jw8hHlilAUbM+tz9Op6jxyfZTwLVcdvH2jgWZsawMZbGWaDZcwpAqy6V7s31xiYL1W6mwCtU=
+	t=1722358107; cv=none; b=BDtRP2FQ26t/27mxgw0Qk1ftG+/HfFLocb+35dfHNraW40LXUCceyea+StUGZ9tmCPfUwcM3UBbgE19RQWpu0COE0cz55eNLbxKtvRu4EYbBLQVlxIVhKp1EJZ0lzGBEBz1YE4dW8dtgr8NM4S09Uzg+4XEXNfiFKk7434qxoGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356534; c=relaxed/simple;
-	bh=WMd0wKByz8DEspVXXWO23q1aSu2eiHRvs2ITxFEuWvA=;
+	s=arc-20240116; t=1722358107; c=relaxed/simple;
+	bh=GzvxVMbs5PgDJO9ke3uFE9GQNAK0kFbc4wRSUrS73eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxnM5t+0zvc+qaRS+NC4WE5reBB3N5ZYFQVIf9P+mqMSzET8wR4eL/kZMnA4JER9AKxkasLZAnsfS1UA7G+ATd7JjF7YT1XRg7GGG3TKLJuAyQQiRYyehW6mxtOI5gLV38RtgjWhmRmfwsOELR+z6AYRWFWsHuX1vTz3TT/EcXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cAOhF2hn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1394AC4AF0A;
-	Tue, 30 Jul 2024 16:22:13 +0000 (UTC)
+	 MIME-Version; b=SpClrCOjC38pHB855VnUbxH3VruhpisOuRnYspx8Hki9Fd3IQIrZ3mQGgzjofFEbIDRfYQvZdY8bo/ZfTpRfTkOxOkSbNsaEL/UtJdYrFXMTclcMv3H1FM50GsSZ5qIrm8NJSRN4bGmas+LzYBa3/L8f8HFaMOgYOwDBqJWDdEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ov7KxUua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30FAC4AF0C;
+	Tue, 30 Jul 2024 16:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356534;
-	bh=WMd0wKByz8DEspVXXWO23q1aSu2eiHRvs2ITxFEuWvA=;
+	s=korg; t=1722358107;
+	bh=GzvxVMbs5PgDJO9ke3uFE9GQNAK0kFbc4wRSUrS73eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cAOhF2hn7yH4s7FjKiihK3wjad7Rhu7dkkdjaVz1kBMhAjfGtVa8r19RKTh59KR7p
-	 X4ZYPFouqDKiSfyY6yMaZYkrJWo4byhPdOp2SfSUcE0Ac2JFdTkR7gJSUo5X/H2xAS
-	 EkpVzIqM/zp35l4X5dJpyVBjZzFso+b8GXeGV8n0=
+	b=Ov7KxUuaUUp2rR5eWqquBShPALH6bp30TFL072ZzCfApscP0DRi9JWFgBCkywQoK8
+	 4xpax8uUkJkTxqzrZKuRlgikqEQqUY9trnF3l+LHSi5bNE2PUbTR8+E8obJ1sFw0Mx
+	 bw4FKeBsotBGLJNONvIU8Zvt8Nr3NCz/Q4yI2uPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Or Har-Toov <ohartoov@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 200/440] RDMA/mlx5: Use sq timestamp as QP timestamp when RoCE is disabled
+Subject: [PATCH 6.6 326/568] pinctrl: core: fix possible memory leak when pinctrl_enable() fails
 Date: Tue, 30 Jul 2024 17:47:13 +0200
-Message-ID: <20240730151623.684340692@linuxfoundation.org>
+Message-ID: <20240730151652.616748522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 0c5275bf75ec3708d95654195ae4ed80d946d088 ]
+[ Upstream commit ae1cf4759972c5fe665ee4c5e0c29de66fe3cf4a ]
 
-When creating a QP, one of the attributes is TS format (timestamp).
-In some devices, we have a limitation that all QPs should have the same
-ts_format. The ts_format is chosen based on the device's capability.
-The qp_ts_format cap resides under the RoCE caps table, and the
-cap will be 0 when RoCE is disabled. So when RoCE is disabled, the
-value that should be queried is sq_ts_format under HCA caps.
+In devm_pinctrl_register(), if pinctrl_enable() fails in pinctrl_register(),
+the "pctldev" has not been added to dev resources, so devm_pinctrl_dev_release()
+can not be called, it leads memory leak.
 
-Consider the case when the system supports REAL_TIME_TS format (0x2),
-some QPs are created with REAL_TIME_TS as ts_format, and afterwards
-RoCE gets disabled. When trying to construct a new QP, we can't use
-the qp_ts_format, that is queried from the RoCE caps table, Since it
-leads to passing 0x0 (FREE_RUNNING_TS) as the value of the qp_ts_format,
-which is different than the ts_format of the previously allocated
-QPs REAL_TIME_TS format (0x2).
+Introduce pinctrl_uninit_controller(), call it in the error path to free memory.
 
-Thus, to resolve this, read the sq_ts_format, which also reflect
-the supported ts format for the QP when RoCE is disabled.
-
-Fixes: 4806f1e2fee8 ("net/mlx5: Set QP timestamp mode to default")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Link: https://lore.kernel.org/r/32801966eb767c7fd62b8dea3b63991d5fbfe213.1718554199.git.leon@kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240606023704.3931561-2-yangyingliang@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mlx5/qp.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/pinctrl/core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mlx5/qp.h b/include/linux/mlx5/qp.h
-index ca0eee571ad7b..15e8d7fd3879f 100644
---- a/include/linux/mlx5/qp.h
-+++ b/include/linux/mlx5/qp.h
-@@ -566,9 +566,12 @@ static inline const char *mlx5_qp_state_str(int state)
- 
- static inline int mlx5_get_qp_default_ts(struct mlx5_core_dev *dev)
- {
--	return !MLX5_CAP_ROCE(dev, qp_ts_format) ?
--		       MLX5_TIMESTAMP_FORMAT_FREE_RUNNING :
--		       MLX5_TIMESTAMP_FORMAT_DEFAULT;
-+	u8 supported_ts_cap = mlx5_get_roce_state(dev) ?
-+			      MLX5_CAP_ROCE(dev, qp_ts_format) :
-+			      MLX5_CAP_GEN(dev, sq_ts_format);
-+
-+	return supported_ts_cap ? MLX5_TIMESTAMP_FORMAT_DEFAULT :
-+	       MLX5_TIMESTAMP_FORMAT_FREE_RUNNING;
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index e19ee66e027bb..88ee086e13763 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -2072,6 +2072,14 @@ pinctrl_init_controller(struct pinctrl_desc *pctldesc, struct device *dev,
+ 	return ERR_PTR(ret);
  }
  
- #endif /* MLX5_QP_H */
++static void pinctrl_uninit_controller(struct pinctrl_dev *pctldev, struct pinctrl_desc *pctldesc)
++{
++	pinctrl_free_pindescs(pctldev, pctldesc->pins,
++			      pctldesc->npins);
++	mutex_destroy(&pctldev->mutex);
++	kfree(pctldev);
++}
++
+ static int pinctrl_claim_hogs(struct pinctrl_dev *pctldev)
+ {
+ 	pctldev->p = create_pinctrl(pctldev->dev, pctldev);
+@@ -2152,8 +2160,10 @@ struct pinctrl_dev *pinctrl_register(struct pinctrl_desc *pctldesc,
+ 		return pctldev;
+ 
+ 	error = pinctrl_enable(pctldev);
+-	if (error)
++	if (error) {
++		pinctrl_uninit_controller(pctldev, pctldesc);
+ 		return ERR_PTR(error);
++	}
+ 
+ 	return pctldev;
+ }
 -- 
 2.43.0
 
