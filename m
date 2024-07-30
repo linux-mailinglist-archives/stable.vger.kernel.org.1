@@ -1,124 +1,168 @@
-Return-Path: <stable+bounces-62824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8FD694143D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:24:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5C194144C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43CFEB289CF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:24:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0219288174
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F951A0AF4;
-	Tue, 30 Jul 2024 14:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6491A2542;
+	Tue, 30 Jul 2024 14:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOb4LPCp"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rAmsmHIA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F971A00CE;
-	Tue, 30 Jul 2024 14:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340B5D529;
+	Tue, 30 Jul 2024 14:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722349452; cv=none; b=fOlopHQAaOWw67R7XuHesZjuixaskmYWFm5N8Iy0mVWIya6To8sgVXa7+5GuByKoWiS22aMlDcKerw5zdfrtz9EZ/d7HKXoWFl3JqUNNqg/HLqOtuLvzM1vTBdW3Uk4z2itt47VZlMI6J0QlCcHB5jQDpIFdW+e9EQ0nEZrCM+c=
+	t=1722349576; cv=none; b=fRblRz4vHaT+uDA2UserXmbw5AUcQRF9IHcywiGDgpHaKT/OXUx5YqsRuD5nhnK/RcGXEqqvxpwKtXky/70COuckNcsGpETJMD6/5Q1CeskDbKVEMhY5VM+EFcYylzwRe1JbTkGdLvpCYj5ucTeiivMTRB78wQ+Qfs8whDgmUgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722349452; c=relaxed/simple;
-	bh=d0CEwF5u8K2jTXxISWUisJEv8UUhL0AyQQ1NkNiJXlM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JFTShmbmGXdNCRTzY97s/8Nd3RlF/+Vm5oq3g2WHmLZkQQyN04wUI+6d81pcBv31sSfAtumZW+nyTMT6wqLYj1S2wDDgQEHv0tRlfwq+VQBg/Y4VT4Aa4/A7/+HCSktifxFxYpdLiNsdIjP5hiNa00Ddvlggvjyw1O0OLTNROgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOb4LPCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD588C32782;
-	Tue, 30 Jul 2024 14:24:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722349452;
-	bh=d0CEwF5u8K2jTXxISWUisJEv8UUhL0AyQQ1NkNiJXlM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vOb4LPCpYSP0rne4Q0/AZ5mL1sSs1Gjcd+k63kNfQGk7dBrOLQ6JUav0cIkG77LXD
-	 mKxtqkYt7+5hocVxkeLQ05l/e42fNbfF7p2WlihWLkN//XbWKDFOZn/Nyxg0/oEDJA
-	 tr/PjyeAHjmYby1Si5SYagi2msDkLtRdQTnb0mRw=
-Date: Tue, 30 Jul 2024 16:24:09 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH for-stable] LoongArch: Define __ARCH_WANT_NEW_STAT in
- unistd.h
-Message-ID: <2024073059-hamstring-verbalize-91df@gregkh>
-References: <CAAhV-H6vXEaJf9NO9Lqh0xKoFAehtOOOLQVO4j5v+_tD7oKEXQ@mail.gmail.com>
- <20240730022542.3553255-1-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1722349576; c=relaxed/simple;
+	bh=B5LjsGmjUnGgC+3S3K4vgufSp6MgbbSVrQQVJKjPAqQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b7XZIA39J+0tbcozRls7L0byAma8PQhv2+6jVjCdSs+p/XlFlTG/EqsYy0fOBR6qI9ZaLd7Te83dOGs6XB6vQdMrh2agsSJvdTxZExdcNIyDYf3R/h+aywlU9aTgfv0VdBEdzi4DLw7d9iRVoN0eo68az4JgaU2xlFshgOOfb3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rAmsmHIA; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46UEK2bv031219;
+	Tue, 30 Jul 2024 14:26:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:content-transfer-encoding
+	:mime-version; s=pp1; bh=45CkuGD/86iKKCzErMLWJiA5f4Ert2ueHMCgSAN
+	L0nQ=; b=rAmsmHIA+EYoBIUkiBdUauQZdgnimEoHxxJgY/H/4leFgGafhd2G5Wx
+	TiWWZleguSlGfOUlV7fZSTAd5ltZ7sHTdVXNGaEnhkSOwlhDuAoSmoa+rG90pS5/
+	lW6KNk2vyVvWycrfvtOZIJr/zmf14eLVMBw4KJXDLiz/ZonZbm53CphwNRe96o3u
+	9ozlS0mlE9EF8S64DPlViFe+YBktPNqbUDZW20psQD5Rx1cHR5Mf+x0EHuxayZ9D
+	gCesn0hsEvyqIQw2j/45m6iBTKkvWzuLXntHW0nJlILmQgDLGblT5c++K0+x4gpW
+	3Oy844h47xAzxPNzgd4S4U8a/v7wtQw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40pys48b1n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jul 2024 14:26:11 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46UC9Isc003857;
+	Tue, 30 Jul 2024 14:26:11 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 40ndemctjh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jul 2024 14:26:11 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46UEQ57M48693532
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Jul 2024 14:26:07 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 932882005A;
+	Tue, 30 Jul 2024 14:26:05 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 737FC20040;
+	Tue, 30 Jul 2024 14:26:05 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 30 Jul 2024 14:26:05 +0000 (GMT)
+From: Michael Mueller <mimu@linux.ibm.com>
+To: linux-s390@vger.kernel.org
+Cc: borntraeger@linux.ibm.com, frankja@linux.ibm.com, nrb@linux.ibm.com,
+        mimu@linux.ibm.com, stable@vger.kernel.org
+Subject: [PATCH] KVM: s390: fix validity interception issue when gisa is switched off
+Date: Tue, 30 Jul 2024 16:25:40 +0200
+Message-ID: <20240730142540.1064136-1-mimu@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: RPQgVhFh-ASmFYDQLBHi2AYhxRnpnGms
+X-Proofpoint-ORIG-GUID: RPQgVhFh-ASmFYDQLBHi2AYhxRnpnGms
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730022542.3553255-1-chenhuacai@loongson.cn>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-30_11,2024-07-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ impostorscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1011 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2407300098
 
-On Tue, Jul 30, 2024 at 10:25:42AM +0800, Huacai Chen wrote:
-> Chromium sandbox apparently wants to deny statx [1] so it could properly
-> inspect arguments after the sandboxed process later falls back to fstat.
-> Because there's currently not a "fd-only" version of statx, so that the
-> sandbox has no way to ensure the path argument is empty without being
-> able to peek into the sandboxed process's memory. For architectures able
-> to do newfstatat though, glibc falls back to newfstatat after getting
-> -ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
-> inspecting the path argument, transforming allowed newfstatat's into
-> fstat instead which is allowed and has the same type of return value.
-> 
-> But, as LoongArch is the first architecture to not have fstat nor
-> newfstatat, the LoongArch glibc does not attempt falling back at all
-> when it gets -ENOSYS for statx -- and you see the problem there!
-> 
-> Actually, back when the LoongArch port was under review, people were
-> aware of the same problem with sandboxing clone3 [3], so clone was
-> eventually kept. Unfortunately it seemed at that time no one had noticed
-> statx, so besides restoring fstat/newfstatat to LoongArch uapi (and
-> postponing the problem further), it seems inevitable that we would need
-> to tackle seccomp deep argument inspection.
-> 
-> However, this is obviously a decision that shouldn't be taken lightly,
-> so we just restore fstat/newfstatat by defining __ARCH_WANT_NEW_STAT
-> in unistd.h. This is the simplest solution for now, and so we hope the
-> community will tackle the long-standing problem of seccomp deep argument
-> inspection in the future [4][5].
-> 
-> More infomation please reading this thread [6].
-> 
-> [1] https://chromium-review.googlesource.com/c/chromium/src/+/2823150
-> [2] https://chromium.googlesource.com/chromium/src/sandbox/+/c085b51940bd/linux/seccomp-bpf-helpers/sigsys_handlers.cc#355
-> [3] https://lore.kernel.org/linux-arch/20220511211231.GG7074@brightrain.aerifal.cx/
-> [4] https://lwn.net/Articles/799557/
-> [5] https://lpc.events/event/4/contributions/560/attachments/397/640/deep-arg-inspection.pdf
-> [6] https://lore.kernel.org/loongarch/20240226-granit-seilschaft-eccc2433014d@brauner/T/#t
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
->  arch/loongarch/include/uapi/asm/unistd.h | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/loongarch/include/uapi/asm/unistd.h b/arch/loongarch/include/uapi/asm/unistd.h
-> index fcb668984f03..b344b1f91715 100644
-> --- a/arch/loongarch/include/uapi/asm/unistd.h
-> +++ b/arch/loongarch/include/uapi/asm/unistd.h
-> @@ -1,4 +1,5 @@
->  /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> +#define __ARCH_WANT_NEW_STAT
->  #define __ARCH_WANT_SYS_CLONE
->  #define __ARCH_WANT_SYS_CLONE3
->  
-> -- 
-> 2.43.5
-> 
-> 
+The following validity interception occures when the gisa usage has been
+switched off either by using kernel parameter "kvm.use_gisa=0" or by
+setting the related sysfs attribute to N (echo N >/sys/module/kvm/
+parameters/use_gisa).
 
-What kernel branch(s) is this for?
+The issue surfaces in the host kernel with the following kernel message as
+soon a new kvm guest start has been attemted.
 
-thanks,
+kvm: unhandled validity intercept 0x1011
+WARNING: CPU: 0 PID: 781237 at arch/s390/kvm/intercept.c:101 kvm_handle_sie_intercept+0x42e/0x4d0 [kvm]
+Modules linked in: vhost_net tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT xt_tcpudp nft_compat x_tables nf_nat_tftp nf_conntrack_tftp vfio_pci_core irqbypass vhost_vsock vmw_vsock_virtio_transport_common vsock vhost vhost_iotlb kvm nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables sunrpc mlx5_ib ib_uverbs ib_core mlx5_core uvdevice s390_trng eadm_sch vfio_ccw zcrypt_cex4 mdev vfio_iommu_type1 vfio sch_fq_codel drm i2c_core loop drm_panel_orientation_quirks configfs nfnetlink lcs ctcm fsm dm_service_time ghash_s390 prng chacha_s390 libchacha aes_s390 des_s390 libdes sha3_512_s390 sha3_256_s390 sha512_s390 sha256_s390 sha1_s390 sha_common dm_mirror dm_region_hash dm_log zfcp scsi_transport_fc scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey zcrypt dm_multipath rng_core autofs4 [last unloaded: vfio_pci]
+CPU: 0 PID: 781237 Comm: CPU 0/KVM Not tainted 6.10.0-08682-gcad9f11498ea #6
+Hardware name: IBM 3931 A01 701 (LPAR)
+Krnl PSW : 0704c00180000000 000003d93deb0122 (kvm_handle_sie_intercept+0x432/0x4d0 [kvm])
+           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+Krnl GPRS: 000003d900000027 000003d900000023 0000000000000028 000002cd00000000
+           000002d063a00900 00000359c6daf708 00000000000bebb5 0000000000001eff
+           000002cfd82e9000 000002cfd80bc000 0000000000001011 000003d93deda412
+           000003ff8962df98 000003d93de77ce0 000003d93deb011e 00000359c6daf960
+Krnl Code: 000003d93deb0112: c020fffe7259	larl	%r2,000003d93de7e5c4
+           000003d93deb0118: c0e53fa8beac	brasl	%r14,000003d9bd3c7e70
+          #000003d93deb011e: af000000		mc	0,0
+          >000003d93deb0122: a728ffea		lhi	%r2,-22
+           000003d93deb0126: a7f4fe24		brc	15,000003d93deafd6e
+           000003d93deb012a: 9101f0b0		tm	176(%r15),1
+           000003d93deb012e: a774fe48		brc	7,000003d93deafdbe
+           000003d93deb0132: 40a0f0ae		sth	%r10,174(%r15)
+Call Trace:
+ [<000003d93deb0122>] kvm_handle_sie_intercept+0x432/0x4d0 [kvm]
+([<000003d93deb011e>] kvm_handle_sie_intercept+0x42e/0x4d0 [kvm])
+ [<000003d93deacc10>] vcpu_post_run+0x1d0/0x3b0 [kvm]
+ [<000003d93deaceda>] __vcpu_run+0xea/0x2d0 [kvm]
+ [<000003d93dead9da>] kvm_arch_vcpu_ioctl_run+0x16a/0x430 [kvm]
+ [<000003d93de93ee0>] kvm_vcpu_ioctl+0x190/0x7c0 [kvm]
+ [<000003d9bd728b4e>] vfs_ioctl+0x2e/0x70
+ [<000003d9bd72a092>] __s390x_sys_ioctl+0xc2/0xd0
+ [<000003d9be0e9222>] __do_syscall+0x1f2/0x2e0
+ [<000003d9be0f9a90>] system_call+0x70/0x98
+Last Breaking-Event-Address:
+ [<000003d9bd3c7f58>] __warn_printk+0xe8/0xf0
 
-greg k-h
+Cc: stable@vger.kernel.org
+Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Closes: https://ibm-systems-z.slack.com/archives/C04BWBXSKEY/p1722280755665409
+Fixes: fe0ef0030463 ("KVM: s390: sort out physical vs virtual pointers usage")
+Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
+---
+ arch/s390/kvm/kvm-s390.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/arch/s390/kvm/kvm-s390.h b/arch/s390/kvm/kvm-s390.h
+index bf8534218af3..e680c6bf0c9d 100644
+--- a/arch/s390/kvm/kvm-s390.h
++++ b/arch/s390/kvm/kvm-s390.h
+@@ -267,7 +267,12 @@ static inline unsigned long kvm_s390_get_gfn_end(struct kvm_memslots *slots)
+ 
+ static inline u32 kvm_s390_get_gisa_desc(struct kvm *kvm)
+ {
+-	u32 gd = virt_to_phys(kvm->arch.gisa_int.origin);
++	u32 gd;
++
++	if (!kvm->arch.gisa_int.origin)
++		return 0;
++
++	gd = virt_to_phys(kvm->arch.gisa_int.origin);
+ 
+ 	if (gd && sclp.has_gisaf)
+ 		gd |= GISA_FORMAT1;
+-- 
+2.43.0
+
 
