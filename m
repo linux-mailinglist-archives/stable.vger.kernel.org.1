@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-63103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C26294174B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6616A941CE4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58BC8286AFF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977851C23A6A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9903F18800A;
-	Tue, 30 Jul 2024 16:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B6F18A6A8;
+	Tue, 30 Jul 2024 17:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Hrl3ncC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9q8wcjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5715D18455F;
-	Tue, 30 Jul 2024 16:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F89D18454A;
+	Tue, 30 Jul 2024 17:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355673; cv=none; b=GMiuOONX38R6VEuTND3Ga/NTjcKIPaNIXUSnR2UrQXSXP0iRf8714NaLM9uiH1ovBP+uDDN3Hzfw2Zmg/rf5lu5VteSi/Ljb6i9irXsZM+lTYo5YjCIo5fDOUuMm1D3VwuIFKQ9ED/k3dBgqKqEZ3eyPEwl0SO7+RlHuK6K24cs=
+	t=1722359388; cv=none; b=NvWNHdi6rFhOr4g9qm4juYGBAs93f89Dw8SzbrU9FeemDcUjRbnIL/lR733zInkalpG65Zv41GkQmhTpKc9ScTV/mxfGoTKWI3w/TI8njFy7KKuz9bNr/zOj40ArUREjrnklMWmTVgvengElUTM3W2/eNxPgEhcRXMAYKSMLkqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355673; c=relaxed/simple;
-	bh=j0iUWLP1R/vkf9bsVJpsGgy8s073a/erZnrjqHvbUv0=;
+	s=arc-20240116; t=1722359388; c=relaxed/simple;
+	bh=zN3vu+5quAQMCNDCtnmSKfLYV9LCRk+BpM9ikwxLkyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxjmjnEcuUKBe57zQ375Frhv4bI6uUaSB7oZv0vIdmGGwyj/76PJK/KJgN1Ryg+xHWweowWr67iA7SB4ap5DCKTtlf6WBIvmioQcyjHNl+HipEYc8M6N6QOhp7BFBE15Virn1DBup10Z2mHC3nzuASkqu1vhiaDIncZL1J04WU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Hrl3ncC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF973C32782;
-	Tue, 30 Jul 2024 16:07:52 +0000 (UTC)
+	 MIME-Version; b=hFyKtBF24fgbRaEbpUiVz0TStL4nGKCR3ytvovya+LBVo9R/HqZQt3EOqMys6MwRHqfOCfK5tJetjjub7KFEpe8zj7GpS59ppqviJXXAQS08gvcPsaL0Y7hSyFST53R3Yo4jl4xhPjWXCGpIPchJEj8YlUiaFv5ymv6xZPdP9F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9q8wcjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FE0C32782;
+	Tue, 30 Jul 2024 17:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355673;
-	bh=j0iUWLP1R/vkf9bsVJpsGgy8s073a/erZnrjqHvbUv0=;
+	s=korg; t=1722359387;
+	bh=zN3vu+5quAQMCNDCtnmSKfLYV9LCRk+BpM9ikwxLkyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Hrl3ncCBmTHZxm5cYhZkHIvGmWWhq8rC0TZMjJoGCtCSp4OchtCQWqQVPADm/07Z
-	 lcdkM7yZfzkQHvpaAtipZPFvQ89Pv8dbT9kXwntwL9iLQklMqezpuzOJXQaLD4rnur
-	 ILWzcmAKcAHnbetthOzDe3Q874Xf8lhKbHuflNzA=
+	b=p9q8wcjS4E32+vA8vJ3axjDvRBqYDoloeC+EyLKefwHIrktx1tCLU0/IdNuLB+3/9
+	 unt5XhqVQpw5iQwmwce9i+YKaWpdYW7EfvAZUlFi0tek5TfErP8/sCL501kfTzRl8V
+	 59P0ILq5w+GNzMX+yu3oJXdb5P0hbjkJpLwjaMZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/440] selftests/bpf: Close obj in error path in xdp_adjust_tail
+Subject: [PATCH 6.10 477/809] ipvs: properly dereference pe in ip_vs_add_service
 Date: Tue, 30 Jul 2024 17:45:53 +0200
-Message-ID: <20240730151620.575121883@linuxfoundation.org>
+Message-ID: <20240730151743.575550136@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
 
-[ Upstream commit 52b49ec1b2c78deb258596c3b231201445ef5380 ]
+[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
 
-If bpf_object__load() fails in test_xdp_adjust_frags_tail_grow(), "obj"
-opened before this should be closed. So use "goto out" to close it instead
-of using "return" here.
+Use pe directly to resolve sparse warning:
 
-Fixes: 110221081aac ("bpf: selftests: update xdp_adjust_tail selftest to include xdp frags")
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Link: https://lore.kernel.org/r/f282a1ed2d0e3fb38cceefec8e81cabb69cab260.1720615848.git.tanggeliang@kylinos.cn
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
+
+Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
+Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_ctl.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c b/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-index 39973ea1ce433..89366913a251c 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-@@ -217,7 +217,7 @@ static void test_xdp_adjust_frags_tail_grow(void)
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index b6d0dcf3a5c34..f4384e147ee16 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -1459,18 +1459,18 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
+ 	if (ret < 0)
+ 		goto out_err;
  
- 	prog = bpf_object__next_program(obj, NULL);
- 	if (bpf_object__load(obj))
--		return;
-+		goto out;
+-	/* Bind the ct retriever */
+-	RCU_INIT_POINTER(svc->pe, pe);
+-	pe = NULL;
+-
+ 	/* Update the virtual service counters */
+ 	if (svc->port == FTPPORT)
+ 		atomic_inc(&ipvs->ftpsvc_counter);
+ 	else if (svc->port == 0)
+ 		atomic_inc(&ipvs->nullsvc_counter);
+-	if (svc->pe && svc->pe->conn_out)
++	if (pe && pe->conn_out)
+ 		atomic_inc(&ipvs->conn_out_counter);
  
- 	prog_fd = bpf_program__fd(prog);
- 
++	/* Bind the ct retriever */
++	RCU_INIT_POINTER(svc->pe, pe);
++	pe = NULL;
++
+ 	/* Count only IPv4 services for old get/setsockopt interface */
+ 	if (svc->af == AF_INET)
+ 		ipvs->num_services++;
 -- 
 2.43.0
 
