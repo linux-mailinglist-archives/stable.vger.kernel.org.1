@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1AC3941B64
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAFE941DEA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C2D61F23383
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5364C289807
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EDE1898F8;
-	Tue, 30 Jul 2024 16:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AC11A76BD;
+	Tue, 30 Jul 2024 17:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+iTjo0F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2I9qnZrj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2AD1A6195;
-	Tue, 30 Jul 2024 16:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AEB1A76B2;
+	Tue, 30 Jul 2024 17:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358464; cv=none; b=knneozUr8ENfy01E8CH4cLRQvB9OXhc/Yc3RhK511lfZVJ0Vj2uzutfhDFQu1d8mu9TIWMi1q5HTjuSqjvwW4KuUascUMpDAB6HA4G/t2ZvXO5Q3BoCEKMmVbx8x2QOLr7sSIVuqJvGc9sqxQ/UKgXt6juXZcpYwGGq7Wm4Syw4=
+	t=1722360198; cv=none; b=YGAR/JETCHyGoHsX86o3+i0/T33eLO8k9IxryDwV3tP6+kpblS7+78Wvnpla1wPSe7d6vZyx0YJTppNlvJ5UmbxCAJGdQyz0kstZYvzyj8kbX5v+yLizEa34rKJEdjAM88udZGVg4hBk4dr7I82sYSYzXQzrd2+FVn4HQB/I0h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358464; c=relaxed/simple;
-	bh=5yXoxf8bi9Kn4wsxDHq4/yyeWc7w+R4Tgm7miYNcsSk=;
+	s=arc-20240116; t=1722360198; c=relaxed/simple;
+	bh=nsILxJorgQ3A8juMOUSMswkmmlrga2tbe31jKX1lJ+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hz5nksLiYALJFgs293gxQCvnnX25uRrq5ubSsLScrhnUusXJ0m4X8Gmc1l3EgHFEyoK3wZ/D0jbnSgYg1P6R8GrzfGmsZkYe2rqNUEb8W/qM7WI4iqKha7dfnbeKcnF8CeNmO1yuTjIxzp7kSjBerJ9OfRjvI6uDVN2bSmtZ6n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+iTjo0F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B53C32782;
-	Tue, 30 Jul 2024 16:54:23 +0000 (UTC)
+	 MIME-Version; b=gT5K2Fojh8XVXX/rZsQh1Y2LlngTUOWfl/GXlAMPPrqhjXsCxWyi2b3hXDqA8X9QXD3qSBG+u4+fcA9OoQjImvwrOCuDCAjrlJm0uYf2E6tgJ7NeSBh4f2cjl+ZaAznrZTkGjbC46YJ3kLZErA4qm7Iq7v6evHjD22z1XztF5CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2I9qnZrj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9017EC4AF0C;
+	Tue, 30 Jul 2024 17:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358464;
-	bh=5yXoxf8bi9Kn4wsxDHq4/yyeWc7w+R4Tgm7miYNcsSk=;
+	s=korg; t=1722360198;
+	bh=nsILxJorgQ3A8juMOUSMswkmmlrga2tbe31jKX1lJ+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+iTjo0FYgmTxCZJC6eJtkHiTVG8aBzH+qRk1I2JTk8Ou0FD8zYHUhtyWQehc+yBX
-	 l5LkjMsQPMqir70pljTE9LoP01+/8dF7oPa77k8jOr31MsNE+hQ3QQOVrcL8+D9dZo
-	 AS77bWGOpm3PKumkDjjNeyBP3DArykDbD/0izqZ8=
+	b=2I9qnZrj7iUQYFWCf7z7p1kabzRaayrIP228HaCua/fn3wkGySRCPGHbYPctrgMw7
+	 uEGJor3vln3FpVKi7+HuEjTz3B3n32gGGAuGhn3ZiFcNx++slSBWyPRyAK4GbZi8oa
+	 IzA3XHbO7D4oqumpxtatD9B9j7lYInP1nJQSuq0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Heusel <christian@heusel.eu>,
-	mavrix#kernel@simplelogin.com,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 364/568] x86/efistub: Revert to heap allocated boot_params for PE entrypoint
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 595/809] io_uring: tighten task exit cancellations
 Date: Tue, 30 Jul 2024 17:47:51 +0200
-Message-ID: <20240730151654.088255404@linuxfoundation.org>
+Message-ID: <20240730151748.331319504@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit ae835a96d72cd025421910edb0e8faf706998727 upstream.
+commit f8b632e89a101dae349a7b212c1771d7925f441b upstream.
 
-This is a partial revert of commit
+io_uring_cancel_generic() should retry if any state changes like a
+request is completed, however in case of a task exit it only goes for
+another loop and avoids schedule() if any tracked (i.e. REQ_F_INFLIGHT)
+request got completed.
 
-  8117961d98f ("x86/efi: Disregard setup header of loaded image")
+Let's assume we have a non-tracked request executing in iowq and a
+tracked request linked to it. Let's also assume
+io_uring_cancel_generic() fails to find and cancel the request, i.e.
+via io_run_local_work(), which may happen as io-wq has gaps.
+Next, the request logically completes, io-wq still hold a ref but queues
+it for completion via tw, which happens in
+io_uring_try_cancel_requests(). After, right before prepare_to_wait()
+io-wq puts the request, grabs the linked one and tries executes it, e.g.
+arms polling. Finally the cancellation loop calls prepare_to_wait(),
+there are no tw to run, no tracked request was completed, so the
+tctx_inflight() check passes and the task is put to indefinite sleep.
 
-which triggers boot issues on older Dell laptops. As it turns out,
-switching back to a heap allocation for the struct boot_params
-constructed by the EFI stub works around this, even though it is unclear
-why.
-
-Cc: Christian Heusel <christian@heusel.eu>
-Reported-by: <mavrix#kernel@simplelogin.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3f48cf18f886c ("io_uring: unify files and task cancel")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/acac7311f4e02ce3c43293f8f1fda9c705d158f1.1721819383.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ io_uring/io_uring.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -469,11 +469,12 @@ void __noreturn efi_stub_entry(efi_handl
- efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 				   efi_system_table_t *sys_table_arg)
- {
--	static struct boot_params boot_params __page_aligned_bss;
--	struct setup_header *hdr = &boot_params.hdr;
- 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
-+	struct boot_params *boot_params;
-+	struct setup_header *hdr;
- 	int options_size = 0;
- 	efi_status_t status;
-+	unsigned long alloc;
- 	char *cmdline_ptr;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3071,8 +3071,11 @@ __cold void io_uring_cancel_generic(bool
+ 		bool loop = false;
  
- 	if (efi_is_native())
-@@ -491,6 +492,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 		efi_exit(handle, status);
- 	}
- 
-+	status = efi_allocate_pages(PARAM_SIZE, &alloc, ULONG_MAX);
-+	if (status != EFI_SUCCESS)
-+		efi_exit(handle, status);
+ 		io_uring_drop_tctx_refs(current);
++		if (!tctx_inflight(tctx, !cancel_all))
++			break;
 +
-+	boot_params = memset((void *)alloc, 0x0, PARAM_SIZE);
-+	hdr	    = &boot_params->hdr;
-+
- 	/* Assign the setup_header fields that the kernel actually cares about */
- 	hdr->root_flags	= 1;
- 	hdr->vid_mode	= 0xffff;
-@@ -500,13 +508,15 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 
- 	/* Convert unicode cmdline to ascii */
- 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
--	if (!cmdline_ptr)
-+	if (!cmdline_ptr) {
-+		efi_free(PARAM_SIZE, alloc);
- 		efi_exit(handle, EFI_OUT_OF_RESOURCES);
-+	}
- 
- 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
--			  &boot_params.ext_cmd_line_ptr);
-+			  &boot_params->ext_cmd_line_ptr);
- 
--	efi_stub_entry(handle, sys_table_arg, &boot_params);
-+	efi_stub_entry(handle, sys_table_arg, boot_params);
- 	/* not reached */
- }
+ 		/* read completions before cancelations */
+-		inflight = tctx_inflight(tctx, !cancel_all);
++		inflight = tctx_inflight(tctx, false);
+ 		if (!inflight)
+ 			break;
  
 
 
