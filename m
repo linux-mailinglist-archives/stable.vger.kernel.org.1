@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEF19417EE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0ACB941887
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 181301F24687
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C80F8B23E47
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3016C18C92A;
-	Tue, 30 Jul 2024 16:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D530918E021;
+	Tue, 30 Jul 2024 16:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqWYapl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQXZuKOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E213518C92B;
-	Tue, 30 Jul 2024 16:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9259D18C931;
+	Tue, 30 Jul 2024 16:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356075; cv=none; b=di1ridl+rcoErl0eoJ5uNFXZxKiX759FUH8rs6eFRAkC2f/OB2c+N5J6QvEgYymoWGn/h+yW8yv+7G+K6+Rz9xYNpoEOnonR/wFq9C/hc6DmYtAuLXfF7vM3SjfMYmYmHIBjs9YBgqv5QiEaxx76iDs7x2rYUhz3ceKFJ6r/4jk=
+	t=1722356084; cv=none; b=XHJxSip+uBeiQU4RFM0Xf6jjd/2EDz2RnjRRlwCQ5yFgLZ7j4SfWaVsSWtzo3VAVrw7JUQ6BR8qDPjMRHRTHAABmGlSJl5DyeryGYOmAafYdjs20JfrpODHCQgSENePGpjXCdqCjOhpxY/1QxSK/wJRt+sSODL8XUVpNOVVUIBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356075; c=relaxed/simple;
-	bh=t98ykbOf77S5kGZIONNhPUiAfsPFFOWpFgifzzuxBpY=;
+	s=arc-20240116; t=1722356084; c=relaxed/simple;
+	bh=21r5Ns4TmXC67ZXSH8mNWuXRKkYtR4Tk8qrepMET1/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sfg94dbfZvbiMuWEEVnlodLzF4yJDMo29P8DaZl6mMwkUgC9Igfyh75r9/4vtW9kzvNvVM31Xyi+mVZZvtxOPU2NKA8ZRx7PedrZbiH/GsfH0btYRw8MOhzkDMnElzo+++Y5EV31svXPsXAYWVpPVdOvhSuh8PNVDmX9nQNrOWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqWYapl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B74C4AF0C;
-	Tue, 30 Jul 2024 16:14:33 +0000 (UTC)
+	 MIME-Version; b=t7Xm0mzxpxKA6GrnoDbRdxTZme1Xk117mXFQkKzDf3t0A3x0Z9XBC1ZuUTpSBlLjag8H/dnJo7SMZbms1TRI/2oNSnDlYzuPs08fRBPTu0hAogabo8TT/1nwbVf2dG2WiMY0kuCfdqmdS/qgUHKMMiyJP9xAEFDriloKa24WqAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQXZuKOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9906C32782;
+	Tue, 30 Jul 2024 16:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356074;
-	bh=t98ykbOf77S5kGZIONNhPUiAfsPFFOWpFgifzzuxBpY=;
+	s=korg; t=1722356084;
+	bh=21r5Ns4TmXC67ZXSH8mNWuXRKkYtR4Tk8qrepMET1/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqWYapl6UNtg/4M5Ns1HUfe084+g8YJx8xl/AOtVhDvWT1i3jC92FgObkDBeURtu6
-	 Ym5EQlreowQRxt57rQNG5OZcvrDAahIFPqo3dviVG3XPLZvqWDlgnbJAEWLhIxHnHZ
-	 C72RqudgpHEdlsCaImGVB65ldxc6fkMaW0S41Aic=
+	b=fQXZuKOqTzX1Tj2W13ER81882AGE59TbXlnipWIdOhDkxk1Nm6nBapX8t5cJ2Jrip
+	 ecqsRDvWbVPANBRWU5W4T5bmtB6wPj4/UEaK7DXR7EotxHyrZCp6tNnjOe20OCF+4r
+	 FogcxW2PPe+ldDmPt3YOLffmLzgBJfQAwPAx41fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 114/809] arm64: dts: rockchip: Fix mic-in-differential usage on rk3566-roc-pc
-Date: Tue, 30 Jul 2024 17:39:50 +0200
-Message-ID: <20240730151729.125222160@linuxfoundation.org>
+Subject: [PATCH 6.10 115/809] arm64: dts: rockchip: Fix mic-in-differential usage on rk3568-evb1-v10
+Date: Tue, 30 Jul 2024 17:39:51 +0200
+Message-ID: <20240730151729.163785961@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,39 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit e643e4eb4bef6a2f95bf0c61a20c991bccecb212 ]
+[ Upstream commit ec03073888ad23223ebb986e62583c20a9ed3c07 ]
 
 The 'mic-in-differential' DT property supported by the RK809/RK817 audio
 codec driver is actually valid if prefixed with 'rockchip,':
 
-  DTC_CHK arch/arm64/boot/dts/rockchip/rk3566-roc-pc.dtb
-  rk3566-roc-pc.dtb: pmic@20: codec: 'mic-in-differential' does not match any of the regexes: 'pinctrl-[0-9]+'
+  DTC_CHK arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dtb
+
+  rk3568-evb1-v10.dtb: pmic@20: codec: 'mic-in-differential' does not match any of the regexes: 'pinctrl-[0-9]+'
 	from schema $id: http://devicetree.org/schemas/mfd/rockchip,rk809.yaml#
 
 Make use of the correct property name.
 
-Fixes: a8e35c4bebe4 ("arm64: dts: rockchip: add audio nodes to rk3566-roc-pc")
+Fixes: 3e4c629ca680 ("arm64: dts: rockchip: enable rk809 audio codec on the rk3568 evb1-v10")
 Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20240622-rk809-fixes-v2-4-c0db420d3639@collabora.com
+Link: https://lore.kernel.org/r/20240622-rk809-fixes-v2-5-c0db420d3639@collabora.com
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-roc-pc.dts | 2 +-
+ arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-roc-pc.dts b/arch/arm64/boot/dts/rockchip/rk3566-roc-pc.dts
-index 63eea27293fe9..67e7801bd4896 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-roc-pc.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-roc-pc.dts
-@@ -269,7 +269,7 @@ rk809: pmic@20 {
- 		vcc9-supply = <&vcc3v3_sys>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
+index 19f8fc369b130..8c3ab07d38079 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-evb1-v10.dts
+@@ -475,7 +475,7 @@ regulator-state-mem {
+ 		};
  
  		codec {
 -			mic-in-differential;
 +			rockchip,mic-in-differential;
  		};
- 
- 		regulators {
+ 	};
+ };
 -- 
 2.43.0
 
