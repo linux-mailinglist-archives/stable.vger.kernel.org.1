@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-64096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E205941C18
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E38A941922
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4815A285673
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A5A3B2BE78
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4BC188003;
-	Tue, 30 Jul 2024 17:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BF7187FF9;
+	Tue, 30 Jul 2024 16:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+bRwE8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SORCqqzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724D61E86F;
-	Tue, 30 Jul 2024 17:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B3818455D;
+	Tue, 30 Jul 2024 16:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358977; cv=none; b=TeSgjo1vTf/f7ORtawBfAEJIQQ8v0Y4H24Q39kKBjpo36gd3QVHY+X/ClkpWI8dKH6SiTXgnu/BFenmO50s3dxo4Gcs2Dr3cUxLTeVOQl0W+PBlQEjxGkzRMAuSYSILI2p+BQyB4nm8+iq0IFgznypfdg+kujTuJFNhR5p4p5ss=
+	t=1722356777; cv=none; b=OjkTYkJ3jqMlPcSj6n/7yslKttetSEIcE9Y5hNDBZxP1I6JHqGpgi7n35F7ymkxyjyeelCeG5gg6uubz1FAs9act9dV7yRuURomcRHhEFbTMjuqsor53vRukCF6e7zdVok7p07nnm/BCvq4Qog9P+lgudb/oUU936ExCbIzeb3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358977; c=relaxed/simple;
-	bh=1ZOO+jophsezJZyb+BD7WFEA97vHwaSHeu6Dmd++kXk=;
+	s=arc-20240116; t=1722356777; c=relaxed/simple;
+	bh=5kOMzIWgTv3EG/mcbFKjkqAEBz/LHDxTR65j3Jdwbic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prm82j/YYFFQ2TeZ91XWlix0IY9mbuoT32xM2Bfq1w5bxHGJv8k8JZh7TCQHxJ9bulfC8YD/UF+kKfplbt0Pf1w7mANzoQ/oPIHWk2RGhcBSf6lrQ553aDxmKJ7Bb+yfIesFOZRrKGAU74n907RaS4ZdNpJLuIfuR4/GNCpjf0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+bRwE8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45E3C4AF0A;
-	Tue, 30 Jul 2024 17:02:56 +0000 (UTC)
+	 MIME-Version; b=a/xcaBrcZmY3IPfU/MHNUBjIPEiSyecoqyUIQbtRvIz9iZpidiYg7L4cuTuIvu2WPVeDrCc+D6PPxgkhAAMc9u2/ilJXx3KajTZpDbqwv50nPvHREoaTVbmzIDs1LYjuoByTkJvVjEQ0XeD4KB7uGn6D+4SJ6X9rUcBOU4Q3DLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SORCqqzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8680C4AF0C;
+	Tue, 30 Jul 2024 16:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358977;
-	bh=1ZOO+jophsezJZyb+BD7WFEA97vHwaSHeu6Dmd++kXk=;
+	s=korg; t=1722356777;
+	bh=5kOMzIWgTv3EG/mcbFKjkqAEBz/LHDxTR65j3Jdwbic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s+bRwE8PoJS3JBBRuXS+zVSTh1CQw04QttGsTluhsc8IuiGEEuLyuRv4GlqBjmqDa
-	 Z1bcFR8wNR9InMaWA7m5zqbCFYc/KfKak4C+CcVaGVaEKGORyvy74MArTgnWuesbcr
-	 qJjmVR6eevYWd+GbBuvKRd7gllMFH12jwtzKm4dg=
+	b=SORCqqzrFzlDKBs471SnEdLhlwBpzxFvb3Gmpmq6oeBbQVnw53CxZSr2WvE+1G4DN
+	 YqGznqluOxYmU5lrmlNItwIHH14b6E5Ce81KFtgydcWFsfFrbqWtXagsOdgRQiN3ba
+	 YZ1YdVb8Vvx2H9pGUDab1gelL/Yt2HWsktH6k5go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Tim Van Patten <timvp@google.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 413/809] clk: qcom: gcc-sa8775p: Update the GDSC wait_val fields and flags
-Date: Tue, 30 Jul 2024 17:44:49 +0200
-Message-ID: <20240730151741.004653647@linuxfoundation.org>
+Subject: [PATCH 6.6 183/568] drm/amdgpu: Remove GC HW IP 9.3.0 from noretry=1
+Date: Tue, 30 Jul 2024 17:44:50 +0200
+Message-ID: <20240730151647.030692841@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Tim Van Patten <timvp@google.com>
 
-[ Upstream commit be208c0ccf7d861fc6109ca06c1a773512739af9 ]
+[ Upstream commit 1446226d32a45bb7c4f63195a59be8c08defe658 ]
 
-Update the GDSC wait_val fields as per the default hardware values as
-otherwise they would lead to GDSC FSM state to be stuck and causing
-failures to power on/off. Also add the GDSC flags as applicable and
-add support to control PCIE GDSC's using collapse vote registers.
+The following commit updated gmc->noretry from 0 to 1 for GC HW IP
+9.3.0:
 
-Fixes: 08c51ceb12f7 ("clk: qcom: add the GCC driver for sa8775p")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-2-adcc756a23df@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+    commit 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
+
+This causes the device to hang when a page fault occurs, until the
+device is rebooted. Instead, revert back to gmc->noretry=0 so the device
+is still responsive.
+
+Fixes: 5f3854f1f4e2 ("drm/amdgpu: add more cases to noretry=1")
+Signed-off-by: Tim Van Patten <timvp@google.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sa8775p.c | 40 ++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sa8775p.c b/drivers/clk/qcom/gcc-sa8775p.c
-index 5bcbfbf52cb9e..9bbc0836fae98 100644
---- a/drivers/clk/qcom/gcc-sa8775p.c
-+++ b/drivers/clk/qcom/gcc-sa8775p.c
-@@ -4305,74 +4305,114 @@ static struct clk_branch gcc_video_axi1_clk = {
- 
- static struct gdsc pcie_0_gdsc = {
- 	.gdscr = 0xa9004,
-+	.collapse_ctrl = 0x4b104,
-+	.collapse_mask = BIT(0),
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct gdsc pcie_1_gdsc = {
- 	.gdscr = 0x77004,
-+	.collapse_ctrl = 0x4b104,
-+	.collapse_mask = BIT(1),
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct gdsc ufs_card_gdsc = {
- 	.gdscr = 0x81004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ufs_card_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct gdsc ufs_phy_gdsc = {
- 	.gdscr = 0x83004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ufs_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct gdsc usb20_prim_gdsc = {
- 	.gdscr = 0x1c004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "usb20_prim_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct gdsc usb30_prim_gdsc = {
- 	.gdscr = 0x1b004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "usb30_prim_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct gdsc usb30_sec_gdsc = {
- 	.gdscr = 0x2f004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "usb30_sec_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct gdsc emac0_gdsc = {
- 	.gdscr = 0xb6004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "emac0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct gdsc emac1_gdsc = {
- 	.gdscr = 0xb4004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "emac1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE | POLL_CFG_GDSCR,
- };
- 
- static struct clk_regmap *gcc_sa8775p_clocks[] = {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index bc0eda1a729c5..0b6a0e149f1c4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -650,7 +650,6 @@ void amdgpu_gmc_noretry_set(struct amdgpu_device *adev)
+ 	struct amdgpu_gmc *gmc = &adev->gmc;
+ 	uint32_t gc_ver = adev->ip_versions[GC_HWIP][0];
+ 	bool noretry_default = (gc_ver == IP_VERSION(9, 0, 1) ||
+-				gc_ver == IP_VERSION(9, 3, 0) ||
+ 				gc_ver == IP_VERSION(9, 4, 0) ||
+ 				gc_ver == IP_VERSION(9, 4, 1) ||
+ 				gc_ver == IP_VERSION(9, 4, 2) ||
 -- 
 2.43.0
 
