@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C64F94195D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F1B941960
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E0FE1C232A1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C72A1F2533B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293D2188012;
-	Tue, 30 Jul 2024 16:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF88189903;
+	Tue, 30 Jul 2024 16:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2YSspwH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFceg9yb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98571A6192;
-	Tue, 30 Jul 2024 16:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3D81898F2;
+	Tue, 30 Jul 2024 16:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357091; cv=none; b=bmFBhVPVU2s6jnGosfuOIKGIox+xFFENLZZfBobIknHDYVWkMSd2rSViYFV+clHJtuXh63cOG7IoaYIJSi45ClpEHk/bt7ZAOqAD8NCbgnUHpP1pYKq01ZhKWpIv3ZhLF/qkyinbFG04RWlVoZ1YgwX7jQD35asNKNVyAKxl11I=
+	t=1722357101; cv=none; b=HUJ6wINzgeVuVgI4dR2F+XVrt1JaSgL5WrXS16mLnzORY5VNC3WTEpay04BMIRE2jg+b+2wXjmSrOw95OXNqKPZVcQetcWg62xUrgx/SrKCKV59pYRhvOh0GWs9/qWXKtsRpz/m5Ahs2dYB9RRhxSSCzcZWyb4KhTiyylaL+a/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357091; c=relaxed/simple;
-	bh=3ucQ6l6toXeV63tExeD1QjLFYqwvMstG1+aINJ9k0Qk=;
+	s=arc-20240116; t=1722357101; c=relaxed/simple;
+	bh=lB5EGpGPw7vA5X5uJt6kxpR83BHH32tJal0efzDQ9a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAaUaseiyGBIOBIB+Mf07uXdKDzbPrHAiotKpKHychOZ4M65jOryEUvHz081cd656dPGY5TvJXXIdGnE74gNWwgQFUMiYqQ9WURLhHW4mBQCam8aqWgrWtXcSsvsDm2ArLYHFgNE1JVbUL1LaeFlwBvv2EuYZND30nIdd8rs9Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2YSspwH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFCCC32782;
-	Tue, 30 Jul 2024 16:31:30 +0000 (UTC)
+	 MIME-Version; b=tEYCMfDEt7DMLOCuyWSPe7eh5KmL5aXuWnXzQ/tWRDQEQ38N2qlyA15vW9nVWAMlShfLRUybLyDM5oVOTYfdQmLSCa4BmoKyOczTzO0Oa5ebi319eTb+WwjDcOqj+TBdu74uB2bq0bbZTDFyOBQHw4ignHkxUPmhOx3MH1vet8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFceg9yb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B454AC4AF0F;
+	Tue, 30 Jul 2024 16:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357091;
-	bh=3ucQ6l6toXeV63tExeD1QjLFYqwvMstG1+aINJ9k0Qk=;
+	s=korg; t=1722357101;
+	bh=lB5EGpGPw7vA5X5uJt6kxpR83BHH32tJal0efzDQ9a0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2YSspwH6mZdg/DwK17jHNc4Ovpbo0iiACc6yCrPR48Vt+/2hJKWh0BxPbuhab5m2
-	 3LL33oywq02SlOKiYKNh8u5O+EtsIFgdVJWtxgb6fOVQnZKxWV0lrRpmniZEgkPDJk
-	 Q2lL2oBJnyIPklRSPgKFcbIQLpzOCIEkxHGVdBqM=
+	b=GFceg9yb7qQOKyC0O3YnBOPRn5bX+agGc0RkFilVEMqAbJNJDJ73ZvkeAtDZ3MSHb
+	 5qL4ArYeZJjgmbej62atI6IZYzHNKvqyHsqVRKN4oEClBYoR8wSe8GaXoJMmSpiVUD
+	 h95iGy4oPFLGnqyobUfkaQSBuz9kuORgaK++uBhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 217/809] wifi: rtl8xxxu: 8188f: Limit TX power index
-Date: Tue, 30 Jul 2024 17:41:33 +0200
-Message-ID: <20240730151733.178060662@linuxfoundation.org>
+Subject: [PATCH 6.10 218/809] xfrm: Export symbol xfrm_dev_state_delete.
+Date: Tue, 30 Jul 2024 17:41:34 +0200
+Message-ID: <20240730151733.217272570@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,67 +67,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Martin Kaistra <martin.kaistra@linutronix.de>
+From: Steffen Klassert <steffen.klassert@secunet.com>
 
-[ Upstream commit d0b4b8ef083ca46d5d318e66a30fb80e0abbb90d ]
+[ Upstream commit 2d5317753e5f02a66e6d0afb9b25105d0beab1be ]
 
-TX power index is read from the efuse on init, the values get written to
-the TX power registers when the channel gets switched.
+This fixes a build failure if xfrm_user is build as a module.
 
-When the chip has not yet been calibrated, the efuse values are 0xFF,
-which on some boards leads to USB timeouts for reading/writing registers
-after the first frames have been sent.
-
-The vendor driver (v5.11.5-1) checks for these invalid values and sets
-default values instead. Implement something similar in
-rtl8188fu_parse_efuse().
-
-Fixes: c888183b21f3 ("wifi: rtl8xxxu: Support new chip RTL8188FU")
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240624140037.231657-1-martin.kaistra@linutronix.de
+Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
+Reported-by: Mark Brown <broonie@kernel.org>
+Tested-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/8188f.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/xfrm/xfrm_state.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
-index bd5a0603b4a23..3abf14d7044f3 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
-@@ -697,9 +697,14 @@ static void rtl8188fu_init_statistics(struct rtl8xxxu_priv *priv)
- 	rtl8xxxu_write32(priv, REG_OFDM0_FA_RSTC, val32);
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index d531d2a1fae28..936f9348e5f63 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -698,6 +698,7 @@ void xfrm_dev_state_delete(struct xfrm_state *x)
+ 		spin_unlock_bh(&xfrm_state_dev_gc_lock);
+ 	}
  }
++EXPORT_SYMBOL_GPL(xfrm_dev_state_delete);
  
-+#define TX_POWER_INDEX_MAX 0x3F
-+#define TX_POWER_INDEX_DEFAULT_CCK 0x22
-+#define TX_POWER_INDEX_DEFAULT_HT40 0x27
-+
- static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
+ void xfrm_dev_state_free(struct xfrm_state *x)
  {
- 	struct rtl8188fu_efuse *efuse = &priv->efuse_wifi.efuse8188fu;
-+	int i;
- 
- 	if (efuse->rtl_id != cpu_to_le16(0x8129))
- 		return -EINVAL;
-@@ -713,6 +718,16 @@ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
- 	       efuse->tx_power_index_A.ht40_base,
- 	       sizeof(efuse->tx_power_index_A.ht40_base));
- 
-+	for (i = 0; i < ARRAY_SIZE(priv->cck_tx_power_index_A); i++) {
-+		if (priv->cck_tx_power_index_A[i] > TX_POWER_INDEX_MAX)
-+			priv->cck_tx_power_index_A[i] = TX_POWER_INDEX_DEFAULT_CCK;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(priv->ht40_1s_tx_power_index_A); i++) {
-+		if (priv->ht40_1s_tx_power_index_A[i] > TX_POWER_INDEX_MAX)
-+			priv->ht40_1s_tx_power_index_A[i] = TX_POWER_INDEX_DEFAULT_HT40;
-+	}
-+
- 	priv->ofdm_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.a;
- 	priv->ht20_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.b;
- 
 -- 
 2.43.0
 
