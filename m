@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-64361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6D3941D75
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A863A941EA9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81B691F26562
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B8C1F237FE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18581A76A4;
-	Tue, 30 Jul 2024 17:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65C51898E0;
+	Tue, 30 Jul 2024 17:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kA6SFYoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0AtPeCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614E11A76A7;
-	Tue, 30 Jul 2024 17:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627671A76AD;
+	Tue, 30 Jul 2024 17:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359866; cv=none; b=NNe4byH4EdylgXXDm2+wL05Luc9mnBMpnG5yXH/22A2N8EKwKXmE5NMBmeMbZl9ZJ9l3ORY1eAUixgiW5BKsHftOqfMWlu0TICfwmPfkxk6pHcZ/WvaJtYDomi6xuCz3jeGcZj/z9aTYV49KA/29pw+VtysjtCu3x4q9tWg5rQ0=
+	t=1722360697; cv=none; b=gQ8bPOCJRgOtX5R1gW4JmaQEXpSn/+x5ROZUP+Y8O+KGU4OHRdYWf5X23PLMomGBO1Vwl+kH5lGCGZR8W5heqbKIwdY8Ka0wZ7TNSNUsvEsXJ4rze8UgaCCsh3GVK4CF3vf1arGc85MDUrOqHHbwMmMiWjmESK7jyPdkewyoaog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359866; c=relaxed/simple;
-	bh=xXJF6qXqUnSNPhhVXd/FvdtOtHV4WNGPEAxWRewBUH4=;
+	s=arc-20240116; t=1722360697; c=relaxed/simple;
+	bh=EA4Ac/i4V/YcpuxYfP21f88MvCTMVCYtawAudA4cvQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZp8pwOjV5hZyBKezmrkfksHJiCmuP+b9ReWFsSjwSg5ZnxyY3YGOO1ZU4ZjylNxt4UhK5NFfj1hmVlxj+P+0bKur/4/bNpoEayi7BnYJVW9W5jVEmy4ktO4cuCfe0h7K+w/A5KbUGC+c3DX2+rIVf5l+1ZRNnNnD/xI9SV81H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kA6SFYoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C015FC4AF0A;
-	Tue, 30 Jul 2024 17:17:45 +0000 (UTC)
+	 MIME-Version; b=elD/UsFeETh/USCVAG+E9womMWbfPpNM69XnODxboK+lXiua6WlGdzaP6rsCkUAXzrGKWsbhV/+JJ1nCXajKl7EKENKJrskedR3bBoh/+JEdBZyz5MVPLG5rCcOQOlxQa0AJTLjuJKWAgoRIqI3rJ8WikpTX87K10tFdZu21WWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0AtPeCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8100C32782;
+	Tue, 30 Jul 2024 17:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359866;
-	bh=xXJF6qXqUnSNPhhVXd/FvdtOtHV4WNGPEAxWRewBUH4=;
+	s=korg; t=1722360697;
+	bh=EA4Ac/i4V/YcpuxYfP21f88MvCTMVCYtawAudA4cvQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kA6SFYoXWP/bxRAjk0Mt/SO+yjzpD6MdJ/pTAuypHSayH9k8oSg/3ljyOENzzBO5U
-	 1Zxl/YMuAmnN7AcS1rB+VLvXCy3nM55uOojq7YygbMVO2mXFWzlqLw0W5fGilkSB60
-	 igA3fXKAYLsv4xsgAV925Vt+VS4zdEmtCxDsB1hc=
+	b=k0AtPeCjZM1A+w4nTiLAKalgHRBwJEmcFUiOwP0jxWuWSCp85VtSJw/Bi7n6J78pk
+	 sV50ZR0g3fcav8ldViaNMysNGBrIn5F1bTMlkBEKS6rr5ewNGeSRAn8Y3d35C6DClH
+	 ajOzjrVMLdw+F5RNF3N7D4osmN+feq3dx/pzxwsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 548/568] auxdisplay: ht16k33: Drop reference after LED registration
+Subject: [PATCH 6.10 779/809] spi: microchip-core: fix the issues in the isr
 Date: Tue, 30 Jul 2024 17:50:55 +0200
-Message-ID: <20240730151701.581837082@linuxfoundation.org>
+Message-ID: <20240730151755.736805063@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
 
-[ Upstream commit 2ccfe94bc3ac980d2d1df9f7a0b2c6d2137abe55 ]
+[ Upstream commit 502a582b8dd897d9282db47c0911d5320ef2e6b9 ]
 
-The reference count is bumped by device_get_named_child_node()
-and never dropped. Since LED APIs do not require it to be
-bumped by the user, drop the reference after LED registration.
+It is possible for the TXDONE interrupt be raised if the tx FIFO becomes
+temporarily empty while transmitting, resulting in recursive calls to
+mchp_corespi_write_fifo() and therefore a garbage message might be
+transmitted depending on when the interrupt is triggered. Moving all of
+the tx FIFO writes out of the TXDONE portion of the interrupt handler
+avoids this problem.
 
-[andy: rewritten the commit message and amended the change]
+Most of rest of the TXDONE portion of the handler is problematic too.
+Only reading the rx FIFO (and finalising the transfer) when the TXDONE
+interrupt is raised can cause the transfer to stall, if the final bytes
+of rx data are not available in the rx FIFO when the final TXDONE
+interrupt is raised. The transfer should be finalised regardless of
+which interrupt is raised, provided that all tx data has been set and
+all rx data received.
 
-Fixes: c223d9c636ed ("auxdisplay: ht16k33: Add LED support")
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The first issue was encountered "in the wild", the second is
+theoretical.
+
+Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
+Signed-off-by: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20240715-candied-deforest-585685ef3c8a@wendy
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/auxdisplay/ht16k33.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-microchip-core.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/auxdisplay/ht16k33.c b/drivers/auxdisplay/ht16k33.c
-index 3a2d883872249..b360ddefc4238 100644
---- a/drivers/auxdisplay/ht16k33.c
-+++ b/drivers/auxdisplay/ht16k33.c
-@@ -507,6 +507,7 @@ static int ht16k33_led_probe(struct device *dev, struct led_classdev *led,
- 	led->max_brightness = MAX_BRIGHTNESS;
+diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
+index c10de45aa4729..003a2bc3cfd1b 100644
+--- a/drivers/spi/spi-microchip-core.c
++++ b/drivers/spi/spi-microchip-core.c
+@@ -380,21 +380,18 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
+ 	if (intfield == 0)
+ 		return IRQ_NONE;
  
- 	err = devm_led_classdev_register_ext(dev, led, &init_data);
-+	fwnode_handle_put(init_data.fwnode);
- 	if (err)
- 		dev_err(dev, "Failed to register LED\n");
+-	if (intfield & INT_TXDONE) {
++	if (intfield & INT_TXDONE)
+ 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_TXDONE);
+ 
++	if (intfield & INT_RXRDY) {
++		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
++
+ 		if (spi->rx_len)
+ 			mchp_corespi_read_fifo(spi);
+-
+-		if (spi->tx_len)
+-			mchp_corespi_write_fifo(spi);
+-
+-		if (!spi->rx_len)
+-			finalise = true;
+ 	}
+ 
+-	if (intfield & INT_RXRDY)
+-		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RXRDY);
++	if (!spi->rx_len && !spi->tx_len)
++		finalise = true;
+ 
+ 	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
+ 		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
+@@ -479,8 +476,9 @@ static int mchp_corespi_transfer_one(struct spi_controller *host,
+ 	mchp_corespi_set_xfer_size(spi, (spi->tx_len > FIFO_DEPTH)
+ 				   ? FIFO_DEPTH : spi->tx_len);
+ 
+-	if (spi->tx_len)
++	while (spi->tx_len)
+ 		mchp_corespi_write_fifo(spi);
++
+ 	return 1;
+ }
  
 -- 
 2.43.0
