@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE15941781
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F89941CFC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F12D01C236CA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3455B1F216B6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3332318B480;
-	Tue, 30 Jul 2024 16:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D261A3DA1;
+	Tue, 30 Jul 2024 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmhACvvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuCNnvYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E331429A2;
-	Tue, 30 Jul 2024 16:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BCA1A2C35;
+	Tue, 30 Jul 2024 17:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355777; cv=none; b=p7wN2m3hqBdK0sMoTiLOElTbl8JYHS7Zvr2GpP6pEbhNmg7LpbWmTpVmIghelfXqAHp8CW+or6GQVolCQ9zd9+xlZmWhK0LS3losogFyevdQn++r3lW24mIoMf658uFvezyPKeEgQpciNywitQZTOKFPtXcc1XOdX2ikrSRunyg=
+	t=1722359459; cv=none; b=mvi+P1UKOl02NAXPFH++5/U+65KwfpTJFqZaWQ1E+ne2B/fO2pYYmMAu0yTUe3iO1Htk7/4vkX/N1kOaTicZwFwvyw56N+hHlRIYfS/GGaOPpwhv4n+A5p9YJ0znKSwPSscAq/KseR8/exRhxTobDtx0mB86Kty/Ugw+qz6tAqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355777; c=relaxed/simple;
-	bh=UA/lj8aZHQb7n+tTKy+ATtUftmSQOqNIsF5jTA0n27E=;
+	s=arc-20240116; t=1722359459; c=relaxed/simple;
+	bh=Ws4pQ1mcJTOwCI+6XO3eh2PrqnJF9WVXimU4rOPaLmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aC0bdqmMTEI5l92lcfZWIbtczqIukDVd+ewfMmi8600He92BM7oNjZsr51fvobiMEqB4fSaThkLJO8io6ZCGIfKKDusbpZDxSCU4H+Th5H7aswvNBfd9mdjZiVul037L0LOuiCy2/OTHZ4218AhS2yeYE+5mq4Rbaw6bc8QPnI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmhACvvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47817C32782;
-	Tue, 30 Jul 2024 16:09:36 +0000 (UTC)
+	 MIME-Version; b=VP9AjI8jzv2j2M1GpFKdlVnAD7ETt2gndXgok6qE/9XgrJGwGCmi2wIGiOGEocwm71vhnIZRjekfrC+Nl9xaHODUOOhKrqOdrKy0n9LIv+N3GoS4VJiqLYVXOFc8l/ceg4+9ay12eeQ6OnP7rs94V44mDfI+qxvHA1CSMfG7VYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuCNnvYN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86406C32782;
+	Tue, 30 Jul 2024 17:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355776;
-	bh=UA/lj8aZHQb7n+tTKy+ATtUftmSQOqNIsF5jTA0n27E=;
+	s=korg; t=1722359458;
+	bh=Ws4pQ1mcJTOwCI+6XO3eh2PrqnJF9WVXimU4rOPaLmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmhACvvywC7+d083zzhhsX9Pm2BFfaQzb7TJ8xfDpX10ukLGD1Tec/adsEWMXwzUm
-	 vQCOcgKvNCQr/h7AhqvAxEOUART3oWwqeq6pN5DNjzvoX8M6nxQxhStHBjxqA8Bb4m
-	 ZDMN/d6MqS28vJWRv2bCubiQVJpzYuEm5U2X8jfM=
+	b=GuCNnvYNBitSMfGz2lvpqSWztyIjAbgdtJcJkGu3PYSv6mPA3tmkvK0VF40NSjfwI
+	 /FVtAa5hUtn7cBI4IJlxe+r5FkzuBKtZlEfOupVFCzITEbBbs0l2Sil+1bEmDz4kHC
+	 w/FQYLVwOiGcjm0TuRAQNyw0mH2FKIBjmBgswk9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Javier Martinez Canillas <javierm@redhat.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/440] drm/mipi-dsi: Fix mipi_dsi_dcs_write_seq() macro definition format
+Subject: [PATCH 6.10 486/809] fs/ntfs3: Deny getting attr data block in compressed frame
 Date: Tue, 30 Jul 2024 17:46:02 +0200
-Message-ID: <20240730151620.921675937@linuxfoundation.org>
+Message-ID: <20240730151743.934767307@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Martinez Canillas <javierm@redhat.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 51d3c0e7dc3cf1dd91c34b0f9bdadda310c7ed5b ]
+[ Upstream commit 69943484b95267c94331cba41e9e64ba7b24f136 ]
 
-Change made using a `clang-format -i include/drm/drm_mipi_dsi.h` command.
+Attempting to retrieve an attribute data block in a compressed frame
+is ignored.
 
-Suggested-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230102202542.3494677-1-javierm@redhat.com
-Stable-dep-of: 0b03829fdece ("drm/mipi-dsi: Fix theoretical int overflow in mipi_dsi_dcs_write_seq()")
+Fixes: be71b5cba2e64 ("fs/ntfs3: Add attrib operations")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_mipi_dsi.h | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ fs/ntfs3/attrib.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index 66a7e01c62608..9dd1093b2dfa9 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -309,15 +309,18 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
-  * @cmd: Command
-  * @seq: buffer containing data to be transmitted
-  */
--#define mipi_dsi_dcs_write_seq(dsi, cmd, seq...) do {				\
--		static const u8 d[] = { cmd, seq };				\
--		struct device *dev = &dsi->dev;	\
--		int ret;						\
--		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));	\
--		if (ret < 0) {						\
--			dev_err_ratelimited(dev, "sending command %#02x failed: %d\n", cmd, ret); \
--			return ret;						\
--		}						\
-+#define mipi_dsi_dcs_write_seq(dsi, cmd, seq...)                           \
-+	do {                                                               \
-+		static const u8 d[] = { cmd, seq };                        \
-+		struct device *dev = &dsi->dev;                            \
-+		int ret;                                                   \
-+		ret = mipi_dsi_dcs_write_buffer(dsi, d, ARRAY_SIZE(d));    \
-+		if (ret < 0) {                                             \
-+			dev_err_ratelimited(                               \
-+				dev, "sending command %#02x failed: %d\n", \
-+				cmd, ret);                                 \
-+			return ret;                                        \
-+		}                                                          \
- 	} while (0)
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 8638248d80d93..7918ab1a3f354 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -975,6 +975,19 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
+ 	if (err)
+ 		goto out;
  
- /**
++	/* Check for compressed frame. */
++	err = attr_is_frame_compressed(ni, attr, vcn >> NTFS_LZNT_CUNIT, &hint);
++	if (err)
++		goto out;
++
++	if (hint) {
++		/* if frame is compressed - don't touch it. */
++		*lcn = COMPRESSED_LCN;
++		*len = hint;
++		err = -EOPNOTSUPP;
++		goto out;
++	}
++
+ 	if (!*len) {
+ 		if (run_lookup_entry(run, vcn, lcn, len, NULL)) {
+ 			if (*lcn != SPARSE_LCN || !new)
 -- 
 2.43.0
 
