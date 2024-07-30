@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-64168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D103941CAD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:11:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3079C941A50
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06E86288B08
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:11:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6182A1C23505
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DED1A76D4;
-	Tue, 30 Jul 2024 17:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F5C189514;
+	Tue, 30 Jul 2024 16:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEOzdxu4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyFhFSaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0161A76C7;
-	Tue, 30 Jul 2024 17:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC1B183CD5;
+	Tue, 30 Jul 2024 16:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359216; cv=none; b=L1B4rxgDCkDSxErvp5Bfv47wheS2v96jcvLiCb4rq7wnGUiOnb1ZtQjN7fWO65/ejDHHOXsUyWrQggJOHlawqbDBSgjvDRLZ8dZDrN6h3xx9vUFJR7EFIRLeB9gU3I8UX64gKMcR8eH8wy6+3xqYlops2TEzbKDcSMil3IsqkD4=
+	t=1722357750; cv=none; b=QLnvsipmaaHFqZSbQnFkqADdpt97UDlUcpsfKsvC+saHEPJKpvN3qHaTKy7RUICh5jp0fX0NwWL5wpM0tGCMOKZbXpjffUA2n0ZpOQyXCsY4/ed9gh+GvQ1NhFOd8R72fOeVuhu0i0jn1PtP6i/QG6ttZHKSOU5lz8ywuvE0Y/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359216; c=relaxed/simple;
-	bh=sfhfkgnLAnYUd3KTJsjUifwrRv4iMigOB+G9ee5I+Mk=;
+	s=arc-20240116; t=1722357750; c=relaxed/simple;
+	bh=0hiLsT0tC9EoUu9m2toFTFbqYBzwRo8DiKtHRaiwWW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uejhv+zrWFGljLHu6CD8E7sMHxuSuUmF8NU6CqeiyRna25WGSjd9+Lw/gASNDIM2oINbowZuHvG7vj2IvcludnjKNnFOk86lVsDsL8MOoTEn4VOeewmrWJqRMq442CCoR7llVNyIfHZG9rq58im91sCnn/ZGlbnVfj38T8uXQbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEOzdxu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B618C32782;
-	Tue, 30 Jul 2024 17:06:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DVIr3gx3Cru5JBmNxluVHmXb8ypfK+3vmj2NV/zAoYGBKNPOYfNkMgXAFHzPRH1oC5/pNbCtZ91dE4xZzBkc1MBHER2B2bCw9z3OW5JOD1vcDYm3OpVusJoT9rtykS2xdzb8rDR9//7P7TeNRGiw+xdLl6QdKWBCgPzWwNT99Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyFhFSaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167E9C32782;
+	Tue, 30 Jul 2024 16:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359216;
-	bh=sfhfkgnLAnYUd3KTJsjUifwrRv4iMigOB+G9ee5I+Mk=;
+	s=korg; t=1722357750;
+	bh=0hiLsT0tC9EoUu9m2toFTFbqYBzwRo8DiKtHRaiwWW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gEOzdxu4KjXG2f1IAbdiVQ1mXEPHuc/Niv5gDQhQ2+xjsOlvl/RCc0tnjEQZomSOG
-	 ZrRYYGiKHtkwQR6lWXHTWVF7fvwLv39NCaNhpvG3x9NoEuR8FVXPZrlivA04b+azb4
-	 QJ6ToJZbXQlN7yOuEWe3QePnTismKWY6k3vztrcs=
+	b=GyFhFSaL7iiH3/ZEFbyz7HTbrOzFGSyyIK+Bk2eOy9f0UCIvrntLq+4GMZxfJM4DH
+	 oi0w22Y3b/mPGlxRRNgE9UUvvS5+kThir650yrE/5GePn7rwHrKEDVv5R8ET4lkow1
+	 SsFs/10l5KP11hpQfbvhm05c7S44UZ8SxymWznXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Lk Sii <lk_sii@163.com>
-Subject: [PATCH 6.6 449/568] kobject_uevent: Fix OOB access within zap_modalias_env()
+	Heiko Stuebner <heiko@sntech.de>,
+	Jianfeng Liu <liujianfeng1994@gmail.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.1 323/440] PCI: dw-rockchip: Fix initial PERST# GPIO value
 Date: Tue, 30 Jul 2024 17:49:16 +0200
-Message-ID: <20240730151657.559317771@linuxfoundation.org>
+Message-ID: <20240730151628.435038197@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit dd6e9894b451e7c85cceb8e9dc5432679a70e7dc upstream.
+commit 28b8d7793b8573563b3d45321376f36168d77b1e upstream.
 
-zap_modalias_env() wrongly calculates size of memory block to move, so
-will cause OOB memory access issue if variable MODALIAS is not the last
-one within its @env parameter, fixed by correcting size to memmove.
+PERST# is active low according to the PCIe specification.
 
-Fixes: 9b3fa47d4a76 ("kobject: fix suppressing modalias in uevents delivered over netlink")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Reviewed-by: Lk Sii <lk_sii@163.com>
-Link: https://lore.kernel.org/r/1717074877-11352-1-git-send-email-quic_zijuhu@quicinc.com
+However, the existing pcie-dw-rockchip.c driver does:
+
+  gpiod_set_value(..., 0); msleep(100); gpiod_set_value(..., 1);
+
+when asserting + deasserting PERST#.
+
+This is of course wrong, but because all the device trees for this
+compatible string have also incorrectly marked this GPIO as ACTIVE_HIGH:
+
+  $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3568*
+  $ git grep -B 10 reset-gpios arch/arm64/boot/dts/rockchip/rk3588*
+
+The actual toggling of PERST# is correct, and we cannot change it anyway,
+since that would break device tree compatibility.
+
+However, this driver does request the GPIO to be initialized as
+GPIOD_OUT_HIGH, which does cause a silly sequence where PERST# gets
+toggled back and forth for no good reason.
+
+Fix this by requesting the GPIO to be initialized as GPIOD_OUT_LOW (which
+for this driver means PERST# asserted).
+
+This will avoid an unnecessary signal change where PERST# gets deasserted
+(by devm_gpiod_get_optional()) and then gets asserted (by
+rockchip_pcie_start_link()) just a few instructions later.
+
+Before patch, debug prints on EP side, when booting RC:
+
+  [  845.606810] pci: PERST# asserted by host!
+  [  852.483985] pci: PERST# de-asserted by host!
+  [  852.503041] pci: PERST# asserted by host!
+  [  852.610318] pci: PERST# de-asserted by host!
+
+After patch, debug prints on EP side, when booting RC:
+
+  [  125.107921] pci: PERST# asserted by host!
+  [  132.111429] pci: PERST# de-asserted by host!
+
+This extra, very short, PERST# assertion + deassertion has been reported to
+cause issues with certain WLAN controllers, e.g. RTL8822CE.
+
+Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+Link: https://lore.kernel.org/linux-pci/20240417164227.398901-1-cassel@kernel.org
+Tested-by: Heiko Stuebner <heiko@sntech.de>
+Tested-by: Jianfeng Liu <liujianfeng1994@gmail.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org	# v5.15+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/kobject_uevent.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/lib/kobject_uevent.c
-+++ b/lib/kobject_uevent.c
-@@ -432,8 +432,23 @@ static void zap_modalias_env(struct kobj
- 		len = strlen(env->envp[i]) + 1;
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -240,7 +240,7 @@ static int rockchip_pcie_resource_get(st
+ 		return PTR_ERR(rockchip->apb_base);
  
- 		if (i != env->envp_idx - 1) {
-+			/* @env->envp[] contains pointers to @env->buf[]
-+			 * with @env->buflen chars, and we are removing
-+			 * variable MODALIAS here pointed by @env->envp[i]
-+			 * with length @len as shown below:
-+			 *
-+			 * 0               @env->buf[]      @env->buflen
-+			 * ---------------------------------------------
-+			 * ^             ^              ^              ^
-+			 * |             |->   @len   <-| target block |
-+			 * @env->envp[0] @env->envp[i]  @env->envp[i + 1]
-+			 *
-+			 * so the "target block" indicated above is moved
-+			 * backward by @len, and its right size is
-+			 * @env->buflen - (@env->envp[i + 1] - @env->envp[0]).
-+			 */
- 			memmove(env->envp[i], env->envp[i + 1],
--				env->buflen - len);
-+				env->buflen - (env->envp[i + 1] - env->envp[0]));
+ 	rockchip->rst_gpio = devm_gpiod_get_optional(&pdev->dev, "reset",
+-						     GPIOD_OUT_HIGH);
++						     GPIOD_OUT_LOW);
+ 	if (IS_ERR(rockchip->rst_gpio))
+ 		return PTR_ERR(rockchip->rst_gpio);
  
- 			for (j = i; j < env->envp_idx - 1; j++)
- 				env->envp[j] = env->envp[j + 1] - len;
 
 
 
