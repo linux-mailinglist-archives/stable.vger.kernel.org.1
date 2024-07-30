@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-64292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC64A941D2E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E339419F0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97C171F213BF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D98A21C239BC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B181A76A4;
-	Tue, 30 Jul 2024 17:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED53618455C;
+	Tue, 30 Jul 2024 16:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mp0tK6zK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yww149be"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E91C1A76A0;
-	Tue, 30 Jul 2024 17:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD341A6169;
+	Tue, 30 Jul 2024 16:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359638; cv=none; b=MXCOlaouG0dYXOu0BQ4MGo+kuAlwSL85sXyx01SuKurFafBWHWvQqx7115uUiVHwLIN1KrGANxW4ENUk/ppcByHhrFJQDdryrziZNKMOEPVct0EYPjPa66QjrR/XoI36jaPcJStoe6ZT937HgIor1sLuQOBB5xEgdw/TrirRNT0=
+	t=1722357482; cv=none; b=lOgV+1sclybPxyK+sb+mhPGcsb2iSkv0YmBHlUb4UB/ckI58GxTkqDNhl9WfUXndKghhHT5ipPaa28/Oabz5w1SWsSSGSno3EDZ7cNOL4PC1P6Jynw0RUO+8LvY7/64QCaZPuo9OkOGL1arJ8sIsefst2HMIadu1Nrw6uCcgawk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359638; c=relaxed/simple;
-	bh=nM7r5b+qaJfPiqYGOJ9hlhJGMUxSUnjASup3w7P7cUQ=;
+	s=arc-20240116; t=1722357482; c=relaxed/simple;
+	bh=IoJlfuoCV+dctK33VXgRhCJ+rZ/U8cVKWw/JPIc+8Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKDvMy77egLt0jLz2nQmsRzOfvhgYRDiRa4bGScivbaO3CFwagdBa5iTEBqZK6Kec1Qgy2mPKVFyOscJ58SDlvBl+SdNMMXz4+J9z6+7WMH2S8a4xiZ23s3QfWwEsXtFM9r6Si2A5BJs+UDNolv9w2lo/pUejJsfErJsVLZgivE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mp0tK6zK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C10C32782;
-	Tue, 30 Jul 2024 17:13:57 +0000 (UTC)
+	 MIME-Version; b=mwIx7ymzEzUKftztFGSbIQZyyz5/Zkw29Hl42h3eCMeAAGOYABqmlq1uxuyWFdW3bAsbFHODzZv/xBi8u1Agv7c9QfYNn394gppQTCrmXiW/1wUY79hJhs/klcmfz1y53LyW3/GFw2ykAiBcZncpivIJCNCRNwjxxLfyDDxqa/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yww149be; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2BCC4AF0C;
+	Tue, 30 Jul 2024 16:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359638;
-	bh=nM7r5b+qaJfPiqYGOJ9hlhJGMUxSUnjASup3w7P7cUQ=;
+	s=korg; t=1722357482;
+	bh=IoJlfuoCV+dctK33VXgRhCJ+rZ/U8cVKWw/JPIc+8Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mp0tK6zKRK39UnRmTwzNQX+72BOCgNLT322iOGueYlldjeWKp2xJefyvMXLh3jTyc
-	 hDxsfN/3pL0unTPbTKkOo7fdQKwKxsyITdMF364Ep8AR+YRHYxZSRUpguy2qlbAJDC
-	 uLBOkVRWcT1f7GC+g7dgnZEEDVzhLs6r3x9VmVlI=
+	b=Yww149beuF6IhyNaPLS5MVmE+uZbuwsNrmxsDWIrDv//uoWTKrqJOM/Uaa93MeJbS
+	 gWGWbs48Ij1CAGRRpxELgO3JaiODB5c/zDCbusCmFC9pf1ONJUQtPfzBJF8ZWA/EqQ
+	 25uGg3zm3HLI6h8hoVa8/MjhY8PvD4bqKdigd4FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	James Clark <james.clark@arm.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 489/809] fs/ntfs3: Add missing .dirty_folio in address_space_operations
-Date: Tue, 30 Jul 2024 17:46:05 +0200
-Message-ID: <20240730151744.052829982@linuxfoundation.org>
+Subject: [PATCH 6.6 259/568] coresight: Fix ref leak when of_coresight_parse_endpoint() fails
+Date: Tue, 30 Jul 2024 17:46:06 +0200
+Message-ID: <20240730151650.000664672@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit 0f9579d9e0331b6255132ac06bdf2c0a01cceb90 ]
+[ Upstream commit 7fcb9cb2fe47294e16067c3cfd25332c8662a115 ]
 
-After switching from pages to folio [1], it became evident that
-the initialization of .dirty_folio for page cache operations was missed for
-compressed files.
+of_graph_get_next_endpoint() releases the reference to the previous
+endpoint on each iteration, but when parsing fails the loop exits
+early meaning the last reference is never dropped.
 
-[1] https://lore.kernel.org/ntfs3/20240422193203.3534108-1-willy@infradead.org
+Fix it by dropping the refcount in the exit condition.
 
-Fixes: 82cae269cfa95 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: d375b356e687 ("coresight: Fix support for sparsely populated ports")
+Signed-off-by: James Clark <james.clark@arm.com>
+Reported-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20240529133626.90080-1-james.clark@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwtracing/coresight/coresight-platform.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 8521238f5448e..bef3b4a36b750 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -2133,5 +2133,6 @@ const struct address_space_operations ntfs_aops = {
- const struct address_space_operations ntfs_aops_cmpr = {
- 	.read_folio	= ntfs_read_folio,
- 	.readahead	= ntfs_readahead,
-+	.dirty_folio	= block_dirty_folio,
- };
- // clang-format on
+diff --git a/drivers/hwtracing/coresight/coresight-platform.c b/drivers/hwtracing/coresight/coresight-platform.c
+index 9d550f5697fa8..57a009552cc5c 100644
+--- a/drivers/hwtracing/coresight/coresight-platform.c
++++ b/drivers/hwtracing/coresight/coresight-platform.c
+@@ -297,8 +297,10 @@ static int of_get_coresight_platform_data(struct device *dev,
+ 			continue;
+ 
+ 		ret = of_coresight_parse_endpoint(dev, ep, pdata);
+-		if (ret)
++		if (ret) {
++			of_node_put(ep);
+ 			return ret;
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
