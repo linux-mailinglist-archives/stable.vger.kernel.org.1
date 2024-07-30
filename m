@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECBD941E84
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2CDD941B52
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 599EA1F2504A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:29:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42D11C2292B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDD11A76D4;
-	Tue, 30 Jul 2024 17:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E024E189BB6;
+	Tue, 30 Jul 2024 16:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQTopR7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ya6i6OJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4656E1A76CB;
-	Tue, 30 Jul 2024 17:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E92F189B97;
+	Tue, 30 Jul 2024 16:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360589; cv=none; b=IGOfc/GmAvx/1C6IUU4oGH6v8Tgm2N5Uvnw+2y3h1GFY9X77SvrTjc9T5A5z58kKzgKVMp8miAEBLDxCihxesZoKvbxV22FJHFtqRCL3pgFi8yYjf5LUSiIY3QZDm/oFVncQNdSkoNRKxBMlFH/rY5BPfpuTt8C5JZvrFT4vBf8=
+	t=1722358410; cv=none; b=BQUCHsKhekPxojXmIJvssBjq32nsBLY6NV/XQf7vr67z+E2PC3USu9e9E8oAe04Boo+unSU+++iI6nRTWAGABp9+UBfA7RKMAjpnsTd/8UcCxLm3wKTpAYcxsGrnuXaKipK6YWm9s+JrN5EMtl9wXI9h4sH0f2JoewyvvxJfx2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360589; c=relaxed/simple;
-	bh=tE7cJSEL+QIgK+FA4Gi5e4gqQJSU1Th2sWM37YU0sJc=;
+	s=arc-20240116; t=1722358410; c=relaxed/simple;
+	bh=9svdMGnd8TAHLZpLpi3tWTHFZvsg8qNjfCpnjvAyILQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaiE4MRiTczGtwtRlLWKhn9ZK56rSVKJWVh0XXr2GumGf6HJeGE/ep3sNgtXUi+Xpu95NcAiI5tRe0qP0xyt3KN+DnlXlg1BbqRF8K9dMwgQUmdQF51QOTVMgbetqznQ0jWZMftVdPIz12IUHMMgNXw57JYsf+U1d7MqrPZH+xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQTopR7N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8259C4AF0E;
-	Tue, 30 Jul 2024 17:29:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eKwoZ7HzFuKZqe/arfA2Dnc3D0BMkYejsB565W0Ghz67tSj3uHuNGMhq055YTlrpSfyGob3aNjqczpwCHSbwrhURWHGjEpW8KSYBVBsnoPV74juh94qkV8Ld5pCBJuWOay02lu2ZXpsKCQOMFgPjfWSf/eZg5ziHdqvR4kicm5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ya6i6OJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F956C32782;
+	Tue, 30 Jul 2024 16:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360589;
-	bh=tE7cJSEL+QIgK+FA4Gi5e4gqQJSU1Th2sWM37YU0sJc=;
+	s=korg; t=1722358410;
+	bh=9svdMGnd8TAHLZpLpi3tWTHFZvsg8qNjfCpnjvAyILQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQTopR7NYaQutf27oByoGHxyr8kxIl1WtX7iH4dYPLCZ/nj2ebwxXwIkw9oaWaR0m
-	 WhjIjNLkP60JnCkKeI3aVr+ydI/vpcMvgP7bfTys9SZKv/eJAnzqds6oWSs1rb+FqV
-	 iXqbR5lmwo8X3WWiIf4HepNBTEl3FXWiYwxr6aao=
+	b=Ya6i6OJO/3XVtVrW8UokPSrUCBG3OUZKZuavzte73cHVnjYomMdkDjpJD0HDZaRsp
+	 90Rcg4ugMocJ4EIs7V2HdWoxtEqAe28gGQvk83nSCBYJwcp0IMFmvgIYDA4NsgjSTV
+	 Dc2RnamcIf2wfLgvNA91fCcswHGn1A4tQj3Hg/b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 745/809] um: time-travel: fix time-travel-start option
+	Keith Busch <kbusch@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.1 388/440] PCI/DPC: Fix use-after-free on concurrent DPC and hot-removal
 Date: Tue, 30 Jul 2024 17:50:21 +0200
-Message-ID: <20240730151754.381069312@linuxfoundation.org>
+Message-ID: <20240730151630.959056730@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 7d0a8a490aa3a2a82de8826aaf1dfa38575cb77a ]
+commit 11a1f4bc47362700fcbde717292158873fb847ed upstream.
 
-We need to have the = as part of the option so that the
-value can be parsed properly. Also document that it must
-be given in nanoseconds, not seconds.
+Keith reports a use-after-free when a DPC event occurs concurrently to
+hot-removal of the same portion of the hierarchy:
 
-Fixes: 065038706f77 ("um: Support time travel mode")
-Link: https://patch.msgid.link/20240417102744.14b9a9d4eba0.Ib22e9136513126b2099d932650f55f193120cd97@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The dpc_handler() awaits readiness of the secondary bus below the
+Downstream Port where the DPC event occurred.  To do so, it polls the
+config space of the first child device on the secondary bus.  If that
+child device is concurrently removed, accesses to its struct pci_dev
+cause the kernel to oops.
+
+That's because pci_bridge_wait_for_secondary_bus() neglects to hold a
+reference on the child device.  Before v6.3, the function was only
+called on resume from system sleep or on runtime resume.  Holding a
+reference wasn't necessary back then because the pciehp IRQ thread
+could never run concurrently.  (On resume from system sleep, IRQs are
+not enabled until after the resume_noirq phase.  And runtime resume is
+always awaited before a PCI device is removed.)
+
+However starting with v6.3, pci_bridge_wait_for_secondary_bus() is also
+called on a DPC event.  Commit 53b54ad074de ("PCI/DPC: Await readiness
+of secondary bus after reset"), which introduced that, failed to
+appreciate that pci_bridge_wait_for_secondary_bus() now needs to hold a
+reference on the child device because dpc_handler() and pciehp may
+indeed run concurrently.  The commit was backported to v5.10+ stable
+kernels, so that's the oldest one affected.
+
+Add the missing reference acquisition.
+
+Abridged stack trace:
+
+  BUG: unable to handle page fault for address: 00000000091400c0
+  CPU: 15 PID: 2464 Comm: irq/53-pcie-dpc 6.9.0
+  RIP: pci_bus_read_config_dword+0x17/0x50
+  pci_dev_wait()
+  pci_bridge_wait_for_secondary_bus()
+  dpc_reset_link()
+  pcie_do_recovery()
+  dpc_handler()
+
+Fixes: 53b54ad074de ("PCI/DPC: Await readiness of secondary bus after reset")
+Closes: https://lore.kernel.org/r/20240612181625.3604512-3-kbusch@meta.com/
+Link: https://lore.kernel.org/linux-pci/8e4bcd4116fd94f592f2bf2749f168099c480ddf.1718707743.git.lukas@wunner.de
+Reported-by: Keith Busch <kbusch@kernel.org>
+Tested-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/kernel/time.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/pci.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
-index a8bfe8be15260..5b5fd8f68d9c1 100644
---- a/arch/um/kernel/time.c
-+++ b/arch/um/kernel/time.c
-@@ -875,9 +875,9 @@ static int setup_time_travel_start(char *str)
- 	return 1;
- }
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5007,7 +5007,7 @@ static int pci_bus_max_d3cold_delay(cons
+ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type,
+ 				      int timeout)
+ {
+-	struct pci_dev *child;
++	struct pci_dev *child __free(pci_dev_put) = NULL;
+ 	int delay;
  
--__setup("time-travel-start", setup_time_travel_start);
-+__setup("time-travel-start=", setup_time_travel_start);
- __uml_help(setup_time_travel_start,
--"time-travel-start=<seconds>\n"
-+"time-travel-start=<nanoseconds>\n"
- "Configure the UML instance's wall clock to start at this value rather than\n"
- "the host's wall clock at the time of UML boot.\n");
- #endif
--- 
-2.43.0
-
+ 	if (pci_dev_is_disconnected(dev))
+@@ -5036,8 +5036,8 @@ int pci_bridge_wait_for_secondary_bus(st
+ 		return 0;
+ 	}
+ 
+-	child = list_first_entry(&dev->subordinate->devices, struct pci_dev,
+-				 bus_list);
++	child = pci_dev_get(list_first_entry(&dev->subordinate->devices,
++					     struct pci_dev, bus_list));
+ 	up_read(&pci_bus_sem);
+ 
+ 	/*
 
 
 
