@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2363941D33
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65700941E62
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:28:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C2621F24DA5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C81F285F7E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FCB1A76B5;
-	Tue, 30 Jul 2024 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634C91A76C5;
+	Tue, 30 Jul 2024 17:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Od1+MKag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07bkOfw5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F4E1A76A0;
-	Tue, 30 Jul 2024 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2801A76B6;
+	Tue, 30 Jul 2024 17:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359654; cv=none; b=bEzp2y2MYdDwnq81BGZU5blQCKiiUIR31uMS4MkrTEMijEu6FNVJCFLb0Ua1lqrE8yNc0GEI6nj8DO3S5IQb+y0FkkkIJ4fqXnULZlttSDT63brfO9G1IAKTk8v8h+RwzwgTJ/6VKmeV+9gz/bd7yuLxVR3jFxqTeD3UavfvjpY=
+	t=1722360499; cv=none; b=i6byQFys7RHGRlxTTuamVqbDegEx9rw6oYgOFB6gi3vs1nqg2HGysG3kiWDLkfu+QRoKUnx4he+pco8FkW+cyWYSgTkNTckyXL//M2SUaWm6ZU08BIh49icmN0tn32z4UDzHQOvcQl3NXW2Q4U/2lHr+RRGWONNCNHENHc68zXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359654; c=relaxed/simple;
-	bh=aNRPv5pZJNi4HQUjGFbqNuf9bWCSECvC82yf9XLlmvI=;
+	s=arc-20240116; t=1722360499; c=relaxed/simple;
+	bh=dw+3KkI9Wu+W+6XsKHVYS7wJiDSQox87yzu8V+BQKZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYCD0z4VFLZCDDwe4CUnBW182wrxqQkfWzBp4w9ndgkYG4baOZsaLIvi0fj9QRtg8zxEJaKX1r0O/Onk7WjEubnHCD09fA2hMz0VJzF7XCiUOuNNHEzBGuZR2/viHt4hqwsvD9TD8uwDRRTrQ23GugZ0IC3KP+wj3aZp7JRvsDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Od1+MKag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24466C32782;
-	Tue, 30 Jul 2024 17:14:13 +0000 (UTC)
+	 MIME-Version; b=MQgXuFqDjEK5giIdevaQky2XqpjUdxRNiNafDL7tnf6GpiR9PJJtRKVziB6cAdlpGr69dcuwh1KBMlv1TZf8VTUbROdmAHtc4+FE+5UF/4tqCtRqe6JpRkGo1unOXSTedfDKjUh/OfjHXSdblLeQSjfb15AH+t9f3zD8ULkEFSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07bkOfw5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C3EC4AF0A;
+	Tue, 30 Jul 2024 17:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359654;
-	bh=aNRPv5pZJNi4HQUjGFbqNuf9bWCSECvC82yf9XLlmvI=;
+	s=korg; t=1722360499;
+	bh=dw+3KkI9Wu+W+6XsKHVYS7wJiDSQox87yzu8V+BQKZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Od1+MKags5Ls94MkjOTMI0FttPIJN59a/of+JehRX2TqlRvVvoT0dzoG3Qs+oWN7J
-	 zEvLRSTuw3dYoQuyPcji1vsoDDq4AQdbl6uV7vdqz//bo+wBDmHTMbNtCRk/qaju2B
-	 ZJQ9S2K6kkwpStxW4hfjXCVmDbyj3/SreCLDtNnY=
+	b=07bkOfw5VRb52kI/fUZow96eB5RrFtWHhmUBSwRfxhsBcS3O0yEwaA8mSo+NAAcAJ
+	 +8qI32DCNy2+sJvhCJkzuGdzsUFvfBQMlaAskwXz5ofRLZRqCbiXAv7TfafYYWmuQk
+	 +1dvrhAbrdFq/bupKYn0ekqC6sr7HxR8Aox0QetY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.6 486/568] RDMA/iwcm: Fix a use-after-free related to destroying CM IDs
+	Matthias Kaehlcke <mka@chromium.org>,
+	Kees Cook <keescook@chromium.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.10 717/809] dm-verity: fix dm_is_verity_target() when dm-verity is builtin
 Date: Tue, 30 Jul 2024 17:49:53 +0200
-Message-ID: <20240730151659.023535353@linuxfoundation.org>
+Message-ID: <20240730151753.258753866@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit aee2424246f9f1dadc33faa78990c1e2eb7826e4 upstream.
+commit 3708c7269593b836b1d684214cd9f5d83e4ed3fd upstream.
 
-iw_conn_req_handler() associates a new struct rdma_id_private (conn_id) with
-an existing struct iw_cm_id (cm_id) as follows:
+When CONFIG_DM_VERITY=y, dm_is_verity_target() returned true for any
+builtin dm target, not just dm-verity.  Fix this by checking for
+verity_target instead of THIS_MODULE (which is NULL for builtin code).
 
-        conn_id->cm_id.iw = cm_id;
-        cm_id->context = conn_id;
-        cm_id->cm_handler = cma_iw_handler;
-
-rdma_destroy_id() frees both the cm_id and the struct rdma_id_private. Make
-sure that cm_work_handler() does not trigger a use-after-free by only
-freeing of the struct rdma_id_private after all pending work has finished.
-
+Fixes: b6c1c5745ccc ("dm: Add verity helpers for LoadPin")
 Cc: stable@vger.kernel.org
-Fixes: 59c68ac31e15 ("iw_cm: free cm_id resources on the last deref")
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240605145117.397751-6-bvanassche@acm.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/iwcm.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/md/dm-verity-target.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/infiniband/core/iwcm.c
-+++ b/drivers/infiniband/core/iwcm.c
-@@ -369,8 +369,10 @@ EXPORT_SYMBOL(iw_cm_disconnect);
-  *
-  * Clean up all resources associated with the connection and release
-  * the initial reference taken by iw_create_cm_id.
-+ *
-+ * Returns true if and only if the last cm_id_priv reference has been dropped.
-  */
--static void destroy_cm_id(struct iw_cm_id *cm_id)
-+static bool destroy_cm_id(struct iw_cm_id *cm_id)
- {
- 	struct iwcm_id_private *cm_id_priv;
- 	struct ib_qp *qp;
-@@ -440,7 +442,7 @@ static void destroy_cm_id(struct iw_cm_i
- 		iwpm_remove_mapping(&cm_id->local_addr, RDMA_NL_IWCM);
- 	}
- 
--	(void)iwcm_deref_id(cm_id_priv);
-+	return iwcm_deref_id(cm_id_priv);
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -1539,14 +1539,6 @@ bad:
  }
  
  /*
-@@ -451,7 +453,8 @@ static void destroy_cm_id(struct iw_cm_i
-  */
- void iw_destroy_cm_id(struct iw_cm_id *cm_id)
- {
--	destroy_cm_id(cm_id);
-+	if (!destroy_cm_id(cm_id))
-+		flush_workqueue(iwcm_wq);
- }
- EXPORT_SYMBOL(iw_destroy_cm_id);
+- * Check whether a DM target is a verity target.
+- */
+-bool dm_is_verity_target(struct dm_target *ti)
+-{
+-	return ti->type->module == THIS_MODULE;
+-}
+-
+-/*
+  * Get the verity mode (error behavior) of a verity target.
+  *
+  * Returns the verity mode of the target, or -EINVAL if 'ti' is not a verity
+@@ -1599,6 +1591,14 @@ static struct target_type verity_target
+ };
+ module_dm(verity);
  
-@@ -1035,7 +1038,7 @@ static void cm_work_handler(struct work_
- 		if (!test_bit(IWCM_F_DROP_EVENTS, &cm_id_priv->flags)) {
- 			ret = process_event(cm_id_priv, &levent);
- 			if (ret)
--				destroy_cm_id(&cm_id_priv->id);
-+				WARN_ON_ONCE(destroy_cm_id(&cm_id_priv->id));
- 		} else
- 			pr_debug("dropping event %d\n", levent.event);
- 		if (iwcm_deref_id(cm_id_priv))
++/*
++ * Check whether a DM target is a verity target.
++ */
++bool dm_is_verity_target(struct dm_target *ti)
++{
++	return ti->type == &verity_target;
++}
++
+ MODULE_AUTHOR("Mikulas Patocka <mpatocka@redhat.com>");
+ MODULE_AUTHOR("Mandeep Baines <msb@chromium.org>");
+ MODULE_AUTHOR("Will Drewry <wad@chromium.org>");
 
 
 
