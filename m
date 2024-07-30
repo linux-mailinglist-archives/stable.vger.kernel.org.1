@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48EA9418F8
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:27:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8419418FB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0580285586
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:27:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 785E31F24554
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951D01A6196;
-	Tue, 30 Jul 2024 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AA21A616E;
+	Tue, 30 Jul 2024 16:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/fh0cIP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5oICvqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520611A6161;
-	Tue, 30 Jul 2024 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9206F1A6160;
+	Tue, 30 Jul 2024 16:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356846; cv=none; b=Bhrl0yz3fkNiAqShMK8OTQAyrthFsdMSW9pnY6U7p9RvMRpW08dbqrDuwVGnngLXpBCkT9k33up8/oe0nzrdDbbHTe8lCHcRyGAO1d61/RTa/ba0i8lQ1bNl26i8AbvvRSm27Pawu3ZYtW9NL2jyJ4xzOzQfXlexvJwodcG7jxg=
+	t=1722356855; cv=none; b=svsbgbOJD6pOS0L0V3al1+DHxOdLt9kbSfmYFj04PybLIuSZbsicS8iUHjVGSMUOcOGsMCfqoECuAHKv9KWbaQ7yzke5CwyatxpKmRgKIM8895V7b7H+DXpum0IIBnlakXoDyqh0CJ/I+ao61pkRO9J0NHXVA+LA9eqHg/QyXzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356846; c=relaxed/simple;
-	bh=U9oTC/x7NECOK+f7R7+mEaT4Kx0SBTKfPpjyRzChTXo=;
+	s=arc-20240116; t=1722356855; c=relaxed/simple;
+	bh=P8ZRTOFI3+Kk85WSQutSC5fCjMuAEiOdvaWIAUpz4+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwAbhWZuyr1QiJ0zsh6Z2feZ4Gun9uxjl3LepZfQpJl9LK6YAB3JPoUykbnQtyfRHBrWuD/k7d+Eu+/3FH15bFd5S0Y0sTMDEdGGTS/Y/Jj5kccp0W1kXZUFLpX15wdO4MF2ZBz46tDjfY1HgUBnbMo19YT4wdAAlZgiDylF4NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/fh0cIP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FB6C32782;
-	Tue, 30 Jul 2024 16:27:25 +0000 (UTC)
+	 MIME-Version; b=OzV4oZboQrQJNp2BOEX6OcphGorSNL/cUB4ok7u1HPL+BT/44EqPkzI7FiWX5W2MqMlcyGnTr6xFI3ctKjRIpxCcvyXsvemE7t6+atv12yB/qaCFqgVmfu0ZSSNRaW8ylTFSlzMAmfDORIENI8RGueEXAnQSRw3sH2qNhq+Ft+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5oICvqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1816FC32782;
+	Tue, 30 Jul 2024 16:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356846;
-	bh=U9oTC/x7NECOK+f7R7+mEaT4Kx0SBTKfPpjyRzChTXo=;
+	s=korg; t=1722356855;
+	bh=P8ZRTOFI3+Kk85WSQutSC5fCjMuAEiOdvaWIAUpz4+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/fh0cIPYjK+TON2jhk2wUfUydBEXaNOzbTF4yfdK+OEh4H1j93gE1vyojx33loiP
-	 PrMHUTW33bS4TUwVusL53CyvK4EDKC2JpmxqxAImQIXVALfFxEqHK3hFJySHsx1R7+
-	 sft/psfyaxuZ995zH9OEnbBfFcGnTxE0mnezRGug=
+	b=x5oICvqShzS45WICv83+6FiV3yVPxov0nSeS3THV9nHc1RhdS8gGi3MxsVSi7usW+
+	 mPlzAGfxUpEBVOaZJI1xXtdq31Jea9+/vMxS5FoTIJ5F8Rr+m1ewzTyeyXDmYEjEC7
+	 ilLvFlMganYmuve0sep2PgGfhGCcD3mMBb9Fgamo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Guillaume Nault <gnault@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 234/440] ipv4: Fix incorrect TOS in route get reply
-Date: Tue, 30 Jul 2024 17:47:47 +0200
-Message-ID: <20240730151624.997085306@linuxfoundation.org>
+Subject: [PATCH 6.1 235/440] ipv4: Fix incorrect TOS in fibmatch route get reply
+Date: Tue, 30 Jul 2024 17:47:48 +0200
+Message-ID: <20240730151625.034250670@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -70,7 +70,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 338bb57e4c2a1c2c6fc92f9c0bd35be7587adca7 ]
+[ Upstream commit f036e68212c11e5a7edbb59b5e25299341829485 ]
 
 The TOS value that is returned to user space in the route get reply is
 the one with which the lookup was performed ('fl4->flowi4_tos'). This is
@@ -84,104 +84,117 @@ non-zero TOS:
 
  # ip link add name dummy1 up type dummy
  # ip address add 192.0.2.1/24 dev dummy1
- # ip route get 192.0.2.2 tos 0xfc
- 192.0.2.2 tos 0x1c dev dummy1 src 192.0.2.1 uid 0
-     cache
+ # ip route get fibmatch 192.0.2.2 tos 0xfc
+ 192.0.2.0/24 tos 0x1c dev dummy1 proto kernel scope link src 192.0.2.1
 
-Fix by adding a DSCP field to the FIB result structure (inside an
-existing 4 bytes hole), populating it in the route lookup and using it
-when filling the route get reply.
+Fix by instead returning the DSCP field from the FIB result structure
+which was populated during the route lookup.
 
 Output after the patch:
 
  # ip link add name dummy1 up type dummy
  # ip address add 192.0.2.1/24 dev dummy1
- # ip route get 192.0.2.2 tos 0xfc
- 192.0.2.2 dev dummy1 src 192.0.2.1 uid 0
-     cache
+ # ip route get fibmatch 192.0.2.2 tos 0xfc
+ 192.0.2.0/24 dev dummy1 proto kernel scope link src 192.0.2.1
 
-Fixes: 1a00fee4ffb2 ("ipv4: Remove rt_key_{src,dst,tos} from struct rtable.")
+Extend the existing selftests to not only verify that the correct route
+is returned, but that it is also returned with correct "tos" value (or
+without it).
+
+Fixes: b61798130f1b ("net: ipv4: RTM_GETROUTE: return matched fib result when requested")
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
 Reviewed-by: Guillaume Nault <gnault@redhat.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_fib.h |  1 +
- net/ipv4/fib_trie.c  |  1 +
- net/ipv4/route.c     | 14 +++++++-------
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ net/ipv4/route.c                         |  2 +-
+ tools/testing/selftests/net/fib_tests.sh | 24 ++++++++++++------------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
-index 15de07d365405..ca1700c2a5733 100644
---- a/include/net/ip_fib.h
-+++ b/include/net/ip_fib.h
-@@ -173,6 +173,7 @@ struct fib_result {
- 	unsigned char		type;
- 	unsigned char		scope;
- 	u32			tclassid;
-+	dscp_t			dscp;
- 	struct fib_nh_common	*nhc;
- 	struct fib_info		*fi;
- 	struct fib_table	*table;
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 9bdfdab906fe0..77b97c48da5ea 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1628,6 +1628,7 @@ int fib_table_lookup(struct fib_table *tb, const struct flowi4 *flp,
- 			res->nhc = nhc;
- 			res->type = fa->fa_type;
- 			res->scope = fi->fib_scope;
-+			res->dscp = fa->fa_dscp;
- 			res->fi = fi;
- 			res->table = tb;
- 			res->fa_head = &n->leaf;
 diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index fcbacd39febe0..01b98590591db 100644
+index 01b98590591db..da193840fc007 100644
 --- a/net/ipv4/route.c
 +++ b/net/ipv4/route.c
-@@ -2934,9 +2934,9 @@ EXPORT_SYMBOL_GPL(ip_route_output_tunnel);
+@@ -3398,7 +3398,7 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 		fri.tb_id = table_id;
+ 		fri.dst = res.prefix;
+ 		fri.dst_len = res.prefixlen;
+-		fri.dscp = inet_dsfield_to_dscp(fl4.flowi4_tos);
++		fri.dscp = res.dscp;
+ 		fri.type = rt->rt_type;
+ 		fri.offload = 0;
+ 		fri.trap = 0;
+diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
+index e5db2a2a67df9..26f30c6fa0f29 100755
+--- a/tools/testing/selftests/net/fib_tests.sh
++++ b/tools/testing/selftests/net/fib_tests.sh
+@@ -1485,53 +1485,53 @@ ipv4_rt_dsfield()
  
- /* called with rcu_read_lock held */
- static int rt_fill_info(struct net *net, __be32 dst, __be32 src,
--			struct rtable *rt, u32 table_id, struct flowi4 *fl4,
--			struct sk_buff *skb, u32 portid, u32 seq,
--			unsigned int flags)
-+			struct rtable *rt, u32 table_id, dscp_t dscp,
-+			struct flowi4 *fl4, struct sk_buff *skb, u32 portid,
-+			u32 seq, unsigned int flags)
- {
- 	struct rtmsg *r;
- 	struct nlmsghdr *nlh;
-@@ -2952,7 +2952,7 @@ static int rt_fill_info(struct net *net, __be32 dst, __be32 src,
- 	r->rtm_family	 = AF_INET;
- 	r->rtm_dst_len	= 32;
- 	r->rtm_src_len	= 0;
--	r->rtm_tos	= fl4 ? fl4->flowi4_tos : 0;
-+	r->rtm_tos	= inet_dscp_to_dsfield(dscp);
- 	r->rtm_table	= table_id < 256 ? table_id : RT_TABLE_COMPAT;
- 	if (nla_put_u32(skb, RTA_TABLE, table_id))
- 		goto nla_put_failure;
-@@ -3102,7 +3102,7 @@ static int fnhe_dump_bucket(struct net *net, struct sk_buff *skb,
- 				goto next;
+ 	# DSCP 0x10 should match the specific route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x10 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:Not-ECT"
  
- 			err = rt_fill_info(net, fnhe->fnhe_daddr, 0, rt,
--					   table_id, NULL, skb,
-+					   table_id, 0, NULL, skb,
- 					   NETLINK_CB(cb->skb).portid,
- 					   cb->nlh->nlmsg_seq, flags);
- 			if (err)
-@@ -3425,8 +3425,8 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 		err = fib_dump_info(skb, NETLINK_CB(in_skb).portid,
- 				    nlh->nlmsg_seq, RTM_NEWROUTE, &fri, 0);
- 	} else {
--		err = rt_fill_info(net, dst, src, rt, table_id, &fl4, skb,
--				   NETLINK_CB(in_skb).portid,
-+		err = rt_fill_info(net, dst, src, rt, table_id, res.dscp, &fl4,
-+				   skb, NETLINK_CB(in_skb).portid,
- 				   nlh->nlmsg_seq, 0);
- 	}
- 	if (err < 0)
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x11 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:ECT(1)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x12 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:ECT(0)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x13 | \
+-		grep -q "via 172.16.103.2"
++		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
+ 	log_test $? 0 "IPv4 route with DSCP and ECN:CE"
+ 
+ 	# Unknown DSCP should match the generic route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x14 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:Not-ECT"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x15 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:ECT(1)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x16 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:ECT(0)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x17 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:CE"
+ 
+ 	# Null DSCP should match the generic route, no matter the ECN bits
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x00 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:Not-ECT"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x01 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:ECT(1)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x02 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:ECT(0)"
+ 
+ 	$IP route get fibmatch 172.16.102.1 dsfield 0x03 | \
+-		grep -q "via 172.16.101.2"
++		grep -q "172.16.102.0/24 via 172.16.101.2"
+ 	log_test $? 0 "IPv4 route with no DSCP and ECN:CE"
+ }
+ 
 -- 
 2.43.0
 
