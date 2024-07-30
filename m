@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-64564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C840941E70
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9FE941AA0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9AAD286685
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AB33282122
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757A61A76CB;
-	Tue, 30 Jul 2024 17:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A13154C0C;
+	Tue, 30 Jul 2024 16:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBaZEm6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8NstoJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342B11A76BF;
-	Tue, 30 Jul 2024 17:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27611A6166;
+	Tue, 30 Jul 2024 16:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360537; cv=none; b=Xsdp8m9uEhet0J/FC9Or8EYmYDwEz4Zb/X1yQRDHbF5/wJuq2cktOCwleaI8Chpylqfj8F2EK/s0Z0SzexAtP3XrrRoSqojk2lEDH6HUC0gQ6PFQBJ9GMuTCun14kdfv8qpIewe5P7gD8fGPUb99R07LMty+vrYM/wWzPKx+21c=
+	t=1722357950; cv=none; b=r8Nt/aMKTYxIUoQ6upjRn3ojuJJXMv9Yl7vFvYrDggrcfJRQM7OxhjzNdisz6wEHbBwtvu0/Mrk/qNxkv1FdHj7UKaNc0ZRg3sYcMNm/YBzy0M43vk+0mag4PeVsknU8Moxtg/Fs2V42r4vlT+OLNyAMMr8Rf1pGkfQjNdrb9q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360537; c=relaxed/simple;
-	bh=7/qWEjG4Arfkp1HIit0ZzmrywJbT5okgWwK/BnFzl1Q=;
+	s=arc-20240116; t=1722357950; c=relaxed/simple;
+	bh=/qUSFuzHKsntY1NmORap4DX9PS3fQMh7iJ6dnJve9TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RloGPckOydAwXTDYkVLCQ5nii9H/kyiz+gETNIi/rfSolyO+613qzyM+bUgInhe3r200st7TskUB+h740R4ZTDMRns6Dp4RT6wQT27q2vi+AEO1z5luqYKiHp0s2mtfMfpjuzRNGwurYZ0z8Ghf0kikNje/RIT0uAW2u0uELaSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBaZEm6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B11CBC32782;
-	Tue, 30 Jul 2024 17:28:56 +0000 (UTC)
+	 MIME-Version; b=WIiX3ai1uV6ZVLoFQgCprzdm0+Wfd5i8n9zLRc8KitnL8psdXtNpd9NGacvxPKD8o9vwuhOgegXPQ3YPt2dpCtsnUo/J/EOGzl4rdXmUsh1RrGzxb+SrbyRH4Igq74DKgxCEBbfWRGc4FNmvOoM4SpunQKHvm7iYSrDPtJbl8Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8NstoJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62820C32782;
+	Tue, 30 Jul 2024 16:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360537;
-	bh=7/qWEjG4Arfkp1HIit0ZzmrywJbT5okgWwK/BnFzl1Q=;
+	s=korg; t=1722357949;
+	bh=/qUSFuzHKsntY1NmORap4DX9PS3fQMh7iJ6dnJve9TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBaZEm6sJ8kcxwNm0h0vRjqbtsxYLk50pR0Gtp3Ip3zDJClMbo54zI7Btau0LVxmF
-	 0Cr9wOQI+cvhACeC9/lMyGHT/du64LL5qXAnRxqYlrUXrhaVMvZWV+KSXPz5HvZH1e
-	 reqOBd4rNIM/75JEa8O/9YJGg7glyUjKjAiEqIvs=
+	b=Y8NstoJnDOaUKgeOeSBJ1C99T18phS6gGxDyPt8NpssD64zBB27eeUo4h5K/l/9PU
+	 +1TtfsW4EicqV9SvxczPmHYjNVNlgpnFI0fTI5T/RgF6P+ihwu6Ex3bBC2D0bbJOx4
+	 ijnY2blK0gCRakbNySRm9iG9UIwooVwCehMhSmlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Friedrich Vock <friedrich.vock@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 699/809] drm/amdgpu/sdma5.2: Update wptr registers as well as doorbell
+	Zijun Hu <quic_zijuhu@quicinc.com>
+Subject: [PATCH 6.1 342/440] devres: Fix memory leakage caused by driver API devm_free_percpu()
 Date: Tue, 30 Jul 2024 17:49:35 +0200
-Message-ID: <20240730151752.531990093@linuxfoundation.org>
+Message-ID: <20240730151629.171543883@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit a03ebf116303e5d13ba9a2b65726b106cb1e96f6 upstream.
+commit bd50a974097bb82d52a458bd3ee39fb723129a0c upstream.
 
-We seem to have a case where SDMA will sometimes miss a doorbell
-if GFX is entering the powergating state when the doorbell comes in.
-To workaround this, we can update the wptr via MMIO, however,
-this is only safe because we disallow gfxoff in begin_ring() for
-SDMA 5.2 and then allow it again in end_ring().
+It will cause memory leakage when use driver API devm_free_percpu()
+to free memory allocated by devm_alloc_percpu(), fixed by using
+devres_release() instead of devres_destroy() within devm_free_percpu().
 
-Enable this workaround while we are root causing the issue with
-the HW team.
-
-Bug: https://gitlab.freedesktop.org/drm/amd/-/issues/3440
-Tested-by: Friedrich Vock <friedrich.vock@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: ff86aae3b411 ("devres: add devm_alloc_percpu()")
 Cc: stable@vger.kernel.org
-(cherry picked from commit f2ac52634963fc38e4935e11077b6f7854e5d700)
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-3-git-send-email-quic_zijuhu@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/base/devres.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-@@ -176,6 +176,14 @@ static void sdma_v5_2_ring_set_wptr(stru
- 		DRM_DEBUG("calling WDOORBELL64(0x%08x, 0x%016llx)\n",
- 				ring->doorbell_index, ring->wptr << 2);
- 		WDOORBELL64(ring->doorbell_index, ring->wptr << 2);
-+		/* SDMA seems to miss doorbells sometimes when powergating kicks in.
-+		 * Updating the wptr directly will wake it. This is only safe because
-+		 * we disallow gfxoff in begin_use() and then allow it again in end_use().
-+		 */
-+		WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR),
-+		       lower_32_bits(ring->wptr << 2));
-+		WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR_HI),
-+		       upper_32_bits(ring->wptr << 2));
- 	} else {
- 		DRM_DEBUG("Not using doorbell -- "
- 				"mmSDMA%i_GFX_RB_WPTR == 0x%08x "
-@@ -1647,6 +1655,10 @@ static void sdma_v5_2_ring_begin_use(str
- 	 * but it shouldn't hurt for other parts since
- 	 * this GFXOFF will be disallowed anyway when SDMA is
- 	 * active, this just makes it explicit.
-+	 * sdma_v5_2_ring_set_wptr() takes advantage of this
-+	 * to update the wptr because sometimes SDMA seems to miss
-+	 * doorbells when entering PG.  If you remove this, update
-+	 * sdma_v5_2_ring_set_wptr() as well!
- 	 */
- 	amdgpu_gfx_off_ctrl(adev, false);
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -1221,7 +1221,11 @@ EXPORT_SYMBOL_GPL(__devm_alloc_percpu);
+  */
+ void devm_free_percpu(struct device *dev, void __percpu *pdata)
+ {
+-	WARN_ON(devres_destroy(dev, devm_percpu_release, devm_percpu_match,
++	/*
++	 * Use devres_release() to prevent memory leakage as
++	 * devm_free_pages() does.
++	 */
++	WARN_ON(devres_release(dev, devm_percpu_release, devm_percpu_match,
+ 			       (__force void *)pdata));
  }
+ EXPORT_SYMBOL_GPL(devm_free_percpu);
 
 
 
