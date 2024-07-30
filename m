@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-63880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86D0941B17
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3662294183E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 987CE282269
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55A97B29724
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB62A1078F;
-	Tue, 30 Jul 2024 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB2E18E056;
+	Tue, 30 Jul 2024 16:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovEsTYqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9bqtFkP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E28189900;
-	Tue, 30 Jul 2024 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CD718E044;
+	Tue, 30 Jul 2024 16:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358249; cv=none; b=a/aH3TCvHaszP+reCYC/m6lcTrgKkEeh2RfAJVMpDAiLL328AvZN500WCqwwPZNC8Ye4fWM9mq/SLcXUWcdHjM+XM5VGbmE8Ads2wKWQI6RMhhGpSgAy6Am1kNOyULYVpUF3axMyxKcpLdF0ZzzHP9Bx6VSzZRjXpQmEYByUkI4=
+	t=1722356104; cv=none; b=UNteWB5OZsERryNpMkS1AjecnbIHvNbM7WrRGtqA5CPEsNpxoqxcatIdAHJ0KDJ2t2HYKn00M1iBBbIeh/HdSTAr+vUpyhk95z7qMKsjxaxN2Yf3RQRkRtY6OnsAhymXC/0Q9FWCiMLD8MCIdi9ClkGH7KEdLKuqN3t3O2/50lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358249; c=relaxed/simple;
-	bh=+M2qcTYhGU6HAVRIVow4FQB5AGY2oAr3EJDa2+CzQew=;
+	s=arc-20240116; t=1722356104; c=relaxed/simple;
+	bh=W+G/rtZ3CM9If/VANW+RtUIWHlucI9HPljsT1RykWTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCnUmGZG4DTHF9DJG/1UUuWby0wMdo3cr7i90STe5AQNW0XbB/ynUZ2RUgVuc0S0eETNG1e6ZzuKxZjVi1F+ZpOFgyfcMyiCKa3yB4DqWhSzKbpDeZpbuVJEkXhp5Hasu28+cVcx3tvug6oVgt2tprRRGMmUTKpE6iLuViqpSBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovEsTYqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2973BC4AF0A;
-	Tue, 30 Jul 2024 16:50:48 +0000 (UTC)
+	 MIME-Version; b=bnN/e3KwGkDZTg6L319I3D/gCtBAPn0bipJZtLXVk1LadDyv5XCpVt7R74fJo+Y/7xlfG3QZ0G+eAeXWv+pZ1/FrEAhZ6GVPhOZVgmoVvQtU4dY/S7TuGzY7+HqviabF50erAo56yCpdYZN+Ngy3mYuvA3baEh7D+2OAgM5PR2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9bqtFkP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28AAC32782;
+	Tue, 30 Jul 2024 16:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358249;
-	bh=+M2qcTYhGU6HAVRIVow4FQB5AGY2oAr3EJDa2+CzQew=;
+	s=korg; t=1722356104;
+	bh=W+G/rtZ3CM9If/VANW+RtUIWHlucI9HPljsT1RykWTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ovEsTYqu4fv6mIIaKHu7Ay8jiTe3cvTVqjOFtbceMHD/dxxAZq2kxmhAt8OKO158r
-	 K2sYM65a5TC9AOFuVE5yIhcvpHSIM5q3lB0dv4An3jxzuxM2IGSEo3nJ0ztZD167wp
-	 xcgeyHuDyQ5wqHPdp9qsR6drifwprQT6Q6P7y3Us=
+	b=M9bqtFkPG3tIVlbGjW9abyRld0GZBCh40BDTppnTG+8N6NQ7hbE2qWH65Gg1lRHS0
+	 uspYXffXZNGKULXix+RscEI1WgAAhfzSb2tZpLcI9iBeDNVOWJKbNxs6xhiSbUkQiM
+	 f69h4JVFyZoJfi06SkHVnjjQPq9pYcRWFOxXjxRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 326/809] drm/mediatek: Fix XRGB setting error in OVL
-Date: Tue, 30 Jul 2024 17:43:22 +0200
-Message-ID: <20240730151737.481144848@linuxfoundation.org>
+Subject: [PATCH 6.6 096/568] arm64: dts: rockchip: fix regulator name for Lunzn Fastrhino R6xS
+Date: Tue, 30 Jul 2024 17:43:23 +0200
+Message-ID: <20240730151643.628777575@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 765f284f1fe172573021056f7e337ee53f252969 ]
+[ Upstream commit 2dad31528de9ea8b05245ce6ac4f76ebf8dae947 ]
 
-CONST_BLD must be enabled for XRGB formats although the alpha channel
-can be ignored, or OVL will still read the value from memory.
-This error only affects CRC generation.
+Make the regulator name the same as those marked by schematics.
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-3-a9d62d2e2c7e@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: c79dab407afd ("arm64: dts: rockchip: Add Lunzn Fastrhino R66S")
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/r/20240630150010.55729-2-amadeus@jmu.edu.cn
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-index b552a02d7eae7..bd00e5e85deba 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-@@ -38,6 +38,7 @@
- #define DISP_REG_OVL_PITCH_MSB(n)		(0x0040 + 0x20 * (n))
- #define OVL_PITCH_MSB_2ND_SUBBUF			BIT(16)
- #define DISP_REG_OVL_PITCH(n)			(0x0044 + 0x20 * (n))
-+#define OVL_CONST_BLEND					BIT(28)
- #define DISP_REG_OVL_RDMA_CTRL(n)		(0x00c0 + 0x20 * (n))
- #define DISP_REG_OVL_RDMA_GMC(n)		(0x00c8 + 0x20 * (n))
- #define DISP_REG_OVL_ADDR_MT2701		0x0040
-@@ -407,6 +408,7 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 	unsigned int fmt = pending->format;
- 	unsigned int offset = (pending->y << 16) | pending->x;
- 	unsigned int src_size = (pending->height << 16) | pending->width;
-+	unsigned int ignore_pixel_alpha = 0;
- 	unsigned int con;
- 	bool is_afbc = pending->modifier != DRM_FORMAT_MOD_LINEAR;
- 	union overlay_pitch {
-@@ -428,6 +430,14 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
- 	if (state->base.fb && state->base.fb->format->has_alpha)
- 		con |= OVL_CON_AEN | OVL_CON_ALPHA;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+index 89e84e3a92629..93987c8740f7b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568-fastrhino-r66s.dtsi
+@@ -39,9 +39,9 @@ status_led: led-status {
+ 		};
+ 	};
  
-+	/* CONST_BLD must be enabled for XRGB formats although the alpha channel
-+	 * can be ignored, or OVL will still read the value from memory.
-+	 * For RGB888 related formats, whether CONST_BLD is enabled or not won't
-+	 * affect the result. Therefore we use !has_alpha as the condition.
-+	 */
-+	if (state->base.fb && !state->base.fb->format->has_alpha)
-+		ignore_pixel_alpha = OVL_CONST_BLEND;
-+
- 	if (pending->rotation & DRM_MODE_REFLECT_Y) {
- 		con |= OVL_CON_VIRT_FLIP;
- 		addr += (pending->height - 1) * pending->pitch;
-@@ -443,8 +453,8 @@ void mtk_ovl_layer_config(struct device *dev, unsigned int idx,
+-	dc_12v: dc-12v-regulator {
++	vcc12v_dcin: vcc12v-dcin-regulator {
+ 		compatible = "regulator-fixed";
+-		regulator-name = "dc_12v";
++		regulator-name = "vcc12v_dcin";
+ 		regulator-always-on;
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <12000000>;
+@@ -65,7 +65,7 @@ vcc3v3_sys: vcc3v3-sys-regulator {
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+-		vin-supply = <&dc_12v>;
++		vin-supply = <&vcc12v_dcin>;
+ 	};
  
- 	mtk_ddp_write_relaxed(cmdq_pkt, con, &ovl->cmdq_reg, ovl->regs,
- 			      DISP_REG_OVL_CON(idx));
--	mtk_ddp_write_relaxed(cmdq_pkt, overlay_pitch.split_pitch.lsb, &ovl->cmdq_reg, ovl->regs,
--			      DISP_REG_OVL_PITCH(idx));
-+	mtk_ddp_write_relaxed(cmdq_pkt, overlay_pitch.split_pitch.lsb | ignore_pixel_alpha,
-+			      &ovl->cmdq_reg, ovl->regs, DISP_REG_OVL_PITCH(idx));
- 	mtk_ddp_write_relaxed(cmdq_pkt, src_size, &ovl->cmdq_reg, ovl->regs,
- 			      DISP_REG_OVL_SRC_SIZE(idx));
- 	mtk_ddp_write_relaxed(cmdq_pkt, offset, &ovl->cmdq_reg, ovl->regs,
+ 	vcc5v0_sys: vcc5v0-sys-regulator {
+@@ -75,7 +75,7 @@ vcc5v0_sys: vcc5v0-sys-regulator {
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <5000000>;
+ 		regulator-max-microvolt = <5000000>;
+-		vin-supply = <&dc_12v>;
++		vin-supply = <&vcc12v_dcin>;
+ 	};
+ 
+ 	vcc5v0_usb_host: vcc5v0-usb-host-regulator {
 -- 
 2.43.0
 
