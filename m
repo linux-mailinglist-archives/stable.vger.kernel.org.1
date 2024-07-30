@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-63999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27AF0941BA6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C45941BAB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD3E1C23135
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C84A81C23025
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6241898EB;
-	Tue, 30 Jul 2024 16:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B621898EB;
+	Tue, 30 Jul 2024 16:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0rx1SCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7p6txcG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715D0184549;
-	Tue, 30 Jul 2024 16:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6018018801A;
+	Tue, 30 Jul 2024 16:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358644; cv=none; b=rkOO8gB+zA2LBEPIG1Y3mgdBhvlhdK33tWtAikfp+UO4B0mW3Yf+6Hbv/KoX92GwDLZ9lWBxmxasTsErdrLc4yfN3e03MMb4r3FAdpp+htoKAlkdrgIDoVun+ltJNobvgE+2pbdlJwOy4huFAeXevbzkbpHet4NptoETl7xNwqE=
+	t=1722358654; cv=none; b=GrgwKzGDJaQ+ASStZndg6xsDAG2ggfoGFgsd6Ed4GXZOLsAd+wiHULSiHzi4QADi+0YziKe7WnutlB5jAR64hjFN5YUttQluXW4oTuw8/Ahqw04mnYJ4dJLoVtvhTAdt3v8BT/EHR8p+gF1NuvcGAgAtKvN0ozGlyPJhzswEWPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358644; c=relaxed/simple;
-	bh=M0kQz9lXD53w/6kblduJ/9lbAiPpPXEkl+0Lv/Ar8oo=;
+	s=arc-20240116; t=1722358654; c=relaxed/simple;
+	bh=8daS3+DknWohxtBMsSL8oFHBtgBL1y4+j/aR+Jo0jmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rkFrwVQGOXQLvymxisPcLN5DDWgSJ4tvosInTpKeMKCq0lnK28OebC4jtZewhSAX6Z/ILXpfhv2uqGVANOJoew2NQkpVt6zlq6jz2SsxJkDtvx1Uqv9gGn0xPecKvo+EYLr2y0yPswB5oLy2IUxA0IeSi4yzZC35Ld0a0XMhgco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0rx1SCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF126C32782;
-	Tue, 30 Jul 2024 16:57:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HFbe647yWk/6+InsWMXferEu1cJylvj2PxznvjgSSWWJnW4ouN+a3NmADvu/A819UzHHhj3ndX7tclx8JVt6FSekP9eRXLgbQ7wp0MTHVNiPiRtNRj4HMab+1yrvLCrl+rYfCeerKUNWG9/B3Gx6556igczipJYAhhPHSp5HnTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7p6txcG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6EFC32782;
+	Tue, 30 Jul 2024 16:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358644;
-	bh=M0kQz9lXD53w/6kblduJ/9lbAiPpPXEkl+0Lv/Ar8oo=;
+	s=korg; t=1722358654;
+	bh=8daS3+DknWohxtBMsSL8oFHBtgBL1y4+j/aR+Jo0jmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0rx1SCqoX0r27NJ+XLWrwOEdtiXDqU4TrMwl2rwd2Gl0BRF794mmNDihM976ifVJ
-	 4qXEWMVVpd5HHCPjXZU31F94oc0LwLDfN7JrNzrgyukN0sjtb3xmXeYovDt0gO2VUP
-	 UTZpE/dz/WBdrr9+wksMkSMuIRDRfroHOEZ+HJNs=
+	b=o7p6txcG/e13TzxO+BBFadezekZ5ahIOgiL4AVzFDa5zUu382ZVv/7tH+tLQqCptc
+	 Azuazlu6FI5lTi20lCkwI1bCHs0mrzqveen1l5i1bQ4Zm/dtx+Q7CQhE0EY7Z2RNmx
+	 40pMeD0gtih4OjiYE4lp5R1RQmvBCMQTIV7iXFgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Lidong Wang <lidong.wang@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 381/809] PCI: endpoint: pci-epf-test: Make use of cached epc_features in pci_epf_test_core_init()
-Date: Tue, 30 Jul 2024 17:44:17 +0200
-Message-ID: <20240730151739.714794750@linuxfoundation.org>
+Subject: [PATCH 6.10 382/809] PCI: Fix resource double counting on remove & rescan
+Date: Tue, 30 Jul 2024 17:44:18 +0200
+Message-ID: <20240730151739.755401589@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -71,84 +69,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 5a5095a8bd1bd349cce1c879e5e44407a34dda8a ]
+[ Upstream commit 903534fa7d30214d8ba840ab1cd9e917e0c88e41 ]
 
-Instead of getting the epc_features from pci_epc_get_features() API, use
-the cached pci_epf_test::epc_features value to avoid the NULL check. Since
-the NULL check is already performed in pci_epf_test_bind(), having one more
-check in pci_epf_test_core_init() is redundant and it is not possible to
-hit the NULL pointer dereference.
+pbus_size_mem() keeps the size of the optional resources in
+children_add_size. When calculating the PCI bridge window size,
+calculate_memsize() lower bounds size by old_size before adding
+children_add_size and performing the window size alignment. This
+results in double counting for the resources in children_add_size
+because old_size may be based on the previous size of the bridge
+window after it has already included children_add_size (that is,
+size1 in pbus_size_mem() from an earlier invocation of that
+function).
 
-Also with commit a01e7214bef9 ("PCI: endpoint: Remove "core_init_notifier"
-flag"), 'epc_features' got dereferenced without the NULL check, leading to
-the following false positive Smatch warning:
+As a result, on repeated remove of the bus & rescan cycles the resource
+size keeps increasing when children_add_size is non-zero as can be seen
+from this extract:
 
-  drivers/pci/endpoint/functions/pci-epf-test.c:784 pci_epf_test_core_init() error: we previously assumed 'epc_features' could be null (see line 747)
+  iomem0:  23fffd00000-23fffdfffff : PCI Bus 0000:03    # 1MiB
+  iomem1:  20000000000-200001fffff : PCI Bus 0000:03    # 2MiB
+  iomem2:  20000000000-200002fffff : PCI Bus 0000:03    # 3MiB
+  iomem3:  20000000000-200003fffff : PCI Bus 0000:03    # 4MiB
+  iomem4:  20000000000-200004fffff : PCI Bus 0000:03    # 5MiB
 
-Thus, remove the redundant NULL check and also use the epc_features::
-{msix_capable/msi_capable} flags directly to avoid local variables.
+Solve the double counting by moving old_size check later in
+calculate_memsize() so that children_add_size is already accounted for.
 
-[kwilczynski: commit log]
-Fixes: 5e50ee27d4a5 ("PCI: pci-epf-test: Add support to defer core initialization")
-Closes: https://lore.kernel.org/linux-pci/024b5826-7180-4076-ae08-57d2584cca3f@moroto.mountain
-Link: https://lore.kernel.org/linux-pci/20240418-pci-epf-test-fix-v2-1-eacd54831444@linaro.org
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+After the patch, the bridge window retains its size as expected:
+
+  iomem0:  23fffd00000-23fffdfffff : PCI Bus 0000:03    # 1MiB
+  iomem1:  20000000000-200000fffff : PCI Bus 0000:03    # 1MiB
+  iomem2:  20000000000-200000fffff : PCI Bus 0000:03    # 1MiB
+
+Fixes: a4ac9fea016f ("PCI : Calculate right add_size")
+Link: https://lore.kernel.org/r/20240507102523.57320-2-ilpo.jarvinen@linux.intel.com
+Tested-by: Lidong Wang <lidong.wang@intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/pci/setup-bus.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index 977fb79c15677..546d2a27955cf 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -735,20 +735,12 @@ static int pci_epf_test_core_init(struct pci_epf *epf)
- {
- 	struct pci_epf_test *epf_test = epf_get_drvdata(epf);
- 	struct pci_epf_header *header = epf->header;
--	const struct pci_epc_features *epc_features;
-+	const struct pci_epc_features *epc_features = epf_test->epc_features;
- 	struct pci_epc *epc = epf->epc;
- 	struct device *dev = &epf->dev;
- 	bool linkup_notifier = false;
--	bool msix_capable = false;
--	bool msi_capable = true;
- 	int ret;
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 909e6a7c3cc31..141d6b31959be 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -829,11 +829,9 @@ static resource_size_t calculate_memsize(resource_size_t size,
+ 		size = min_size;
+ 	if (old_size == 1)
+ 		old_size = 0;
+-	if (size < old_size)
+-		size = old_size;
  
--	epc_features = pci_epc_get_features(epc, epf->func_no, epf->vfunc_no);
--	if (epc_features) {
--		msix_capable = epc_features->msix_capable;
--		msi_capable = epc_features->msi_capable;
--	}
--
- 	if (epf->vfunc_no <= 1) {
- 		ret = pci_epc_write_header(epc, epf->func_no, epf->vfunc_no, header);
- 		if (ret) {
-@@ -761,7 +753,7 @@ static int pci_epf_test_core_init(struct pci_epf *epf)
- 	if (ret)
- 		return ret;
+-	size = ALIGN(max(size, add_size) + children_add_size, align);
+-	return size;
++	size = max(size, add_size) + children_add_size;
++	return ALIGN(max(size, old_size), align);
+ }
  
--	if (msi_capable) {
-+	if (epc_features->msi_capable) {
- 		ret = pci_epc_set_msi(epc, epf->func_no, epf->vfunc_no,
- 				      epf->msi_interrupts);
- 		if (ret) {
-@@ -770,7 +762,7 @@ static int pci_epf_test_core_init(struct pci_epf *epf)
- 		}
- 	}
- 
--	if (msix_capable) {
-+	if (epc_features->msix_capable) {
- 		ret = pci_epc_set_msix(epc, epf->func_no, epf->vfunc_no,
- 				       epf->msix_interrupts,
- 				       epf_test->test_reg_bar,
+ resource_size_t __weak pcibios_window_alignment(struct pci_bus *bus,
 -- 
 2.43.0
 
