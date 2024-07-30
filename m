@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-62808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635C5941377
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:45:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02213941384
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 951541C23598
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 13:45:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2607283D6F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 13:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFAE1A00ED;
-	Tue, 30 Jul 2024 13:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439541A08A0;
+	Tue, 30 Jul 2024 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1eAbqWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmYSzJ1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A01F19E7E3
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 13:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A61465A7;
+	Tue, 30 Jul 2024 13:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722347117; cv=none; b=RtOnXh4y3wRbR1sum/tQIjMPhHBumM1AzNHIssO/Rg6lMrcdxxwUGr/vC6SAlPwjcZCKR8953ZJKeStpG9hIK33KO1iziuIMIYlCJBPpjCJmCVokiclpMaUru4SIptKNFv41PCW9cU50U+DabtnTgumCfXEiTcU7CS60/RxIowY=
+	t=1722347306; cv=none; b=f6js/PXNcJOYejkPaVOWtgY09YmhoPmSm6zfTVDDfEXDbwcOjrPbeOtNK/fzJZNmlA1825eyN/xOQhKt/SsIAU2u45Y0lM2ZdNsxBb/TLks9Bx/rq3AN3g4dBdnFdUu4njVq95HenOf8p5R3R1EFlbrmXGvh0g9WTkRq6M5F+aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722347117; c=relaxed/simple;
-	bh=+zsI6u1pamv4zfSkp3vIYVQE6SGk1QRtdxKnss1H2KA=;
+	s=arc-20240116; t=1722347306; c=relaxed/simple;
+	bh=he9J58vS8pkfcV4kvaKODB0LsCUqw+V9kr+mja/L7pY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jlgBnEzU94/21O+ciYECN7JaelfbeMBKQLGQ1g8d25hWmp0pngrzp+oQ8FX0fPuW50fXtRXnBF/YRlykBqAeXPxTwNhpdOKJm19jGfHqAp58ejkpnO/rwpL4SsTlTGqHuZcYSD5muZ3VsmaKAMgOynIqB3FPwLTMJiHtKuJTUD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1eAbqWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAB4C32782;
-	Tue, 30 Jul 2024 13:45:15 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jclfkmvG/5u54N03pJopx9aoJPnI4ZJ1CaEWp4c/k9Cik+dnBiT+UmMKW3N30WANtBXgEIH9O/Ktp+nzsgITDaP3WFUoX+0JJtObR1bx5/z846SO8+2JHJbCc75R/AnRBGXbF1PVhDtsPnipHPNBqko4AK+Cd+0haATEe4QDaRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmYSzJ1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F394FC32782;
+	Tue, 30 Jul 2024 13:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722347116;
-	bh=+zsI6u1pamv4zfSkp3vIYVQE6SGk1QRtdxKnss1H2KA=;
+	s=korg; t=1722347305;
+	bh=he9J58vS8pkfcV4kvaKODB0LsCUqw+V9kr+mja/L7pY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h1eAbqWaTCNi4HjS6ht+5LIEMeSda2Q44FNoaj2IVjPTwxh77b4QFgTpeRouPd6tB
-	 4AdP3N5Nl7Bt3nUF3C3CkI0nBhw5K9Jw20NJoXxD04e5KkKqjz2qLjCIHYzs981zB8
-	 CjJIAnm941DX97s2Ck4fM7b3BlAR8bD9CycB7DaA=
-Date: Tue, 30 Jul 2024 15:45:13 +0200
+	b=CmYSzJ1JX3hyU8vVXsCLiv7jplGEOlO7z+lwnGsnz89uC+dboHgCDi9JCgwyuad4k
+	 UKRtFYj6fxbpmC4/GrstdbMAcFcowyJ9zdAyo32nshvQZoypuK90yYsHBbSLeexTvz
+	 YcNVTQ43ULl8hjBi0d3/vmk+AgGTv4a0i7QeX2w4=
+Date: Tue, 30 Jul 2024 15:48:22 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: stable <stable@vger.kernel.org>, Lucas Stach <l.stach@pengutronix.de>,
-	Helge Deller <deller@gmx.de>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: stable-6.6: Reproducibility fixes
-Message-ID: <2024073004-puppet-amiable-bab9@gregkh>
-References: <CAOMZO5DymKk1oJM-Q+a_7hKSSLcxSs8D+EM=jUbT+Bj2g_nXnQ@mail.gmail.com>
+To: Erpeng Xu <xuerpeng@uniontech.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, hildawu@realtek.com,
+	wangyuli@uniontech.com, jagan@edgeble.ai, marcel@holtmann.org,
+	luiz.dentz@gmail.com, linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org, guanwentao@uniontech.com,
+	luiz.von.dentz@intel.com
+Subject: Re: [PATCH 6.6 1/3] Bluetooth: Add device 13d3:3572 IMC Networks
+ Bluetooth Radio
+Message-ID: <2024073015-calibrate-badge-32dd@gregkh>
+References: <F2FCAA7252DFAEDC+20240729032444.15274-1-xuerpeng@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,19 +58,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOMZO5DymKk1oJM-Q+a_7hKSSLcxSs8D+EM=jUbT+Bj2g_nXnQ@mail.gmail.com>
+In-Reply-To: <F2FCAA7252DFAEDC+20240729032444.15274-1-xuerpeng@uniontech.com>
 
-On Fri, Jul 26, 2024 at 11:22:43AM -0300, Fabio Estevam wrote:
-> Hi,
+On Mon, Jul 29, 2024 at 11:22:52AM +0800, Erpeng Xu wrote:
+> From: Jagan Teki <jagan@edgeble.ai>
 > 
-> Please consider applying the two commits below to the linux-stable 6.6
-> tree as they fix reproducibility errors reported by OpenEmbedded:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/lib/build_OID_registry?h=v6.10.1&id=5ef6dc08cfde240b8c748733759185646e654570
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/video/logo/pnmtologo.c?h=v6.10&id=fb3b9c2d217f1f51fffe19fc0f4eaf55e2d4ea4f
+> commit c3df5671c937a21b8e6cf4798bf6450f12cb3a98 upstream
 
-Both now queued up, thanks.
-
-greg k-h
+Not a valid git id :(
 
