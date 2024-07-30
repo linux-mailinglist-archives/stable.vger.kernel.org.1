@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-62937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E982C941657
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5628F94165B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A92B1283297
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D03E1F24AA5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2391BBBE6;
-	Tue, 30 Jul 2024 15:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8D51BC06D;
+	Tue, 30 Jul 2024 15:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqZXRC73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZwAnQAU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B83E1BBBCA;
-	Tue, 30 Jul 2024 15:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E451BBBFE;
+	Tue, 30 Jul 2024 15:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355124; cv=none; b=QmhYKtBx/jrFef1+6CdP0TOhOHzvazlrCcGJAMOaUwiyqmUcZVnr6OOAuWF5ZHTKmR6foieV9iM99g7J0VsuAAGJ1LjIdba9tdBCh0fCAt4/qlv6CLwIf2hs1fODJnxNa+FtR39wzzs8jZl7yRp/toWm6JWyQbTFGdE7JHCxVTg=
+	t=1722355134; cv=none; b=h5EGY0yPGF56gPk9DzA+e8wzLfRiuCbKH5M2CJGV7v/4hMwpfIGzjkYfXUoEa2GvyaUscXWhD74bJfmpuyGkvfPSRw9qoPFnwqpVfsuwKhUqQXfG2Cw6ZbulGBu13NQOtH7DHofv2plkFdF7Tr/Ns34npZzEmePOIZusP2mVQqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355124; c=relaxed/simple;
-	bh=1ji2cuHQjkUakXQpkCMJA9XwwH6FwEtpt3CUBPjH8X8=;
+	s=arc-20240116; t=1722355134; c=relaxed/simple;
+	bh=PBNB8XfHCNFZuTYSH5vUe3X551LNxyAhhCx+QfSVUgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gu6h+KOfU7pkvxPsHGuSc8dFF7sZIq5Y+nlfOUtAJxItfZ0SlobBTlRMc/o7nGYt0kpzbgdV9tnGF9LOb56lbP4TXwRJDMZMUAhaJvFzWoaVOw6lSSBF4fPfnzE28wJHIaKiU84S6p2gfnVuosTv8/4E8twn5P1HFr25x9hkzyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqZXRC73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9E1C4AF0A;
-	Tue, 30 Jul 2024 15:58:43 +0000 (UTC)
+	 MIME-Version; b=ec94REibA8Cpqr1Eo5gnC0nWBNGqKpNLxGL9rSQQoX9pkkgEX8MVu4ef9AXyDxg3kV6sdehypNpVvQVz18pC8sg59iNwd3gylVYUogiZzcFNYfZvff86Im/LtxnVWJGnWvF+5booCcje4r+jSUSmBE3apIXXHKSQMVii9q82pG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZwAnQAU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C1AC4AF0A;
+	Tue, 30 Jul 2024 15:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355124;
-	bh=1ji2cuHQjkUakXQpkCMJA9XwwH6FwEtpt3CUBPjH8X8=;
+	s=korg; t=1722355133;
+	bh=PBNB8XfHCNFZuTYSH5vUe3X551LNxyAhhCx+QfSVUgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqZXRC73jZTCOo3k2y+5NkTVX+hozzT9WgoegRC9RcWm+AJu/+rDDoN1nwIke1Zm7
-	 pcSHYNjOffmBBsx9u8NRGJRxCX8XojnQoFFugRqXVCpUZcfu98wJlqG5nBSXZwRY0K
-	 c3f5NzzzUYIN0Hf2PXAzN+2oCxpKpgMzOccq/VqM=
+	b=bZwAnQAUhSZ6H5a20Ew9SexYy6xfqTpYufFnb4/rjh2k9KDRn0j6byd50aJ4ItbaZ
+	 MgpupVdMuFLXEH3OJcD9JPUwrBW4cSW9RU9o5xhXrXzwBOhi/jrokoo4w6Y3tCVnRj
+	 /5auu0bN8ahD3r0RbH5zzqe6/xxRuClbaw9awB+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/440] arm64: dts: amlogic: gx: correct hdmi clocks
-Date: Tue, 30 Jul 2024 17:44:53 +0200
-Message-ID: <20240730151618.111079695@linuxfoundation.org>
+Subject: [PATCH 6.1 061/440] arm64: dts: rockchip: Drop invalid mic-in-differential on rk3568-rock-3a
+Date: Tue, 30 Jul 2024 17:44:54 +0200
+Message-ID: <20240730151618.149417613@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -66,61 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 0602ba0dcd0e76067a0b7543e92b2de3fb231073 ]
+[ Upstream commit 406a554b382200abfabd1df423a425f6efee53e0 ]
 
-The clocks provided to HDMI tx are not consistent between gx and g12:
-* gx receives the peripheral clock as 'isfr' while g12 receives it as
-  'iahb'
-* g12 gets the HDMI system clock as 'isfr' but gx does not even get it.
-  It surely needs that clock since the driver is directly poking around
-  the clock controller's registers for that clock.
+The 'mic-in-differential' DT property supported by the RK809/RK817 audio
+codec driver is actually valid if prefixed with 'rockchip,':
 
-Align gx SoCs with g12 and provide:
- * the HDMI peripheral clock as 'iahb'
- * the HDMI system clock as 'isfr'
+  DTC_CHK arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dtb
+  rk3568-rock-3a.dtb: pmic@20: codec: 'mic-in-differential' does not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/mfd/rockchip,rk809.yaml#
 
-Fixes: 6939db7e0dbf ("ARM64: dts: meson-gx: Add support for HDMI output")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20240626152733.1350376-2-jbrunet@baylibre.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+However, the board doesn't make use of differential signaling, hence
+drop the incorrect property and the now unnecessary 'codec' node.
+
+Fixes: 22a442e6586c ("arm64: dts: rockchip: add basic dts for the radxa rock3 model a")
+Reported-by: Jonas Karlman <jonas@kwiboo.se>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://lore.kernel.org/r/20240622-rk809-fixes-v2-3-c0db420d3639@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi | 4 ++--
- arch/arm64/boot/dts/amlogic/meson-gxl.dtsi  | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-index 7c029f552a23b..256c46771db78 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxbb.dtsi
-@@ -311,8 +311,8 @@ &hdmi_tx {
- 		 <&reset RESET_HDMI_SYSTEM_RESET>,
- 		 <&reset RESET_HDMI_TX>;
- 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
--	clocks = <&clkc CLKID_HDMI_PCLK>,
--		 <&clkc CLKID_CLK81>,
-+	clocks = <&clkc CLKID_HDMI>,
-+		 <&clkc CLKID_HDMI_PCLK>,
- 		 <&clkc CLKID_GCLK_VENCI_INT0>;
- 	clock-names = "isfr", "iahb", "venci";
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts b/arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts
+index bab46db2b18cd..478620c782599 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-rock-3a.dts
+@@ -481,10 +481,6 @@ regulator-state-mem {
+ 				};
+ 			};
+ 		};
+-
+-		codec {
+-			mic-in-differential;
+-		};
+ 	};
  };
-diff --git a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-index 3500229350522..a689bd14ece99 100644
---- a/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-gxl.dtsi
-@@ -323,8 +323,8 @@ &hdmi_tx {
- 		 <&reset RESET_HDMI_SYSTEM_RESET>,
- 		 <&reset RESET_HDMI_TX>;
- 	reset-names = "hdmitx_apb", "hdmitx", "hdmitx_phy";
--	clocks = <&clkc CLKID_HDMI_PCLK>,
--		 <&clkc CLKID_CLK81>,
-+	clocks = <&clkc CLKID_HDMI>,
-+		 <&clkc CLKID_HDMI_PCLK>,
- 		 <&clkc CLKID_GCLK_VENCI_INT0>;
- 	clock-names = "isfr", "iahb", "venci";
- };
+ 
 -- 
 2.43.0
 
