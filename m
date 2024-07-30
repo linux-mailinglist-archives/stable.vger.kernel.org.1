@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51ACF941AF1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 080BD941D0B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11F282815F4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:49:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B65B028AD98
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8492118455D;
-	Tue, 30 Jul 2024 16:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534D61A76D8;
+	Tue, 30 Jul 2024 17:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/DCiLF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPafSS8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4322114831F;
-	Tue, 30 Jul 2024 16:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127D71A76A5;
+	Tue, 30 Jul 2024 17:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358162; cv=none; b=ENCmAVYJH7XItr4HImxMelFguo3L7DufrRHNbEQo9ZmZFVZXPxVsCcCPyETX2qIZlhkl1oWCkEt0VpwQXqyYMz6d5YIuQRa/cQAYN7g9XrlspICnUWU3Ym0GOpQNBn2hRaYoK/+t73pgbuZAA+XHKsbS+Loee8Q9VC5QCMnX2Uk=
+	t=1722359526; cv=none; b=NA2qLt1Zp7S81txMBXqzBfH5bBJ3V1Do900pb+N8yopZtGhMakb9RXWCK9JC2Z0tMC64B2k3RHtY3GnbIkI0mZXIVjw7e3NuubK4BScth2MciPvtxqQhCJZc4UlUbVVZKJ3aedzfmJAljRq+6ATLHJR6AhjtdsHp9lhS0iO0zXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358162; c=relaxed/simple;
-	bh=2S9rpcZr1Qi7AsHu/lB+TJXRNzjFxj+Era6vfMoru6o=;
+	s=arc-20240116; t=1722359526; c=relaxed/simple;
+	bh=/Im5cuDeGUNSsybPAsCAGnSsi2AVBuz7KeCbTJFvcAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqjusf/wBOW8O5czDrqK5BtAOp1JrYNIBJDLMS2g0pJpKiuF+acknQh+rSQ4uUQ2NTQ4hCidGslwjx2LseFxnj3qdJYLmpAkSLegQxZ9o3vIW1k67O4NacVaj7XXMgWhH8Mp8c1iONCS+rQRmFKcV2isbCBH6UcHpgBJV0f94rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/DCiLF9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0A7C4AF0C;
-	Tue, 30 Jul 2024 16:49:21 +0000 (UTC)
+	 MIME-Version; b=ONJDMxDTtOaYR+pfGg8KHtZNBDwWPblyEaA+93gwbaWYcL6TlrsQj0Kk4hLYq87aqVc+InwI8sNbsYzJ72rxX4nSLdh0awFWaprBJSsLke3OB5wRXjvcTk8oJX7sdJYBgqxEltCJZDaiIYdngHkchgFhrDnIeU+cuX7PxncxiCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPafSS8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35583C32782;
+	Tue, 30 Jul 2024 17:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358161;
-	bh=2S9rpcZr1Qi7AsHu/lB+TJXRNzjFxj+Era6vfMoru6o=;
+	s=korg; t=1722359525;
+	bh=/Im5cuDeGUNSsybPAsCAGnSsi2AVBuz7KeCbTJFvcAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/DCiLF9DRlNnRGC1jMGOmiBu6Ecxj4XQMWlj1/Je5n/u/eVZoZIyUnmHiS3Qzxnm
-	 lo63a7n7w0aHwhLojh7L7gnbcCdeO3oOarPN4x5xyFpUA6pJ/ZQKt5rmnM+c4y2PqV
-	 eVm14Y4IYTk/oAfomFH/0XwMxripp2ReaW3auXQ4=
+	b=HPafSS8CFoWJtzAoyFKev2YeFy90s+0f+zBXvyvIhSit+y87mpzzlY+Od80mAvWTf
+	 yHlThg+1AQA0HB+RdqN430+ucwHQoAa49M1t9BKV8H+3YzPk0ELzfY23z3HpTNa1Qo
+	 1FwnhYHrEYrMaWtf5dan97kbFbOyL7LOLo+n3khM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 362/440] rtc: isl1208: Fix return value of nvmem callbacks
+	Matthias Kaehlcke <mka@chromium.org>,
+	Kees Cook <keescook@chromium.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 488/568] dm-verity: fix dm_is_verity_target() when dm-verity is builtin
 Date: Tue, 30 Jul 2024 17:49:55 +0200
-Message-ID: <20240730151629.953748839@linuxfoundation.org>
+Message-ID: <20240730151659.104869418@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 70f1ae5f0e7f44edf842444044615da7b59838c1 upstream.
+commit 3708c7269593b836b1d684214cd9f5d83e4ed3fd upstream.
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+When CONFIG_DM_VERITY=y, dm_is_verity_target() returned true for any
+builtin dm target, not just dm-verity.  Fix this by checking for
+verity_target instead of THIS_MODULE (which is NULL for builtin code).
 
-isl1208_nvmem_read()/isl1208_nvmem_write() currently return the number of
-bytes read/written on success, fix to return 0 on success and negative on
-failure.
-
-Fixes: c3544f6f51ed ("rtc: isl1208: Add new style nvmem support to driver")
+Fixes: b6c1c5745ccc ("dm: Add verity helpers for LoadPin")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Link: https://lore.kernel.org/r/20240612080831.1227131-1-joychakr@google.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-isl1208.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/md/dm-verity-target.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/rtc/rtc-isl1208.c
-+++ b/drivers/rtc/rtc-isl1208.c
-@@ -743,14 +743,13 @@ static int isl1208_nvmem_read(void *priv
- {
- 	struct isl1208_state *isl1208 = priv;
- 	struct i2c_client *client = to_i2c_client(isl1208->rtc->dev.parent);
--	int ret;
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -1512,14 +1512,6 @@ bad:
+ }
  
- 	/* nvmem sanitizes offset/count for us, but count==0 is possible */
- 	if (!count)
- 		return count;
--	ret = isl1208_i2c_read_regs(client, ISL1208_REG_USR1 + off, buf,
+ /*
+- * Check whether a DM target is a verity target.
+- */
+-bool dm_is_verity_target(struct dm_target *ti)
+-{
+-	return ti->type->module == THIS_MODULE;
+-}
+-
+-/*
+  * Get the verity mode (error behavior) of a verity target.
+  *
+  * Returns the verity mode of the target, or -EINVAL if 'ti' is not a verity
+@@ -1572,6 +1564,14 @@ static struct target_type verity_target
+ };
+ module_dm(verity);
+ 
++/*
++ * Check whether a DM target is a verity target.
++ */
++bool dm_is_verity_target(struct dm_target *ti)
++{
++	return ti->type == &verity_target;
++}
 +
-+	return isl1208_i2c_read_regs(client, ISL1208_REG_USR1 + off, buf,
- 				    count);
--	return ret == 0 ? count : ret;
- }
- 
- static int isl1208_nvmem_write(void *priv, unsigned int off, void *buf,
-@@ -758,15 +757,13 @@ static int isl1208_nvmem_write(void *pri
- {
- 	struct isl1208_state *isl1208 = priv;
- 	struct i2c_client *client = to_i2c_client(isl1208->rtc->dev.parent);
--	int ret;
- 
- 	/* nvmem sanitizes off/count for us, but count==0 is possible */
- 	if (!count)
- 		return count;
--	ret = isl1208_i2c_set_regs(client, ISL1208_REG_USR1 + off, buf,
--				   count);
- 
--	return ret == 0 ? count : ret;
-+	return isl1208_i2c_set_regs(client, ISL1208_REG_USR1 + off, buf,
-+				   count);
- }
- 
- static const struct nvmem_config isl1208_nvmem_config = {
+ MODULE_AUTHOR("Mikulas Patocka <mpatocka@redhat.com>");
+ MODULE_AUTHOR("Mandeep Baines <msb@chromium.org>");
+ MODULE_AUTHOR("Will Drewry <wad@chromium.org>");
 
 
 
