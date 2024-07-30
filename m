@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-63866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6D0941B70
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 277AF941B91
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42247B24F7F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 343EBB29250
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75282188018;
-	Tue, 30 Jul 2024 16:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963281898ED;
+	Tue, 30 Jul 2024 16:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eZ8EA2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIluZ3zM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339A018455B;
-	Tue, 30 Jul 2024 16:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A1018455E;
+	Tue, 30 Jul 2024 16:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358204; cv=none; b=pHjed5f8UhZNtUrklhTvshXDiDb1sJ/KIcFV1QxXvL2cXYj5SKzKl/pgsbXcU3AN0ka7oEtNRtBzKdNT69qAK2NKG7TTew471dEMz1ET/VKw1XehW0lmGXogbVhTM4TWuXgXMzI95Aal+kDrm4aSKL51Y64oWqHvFzNHVDj9c7M=
+	t=1722358217; cv=none; b=Ns8eVwEh4bPk2hnno08+sEYJhWWvsl+UsoJGPsZPq7tnFZh0eOCw016TaKy8FeDQKA/nNYZAznoU18leyioyGCbjSxywluj5dZpmX/OwvsymwdV3X4lBHdAyK17Iw4k3E2zr2Mk5lgrjM2DEq7buUDPshAMP3xEU/qGW0iFNEU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358204; c=relaxed/simple;
-	bh=JUIq2yYW7FZ9qA7+KoD0H55blhchXwQqBPj8t9haAco=;
+	s=arc-20240116; t=1722358217; c=relaxed/simple;
+	bh=IcIu1KZGWa9DAOND940gRmFCHLm/+TU1QNCTBofMGik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I/C1vIGQHnA75FiVNO8IXMLBiJ5pSxOiJr+KzVzcPcE+xq1PnZ9u9VVb6Sb3LNognzJQm5/JgfW/SuPuYb+KyG0Q836cIjpztp6Q3EyhdmEXBVfli6+cRUcU//+VZMPFIR8OAoRcrG3oWW4nG/TAhbF0xPL1dTLltlfLOQOE3ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eZ8EA2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE699C32782;
-	Tue, 30 Jul 2024 16:50:03 +0000 (UTC)
+	 MIME-Version; b=Am6EWMI44x18d0m9+gXjlK0kN2sHpfrsMohcuMYC4NlJYS4OKjxELnwl9+S7xo4e9muGqaLSVD79Djvs/Lg7pEWQe6Y0PF8YRWZPEYySEo8dit87ohCgZVZMZzK+8BahNow8FXFxncCjnxE2x6Yd8Gi18Y8+bvM5xyZMRTrUQUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIluZ3zM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC487C32782;
+	Tue, 30 Jul 2024 16:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358204;
-	bh=JUIq2yYW7FZ9qA7+KoD0H55blhchXwQqBPj8t9haAco=;
+	s=korg; t=1722358217;
+	bh=IcIu1KZGWa9DAOND940gRmFCHLm/+TU1QNCTBofMGik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0eZ8EA2rivNIvxGKMqZLx6pgTD+ApaQxnPilULY1Nwp5aUq2a9k73h6U377O5DCT0
-	 M4jBHJsf8Enftvc9YpNAix3S0dlsdY53ncpSyIuGgUoxQjFuzMxUdbC5vUyAJKaEzV
-	 Znp9pwQ/qjGvsN+zCweeh97RjajEt44qCp+H/Q1c=
+	b=mIluZ3zMaBjM3sHLRDXzfvXX2KWJkENbIAYJzZ/wgLXlqGyau69a7xM8ojktH4k32
+	 xIqI5Ro127rBXw7QMus/BgQ6vB5PzJLqjaCxNHktuwGjAsxHYo6F0U5qS5ThMT6dF1
+	 PoPnYdbrcjxKRseBvpkRXj4MRPeb2ZU9TSiuEdlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.1 366/440] selftests/sigaltstack: Fix ppc64 GCC build
-Date: Tue, 30 Jul 2024 17:49:59 +0200
-Message-ID: <20240730151630.112633499@linuxfoundation.org>
+	Matthias Kaehlcke <mka@chromium.org>,
+	Kees Cook <keescook@chromium.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 367/440] dm-verity: fix dm_is_verity_target() when dm-verity is builtin
+Date: Tue, 30 Jul 2024 17:50:00 +0200
+Message-ID: <20240730151630.152620159@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -58,53 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
+commit 3708c7269593b836b1d684214cd9f5d83e4ed3fd upstream.
 
-Building the sigaltstack test with GCC on 64-bit powerpc errors with:
+When CONFIG_DM_VERITY=y, dm_is_verity_target() returned true for any
+builtin dm target, not just dm-verity.  Fix this by checking for
+verity_target instead of THIS_MODULE (which is NULL for builtin code).
 
-  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
-  In file included from sas.c:23:
-  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
-     22 | #error "implement current_stack_pointer equivalent"
-        |  ^~~~~
-  sas.c: In function ‘my_usr1’:
-  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
-     50 |         if (sp < (unsigned long)sstack ||
-        |             ^~
-
-This happens because GCC doesn't define __ppc__ for 64-bit builds, only
-32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
-is defined by clang and GCC for 64-bit and 32-bit builds.
-
-Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
-Cc: stable@vger.kernel.org # v6.3+
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
+Fixes: b6c1c5745ccc ("dm: Add verity helpers for LoadPin")
+Cc: stable@vger.kernel.org
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-verity-target.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-+++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
-@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
- register unsigned long sp asm("esp");
- #elif __loongarch64
- register unsigned long sp asm("$sp");
--#elif __ppc__
-+#elif __powerpc__
- register unsigned long sp asm("r1");
- #elif __s390x__
- register unsigned long sp asm("%15");
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -1497,14 +1497,6 @@ bad:
+ }
+ 
+ /*
+- * Check whether a DM target is a verity target.
+- */
+-bool dm_is_verity_target(struct dm_target *ti)
+-{
+-	return ti->type->module == THIS_MODULE;
+-}
+-
+-/*
+  * Get the verity mode (error behavior) of a verity target.
+  *
+  * Returns the verity mode of the target, or -EINVAL if 'ti' is not a verity
+@@ -1575,6 +1567,14 @@ static void __exit dm_verity_exit(void)
+ module_init(dm_verity_init);
+ module_exit(dm_verity_exit);
+ 
++/*
++ * Check whether a DM target is a verity target.
++ */
++bool dm_is_verity_target(struct dm_target *ti)
++{
++	return ti->type == &verity_target;
++}
++
+ MODULE_AUTHOR("Mikulas Patocka <mpatocka@redhat.com>");
+ MODULE_AUTHOR("Mandeep Baines <msb@chromium.org>");
+ MODULE_AUTHOR("Will Drewry <wad@chromium.org>");
 
 
 
