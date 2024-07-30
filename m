@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204A4941B26
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122BF9418D1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9D911F234C1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:51:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43BD71C2109C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE9E188018;
-	Tue, 30 Jul 2024 16:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2297118800A;
+	Tue, 30 Jul 2024 16:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLNkQPeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LC0xMFWD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11161078F;
-	Tue, 30 Jul 2024 16:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53F31A6166;
+	Tue, 30 Jul 2024 16:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358294; cv=none; b=N5TCuLl3wkTdpBYjMIa99Jidl+ERFOU/CWPu1y/fFcXqHMRltbsjswvHNpdZ5W59leYtPUhf4y37e8nx+gpw85kDL7r+SwfdNotntN7xa8ky+0MlLVZcJy/WHapjgPYva8b21n4tJaNMvRkTGGsI4MflfnP9xpRCg0ly1QnZst8=
+	t=1722356722; cv=none; b=XxJ6kkjTVHFff1jQAvbeN2QPS/+D/aPIwzjP7IU3cWheUUk0jN2ptdXXYfPy12WTeAagI/auDaKrktdCHpiGHNj0R5CMv0gV5HF8GpvMEvPPw2J5DonylHjA8qeLa/3lFTv4XPewa9TUfJc6PHHHJeyJeY+QBc/D/iXEiKYkT58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358294; c=relaxed/simple;
-	bh=He09Z96QXrqAtSVOpxUw2BtXhFIVhUJUuUi8M9dyrqU=;
+	s=arc-20240116; t=1722356722; c=relaxed/simple;
+	bh=0/qF3Rp6nQXVQtkFAACPJkekXRF/VVzXHxY4rzORC54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D97N7xCRtKO4p6U22Pu+rvkBfzSIOhtKiK0Qh6csYgQl9j1tpj1jQl6j9tlUSRaiVPcdUV5P+/0V10sp4YtR6icOD6Usj7LtyiMKxAgSf75q+n/TiegxevS17C2Il4iHQD2LwxTLz/g3/Fi9+id7K24Hex2OsF/5yl8AK1J3LsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLNkQPeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688A7C32782;
-	Tue, 30 Jul 2024 16:51:33 +0000 (UTC)
+	 MIME-Version; b=mvT60RWp7EjKcv4JC4FnhQiT3L/JQ8T1GCntQjOYjkSRfFz3fwYblGaOAXg76dPJNoxgEoflAC8/Z3InVnTz0arg6r0Nl9TjBui4G1GNr9KTvCfRRQTXKJHaDTs418+j/u50WAxEDasKvYIxjr0TxNHvhbDTFjWpyesVK9vWvIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LC0xMFWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA301C4AF0C;
+	Tue, 30 Jul 2024 16:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358293;
-	bh=He09Z96QXrqAtSVOpxUw2BtXhFIVhUJUuUi8M9dyrqU=;
+	s=korg; t=1722356722;
+	bh=0/qF3Rp6nQXVQtkFAACPJkekXRF/VVzXHxY4rzORC54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WLNkQPeBLspMSH1sjyg/WXycVX5CoBpl4H4xs3aEcUeCc5HPGYx1v60plNK8CqdAT
-	 igh42zxulfEZTth3l8aBZ4TTYXl0FnZpLOcj6+YOXXJM6FFSwGdi34PRS1BZeUHXDs
-	 qjHLEBhUQ/koKnuwfz+hDqisyEMdISnO0wWaKy4M=
+	b=LC0xMFWDgasrBExy3WmVl9oOH9ZWPNKBRDwSz7Rd6aoQn6DfW2YQwNxM2aJMG+I7q
+	 sgpO7Hz/r7vp9hucqvGjlRrbXvXgLta8raYdIIYVXJK1KvTSt85DV2k6NTFA5Ihi8a
+	 BKX2uPHdH9x3DeSEYq9CjciSwcHG4DIqpZLQquuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>, Csókás@web.codeaurora.org
-Subject: [PATCH 6.6 348/568] rtc: interface: Add RTC offset to alarm after fix-up
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 222/440] RDMA/hns: Fix unmatch exception handling when init eq table fails
 Date: Tue, 30 Jul 2024 17:47:35 +0200
-Message-ID: <20240730151653.470589408@linuxfoundation.org>
+Message-ID: <20240730151624.531389722@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 463927a8902a9f22c3633960119410f57d4c8920 ]
+[ Upstream commit 543fb987bd63ed27409b5dea3d3eec27b9c1eac9 ]
 
-`rtc_add_offset()` is called by `__rtc_read_time()`
-and `__rtc_read_alarm()` to add the RTC's offset to
-the raw read-outs from the device drivers. However,
-in the latter case, a fix-up algorithm is run if
-the RTC device does not report a full `struct rtc_time`
-alarm value. In that case, the offset was forgot to be
-added.
+The hw ctx should be destroyed when init eq table fails.
 
-Fixes: fd6792bb022e ("rtc: fix alarm read and set offset")
-
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://lore.kernel.org/r/20240619140451.2800578-1-csokas.bence@prolan.hu
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: a5073d6054f7 ("RDMA/hns: Add eq support of hip08")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-4-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/interface.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 25 +++++++++++-----------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index 1b63111cdda2e..0b23706d9fd3c 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -274,10 +274,9 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 			return err;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 176d75f2514eb..b592f1c1e2f5b 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -6418,9 +6418,16 @@ static void hns_roce_v2_int_mask_enable(struct hns_roce_dev *hr_dev,
+ 	roce_write(hr_dev, ROCEE_VF_ABN_INT_CFG_REG, enable_flag);
+ }
  
- 		/* full-function RTCs won't have such missing fields */
--		if (rtc_valid_tm(&alarm->time) == 0) {
--			rtc_add_offset(rtc, &alarm->time);
--			return 0;
--		}
-+		err = rtc_valid_tm(&alarm->time);
-+		if (!err)
-+			goto done;
+-static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
++static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
++{
++	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
++}
++
++static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev,
++				    struct hns_roce_eq *eq)
+ {
+ 	struct device *dev = hr_dev->dev;
++	int eqn = eq->eqn;
+ 	int ret;
+ 	u8 cmd;
  
- 		/* get the "after" timestamp, to detect wrapped fields */
- 		err = rtc_read_time(rtc, &now);
-@@ -379,6 +378,8 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 	if (err && alarm->enabled)
- 		dev_warn(&rtc->dev, "invalid alarm value: %ptR\n",
- 			 &alarm->time);
-+	else
-+		rtc_add_offset(rtc, &alarm->time);
+@@ -6431,12 +6438,9 @@ static void hns_roce_v2_destroy_eqc(struct hns_roce_dev *hr_dev, u32 eqn)
  
- 	return err;
+ 	ret = hns_roce_destroy_hw_ctx(hr_dev, cmd, eqn & HNS_ROCE_V2_EQN_M);
+ 	if (ret)
+-		dev_err(dev, "[mailbox cmd] destroy eqc(%u) failed.\n", eqn);
+-}
++		dev_err(dev, "[mailbox cmd] destroy eqc(%d) failed.\n", eqn);
+ 
+-static void free_eq_buf(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
+-{
+-	hns_roce_mtr_destroy(hr_dev, &eq->mtr);
++	free_eq_buf(hr_dev, eq);
+ }
+ 
+ static void init_eq_config(struct hns_roce_dev *hr_dev, struct hns_roce_eq *eq)
+@@ -6742,7 +6746,7 @@ static int hns_roce_v2_init_eq_table(struct hns_roce_dev *hr_dev)
+ 
+ err_create_eq_fail:
+ 	for (i -= 1; i >= 0; i--)
+-		free_eq_buf(hr_dev, &eq_table->eq[i]);
++		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
+ 	kfree(eq_table->eq);
+ 
+ 	return ret;
+@@ -6762,11 +6766,8 @@ static void hns_roce_v2_cleanup_eq_table(struct hns_roce_dev *hr_dev)
+ 	__hns_roce_free_irq(hr_dev);
+ 	destroy_workqueue(hr_dev->irq_workq);
+ 
+-	for (i = 0; i < eq_num; i++) {
+-		hns_roce_v2_destroy_eqc(hr_dev, i);
+-
+-		free_eq_buf(hr_dev, &eq_table->eq[i]);
+-	}
++	for (i = 0; i < eq_num; i++)
++		hns_roce_v2_destroy_eqc(hr_dev, &eq_table->eq[i]);
+ 
+ 	kfree(eq_table->eq);
  }
 -- 
 2.43.0
