@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DE7941E89
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:30:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05682941B61
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11C3C1F250F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:30:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFBB81F210B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889B2189502;
-	Tue, 30 Jul 2024 17:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B824189514;
+	Tue, 30 Jul 2024 16:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsf7mTX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxi8a0Sb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EA6187FF6;
-	Tue, 30 Jul 2024 17:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012CF1A6195;
+	Tue, 30 Jul 2024 16:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360602; cv=none; b=NNXKGE2U0HV6hdZxrlBXmhcIPYICx0P8O0zBHJ8XrRmPMMikS1DwuPfa0HEapkOMucMuY5sDARro9A1xlQPYbiLoJYbfW3voX8Q3wkJ6XguHMkU3+FTdcacuho/c1cmbpeT9XMEqB7y0+H433brm1hVVldQ7Kx3z/z7ypVCW5IE=
+	t=1722358458; cv=none; b=cNvFzCUXzHH7s4B0/3/lvxSuN6nqs+gHF0++rmuXjYfnJ7gEeMRnqEiMo8rCUMG1NCZkkrgBC00MJ4dQQFjirF+Q1ag4oSiIXY4CQvhG552OgDzU4GihZLr58pJ5C+qbnrLDHG9+gPyLEi8R8tTm3i4RcQo8V5RwiQA/QkYQk6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360602; c=relaxed/simple;
-	bh=f5gJjUNPy0uwBQnkZd71nqYEncREi3l0yvLhzEW/UJ4=;
+	s=arc-20240116; t=1722358458; c=relaxed/simple;
+	bh=X/Jlp0LBfmcc3CG+NlO5lXUXid4hIB7qHw9D6jDC3t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlDQWlq4rb47KDAUFQGiyL/Jar3xFx8JmJNT/yS9ekjUAnwMuJK0IXvbd30UxW1MF8Fl5JTGoGCPcTbf7zHPEOK6mX7CMrI+BMw9WP0M9tYIrz7cefyd+/hgoJGg6NoopL4Z7Mn+3bVBdOCibPqRXswpLI8xDTz9dy4kpbkPNs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsf7mTX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD64C32782;
-	Tue, 30 Jul 2024 17:30:01 +0000 (UTC)
+	 MIME-Version; b=tuJG9KUbuJ8d9P6RQLwmK8Oy/Cc+tyz0p8cj2PRHSVkxDwpsN2zgmFWnuRttUGaBc481nNPgvPGOb76du7HDEH7BXNbCUe/+PSjyK78/SyYOTEs6Zto1+hO6WcKRcJa0thF/wG3x5X/YpzukwIygD/H3QoJrbrHwkZPjl0wyTu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxi8a0Sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75653C32782;
+	Tue, 30 Jul 2024 16:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360602;
-	bh=f5gJjUNPy0uwBQnkZd71nqYEncREi3l0yvLhzEW/UJ4=;
+	s=korg; t=1722358457;
+	bh=X/Jlp0LBfmcc3CG+NlO5lXUXid4hIB7qHw9D6jDC3t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsf7mTX/i83xyjz5PUUWlJZjk6hA1YZQ8lyOoUPrioHuSzgsQrNB7mAqor11xyDnA
-	 Wqfnv3LQ899w9dMxaPQNJziXg4H+rC7NlEuU3wtqH8QBll6brMAztyjvJzgqOVIV0a
-	 KbEkeVHrKqHr5XTm+Y9UkU3wDCW6wwbhVpE1Do54=
+	b=jxi8a0SbYQtQMuFCZ8P5uGS2sWH8hdjjFLP09hW8SKoPo6ah2zqD976mux6THHONk
+	 dXoekg1iQKqtcyQK/p5wYZPNIAhrP2ZAwC4sAPE66UkjXa26WsLm0xbowJfLAnke9N
+	 LAv978A+eIzxYpbV2ozNsUVmvne4t0k7wuiyRYOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 749/809] watchdog: rzg2l_wdt: Use pm_runtime_resume_and_get()
+	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com,
+	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+Subject: [PATCH 6.1 392/440] wifi: mac80211: check basic rates validity
 Date: Tue, 30 Jul 2024 17:50:25 +0200
-Message-ID: <20240730151754.542674767@linuxfoundation.org>
+Message-ID: <20240730151631.116892046@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f0ba0fcdd19943809b1a7f760f77f6673c6aa7f7 ]
+commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
 
-pm_runtime_get_sync() may return with error. In case it returns with error
-dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
-takes care of this. Thus use it.
+When userspace sets basic rates, it might send us some rates
+list that's empty or consists of invalid values only. We're
+currently ignoring invalid values and then may end up with a
+rates bitmap that's empty, which later results in a warning.
 
-Along with it the rzg2l_wdt_set_timeout() function was updated to
-propagate the result of rzg2l_wdt_start() to its caller.
+Reject the call if there were no valid rates.
 
-Fixes: 2cbc5cd0b55f ("watchdog: Add Watchdog Timer driver for RZ/G2L")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240531065723.1085423-4-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+Tested-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
+Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/rzg2l_wdt.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ net/mac80211/cfg.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/watchdog/rzg2l_wdt.c b/drivers/watchdog/rzg2l_wdt.c
-index 1741f98ca67c5..d87d4f50180c5 100644
---- a/drivers/watchdog/rzg2l_wdt.c
-+++ b/drivers/watchdog/rzg2l_wdt.c
-@@ -123,8 +123,11 @@ static void rzg2l_wdt_init_timeout(struct watchdog_device *wdev)
- static int rzg2l_wdt_start(struct watchdog_device *wdev)
- {
- 	struct rzg2l_wdt_priv *priv = watchdog_get_drvdata(wdev);
-+	int ret;
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2577,6 +2577,17 @@ static int ieee80211_change_bss(struct w
+ 	if (!sband)
+ 		return -EINVAL;
  
--	pm_runtime_get_sync(wdev->parent);
-+	ret = pm_runtime_resume_and_get(wdev->parent);
-+	if (ret)
-+		return ret;
- 
- 	/* Initialize time out */
- 	rzg2l_wdt_init_timeout(wdev);
-@@ -150,6 +153,8 @@ static int rzg2l_wdt_stop(struct watchdog_device *wdev)
- 
- static int rzg2l_wdt_set_timeout(struct watchdog_device *wdev, unsigned int timeout)
- {
-+	int ret = 0;
++	if (params->basic_rates) {
++		if (!ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
++					      wiphy->bands[sband->band],
++					      params->basic_rates,
++					      params->basic_rates_len,
++					      &sdata->vif.bss_conf.basic_rates))
++			return -EINVAL;
++		changed |= BSS_CHANGED_BASIC_RATES;
++		ieee80211_check_rate_mask(&sdata->deflink);
++	}
 +
- 	wdev->timeout = timeout;
- 
- 	/*
-@@ -159,10 +164,10 @@ static int rzg2l_wdt_set_timeout(struct watchdog_device *wdev, unsigned int time
- 	 */
- 	if (watchdog_active(wdev)) {
- 		rzg2l_wdt_stop(wdev);
--		rzg2l_wdt_start(wdev);
-+		ret = rzg2l_wdt_start(wdev);
+ 	if (params->use_cts_prot >= 0) {
+ 		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
+ 		changed |= BSS_CHANGED_ERP_CTS_PROT;
+@@ -2600,16 +2611,6 @@ static int ieee80211_change_bss(struct w
+ 		changed |= BSS_CHANGED_ERP_SLOT;
  	}
  
--	return 0;
-+	return ret;
- }
- 
- static int rzg2l_wdt_restart(struct watchdog_device *wdev,
--- 
-2.43.0
-
+-	if (params->basic_rates) {
+-		ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
+-					 wiphy->bands[sband->band],
+-					 params->basic_rates,
+-					 params->basic_rates_len,
+-					 &sdata->vif.bss_conf.basic_rates);
+-		changed |= BSS_CHANGED_BASIC_RATES;
+-		ieee80211_check_rate_mask(&sdata->deflink);
+-	}
+-
+ 	if (params->ap_isolate >= 0) {
+ 		if (params->ap_isolate)
+ 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
 
 
 
