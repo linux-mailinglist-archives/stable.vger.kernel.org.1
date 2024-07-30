@@ -1,118 +1,215 @@
-Return-Path: <stable+bounces-63522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC7894195F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63414941A38
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8793E1F24826
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:31:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8683D1C22F79
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9740718801C;
-	Tue, 30 Jul 2024 16:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345E418454A;
+	Tue, 30 Jul 2024 16:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="QnvKyE+P"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAwDcbhE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822841898E4
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 16:31:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB661A6192
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 16:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357100; cv=none; b=s0faV6rzaAPp0RIXxW4vJ4VJwVlc4V8rXBhkQJrFf57tAHx90hFxzyo67QxfLtIjIzZ6mR+q/FnmFXUWPnUCIBuvqrSbss6fJCBTP5wC7DqBT43VZvKc5MwilXtmVPE4zq7uNaUdJa4wnA/pRm2MrPqLo6GmMCbUkrZ4ONOOj1U=
+	t=1722357680; cv=none; b=Qu63s01DerA1WO8eh40PCiD4El3iJegHksHgwN2jcY9I9iWOBqsIvg0aKDPzO/tBZymlKUxjTBk+BQaA7zHGuiIVU2mwCVphyAfVdLtNfspNUvalxmnPU/sK+OeWf0SVDm91pS8F/iakqQQIFZXMCkFocGOyhdVfQdsKFdWhrz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357100; c=relaxed/simple;
-	bh=nyrerJDyhxrjVhddkZkyuAsVrv4YgfVF935QAWq/eAk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jzZnduQZL013mo92OWJDfLFaMnsUFA+ykQGjobpPFVUOz6VwBb7KViyUJ8BmC2pSNG7QBXqpAhyAvyk1a/1PtefkyXt3Hl4oFI+3PQuHXdEkq9O7KAf5YzqkotBIxAe/fIZqjJZH0Q/jWi+vH9S26K4/i5vwbY57swnxuiBuOyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=QnvKyE+P; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a7a8a4f21aeso627411766b.2
-        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:31:38 -0700 (PDT)
+	s=arc-20240116; t=1722357680; c=relaxed/simple;
+	bh=wWV6OVcVe10jstJ+qNJkO6ruxHHuc4u0/MpzIMVmfgg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=tgS7Nv/QL0SpJuHA0jxyglQL+h/8slPVwS9jQhMFgLDHvh3WRuLrD1gJXPHK2Rh7Yci89nVrJyrrkFRxKA4dCfrO2OV9OopOO/6wdrxm0L1+H9/e6hFeCUJKKfwiA0tvawTRvQpWH7aG5Ut5vE9uB0sKz1W9vll6w2GVBr+QSVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EAwDcbhE; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52efe4c7c16so7060213e87.0
+        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:41:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1722357097; x=1722961897; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1722357676; x=1722962476; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E5cj6IhKT08G/JY9sA9ZAZBlaQGsxU+ED4GyGLcLHJ8=;
-        b=QnvKyE+P7ei24VE0NqPYK3qsHjeemZi0qale+y13a3WGNC/yFv3GBiAmw0By4yXeLq
-         chDpI2yu/44/lcwrtidEjFufcEWGYJlHMshTqSW9i6rgwXCrlWRB7w+MqhXKUCBB7Jc4
-         ltl1mSZgefuYvaX2j2xHBm9uvuMmqtYKVN/AcQuFqfmKs6iHzP7NFfMf2vjcD8XRM5Yp
-         9QnlC+TWA8R5mp46TPJvZpkYKEKcYXk2GSE5lyf3ICAG1tX6Rje3bqXUDzC1SmGjL4E3
-         lAohMo5bN7gi1XmciGbR2jjmW2w2u5sKJJB2ilmSYAGdEWxazHWfKAyr95t+bDoTfTXn
-         TERA==
+        bh=BXKV1G6Qjh92ziY7QtfKBV7evZIaDh5DHsUlmmYPSaw=;
+        b=EAwDcbhE2+4nXEuikBS+y3Ppk3Ueto5fohRSFCiIvA+/KDuAulFkIpU4/yEYXIVaUh
+         x5oMXxpb2wdqOu8v65pZhnqQMo8Ae5MrSPIfFFIMg5Fgj35K2VZIkLrWwiJW9hVx1d0K
+         Q7ylVtXGprhg4G8lkup7Shc/tjsu2/+csuhdtYrh46DHnHU0md73zyri270tR8AOs1/K
+         zPnLeJd/5nDcIY3oJBK5xji1j9Dqqv0AcSoPZsNssrUvD5C/Hp7b5FXfn1GFIbrvVuvk
+         AGlfckd2XOJpFrv60Lf3eEsj2/58MB75l/xjgyBCfdEG1lnRya11m7KxUoMly77NdZb+
+         3wqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722357097; x=1722961897;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E5cj6IhKT08G/JY9sA9ZAZBlaQGsxU+ED4GyGLcLHJ8=;
-        b=fmH84q2pq+ddaKQ8NyHc6wy0Me5mZoFhv9YJiACsysbZi93NRVtS4rjE1AZ7VhPvfo
-         m+pGMuvmxrTSqwKP8DMIzZRj5C2wZ9NZ79L9Sj5125CEMrZ9ReTBuma2uIj8bjFfjuAX
-         kiMRKUXKO/vcMiC9lQJJWKRgAFKEQ6pTbWipljFAiwnw033kCNoD7iO4WGnHT7HBINnV
-         PxmUyv2h+Lf34H04gBb4M9bmYy7REIEhNdYRCsqHBfIuJcQIYVHsP7dJsJHlCrKkQhZi
-         F3iJDw7y1xE9j4IWbJLxqZn9qaaVj+2a9DQQ+k/P3AxMXOkT1mauhPF/srEnOTajy03j
-         gTbw==
-X-Forwarded-Encrypted: i=1; AJvYcCX6z0nXMoIE/n7IfL7fyvwbtk7V9P6ZWM9MK4+1ZNsBqgo+Ozl2JSwx5bUt6KEUYhJvTcnlAwF1NoYZmDWVzQvb9K1k2vpM
-X-Gm-Message-State: AOJu0Yybrf7tF3l+2lsx8CLNyAeVscbZGoEKhSK0sH0u62O/Kbu9DYgi
-	GxwHEmxq/NRFz73qkT+LKmx4R2FL7DwGkPhGj9oq2JKlx2jet2qLIcXFhicrYPQpgDs9idKHEiX
-	a6+8tTDDb68yEgrb2z2k3LM/i6rYV93DVg0n46g==
-X-Google-Smtp-Source: AGHT+IH7khnXrujEv1gKQnGzEfjEWyF4QEf2ukDbjiCueUR6RcV66FHsXp7NckoSkFnWoeFBMNqlnHILehdexStSq60=
-X-Received: by 2002:a17:907:7284:b0:a77:dd1c:6273 with SMTP id
- a640c23a62f3a-a7d3ff7cb6fmr795199266b.12.1722357096904; Tue, 30 Jul 2024
- 09:31:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722357676; x=1722962476;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BXKV1G6Qjh92ziY7QtfKBV7evZIaDh5DHsUlmmYPSaw=;
+        b=vuiRMCnKHoU00piWPRZTinIbqcKRiufI5klA6MCZeJ/8B9AROyi1gk/8bU5SMSax56
+         1jvC2PxOK408Gj+u6RoXbHfGp02XvEx/ytaN60+HBE4h8w7C1TG7CRykIGo+dddynmNs
+         njhmPuFgs6Ac90X/Ns84jHCT0hawPVCkQVR79JLT1S51LWINAd9qRCcG3DdDEenbwHKJ
+         LrdvmkfjxGk/urqw6tbeLPxaTXBZCwHc9xPtj4ZyWa3mvw7cPWh9k8MXeCuVW9ee2wyP
+         5bJGPMN+TRuqb6wlqMlVeDtF62VVDgWRQdsneM8/+X0899SiVDJOogToJvABtBynFwdM
+         CRZg==
+X-Gm-Message-State: AOJu0Yx9K0u0jnqNz1ipOri+ItIWMNabM5qtXhaF1WEnMpjZS7SiNtnR
+	I8lALYAgRpF7icquA+k+yBe9WF4aQukQ/eCipS8q8JHVfWyXts62
+X-Google-Smtp-Source: AGHT+IHwUamOqGpDD7aAkFSLhLOzNqCYn+sRGvldbwNsG9lt4bVY3ptAO2wYzc1pJ596Kw1WNojKTg==
+X-Received: by 2002:a05:6512:3196:b0:52e:ff2b:dfd8 with SMTP id 2adb3069b0e04-5309b2e0af1mr7772529e87.54.1722357675804;
+        Tue, 30 Jul 2024 09:41:15 -0700 (PDT)
+Received: from [84.217.175.36] (c-f6a4d954.51034-0-757473696b74.bbcust.telenor.se. [84.217.175.36])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acadb82e7sm663784666b.208.2024.07.30.09.41.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jul 2024 09:41:15 -0700 (PDT)
+Message-ID: <eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com>
+Date: Tue, 30 Jul 2024 18:41:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240729092828.857383-1-max.kellermann@ionos.com> <20240730-bogen-absuchen-8ab2d9ba0406@brauner>
-In-Reply-To: <20240730-bogen-absuchen-8ab2d9ba0406@brauner>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Tue, 30 Jul 2024 18:31:26 +0200
-Message-ID: <CAKPOu+9DPbtpDOtmLf=kSvK8Vw7OQfET4-Tn6bHAcXe90HFpKg@mail.gmail.com>
-Subject: Re: [PATCH v2] fs/netfs/fscache_io: remove the obsolete
- "using_pgpriv2" flag
-To: Christian Brauner <brauner@kernel.org>
-Cc: dhowells@redhat.com, jlayton@kernel.org, willy@infradead.org, 
-	linux-cachefs@redhat.com, linux-fsdevel@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: tony.luck@intel.com
+Cc: stable@vger.kernel.org
+From: Thomas Lindroth <thomas.lindroth@gmail.com>
+Subject: [STABLE REGRESSION] Possible missing backport of x86_match_cpu()
+ change in v6.1.96
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 30, 2024 at 2:30=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-> Patches in the vfs.fixes branch should appear in linux-next soon.
->
-> Please report any outstanding bugs that were missed during review in a
-> new review to the original patch series allowing us to drop it.
->
-> It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> patch has now been applied. If possible patch trailers will be updated.
->
-> Note that commit hashes shown below are subject to change due to rebase,
-> trailer updates or similar. If in doubt, please check the listed branch.
->
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> branch: vfs.fixes
->
-> [1/1] fs/netfs/fscache_io: remove the obsolete "using_pgpriv2" flag
->       https://git.kernel.org/vfs/vfs/c/f7244a2b1d4c
+I upgraded from kernel 6.1.94 to 6.1.99 on one of my machines and noticed that
+the dmesg line "Incomplete global flushes, disabling PCID" had disappeared from
+the log.
 
-Hi Christian,
+That message comes from commit c26b9e193172f48cd0ccc64285337106fb8aa804, which
+disables PCID support on some broken hardware in arch/x86/mm/init.c:
 
-thanks, but this patch turned out to be bad; see
-https://lore.kernel.org/linux-fsdevel/3575457.1722355300@warthog.procyon.or=
-g.uk/
-for a better candidate. I guess David will post it for merging soon.
-Please revert mine.
+#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,     \
+                              .family  = 6,                     \
+                              .model = _model,                  \
+                            }
+/*
+  * INVLPG may not properly flush Global entries
+  * on these CPUs when PCIDs are enabled.
+  */
+static const struct x86_cpu_id invlpg_miss_ids[] = {
+        INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
+        INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
+        INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
+        INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
+        INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
+        INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
+        {}
 
-Max
+...
+
+if (x86_match_cpu(invlpg_miss_ids)) {
+         pr_info("Incomplete global flushes, disabling PCID");
+         setup_clear_cpu_cap(X86_FEATURE_PCID);
+         return;
+}
+
+arch/x86/mm/init.c, which has that code, hasn't changed in 6.1.94 -> 6.1.99.
+However I found a commit changing how x86_match_cpu() behaves in 6.1.96:
+
+commit 8ab1361b2eae44077fef4adea16228d44ffb860c
+Author: Tony Luck <tony.luck@intel.com>
+Date:   Mon May 20 15:45:33 2024 -0700
+
+     x86/cpu: Fix x86_match_cpu() to match just X86_VENDOR_INTEL
+
+I suspect this broke the PCID disabling code in arch/x86/mm/init.c.
+The commit message says:
+
+"Add a new flags field to struct x86_cpu_id that has a bit set to indicate that
+this entry in the array is valid. Update X86_MATCH*() macros to set that bit.
+Change the end-marker check in x86_match_cpu() to just check the flags field
+for this bit."
+
+But the PCID disabling code in 6.1.99 does not make use of the
+X86_MATCH*() macros; instead, it defines a new INTEL_MATCH() macro without the
+X86_CPU_ID_FLAG_ENTRY_VALID flag.
+
+I looked in upstream git and found an existing fix:
+commit 2eda374e883ad297bd9fe575a16c1dc850346075
+Author: Tony Luck <tony.luck@intel.com>
+Date:   Wed Apr 24 11:15:18 2024 -0700
+
+     x86/mm: Switch to new Intel CPU model defines
+
+     New CPU #defines encode vendor and family as well as model.
+
+     [ dhansen: vertically align 0's in invlpg_miss_ids[] ]
+
+     Signed-off-by: Tony Luck <tony.luck@intel.com>
+     Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+     Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+     Link: https://lore.kernel.org/all/20240424181518.41946-1-tony.luck%40intel.com
+
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 679893ea5e68..6b43b6480354 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -261,21 +261,17 @@ static void __init probe_page_size_mask(void)
+         }
+  }
+  
+-#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,     \
+-                             .family  = 6,                     \
+-                             .model = _model,                  \
+-                           }
+  /*
+   * INVLPG may not properly flush Global entries
+   * on these CPUs when PCIDs are enabled.
+   */
+  static const struct x86_cpu_id invlpg_miss_ids[] = {
+-       INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
+-       INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
+-       INTEL_MATCH(INTEL_FAM6_ATOM_GRACEMONT ),
+-       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
+-       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
+-       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
++       X86_MATCH_VFM(INTEL_ALDERLAKE,      0),
++       X86_MATCH_VFM(INTEL_ALDERLAKE_L,    0),
++       X86_MATCH_VFM(INTEL_ATOM_GRACEMONT, 0),
++       X86_MATCH_VFM(INTEL_RAPTORLAKE,     0),
++       X86_MATCH_VFM(INTEL_RAPTORLAKE_P,   0),
++       X86_MATCH_VFM(INTEL_RAPTORLAKE_S,   0),
+         {}
+  };
+
+The fix removed the custom INTEL_MATCH macro and uses the X86_MATCH*() macros
+with X86_CPU_ID_FLAG_ENTRY_VALID. This fixed commit was never backported to 6.1,
+so it looks like a stable series regression due to a missing backport.
+
+If I apply the fix patch on 6.1.99, the PCID disabling code activates again.
+I had to change all the INTEL_* definitions to the old definitions to make it
+build:
+
+  static const struct x86_cpu_id invlpg_miss_ids[] = {
+-       INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
+-       INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
+-       INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
+-       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
+-       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
+-       INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
++       X86_MATCH_VFM(INTEL_FAM6_ALDERLAKE,    0),
++       X86_MATCH_VFM(INTEL_FAM6_ALDERLAKE_L,  0),
++       X86_MATCH_VFM(INTEL_FAM6_ALDERLAKE_N,  0),
++       X86_MATCH_VFM(INTEL_FAM6_RAPTORLAKE,   0),
++       X86_MATCH_VFM(INTEL_FAM6_RAPTORLAKE_P, 0),
++       X86_MATCH_VFM(INTEL_FAM6_RAPTORLAKE_S, 0),
+         {}
+  };
+
+I only looked at the code in arch/x86/mm/init.c, so there may be other uses of
+x86_match_cpu() in the kernel that are also broken in 6.1.99.
+This email is meant as a bug report, not a pull request. Someone else should
+confirm the problem and submit the appropriate fix.
 
