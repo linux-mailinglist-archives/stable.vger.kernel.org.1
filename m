@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB967941A02
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8946D941D09
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:14:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE991F237CD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAF7B1C23598
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400F818455C;
-	Tue, 30 Jul 2024 16:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A6E1A76D0;
+	Tue, 30 Jul 2024 17:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqP7ICBv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sciZCw30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35A81A6192;
-	Tue, 30 Jul 2024 16:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780C11A76CE;
+	Tue, 30 Jul 2024 17:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357539; cv=none; b=Gzi6Tw47aRI4fwhHGH9Rld7lzS9mG36zwrOnX4/Wdit3Prv0UoHLfMqrWb8zacJepFnf/z9NE7WZyGrB4QeS6FoL2JLEpDm0G633pRSTGcsNU7O+N+wGJK1HjMPNTnR15+7JACH7mXw7fhgCI15wajz7eA7LA014jEkjsta3/7U=
+	t=1722359515; cv=none; b=oAvruNIIsNY8WiM4lPV3s7WhTjBMAVbdZib9bxbzvVBrnxsdOfarUpZo0KILJ2QsvgVh4cVb6dH5W4JRPsFuraTWVliE32E14pS69t6Erw3f0Nifo793woor6CuFQsAkDePKDmZYpszRA5D3FrA4V1416i43ocqOChbJumk0qRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357539; c=relaxed/simple;
-	bh=L6VhuMIqd5OQXNFX5C+xGQY7oyq+nFHqIYlpxD1Kyj8=;
+	s=arc-20240116; t=1722359515; c=relaxed/simple;
+	bh=6Q4xdb1roaPVOMnubtvYfmjy6KSHJLNUEGrnNNCYK/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NG7H51lW/yexgT+FAmVl5h2+b6t028OtgrG2hYfkY0pxUfGCop+d9s1yk4mMokMP08NBtXgmcy5UnUiPGN2t2BKtQz6GeS50gbJePIOVQrNqamJY9ur5C5dgvEp/fUmQ0fwKmKp7RWZD05qbQilsZ0bAzPYn20dzPQNP7PAzv5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqP7ICBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7702CC4AF0F;
-	Tue, 30 Jul 2024 16:38:58 +0000 (UTC)
+	 MIME-Version; b=pL3n7sPxzrYOVBsYjWDrNbjIghIf+3IB9KxTjkqUpHlqxTMQu1kc0DlGVHGisVv37frQQkmREDo4zRBl60nRgB6e7KYO8h63xHQo9EZIJE/ECG9B1pch4RouuhXcLZQl/sGhatLGPdVobQQuLr1s2b4pmuPTQ7jwBI9UeqguRcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sciZCw30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E16C32782;
+	Tue, 30 Jul 2024 17:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357538;
-	bh=L6VhuMIqd5OQXNFX5C+xGQY7oyq+nFHqIYlpxD1Kyj8=;
+	s=korg; t=1722359515;
+	bh=6Q4xdb1roaPVOMnubtvYfmjy6KSHJLNUEGrnNNCYK/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqP7ICBv+jPwOd8aHjB9RaVxBKDVfYmyNQtXYBGi7OpNDA1QvAaHQnAf7o9Nt7wV3
-	 Mh4UjGc0ErvIFVg3wCjrul4HkrFN82AMYL0HZ1El/ivtEelfL5W9ePqrY61Gfj4+n+
-	 YuhwXnsXMOmu+fdL7wkjDN87rR3IVLd46Wtbt/eY=
+	b=sciZCw30fpw420tdJea4zpzn5UXmwhHxOFdJAStPbNgNRxKB/Iu4LB3j+xK+W2SI8
+	 gNQIG9TbCGnLNdYiOBiz5JuO4R+2LWIqXzhi/t38kJ7j+DeQ3NnP4TJ1p4W2sPkEu6
+	 2HJ6bkGL2gV4hrWxLoBUZ5l1Jtw13JtgOSKPap5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leon@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/568] RDMA/cache: Release GID table even if leak is detected
+Subject: [PATCH 6.10 495/809] fs/ntfs3: Replace inode_trylock with inode_lock
 Date: Tue, 30 Jul 2024 17:46:11 +0200
-Message-ID: <20240730151650.193864820@linuxfoundation.org>
+Message-ID: <20240730151744.288876134@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit a92fbeac7e94a420b55570c10fe1b90e64da4025 ]
+[ Upstream commit 69505fe98f198ee813898cbcaf6770949636430b ]
 
-When the table is released, we nullify pointer to GID table, it means
-that in case GID entry leak is detected, we will leak table too.
+The issue was detected due to xfstest 465 failing.
 
-Delete code that prevents table destruction.
-
-Fixes: b150c3862d21 ("IB/core: Introduce GID entry reference counts")
-Link: https://lore.kernel.org/r/a62560af06ba82c88ef9194982bfa63d14768ff9.1716900410.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cache.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ fs/ntfs3/file.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
-index 7acc0f936dad3..b7251ed7a8dfb 100644
---- a/drivers/infiniband/core/cache.c
-+++ b/drivers/infiniband/core/cache.c
-@@ -794,7 +794,6 @@ static struct ib_gid_table *alloc_gid_table(int sz)
- static void release_gid_table(struct ib_device *device,
- 			      struct ib_gid_table *table)
- {
--	bool leak = false;
- 	int i;
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 2f903b6ce1570..9ae202901f3c0 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -299,10 +299,7 @@ static int ntfs_file_mmap(struct file *file, struct vm_area_struct *vma)
+ 		}
  
- 	if (!table)
-@@ -803,15 +802,12 @@ static void release_gid_table(struct ib_device *device,
- 	for (i = 0; i < table->sz; i++) {
- 		if (is_gid_entry_free(table->data_vec[i]))
- 			continue;
--		if (kref_read(&table->data_vec[i]->kref) > 1) {
--			dev_err(&device->dev,
--				"GID entry ref leak for index %d ref=%u\n", i,
--				kref_read(&table->data_vec[i]->kref));
--			leak = true;
--		}
-+
-+		WARN_ONCE(true,
-+			  "GID entry ref leak for dev %s index %d ref=%u\n",
-+			  dev_name(&device->dev), i,
-+			  kref_read(&table->data_vec[i]->kref));
- 	}
--	if (leak)
--		return;
- 
- 	mutex_destroy(&table->lock);
- 	kfree(table->data_vec);
+ 		if (ni->i_valid < to) {
+-			if (!inode_trylock(inode)) {
+-				err = -EAGAIN;
+-				goto out;
+-			}
++			inode_lock(inode);
+ 			err = ntfs_extend_initialized_size(file, ni,
+ 							   ni->i_valid, to);
+ 			inode_unlock(inode);
 -- 
 2.43.0
 
