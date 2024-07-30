@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886AE941BD2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD81941EA4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E68DB265F9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66B061F210FA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994C118990A;
-	Tue, 30 Jul 2024 16:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16FB1898EC;
+	Tue, 30 Jul 2024 17:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeSaeTyj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSA9RTZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2A517D8BB;
-	Tue, 30 Jul 2024 16:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610931A76A5;
+	Tue, 30 Jul 2024 17:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358744; cv=none; b=G5fpVAeMuKChUSUPD94Tg7wM3PhRIYdDWxJ2eIwZwUEQ4XXB6bxZ6PaxMzb00JiSHMHK7ytKCQm4cYkHOpccqrGXNzlVpBnQuJqVGBoAQtnovSHBOoCVkk1X5GcYUEQNnqajFJvk6f9Q4DlSaxi0p1Ji6Dw+AzQUEO34aBHLdgc=
+	t=1722360681; cv=none; b=Os6JUHakWKP2bIeObnQle6mvHsZpettrC2Gs7j85xkNUZcTPgvw4424gRF3LYFwJS2JLm4X6ILE1XZuob1mxLktnQEdPVXTf5QJH8HGbajYyp03SwTWnD+adgxeoEkMK4WOa+rqPTxRp/EceW100h1E3sspHYLlJZ1sKDtVRBHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358744; c=relaxed/simple;
-	bh=DEfxtJ8WDI+pjkCDishJShdodQFX8cXdxVtQYWSt188=;
+	s=arc-20240116; t=1722360681; c=relaxed/simple;
+	bh=AzjUt5OUoXDCJG5qij4XxX7prv8irbwifaqKc2/104U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdMswDTr6Dy4sxVdt7FJRlWMN7j7GCSQkxUUpBkKe2D4fRF1Cua/AuuQC86zd0l58lUqFd1CdVF2L2PESOrtgxbgby50RaSKq9/ogvef7fQlf7l4u/3W4c2Q6N1gE3FZNRCAZK9pj6hJzehvYVra+Mef5Xl9/wE1NgBozvoiTs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeSaeTyj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7F2C32782;
-	Tue, 30 Jul 2024 16:59:03 +0000 (UTC)
+	 MIME-Version; b=GzqlBtSL7C5VG5aWc60xhZlhYSI90Jds8FOBbyeCwhGARPOg3v9l3mwm1HO2z+pFcQN8H5x6y9GM0lMGUfxJhiyxgQ049ekYbi8IlXqigjbU9kIlN641ugeSrGW7trub7quoNnilpA6jLrAljty/cw3mHXOc8jLHzd4NK/lxEDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSA9RTZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5DFC4AF0E;
+	Tue, 30 Jul 2024 17:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358744;
-	bh=DEfxtJ8WDI+pjkCDishJShdodQFX8cXdxVtQYWSt188=;
+	s=korg; t=1722360681;
+	bh=AzjUt5OUoXDCJG5qij4XxX7prv8irbwifaqKc2/104U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PeSaeTyjB8W+IpPP77UHfw47hLSq/rxC3dniAoIJ8r9QOzbc8nvsKNhk7DNiamNQh
-	 VjZEHipjAmokYEuvRiH+OLOErcU+s6aDwJG2p36j7FbMacHHBwNPMR2NshSVA/Nh90
-	 NJQu7yxNkvInF3qG1kv0+fOjNUG+qegWjqz1sN8k=
+	b=NSA9RTZX9QLxmZkljHvpIaL7zMJuXzquIKelbUrCGiiiUnmpRmRMWZ7H8bHRKkmLD
+	 COvi13vd7H4QlgYxFsw6Xf+4LSMTsI3ohZV2QktMqecWiRRy7oUrw72QnSl1/vexPG
+	 dS9k968jN7VXsCAwRJwvqHQOwQ4Oz7RKPXk2rDnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 418/440] mISDN: Fix a use after free in hfcmulti_tx()
+Subject: [PATCH 6.10 775/809] powerpc: fix a file leak in kvm_vcpu_ioctl_enable_cap()
 Date: Tue, 30 Jul 2024 17:50:51 +0200
-Message-ID: <20240730151632.112991020@linuxfoundation.org>
+Message-ID: <20240730151755.579213047@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 61ab751451f5ebd0b98e02276a44e23a10110402 ]
+[ Upstream commit b4cf5fc01ce83e5c0bcf3dbb9f929428646b9098 ]
 
-Don't dereference *sp after calling dev_kfree_skb(*sp).
+missing fdput() on one of the failure exits
 
-Fixes: af69fb3a8ffa ("Add mISDN HFC multiport driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8be65f5a-c2dd-4ba0-8a10-bfe5980b8cfb@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: eacc56bb9de3e # v5.2
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/hardware/mISDN/hfcmulti.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/powerpc/kvm/powerpc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/isdn/hardware/mISDN/hfcmulti.c b/drivers/isdn/hardware/mISDN/hfcmulti.c
-index e840609c50eb7..2063afffd0853 100644
---- a/drivers/isdn/hardware/mISDN/hfcmulti.c
-+++ b/drivers/isdn/hardware/mISDN/hfcmulti.c
-@@ -1931,7 +1931,7 @@ hfcmulti_dtmf(struct hfc_multi *hc)
- static void
- hfcmulti_tx(struct hfc_multi *hc, int ch)
- {
--	int i, ii, temp, len = 0;
-+	int i, ii, temp, tmp_len, len = 0;
- 	int Zspace, z1, z2; /* must be int for calculation */
- 	int Fspace, f1, f2;
- 	u_char *d;
-@@ -2152,14 +2152,15 @@ hfcmulti_tx(struct hfc_multi *hc, int ch)
- 		HFC_wait_nodebug(hc);
- 	}
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index d32abe7fe6ab7..d11767208bfc1 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -1984,8 +1984,10 @@ static int kvm_vcpu_ioctl_enable_cap(struct kvm_vcpu *vcpu,
+ 			break;
  
-+	tmp_len = (*sp)->len;
- 	dev_kfree_skb(*sp);
- 	/* check for next frame */
- 	if (bch && get_next_bframe(bch)) {
--		len = (*sp)->len;
-+		len = tmp_len;
- 		goto next_frame;
- 	}
- 	if (dch && get_next_dframe(dch)) {
--		len = (*sp)->len;
-+		len = tmp_len;
- 		goto next_frame;
- 	}
+ 		r = -ENXIO;
+-		if (!xive_enabled())
++		if (!xive_enabled()) {
++			fdput(f);
+ 			break;
++		}
  
+ 		r = -EPERM;
+ 		dev = kvm_device_from_filp(f.file);
 -- 
 2.43.0
 
