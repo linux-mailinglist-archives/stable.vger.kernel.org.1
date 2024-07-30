@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6616A941CE4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2769419BB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 977851C23A6A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 973E8287EA4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B6F18A6A8;
-	Tue, 30 Jul 2024 17:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FB1433A9;
+	Tue, 30 Jul 2024 16:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9q8wcjS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOQbnXzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F89D18454A;
-	Tue, 30 Jul 2024 17:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9356C1A619B;
+	Tue, 30 Jul 2024 16:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359388; cv=none; b=NvWNHdi6rFhOr4g9qm4juYGBAs93f89Dw8SzbrU9FeemDcUjRbnIL/lR733zInkalpG65Zv41GkQmhTpKc9ScTV/mxfGoTKWI3w/TI8njFy7KKuz9bNr/zOj40ArUREjrnklMWmTVgvengElUTM3W2/eNxPgEhcRXMAYKSMLkqg=
+	t=1722357344; cv=none; b=KpbmHqQQ4PMdUlz75bwjSHNE5heVtWlW06//QAbmvNu9Zoz1QxVpATCbOwjrqSH6WtRB1ZVZUsuNjGli77u8SCxtCoQZwwCh6rtflEy6/iZpZ9fdjVHNsGfu3gpHDGOPCk5g9mxpElFYfxVommAnqrhKmbPzJ3DFq2OjmskDUmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359388; c=relaxed/simple;
-	bh=zN3vu+5quAQMCNDCtnmSKfLYV9LCRk+BpM9ikwxLkyU=;
+	s=arc-20240116; t=1722357344; c=relaxed/simple;
+	bh=jaN4r44kinXzrAzFFIjrWTuK5mU/pmyJFPA3MwMt0yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFyKtBF24fgbRaEbpUiVz0TStL4nGKCR3ytvovya+LBVo9R/HqZQt3EOqMys6MwRHqfOCfK5tJetjjub7KFEpe8zj7GpS59ppqviJXXAQS08gvcPsaL0Y7hSyFST53R3Yo4jl4xhPjWXCGpIPchJEj8YlUiaFv5ymv6xZPdP9F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9q8wcjS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FE0C32782;
-	Tue, 30 Jul 2024 17:09:47 +0000 (UTC)
+	 MIME-Version; b=nXagKxzfrkPN/baljeBWGa0Sjm+t5sPT7IMW+Yxbf0A0mjrdnKkkx4kEKgAMNoHFA5jl8m6IK8KbNnCN/ONNkNn5A2WMkJU1++Pi4Ncu63jKO26QXW5a+WvzhcWeVqNX/6OY8Y4NRJp1JTLrXSGxbD85K4PwIcZ0udzq0YPXJ5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOQbnXzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116DDC32782;
+	Tue, 30 Jul 2024 16:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359387;
-	bh=zN3vu+5quAQMCNDCtnmSKfLYV9LCRk+BpM9ikwxLkyU=;
+	s=korg; t=1722357344;
+	bh=jaN4r44kinXzrAzFFIjrWTuK5mU/pmyJFPA3MwMt0yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9q8wcjS4E32+vA8vJ3axjDvRBqYDoloeC+EyLKefwHIrktx1tCLU0/IdNuLB+3/9
-	 unt5XhqVQpw5iQwmwce9i+YKaWpdYW7EfvAZUlFi0tek5TfErP8/sCL501kfTzRl8V
-	 59P0ILq5w+GNzMX+yu3oJXdb5P0hbjkJpLwjaMZ0=
+	b=VOQbnXzZmHH51lX7KzcGpiDvfoNvtucW4ETbKOV2QR8uCepXwvM6skXenO7lLw5uF
+	 osNO1zI74zcKWxe94+QTcY5LfcUVoUVmvHQJsskc0WJwiboAjbwjiFgLtgDmB7SfDn
+	 nIr+esSkGUEcSK/PYdaV8FNxAHj1ehcmDH7+3Rgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 477/809] ipvs: properly dereference pe in ip_vs_add_service
+Subject: [PATCH 6.6 246/568] SUNRPC: Fixup gss_status tracepoint error output
 Date: Tue, 30 Jul 2024 17:45:53 +0200
-Message-ID: <20240730151743.575550136@linuxfoundation.org>
+Message-ID: <20240730151649.496744351@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit cbd070a4ae62f119058973f6d2c984e325bce6e7 ]
+[ Upstream commit b9fae9f06d84ffab0f3f9118f3a96bbcdc528bf6 ]
 
-Use pe directly to resolve sparse warning:
+The GSS routine errors are values, not flags.
 
-  net/netfilter/ipvs/ip_vs_ctl.c:1471:27: warning: dereference of noderef expression
-
-Fixes: 39b972231536 ("ipvs: handle connections started by real-servers")
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/trace/events/rpcgss.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index b6d0dcf3a5c34..f4384e147ee16 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1459,18 +1459,18 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
- 	if (ret < 0)
- 		goto out_err;
+diff --git a/include/trace/events/rpcgss.h b/include/trace/events/rpcgss.h
+index f50fcafc69de2..78704f1209d3e 100644
+--- a/include/trace/events/rpcgss.h
++++ b/include/trace/events/rpcgss.h
+@@ -54,7 +54,7 @@ TRACE_DEFINE_ENUM(GSS_S_UNSEQ_TOKEN);
+ TRACE_DEFINE_ENUM(GSS_S_GAP_TOKEN);
  
--	/* Bind the ct retriever */
--	RCU_INIT_POINTER(svc->pe, pe);
--	pe = NULL;
--
- 	/* Update the virtual service counters */
- 	if (svc->port == FTPPORT)
- 		atomic_inc(&ipvs->ftpsvc_counter);
- 	else if (svc->port == 0)
- 		atomic_inc(&ipvs->nullsvc_counter);
--	if (svc->pe && svc->pe->conn_out)
-+	if (pe && pe->conn_out)
- 		atomic_inc(&ipvs->conn_out_counter);
- 
-+	/* Bind the ct retriever */
-+	RCU_INIT_POINTER(svc->pe, pe);
-+	pe = NULL;
-+
- 	/* Count only IPv4 services for old get/setsockopt interface */
- 	if (svc->af == AF_INET)
- 		ipvs->num_services++;
+ #define show_gss_status(x)						\
+-	__print_flags(x, "|",						\
++	__print_symbolic(x, 						\
+ 		{ GSS_S_BAD_MECH, "GSS_S_BAD_MECH" },			\
+ 		{ GSS_S_BAD_NAME, "GSS_S_BAD_NAME" },			\
+ 		{ GSS_S_BAD_NAMETYPE, "GSS_S_BAD_NAMETYPE" },		\
 -- 
 2.43.0
 
