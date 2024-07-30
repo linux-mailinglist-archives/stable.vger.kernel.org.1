@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-63926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC63941B4E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13077941DF2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC838282A09
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFE65289AE8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869DF18990C;
-	Tue, 30 Jul 2024 16:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C78F1A76BF;
+	Tue, 30 Jul 2024 17:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxmsVAPp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvkDG4vH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CDF1898E0;
-	Tue, 30 Jul 2024 16:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED93C1A76A1;
+	Tue, 30 Jul 2024 17:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358397; cv=none; b=h5TGQE3IL6HRMc/oIs1F6MuBbcYv2aYJtsPIMyvhWefOdf+Jpcy2viKlEoAPNdm46BuHw1+8EyYHpf9WpdqMPHLedQ4+WH/MnxFrSQA43dw8Hgkx+LymzUCeXSz6G27oCtNWGNK+hCnLSeUsAa4ha7krMwB5Cwx9LDv9stsOrhw=
+	t=1722360215; cv=none; b=L7MJYsz7j0AqrX0cYCm+QGoUm5zTc7q77tMXQ1ti4CkKfz/K+HWd+eVR3hktBNnFAzLFkDHm07jc9nBV0LZf7ZP0ERou/YW0jsDHoU/tHluf9t+B7V/ktCUD9n5ixq8Dr53uzvvHiSYo+IU68/Vy4EaMahSK1mNuf7fOw+HLdpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358397; c=relaxed/simple;
-	bh=WIDWKih1JiEJJBkkXv4YuRxvAsjICdNVAFp9gxzzeLg=;
+	s=arc-20240116; t=1722360215; c=relaxed/simple;
+	bh=EeB+W5DSevJLGwAuh9OLlmC+wS9HPYaxZI9zj5QC+rI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h38mdgSq2YmFsUuJFzVQW/3l3Bsh33NRqWREKoaQLE1bD031IoqUQ8kY5zzB182K5FT/+2H1Osp1HdsL2AxX5YIKxcNrfXop55zbfoJX7F6LBK3DYsUXx7jPBh9V5UhjmlOMezVMenYG+7B3GopOZk+hgqqKcstqLvkB37YlGGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxmsVAPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB634C4AF0F;
-	Tue, 30 Jul 2024 16:53:16 +0000 (UTC)
+	 MIME-Version; b=QXxQVZBmVa1UJ01ThiiD5VxGxscUGBem2/cbfYcs58HFQxYG+NAEfzeEKDJWUE/pZoOas6bFx3uZJ55l9gMAUlRtl0/lm9Zv1/2hx3C4VpqPm4Q1siOVBiEQfTBPoItXuu7BcDhSmst3gSj8DQD3i50H5/FXqNX/5w1pu7CXf7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvkDG4vH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6C9C32782;
+	Tue, 30 Jul 2024 17:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358397;
-	bh=WIDWKih1JiEJJBkkXv4YuRxvAsjICdNVAFp9gxzzeLg=;
+	s=korg; t=1722360214;
+	bh=EeB+W5DSevJLGwAuh9OLlmC+wS9HPYaxZI9zj5QC+rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PxmsVAPp8yQCdrnz9m0o4EDAYg+Rqb2ZEZr1+m6XOnSTGnJ29Bl7CC92xZGaN6QCB
-	 a3H5KxqbYASeqgiQp9M5WQjiZmOBVVjEgfer+oSp9aoF8/2JoaXkCfwJU1XCPUCER6
-	 8U6ajeJi9mr7GcuojHQcsOzZuK+2fx+G3GB/RSQc=
+	b=HvkDG4vHfJSn08PKsVth2VeD2KcPnPqd8A72z4OEK299aMIq6LOdaNUE5kwpyyfu/
+	 sY7ldDT2fHpO/im9D8I8lEjgK0PkTQkmnp1X8cq1MLO1PW77wmsIoOUAPo98alHEps
+	 0H/XYi4xbMRGBPY3mm5lhoDdHdhWj8vX1cg6sX8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aristeu Rozanski <aris@redhat.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Aristeu Rozanski <aris@ruivo.org>,
-	David Hildenbrand <david@redhat.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 358/568] hugetlb: force allocating surplus hugepages on mempolicy allowed nodes
-Date: Tue, 30 Jul 2024 17:47:45 +0200
-Message-ID: <20240730151653.856834182@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Paolo Pisati <p.pisati@gmail.com>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 6.10 590/809] m68k: amiga: Turn off Warp1260 interrupts during boot
+Date: Tue, 30 Jul 2024 17:47:46 +0200
+Message-ID: <20240730151748.133399136@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aristeu Rozanski <aris@redhat.com>
+From: Paolo Pisati <p.pisati@gmail.com>
 
-commit 003af997c8a945493859dd1a2d015cc9387ff27a upstream.
+commit 1d8491d3e726984343dd8c3cdbe2f2b47cfdd928 upstream.
 
-When trying to allocate a hugepage with no reserved ones free, it may be
-allowed in case a number of overcommit hugepages was configured (using
-/proc/sys/vm/nr_overcommit_hugepages) and that number wasn't reached.
-This allows for a behavior of having extra hugepages allocated
-dynamically, if there're resources for it.  Some sysadmins even prefer not
-reserving any hugepages and setting a big number of overcommit hugepages.
+On an Amiga 1200 equipped with a Warp1260 accelerator, an interrupt
+storm coming from the accelerator board causes the machine to crash in
+local_irq_enable() or auto_irq_enable().  Disabling interrupts for the
+Warp1260 in amiga_parse_bootinfo() fixes the problem.
 
-But while attempting to allocate overcommit hugepages in a multi node
-system (either NUMA or mempolicy/cpuset) said allocations might randomly
-fail even when there're resources available for the allocation.
-
-This happens due to allowed_mems_nr() only accounting for the number of
-free hugepages in the nodes the current process belongs to and the surplus
-hugepage allocation is done so it can be allocated in any node.  In case
-one or more of the requested surplus hugepages are allocated in a
-different node, the whole allocation will fail due allowed_mems_nr()
-returning a lower value.
-
-So allocate surplus hugepages in one of the nodes the current process
-belongs to.
-
-Easy way to reproduce this issue is to use a 2+ NUMA nodes system:
-
-	# echo 0 >/proc/sys/vm/nr_hugepages
-	# echo 1 >/proc/sys/vm/nr_overcommit_hugepages
-	# numactl -m0 ./tools/testing/selftests/mm/map_hugetlb 2
-
-Repeating the execution of map_hugetlb test application will eventually
-fail when the hugepage ends up allocated in a different node.
-
-[aris@ruivo.org: v2]
-  Link: https://lkml.kernel.org/r/20240701212343.GG844599@cathedrallabs.org
-Link: https://lkml.kernel.org/r/20240621190050.mhxwb65zn37doegp@redhat.com
-Signed-off-by: Aristeu Rozanski <aris@redhat.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Aristeu Rozanski <aris@ruivo.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vishal Moola <vishal.moola@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/ZkjwzVwYeQtyAPrL@amaterasu.local
+Cc: stable <stable@kernel.org>
+Signed-off-by: Paolo Pisati <p.pisati@gmail.com>
+Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/r/20240601153254.186225-1-p.pisati@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |   47 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 28 insertions(+), 19 deletions(-)
+ arch/m68k/amiga/config.c       |    9 +++++++++
+ include/uapi/linux/zorro_ids.h |    3 +++
+ 2 files changed, 12 insertions(+)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2518,6 +2518,23 @@ struct folio *alloc_hugetlb_folio_vma(st
- 	return folio;
- }
- 
-+static nodemask_t *policy_mbind_nodemask(gfp_t gfp)
-+{
-+#ifdef CONFIG_NUMA
-+	struct mempolicy *mpol = get_task_policy(current);
+--- a/arch/m68k/amiga/config.c
++++ b/arch/m68k/amiga/config.c
+@@ -180,6 +180,15 @@ int __init amiga_parse_bootinfo(const st
+ 			dev->slotsize = be16_to_cpu(cd->cd_SlotSize);
+ 			dev->boardaddr = be32_to_cpu(cd->cd_BoardAddr);
+ 			dev->boardsize = be32_to_cpu(cd->cd_BoardSize);
 +
-+	/*
-+	 * Only enforce MPOL_BIND policy which overlaps with cpuset policy
-+	 * (from policy_nodemask) specifically for hugetlb case
-+	 */
-+	if (mpol->mode == MPOL_BIND &&
-+		(apply_policy_zone(mpol, gfp_zone(gfp)) &&
-+		 cpuset_nodemask_valid_mems_allowed(&mpol->nodes)))
-+		return &mpol->nodes;
-+#endif
-+	return NULL;
-+}
++			/* CS-LAB Warp 1260 workaround */
++			if (be16_to_cpu(dev->rom.er_Manufacturer) == ZORRO_MANUF(ZORRO_PROD_CSLAB_WARP_1260) &&
++			    dev->rom.er_Product == ZORRO_PROD(ZORRO_PROD_CSLAB_WARP_1260)) {
 +
- /*
-  * Increase the hugetlb pool such that it can accommodate a reservation
-  * of size 'delta'.
-@@ -2531,6 +2548,8 @@ static int gather_surplus_pages(struct h
- 	long i;
- 	long needed, allocated;
- 	bool alloc_ok = true;
-+	int node;
-+	nodemask_t *mbind_nodemask = policy_mbind_nodemask(htlb_alloc_mask(h));
- 
- 	lockdep_assert_held(&hugetlb_lock);
- 	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
-@@ -2545,8 +2564,15 @@ static int gather_surplus_pages(struct h
- retry:
- 	spin_unlock_irq(&hugetlb_lock);
- 	for (i = 0; i < needed; i++) {
--		folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
--				NUMA_NO_NODE, NULL);
-+		folio = NULL;
-+		for_each_node_mask(node, cpuset_current_mems_allowed) {
-+			if (!mbind_nodemask || node_isset(node, *mbind_nodemask)) {
-+				folio = alloc_surplus_hugetlb_folio(h, htlb_alloc_mask(h),
-+						node, NULL);
-+				if (folio)
-+					break;
++				/* turn off all interrupts */
++				pr_info("Warp 1260 card detected: applying interrupt storm workaround\n");
++				*(uint32_t *)(dev->boardaddr + 0x1000) = 0xfff;
 +			}
-+		}
- 		if (!folio) {
- 			alloc_ok = false;
- 			break;
-@@ -4531,23 +4557,6 @@ static int __init default_hugepagesz_set
- }
- __setup("default_hugepagesz=", default_hugepagesz_setup);
+ 		} else
+ 			pr_warn("amiga_parse_bootinfo: too many AutoConfig devices\n");
+ #endif /* CONFIG_ZORRO */
+--- a/include/uapi/linux/zorro_ids.h
++++ b/include/uapi/linux/zorro_ids.h
+@@ -449,6 +449,9 @@
+ #define  ZORRO_PROD_VMC_ISDN_BLASTER_Z2				ZORRO_ID(VMC, 0x01, 0)
+ #define  ZORRO_PROD_VMC_HYPERCOM_4				ZORRO_ID(VMC, 0x02, 0)
  
--static nodemask_t *policy_mbind_nodemask(gfp_t gfp)
--{
--#ifdef CONFIG_NUMA
--	struct mempolicy *mpol = get_task_policy(current);
--
--	/*
--	 * Only enforce MPOL_BIND policy which overlaps with cpuset policy
--	 * (from policy_nodemask) specifically for hugetlb case
--	 */
--	if (mpol->mode == MPOL_BIND &&
--		(apply_policy_zone(mpol, gfp_zone(gfp)) &&
--		 cpuset_nodemask_valid_mems_allowed(&mpol->nodes)))
--		return &mpol->nodes;
--#endif
--	return NULL;
--}
--
- static unsigned int allowed_mems_nr(struct hstate *h)
- {
- 	int node;
++#define ZORRO_MANUF_CSLAB					0x1400
++#define  ZORRO_PROD_CSLAB_WARP_1260				ZORRO_ID(CSLAB, 0x65, 0)
++
+ #define ZORRO_MANUF_INFORMATION					0x157C
+ #define  ZORRO_PROD_INFORMATION_ISDN_ENGINE_I			ZORRO_ID(INFORMATION, 0x64, 0)
+ 
 
 
 
