@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-63629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784019419E2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC5D941CDE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D9201F27794
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5599A1C213EF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960E5189504;
-	Tue, 30 Jul 2024 16:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16669196DA1;
+	Tue, 30 Jul 2024 17:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MefnXjFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOfP8tx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FB5184535;
-	Tue, 30 Jul 2024 16:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FEA192B81;
+	Tue, 30 Jul 2024 17:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357444; cv=none; b=g0fjDOISaA5ZTqwYDs7c1HeoNjsC5QckgEfFpJ7SLUhkH3eHdwZ5SAgE0qAY/CVIA9Ai3fqu9PedLmBUrBC9Wt4OiStjOjzg6QyjYwCMvX1IsOj0kCSnIZeAlN9voECk6wl98avLQPLy69lgojjs+4CFEuIzZ8mPaaCpSKe/vlg=
+	t=1722359368; cv=none; b=lY+SRW7DNNDn+WoGkb+jwr0eXkcY+KzKMTBJNyQqyJSWflWwpcvn9SEqWIukvn0zKYWi664QG38UBvw3WX1BoUgwKwE4ZfQA3rMFAMrhcsZRgMsahubr8hKdMo0gIfmW9e0k3MxVtJL+vHUvgaoRdIA83EbipA6w/3vltzqSHwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357444; c=relaxed/simple;
-	bh=VcOhbNKJsAca+cjNQVVTmyBSk0kIt1oXgVaN+LFEazw=;
+	s=arc-20240116; t=1722359368; c=relaxed/simple;
+	bh=lusMuYexaR2yZemaSBlgQjkkvmg/yLitTZmLygIG7vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngrXgSzy5v7KCMyufe/QlAU2Cb5IrSQMhhVGgFWgFO4Ol/Ka1LgVHPLta02hcoK1zDDN2ucM0zt8cdUKMH9NGJFBiIPMwF3GXByAGZfjp0Vo0eAR3RCggsCbytkIdAp9ALObGrjGyI6kwLm0QFMIpLPpqC0u9mzmjLavtWIWpcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MefnXjFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBA4C32782;
-	Tue, 30 Jul 2024 16:37:23 +0000 (UTC)
+	 MIME-Version; b=gqMP8HO0EZC3SrJEQFF1KuEma5wdZ7clKmnwHGgqiNcTFzivbgRRKQFpH1CMw94LxAPZ0OKp2icbur5qp2mDqnLuBWdWdBY7RuXpq0i1TZ8XqmqMhpKOl8fwKSB1Q3LrlzD7yhZEAn6cBe6ShYSy/fU1oea03Hk8rCsSVsIpUSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOfP8tx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08116C32782;
+	Tue, 30 Jul 2024 17:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357444;
-	bh=VcOhbNKJsAca+cjNQVVTmyBSk0kIt1oXgVaN+LFEazw=;
+	s=korg; t=1722359368;
+	bh=lusMuYexaR2yZemaSBlgQjkkvmg/yLitTZmLygIG7vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MefnXjFD6xlTVGxB3OV4evYPzpWyw7XshCfzf5OHERJJXYuBT148ruUetNCqK+ASQ
-	 nzc4x/cntbwh7zqF1RSZn7DfuyBLT9Igk+lbCIE3f9KyOhLoxK4qOhiTv9W0qSA2IY
-	 l0F4JX8l4nh2BAPFeUh/1aN5mPDoEvR4WLA3ALYY=
+	b=dOfP8tx1DAnQyb5WjZ3fGOOIdFnIXmoD0AiGNKpSUb3edX+wVmBKupswr4uhQdJGz
+	 xcfW5Oir+J/uamIr7J7xhDMmTJVj9Ty9Sec5PMUMZHvQPSbSkEzhnJOvDYWaRfYHdN
+	 BAPhNyFPWWXQHjIIyrlqSwxWOUu38yKXQj907Ayc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com,
-	Hugh Dickins <hughd@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	kernel test robot <lkp@intel.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 243/568] ext4: avoid writing unitialized memory to disk in EA inodes
+Subject: [PATCH 6.10 474/809] MIPS: Fix fallback march for SB1
 Date: Tue, 30 Jul 2024 17:45:50 +0200
-Message-ID: <20240730151649.378980200@linuxfoundation.org>
+Message-ID: <20240730151743.457740399@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 65121eff3e4c8c90f8126debf3c369228691c591 ]
+[ Upstream commit 2326c8f2022636a1e47402ffd09a3b28f737275f ]
 
-If the extended attribute size is not a multiple of block size, the last
-block in the EA inode will have uninitialized tail which will get
-written to disk. We will never expose the data to userspace but still
-this is not a good practice so just zero out the tail of the block as it
-isn't going to cause a noticeable performance overhead.
+Fallback march for SB1 should be mips64 instead of mips64r1.
 
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Reported-by: syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com
-Reported-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240613150234.25176-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202407111851.LwDasTcp-lkp@intel.com/
+Fixes: bfc0a330c1b4 ("MIPS: Fallback CPU -march flag to ISA level if unsupported")
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index 41b4630b17d64..c58cbe9f7809c 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1433,6 +1433,12 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
- 			goto out;
- 
- 		memcpy(bh->b_data, buf, csize);
-+		/*
-+		 * Zero out block tail to avoid writing uninitialized memory
-+		 * to disk.
-+		 */
-+		if (csize < blocksize)
-+			memset(bh->b_data + csize, 0, blocksize - csize);
- 		set_buffer_uptodate(bh);
- 		ext4_handle_dirty_metadata(handle, ea_inode, bh);
- 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 80aecba248922..5785a3d5ccfbb 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -170,7 +170,7 @@ cflags-$(CONFIG_CPU_NEVADA)	+= $(call cc-option,-march=rm5200,-march=mips4) \
+ 			-Wa,--trap
+ cflags-$(CONFIG_CPU_RM7000)	+= $(call cc-option,-march=rm7000,-march=mips4) \
+ 			-Wa,--trap
+-cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-march=sb1,-march=mips64r1) \
++cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-march=sb1,-march=mips64) \
+ 			-Wa,--trap
+ cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-mno-mdmx)
+ cflags-$(CONFIG_CPU_SB1)	+= $(call cc-option,-mno-mips3d)
 -- 
 2.43.0
 
