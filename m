@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-64330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44601941D5A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0AF941B9D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 751D21C23A02
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E4A1C22E73
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F47183A17;
-	Tue, 30 Jul 2024 17:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0671898EB;
+	Tue, 30 Jul 2024 16:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAzvl5EW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHSP0ctn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B191A76D4;
-	Tue, 30 Jul 2024 17:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A6F184549;
+	Tue, 30 Jul 2024 16:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359765; cv=none; b=GDzQ7md0JK5CRzqoYCCxZaG9XZn/ZknrQT81K8iCK/3Rc9teaUuLgV42k72Mmc5QzVlpBwUFauZ3D0KWck60Jery60G12/d3dxbdpAnZxljvWAcWqBfrZn0nnJrAOE7hz6DUDlnpZNK/V3TCrDCo2MDoiiLBgZvCObwO19FWSO4=
+	t=1722358618; cv=none; b=RSCcoxPmoWrseCKogl/891st9PacDyti0K9/hMbscprnTcSSk7yWH1o1o6JEv1Rh26jVufmoOfZKSsCI2vJbeFqfq9jpKdz9i161FZ9dW/VP79uq6MzRds0FDXqCTEdPq39dHgLuHuACwijFtqxUEJL3vZ3Ylj2eNO0BJiFQWw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359765; c=relaxed/simple;
-	bh=HhWgQsg9uJpQsfycDU18WGuGyBUl5nO34UU/NaQd9L0=;
+	s=arc-20240116; t=1722358618; c=relaxed/simple;
+	bh=96H8SNTIovS7q0TCenF6n7BkRtB/L1HJf/kf93WRcnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXjJpvds7slr8IHOuw72lj99Ao0MwCR0Qv/peg9KnCdcKRJHUb34CglBLZvYdXkZBAEvmXzPpyfTzK6bZNd59Fr23YKX0v4hX62oOslou/buy/IB+mzdR0ubobI5HvBxGX30Wn4eQcoXSvzSlwfkbDYcCaQ0bMQk+7PfUkiPLMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAzvl5EW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51620C32782;
-	Tue, 30 Jul 2024 17:16:05 +0000 (UTC)
+	 MIME-Version; b=ouFy6a+WMpTIv3mj/PftTzkutSLf4l5Dfb3i7t6wN3Qo/Ur1UbAFj+OjYv9kAPW7e0pj06DyooidAGQ0cmSBqBRbmy10hWADUbiZgvs2JN+nBtOUdxzEghs2xTDFmBPfG+SFHUDZAYioQyLdPssJ0Yv7XBksLxHCnlIEuRyTYPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHSP0ctn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE58C4AF0A;
+	Tue, 30 Jul 2024 16:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359765;
-	bh=HhWgQsg9uJpQsfycDU18WGuGyBUl5nO34UU/NaQd9L0=;
+	s=korg; t=1722358617;
+	bh=96H8SNTIovS7q0TCenF6n7BkRtB/L1HJf/kf93WRcnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAzvl5EWvtAiERuhLmNkHnUtPOpp6yuDgAMm7At48T8H2duptvAuUAvaU5XdtZedT
-	 dqnDi+kqrmuHnoWLktqwRkEH/6z/IzMJm71/d0tkQAYRX5PEY2wDPFU/dkXJdSJ9MO
-	 u/rjEo6uq74EMVPdpe1qilCo25rGlNvsk0ghw98U=
+	b=zHSP0ctnKx8rKATWE659drW/qxp9vEXvMqsObSChyYbpxdD3HWYv9Wra2Z81ClHh7
+	 S2yDHseih2N8mb6UfqduR1lFNVE+VKAn7WwKhrRFz4rEDwk/er2B7n1k7AyLsw/+B0
+	 zr+VwGSNVBhXPPJg2pUrPK4vZ8KDzoBrzn8FIGIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Jiri Olsa <jolsa@kernel.org>,
+	Lance Richardson <rlance@google.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 533/568] bpf, events: Use prog to emit ksymbol event for main program
+Subject: [PATCH 6.1 407/440] dma: fix call order in dmam_free_coherent
 Date: Tue, 30 Jul 2024 17:50:40 +0200
-Message-ID: <20240730151700.988381052@linuxfoundation.org>
+Message-ID: <20240730151631.693137784@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Lance Richardson <rlance@google.com>
 
-[ Upstream commit 0be9ae5486cd9e767138c13638820d240713f5f1 ]
+[ Upstream commit 28e8b7406d3a1f5329a03aa25a43aa28e087cb20 ]
 
-Since commit 0108a4e9f358 ("bpf: ensure main program has an extable"),
-prog->aux->func[0]->kallsyms is left as uninitialized. For BPF programs
-with subprogs, the symbol for the main program is missing just as shown
-in the output of perf script below:
+dmam_free_coherent() frees a DMA allocation, which makes the
+freed vaddr available for reuse, then calls devres_destroy()
+to remove and free the data structure used to track the DMA
+allocation. Between the two calls, it is possible for a
+concurrent task to make an allocation with the same vaddr
+and add it to the devres list.
 
- ffffffff81284b69 qp_trie_lookup_elem+0xb9 ([kernel.kallsyms])
- ffffffffc0011125 bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
- ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
- ffffffffc00110a1 +0x25 ()
- ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
+If this happens, there will be two entries in the devres list
+with the same vaddr and devres_destroy() can free the wrong
+entry, triggering the WARN_ON() in dmam_match.
 
-Fix it by always using prog instead prog->aux->func[0] to emit ksymbol
-event for the main program. After the fix, the output of perf script
-will be correct:
+Fix by destroying the devres entry before freeing the DMA
+allocation.
 
- ffffffff81284b96 qp_trie_lookup_elem+0xe6 ([kernel.kallsyms])
- ffffffffc001382d bpf_prog_a4a0eb0651e6af8b_lookup_qp_trie+0x5d (bpf...)
- ffffffff8127bc2b bpf_for_each_array_elem+0x7b ([kernel.kallsyms])
- ffffffffc0013779 bpf_prog_245c55ab25cfcf40_qp_trie_lookup+0x25 (bpf...)
- ffffffff8121a89a trace_call_bpf+0xca ([kernel.kallsyms])
+Tested:
+  kokonut //net/encryption
+    http://sponge2/b9145fe6-0f72-4325-ac2f-a84d81075b03
 
-Fixes: 0108a4e9f358 ("bpf: ensure main program has an extable")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Yonghong Song <yonghong.song@linux.dev>
-Reviewed-by: Krister Johansen <kjlx@templeofstupid.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20240714065533.1112616-1-houtao@huaweicloud.com
+Fixes: 9ac7849e35f7 ("devres: device resource management")
+Signed-off-by: Lance Richardson <rlance@google.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ kernel/dma/mapping.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 32723d53b970b..1b728f3f4b539 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9273,21 +9273,19 @@ static void perf_event_bpf_emit_ksymbols(struct bpf_prog *prog,
- 	bool unregister = type == PERF_BPF_EVENT_PROG_UNLOAD;
- 	int i;
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 33437d6206445..f1051ad0da7cc 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -63,8 +63,8 @@ void dmam_free_coherent(struct device *dev, size_t size, void *vaddr,
+ {
+ 	struct dma_devres match_data = { size, vaddr, dma_handle };
  
--	if (prog->aux->func_cnt == 0) {
--		perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
--				   (u64)(unsigned long)prog->bpf_func,
--				   prog->jited_len, unregister,
--				   prog->aux->ksym.name);
--	} else {
--		for (i = 0; i < prog->aux->func_cnt; i++) {
--			struct bpf_prog *subprog = prog->aux->func[i];
--
--			perf_event_ksymbol(
--				PERF_RECORD_KSYMBOL_TYPE_BPF,
--				(u64)(unsigned long)subprog->bpf_func,
--				subprog->jited_len, unregister,
--				subprog->aux->ksym.name);
--		}
-+	perf_event_ksymbol(PERF_RECORD_KSYMBOL_TYPE_BPF,
-+			   (u64)(unsigned long)prog->bpf_func,
-+			   prog->jited_len, unregister,
-+			   prog->aux->ksym.name);
-+
-+	for (i = 1; i < prog->aux->func_cnt; i++) {
-+		struct bpf_prog *subprog = prog->aux->func[i];
-+
-+		perf_event_ksymbol(
-+			PERF_RECORD_KSYMBOL_TYPE_BPF,
-+			(u64)(unsigned long)subprog->bpf_func,
-+			subprog->jited_len, unregister,
-+			subprog->aux->ksym.name);
- 	}
+-	dma_free_coherent(dev, size, vaddr, dma_handle);
+ 	WARN_ON(devres_destroy(dev, dmam_release, dmam_match, &match_data));
++	dma_free_coherent(dev, size, vaddr, dma_handle);
  }
+ EXPORT_SYMBOL(dmam_free_coherent);
  
 -- 
 2.43.0
