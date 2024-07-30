@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-63054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2DD941708
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8928494170C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EB771C22E0B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B850C1C22D08
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD56E18C911;
-	Tue, 30 Jul 2024 16:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C1E18C922;
+	Tue, 30 Jul 2024 16:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxfuVSVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mz8le5L2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B78A29A2;
-	Tue, 30 Jul 2024 16:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3000118C91F;
+	Tue, 30 Jul 2024 16:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355514; cv=none; b=mO4uJZLe4z44fev2zWTmqOOXvb4zTl1Ug/3BctvnXSkdW7njnQ9sk44oIIndh7XURHgJOp9VOttMWxN5NcBjcGZM8tA4L2GEjWyUNN6ILlPYto9p4Y3WSQwWuN204FTnN9ICHeR2qekvtCX4RljIuej8rphYhAH5GhRbSLrNm6M=
+	t=1722355528; cv=none; b=PLmeJ1DNL+jP1kApTOpo12cPP4Iz/VkATWxB7b6hTiFL/BLVnczD3dpDbSb+7o2C4+H0WEfaiI7zXSxK8LGFaZn0dJcAVnZhbcH8GP0/QzljxI7JAAq156cRZQKxr/0Tje3VGtbdupeqrkdPjeqbTdhj07MrjOM42RAmw4UNko0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355514; c=relaxed/simple;
-	bh=XMvpMSUuv5o9EC/Pg1RPv0i72QU9hgf7Llw6DIW4P9M=;
+	s=arc-20240116; t=1722355528; c=relaxed/simple;
+	bh=SyRuPbDSj+zTDZL6b+o17QyAQ702hraxKml3c++5NwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAuSBSYR82XR7cZgLpFnxSLfUvO8qyIz93fOVYQmvSonz72Z7wQ6z7DjudaQtVBrczr802aM/upwpXzgpOn/mQvY2MTyPg8eEwFJ4fmx2kdC6anLSJ+j3MhD/w6oKuSwul6BKNOux6wbQCcLc5hmI5Bkfq63fs7cI8e79ECa1IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxfuVSVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFED9C4AF0C;
-	Tue, 30 Jul 2024 16:05:13 +0000 (UTC)
+	 MIME-Version; b=UOaESEQSv4jey+A5vV2JdsKlj0OTk7v+G+yJQfIXlDM7AocdAY1F8Fm/U1KrH1VOcm79unHkJ44cquOKWktNo3skTmrjylumyeESMweIGGj5UqOa6QMR3QaAX01Wsd/BI+X1RxGnS3IWZY1K62z0OaaPnNTZUcyNSlifiXTl1Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mz8le5L2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E92C32782;
+	Tue, 30 Jul 2024 16:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355514;
-	bh=XMvpMSUuv5o9EC/Pg1RPv0i72QU9hgf7Llw6DIW4P9M=;
+	s=korg; t=1722355527;
+	bh=SyRuPbDSj+zTDZL6b+o17QyAQ702hraxKml3c++5NwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxfuVSVjdEJ0+7CfhWYKsvrzYYtNCKGhD2Mqj0U/Jz+FQK+2Ra+0TCh6vCtqu6n8Y
-	 +Huz3mYMFXKtyfjan0a5DnG4O5e8nThAMi6l+vB43+MnuKZ/9so7wr9HbIks4/zahO
-	 dgh3SrwfiesCMSEYZPAoxap0CwzawkJNxfC1LnBI=
+	b=Mz8le5L2Z4bhDzmT/wWodRLY/0lofD247epTWzpUOWBQj2FsbTFnbqrNIn1jMy5Gi
+	 JfUw/ei9yAcBeJvxWA0Qhf03e4ZiqkrP8oRvIN0mz/7k1lx6Xx02ItNaFO2uFcr+7j
+	 phbfiC5OJPFT37dcHo4RAtrmJATY3mwZhkGX03vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Andre Przywara <andre.przywara@arm.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 062/809] cpufreq: sun50i: fix memory leak in dt_has_supported_hw()
-Date: Tue, 30 Jul 2024 17:38:58 +0200
-Message-ID: <20240730151727.093480234@linuxfoundation.org>
+Subject: [PATCH 6.10 063/809] OPP: Fix missing cleanup on error in _opp_attach_genpd()
+Date: Tue, 30 Jul 2024 17:38:59 +0200
+Message-ID: <20240730151727.133298669@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,48 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 6282fba6abd7c3c8896c239cc8aa9ec45edcb97b ]
+[ Upstream commit d86a2f0800683652004490c590b4b96a63e7fc04 ]
 
-The for_each_child_of_node() loop does not decrement the child node
-refcount before the break instruction, even though the node is no
-longer required.
+A recent commit updated the code mistakenly to return directly on
+errors, without doing the required cleanups. Fix it.
 
-This can be avoided with the new for_each_child_of_node_scoped() macro
-that removes the need for any of_node_put().
-
-Fixes: fa5aec9561cf ("cpufreq: sun50i: Add support for opp_supported_hw")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Fixes: 2a56c462fe5a ("OPP: Fix required_opp_tables for multiple genpds using same table")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202405180016.4fbn86bm-lkp@intel.com/
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/sun50i-cpufreq-nvmem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/opp/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/sun50i-cpufreq-nvmem.c b/drivers/cpufreq/sun50i-cpufreq-nvmem.c
-index 0b882765cd66f..ef83e4bf26391 100644
---- a/drivers/cpufreq/sun50i-cpufreq-nvmem.c
-+++ b/drivers/cpufreq/sun50i-cpufreq-nvmem.c
-@@ -131,7 +131,7 @@ static const struct of_device_id cpu_opp_match_list[] = {
- static bool dt_has_supported_hw(void)
- {
- 	bool has_opp_supported_hw = false;
--	struct device_node *np, *opp;
-+	struct device_node *np;
- 	struct device *cpu_dev;
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index cb4611fe1b5b2..4e4d293bf5b10 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -2443,8 +2443,10 @@ static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
+ 		 * Cross check it again and fix if required.
+ 		 */
+ 		gdev = dev_to_genpd_dev(virt_dev);
+-		if (IS_ERR(gdev))
+-			return PTR_ERR(gdev);
++		if (IS_ERR(gdev)) {
++			ret = PTR_ERR(gdev);
++			goto err;
++		}
  
- 	cpu_dev = get_cpu_device(0);
-@@ -142,7 +142,7 @@ static bool dt_has_supported_hw(void)
- 	if (!np)
- 		return false;
- 
--	for_each_child_of_node(np, opp) {
-+	for_each_child_of_node_scoped(np, opp) {
- 		if (of_find_property(opp, "opp-supported-hw", NULL)) {
- 			has_opp_supported_hw = true;
- 			break;
+ 		genpd_table = _find_opp_table(gdev);
+ 		if (!IS_ERR(genpd_table)) {
 -- 
 2.43.0
 
