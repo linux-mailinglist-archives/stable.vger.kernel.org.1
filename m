@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-63803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FAC941ABB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:47:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A8C941959
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3E9B1C22176
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C32C3B2793C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B30A1898F7;
-	Tue, 30 Jul 2024 16:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F8B189B97;
+	Tue, 30 Jul 2024 16:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuBq5zjm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3jEi9cf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484401898ED;
-	Tue, 30 Jul 2024 16:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B805C189B85;
+	Tue, 30 Jul 2024 16:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358003; cv=none; b=NFV/md3477UmThIIDTxZZIeAH1QEoUUCMGphycXUeEq2yU0JtlDD90GVQQSedyfuNz/zEllGSqzIG8GMVy0XXzmuAMFjlBTPAxI2woY4tJAQtQTeO7pTisFm2XmzNsw0TL9958n9MllxKtKwKW8poSpO+arGERyHZcEXXiKt9Yc=
+	t=1722356431; cv=none; b=uibKLBypmULkAeH7GP3NvIfrlWnDCHQC3jCCJi6r1urFwYjU/LeJqF4QH3mpBFkVqY8+osLIePMjlHpI/VJew/8ui8dw5f5hMNXSGVRDWKlPhJ4e8+tsfy12qNeZvkISqjpYSnjlMbSQqPEwqVkEjbMxF3vWZsjiFi4MAh4+/ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358003; c=relaxed/simple;
-	bh=m3lFJPOC1Te1iMHkZ6ayATaeoMGSiIkptyCxk6OynNo=;
+	s=arc-20240116; t=1722356431; c=relaxed/simple;
+	bh=jzfDbByuOS3Ziofk87OG6Q8/47M/5Hb7yRWL8d5jsgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2UoL1iaYH0i4eyRXfbRUzD/PJkbJMOghKRavkOktSss4IAqngCJBfxFeel1LvxmrmWn9Oltlp41JwZLTC761vTRiIDYoWsnYLbkAUI3y/XQQf7fCpirwGfFN2lEQqi3jy0G8++Rv1++GEzCeYCQUztdF4H+w8HLuAk0ki1w1Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuBq5zjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BA4C4AF0C;
-	Tue, 30 Jul 2024 16:46:42 +0000 (UTC)
+	 MIME-Version; b=lLwYp47gnhw8S7LDTFhJ6F8LYLgn+6KA7ErtHlb0RlUZuhatyG/eLll+04+vmO7tTo5FAkBn95kJOCVqM+98zJ7S9yPdR9GwTCTYawyXYMvSDXekZdqw6LroNjLykOwUCmmw6nITBO26aWbMsJNSHXmaagMjSPerY2T7x3FhUZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3jEi9cf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390C8C4AF0E;
+	Tue, 30 Jul 2024 16:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358003;
-	bh=m3lFJPOC1Te1iMHkZ6ayATaeoMGSiIkptyCxk6OynNo=;
+	s=korg; t=1722356431;
+	bh=jzfDbByuOS3Ziofk87OG6Q8/47M/5Hb7yRWL8d5jsgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuBq5zjmIioJ6duDCpTvEdXgINw39LePrssMSaG0ixrd8sJKWfS6IUZI94NPauuxX
-	 M6GYSSIiFPemv4I6AdaUpSMjlPH/1qWflt/h0zGyW4A3N9LimGAkqu4O2qnCBprzpk
-	 vosw5T5OiYC/i/6Jm+qOfd3XWWuoro4UHI75Do/w=
+	b=q3jEi9cf3fKkbrd3cxePAKE7sAPxcN9aC1t5xlhrAoSUFcEfZOBTeR+gJahLofCNM
+	 /jPwCHED4MwDWMOqyMvqKst5zXMbbt9CzsavdLhZpyebIYuNIuJhK/YebFobeZMWEj
+	 kIh8sZpNVRHiKsJPwFR+FrvOQrf0BaT2vDGagZcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Guillaume Nault <gnault@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Russell Currey <ruscur@russell.cc>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 316/568] ipv4: Fix incorrect TOS in fibmatch route get reply
-Date: Tue, 30 Jul 2024 17:47:03 +0200
-Message-ID: <20240730151652.222385988@linuxfoundation.org>
+Subject: [PATCH 6.1 191/440] powerpc/pseries: Add helper to get PLPKS password length
+Date: Tue, 30 Jul 2024 17:47:04 +0200
+Message-ID: <20240730151623.332666446@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,137 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Russell Currey <ruscur@russell.cc>
 
-[ Upstream commit f036e68212c11e5a7edbb59b5e25299341829485 ]
+[ Upstream commit 9ee76bd5c7e39b622660cc14833ead1967f2038d ]
 
-The TOS value that is returned to user space in the route get reply is
-the one with which the lookup was performed ('fl4->flowi4_tos'). This is
-fine when the matched route is configured with a TOS as it would not
-match if its TOS value did not match the one with which the lookup was
-performed.
+Add helper function to get the PLPKS password length. This will be used
+in a later patch to support passing the password between kernels over
+kexec.
 
-However, matching on TOS is only performed when the route's TOS is not
-zero. It is therefore possible to have the kernel incorrectly return a
-non-zero TOS:
-
- # ip link add name dummy1 up type dummy
- # ip address add 192.0.2.1/24 dev dummy1
- # ip route get fibmatch 192.0.2.2 tos 0xfc
- 192.0.2.0/24 tos 0x1c dev dummy1 proto kernel scope link src 192.0.2.1
-
-Fix by instead returning the DSCP field from the FIB result structure
-which was populated during the route lookup.
-
-Output after the patch:
-
- # ip link add name dummy1 up type dummy
- # ip address add 192.0.2.1/24 dev dummy1
- # ip route get fibmatch 192.0.2.2 tos 0xfc
- 192.0.2.0/24 dev dummy1 proto kernel scope link src 192.0.2.1
-
-Extend the existing selftests to not only verify that the correct route
-is returned, but that it is also returned with correct "tos" value (or
-without it).
-
-Fixes: b61798130f1b ("net: ipv4: RTM_GETROUTE: return matched fib result when requested")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20230210080401.345462-23-ajd@linux.ibm.com
+Stable-dep-of: 932bed412170 ("powerpc/kexec_file: fix cpus node update to FDT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c                         |  2 +-
- tools/testing/selftests/net/fib_tests.sh | 24 ++++++++++++------------
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ arch/powerpc/include/asm/plpks.h       | 5 +++++
+ arch/powerpc/platforms/pseries/plpks.c | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 810779d537bec..4d169573148f6 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -3394,7 +3394,7 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 		fri.tb_id = table_id;
- 		fri.dst = res.prefix;
- 		fri.dst_len = res.prefixlen;
--		fri.dscp = inet_dsfield_to_dscp(fl4.flowi4_tos);
-+		fri.dscp = res.dscp;
- 		fri.type = rt->rt_type;
- 		fri.offload = 0;
- 		fri.trap = 0;
-diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
-index 66d0db7a2614d..ede2c0ec2a9dd 100755
---- a/tools/testing/selftests/net/fib_tests.sh
-+++ b/tools/testing/selftests/net/fib_tests.sh
-@@ -1643,53 +1643,53 @@ ipv4_rt_dsfield()
+diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
+index 8dab5c26c1e41..9e2219b0202db 100644
+--- a/arch/powerpc/include/asm/plpks.h
++++ b/arch/powerpc/include/asm/plpks.h
+@@ -153,6 +153,11 @@ u32 plpks_get_maxlargeobjectsize(void);
+  */
+ u64 plpks_get_signedupdatealgorithms(void);
  
- 	# DSCP 0x10 should match the specific route, no matter the ECN bits
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x10 | \
--		grep -q "via 172.16.103.2"
-+		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
- 	log_test $? 0 "IPv4 route with DSCP and ECN:Not-ECT"
++/**
++ * Returns the length of the PLPKS password in bytes.
++ */
++u16 plpks_get_passwordlen(void);
++
+ #endif // CONFIG_PSERIES_PLPKS
  
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x11 | \
--		grep -q "via 172.16.103.2"
-+		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
- 	log_test $? 0 "IPv4 route with DSCP and ECN:ECT(1)"
- 
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x12 | \
--		grep -q "via 172.16.103.2"
-+		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
- 	log_test $? 0 "IPv4 route with DSCP and ECN:ECT(0)"
- 
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x13 | \
--		grep -q "via 172.16.103.2"
-+		grep -q "172.16.102.0/24 tos 0x10 via 172.16.103.2"
- 	log_test $? 0 "IPv4 route with DSCP and ECN:CE"
- 
- 	# Unknown DSCP should match the generic route, no matter the ECN bits
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x14 | \
--		grep -q "via 172.16.101.2"
-+		grep -q "172.16.102.0/24 via 172.16.101.2"
- 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:Not-ECT"
- 
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x15 | \
--		grep -q "via 172.16.101.2"
-+		grep -q "172.16.102.0/24 via 172.16.101.2"
- 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:ECT(1)"
- 
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x16 | \
--		grep -q "via 172.16.101.2"
-+		grep -q "172.16.102.0/24 via 172.16.101.2"
- 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:ECT(0)"
- 
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x17 | \
--		grep -q "via 172.16.101.2"
-+		grep -q "172.16.102.0/24 via 172.16.101.2"
- 	log_test $? 0 "IPv4 route with unknown DSCP and ECN:CE"
- 
- 	# Null DSCP should match the generic route, no matter the ECN bits
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x00 | \
--		grep -q "via 172.16.101.2"
-+		grep -q "172.16.102.0/24 via 172.16.101.2"
- 	log_test $? 0 "IPv4 route with no DSCP and ECN:Not-ECT"
- 
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x01 | \
--		grep -q "via 172.16.101.2"
-+		grep -q "172.16.102.0/24 via 172.16.101.2"
- 	log_test $? 0 "IPv4 route with no DSCP and ECN:ECT(1)"
- 
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x02 | \
--		grep -q "via 172.16.101.2"
-+		grep -q "172.16.102.0/24 via 172.16.101.2"
- 	log_test $? 0 "IPv4 route with no DSCP and ECN:ECT(0)"
- 
- 	$IP route get fibmatch 172.16.102.1 dsfield 0x03 | \
--		grep -q "via 172.16.101.2"
-+		grep -q "172.16.102.0/24 via 172.16.101.2"
- 	log_test $? 0 "IPv4 route with no DSCP and ECN:CE"
+ #endif // _ASM_POWERPC_PLPKS_H
+diff --git a/arch/powerpc/platforms/pseries/plpks.c b/arch/powerpc/platforms/pseries/plpks.c
+index 2b659f2b01214..eea251105e394 100644
+--- a/arch/powerpc/platforms/pseries/plpks.c
++++ b/arch/powerpc/platforms/pseries/plpks.c
+@@ -348,6 +348,11 @@ u64 plpks_get_signedupdatealgorithms(void)
+ 	return signedupdatealgorithms;
  }
  
++u16 plpks_get_passwordlen(void)
++{
++	return ospasswordlength;
++}
++
+ bool plpks_is_available(void)
+ {
+ 	int rc;
 -- 
 2.43.0
 
