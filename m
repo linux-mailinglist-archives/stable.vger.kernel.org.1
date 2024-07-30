@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-63762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E497941A83
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D21A6941A87
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB4B71F25F8E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:44:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882A11F26007
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ACD18990A;
-	Tue, 30 Jul 2024 16:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984C818801C;
+	Tue, 30 Jul 2024 16:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipAsstwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRzFyIy+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBAB757FC;
-	Tue, 30 Jul 2024 16:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560B5757FC;
+	Tue, 30 Jul 2024 16:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357871; cv=none; b=eN4JBwkVe9gYncAGV1FS0ylxzcXhjE0L4pOHoC52PefgI3mK2lPpmv5E4ZCTwfta2NdP4lqbkso4NcJFT3c65YoYGg7SreVLizyhnkh7R1TIaJPisNZcTcJMdyTQqjYg5x7h+fL4OHeNvuFDX4RrsTzVRbUxGnY+dGGZ/mcgJ14=
+	t=1722357882; cv=none; b=E+wkDh4VZ0t/AEaeS8MvK7r51SSNL5gkARq2N5hCHJuOSKKIi6ZTgv1wWvibbIcLa/fUWuDL/z9HsPtff7l+4+e63a6/M0zMRejcfXf2DTZlWeFf/EImRlRe6/Tjnx5ulKIbnLV+YEyfy8wphzkDLcn3kecWyloD3ArEoH/yO2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357871; c=relaxed/simple;
-	bh=5y9921NxaeHArQoWzELxm7WGiN82f2J/8r2NW7TMwls=;
+	s=arc-20240116; t=1722357882; c=relaxed/simple;
+	bh=oB/3dtC5deqGw9jkVY5xk/NOPpI1FnJlBjeVMJB0aNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXfh9gGshOOZiUsq/sEpwys81s4TcTsOg2KHc5frcq1kRCCz7Y8RKgohg5PBs+Hb+SSI1f7xQ/pD1B5aVgfPYe7Y7oc4/TcNYwP0UxnBfW9ZawZvCmFAze5er3F/W4V0kW2+qzpK2kF60QrXAVuvQ16RncUE9z+N8T5TE5rCeYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipAsstwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F068FC4AF0C;
-	Tue, 30 Jul 2024 16:44:30 +0000 (UTC)
+	 MIME-Version; b=LEmGXKYp9Xl5pjuQ9zL19zl1OLML8KZ4a+o7tgNZbPV42AYTXvevDuLPiNVNDDdf93R2D7Rs42IcYGJPe4C6m092cUq8xqG4C3LlUTaTpT2gOzGTDh02Td8dRfzZufK1QbZZPPxmf5aBFWxIwh7HmLwheoyCgMA41mLOtSR2h0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRzFyIy+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC34C32782;
+	Tue, 30 Jul 2024 16:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357871;
-	bh=5y9921NxaeHArQoWzELxm7WGiN82f2J/8r2NW7TMwls=;
+	s=korg; t=1722357882;
+	bh=oB/3dtC5deqGw9jkVY5xk/NOPpI1FnJlBjeVMJB0aNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ipAsstwdY644w845KybLjpeFvV9BvPmd4JYGFCytpcyXXEuTXuRIbZNaQrM6z7vGK
-	 kAZY+wXA4sJOJWOqH0wyZ5/pclXULUQQRx0C/8yZgEIE1+ns+5biZN+2PtfOHiqvTr
-	 d4ixftqFE8qIGgvrez8+RVbk8b6rqgr7KUYb1jQc=
+	b=DRzFyIy+XlY7aWVPyfHi51Rob4DJgVMjWlIA4SFFXJKmO5kriix8UuQGh06G0rEWi
+	 BdO/y9hC9bfTswj/urW9uuy5WJoFU5BaeM7ZgIBSSb88KMAFC5z4RQF1HsKb5cwePm
+	 EXZW26AICWrxdkWT13SrchOkDYeCKN+zjfMwyJNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	"Steinar H . Gunderson" <sesse@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Irui Wang <irui.wang@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 300/809] perf maps: Fix use after free in __maps__fixup_overlap_and_insert
-Date: Tue, 30 Jul 2024 17:42:56 +0200
-Message-ID: <20240730151736.444337179@linuxfoundation.org>
+Subject: [PATCH 6.10 301/809] media: mediatek: vcodec: Handle invalid decoder vsi
+Date: Tue, 30 Jul 2024 17:42:57 +0200
+Message-ID: <20240730151736.483123408@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,72 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Irui Wang <irui.wang@mediatek.com>
 
-[ Upstream commit 0b90dfda222e38b7ca8dad6e098e36f5186f0b94 ]
+[ Upstream commit 59d438f8e02ca641c58d77e1feffa000ff809e9f ]
 
-In the case 'before' and 'after' are broken out from pos,
-maps_by_address may be changed by __maps__insert, as such it needs
-re-reading.
+Handle an invalid decoder vsi in vpu_dec_init to ensure the decoder vsi
+is valid for future use.
 
-Don't ignore the return value from __maps_insert.
+Fixes: 590577a4e525 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Decoder Driver")
 
-Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: James Clark <james.clark@arm.com>
-Cc: Steinar H . Gunderson <sesse@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240521165109.708593-2-irogers@google.com
+Signed-off-by: Irui Wang <irui.wang@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/maps.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ .../media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c    | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
-index 16b39db594f4c..eaada3e0f5b4e 100644
---- a/tools/perf/util/maps.c
-+++ b/tools/perf/util/maps.c
-@@ -741,7 +741,6 @@ static unsigned int first_ending_after(struct maps *maps, const struct map *map)
-  */
- static int __maps__fixup_overlap_and_insert(struct maps *maps, struct map *new)
- {
--	struct map **maps_by_address;
- 	int err = 0;
- 	FILE *fp = debug_file();
+diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
+index da6be556727bb..145958206e38a 100644
+--- a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
++++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
+@@ -233,6 +233,12 @@ int vpu_dec_init(struct vdec_vpu_inst *vpu)
+ 	mtk_vdec_debug(vpu->ctx, "vdec_inst=%p", vpu);
  
-@@ -749,12 +748,12 @@ static int __maps__fixup_overlap_and_insert(struct maps *maps, struct map *new)
- 	if (!maps__maps_by_address_sorted(maps))
- 		__maps__sort_by_address(maps);
- 
--	maps_by_address = maps__maps_by_address(maps);
- 	/*
- 	 * Iterate through entries where the end of the existing entry is
- 	 * greater-than the new map's start.
- 	 */
- 	for (unsigned int i = first_ending_after(maps, new); i < maps__nr_maps(maps); ) {
-+		struct map **maps_by_address = maps__maps_by_address(maps);
- 		struct map *pos = maps_by_address[i];
- 		struct map *before = NULL, *after = NULL;
- 
-@@ -821,8 +820,10 @@ static int __maps__fixup_overlap_and_insert(struct maps *maps, struct map *new)
- 			/* Maps are still ordered, go to next one. */
- 			i++;
- 			if (after) {
--				__maps__insert(maps, after);
-+				err = __maps__insert(maps, after);
- 				map__put(after);
-+				if (err)
-+					goto out_err;
- 				if (!maps__maps_by_address_sorted(maps)) {
- 					/*
- 					 * Sorting broken so invariants don't
-@@ -851,7 +852,7 @@ static int __maps__fixup_overlap_and_insert(struct maps *maps, struct map *new)
- 		check_invariants(maps);
- 	}
- 	/* Add the map. */
--	__maps__insert(maps, new);
-+	err = __maps__insert(maps, new);
- out_err:
+ 	err = vcodec_vpu_send_msg(vpu, (void *)&msg, sizeof(msg));
++
++	if (IS_ERR_OR_NULL(vpu->vsi)) {
++		mtk_vdec_err(vpu->ctx, "invalid vdec vsi, status=%d", err);
++		return -EINVAL;
++	}
++
+ 	mtk_vdec_debug(vpu->ctx, "- ret=%d", err);
  	return err;
  }
 -- 
