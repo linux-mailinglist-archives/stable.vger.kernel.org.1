@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B62C941B8E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AE89418C9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB9E28328D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44892B29C02
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A900F18B46A;
-	Tue, 30 Jul 2024 16:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1462D188013;
+	Tue, 30 Jul 2024 16:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdvY+7Ve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKHqtxf6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6059818B465;
-	Tue, 30 Jul 2024 16:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66E818455E;
+	Tue, 30 Jul 2024 16:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358577; cv=none; b=hCG9jFgn2Dv7GaPS1FaRFcjyHnxTlm3IWbUdsc1h555jtGOpUBK2t2n+QNiUdMSuEJLosinHXch86qPma143WVZ9FfBCr3zvMn6xPaqCKK++qYh4yWahG4aJfsrbqncDsEa4EeTB4iLrgQvK6lH5i1BPyK3VtUxoGFiHr7QOBWw=
+	t=1722356391; cv=none; b=TbJRIHP/ZAYW0o4lXcWRA8fp/pVYuvkEiPoyfUgBrlp+vKbgh4YeyumeA5dkOhHL5eT2YnQ4syPDs08czRhIy+ypAtF0hUzysiKnIUJ4cTYBRMNPBFBPms2Hq/pGG36zudxlzk9Lw/3RIulv1c1wDeSXlqCTPe536qpFGGUSKx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358577; c=relaxed/simple;
-	bh=OfuwrVUlHmNooVNQclhNIxEywM9tfMHEoxZk/IXgM9w=;
+	s=arc-20240116; t=1722356391; c=relaxed/simple;
+	bh=/z1wSD73qeFX8sumlyAJ+K7sc59oFmibG0DMNCNGGEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t3Vk1DFVYyaKvaCnTHbBPE6d58s/XEzewRjEZjO0gE/AcQ+EU2NYQ0uwy0ZVlypQOk519pc0ITZbuCSM8j+bkEF+uCM9Iz+9PlpdcThE2LlKhW7XfBX/n92RMi+1VnCnmfCe/+sGKsGk3INHYrp/dorFbFCENf4JXSxzx7habyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdvY+7Ve; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C409EC4AF0E;
-	Tue, 30 Jul 2024 16:56:16 +0000 (UTC)
+	 MIME-Version; b=AYN24udtreVQI+7bEGYO1dp4QYkdIc/m/2iMdg+NxPG/fveCj9cixSqdVg1+/dF0SuUlcv0KxUR29xSPxj1ExcHzSFYzKPsuqx9SyYHcnUhEqwKwyCXb029WNDCJIrQnOMNGSVM/VGvIGdusFlArqvY63R5De32No4FLZdIqHQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKHqtxf6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4091CC32782;
+	Tue, 30 Jul 2024 16:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358577;
-	bh=OfuwrVUlHmNooVNQclhNIxEywM9tfMHEoxZk/IXgM9w=;
+	s=korg; t=1722356391;
+	bh=/z1wSD73qeFX8sumlyAJ+K7sc59oFmibG0DMNCNGGEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdvY+7VeL/qAiF4XVOEyTasQikZhYhLD7dXKPLu7O6KtWuIv7dVMUOOCgp8M4CZKz
-	 F0qnghfbdJFVHDRKEYQvjjZa3ZdVDfhW0cZAgj0Zu+vKDDVCfc+Jm8Px8wNwhY6m2n
-	 RN5PK0CSGJLUZ655vrPwtAEAhxizSvQ4aWjfOQq4=
+	b=bKHqtxf6TMYd+EeoRwAv1fiblMUCxbDFrp221bvU52X9d7YYJggk7FxJqlmpj6P9H
+	 hQc3kE3bccPLPTA1cN+xU3iXlaILQdCJF1KLOfCNKDDLS9UYjPcvJ31AGeJCcbEvgj
+	 Np8xPSNMxRGeYu9zlmJqHf1Cx4wqkVepRG3omWi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Larsson <andreas@gaisler.com>,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 375/809] sparc64: Fix incorrect function signature and add prototype for prom_cif_init
+Subject: [PATCH 6.6 144/568] wifi: rtl8xxxu: 8188f: Limit TX power index
 Date: Tue, 30 Jul 2024 17:44:11 +0200
-Message-ID: <20240730151739.472489638@linuxfoundation.org>
+Message-ID: <20240730151645.506777969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Larsson <andreas@gaisler.com>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
 
-[ Upstream commit a6c3ea1ec96307dbfbb2f16d96c674c5cc80f445 ]
+[ Upstream commit d0b4b8ef083ca46d5d318e66a30fb80e0abbb90d ]
 
-Remove the unused cif_stack argument and add a protype in oplib_64.h
-Commit ef3e035c3a9b ("sparc64: Fix register corruption in top-most
-kernel stack frame during boot.") removed the cif_stack argument to
-prom_cif init in the declaration at the caller site and the usage of it
-within prom_cif_init, but not in the function signature of the function
-itself.
+TX power index is read from the efuse on init, the values get written to
+the TX power registers when the channel gets switched.
 
-This also fixes the following warning:
-arch/sparc/prom/p1275.c:52:6: warning: no previous prototype for ‘prom_cif_init’
+When the chip has not yet been calibrated, the efuse values are 0xFF,
+which on some boards leads to USB timeouts for reading/writing registers
+after the first frames have been sent.
 
-Fixes: ef3e035c3a9b ("sparc64: Fix register corruption in top-most kernel stack frame during boot.")
-Link: https://lore.kernel.org/r/20240710094155.458731-3-andreas@gaisler.com
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+The vendor driver (v5.11.5-1) checks for these invalid values and sets
+default values instead. Implement something similar in
+rtl8188fu_parse_efuse().
+
+Fixes: c888183b21f3 ("wifi: rtl8xxxu: Support new chip RTL8188FU")
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240624140037.231657-1-martin.kaistra@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/asm/oplib_64.h | 1 +
- arch/sparc/prom/init_64.c         | 3 ---
- arch/sparc/prom/p1275.c           | 2 +-
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c    | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/sparc/include/asm/oplib_64.h b/arch/sparc/include/asm/oplib_64.h
-index a67abebd43592..1b86d02a84556 100644
---- a/arch/sparc/include/asm/oplib_64.h
-+++ b/arch/sparc/include/asm/oplib_64.h
-@@ -247,6 +247,7 @@ void prom_sun4v_guest_soft_state(void);
- int prom_ihandle2path(int handle, char *buffer, int bufsize);
- 
- /* Client interface level routines. */
-+void prom_cif_init(void *cif_handler);
- void p1275_cmd_direct(unsigned long *);
- 
- #endif /* !(__SPARC64_OPLIB_H) */
-diff --git a/arch/sparc/prom/init_64.c b/arch/sparc/prom/init_64.c
-index 103aa91043185..f7b8a1a865b8f 100644
---- a/arch/sparc/prom/init_64.c
-+++ b/arch/sparc/prom/init_64.c
-@@ -26,9 +26,6 @@ phandle prom_chosen_node;
-  * routines in the prom library.
-  * It gets passed the pointer to the PROM vector.
-  */
--
--extern void prom_cif_init(void *);
--
- void __init prom_init(void *cif_handler)
- {
- 	phandle node;
-diff --git a/arch/sparc/prom/p1275.c b/arch/sparc/prom/p1275.c
-index 889aa602f8d86..51c3f984bbf72 100644
---- a/arch/sparc/prom/p1275.c
-+++ b/arch/sparc/prom/p1275.c
-@@ -49,7 +49,7 @@ void p1275_cmd_direct(unsigned long *args)
- 	local_irq_restore(flags);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+index 1e1c8fa194cb8..0466b8be5df01 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+@@ -713,9 +713,14 @@ static void rtl8188fu_init_statistics(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_write32(priv, REG_OFDM0_FA_RSTC, val32);
  }
  
--void prom_cif_init(void *cif_handler, void *cif_stack)
-+void prom_cif_init(void *cif_handler)
++#define TX_POWER_INDEX_MAX 0x3F
++#define TX_POWER_INDEX_DEFAULT_CCK 0x22
++#define TX_POWER_INDEX_DEFAULT_HT40 0x27
++
+ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
  {
- 	p1275buf.prom_cif_handler = (void (*)(long *))cif_handler;
- }
+ 	struct rtl8188fu_efuse *efuse = &priv->efuse_wifi.efuse8188fu;
++	int i;
+ 
+ 	if (efuse->rtl_id != cpu_to_le16(0x8129))
+ 		return -EINVAL;
+@@ -729,6 +734,16 @@ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
+ 	       efuse->tx_power_index_A.ht40_base,
+ 	       sizeof(efuse->tx_power_index_A.ht40_base));
+ 
++	for (i = 0; i < ARRAY_SIZE(priv->cck_tx_power_index_A); i++) {
++		if (priv->cck_tx_power_index_A[i] > TX_POWER_INDEX_MAX)
++			priv->cck_tx_power_index_A[i] = TX_POWER_INDEX_DEFAULT_CCK;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(priv->ht40_1s_tx_power_index_A); i++) {
++		if (priv->ht40_1s_tx_power_index_A[i] > TX_POWER_INDEX_MAX)
++			priv->ht40_1s_tx_power_index_A[i] = TX_POWER_INDEX_DEFAULT_HT40;
++	}
++
+ 	priv->ofdm_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.a;
+ 	priv->ht20_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.b;
+ 
 -- 
 2.43.0
 
