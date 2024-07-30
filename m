@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D93941954
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:31:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F47941B67
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90ACCB2C8BC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78971C20CB7
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9E51A6196;
-	Tue, 30 Jul 2024 16:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E751898E0;
+	Tue, 30 Jul 2024 16:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uo9n2zhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgB1crV3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF941A6166;
-	Tue, 30 Jul 2024 16:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D51A6195;
+	Tue, 30 Jul 2024 16:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356887; cv=none; b=gESjTezbQpZ0xML2L4PCRDVFssFPbr8PQpXsAsr/bb6+yQiR0jGeZYQxtZhZwKqeh/eTh3dze0uJYrSLoCrSOuzRNyYE9lIf5ZJSvEjuo2cNbYjY5Lsq1dIDeivTFxZZteHqgH4uDpQa09h3zNlG2CLTG2ENVZKyHT0xTTPcWyc=
+	t=1722358474; cv=none; b=Dw18X1h5/RGVavAYUI0VvTATY70eImAx9HCZnyoA58xp2Z4dRWQ7aIfQifgbf44atfY+R16fC3Cm1N4pkPDXP+4N54iNo3tU19yAvxV7XtzGpkQYK4XnsUuiVNlixfMBPeI/qHLUXaeu2VOfLqHD2xsGJJsFlFlCmd3JZOkOg3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356887; c=relaxed/simple;
-	bh=l/wJ0ZEQnnzrDpvf6WlhX1UCWhgB/RRyD5vd296z1Xs=;
+	s=arc-20240116; t=1722358474; c=relaxed/simple;
+	bh=fuVksvIHhXtE3jbER/w6GXrHJaWrxlBvEUBQ39NBm9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsxUdjCFmM0ykvksygVCt8nYo5wl8h937V11KrLgkdesRm6JMRtTf8YAwaV8B2DN4A/Xl9RJYf4rOYdJUSlcxxon/wBCDCHJFIhdA3QJ7mA97xPUVL/eXvCLNQNE7bMWeNBxE6nWaDP7pQM3N6qHbVBNN1DuhEGaETE8JwkUvzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uo9n2zhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578EAC4AF0A;
-	Tue, 30 Jul 2024 16:28:07 +0000 (UTC)
+	 MIME-Version; b=guC+T+gVP8Ft9lfhNvKlplC6TaAJZLdHUzW/CL4CvDiEVTpehjtLkwzcGLoGZ+Pgkkg2ZqeCjGL9uOiqfoTzscLboCqEPPCtUc5zo+aYprdXLW21vBMT4EqKMyj8ZYeSzj736gdVbkAKEphlSzlzoIw+VhkVOcMCBcokyptLrAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgB1crV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9D7C32782;
+	Tue, 30 Jul 2024 16:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356887;
-	bh=l/wJ0ZEQnnzrDpvf6WlhX1UCWhgB/RRyD5vd296z1Xs=;
+	s=korg; t=1722358474;
+	bh=fuVksvIHhXtE3jbER/w6GXrHJaWrxlBvEUBQ39NBm9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uo9n2zhUxQc0BLnAva2AFNcL0wHiD5Hhz+iviSkMKGPZR2rdpJxSoCmjs+ua8a96B
-	 pAQf8SrRHHKRf5XJlowIUzqAKRlO5Hlvh+R+9EQaNRjQTffYPgUSY/G0UArNQRq5Xu
-	 jxehf8kAVRSMlGH+BfzL9CmtnMrzh8Qk4hKhVikU=
+	b=wgB1crV3pxKZg9dCsZ7x80coOYi8E10bRjrobPEj3i/4Vyd3tTM76ZGN1HGODuOOP
+	 xu1hfday56RTkTORoKiO/9+QaLxbgw3g8Q49YJXw8WM3EYYcVwk+2OLG8ajgSHtPR5
+	 j81Hoqtl9t+QItkikcgMGEOcUOhV/K9lYqxbFcys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 238/440] fs/ntfs3: Use ALIGN kernel macro
-Date: Tue, 30 Jul 2024 17:47:51 +0200
-Message-ID: <20240730151625.150615546@linuxfoundation.org>
+	syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 6.6 365/568] exfat: fix potential deadlock on __exfat_get_dentry_set
+Date: Tue, 30 Jul 2024 17:47:52 +0200
+Message-ID: <20240730151654.127289235@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Sungjong Seo <sj1557.seo@samsung.com>
 
-[ Upstream commit 97a6815e50619377704e6566fb2b77c1aa4e2647 ]
+commit 89fc548767a2155231128cb98726d6d2ea1256c9 upstream.
 
-This way code will be more readable.
+When accessing a file with more entries than ES_MAX_ENTRY_NUM, the bh-array
+is allocated in __exfat_get_entry_set. The problem is that the bh-array is
+allocated with GFP_KERNEL. It does not make sense. In the following cases,
+a deadlock for sbi->s_lock between the two processes may occur.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Stable-dep-of: 25610ff98d4a ("fs/ntfs3: Fix transform resident to nonresident for compressed files")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+       CPU0                CPU1
+       ----                ----
+  kswapd
+   balance_pgdat
+    lock(fs_reclaim)
+                      exfat_iterate
+                       lock(&sbi->s_lock)
+                       exfat_readdir
+                        exfat_get_uniname_from_ext_entry
+                         exfat_get_dentry_set
+                          __exfat_get_dentry_set
+                           kmalloc_array
+                            ...
+                            lock(fs_reclaim)
+    ...
+    evict
+     exfat_evict_inode
+      lock(&sbi->s_lock)
+
+To fix this, let's allocate bh-array with GFP_NOFS.
+
+Fixes: a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
+Cc: stable@vger.kernel.org # v6.2+
+Reported-by: syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000fef47e0618c0327f@google.com
+Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fsntfs.c  | 2 +-
- fs/ntfs3/ntfs.h    | 1 -
- fs/ntfs3/ntfs_fs.h | 2 ++
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ fs/exfat/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
-index 4c2d079b3d49b..97723a839c81a 100644
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -475,7 +475,7 @@ static int ntfs_extend_mft(struct ntfs_sb_info *sbi)
- 	struct ATTRIB *attr;
- 	struct wnd_bitmap *wnd = &sbi->mft.bitmap;
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -890,7 +890,7 @@ int exfat_get_dentry_set(struct exfat_en
  
--	new_mft_total = (wnd->nbits + MFT_INCREASE_CHUNK + 127) & (CLST)~127;
-+	new_mft_total = ALIGN(wnd->nbits + NTFS_MFT_INCREASE_STEP, 128);
- 	new_mft_bytes = (u64)new_mft_total << sbi->record_bits;
- 
- 	/* Step 1: Resize $MFT::DATA. */
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 324c0b036fdc1..1197d1a232962 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -84,7 +84,6 @@ typedef u32 CLST;
- 
- #define COMPRESSION_UNIT     4
- #define COMPRESS_MAX_CLUSTER 0x1000
--#define MFT_INCREASE_CHUNK   1024
- 
- enum RECORD_NUM {
- 	MFT_REC_MFT		= 0,
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 0f9bec29f2b70..3e65ccccdb899 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -197,6 +197,8 @@ struct ntfs_index {
- 
- /* Minimum MFT zone. */
- #define NTFS_MIN_MFT_ZONE 100
-+/* Step to increase the MFT. */
-+#define NTFS_MFT_INCREASE_STEP 1024
- 
- /* Ntfs file system in-core superblock data. */
- struct ntfs_sb_info {
--- 
-2.43.0
-
+ 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
+ 	if (num_bh > ARRAY_SIZE(es->__bh)) {
+-		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
++		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_NOFS);
+ 		if (!es->bh) {
+ 			brelse(bh);
+ 			return -ENOMEM;
 
 
 
