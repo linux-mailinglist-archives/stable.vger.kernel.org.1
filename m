@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-63982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5591941B92
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:56:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C51999418CE
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 503321F24137
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:56:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72751B25943
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2265189915;
-	Tue, 30 Jul 2024 16:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694E7189520;
+	Tue, 30 Jul 2024 16:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSOIg9ls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUeIfART"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C671898EB;
-	Tue, 30 Jul 2024 16:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25ACA18801C;
+	Tue, 30 Jul 2024 16:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358587; cv=none; b=aSpV+V7t2pIXCgWwbeb816bXsx34imlh07Ll81pdTGkLfGGTqXtsXwFlurjDF2+MozUctLVyw1h2p6ilx743iSWDbsravoYBZqty5hm+AiIIiyRULqouWNa1RkXCvpe9sLLElk2L+v7iLRWcWrpgZXry4TQBTNDIwed9PB8dmqg=
+	t=1722356405; cv=none; b=hHyVkGg1Re+AfBCpopUlSU0O3spl/PIhoapvn4+OzpyEAOIj5f+yKGYPr5seUqQpLfW8Z72tihFt/BH9xqQPrW41fjTYfzjHQXrmK83KJs7xmqLdLc8rsYOZ+idwOEgOTeot9wXZvGxz+bWFiQNqp0Oq91KtwgZjNGmxjtwG2mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358587; c=relaxed/simple;
-	bh=tZUzd25zayQ9f6eM1Ui1KLR42sCAmw5vVIcI3Y5gLco=;
+	s=arc-20240116; t=1722356405; c=relaxed/simple;
+	bh=oz+XLSIGacZXkoeJVVUcpjOC1pX2YQuJA9Vavjupnc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EE0rZBmt7y+UI9vnyL9LtteT5ahSBwN93KlSC0RVy/ExFLZfBROY2NEpbQz3Vc8pv95vD4weSsfH/+mswhmRWEY8s+2xF9xAHeYlx6hEIwxMzIjGVK9OuUr3axY15oj4/7wdYppeXuG5HChORQXI4LJyFBhD5BvEBuRgKN87CzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSOIg9ls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B511AC4AF10;
-	Tue, 30 Jul 2024 16:56:26 +0000 (UTC)
+	 MIME-Version; b=lk1RwEWjOsmk+YIPG7GVG6+AH0c3xcZPy3uwh5wjM1E9ceatFz9xnii1/iNbkutkNldrLVkuXLYBnc0Onp+8I1qtxRJ8cFq+Sz2j2GVQVezODkwPrWuIlE8cDiSXuP4mv16geaCVEoI/LFYgWrY+eRQPIDL/uPojKKs9VurWRGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUeIfART; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519E2C32782;
+	Tue, 30 Jul 2024 16:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358587;
-	bh=tZUzd25zayQ9f6eM1Ui1KLR42sCAmw5vVIcI3Y5gLco=;
+	s=korg; t=1722356405;
+	bh=oz+XLSIGacZXkoeJVVUcpjOC1pX2YQuJA9Vavjupnc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eSOIg9lsaQX+Ig77dy6Zuai5100nViXQ9IKZO6DKZPVzOw2yFPe9ZjUxySm3j/cpf
-	 PaKpZiQAfbxz6nqs89fMYotkrzeYBqsRzW8+nSGYY/erWbtqplHJ1zg9KDSxLet4bg
-	 cpN6bRWChRjM9E9ODV2n5YnTefFX9h0IsmCUuK6E=
+	b=GUeIfARTOKjh39I0W7mJyxFcEPNrLinXZGLe5YTi1TYATdJN3ZAUjRtTDWrDHj7UT
+	 8K6ShFhCX70yab3m2QDNNaoNwwtIK1G/EeNpQsJBFAyol2kvxm3J7BghQqqqyqWEba
+	 Ck2nPo8FaaSZG+XNt3zVNAMtyEi8eyGGRvrVfRvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Yunseong Kim <yskelg@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Mike Leach <mike.leach@linaro.org>,
-	Leo Yan <leo.yan@linux.dev>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 376/809] perf dso: Fix address sanitizer build
+Subject: [PATCH 6.6 145/568] xfrm: Export symbol xfrm_dev_state_delete.
 Date: Tue, 30 Jul 2024 17:44:12 +0200
-Message-ID: <20240730151739.512578810@linuxfoundation.org>
+Message-ID: <20240730151645.545675691@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,384 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Steffen Klassert <steffen.klassert@secunet.com>
 
-[ Upstream commit 1553419c3c10cf386496e68b90b5d0ce966ac614 ]
+[ Upstream commit 2d5317753e5f02a66e6d0afb9b25105d0beab1be ]
 
-Various files had been missed from having accessor functions added for
-the sake of dso reference count checking. Add the function calls and
-missing dso accessor functions.
+This fixes a build failure if xfrm_user is build as a module.
 
-Fixes: ee756ef7491e ("perf dso: Add reference count checking and accessor functions")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Yunseong Kim <yskelg@gmail.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Leo Yan <leo.yan@linux.dev>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20240704011745.1021288-1-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
+Reported-by: Mark Brown <broonie@kernel.org>
+Tested-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arch/powerpc/util/skip-callchain-idx.c     |  8 ++++----
- tools/perf/ui/gtk/annotate.c                   |  5 +++--
- tools/perf/util/cs-etm.c                       | 10 +++++-----
- tools/perf/util/disasm.c                       | 10 +++++-----
- tools/perf/util/dso.h                          | 10 ++++++++++
- tools/perf/util/srcline.c                      | 12 ++++++------
- tools/perf/util/symbol.c                       | 15 ++++++++-------
- tools/perf/util/unwind-libdw.c                 | 12 ++++++------
- tools/perf/util/unwind-libunwind-local.c       | 18 +++++++++---------
- 9 files changed, 56 insertions(+), 44 deletions(-)
+ net/xfrm/xfrm_state.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/arch/powerpc/util/skip-callchain-idx.c b/tools/perf/arch/powerpc/util/skip-callchain-idx.c
-index 5f3edb3004d84..356786432fd3c 100644
---- a/tools/perf/arch/powerpc/util/skip-callchain-idx.c
-+++ b/tools/perf/arch/powerpc/util/skip-callchain-idx.c
-@@ -159,9 +159,9 @@ static int check_return_addr(struct dso *dso, u64 map_start, Dwarf_Addr pc)
- 	Dwarf_Addr	start = pc;
- 	Dwarf_Addr	end = pc;
- 	bool		signalp;
--	const char	*exec_file = dso->long_name;
-+	const char	*exec_file = dso__long_name(dso);
- 
--	dwfl = dso->dwfl;
-+	dwfl = RC_CHK_ACCESS(dso)->dwfl;
- 
- 	if (!dwfl) {
- 		dwfl = dwfl_begin(&offline_callbacks);
-@@ -183,7 +183,7 @@ static int check_return_addr(struct dso *dso, u64 map_start, Dwarf_Addr pc)
- 			dwfl_end(dwfl);
- 			goto out;
- 		}
--		dso->dwfl = dwfl;
-+		RC_CHK_ACCESS(dso)->dwfl = dwfl;
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index e5308bb75eea2..7692d587e59b8 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -698,6 +698,7 @@ void xfrm_dev_state_delete(struct xfrm_state *x)
+ 		spin_unlock_bh(&xfrm_state_dev_gc_lock);
  	}
- 
- 	mod = dwfl_addrmodule(dwfl, pc);
-@@ -267,7 +267,7 @@ int arch_skip_callchain_idx(struct thread *thread, struct ip_callchain *chain)
- 	rc = check_return_addr(dso, map__start(al.map), ip);
- 
- 	pr_debug("[DSO %s, sym %s, ip 0x%" PRIx64 "] rc %d\n",
--				dso->long_name, al.sym->name, ip, rc);
-+		dso__long_name(dso), al.sym->name, ip, rc);
- 
- 	if (rc == 0) {
- 		/*
-diff --git a/tools/perf/ui/gtk/annotate.c b/tools/perf/ui/gtk/annotate.c
-index 93ce3d47e47e6..6da24aa039ebb 100644
---- a/tools/perf/ui/gtk/annotate.c
-+++ b/tools/perf/ui/gtk/annotate.c
-@@ -180,13 +180,14 @@ static int symbol__gtk_annotate(struct map_symbol *ms, struct evsel *evsel,
- 	GtkWidget *tab_label;
- 	int err;
- 
--	if (dso->annotate_warned)
-+	if (dso__annotate_warned(dso))
- 		return -1;
- 
- 	err = symbol__annotate(ms, evsel, NULL);
- 	if (err) {
- 		char msg[BUFSIZ];
--		dso->annotate_warned = true;
-+
-+		dso__set_annotate_warned(dso);
- 		symbol__strerror_disassemble(ms, err, msg, sizeof(msg));
- 		ui__error("Couldn't annotate %s: %s\n", sym->name, msg);
- 		return -1;
-diff --git a/tools/perf/util/cs-etm.c b/tools/perf/util/cs-etm.c
-index 32818bd7cd177..5e9fbcfad7d44 100644
---- a/tools/perf/util/cs-etm.c
-+++ b/tools/perf/util/cs-etm.c
-@@ -1013,7 +1013,7 @@ static u32 cs_etm__mem_access(struct cs_etm_queue *etmq, u8 trace_chan_id,
- 	if (!dso)
- 		goto out;
- 
--	if (dso->data.status == DSO_DATA_STATUS_ERROR &&
-+	if (dso__data(dso)->status == DSO_DATA_STATUS_ERROR &&
- 	    dso__data_status_seen(dso, DSO_DATA_STATUS_SEEN_ITRACE))
- 		goto out;
- 
-@@ -1027,11 +1027,11 @@ static u32 cs_etm__mem_access(struct cs_etm_queue *etmq, u8 trace_chan_id,
- 	if (len <= 0) {
- 		ui__warning_once("CS ETM Trace: Missing DSO. Use 'perf archive' or debuginfod to export data from the traced system.\n"
- 				 "              Enable CONFIG_PROC_KCORE or use option '-k /path/to/vmlinux' for kernel symbols.\n");
--		if (!dso->auxtrace_warned) {
-+		if (!dso__auxtrace_warned(dso)) {
- 			pr_err("CS ETM Trace: Debug data not found for address %#"PRIx64" in %s\n",
--				    address,
--				    dso->long_name ? dso->long_name : "Unknown");
--			dso->auxtrace_warned = true;
-+				address,
-+				dso__long_name(dso) ? dso__long_name(dso) : "Unknown");
-+			dso__set_auxtrace_warned(dso);
- 		}
- 		goto out;
- 	}
-diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
-index 72aec8f61b944..e10558b79504b 100644
---- a/tools/perf/util/disasm.c
-+++ b/tools/perf/util/disasm.c
-@@ -1199,7 +1199,7 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 	int ret;
- 	FILE *s;
- 
--	if (dso->binary_type != DSO_BINARY_TYPE__BPF_PROG_INFO)
-+	if (dso__binary_type(dso) != DSO_BINARY_TYPE__BPF_PROG_INFO)
- 		return SYMBOL_ANNOTATE_ERRNO__BPF_INVALID_FILE;
- 
- 	pr_debug("%s: handling sym %s addr %" PRIx64 " len %" PRIx64 "\n", __func__,
-@@ -1226,14 +1226,14 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 	info.arch = bfd_get_arch(bfdf);
- 	info.mach = bfd_get_mach(bfdf);
- 
--	info_node = perf_env__find_bpf_prog_info(dso->bpf_prog.env,
--						 dso->bpf_prog.id);
-+	info_node = perf_env__find_bpf_prog_info(dso__bpf_prog(dso)->env,
-+						 dso__bpf_prog(dso)->id);
- 	if (!info_node) {
- 		ret = SYMBOL_ANNOTATE_ERRNO__BPF_MISSING_BTF;
- 		goto out;
- 	}
- 	info_linear = info_node->info_linear;
--	sub_id = dso->bpf_prog.sub_id;
-+	sub_id = dso__bpf_prog(dso)->sub_id;
- 
- 	info.buffer = (void *)(uintptr_t)(info_linear->info.jited_prog_insns);
- 	info.buffer_length = info_linear->info.jited_prog_len;
-@@ -1244,7 +1244,7 @@ static int symbol__disassemble_bpf(struct symbol *sym,
- 	if (info_linear->info.btf_id) {
- 		struct btf_node *node;
- 
--		node = perf_env__find_btf(dso->bpf_prog.env,
-+		node = perf_env__find_btf(dso__bpf_prog(dso)->env,
- 					  info_linear->info.btf_id);
- 		if (node)
- 			btf = btf__new((__u8 *)(node->data),
-diff --git a/tools/perf/util/dso.h b/tools/perf/util/dso.h
-index d72f3b8c37f6a..878c1f441868b 100644
---- a/tools/perf/util/dso.h
-+++ b/tools/perf/util/dso.h
-@@ -280,6 +280,16 @@ static inline void dso__set_annotate_warned(struct dso *dso)
- 	RC_CHK_ACCESS(dso)->annotate_warned = 1;
  }
++EXPORT_SYMBOL_GPL(xfrm_dev_state_delete);
  
-+static inline bool dso__auxtrace_warned(const struct dso *dso)
-+{
-+	return RC_CHK_ACCESS(dso)->auxtrace_warned;
-+}
-+
-+static inline void dso__set_auxtrace_warned(struct dso *dso)
-+{
-+	RC_CHK_ACCESS(dso)->auxtrace_warned = 1;
-+}
-+
- static inline struct auxtrace_cache *dso__auxtrace_cache(struct dso *dso)
+ void xfrm_dev_state_free(struct xfrm_state *x)
  {
- 	return RC_CHK_ACCESS(dso)->auxtrace_cache;
-diff --git a/tools/perf/util/srcline.c b/tools/perf/util/srcline.c
-index 9d670d8c1c089..4d67c1e095a18 100644
---- a/tools/perf/util/srcline.c
-+++ b/tools/perf/util/srcline.c
-@@ -288,7 +288,7 @@ static int inline_list__append_dso_a2l(struct dso *dso,
- 				       struct inline_node *node,
- 				       struct symbol *sym)
- {
--	struct a2l_data *a2l = dso->a2l;
-+	struct a2l_data *a2l = dso__a2l(dso);
- 	struct symbol *inline_sym = new_inline_sym(dso, sym, a2l->funcname);
- 	char *srcline = NULL;
- 
-@@ -304,11 +304,11 @@ static int addr2line(const char *dso_name, u64 addr,
- 		     struct symbol *sym)
- {
- 	int ret = 0;
--	struct a2l_data *a2l = dso->a2l;
-+	struct a2l_data *a2l = dso__a2l(dso);
- 
- 	if (!a2l) {
--		dso->a2l = addr2line_init(dso_name);
--		a2l = dso->a2l;
-+		a2l = addr2line_init(dso_name);
-+		dso__set_a2l(dso, a2l);
- 	}
- 
- 	if (a2l == NULL) {
-@@ -360,14 +360,14 @@ static int addr2line(const char *dso_name, u64 addr,
- 
- void dso__free_a2l(struct dso *dso)
- {
--	struct a2l_data *a2l = dso->a2l;
-+	struct a2l_data *a2l = dso__a2l(dso);
- 
- 	if (!a2l)
- 		return;
- 
- 	addr2line_cleanup(a2l);
- 
--	dso->a2l = NULL;
-+	dso__set_a2l(dso, NULL);
- }
- 
- #else /* HAVE_LIBBFD_SUPPORT */
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index aee0a4cfb3836..22646f0cca7da 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -1607,7 +1607,7 @@ int dso__load_bfd_symbols(struct dso *dso, const char *debugfile)
- 
- 	if (!bfd_check_format(abfd, bfd_object)) {
- 		pr_debug2("%s: cannot read %s bfd file.\n", __func__,
--			  dso->long_name);
-+			  dso__long_name(dso));
- 		goto out_close;
- 	}
- 
-@@ -1640,12 +1640,13 @@ int dso__load_bfd_symbols(struct dso *dso, const char *debugfile)
- 		}
- 		if (i < symbols_count) {
- 			/* PE symbols can only have 4 bytes, so use .text high bits */
--			dso->text_offset = section->vma - (u32)section->vma;
--			dso->text_offset += (u32)bfd_asymbol_value(symbols[i]);
--			dso->text_end = (section->vma - dso->text_offset) + section->size;
-+			u64 text_offset = (section->vma - (u32)section->vma)
-+				+ (u32)bfd_asymbol_value(symbols[i]);
-+			dso__set_text_offset(dso, text_offset);
-+			dso__set_text_end(dso, (section->vma - text_offset) + section->size);
- 		} else {
--			dso->text_offset = section->vma - section->filepos;
--			dso->text_end = section->filepos + section->size;
-+			dso__set_text_offset(dso, section->vma - section->filepos);
-+			dso__set_text_end(dso, section->filepos + section->size);
- 		}
- 	}
- 
-@@ -1671,7 +1672,7 @@ int dso__load_bfd_symbols(struct dso *dso, const char *debugfile)
- 		else
- 			len = section->size - sym->value;
- 
--		start = bfd_asymbol_value(sym) - dso->text_offset;
-+		start = bfd_asymbol_value(sym) - dso__text_offset(dso);
- 		symbol = symbol__new(start, len, bfd2elf_binding(sym), STT_FUNC,
- 				     bfd_asymbol_name(sym));
- 		if (!symbol)
-diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
-index b38d322734b4a..bde216e630d29 100644
---- a/tools/perf/util/unwind-libdw.c
-+++ b/tools/perf/util/unwind-libdw.c
-@@ -29,8 +29,8 @@ static int __find_debuginfo(Dwfl_Module *mod __maybe_unused, void **userdata,
- 	const struct dso *dso = *userdata;
- 
- 	assert(dso);
--	if (dso->symsrc_filename && strcmp (file_name, dso->symsrc_filename))
--		*debuginfo_file_name = strdup(dso->symsrc_filename);
-+	if (dso__symsrc_filename(dso) && strcmp(file_name, dso__symsrc_filename(dso)))
-+		*debuginfo_file_name = strdup(dso__symsrc_filename(dso));
- 	return -1;
- }
- 
-@@ -66,7 +66,7 @@ static int __report_module(struct addr_location *al, u64 ip,
- 	 * a different code in another DSO.  So just use the map->start
- 	 * directly to pick the correct one.
- 	 */
--	if (!strncmp(dso->long_name, "/tmp/jitted-", 12))
-+	if (!strncmp(dso__long_name(dso), "/tmp/jitted-", 12))
- 		base = map__start(al->map);
- 	else
- 		base = map__start(al->map) - map__pgoff(al->map);
-@@ -83,15 +83,15 @@ static int __report_module(struct addr_location *al, u64 ip,
- 	if (!mod) {
- 		char filename[PATH_MAX];
- 
--		__symbol__join_symfs(filename, sizeof(filename), dso->long_name);
--		mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
-+		__symbol__join_symfs(filename, sizeof(filename), dso__long_name(dso));
-+		mod = dwfl_report_elf(ui->dwfl, dso__short_name(dso), filename, -1,
- 				      base, false);
- 	}
- 	if (!mod) {
- 		char filename[PATH_MAX];
- 
- 		if (dso__build_id_filename(dso, filename, sizeof(filename), false))
--			mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
-+			mod = dwfl_report_elf(ui->dwfl, dso__short_name(dso), filename, -1,
- 					      base, false);
- 	}
- 
-diff --git a/tools/perf/util/unwind-libunwind-local.c b/tools/perf/util/unwind-libunwind-local.c
-index cde267ea3e99e..5c073d815ba2b 100644
---- a/tools/perf/util/unwind-libunwind-local.c
-+++ b/tools/perf/util/unwind-libunwind-local.c
-@@ -363,7 +363,7 @@ static int read_unwind_spec_debug_frame(struct dso *dso,
- 					struct machine *machine, u64 *offset)
- {
- 	int fd;
--	u64 ofs = dso->data.debug_frame_offset;
-+	u64 ofs = dso__data(dso)->debug_frame_offset;
- 
- 	/* debug_frame can reside in:
- 	 *  - dso
-@@ -379,7 +379,7 @@ static int read_unwind_spec_debug_frame(struct dso *dso,
- 		}
- 
- 		if (ofs <= 0) {
--			fd = open(dso->symsrc_filename, O_RDONLY);
-+			fd = open(dso__symsrc_filename(dso), O_RDONLY);
- 			if (fd >= 0) {
- 				ofs = elf_section_offset(fd, ".debug_frame");
- 				close(fd);
-@@ -402,21 +402,21 @@ static int read_unwind_spec_debug_frame(struct dso *dso,
- 				}
- 			}
- 			if (ofs > 0) {
--				if (dso->symsrc_filename != NULL) {
-+				if (dso__symsrc_filename(dso) != NULL) {
- 					pr_warning(
- 						"%s: overwrite symsrc(%s,%s)\n",
- 							__func__,
--							dso->symsrc_filename,
-+							dso__symsrc_filename(dso),
- 							debuglink);
--					zfree(&dso->symsrc_filename);
-+					zfree(&dso__symsrc_filename(dso));
- 				}
--				dso->symsrc_filename = debuglink;
-+				dso__set_symsrc_filename(dso, debuglink);
- 			} else {
- 				free(debuglink);
- 			}
- 		}
- 
--		dso->data.debug_frame_offset = ofs;
-+		dso__data(dso)->debug_frame_offset = ofs;
- 	}
- 
- 	*offset = ofs;
-@@ -481,7 +481,7 @@ find_proc_info(unw_addr_space_t as, unw_word_t ip, unw_proc_info_t *pi,
- 	if (ret < 0 &&
- 	    !read_unwind_spec_debug_frame(dso, ui->machine, &segbase)) {
- 		int fd = dso__data_get_fd(dso, ui->machine);
--		int is_exec = elf_is_exec(fd, dso->name);
-+		int is_exec = elf_is_exec(fd, dso__name(dso));
- 		u64 start = map__start(map);
- 		unw_word_t base = is_exec ? 0 : start;
- 		const char *symfile;
-@@ -489,7 +489,7 @@ find_proc_info(unw_addr_space_t as, unw_word_t ip, unw_proc_info_t *pi,
- 		if (fd >= 0)
- 			dso__data_put_fd(dso);
- 
--		symfile = dso->symsrc_filename ?: dso->name;
-+		symfile = dso__symsrc_filename(dso) ?: dso__name(dso);
- 
- 		memset(&di, 0, sizeof(di));
- 		if (dwarf_find_debug_frame(0, &di, ip, base, symfile, start, map__end(map)))
 -- 
 2.43.0
 
