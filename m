@@ -1,61 +1,53 @@
-Return-Path: <stable+bounces-64150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13119941C55
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D482941C57
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45A8B1C2291F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5698C282158
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A828B188003;
-	Tue, 30 Jul 2024 17:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2134188017;
+	Tue, 30 Jul 2024 17:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFtc5mNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjSMVxP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FB11A6192;
-	Tue, 30 Jul 2024 17:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09A01A6192;
+	Tue, 30 Jul 2024 17:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359159; cv=none; b=fcG+EQpWxzRZyatQGhC/FmHD3CIrE4Y0/ufhITaVoiQaCAm0tvgJcy4/jLGPEKq7JEz1tw351LRDOdXYLMhvNIE2W2r682WjdCRvNFf/SYStTQWarvwQAuEtz+1rja+CuRAYlgutnhSwow2jjIh/CQ52BuV0RcMnsk5Jw39iNus=
+	t=1722359165; cv=none; b=ruveqSSSJ8ZA3Gvu1NheiNW7+GLTi0XAdYIYq8QR5N5quSLLD39KuMExiX5ZAu0On9Uf84+OPJG/MKS7To8hEox2tUFrcFQhYe5HEK4EdU6lxRTbyvn87ZY7Xy/lbK3wWsI3bv34omh6Ch4/DJcDUH1/ZDrnKJNtWyG8vNQHBv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359159; c=relaxed/simple;
-	bh=9i2vCvDup8mgfydrSfjcFXSytGhTA5ISYYFeO5dhiNQ=;
+	s=arc-20240116; t=1722359165; c=relaxed/simple;
+	bh=MLUi+L4FUoKFNVbg4eTSRv8QjksZmlPce2yvD1t8Dfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nJOOGdA/AcC2Z7WtVbS1PJJnAExi81R6CcUd5YrsUp2lss+Jjqwboo8IAySEkOkOOK3ttJap7xPM+EFS4ZWnHwAB+1z9DybbXe/XZ61td5z+kT6kEPCizsmVU5nzcCcUJnJ8CFqyjq7Mepfku4dHUSJPNDsZuhKuxJ6Uqzr4RFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFtc5mNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A20C32782;
-	Tue, 30 Jul 2024 17:05:58 +0000 (UTC)
+	 MIME-Version; b=L3+8deH/TGkhok6t6ga0NzAggNfwWkUZD+gyxGo6H7VnfD0gXSK9JybOIq0g4adZs5RRYRYFqyjFGj9IKth/iyC5qb64m9oPf8aq2GIfTqAlVFfChBJybzrF/jR+uwxXZxsne5ONitJEmc23wLqvLcnXiB7CK6fp7oau1W0lj9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjSMVxP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25ED0C32782;
+	Tue, 30 Jul 2024 17:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359159;
-	bh=9i2vCvDup8mgfydrSfjcFXSytGhTA5ISYYFeO5dhiNQ=;
+	s=korg; t=1722359165;
+	bh=MLUi+L4FUoKFNVbg4eTSRv8QjksZmlPce2yvD1t8Dfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFtc5mNLYxkSHc/PLqZY6QZkGGDi5TntBtmUvr11wEgpm6jGlVrGWLFAt8qptucoS
-	 Y4RAWFK52gqQIh+96kfBUgWKb5ZsxVvq8mwH3pndWKfDdBSMvlCXwiHpY51whuyoiD
-	 2Nw7h3yRpKQ4lfIzuxR+aY7HaigzY7DtLnjwPMQQ=
+	b=LjSMVxP/vc/Xl+JeBgDU145Ox4hcQZYYCrJG1ol5dSnGSqR+AeVTh6tFQOh0mMIzs
+	 DWXdM0dWxybSHN+F/Oj8i7BJT2uexn54Ivxi7rCsambECq2ZWPqFmyQEuF9ItK8LrM
+	 Al8KD1tm403BK6qRJ2RormpIgKw7MqmNpnErNOyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6c21aeb59d0e82eb2782@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Arseny Krasnov <arseny.krasnov@kaspersky.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
+	Denis Arefev <arefev@swemel.ru>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 444/809] vhost/vsock: always initialize seqpacket_allow
-Date: Tue, 30 Jul 2024 17:45:20 +0200
-Message-ID: <20240730151742.240054343@linuxfoundation.org>
+Subject: [PATCH 6.10 445/809] net: missing check virtio
+Date: Tue, 30 Jul 2024 17:45:21 +0200
+Message-ID: <20240730151742.280510883@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,70 +60,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit 1e1fdcbdde3b7663e5d8faeb2245b9b151417d22 ]
+[ Upstream commit e269d79c7d35aa3808b1f3c1737d63dab504ddc8 ]
 
-There are two issues around seqpacket_allow:
-1. seqpacket_allow is not initialized when socket is
-   created. Thus if features are never set, it will be
-   read uninitialized.
-2. if VIRTIO_VSOCK_F_SEQPACKET is set and then cleared,
-   then seqpacket_allow will not be cleared appropriately
-   (existing apps I know about don't usually do this but
-    it's legal and there's no way to be sure no one relies
-    on this).
+Two missing check in virtio_net_hdr_to_skb() allowed syzbot
+to crash kernels again
 
-To fix:
-	- initialize seqpacket_allow after allocation
-	- set it unconditionally in set_features
+1. After the skb_segment function the buffer may become non-linear
+(nr_frags != 0), but since the SKBTX_SHARED_FRAG flag is not set anywhere
+the __skb_linearize function will not be executed, then the buffer will
+remain non-linear. Then the condition (offset >= skb_headlen(skb))
+becomes true, which causes WARN_ON_ONCE in skb_checksum_help.
 
-Reported-by: syzbot+6c21aeb59d0e82eb2782@syzkaller.appspotmail.com
-Reported-by: Jeongjun Park <aha310510@gmail.com>
-Fixes: ced7b713711f ("vhost/vsock: support SEQPACKET for transport").
-Tested-by: Arseny Krasnov <arseny.krasnov@kaspersky.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240422100010-mutt-send-email-mst@kernel.org>
+2. The struct sk_buff and struct virtio_net_hdr members must be
+mathematically related.
+(gso_size) must be greater than (needed) otherwise WARN_ON_ONCE.
+(remainder) must be greater than (needed) otherwise WARN_ON_ONCE.
+(remainder) may be 0 if division is without remainder.
+
+offset+2 (4191) > skb_headlen() (1116)
+WARNING: CPU: 1 PID: 5084 at net/core/dev.c:3303 skb_checksum_help+0x5e2/0x740 net/core/dev.c:3303
+Modules linked in:
+CPU: 1 PID: 5084 Comm: syz-executor336 Not tainted 6.7.0-rc3-syzkaller-00014-gdf60cee26a2e #0
+Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:skb_checksum_help+0x5e2/0x740 net/core/dev.c:3303
+Code: 89 e8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 52 01 00 00 44 89 e2 2b 53 74 4c 89 ee 48 c7 c7 40 57 e9 8b e8 af 8f dd f8 90 <0f> 0b 90 90 e9 87 fe ff ff e8 40 0f 6e f9 e9 4b fa ff ff 48 89 ef
+RSP: 0018:ffffc90003a9f338 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff888025125780 RCX: ffffffff814db209
+RDX: ffff888015393b80 RSI: ffffffff814db216 RDI: 0000000000000001
+RBP: ffff8880251257f4 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000045c
+R13: 000000000000105f R14: ffff8880251257f0 R15: 000000000000105d
+FS:  0000555555c24380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000002000f000 CR3: 0000000023151000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ip_do_fragment+0xa1b/0x18b0 net/ipv4/ip_output.c:777
+ ip_fragment.constprop.0+0x161/0x230 net/ipv4/ip_output.c:584
+ ip_finish_output_gso net/ipv4/ip_output.c:286 [inline]
+ __ip_finish_output net/ipv4/ip_output.c:308 [inline]
+ __ip_finish_output+0x49c/0x650 net/ipv4/ip_output.c:295
+ ip_finish_output+0x31/0x310 net/ipv4/ip_output.c:323
+ NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+ ip_output+0x13b/0x2a0 net/ipv4/ip_output.c:433
+ dst_output include/net/dst.h:451 [inline]
+ ip_local_out+0xaf/0x1a0 net/ipv4/ip_output.c:129
+ iptunnel_xmit+0x5b4/0x9b0 net/ipv4/ip_tunnel_core.c:82
+ ipip6_tunnel_xmit net/ipv6/sit.c:1034 [inline]
+ sit_tunnel_xmit+0xed2/0x28f0 net/ipv6/sit.c:1076
+ __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+ xmit_one net/core/dev.c:3545 [inline]
+ dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3561
+ __dev_queue_xmit+0x7c1/0x3d60 net/core/dev.c:4346
+ dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+ packet_xmit+0x257/0x380 net/packet/af_packet.c:276
+ packet_snd net/packet/af_packet.c:3087 [inline]
+ packet_sendmsg+0x24ca/0x5240 net/packet/af_packet.c:3119
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0xd5/0x180 net/socket.c:745
+ __sys_sendto+0x255/0x340 net/socket.c:2190
+ __do_sys_sendto net/socket.c:2202 [inline]
+ __se_sys_sendto net/socket.c:2198 [inline]
+ __x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller
+
+Fixes: 0f6925b3e8da ("virtio_net: Do not pull payload in skb->head")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Message-Id: <20240613095448.27118-1-arefev@swemel.ru>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vsock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/virtio_net.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index ec20ecff85c7f..bf664ec9341b3 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -667,6 +667,7 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
- 	}
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 4dfa9b69ca8d9..d1d7825318c32 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -56,6 +56,7 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	unsigned int thlen = 0;
+ 	unsigned int p_off = 0;
+ 	unsigned int ip_proto;
++	u64 ret, remainder, gso_size;
  
- 	vsock->guest_cid = 0; /* no CID assigned yet */
-+	vsock->seqpacket_allow = false;
+ 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+ 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
+@@ -98,6 +99,16 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
+ 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
  
- 	atomic_set(&vsock->queued_replies, 0);
++		if (hdr->gso_size) {
++			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
++			ret = div64_u64_rem(skb->len, gso_size, &remainder);
++			if (!(ret && (hdr->gso_size > needed) &&
++						((remainder > needed) || (remainder == 0)))) {
++				return -EINVAL;
++			}
++			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
++		}
++
+ 		if (!pskb_may_pull(skb, needed))
+ 			return -EINVAL;
  
-@@ -810,8 +811,7 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
- 			goto err;
- 	}
- 
--	if (features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET))
--		vsock->seqpacket_allow = true;
-+	vsock->seqpacket_allow = features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET);
- 
- 	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
- 		vq = &vsock->vqs[i];
 -- 
 2.43.0
 
