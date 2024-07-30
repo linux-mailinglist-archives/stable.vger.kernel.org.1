@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-64419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11BC0941DC2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:21:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A1A941B3C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFA9E28D2DC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:21:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54DC41C20F20
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD911A76B0;
-	Tue, 30 Jul 2024 17:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B07189502;
+	Tue, 30 Jul 2024 16:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CICyIJrq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyHU/LUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A921A76A9;
-	Tue, 30 Jul 2024 17:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5C2188013;
+	Tue, 30 Jul 2024 16:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360061; cv=none; b=UNzQVosgnjkTyRNWphaQxXzAsr8E2rCS4E054EvQMfVDI5Q/6v3YvpHMXwYUI122jabyAtdqUocdVh79WeqhBrb7fyZtjrcd34qngHJrdRiazqi/K+qXKY5sNg8u87xfFgJr1Yjn6MNV0SQG6wP1xHMY1eC4XdpraghqAluua/4=
+	t=1722358345; cv=none; b=SKkwbv3cAZjIb1AoHhrBDE2bqZjZzBjAEsbaBqtN5Uv+EQGOG9D+UHAb5ucHoMO+2lCA5dCK9ypmklpBQidzjMwn9Ve2hOdy9KnxOJrKDDH5Xpsuva5pC/E2uIQnwbVSuYiBBxaj46YYkbHaQu0AyE58FyLDFqHpVY7omCFmMuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360061; c=relaxed/simple;
-	bh=SA2assnotwClmxuNA2vWvuNIvH+Yz3M5ynsGPbxUQ8A=;
+	s=arc-20240116; t=1722358345; c=relaxed/simple;
+	bh=6VDoPMfndl7okxi72wssqNDAO3b2KR+tVaVsomoe0lQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjP1FYith4ard3PczMa9/hLscIKaESBB5DK6CjINggKfuw1lIjSMz5O6GFRyHH1pr/6tLLjXUzq28FBflR4LsW8vBNzur7ogJMKAkssnWWdlfENiWGvHUeUdRRkwHEfGqg0ucaAWoB4Vh1BFfxQt5xph28lp10vshN/w9l75jvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CICyIJrq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8156CC32782;
-	Tue, 30 Jul 2024 17:21:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q+kPg7dbzICjSBK1CBHJl1HmhNrUpw2p+9DE41wmiXfvm4bIRipPqTeu2HZCF1ksmVbKVZFq1RRpSTascKId0o2GTDZ5Jdg9lFhvfgVvso3tqbVrdtO5pbBlhutVxMHxznrKzglDz1lqdpiC0zMRGAQbhSbkIEAbTPi/XobOl8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyHU/LUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C7CC32782;
+	Tue, 30 Jul 2024 16:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360060;
-	bh=SA2assnotwClmxuNA2vWvuNIvH+Yz3M5ynsGPbxUQ8A=;
+	s=korg; t=1722358345;
+	bh=6VDoPMfndl7okxi72wssqNDAO3b2KR+tVaVsomoe0lQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CICyIJrq6pksHv0jS0LRWHWSNJeJKDEZKOWgrQ2td1kK6edSDyqqB+6p8f4uU3vGs
-	 aBMloD+xv+dRv5+3+9LKk8ulse+cL84zt8KufyntvzI2E18fGsXZeUbVWT6AFwCcQY
-	 zk8dTYIhLDTvzXwu4jcrVEJZmDqhmBnycwUEDPHs=
+	b=dyHU/LUyVGZEfR+T2A0bG4DoMtXIGE96kpH89o+r8hdqqTdOkLxkW+xncbQvGtegD
+	 ASolqDtVJgGa3/fYuXgqGOq5a34AG8psRg656gYf2aqmAMypGaqxF8yHEG7xQUCAOq
+	 /Bt4n5Si4ROfIjpI2TCk5vpI5r2QXuh5JSaAZq78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ritvik Budhiraja <rbudhiraja@microsoft.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	David Howells <dhowell@redhat.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.10 584/809] cifs: fix potential null pointer use in destroy_workqueue in init_cifs error path
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 353/568] s390/dasd: fix error checks in dasd_copy_pair_store()
 Date: Tue, 30 Jul 2024 17:47:40 +0200
-Message-ID: <20240730151747.896847130@linuxfoundation.org>
+Message-ID: <20240730151653.664852689@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Carlos López <clopez@suse.de>
 
-commit 193cc89ea0ca1da311877d2b4bb5e9f03bcc82a2 upstream.
+[ Upstream commit 8e64d2356cbc800b4cd0e3e614797f76bcf0cdb8 ]
 
-Dan Carpenter reported a Smack static checker warning:
-   fs/smb/client/cifsfs.c:1981 init_cifs()
-   error: we previously assumed 'serverclose_wq' could be null (see line 1895)
+dasd_add_busid() can return an error via ERR_PTR() if an allocation
+fails. However, two callsites in dasd_copy_pair_store() do not check
+the result, potentially resulting in a NULL pointer dereference. Fix
+this by checking the result with IS_ERR() and returning the error up
+the stack.
 
-The patch which introduced the serverclose workqueue used the wrong
-oredering in error paths in init_cifs() for freeing it on errors.
-
-Fixes: 173217bd7336 ("smb3: retrying on failed server close")
-Cc: stable@vger.kernel.org
-Cc: Ritvik Budhiraja <rbudhiraja@microsoft.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: David Howells <dhowell@redhat.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a91ff09d39f9b ("s390/dasd: add copy pair setup")
+Signed-off-by: Carlos López <clopez@suse.de>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240715112434.2111291-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/s390/block/dasd_devmap.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1894,12 +1894,12 @@ init_cifs(void)
- 					   WQ_FREEZABLE|WQ_MEM_RECLAIM, 0);
- 	if (!serverclose_wq) {
- 		rc = -ENOMEM;
--		goto out_destroy_serverclose_wq;
-+		goto out_destroy_deferredclose_wq;
- 	}
+diff --git a/drivers/s390/block/dasd_devmap.c b/drivers/s390/block/dasd_devmap.c
+index c4e36650c4264..91522dba9fd98 100644
+--- a/drivers/s390/block/dasd_devmap.c
++++ b/drivers/s390/block/dasd_devmap.c
+@@ -2258,13 +2258,19 @@ static ssize_t dasd_copy_pair_store(struct device *dev,
  
- 	rc = cifs_init_inodecache();
- 	if (rc)
--		goto out_destroy_deferredclose_wq;
-+		goto out_destroy_serverclose_wq;
+ 	/* allocate primary devmap if needed */
+ 	prim_devmap = dasd_find_busid(prim_busid);
+-	if (IS_ERR(prim_devmap))
++	if (IS_ERR(prim_devmap)) {
+ 		prim_devmap = dasd_add_busid(prim_busid, DASD_FEATURE_DEFAULT);
++		if (IS_ERR(prim_devmap))
++			return PTR_ERR(prim_devmap);
++	}
  
- 	rc = cifs_init_netfs();
- 	if (rc)
-@@ -1967,6 +1967,8 @@ out_destroy_netfs:
- 	cifs_destroy_netfs();
- out_destroy_inodecache:
- 	cifs_destroy_inodecache();
-+out_destroy_serverclose_wq:
-+	destroy_workqueue(serverclose_wq);
- out_destroy_deferredclose_wq:
- 	destroy_workqueue(deferredclose_wq);
- out_destroy_cifsoplockd_wq:
-@@ -1977,8 +1979,6 @@ out_destroy_decrypt_wq:
- 	destroy_workqueue(decrypt_wq);
- out_destroy_cifsiod_wq:
- 	destroy_workqueue(cifsiod_wq);
--out_destroy_serverclose_wq:
--	destroy_workqueue(serverclose_wq);
- out_clean_proc:
- 	cifs_proc_clean();
- 	return rc;
+ 	/* allocate secondary devmap if needed */
+ 	sec_devmap = dasd_find_busid(sec_busid);
+-	if (IS_ERR(sec_devmap))
++	if (IS_ERR(sec_devmap)) {
+ 		sec_devmap = dasd_add_busid(sec_busid, DASD_FEATURE_DEFAULT);
++		if (IS_ERR(sec_devmap))
++			return PTR_ERR(sec_devmap);
++	}
+ 
+ 	/* setting copy relation is only allowed for offline secondary */
+ 	if (sec_devmap->device)
+-- 
+2.43.0
+
 
 
 
