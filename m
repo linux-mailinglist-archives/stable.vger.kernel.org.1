@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-62712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12AC5940DD3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:36:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD9E940DEF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 11:39:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2AA6B27579
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:33:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FF67B27CD1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 09:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07527195985;
-	Tue, 30 Jul 2024 09:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C1E195B18;
+	Tue, 30 Jul 2024 09:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6RdRWRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qtzdi92z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99F5194AF2
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63752194AF2
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 09:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722331832; cv=none; b=e0yvCLcZ4Szwztrjhz4ExgntkhXXy0iL4J5J0KAAMXSCSQB0KqVuxlMUm0KgyHa+gsp7dzX4VBzisXGrImTx139iQ0bGyJ1mG73CM41W2HUlZNWt/5YoKxuYhByhxMmtWScQGR2QCNrErGe7VAX6k4SZGVEPy+AkDAWlcDnN0/U=
+	t=1722331835; cv=none; b=IIlcvawf96EStWRJMB0c1cwdmA3jash7kmibMtRmp214H69YEQBZJ3X5BI9fgnAXHgobLWS5I8L1boCZFajX2xE3nC1v10PAwyhfL+QJOEfIYJ3lF8wL2c7N/jgPpyxANOGkvUgtOeYLe1LOLn2WqA4p6F1+WCIMMmEDz5m3KYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722331832; c=relaxed/simple;
-	bh=zbXX8xLI66fIYGzHEZryel2AvNz5kny+syNf2vl3QCA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P+AIiTM4vax93TOpZkMxWoSmW/I5ByWzJLbHqlbC8oeAbxjzK3mjN7RJZSoVKpjYbL7UMvqrC3fM+q++WSbHWH1/tN4BVZetD6NLOgRT3FMvdw6lMbZtV13tGLadF3vP72mw3xe9O+MYAYM+T5LcBDqEKrgsBzNjQES7u2Tuz4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6RdRWRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29504C32782;
-	Tue, 30 Jul 2024 09:30:29 +0000 (UTC)
+	s=arc-20240116; t=1722331835; c=relaxed/simple;
+	bh=pPBZ/w95b17pwX591XoK+FDswJGBU67JdW2a59EW1cU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ftHD9JAIJUIU3dFqBufc3KXIZ0QUxKeZvPXU5qZepvCB9xC3QiSLbLWH7BIBa4WurLJkH6bqq2S7DUkv/NIodLac8LCh2/8kd+eOhsfkihWPOC3/AChFZAvUxgfpApg6nKH5xXF3Ox/CLh/JlDNxoD7pk25kqkxY0ood0G6z6Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qtzdi92z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE2AC4AF0B;
+	Tue, 30 Jul 2024 09:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722331830;
-	bh=zbXX8xLI66fIYGzHEZryel2AvNz5kny+syNf2vl3QCA=;
+	s=korg; t=1722331834;
+	bh=pPBZ/w95b17pwX591XoK+FDswJGBU67JdW2a59EW1cU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=o6RdRWRdN9EbsTuiSt88PEitphyIfSNYO7CD7dKtQ2Yxq5ur+utmqhPsDsxQw//dq
-	 HQaJrY8JGhhHT6Gs+PhwNvF22UwTSiLMw7xttYNhXDHqzjeX8mmizffFgFpqtTfB6l
-	 3J/TsG+MpXefasyqknmwdFr8WB7V/NkLW1sXgVmM=
-Subject: FAILED: patch "[PATCH] drm/udl: Remove DRM_CONNECTOR_POLL_HPD" failed to apply to 4.19-stable tree
-To: tzimmermann@suse.de,airlied@redhat.com,alexander.deucher@amd.com,jani.nikula@intel.com,sean@poorly.run,stable@vger.kernel.org,tutankhamen@chromium.org
+	b=Qtzdi92zROZvlKncCB1nyU6D8qjyPz75Qkbk/jgzxruzktD6YfjoE9bfOotJTmBj3
+	 4+YGwaD1QQL1nTsCTPMWqhVETqx284En0bgwzA/4wujy0PUfTwpaSJ6K7lJOByFXt2
+	 eqJgGXvGIoGrzSl2k0JODXjnlmSHBnZGjxzAyTa0=
+Subject: FAILED: patch "[PATCH] drm/dp_mst: Fix all mstb marked as not probed after" failed to apply to 5.15-stable tree
+To: Wayne.Lin@amd.com,daniel@ffwll.ch,hwentlan@amd.com,imre.deak@intel.com,jani.nikula@intel.com,lyude@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 30 Jul 2024 11:30:12 +0200
-Message-ID: <2024073011-enigmatic-overstep-1479@gregkh>
+Date: Tue, 30 Jul 2024 11:30:31 +0200
+Message-ID: <2024073031-survivor-unaudited-6efd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,30 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5aed213c7c6c4f5dcb1a3ef146f493f18fe703dc
+git cherry-pick -x d63d81094d208abb20fc444514b2d9ec2f4b7c4e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073011-enigmatic-overstep-1479@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024073031-survivor-unaudited-6efd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-5aed213c7c6c ("drm/udl: Remove DRM_CONNECTOR_POLL_HPD")
-0862cfd3e22f ("drm/udl: Move connector to modesetting code")
-43858eb41e0d ("drm/udl: Various improvements to the connector")
-2c1eafc40e53 ("drm/udl: Use USB timeout constant when reading EDID")
-c020f66013b6 ("drm/udl: Test pixel limit in mode-config's mode-valid function")
-59a811faa74f ("drm/udl: Rename struct udl_drm_connector to struct udl_connector")
-255490f9150d ("drm: Drop drm_edid.h from drm_crtc.h")
-0f95ee9a0c57 ("Merge tag 'drm-misc-next-2022-06-08' of git://anongit.freedesktop.org/drm/drm-misc into drm-next")
+d63d81094d20 ("drm/dp_mst: Fix all mstb marked as not probed after suspend/resume")
 
 thanks,
 
@@ -84,40 +77,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5aed213c7c6c4f5dcb1a3ef146f493f18fe703dc Mon Sep 17 00:00:00 2001
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Fri, 10 May 2024 17:47:08 +0200
-Subject: [PATCH] drm/udl: Remove DRM_CONNECTOR_POLL_HPD
+From d63d81094d208abb20fc444514b2d9ec2f4b7c4e Mon Sep 17 00:00:00 2001
+From: Wayne Lin <Wayne.Lin@amd.com>
+Date: Wed, 26 Jun 2024 16:48:23 +0800
+Subject: [PATCH] drm/dp_mst: Fix all mstb marked as not probed after
+ suspend/resume
 
-DisplayLink devices do not generate hotplug events. Remove the poll
-flag DRM_CONNECTOR_POLL_HPD, as it may not be specified together with
-DRM_CONNECTOR_POLL_CONNECT or DRM_CONNECTOR_POLL_DISCONNECT.
+[Why]
+After supend/resume, with topology unchanged, observe that
+link_address_sent of all mstb are marked as false even the topology probing
+is done without any error.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: afdfc4c6f55f ("drm/udl: Fixed problem with UDL adpater reconnection")
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Cc: Robert Tarasov <tutankhamen@chromium.org>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Sean Paul <sean@poorly.run>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.15+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240510154841.11370-2-tzimmermann@suse.de
+It is caused by wrongly also include "ret == 0" case as a probing failure
+case.
 
-diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl/udl_modeset.c
-index 7702359c90c2..751da3a294c4 100644
---- a/drivers/gpu/drm/udl/udl_modeset.c
-+++ b/drivers/gpu/drm/udl/udl_modeset.c
-@@ -527,8 +527,7 @@ struct drm_connector *udl_connector_init(struct drm_device *dev)
+[How]
+Remove inappropriate checking conditions.
+
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Harry Wentland <hwentlan@amd.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: stable@vger.kernel.org
+Fixes: 37dfdc55ffeb ("drm/dp_mst: Cleanup drm_dp_send_link_address() a bit")
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240626084825.878565-2-Wayne.Lin@amd.com
+
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 7f8e1cfbe19d..68831f4e502a 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -2929,7 +2929,7 @@ static int drm_dp_send_link_address(struct drm_dp_mst_topology_mgr *mgr,
  
- 	drm_connector_helper_add(connector, &udl_connector_helper_funcs);
+ 	/* FIXME: Actually do some real error handling here */
+ 	ret = drm_dp_mst_wait_tx_reply(mstb, txmsg);
+-	if (ret <= 0) {
++	if (ret < 0) {
+ 		drm_err(mgr->dev, "Sending link address failed with %d\n", ret);
+ 		goto out;
+ 	}
+@@ -2981,7 +2981,7 @@ static int drm_dp_send_link_address(struct drm_dp_mst_topology_mgr *mgr,
+ 	mutex_unlock(&mgr->lock);
  
--	connector->polled = DRM_CONNECTOR_POLL_HPD |
--			    DRM_CONNECTOR_POLL_CONNECT |
-+	connector->polled = DRM_CONNECTOR_POLL_CONNECT |
- 			    DRM_CONNECTOR_POLL_DISCONNECT;
- 
- 	return connector;
+ out:
+-	if (ret <= 0)
++	if (ret < 0)
+ 		mstb->link_address_sent = false;
+ 	kfree(txmsg);
+ 	return ret < 0 ? ret : changed;
 
 
