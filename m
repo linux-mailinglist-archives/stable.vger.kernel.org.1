@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699AB941829
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F700941A8C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FD601F23F07
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70D791C2341E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A9A18B468;
-	Tue, 30 Jul 2024 16:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DFD189537;
+	Tue, 30 Jul 2024 16:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16FxLg+w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV2uoSaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8E2189516;
-	Tue, 30 Jul 2024 16:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21972154C0C;
+	Tue, 30 Jul 2024 16:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356280; cv=none; b=r8kW7FwbsF2CJMYa+D7ZUWC+zObjbLfLRo2dEN7rvL5UPvHYh70p99MFji9CX8XjUHpPVp776rhlWEnv9fugDIfu438GEYd6t2S4OtMX5Fw7i0mmVndbU/EcwMEk4HSVJjBdzsw9iXpylOUgtHAXCmC4CIk9prEKatGW2yryIIo=
+	t=1722357902; cv=none; b=Uc9jtMSJxJMd7AYquJmUgsQiZTzBi0zYs0UAGb9ImodWaTCArjregrmd/63fg0n0bub3ojwMopD54kqT6uezfHpbKtRzUnyDQV0Rutg8WrC9ThFhCfbqviOEqyTSSxbdsqbS/7TZaEZvWDppU9suHvxmQo5gK8G1ni0EFn7XWzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356280; c=relaxed/simple;
-	bh=n+ujX1nP6Pp2iUlj5p0GfcXvR1xZRjOfdQ2K5E8mEKQ=;
+	s=arc-20240116; t=1722357902; c=relaxed/simple;
+	bh=Fr2IXoE/fnLQ8QAx6XMtp8LcSWayTR7u7s7RtEKIOWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=htKLIJGQZmbnWh1iCPWIWMKEVaXOyhDBaJVs2Ihx3U4DT+9ar4frDIuuU87/akcKJy7BJfGpUvGOtoxH/o+6t5R22C8M/9XelcEO/jQTd0V+PxFDqQJzMyMPsiAsaWVBtZ+8KZYTNLHpalR+QF77yana5I3QOr8fAmD+C5UE/Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16FxLg+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B91AC32782;
-	Tue, 30 Jul 2024 16:17:59 +0000 (UTC)
+	 MIME-Version; b=Ee1jqD3azWmaFhjl/d2zgMMe+83zH0S9LU2gCEH7aD+6OlzaFUqHiu4mHYvzUBoot5yNj0jJK0Z6vFwk/+A+nYfQJRWaPJgo9/tODj3Mz7qiHe4vqqR+TD0wx3SHKkcGcdSkJY2WDuX+HzWGQuS87itMcCfqxaaovdJSMWd1ot8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV2uoSaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CF5C32782;
+	Tue, 30 Jul 2024 16:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356279;
-	bh=n+ujX1nP6Pp2iUlj5p0GfcXvR1xZRjOfdQ2K5E8mEKQ=;
+	s=korg; t=1722357902;
+	bh=Fr2IXoE/fnLQ8QAx6XMtp8LcSWayTR7u7s7RtEKIOWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16FxLg+wtazuELbj3njRKeQBn4yYkLsz5LK+jbQhpYhKfq4AiAPWQqyYgqn2TTVHT
-	 cxWgii51pbkp+8vGWhak94AliI6IBWx+50qkYscx0hRfYpiFGoltgCFe48Yi7+6rVU
-	 RkQaXJmg1zuVMedtQvxe8GSHMbcb5uHCt4II8zyE=
+	b=UV2uoSaPQ6h3QZ6FV0d/nnqC6Olob3mG2r1ATMeF5sfTxwZShOhN5ZfMll2IC2mVN
+	 8AvtXuq0HVpNjvb59n24JTKpfe8/vCX6APghTQjnTFJIrmfxJ56Oj0qibpHCybAi38
+	 EtXTFOlAFeV2Re6rCL1CR+Sc9Edebuw81jpdPHqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Larsson <andreas@gaisler.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/440] sparc64: Fix incorrect function signature and add prototype for prom_cif_init
-Date: Tue, 30 Jul 2024 17:46:48 +0200
-Message-ID: <20240730151622.709437339@linuxfoundation.org>
+Subject: [PATCH 6.6 302/568] RDMA/hns: Fix shift-out-bounds when max_inline_data is 0
+Date: Tue, 30 Jul 2024 17:46:49 +0200
+Message-ID: <20240730151651.679198080@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +61,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Larsson <andreas@gaisler.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit a6c3ea1ec96307dbfbb2f16d96c674c5cc80f445 ]
+[ Upstream commit 24c6291346d98c7ece4f4bfeb5733bec1d6c7b4f ]
 
-Remove the unused cif_stack argument and add a protype in oplib_64.h
-Commit ef3e035c3a9b ("sparc64: Fix register corruption in top-most
-kernel stack frame during boot.") removed the cif_stack argument to
-prom_cif init in the declaration at the caller site and the usage of it
-within prom_cif_init, but not in the function signature of the function
-itself.
+A shift-out-bounds may occur, if the max_inline_data has not been set.
 
-This also fixes the following warning:
-arch/sparc/prom/p1275.c:52:6: warning: no previous prototype for ‘prom_cif_init’
+The related log:
+UBSAN: shift-out-of-bounds in kernel/include/linux/log2.h:57:13
+shift exponent 64 is too large for 64-bit type 'long unsigned int'
+Call trace:
+ dump_backtrace+0xb0/0x118
+ show_stack+0x20/0x38
+ dump_stack_lvl+0xbc/0x120
+ dump_stack+0x1c/0x28
+ __ubsan_handle_shift_out_of_bounds+0x104/0x240
+ set_ext_sge_param+0x40c/0x420 [hns_roce_hw_v2]
+ hns_roce_create_qp+0xf48/0x1c40 [hns_roce_hw_v2]
+ create_qp.part.0+0x294/0x3c0
+ ib_create_qp_kernel+0x7c/0x150
+ create_mad_qp+0x11c/0x1e0
+ ib_mad_init_device+0x834/0xc88
+ add_client_context+0x248/0x318
+ enable_device_and_get+0x158/0x280
+ ib_register_device+0x4ac/0x610
+ hns_roce_init+0x890/0xf98 [hns_roce_hw_v2]
+ __hns_roce_hw_v2_init_instance+0x398/0x720 [hns_roce_hw_v2]
+ hns_roce_hw_v2_init_instance+0x108/0x1e0 [hns_roce_hw_v2]
+ hclge_init_roce_client_instance+0x1a0/0x358 [hclge]
+ hclge_init_client_instance+0xa0/0x508 [hclge]
+ hnae3_register_client+0x18c/0x210 [hnae3]
+ hns_roce_hw_v2_init+0x28/0xff8 [hns_roce_hw_v2]
+ do_one_initcall+0xe0/0x510
+ do_init_module+0x110/0x370
+ load_module+0x2c6c/0x2f20
+ init_module_from_file+0xe0/0x140
+ idempotent_init_module+0x24c/0x350
+ __arm64_sys_finit_module+0x88/0xf8
+ invoke_syscall+0x68/0x1a0
+ el0_svc_common.constprop.0+0x11c/0x150
+ do_el0_svc+0x38/0x50
+ el0_svc+0x50/0xa0
+ el0t_64_sync_handler+0xc0/0xc8
+ el0t_64_sync+0x1a4/0x1a8
 
-Fixes: ef3e035c3a9b ("sparc64: Fix register corruption in top-most kernel stack frame during boot.")
-Link: https://lore.kernel.org/r/20240710094155.458731-3-andreas@gaisler.com
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Fixes: 0c5e259b06a8 ("RDMA/hns: Fix incorrect sge nums calculation")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240710133705.896445-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/asm/oplib_64.h | 1 +
- arch/sparc/prom/init_64.c         | 3 ---
- arch/sparc/prom/p1275.c           | 2 +-
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sparc/include/asm/oplib_64.h b/arch/sparc/include/asm/oplib_64.h
-index a67abebd43592..1b86d02a84556 100644
---- a/arch/sparc/include/asm/oplib_64.h
-+++ b/arch/sparc/include/asm/oplib_64.h
-@@ -247,6 +247,7 @@ void prom_sun4v_guest_soft_state(void);
- int prom_ihandle2path(int handle, char *buffer, int bufsize);
- 
- /* Client interface level routines. */
-+void prom_cif_init(void *cif_handler);
- void p1275_cmd_direct(unsigned long *);
- 
- #endif /* !(__SPARC64_OPLIB_H) */
-diff --git a/arch/sparc/prom/init_64.c b/arch/sparc/prom/init_64.c
-index 103aa91043185..f7b8a1a865b8f 100644
---- a/arch/sparc/prom/init_64.c
-+++ b/arch/sparc/prom/init_64.c
-@@ -26,9 +26,6 @@ phandle prom_chosen_node;
-  * routines in the prom library.
-  * It gets passed the pointer to the PROM vector.
-  */
--
--extern void prom_cif_init(void *);
--
- void __init prom_init(void *cif_handler)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 828b58534aa97..bff00b3af41fb 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -531,13 +531,15 @@ static unsigned int get_sge_num_from_max_inl_data(bool is_ud_or_gsi,
  {
- 	phandle node;
-diff --git a/arch/sparc/prom/p1275.c b/arch/sparc/prom/p1275.c
-index 889aa602f8d86..51c3f984bbf72 100644
---- a/arch/sparc/prom/p1275.c
-+++ b/arch/sparc/prom/p1275.c
-@@ -49,7 +49,7 @@ void p1275_cmd_direct(unsigned long *args)
- 	local_irq_restore(flags);
- }
+ 	unsigned int inline_sge;
  
--void prom_cif_init(void *cif_handler, void *cif_stack)
-+void prom_cif_init(void *cif_handler)
- {
- 	p1275buf.prom_cif_handler = (void (*)(long *))cif_handler;
- }
+-	inline_sge = roundup_pow_of_two(max_inline_data) / HNS_ROCE_SGE_SIZE;
++	if (!max_inline_data)
++		return 0;
+ 
+ 	/*
+ 	 * if max_inline_data less than
+ 	 * HNS_ROCE_SGE_IN_WQE * HNS_ROCE_SGE_SIZE,
+ 	 * In addition to ud's mode, no need to extend sge.
+ 	 */
++	inline_sge = roundup_pow_of_two(max_inline_data) / HNS_ROCE_SGE_SIZE;
+ 	if (!is_ud_or_gsi && inline_sge <= HNS_ROCE_SGE_IN_WQE)
+ 		inline_sge = 0;
+ 
 -- 
 2.43.0
 
