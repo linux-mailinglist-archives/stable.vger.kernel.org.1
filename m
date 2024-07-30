@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-63470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80748941915
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:29:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA2494193E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3ED61C22EB3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:29:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A24E4B2791B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F981184549;
-	Tue, 30 Jul 2024 16:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF99418455E;
+	Tue, 30 Jul 2024 16:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0jyqIc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDMnQFON"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18531A619C;
-	Tue, 30 Jul 2024 16:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB9D1A6190;
+	Tue, 30 Jul 2024 16:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356931; cv=none; b=rcwm+9FjHZIwCiFX3gAC4smSSe5JtsqOiEla2PeLSH+fQ4f+/+hKSxBrBP73m9yfoJGLrHmiNEwVja6ZHhQ5REZ9EMS7GCSr9BFpb3LRmm7AR0kBU5+I4WAoSxT8/M29TM5MZnG9pz4SqY6BRZO4x2oN1nLyXX6dcHLCknKm4fY=
+	t=1722356739; cv=none; b=HCabPsrY7/mJKFzC6m0vhA93esFPJmed2feNbksKgTx+XrPtlzBRTAghng4fpyQCw4RYWkKf10gp7GENwztPijbhMl7stztKmpMnuN4us+JOkDqKMBFbzaUY8+H/eVtqC6LYmWjPuJ5iETtLxK9I8II/e5zK/N6H/zPs1Pq8boE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356931; c=relaxed/simple;
-	bh=EVa5lMGtVSHBRDpdeGdxkV910Myiy8eS0B+ENS1stRk=;
+	s=arc-20240116; t=1722356739; c=relaxed/simple;
+	bh=hiPbXNUBqI+sZPWZ2r0Xfmhm198jhKnyFamvjVtXrHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAcnPWoPubJTomjVnjm5lwiXivhm9hIAiovL+OUEuH8X54+OvvCJZcxCXD9jzmQVxxl76OEklnGqtBb84ku8otF6TZQn2s5b0cxeepxqb8wlnY0ggmsAPGWwF1JlzhVxv/9Izx3OuxN9s7ry6nY4E5CCUR80F9lQJvR4p4X29VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0jyqIc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B54FC4AF10;
-	Tue, 30 Jul 2024 16:28:51 +0000 (UTC)
+	 MIME-Version; b=ZxOcv/ugnYImN/TdAEBXp3yQeEnNSkVCDLqXRDTImEhlEt7hSxGPzs5GvhKQUxl2WOPjTlb95amGkTpPZZd8CzDmaFJGBkU2HxGSgNn1Yltf/mRGnxb7tE7kas680/0Zj4qzot397J6DSx+6DfVURjq/hyRI2WQhxwP5YzEgFs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDMnQFON; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149F6C32782;
+	Tue, 30 Jul 2024 16:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356931;
-	bh=EVa5lMGtVSHBRDpdeGdxkV910Myiy8eS0B+ENS1stRk=;
+	s=korg; t=1722356739;
+	bh=hiPbXNUBqI+sZPWZ2r0Xfmhm198jhKnyFamvjVtXrHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0jyqIc1JJD6wh5JshyoQD4GcMf21l15C/GzmhgCE+RYgizbuatQ94wotPNuN1pMY
-	 +LRcKqI+HdXVsQgse4HdO0O3xnSTpVqePI423sjcod8n+KLZZ/yZNhE8pv5jlhXO5V
-	 qsrSKZMKJNQdHZzmqxlGIo1iuS9NPjAvPsGGrMV8=
+	b=hDMnQFON8UQ7aqOFM8HKqfou0+5Yp3XlM6yhsbyiagPI1AtlQKP7H0NmYRnKHIW29
+	 7qCipypb8CkOizOOKbZW4edinZB/U4LBpey4BK7aNLdjw1He9lJBGGWSjwpcn2fHOM
+	 r08PrDRk+cM6UjiRmtPMdOm2fZAqTYBGc0IN6SyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lennart Poettering <lennart@poettering.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 177/809] hns3: avoid linking objects into multiple modules
-Date: Tue, 30 Jul 2024 17:40:53 +0200
-Message-ID: <20240730151731.600789041@linuxfoundation.org>
+Subject: [PATCH 6.10 178/809] libbpf: keep FD_CLOEXEC flag when dup()ing FD
+Date: Tue, 30 Jul 2024 17:40:54 +0200
+Message-ID: <20240730151731.643294331@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,271 +68,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit e3bbb994a7e0ead1e028c5a8ec5f8526b4a9c5c9 ]
+[ Upstream commit 531876c80004ecff7bfdbd8ba6c6b48835ef5e22 ]
 
-Each object file contains information about which module it gets linked
-into, so linking the same file into multiple modules now causes a warning:
+Make sure to preserve and/or enforce FD_CLOEXEC flag on duped FDs.
+Use dup3() with O_CLOEXEC flag for that.
 
-scripts/Makefile.build:254: drivers/net/ethernet/hisilicon/hns3/Makefile: hns3_common/hclge_comm_cmd.o is added to multiple modules: hclge hclgevf
-scripts/Makefile.build:254: drivers/net/ethernet/hisilicon/hns3/Makefile: hns3_common/hclge_comm_rss.o is added to multiple modules: hclge hclgevf
-scripts/Makefile.build:254: drivers/net/ethernet/hisilicon/hns3/Makefile: hns3_common/hclge_comm_tqp_stats.o is added to multiple modules: hclge hclgevf
+Without this fix libbpf effectively clears FD_CLOEXEC flag on each of BPF
+map/prog FD, which is definitely not the right or expected behavior.
 
-Change the way that hns3 is built by moving the three common files into a
-separate module with exported symbols instead.
-
-Fixes: 5f20be4e90e6 ("net: hns3: refactor hns3 makefile to support hns3_common module")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240528161603.2443125-1-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Lennart Poettering <lennart@poettering.net>
+Fixes: bc308d011ab8 ("libbpf: call dup2() syscall directly")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20240529223239.504241-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/Makefile       | 11 +++++------
- .../hisilicon/hns3/hns3_common/hclge_comm_cmd.c    | 11 +++++++++++
- .../hisilicon/hns3/hns3_common/hclge_comm_rss.c    | 14 ++++++++++++++
- .../hns3/hns3_common/hclge_comm_tqp_stats.c        |  5 +++++
- 4 files changed, 35 insertions(+), 6 deletions(-)
+ tools/lib/bpf/libbpf_internal.h | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/Makefile b/drivers/net/ethernet/hisilicon/hns3/Makefile
-index 8e9293e57bfd5..e8af26da1fc1e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/Makefile
-+++ b/drivers/net/ethernet/hisilicon/hns3/Makefile
-@@ -15,15 +15,14 @@ hns3-objs = hns3_enet.o hns3_ethtool.o hns3_debugfs.o
- 
- hns3-$(CONFIG_HNS3_DCB) += hns3_dcbnl.o
- 
--obj-$(CONFIG_HNS3_HCLGEVF) += hclgevf.o
-+obj-$(CONFIG_HNS3_HCLGEVF) += hclgevf.o hclge-common.o
- 
--hclgevf-objs = hns3vf/hclgevf_main.o hns3vf/hclgevf_mbx.o  hns3vf/hclgevf_devlink.o hns3vf/hclgevf_regs.o \
--		hns3_common/hclge_comm_cmd.o hns3_common/hclge_comm_rss.o hns3_common/hclge_comm_tqp_stats.o
-+hclge-common-objs += hns3_common/hclge_comm_cmd.o hns3_common/hclge_comm_rss.o hns3_common/hclge_comm_tqp_stats.o
- 
--obj-$(CONFIG_HNS3_HCLGE) += hclge.o
-+hclgevf-objs = hns3vf/hclgevf_main.o hns3vf/hclgevf_mbx.o  hns3vf/hclgevf_devlink.o hns3vf/hclgevf_regs.o
-+
-+obj-$(CONFIG_HNS3_HCLGE) += hclge.o hclge-common.o
- hclge-objs = hns3pf/hclge_main.o hns3pf/hclge_mdio.o hns3pf/hclge_tm.o hns3pf/hclge_regs.o \
- 		hns3pf/hclge_mbx.o hns3pf/hclge_err.o  hns3pf/hclge_debugfs.o hns3pf/hclge_ptp.o hns3pf/hclge_devlink.o \
--		hns3_common/hclge_comm_cmd.o hns3_common/hclge_comm_rss.o hns3_common/hclge_comm_tqp_stats.o
--
- 
- hclge-$(CONFIG_HNS3_DCB) += hns3pf/hclge_dcb.o
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-index ea40b594dbac7..4ad4e8ab2f1f3 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_cmd.c
-@@ -48,6 +48,7 @@ void hclge_comm_cmd_reuse_desc(struct hclge_desc *desc, bool is_read)
- 	else
- 		desc->flag &= cpu_to_le16(~HCLGE_COMM_CMD_FLAG_WR);
+diff --git a/tools/lib/bpf/libbpf_internal.h b/tools/lib/bpf/libbpf_internal.h
+index a0dcfb82e455d..7e7e686008c62 100644
+--- a/tools/lib/bpf/libbpf_internal.h
++++ b/tools/lib/bpf/libbpf_internal.h
+@@ -597,13 +597,9 @@ static inline int ensure_good_fd(int fd)
+ 	return fd;
  }
-+EXPORT_SYMBOL_GPL(hclge_comm_cmd_reuse_desc);
  
- static void hclge_comm_set_default_capability(struct hnae3_ae_dev *ae_dev,
- 					      bool is_pf)
-@@ -72,6 +73,7 @@ void hclge_comm_cmd_setup_basic_desc(struct hclge_desc *desc,
- 	if (is_read)
- 		desc->flag |= cpu_to_le16(HCLGE_COMM_CMD_FLAG_WR);
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_cmd_setup_basic_desc);
- 
- int hclge_comm_firmware_compat_config(struct hnae3_ae_dev *ae_dev,
- 				      struct hclge_comm_hw *hw, bool en)
-@@ -517,6 +519,7 @@ int hclge_comm_cmd_send(struct hclge_comm_hw *hw, struct hclge_desc *desc,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_cmd_send);
- 
- static void hclge_comm_cmd_uninit_regs(struct hclge_comm_hw *hw)
+-static inline int sys_dup2(int oldfd, int newfd)
++static inline int sys_dup3(int oldfd, int newfd, int flags)
  {
-@@ -553,6 +556,7 @@ void hclge_comm_cmd_uninit(struct hnae3_ae_dev *ae_dev,
- 	hclge_comm_free_cmd_desc(&cmdq->csq);
- 	hclge_comm_free_cmd_desc(&cmdq->crq);
+-#ifdef __NR_dup2
+-	return syscall(__NR_dup2, oldfd, newfd);
+-#else
+-	return syscall(__NR_dup3, oldfd, newfd, 0);
+-#endif
++	return syscall(__NR_dup3, oldfd, newfd, flags);
  }
-+EXPORT_SYMBOL_GPL(hclge_comm_cmd_uninit);
  
- int hclge_comm_cmd_queue_init(struct pci_dev *pdev, struct hclge_comm_hw *hw)
+ /* Point *fixed_fd* to the same file that *tmp_fd* points to.
+@@ -614,7 +610,7 @@ static inline int reuse_fd(int fixed_fd, int tmp_fd)
  {
-@@ -591,6 +595,7 @@ int hclge_comm_cmd_queue_init(struct pci_dev *pdev, struct hclge_comm_hw *hw)
- 	hclge_comm_free_cmd_desc(&hw->cmq.csq);
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_cmd_queue_init);
+ 	int err;
  
- void hclge_comm_cmd_init_ops(struct hclge_comm_hw *hw,
- 			     const struct hclge_comm_cmq_ops *ops)
-@@ -602,6 +607,7 @@ void hclge_comm_cmd_init_ops(struct hclge_comm_hw *hw,
- 		cmdq->ops.trace_cmd_get = ops->trace_cmd_get;
- 	}
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_cmd_init_ops);
- 
- int hclge_comm_cmd_init(struct hnae3_ae_dev *ae_dev, struct hclge_comm_hw *hw,
- 			u32 *fw_version, bool is_pf,
-@@ -672,3 +678,8 @@ int hclge_comm_cmd_init(struct hnae3_ae_dev *ae_dev, struct hclge_comm_hw *hw,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_cmd_init);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("HNS3: Hisilicon Ethernet PF/VF Common Library");
-+MODULE_AUTHOR("Huawei Tech. Co., Ltd.");
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_rss.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_rss.c
-index b4ae2160aff4f..4e2bb6556b1ce 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_rss.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_rss.c
-@@ -62,6 +62,7 @@ int hclge_comm_rss_init_cfg(struct hnae3_handle *nic,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_rss_init_cfg);
- 
- void hclge_comm_get_rss_tc_info(u16 rss_size, u8 hw_tc_map, u16 *tc_offset,
- 				u16 *tc_valid, u16 *tc_size)
-@@ -78,6 +79,7 @@ void hclge_comm_get_rss_tc_info(u16 rss_size, u8 hw_tc_map, u16 *tc_offset,
- 		tc_offset[i] = (hw_tc_map & BIT(i)) ? rss_size * i : 0;
- 	}
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_get_rss_tc_info);
- 
- int hclge_comm_set_rss_tc_mode(struct hclge_comm_hw *hw, u16 *tc_offset,
- 			       u16 *tc_valid, u16 *tc_size)
-@@ -113,6 +115,7 @@ int hclge_comm_set_rss_tc_mode(struct hclge_comm_hw *hw, u16 *tc_offset,
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_set_rss_tc_mode);
- 
- int hclge_comm_set_rss_hash_key(struct hclge_comm_rss_cfg *rss_cfg,
- 				struct hclge_comm_hw *hw, const u8 *key,
-@@ -143,6 +146,7 @@ int hclge_comm_set_rss_hash_key(struct hclge_comm_rss_cfg *rss_cfg,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_set_rss_hash_key);
- 
- int hclge_comm_set_rss_tuple(struct hnae3_ae_dev *ae_dev,
- 			     struct hclge_comm_hw *hw,
-@@ -185,11 +189,13 @@ int hclge_comm_set_rss_tuple(struct hnae3_ae_dev *ae_dev,
- 	rss_cfg->rss_tuple_sets.ipv6_fragment_en = req->ipv6_fragment_en;
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_set_rss_tuple);
- 
- u32 hclge_comm_get_rss_key_size(struct hnae3_handle *handle)
- {
- 	return HCLGE_COMM_RSS_KEY_SIZE;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_get_rss_key_size);
- 
- int hclge_comm_parse_rss_hfunc(struct hclge_comm_rss_cfg *rss_cfg,
- 			       const u8 hfunc, u8 *hash_algo)
-@@ -217,6 +223,7 @@ void hclge_comm_rss_indir_init_cfg(struct hnae3_ae_dev *ae_dev,
- 	for (i = 0; i < ae_dev->dev_specs.rss_ind_tbl_size; i++)
- 		rss_cfg->rss_indirection_tbl[i] = i % rss_cfg->rss_size;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_rss_indir_init_cfg);
- 
- int hclge_comm_get_rss_tuple(struct hclge_comm_rss_cfg *rss_cfg, int flow_type,
- 			     u8 *tuple_sets)
-@@ -250,6 +257,7 @@ int hclge_comm_get_rss_tuple(struct hclge_comm_rss_cfg *rss_cfg, int flow_type,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_get_rss_tuple);
- 
- static void
- hclge_comm_append_rss_msb_info(struct hclge_comm_rss_ind_tbl_cmd *req,
-@@ -304,6 +312,7 @@ int hclge_comm_set_rss_indir_table(struct hnae3_ae_dev *ae_dev,
- 	}
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_set_rss_indir_table);
- 
- int hclge_comm_set_rss_input_tuple(struct hclge_comm_hw *hw,
- 				   struct hclge_comm_rss_cfg *rss_cfg)
-@@ -332,6 +341,7 @@ int hclge_comm_set_rss_input_tuple(struct hclge_comm_hw *hw,
- 			"failed to configure rss input, ret = %d.\n", ret);
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_set_rss_input_tuple);
- 
- void hclge_comm_get_rss_hash_info(struct hclge_comm_rss_cfg *rss_cfg, u8 *key,
- 				  u8 *hfunc)
-@@ -355,6 +365,7 @@ void hclge_comm_get_rss_hash_info(struct hclge_comm_rss_cfg *rss_cfg, u8 *key,
- 	if (key)
- 		memcpy(key, rss_cfg->rss_hash_key, HCLGE_COMM_RSS_KEY_SIZE);
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_get_rss_hash_info);
- 
- void hclge_comm_get_rss_indir_tbl(struct hclge_comm_rss_cfg *rss_cfg,
- 				  u32 *indir, u16 rss_ind_tbl_size)
-@@ -367,6 +378,7 @@ void hclge_comm_get_rss_indir_tbl(struct hclge_comm_rss_cfg *rss_cfg,
- 	for (i = 0; i < rss_ind_tbl_size; i++)
- 		indir[i] = rss_cfg->rss_indirection_tbl[i];
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_get_rss_indir_tbl);
- 
- int hclge_comm_set_rss_algo_key(struct hclge_comm_hw *hw, const u8 hfunc,
- 				const u8 *key)
-@@ -408,6 +420,7 @@ int hclge_comm_set_rss_algo_key(struct hclge_comm_hw *hw, const u8 hfunc,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_set_rss_algo_key);
- 
- static u8 hclge_comm_get_rss_hash_bits(struct ethtool_rxnfc *nfc)
- {
-@@ -502,3 +515,4 @@ u64 hclge_comm_convert_rss_tuple(u8 tuple_sets)
- 
- 	return tuple_data;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_convert_rss_tuple);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
-index 618f66d9586b3..2b31188ff5558 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_common/hclge_comm_tqp_stats.c
-@@ -26,6 +26,7 @@ u64 *hclge_comm_tqps_get_stats(struct hnae3_handle *handle, u64 *data)
- 
- 	return buff;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_tqps_get_stats);
- 
- int hclge_comm_tqps_get_sset_count(struct hnae3_handle *handle)
- {
-@@ -33,6 +34,7 @@ int hclge_comm_tqps_get_sset_count(struct hnae3_handle *handle)
- 
- 	return kinfo->num_tqps * HCLGE_COMM_QUEUE_PAIR_SIZE;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_tqps_get_sset_count);
- 
- u8 *hclge_comm_tqps_get_strings(struct hnae3_handle *handle, u8 *data)
- {
-@@ -56,6 +58,7 @@ u8 *hclge_comm_tqps_get_strings(struct hnae3_handle *handle, u8 *data)
- 
- 	return buff;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_tqps_get_strings);
- 
- int hclge_comm_tqps_update_stats(struct hnae3_handle *handle,
- 				 struct hclge_comm_hw *hw)
-@@ -99,6 +102,7 @@ int hclge_comm_tqps_update_stats(struct hnae3_handle *handle,
- 
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_tqps_update_stats);
- 
- void hclge_comm_reset_tqp_stats(struct hnae3_handle *handle)
- {
-@@ -113,3 +117,4 @@ void hclge_comm_reset_tqp_stats(struct hnae3_handle *handle)
- 		memset(&tqp->tqp_stats, 0, sizeof(tqp->tqp_stats));
- 	}
- }
-+EXPORT_SYMBOL_GPL(hclge_comm_reset_tqp_stats);
+-	err = sys_dup2(tmp_fd, fixed_fd);
++	err = sys_dup3(tmp_fd, fixed_fd, O_CLOEXEC);
+ 	err = err < 0 ? -errno : 0;
+ 	close(tmp_fd); /* clean up temporary FD */
+ 	return err;
 -- 
 2.43.0
 
