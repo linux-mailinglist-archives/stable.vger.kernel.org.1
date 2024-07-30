@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A1894173A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E43941A2A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 834871C2339D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86926B2629C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8931898F8;
-	Tue, 30 Jul 2024 16:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED2A1A6195;
+	Tue, 30 Jul 2024 16:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nK8nmgj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqI08FGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EF0187FF2;
-	Tue, 30 Jul 2024 16:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B321A6192;
+	Tue, 30 Jul 2024 16:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355618; cv=none; b=fw77q71Lb/oKD1U8N06YNr9r0NiW7yx38s+CUSYGePwCchCQsifg0e1SmhLognCwLEsrThtPpv9O+TbvG9OnDiez5mzU/+7BqkNWWK5aOy8K7lN7lOVP/Fk9/UsSzysmBwlTJy+ZyXBBQvTUQiTnRgTygmP8pD4WJAoaxlnklw0=
+	t=1722357292; cv=none; b=rnffh2jCFFJNGfrhF7xV4mh7AQLcmA0Q4hDZTXjOyxbhMdU2bWYjwtc1LX55dyIgbQhjoSTtuLc3rIPqnkkUuxfcqp96wqiqDo0/dBPsIv6Jswbnwu02fJnl0vZguGTBaSF23wz6Y1G3YyGzpxWXYR7Gn5RgYguBCELAw/Pc3EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355618; c=relaxed/simple;
-	bh=jRyw7OYceTvh4HMWnFwKjbLdQdrsJAgN268a16fMmN4=;
+	s=arc-20240116; t=1722357292; c=relaxed/simple;
+	bh=zbSvtKyvEYYNdRuNgifNq/tLsthosQOB/rdp+2ZTt+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4zmGLrcCa8w/oOx2ram3TdusVQedIJzguaVNQIABQZDsgZkDyYMumMHkNYe5PERIcy6rzugiG+tRE+bySM39xcxGk9PIwR/pDxD1VEvgp98AzQz4+Mp943KycH2YNXdFLJNeP90ttSY2geIhWjrjuKO3ue9kOdqGU0znJZiteI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nK8nmgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E556BC32782;
-	Tue, 30 Jul 2024 16:06:57 +0000 (UTC)
+	 MIME-Version; b=QqAhfT7fQp251GK5FeatdIH+mdbczojNFw/1xgZ0DlJX1ylMo1drZNu/EPLeLkRBuUrzcrtEmQYtXwxNnwqrn/edz2Sr/esHSg1GbKKEcLZuRZGSIqfM2v5GKG918yL757Y7rU6wlBGt8lazv66drMWwR49Qj5W4959RgGK7mzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqI08FGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688AEC4AF0C;
+	Tue, 30 Jul 2024 16:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355618;
-	bh=jRyw7OYceTvh4HMWnFwKjbLdQdrsJAgN268a16fMmN4=;
+	s=korg; t=1722357291;
+	bh=zbSvtKyvEYYNdRuNgifNq/tLsthosQOB/rdp+2ZTt+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nK8nmgje6iinCPTBvMkAI8U0X+Tto6Wl1drJOeA66vZrKIiEt+DCpiRE8+lJv1Js
-	 ww6xJlA9YCX8Egq/gO5lYn0MB4TeQGZz5R1AwhAWrQVUpwuzpp0TBBrrhpHBw3lvL9
-	 A0kLZCrwH3d93F9cMmkAHFOpMVDknIvFucci+tAA=
+	b=MqI08FGxDuNnVM/dF/5fh9P+FFvLGkuGemMt+rJ2b2Qoj7f71yR0e4JzONQhtRTHv
+	 SdNtAeigxyq8zAv/d+22WRIdcKaD6r9sNLuyaFurElH15yrAEiF8zhxlAs5/apIMny
+	 VqNmxej/auND8z1xbF3kOFzZYnad44rarAFxi1Bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/440] perf: Prevent passing zero nr_pages to rb_alloc_aux()
+Subject: [PATCH 6.6 237/568] mfd: rsmu: Split core code into separate module
 Date: Tue, 30 Jul 2024 17:45:44 +0200
-Message-ID: <20240730151620.227877381@linuxfoundation.org>
+Message-ID: <20240730151649.144754549@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
+[ Upstream commit c879a8c39dd55e7fabdd8d13341f7bc5200db377 ]
 
-nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
-and is stored as an int.
+Linking a file into two modules can have unintended side-effects
+and produces a W=1 warning:
 
-Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
-will be passed to rb_alloc_aux() as zero.
+scripts/Makefile.build:236: drivers/mfd/Makefile: rsmu_core.o is added to multiple modules: rsmu-i2c rsmu-spi
 
-That is not ideal because:
- 1. the value is incorrect
- 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
- return -ENOMEM in that case, it is a result of passing zero to get_order()
- even though the get_order() result is documented to be undefined in that
- case.
+Make this one a separate module instead.
 
-Fix by simply validating the maximum supported value in the first place.
-Use -ENOMEM error code for consistency with the current error code that
-is returned in that case.
-
-Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
+Fixes: a1867f85e06e ("mfd: Add Renesas Synchronization Management Unit (SMU) support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240529094856.1869543-1-arnd@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/Makefile    | 6 ++----
+ drivers/mfd/rsmu_core.c | 2 ++
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 413a69aecf5c7..b8333b8e6a782 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6307,6 +6307,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 			return -EINVAL;
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index c66f07edcd0e6..db1ba39de3b59 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -280,7 +280,5 @@ obj-$(CONFIG_MFD_INTEL_M10_BMC_PMCI)   += intel-m10-bmc-pmci.o
+ obj-$(CONFIG_MFD_ATC260X)	+= atc260x-core.o
+ obj-$(CONFIG_MFD_ATC260X_I2C)	+= atc260x-i2c.o
  
- 		nr_pages = vma_size / PAGE_SIZE;
-+		if (nr_pages > INT_MAX)
-+			return -ENOMEM;
+-rsmu-i2c-objs			:= rsmu_core.o rsmu_i2c.o
+-rsmu-spi-objs			:= rsmu_core.o rsmu_spi.o
+-obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu-i2c.o
+-obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu-spi.o
++obj-$(CONFIG_MFD_RSMU_I2C)	+= rsmu_i2c.o rsmu_core.o
++obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu_spi.o rsmu_core.o
+diff --git a/drivers/mfd/rsmu_core.c b/drivers/mfd/rsmu_core.c
+index 29437fd0bd5bf..fd04a6e5dfa31 100644
+--- a/drivers/mfd/rsmu_core.c
++++ b/drivers/mfd/rsmu_core.c
+@@ -78,11 +78,13 @@ int rsmu_core_init(struct rsmu_ddata *rsmu)
  
- 		mutex_lock(&event->mmap_mutex);
- 		ret = -EINVAL;
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(rsmu_core_init);
+ 
+ void rsmu_core_exit(struct rsmu_ddata *rsmu)
+ {
+ 	mutex_destroy(&rsmu->lock);
+ }
++EXPORT_SYMBOL_GPL(rsmu_core_exit);
+ 
+ MODULE_DESCRIPTION("Renesas SMU core driver");
+ MODULE_LICENSE("GPL");
 -- 
 2.43.0
 
