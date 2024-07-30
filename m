@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A264B941C06
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16FC941D9B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D98C1F245AA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5758F1F2722B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C569218B469;
-	Tue, 30 Jul 2024 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B7A1A76B3;
+	Tue, 30 Jul 2024 17:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdLx+B1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zv4JYzpE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA57187FF6;
-	Tue, 30 Jul 2024 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7252C1A76A4;
+	Tue, 30 Jul 2024 17:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358918; cv=none; b=I79xuz3Vc4mRaqL17WjLXcCB0zzLQCQj/vMx9GAmi3liyOJ8lSBXp8L0xJixHBZo5XDPHY5wQi819j/0qDdNHejxL1iI7HABwN1RPIqOctCIJj45oljvmsPmD2FUxqA3/NzCdt0Ztjg3D9j4maSeiixulrZ0qYIJ87acoQvOukk=
+	t=1722359954; cv=none; b=jP+Ol4nBktSqwPlS9vpupKtPeG06z7hV11csmIFf+1VDDnPDYT7wOa9xsghcrDaooBxHWNVGV5jfRwKaeyiuvE0HrBu1KacS6IfUFTHnUjj6jl19bxk1rj71LyZyoQMn4lGnEBYbsnIuxIvJsZEbwmO0rLoMmkUIpvdmN6acBdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358918; c=relaxed/simple;
-	bh=rRbeQnlt/bK9NMVO3piPYKLRJnZEKpsoxPBMUtIpWv8=;
+	s=arc-20240116; t=1722359954; c=relaxed/simple;
+	bh=MPOZpT/b3ZiDjJVK5ONHJ8dVk7YyZxNYjfZZ/8Fa35k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZmSs7hr9NvVS2IwujtSZc0LmraqOfPUO+S5DjlWDHtRnTSawmPoHWBzULBcSgE35BQsQmhwT71maQhxHbymD5z02bIvbSS76QC7qQTUDtCWimQWUQ6NObaZOk54/GpDEI9Ib5v4WDEoeRDVzH1SfWuNFMsX6pE3O+ddustzsuXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdLx+B1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C81C32782;
-	Tue, 30 Jul 2024 17:01:57 +0000 (UTC)
+	 MIME-Version; b=mmISEL+n+xGZRDMEQm5ogdtHWH/z/tWVcJhQugjw8eONyTrJVBHXFM0FftGBptr8UdKXjoTnTXizgO+ezItOCiYtnAVVtRRSy+WANnv4SOwDbabduxe1RdRgA04lOO2aZbuyQk6ucLNmGl/vLDsjFT/FMHW3kXkjuGt6Tuz0VjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zv4JYzpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFE8C32782;
+	Tue, 30 Jul 2024 17:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358918;
-	bh=rRbeQnlt/bK9NMVO3piPYKLRJnZEKpsoxPBMUtIpWv8=;
+	s=korg; t=1722359954;
+	bh=MPOZpT/b3ZiDjJVK5ONHJ8dVk7YyZxNYjfZZ/8Fa35k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdLx+B1pnq68t+x2qRp2iBX2ZC2Sk1dVSGuU269bbYVDKY3KWPvlE02bVad+kcZvQ
-	 cARAHMcJODMGzahuvXk8v2t6cu8tkTpHwI9liIoF7dMpmjEHyVSJ7+mcDNtD1za14W
-	 8VFtj+FGgMkIgIcXlZXCGGmlfv1e3Zcca1XKQHnY=
+	b=Zv4JYzpEaamdDWklhFx7yKO7BOvobQE4K1QjCEikYwdeVt7KyGI/4PIqDwQNmVids
+	 PQw9k9Glx8Dv+CDmtNMQXJEbxcBP4CvLTKMaBbOnx/vFkFhGB+F42+WLCdMzmYErMk
+	 5DKqACBhu4iYg/0UTNLQ5J52PoZksgnEVvRB7vKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ethanwu <ethanwu@synology.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 433/440] ceph: fix incorrect kmalloc size of pagevec mempool
-Date: Tue, 30 Jul 2024 17:51:06 +0200
-Message-ID: <20240730151632.688073203@linuxfoundation.org>
+Subject: [PATCH 6.6 560/568] ASoC: TAS2781: Fix tasdev_load_calibrated_data()
+Date: Tue, 30 Jul 2024 17:51:07 +0200
+Message-ID: <20240730151702.045452333@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ethanwu <ethanwu@synology.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 03230edb0bd831662a7c08b6fef66b2a9a817774 ]
+[ Upstream commit 92c78222168e9035a9bfb8841c2e56ce23e51f73 ]
 
-The kmalloc size of pagevec mempool is incorrectly calculated.
-It misses the size of page pointer and only accounts the number for the array.
+This function has a reversed if statement so it's either a no-op or it
+leads to a NULL dereference.
 
-Fixes: a0102bda5bc0 ("ceph: move sb->wb_pagevec_pool to be a global mempool")
-Signed-off-by: ethanwu <ethanwu@synology.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: b195acf5266d ("ASoC: tas2781: Fix wrong loading calibrated data sequence")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/18a29b68-cc85-4139-b7c7-2514e8409a42@stanley.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/tas2781-fmwlib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-index 281b493fdac8e..aa75aa796e434 100644
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -924,7 +924,8 @@ static int __init init_caches(void)
- 	if (!ceph_mds_request_cachep)
- 		goto bad_mds_req;
+diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
+index 32ff4fb14998e..41ad82a429163 100644
+--- a/sound/soc/codecs/tas2781-fmwlib.c
++++ b/sound/soc/codecs/tas2781-fmwlib.c
+@@ -2193,7 +2193,7 @@ static void tasdev_load_calibrated_data(struct tasdevice_priv *priv, int i)
+ 		return;
  
--	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10, CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT);
-+	ceph_wb_pagevec_pool = mempool_create_kmalloc_pool(10,
-+	    (CEPH_MAX_WRITE_SIZE >> PAGE_SHIFT) * sizeof(struct page *));
- 	if (!ceph_wb_pagevec_pool)
- 		goto bad_pagevec_pool;
+ 	cal = cal_fmw->calibrations;
+-	if (cal)
++	if (!cal)
+ 		return;
  
+ 	load_calib_data(priv, &cal->dev_data);
 -- 
 2.43.0
 
