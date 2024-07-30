@@ -1,145 +1,154 @@
-Return-Path: <stable+bounces-62733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078DD940E8F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:03:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C95940EB0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395281C211EC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:03:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9C161F26817
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 10:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE08195F28;
-	Tue, 30 Jul 2024 10:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F00E1991A7;
+	Tue, 30 Jul 2024 10:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="hBWHkdiZ"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Ohbt2RK5"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA97194A49;
-	Tue, 30 Jul 2024 10:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3839B197A9F;
+	Tue, 30 Jul 2024 10:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722333784; cv=none; b=B6wzvkhQ3daAptfl9H+Sglng13rgCuOhcP+1t3WF9B82SgI/ehsW8ukXuGmtuSDzqBZr/hknjeLXvTRVIyrrdEc+53o5v46bWNBFxVA1J5jWNf1cyHtmm/MNGYKxZp7THhx2LwaRbZe7lxaVcmkEWnUstgepZpVBVhgcQApNLKQ=
+	t=1722334279; cv=none; b=RlppvLSqpb75oljhe5GWaCqv/rGCS5H125qUkewBVs48nAawfmBW60Gm9Qxlv4ABMwObT+3OvOdkqpxhDlyQkR9ZCxoKgxqqq3ZaiypDawnLqtbr0DfZLrNg1BCGGmDbHAbKeaXbPTJTGmyC+XTjYwMd2HLAB4GHp0fmAOww6no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722333784; c=relaxed/simple;
-	bh=Sxj6T2e8H3iOl77/RRAmKUj8/cujWJb7+RDEKzzRT34=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LwdgQZh+SxmnmrVjanKf+JrKGVl4A7r8ZGsm+NbsQd9VaGHApSFCP1wAN/8aWO3pCrrgtThcJ/+Y6cCpLApQM5s5uLrV8KqpX7WJ5JZBy3ZJN8h7vHX563ChhoEK/+lWSPDus18kEbQ21z/DB63nyK2rp+ZrOxc5yImLkj54ge4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=hBWHkdiZ; arc=none smtp.client-ip=117.135.210.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=ZLcbpVCULNRrBnozP+gUuxo88BIerhBLHccbm3mX2/o=;
-	b=hBWHkdiZY+IiOOhDa/TGrGVXw83g/Wp15tpiiYWaxcR40ci7D/x8/DKnUsJcFK
-	k3yfLqeLoFbCMrKs77Epe5RAQR3dH6oUAzak3OGx4/UWBSEmSor5b1ZkgQLVs2pW
-	Hi+4ankNvHGxT7eeC2IXEqkQya6YwgJyDwfV0E4L/rtM8=
-Received: from [172.21.22.210] (unknown [118.242.3.34])
-	by gzga-smtp-mta-g1-0 (Coremail) with SMTP id _____wDnr_kJuqhm1wPgAw--.37433S2;
-	Tue, 30 Jul 2024 18:01:46 +0800 (CST)
-Message-ID: <18cdbd92-81db-42be-a290-08462759ffe6@126.com>
-Date: Tue, 30 Jul 2024 18:01:45 +0800
+	s=arc-20240116; t=1722334279; c=relaxed/simple;
+	bh=FtrnbrfAmCKXlknarmYd/TWw6g5+8+rtYnvD70zTvNI=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=ayjxzZK8sWXvKNHs1ar6niPzNBSYs2UotJMOctKWbSntyW8DR6ZruiPK2FxCIM2MdjtK656gOyKMKvPV4NLxVK9/dgBx0K4xvjqc9gDBPqfkblN2/UySIdAkwnVTt6IPwgAtg3Dby3SgjQfJnroiBbBKIs6zhkQH0TMcmANDGCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Ohbt2RK5; arc=none smtp.client-ip=203.205.221.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1722334273; bh=PLMcArhzuuAKwrdf7sy/491o8NduT+1VCqvCj3//12U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Ohbt2RK5wFku2xQiD1v8xHT/hASgUv7tEaeJZ8TmrWVGOrFOpvYNm1GChz77wtMRL
+	 38PSxFBjyCJ/bANiUzMKrtKcoHisBZPgXI+4+l8J9rKYK56XXhvMmBg0vzBUjwMARt
+	 rZf7jPo0dsadGRP9Uasth6es3eIp9T/l/E2C5l5Q=
+Received: from localhost.localdomain ([36.111.64.84])
+	by newxmesmtplogicsvrszc5-2.qq.com (NewEsmtp) with SMTP
+	id 2CA97060; Tue, 30 Jul 2024 18:11:10 +0800
+X-QQ-mid: xmsmtpt1722334270t5qglkr8y
+Message-ID: <tencent_16253196C5C7F0141593B633CA21A0150505@qq.com>
+X-QQ-XMAILINFO: OKkKo7I1HxIeyPzr2ei58d1lwO6YM6ke1aeoyErQNfKKDIeoQVy7O+ipIxkWG4
+	 xjlN/HM0vNybHghs3tSHJyT6QZLjAJfQTRVfxHFtqrkRNM8rvudCaTRLK7kgIXGzsK8i/q+GmdR4
+	 6+V0MfpOnFGomHi4UyxKbSnPisVSICLtfN5ubwT7oiBmxdVUJE26VgwjjL1f6HMzIHT+mOLSLQp2
+	 QZ/EkYvixc15mvIqaAkZLIkmd2+8X8lbz2tmLyQMCQikosoeb3l670/sCV/XStHKxlVfjt1ECLbQ
+	 ld39Gp8lc7JtE6W5ZYEpw3phAlvVBw9gL+p4/zwpzUWS0QD/D9ezK+F73ClEtRZeihzJhelezdKe
+	 6Hq2GIwgwVeYB4ZihQWhQZmdaibPG4m/xtJismEJmAneRPwqxoBf/EiMGcdCA+zEBqkrFA3dQA1s
+	 vdBFbf2If2l8yzVQTP0WskBHtpwjA72i92WWIX6pWsDDtAgUfEk3AexblQjkNMRnnhHRMl1JvtCJ
+	 M/1nsgWHZg5Qr5gKqGDcntW1wuIDmi2BQbX+NpP1pLlKoa6kUbO7l2CKwqAvlQ+ZfAO2J55C9bgi
+	 cBC3nIuOUxK8fUlKx9LgZAXDo06LXWwvsZOs2c+6HVRFgxgFkBHBZXrvEIqzi537Dy/IC0O2bUJ6
+	 PMTvZfV1O64gIE9BafZiB7pFgjRU9vltCHgvll4u2YBSV+WVAGK/cvim03ZJhK7o7cUB3AyamnTu
+	 VCZTBjK7/xR9dLkl333ug7Oa/WZp74n+t8VuCGx6xzgAViv50H5Zv4hSPfaDW74UL/BSnkEglZRw
+	 sJozO4nt4Xs3Ha88Xn2cG2wJJ4p/zOYbbzDwuKpcRttWg3UjCe7UpIhO0lpxE6k2CTX5xSr2Wqn7
+	 LHOM5aLdIzOK1uaF364uhQz646c1O68vSSJ3En7Xdx/3sUtg+sP5r+gRxjfri661vrGu33gU+0OQ
+	 gc7FmveYMAGoHGTi9o5UmI4GPu/5dzYHU5fpJqQ+GEC6Ui929r3wZkDlczQSJErNMQ5HGmySr44F
+	 LYGMmYkhqjOmKm6+R68im2Q+ocO5E=
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+From: wujing <realwujing@qq.com>
+To: gregkh@linuxfoundation.org
+Cc: dongml2@chinatelecom.cn,
+	linux-kernel@vger.kernel.org,
+	menglong8.dong@gmail.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	realwujing@qq.com,
+	stable@vger.kernel.org,
+	yuanql9@chinatelecom.cn
+Subject: Re: Re: [PATCH] sched/fair: Correct CPU selection from isolated domain
+Date: Tue, 30 Jul 2024 18:11:06 +0800
+X-OQ-MSGID: <20240730101107.58814-1-realwujing@qq.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024073011-operating-pointless-7ab9@gregkh>
+References: <2024073011-operating-pointless-7ab9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
- LRU batch
-To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, baolin.wang@linux.alibaba.com, liuzixing@hygon.cn
-References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
- <3a2ab0ea-3a07-45a0-ae0e-b9d48bf409bd@redhat.com>
- <79234eac-d7cc-424b-984d-b78861a5e862@126.com>
- <9e018975-8a80-46a6-ab38-f3e2945c8878@redhat.com>
- <1c5f1582-d6ea-4e27-a966-e6e992cf7c22@126.com>
- <a8abf253-b1bb-422a-9d3f-d0dd24990617@redhat.com>
- <9f1b8c87-6ea4-4f88-9332-13ac4b1b35d9@126.com>
- <d41865b4-d6fa-49ba-890a-921eefad27dd@redhat.com>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <d41865b4-d6fa-49ba-890a-921eefad27dd@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnr_kJuqhm1wPgAw--.37433S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur13Xr1DWrW7KFWUZrW8Zwb_yoW8Zry8pr
-	WxG3Wqqr4kJr9Fyr4qqr1UJFyUtry3Xa1UXF43GrnrCFn0yrn7Gr47C3yUCFy3Ar1DJF10
-	qa4Uta4xXa4UZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYOJ5UUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiWQosG2VLbyXSowABsw
+
+> On Tue, Jul 30, 2024 at 05:40:17PM +0800, wujing wrote:
+> > > What "current patch"?
+> > >
+> > > confused,
+> > >
+> > > greg k-h
+> >
+> > The current patch is in my first email.
+>
+> What message exactly?  I don't see any such message on the stable list.
+>
+> > Please ignore the previous two emails.
+> > The "current patch" mentioned in the earlier emails refers to the upstream
+> > status, but the latest upstream patch can no longer be applied to linux-4.19.y.
+>
+> Again, please read:
+>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> for how to do this properly.
+>
+> thanks,
+>
+> greg k-h
+
+The email you just replied to is correct.
+
+I reviewed the link in the email, and according to the link,
+the patch I submitted meets the third criterion. I have noted
+Upstream commit <8aeaffef8c6e> in the patch log.
 
 
 
-在 2024/7/30 17:58, David Hildenbrand 写道:
-> On 30.07.24 11:56, Ge Yang wrote:
->>
->>
->> 在 2024/7/30 17:41, David Hildenbrand 写道:
->>> On 30.07.24 11:36, Ge Yang wrote:
->>>>
->>>>
->>>> 在 2024/7/30 15:45, David Hildenbrand 写道:
->>>>>>> Looking at this in more detail, I wonder if we can turn that to
->>>>>>>
->>>>>>> if (!folio_test_clear_lru(folio))
->>>>>>>         return;
->>>>>>> folio_get(folio);
->>>>>>>
->>>>>>> In all cases? The caller must hold a reference, so this should be
->>>>>>> fine.
->>>>>>>
->>>>>>
->>>>>> Seems the caller madvise_free_pte_range(...), calling
->>>>>> folio_mark_lazyfree(...), doesn't hold a reference on folio.
->>>>>>
->>>>>
->>>>> If that would be the case and the folio could get freed concurrently,
->>>>> the folio_get(folio) would be completely broken.
->>>>>
->>>>> In madvise_free_pte_range() we hold the PTL, so the folio cannot get
->>>>> freed concurrently.
->>>>>
->>>>
->>>> Right.
->>>>
->>>>> folio_get() is only allowed when we are sure the folio cannot get 
->>>>> freed
->>>>> concurrently, because we know there is a reference that cannot go 
->>>>> away.
->>>>>
->>>>>
->>>>
->>>> When cpu0 runs folio_activate(), and cpu1 runs folio_put() 
->>>> concurrently,
->>>> a possible bad scenario would like:
->>>>
->>>> cpu0                                           cpu1
->>>>
->>>>                                               folio_put_testzero(folio)
->>>> if (!folio_test_clear_lru(folio))// Seems folio shouldn't be accessed
->>>>
->>>>           return;
->>>> folio_get(folio);
->>>>                                                __folio_put(folio)
->>>>                                                __folio_clear_lru(folio)
->>>>
->>>>
->>>> Seems we should use folio_try_get(folio) instead of folio_get(folio).
->>>
->>> In which case is folio_activate() called without the PTL on a mapped
->>> page or without a raised refcount?
->>>
->>
->> No such case has been found. But, folio_put() can be run at anytime, so
->> folio_activate() may access a folio with a reference count of 0.
-> 
-> If you can't find such a case then nothing is broken and no switch to 
-> folio_try_get() is required.
-> 
+From 9d4ecc9314088c2b0aa39c2248fb5e64042f1eef Mon Sep 17 00:00:00 2001
+From: wujing <realwujing@gmail.com>
+Date: Tue, 30 Jul 2024 15:35:53 +0800
+Subject: [PATCH] sched/fair: Correct CPU selection from isolated domain
 
-Ok, thanks.
+We encountered an issue where the kernel thread `ksmd` runs on the PMD
+dedicated isolated core, leading to high latency in OVS packets.
+
+Upon analysis, we discovered that this is caused by the current
+select_idle_smt() function not taking the sched_domain mask into account.
+
+Upstream commit <8aeaffef8c6e>
+
+Kernel version: linux-4.19.y
+
+Signed-off-by: wujing <realwujing@qq.com>
+Signed-off-by: QiLiang Yuan <yuanql9@chinatelecom.cn>
+---
+ kernel/sched/fair.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 09f82c84474b..0950cabfc1d0 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6171,7 +6171,8 @@ static int select_idle_smt(struct task_struct *p, struct sched_domain *sd, int t
+ 		return -1;
+
+ 	for_each_cpu(cpu, cpu_smt_mask(target)) {
+-		if (!cpumask_test_cpu(cpu, &p->cpus_allowed))
++		if (!cpumask_test_cpu(cpu, &p->cpus_allowed) ||
++			!cpumask_test_cpu(cpu, sched_domain_span(sd)))
+ 			continue;
+ 		if (available_idle_cpu(cpu))
+ 			return cpu;
+--
+2.45.2
 
 
