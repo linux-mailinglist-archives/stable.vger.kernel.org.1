@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5B1941878
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7188F941879
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 157F41C230D4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D676B284D65
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A317A18800A;
-	Tue, 30 Jul 2024 16:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC7B1A616B;
+	Tue, 30 Jul 2024 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1y7BvF7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mb/Nlh1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288518455B;
-	Tue, 30 Jul 2024 16:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE38E1A6161;
+	Tue, 30 Jul 2024 16:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356541; cv=none; b=G/QdAAk2kNzLh61WLKBAnWa5V9o7fU/HMVnhaEu9sNbulbcONlJG3uJJKr/Zm5qrCBMIuSc2ZCODa+xl/xh8nL9t4LKskiIyCm39NsDXYJh1kFhuVOJU43wNG7BXMs3P7oZ+uCLBp1sOOo2A3slQ0u3yWC4lSlmx+DH6CzDMbJo=
+	t=1722356551; cv=none; b=tRKqicCDS+ot5Qv7RUHkSzZtClLpd3+kuTThSEKQVzggOufxH97aDs/QdRaPQ+BdDlwnSWYzbSBO5NYkaYh2f9RzI//WD44nT9GkaAaBHW4UgGTsC12hxBitzQCoTxI5LVhjdaYOF/hhxi5KHOvCf2BoqMBDzVnObbNC4J1eHV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356541; c=relaxed/simple;
-	bh=+XEQh5ySgIOxV/y5agGG7fxhQtBmOLJ3FSniNp8cGpU=;
+	s=arc-20240116; t=1722356551; c=relaxed/simple;
+	bh=6aXKSVCmi/odxqDI5rWCYMvVop61gQ2EVo8w/7+g3kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acUgOGWVsO3R7t+ZMyPDwRcR7FvAo2+5NhHCxJmIuET16+OP74xLDevNmZOtPDv5J3LpuLoDoMzX2BYxdYXrkhFP4F8rFy4ouZfyR4BCM6o4ihQ/jd4b8qcS+RJh9FZOZPhnc7UsRM3zhSoBUghwN1xQk9RupWL+AyspKOMtx8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1y7BvF7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D458AC32782;
-	Tue, 30 Jul 2024 16:22:20 +0000 (UTC)
+	 MIME-Version; b=lQRIAbnV/6x0X6HLcFmrAHHoqgk2ybGBaSvSLfIgb3BM5c8t6xee/P9IUFfqKZxVfSDHlY1apbHLcCL8KjCBM/fr8d86H4lFlJ0tuOvAzo9I+iICxtdUQvP+jo8KWugGh1hlg6HHWYmSm/PnvkgH2giEORqH2Dx+OESddpma34A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mb/Nlh1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C27C32782;
+	Tue, 30 Jul 2024 16:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356541;
-	bh=+XEQh5ySgIOxV/y5agGG7fxhQtBmOLJ3FSniNp8cGpU=;
+	s=korg; t=1722356550;
+	bh=6aXKSVCmi/odxqDI5rWCYMvVop61gQ2EVo8w/7+g3kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1y7BvF7ysVIyR/bmPoAIAU2GX5LmJg9P1geFlOMZO8JgaJUQz66nIPdIk8RIllfLo
-	 pEI6wkB90vxwICH4Ql+2TPNQLZ4GGJUBy4PyDsEV905b9IIZ+a9e1s/Pegl2KfnBZj
-	 stXXqLb/TTGAdYztJ79z81U0jmxtPgmABDctMYQQ=
+	b=Mb/Nlh1pA9aztZvvFFRTz9XNlKHqSfDOjM38e6WkZtGlUe0Pab7LWSrbgTjWLmJQk
+	 S0koFkfVSSsDoesL9TSLlNsZKqfZ3sydB7dI9N/6/nUO9MqQptskd0A7NDff0ja9rt
+	 Bz4BGzd3Y96Zkf1xFtA/PfJDlN92RRqvN0jkLpSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Ilan Peer <ilan.peer@intel.com>,
 	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 160/809] wifi: mac80211: fix TTLM teardown work
-Date: Tue, 30 Jul 2024 17:40:36 +0200
-Message-ID: <20240730151730.922247523@linuxfoundation.org>
+Subject: [PATCH 6.10 161/809] wifi: mac80211: cancel multi-link reconf work on disconnect
+Date: Tue, 30 Jul 2024 17:40:37 +0200
+Message-ID: <20240730151730.961909069@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -68,33 +69,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 2fe0a605d083b884490ee4de02be071b5b4291b1 ]
+[ Upstream commit 53b739fd46462dc40fd18390d76f2ee05c18ea3a ]
 
-The worker calculates the wrong sdata pointer, so if it ever
-runs, it'll crash. Fix that.
+This work shouldn't run after we're disconnecting. Cancel it earlier
+(and then don't cancel it in stop later.)
 
-Fixes: a17a58ad2ff2 ("wifi: mac80211: add support for tearing down negotiated TTLM")
+Fixes: 8eb8dd2ffbbb ("wifi: mac80211: Support link removal using Reconfiguration ML element")
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240506211853.e6471800c76d.I8b7c2d6984c89a11cd33d1a610e9645fa965f6e1@changeid
+Link: https://msgid.link/20240506211034.ac754794279f.Ib9fbb1dab50c6b67f6de9be09a6c452ce89bbd50@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mlme.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index a5f2d3cfe60d2..edac1578d425c 100644
+index edac1578d425c..72e38e42f6da0 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -6834,7 +6834,7 @@ static void ieee80211_teardown_ttlm_work(struct wiphy *wiphy,
- 	u16 new_dormant_links;
- 	struct ieee80211_sub_if_data *sdata =
- 		container_of(work, struct ieee80211_sub_if_data,
--			     u.mgd.neg_ttlm_timeout_work.work);
-+			     u.mgd.teardown_ttlm_work);
+@@ -3289,6 +3289,11 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
  
- 	if (!sdata->vif.neg_ttlm.valid)
- 		return;
+ 	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
+ 				  &ifmgd->neg_ttlm_timeout_work);
++
++	sdata->u.mgd.removed_links = 0;
++	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
++				  &sdata->u.mgd.ml_reconf_work);
++
+ 	ieee80211_vif_set_links(sdata, 0, 0);
+ 
+ 	ifmgd->mcast_seq_last = IEEE80211_SN_MODULO;
+@@ -8708,8 +8713,6 @@ void ieee80211_mgd_stop(struct ieee80211_sub_if_data *sdata)
+ 			  &ifmgd->teardown_ttlm_work);
+ 	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
+ 				  &ifmgd->tdls_peer_del_work);
+-	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
+-				  &ifmgd->ml_reconf_work);
+ 	wiphy_delayed_work_cancel(sdata->local->hw.wiphy, &ifmgd->ttlm_work);
+ 	wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
+ 				  &ifmgd->neg_ttlm_timeout_work);
 -- 
 2.43.0
 
