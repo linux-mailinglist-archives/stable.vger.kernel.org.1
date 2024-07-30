@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB297941A4C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:42:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3676941A04
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808961F24554
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:42:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63CDE1F214ED
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD97E1898FE;
-	Tue, 30 Jul 2024 16:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CB5183CD5;
+	Tue, 30 Jul 2024 16:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o81845wT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRJ65oXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9C71898EC;
-	Tue, 30 Jul 2024 16:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D091A6192;
+	Tue, 30 Jul 2024 16:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357737; cv=none; b=pyrWAiaNqUqJYqfdcremlYaQqnmAPauQcJwcKhAddjmbXs0pVn5pSXLyqMUAPYKnLOAFN+FtvcVEt6SGl8/Y4q8nLVRnXi0I1RaEb2YNx/lNcYi9Szl2xxA2zbye7SB9fWJdP/6d6mqvMGz42Uhyv/XidsXfW+/aZlPQWICJPOM=
+	t=1722357548; cv=none; b=juwqCHGpYodyj8e/gtSOSC/V2QpQN6H4mxQxR0e1P63EG2UUizNzdP+i85AkGdZ83eCEu0w6NA+VyGc87UIvnNK93ZMiEd7XJcZXYfo1SFybytQPQsOKibs2Hz+H5wtvxv8iu/i5vFa2QXmUyZ8Q40P6l8llVeF2nFtQnw54uM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357737; c=relaxed/simple;
-	bh=Vwx1ZgODKzaXqfUx+5mmi9Ok8dzqTBa/gV0W5q0g750=;
+	s=arc-20240116; t=1722357548; c=relaxed/simple;
+	bh=mjetlmRvkGAnR4y2iq9zshJAJdLZ0KDWZqNp+FYuQZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6buSxeyn5+c8y+I9ts02RW7ZateTKA6H80em9qW8n4zMD36vYae0e+xJJ1K8y0LfrY/qngKzOijhqfMAlFI1vx5R5NFOsrwqaEMgjV36ieqXiK0cmhsJqWrTwM8KkLmBIZ0PhyyOfLLyRw25B6LfYFaI8Eai46ZtJnQDIKO/d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o81845wT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0616C32782;
-	Tue, 30 Jul 2024 16:42:16 +0000 (UTC)
+	 MIME-Version; b=SRCUysEmS2QfZ+nnWDJdfDBqwTy5hnGUIE3wOHFqu8s3DC9kTfnUS0N/yGGunyc6nMKgwHRKIfC+gdC3XSPpYQ/CZJJZZ2Ha1WhvySIsjCr/Exw79pE5c94Ns6XSNba6zDWW8muXdp+wkVH9GDYd4JzsCEQ9kx5Mz+LLoDHPBqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRJ65oXt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38BD2C4AF0C;
+	Tue, 30 Jul 2024 16:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357737;
-	bh=Vwx1ZgODKzaXqfUx+5mmi9Ok8dzqTBa/gV0W5q0g750=;
+	s=korg; t=1722357548;
+	bh=mjetlmRvkGAnR4y2iq9zshJAJdLZ0KDWZqNp+FYuQZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o81845wTv3PXMmidy/2hH/XDzS85uMWCUh+4mh5hqRdMUb2V3AHLQSS40K5yEOVNC
-	 8AbUxje2RuNyYH4DM5be1d079oblgcTr3qCICCkOdYxrY0wmmgcoHIl+4UH3+fJorv
-	 Sk1PYeQJwbQxQSn2kk9ZC5AaASGEYT6d/4TJijP8=
+	b=DRJ65oXtbKLvscH7TloEAID/kEmY183ie8A6wKvaj60PjVWgpqtuJL3FzKgaDqu5L
+	 V02BK4yQaU386QY4Bh7L63pjicFuZwz9XPGtVeGT+KMTBvQknkreFWejEVxCiF1S8+
+	 bqQ8v55qVO9yZfw2enTc4DMMhn+hrH8KQegxf/jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Faiz Abbas <faiz.abbas@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 265/809] drm/rockchip: vop2: Fix the port mux of VP2
-Date: Tue, 30 Jul 2024 17:42:21 +0200
-Message-ID: <20240730151735.057949919@linuxfoundation.org>
+Subject: [PATCH 6.10 266/809] drm/arm/komeda: Fix komeda probe failing if there are no links in the secondary pipeline
+Date: Tue, 30 Jul 2024 17:42:22 +0200
+Message-ID: <20240730151735.103695183@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,36 +66,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Faiz Abbas <faiz.abbas@arm.com>
 
-[ Upstream commit 2bdb481bf7a93c22b9fea8daefa2834aab23a70f ]
+[ Upstream commit 9054c46d479b55768adae31031a1afa1b7d62228 ]
 
-The port mux of VP2 should be RK3568_OVL_PORT_SET__PORT2_MUX.
+Since commit 4cfe5cc02e3f ("drm/arm/komeda: Remove component framework and
+add a simple encoder"), the devm_drm_of_get_bridge() call happens
+regardless of whether any remote nodes are available on the pipeline. Fix
+this by moving the bridge attach to its own function and calling it
+conditional on there being an output link.
 
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240422101905.32703-2-andyshrk@163.com
+Fixes: 4cfe5cc02e3f ("drm/arm/komeda: Remove component framework and add a simple encoder")
+Signed-off-by: Faiz Abbas <faiz.abbas@arm.com>
+[Corrected Commit-id of the fixed patch to match mainline]
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240219100915.192475-2-faiz.abbas@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/arm/display/komeda/komeda_crtc.c  | 43 ++++++++++++++-----
+ 1 file changed, 32 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 62ebbdb16253d..9873172e3fd33 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -2344,7 +2344,7 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
- 		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX,
- 			(vp2->nlayers + vp1->nlayers + vp0->nlayers - 1));
- 	else
--		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT1_MUX, 8);
-+		port_sel |= FIELD_PREP(RK3568_OVL_PORT_SET__PORT2_MUX, 8);
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+index 2c661f28410ed..b645c5998230b 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+@@ -5,6 +5,7 @@
+  *
+  */
+ #include <linux/clk.h>
++#include <linux/of.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spinlock.h>
  
- 	layer_sel = vop2_readl(vop2, RK3568_OVL_LAYER_SEL);
+@@ -610,12 +611,34 @@ get_crtc_primary(struct komeda_kms_dev *kms, struct komeda_crtc *crtc)
+ 	return NULL;
+ }
  
++static int komeda_attach_bridge(struct device *dev,
++				struct komeda_pipeline *pipe,
++				struct drm_encoder *encoder)
++{
++	struct drm_bridge *bridge;
++	int err;
++
++	bridge = devm_drm_of_get_bridge(dev, pipe->of_node,
++					KOMEDA_OF_PORT_OUTPUT, 0);
++	if (IS_ERR(bridge))
++		return dev_err_probe(dev, PTR_ERR(bridge), "remote bridge not found for pipe: %s\n",
++				     of_node_full_name(pipe->of_node));
++
++	err = drm_bridge_attach(encoder, bridge, NULL, 0);
++	if (err)
++		dev_err(dev, "bridge_attach() failed for pipe: %s\n",
++			of_node_full_name(pipe->of_node));
++
++	return err;
++}
++
+ static int komeda_crtc_add(struct komeda_kms_dev *kms,
+ 			   struct komeda_crtc *kcrtc)
+ {
+ 	struct drm_crtc *crtc = &kcrtc->base;
+ 	struct drm_device *base = &kms->base;
+-	struct drm_bridge *bridge;
++	struct komeda_pipeline *pipe = kcrtc->master;
++	struct drm_encoder *encoder = &kcrtc->encoder;
+ 	int err;
+ 
+ 	err = drm_crtc_init_with_planes(base, crtc,
+@@ -626,27 +649,25 @@ static int komeda_crtc_add(struct komeda_kms_dev *kms,
+ 
+ 	drm_crtc_helper_add(crtc, &komeda_crtc_helper_funcs);
+ 
+-	crtc->port = kcrtc->master->of_output_port;
++	crtc->port = pipe->of_output_port;
+ 
+ 	/* Construct an encoder for each pipeline and attach it to the remote
+ 	 * bridge
+ 	 */
+ 	kcrtc->encoder.possible_crtcs = drm_crtc_mask(crtc);
+-	err = drm_simple_encoder_init(base, &kcrtc->encoder,
+-				      DRM_MODE_ENCODER_TMDS);
++	err = drm_simple_encoder_init(base, encoder, DRM_MODE_ENCODER_TMDS);
+ 	if (err)
+ 		return err;
+ 
+-	bridge = devm_drm_of_get_bridge(base->dev, kcrtc->master->of_node,
+-					KOMEDA_OF_PORT_OUTPUT, 0);
+-	if (IS_ERR(bridge))
+-		return PTR_ERR(bridge);
+-
+-	err = drm_bridge_attach(&kcrtc->encoder, bridge, NULL, 0);
++	if (pipe->of_output_links[0]) {
++		err = komeda_attach_bridge(base->dev, pipe, encoder);
++		if (err)
++			return err;
++	}
+ 
+ 	drm_crtc_enable_color_mgmt(crtc, 0, true, KOMEDA_COLOR_LUT_SIZE);
+ 
+-	return err;
++	return 0;
+ }
+ 
+ int komeda_kms_add_crtcs(struct komeda_kms_dev *kms, struct komeda_dev *mdev)
 -- 
 2.43.0
 
