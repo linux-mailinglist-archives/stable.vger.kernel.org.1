@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-63626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A399419DE
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C232941C1F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E5A1C20CB9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3CC5B24614
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD6B18990D;
-	Tue, 30 Jul 2024 16:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB310188017;
+	Tue, 30 Jul 2024 17:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyCpF+oM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDN7Tt+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F9B189902;
-	Tue, 30 Jul 2024 16:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40581E86F;
+	Tue, 30 Jul 2024 17:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357434; cv=none; b=sYl5u4O4ghF/seZCg4kEpygvoXPNpJt3HE2Qw7bsXvSpeffnkt9WwGaaPMV0eyYHeUt2n/c2IPfanDyX0fqG4zgh01kxQXLz5ZFMMiEi05ij7MPuinAnbNwK7p1oqcLkMJct1tof9TMjsm3YyObVw52mhEVCPDMFToOsitXosPU=
+	t=1722358999; cv=none; b=PowH0vrg6EXfGCvzOZWt/TvEFCxC+QhiIcyHHCRmPYPIsGU42KhycI/lEKrOKsmRYxsrE0dkGkQqcQxhvAKpaUz6XkncqnFEGEoa93996LWfcSStljaLbNckn/a8S7MLwoEm67fa54kApNQ3k9ty9JCMEEREwOw92tHEOMnHSDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357434; c=relaxed/simple;
-	bh=obsY9om4RGj/TsLMRzXtAxR21rjosRiMV4thDaV2H8Y=;
+	s=arc-20240116; t=1722358999; c=relaxed/simple;
+	bh=BMJcrvZcLoz5LDjL3ObNBVzCGnDmcbMw89nPI+mEp7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XY31ATo1cqHxlsWkoY7JRom5uYXl/GTo6A8YEH78G0pNRFtwzSrnIsdvKB32bsicuxmhA6NAUrpr80+7uQ3JO1kqyWml7vTau74F6r1HT+q/K2jKPVO+7GmgC6NVDBHn9k6q5ED/ZQlRrfH3jUSbT3v3j9R2CNwqsoKzEZjqMZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyCpF+oM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECE8C4AF0E;
-	Tue, 30 Jul 2024 16:37:13 +0000 (UTC)
+	 MIME-Version; b=nM+CbS8bvLZFJM6tdPG9OjxxutdLAooU+7kfYhKC2FRKo3XZV7N0nbP/Ilc53aRVeKVZ9gW7ixcabmjdzfpxhm1LXhBZH+0ms0yt5rjh2VED5aCCShCgUIjNomFg0ijWVGJpZB8Ee3YiXgnBjjS8ODRRHcKeSkP0cGV/Yd5l9rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDN7Tt+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2162BC4AF0C;
+	Tue, 30 Jul 2024 17:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357434;
-	bh=obsY9om4RGj/TsLMRzXtAxR21rjosRiMV4thDaV2H8Y=;
+	s=korg; t=1722358999;
+	bh=BMJcrvZcLoz5LDjL3ObNBVzCGnDmcbMw89nPI+mEp7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyCpF+oMbPtGERWTY0nrC1aCCUkXyQpDIPhPMmt6SxDzCBM80pcoLSUuLVFhaw5Zc
-	 pBobAYvqzvURZ3NL+hOtAlKx8YfT7fKi6zjsxItXr07XYJGIpxRs9bMCWxp4Muythl
-	 +u9bcTZZaJUU9OXPxXG9czC0nT2J3KqqcyyUbSJw=
+	b=TDN7Tt+pJX7bvHzISwRvqVU5WdIiyXW0fQkcFMCiGH0ixmw3F3lPurJl51MQB4Q8v
+	 GhYi+J9XXBabgHmLlKjQi8OSNncQJ1V0KcBOyuBVv1vnpbeQVR550lyotSTjSJqfpg
+	 flCZYn6SsjQwuI5YLrLMw/SfurIQn6aR+Nj7NoJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shreyas Deodhar <sdeodhar@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 292/440] scsi: qla2xxx: Fix optrom version displayed in FDMI
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 418/568] ALSA: ump: Force 1 Group for MIDI1 FBs
 Date: Tue, 30 Jul 2024 17:48:45 +0200
-Message-ID: <20240730151627.236984068@linuxfoundation.org>
+Message-ID: <20240730151656.208622815@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shreyas Deodhar <sdeodhar@marvell.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 348744f27a35e087acc9378bf53537fbfb072775 upstream.
+commit ac29d8ae05b770ed3f52d7a60908ab9b126f69d7 upstream.
 
-Bios version was popluated for FDMI response. Systems with EFI would show
-optrom version as 0.  EFI version is populated here and BIOS version is
-already displayed under FDMI_HBA_BOOT_BIOS_NAME.
+When a Function Block declares it being a legacy MIDI1 device, it has
+to be only with a single UMP Group.  Correct the attribute when a
+device declares it wrongly.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-9-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 37e0e14128e0 ("ALSA: ump: Support UMP Endpoint and Function Block parsing")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240722140610.10845-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_gs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/ump.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_gs.c
-+++ b/drivers/scsi/qla2xxx/qla_gs.c
-@@ -1710,7 +1710,7 @@ qla2x00_hba_attributes(scsi_qla_host_t *
- 	eiter->type = cpu_to_be16(FDMI_HBA_OPTION_ROM_VERSION);
- 	alen = scnprintf(
- 		eiter->a.orom_version, sizeof(eiter->a.orom_version),
--		"%d.%02d", ha->bios_revision[1], ha->bios_revision[0]);
-+		"%d.%02d", ha->efi_revision[1], ha->efi_revision[0]);
- 	alen += FDMI_ATTR_ALIGNMENT(alen);
- 	alen += FDMI_ATTR_TYPELEN(eiter);
- 	eiter->len = cpu_to_be16(alen);
+diff --git a/sound/core/ump.c b/sound/core/ump.c
+index b325fcfa77d0..0f0d7e895c5a 100644
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -733,6 +733,12 @@ static void fill_fb_info(struct snd_ump_endpoint *ump,
+ 		info->block_id, info->direction, info->active,
+ 		info->first_group, info->num_groups, info->midi_ci_version,
+ 		info->sysex8_streams, info->flags);
++
++	if ((info->flags & SNDRV_UMP_BLOCK_IS_MIDI1) && info->num_groups != 1) {
++		info->num_groups = 1;
++		ump_dbg(ump, "FB %d: corrected groups to 1 for MIDI1\n",
++			info->block_id);
++	}
+ }
+ 
+ /* check whether the FB info gets updated by the current message */
+-- 
+2.45.2
+
 
 
 
