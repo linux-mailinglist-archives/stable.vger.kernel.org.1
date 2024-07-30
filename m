@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A1F9417FA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEDE941D3F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAED41C22D4B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E77451F251E9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C641A0B06;
-	Tue, 30 Jul 2024 16:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731471898E0;
+	Tue, 30 Jul 2024 17:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGlOQeL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFXa1gPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B321A00F7;
-	Tue, 30 Jul 2024 16:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE081A76B7;
+	Tue, 30 Jul 2024 17:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356128; cv=none; b=WyhF0YExdXKTAMt1N3v8QBhy/vK0q3dDHLRdgP4TkecYgHosY7CPIKdM/IEEnE7Nim855Z4HqvqEINVB5ccPKPmnEuEaZvEnMPral08lp7WFtM4utJMMBJZijLwfhOFwNWsGLKhmZjCo4xGApvs6aNcskQT9Tjx4TWNCBW/AEQ8=
+	t=1722359687; cv=none; b=n3/cFqp8PbYvRBMjDDRsNzsemEHY2CjsDJfd1SncCZWPkiXWShkbbqQdctFTJbMmp9iMej8KHhXHKnsVr6xITmRtiNjousrYPq8veVnmiJJffvjLktPOoVvV90i0nNTcbFVJ/MfsVelUKQPLcoHxoXY4h2Hl/NERCdc4+ken0Pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356128; c=relaxed/simple;
-	bh=NJUilYkBnTyZRRwoBIcQPbarrmuO5dWidg6hg4v+YV8=;
+	s=arc-20240116; t=1722359687; c=relaxed/simple;
+	bh=z7d6vbBYTaV46UYni5NUFmSsnarpkAmvSd0IZ6YNU+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WtM6abU3L09DOVAH6oq53nc7xMZ1iY1KgLVw/fqLGzbQlHPvSRadub+Kf7jQlut5bxrskGfZjVKsbDNmXntURfZ2d/nT8OxPagKSZ4P4mXTy9cr2oBgXA9KdgKgyDKUJxE0au/hFjKn3gWgbTN9ETkQD6A9fLjCQwGcgOL2KpAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGlOQeL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DD9C32782;
-	Tue, 30 Jul 2024 16:15:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jSrBU6s6QDzIiNlFmXkc6n1PkPOwtqgXwXmRDiHlVi0sT0X+wrSUkklW9waB13hu9fwHk/LugdZgNakEyZdq8cS0ug9sBtCbeQMcaXQltMlTm5eTMGXwZJcRzecXur2fDOHj4p+Jb6bks3xL8UKxDgxQ+Qd6wNquYbeFG8r7Xe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFXa1gPZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D1FC32782;
+	Tue, 30 Jul 2024 17:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356128;
-	bh=NJUilYkBnTyZRRwoBIcQPbarrmuO5dWidg6hg4v+YV8=;
+	s=korg; t=1722359687;
+	bh=z7d6vbBYTaV46UYni5NUFmSsnarpkAmvSd0IZ6YNU+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UGlOQeL+jJ9B/oCLKsKuqUhK+4Jts9A7uj6KO4U4im5OZrTc7vJIeJv4CEiNhmDXL
-	 xk8Bnw0kz7a0nCVN5bVpsDaOJfH8WqEXPO8eDoPZH7d7SVtiSmADCZeF2RvLl4wvwQ
-	 41EqEDWh6tibYHT3zkza8vTiTti+Zrj67X64dmBA=
+	b=mFXa1gPZ661JU0ks6il4rLaB8FTpcpoGj+yqZSP05S3V1PCFXWJ5EOMg45bTgNYqB
+	 o5s0wvx/msV6h4OHhpZT0lZ1hncIN1Iq67A7ZK51Idr8CJ6GZI1npotjnUJGTw+3nt
+	 c+Q0lxgSbsRMm1PtKpDdD862Oj0i5tdCHaud/FPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/440] drm/etnaviv: fix DMA direction handling for cached RW buffers
-Date: Tue, 30 Jul 2024 17:46:34 +0200
-Message-ID: <20240730151622.162700751@linuxfoundation.org>
+Subject: [PATCH 6.10 519/809] s390/dasd: fix error checks in dasd_copy_pair_store()
+Date: Tue, 30 Jul 2024 17:46:35 +0200
+Message-ID: <20240730151745.238459210@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Carlos López <clopez@suse.de>
 
-[ Upstream commit 58979ad6330a70450ed78837be3095107d022ea9 ]
+[ Upstream commit 8e64d2356cbc800b4cd0e3e614797f76bcf0cdb8 ]
 
-The dma sync operation needs to be done with DMA_BIDIRECTIONAL when
-the BO is prepared for both read and write operations.
+dasd_add_busid() can return an error via ERR_PTR() if an allocation
+fails. However, two callsites in dasd_copy_pair_store() do not check
+the result, potentially resulting in a NULL pointer dereference. Fix
+this by checking the result with IS_ERR() and returning the error up
+the stack.
 
-Fixes: a8c21a5451d8 ("drm/etnaviv: add initial etnaviv DRM driver")
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Fixes: a91ff09d39f9b ("s390/dasd: add copy pair setup")
+Signed-off-by: Carlos López <clopez@suse.de>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240715112434.2111291-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gem.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/s390/block/dasd_devmap.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-index 5cf13e52f7c94..23d5058eca8d8 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-@@ -355,9 +355,11 @@ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
+diff --git a/drivers/s390/block/dasd_devmap.c b/drivers/s390/block/dasd_devmap.c
+index 0316c20823eec..6adaeb985dde1 100644
+--- a/drivers/s390/block/dasd_devmap.c
++++ b/drivers/s390/block/dasd_devmap.c
+@@ -2248,13 +2248,19 @@ static ssize_t dasd_copy_pair_store(struct device *dev,
  
- static inline enum dma_data_direction etnaviv_op_to_dma_dir(u32 op)
- {
--	if (op & ETNA_PREP_READ)
-+	op &= ETNA_PREP_READ | ETNA_PREP_WRITE;
-+
-+	if (op == ETNA_PREP_READ)
- 		return DMA_FROM_DEVICE;
--	else if (op & ETNA_PREP_WRITE)
-+	else if (op == ETNA_PREP_WRITE)
- 		return DMA_TO_DEVICE;
- 	else
- 		return DMA_BIDIRECTIONAL;
+ 	/* allocate primary devmap if needed */
+ 	prim_devmap = dasd_find_busid(prim_busid);
+-	if (IS_ERR(prim_devmap))
++	if (IS_ERR(prim_devmap)) {
+ 		prim_devmap = dasd_add_busid(prim_busid, DASD_FEATURE_DEFAULT);
++		if (IS_ERR(prim_devmap))
++			return PTR_ERR(prim_devmap);
++	}
+ 
+ 	/* allocate secondary devmap if needed */
+ 	sec_devmap = dasd_find_busid(sec_busid);
+-	if (IS_ERR(sec_devmap))
++	if (IS_ERR(sec_devmap)) {
+ 		sec_devmap = dasd_add_busid(sec_busid, DASD_FEATURE_DEFAULT);
++		if (IS_ERR(sec_devmap))
++			return PTR_ERR(sec_devmap);
++	}
+ 
+ 	/* setting copy relation is only allowed for offline secondary */
+ 	if (sec_devmap->device)
 -- 
 2.43.0
 
