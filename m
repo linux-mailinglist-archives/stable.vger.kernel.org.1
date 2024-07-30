@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-64620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25F1941EAF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769BC941BED
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 574A01F24473
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 307B1283F98
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDC9189503;
-	Tue, 30 Jul 2024 17:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A04187FF6;
+	Tue, 30 Jul 2024 17:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBrhECPN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Owh3OQKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681EE1A76A5;
-	Tue, 30 Jul 2024 17:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2763E83A17;
+	Tue, 30 Jul 2024 17:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360716; cv=none; b=sFS5fcxnBIcF9726XwN2yObLmGKl7v5SuKf2P75aTKtBlCS1an4rSc5r8e3P1sUsinx6O0itN59MWEGbCANh+309aKWrQwL7IkQOpH99W7nLq77kKY+hJsOmH9rnRbsILjlioFi+0jhMTpaeDllxlm077x5x8oANR7+w2vhUXcM=
+	t=1722358857; cv=none; b=GAKfQsCTi9wSbxKFDlQcLFqO04SjQu6Bezst5uOYvu1pQQfSmxLFYg+GaheZCaq6nfdXF3uYiCZPqUGBkUiaatQSkLVSVg1X8oV5wM1+CE6oXrjTe388L1AtRdpI5/dfssofk5TfNRZCV1DvaSrDgPbzfooK1SBQebn4bu+VShk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360716; c=relaxed/simple;
-	bh=oIoU2i5tqDjoJ0zXyGxW55nwsoumyyFOGdMojPWqVeA=;
+	s=arc-20240116; t=1722358857; c=relaxed/simple;
+	bh=yUQaxuvkk74X7eVTYa8dZxFfDonvNdBCRXljvnnqNxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GTxMLGwJdPlQUk0eoVb1xitLVpkqyaPVxBwoMerpHhblh7d3sB1g/ydAfuxOwLdWsPk9UQs7a6TY8SzAs1kbT4W7PZwmPIF/3HyTv5S2FLwhwZz2E/nQ4GuQKE5dw1BVvLmHX1+thw1zqB2AFEOG31noQuPhuLNXbf9E5afKcTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBrhECPN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6897C32782;
-	Tue, 30 Jul 2024 17:31:55 +0000 (UTC)
+	 MIME-Version; b=iw+5WnUnYSwV6Nby2j6yqc2Db8fd1YHeBQLiAevTpwo4oszSKf6wp9bGkXOnBUEikhlYFGARRMwT/W8JO+yLKvNY2GBIVmERVquHarOCjmBfhl5o2qAC8//DHMfiWH65b3sjl296Bmpj0l+a7kfx+aR2Yh16P2bmboVfKZYAyn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Owh3OQKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E711C32782;
+	Tue, 30 Jul 2024 17:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360716;
-	bh=oIoU2i5tqDjoJ0zXyGxW55nwsoumyyFOGdMojPWqVeA=;
+	s=korg; t=1722358857;
+	bh=yUQaxuvkk74X7eVTYa8dZxFfDonvNdBCRXljvnnqNxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBrhECPNK3BYcQHpblmMnmtvh/m0nt2PsaPSEh0q7ZMHR6KwtMdUw6dGxXz6jkBvu
-	 SyHmesM5AtP35yTd3RtvM8S1RdXMsmLAPPQwJAUFjC9u4WxpC/i+O2WOAx1IK5x2UU
-	 tjXNgvVUY/yggfc77TvarpJONmt34t1mzSqMXt+8=
+	b=Owh3OQKCQV59fZxl3DRPl/q2x6Ggrpj3fsBkRBI5GBQmxVvAAuh2i4NtWW0wBUzPY
+	 2qCLg3YvHx/7CB+L8HLDCp4qo9H8AYxmkvdbvH1nvsT9Y4dXKOOOQpnfYegLmiL05s
+	 ESv5Wd2XLT0kQcCLkK6LtP3CZTWfOaSbDD6BZ+S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Krinkin <krinkin.m.u@gmail.com>,
-	Todd Brandt <todd.e.brandt@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Bart Van Assche <bvanassche@acm.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 785/809] ASOC: SOF: Intel: hda-loader: only wait for HDaudio IOC for IPC4 devices
+Subject: [PATCH 6.1 428/440] nvme-pci: Fix the instructions for disabling power management
 Date: Tue, 30 Jul 2024 17:51:01 +0200
-Message-ID: <20240730151755.971585316@linuxfoundation.org>
+Message-ID: <20240730151632.497548512@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 9ee3f0d8c9999eb1ef2866e86f8d57d996fc0348 ]
+[ Upstream commit 92fc2c469eb26060384e9b2cd4cb0cc228aba582 ]
 
-Multiple users report a regression bisected to commit d5263dbbd8af
-("ASoC: SOF: Intel: don't ignore IOC interrupts for non-audio
-transfers"). The firmware version is the likely suspect, as these
-users relied on SOF 2.0 while Intel only tested with the 2.2 release.
+pcie_aspm=off tells the kernel not to modify the ASPM configuration. This
+setting does not guarantee that ASPM (Active State Power Management) is
+disabled. Hence add pcie_port_pm=off. This disables power management for
+all PCIe ports.
 
-Rather than completely disable the wait_for_completion(), which can
-help us gather timing information on the different stages of the boot
-process, the simplest course of action is to just disable it for older
-IPC versions which are no longer under active development.
+This patch has been tested on a workstation with a Samsung SSD 970 EVO Plus
+NVMe SSD.
 
-Closes: https://github.com/thesofproject/linux/issues/5072
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218961
-Fixes: d5263dbbd8af ("ASoC: SOF: Intel: don't ignore IOC interrupts for non-audio transfers")
-Tested-by: Mike Krinkin <krinkin.m.u@gmail.com>
-Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20240716084530.300829-1-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 4641a8e6e145 ("nvme-pci: add trouble shooting steps for timeouts")
+Cc: Keith Busch <kbusch@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda-loader.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/hda-loader.c b/sound/soc/sof/intel/hda-loader.c
-index b8b914eaf7e05..75f6240cf3e1d 100644
---- a/sound/soc/sof/intel/hda-loader.c
-+++ b/sound/soc/sof/intel/hda-loader.c
-@@ -310,15 +310,19 @@ int hda_cl_copy_fw(struct snd_sof_dev *sdev, struct hdac_ext_stream *hext_stream
- 		return ret;
- 	}
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 32e89ea853a47..42ef44cc7a852 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1322,7 +1322,7 @@ static void nvme_warn_reset(struct nvme_dev *dev, u32 csts)
+ 	dev_warn(dev->ctrl.device,
+ 		 "Does your device have a faulty power saving mode enabled?\n");
+ 	dev_warn(dev->ctrl.device,
+-		 "Try \"nvme_core.default_ps_max_latency_us=0 pcie_aspm=off\" and report a bug\n");
++		 "Try \"nvme_core.default_ps_max_latency_us=0 pcie_aspm=off pcie_port_pm=off\" and report a bug\n");
+ }
  
--	/* Wait for completion of transfer */
--	time_left = wait_for_completion_timeout(&hda_stream->ioc,
--						msecs_to_jiffies(HDA_CL_DMA_IOC_TIMEOUT_MS));
--
--	if (!time_left) {
--		dev_err(sdev->dev, "Code loader DMA did not complete\n");
--		return -ETIMEDOUT;
-+	if (sdev->pdata->ipc_type == SOF_IPC_TYPE_4) {
-+		/* Wait for completion of transfer */
-+		time_left = wait_for_completion_timeout(&hda_stream->ioc,
-+							msecs_to_jiffies(HDA_CL_DMA_IOC_TIMEOUT_MS));
-+
-+		if (!time_left) {
-+			dev_err(sdev->dev, "Code loader DMA did not complete\n");
-+			return -ETIMEDOUT;
-+		}
-+		dev_dbg(sdev->dev, "Code loader DMA done\n");
- 	}
--	dev_dbg(sdev->dev, "Code loader DMA done, waiting for FW_ENTERED status\n");
-+
-+	dev_dbg(sdev->dev, "waiting for FW_ENTERED status\n");
- 
- 	status = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR,
- 					chip->rom_status_reg, reg,
+ static enum blk_eh_timer_return nvme_timeout(struct request *req)
 -- 
 2.43.0
 
