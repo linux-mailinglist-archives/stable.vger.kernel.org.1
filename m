@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-64065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152D7941BF1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7270B941BF5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1E012838E7
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3B051F23EEC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FB1189537;
-	Tue, 30 Jul 2024 17:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052D21898F6;
+	Tue, 30 Jul 2024 17:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6Ai8Rag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAmnkOvu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC0A156F30;
-	Tue, 30 Jul 2024 17:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0008187FF6;
+	Tue, 30 Jul 2024 17:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358875; cv=none; b=tTF2tT74qUJx4rlppD4WR27PoVdk88WDz630ud1I158plJwz/1WeqR9PWMeNeEoRW7S0oOhIktMpfxFcDneEymgQUrL59/e5F/xq3gbrcTr3kaWcQj8BsCa55ETaf/RoU/u/NXvADWHQTE6sS0EXUgXB/JNdfaSdsKzPtiaDZ6U=
+	t=1722358888; cv=none; b=Qn6IWUPQ5FAm7I4UfmbODHEo4I7OmKJ2TXZkCHX0gUBNYVVdH5bT644edyRfnMsrKV6cpKdbg72hLiiaogmUGW3OnAqbZoBX3mPaUVN/eipnBQq8VpZjnEZGgiL2Q7kEZzZn6RwEcU2onJJ3VtWvL+FnmXr500S+P2qMIjesZ8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358875; c=relaxed/simple;
-	bh=xdGcYtN8pm/FeQQ1lf7XUZvO7rzt6IPbGdiALeKmDOM=;
+	s=arc-20240116; t=1722358888; c=relaxed/simple;
+	bh=tvw+D1DbL5N6QhxPuVK1yjnl+c578hgsLKmC+2KRIWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ve3tnNch5qG3tiseC0uRnf9ZkMajqnw9Lr4tuZXlJeIZ3LGWrqNKiI02712jcNVP40RqWoAJu0FHYoqrc7fNltNNKUxAuSGWj6EK6h0wfzAf/qH07gyCkseXIpmVdQIMWZWBxkKFpYwA1b+JeYv8+JoowoWNu339jl3zcveJpDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6Ai8Rag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C323FC32782;
-	Tue, 30 Jul 2024 17:01:14 +0000 (UTC)
+	 MIME-Version; b=DlDniepZY2aRGXpP7jVW+U725XWzNes62V6RBV1/CSLzpsJ8QEFrkR2dmjsEy5E+vjDg3KdcoGQ4a1MsvH7LNoWtQ1vd4icRX94HY1ObU47V0qeYBF8s/F9RXLAIwRKuVWJyfWiI1AaVQAznfwGP3Q/GM7CbbWtNueRSQCjRXwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAmnkOvu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAA6C32782;
+	Tue, 30 Jul 2024 17:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358875;
-	bh=xdGcYtN8pm/FeQQ1lf7XUZvO7rzt6IPbGdiALeKmDOM=;
+	s=korg; t=1722358888;
+	bh=tvw+D1DbL5N6QhxPuVK1yjnl+c578hgsLKmC+2KRIWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6Ai8RagPfQrRbsM/i1yuXICX8myD1FFpnuwAd2rPjcpfqBVI5RTdjyXkRPTVpYdV
-	 nZ8TOmxno5gym3XN00QPN6hpHh8CJGTOkTR5zZAaK71VGKEJz7Qe3/oig0h8qbuVk7
-	 FJVr7IY7P5tzAHz9wfE3o5o/f2RNmz8nGYbnz0Kc=
+	b=UAmnkOvugc4JXixWlghLQntUbtwa6hsqBQ+C9G4+A1m7oGXydNOpkX7UWU4Gd/KMR
+	 WCjAZ8uy12IlK6J3iTE5UVLhIDKeH0KIgrmjfYvrSj3RE753sjfGf1PxEJn1vIAYwy
+	 1Czw68ycVtx/HXJ9maKSDDYXuSx3Z8J/iFVMI02c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 404/809] powerpc/kexec_file: fix cpus node update to FDT
-Date: Tue, 30 Jul 2024 17:44:40 +0200
-Message-ID: <20240730151740.645289585@linuxfoundation.org>
+Subject: [PATCH 6.10 405/809] ASoc: tas2781: Enable RCA-based playback without DSP firmware download
+Date: Tue, 30 Jul 2024 17:44:41 +0200
+Message-ID: <20240730151740.684862579@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,117 +67,172 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit 932bed41217059638c78a75411b7893b121d2162 ]
+[ Upstream commit 9f774c757e3fb2ac32dc4377e8f21f3364a8df81 ]
 
-While updating the cpus node, commit 40c753993e3a ("powerpc/kexec_file:
- Use current CPU info while setting up FDT") first deletes all subnodes
-under the /cpus node. However, while adding sub-nodes back, it missed
-adding cpus subnodes whose device_type != "cpu", such as l2-cache*,
-l3-cache*, ibm,powerpc-cpu-features.
+In only loading RCA (Reconfigurable Architecture) binary case, no DSP
+program will be working inside tas2563/tas2781, that is dsp-bypass mode,
+do not support speaker protection, or audio acoustic algorithms in this
+mode.
 
-Fix this by only deleting cpus sub-nodes of device_type == "cpus" and
-then adding all available nodes with device_type == "cpu".
-
-Fixes: 40c753993e3a ("powerpc/kexec_file: Use current CPU info while setting up FDT")
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240510102235.2269496-3-sourabhjain@linux.ibm.com
+Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20240614133646.910-1-shenghao-ding@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/core_64.c | 53 +++++++++++++++++++++++++-----------
- 1 file changed, 37 insertions(+), 16 deletions(-)
+ include/sound/tas2781-dsp.h       | 11 +++++++--
+ sound/soc/codecs/tas2781-fmwlib.c | 18 ++++++++++----
+ sound/soc/codecs/tas2781-i2c.c    | 39 ++++++++++++++++++++-----------
+ 3 files changed, 48 insertions(+), 20 deletions(-)
 
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 72b12bc10f90b..222aa326dacee 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -467,9 +467,15 @@ static int add_node_props(void *fdt, int node_offset, const struct device_node *
-  * @fdt:              Flattened device tree of the kernel.
-  *
-  * Returns 0 on success, negative errno on error.
-+ *
-+ * Note: expecting no subnodes under /cpus/<node> with device_type == "cpu".
-+ * If this changes, update this function to include them.
-  */
- int update_cpus_node(void *fdt)
- {
-+	int prev_node_offset;
-+	const char *device_type;
-+	const struct fdt_property *prop;
- 	struct device_node *cpus_node, *dn;
- 	int cpus_offset, cpus_subnode_offset, ret = 0;
+diff --git a/include/sound/tas2781-dsp.h b/include/sound/tas2781-dsp.h
+index 7fba7ea26a4b0..3cda9da14f6d1 100644
+--- a/include/sound/tas2781-dsp.h
++++ b/include/sound/tas2781-dsp.h
+@@ -117,10 +117,17 @@ struct tasdevice_fw {
+ 	struct device *dev;
+ };
  
-@@ -480,30 +486,44 @@ int update_cpus_node(void *fdt)
- 		return cpus_offset;
+-enum tasdevice_dsp_fw_state {
+-	TASDEVICE_DSP_FW_NONE = 0,
++enum tasdevice_fw_state {
++	/* Driver in startup mode, not load any firmware. */
+ 	TASDEVICE_DSP_FW_PENDING,
++	/* DSP firmware in the system, but parsing error. */
+ 	TASDEVICE_DSP_FW_FAIL,
++	/*
++	 * Only RCA (Reconfigurable Architecture) firmware load
++	 * successfully.
++	 */
++	TASDEVICE_RCA_FW_OK,
++	/* Both RCA and DSP firmware load successfully. */
+ 	TASDEVICE_DSP_FW_ALL_OK,
+ };
+ 
+diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
+index 265a8ca25cbbe..838d29fead961 100644
+--- a/sound/soc/codecs/tas2781-fmwlib.c
++++ b/sound/soc/codecs/tas2781-fmwlib.c
+@@ -2324,14 +2324,21 @@ void tasdevice_tuning_switch(void *context, int state)
+ 	struct tasdevice_fw *tas_fmw = tas_priv->fmw;
+ 	int profile_cfg_id = tas_priv->rcabin.profile_cfg_id;
+ 
+-	if (tas_priv->fw_state == TASDEVICE_DSP_FW_FAIL) {
+-		dev_err(tas_priv->dev, "DSP bin file not loaded\n");
++	/*
++	 * Only RCA-based Playback can still work with no dsp program running
++	 * inside the chip.
++	 */
++	switch (tas_priv->fw_state) {
++	case TASDEVICE_RCA_FW_OK:
++	case TASDEVICE_DSP_FW_ALL_OK:
++		break;
++	default:
+ 		return;
  	}
  
--	if (cpus_offset > 0) {
--		ret = fdt_del_node(fdt, cpus_offset);
-+	prev_node_offset = cpus_offset;
-+	/* Delete sub-nodes of /cpus node with device_type == "cpu" */
-+	for (cpus_subnode_offset = fdt_first_subnode(fdt, cpus_offset); cpus_subnode_offset >= 0;) {
-+		/* Ignore nodes that do not have a device_type property or device_type != "cpu" */
-+		prop = fdt_get_property(fdt, cpus_subnode_offset, "device_type", NULL);
-+		if (!prop || strcmp(prop->data, "cpu")) {
-+			prev_node_offset = cpus_subnode_offset;
-+			goto next_node;
-+		}
-+
-+		ret = fdt_del_node(fdt, cpus_subnode_offset);
- 		if (ret < 0) {
--			pr_err("Error deleting /cpus node: %s\n", fdt_strerror(ret));
--			return -EINVAL;
-+			pr_err("Failed to delete a cpus sub-node: %s\n", fdt_strerror(ret));
-+			return ret;
- 		}
-+next_node:
-+		if (prev_node_offset == cpus_offset)
-+			cpus_subnode_offset = fdt_first_subnode(fdt, cpus_offset);
-+		else
-+			cpus_subnode_offset = fdt_next_subnode(fdt, prev_node_offset);
- 	}
+ 	if (state == 0) {
+-		if (tas_priv->cur_prog < tas_fmw->nr_programs) {
+-			/*dsp mode or tuning mode*/
++		if (tas_fmw && tas_priv->cur_prog < tas_fmw->nr_programs) {
++			/* dsp mode or tuning mode */
+ 			profile_cfg_id = tas_priv->rcabin.profile_cfg_id;
+ 			tasdevice_select_tuningprm_cfg(tas_priv,
+ 				tas_priv->cur_prog, tas_priv->cur_conf,
+@@ -2340,9 +2347,10 @@ void tasdevice_tuning_switch(void *context, int state)
  
--	/* Add cpus node to fdt */
--	cpus_offset = fdt_add_subnode(fdt, fdt_path_offset(fdt, "/"), "cpus");
--	if (cpus_offset < 0) {
--		pr_err("Error creating /cpus node: %s\n", fdt_strerror(cpus_offset));
-+	cpus_node = of_find_node_by_path("/cpus");
-+	/* Fail here to avoid kexec/kdump kernel boot hung */
-+	if (!cpus_node) {
-+		pr_err("No /cpus node found\n");
- 		return -EINVAL;
- 	}
- 
--	/* Add cpus node properties */
--	cpus_node = of_find_node_by_path("/cpus");
--	ret = add_node_props(fdt, cpus_offset, cpus_node);
--	of_node_put(cpus_node);
--	if (ret < 0)
--		return ret;
-+	/* Add all /cpus sub-nodes of device_type == "cpu" to FDT */
-+	for_each_child_of_node(cpus_node, dn) {
-+		/* Ignore device nodes that do not have a device_type property
-+		 * or device_type != "cpu".
-+		 */
-+		device_type = of_get_property(dn, "device_type", NULL);
-+		if (!device_type || strcmp(device_type, "cpu"))
-+			continue;
- 
--	/* Loop through all subnodes of cpus and add them to fdt */
--	for_each_node_by_type(dn, "cpu") {
- 		cpus_subnode_offset = fdt_add_subnode(fdt, cpus_offset, dn->full_name);
- 		if (cpus_subnode_offset < 0) {
- 			pr_err("Unable to add %s subnode: %s\n", dn->full_name,
-@@ -517,6 +537,7 @@ int update_cpus_node(void *fdt)
- 			goto out;
- 	}
- out:
-+	of_node_put(cpus_node);
- 	of_node_put(dn);
- 	return ret;
+ 		tasdevice_select_cfg_blk(tas_priv, profile_cfg_id,
+ 			TASDEVICE_BIN_BLK_PRE_POWER_UP);
+-	} else
++	} else {
+ 		tasdevice_select_cfg_blk(tas_priv, profile_cfg_id,
+ 			TASDEVICE_BIN_BLK_PRE_SHUTDOWN);
++	}
  }
+ EXPORT_SYMBOL_NS_GPL(tasdevice_tuning_switch,
+ 	SND_SOC_TAS2781_FMWLIB);
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 9350972dfefe7..c64d458e524e2 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -380,23 +380,37 @@ static void tasdevice_fw_ready(const struct firmware *fmw,
+ 	mutex_lock(&tas_priv->codec_lock);
+ 
+ 	ret = tasdevice_rca_parser(tas_priv, fmw);
+-	if (ret)
++	if (ret) {
++		tasdevice_config_info_remove(tas_priv);
+ 		goto out;
++	}
+ 	tasdevice_create_control(tas_priv);
+ 
+ 	tasdevice_dsp_remove(tas_priv);
+ 	tasdevice_calbin_remove(tas_priv);
+-	tas_priv->fw_state = TASDEVICE_DSP_FW_PENDING;
++	/*
++	 * The baseline is the RCA-only case, and then the code attempts to
++	 * load DSP firmware but in case of failures just keep going, i.e.
++	 * failing to load DSP firmware is NOT an error.
++	 */
++	tas_priv->fw_state = TASDEVICE_RCA_FW_OK;
+ 	scnprintf(tas_priv->coef_binaryname, 64, "%s_coef.bin",
+ 		tas_priv->dev_name);
+ 	ret = tasdevice_dsp_parser(tas_priv);
+ 	if (ret) {
+ 		dev_err(tas_priv->dev, "dspfw load %s error\n",
+ 			tas_priv->coef_binaryname);
+-		tas_priv->fw_state = TASDEVICE_DSP_FW_FAIL;
+ 		goto out;
+ 	}
+-	tasdevice_dsp_create_ctrls(tas_priv);
++
++	/*
++	 * If no dsp-related kcontrol created, the dsp resource will be freed.
++	 */
++	ret = tasdevice_dsp_create_ctrls(tas_priv);
++	if (ret) {
++		dev_err(tas_priv->dev, "dsp controls error\n");
++		goto out;
++	}
+ 
+ 	tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
+ 
+@@ -417,9 +431,8 @@ static void tasdevice_fw_ready(const struct firmware *fmw,
+ 	tasdevice_prmg_load(tas_priv, 0);
+ 	tas_priv->cur_prog = 0;
+ out:
+-	if (tas_priv->fw_state == TASDEVICE_DSP_FW_FAIL) {
+-		/*If DSP FW fail, kcontrol won't be created */
+-		tasdevice_config_info_remove(tas_priv);
++	if (tas_priv->fw_state == TASDEVICE_RCA_FW_OK) {
++		/* If DSP FW fail, DSP kcontrol won't be created. */
+ 		tasdevice_dsp_remove(tas_priv);
+ 	}
+ 	mutex_unlock(&tas_priv->codec_lock);
+@@ -466,14 +479,14 @@ static int tasdevice_startup(struct snd_pcm_substream *substream,
+ {
+ 	struct snd_soc_component *codec = dai->component;
+ 	struct tasdevice_priv *tas_priv = snd_soc_component_get_drvdata(codec);
+-	int ret = 0;
+ 
+-	if (tas_priv->fw_state != TASDEVICE_DSP_FW_ALL_OK) {
+-		dev_err(tas_priv->dev, "DSP bin file not loaded\n");
+-		ret = -EINVAL;
++	switch (tas_priv->fw_state) {
++	case TASDEVICE_RCA_FW_OK:
++	case TASDEVICE_DSP_FW_ALL_OK:
++		return 0;
++	default:
++		return -EINVAL;
+ 	}
+-
+-	return ret;
+ }
+ 
+ static int tasdevice_hw_params(struct snd_pcm_substream *substream,
 -- 
 2.43.0
 
