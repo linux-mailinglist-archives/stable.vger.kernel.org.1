@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-63655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590359419FF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:39:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C199941CE2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 035411F252F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:39:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20370289FF0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B78757FC;
-	Tue, 30 Jul 2024 16:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAE418A6A4;
+	Tue, 30 Jul 2024 17:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTBZY+lm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKSFrhr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8133218454A;
-	Tue, 30 Jul 2024 16:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3AB18454A;
+	Tue, 30 Jul 2024 17:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357528; cv=none; b=WqWJxpWrZVkz9Le4DaPTlNHXD7ujrilbkw0FWBGD+PXmVaYxOk+aS3DPlGeH4ZIyMeUMVptdzv2SrteFYwuCDJFUcOgXdVQwHh6UMG4RGfERzAV+69bKmXCPzWwfX6eDKH8g+mIMUZY1xsR/e+oIiCwdwZrEoR4OFC/Jnr7xcrk=
+	t=1722359381; cv=none; b=JMszh2ic1aR0WbNLgbeNoZvMqnQ0paVBBEE7VURgTs/TK6r1T8XAL64JX885XycL+Js6K67eq7TfE6gFWGWlTeczQSBk0Ad1GbXrYfiO5Xke1e0bML325obFQyOBFkpFpoz8tsb1WrCDHtjOrrBQBD9jSJplml3jYgUAVa4bF7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357528; c=relaxed/simple;
-	bh=SyOjNUoqSjIHqitopMOVTcm1/Sp6tY4Ml1LTtK2xJ7s=;
+	s=arc-20240116; t=1722359381; c=relaxed/simple;
+	bh=oAAH93viph5+zcwtBOK3aw2OQR5hKk0feJZfvyrcN9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dc+1tQS90MSlAUXlCYnmCqSFGT3EEXuRSiwved99E0lMs8wyDzhYWN3z07nUqVchATOBuuykPEokKjKZ3umauUHJy4vUX/iLHJFCSjtDPu73v/nP5ruftQEmt6qUnDncU2CGA16Wy6RGzO9iTyjJKnO2gjmzHCPIEXGFoh12ppQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTBZY+lm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A144EC4AF0E;
-	Tue, 30 Jul 2024 16:38:47 +0000 (UTC)
+	 MIME-Version; b=O/oU8g7k59LEDCJk+cu31axHmxhCRPGEiTnMjwtbdJux+/WZBLy0dj0GcidJNf6GV14nNgblR0LkMXk2J4thGIHKOBRemwXJWjgNXDmwv1Jr36sCuGIkAbKCQF1k1upw5LwMAIROsK2WDgPT4UwRkYrDejdtjb8VXUIDtrm7LEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKSFrhr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E8BC32782;
+	Tue, 30 Jul 2024 17:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357528;
-	bh=SyOjNUoqSjIHqitopMOVTcm1/Sp6tY4Ml1LTtK2xJ7s=;
+	s=korg; t=1722359381;
+	bh=oAAH93viph5+zcwtBOK3aw2OQR5hKk0feJZfvyrcN9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dTBZY+lmDEDiHyEskWjtHnBJIB628L33DQuhBCCXaAFLZoXWkKWVCvYvNxd7u2EEl
-	 8Xg+j2/2hUusM0hFp4ud8V6yN7RkCZefIfsdqTkFuazR+4Wto/j+T4Jmkvk4WXoc5j
-	 4VvHCbgk5CB5bNzi93aY07M4X2ivTt7kqhq2WiN0=
+	b=NKSFrhr832Tno/wT2FQX5FKS3n98WauoVgfAsXEFRsAz4S/mTZD8dPeEdnysG5zeV
+	 cCtQYg8W15kxjaXATOfO9vGcmXYj8GA9mKQAPHhFrlp1BW8HlSx443x7xc7oUvHl3z
+	 xp0jtJRF39LHG6njzIjkAOmDoljGSNU+CN8a/3io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Larsson <andreas@gaisler.com>,
+	Yi Chen <yiche@redhat.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/568] sparc64: Fix incorrect function signature and add prototype for prom_cif_init
+Subject: [PATCH 6.10 476/809] netfilter: nf_set_pipapo: fix initial map fill
 Date: Tue, 30 Jul 2024 17:45:52 +0200
-Message-ID: <20240730151649.456116128@linuxfoundation.org>
+Message-ID: <20240730151743.536076451@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +62,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Larsson <andreas@gaisler.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit a6c3ea1ec96307dbfbb2f16d96c674c5cc80f445 ]
+[ Upstream commit 791a615b7ad2258c560f91852be54b0480837c93 ]
 
-Remove the unused cif_stack argument and add a protype in oplib_64.h
-Commit ef3e035c3a9b ("sparc64: Fix register corruption in top-most
-kernel stack frame during boot.") removed the cif_stack argument to
-prom_cif init in the declaration at the caller site and the usage of it
-within prom_cif_init, but not in the function signature of the function
-itself.
+The initial buffer has to be inited to all-ones, but it must restrict
+it to the size of the first field, not the total field size.
 
-This also fixes the following warning:
-arch/sparc/prom/p1275.c:52:6: warning: no previous prototype for ‘prom_cif_init’
+After each round in the map search step, the result and the fill map
+are swapped, so if we have a set where f->bsize of the first element
+is smaller than m->bsize_max, those one-bits are leaked into future
+rounds result map.
 
-Fixes: ef3e035c3a9b ("sparc64: Fix register corruption in top-most kernel stack frame during boot.")
-Link: https://lore.kernel.org/r/20240710094155.458731-3-andreas@gaisler.com
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+This makes pipapo find an incorrect matching results for sets where
+first field size is not the largest.
+
+Followup patch adds a test case to nft_concat_range.sh selftest script.
+
+Thanks to Stefano Brivio for pointing out that we need to zero out
+the remainder explicitly, only correcting memset() argument isn't enough.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Reported-by: Yi Chen <yiche@redhat.com>
+Cc: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/asm/oplib_64.h | 1 +
- arch/sparc/prom/init_64.c         | 3 ---
- arch/sparc/prom/p1275.c           | 2 +-
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ net/netfilter/nft_set_pipapo.c      |  4 ++--
+ net/netfilter/nft_set_pipapo.h      | 21 +++++++++++++++++++++
+ net/netfilter/nft_set_pipapo_avx2.c | 10 ++++++----
+ 3 files changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/arch/sparc/include/asm/oplib_64.h b/arch/sparc/include/asm/oplib_64.h
-index a67abebd43592..1b86d02a84556 100644
---- a/arch/sparc/include/asm/oplib_64.h
-+++ b/arch/sparc/include/asm/oplib_64.h
-@@ -247,6 +247,7 @@ void prom_sun4v_guest_soft_state(void);
- int prom_ihandle2path(int handle, char *buffer, int bufsize);
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 15a236bebb46a..eb4c4a4ac7ace 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -434,7 +434,7 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
+ 	res_map  = scratch->map + (map_index ? m->bsize_max : 0);
+ 	fill_map = scratch->map + (map_index ? 0 : m->bsize_max);
  
- /* Client interface level routines. */
-+void prom_cif_init(void *cif_handler);
- void p1275_cmd_direct(unsigned long *);
+-	memset(res_map, 0xff, m->bsize_max * sizeof(*res_map));
++	pipapo_resmap_init(m, res_map);
  
- #endif /* !(__SPARC64_OPLIB_H) */
-diff --git a/arch/sparc/prom/init_64.c b/arch/sparc/prom/init_64.c
-index 103aa91043185..f7b8a1a865b8f 100644
---- a/arch/sparc/prom/init_64.c
-+++ b/arch/sparc/prom/init_64.c
-@@ -26,9 +26,6 @@ phandle prom_chosen_node;
-  * routines in the prom library.
-  * It gets passed the pointer to the PROM vector.
+ 	nft_pipapo_for_each_field(f, i, m) {
+ 		bool last = i == m->field_count - 1;
+@@ -542,7 +542,7 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ 		goto out;
+ 	}
+ 
+-	memset(res_map, 0xff, m->bsize_max * sizeof(*res_map));
++	pipapo_resmap_init(m, res_map);
+ 
+ 	nft_pipapo_for_each_field(f, i, m) {
+ 		bool last = i == m->field_count - 1;
+diff --git a/net/netfilter/nft_set_pipapo.h b/net/netfilter/nft_set_pipapo.h
+index 0d2e40e10f7f5..4a2ff85ce1c43 100644
+--- a/net/netfilter/nft_set_pipapo.h
++++ b/net/netfilter/nft_set_pipapo.h
+@@ -278,4 +278,25 @@ static u64 pipapo_estimate_size(const struct nft_set_desc *desc)
+ 	return size;
+ }
+ 
++/**
++ * pipapo_resmap_init() - Initialise result map before first use
++ * @m:		Matching data, including mapping table
++ * @res_map:	Result map
++ *
++ * Initialize all bits covered by the first field to one, so that after
++ * the first step, only the matching bits of the first bit group remain.
++ *
++ * If other fields have a large bitmap, set remainder of res_map to 0.
++ */
++static inline void pipapo_resmap_init(const struct nft_pipapo_match *m, unsigned long *res_map)
++{
++	const struct nft_pipapo_field *f = m->f;
++	int i;
++
++	for (i = 0; i < f->bsize; i++)
++		res_map[i] = ULONG_MAX;
++
++	for (i = f->bsize; i < m->bsize_max; i++)
++		res_map[i] = 0ul;
++}
+ #endif /* _NFT_SET_PIPAPO_H */
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index d08407d589eac..8910a5ac7ed12 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -1036,6 +1036,7 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
+ 
+ /**
+  * nft_pipapo_avx2_lookup_slow() - Fallback function for uncommon field sizes
++ * @mdata:	Matching data, including mapping table
+  * @map:	Previous match result, used as initial bitmap
+  * @fill:	Destination bitmap to be filled with current match result
+  * @f:		Field, containing lookup and mapping tables
+@@ -1051,7 +1052,8 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
+  * Return: -1 on no match, rule index of match if @last, otherwise first long
+  * word index to be checked next (i.e. first filled word).
   */
--
--extern void prom_cif_init(void *);
--
- void __init prom_init(void *cif_handler)
- {
- 	phandle node;
-diff --git a/arch/sparc/prom/p1275.c b/arch/sparc/prom/p1275.c
-index 889aa602f8d86..51c3f984bbf72 100644
---- a/arch/sparc/prom/p1275.c
-+++ b/arch/sparc/prom/p1275.c
-@@ -49,7 +49,7 @@ void p1275_cmd_direct(unsigned long *args)
- 	local_irq_restore(flags);
- }
+-static int nft_pipapo_avx2_lookup_slow(unsigned long *map, unsigned long *fill,
++static int nft_pipapo_avx2_lookup_slow(const struct nft_pipapo_match *mdata,
++					unsigned long *map, unsigned long *fill,
+ 					const struct nft_pipapo_field *f,
+ 					int offset, const u8 *pkt,
+ 					bool first, bool last)
+@@ -1060,7 +1062,7 @@ static int nft_pipapo_avx2_lookup_slow(unsigned long *map, unsigned long *fill,
+ 	int i, ret = -1, b;
  
--void prom_cif_init(void *cif_handler, void *cif_stack)
-+void prom_cif_init(void *cif_handler)
- {
- 	p1275buf.prom_cif_handler = (void (*)(long *))cif_handler;
- }
+ 	if (first)
+-		memset(map, 0xff, bsize * sizeof(*map));
++		pipapo_resmap_init(mdata, map);
+ 
+ 	for (i = offset; i < bsize; i++) {
+ 		if (f->bb == 8)
+@@ -1186,7 +1188,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 			} else if (f->groups == 16) {
+ 				NFT_SET_PIPAPO_AVX2_LOOKUP(8, 16);
+ 			} else {
+-				ret = nft_pipapo_avx2_lookup_slow(res, fill, f,
++				ret = nft_pipapo_avx2_lookup_slow(m, res, fill, f,
+ 								  ret, rp,
+ 								  first, last);
+ 			}
+@@ -1202,7 +1204,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 			} else if (f->groups == 32) {
+ 				NFT_SET_PIPAPO_AVX2_LOOKUP(4, 32);
+ 			} else {
+-				ret = nft_pipapo_avx2_lookup_slow(res, fill, f,
++				ret = nft_pipapo_avx2_lookup_slow(m, res, fill, f,
+ 								  ret, rp,
+ 								  first, last);
+ 			}
 -- 
 2.43.0
 
