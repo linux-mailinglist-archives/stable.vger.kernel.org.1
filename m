@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-63939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4427C941B5C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6DB941E28
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75F621C21173
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:54:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9318B2827A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FF81898EB;
-	Tue, 30 Jul 2024 16:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C91A76DE;
+	Tue, 30 Jul 2024 17:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lO/J6kM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7f2kbfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0008D18800A;
-	Tue, 30 Jul 2024 16:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3380A1A76A1;
+	Tue, 30 Jul 2024 17:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358441; cv=none; b=OB35bk0V2lnr1uQD1KRBfAlQiGXFz4A45urxcQAfc0UuX/SczGCTsou5d3Mfm432am1U9HrYKwoWfH+D0WNqL5Po6pfOakhFZITDtENiUBmJ05t30Hz8TLv3NNbZixg4XXHfXvSC4OEwuFQxsO24+KPZLASNDLN5mzf5JJDK1UQ=
+	t=1722360178; cv=none; b=p2aZgqpq0fIZS+JaYFC9ZnvrCS3238ZL1ocFgpU8oTr2bQ4K5FE+NL1Px1H73OigY9YXq9ZbcdO2hlUC0hyvLq1LnBRmziyFm2G7Z+zXY7auw28VATI2yK1zjSt47w0/8H138K1Yaki+zPLgxtt1QwpMWRPksXEwxpzKqtqYD18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358441; c=relaxed/simple;
-	bh=GvujTPpyv6JiI1/79aIaCvt89P1Ca67tsZXFnXv66/I=;
+	s=arc-20240116; t=1722360178; c=relaxed/simple;
+	bh=pOe861v5Wj8y60QgxC4ijOJLMJ3FoHaZpyfKppbfl+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WX5HArCKybeHtAsf506hHotxFePd9GIdY5ON6au05Vl3RdBwAT3f4OpfOouHUdlCb1FJDc1BupByad5idGwL34FguUGfoxj13uFXsspbF8xEBxTOOABTCvpwuTN0juc+jf/4M7Bgv2Dcm+h/TzaCrLi6/uo73jNeZEymER6Sz2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lO/J6kM+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A962C4AF0C;
-	Tue, 30 Jul 2024 16:54:00 +0000 (UTC)
+	 MIME-Version; b=QgqEDgfrYVNMzRgHi4DKtb4jGOBEDb7Cv9vOS8fkR5HdOn8BtQreCHqLMrlP0iiCFSmCBv+AEQXksFQTXW3jRZ3kfjsj+3yiK1WC+XUPqq2Qj0q02YOJhXLkq42Mm6ss/6hKKQBx4vtAO/5of6r9xhrJCHhB+s9zSTmAbbE4Fo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7f2kbfv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C4CC32782;
+	Tue, 30 Jul 2024 17:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358440;
-	bh=GvujTPpyv6JiI1/79aIaCvt89P1Ca67tsZXFnXv66/I=;
+	s=korg; t=1722360178;
+	bh=pOe861v5Wj8y60QgxC4ijOJLMJ3FoHaZpyfKppbfl+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lO/J6kM+e6kl0kj4O8WSxxx6xgGkl9JsEYCI/kHs4Jj3riN3mTdPJ6s/uHVPp3/P+
-	 9dl2vQ/uc4eCouhCV++LDtAVwZNzqouTfPwoDwOja61ev//mjxtTfuLW/a+qpcZYnt
-	 BG1D4TbhR+KSdngaMPK2nrne9djkSwkfLdCVsgqM=
+	b=u7f2kbfvobSK4pcDif9O7XBMBj/bI9tHvN5AVGUqt4smERzCy/0+MvlsLYaVGwOxo
+	 csq7MAiktDZGEMCLjabiHwpbctlcnu/BpM5U2x6au+q8SZxx5H+L7r3PUwMynoSZ4u
+	 Ub2iYJlg/Pc6r7omAon39iuOD0S++KI0XhdlFcYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Zhao <yuzhao@google.com>,
-	Alexander Motin <mav@ixsystems.com>,
-	Wei Xu <weixugc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 362/568] mm/mglru: fix overshooting shrinker memory
+	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.10 593/809] ext4: make sure the first directory block is not a hole
 Date: Tue, 30 Jul 2024 17:47:49 +0200
-Message-ID: <20240730151654.010222742@linuxfoundation.org>
+Message-ID: <20240730151748.252196817@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Zhao <yuzhao@google.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 3f74e6bd3b84a8b6bb3cc51609c89e5b9d58eed7 upstream.
+commit f9ca51596bbfd0f9c386dd1c613c394c78d9e5e6 upstream.
 
-set_initial_priority() tries to jump-start global reclaim by estimating
-the priority based on cold/hot LRU pages.  The estimation does not account
-for shrinker objects, and it cannot do so because their sizes can be in
-different units other than page.
+The syzbot constructs a directory that has no dirblock but is non-inline,
+i.e. the first directory block is a hole. And no errors are reported when
+creating files in this directory in the following flow.
 
-If shrinker objects are the majority, e.g., on TrueNAS SCALE 24.04.0 where
-ZFS ARC can use almost all system memory, set_initial_priority() can
-vastly underestimate how much memory ARC shrinker can evict and assign
-extreme low values to scan_control->priority, resulting in overshoots of
-shrinker objects.
+    ext4_mknod
+     ...
+      ext4_add_entry
+        // Read block 0
+        ext4_read_dirblock(dir, block, DIRENT)
+          bh = ext4_bread(NULL, inode, block, 0)
+          if (!bh && (type == INDEX || type == DIRENT_HTREE))
+          // The first directory block is a hole
+          // But type == DIRENT, so no error is reported.
 
-To reproduce the problem, using TrueNAS SCALE 24.04.0 with 32GB DRAM, a
-test ZFS pool and the following commands:
+After that, we get a directory block without '.' and '..' but with a valid
+dentry. This may cause some code that relies on dot or dotdot (such as
+make_indexed_dir()) to crash.
 
-  fio --name=mglru.file --numjobs=36 --ioengine=io_uring \
-      --directory=/root/test-zfs-pool/ --size=1024m --buffered=1 \
-      --rw=randread --random_distribution=random \
-      --time_based --runtime=1h &
+Therefore when ext4_read_dirblock() finds that the first directory block
+is a hole report that the filesystem is corrupted and return an error to
+avoid loading corrupted data from disk causing something bad.
 
-  for ((i = 0; i < 20; i++))
-  do
-    sleep 120
-    fio --name=mglru.anon --numjobs=16 --ioengine=mmap \
-      --filename=/dev/zero --size=1024m --fadvise_hint=0 \
-      --rw=randrw --random_distribution=random \
-      --time_based --runtime=1m
-  done
-
-To fix the problem:
-1. Cap scan_control->priority at or above DEF_PRIORITY/2, to prevent
-   the jump-start from being overly aggressive.
-2. Account for the progress from mm_account_reclaimed_pages(), to
-   prevent kswapd_shrink_node() from raising the priority
-   unnecessarily.
-
-Link: https://lkml.kernel.org/r/20240711191957.939105-2-yuzhao@google.com
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: Alexander Motin <mav@ixsystems.com>
-Cc: Wei Xu <weixugc@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
+Fixes: 4e19d6b65fb4 ("ext4: allow directory holes")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240702132349.2600605-3-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmscan.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/ext4/namei.c |   17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5585,7 +5585,11 @@ static void set_initial_priority(struct
- 	/* round down reclaimable and round up sc->nr_to_reclaim */
- 	priority = fls_long(reclaimable) - 1 - fls_long(sc->nr_to_reclaim - 1);
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -151,10 +151,11 @@ static struct buffer_head *__ext4_read_d
  
--	sc->priority = clamp(priority, 0, DEF_PRIORITY);
-+	/*
-+	 * The estimation is based on LRU pages only, so cap it to prevent
-+	 * overshoots of shrinker objects by large margins.
-+	 */
-+	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
- }
+ 		return bh;
+ 	}
+-	if (!bh && (type == INDEX || type == DIRENT_HTREE)) {
++	/* The first directory block must not be a hole. */
++	if (!bh && (type == INDEX || type == DIRENT_HTREE || block == 0)) {
+ 		ext4_error_inode(inode, func, line, block,
+-				 "Directory hole found for htree %s block",
+-				 (type == INDEX) ? "index" : "leaf");
++				 "Directory hole found for htree %s block %u",
++				 (type == INDEX) ? "index" : "leaf", block);
+ 		return ERR_PTR(-EFSCORRUPTED);
+ 	}
+ 	if (!bh)
+@@ -3129,10 +3130,7 @@ bool ext4_empty_dir(struct inode *inode)
+ 		EXT4_ERROR_INODE(inode, "invalid size");
+ 		return false;
+ 	}
+-	/* The first directory block must not be a hole,
+-	 * so treat it as DIRENT_HTREE
+-	 */
+-	bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
++	bh = ext4_read_dirblock(inode, 0, EITHER);
+ 	if (IS_ERR(bh))
+ 		return false;
  
- static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *sc)
-@@ -7350,6 +7354,7 @@ static bool kswapd_shrink_node(pg_data_t
- {
- 	struct zone *zone;
- 	int z;
-+	unsigned long nr_reclaimed = sc->nr_reclaimed;
+@@ -3577,10 +3575,7 @@ static struct buffer_head *ext4_get_firs
+ 		struct ext4_dir_entry_2 *de;
+ 		unsigned int offset;
  
- 	/* Reclaim a number of pages proportional to the number of zones */
- 	sc->nr_to_reclaim = 0;
-@@ -7377,7 +7382,8 @@ static bool kswapd_shrink_node(pg_data_t
- 	if (sc->order && sc->nr_reclaimed >= compact_gap(sc->order))
- 		sc->order = 0;
- 
--	return sc->nr_scanned >= sc->nr_to_reclaim;
-+	/* account for progress from mm_account_reclaimed_pages() */
-+	return max(sc->nr_scanned, sc->nr_reclaimed - nr_reclaimed) >= sc->nr_to_reclaim;
- }
- 
- /* Page allocator PCP high watermark is lowered if reclaim is active. */
+-		/* The first directory block must not be a hole, so
+-		 * treat it as DIRENT_HTREE
+-		 */
+-		bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
++		bh = ext4_read_dirblock(inode, 0, EITHER);
+ 		if (IS_ERR(bh)) {
+ 			*retval = PTR_ERR(bh);
+ 			return NULL;
 
 
 
