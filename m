@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7B6941E9B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:31:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9BD941BC1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38AF02875CD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:31:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37A10B22C70
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC116187FEC;
-	Tue, 30 Jul 2024 17:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779AB1898F8;
+	Tue, 30 Jul 2024 16:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzfG5FLN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyzxC7SZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994E61A76A5;
-	Tue, 30 Jul 2024 17:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E93318801A;
+	Tue, 30 Jul 2024 16:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360659; cv=none; b=tPkxYV2qD0jbdQO+/BwSVJO7MBSU2Ja4KMk3KfOyeHCaWwXaUTAgzawpmkvdWzl6u3HGcdAh23DFuylt7qSayy/dwQiwqkL0NC+aVlJPtITOGnFbSwo0oTU0joPuj6i4cZ4sFr+Kj+3siqQkEOYnvyXQmvpAuD61SQI3ad4NRC4=
+	t=1722358675; cv=none; b=s1dfDao/kY6L/08QjbQIyEHpvXCmPSBflxZ6jCBBbcYUvNYX+HZRmK3/H67A3x2f+EnkUuqEPObn1eap38dP95243Y6CrfLjPH1r6lxbvkAHlFbj2OjRSpGUAvXWjxnsvz/MHcY3moKGQiywnSsXtjAzVEQKK4YxaikNEyy1/ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360659; c=relaxed/simple;
-	bh=Xf0aNgiNLLsGxmypp7Dt/zi5/gJ/FIuE92mPLN5BqCg=;
+	s=arc-20240116; t=1722358675; c=relaxed/simple;
+	bh=gQZiK0tgtS3t3csMxc3I1zOErwobEjPNE1v+NxD5ZVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pb5divTCFc0NELREJhns/arbxnpjx/HVt/PD+lfxvQ2A05TxUc5B+iirY7eC5K0N+CZSogdhM3qhPtGpIbS0yxC9j1806Bmx6B30oWf1V/8WP2Q+kQ2rBOmH5Vdy4Lg657/GVwdUplqJ1eLsMPdw/7pS3PEFQ+VJesRJhPjJXrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VzfG5FLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F7BC4AF0C;
-	Tue, 30 Jul 2024 17:30:58 +0000 (UTC)
+	 MIME-Version; b=GYJxBuQ3D/L63VLID99a3b3UO4waQDh1eHwd6A4devpxdOWulANQCtQHfH4FXQ+YKGgPLh4F7H8KcQQRmixd0dRgLHUA+Q7VGayQ5sB4uQwsVPL6eXt81sbx0SEbDrUdkPbxUTrgp/SD7Ek/83oj5JKX1Qlm2KErPGd/d4QFU5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyzxC7SZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC76C32782;
+	Tue, 30 Jul 2024 16:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360659;
-	bh=Xf0aNgiNLLsGxmypp7Dt/zi5/gJ/FIuE92mPLN5BqCg=;
+	s=korg; t=1722358675;
+	bh=gQZiK0tgtS3t3csMxc3I1zOErwobEjPNE1v+NxD5ZVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VzfG5FLNgd5rM/3MzCyT/aGEPwN9rJgb7XV6W7Cek789jjr1gQAMubKGWfYiTOgFn
-	 2rY6bUs7m9w9cYOLCEQzO+/q2BhsWeezw89cC8Xou+LiQBWzUZPx48bVReknslOI5Y
-	 PU6qP72P080jeC/mMMypsjq4U9Z8cjEJ6pq0/FVQ=
+	b=jyzxC7SZpTr4+/FGFC49BySPIv39D770Q5AoTSOEoe1hX8Jgl22cwfzNDGz7yUDAf
+	 DGr+3rUenv5IbwY8uf0GW6Ti4BqYlib4GpmthK9weuV8iXwYDqyEoo1d/VaepXpwbe
+	 5kscSL/rUhOtdbGwMkZTvU1XeV4spLsnme6nqpB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 768/809] net: stmmac: Correct byte order of perfect_match
-Date: Tue, 30 Jul 2024 17:50:44 +0200
-Message-ID: <20240730151755.299412131@linuxfoundation.org>
+Subject: [PATCH 6.1 412/440] net: bonding: correctly annotate RCU in bond_should_notify_peers()
+Date: Tue, 30 Jul 2024 17:50:45 +0200
+Message-ID: <20240730151631.884080353@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit e9dbebae2e3c338122716914fe105458f41e3a4a ]
+[ Upstream commit 3ba359c0cd6eb5ea772125a7aededb4a2d516684 ]
 
-The perfect_match parameter of the update_vlan_hash operation is __le16,
-and is correctly converted from host byte-order in the lone caller,
-stmmac_vlan_update().
+RCU use in bond_should_notify_peers() looks wrong, since it does
+rcu_dereference(), leaves the critical section, and uses the
+pointer after that.
 
-However, the implementations of this caller, dwxgmac2_update_vlan_hash()
-and dwxgmac2_update_vlan_hash(), both treat this parameter as host byte
-order, using the following pattern:
+Luckily, it's called either inside a nested RCU critical section
+or with the RTNL held.
 
-	u32 value = ...
-	...
-	writel(value | perfect_match, ...);
+Annotate it with rcu_dereference_rtnl() instead, and remove the
+inner RCU critical section.
 
-This is not correct because both:
-1) value is host byte order; and
-2) writel expects a host byte order value as it's first argument
-
-I believe that this will break on big endian systems. And I expect it
-has gone unnoticed by only being exercised on little endian systems.
-
-The approach taken by this patch is to update the callback, and it's
-caller to simply use a host byte order value.
-
-Flagged by Sparse.
-Compile tested only.
-
-Fixes: c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if HASH is not available")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 4cb4f97b7e36 ("bonding: rebuild the lock use for bond_mii_monitor()")
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20240719094119.35c62455087d.I68eb9c0f02545b364b79a59f2110f2cf5682a8e2@changeid
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c | 2 +-
- drivers/net/ethernet/stmicro/stmmac/hwif.h          | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c   | 4 ++--
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/bonding/bond_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index b25774d691957..8e2049ed60159 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -982,7 +982,7 @@ static void dwmac4_set_mac_loopback(void __iomem *ioaddr, bool enable)
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 710734a5af9bf..be5348d0b22e5 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1117,13 +1117,10 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
+ 	return bestslave;
  }
  
- static void dwmac4_update_vlan_hash(struct mac_device_info *hw, u32 hash,
--				    __le16 perfect_match, bool is_double)
-+				    u16 perfect_match, bool is_double)
++/* must be called in RCU critical section or with RTNL held */
+ static bool bond_should_notify_peers(struct bonding *bond)
  {
- 	void __iomem *ioaddr = hw->pcsr;
- 	u32 value;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index f8e7775bb6336..9a705a5a3a1ad 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -615,7 +615,7 @@ static int dwxgmac2_rss_configure(struct mac_device_info *hw,
- }
+-	struct slave *slave;
+-
+-	rcu_read_lock();
+-	slave = rcu_dereference(bond->curr_active_slave);
+-	rcu_read_unlock();
++	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
  
- static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
--				      __le16 perfect_match, bool is_double)
-+				      u16 perfect_match, bool is_double)
- {
- 	void __iomem *ioaddr = hw->pcsr;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index 90384db228b5c..a318c84ddb8ac 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -394,7 +394,7 @@ struct stmmac_ops {
- 			     struct stmmac_rss *cfg, u32 num_rxq);
- 	/* VLAN */
- 	void (*update_vlan_hash)(struct mac_device_info *hw, u32 hash,
--				 __le16 perfect_match, bool is_double);
-+				 u16 perfect_match, bool is_double);
- 	void (*enable_vlan)(struct mac_device_info *hw, u32 type);
- 	void (*rx_hw_vlan)(struct mac_device_info *hw, struct dma_desc *rx_desc,
- 			   struct sk_buff *skb);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index c58782c41417a..33e2bd5a351ca 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6640,7 +6640,7 @@ static u32 stmmac_vid_crc32_le(__le16 vid_le)
- static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double)
- {
- 	u32 crc, hash = 0;
--	__le16 pmatch = 0;
-+	u16 pmatch = 0;
- 	int count = 0;
- 	u16 vid = 0;
- 
-@@ -6655,7 +6655,7 @@ static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double)
- 		if (count > 2) /* VID = 0 always passes filter */
- 			return -EOPNOTSUPP;
- 
--		pmatch = cpu_to_le16(vid);
-+		pmatch = vid;
- 		hash = 0;
- 	}
- 
+ 	if (!slave || !bond->send_peer_notif ||
+ 	    bond->send_peer_notif %
 -- 
 2.43.0
 
