@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F19941841
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3072941DA6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B80D52847F0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55C1E1F273BB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACCA1A619E;
-	Tue, 30 Jul 2024 16:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE271A76B5;
+	Tue, 30 Jul 2024 17:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jqk4s8yc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmnwAuH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270451A6199;
-	Tue, 30 Jul 2024 16:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776EC1A76A9;
+	Tue, 30 Jul 2024 17:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356345; cv=none; b=UEvV/gPShqOXLp59w/WshEA4JA42ba3vyEVTFWa5kNPUbRzQAdG2hZEqt46wLCWhJ3T8Lmxc/eUEmlpAWLZRa0TkFhvzY25jE09SjOD83g9XquBusnVA7gUyGkRdyVgiFkNrw5nZIhlL0L9Ccmzkvz6E/aeQcXCbV/HhS5UJ1B0=
+	t=1722359985; cv=none; b=AAUyx7Wpd/6eLRlLRo1HLbJCDUuYLzLUu7p2wcXI4fPbmolF69DdjhaUPktfA1fjRc7n7PkYPIvofFd/PA4e7tug2b9nu8FtgGPbYpF0viOAaohLM3kssMYUHzB/ri5Onehb/0k7S/voe7zndzUEPAaPyioJ57tt5AbsMkb8Hro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356345; c=relaxed/simple;
-	bh=o6ORou4B3uCFKXnWqkvMpP2BsJdd4brHkjPagoQJdnw=;
+	s=arc-20240116; t=1722359985; c=relaxed/simple;
+	bh=jmhGjQrGN9mev/vtJ1wjShuayw6hkEW2UN/sEmYLOCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DgfS6SsC+ABNYZhUbzC68uSpt6xGnT74cYTyskiqum4WBa9tzUH7m1GUzrKAESKr+pTwGhlCOd9wGlKSaKNOjBN/XRTE2tjn04OEuuF/rn7Q4bRm0/C631uiEcxcEWxKFrn/qu92MJ6WcSWLRhhVtpDnne17Jd1VU/p33JdOSwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jqk4s8yc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817C9C32782;
-	Tue, 30 Jul 2024 16:19:04 +0000 (UTC)
+	 MIME-Version; b=YINwfbZ6sonhu//13P2a1/qW64zmXc7265w5X1vGpFCYcQHvVhnPe9b8+jRMCyJA36/vOJbTZD34w1/eC+y8TZHBBn4viZ1N1ijJGicf435Q2RBkgWrlzSXE9JV//2Cl4Sq9mXiY7IRl5wLf1+HnVsMZ+m6mdLP92XjDdZ2GO9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmnwAuH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC754C32782;
+	Tue, 30 Jul 2024 17:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356345;
-	bh=o6ORou4B3uCFKXnWqkvMpP2BsJdd4brHkjPagoQJdnw=;
+	s=korg; t=1722359985;
+	bh=jmhGjQrGN9mev/vtJ1wjShuayw6hkEW2UN/sEmYLOCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jqk4s8ycC9nAkRtFsnGL/vPAfdKPn/ydFcxLD/kJ7U9ohesQCYfI1lkdCBdVDRcd3
-	 hAozavyQ0YRcbdgwHq04drVzauNiTGQbte7BOFQzW0Kf04c1hjauwgMZYU3fJdhV/M
-	 5vAqpHqkLmb1TbSez3y0tBcd5WlMpAQQZiWJoJUU=
+	b=mmnwAuH+RsOylcL4Br1WwkIpi2zHwqeYk7ZDzQk74sAnaeSTymbP4GLUBHgq2oiey
+	 VSR14NGyUKhALWOWgqCjLyA5W4dg9gCW6+H6t3m8Ew/VPe04RjARlHchQyyQ3E+h3t
+	 LQZ9hdpotEqIgydq8mkEk/80J2H5BIIghaOfkWQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/440] clk: qcom: gcc-sc7280: Update force mem core bit for UFS ICE clock
+	Yu Zhao <yuzhao@google.com>,
+	Alexander Motin <mav@ixsystems.com>,
+	Wei Xu <weixugc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 540/809] mm/mglru: fix overshooting shrinker memory
 Date: Tue, 30 Jul 2024 17:46:56 +0200
-Message-ID: <20240730151623.021664964@linuxfoundation.org>
+Message-ID: <20240730151746.075525721@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Yu Zhao <yuzhao@google.com>
 
-[ Upstream commit f38467b5a920be1473710428a93c4e54b6f8a0c1 ]
+commit 3f74e6bd3b84a8b6bb3cc51609c89e5b9d58eed7 upstream.
 
-Update the force mem core bit for UFS ICE clock to force the core on signal
-to remain active during halt state of the clk. When retention bit of the
-clock is set the memories of the subsystem will retain the logic across
-power states.
+set_initial_priority() tries to jump-start global reclaim by estimating
+the priority based on cold/hot LRU pages.  The estimation does not account
+for shrinker objects, and it cannot do so because their sizes can be in
+different units other than page.
 
-Fixes: a3cc092196ef ("clk: qcom: Add Global Clock controller (GCC) driver for SC7280")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240531095142.9688-3-quic_tdas@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If shrinker objects are the majority, e.g., on TrueNAS SCALE 24.04.0 where
+ZFS ARC can use almost all system memory, set_initial_priority() can
+vastly underestimate how much memory ARC shrinker can evict and assign
+extreme low values to scan_control->priority, resulting in overshoots of
+shrinker objects.
+
+To reproduce the problem, using TrueNAS SCALE 24.04.0 with 32GB DRAM, a
+test ZFS pool and the following commands:
+
+  fio --name=mglru.file --numjobs=36 --ioengine=io_uring \
+      --directory=/root/test-zfs-pool/ --size=1024m --buffered=1 \
+      --rw=randread --random_distribution=random \
+      --time_based --runtime=1h &
+
+  for ((i = 0; i < 20; i++))
+  do
+    sleep 120
+    fio --name=mglru.anon --numjobs=16 --ioengine=mmap \
+      --filename=/dev/zero --size=1024m --fadvise_hint=0 \
+      --rw=randrw --random_distribution=random \
+      --time_based --runtime=1m
+  done
+
+To fix the problem:
+1. Cap scan_control->priority at or above DEF_PRIORITY/2, to prevent
+   the jump-start from being overly aggressive.
+2. Account for the progress from mm_account_reclaimed_pages(), to
+   prevent kswapd_shrink_node() from raising the priority
+   unnecessarily.
+
+Link: https://lkml.kernel.org/r/20240711191957.939105-2-yuzhao@google.com
+Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: Alexander Motin <mav@ixsystems.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sc7280.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/vmscan.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc7280.c b/drivers/clk/qcom/gcc-sc7280.c
-index 46d41ebce2b08..2067e39840cb4 100644
---- a/drivers/clk/qcom/gcc-sc7280.c
-+++ b/drivers/clk/qcom/gcc-sc7280.c
-@@ -3469,6 +3469,9 @@ static int gcc_sc7280_probe(struct platform_device *pdev)
- 	regmap_update_bits(regmap, 0x71004, BIT(0), BIT(0));
- 	regmap_update_bits(regmap, 0x7100C, BIT(13), BIT(13));
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4915,7 +4915,11 @@ static void set_initial_priority(struct
+ 	/* round down reclaimable and round up sc->nr_to_reclaim */
+ 	priority = fls_long(reclaimable) - 1 - fls_long(sc->nr_to_reclaim - 1);
  
-+	/* FORCE_MEM_CORE_ON for ufs phy ice core clocks */
-+	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_ice_core_clk, true);
-+
- 	ret = qcom_cc_register_rcg_dfs(regmap, gcc_dfs_clocks,
- 			ARRAY_SIZE(gcc_dfs_clocks));
- 	if (ret)
--- 
-2.43.0
-
+-	sc->priority = clamp(priority, 0, DEF_PRIORITY);
++	/*
++	 * The estimation is based on LRU pages only, so cap it to prevent
++	 * overshoots of shrinker objects by large margins.
++	 */
++	sc->priority = clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
+ }
+ 
+ static void lru_gen_shrink_node(struct pglist_data *pgdat, struct scan_control *sc)
+@@ -6701,6 +6705,7 @@ static bool kswapd_shrink_node(pg_data_t
+ {
+ 	struct zone *zone;
+ 	int z;
++	unsigned long nr_reclaimed = sc->nr_reclaimed;
+ 
+ 	/* Reclaim a number of pages proportional to the number of zones */
+ 	sc->nr_to_reclaim = 0;
+@@ -6728,7 +6733,8 @@ static bool kswapd_shrink_node(pg_data_t
+ 	if (sc->order && sc->nr_reclaimed >= compact_gap(sc->order))
+ 		sc->order = 0;
+ 
+-	return sc->nr_scanned >= sc->nr_to_reclaim;
++	/* account for progress from mm_account_reclaimed_pages() */
++	return max(sc->nr_scanned, sc->nr_reclaimed - nr_reclaimed) >= sc->nr_to_reclaim;
+ }
+ 
+ /* Page allocator PCP high watermark is lowered if reclaim is active. */
 
 
 
