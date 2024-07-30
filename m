@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87634941864
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E11D5941869
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C8A1C23AE4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:21:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F1371C22B8D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2928187FF9;
-	Tue, 30 Jul 2024 16:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56001188012;
+	Tue, 30 Jul 2024 16:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUxZh81P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txrjPW/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEA71A617E;
-	Tue, 30 Jul 2024 16:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132B41A617E;
+	Tue, 30 Jul 2024 16:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356468; cv=none; b=WCPjZxcs10ZTJOpACBGPVv2EdMMjXxiAe+7s/Uq22lb9MAeS0VIDDGoGQpqd3loGGDiDAMswjRuX7cTzukohWtf+9cjq80jgS6v6V5horm6TVQ2W9/18DXHxNokXmOxlCZ7LWg6byYXUuKw9L84ExEAEDK/AB/wMp/u1SOlnpsc=
+	t=1722356481; cv=none; b=QQyrj8G7k3gHaznu46HzoZ7gfu6nYcNgj9GBPI3tFHJ7PwhhUOYBPfeSrSM/V9woAWWFs4i8gShFNkIuJMg74J+7wk5KOuBcGmQLqXvyc3a03XTBv+tmTtaUnqzUGTyxHUHPw33aMx3pLMIEUR9mnZlSMwHKnFYwLRDHq9vr0B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356468; c=relaxed/simple;
-	bh=iw1Da3RteKPLxQ97mzAQojzZ51ef/KGLdJNEO4gm2ZM=;
+	s=arc-20240116; t=1722356481; c=relaxed/simple;
+	bh=BIcfr4hXQ+pC82r3I20MgbbK2z87MxA+XxDWNCr+qb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMqa5gEMp5HB9HJvmAp7ynWDxa57ktiNVKyC0KxQhLskITwzwiKZ+XCR/z65JqA2NgAJzFNz8N22ZeQP7lu4WuLDxYd+Y9029IUDYBnoT2b5eO2/pvA/YVOLYHbcZlQt29S5oWESS1NfrZn3mQiELhFJxm+iMwph5xYQLCgSTNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUxZh81P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC0BC32782;
-	Tue, 30 Jul 2024 16:21:07 +0000 (UTC)
+	 MIME-Version; b=XF2x2eT2nvrbLMK6Z3/R7W9o6rAyAI7BoqAC2cSz41x3BvzDJm8pMBzREREZhQGhZixtPgjDh1SiT407Zt8TAish5qyR1VSLI4eO7yy4TUAlZSnieq0mK7iDltp0yP6U4fxbsRa1HMhF3mMSifEYNcJKSa/+//L7y4/gtAyyvRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txrjPW/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D868C32782;
+	Tue, 30 Jul 2024 16:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356468;
-	bh=iw1Da3RteKPLxQ97mzAQojzZ51ef/KGLdJNEO4gm2ZM=;
+	s=korg; t=1722356481;
+	bh=BIcfr4hXQ+pC82r3I20MgbbK2z87MxA+XxDWNCr+qb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UUxZh81P/0FQak7TPgZhJdRbUn8Ek9cpnNrJA4tNKjcnehHaG23PKYqTEJhRfg8+/
-	 GjjZWoHX6H6OjkQ5pyoRZdBPKj4hyhxVDYOCo89bP5LV3sFccdHr9qSnQwlCCkAQPQ
-	 naa9Z1jYXmLUJKYDaA1h7IihVEzwdmqugV8pvwRg=
+	b=txrjPW/Uoi54j+VKKkAXHcX/R69AFyM1Os0XGncUBDkYL3EyApTXBn98N/eDlDaFh
+	 ZW5327v3JMARD7UiuA7plH6a4jeYGy8vHR/hvpJ0WGjFU+sZp+VtVP5itr7o4Tu1tl
+	 LaPHvRUa5bWwA0CmxAzGWNJnOH3RzW2dHRw3IdHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/568] perf/x86/intel/cstate: Fix Alderlake/Raptorlake/Meteorlake
-Date: Tue, 30 Jul 2024 17:44:18 +0200
-Message-ID: <20240730151645.779204767@linuxfoundation.org>
+Subject: [PATCH 6.6 152/568] wifi: rtw89: Fix array index mistake in rtw89_sta_info_get_iter()
+Date: Tue, 30 Jul 2024 17:44:19 +0200
+Message-ID: <20240730151645.817146516@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,61 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 2c3aedd9db6295619d21e50ad29efda614023bf1 ]
+[ Upstream commit 85099c7ce4f9e64c66aa397cd9a37473637ab891 ]
 
-For Alderlake, the spec changes after the patch submitted and PC7/PC9
-are removed.
+In rtw89_sta_info_get_iter() 'status->he_gi' is compared to array size.
+But then 'rate->he_gi' is used as array index instead of 'status->he_gi'.
+This can lead to go beyond array boundaries in case of 'rate->he_gi' is
+not equal to 'status->he_gi' and is bigger than array size. Looks like
+"copy-paste" mistake.
 
-Raptorlake and Meteorlake, which copy the Alderlake cstate PMU, also
-don't have PC7/PC9.
+Fix this mistake by replacing 'rate->he_gi' with 'status->he_gi'.
 
-Remove PC7/PC9 support for Alderlake/Raptorlake/Meteorlake.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: d0ca946bcf84 ("perf/x86/cstate: Add Alder Lake CPU support")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20240628031758.43103-2-rui.zhang@intel.com
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240703210510.11089-1-amishin@t-argos.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/cstate.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw89/debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
-index 96fffb2d521d2..cc6609cbfc8da 100644
---- a/arch/x86/events/intel/cstate.c
-+++ b/arch/x86/events/intel/cstate.c
-@@ -80,7 +80,7 @@
-  *	MSR_PKG_C7_RESIDENCY:  Package C7 Residency Counter.
-  *			       perf code: 0x03
-  *			       Available model: NHM,WSM,SNB,IVB,HSW,BDW,SKL,CNL,
-- *						KBL,CML,ICL,TGL,RKL,ADL,RPL,MTL
-+ *						KBL,CML,ICL,TGL,RKL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C8_RESIDENCY:  Package C8 Residency Counter.
-  *			       perf code: 0x04
-@@ -89,8 +89,7 @@
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C9_RESIDENCY:  Package C9 Residency Counter.
-  *			       perf code: 0x05
-- *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL,
-- *						ADL,RPL,MTL
-+ *			       Available model: HSW ULT,KBL,CNL,CML,ICL,TGL,RKL
-  *			       Scope: Package (physical package)
-  *	MSR_PKG_C10_RESIDENCY: Package C10 Residency Counter.
-  *			       perf code: 0x06
-@@ -582,9 +581,7 @@ static const struct cstate_model adl_cstates __initconst = {
- 	.pkg_events		= BIT(PERF_CSTATE_PKG_C2_RES) |
- 				  BIT(PERF_CSTATE_PKG_C3_RES) |
- 				  BIT(PERF_CSTATE_PKG_C6_RES) |
--				  BIT(PERF_CSTATE_PKG_C7_RES) |
- 				  BIT(PERF_CSTATE_PKG_C8_RES) |
--				  BIT(PERF_CSTATE_PKG_C9_RES) |
- 				  BIT(PERF_CSTATE_PKG_C10_RES),
- };
- 
+diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
+index d162e64f60647..94fe921e9ff28 100644
+--- a/drivers/net/wireless/realtek/rtw89/debug.c
++++ b/drivers/net/wireless/realtek/rtw89/debug.c
+@@ -3292,7 +3292,7 @@ static void rtw89_sta_info_get_iter(void *data, struct ieee80211_sta *sta)
+ 	case RX_ENC_HE:
+ 		seq_printf(m, "HE %dSS MCS-%d GI:%s", status->nss, status->rate_idx,
+ 			   status->he_gi <= NL80211_RATE_INFO_HE_GI_3_2 ?
+-			   he_gi_str[rate->he_gi] : "N/A");
++			   he_gi_str[status->he_gi] : "N/A");
+ 		break;
+ 	}
+ 	seq_printf(m, " BW:%u", rtw89_rate_info_bw_to_mhz(status->bw));
 -- 
 2.43.0
 
