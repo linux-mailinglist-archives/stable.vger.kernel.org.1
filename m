@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-64474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D2E941E36
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7599419B8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00892B29F04
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD84C1F268FA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE491A76B2;
-	Tue, 30 Jul 2024 17:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F277F8BE8;
+	Tue, 30 Jul 2024 16:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvo3miRx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEpmFigY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3CA1A76A1;
-	Tue, 30 Jul 2024 17:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05DA1A6195;
+	Tue, 30 Jul 2024 16:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360241; cv=none; b=jhyoDe2OKzer+BzDiiAqrrnQfQh6jQGTyo4QrpiB94eH2JvVRKXUy3kF6rBzTcitMdZWE3Wx7FptC4Z5qlBM1x3Uvh/50pOrY+fiqivHREI6vrquLQEfoM+J3h6nTKjFhdLtyfOYvscfXCd9ClO1psSp9tS1yLGqBFvuU8faXj4=
+	t=1722357341; cv=none; b=euRaw89mitIrTMFUYNj+1CYBJVmkDUIja7GxoncDgSD9IaE6Vw1GdWPgcfmo2wnFM6+oZeG8992tfnbmueKqqP0xjpvnKWkzVSCeFXwvaq6QPjkycwYIaao7b+jPNjFJvrltAVWPz2BnXPfW/C9inOaBNRZR+7GATS/PztbvgPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360241; c=relaxed/simple;
-	bh=nnNHPhRLHoDq9hRuvjXAhk6aKc7TB+GOWTqjs9EGX/Y=;
+	s=arc-20240116; t=1722357341; c=relaxed/simple;
+	bh=3O/1j4lPRAA8b0Tb7XSCQxMMBMOopXnU1LuCnRmZNMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j9hTqsA6uh1Fs6ykHhLjSaQzZFLu1264bPhsA0gcnuWuJCPHAfX3Xe9ZqtndD9B7Zod1sOix3+JSSelZMFpZI/R7ZJmkxIlRml9wmIbKrvK7x3ZT7YOolePYDUnsrL2zQ2rVRRDkDjHSXQStlZ6UQgUKjveuPRLWk86tL9BiM8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvo3miRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932FFC32782;
-	Tue, 30 Jul 2024 17:24:00 +0000 (UTC)
+	 MIME-Version; b=KBHybNunDk72WbjgHNh36eF8zeqLndxKPWkLEW7k7D3CG1bzwWnKhBCV3llWCScjOaXqkyfwe2Aj+CSlDWlWZhYcwCDskmTZtt86NWD3nYmdKg2lItXecfRScEfBgyqDln5ck191uePBEWhT69k7FSajAAzgoxtI7+zchTCPXV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEpmFigY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0FBC32782;
+	Tue, 30 Jul 2024 16:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360241;
-	bh=nnNHPhRLHoDq9hRuvjXAhk6aKc7TB+GOWTqjs9EGX/Y=;
+	s=korg; t=1722357341;
+	bh=3O/1j4lPRAA8b0Tb7XSCQxMMBMOopXnU1LuCnRmZNMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvo3miRxYHSe9NIf2jFexYAbskB9rVq986+ovvgL9wVpirRuMH/rUISdWSb7jzLWk
-	 7O+iH+BPDJGvck8eeXLPxW4U60rDZqGFdDqGbe4ma10ERoM2bBg8N3tOntNWcnh8FB
-	 pzxQ5bqxzUs0K1SEDydnUmCILTLdFaKTV4hYyvXU=
+	b=UEpmFigYmwQfsAw1lPCCtoGJGBdQHaZplKDLGwvrLX4zRd9G8L9ouG9sp1BIxHqvC
+	 KFRgyK0dYTiOJGFo6doZbfJsKVLmyGwa40eGHvO3NAPSPZqxhs4QfTkiyvWkg3j7gd
+	 3xd6L7I0G0cyK/Tqr4UVVEYEKymozhWZ3pLq7nnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.10 640/809] PCI: rockchip: Use GPIOD_OUT_LOW flag while requesting ep_gpio
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.1 283/440] sched/fair: set_load_weight() must also call reweight_task() for SCHED_IDLE tasks
 Date: Tue, 30 Jul 2024 17:48:36 +0200
-Message-ID: <20240730151750.132393990@linuxfoundation.org>
+Message-ID: <20240730151626.881988562@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +59,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Tejun Heo <tj@kernel.org>
 
-commit 840b7a5edf88fe678c60dee88a135647c0ea4375 upstream.
+commit d329605287020c3d1c3b0dadc63d8208e7251382 upstream.
 
-Rockchip platforms use 'GPIO_ACTIVE_HIGH' flag in the devicetree definition
-for ep_gpio. This means, whatever the logical value set by the driver for
-the ep_gpio, physical line will output the same logic level.
+When a task's weight is being changed, set_load_weight() is called with
+@update_load set. As weight changes aren't trivial for the fair class,
+set_load_weight() calls fair.c::reweight_task() for fair class tasks.
 
-For instance,
+However, set_load_weight() first tests task_has_idle_policy() on entry and
+skips calling reweight_task() for SCHED_IDLE tasks. This is buggy as
+SCHED_IDLE tasks are just fair tasks with a very low weight and they would
+incorrectly skip load, vlag and position updates.
 
-  gpiod_set_value_cansleep(rockchip->ep_gpio, 0); --> Level low
-  gpiod_set_value_cansleep(rockchip->ep_gpio, 1); --> Level high
+Fix it by updating reweight_task() to take struct load_weight as idle weight
+can't be expressed with prio and making set_load_weight() call
+reweight_task() for SCHED_IDLE tasks too when @update_load is set.
 
-But while requesting the ep_gpio, GPIOD_OUT_HIGH flag is currently used.
-Now, this also causes the physical line to output 'high' creating trouble
-for endpoint devices during host reboot.
-
-When host reboot happens, the ep_gpio will initially output 'low' due to
-the GPIO getting reset to its POR value. Then during host controller probe,
-it will output 'high' due to GPIOD_OUT_HIGH flag. Then during
-rockchip_pcie_host_init_port(), it will first output 'low' and then 'high'
-indicating the completion of controller initialization.
-
-On the endpoint side, each output 'low' of ep_gpio is accounted for PERST#
-assert and 'high' for PERST# deassert. With the above mentioned flow during
-host reboot, endpoint will witness below state changes for PERST#:
-
-  (1) PERST# assert - GPIO POR state
-  (2) PERST# deassert - GPIOD_OUT_HIGH while requesting GPIO
-  (3) PERST# assert - rockchip_pcie_host_init_port()
-  (4) PERST# deassert - rockchip_pcie_host_init_port()
-
-Now the time interval between (2) and (3) is very short as both happen
-during the driver probe(), and this results in a race in the endpoint.
-Because, before completing the PERST# deassertion in (2), endpoint got
-another PERST# assert in (3).
-
-A proper way to fix this issue is to change the GPIOD_OUT_HIGH flag in (2)
-to GPIOD_OUT_LOW. Because the usual convention is to request the GPIO with
-a state corresponding to its 'initial/default' value and let the driver
-change the state of the GPIO when required.
-
-As per that, the ep_gpio should be requested with GPIOD_OUT_LOW as it
-corresponds to the POR value of '0' (PERST# assert in the endpoint). Then
-the driver can change the state of the ep_gpio later in
-rockchip_pcie_host_init_port() as per the initialization sequence.
-
-This fixes the firmware crash issue in Qcom based modems connected to
-Rockpro64 based board.
-
-Fixes: e77f847df54c ("PCI: rockchip: Add Rockchip PCIe controller support")
-Closes: https://lore.kernel.org/mhi/20240402045647.GG2933@thinkpad/
-Link: https://lore.kernel.org/linux-pci/20240416-pci-rockchip-perst-fix-v1-1-4800b1d4d954@linaro.org
-Reported-by: Slark Xiao <slark_xiao@163.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org	# v4.9
+Fixes: 9059393e4ec1 ("sched/fair: Use reweight_entity() for set_user_nice()")
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org # v4.15+
+Link: http://lkml.kernel.org/r/20240624102331.GI31592@noisy.programming.kicks-ass.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/core.c  |   23 ++++++++++-------------
+ kernel/sched/fair.c  |    7 +++----
+ kernel/sched/sched.h |    2 +-
+ 3 files changed, 14 insertions(+), 18 deletions(-)
 
---- a/drivers/pci/controller/pcie-rockchip.c
-+++ b/drivers/pci/controller/pcie-rockchip.c
-@@ -121,7 +121,7 @@ int rockchip_pcie_parse_dt(struct rockch
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1259,27 +1259,24 @@ int tg_nop(struct task_group *tg, void *
+ static void set_load_weight(struct task_struct *p, bool update_load)
+ {
+ 	int prio = p->static_prio - MAX_RT_PRIO;
+-	struct load_weight *load = &p->se.load;
++	struct load_weight lw;
  
- 	if (rockchip->is_rc) {
- 		rockchip->ep_gpio = devm_gpiod_get_optional(dev, "ep",
--							    GPIOD_OUT_HIGH);
-+							    GPIOD_OUT_LOW);
- 		if (IS_ERR(rockchip->ep_gpio))
- 			return dev_err_probe(dev, PTR_ERR(rockchip->ep_gpio),
- 					     "failed to get ep GPIO\n");
+-	/*
+-	 * SCHED_IDLE tasks get minimal weight:
+-	 */
+ 	if (task_has_idle_policy(p)) {
+-		load->weight = scale_load(WEIGHT_IDLEPRIO);
+-		load->inv_weight = WMULT_IDLEPRIO;
+-		return;
++		lw.weight = scale_load(WEIGHT_IDLEPRIO);
++		lw.inv_weight = WMULT_IDLEPRIO;
++	} else {
++		lw.weight = scale_load(sched_prio_to_weight[prio]);
++		lw.inv_weight = sched_prio_to_wmult[prio];
+ 	}
+ 
+ 	/*
+ 	 * SCHED_OTHER tasks have to update their load when changing their
+ 	 * weight
+ 	 */
+-	if (update_load && p->sched_class == &fair_sched_class) {
+-		reweight_task(p, prio);
+-	} else {
+-		load->weight = scale_load(sched_prio_to_weight[prio]);
+-		load->inv_weight = sched_prio_to_wmult[prio];
+-	}
++	if (update_load && p->sched_class == &fair_sched_class)
++		reweight_task(p, &lw);
++	else
++		p->se.load = lw;
+ }
+ 
+ #ifdef CONFIG_UCLAMP_TASK
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3330,15 +3330,14 @@ static void reweight_entity(struct cfs_r
+ 
+ }
+ 
+-void reweight_task(struct task_struct *p, int prio)
++void reweight_task(struct task_struct *p, const struct load_weight *lw)
+ {
+ 	struct sched_entity *se = &p->se;
+ 	struct cfs_rq *cfs_rq = cfs_rq_of(se);
+ 	struct load_weight *load = &se->load;
+-	unsigned long weight = scale_load(sched_prio_to_weight[prio]);
+ 
+-	reweight_entity(cfs_rq, se, weight);
+-	load->inv_weight = sched_prio_to_wmult[prio];
++	reweight_entity(cfs_rq, se, lw->weight);
++	load->inv_weight = lw->inv_weight;
+ }
+ 
+ static inline int throttled_hierarchy(struct cfs_rq *cfs_rq);
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -2346,7 +2346,7 @@ extern void init_sched_dl_class(void);
+ extern void init_sched_rt_class(void);
+ extern void init_sched_fair_class(void);
+ 
+-extern void reweight_task(struct task_struct *p, int prio);
++extern void reweight_task(struct task_struct *p, const struct load_weight *lw);
+ 
+ extern void resched_curr(struct rq *rq);
+ extern void resched_cpu(int cpu);
 
 
 
