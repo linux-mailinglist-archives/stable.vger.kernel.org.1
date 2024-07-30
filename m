@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-64289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9735941D39
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:15:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B4D941B10
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 580F8B21C4C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C14BB2504D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD72918B481;
-	Tue, 30 Jul 2024 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC998184535;
+	Tue, 30 Jul 2024 16:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDSvMgTf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0RSETiJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B2718A6D6;
-	Tue, 30 Jul 2024 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6821A6192;
+	Tue, 30 Jul 2024 16:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359628; cv=none; b=LupGwdh7AXUEPQpUg79jWv7YJi7Ar+/SATbKiOLGcqZiojjq0Km8l1MR7B8hoYc4Lq3I9WoRHb+UDkYJXUOEo3ZxdMNsb4nzd73DJAOW1AuLWua5FU6KOdEbjQjkPTBKy0ISpZhy14grwUOlYfXwzfmqe7+poz2P32TWVGOgQDs=
+	t=1722357662; cv=none; b=YGUTdijHYZIxPqjPnUHzZmrPampH6O0NK1Vgb5guSct1RtqMAuRctcXF7zL/VL8knjigWRAx/s+55aZZYftR5EUy4yi6gSfiLq6U+v5VSRUaTm5rBeiyENfxnTIGKh3GJlGUEiWr49ngZX1Fb/puAsmYqPTgcTe6J6G63zpXWMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359628; c=relaxed/simple;
-	bh=53CF6ij41Fb8W8yyj3TeENXQ3XidxvxyezL1Pk7dV6g=;
+	s=arc-20240116; t=1722357662; c=relaxed/simple;
+	bh=jR2V1zeeA9lAuftav9GmiOzbj4hGNlBn6JWZq2legFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txdlbEQR0Z/CzVe0uYJhdB/+WKgBqNOgqGRNUngt3EH3NBhSo7uEgR7dVly75c1LHip4JVNbcFG5q+z6Vv7eNgUk4tROQRERARztKFcOKT1QoBRJauMpMcNi7sUEiALaj20YcLAR9Y+kRFW6AQ7fgHerDKscHAV9KpWL7Mqodfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDSvMgTf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9384C32782;
-	Tue, 30 Jul 2024 17:13:47 +0000 (UTC)
+	 MIME-Version; b=SohDPU5tJabJo4cw6UEtX+Hq5dOX6tgkXCKpXLihYOcysKYgLZ2H0ZHAM6tLWIDcxMTUE8IGysAy7uultqwV681Fq4DylWS+n3atctIpLsKKlY9uT1wZT5rlZW5iUDPDQiD9ai4+LdWh2X3x8Tk/6HKz+s7MxDUrR2ZovR4rJ6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0RSETiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209ABC32782;
+	Tue, 30 Jul 2024 16:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359628;
-	bh=53CF6ij41Fb8W8yyj3TeENXQ3XidxvxyezL1Pk7dV6g=;
+	s=korg; t=1722357662;
+	bh=jR2V1zeeA9lAuftav9GmiOzbj4hGNlBn6JWZq2legFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDSvMgTfL8n2QrlhYELcKaYYa/aBP1XNe0ORrbRyyBRULEphHz2no9vv/8meTAZCW
-	 /hlaVBNWl0xY7E0wXnQ2DGWcuAfK2shODiXqk8t1XjjiDuhRufdpYECzDQbrAriqlb
-	 2z5vn5PWCuPICJl5oCZBnWO8YDof2g3NMWK8uJ3o=
+	b=K0RSETiJo+FivbuM+V/D1JG+McE0zb+g4B/Wcq2po+pGjQwH7hkLwwUbrv9T903Yb
+	 2AaR88Ct04OeUp/dhpKc68NpP3LbIeHAUZR3u6X9Ka502exnwp4aU9k4fOuyWolp2N
+	 OMcU2Zk4p7peh8H4hpB/AgJKgNJTtwbtpWCVYzwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lance Yang <ioworker0@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 510/809] fs/proc/task_mmu: properly detect PM_MMAP_EXCLUSIVE per page of PMD-mapped THPs
+Subject: [PATCH 6.6 279/568] powerpc/prom: Add CPU info to hardware description string later
 Date: Tue, 30 Jul 2024 17:46:26 +0200
-Message-ID: <20240730151744.878236166@linuxfoundation.org>
+Message-ID: <20240730151650.781243905@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit 2c1f057e5be63e890f2dd89e4c25ab5eef084a91 ]
+[ Upstream commit 7bdd1c6c87de758750d419eedab7285b95b66417 ]
 
-We added PM_MMAP_EXCLUSIVE in 2015 via commit 77bb499bb60f ("pagemap: add
-mmap-exclusive bit for marking pages mapped only here"), when THPs could
-not be partially mapped and page_mapcount() returned something that was
-true for all pages of the THP.
+cur_cpu_spec->cpu_name is appended to ppc_hw_desc before cur_cpu_spec
+has taken on its final value. This is illustrated on pseries by
+comparing the CPU name as reported at boot ("POWER8E (raw)") to the
+contents of /proc/cpuinfo ("POWER8 (architected)"):
 
-In 2016, we added support for partially mapping THPs via commit
-53f9263baba6 ("mm: rework mapcount accounting to enable 4k mapping of
-THPs") but missed to determine PM_MMAP_EXCLUSIVE as well per page.
+  $ dmesg | grep Hardware
+  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 \
+    of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
 
-Checking page_mapcount() on the head page does not tell the whole story.
+  $ grep -m 1 ^cpu /proc/cpuinfo
+  cpu             : POWER8 (architected), altivec supported
 
-We should check each individual page.  In a future without per-page
-mapcounts it will be different, but we'll change that to be consistent
-with PTE-mapped THPs once we deal with that.
+Some 44x models would appear to be affected as well; see
+identical_pvr_fixup().
 
-Link: https://lkml.kernel.org/r/20240607122357.115423-4-david@redhat.com
-Fixes: 53f9263baba6 ("mm: rework mapcount accounting to enable 4k mapping of THPs")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Lance Yang <ioworker0@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This results in incorrect CPU information in stack dumps --
+ppc_hw_desc is an input to dump_stack_set_arch_desc().
+
+Delay gathering the CPU name until after all potential calls to
+identify_cpu().
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: bd649d40e0f2 ("powerpc: Add PVR & CPU name to hardware description")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240603-fix-cpu-hwdesc-v1-1-945f2850fcaa@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ arch/powerpc/kernel/prom.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 22892cdb74cef..a45f2da0ada0d 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1477,6 +1477,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 
- 	ptl = pmd_trans_huge_lock(pmdp, vma);
- 	if (ptl) {
-+		unsigned int idx = (addr & ~PMD_MASK) >> PAGE_SHIFT;
- 		u64 flags = 0, frame = 0;
- 		pmd_t pmd = *pmdp;
- 		struct page *page = NULL;
-@@ -1493,8 +1494,7 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 			if (pmd_uffd_wp(pmd))
- 				flags |= PM_UFFD_WP;
- 			if (pm->show_pfn)
--				frame = pmd_pfn(pmd) +
--					((addr & ~PMD_MASK) >> PAGE_SHIFT);
-+				frame = pmd_pfn(pmd) + idx;
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 77364729a1b61..bf6d8ad3819e9 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -327,6 +327,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 					  void *data)
+ {
+ 	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
++	const __be32 *cpu_version = NULL;
+ 	const __be32 *prop;
+ 	const __be32 *intserv;
+ 	int i, nthreads;
+@@ -410,7 +411,7 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 		prop = of_get_flat_dt_prop(node, "cpu-version", NULL);
+ 		if (prop && (be32_to_cpup(prop) & 0xff000000) == 0x0f000000) {
+ 			identify_cpu(0, be32_to_cpup(prop));
+-			seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(prop));
++			cpu_version = prop;
  		}
- #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 		else if (is_swap_pmd(pmd)) {
-@@ -1503,11 +1503,9 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
  
- 			if (pm->show_pfn) {
- 				if (is_pfn_swap_entry(entry))
--					offset = swp_offset_pfn(entry);
-+					offset = swp_offset_pfn(entry) + idx;
- 				else
--					offset = swp_offset(entry);
--				offset = offset +
--					((addr & ~PMD_MASK) >> PAGE_SHIFT);
-+					offset = swp_offset(entry) + idx;
- 				frame = swp_type(entry) |
- 					(offset << MAX_SWAPFILES_SHIFT);
- 			}
-@@ -1523,12 +1521,16 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		check_cpu_feature_properties(node);
+@@ -421,6 +422,12 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
+ 	}
  
- 		if (page && !PageAnon(page))
- 			flags |= PM_FILE;
--		if (page && (flags & PM_PRESENT) && page_mapcount(page) == 1)
--			flags |= PM_MMAP_EXCLUSIVE;
- 
--		for (; addr != end; addr += PAGE_SIZE) {
--			pagemap_entry_t pme = make_pme(frame, flags);
-+		for (; addr != end; addr += PAGE_SIZE, idx++) {
-+			unsigned long cur_flags = flags;
-+			pagemap_entry_t pme;
+ 	identical_pvr_fixup(node);
 +
-+			if (page && (flags & PM_PRESENT) &&
-+			    page_mapcount(page + idx) == 1)
-+				cur_flags |= PM_MMAP_EXCLUSIVE;
++	// We can now add the CPU name & PVR to the hardware description
++	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
++	if (cpu_version)
++		seq_buf_printf(&ppc_hw_desc, "0x%04x ", be32_to_cpup(cpu_version));
++
+ 	init_mmu_slb_size(node);
  
-+			pme = make_pme(frame, cur_flags);
- 			err = add_to_pagemap(&pme, pm);
- 			if (err)
- 				break;
+ #ifdef CONFIG_PPC64
+@@ -858,9 +865,6 @@ void __init early_init_devtree(void *params)
+ 
+ 	dt_cpu_ftrs_scan();
+ 
+-	// We can now add the CPU name & PVR to the hardware description
+-	seq_buf_printf(&ppc_hw_desc, "%s 0x%04lx ", cur_cpu_spec->cpu_name, mfspr(SPRN_PVR));
+-
+ 	/* Retrieve CPU related informations from the flat tree
+ 	 * (altivec support, boot CPU ID, ...)
+ 	 */
 -- 
 2.43.0
 
