@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-63785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9C1941A9F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D01941872
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0028B1C20EBF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23D9A282502
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314C6155CB3;
-	Tue, 30 Jul 2024 16:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33DB1A6194;
+	Tue, 30 Jul 2024 16:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8utiGXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9OpJGPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E297778276;
-	Tue, 30 Jul 2024 16:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7089C1A6160;
+	Tue, 30 Jul 2024 16:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357947; cv=none; b=ZLgAP5SEVd/WFeNGOiqzMOhKaCDmbgd26QOaoTIzT+i1dkZw6P1thheR98+8/cZ4NjhvuZ5spwPD7/7VJ9i3r/tArGpdhVPCF3T89TZibwr6zIHH4TrA5s4doESPnI8N9na+Ds8JGJvjj1f3ucJKYtE1qKGMBpIbDH0l+PoulME=
+	t=1722356508; cv=none; b=BxF5VLwV2M2EtpCI8MCoK4HgUAEsEDyF8TO4TmznWFmQj4BpzYCNibzk2Ly5C8MvbHk1WYggfniq8cPG1juDythHeQMPaR6UVnxLHeTyC0QX9IA1L2QRcd59AcNoguhfdqlZJznQqjCaXJ5ztBHm8XUU/Kyy8QCu+xsq6Lh/TJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357947; c=relaxed/simple;
-	bh=P8FgoCmZJrF4tzeRomy1cUWWmUIqmt4mX8+5GgJtYxk=;
+	s=arc-20240116; t=1722356508; c=relaxed/simple;
+	bh=yEfwp6WD5ijJETqGjl9J0P/xOp8B64i7f8qQ8H+zQWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqQ/PLU/eEa08BEGJg+RnzR7Ce9FYQDtrLM2I+GEAaC0euZV9l/nCbOD2VOwLUcEsTpw5+arcoEHdBFseqj4maI8aL/+P2ucUXcS41Wz4lSvk5MYAnt5XWQkuSX5FtIBlcH6HPrMnYL9oN0CqkhtKgAmoHGvh4AUfFOIqsXlua4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8utiGXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B6FC32782;
-	Tue, 30 Jul 2024 16:45:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jiy3h5NWtEloLo/uUfX+2XGeGWeQC67AlSMQNbigv1k4nzGY+74sTYvkXKWPSTQJxZLGyfSt0IBUeYfY7/7k/UEleKq1O6Xbs2aKo1mRGLo41v0pPLPFm9XhIFg+HkDYByxKZH+02vaHFL9iJYY2LdXt66IgnVOQR7Hokh/KYSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9OpJGPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB0EC32782;
+	Tue, 30 Jul 2024 16:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357946;
-	bh=P8FgoCmZJrF4tzeRomy1cUWWmUIqmt4mX8+5GgJtYxk=;
+	s=korg; t=1722356508;
+	bh=yEfwp6WD5ijJETqGjl9J0P/xOp8B64i7f8qQ8H+zQWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R8utiGXEndP7WFCUlZ5lcZeWGzx0MR4uqgkNx6ZRiZVhGuRSPI0yqUq5NeCaaPCOo
-	 kSkz0eua+2DW5sEpvsdhYcc5j7L921aVYFIGtYtxDrzUP5nyllI7yxDOWkMjT8q8XE
-	 OHCAByVxAqGqIPuy1vWk0JElw6JluQhOWMO9slSE=
+	b=i9OpJGPe17Bx/Fr5PPCDRzCd4dDce26U8XDICYDqSJh9R0+hkeFIEd1m3kxmBC3CQ
+	 BLSrz4Rgy7VhE/Dgrd1bFqNv6OxHteZ4AJdqPVEsaYlhO+usDN7ww5gU3pefWL+QOD
+	 zgBzawZHCGoC55IU21ZQ1ICWZo4ycq4nbmT2d3/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abaci Robot <abaci@linux.alibaba.com>,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 306/568] RDMA/core: Remove NULL check before dev_{put, hold}
+Subject: [PATCH 6.1 180/440] PCI: keystone: Fix NULL pointer dereference in case of DT error in ks_pcie_setup_rc_app_regs()
 Date: Tue, 30 Jul 2024 17:46:53 +0200
-Message-ID: <20240730151651.835201557@linuxfoundation.org>
+Message-ID: <20240730151622.906261764@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +63,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jules Irenge <jbi.octave@gmail.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 7a1c2abf9a2be7d969b25e8d65567933335ca88e ]
+[ Upstream commit a231707a91f323af1e5d9f1722055ec2fc1c7775 ]
 
-The call netdev_{put, hold} of dev_{put, hold} will check NULL,
-so there is no need to check before using dev_{put, hold},
-remove it to silence the warning:
+If IORESOURCE_MEM is not provided in Device Tree due to
+any error, resource_list_first_type() will return NULL and
+pci_parse_request_of_pci_ranges() will just emit a warning.
 
-./drivers/infiniband/core/nldev.c:375:2-9: WARNING: NULL check before dev_{put, hold} functions is not needed.
+This will cause a NULL pointer dereference. Fix this bug by adding NULL
+return check.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=7047
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20231024003815.89742-1-yang.lee@linux.alibaba.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 2043a14fb3de ("RDMA: Fix netdev tracker in ib_device_set_netdev")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 0f71c60ffd26 ("PCI: dwc: Remove storing of PCI resources")
+Link: https://lore.kernel.org/linux-pci/20240505061517.11527-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/device.c        | 10 +++-------
- drivers/infiniband/core/lag.c           |  3 +--
- drivers/infiniband/core/roce_gid_mgmt.c |  3 +--
- 3 files changed, 5 insertions(+), 11 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index d1b5908c70cdc..e70804d8de828 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -2174,8 +2174,7 @@ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
- 	spin_unlock_irqrestore(&pdata->netdev_lock, flags);
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index 438aa5fa4c64b..6007ffcb4752a 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -403,17 +403,22 @@ static const struct irq_domain_ops ks_pcie_legacy_irq_domain_ops = {
+ 	.xlate = irq_domain_xlate_onetwocell,
+ };
  
- 	add_ndev_hash(pdata);
--	if (old_ndev)
--		__dev_put(old_ndev);
-+	__dev_put(old_ndev);
+-static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
++static int ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ {
+ 	u32 val;
+ 	u32 num_viewport = ks_pcie->num_viewport;
+ 	struct dw_pcie *pci = ks_pcie->pci;
+ 	struct dw_pcie_rp *pp = &pci->pp;
+-	u64 start, end;
++	struct resource_entry *entry;
+ 	struct resource *mem;
++	u64 start, end;
+ 	int i;
  
- 	return 0;
+-	mem = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM)->res;
++	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
++	if (!entry)
++		return -ENODEV;
++
++	mem = entry->res;
+ 	start = mem->start;
+ 	end = mem->end;
+ 
+@@ -424,7 +429,7 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ 	ks_pcie_clear_dbi_mode(ks_pcie);
+ 
+ 	if (ks_pcie->is_am6)
+-		return;
++		return 0;
+ 
+ 	val = ilog2(OB_WIN_SIZE);
+ 	ks_pcie_app_writel(ks_pcie, OB_SIZE, val);
+@@ -441,6 +446,8 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ 	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
+ 	val |= OB_XLAT_EN_VAL;
+ 	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
++
++	return 0;
  }
-@@ -2235,8 +2234,7 @@ struct net_device *ib_device_get_netdev(struct ib_device *ib_dev,
- 		spin_lock(&pdata->netdev_lock);
- 		res = rcu_dereference_protected(
- 			pdata->netdev, lockdep_is_held(&pdata->netdev_lock));
--		if (res)
--			dev_hold(res);
-+		dev_hold(res);
- 		spin_unlock(&pdata->netdev_lock);
- 	}
  
-@@ -2311,9 +2309,7 @@ void ib_enum_roce_netdev(struct ib_device *ib_dev,
+ static void __iomem *ks_pcie_other_map_bus(struct pci_bus *bus,
+@@ -802,7 +809,10 @@ static int __init ks_pcie_host_init(struct dw_pcie_rp *pp)
+ 		return ret;
  
- 			if (filter(ib_dev, port, idev, filter_cookie))
- 				cb(ib_dev, port, idev, cookie);
--
--			if (idev)
--				dev_put(idev);
-+			dev_put(idev);
- 		}
- }
+ 	ks_pcie_stop_link(pci);
+-	ks_pcie_setup_rc_app_regs(ks_pcie);
++	ret = ks_pcie_setup_rc_app_regs(ks_pcie);
++	if (ret)
++		return ret;
++
+ 	writew(PCI_IO_RANGE_TYPE_32 | (PCI_IO_RANGE_TYPE_32 << 8),
+ 			pci->dbi_base + PCI_IO_BASE);
  
-diff --git a/drivers/infiniband/core/lag.c b/drivers/infiniband/core/lag.c
-index c77d7d2559a11..66c7e1e6600dc 100644
---- a/drivers/infiniband/core/lag.c
-+++ b/drivers/infiniband/core/lag.c
-@@ -93,8 +93,7 @@ static struct net_device *rdma_get_xmit_slave_udp(struct ib_device *device,
- 	slave = netdev_get_xmit_slave(master, skb,
- 				      !!(device->lag_flags &
- 					 RDMA_LAG_FLAGS_HASH_ALL_SLAVES));
--	if (slave)
--		dev_hold(slave);
-+	dev_hold(slave);
- 	rcu_read_unlock();
- 	kfree_skb(skb);
- 	return slave;
-diff --git a/drivers/infiniband/core/roce_gid_mgmt.c b/drivers/infiniband/core/roce_gid_mgmt.c
-index e958c43dd28fd..d5131b3ba8ab0 100644
---- a/drivers/infiniband/core/roce_gid_mgmt.c
-+++ b/drivers/infiniband/core/roce_gid_mgmt.c
-@@ -601,8 +601,7 @@ static void del_netdev_default_ips_join(struct ib_device *ib_dev, u32 port,
- 
- 	rcu_read_lock();
- 	master_ndev = netdev_master_upper_dev_get_rcu(rdma_ndev);
--	if (master_ndev)
--		dev_hold(master_ndev);
-+	dev_hold(master_ndev);
- 	rcu_read_unlock();
- 
- 	if (master_ndev) {
 -- 
 2.43.0
 
