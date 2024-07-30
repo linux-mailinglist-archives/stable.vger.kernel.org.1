@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-62959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3C094166E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D9A941671
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B224F1F2164E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01D821C22A74
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA01B1BBBD9;
-	Tue, 30 Jul 2024 15:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D862154C14;
+	Tue, 30 Jul 2024 16:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyEIzDWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEVbktQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12DA19F467;
-	Tue, 30 Jul 2024 15:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BD91A38CF;
+	Tue, 30 Jul 2024 16:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355198; cv=none; b=FZ9gn77OxzN1tlNZqub91CFP/sh7ErW6951WQZBEKXnzov6uSpNes3AbpvDy4Ee5kAea0QHIVBfPVXDDM2gXKjH1Vzaex15tr2n4iVJYhmUas/cyv7vSVUZpbnEl9BGaPjxkGWx9mFsa4ORek2cmyrxVUosCDRlbzud5PS7vMGw=
+	t=1722355206; cv=none; b=Z+0JN5aJED6LOt4fABT2w7DLSYIkYABdCvfHOSZ3Ldg0iKtoSkae03SH3UjCnCJc/sx1LTFxcGu3eJuH8plVBjn/EHCXGN8E/c4uM+muVgurS9LW30dADZpK3IxHK5eFeTBhl8aZbbn6AWyIfNQIVp6cJEWfQv4c28LKyjBb7ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355198; c=relaxed/simple;
-	bh=8wd0vQZZLRftox+AoKj5ACFE8CXrRVRI61iiPoBZ8ns=;
+	s=arc-20240116; t=1722355206; c=relaxed/simple;
+	bh=3OXJbIy8+WRGibA1YqmaRbsCWUabRLof9cwCMbkXvRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlVgH31+2SvBHn1Up0R2MPARppJCVUtmIJ1jQFmeM8zbik+lvk0d31zbnu90mdu/LXjWH4nXWfr5GRhv4T+9n9zp2CiHopNBVSVWG96vJY1TGx2PfNZ2ywgNXvzBAaXYtTUzI9LNp4ew43Da0ENXmz/Ree5KGIGo2xJuxYm//o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyEIzDWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE1EC32782;
-	Tue, 30 Jul 2024 15:59:57 +0000 (UTC)
+	 MIME-Version; b=ThZy/qG2DqW810CzVme8tpTIhxZDKEIzag6MJkBWMnkBLsL+NMVn7oTxDc9/cMUJG1pdyFTH1ignOuECzA2UZQBEEagi5z15inQxGVCw9re4mBgWC9wXMfknBf81qRwbZsKgzwSxUfuMxMGMvCPb4dRA3uP+KJGMfRjSg0A9ebA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEVbktQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E36C32782;
+	Tue, 30 Jul 2024 16:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355198;
-	bh=8wd0vQZZLRftox+AoKj5ACFE8CXrRVRI61iiPoBZ8ns=;
+	s=korg; t=1722355205;
+	bh=3OXJbIy8+WRGibA1YqmaRbsCWUabRLof9cwCMbkXvRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OyEIzDWg+MDlkNIPsjvNGK3r1en1/kJ2sOExIvWvwuTqh78cRwFnmKZ6qe024CXVp
-	 EFyWDWj8Qm0f791laZidjfNm8uC3Nz9FJWfaZnQVYselFoJzszCvnSqQJLhV/Z55+5
-	 xLEB9ctGwdHoU0oZHcuC4f+Ns6YzlLb2rCGKmoC4=
+	b=MEVbktQ6ik+9RhOf0npV0uaUfuE0JWn+Ll5n2qNZaTbLaRs0USYZE5VF47jfzvT6q
+	 DZCLkgjoxrkOtDGtl2AMuzTdEWtORzjzATiEFFhkcTNGA7hW2JnyoYQtUdRYkVWaeK
+	 52zwHBYlxVZTsx/+JtKyUitJpG6mqT7wXFfDbcxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Mateusz Kusiak <mateusz.kusiak@linux.intel.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 028/809] perf: arm_pmuv3: Avoid assigning fixed cycle counter with threshold
-Date: Tue, 30 Jul 2024 17:38:24 +0200
-Message-ID: <20240730151725.768524448@linuxfoundation.org>
+Subject: [PATCH 6.10 029/809] md: Dont wait for MD_RECOVERY_NEEDED for HOT_REMOVE_DISK ioctl
+Date: Tue, 30 Jul 2024 17:38:25 +0200
+Message-ID: <20240730151725.807475597@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,63 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 81e15ca3e523a508d62806fe681c1d289361ca16 ]
+[ Upstream commit a1fd37f97808db4fa1bf55da0275790c42521e45 ]
 
-If the user has requested a counting threshold for the CPU cycles event,
-then the fixed cycle counter can't be assigned as it lacks threshold
-support. Currently, the thresholds will work or not randomly depending
-on which counter the event is assigned.
+Commit 90f5f7ad4f38 ("md: Wait for md_check_recovery before attempting
+device removal.") explained in the commit message that failed device
+must be reomoved from the personality first by md_check_recovery(),
+before it can be removed from the array. That's the reason the commit
+add the code to wait for MD_RECOVERY_NEEDED.
 
-While using thresholds for CPU cycles doesn't make much sense, it can be
-useful for testing purposes.
+However, this is not the case now, because remove_and_add_spares() is
+called directly from hot_remove_disk() from ioctl path, hence failed
+device(marked faulty) can be removed from the personality by ioctl.
 
-Fixes: 816c26754447 ("arm64: perf: Add support for event counting threshold")
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20240626-arm-pmu-3-9-icntr-v2-1-c9784b4f4065@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+On the other hand, the commit introduced a performance problem that
+if MD_RECOVERY_NEEDED is set and the array is not running, ioctl will
+wait for 5s before it can return failure to user.
+
+Since the waiting is not needed now, fix the problem by removing the
+waiting.
+
+Fixes: 90f5f7ad4f38 ("md: Wait for md_check_recovery before attempting device removal.")
+Reported-by: Mateusz Kusiak <mateusz.kusiak@linux.intel.com>
+Closes: https://lore.kernel.org/all/814ff6ee-47a2-4ba0-963e-cf256ee4ecfa@linux.intel.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240627112321.3044744-1-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_pmuv3.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/md/md.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
-index 23fa6c5da82c4..8ed5c3358920a 100644
---- a/drivers/perf/arm_pmuv3.c
-+++ b/drivers/perf/arm_pmuv3.c
-@@ -338,6 +338,11 @@ static bool armv8pmu_event_want_user_access(struct perf_event *event)
- 	return ATTR_CFG_GET_FLD(&event->attr, rdpmc);
- }
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 3a02b8903d626..9c5be016e5073 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -7746,12 +7746,6 @@ static int md_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 		return get_bitmap_file(mddev, argp);
+ 	}
  
-+static u32 armv8pmu_event_get_threshold(struct perf_event_attr *attr)
-+{
-+	return ATTR_CFG_GET_FLD(attr, threshold);
-+}
-+
- static u8 armv8pmu_event_threshold_control(struct perf_event_attr *attr)
- {
- 	u8 th_compare = ATTR_CFG_GET_FLD(attr, threshold_compare);
-@@ -941,7 +946,8 @@ static int armv8pmu_get_event_idx(struct pmu_hw_events *cpuc,
- 	unsigned long evtype = hwc->config_base & ARMV8_PMU_EVTYPE_EVENT;
- 
- 	/* Always prefer to place a cycle counter into the cycle counter. */
--	if (evtype == ARMV8_PMUV3_PERFCTR_CPU_CYCLES) {
-+	if ((evtype == ARMV8_PMUV3_PERFCTR_CPU_CYCLES) &&
-+	    !armv8pmu_event_get_threshold(&event->attr)) {
- 		if (!test_and_set_bit(ARMV8_IDX_CYCLE_COUNTER, cpuc->used_mask))
- 			return ARMV8_IDX_CYCLE_COUNTER;
- 		else if (armv8pmu_event_is_64bit(event) &&
-@@ -1033,7 +1039,7 @@ static int armv8pmu_set_event_filter(struct hw_perf_event *event,
- 	 * If FEAT_PMUv3_TH isn't implemented, then THWIDTH (threshold_max) will
- 	 * be 0 and will also trigger this check, preventing it from being used.
- 	 */
--	th = ATTR_CFG_GET_FLD(attr, threshold);
-+	th = armv8pmu_event_get_threshold(attr);
- 	if (th > threshold_max(cpu_pmu)) {
- 		pr_debug("PMU event threshold exceeds max value\n");
- 		return -EINVAL;
+-	if (cmd == HOT_REMOVE_DISK)
+-		/* need to ensure recovery thread has run */
+-		wait_event_interruptible_timeout(mddev->sb_wait,
+-						 !test_bit(MD_RECOVERY_NEEDED,
+-							   &mddev->recovery),
+-						 msecs_to_jiffies(5000));
+ 	if (cmd == STOP_ARRAY || cmd == STOP_ARRAY_RO) {
+ 		/* Need to flush page cache, and ensure no-one else opens
+ 		 * and writes
 -- 
 2.43.0
 
