@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-63644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3BD9419F3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D175994179E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 464011F214EC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7651C235AD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E4A1898EB;
-	Tue, 30 Jul 2024 16:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B0918B46D;
+	Tue, 30 Jul 2024 16:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AwCZRDGj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8ZJkdel"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B882A1A6169;
-	Tue, 30 Jul 2024 16:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5302018951A;
+	Tue, 30 Jul 2024 16:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357492; cv=none; b=o17p+D4zEqKCu7+JVM3bCKSEOJ+TTGkSA+2REh9Fz/qmPEF9b58+1phoWLn2qeaPf8UZFjgA/Na4FlVLGKLKnBL7hDTuDilh7JexzggzQ4c9mYF3dwCTFP9+3VP7vVS1BNZw1KIOH/9oNPY7kF/yOdBEqD1WnivUzI/wcplP0as=
+	t=1722355843; cv=none; b=Zl9myhkD8sxLp1UInkS2sihQSk1F7PFxMN2jctllQpAk7zJ/26MgZREmCMbmgJusLJTpHusoAK9Ji4MoEGefIEt32+xuwunYKoUS2afWr8IwJGd9GxcQaZo/Pv+HWEC/ZjbacRUMVFLw5fNPih9NBmk8PuyRljyHZLXfDerzq+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357492; c=relaxed/simple;
-	bh=U++3a3RZ2N/f1tcplWDG/jNgUDca11VPWBXw9p5RSFw=;
+	s=arc-20240116; t=1722355843; c=relaxed/simple;
+	bh=bXIZQ2mEyTQ3vpskPrQ6D2BwDM6eElZdJs0eJ1dhYxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAcMqdD7HsHlopbHGag/qEgKkTAbaveKhQ9gtWaduHvw4GJ3AGwYooE1ejPKcOWluDj/hNfn6y7SKsSRv8r7lZc1Li2NXEFRxH+v7qW6XTYrRLwoGpFYqC892m91joyfr7M+lD9PPu8Qo1+9avCErq+AF58d8wX0oJlaXCkm/Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwCZRDGj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26E1C32782;
-	Tue, 30 Jul 2024 16:38:11 +0000 (UTC)
+	 MIME-Version; b=iCjUrUrFMkdZPkuvdWqZA1Vv/ZHu32p4XBy6uMFr6qeVhCSpBssbB1mp3jos/97wrWcoLL2PrJW0qDxEOmcX/LRRJK+zkNdxGfXV3a5rwBsNAVecA6a4g1YTZXFxZ2ZvEHvI2uYCUIDO+Atx/YCRpptB2Qd8JdPMs7lAjnd/dEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8ZJkdel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB343C32782;
+	Tue, 30 Jul 2024 16:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357492;
-	bh=U++3a3RZ2N/f1tcplWDG/jNgUDca11VPWBXw9p5RSFw=;
+	s=korg; t=1722355843;
+	bh=bXIZQ2mEyTQ3vpskPrQ6D2BwDM6eElZdJs0eJ1dhYxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AwCZRDGjoBu/9d0/Kf3HZs9YnJcvJiLCe6TXuB599covYzfyH1hnCTbaCJtiTczjI
-	 7qVGOcmN5N/XU9gQRN/ymoUeXfXq1De++AHG3TkuS3m54V74JSC6lNNhK/ltvzlV/v
-	 clpAz4l7xz7AU3AIzplxZL85SxVT722sJnWaw/C4=
+	b=U8ZJkdelaPF5wWF1GAiIvO7d8oSGM0T6kAV8I/rAuZJwwZ0kWRU/Spvgq+2WxdWqV
+	 ePltFaBIuK2o59T/TD4CHPpC1+LCKvAi+QMcsWcoBuNB9DeCGSjM5cpjdRefyaaHdW
+	 fKSAXJ/FUtdBr/SyhRXGzU7YvPUyu9lQoTcVHs0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 260/568] RDMA/mlx5: Set mkeys for dmabuf at PAGE_SIZE
-Date: Tue, 30 Jul 2024 17:46:07 +0200
-Message-ID: <20240730151650.039669073@linuxfoundation.org>
+Subject: [PATCH 6.1 135/440] drm/panel: boe-tv101wum-nl6: Check for errors on the NOP in prepare()
+Date: Tue, 30 Jul 2024 17:46:08 +0200
+Message-ID: <20240730151621.156974379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit a4e540119be565f47c305f295ed43f8e0bc3f5c3 ]
+[ Upstream commit 6320b9199dd99622668649c234d4e8a99e44a9c8 ]
 
-Set the mkey for dmabuf at PAGE_SIZE to support any SGL
-after a move operation.
+The mipi_dsi_dcs_nop() function returns an error but we weren't
+checking it in boe_panel_prepare(). Add a check. This is highly
+unlikely to matter in practice. If the NOP failed then likely later
+MIPI commands would fail too.
 
-ib_umem_find_best_pgsz returns 0 on error, so it is
-incorrect to check the returned page_size against PAGE_SIZE
+Found by code inspection.
 
-Fixes: 90da7dc8206a ("RDMA/mlx5: Support dma-buf based userspace memory region")
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://lore.kernel.org/r/1e2289b9133e89f273a4e68d459057d032cbc2ce.1718301631.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 812562b8d881 ("drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240517143643.3.Ibffbaa5b4999ac0e55f43bf353144433b099d727@changeid
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.3.Ibffbaa5b4999ac0e55f43bf353144433b099d727@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mlx5_ib.h | 13 +++++++++++++
- drivers/infiniband/hw/mlx5/odp.c     |  6 ++----
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 6a57af8fa231b..43a963e205eb4 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -115,6 +115,19 @@ unsigned long __mlx5_umem_find_best_quantized_pgoff(
- 		__mlx5_bit_sz(typ, page_offset_fld), 0, scale,                 \
- 		page_offset_quantized)
+diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+index b26c4a09d0912..820d8d29b62bd 100644
+--- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
++++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+@@ -1271,7 +1271,11 @@ static int boe_panel_prepare(struct drm_panel *panel)
+ 	usleep_range(10000, 11000);
  
-+static inline unsigned long
-+mlx5_umem_dmabuf_find_best_pgsz(struct ib_umem_dmabuf *umem_dmabuf)
-+{
-+	/*
-+	 * mkeys used for dmabuf are fixed at PAGE_SIZE because we must be able
-+	 * to hold any sgl after a move operation. Ideally the mkc page size
-+	 * could be changed at runtime to be optimal, but right now the driver
-+	 * cannot do that.
-+	 */
-+	return ib_umem_find_best_pgsz(&umem_dmabuf->umem, PAGE_SIZE,
-+				      umem_dmabuf->umem.iova);
-+}
-+
- enum {
- 	MLX5_IB_MMAP_OFFSET_START = 9,
- 	MLX5_IB_MMAP_OFFSET_END = 255,
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index 4a04cbc5b78a4..a524181f34df9 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -705,10 +705,8 @@ static int pagefault_dmabuf_mr(struct mlx5_ib_mr *mr, size_t bcnt,
- 		return err;
+ 	if (boe->desc->lp11_before_reset) {
+-		mipi_dsi_dcs_nop(boe->dsi);
++		ret = mipi_dsi_dcs_nop(boe->dsi);
++		if (ret < 0) {
++			dev_err(&boe->dsi->dev, "Failed to send NOP: %d\n", ret);
++			goto poweroff;
++		}
+ 		usleep_range(1000, 2000);
  	}
- 
--	page_size = mlx5_umem_find_best_pgsz(&umem_dmabuf->umem, mkc,
--					     log_page_size, 0,
--					     umem_dmabuf->umem.iova);
--	if (unlikely(page_size < PAGE_SIZE)) {
-+	page_size = mlx5_umem_dmabuf_find_best_pgsz(umem_dmabuf);
-+	if (!page_size) {
- 		ib_umem_dmabuf_unmap_pages(umem_dmabuf);
- 		err = -EINVAL;
- 	} else {
+ 	gpiod_set_value(boe->enable_gpio, 1);
 -- 
 2.43.0
 
