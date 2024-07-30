@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-63235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBE4941804
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72030941807
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 816E01C22AC5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:18:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A36AA1C22ECC
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88B71A0706;
-	Tue, 30 Jul 2024 16:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A401A2558;
+	Tue, 30 Jul 2024 16:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deAaQ1Fp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmySaFR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68B31917EC;
-	Tue, 30 Jul 2024 16:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBBD1A0724;
+	Tue, 30 Jul 2024 16:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356164; cv=none; b=Tf0Z2uSGRdFZ/a3+UzEEC/CXV+cDrnh2bShsTPRxGhWE1fFyTducVQ775TT/U3kljwpoT5jrFGshSiUff7CdMuawFABtIWSCfywo08bXUKFhDz9QuM2glY3R4FZLc3TI83hXxUMp6ENQTvXhBPq7O+faIv9unaybLy1d5UXzhxw=
+	t=1722356175; cv=none; b=AFGagcVqvAyUUYTKu1n+fuSWAy9jOVZCHY+jeuDt/fKrbKF/zSLUSbYQk5oIQ6MgS1NLUdhLbE9RIwvycg7Fvga30cPIQ4MhrCoEjFrMPj0MyKEZG6Xq9ChrOJF15jF4Bo25p6cskRCtBC9RZF93U/9qbRwMEXq+hdNDTn3TKiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356164; c=relaxed/simple;
-	bh=7kM3ExjipTvY0spCNTOicwKll77XyQbmQ60dABxfwms=;
+	s=arc-20240116; t=1722356175; c=relaxed/simple;
+	bh=qPcldIElnBaq5M0HPa+v5K616Tn3BuZIg9vF0hit/a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qh3tu+W4dMxxQSootPdvPExmhgG3uOmXwUkadOegKiGVPZ3mDGRaXh8XOnPD8yrjAvEjteROz1ORF863ciNnVzNW5bTbDZita1M5pilrdLTwC0LaEgflK2RvfbTBZIRH7DmpUEAWkkSFhPuKSxPaSkERKsNy0L2kHpyfsDQX/Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deAaQ1Fp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC65C32782;
-	Tue, 30 Jul 2024 16:16:04 +0000 (UTC)
+	 MIME-Version; b=HghozfofCGIohQvhoZ/3x6iXC05HdqTA7DqcsPUSIqy+jrjBAmkx/gfSxSFOyYsDg2bE61UwoI42ODD7ftSg86hi4iQUoui7yq9Cq06Xll+FfWNyQubyEfLfkWEhz/tfah+OQ6PzqDqZlqsIP0+BrvzyweILLeNXdZE1ioATG8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmySaFR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5482DC32782;
+	Tue, 30 Jul 2024 16:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356164;
-	bh=7kM3ExjipTvY0spCNTOicwKll77XyQbmQ60dABxfwms=;
+	s=korg; t=1722356175;
+	bh=qPcldIElnBaq5M0HPa+v5K616Tn3BuZIg9vF0hit/a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deAaQ1Fpzv/UYCrGKLz9dRnCXF1YRuvD7KWIM5HP7xjp24htDs5Kv5WYo5Ai4KMCX
-	 GD/fHIJ5eH1e8xA/vrfDdTgogCyDauPvSRSG1JI8Ip5WQUsJR/G7bpnNb0TmV5kafx
-	 RZU8Z+05MeXotMQDKVE294O33d04MwZr1okF4Jfk=
+	b=CmySaFR2peuEDPvGJCMbY9Jrgtj1fIOIpoih7sn0SJHN6pTTMmdQ0Xsv1M0B1hZMF
+	 FXXRmwKW+9G9ZJ206QAzh9Y3x56AKwVo+NWfKOQFp43DaaSXG/stAeUQ1gwCCslVV8
+	 mcT+LG17dMcDECJdG3K4OGFt4CxUPCPaFS9uvamc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Marek Vasut <marex@denx.de>,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Adam Ford <aford173@gmail.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 125/809] arm64: dts: imx8mp: Fix pgc_mlmix location
-Date: Tue, 30 Jul 2024 17:40:01 +0200
-Message-ID: <20240730151729.553194897@linuxfoundation.org>
+Subject: [PATCH 6.10 126/809] arm64: dts: imx8mp: Fix pgc vpu locations
+Date: Tue, 30 Jul 2024 17:40:02 +0200
+Message-ID: <20240730151729.591810717@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -71,74 +69,98 @@ Content-Transfer-Encoding: 8bit
 
 From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 106f68fc9da3d4835070b55a2229d2c54ef5cba1 ]
+[ Upstream commit 2f8405fb077bcb8e98c8cd87c2a0a238b15d8da8 ]
 
-The pgc_mlmix shows a power-domain@24, but the reg value is
-IMX8MP_POWER_DOMAIN_MLMIX which is set to 4.
+The various pgv_vpu nodes have a mismatch between the value after
+the @ symbol and what is referenced by 'reg' so reorder the nodes
+to align.
 
-The stuff after the @ symbol should match the stuff referenced
-by 'reg' so reorder the pgc_mlmix so it to appear as power-domain@4.
-
-Fixes: 834464c8504c ("arm64: dts: imx8mp: add mlmix power domain")
-Fixes: 4bedc468b725 ("arm64: dts: imx8mp: Add NPU Node")
+Fixes: df680992dd62 ("arm64: dts: imx8mp: add vpu pgc nodes")
+Suggested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewd-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 34 +++++++++++------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 55 ++++++++++++-----------
+ 1 file changed, 28 insertions(+), 27 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index b92abb5a5c536..3576d2b89b439 100644
+index 3576d2b89b439..ee0c864f27e89 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -789,6 +789,23 @@ pgc_usb2_phy: power-domain@3 {
- 						reg = <IMX8MP_POWER_DOMAIN_USB2_PHY>;
+@@ -838,6 +838,12 @@ pgc_gpumix: power-domain@7 {
+ 						assigned-clock-rates = <800000000>, <400000000>;
  					};
  
-+					pgc_mlmix: power-domain@4 {
++					pgc_vpumix: power-domain@8 {
 +						#power-domain-cells = <0>;
-+						reg = <IMX8MP_POWER_DOMAIN_MLMIX>;
-+						clocks = <&clk IMX8MP_CLK_ML_AXI>,
-+							 <&clk IMX8MP_CLK_ML_AHB>,
-+							 <&clk IMX8MP_CLK_NPU_ROOT>;
-+						assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
-+								  <&clk IMX8MP_CLK_ML_AXI>,
-+								  <&clk IMX8MP_CLK_ML_AHB>;
-+						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
-+									 <&clk IMX8MP_SYS_PLL1_800M>,
-+									 <&clk IMX8MP_SYS_PLL1_800M>;
-+						assigned-clock-rates = <800000000>,
-+								       <800000000>,
-+								       <300000000>;
++						reg = <IMX8MP_POWER_DOMAIN_VPUMIX>;
++						clocks = <&clk IMX8MP_CLK_VPU_ROOT>;
 +					};
 +
- 					pgc_audio: power-domain@5 {
+ 					pgc_gpu3d: power-domain@9 {
  						#power-domain-cells = <0>;
- 						reg = <IMX8MP_POWER_DOMAIN_AUDIOMIX>;
-@@ -900,23 +917,6 @@ pgc_vpu_vc8000e: power-domain@22 {
- 						reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
- 						clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+ 						reg = <IMX8MP_POWER_DOMAIN_GPU3D>;
+@@ -853,6 +859,28 @@ pgc_mediamix: power-domain@10 {
+ 							 <&clk IMX8MP_CLK_MEDIA_APB_ROOT>;
+ 					};
+ 
++					pgc_vpu_g1: power-domain@11 {
++						#power-domain-cells = <0>;
++						power-domains = <&pgc_vpumix>;
++						reg = <IMX8MP_POWER_DOMAIN_VPU_G1>;
++						clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
++					};
++
++					pgc_vpu_g2: power-domain@12 {
++						#power-domain-cells = <0>;
++						power-domains = <&pgc_vpumix>;
++						reg = <IMX8MP_POWER_DOMAIN_VPU_G2>;
++						clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
++
++					};
++
++					pgc_vpu_vc8000e: power-domain@13 {
++						#power-domain-cells = <0>;
++						power-domains = <&pgc_vpumix>;
++						reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
++						clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
++					};
++
+ 					pgc_hdmimix: power-domain@14 {
+ 						#power-domain-cells = <0>;
+ 						reg = <IMX8MP_POWER_DOMAIN_HDMIMIX>;
+@@ -890,33 +918,6 @@ pgc_ispdwp: power-domain@18 {
+ 						reg = <IMX8MP_POWER_DOMAIN_MEDIAMIX_ISPDWP>;
+ 						clocks = <&clk IMX8MP_CLK_MEDIA_ISP_ROOT>;
  					};
 -
--					pgc_mlmix: power-domain@24 {
+-					pgc_vpumix: power-domain@19 {
 -						#power-domain-cells = <0>;
--						reg = <IMX8MP_POWER_DOMAIN_MLMIX>;
--						clocks = <&clk IMX8MP_CLK_ML_AXI>,
--							 <&clk IMX8MP_CLK_ML_AHB>,
--							 <&clk IMX8MP_CLK_NPU_ROOT>;
--						assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
--								  <&clk IMX8MP_CLK_ML_AXI>,
--								  <&clk IMX8MP_CLK_ML_AHB>;
--						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
--									 <&clk IMX8MP_SYS_PLL1_800M>,
--									 <&clk IMX8MP_SYS_PLL1_800M>;
--						assigned-clock-rates = <800000000>,
--								       <800000000>,
--								       <300000000>;
+-						reg = <IMX8MP_POWER_DOMAIN_VPUMIX>;
+-						clocks = <&clk IMX8MP_CLK_VPU_ROOT>;
+-					};
+-
+-					pgc_vpu_g1: power-domain@20 {
+-						#power-domain-cells = <0>;
+-						power-domains = <&pgc_vpumix>;
+-						reg = <IMX8MP_POWER_DOMAIN_VPU_G1>;
+-						clocks = <&clk IMX8MP_CLK_VPU_G1_ROOT>;
+-					};
+-
+-					pgc_vpu_g2: power-domain@21 {
+-						#power-domain-cells = <0>;
+-						power-domains = <&pgc_vpumix>;
+-						reg = <IMX8MP_POWER_DOMAIN_VPU_G2>;
+-						clocks = <&clk IMX8MP_CLK_VPU_G2_ROOT>;
+-					};
+-
+-					pgc_vpu_vc8000e: power-domain@22 {
+-						#power-domain-cells = <0>;
+-						power-domains = <&pgc_vpumix>;
+-						reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
+-						clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
 -					};
  				};
  			};
