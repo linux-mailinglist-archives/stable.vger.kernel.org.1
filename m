@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A28994180D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4193C941D4F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C7ED1C22E0E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EE61F25D65
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0125189538;
-	Tue, 30 Jul 2024 16:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A945B1A76AF;
+	Tue, 30 Jul 2024 17:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muac6Y69"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzh43lYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC058189537;
-	Tue, 30 Jul 2024 16:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669A31A76A2;
+	Tue, 30 Jul 2024 17:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356194; cv=none; b=G432MLsQJIe0bKPINEM1QlzZynb0nadwFwIDkc6Tl7Au5TijWr1MUqHI0n0zxpl9P1S58FczvGOJRqkxkmHlo5FXEvTY5OjSZQsRCL6gZUTziBOaOhv8yK6UxkrAJBRPN4HaZ2LJ/MvDJWmlBZ+2nF54t30nG41ULKV3DnJzfN0=
+	t=1722359724; cv=none; b=j7AFb3N6iCoO7PK2Vevg3oZvpb06Ae56+GNxibn5b0zJ0/vNGG3qgbtC4uqhVIRtPTtvNAYpuf7tJtW2KsS2yqXnLXB0WJ5Po2fpLeWa0fyuP9joujN2VvZ+MHQ9qZgpyIAt0SVKfs2CkPvc9mIBYkjla7ELgKurSUoHxYWVrU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356194; c=relaxed/simple;
-	bh=IiAMLIa42IE0xtAT/EFnZQripv/F/g4bc57bPioQxr8=;
+	s=arc-20240116; t=1722359724; c=relaxed/simple;
+	bh=acISr0ANHkcKZhkqultyz/qb9Ms2CZsUKZIK1Qhaydo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGmGxRbPk7powb2I4aiH1FcVOv0Jxpm5g6x3D41kkUxkdUnoP8keEXS7eUj80nOkNqwalRkOy8tUwRHQ16vrV6B1U6cT6nZN0IcsipyfrOMJtOQUMZMkTG453FJXP26LUQ8ULiYTjLho0wZoIDdys+LOV2sX1dTkRq/8orfKIJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muac6Y69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DFFC32782;
-	Tue, 30 Jul 2024 16:16:33 +0000 (UTC)
+	 MIME-Version; b=uQyt3xPCbg1FGB95dk+y/PDD4ZgqYfF5ljWFETwBVB89rZpVB3owEVDU9d3doP4t8sAjhkUITMylaDMLVVEmoAbfcLGnk599DSV5jNi3ei3mGoyie1NPjtHNH4r5F/EB/fhKTJpdR2Cj7c2iKqQ88+0OMHSvul0um6GJOgJnD3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzh43lYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9769EC4AF0A;
+	Tue, 30 Jul 2024 17:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356194;
-	bh=IiAMLIa42IE0xtAT/EFnZQripv/F/g4bc57bPioQxr8=;
+	s=korg; t=1722359724;
+	bh=acISr0ANHkcKZhkqultyz/qb9Ms2CZsUKZIK1Qhaydo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muac6Y69vwYsdSXXK4l4tKn3nxEoDaPv5WZ3r3E4062USbmxPq3WispS7EYmmJ5Yl
-	 gxSSV+mdz/WgUlxGWh6HEVS8KJMvWUcxKBb6+JKeMOjFyN/BSUBqH7/H15iBPC+eAf
-	 R9n1+jnojp1t8l0yiOO7kEqz795t/JxlcIIynXNI=
+	b=pzh43lYDL2aXxLeu52QbCalZf+728oJ1pquW3i+nKbtM8D5NMWgaxALskYMCayLne
+	 uFW8JBn4Xciy/qXkzt+xmaOD4YlMhxQYzBTPBPlI51eCOKQJBn4DmLVz5Tww3/SvZ2
+	 lpT8CxclIBZONLjI/ukILRJ64kSirOfbt7U7iUlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/440] perf intel-pt: Fix exclude_guest setting
+Subject: [PATCH 6.10 524/809] LoongArch: Check TIF_LOAD_WATCH to enable user space watchpoint
 Date: Tue, 30 Jul 2024 17:46:40 +0200
-Message-ID: <20240730151622.393824272@linuxfoundation.org>
+Message-ID: <20240730151745.435182826@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit b40934ae32232140e85dc7dc1c3ea0e296986723 ]
+[ Upstream commit 3892b11eac5aaaeefbf717f1953288b77759d9e2 ]
 
-In the past, the exclude_guest setting has had no effect on Intel PT
-tracing, but that may not be the case in the future.
+Currently, there are some places to set CSR.PRMD.PWE, the first one is
+in hw_breakpoint_thread_switch() to enable user space singlestep via
+checking TIF_SINGLESTEP, the second one is in hw_breakpoint_control() to
+enable user space watchpoint. For the latter case, it should also check
+TIF_LOAD_WATCH to make the logic correct and clear.
 
-Set the flag correctly based upon whether KVM is using Intel PT
-"Host/Guest" mode, which is determined by the kvm_intel module
-parameter pt_mode:
-
- pt_mode=0	System-wide mode : host and guest output to host buffer
- pt_mode=1	Host/Guest mode : host/guest output to host/guest
-                buffers respectively
-
-Fixes: 6e86bfdc4a60 ("perf intel-pt: Support decoding of guest kernel")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240625104532.11990-3-adrian.hunter@intel.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: c8e57ab0995c ("LoongArch: Trigger user-space watchpoints correctly")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/arch/x86/util/intel-pt.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/loongarch/kernel/hw_breakpoint.c | 2 +-
+ arch/loongarch/kernel/ptrace.c        | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/arch/x86/util/intel-pt.c b/tools/perf/arch/x86/util/intel-pt.c
-index 357eef045f3be..9daec588103bc 100644
---- a/tools/perf/arch/x86/util/intel-pt.c
-+++ b/tools/perf/arch/x86/util/intel-pt.c
-@@ -32,6 +32,7 @@
- #include "../../../util/tsc.h"
- #include <internal/lib.h> // page_size
- #include "../../../util/intel-pt.h"
-+#include <api/fs/fs.h>
+diff --git a/arch/loongarch/kernel/hw_breakpoint.c b/arch/loongarch/kernel/hw_breakpoint.c
+index 621ad7634df71..a6e4b605bfa8d 100644
+--- a/arch/loongarch/kernel/hw_breakpoint.c
++++ b/arch/loongarch/kernel/hw_breakpoint.c
+@@ -221,7 +221,7 @@ static int hw_breakpoint_control(struct perf_event *bp,
+ 		}
+ 		enable = csr_read64(LOONGARCH_CSR_CRMD);
+ 		csr_write64(CSR_CRMD_WE | enable, LOONGARCH_CSR_CRMD);
+-		if (bp->hw.target)
++		if (bp->hw.target && test_tsk_thread_flag(bp->hw.target, TIF_LOAD_WATCH))
+ 			regs->csr_prmd |= CSR_PRMD_PWE;
+ 		break;
+ 	case HW_BREAKPOINT_UNINSTALL:
+diff --git a/arch/loongarch/kernel/ptrace.c b/arch/loongarch/kernel/ptrace.c
+index 200109de1971a..19dc6eff45ccc 100644
+--- a/arch/loongarch/kernel/ptrace.c
++++ b/arch/loongarch/kernel/ptrace.c
+@@ -589,6 +589,7 @@ static int ptrace_hbp_set_ctrl(unsigned int note_type,
+ 	struct perf_event *bp;
+ 	struct perf_event_attr attr;
+ 	struct arch_hw_breakpoint_ctrl ctrl;
++	struct thread_info *ti = task_thread_info(tsk);
  
- #define KiB(x) ((x) * 1024)
- #define MiB(x) ((x) * 1024 * 1024)
-@@ -440,6 +441,16 @@ static int intel_pt_track_switches(struct evlist *evlist)
- 	return 0;
- }
+ 	bp = ptrace_hbp_get_initialised_bp(note_type, tsk, idx);
+ 	if (IS_ERR(bp))
+@@ -613,8 +614,10 @@ static int ptrace_hbp_set_ctrl(unsigned int note_type,
+ 		if (err)
+ 			return err;
+ 		attr.disabled = 0;
++		set_ti_thread_flag(ti, TIF_LOAD_WATCH);
+ 	} else {
+ 		attr.disabled = 1;
++		clear_ti_thread_flag(ti, TIF_LOAD_WATCH);
+ 	}
  
-+static bool intel_pt_exclude_guest(void)
-+{
-+	int pt_mode;
-+
-+	if (sysfs__read_int("module/kvm_intel/parameters/pt_mode", &pt_mode))
-+		pt_mode = 0;
-+
-+	return pt_mode == 1;
-+}
-+
- static void intel_pt_valid_str(char *str, size_t len, u64 valid)
- {
- 	unsigned int val, last = 0, state = 1;
-@@ -643,6 +654,7 @@ static int intel_pt_recording_options(struct auxtrace_record *itr,
- 			}
- 			evsel->core.attr.freq = 0;
- 			evsel->core.attr.sample_period = 1;
-+			evsel->core.attr.exclude_guest = intel_pt_exclude_guest();
- 			evsel->no_aux_samples = true;
- 			evsel->needs_auxtrace_mmap = true;
- 			intel_pt_evsel = evsel;
+ 	return modify_user_hw_breakpoint(bp, &attr);
 -- 
 2.43.0
 
