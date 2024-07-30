@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516F4941D44
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C1C941BA2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:57:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2E928B40F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 528E5B21C67
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF0418A6B6;
-	Tue, 30 Jul 2024 17:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FCD189907;
+	Tue, 30 Jul 2024 16:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOf5/7KQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJuE121v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24BE18454A;
-	Tue, 30 Jul 2024 17:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E921A6195;
+	Tue, 30 Jul 2024 16:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359699; cv=none; b=GDM0vpmGd3Du2q49lx6L7XZz/Eog3EysgrdfOOLYeKP/BqFl+dYmNF4CIcxYZKwfbvDoPSiuhxSIc9m6pp5StrMsXSxw9ZI+H1eOJLz1oPut6XAhnNjIdgOnU7HA50dmYCGHVqV74+tsF8qSPdpVApLAzk1bUTmq9LLW5FbERkw=
+	t=1722358523; cv=none; b=cQyEX6Sgy4gc4bRotk3uBILLbNc7kgPZX0IrGNveUiOSDcRfKx7VRdBeu0XX4JNcRVxhppsHyhffW849aax+PV93JvMjmtjtqdEKNa5fHJEFv07DP7Kv/0Vae1ckYqP+FYw4BJhMeRiEsgZBlFzEief+qDBMKu4oDRwkoZyWZA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359699; c=relaxed/simple;
-	bh=92sXEXjpVGpTutLx/DWQ+GF2uIMM+u9q2T7zhtGHISg=;
+	s=arc-20240116; t=1722358523; c=relaxed/simple;
+	bh=MeBAtBfcZVlxi1OXlll3Kp0zq0OKfaTGE3BH4U715dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cz8Su0Pa+iPQyVN5nHfqpCqQbzvfeRD4b6SFKr8SYdu7by4ocqfom0lAoIRM1vet4iFVosmQ3k6prsbWc0NCnbEcjwbGQ3i/wgwVCO0qrudM9qj32p5n1D/W/l0c2KZKnLfyh/6/V6JP7OnbVRLx2zmr2g/gbiH9qx+8gg4UPtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOf5/7KQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7EAC32782;
-	Tue, 30 Jul 2024 17:14:59 +0000 (UTC)
+	 MIME-Version; b=H0hE0b2te5+DOW7EqkJySXQDQSJXVO1H9/uss07ex2/FMd/aPgcHrTx6vufSn6ZhJNsxSXNkuV9Wiwy3M9nmBQk6Jm8Dbxl31pW8PslCl7Tswyw+MdN08L/Qfn95ISgFzIbxZpWXmwq7qgWIF/UE1Jykdpq8yo/AB15b07V/RCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJuE121v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B451C32782;
+	Tue, 30 Jul 2024 16:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359699;
-	bh=92sXEXjpVGpTutLx/DWQ+GF2uIMM+u9q2T7zhtGHISg=;
+	s=korg; t=1722358522;
+	bh=MeBAtBfcZVlxi1OXlll3Kp0zq0OKfaTGE3BH4U715dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOf5/7KQmdQBiSkj2BbvYxYEg7oVMqBNaAwDmgKQOQ1zsG5mK/0vo5nl/+FpL4VdX
-	 fjDVnLZborvwV8mQwKumVoNW75MHIoOW0f/nHspL5VoJTgyokbmXhnZh0TAu70+qEf
-	 nAr6wm8JAwzabhJ85wLdhoNBSr0u8Cl9rHVRVMbY=
+	b=GJuE121vzeP12CMxVcIpAhIVeOLkmBqtUygd1GU45a1C8vi6DHc7LQ4jo0qiVqmKY
+	 R+f3H6mJBSlCLWsmBOI79b9V7hqAydftbTNyxd0d2jUALBqt59NISrOlg+N3AK2zRL
+	 rmte0ONaHeVPcqoV9BeJvPop9IIewYwfSWERPm6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 524/568] f2fs: fix start segno of large section
+Subject: [PATCH 6.1 398/440] um: time-travel: fix time-travel-start option
 Date: Tue, 30 Jul 2024 17:50:31 +0200
-Message-ID: <20240730151700.641628793@linuxfoundation.org>
+Message-ID: <20240730151631.347633424@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong@oppo.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 8c409989678e92e4a737e7cd2bb04f3efb81071a ]
+[ Upstream commit 7d0a8a490aa3a2a82de8826aaf1dfa38575cb77a ]
 
-get_ckpt_valid_blocks() checks valid ckpt blocks in current section.
-It counts all vblocks from the first to the last segment in the
-large section. However, START_SEGNO() is used to get the first segno
-in an SIT block. This patch fixes that to get the correct start segno.
+We need to have the = as part of the option so that the
+value can be parsed properly. Also document that it must
+be given in nanoseconds, not seconds.
 
-Fixes: 61461fc921b7 ("f2fs: fix to avoid touching checkpointed data in get_victim()")
-Signed-off-by: Sheng Yong <shengyong@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 065038706f77 ("um: Support time travel mode")
+Link: https://patch.msgid.link/20240417102744.14b9a9d4eba0.Ib22e9136513126b2099d932650f55f193120cd97@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/um/kernel/time.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 4595f1cc03828..952970166d5da 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -348,7 +348,8 @@ static inline unsigned int get_ckpt_valid_blocks(struct f2fs_sb_info *sbi,
- 				unsigned int segno, bool use_section)
- {
- 	if (use_section && __is_large_section(sbi)) {
--		unsigned int start_segno = START_SEGNO(segno);
-+		unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
-+		unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
- 		unsigned int blocks = 0;
- 		int i;
+diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
+index 3e270da6b6f67..c8c4ef94c753f 100644
+--- a/arch/um/kernel/time.c
++++ b/arch/um/kernel/time.c
+@@ -874,9 +874,9 @@ int setup_time_travel_start(char *str)
+ 	return 1;
+ }
  
+-__setup("time-travel-start", setup_time_travel_start);
++__setup("time-travel-start=", setup_time_travel_start);
+ __uml_help(setup_time_travel_start,
+-"time-travel-start=<seconds>\n"
++"time-travel-start=<nanoseconds>\n"
+ "Configure the UML instance's wall clock to start at this value rather than\n"
+ "the host's wall clock at the time of UML boot.\n");
+ #endif
 -- 
 2.43.0
 
