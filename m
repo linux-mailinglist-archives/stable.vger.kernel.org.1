@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-63751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285AC941A74
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFED941D56
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D57AF28422E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:43:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98B0728B428
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70DD18454A;
-	Tue, 30 Jul 2024 16:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0C21A76C9;
+	Tue, 30 Jul 2024 17:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5gdMlKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsMOSpQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4DE187FF9;
-	Tue, 30 Jul 2024 16:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6581A76C1;
+	Tue, 30 Jul 2024 17:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357834; cv=none; b=qSUrPbTEiOrvtO21FxDPkxxYPIsEOkQCYwHII2EIga778d8PaJCfbDssUu8tGBZO88+dfIrRXdsKTFV3YjJwJnEqf06f9AB0l8hrMyyhc2drMdncEQ3hrhNN+fHeVmq9NRQgIqFqgGSjhClAbVeJORvu/mFBzUkZbwZAXTGbImk=
+	t=1722359746; cv=none; b=sgLYT2fP/eGcWLvPLmKxZURUazB2lXtroyNEMV2TttxvtLyHH91BDJZF5RIuD2KUWTYTPaNBpMFMnOeDuPscL4UAvxxrDB+b3D3aft9NUnFnh/Tf/bpOTnM6osdY3VrG0lVXeR1Q58aWfbYrz8l5eSdydlumPiWj3ykG1ApAD9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357834; c=relaxed/simple;
-	bh=iUDBcfGIY9wUDLyFCP+qzxEKIsxKdkq7rNwicOy/QAE=;
+	s=arc-20240116; t=1722359746; c=relaxed/simple;
+	bh=Kzt2gxQ1HtMJKBRDS8pH1ajUMKFxXG2ZJb5R0hqVFEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=slYGo0LseqlHwkMzSyQpdXtb23/FcT8zIJ1Y/oNVh/aMj2kCZtjkz20Z9/Gz4s7JyEPoewmqkngnT75ExNQk1BfvAwcMYogEYQdv6uXm+niUrDdmkQxzgwD2ICyBwUjiHaZSGqPd69s8SEKEakbrAn499Sz4je1JHBDfUSyfxXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5gdMlKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE57C32782;
-	Tue, 30 Jul 2024 16:43:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O5pqWKEqdVSUX6EzH/DaxPJpT1rxiz2UJQkA8o12i1aCy5BTGki4cNn69PQXhj5xt1BhH3InKYFPr/SaAhkBtFQn1ewZs9KFeL8Ytou/rji2iNmuzoiIhpVP+Q3Wn8tDtVY0b7mqs5I4LszRLsHjpcqEp+oxvtK7Eg1///CqmBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsMOSpQB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15043C4AF0C;
+	Tue, 30 Jul 2024 17:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357834;
-	bh=iUDBcfGIY9wUDLyFCP+qzxEKIsxKdkq7rNwicOy/QAE=;
+	s=korg; t=1722359746;
+	bh=Kzt2gxQ1HtMJKBRDS8pH1ajUMKFxXG2ZJb5R0hqVFEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5gdMlKoQ51zrQtXdNujg6UelVVAGVD/vV3IWZBwxQ8VEmU/oxLS4/10d5fIQ8lVm
-	 SMOrd4Ziv98kOhR0SuTfYFK8BrpqJcuCW1CiNSd2CI0gFNhXiJLHEp3dYKXaGju+r9
-	 U7lcZBtytvT3dajX3ECyAOi6ULV5eel4pSQ2ZRtA=
+	b=RsMOSpQBE+rUGymtVaDX2Fz7soCGzkynnqlgRwBvg7IoMoTDsTf5IOStShG7vAuBl
+	 fIRS15tGSDDBowdOdAx9uP33PmHLthit8Rik6GXXytCiw7wZnHm7m+PZJUcj3QJtAG
+	 AE1RLKjuPMgVfnhHYWTVVe4fwwa46dBqtb8TLNd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Niklas Cassel <niklas.cassel@wdc.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 296/568] PCI: dwc: Fix index 0 incorrectly being interpreted as a free ATU slot
+Subject: [PATCH 6.10 527/809] remoteproc: mediatek: Dont attempt to remap l1tcm memory if missing
 Date: Tue, 30 Jul 2024 17:46:43 +0200
-Message-ID: <20240730151651.447125181@linuxfoundation.org>
+Message-ID: <20240730151745.554418814@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +65,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit c2a57ee0f2f1ad8c970ff58b78a43e85abbdeb7f ]
+[ Upstream commit 67ca3f98070ffdf308b91e08a477fcb1e9684ae8 ]
 
-When PERST# assert and deassert happens on the PERST# supported platforms,
-both iATU0 and iATU6 will map inbound window to BAR0. DMA will access the
-area that was previously allocated (iATU0) for BAR0, instead of the new
-area (iATU6) for BAR0.
+The current code doesn't check whether platform_get_resource_byname()
+succeeded to get the l1tcm memory, which is optional, before attempting
+to map it. This results in the following error message when it is
+missing:
 
-Right now, this isn't an issue because both iATU0 and iATU6 should
-translate inbound accesses to BAR0 to the same allocated memory area.
-However, having two separate inbound mappings for the same BAR is a
-disaster waiting to happen.
+  mtk-scp 10500000.scp: error -EINVAL: invalid resource (null)
 
-The mappings between PCI BAR and iATU inbound window are maintained in the
-dw_pcie_ep::bar_to_atu[] array. While allocating a new inbound iATU map for
-a BAR, dw_pcie_ep_inbound_atu() API checks for the availability of the
-existing mapping in the array and if it is not found (i.e., value in the
-array indexed by the BAR is found to be 0), it allocates a new map value
-using find_first_zero_bit().
+Add a check so that the remapping is only attempted if the memory region
+exists. This also allows to simplify the logic handling failure to
+remap, since a failure then is always a failure.
 
-The issue is the existing logic failed to consider the fact that the map
-value '0' is a valid value for BAR0, so find_first_zero_bit() will return
-'0' as the map value for BAR0 (note that it returns the first zero bit
-position).
-
-Due to this, when PERST# assert + deassert happens on the PERST# supported
-platforms, the inbound window allocation restarts from BAR0 and the
-existing logic to find the BAR mapping will return '6' for BAR0 instead of
-'0' due to the fact that it considers '0' as an invalid map value.
-
-Fix this issue by always incrementing the map value before assigning to
-bar_to_atu[] array and then decrementing it while fetching. This will make
-sure that the map value '0' always represents the invalid mapping."
-
-Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
-Closes: https://lore.kernel.org/linux-pci/ZXsRp+Lzg3x%2Fnhk3@x1-carbon/
-Link: https://lore.kernel.org/linux-pci/20240412160841.925927-1-Frank.Li@nxp.com
-Reported-by: Niklas Cassel <Niklas.Cassel@wdc.com>
-Tested-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Fixes: ca23ecfdbd44 ("remoteproc/mediatek: support L1TCM")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240627-scp-invalid-resource-l1tcm-v1-1-7d221e6c495a@collabora.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/remoteproc/mtk_scp.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index ad6516a3ae6ea..f2e5feba55267 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -163,7 +163,7 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
- 	if (!ep->bar_to_atu[bar])
- 		free_win = find_first_zero_bit(ep->ib_window_map, pci->num_ib_windows);
- 	else
--		free_win = ep->bar_to_atu[bar];
-+		free_win = ep->bar_to_atu[bar] - 1;
+diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
+index b8498772dba17..3958f7b02d701 100644
+--- a/drivers/remoteproc/mtk_scp.c
++++ b/drivers/remoteproc/mtk_scp.c
+@@ -1344,14 +1344,12 @@ static int scp_probe(struct platform_device *pdev)
  
- 	if (free_win >= pci->num_ib_windows) {
- 		dev_err(pci->dev, "No free inbound window\n");
-@@ -177,7 +177,11 @@ static int dw_pcie_ep_inbound_atu(struct dw_pcie_ep *ep, u8 func_no, int type,
- 		return ret;
+ 	/* l1tcm is an optional memory region */
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "l1tcm");
+-	scp_cluster->l1tcm_base = devm_ioremap_resource(dev, res);
+-	if (IS_ERR(scp_cluster->l1tcm_base)) {
+-		ret = PTR_ERR(scp_cluster->l1tcm_base);
+-		if (ret != -EINVAL)
+-			return dev_err_probe(dev, ret, "Failed to map l1tcm memory\n");
++	if (res) {
++		scp_cluster->l1tcm_base = devm_ioremap_resource(dev, res);
++		if (IS_ERR(scp_cluster->l1tcm_base))
++			return dev_err_probe(dev, PTR_ERR(scp_cluster->l1tcm_base),
++					     "Failed to map l1tcm memory\n");
+ 
+-		scp_cluster->l1tcm_base = NULL;
+-	} else {
+ 		scp_cluster->l1tcm_size = resource_size(res);
+ 		scp_cluster->l1tcm_phys = res->start;
  	}
- 
--	ep->bar_to_atu[bar] = free_win;
-+	/*
-+	 * Always increment free_win before assignment, since value 0 is used to identify
-+	 * unallocated mapping.
-+	 */
-+	ep->bar_to_atu[bar] = free_win + 1;
- 	set_bit(free_win, ep->ib_window_map);
- 
- 	return 0;
-@@ -214,7 +218,10 @@ static void dw_pcie_ep_clear_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	enum pci_barno bar = epf_bar->barno;
--	u32 atu_index = ep->bar_to_atu[bar];
-+	u32 atu_index = ep->bar_to_atu[bar] - 1;
-+
-+	if (!ep->bar_to_atu[bar])
-+		return;
- 
- 	__dw_pcie_ep_reset_bar(pci, func_no, bar, epf_bar->flags);
- 
 -- 
 2.43.0
 
