@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED75F941C1D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F018A941DCF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FCF9B21F55
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8E22287847
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DED6187FF6;
-	Tue, 30 Jul 2024 17:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9F318800A;
+	Tue, 30 Jul 2024 17:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fr8DWNLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OC9x28PW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DA21A6192;
-	Tue, 30 Jul 2024 17:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F13184556;
+	Tue, 30 Jul 2024 17:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358993; cv=none; b=RqAtEBpFvN9wF58hHbuHZBTWqKGctH9m6eVYPTelRWcTdzg4F6uOUSM7cNwh7Y1fMzIW1qBnRZl/8WApvpY4ak1LRUFrOfsFBtCe8AMaodltsQsddUBFMQqwS2CQVtDNRYipslvWI6iOHxTCBs+KH53LYY+0fq0KeywKqXxlGT8=
+	t=1722360086; cv=none; b=YGogADgtkdpyB3ki4W0Cp77nO3XZ5VK7xF2NvQdQwJQfaQ6FIqT3C1furjSvfmwO/XMafejl7mXq2kwfYbFslH1wyvVNuwjB9C1T1l4IHDpohrXsr/FP0I2zXr09Hg/k7QKvmxrU+kIYhFN6fIt1q1h+7wq0zScIMRQD3nv0ptk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358993; c=relaxed/simple;
-	bh=IIeKwlUXm+4S/Q9gswJgQl9zsDpaNey5nEHcPWOtVCg=;
+	s=arc-20240116; t=1722360086; c=relaxed/simple;
+	bh=oxvlNXz5mLJpqEi/Df1NCC1mzd6TUjkWoHvq/113Qvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEJvpv+Ceph4ymXs7oKz0RRR4heejZdB69NAIFAO+qPxwBOUogBesnQGf9BHrP2U4fdJnKjcP9COsGePgFoVUqvuunAbLjrocbfLDr0ePz53XDg0NFgLrumYvclnDS6MqXEuIJ5FIAVYtn/RQ1U7ENWGYQcuexkQPwNIezxarBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fr8DWNLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F6FC32782;
-	Tue, 30 Jul 2024 17:03:12 +0000 (UTC)
+	 MIME-Version; b=taEPVSIWoSPiVxmaflgXnu7MaGXFKV2qTENjo/3+GO17e/HMBy9REIOsc2TEeWAJc6kquhI/t9ECaSvxEJXIUOp/LNeMQBwrI+1qXFe1aELRZ7ExrMe7CNI+Q9h5wTSJb7PuepJZ2ulZKufo3yWXpBSpWBRKG8piDgfHZ6Bk6Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OC9x28PW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54DFC32782;
+	Tue, 30 Jul 2024 17:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358993;
-	bh=IIeKwlUXm+4S/Q9gswJgQl9zsDpaNey5nEHcPWOtVCg=;
+	s=korg; t=1722360086;
+	bh=oxvlNXz5mLJpqEi/Df1NCC1mzd6TUjkWoHvq/113Qvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fr8DWNLeoT05FTlnwSLCqt3NqAsxd5YdZuk9QJhBzSsvIlqoTBgEPB2n6ja48Y1pB
-	 yWe7xWdalcPEE9oSP5ukLsbPTIEq3NCjQW1NNrt2FGlZplDV0a6XCV2pacVst1xMS9
-	 JZMLF3DsEY7hS92n/8S/lFWiV2A5WnxPsds2sB9I=
+	b=OC9x28PWmepn0smeTO2R5AcocC1ZXSpJxt1QJM+jG7AgvXsnJAnE15p3FfPDqesFh
+	 5JKaVC+XC3W7AojLkOvD0fdhRtGBeq6NaeqPIpfmh9bio/ZQnGWzPhjYJNY/w+P7qs
+	 bLQ5sdJaCaVPtYg1wV8ntQUuVhYG9GNFkC3EVd4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	"Seth Forshee (DigitalOcean)" <sforshee@kernel.org>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Nitesh Shetty <nj.shetty@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 440/440] fs: dont allow non-init s_user_ns for filesystems without FS_USERNS_MOUNT
-Date: Tue, 30 Jul 2024 17:51:13 +0200
-Message-ID: <20240730151632.958183363@linuxfoundation.org>
+Subject: [PATCH 6.6 567/568] nvme-pci: add missing condition check for existence of mapped data
+Date: Tue, 30 Jul 2024 17:51:14 +0200
+Message-ID: <20240730151702.318956035@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seth Forshee (DigitalOcean) <sforshee@kernel.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit e1c5ae59c0f22f7fe5c07fb5513a29e4aad868c9 ]
+[ Upstream commit c31fad1470389666ac7169fe43aa65bf5b7e2cfd ]
 
-Christian noticed that it is possible for a privileged user to mount
-most filesystems with a non-initial user namespace in sb->s_user_ns.
-When fsopen() is called in a non-init namespace the caller's namespace
-is recorded in fs_context->user_ns. If the returned file descriptor is
-then passed to a process priviliged in init_user_ns, that process can
-call fsconfig(fd_fs, FSCONFIG_CMD_CREATE), creating a new superblock
-with sb->s_user_ns set to the namespace of the process which called
-fsopen().
+nvme_map_data() is called when request has physical segments, hence
+the nvme_unmap_data() should have same condition to avoid dereference.
 
-This is problematic. We cannot assume that any filesystem which does not
-set FS_USERNS_MOUNT has been written with a non-initial s_user_ns in
-mind, increasing the risk for bugs and security issues.
-
-Prevent this by returning EPERM from sget_fc() when FS_USERNS_MOUNT is
-not set for the filesystem and a non-initial user namespace will be
-used. sget() does not need to be updated as it always uses the user
-namespace of the current context, or the initial user namespace if
-SB_SUBMOUNT is set.
-
-Fixes: cb50b348c71f ("convenience helpers: vfs_get_super() and sget_fc()")
-Reported-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Seth Forshee (DigitalOcean) <sforshee@kernel.org>
-Link: https://lore.kernel.org/r/20240724-s_user_ns-fix-v1-1-895d07c94701@kernel.org
-Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 4aedb705437f ("nvme-pci: split metadata handling from nvme_map_data / nvme_unmap_data")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/super.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/nvme/host/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/super.c b/fs/super.c
-index d138332e57a94..b116f72cd122a 100644
---- a/fs/super.c
-+++ b/fs/super.c
-@@ -569,6 +569,17 @@ struct super_block *sget_fc(struct fs_context *fc,
- 	struct user_namespace *user_ns = fc->global ? &init_user_ns : fc->user_ns;
- 	int err;
- 
-+	/*
-+	 * Never allow s_user_ns != &init_user_ns when FS_USERNS_MOUNT is
-+	 * not set, as the filesystem is likely unprepared to handle it.
-+	 * This can happen when fsconfig() is called from init_user_ns with
-+	 * an fs_fd opened in another user namespace.
-+	 */
-+	if (user_ns != &init_user_ns && !(fc->fs_type->fs_flags & FS_USERNS_MOUNT)) {
-+		errorfc(fc, "VFS: Mounting from non-initial user namespace is not allowed");
-+		return ERR_PTR(-EPERM);
-+	}
-+
- retry:
- 	spin_lock(&sb_lock);
- 	if (test) {
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 7c71431dbd6cc..796c2a00fea4a 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -863,7 +863,8 @@ static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
+ 	nvme_start_request(req);
+ 	return BLK_STS_OK;
+ out_unmap_data:
+-	nvme_unmap_data(dev, req);
++	if (blk_rq_nr_phys_segments(req))
++		nvme_unmap_data(dev, req);
+ out_free_cmd:
+ 	nvme_cleanup_cmd(req);
+ 	return ret;
 -- 
 2.43.0
 
