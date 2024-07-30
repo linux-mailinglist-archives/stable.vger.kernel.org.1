@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A13941893
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:23:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DB294189B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86A91F23FA1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:23:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 967161F2176F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECACD1898E5;
-	Tue, 30 Jul 2024 16:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DCF1A619E;
+	Tue, 30 Jul 2024 16:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dhw3S3+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvJR1qax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1331898E0;
-	Tue, 30 Jul 2024 16:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8710B1A618C;
+	Tue, 30 Jul 2024 16:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356592; cv=none; b=QjXvEOuNjHe4qQwXt1S3eoKfoVcVvwW925DUE7g4ztcYBCNVn8kVN7jd2u8Jj8TOK6DlUQfs8pC5Hh4sLcMyzv1JFn0eZBaESSEHk6808tU2uTYFPVMu6dL9T0OSlmDSrQGYLTpb3dfoWU0H3oZWIa4z029zBZm/+VEit1rFuig=
+	t=1722356602; cv=none; b=ktMOMhMALpH5FMH5eDOJW8FI0wllHZGELsnG0bV3XOBZhDdzljvWmW/7HURn4fK0LpyiDIjTC7Tim7Yp/YuVMzCdtjdJ80X0Udc3UeU4Lbk9lOhGl+VKICUuQZEV73xkotLZaWPlZajjKusbQRsOsmBRisMi2OO+1ErjILSwxHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356592; c=relaxed/simple;
-	bh=ussxRMrdVVNBWZhbbyvedjHCffzPvFJdWjSUGldjEaY=;
+	s=arc-20240116; t=1722356602; c=relaxed/simple;
+	bh=1SnRJVVU+DOZc778FZ3UOHStS+Oi1JO+jDxxeOfNX4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0+mYUpXmVG4OeAdFrmtdLMjg01W4mFOnX6yT/2WL6HFkXTUEiSekW8ehI3vJjNVkL+q6ACHxx5ZHr/7m0Ph5sq9sc4hvg/jd5rEqfo5a15R2Sa479galu+8v2Q/qwh0Z4NjD81fZ8ECFnaqN1WUVaVs8vYhtbw6rsNSPhBJ7P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dhw3S3+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2389DC4AF0E;
-	Tue, 30 Jul 2024 16:23:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jvo1wwZ9F7CxNnZs9648gIEiOgRJtBKpYh8vP7g4qTCjf1F5YbHZL5bpbzxonuTkknY+97iw3d/JwvSo8mx6qyCeJ0RAgo/ZtIYMZkAkt0+xEL/ff6ff2WUQfOR60Pp2IXIO6cjHDswPdWMtzGHfDCfh5rW9QWLBkr6k+NCI9sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvJR1qax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD87C32782;
+	Tue, 30 Jul 2024 16:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356592;
-	bh=ussxRMrdVVNBWZhbbyvedjHCffzPvFJdWjSUGldjEaY=;
+	s=korg; t=1722356602;
+	bh=1SnRJVVU+DOZc778FZ3UOHStS+Oi1JO+jDxxeOfNX4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dhw3S3+n9ZmVznDmdb4vsWQDJ9/QJxblVxaYh+mPpSLL8sXr6rB9ry/NcyQCsqNBf
-	 HB0O74Ew+WGq5mG110DmxK46PnpGxcOr33tPWY+Ng17UunFcrilFm9mmp0T0s0x9Do
-	 s7rBuft18296gkyTkI+i0Ri0UG0IAd2OBFDhnl8Q=
+	b=FvJR1qaxC9rt0MtZJ8ef9Pw95oc9W8tkMvR9XiRuMkNIekU9y6A675r98zaBaJncK
+	 7T+qGFWmu++PxIYdrYDQc8O6gxeJ8csrHakC8lHRcTUNJhIfAAqhQtcs79kXiF9BAM
+	 i1DZwUHP+h7tLXDUvhJm8aWJIoNYfZoR0d4An+WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Baochen Qiang <quic_bqiang@quicinc.com>,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 165/809] wifi: ath11k: restore country code during resume
-Date: Tue, 30 Jul 2024 17:40:41 +0200
-Message-ID: <20240730151731.123577781@linuxfoundation.org>
+Subject: [PATCH 6.10 166/809] wifi: ath12k: change DMA direction while mapping reinjected packets
+Date: Tue, 30 Jul 2024 17:40:42 +0200
+Message-ID: <20240730151731.163816062@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -60,82 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 7f0343b7b8710436c1e6355c71782d32ada47e0c ]
+[ Upstream commit 33322e3ef07409278a18c6919c448e369d66a18e ]
 
-We got report that regdomain is not correct after
-return from hibernation:
+For fragmented packets, ath12k reassembles each fragment as a normal
+packet and then reinjects it into HW ring. In this case, the DMA
+direction should be DMA_TO_DEVICE, not DMA_FROM_DEVICE. Otherwise,
+an invalid payload may be reinjected into the HW and
+subsequently delivered to the host.
 
-Before hibernation:
-% iw reg get
-[...]
-phy#0 (self-managed)
-country CH: DFS-ETSI
-        (2402 - 2482 @ 40), (N/A, 20), (N/A)
-        (5170 - 5250 @ 80), (N/A, 23), (N/A), NO-OUTDOOR, AUTO-BW
-        (5250 - 5330 @ 80), (N/A, 23), (0 ms), NO-OUTDOOR, DFS, AUTO-BW
-        (5490 - 5590 @ 80), (N/A, 30), (0 ms), DFS, AUTO-BW
-        (5590 - 5650 @ 40), (N/A, 30), (600000 ms), DFS, AUTO-BW
-        (5650 - 5730 @ 80), (N/A, 30), (0 ms), DFS, AUTO-BW
-        (5735 - 5875 @ 80), (N/A, 14), (N/A), AUTO-BW
+Given that arbitrary memory can be allocated to the skb buffer,
+knowledge about the data contained in the reinjected buffer is lacking.
+Consequently, there’s a risk of private information being leaked.
 
-After hibernation:
-% iw reg get
-[...]
-phy#0 (self-managed)
-country na: DFS-UNSET
-        (2402 - 2472 @ 40), (N/A, 20), (N/A)
-        (2457 - 2482 @ 20), (N/A, 20), (N/A), PASSIVE-SCAN
-        (5170 - 5330 @ 160), (N/A, 20), (N/A), AUTO-BW, PASSIVE-SCAN
-        (5490 - 5730 @ 160), (N/A, 20), (N/A), AUTO-BW, PASSIVE-SCAN
-        (5735 - 5895 @ 160), (N/A, 20), (N/A), AUTO-BW, PASSIVE-SCAN
-        (5945 - 7125 @ 160), (N/A, 30), (N/A), AUTO-BW, PASSIVE-SCAN
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00209-QCAHKSWPL_SILICONZ-1
 
-The reason is, during resume, firmware is reinitialized but host does
-not send current country code to firmware. So default reg rules with
-country code set to 'na' is uploaded to host, as shown above.
-
-Fix it by restoring country code to firmware during resume.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Fixes: 166a490f59ac ("wifi: ath11k: support hibernation")
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Co-developed-by: Baochen Qiang <quic_bqiang@quicinc.com>
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240520024148.5472-3-quic_bqiang@quicinc.com
+Link: https://msgid.link/20240520070045.631029-2-quic_ppranees@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index a14d0c65000ad..47554c3619633 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1009,6 +1009,16 @@ int ath11k_core_resume(struct ath11k_base *ab)
- 		return -ETIMEDOUT;
- 	}
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index e5fb5cb000f04..37e5bca9570fe 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -3030,7 +3030,7 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
  
-+	if (ab->hw_params.current_cc_support &&
-+	    ar->alpha2[0] != 0 && ar->alpha2[1] != 0) {
-+		ret = ath11k_reg_set_cc(ar);
-+		if (ret) {
-+			ath11k_warn(ab, "failed to set country code during resume: %d\n",
-+				    ret);
-+			return ret;
-+		}
-+	}
-+
- 	ret = ath11k_dp_rx_pktlog_start(ab);
- 	if (ret)
- 		ath11k_warn(ab, "failed to start rx pktlog during resume: %d\n",
+ 	buf_paddr = dma_map_single(ab->dev, defrag_skb->data,
+ 				   defrag_skb->len + skb_tailroom(defrag_skb),
+-				   DMA_FROM_DEVICE);
++				   DMA_TO_DEVICE);
+ 	if (dma_mapping_error(ab->dev, buf_paddr))
+ 		return -ENOMEM;
+ 
+@@ -3116,7 +3116,7 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
+ 	spin_unlock_bh(&dp->rx_desc_lock);
+ err_unmap_dma:
+ 	dma_unmap_single(ab->dev, buf_paddr, defrag_skb->len + skb_tailroom(defrag_skb),
+-			 DMA_FROM_DEVICE);
++			 DMA_TO_DEVICE);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
