@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-64129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566F8941C3A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:04:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 337B79418E4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 106D828215C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:04:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6544B1C22AD1
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126A7189537;
-	Tue, 30 Jul 2024 17:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC58F1A6192;
+	Tue, 30 Jul 2024 16:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEXECrUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjCZpgnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32DC188017;
-	Tue, 30 Jul 2024 17:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B14C1A6166;
+	Tue, 30 Jul 2024 16:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359084; cv=none; b=C3XbZw6neWBMsr114dwY0A4//TZV/jxqKqe1+0s7ReBGPtL+OsyCX4nL7OGfv0p0IP5ptwYnrZUVkiGiJM99XfFVg8VC39TdYWgPyEGeshYuVj8nxFpDcvd6d5Jz7GjXCreLeYm7KLvQZ0yULmJxNdNqFh5ORUwvPCxyjNXIBec=
+	t=1722356786; cv=none; b=d9u0mYt4t7k0vc6EbK+GG20Wg/GGcoivrt2jpXK/mlaMLtEPQGoLrGDPIiSrGeEMx9zqf2Qiwdp2THammqEMdLX61LU79zs48uSHU3m3kB+pscfGMZuMi4JLYGPiikH/tQyRYXgJLu8Ny9oAYwaIiES/V2Onxs9vTcRnWKjzTUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359084; c=relaxed/simple;
-	bh=TGDQsg6SRmFPzSk5FBo5oznZr6bu3J8mMcG7fHRekV8=;
+	s=arc-20240116; t=1722356786; c=relaxed/simple;
+	bh=6ioOyHVe54/2hU3nPGTcCCIMeMLkI6ewvzyYq0ZWDDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyyiLIVOV/S4Ue12PyrMFZabD/GpOYlJY5g0DwUUaQKEhxGdRz8oOnAadnMDaL1JhFB/EKwehxKGG8pZI5G1ogQKBigSPrVoD28CL9gwtNtvDhWm3qxk7B34d+bx5ZZ1g7vk0cXBnOyLdTaXtaLoPbrSDFoTYYSYPqPKtXsZBUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEXECrUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE58C32782;
-	Tue, 30 Jul 2024 17:04:43 +0000 (UTC)
+	 MIME-Version; b=j7Vlc39XQFB/EXDcDrHqZcJ2U1nET8wFVKHJ1nlzNnwZLzGvPZLGu1fwZH7GdWxIQjF/fWqT3fXVyoyZa83Bw1O55FQr/da4aTiAfKLSiEgZb5dxqW/FWg2guJyMB+0WCZ7yzc+tcoS5nOetrD7sHRR9jAr8CdoQajmtJHs8yN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjCZpgnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1089DC32782;
+	Tue, 30 Jul 2024 16:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359084;
-	bh=TGDQsg6SRmFPzSk5FBo5oznZr6bu3J8mMcG7fHRekV8=;
+	s=korg; t=1722356786;
+	bh=6ioOyHVe54/2hU3nPGTcCCIMeMLkI6ewvzyYq0ZWDDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEXECrUqE15ITn14KzG0aqGLuZd/NmD9s6boPsnj2t9m+QkmDz9kKl7ym9aQMbZXp
-	 W5DQ2j+fHWLzGpnsS85RGnCdukqUaX0jJ+3vNn9zOg+mQhq5wWUs1mHZXTIzZkOq2A
-	 X20op2hcHtt3jP2e99BZNmrY8vHweEE265ljvuBU=
+	b=RjCZpgnvB3diMAgC8N5lK4t5KoobVDUgJZJcjOu+xJKvIWR1DZs27s9Dvqd+mTeuA
+	 Xl+Icuf9hqECOOFMWaCyp/pbDE7XicGnV8aZzMh3e0kdItiT4wS30dxN1pQnByF+Q7
+	 kQR5XnaPamaB16zWZNrffrywrLoF9U7f8I40fqko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 415/809] clk: qcom: gpucc-sa8775p: Park RCGs clk source at XO during disable
+Subject: [PATCH 6.6 184/568] drm/panel: himax-hx8394: Handle errors from mipi_dsi_dcs_set_display_on() better
 Date: Tue, 30 Jul 2024 17:44:51 +0200
-Message-ID: <20240730151741.084923540@linuxfoundation.org>
+Message-ID: <20240730151647.071131155@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit dff68b2f74547617dbb75d0d12f404877ec8f8ce ]
+[ Upstream commit cc2db2ef8d9eebc0df03808ac0dadbdb96733499 ]
 
-The RCG's clk src has to be parked at XO while disabling as per the
-HW recommendation, hence use clk_rcg2_shared_ops to achieve the same.
-Also gpu_cc_cb_clk is recommended to be kept always ON, hence use
-clk_branch2_aon_ops to keep the clock always ON.
+If mipi_dsi_dcs_set_display_on() returned an error then we'd store
+that in the "ret" variable and jump to error handling. We'd then
+attempt an orderly poweroff. Unfortunately we then blew away the value
+stored in "ret". That means that if the orderly poweroff actually
+worked then we're return 0 (no error) from hx8394_enable() even though
+the panel wasn't enabled.
 
-Fixes: 0afa16afc36d ("clk: qcom: add the GPUCC driver for sa8775p")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240612-sa8775p-v2-gcc-gpucc-fixes-v2-5-adcc756a23df@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix this by not blowing away "ret".
+
+Found by code inspection.
+
+Fixes: 65dc9360f741 ("drm: panel: Add Himax HX8394 panel controller driver")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240517143643.1.I0a6836fffd8d7620f353becb3df2370d2898f803@changeid
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240517143643.1.I0a6836fffd8d7620f353becb3df2370d2898f803@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sa8775p.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-himax-hx8394.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gpucc-sa8775p.c b/drivers/clk/qcom/gpucc-sa8775p.c
-index f965babf4330d..1f7a02a7503d4 100644
---- a/drivers/clk/qcom/gpucc-sa8775p.c
-+++ b/drivers/clk/qcom/gpucc-sa8775p.c
-@@ -161,7 +161,7 @@ static struct clk_rcg2 gpu_cc_ff_clk_src = {
- 		.name = "gpu_cc_ff_clk_src",
- 		.parent_data = gpu_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_0),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/drivers/gpu/drm/panel/panel-himax-hx8394.c b/drivers/gpu/drm/panel/panel-himax-hx8394.c
+index c73243d85de71..631420d28be4c 100644
+--- a/drivers/gpu/drm/panel/panel-himax-hx8394.c
++++ b/drivers/gpu/drm/panel/panel-himax-hx8394.c
+@@ -234,8 +234,7 @@ static int hx8394_enable(struct drm_panel *panel)
  
-@@ -181,7 +181,7 @@ static struct clk_rcg2 gpu_cc_gmu_clk_src = {
- 		.parent_data = gpu_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ sleep_in:
+ 	/* This will probably fail, but let's try orderly power off anyway. */
+-	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
+-	if (!ret)
++	if (!mipi_dsi_dcs_enter_sleep_mode(dsi))
+ 		msleep(50);
  
-@@ -200,7 +200,7 @@ static struct clk_rcg2 gpu_cc_hub_clk_src = {
- 		.name = "gpu_cc_hub_clk_src",
- 		.parent_data = gpu_cc_parent_data_2,
- 		.num_parents = ARRAY_SIZE(gpu_cc_parent_data_2),
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -294,7 +294,7 @@ static struct clk_branch gpu_cc_cb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(const struct clk_init_data){
- 			.name = "gpu_cc_cb_clk",
--			.ops = &clk_branch2_ops,
-+			.ops = &clk_branch2_aon_ops,
- 		},
- 	},
- };
+ 	return ret;
 -- 
 2.43.0
 
