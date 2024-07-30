@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-64053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB91B941BE5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E61941998
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 667FE28393A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05A281C23715
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1A6187FF6;
-	Tue, 30 Jul 2024 17:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505EA4EB2B;
+	Tue, 30 Jul 2024 16:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+FApuDt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCvm8/E+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603921FBA;
-	Tue, 30 Jul 2024 17:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4EE1A6195;
+	Tue, 30 Jul 2024 16:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358831; cv=none; b=B6r1s3y2VSrswVSrsQv8beW4eBuINCRKpoQmY6joZprQb/plbQTFnK09aZ4aZnZ0LMHQmoKh/9wFzEM7uDsJXJVtB3fTJMJR/QtzczcFgJ7DI7L25sQtig0njc4esLduSX1pxhvQpL/EwWWU79Rw3immNKOomT0sHcG79FpWsxg=
+	t=1722357272; cv=none; b=W/ntgdDaWxpYpQKFmvKKw9wzDsStqiyVRN6z1q9AYaC/cFcOP1aqUQlTWwcY+M+zmChLGS4UJA6hcuJ4GDaT64dvVnvz3gIiswf3VpmvHU3RyZOctWBIgyGUh9quYDoOshAm064Na8qkpbIMGhMLTEEJjYDT9ChiCG6f2gilbcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358831; c=relaxed/simple;
-	bh=hdWYUP9evZmlF/ZihSZvDGQ9Zi4TWb72IRUT5ONdoZo=;
+	s=arc-20240116; t=1722357272; c=relaxed/simple;
+	bh=C4ZVLqMsx8hvnY6VbM5orTldkmrdGOxk47Jl+BRg6Oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cEz5xp1+N8yjMrXjJkqp+76rb5vPlyFymFMv4r0fK9Wdhew3/zZoSzNSsIXlupSJNZWZ9mvOuxss8uE9qloXEgg2PY4yBFvbW74MaNGPeLcDQHJS6WhHE8FfcmW5u95C4uUVTX3f3NCrGb8W8D1G3MuxEMLqrEgr1Kud8obMJbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+FApuDt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C9AC32782;
-	Tue, 30 Jul 2024 17:00:30 +0000 (UTC)
+	 MIME-Version; b=kUajHwq13e6OhjfeEeLcFr11x+w405AHYYJVNefTQrWV08zbNeG4IzjM+Sfdeuxa5pOxfjHT/J8M79OaNPNFuJlje4r/xfiMu319NQFv/VkP1HE5vQwloCltKWVUbg4a90JAfseKN4+LAKgl53uUL29oLUmG2w8+fQd5R3bIrjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCvm8/E+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA82C32782;
+	Tue, 30 Jul 2024 16:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358831;
-	bh=hdWYUP9evZmlF/ZihSZvDGQ9Zi4TWb72IRUT5ONdoZo=;
+	s=korg; t=1722357271;
+	bh=C4ZVLqMsx8hvnY6VbM5orTldkmrdGOxk47Jl+BRg6Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s+FApuDtYx2Fy+V42tTdCudP5tKLGtZwDGlGWZxlNePB74kHCmG0ZPsrclOeYJjuZ
-	 AB+c9gl8ImtbLetMg2OZd1ZR0VZF7kCPQFly21uw4f/leyYUyFowoPEJdUSHvXUECM
-	 2cF+rIgqUlr1yeN4UNGILiejpwPDNbWfvGRg8JE4=
+	b=iCvm8/E+EMrEG5PYIUbtdAo8l65yO+4nEngy9T4Jq8qk7Gk6ifel+jcgoPmr7RP+L
+	 3S8gZ4naDfPfo+1eY0hLM3oJNo/N4RcuPu754kAZ04uWQwz9LFpzzTPcjEUMfxZ8wt
+	 EN4sT4k3lidczTxPaILqMCVkrhxdp+hGLaACcPOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 6.6 401/568] selftests/landlock: Add cred_transfer test
+	Christian Heusel <christian@heusel.eu>,
+	mavrix#kernel@simplelogin.com,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1 275/440] x86/efistub: Revert to heap allocated boot_params for PE entrypoint
 Date: Tue, 30 Jul 2024 17:48:28 +0200
-Message-ID: <20240730151655.543425835@linuxfoundation.org>
+Message-ID: <20240730151626.574004219@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,128 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit cc374782b6ca0fd634482391da977542443d3368 upstream.
+commit ae835a96d72cd025421910edb0e8faf706998727 upstream.
 
-Check that keyctl(KEYCTL_SESSION_TO_PARENT) preserves the parent's
-restrictions.
+This is a partial revert of commit
 
-Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
-Co-developed-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240724.Ood5aige9she@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+  8117961d98f ("x86/efi: Disregard setup header of loaded image")
+
+which triggers boot issues on older Dell laptops. As it turns out,
+switching back to a heap allocation for the struct boot_params
+constructed by the EFI stub works around this, even though it is unclear
+why.
+
+Cc: Christian Heusel <christian@heusel.eu>
+Reported-by: <mavrix#kernel@simplelogin.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/landlock/base_test.c |   74 +++++++++++++++++++++++++++
- tools/testing/selftests/landlock/config      |    1 
- 2 files changed, 75 insertions(+)
+ drivers/firmware/efi/libstub/x86-stub.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/tools/testing/selftests/landlock/base_test.c
-+++ b/tools/testing/selftests/landlock/base_test.c
-@@ -9,6 +9,7 @@
- #define _GNU_SOURCE
- #include <errno.h>
- #include <fcntl.h>
-+#include <linux/keyctl.h>
- #include <linux/landlock.h>
- #include <string.h>
- #include <sys/prctl.h>
-@@ -326,4 +327,77 @@ TEST(ruleset_fd_transfer)
- 	ASSERT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -435,11 +435,12 @@ void __noreturn efi_stub_entry(efi_handl
+ efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
+ 				   efi_system_table_t *sys_table_arg)
+ {
+-	static struct boot_params boot_params __page_aligned_bss;
+-	struct setup_header *hdr = &boot_params.hdr;
+ 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
++	struct boot_params *boot_params;
++	struct setup_header *hdr;
+ 	int options_size = 0;
+ 	efi_status_t status;
++	unsigned long alloc;
+ 	char *cmdline_ptr;
+ 
+ 	if (efi_is_native())
+@@ -457,6 +458,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
+ 		efi_exit(handle, status);
+ 	}
+ 
++	status = efi_allocate_pages(PARAM_SIZE, &alloc, ULONG_MAX);
++	if (status != EFI_SUCCESS)
++		efi_exit(handle, status);
++
++	boot_params = memset((void *)alloc, 0x0, PARAM_SIZE);
++	hdr	    = &boot_params->hdr;
++
+ 	/* Assign the setup_header fields that the kernel actually cares about */
+ 	hdr->root_flags	= 1;
+ 	hdr->vid_mode	= 0xffff;
+@@ -466,13 +474,15 @@ efi_status_t __efiapi efi_pe_entry(efi_h
+ 
+ 	/* Convert unicode cmdline to ascii */
+ 	cmdline_ptr = efi_convert_cmdline(image, &options_size);
+-	if (!cmdline_ptr)
++	if (!cmdline_ptr) {
++		efi_free(PARAM_SIZE, alloc);
+ 		efi_exit(handle, EFI_OUT_OF_RESOURCES);
++	}
+ 
+ 	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
+-			  &boot_params.ext_cmd_line_ptr);
++			  &boot_params->ext_cmd_line_ptr);
+ 
+-	efi_stub_entry(handle, sys_table_arg, &boot_params);
++	efi_stub_entry(handle, sys_table_arg, boot_params);
+ 	/* not reached */
  }
  
-+TEST(cred_transfer)
-+{
-+	struct landlock_ruleset_attr ruleset_attr = {
-+		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_DIR,
-+	};
-+	int ruleset_fd, dir_fd;
-+	pid_t child;
-+	int status;
-+
-+	drop_caps(_metadata);
-+
-+	dir_fd = open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-+	EXPECT_LE(0, dir_fd);
-+	EXPECT_EQ(0, close(dir_fd));
-+
-+	/* Denies opening directories. */
-+	ruleset_fd =
-+		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
-+	ASSERT_LE(0, ruleset_fd);
-+	EXPECT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
-+	ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
-+	EXPECT_EQ(0, close(ruleset_fd));
-+
-+	/* Checks ruleset enforcement. */
-+	EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+	EXPECT_EQ(EACCES, errno);
-+
-+	/* Needed for KEYCTL_SESSION_TO_PARENT permission checks */
-+	EXPECT_NE(-1, syscall(__NR_keyctl, KEYCTL_JOIN_SESSION_KEYRING, NULL, 0,
-+			      0, 0))
-+	{
-+		TH_LOG("Failed to join session keyring: %s", strerror(errno));
-+	}
-+
-+	child = fork();
-+	ASSERT_LE(0, child);
-+	if (child == 0) {
-+		/* Checks ruleset enforcement. */
-+		EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+		EXPECT_EQ(EACCES, errno);
-+
-+		/*
-+		 * KEYCTL_SESSION_TO_PARENT is a no-op unless we have a
-+		 * different session keyring in the child, so make that happen.
-+		 */
-+		EXPECT_NE(-1, syscall(__NR_keyctl, KEYCTL_JOIN_SESSION_KEYRING,
-+				      NULL, 0, 0, 0));
-+
-+		/*
-+		 * KEYCTL_SESSION_TO_PARENT installs credentials on the parent
-+		 * that never go through the cred_prepare hook, this path uses
-+		 * cred_transfer instead.
-+		 */
-+		EXPECT_EQ(0, syscall(__NR_keyctl, KEYCTL_SESSION_TO_PARENT, 0,
-+				     0, 0, 0));
-+
-+		/* Re-checks ruleset enforcement. */
-+		EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+		EXPECT_EQ(EACCES, errno);
-+
-+		_exit(_metadata->passed ? EXIT_SUCCESS : EXIT_FAILURE);
-+		return;
-+	}
-+
-+	EXPECT_EQ(child, waitpid(child, &status, 0));
-+	EXPECT_EQ(1, WIFEXITED(status));
-+	EXPECT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
-+
-+	/* Re-checks ruleset enforcement. */
-+	EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+	EXPECT_EQ(EACCES, errno);
-+}
-+
- TEST_HARNESS_MAIN
---- a/tools/testing/selftests/landlock/config
-+++ b/tools/testing/selftests/landlock/config
-@@ -1,5 +1,6 @@
- CONFIG_CGROUPS=y
- CONFIG_CGROUP_SCHED=y
-+CONFIG_KEYS=y
- CONFIG_OVERLAY_FS=y
- CONFIG_PROC_FS=y
- CONFIG_SECURITY=y
 
 
 
