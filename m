@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-63867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19976941B06
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D30FB9418B2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE66A281EE5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:50:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59E00287CF0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D36B189502;
-	Tue, 30 Jul 2024 16:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5044D18952B;
+	Tue, 30 Jul 2024 16:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGV7sHd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="roG+Tj31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48590189B85;
-	Tue, 30 Jul 2024 16:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB651A6164;
+	Tue, 30 Jul 2024 16:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358207; cv=none; b=r7HIZXbITydBuUPGK/PlBngPy5RELxIi3d78xTEuCWSYLvQtMYWTwRM1bvCI03BCas0oEJd0ofywVKwa8JoJxaO/qXFp5A+rfFvDWgRBhKO7+9RWEu73vk85SYfOLs24I++hA6p+qPUZbv4V4bpLXozXpHuD5k7hMAU5RM+1A2g=
+	t=1722356632; cv=none; b=ISAlx40UOVfxcaCYG7r7K76AGroSR4uLTLmgI7Wc3n0NJfPp0aIhmonAHYOSmrjqT7meiS1D1Q3fGVnPTeY72TgWR2lxQEG25bc//Dap5XHN1/1b+4lolDvnQsX8c/dqLJ4ORzcM0KXmjjg0edWBNv2P4d5k4tc6ec47QXmbqKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358207; c=relaxed/simple;
-	bh=BB25yg7VMy066wi0MJHhwr+2y6s+182j9hvyD5F60E0=;
+	s=arc-20240116; t=1722356632; c=relaxed/simple;
+	bh=CgY+vReWJiHkLEfy4V2A2SmtPlVAkMB1egedj7RbiNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCzBVTXRNi/Ac9oQoW+Nnw53A4MlaocClw0vT6LSKzGxMYjXZGqrfEfm+8vhzqTXQ56k21TlDcFuM7oSuL0JG5Y1k2yH02kACmzCsi5wwnc5mG3T5aLq/+S6VLtkDJ2hd5C4cGRLJiBzfbQ2q2cgAdrOHVLox6702WFxGE6A+DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGV7sHd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBFBC4AF0E;
-	Tue, 30 Jul 2024 16:50:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NXFm6Jlu42QMIeev7WVuHj4itOhSTb96cbo1JnHKvcKeGs9fUeZzyiVhSW98NYkNW14ocDxDPs6Trsfz7duRwprLDdIYjyt+BOAqDkkc38QLRaK3ueZ+wwLRrAWpyvAT5c3K22+JCFJGvqjjgLi+O0HPVqyUVVRTlM0QNl9ytAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=roG+Tj31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809A4C32782;
+	Tue, 30 Jul 2024 16:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358207;
-	bh=BB25yg7VMy066wi0MJHhwr+2y6s+182j9hvyD5F60E0=;
+	s=korg; t=1722356631;
+	bh=CgY+vReWJiHkLEfy4V2A2SmtPlVAkMB1egedj7RbiNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGV7sHd78ud/lRODDo0tqQuyOiZ7Is7lNRICc2i/mcTvkVXlUYYjWUpiZa4VN+Hn7
-	 DH0DvzSIVpfC8G3fYRgmbuXMg2LmFVU6yqziICE1y64XRhhwkMys3GS03Jq40dsWPK
-	 aKUUO1IoJwG2D7bVlnOY5oTSYicc4Omb+tkMRqII=
+	b=roG+Tj31OEpWgeatMWWY94w1VXWYSxPWxEmND9pgu66RO1f+9HB5zXMS/tIHR4Cw2
+	 PPd2xxJQoUQ5r0bUej83DjvcAZ3B4HQ/uQpQoH3bs8HDs1EzU74Z8VxxCPsrz0scoT
+	 oc+eL+opbsOFM9Z2jz0YbIOKr45G1gtz3usJnDEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Laura Nao <laura.nao@collabora.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 340/568] pinctrl: renesas: r8a779g0: FIX PWM suffixes
+Subject: [PATCH 6.1 214/440] clk: qcom: Park shared RCGs upon registration
 Date: Tue, 30 Jul 2024 17:47:27 +0200
-Message-ID: <20240730151653.157698431@linuxfoundation.org>
+Message-ID: <20240730151624.222419002@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,211 +66,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit 0aabdc9a4d3644fd57d804b283b2ab0f9c28dc6c ]
+[ Upstream commit 01a0a6cc8cfd9952e72677d48d56cf6bc4e3a561 ]
 
-PWM channels 0, 2, 8, and 9 do not have alternate pins.
-Remove their "_a" or "_b" suffixes to increase uniformity.
+There's two problems with shared RCGs.
 
-Fixes: c606c2fde2330547 ("pinctrl: renesas: r8a779g0: Add missing PWM")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/abb748e6e1e4e7d78beac7d96e7a0a3481b32e75.1717754960.git.geert+renesas@glider.be
+The first problem is that they incorrectly report the parent after
+commit 703db1f5da1e ("clk: qcom: rcg2: Cache CFG register updates for
+parked RCGs"). That's because the cached CFG register value needs to be
+populated when the clk is registered. clk_rcg2_shared_enable() writes
+the cached CFG register value 'parked_cfg'. This value is initially zero
+due to static initializers. If a driver calls clk_enable() before
+setting a rate or parent, it will set the parent to '0' which is
+(almost?) always XO, and may not reflect the parent at registration. In
+the worst case, this switches the RCG from sourcing a fast PLL to the
+slow crystal speed.
+
+The second problem is that the force enable bit isn't cleared. The force
+enable bit is only used during parking and unparking of shared RCGs.
+Otherwise it shouldn't be set because it keeps the RCG enabled even when
+all the branches on the output of the RCG are disabled (the hardware has
+a feedback mechanism so that any child branches keep the RCG enabled
+when the branch enable bit is set). This problem wastes power if the clk
+is unused, and is harmful in the case that the clk framework disables
+the parent of the force enabled RCG. In the latter case, the GDSC the
+shared RCG is associated with will get wedged if the RCG's source clk is
+disabled and the GDSC tries to enable the RCG to do "housekeeping" while
+powering on.
+
+Both of these problems combined with incorrect runtime PM usage in the
+display driver lead to a black screen on Qualcomm sc7180 Trogdor
+chromebooks. What happens is that the bootloader leaves the
+'disp_cc_mdss_rot_clk' enabled and the 'disp_cc_mdss_rot_clk_src' force
+enabled and parented to 'disp_cc_pll0'. The mdss driver probes and
+runtime suspends, disabling the mdss_gdsc which uses the
+'disp_cc_mdss_rot_clk_src' for "housekeeping". The
+'disp_cc_mdss_rot_clk' is disabled during late init because the clk is
+unused, but the parent 'disp_cc_mdss_rot_clk_src' is still force enabled
+because the force enable bit was never cleared. Then 'disp_cc_pll0' is
+disabled because it is also unused. That's because the clk framework
+believes the parent of the RCG is XO when it isn't. A child device of
+the mdss device (e.g. DSI) runtime resumes mdss which powers on the
+mdss_gdsc. This wedges the GDSC because 'disp_cc_mdss_rot_clk_src' is
+parented to 'disp_cc_pll0' and that PLL is off. With the GDSC wedged,
+mdss_runtime_resume() tries to enable 'disp_cc_mdss_mdp_clk' but it
+can't because the GDSC has wedged all the clks associated with the GDSC
+causing clks to stay stuck off.
+
+This leads to the following warning seen at boot and a black screen
+because the display driver fails to probe.
+
+ disp_cc_mdss_mdp_clk status stuck at 'off'
+ WARNING: CPU: 1 PID: 81 at drivers/clk/qcom/clk-branch.c:87 clk_branch_toggle+0x114/0x168
+ Modules linked in:
+ CPU: 1 PID: 81 Comm: kworker/u16:4 Not tainted 6.7.0-g0dd3ee311255 #1 f5757d475795053fd2ad52247a070cd50dd046f2
+ Hardware name: Google Lazor (rev1 - 2) with LTE (DT)
+ Workqueue: events_unbound deferred_probe_work_func
+ pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : clk_branch_toggle+0x114/0x168
+ lr : clk_branch_toggle+0x110/0x168
+ sp : ffffffc08084b670
+ pmr_save: 00000060
+ x29: ffffffc08084b680 x28: ffffff808006de00 x27: 0000000000000001
+ x26: ffffff8080dbd4f4 x25: 0000000000000000 x24: 0000000000000000
+ x23: 0000000000000000 x22: ffffffd838461198 x21: ffffffd838007997
+ x20: ffffffd837541d5c x19: 0000000000000001 x18: 0000000000000004
+ x17: 0000000000000000 x16: 0000000000000010 x15: ffffffd837070fac
+ x14: 0000000000000003 x13: 0000000000000004 x12: 0000000000000001
+ x11: c0000000ffffdfff x10: ffffffd838347aa0 x9 : 08dadf92e516c000
+ x8 : 08dadf92e516c000 x7 : 0000000000000000 x6 : 0000000000000027
+ x5 : ffffffd8385a61f2 x4 : 0000000000000000 x3 : ffffffc08084b398
+ x2 : ffffffc08084b3a0 x1 : 00000000ffffdfff x0 : 00000000fffffff0
+ Call trace:
+  clk_branch_toggle+0x114/0x168
+  clk_branch2_enable+0x24/0x30
+  clk_core_enable+0x5c/0x1c8
+  clk_enable+0x38/0x58
+  clk_bulk_enable+0x40/0xb0
+  mdss_runtime_resume+0x68/0x258
+  pm_generic_runtime_resume+0x30/0x44
+  __genpd_runtime_resume+0x30/0x80
+  genpd_runtime_resume+0x124/0x214
+  __rpm_callback+0x7c/0x15c
+  rpm_callback+0x30/0x88
+  rpm_resume+0x390/0x4d8
+  rpm_resume+0x43c/0x4d8
+  __pm_runtime_resume+0x54/0x98
+  __device_attach+0xe0/0x170
+  device_initial_probe+0x1c/0x28
+  bus_probe_device+0x48/0xa4
+  device_add+0x52c/0x6fc
+  mipi_dsi_device_register_full+0x104/0x1a8
+  devm_mipi_dsi_device_register_full+0x28/0x78
+  ti_sn_bridge_probe+0x1dc/0x2bc
+  auxiliary_bus_probe+0x4c/0x94
+  really_probe+0xf8/0x270
+  __driver_probe_device+0xa8/0x130
+  driver_probe_device+0x44/0x104
+  __device_attach_driver+0xa4/0xcc
+  bus_for_each_drv+0x94/0xe8
+  __device_attach+0xf8/0x170
+  device_initial_probe+0x1c/0x28
+  bus_probe_device+0x48/0xa4
+  deferred_probe_work_func+0x9c/0xd8
+
+Fix these problems by parking shared RCGs at boot. This will properly
+initialize the parked_cfg struct member so that the parent is reported
+properly and ensure that the clk won't get stuck on or off because the
+RCG is parented to the safe source (XO).
+
+Fixes: 703db1f5da1e ("clk: qcom: rcg2: Cache CFG register updates for parked RCGs")
+Reported-by: Stephen Boyd <sboyd@kernel.org>
+Closes: https://lore.kernel.org/r/1290a5a0f7f584fcce722eeb2a1fd898.sboyd@kernel.org
+Closes: https://issuetracker.google.com/319956935
+Reported-by: Laura Nao <laura.nao@collabora.com>
+Closes: https://lore.kernel.org/r/20231218091806.7155-1-laura.nao@collabora.com
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20240502224703.103150-1-swboyd@chromium.org
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pfc-r8a779g0.c | 76 ++++++++++++--------------
- 1 file changed, 36 insertions(+), 40 deletions(-)
+ drivers/clk/qcom/clk-rcg2.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/pinctrl/renesas/pfc-r8a779g0.c b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-index f9f650f232e6e..3228a61ea4098 100644
---- a/drivers/pinctrl/renesas/pfc-r8a779g0.c
-+++ b/drivers/pinctrl/renesas/pfc-r8a779g0.c
-@@ -316,9 +316,9 @@
- #define IP1SR1_11_8	FM(MSIOF0_SCK)		FM(HSCK1_B)		FM(SCK1_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR1_15_12	FM(MSIOF0_RXD)		F_(0, 0)		F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR1_19_16	FM(HTX0)		FM(TX0)			F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP1SR1_23_20	FM(HCTS0_N)		FM(CTS0_N)		FM(PWM8_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP1SR1_27_24	FM(HRTS0_N)		FM(RTS0_N)		FM(PWM9_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP1SR1_31_28	FM(HSCK0)		FM(SCK0)		FM(PWM0_A)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR1_23_20	FM(HCTS0_N)		FM(CTS0_N)		FM(PWM8)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR1_27_24	FM(HRTS0_N)		FM(RTS0_N)		FM(PWM9)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR1_31_28	FM(HSCK0)		FM(SCK0)		FM(PWM0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
+diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
+index dc797bd137caf..e46bb60dcda41 100644
+--- a/drivers/clk/qcom/clk-rcg2.c
++++ b/drivers/clk/qcom/clk-rcg2.c
+@@ -1136,7 +1136,39 @@ clk_rcg2_shared_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	return clk_rcg2_recalc_rate(hw, parent_rate);
+ }
  
- /* IP2SR1 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
- #define IP2SR1_3_0	FM(HRX0)		FM(RX0)			F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-@@ -355,7 +355,7 @@
- #define IP1SR2_15_12	FM(CANFD0_RX)		FM(STPWT_EXTFXR)	F_(0, 0)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_19_16	FM(CANFD2_TX)		FM(TPU0TO2)		F_(0, 0)		FM(TCLK3_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_23_20	FM(CANFD2_RX)		FM(TPU0TO3)		FM(PWM1_B)		FM(TCLK4_A)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
--#define IP1SR2_27_24	FM(CANFD3_TX)		F_(0, 0)		FM(PWM2_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
-+#define IP1SR2_27_24	FM(CANFD3_TX)		F_(0, 0)		FM(PWM2)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- #define IP1SR2_31_28	FM(CANFD3_RX)		F_(0, 0)		FM(PWM3_B)		F_(0, 0)	F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0) F_(0, 0)
- 
- /* IP2SR2 */		/* 0 */			/* 1 */			/* 2 */			/* 3		4	 5	  6	   7	    8	     9	      A	       B	C	 D	  E	   F */
-@@ -827,15 +827,15 @@ static const u16 pinmux_data[] = {
- 
- 	PINMUX_IPSR_GPSR(IP1SR1_23_20,	HCTS0_N),
- 	PINMUX_IPSR_GPSR(IP1SR1_23_20,	CTS0_N),
--	PINMUX_IPSR_GPSR(IP1SR1_23_20,	PWM8_A),
-+	PINMUX_IPSR_GPSR(IP1SR1_23_20,	PWM8),
- 
- 	PINMUX_IPSR_GPSR(IP1SR1_27_24,	HRTS0_N),
- 	PINMUX_IPSR_GPSR(IP1SR1_27_24,	RTS0_N),
--	PINMUX_IPSR_GPSR(IP1SR1_27_24,	PWM9_A),
-+	PINMUX_IPSR_GPSR(IP1SR1_27_24,	PWM9),
- 
- 	PINMUX_IPSR_GPSR(IP1SR1_31_28,	HSCK0),
- 	PINMUX_IPSR_GPSR(IP1SR1_31_28,	SCK0),
--	PINMUX_IPSR_GPSR(IP1SR1_31_28,	PWM0_A),
-+	PINMUX_IPSR_GPSR(IP1SR1_31_28,	PWM0),
- 
- 	/* IP2SR1 */
- 	PINMUX_IPSR_GPSR(IP2SR1_3_0,	HRX0),
-@@ -937,7 +937,7 @@ static const u16 pinmux_data[] = {
- 	PINMUX_IPSR_GPSR(IP1SR2_23_20,	TCLK4_A),
- 
- 	PINMUX_IPSR_GPSR(IP1SR2_27_24,	CANFD3_TX),
--	PINMUX_IPSR_GPSR(IP1SR2_27_24,	PWM2_B),
-+	PINMUX_IPSR_GPSR(IP1SR2_27_24,	PWM2),
- 
- 	PINMUX_IPSR_GPSR(IP1SR2_31_28,	CANFD3_RX),
- 	PINMUX_IPSR_GPSR(IP1SR2_31_28,	PWM3_B),
-@@ -2090,13 +2090,13 @@ static const unsigned int pcie1_clkreq_n_mux[] = {
- 	PCIE1_CLKREQ_N_MARK,
- };
- 
--/* - PWM0_A ------------------------------------------------------------------- */
--static const unsigned int pwm0_a_pins[] = {
--	/* PWM0_A */
-+/* - PWM0 ------------------------------------------------------------------- */
-+static const unsigned int pwm0_pins[] = {
-+	/* PWM0 */
- 	RCAR_GP_PIN(1, 15),
- };
--static const unsigned int pwm0_a_mux[] = {
--	PWM0_A_MARK,
-+static const unsigned int pwm0_mux[] = {
-+	PWM0_MARK,
- };
- 
- /* - PWM1_A ------------------------------------------------------------------- */
-@@ -2117,13 +2117,13 @@ static const unsigned int pwm1_b_mux[] = {
- 	PWM1_B_MARK,
- };
- 
--/* - PWM2_B ------------------------------------------------------------------- */
--static const unsigned int pwm2_b_pins[] = {
--	/* PWM2_B */
-+/* - PWM2 ------------------------------------------------------------------- */
-+static const unsigned int pwm2_pins[] = {
-+	/* PWM2 */
- 	RCAR_GP_PIN(2, 14),
- };
--static const unsigned int pwm2_b_mux[] = {
--	PWM2_B_MARK,
-+static const unsigned int pwm2_mux[] = {
-+	PWM2_MARK,
- };
- 
- /* - PWM3_A ------------------------------------------------------------------- */
-@@ -2180,22 +2180,22 @@ static const unsigned int pwm7_mux[] = {
- 	PWM7_MARK,
- };
- 
--/* - PWM8_A ------------------------------------------------------------------- */
--static const unsigned int pwm8_a_pins[] = {
--	/* PWM8_A */
-+/* - PWM8 ------------------------------------------------------------------- */
-+static const unsigned int pwm8_pins[] = {
-+	/* PWM8 */
- 	RCAR_GP_PIN(1, 13),
- };
--static const unsigned int pwm8_a_mux[] = {
--	PWM8_A_MARK,
-+static const unsigned int pwm8_mux[] = {
-+	PWM8_MARK,
- };
- 
--/* - PWM9_A ------------------------------------------------------------------- */
--static const unsigned int pwm9_a_pins[] = {
--	/* PWM9_A */
-+/* - PWM9 ------------------------------------------------------------------- */
-+static const unsigned int pwm9_pins[] = {
-+	/* PWM9 */
- 	RCAR_GP_PIN(1, 14),
- };
--static const unsigned int pwm9_a_mux[] = {
--	PWM9_A_MARK,
-+static const unsigned int pwm9_mux[] = {
-+	PWM9_MARK,
- };
- 
- /* - QSPI0 ------------------------------------------------------------------ */
-@@ -2658,18 +2658,18 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
- 	SH_PFC_PIN_GROUP(pcie0_clkreq_n),
- 	SH_PFC_PIN_GROUP(pcie1_clkreq_n),
- 
--	SH_PFC_PIN_GROUP(pwm0_a),		/* suffix might be updated */
-+	SH_PFC_PIN_GROUP(pwm0),
- 	SH_PFC_PIN_GROUP(pwm1_a),
- 	SH_PFC_PIN_GROUP(pwm1_b),
--	SH_PFC_PIN_GROUP(pwm2_b),		/* suffix might be updated */
-+	SH_PFC_PIN_GROUP(pwm2),
- 	SH_PFC_PIN_GROUP(pwm3_a),
- 	SH_PFC_PIN_GROUP(pwm3_b),
- 	SH_PFC_PIN_GROUP(pwm4),
- 	SH_PFC_PIN_GROUP(pwm5),
- 	SH_PFC_PIN_GROUP(pwm6),
- 	SH_PFC_PIN_GROUP(pwm7),
--	SH_PFC_PIN_GROUP(pwm8_a),		/* suffix might be updated */
--	SH_PFC_PIN_GROUP(pwm9_a),		/* suffix might be updated */
-+	SH_PFC_PIN_GROUP(pwm8),
-+	SH_PFC_PIN_GROUP(pwm9),
- 
- 	SH_PFC_PIN_GROUP(qspi0_ctrl),
- 	BUS_DATA_PIN_GROUP(qspi0_data, 2),
-@@ -2923,8 +2923,7 @@ static const char * const pcie_groups[] = {
- };
- 
- static const char * const pwm0_groups[] = {
--	/* suffix might be updated */
--	"pwm0_a",
-+	"pwm0",
- };
- 
- static const char * const pwm1_groups[] = {
-@@ -2933,8 +2932,7 @@ static const char * const pwm1_groups[] = {
- };
- 
- static const char * const pwm2_groups[] = {
--	/* suffix might be updated */
--	"pwm2_b",
-+	"pwm2",
- };
- 
- static const char * const pwm3_groups[] = {
-@@ -2959,13 +2957,11 @@ static const char * const pwm7_groups[] = {
- };
- 
- static const char * const pwm8_groups[] = {
--	/* suffix might be updated */
--	"pwm8_a",
-+	"pwm8",
- };
- 
- static const char * const pwm9_groups[] = {
--	/* suffix might be updated */
--	"pwm9_a",
-+	"pwm9",
- };
- 
- static const char * const qspi0_groups[] = {
++static int clk_rcg2_shared_init(struct clk_hw *hw)
++{
++	/*
++	 * This does a few things:
++	 *
++	 *  1. Sets rcg->parked_cfg to reflect the value at probe so that the
++	 *     proper parent is reported from clk_rcg2_shared_get_parent().
++	 *
++	 *  2. Clears the force enable bit of the RCG because we rely on child
++	 *     clks (branches) to turn the RCG on/off with a hardware feedback
++	 *     mechanism and only set the force enable bit in the RCG when we
++	 *     want to make sure the clk stays on for parent switches or
++	 *     parking.
++	 *
++	 *  3. Parks shared RCGs on the safe source at registration because we
++	 *     can't be certain that the parent clk will stay on during boot,
++	 *     especially if the parent is shared. If this RCG is enabled at
++	 *     boot, and the parent is turned off, the RCG will get stuck on. A
++	 *     GDSC can wedge if is turned on and the RCG is stuck on because
++	 *     the GDSC's controller will hang waiting for the clk status to
++	 *     toggle on when it never does.
++	 *
++	 * The safest option here is to "park" the RCG at init so that the clk
++	 * can never get stuck on or off. This ensures the GDSC can't get
++	 * wedged.
++	 */
++	clk_rcg2_shared_disable(hw);
++
++	return 0;
++}
++
+ const struct clk_ops clk_rcg2_shared_ops = {
++	.init = clk_rcg2_shared_init,
+ 	.enable = clk_rcg2_shared_enable,
+ 	.disable = clk_rcg2_shared_disable,
+ 	.get_parent = clk_rcg2_shared_get_parent,
 -- 
 2.43.0
 
