@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-63489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4ACD94192F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E234941932
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02FBA1C23643
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F10E1C20FAB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637E41A6161;
-	Tue, 30 Jul 2024 16:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841AF188014;
+	Tue, 30 Jul 2024 16:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+X2x1Y8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfiaFyU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BAE1A6160;
-	Tue, 30 Jul 2024 16:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42841184556;
+	Tue, 30 Jul 2024 16:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356994; cv=none; b=lFKKt8fb2EBZ8Zrb5Jz70wOxdiXWJrlK5Odql2b7SmWCL9zznCj7h6bqCeYUgsblZ7j/2RDwtmZk/4MSS1plZCp+kyYZ4Q9QsdlZl6gsCxvLEYztxO6aGpJ9SPbXhEJSCefPPHjmrVOMj0F+g9omUSmwg2UMJiHcyHy79kIpuCQ=
+	t=1722357004; cv=none; b=iYk8+En70jHdJnqBrvZNRjevhQKf4Xsf4TQfPvJ2ML1852nxnt+/np9u2ephoKGaFXvzp3fEI3hccOPh7EZHiR8eW1xiavYt2CD25AAcJBnNwbEHawG8PCFY6ETHU0p/keU/ouQGsO9vzvuJIf5kmL/+9VaPjAGRb0B5IF/reyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356994; c=relaxed/simple;
-	bh=i8pgX3ZTm8KkuHnEGGZ3WQ0Wj+gvf/6ZhxDcX2B/kh8=;
+	s=arc-20240116; t=1722357004; c=relaxed/simple;
+	bh=Zr+c7zaL9G0H3BT/kJEK1Wq890LxCMK9nLLzaBWbmd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lR8gBUgcV6UKkVM0+kCAFmYbLlqP24Su4fAo7cjHbYSfuM0guVWI88lx+nZtKx39ybSXI8pOuGbQS+9vxqDNNc48YmFusyCPFwsiPedPSRnZmELIal+bOV5MyrtL86+2CKrj0I811K1w4iHMO0Z7eAOA67E8FYmr2IxuLPXxhfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+X2x1Y8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F79BC32782;
-	Tue, 30 Jul 2024 16:29:53 +0000 (UTC)
+	 MIME-Version; b=nB92hBxydCCU2hChWKo14WkBaQNBh3DOzkIFn3f67C4fIg/i0ZuM8glo3sppwMw09/lgUteSdz5bmxNWke0p0I9n5v/aN+L/efFRAbIKY78jK4LZssXX8SX1CvQnlqr6FUfnCMpgggWD78ET7IqSSMPxLP/gvBpM/kNAlGLFnfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfiaFyU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC00CC4AF0A;
+	Tue, 30 Jul 2024 16:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356994;
-	bh=i8pgX3ZTm8KkuHnEGGZ3WQ0Wj+gvf/6ZhxDcX2B/kh8=;
+	s=korg; t=1722357004;
+	bh=Zr+c7zaL9G0H3BT/kJEK1Wq890LxCMK9nLLzaBWbmd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+X2x1Y8qA3zx66fpP4nLIdMD1Te8l4ZABlDY0a2ueGv8mqZO/xCjELlLTFt5ADwX
-	 mEO7bUln/9UjKBSFU8xigwzLsvfLXgLpIROoDZq/UIKJerSH80Tlk8kz4PWD2Z1K+n
-	 6Y008/3ZSM3Mhr2vv/jpyhXGIJVIJfNr1eyFWKfk=
+	b=jfiaFyU2yRFemFxhFA6nzqv6cmn/WCbkYiuc+73y6c2BUhX+lGR/tapT2Rwbba7ET
+	 EZaLhm9GETdonPF6YhN6sILuCbnOc8tFGvS1cwIhJV+/I9jx+A+YBsFrcU95ysNPuc
+	 6CzM0AlDvBxkGayqfiCoeELlprXBRzDwPwLgM9IU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 208/809] netfilter: nf_tables: rise cap on SELinux secmark context
-Date: Tue, 30 Jul 2024 17:41:24 +0200
-Message-ID: <20240730151732.822671153@linuxfoundation.org>
+Subject: [PATCH 6.10 209/809] wifi: mac80211: add ieee80211_tdls_sta_link_id()
+Date: Tue, 30 Jul 2024 17:41:25 +0200
+Message-ID: <20240730151732.861315823@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -65,32 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit e29630247be24c3987e2b048f8e152771b32d38b ]
+[ Upstream commit d42fcaece03654a4b21d2da88d68ed913e0b6c46 ]
 
-secmark context is artificially limited 256 bytes, rise it to 4Kbytes.
+We've open-coded this twice and will need it again,
+add ieee80211_tdls_sta_link_id() to get the one link
+ID for a TDLS STA.
 
-Fixes: fb961945457f ("netfilter: nf_tables: add SECMARK support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240612143707.9f8141ae1725.I343822bbba0ae08dedb2f54a0ce87f2ae5ebeb2b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 0b2d9d9aec2b ("wifi: mac80211: correcty limit wider BW TDLS STAs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/netfilter/nf_tables.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/sta_info.h | 6 ++++++
+ net/mac80211/tx.c       | 6 ++----
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
-index aa4094ca2444f..639894ed1b973 100644
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -1376,7 +1376,7 @@ enum nft_secmark_attributes {
- #define NFTA_SECMARK_MAX	(__NFTA_SECMARK_MAX - 1)
+diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+index bd5e2f7146f67..9195d5a2de0a8 100644
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -727,6 +727,12 @@ struct sta_info {
+ 	struct ieee80211_sta sta;
+ };
  
- /* Max security context length */
--#define NFT_SECMARK_CTX_MAXLEN		256
-+#define NFT_SECMARK_CTX_MAXLEN		4096
++static inline int ieee80211_tdls_sta_link_id(struct sta_info *sta)
++{
++	/* TDLS STA can only have a single link */
++	return sta->sta.valid_links ? __ffs(sta->sta.valid_links) : 0;
++}
++
+ static inline enum nl80211_plink_state sta_plink_state(struct sta_info *sta)
+ {
+ #ifdef CONFIG_MAC80211_MESH
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index f861d99e5f055..72a9ba8bc5fd9 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2774,8 +2774,7 @@ static struct sk_buff *ieee80211_build_hdr(struct ieee80211_sub_if_data *sdata,
  
- /**
-  * enum nft_reject_types - nf_tables reject expression reject types
+ 		if (tdls_peer) {
+ 			/* For TDLS only one link can be valid with peer STA */
+-			int tdls_link_id = sta->sta.valid_links ?
+-					   __ffs(sta->sta.valid_links) : 0;
++			int tdls_link_id = ieee80211_tdls_sta_link_id(sta);
+ 			struct ieee80211_link_data *link;
+ 
+ 			/* DA SA BSSID */
+@@ -3101,8 +3100,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 	case NL80211_IFTYPE_STATION:
+ 		if (test_sta_flag(sta, WLAN_STA_TDLS_PEER)) {
+ 			/* For TDLS only one link can be valid with peer STA */
+-			int tdls_link_id = sta->sta.valid_links ?
+-					   __ffs(sta->sta.valid_links) : 0;
++			int tdls_link_id = ieee80211_tdls_sta_link_id(sta);
+ 			struct ieee80211_link_data *link;
+ 
+ 			/* DA SA BSSID */
 -- 
 2.43.0
 
