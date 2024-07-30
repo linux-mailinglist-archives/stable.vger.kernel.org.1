@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19862941BC2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5361B941A6B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35B81F210B2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DAC6B2469B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A591A1898ED;
-	Tue, 30 Jul 2024 16:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAF01A6192;
+	Tue, 30 Jul 2024 16:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGhgKgOO"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGKzG2nD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A87B17D8BB;
-	Tue, 30 Jul 2024 16:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079961A6195;
+	Tue, 30 Jul 2024 16:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358717; cv=none; b=cbJ4Vra4+GW2fvnIyVyesrAF53Musn5DVhWw9z3BXvxtz4D3SoDgGt1lvqNmZjmh/fSRPC7XBQXzixR76zVr35avs0INkDGVmAOZ5xlsG2h+pwRixAvCimmA2DZ1sm9lTtpfzipa521AtbXaTNdl2pf6dDzejJ5BdC3aXhrHHFY=
+	t=1722357331; cv=none; b=tBdt9vgAY6LO/RivxAA9ju6osyKD7UFKDUURTzSQ9NWMXSpm8nCqf5AusBRpkqPUUptZDhExtArmHX7vNba6vVK2tBYGIWNW94HDDjRWFruM18RavBCBzH6HsCmJa1koPzSD2dK1Op7Q0FL1/Z/eGpxkfOduRg6paQQPCJMB0CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358717; c=relaxed/simple;
-	bh=Fu4ZYTGsO1gsgCkevfo1irf1SDsShIjFP7TaiRAooHE=;
+	s=arc-20240116; t=1722357331; c=relaxed/simple;
+	bh=xaI7na7rCDNi3cCWxgaH5YahjeKZHl0X+RAG1wsklY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5KJJeUYJIX4pF1jDgxxYn58GbelCPuTHpBqFpJiKQcNCP03VJADxiXJ8RqE4izB/k9i80iUNJ2zBCnBHRXafSU5bsK/w6rVuAQ/Fy5iuP0HQHpLlZ8Y2W7ZqkmtgQOUrBfAA9AguLxeQ+9O2eKwORjs8H+xf4aeXIHrYHLLNNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGhgKgOO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA074C32782;
-	Tue, 30 Jul 2024 16:58:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dYpq7Gj6pWuXyqmjblcDZqHKbM0GEy84onczhqZeHD6aJO8R3q1z/xrg4C2IDv6pwbiNRzg1ZDdg95apaS6EqNpWpLqXVDv09jvWls6xuHg62lasvmi/tcMKfSU39Qi6s4CHnApKQF4hESIDI45KB8avQ/tGaZKKd1jN8cE84ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGKzG2nD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB9BC32782;
+	Tue, 30 Jul 2024 16:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358717;
-	bh=Fu4ZYTGsO1gsgCkevfo1irf1SDsShIjFP7TaiRAooHE=;
+	s=korg; t=1722357330;
+	bh=xaI7na7rCDNi3cCWxgaH5YahjeKZHl0X+RAG1wsklY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGhgKgOOwJtTpoe81Y8/3xdlw8zqeOm0SLi1YzUvqsnFUzUB2lx/QPA+G74F4bMkU
-	 8PcWiaEz6962sqPEudxjqbg0mMzMTD4ANiJtSnK4McBs+gCQejyku75zNmuMszNYdu
-	 vtscNwUH9wWLpFNWmtCL/Xm3Z3VcCZ2/G/MvTY3M=
+	b=JGKzG2nDN9bDQZU+k2pfv6i0xlbbZfXU0Jf+8/vi0WnWi0AllgQyNwGTb7M5Zr7Ji
+	 I9J+GS8OvKGdO0H4t6zpYDfVzsD4Yb03mSl0B6o7/CvVgvN6U/nCNcPilzPjMNgs+j
+	 +5xJEce4HavMPb2RVJ1BlkgZGXqZrbuhYCCyx6z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Xi (Alex) Liu" <xi.liu@amd.com>,
-	Sung Joon Kim <sungjoon.kim@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>
-Subject: [PATCH 6.6 388/568] drm/amd/display: Check for NULL pointer
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>, Csókás@web.codeaurora.org
+Subject: [PATCH 6.1 262/440] rtc: interface: Add RTC offset to alarm after fix-up
 Date: Tue, 30 Jul 2024 17:48:15 +0200
-Message-ID: <20240730151655.029809380@linuxfoundation.org>
+Message-ID: <20240730151626.074465147@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sung Joon Kim <sungjoon.kim@amd.com>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-commit 4ab68e168ae1695f7c04fae98930740aaf7c50fa upstream.
+[ Upstream commit 463927a8902a9f22c3633960119410f57d4c8920 ]
 
-[why & how]
-Need to make sure plane_state is initialized
-before accessing its members.
+`rtc_add_offset()` is called by `__rtc_read_time()`
+and `__rtc_read_alarm()` to add the RTC's offset to
+the raw read-outs from the device drivers. However,
+in the latter case, a fix-up algorithm is run if
+the RTC device does not report a full `struct rtc_time`
+alarm value. In that case, the offset was forgot to be
+added.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Xi (Alex) Liu <xi.liu@amd.com>
-Signed-off-by: Sung Joon Kim <sungjoon.kim@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 295d91cbc700651782a60572f83c24861607b648)
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fd6792bb022e ("rtc: fix alarm read and set offset")
+
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Link: https://lore.kernel.org/r/20240619140451.2800578-1-csokas.bence@prolan.hu
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_surface.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/rtc/interface.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-@@ -154,7 +154,8 @@ const struct dc_plane_status *dc_plane_g
- 		if (pipe_ctx->plane_state != plane_state)
- 			continue;
+diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+index 3d0fbc644f578..c928037bf6f3a 100644
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -274,10 +274,9 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 			return err;
  
--		pipe_ctx->plane_state->status.is_flip_pending = false;
-+		if (pipe_ctx->plane_state)
-+			pipe_ctx->plane_state->status.is_flip_pending = false;
+ 		/* full-function RTCs won't have such missing fields */
+-		if (rtc_valid_tm(&alarm->time) == 0) {
+-			rtc_add_offset(rtc, &alarm->time);
+-			return 0;
+-		}
++		err = rtc_valid_tm(&alarm->time);
++		if (!err)
++			goto done;
  
- 		break;
- 	}
+ 		/* get the "after" timestamp, to detect wrapped fields */
+ 		err = rtc_read_time(rtc, &now);
+@@ -379,6 +378,8 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 	if (err)
+ 		dev_warn(&rtc->dev, "invalid alarm value: %ptR\n",
+ 			 &alarm->time);
++	else
++		rtc_add_offset(rtc, &alarm->time);
+ 
+ 	return err;
+ }
+-- 
+2.43.0
+
 
 
 
