@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-64451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7700E941E08
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:25:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D05941BB3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A84DB21252
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19D8A1F24109
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9A61A76B4;
-	Tue, 30 Jul 2024 17:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9A8189903;
+	Tue, 30 Jul 2024 16:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ff/E0RO/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMZqAEUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A2B1A76AB;
-	Tue, 30 Jul 2024 17:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A7618801A;
+	Tue, 30 Jul 2024 16:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360165; cv=none; b=K4johG0wCJCat0jNwsk4lNcHGrzzWJJ3dzTzPD6rPqqFVJriNOHaNpCHw3XYqv4IC/1HKqGtI/5/vgYfjp8jDdN+TgPaeEte9V9qa6Mrj3NWqF1UmAyWeS0U+7eA2cPZRaUXP8es3JgdW8+z6pbVHpoHbsh0uHNTVlDPsEoMTCQ=
+	t=1722358682; cv=none; b=tuiovJvZlpMf31bAEmtsalbCP+MhsZHbpsYTiGArWUJNz7ARiCQvfhIILKpaCyGTm+RfNH832r2qQnvQY1VH0sPiukhPm4mrfGBApPSS7z9pTzKRByKuW8e7XY+VCOEP8imHxD+z9gr9oiRc089r/j7iVZlzt0gxStmN8KMJ3I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360165; c=relaxed/simple;
-	bh=Ki0/cVyFG7iOgYEIqqVhxYMv+YRpoOAlXw/dU/LAa4o=;
+	s=arc-20240116; t=1722358682; c=relaxed/simple;
+	bh=FEimZ++kVNIDNcvbdXHm02Y22dYQhGjUAD1cK1y8jTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzPzQxX1pM7uRZ544c1ma7JpU0z8EXzdeqwvBV/dlVd15/m1rNkNrfo3Kn+w+Cys0F6Q36l8pt2udxEr7YdbAU58eFOQqiKuPnr9p+tmijcwJ/jaKMgrJLCQX3gMQ9P3QAR6l1yhEwrY54GuDsrz/LrPyBzwPpG0nzpLRdX2KFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ff/E0RO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF690C32782;
-	Tue, 30 Jul 2024 17:22:44 +0000 (UTC)
+	 MIME-Version; b=Lbh+NVIzWCpEl3q3AxttsaD45CvquSfgKkAN0C8qMy21cXGs1XYus5XC8J+zGEwvThxw91XKy7D1H6QJdwmpKc04YXCntfJzBT64Muq1R4UJ3/M3IWYDlWndfgVVp9ZYSt1zO6f0R60RNG5fi728rKWuewMpi+BzQX3gae6QMZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMZqAEUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C9C32782;
+	Tue, 30 Jul 2024 16:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360165;
-	bh=Ki0/cVyFG7iOgYEIqqVhxYMv+YRpoOAlXw/dU/LAa4o=;
+	s=korg; t=1722358681;
+	bh=FEimZ++kVNIDNcvbdXHm02Y22dYQhGjUAD1cK1y8jTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ff/E0RO/zebA9QDw5YxhKurLhO9A/uo9GlGzzEOuMcTNBTyP3253/fcmn8CUgonGP
-	 XB7gqLw8ROd5NTzTpnw8wkfmE0Jq/SAjfTw+f1lVpY1EbobWzd26shScIsnJg9sLhr
-	 PaX5N14jyKhassYwe4oddzYT20aGMHXuS0iHp6DI=
+	b=UMZqAEUhaGHI9B9ZCjsJsYEO0h9JYMOZm8C0V7VAJCrAhHzTpSSDivs7YFOZFQHFF
+	 1thYlPKsny/9nnSsQxLDlFAhiGkHPvaV7CIcMuWsOhN3Y1mswpPmc5Guk3VZnllvuX
+	 pG4KSR1izWOeULI1qs6QL6mJ0V2ksbA4IsX2vobI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Yao <hao.yao@intel.com>,
-	Wentong Wu <wentong.wu@intel.com>,
-	Jason Chen <jason.z.chen@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.10 616/809] media: ivsc: csi: dont count privacy on as error
+	Ma Ke <make24@iscas.ac.cn>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 6.6 385/568] drm/gma500: fix null pointer dereference in cdv_intel_lvds_get_modes
 Date: Tue, 30 Jul 2024 17:48:12 +0200
-Message-ID: <20240730151749.169413984@linuxfoundation.org>
+Message-ID: <20240730151654.914141080@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentong Wu <wentong.wu@intel.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit a813f168336ec4ef725b836e598cd9dc14f76dd7 upstream.
+commit cb520c3f366c77e8d69e4e2e2781a8ce48d98e79 upstream.
 
-Prior to the ongoing command privacy is on, it would return -1 to
-indicate the current privacy status, and the ongoing command would
-be well executed by firmware as well, so this is not error. This
-patch changes its behavior to notify privacy on directly by V4L2
-privacy control instead of reporting error.
+In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
+is assigned to mode, which will lead to a NULL pointer dereference on
+failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Fixes: 29006e196a56 ("media: pci: intel: ivsc: Add CSI submodule")
-Cc: stable@vger.kernel.org # for 6.6 and later
-Reported-by: Hao Yao <hao.yao@intel.com>
-Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-Tested-by: Jason Chen <jason.z.chen@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: stable@vger.kernel.org
+Fixes: 6a227d5fd6c4 ("gma500: Add support for Cedarview")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240709113311.37168-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/intel/ivsc/mei_csi.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/gma500/cdv_intel_lvds.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/pci/intel/ivsc/mei_csi.c
-+++ b/drivers/media/pci/intel/ivsc/mei_csi.c
-@@ -192,7 +192,11 @@ static int mei_csi_send(struct mei_csi *
- 
- 	/* command response status */
- 	ret = csi->cmd_response.status;
--	if (ret) {
-+	if (ret == -1) {
-+		/* notify privacy on instead of reporting error */
-+		ret = 0;
-+		v4l2_ctrl_s_ctrl(csi->privacy_ctrl, 1);
-+	} else if (ret) {
- 		ret = -EINVAL;
- 		goto out;
+--- a/drivers/gpu/drm/gma500/cdv_intel_lvds.c
++++ b/drivers/gpu/drm/gma500/cdv_intel_lvds.c
+@@ -311,6 +311,9 @@ static int cdv_intel_lvds_get_modes(stru
+ 	if (mode_dev->panel_fixed_mode != NULL) {
+ 		struct drm_display_mode *mode =
+ 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
++		if (!mode)
++			return 0;
++
+ 		drm_mode_probed_add(connector, mode);
+ 		return 1;
  	}
 
 
