@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53CF3941934
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:30:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF36941DDA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:22:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84E6F1C235FC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9541B28928E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A871A619E;
-	Tue, 30 Jul 2024 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB20918801C;
+	Tue, 30 Jul 2024 17:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqs/xOHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1Ckj0UP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF1B148848;
-	Tue, 30 Jul 2024 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65671A76AF;
+	Tue, 30 Jul 2024 17:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357014; cv=none; b=CnlcZsXyBBuGVJdK79M4AMlr/fZaXm9iR7uMdGIm2VSbr18wYk3ZE//RZFygfETcZRBbUOxKwd2uvWIoGPyX2d1MiZclYLKdzfs4KPzBCxT0TvMT7q3mTayu76tIIMPB2bxI9DWSjDJp0QqI6FeC8zsNbQ2A6Fzr+oeayQqYRew=
+	t=1722360132; cv=none; b=EaCTy4+kWDw8iez1JIfJThWNOWaSYWJc/CD7GVnZkkA+wbGxAjUs9cSAgrcN67p9siQDdBSyI9JF1YJEt3oVAJrlYDKCYK0E4pwFhmZq2ZVOXZhXkduH7HVK7RIiA8Ke2OJcL0c87K0ZMrsDUTaSliB23wsNefGkIsEF4BgbnvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357014; c=relaxed/simple;
-	bh=qMKCBbNj5JTtcwSX5jHFyPTcWMP+FKOAQKx7G3TJEDw=;
+	s=arc-20240116; t=1722360132; c=relaxed/simple;
+	bh=pCc+jRz0Fs/cF8m2sUZng7Xb/7btWKtFnLDTFFbou5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Da6DTNlJTYdpv3/rXtj5WPs72Rxisb0UNAY6mc2lA1i7JAirGD5crmfrcxbUnRRlA8GSMHgZE7PpVJ6xn31PPBQlPzz/vIpD70UvSOGb9TkxiV4cnWGBKo1fWcuyt26DdjrehUeM0Wu+nV2OHifdBOAfzxj45S+GBUzwfoaC/pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqs/xOHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66915C32782;
-	Tue, 30 Jul 2024 16:30:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RNdJ9FSGyyDOG+07+iAkLzdHR6UgdRswq0OjpZ5r3YFOVfGwGd4B722UDKzbj71aadFhjCmEpa9iAUf95eidjpFCIIcxdkcqsUzab+TzPMMnNYTmuEmzITVG2RLdEr7u9VZlF5RPwkPnLcbP81k8CiX8Lm6voY1vOjYpKuzP/mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1Ckj0UP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D33C32782;
+	Tue, 30 Jul 2024 17:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357013;
-	bh=qMKCBbNj5JTtcwSX5jHFyPTcWMP+FKOAQKx7G3TJEDw=;
+	s=korg; t=1722360132;
+	bh=pCc+jRz0Fs/cF8m2sUZng7Xb/7btWKtFnLDTFFbou5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqs/xOHKsTBe+2ErE7f0pGGQY0xX0T6ef4E5MutrPYrnbsbRZdx0xo813+PZyXJ+6
-	 fLVQLSWYE4F1HAnsVg1IYLdaPiiWiRbuDEk6u6CIYVegcB3X4uxzBLyNoPo1jSKQwG
-	 gPD1O1PApkCIatQRNnZBdgfl6F35ZJfre+oT7UaA=
+	b=p1Ckj0UPH+j62j2bsM7LthZxSdg4/+9YUXApyon6e6aq2LtmZ+TKFCZ7a/zE2FZiY
+	 +uFg+JcOd2N0FiyRotjRmkZR0s0JZA/fGuvEy28dbVskvjFg7PISmlVvIo76yCfxLG
+	 /n/UFVb6U/7lYRmNfdpsHBiHUgR+v0jgU2RgH8sI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 250/440] fs/ntfs3: Replace inode_trylock with inode_lock
+	"Dustin L. Howett" <dustin@howett.net>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.10 607/809] leds: triggers: Flush pending brightness before activating trigger
 Date: Tue, 30 Jul 2024 17:48:03 +0200
-Message-ID: <20240730151625.614549256@linuxfoundation.org>
+Message-ID: <20240730151748.810030938@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 69505fe98f198ee813898cbcaf6770949636430b ]
+commit ab477b766edd3bfb6321a6e3df4c790612613fae upstream.
 
-The issue was detected due to xfstest 465 failing.
+The race fixed in timer_trig_activate() between a blocking
+set_brightness() call and trigger->activate() can affect any trigger.
+So move the call to flush_work() into led_trigger_set() where it can
+avoid the race for all triggers.
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0db37915d912 ("leds: avoid races with workqueue")
+Fixes: 8c0f693c6eff ("leds: avoid flush_work in atomic context")
+Cc: stable@vger.kernel.org
+Tested-by: Dustin L. Howett <dustin@howett.net>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/file.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/leds/led-triggers.c          |    6 ++++++
+ drivers/leds/trigger/ledtrig-timer.c |    5 -----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index 14efe46df91ef..6f03de747e375 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -396,10 +396,7 @@ static int ntfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- 		}
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -194,6 +194,12 @@ int led_trigger_set(struct led_classdev
+ 		spin_unlock(&trig->leddev_list_lock);
+ 		led_cdev->trigger = trig;
  
- 		if (ni->i_valid < to) {
--			if (!inode_trylock(inode)) {
--				err = -EAGAIN;
--				goto out;
--			}
-+			inode_lock(inode);
- 			err = ntfs_extend_initialized_size(file, ni,
- 							   ni->i_valid, to);
- 			inode_unlock(inode);
--- 
-2.43.0
-
++		/*
++		 * If "set brightness to 0" is pending in workqueue,
++		 * we don't want that to be reordered after ->activate()
++		 */
++		flush_work(&led_cdev->set_brightness_work);
++
+ 		ret = 0;
+ 		if (trig->activate)
+ 			ret = trig->activate(led_cdev);
+--- a/drivers/leds/trigger/ledtrig-timer.c
++++ b/drivers/leds/trigger/ledtrig-timer.c
+@@ -110,11 +110,6 @@ static int timer_trig_activate(struct le
+ 		led_cdev->flags &= ~LED_INIT_DEFAULT_TRIGGER;
+ 	}
+ 
+-	/*
+-	 * If "set brightness to 0" is pending in workqueue, we don't
+-	 * want that to be reordered after blink_set()
+-	 */
+-	flush_work(&led_cdev->set_brightness_work);
+ 	led_blink_set(led_cdev, &led_cdev->blink_delay_on,
+ 		      &led_cdev->blink_delay_off);
+ 
 
 
 
