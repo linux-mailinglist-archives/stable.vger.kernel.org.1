@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-63461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E3494190B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:28:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B58B941DEF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B14286975
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:28:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35C04289A67
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74231A6192;
-	Tue, 30 Jul 2024 16:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC141A76B2;
+	Tue, 30 Jul 2024 17:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07qfvq8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6IhWLeu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61381A6160;
-	Tue, 30 Jul 2024 16:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222AC1A76A9;
+	Tue, 30 Jul 2024 17:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356906; cv=none; b=MurtrB68mi+bK69UQ5WyJN9cyr0Z9+2wKe8hf05pqWV6gOftfsQdFP6Jyvf8Cvu63n5Zu055MzvWp34kHqDhSyr1Dwhrth6zroSDqVXVZfj108DWWAB8z/ShtfjMoEreUf6W+C2HzHUBymAa2TEYFBSg5MA60MMjlgkEai4pRNU=
+	t=1722360205; cv=none; b=td0vyXBy/Hlkz88WOfsAel+/p+HjgiPYZoEU5QIr2/ZdNP7Asevz34FStLXcCwuJzsQBrJlp3sU6IM7YVOEIpqUjRiycZAbu/M4OpxM7YRSfn+xBpVTscnBbX3DF6pZLSQWqZk0JyArMy0mNUw/FZhi98E1SjZJYGiDfxi6FgA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356906; c=relaxed/simple;
-	bh=fHKEwmorGuj6pOpI1BF53lVELzUVG2IwRKwIDnR4z6Q=;
+	s=arc-20240116; t=1722360205; c=relaxed/simple;
+	bh=lzDI+wbmrTmX4yBjyKm6jyJ6kXlAD0fyFy9rEQ0VIdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gdva8wEUiKHvSnKZ1JPEc1w4ky6IL0OWhS29SyXzXMKUEhY+cyQD9CpVZ67rNZVWmpCQlDVQ7jN3xcDiGQZKh0xRf0Q45sYMB2rA7LdEEXL7l85OmguyRiGEZ6PzT7c6vvypH/edb9DjsuWyt/1/RPR/zJpPve2W2wIqo1c3KbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07qfvq8g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C428C4AF0E;
-	Tue, 30 Jul 2024 16:28:25 +0000 (UTC)
+	 MIME-Version; b=D+fYj180ndqinz8J2XzgvCRj5MWRmEfIPbc5/m+tJe+IqKBt+P7QufqOK4Jx3zG3XTRPsjRWZS5bmFj9nqG5tKzL9kkt2YtcJ3PjdNdfBa3HpiwAiGCD8HQ1jo+AfS7Bgx0mQb/zMxaUsGKMBgaEe8ZAwGO1eAIhAdpooMPAcBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6IhWLeu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A030DC32782;
+	Tue, 30 Jul 2024 17:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356906;
-	bh=fHKEwmorGuj6pOpI1BF53lVELzUVG2IwRKwIDnR4z6Q=;
+	s=korg; t=1722360205;
+	bh=lzDI+wbmrTmX4yBjyKm6jyJ6kXlAD0fyFy9rEQ0VIdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07qfvq8gY7Z1tNOV1iWoVTCZON7sBPgRrNytU4WYGbPN09HiVyTlLeVY5JhYclyO4
-	 RWUmGSkVu8Zs5mzXInFG9oQk8JalV41oJQJjDHgY165v/ZZupr2in3xIwpYmy5n19Q
-	 RoRN1wfT7TXasokYsDLKu2UnDNgJ/0b+NDWQFYug=
+	b=r6IhWLeuRvSBZYinFm+tHToi1f/Rk6IDtGk3hY4CRlV0aLWXjTGQkHjcMiU6Dtd7A
+	 XgYzvhpbUYbxa84FqAdEj4/+pKXlTei3prpgVMSS3udndBSywvLnJpR3AF9rO+Phxi
+	 QwSppoyMzxXIjSox3rSpDKZtGZnRyXXAQC96/RBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/440] fs/ntfs3: Fix transform resident to nonresident for compressed files
+	stable@goodmis.org,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"levi.yun" <yeoreum.yun@arm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.10 597/809] trace/pid_list: Change gfp flags in pid_list_fill_irq()
 Date: Tue, 30 Jul 2024 17:47:53 +0200
-Message-ID: <20240730151625.229176401@linuxfoundation.org>
+Message-ID: <20240730151748.410228602@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: levi.yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 25610ff98d4a34e6a85cbe4fd8671be6b0829f8f ]
+commit 7dc836187f7c6f70a82b4521503e9f9f96194581 upstream.
 
-Сorrected calculation of required space len (in clusters)
-for attribute data storage in case of compression.
+pid_list_fill_irq() runs via irq_work.
+When CONFIG_PREEMPT_RT is disabled, it would run in irq_context.
+so it shouldn't sleep while memory allocation.
 
-Fixes: be71b5cba2e64 ("fs/ntfs3: Add attrib operations")
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change gfp flags from GFP_KERNEL to GFP_NOWAIT to prevent sleep in
+irq_work.
+
+This change wouldn't impact functionality in practice because the worst-size
+is 2K.
+
+Cc: stable@goodmis.org
+Fixes: 8d6e90983ade2 ("tracing: Create a sparse bitmask for pid filtering")
+Link: https://lore.kernel.org/20240704150226.1359936-1-yeoreum.yun@arm.com
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: levi.yun <yeoreum.yun@arm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/attrib.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ kernel/trace/pid_list.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 180996c213ccf..f39987f080ee1 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -242,7 +242,7 @@ int attr_make_nonresident(struct ntfs_inode *ni, struct ATTRIB *attr,
- 	struct ntfs_sb_info *sbi;
- 	struct ATTRIB *attr_s;
- 	struct MFT_REC *rec;
--	u32 used, asize, rsize, aoff, align;
-+	u32 used, asize, rsize, aoff;
- 	bool is_data;
- 	CLST len, alen;
- 	char *next;
-@@ -263,10 +263,13 @@ int attr_make_nonresident(struct ntfs_inode *ni, struct ATTRIB *attr,
- 	rsize = le32_to_cpu(attr->res.data_size);
- 	is_data = attr->type == ATTR_DATA && !attr->name_len;
+--- a/kernel/trace/pid_list.c
++++ b/kernel/trace/pid_list.c
+@@ -354,7 +354,7 @@ static void pid_list_refill_irq(struct i
+ 	while (upper_count-- > 0) {
+ 		union upper_chunk *chunk;
  
--	align = sbi->cluster_size;
--	if (is_attr_compressed(attr))
--		align <<= NTFS_LZNT_CUNIT;
--	len = (rsize + align - 1) >> sbi->cluster_bits;
-+	/* len - how many clusters required to store 'rsize' bytes */
-+	if (is_attr_compressed(attr)) {
-+		u8 shift = sbi->cluster_bits + NTFS_LZNT_CUNIT;
-+		len = ((rsize + (1u << shift) - 1) >> shift) << NTFS_LZNT_CUNIT;
-+	} else {
-+		len = bytes_to_cluster(sbi, rsize);
-+	}
+-		chunk = kzalloc(sizeof(*chunk), GFP_KERNEL);
++		chunk = kzalloc(sizeof(*chunk), GFP_NOWAIT);
+ 		if (!chunk)
+ 			break;
+ 		*upper_next = chunk;
+@@ -365,7 +365,7 @@ static void pid_list_refill_irq(struct i
+ 	while (lower_count-- > 0) {
+ 		union lower_chunk *chunk;
  
- 	run_init(run);
- 
--- 
-2.43.0
-
+-		chunk = kzalloc(sizeof(*chunk), GFP_KERNEL);
++		chunk = kzalloc(sizeof(*chunk), GFP_NOWAIT);
+ 		if (!chunk)
+ 			break;
+ 		*lower_next = chunk;
 
 
 
