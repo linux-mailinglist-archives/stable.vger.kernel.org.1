@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7789416BB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:03:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D47B29416C8
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BAE0B24003
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:03:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11C301C23580
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9527A187FFB;
-	Tue, 30 Jul 2024 16:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D8D18952F;
+	Tue, 30 Jul 2024 16:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CJi5Vk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEB9XZGV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7C3187FEC;
-	Tue, 30 Jul 2024 16:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD72189520;
+	Tue, 30 Jul 2024 16:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355405; cv=none; b=i1Mu/V1JshWB6MZTZl1AsbF4CUpc6KDUvHchvw/y/TmsvcVGlIhOHj+aEGvwDJEY5iamrluOZovtAKMdR5ZH8fsmsVPdtH4RuMv6gGp0VC0yYnhPWIHu9QQwXScUFu3XhtUVVzLgM2sCT7enLh9STKUhxoQx3Pc0+RAYV7kuc/k=
+	t=1722355415; cv=none; b=FNRGtv9mTLiTLQGOcx+5MxjUSEg6nipvYBortAHLLHNW1QWhYbc86BwURc56aHo3Dai4+CB8CnHpuLW0OCFFHQmrMyd62tb5m80QnK+1m27ipDYZqN4NSGfrcGHpWhl1fUPsjTj/aKMD7vImaWmtcJWSYWBFO+WpTyfVxFd3LsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355405; c=relaxed/simple;
-	bh=R1UbsZEzHD/a99RTLrZUf7W/N2z0+3DZ8bbj1yuqSsA=;
+	s=arc-20240116; t=1722355415; c=relaxed/simple;
+	bh=7CTZwIU8mu9MjllYbo8HuTNfuDmc8RkO0ayIGC4JbsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ko1zRglMYZgZLrVRmDJiKi0/38DsCwRzPQyrNIycRlsy8KgBBFM3z+Gy35rRX+DDgh1Vv9LrXFL/6Z1cEM8QO/wD5tfJFr17rIQkaK9LAbJTLrFOOMD0SdoNklr5iiDFsOaMAC9zhFginT8JZk6SBf3ygNVxFr1Mx5mCTZztM20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CJi5Vk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDC1C32782;
-	Tue, 30 Jul 2024 16:03:23 +0000 (UTC)
+	 MIME-Version; b=O5RG31ivAovptCl7hnX2nFxMxppUIfgYIjiP3tysrcHOuo8LZAfc/vnsACPyVpNBu3rIfbUCWaPVPwyMUGpji7CxObW/kKr9ACUQdldTKhURYBafMKvwjOydU5iMRLCLq7knm4DtxDtgg1M4l87J0D7xMFHjF3m7bCI+Sg31xeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEB9XZGV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA104C4AF0E;
+	Tue, 30 Jul 2024 16:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355405;
-	bh=R1UbsZEzHD/a99RTLrZUf7W/N2z0+3DZ8bbj1yuqSsA=;
+	s=korg; t=1722355415;
+	bh=7CTZwIU8mu9MjllYbo8HuTNfuDmc8RkO0ayIGC4JbsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0CJi5Vk5Z40K7VKCzxKKD9/wx2MHSFXrY8OLCgaTZAnXnFwqiBCTaHQ/WQst6+Kyo
-	 oCy9PTZyQwwJwr7gC8H5qXXT4JJF3MkNrI0hU3oDBsnre2qIy9HKrPgv0DsFfb0011
-	 2tyuiTuCxbbHTQWFmJrARocvHT6niKIu08flIxp4=
+	b=CEB9XZGVatgnNK6Rv0eS2emAFUkQxVYkco6pdHOFs6TVPicXyxBtPF5NrQvw5449g
+	 2uvsirLeZnt0K1AEx6fyNVmaQD58auO67TNdurjdvJ+UxvkdRHgyCfQhNoifR196mU
+	 r+KlBvu6ehctaTdRh+QRcqThWRRLFI973L+7p5+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Esben Haabendal <esben@geanix.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jai Luthra <j-luthra@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/568] memory: fsl_ifc: Make FSL_IFC config visible and selectable
-Date: Tue, 30 Jul 2024 17:42:42 +0200
-Message-ID: <20240730151641.999005798@linuxfoundation.org>
+Subject: [PATCH 6.6 056/568] arm64: dts: ti: k3-am62x: Drop McASP AFIFOs
+Date: Tue, 30 Jul 2024 17:42:43 +0200
+Message-ID: <20240730151642.045549662@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -67,52 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit 9ba0cae3cac07c21c583f9ff194f74043f90d29c ]
+[ Upstream commit 6ee3ca0ec7fabc63603afdb3485da04164dc8747 ]
 
-While use of fsl_ifc driver with NAND flash is fine, as the fsl_ifc_nand
-driver selects FSL_IFC automatically, we need the CONFIG_FSL_IFC option to
-be selectable for platforms using fsl_ifc with NOR flash.
+McASP AFIFOs are not necessary with UDMA-P/BCDMA as there is buffering
+on the DMA IP. Drop these for better audio latency.
 
-Fixes: ea0c0ad6b6eb ("memory: Enable compile testing for most of the drivers")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/r/20240530-fsl-ifc-config-v3-1-1fd2c3d233dd@geanix.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: b94b43715e91 ("arm64: dts: ti: Enable audio on SK-AM62(-LP)")
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20240606-mcasp_fifo_drop-v2-1-8c317dabdd0a@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/Kconfig       | 2 +-
- drivers/mtd/nand/raw/Kconfig | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/memory/Kconfig b/drivers/memory/Kconfig
-index 8efdd1f971395..c82d8d8a16eaf 100644
---- a/drivers/memory/Kconfig
-+++ b/drivers/memory/Kconfig
-@@ -167,7 +167,7 @@ config FSL_CORENET_CF
- 	  represents a coherency violation.
+diff --git a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
+index 677ff8de4b6ec..0f8c0f6a0f573 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-common.dtsi
+@@ -481,8 +481,6 @@ &mcasp1 {
+ 	       0 0 0 0
+ 	       0 0 0 0
+ 	>;
+-	tx-num-evt = <32>;
+-	rx-num-evt = <32>;
+ };
  
- config FSL_IFC
--	bool "Freescale IFC driver" if COMPILE_TEST
-+	bool "Freescale IFC driver"
- 	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
- 	depends on HAS_IOMEM
- 
-diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-index cbf8ae85e1ae0..6142573085169 100644
---- a/drivers/mtd/nand/raw/Kconfig
-+++ b/drivers/mtd/nand/raw/Kconfig
-@@ -234,8 +234,7 @@ config MTD_NAND_FSL_IFC
- 	tristate "Freescale IFC NAND controller"
- 	depends on FSL_SOC || ARCH_LAYERSCAPE || SOC_LS1021A || COMPILE_TEST
- 	depends on HAS_IOMEM
--	select FSL_IFC
--	select MEMORY
-+	depends on FSL_IFC
- 	help
- 	  Various Freescale chips e.g P1010, include a NAND Flash machine
- 	  with built-in hardware ECC capabilities.
+ &dss {
 -- 
 2.43.0
 
