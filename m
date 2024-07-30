@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC19941D86
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 662E9941B4F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ACDDB29F21
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20059282333
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEDE1A76AE;
-	Tue, 30 Jul 2024 17:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1347818990B;
+	Tue, 30 Jul 2024 16:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5ovDYHd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4RMTyzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2DA1A76A4;
-	Tue, 30 Jul 2024 17:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1A518801A;
+	Tue, 30 Jul 2024 16:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359821; cv=none; b=IS8i0aV5RWxIJZZy5QSIC6hcXUi+YCWl2u/tXUxxoDzVfCl3ifOd+Nmf2DTX1VK76Z9ugXIXV6IUSQK8yrHTlJBNMoe0dUUQxQ5NKMJ/oIhQl8a9jFgYydfkq0fvUshfadQ78NwouK2H+w+lEAl0kw/RM1ztPHJvMH45qaguB78=
+	t=1722358400; cv=none; b=l98c3R4Zwy8lFouOUetwZMfUu8GcdfsQHJ0eIl6u49PLBr335q3mKWT3rDG/pF/1jio+hweQQEnP/8GE9gYvn99DCzdUG8ZFw357qknulnkuoSBxXN2OwDd9Crx4cNXXJMHwWKpszy3XqRlzHyjJ1vkgtqkGPR1f4vTI21FbBW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359821; c=relaxed/simple;
-	bh=mzQ201SFz9Cexo9GiBxuJ0reMdf1SjmXxrWpktpZ2kQ=;
+	s=arc-20240116; t=1722358400; c=relaxed/simple;
+	bh=E0w7jrUOgtiH77thYz280NFyfgAF85RK8cmPux/aMeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIuyrYFbgXhSNO0aCtZWOyxAsGOS1VMJg5646vk75Ot4LOLPkMh8frk0aXUdUBeJJ2jxIyNt++OJNZed3GUjxqt29UUnDZ5eOrvrTNojlYJ5Yh1uESw7tPKhaIgaFpcEXRyuf96tjEcpsb3zM/d6GRPBj6R/2VvNgscvRlIZaV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5ovDYHd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFF2C32782;
-	Tue, 30 Jul 2024 17:17:00 +0000 (UTC)
+	 MIME-Version; b=eqid4/Voi2NHgn0zRoCnFtcYv4YPeUUWsBbQyFG1sS6HD4+gTgUybVZ/5NOscAk6YY2QM1BEy/jJOeYTcxn1Lj24dYuOJ5F4tB0A46HAZjhanRIxa+LSIZkdJzKuVsBhBMkQIpINj/sjyJvTY0JTrPbUipAkJZ1Qd/KbWlTydvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4RMTyzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9575C32782;
+	Tue, 30 Jul 2024 16:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359821;
-	bh=mzQ201SFz9Cexo9GiBxuJ0reMdf1SjmXxrWpktpZ2kQ=;
+	s=korg; t=1722358400;
+	bh=E0w7jrUOgtiH77thYz280NFyfgAF85RK8cmPux/aMeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5ovDYHdJS6JQtcjOY0Hv37kOeGrtAtyyIEgr296y+3tWQZN0LT1e5h9nOzrxwCMz
-	 iz1vVgMHDIq1NTcQyiRlCckHsb6c1Jtqz97vHELp+Y3F+CXXhRT33FaMQIyQDZm8mp
-	 Ru9EQtkKMpsGnvVSWPwc2Fk2Q1TVEatQY0jMDYNA=
+	b=d4RMTyzrPmdYS6Wp9/8BU6T6jb6PKqzgeWe4G/5Uwyf26k4RIcXvhfw/7tmVLlZ6g
+	 Z3fDXydojcJ+YXOy0jpUBJXSFifYAxmuYTslRzClGBmJ+7oheHbWLRJZSG4p6+L9LC
+	 edtuADtAp4vHIsuRQ/Ud7xp9HinJ11NKkgkOzfhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ard Biesheuvel <ardb@kernel.org>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 6.6 512/568] PCI: Introduce cleanup helpers for device reference counts and locks
-Date: Tue, 30 Jul 2024 17:50:19 +0200
-Message-ID: <20240730151700.035843246@linuxfoundation.org>
+Subject: [PATCH 6.1 387/440] PCI: Introduce cleanup helpers for device reference counts and locks
+Date: Tue, 30 Jul 2024 17:50:20 +0200
+Message-ID: <20240730151630.920826862@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -136,7 +136,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -1146,6 +1146,7 @@ int pci_get_interrupt_pin(struct pci_dev
+@@ -1138,6 +1138,7 @@ int pci_get_interrupt_pin(struct pci_dev
  u8 pci_common_swizzle(struct pci_dev *dev, u8 *pinp);
  struct pci_dev *pci_dev_get(struct pci_dev *dev);
  void pci_dev_put(struct pci_dev *dev);
@@ -144,7 +144,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  void pci_remove_bus(struct pci_bus *b);
  void pci_stop_and_remove_bus_device(struct pci_dev *dev);
  void pci_stop_and_remove_bus_device_locked(struct pci_dev *dev);
-@@ -1851,6 +1852,7 @@ void pci_cfg_access_unlock(struct pci_de
+@@ -1746,6 +1747,7 @@ void pci_cfg_access_unlock(struct pci_de
  void pci_dev_lock(struct pci_dev *dev);
  int pci_dev_trylock(struct pci_dev *dev);
  void pci_dev_unlock(struct pci_dev *dev);
