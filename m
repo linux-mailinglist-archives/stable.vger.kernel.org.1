@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-63640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A3B9419EF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 188399419FD
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A02528253E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C309F1F25A3C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FCF18454A;
-	Tue, 30 Jul 2024 16:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103E81898E5;
+	Tue, 30 Jul 2024 16:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6lnMQRX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbEqe2gQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658131A619B;
-	Tue, 30 Jul 2024 16:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DDF189502;
+	Tue, 30 Jul 2024 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357479; cv=none; b=eUnGIxxWwclzwksRCEH6kwbklcJYjl9kpp9iLeFwVsZJjy8w5XaImzw6lPLPJ1KGv/rfMSwsKwhA4+a+F+btr8l6Jau9j8YR0pz/vzcTeTcDz5vuMu+D2MgokoJT/VtmG5hNCrsI0v2wH+oNE79q23N3Z/8z/SGn/ZPNfgZFsqo=
+	t=1722357524; cv=none; b=tF3CGlDhSQQkszWvplhoPtiTressH0KAdl6gKFNkdG/kAe9dfV1BHlMiwyluzEaUD3iioVSmwcXBwYs1D6YD1pYuX+iJTbE2gLtPD41noDWD26stMoPebs0sl095yExd1tvASOT8U7XE2f905kMGW5gCwhW1EYt3HChGszNpPKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357479; c=relaxed/simple;
-	bh=IIugkNTzB83k9bPlnrIDN2yYTPSY/s+GfPkBX5gsieg=;
+	s=arc-20240116; t=1722357524; c=relaxed/simple;
+	bh=H22xwe7zEgFDaX+NX8UKpZkgZpbvBBLkW7egQxSRrOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaQLKEsZrdV+BiR3KqHGoCH5SOit2CBkkdYvjQFgZavNrCBtJ1oNwtVODyZZeAO3FUS6K20waSXh2d39NtFNkuObcEHK2hr/6ru3tb73bg/I+aHwY52OkZF6kOsFkWJ/pwzywoaRyXCwY/3YfoBFXLk0ZbJMtYsvwYNJwcm6Cps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6lnMQRX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3470C4AF0C;
-	Tue, 30 Jul 2024 16:37:58 +0000 (UTC)
+	 MIME-Version; b=Rm2I8cqWRcvuTmazIDiPNmTyW81cYQMkxileFGcQ/VMouhwDr2oXdAKTdCLQ0Gk7/yj2IlRGhFEmv30iTnoeJMW4g+6isa1V8dgyzGWwSiioYjbFlHLKlKvx/d8v3vhym3saML67KR7WDwg7VH9SxkDekJuz6CflHO4Xuy4kEFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbEqe2gQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF75C4AF0E;
+	Tue, 30 Jul 2024 16:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357479;
-	bh=IIugkNTzB83k9bPlnrIDN2yYTPSY/s+GfPkBX5gsieg=;
+	s=korg; t=1722357524;
+	bh=H22xwe7zEgFDaX+NX8UKpZkgZpbvBBLkW7egQxSRrOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6lnMQRXynytY+T8S8sCZ3+NT1Kf/nmNCf5Vm48JtRo5g5KtRoeG7/ryc5AOnh5ss
-	 +VEsHvZvmntVwu/jymAmsd9xplEAtL/acPNeG1wPfe1XridgBAvUV6YzV9icW/h6rf
-	 HGbFs2zX9stHeBkWs06QxnlP2Mh0xOOaO4LV5KaA=
+	b=FbEqe2gQNkpXJsVPJFdVPjsRekmquRNx+dvLaw1NjjUL6L2FfZIALXDrwJ4KIpz1F
+	 cW9b+CC4874rSa8I6eDJbY0nLdY7tuCiRU1ZUHHtuWnC+BGqbzE6Cc1vl9OMVdQxjW
+	 vfKIHIqbbQZg3rZAUimfU2iQ2Udu7KBV3Xww4ewM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
 	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 281/440] ipv4: fix source address selection with route leak
-Date: Tue, 30 Jul 2024 17:48:34 +0200
-Message-ID: <20240730151626.805844724@linuxfoundation.org>
+Subject: [PATCH 6.1 282/440] ipv6: take care of scope when choosing the src addr
+Date: Tue, 30 Jul 2024 17:48:35 +0200
+Message-ID: <20240730151626.844245111@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -68,47 +68,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-commit 6807352353561187a718e87204458999dbcbba1b upstream.
+commit abb9a68d2c64dd9b128ae1f2e635e4d805e7ce64 upstream.
 
-By default, an address assigned to the output interface is selected when
-the source address is not specified. This is problematic when a route,
-configured in a vrf, uses an interface from another vrf (aka route leak).
-The original vrf does not own the selected source address.
-
-Let's add a check against the output interface and call the appropriate
-function to select the source address.
+When the source address is selected, the scope must be checked. For
+example, if a loopback address is assigned to the vrf device, it must not
+be chosen for packets sent outside.
 
 CC: stable@vger.kernel.org
-Fixes: 8cbb512c923d ("net: Add source address lookup op for VRF")
+Fixes: afbac6010aec ("net: ipv6: Address selection needs to consider L3 domains")
 Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240710081521.3809742-2-nicolas.dichtel@6wind.com
+Link: https://patch.msgid.link/20240710081521.3809742-4-nicolas.dichtel@6wind.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fib_semantics.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/ipv6/addrconf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -2270,6 +2270,15 @@ void fib_select_path(struct net *net, st
- 		fib_select_default(fl4, res);
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1831,7 +1831,8 @@ int ipv6_dev_get_saddr(struct net *net,
+ 							    master, &dst,
+ 							    scores, hiscore_idx);
  
- check_saddr:
--	if (!fl4->saddr)
--		fl4->saddr = fib_result_prefsrc(net, res);
-+	if (!fl4->saddr) {
-+		struct net_device *l3mdev;
-+
-+		l3mdev = dev_get_by_index_rcu(net, fl4->flowi4_l3mdev);
-+
-+		if (!l3mdev ||
-+		    l3mdev_master_dev_rcu(FIB_RES_DEV(*res)) == l3mdev)
-+			fl4->saddr = fib_result_prefsrc(net, res);
-+		else
-+			fl4->saddr = inet_select_addr(l3mdev, 0, RT_SCOPE_LINK);
-+	}
- }
+-			if (scores[hiscore_idx].ifa)
++			if (scores[hiscore_idx].ifa &&
++			    scores[hiscore_idx].scopedist >= 0)
+ 				goto out;
+ 		}
+ 
 
 
 
