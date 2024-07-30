@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-63829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329E9941ADB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F19941841
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9128281F51
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B80D52847F0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842C918800A;
-	Tue, 30 Jul 2024 16:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACCA1A619E;
+	Tue, 30 Jul 2024 16:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O52JlWPX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jqk4s8yc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424E014831F;
-	Tue, 30 Jul 2024 16:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270451A6199;
+	Tue, 30 Jul 2024 16:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358084; cv=none; b=LyxUBgV6NjEripAzcjXKjnQPio0wS7uqA1JU3IXSL9p+AFIfM7aDKXIfeaj3QLnF0nea0qHLS4vJmnObTOgcDDRfxyE7uAmA4LWrDvy3eRc+pTB4hgl9vYbmxtCL9tV+9xS14sGVbyz96W/jyz/6fQ5za+bHf4mAALG6DIWI48s=
+	t=1722356345; cv=none; b=UEvV/gPShqOXLp59w/WshEA4JA42ba3vyEVTFWa5kNPUbRzQAdG2hZEqt46wLCWhJ3T8Lmxc/eUEmlpAWLZRa0TkFhvzY25jE09SjOD83g9XquBusnVA7gUyGkRdyVgiFkNrw5nZIhlL0L9Ccmzkvz6E/aeQcXCbV/HhS5UJ1B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358084; c=relaxed/simple;
-	bh=V6p+vwy0m0d4qsWZv/80BksEFluv7T6j96zitC10vjY=;
+	s=arc-20240116; t=1722356345; c=relaxed/simple;
+	bh=o6ORou4B3uCFKXnWqkvMpP2BsJdd4brHkjPagoQJdnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLrqYxqGcPDOMNCkC3Z2ySjSD+nC4/UqeDdkbBHIg+PncUTLy6cJWXSm0Luqr7vy2mhAX4dp2Mt2OT0p4lTlTHr1vRHrRW+UTnLerG1P0/NYPSSEsQCpjhCG598dJ+FaihotQu2exfYZ2u+NSkR3QKSWyWuRFN+31SeVqAzvCS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O52JlWPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7FEC32782;
-	Tue, 30 Jul 2024 16:48:03 +0000 (UTC)
+	 MIME-Version; b=DgfS6SsC+ABNYZhUbzC68uSpt6xGnT74cYTyskiqum4WBa9tzUH7m1GUzrKAESKr+pTwGhlCOd9wGlKSaKNOjBN/XRTE2tjn04OEuuF/rn7Q4bRm0/C631uiEcxcEWxKFrn/qu92MJ6WcSWLRhhVtpDnne17Jd1VU/p33JdOSwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jqk4s8yc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817C9C32782;
+	Tue, 30 Jul 2024 16:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358084;
-	bh=V6p+vwy0m0d4qsWZv/80BksEFluv7T6j96zitC10vjY=;
+	s=korg; t=1722356345;
+	bh=o6ORou4B3uCFKXnWqkvMpP2BsJdd4brHkjPagoQJdnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O52JlWPXrBFHbcQ/sSjGtC4GO7VDH7owgWL9tsVxf4UpQtOkNtwFBIq+OPs3HssOj
-	 opgP2Aq66u2k09Qk2PgZVl09vk1+6FKLOO6SOj6aSl8Qs06sEHVV6+RN6mgzQnhA2Z
-	 Fqf9VtcXWODeR+5rdc65CAZn4fLSmhA9EwmgXkpw=
+	b=Jqk4s8ycC9nAkRtFsnGL/vPAfdKPn/ydFcxLD/kJ7U9ohesQCYfI1lkdCBdVDRcd3
+	 hAozavyQ0YRcbdgwHq04drVzauNiTGQbte7BOFQzW0Kf04c1hjauwgMZYU3fJdhV/M
+	 5vAqpHqkLmb1TbSez3y0tBcd5WlMpAQQZiWJoJUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zdi-disclosures@trendmicro.com,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 309/568] netfilter: ctnetlink: use helper function to calculate expect ID
+Subject: [PATCH 6.1 183/440] clk: qcom: gcc-sc7280: Update force mem core bit for UFS ICE clock
 Date: Tue, 30 Jul 2024 17:46:56 +0200
-Message-ID: <20240730151651.950768029@linuxfoundation.org>
+Message-ID: <20240730151623.021664964@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 782161895eb4ac45cf7cfa8db375bd4766cb8299 ]
+[ Upstream commit f38467b5a920be1473710428a93c4e54b6f8a0c1 ]
 
-Delete expectation path is missing a call to the nf_expect_get_id()
-helper function to calculate the expectation ID, otherwise LSB of the
-expectation object address is leaked to userspace.
+Update the force mem core bit for UFS ICE clock to force the core on signal
+to remain active during halt state of the clk. When retention bit of the
+clock is set the memories of the subsystem will retain the logic across
+power states.
 
-Fixes: 3c79107631db ("netfilter: ctnetlink: don't use conntrack/expect object addresses as id")
-Reported-by: zdi-disclosures@trendmicro.com
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: a3cc092196ef ("clk: qcom: Add Global Clock controller (GCC) driver for SC7280")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240531095142.9688-3-quic_tdas@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sc7280.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 334db22199c1d..4dab45039f349 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3411,7 +3411,8 @@ static int ctnetlink_del_expect(struct sk_buff *skb,
+diff --git a/drivers/clk/qcom/gcc-sc7280.c b/drivers/clk/qcom/gcc-sc7280.c
+index 46d41ebce2b08..2067e39840cb4 100644
+--- a/drivers/clk/qcom/gcc-sc7280.c
++++ b/drivers/clk/qcom/gcc-sc7280.c
+@@ -3469,6 +3469,9 @@ static int gcc_sc7280_probe(struct platform_device *pdev)
+ 	regmap_update_bits(regmap, 0x71004, BIT(0), BIT(0));
+ 	regmap_update_bits(regmap, 0x7100C, BIT(13), BIT(13));
  
- 		if (cda[CTA_EXPECT_ID]) {
- 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
--			if (ntohl(id) != (u32)(unsigned long)exp) {
++	/* FORCE_MEM_CORE_ON for ufs phy ice core clocks */
++	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_ice_core_clk, true);
 +
-+			if (id != nf_expect_get_id(exp)) {
- 				nf_ct_expect_put(exp);
- 				return -ENOENT;
- 			}
+ 	ret = qcom_cc_register_rcg_dfs(regmap, gcc_dfs_clocks,
+ 			ARRAY_SIZE(gcc_dfs_clocks));
+ 	if (ret)
 -- 
 2.43.0
 
