@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE181941B75
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 516F4941D44
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68E7D282348
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:55:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B2E928B40F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8163189903;
-	Tue, 30 Jul 2024 16:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF0418A6B6;
+	Tue, 30 Jul 2024 17:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaiXA78D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOf5/7KQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7701A6195;
-	Tue, 30 Jul 2024 16:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24BE18454A;
+	Tue, 30 Jul 2024 17:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358512; cv=none; b=olvx07yBHa+lWZBUj0LC6rGX9K3SSyQhdH8kpwqKAcRdXVNSzb+aa4/STXiXWEV3UC40h8oYCX2e7tnSXHQ0zGR7ZdlniSM5jGf8o2bWgNU1D8sWJBr/DZE3rejUnub7S4WZFDTSibF8uUWnz2S/ZiYwLEiNvN+mjxl2c+NYjCo=
+	t=1722359699; cv=none; b=GDM0vpmGd3Du2q49lx6L7XZz/Eog3EysgrdfOOLYeKP/BqFl+dYmNF4CIcxYZKwfbvDoPSiuhxSIc9m6pp5StrMsXSxw9ZI+H1eOJLz1oPut6XAhnNjIdgOnU7HA50dmYCGHVqV74+tsF8qSPdpVApLAzk1bUTmq9LLW5FbERkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358512; c=relaxed/simple;
-	bh=C9joSy2NvxkK3nidKQPNmwgrf8N8FLvEQJTy79+RfEw=;
+	s=arc-20240116; t=1722359699; c=relaxed/simple;
+	bh=92sXEXjpVGpTutLx/DWQ+GF2uIMM+u9q2T7zhtGHISg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CdQ8qleDxoNVlfMWuicNVpZTnXh+AgZHwbMU5RcdF1mB1iJ4yFWNb2o3uEJQkJKjoaFHnP4GdR2Twj6650uDTbEDvgfwk/suKq6IIhRymJOFDxEuCS7/F2CFxRnKbUpUpuDdpxsr0pAEQWxcKQE0jEW7zpFkeFU743sYEPzWv8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaiXA78D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2A6C32782;
-	Tue, 30 Jul 2024 16:55:11 +0000 (UTC)
+	 MIME-Version; b=Cz8Su0Pa+iPQyVN5nHfqpCqQbzvfeRD4b6SFKr8SYdu7by4ocqfom0lAoIRM1vet4iFVosmQ3k6prsbWc0NCnbEcjwbGQ3i/wgwVCO0qrudM9qj32p5n1D/W/l0c2KZKnLfyh/6/V6JP7OnbVRLx2zmr2g/gbiH9qx+8gg4UPtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOf5/7KQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7EAC32782;
+	Tue, 30 Jul 2024 17:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358512;
-	bh=C9joSy2NvxkK3nidKQPNmwgrf8N8FLvEQJTy79+RfEw=;
+	s=korg; t=1722359699;
+	bh=92sXEXjpVGpTutLx/DWQ+GF2uIMM+u9q2T7zhtGHISg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GaiXA78DfupeCDx0wNk384mBSNnHAnCh1gfACg7p2NtwW/I/rFmCb2Q+XJtbSSroq
-	 Ft3P1myC6k/aOqd84zEF8Smh+G6PxfAZXNH/hCMgpetQEZZE+6GTxrWHxgZRvMdam2
-	 ew45No9yX8q3r2ili8AGnUKVMucPg7ESGq9VjAKA=
+	b=nOf5/7KQmdQBiSkj2BbvYxYEg7oVMqBNaAwDmgKQOQ1zsG5mK/0vo5nl/+FpL4VdX
+	 fjDVnLZborvwV8mQwKumVoNW75MHIoOW0f/nHspL5VoJTgyokbmXhnZh0TAu70+qEf
+	 nAr6wm8JAwzabhJ85wLdhoNBSr0u8Cl9rHVRVMbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Roger Quadros <rogerq@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Sheng Yong <shengyong@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 397/440] phy: cadence-torrent: Check return value on register read
-Date: Tue, 30 Jul 2024 17:50:30 +0200
-Message-ID: <20240730151631.309672495@linuxfoundation.org>
+Subject: [PATCH 6.6 524/568] f2fs: fix start segno of large section
+Date: Tue, 30 Jul 2024 17:50:31 +0200
+Message-ID: <20240730151700.641628793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Sheng Yong <shengyong@oppo.com>
 
-[ Upstream commit 967969cf594ed3c1678a9918d6e9bb2d1591cbe9 ]
+[ Upstream commit 8c409989678e92e4a737e7cd2bb04f3efb81071a ]
 
-cdns_torrent_dp_set_power_state() does not consider that ret might be
-overwritten. Add return value check of regmap_read_poll_timeout() after
-register read in cdns_torrent_dp_set_power_state().
+get_ckpt_valid_blocks() checks valid ckpt blocks in current section.
+It counts all vblocks from the first to the last segment in the
+large section. However, START_SEGNO() is used to get the first segno
+in an SIT block. This patch fixes that to get the correct start segno.
 
-Fixes: 5b16a790f18d ("phy: cadence-torrent: Reorder few functions to remove function declarations")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20240702032042.3993031-1-make24@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 61461fc921b7 ("f2fs: fix to avoid touching checkpointed data in get_victim()")
+Signed-off-by: Sheng Yong <shengyong@oppo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/cadence/phy-cadence-torrent.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/f2fs/segment.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/cadence/phy-cadence-torrent.c b/drivers/phy/cadence/phy-cadence-torrent.c
-index f099053c583c0..34a380ce533a1 100644
---- a/drivers/phy/cadence/phy-cadence-torrent.c
-+++ b/drivers/phy/cadence/phy-cadence-torrent.c
-@@ -1087,6 +1087,9 @@ static int cdns_torrent_dp_set_power_state(struct cdns_torrent_phy *cdns_phy,
- 	ret = regmap_read_poll_timeout(regmap, PHY_PMA_XCVR_POWER_STATE_ACK,
- 				       read_val, (read_val & mask) == value, 0,
- 				       POLL_TIMEOUT_US);
-+	if (ret)
-+		return ret;
-+
- 	cdns_torrent_dp_write(regmap, PHY_PMA_XCVR_POWER_STATE_REQ, 0x00000000);
- 	ndelay(100);
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index 4595f1cc03828..952970166d5da 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -348,7 +348,8 @@ static inline unsigned int get_ckpt_valid_blocks(struct f2fs_sb_info *sbi,
+ 				unsigned int segno, bool use_section)
+ {
+ 	if (use_section && __is_large_section(sbi)) {
+-		unsigned int start_segno = START_SEGNO(segno);
++		unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
++		unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
+ 		unsigned int blocks = 0;
+ 		int i;
  
 -- 
 2.43.0
