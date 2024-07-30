@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EE39419F2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C91941E04
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26B1C1C23656
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 055051C2371B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9924E1898E4;
-	Tue, 30 Jul 2024 16:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0143D1A76BB;
+	Tue, 30 Jul 2024 17:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVDt7MNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ma9jtMIh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FA7188013;
-	Tue, 30 Jul 2024 16:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A71A76A1;
+	Tue, 30 Jul 2024 17:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357489; cv=none; b=SBh3TUh+nTTGgr0GHYH1RXrQx6Hl2w5hkG8q6vGoiOUibJntYwLm+NNwJYxoDLfQtPvbYrJ/m/zFb2BgQ+6AByalxkqSr3gchFD0m7SO13lJ6wHnrAl18La7WDdni/FY47Uc4uR9iVcxtrm2gLF6aa/qtyYTEFurPNc7vei0J/c=
+	t=1722360294; cv=none; b=m7szMm9Vsno1hpjDhoXewpVrev5Pi+vmwKG0IUhwp/3i3HtYOoRo6a9FmE0Vf4wQeVx5Rh6KmDira2QC9kt4/tOWuUFofgB6aZSEPpfVOIO5HE0v1pP7J1e+drlpses0SznlVISHT+duWdCNoC6iEmUv7Rn3/bjbEf5wXnY0abQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357489; c=relaxed/simple;
-	bh=dAN6IrJRn1tP7gR1oPk0IlOKpf5pfoHMbTP3lUmnQYo=;
+	s=arc-20240116; t=1722360294; c=relaxed/simple;
+	bh=AT6ueBOuEspHWO+uUOYVMYv5vtUIf4uZ1hMpB28eMOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ED6UaV3p/e7rJa36s5DN6Y1hUtEBpmJCEbrGsXWh3VLDsH9U3Bj9gV8wM0NGzHVcsvlia36E5Y9Amv4vDRhiGqwOwSwTg+I5JhJjOpAKvVqH2lphDgR6PfhsPddKnFhGt0MQRNMzw5me5ymYrYOiPWS+iun6Xq48Jb6qq8PzFQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVDt7MNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B5EC32782;
-	Tue, 30 Jul 2024 16:38:08 +0000 (UTC)
+	 MIME-Version; b=KW8w1p5irfXdc/M1hD963XEhhPMtaGPlVh06Gn1hlMH+0n2GddcdUOWN56J+UoGlPMUDZ3EsNkRtD4JH2fiACqG+215S67CZeBNOq8pztTaR7w5CXHXDtSDSgXnfRk8t+AMjHLBO54Wjkn7ERj/xiWNR5cem78OW0KL2DeauFqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ma9jtMIh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F7EC32782;
+	Tue, 30 Jul 2024 17:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357489;
-	bh=dAN6IrJRn1tP7gR1oPk0IlOKpf5pfoHMbTP3lUmnQYo=;
+	s=korg; t=1722360294;
+	bh=AT6ueBOuEspHWO+uUOYVMYv5vtUIf4uZ1hMpB28eMOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVDt7MNVY0fwpvBh7YAEF7FG1f2a9tHl2RvrawLlEL4xCIFFaQ1DtmQd9see1cDMW
-	 HVTsL6/LNvKFhzsZvjMlH0wbTMNGQ7O4fqdB38dixYvYvob1nTRm9D4r1jKtCBbrSY
-	 h4iE+Td3tSvKKJkn9mdIov7DpCovCWZ8bSGJ5SxY=
+	b=Ma9jtMIhyNipE2Nu6ofaa8KhUxxAx6cxmE21bemAn6wzget6RKnrMMDd6o9cHA5eu
+	 4nhQHg8fJofSV7CW3STikRjyb2olu78fZ/lGxSCIjWRdhzGtJ5O8UvDEsvOU5ZfVg3
+	 daiRwyaFwjNGDkFNDCdhZK2PTSpH6TicVQaBB84E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 297/440] cifs: fix reconnect with SMB1 UNIX Extensions
+	syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.10 654/809] f2fs: fix return value of f2fs_convert_inline_inode()
 Date: Tue, 30 Jul 2024 17:48:50 +0200
-Message-ID: <20240730151627.429363771@linuxfoundation.org>
+Message-ID: <20240730151750.710472703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Chao Yu <chao@kernel.org>
 
-commit a214384ce26b6111ea8c8d58fa82a1ca63996c38 upstream.
+commit a8eb3de28e7a365690c61161e7a07a4fc7c60bbf upstream.
 
-When mounting with the SMB1 Unix Extensions (e.g. mounts
-to Samba with vers=1.0), reconnects no longer reset the
-Unix Extensions (SetFSInfo SET_FILE_UNIX_BASIC) after tcon so most
-operations (e.g. stat, ls, open, statfs) will fail continuously
-with:
-        "Operation not supported"
-if the connection ever resets (e.g. due to brief network disconnect)
+If device is readonly, make f2fs_convert_inline_inode()
+return EROFS instead of zero, otherwise it may trigger
+panic during writeback of inline inode's dirty page as
+below:
+
+ f2fs_write_single_data_page+0xbb6/0x1e90 fs/f2fs/data.c:2888
+ f2fs_write_cache_pages fs/f2fs/data.c:3187 [inline]
+ __f2fs_write_data_pages fs/f2fs/data.c:3342 [inline]
+ f2fs_write_data_pages+0x1efe/0x3a90 fs/f2fs/data.c:3369
+ do_writepages+0x359/0x870 mm/page-writeback.c:2634
+ filemap_fdatawrite_wbc+0x125/0x180 mm/filemap.c:397
+ __filemap_fdatawrite_range mm/filemap.c:430 [inline]
+ file_write_and_wait_range+0x1aa/0x290 mm/filemap.c:788
+ f2fs_do_sync_file+0x68a/0x1ae0 fs/f2fs/file.c:276
+ generic_write_sync include/linux/fs.h:2806 [inline]
+ f2fs_file_write_iter+0x7bd/0x24e0 fs/f2fs/file.c:4977
+ call_write_iter include/linux/fs.h:2114 [inline]
+ new_sync_write fs/read_write.c:497 [inline]
+ vfs_write+0xa72/0xc90 fs/read_write.c:590
+ ksys_write+0x1a0/0x2c0 fs/read_write.c:643
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000d103ce06174d7ec3@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ fs/f2fs/inline.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3975,6 +3975,7 @@ error:
- }
- #endif
+--- a/fs/f2fs/inline.c
++++ b/fs/f2fs/inline.c
+@@ -203,8 +203,10 @@ int f2fs_convert_inline_inode(struct ino
+ 	struct page *ipage, *page;
+ 	int err = 0;
  
-+#ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
- /*
-  * Issue a TREE_CONNECT request.
-  */
-@@ -4096,11 +4097,25 @@ CIFSTCon(const unsigned int xid, struct
- 		else
- 			tcon->Flags = 0;
- 		cifs_dbg(FYI, "Tcon flags: 0x%x\n", tcon->Flags);
--	}
+-	if (!f2fs_has_inline_data(inode) ||
+-			f2fs_hw_is_readonly(sbi) || f2fs_readonly(sbi->sb))
++	if (f2fs_hw_is_readonly(sbi) || f2fs_readonly(sbi->sb))
++		return -EROFS;
++
++	if (!f2fs_has_inline_data(inode))
+ 		return 0;
  
-+		/*
-+		 * reset_cifs_unix_caps calls QFSInfo which requires
-+		 * need_reconnect to be false, but we would not need to call
-+		 * reset_caps if this were not a reconnect case so must check
-+		 * need_reconnect flag here.  The caller will also clear
-+		 * need_reconnect when tcon was successful but needed to be
-+		 * cleared earlier in the case of unix extensions reconnect
-+		 */
-+		if (tcon->need_reconnect && tcon->unix_ext) {
-+			cifs_dbg(FYI, "resetting caps for %s\n", tcon->tree_name);
-+			tcon->need_reconnect = false;
-+			reset_cifs_unix_caps(xid, tcon, NULL, NULL);
-+		}
-+	}
- 	cifs_buf_release(smb_buffer);
- 	return rc;
- }
-+#endif /* CONFIG_CIFS_ALLOW_INSECURE_LEGACY */
- 
- static void delayed_free(struct rcu_head *p)
- {
+ 	err = f2fs_dquot_initialize(inode);
 
 
 
