@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-63333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C977894186D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:22:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 173D5941BB6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F12D1F216DF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 483341C231E0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25721898F4;
-	Tue, 30 Jul 2024 16:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A40189903;
+	Tue, 30 Jul 2024 16:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/pwa/WD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2CqDyzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A120F1A6169;
-	Tue, 30 Jul 2024 16:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC6018801A;
+	Tue, 30 Jul 2024 16:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356492; cv=none; b=qVA6LcIsMF/rlA1NnUBJIhb1TjqjdtA/JWuBu6Cp3OFmLt6JrThTK6ExK3UaU+sZZvu6+LxLejgUKjo22kLJjkuvcfa7MO5Dw9VYf4hVNeJkxy1mxtPGpKe6sji9KiiQZHjx3enqfQlAPyN7ubh5nYo2fWFCKg0wv0uJBkFo7OM=
+	t=1722358688; cv=none; b=gcAOaUI8e4ISdlnlBqb/dXA7k10Nmh1GdvOKiZv0YlghEAMsytNMEOyA4kuI/NDcc/HqgzEM5L9nqheauivXeb3ND+fwCzQJuev/ZMomlsIW1lrz23STa5VeZwAgbQo2KLJ4k/fz/vFRhbVR+v6wKUXilOrliCR9QdG2/u0aomc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356492; c=relaxed/simple;
-	bh=VZ1KNVu/D1ejiqua6CaBjEU/n7ZSLHLd4LFmceNA6W4=;
+	s=arc-20240116; t=1722358688; c=relaxed/simple;
+	bh=VPakyLEtFcAbTHg5eNBYximQec0HCkfLkYQtuFrfnEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LG79VcwuTx3NVm35y3xJFSwO/nScW1K1xcU0YbSSqX9Ng9P+ST1hrul3irbe2vC74TIDr/0vkXl1tpQNLlqoZJi9i6iZtejHXs43JfB2c6pkcoYs7d3vRUxlZ6bG5Ia7mYIu6/cRWuN/P8BAn75gbgb+pp4WbA58hhLkuc3KsBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/pwa/WD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24014C32782;
-	Tue, 30 Jul 2024 16:21:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RiWeWVfBwN8zkCWKitoDrV2bFnayu0i00aWZa6Ger2lIsTbLxLbBkplgZ3mW6RRlAPJ0ISOJG+g3SRPOv1RM9R23bqsJwBqc1Q9Qya6ANUf83S48Cas3Ejyu/9EXwIKJ2l19NeoVQuDr9Z64qRLTAHwBaW9kS+Cs3QjY/dtUp4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2CqDyzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4E6C32782;
+	Tue, 30 Jul 2024 16:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356492;
-	bh=VZ1KNVu/D1ejiqua6CaBjEU/n7ZSLHLd4LFmceNA6W4=;
+	s=korg; t=1722358688;
+	bh=VPakyLEtFcAbTHg5eNBYximQec0HCkfLkYQtuFrfnEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/pwa/WDe3+j18CKC2t3QA4FB7Lg89qvxQPDs7yOrpaJcRMzo23ijAzbU+vu+sp83
-	 HJSudmxdYdhZut4EsOAqCWdVipvgMtbrkbngEZ4NnVn4dh+eiHF2sFw+BrWaw1U+hY
-	 dsl9dRgc5ufdv+rK7MPtF8fyvhP6TVvl7ENL/lWo=
+	b=F2CqDyzQgIhJDerjVYEQF2nHU1+KvVuXWDMnxhb3YPHGMemnwyN7opvhD43737cVz
+	 H2k+Ax2Ir07HeBWh0qOyeoO9l2mfKOiAZo2PfpdQzrdKIzYZIdri9cMt9kNsqj5m2v
+	 AozUjHrp8cGZDQwtV3rPd41nIMQsOqkarvFTaGgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/568] xfrm: fix netdev reference count imbalance
-Date: Tue, 30 Jul 2024 17:44:20 +0200
-Message-ID: <20240730151645.855144243@linuxfoundation.org>
+Subject: [PATCH 6.10 385/809] PCI: keystone: Fix NULL pointer dereference in case of DT error in ks_pcie_setup_rc_app_regs()
+Date: Tue, 30 Jul 2024 17:44:21 +0200
+Message-ID: <20240730151739.876445580@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 9199b915e9fad7f5eff6160d24ff6b38e970107d ]
+[ Upstream commit a231707a91f323af1e5d9f1722055ec2fc1c7775 ]
 
-In cited commit, netdev_tracker_alloc() is called for the newly
-allocated xfrm state, but dev_hold() is missed, which causes netdev
-reference count imbalance, because netdev_put() is called when the
-state is freed in xfrm_dev_state_free(). Fix the issue by replacing
-netdev_tracker_alloc() with netdev_hold().
+If IORESOURCE_MEM is not provided in Device Tree due to
+any error, resource_list_first_type() will return NULL and
+pci_parse_request_of_pci_ranges() will just emit a warning.
 
-Fixes: f8a70afafc17 ("xfrm: add TX datapath support for IPsec packet offload mode")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+This will cause a NULL pointer dereference. Fix this bug by adding NULL
+return check.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 0f71c60ffd26 ("PCI: dwc: Remove storing of PCI resources")
+Link: https://lore.kernel.org/linux-pci/20240505061517.11527-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 7692d587e59b8..8a6e8656d014f 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1331,8 +1331,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 			xso->dev = xdo->dev;
- 			xso->real_dev = xdo->real_dev;
- 			xso->flags = XFRM_DEV_OFFLOAD_FLAG_ACQ;
--			netdev_tracker_alloc(xso->dev, &xso->dev_tracker,
--					     GFP_ATOMIC);
-+			netdev_hold(xso->dev, &xso->dev_tracker, GFP_ATOMIC);
- 			error = xso->dev->xfrmdev_ops->xdo_dev_state_add(x, NULL);
- 			if (error) {
- 				xso->dir = 0;
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index 57135eee2d7d1..cd0e0022f91d6 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -400,17 +400,22 @@ static const struct irq_domain_ops ks_pcie_intx_irq_domain_ops = {
+ 	.xlate = irq_domain_xlate_onetwocell,
+ };
+ 
+-static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
++static int ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ {
+ 	u32 val;
+ 	u32 num_viewport = ks_pcie->num_viewport;
+ 	struct dw_pcie *pci = ks_pcie->pci;
+ 	struct dw_pcie_rp *pp = &pci->pp;
+-	u64 start, end;
++	struct resource_entry *entry;
+ 	struct resource *mem;
++	u64 start, end;
+ 	int i;
+ 
+-	mem = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM)->res;
++	entry = resource_list_first_type(&pp->bridge->windows, IORESOURCE_MEM);
++	if (!entry)
++		return -ENODEV;
++
++	mem = entry->res;
+ 	start = mem->start;
+ 	end = mem->end;
+ 
+@@ -421,7 +426,7 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ 	ks_pcie_clear_dbi_mode(ks_pcie);
+ 
+ 	if (ks_pcie->is_am6)
+-		return;
++		return 0;
+ 
+ 	val = ilog2(OB_WIN_SIZE);
+ 	ks_pcie_app_writel(ks_pcie, OB_SIZE, val);
+@@ -438,6 +443,8 @@ static void ks_pcie_setup_rc_app_regs(struct keystone_pcie *ks_pcie)
+ 	val = ks_pcie_app_readl(ks_pcie, CMD_STATUS);
+ 	val |= OB_XLAT_EN_VAL;
+ 	ks_pcie_app_writel(ks_pcie, CMD_STATUS, val);
++
++	return 0;
+ }
+ 
+ static void __iomem *ks_pcie_other_map_bus(struct pci_bus *bus,
+@@ -798,7 +805,10 @@ static int __init ks_pcie_host_init(struct dw_pcie_rp *pp)
+ 		return ret;
+ 
+ 	ks_pcie_stop_link(pci);
+-	ks_pcie_setup_rc_app_regs(ks_pcie);
++	ret = ks_pcie_setup_rc_app_regs(ks_pcie);
++	if (ret)
++		return ret;
++
+ 	writew(PCI_IO_RANGE_TYPE_32 | (PCI_IO_RANGE_TYPE_32 << 8),
+ 			pci->dbi_base + PCI_IO_BASE);
+ 
 -- 
 2.43.0
 
