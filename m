@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810B3941BCA
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:59:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C39A8941E92
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384FC1F2258F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:59:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E02E287413
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63990189918;
-	Tue, 30 Jul 2024 16:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C02187FEC;
+	Tue, 30 Jul 2024 17:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8ip2RXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+BXycJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1960717D8BB;
-	Tue, 30 Jul 2024 16:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24BE1A76AD;
+	Tue, 30 Jul 2024 17:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358748; cv=none; b=Yv4jJFV4eBPm0aGfPA1csWZxNRrVdKyUZqHU96AQh+/Y1UFJV9HDWVbqMP5WOW/85xdVwKWL6F9mTw1yUdNXGeKkgRlSfw3w0xJL1ABabmcb+Jqlc6RpNCdQ3Ehu61nhsugk/IMq9nZRahkdN1vtFMd64vDdOeJ/t30TfdRED0c=
+	t=1722360631; cv=none; b=PmkeqfMVxIhe+7GJLiAzdlk3X4l/N73u0S8uGtVMpqpYu5owUxNSOAO2OcAzqmUxrwiqtOwiBBw6mwA5VdaF/F0kd2NxJqx3DdnAF9qpsxt2cuFhGCgdhkbCIR47qm20MTFg3p7AupaPgSchP1Dob5IiaSF0NhdlEysX7mx3uug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358748; c=relaxed/simple;
-	bh=f06Xkzmeal5EvaiI34vuKSVZWzT1uNvb8nYmLbWlHfs=;
+	s=arc-20240116; t=1722360631; c=relaxed/simple;
+	bh=d8KQelsp+4Gm2TVu0wv72jY1sYG6pMrjV2ennU1u9p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egt3l50dLR7Cl/7+DPF62PFyou1jZaLq8es3s9s3RRxTIGsE6PMKD49A7SkeAkMaQA9Ho07Jv49yuORhm4GJ2Zjinr8I8Uyp3aCXSHkas4rhek4oKZHuUjsTOCuLySvRPuyikkCop2Rpm66I681kvWfcvlv88+5bGJUAmnGwBW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8ip2RXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B9BC32782;
-	Tue, 30 Jul 2024 16:59:06 +0000 (UTC)
+	 MIME-Version; b=KqxoG5C9PAPynBvhXcyP0byyj01+3XZZyhgejP66r9UkjMWJm8LGc7yPpHZ0f9yYxB99MhanqgEvEICBRP+sCnaEU+dqVRZoBUTntz4ok9NOPT/VvllMK6Rz9tRU5QyykckpiFRqQnVs2qZYteeNjw336dgR3N/QRr9AoRriIrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+BXycJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D901C32782;
+	Tue, 30 Jul 2024 17:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358747;
-	bh=f06Xkzmeal5EvaiI34vuKSVZWzT1uNvb8nYmLbWlHfs=;
+	s=korg; t=1722360631;
+	bh=d8KQelsp+4Gm2TVu0wv72jY1sYG6pMrjV2ennU1u9p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8ip2RXkW06dY/4Ntkje+WU8ZMLji7a2mlECNl3hFgPiwCjCa7hELfKJqexpYcQe4
-	 FZV3kkg/LE+GhpU72IjFJVl3eE5yuss7a/aNP9NMvP7sO/BAWatEDG6CnLY0uf96Xp
-	 0VyzX2sZZX7PGp9xRpeep12a489aDXDGdutagYuQ=
+	b=o+BXycJ4+ULJJl7/JIGipTvrXMfHWQ1kfnMPJ+lBeMM5QjFo4sBRcVWxMfA/QVATg
+	 dtWiNxLS+4LkAQghrFQxPdTLkcZSsSGTNwYZXN+dCZN6Rhy9xsMj2sDGy0AB9xhQF3
+	 C81Oi6Tv0T0ow+cEHJ4cXA0LxQSPwuEObZ7GIgxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Lance Richardson <rlance@google.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 400/440] f2fs: fix start segno of large section
+Subject: [PATCH 6.10 757/809] dma: fix call order in dmam_free_coherent
 Date: Tue, 30 Jul 2024 17:50:33 +0200
-Message-ID: <20240730151631.424791626@linuxfoundation.org>
+Message-ID: <20240730151754.860039249@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong@oppo.com>
+From: Lance Richardson <rlance@google.com>
 
-[ Upstream commit 8c409989678e92e4a737e7cd2bb04f3efb81071a ]
+[ Upstream commit 28e8b7406d3a1f5329a03aa25a43aa28e087cb20 ]
 
-get_ckpt_valid_blocks() checks valid ckpt blocks in current section.
-It counts all vblocks from the first to the last segment in the
-large section. However, START_SEGNO() is used to get the first segno
-in an SIT block. This patch fixes that to get the correct start segno.
+dmam_free_coherent() frees a DMA allocation, which makes the
+freed vaddr available for reuse, then calls devres_destroy()
+to remove and free the data structure used to track the DMA
+allocation. Between the two calls, it is possible for a
+concurrent task to make an allocation with the same vaddr
+and add it to the devres list.
 
-Fixes: 61461fc921b7 ("f2fs: fix to avoid touching checkpointed data in get_victim()")
-Signed-off-by: Sheng Yong <shengyong@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+If this happens, there will be two entries in the devres list
+with the same vaddr and devres_destroy() can free the wrong
+entry, triggering the WARN_ON() in dmam_match.
+
+Fix by destroying the devres entry before freeing the DMA
+allocation.
+
+Tested:
+  kokonut //net/encryption
+    http://sponge2/b9145fe6-0f72-4325-ac2f-a84d81075b03
+
+Fixes: 9ac7849e35f7 ("devres: device resource management")
+Signed-off-by: Lance Richardson <rlance@google.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/dma/mapping.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index aa9ad85e0901d..17d1723d98a0b 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -373,7 +373,8 @@ static inline unsigned int get_ckpt_valid_blocks(struct f2fs_sb_info *sbi,
- 				unsigned int segno, bool use_section)
+diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+index 81de84318ccc7..b1c18058d55f8 100644
+--- a/kernel/dma/mapping.c
++++ b/kernel/dma/mapping.c
+@@ -67,8 +67,8 @@ void dmam_free_coherent(struct device *dev, size_t size, void *vaddr,
  {
- 	if (use_section && __is_large_section(sbi)) {
--		unsigned int start_segno = START_SEGNO(segno);
-+		unsigned int secno = GET_SEC_FROM_SEG(sbi, segno);
-+		unsigned int start_segno = GET_SEG_FROM_SEC(sbi, secno);
- 		unsigned int blocks = 0;
- 		int i;
+ 	struct dma_devres match_data = { size, vaddr, dma_handle };
+ 
+-	dma_free_coherent(dev, size, vaddr, dma_handle);
+ 	WARN_ON(devres_destroy(dev, dmam_release, dmam_match, &match_data));
++	dma_free_coherent(dev, size, vaddr, dma_handle);
+ }
+ EXPORT_SYMBOL(dmam_free_coherent);
  
 -- 
 2.43.0
