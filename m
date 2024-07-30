@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-62973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4D9941680
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:00:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AA3941685
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C3091C23485
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:00:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3618F282D41
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A473B1C8FB7;
-	Tue, 30 Jul 2024 16:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D04A1CB320;
+	Tue, 30 Jul 2024 16:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeK54TZl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpaKmFnW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B00C1C8FC4;
-	Tue, 30 Jul 2024 16:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D023A1CB324;
+	Tue, 30 Jul 2024 16:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355245; cv=none; b=fZtqRZp19fKODANace76IufsFC7yxL9hkCu7AAzqqOpEltq2gCrlHgf1eNvY14nKMhqt58hyOGObpTkIZL0+4dmjEgGw5inFRbISSYz1oe/Q64lJ2g03aGNclu2/VrHoY9CtadQYRTEWlyAecQ9DmJiEs6h5jpvW0whQ1J83JFU=
+	t=1722355254; cv=none; b=OUQh0iENkAuhhgoS/I3DgISGsScwcBljK3EdFQ69BYJX5ZgHkWAENMBCcRegbqG1XDKE3Li+1B+j7mxyiI3WjkShxWXclpKRyG3pCa6Wi8A3hjpjBhAlflBIx5WqIXqH1iK4GI5PNariiEBCO3LTKPWR1X5mH9vsnRocLGQ+wpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355245; c=relaxed/simple;
-	bh=k4Hl+KJ4tT/LhaUcivwGf/AXCMSoiLjUa6eCSgQ/aaQ=;
+	s=arc-20240116; t=1722355254; c=relaxed/simple;
+	bh=9B5G9xRK/4nVOZPUYz7lSVVXmMgFnscjOfP+CRuBxwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbknJViKQIW6Nk/AnXU2a/8GeZ542uy9UznP10OAxmSn5vsh+Xx48BdHEsJ9BT9DIX4YxiCgx9w/xsBZBGAXm7/M32riHN/GfNvA7lko3o2AvoXKnAKlTekktpa5B2eXnuNG6I2e7VcByqJDO7jljTSxqY490JNHvVz4xcm2d3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeK54TZl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0CFC32782;
-	Tue, 30 Jul 2024 16:00:44 +0000 (UTC)
+	 MIME-Version; b=qJEInUt37W8U3zh+sfUmOlbxjuKHH8PUGke8roh09r5vNIKWRPIzAkfWophYmMu8IoGWBimAvVu6Q8HhuMk4g7UXepzMQRaI8v9CRH419SsD0fjWgNszB2yaX4cml07+QtX2r1yZUwOzlw010XDGhEJ9VOLkwZab4uOKqbq7hxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpaKmFnW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCDAC32782;
+	Tue, 30 Jul 2024 16:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355245;
-	bh=k4Hl+KJ4tT/LhaUcivwGf/AXCMSoiLjUa6eCSgQ/aaQ=;
+	s=korg; t=1722355254;
+	bh=9B5G9xRK/4nVOZPUYz7lSVVXmMgFnscjOfP+CRuBxwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZeK54TZlvlAcmA9b+y1+Z9p/utDOfvJD8l8J56i+5JS8T0AmylVRQ+0oJD7jLU/fx
-	 QXtPwGXsLe5+8uSLrhmQzY/7i3RAgnRorASMLvOtqg6/MfDhFeamvmS0K0VyWpQXlp
-	 gm/nkQbCNiwt4ftqcqjBXrCOAsxTBcbQSUrad8bg=
+	b=dpaKmFnWT3dSbmN6GdUpIWqNsgimC2GmVqDQE7HoK8foaUbU4X6zK0VRIN23OWgeB
+	 o0Jak7hprmSDUy/Vcomn6vkmGfDaeC0dn/oK6E5+cL8G/PyOAe4D1IiiCOi7P7uSyP
+	 O6okdwvKXSmkuVzkJYxJDJLbN/dk/cDogs+F4AbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Ying <victor.liu@nxp.com>,
-	Adam Ford <aford173@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 033/809] drm/bridge: adv7511: Fix Intermittent EDID failures
-Date: Tue, 30 Jul 2024 17:38:29 +0200
-Message-ID: <20240730151725.960992415@linuxfoundation.org>
+Subject: [PATCH 6.10 034/809] arm64: smp: Fix missing IPI statistics
+Date: Tue, 30 Jul 2024 17:38:30 +0200
+Message-ID: <20240730151726.001408855@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,164 +68,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 91f9f4a37124044089debb02a3965c59b5b10c21 ]
+[ Upstream commit 916b93f4e865b35563902f5862b443fc122631b4 ]
 
-In the process of adding support for shared IRQ pins, a scenario
-was accidentally created where adv7511_irq_process returned
-prematurely causing the EDID to fail randomly.
+commit 83cfac95c018 ("genirq: Allow interrupts to be excluded from
+/proc/interrupts") is to avoid IPIs appear twice in /proc/interrupts.
+But the commit 331a1b3a836c ("arm64: smp: Add arch support for backtrace
+using pseudo-NMI") and commit 2f5cd0c7ffde("arm64: kgdb: Implement
+kgdb_roundup_cpus() to enable pseudo-NMI roundup") set CPU_BACKTRACE and
+KGDB_ROUNDUP IPIs "IRQ_HIDDEN" flag but not show them in
+arch_show_interrupts(), which cause the interrupt kstat_irqs accounting
+is missing in display.
 
-Since the interrupt handler is broken up into two main helper functions,
-update both of them to treat the helper functions as IRQ handlers. These
-IRQ routines process their respective tasks as before, but if they
-determine that actual work was done, mark the respective IRQ status
-accordingly, and delay the check until everything has been processed.
+Before this patch, CPU_BACKTRACE and KGDB_ROUNDUP IPIs are missing:
+	/ # cat /proc/interrupts
+	           CPU0       CPU1       CPU2       CPU3
+	 11:        466        600        309        332     GICv3  27 Level     arch_timer
+	 13:         24          0          0          0     GICv3  33 Level     uart-pl011
+	 15:         64          0          0          0     GICv3  78 Edge      virtio0
+	 16:          0          0          0          0     GICv3  79 Edge      virtio1
+	 17:          0          0          0          0     GICv3  34 Level     rtc-pl031
+	 18:          3          3          3          3     GICv3  23 Level     arm-pmu
+	 19:          0          0          0          0 9030000.pl061   3 Edge      GPIO Key Poweroff
+	IPI0:         7         14          9         26       Rescheduling interrupts
+	IPI1:       354         93        233        255       Function call interrupts
+	IPI2:         0          0          0          0       CPU stop interrupts
+	IPI3:         0          0          0          0       CPU stop (for crash dump) interrupts
+	IPI4:         0          0          0          0       Timer broadcast interrupts
+	IPI5:         1          0          0          0       IRQ work interrupts
+	Err:          0
 
-This should guarantee the helper functions don't return prematurely
-while still returning proper values of either IRQ_HANDLED or IRQ_NONE.
+After this pacth, CPU_BACKTRACE and KGDB_ROUNDUP IPIs are displayed:
+	/ # cat /proc/interrupts
+	           CPU0       CPU1       CPU2       CPU3
+	 11:        393        281        532        449     GICv3  27 Level     arch_timer
+	 13:         15          0          0          0     GICv3  33 Level     uart-pl011
+	 15:         64          0          0          0     GICv3  78 Edge      virtio0
+	 16:          0          0          0          0     GICv3  79 Edge      virtio1
+	 17:          0          0          0          0     GICv3  34 Level     rtc-pl031
+	 18:          2          2          2          2     GICv3  23 Level     arm-pmu
+	 19:          0          0          0          0 9030000.pl061   3 Edge      GPIO Key Poweroff
+	IPI0:        11         19          4         23       Rescheduling interrupts
+	IPI1:       279        347        222         72       Function call interrupts
+	IPI2:         0          0          0          0       CPU stop interrupts
+	IPI3:         0          0          0          0       CPU stop (for crash dump) interrupts
+	IPI4:         0          0          0          0       Timer broadcast interrupts
+	IPI5:         1          0          0          1       IRQ work interrupts
+	IPI6:         0          0          0          0       CPU backtrace interrupts
+	IPI7:         0          0          0          0       KGDB roundup interrupts
+	Err:          0
 
-Reported-by: Liu Ying <victor.liu@nxp.com>
-Fixes: f3d9683346d6 ("drm/bridge: adv7511: Allow IRQ to share GPIO pins")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Tested-by: Liu Ying <victor.liu@nxp.com> # i.MX8MP EVK ADV7535 EDID retrieval w/o IRQ
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240630221931.1650565-1-aford173@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-V3:  Remove unnecessary declaration of ret by evaluating the return
-     code of regmap_read directly.
-
-V2:  Fix uninitialized cec_status
-     Cut back a little on error handling to return either IRQ_NONE or
-     IRQ_HANDLED.
+Fixes: 331a1b3a836c ("arm64: smp: Add arch support for backtrace using pseudo-NMI")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Doug Anderson <dianders@chromium.org>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240620063600.573559-1-ruanjinjie@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511.h     |  2 +-
- drivers/gpu/drm/bridge/adv7511/adv7511_cec.c | 13 ++++++++----
- drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 22 ++++++++++++--------
- 3 files changed, 23 insertions(+), 14 deletions(-)
+ arch/arm64/kernel/smp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511.h b/drivers/gpu/drm/bridge/adv7511/adv7511.h
-index ea271f62b214d..ec0b7f3d889c4 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511.h
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511.h
-@@ -401,7 +401,7 @@ struct adv7511 {
- 
- #ifdef CONFIG_DRM_I2C_ADV7511_CEC
- int adv7511_cec_init(struct device *dev, struct adv7511 *adv7511);
--void adv7511_cec_irq_process(struct adv7511 *adv7511, unsigned int irq1);
-+int adv7511_cec_irq_process(struct adv7511 *adv7511, unsigned int irq1);
- #else
- static inline int adv7511_cec_init(struct device *dev, struct adv7511 *adv7511)
- {
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_cec.c b/drivers/gpu/drm/bridge/adv7511/adv7511_cec.c
-index 44451a9658a32..2e9c88a2b5ed4 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_cec.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_cec.c
-@@ -119,7 +119,7 @@ static void adv7511_cec_rx(struct adv7511 *adv7511, int rx_buf)
- 	cec_received_msg(adv7511->cec_adap, &msg);
- }
- 
--void adv7511_cec_irq_process(struct adv7511 *adv7511, unsigned int irq1)
-+int adv7511_cec_irq_process(struct adv7511 *adv7511, unsigned int irq1)
- {
- 	unsigned int offset = adv7511->info->reg_cec_offset;
- 	const u32 irq_tx_mask = ADV7511_INT1_CEC_TX_READY |
-@@ -131,16 +131,19 @@ void adv7511_cec_irq_process(struct adv7511 *adv7511, unsigned int irq1)
- 	unsigned int rx_status;
- 	int rx_order[3] = { -1, -1, -1 };
- 	int i;
-+	int irq_status = IRQ_NONE;
- 
--	if (irq1 & irq_tx_mask)
-+	if (irq1 & irq_tx_mask) {
- 		adv_cec_tx_raw_status(adv7511, irq1);
-+		irq_status = IRQ_HANDLED;
-+	}
- 
- 	if (!(irq1 & irq_rx_mask))
--		return;
-+		return irq_status;
- 
- 	if (regmap_read(adv7511->regmap_cec,
- 			ADV7511_REG_CEC_RX_STATUS + offset, &rx_status))
--		return;
-+		return irq_status;
- 
- 	/*
- 	 * ADV7511_REG_CEC_RX_STATUS[5:0] contains the reception order of RX
-@@ -172,6 +175,8 @@ void adv7511_cec_irq_process(struct adv7511 *adv7511, unsigned int irq1)
- 
- 		adv7511_cec_rx(adv7511, rx_buf);
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 31c8b3094dd7b..5de85dccc09cd 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -767,13 +767,15 @@ void __init smp_prepare_cpus(unsigned int max_cpus)
  	}
-+
-+	return IRQ_HANDLED;
  }
  
- static int adv7511_cec_adap_enable(struct cec_adapter *adap, bool enable)
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-index 66ccb61e2a660..c8d2c4a157b24 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-@@ -469,6 +469,8 @@ static int adv7511_irq_process(struct adv7511 *adv7511, bool process_hpd)
+-static const char *ipi_types[NR_IPI] __tracepoint_string = {
++static const char *ipi_types[MAX_IPI] __tracepoint_string = {
+ 	[IPI_RESCHEDULE]	= "Rescheduling interrupts",
+ 	[IPI_CALL_FUNC]		= "Function call interrupts",
+ 	[IPI_CPU_STOP]		= "CPU stop interrupts",
+ 	[IPI_CPU_CRASH_STOP]	= "CPU stop (for crash dump) interrupts",
+ 	[IPI_TIMER]		= "Timer broadcast interrupts",
+ 	[IPI_IRQ_WORK]		= "IRQ work interrupts",
++	[IPI_CPU_BACKTRACE]	= "CPU backtrace interrupts",
++	[IPI_KGDB_ROUNDUP]	= "KGDB roundup interrupts",
+ };
+ 
+ static void smp_cross_call(const struct cpumask *target, unsigned int ipinr);
+@@ -784,7 +786,7 @@ int arch_show_interrupts(struct seq_file *p, int prec)
  {
- 	unsigned int irq0, irq1;
- 	int ret;
-+	int cec_status = IRQ_NONE;
-+	int irq_status = IRQ_NONE;
+ 	unsigned int cpu, i;
  
- 	ret = regmap_read(adv7511->regmap, ADV7511_REG_INT(0), &irq0);
- 	if (ret < 0)
-@@ -478,29 +480,31 @@ static int adv7511_irq_process(struct adv7511 *adv7511, bool process_hpd)
- 	if (ret < 0)
- 		return ret;
- 
--	/* If there is no IRQ to handle, exit indicating no IRQ data */
--	if (!(irq0 & (ADV7511_INT0_HPD | ADV7511_INT0_EDID_READY)) &&
--	    !(irq1 & ADV7511_INT1_DDC_ERROR))
--		return -ENODATA;
--
- 	regmap_write(adv7511->regmap, ADV7511_REG_INT(0), irq0);
- 	regmap_write(adv7511->regmap, ADV7511_REG_INT(1), irq1);
- 
--	if (process_hpd && irq0 & ADV7511_INT0_HPD && adv7511->bridge.encoder)
-+	if (process_hpd && irq0 & ADV7511_INT0_HPD && adv7511->bridge.encoder) {
- 		schedule_work(&adv7511->hpd_work);
-+		irq_status = IRQ_HANDLED;
-+	}
- 
- 	if (irq0 & ADV7511_INT0_EDID_READY || irq1 & ADV7511_INT1_DDC_ERROR) {
- 		adv7511->edid_read = true;
- 
- 		if (adv7511->i2c_main->irq)
- 			wake_up_all(&adv7511->wq);
-+		irq_status = IRQ_HANDLED;
- 	}
- 
- #ifdef CONFIG_DRM_I2C_ADV7511_CEC
--	adv7511_cec_irq_process(adv7511, irq1);
-+	cec_status = adv7511_cec_irq_process(adv7511, irq1);
- #endif
- 
--	return 0;
-+	/* If there is no IRQ to handle, exit indicating no IRQ data */
-+	if (irq_status == IRQ_HANDLED || cec_status == IRQ_HANDLED)
-+		return IRQ_HANDLED;
-+
-+	return IRQ_NONE;
- }
- 
- static irqreturn_t adv7511_irq_handler(int irq, void *devid)
-@@ -509,7 +513,7 @@ static irqreturn_t adv7511_irq_handler(int irq, void *devid)
- 	int ret;
- 
- 	ret = adv7511_irq_process(adv7511, true);
--	return ret < 0 ? IRQ_NONE : IRQ_HANDLED;
-+	return ret < 0 ? IRQ_NONE : ret;
- }
- 
- /* -----------------------------------------------------------------------------
+-	for (i = 0; i < NR_IPI; i++) {
++	for (i = 0; i < MAX_IPI; i++) {
+ 		seq_printf(p, "%*s%u:%s", prec - 1, "IPI", i,
+ 			   prec >= 4 ? " " : "");
+ 		for_each_online_cpu(cpu)
 -- 
 2.43.0
 
