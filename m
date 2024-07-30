@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-63997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F12941BBF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324F5941E25
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E017B23F13
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:57:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CFC4B2A6E9
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABCD1898ED;
-	Tue, 30 Jul 2024 16:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712B01A76C3;
+	Tue, 30 Jul 2024 17:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ir9sXBzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2BaIJ+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C637E184549;
-	Tue, 30 Jul 2024 16:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9941A76AB;
+	Tue, 30 Jul 2024 17:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358637; cv=none; b=E18T0AVu0LYGkHBRaI9aqPXpp30Sqi2NiT6YIfNnddOv3kcwZUACcTyvhaunW+UK/ztGb6t395gfP8lxkaibwHNUvgxkdd6/BMDKoVB6aUjUXHK79bpZfpzKlf1dSjbf21QWrLsTesSRgPREHnl3Mcr+Uef1wOUgexeLgopYVAE=
+	t=1722360152; cv=none; b=fE+LJBL9RcUvzyaqcNjoeRm65s+TGGNr87Wrs7hp9RxPfQ39W7hemip/rpT/ZFPbFT2zyve/2eM3wWU4mLifQzvnqUBjvsSzr55SNSB0qcOnx/AphUZ93qosDBjQXf6QI8KUnX+GZX/qCLzPyJ1dj7Ep/Q0AWEpUvkAL27AFs80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358637; c=relaxed/simple;
-	bh=ToznvYtZrTG7EfUQqBmtAFOxtMvOVnnT2LBLNHkiz+o=;
+	s=arc-20240116; t=1722360152; c=relaxed/simple;
+	bh=rFp2Pbme6u/T0c/7W0fmYdC6u4li5F5aP9inOBYFKOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmMuMzvzRLNe5hhPcTz3Vsk0s8kQwwa3h7W042+bT7/LKI953V8DAWSm3YZrcXn2CHvF7jemGD2wv53haxFin/7bNx7qavOf3j+X13bbxDwLqYKyJlP8WYydKIG4Nmpwokgo/mgLlTEyDLludTkrOXP/mzhC0rVUl2gRXwmwE6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ir9sXBzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E618C32782;
-	Tue, 30 Jul 2024 16:57:17 +0000 (UTC)
+	 MIME-Version; b=Wv9hFs8cR9S7y1GaWMqx2215Zu4cxJtH2kxyAvA19SY5sXNBAa6x0a6UVKJfRdXmI6qaj+R/jNsnHSp32JJ5LmuakoVZ8Sfq4++1Idm5ZivzDNlETtf11nlmFvx6pQJJDKn5Jae0RvO2vEtiIA8ST00alXmzdVNSbq4kqLOJhDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2BaIJ+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A250C32782;
+	Tue, 30 Jul 2024 17:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358637;
-	bh=ToznvYtZrTG7EfUQqBmtAFOxtMvOVnnT2LBLNHkiz+o=;
+	s=korg; t=1722360152;
+	bh=rFp2Pbme6u/T0c/7W0fmYdC6u4li5F5aP9inOBYFKOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ir9sXBzFa5eZ5caSDO5oBfgVl8Q4NBnm9Y3ockff4TUFZTC1zTTBtqIJwB+q8yTSY
-	 35jWMeT8IW8lSDvDYW3RF5x0KApkAZJ0SxA37Fn9EHu9A5Pfa4Xencf/ZdGREupysL
-	 KjseXozOd/Rw47h0zx+oqWrUU/Ui96uRvC7mzxao=
+	b=W2BaIJ+JNldtJiGWqPaYje/4CMrfrrNLtAb7egPSJZku3Q9J7T3AOeJspd7dD9lmV
+	 ToZa9ccKlGJaSH5xuO+cwNEuejRNfSnKyEO/Cs6hPC/0IQVNOP2bYMsBtSJoptEGdc
+	 rgcuhUF9xcy3jT+2pN8Ge4vytQDTKDsk6nZ1r084=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 6.6 381/568] ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.10 612/809] jbd2: make jbd2_journal_get_max_txn_bufs() internal
 Date: Tue, 30 Jul 2024 17:48:08 +0200
-Message-ID: <20240730151654.758954810@linuxfoundation.org>
+Message-ID: <20240730151749.010950601@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 28ab9769117ca944cb6eb537af5599aa436287a4 upstream.
+commit 4aa99c71e42ad60178c1154ec24e3df9c684fb67 upstream.
 
-SAT-5 revision 8 specification removed the text about the ANSI INCITS
-431-2007 compliance which was requiring SCSI/ATA Translation (SAT) to
-return descriptor format sense data for the ATA PASS-THROUGH commands
-regardless of the setting of the D_SENSE bit.
+There's no reason to have jbd2_journal_get_max_txn_bufs() public
+function. Currently all users are internal and can use
+journal->j_max_transaction_buffers instead. This saves some unnecessary
+recomputations of the limit as a bonus which becomes important as this
+function gets more complex in the following patch.
 
-Let's honor the D_SENSE bit for ATA PASS-THROUGH commands while
-generating the "ATA PASS-THROUGH INFORMATION AVAILABLE" sense data.
-
-SAT-5 revision 7
-================
-
-12.2.2.8 Fixed format sense data
-
-Table 212 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands. SATLs compliant with ANSI
-INCITS 431-2007, SCSI/ATA Translation (SAT) return descriptor format
-sense data for the ATA PASS-THROUGH commands regardless of the setting
-of the D_SENSE bit.
-
-SAT-5 revision 8
-================
-
-12.2.2.8 Fixed format sense data
-
-Table 211 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands.
-
-Cc: stable@vger.kernel.org # 4.19+
-Reported-by: Niklas Cassel <cassel@kernel.org>
-Closes: https://lore.kernel.org/linux-ide/Zn1WUhmLglM4iais@ryzen.lan
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240702024735.1152293-4-ipylypiv@google.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20240624170127.3253-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/jbd2/commit.c     |    2 +-
+ fs/jbd2/journal.c    |    5 +++++
+ include/linux/jbd2.h |    5 -----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -941,11 +941,8 @@ static void ata_gen_passthru_sense(struc
- 				   &sense_key, &asc, &ascq);
- 		ata_scsi_set_sense(qc->dev, cmd, sense_key, asc, ascq);
- 	} else {
--		/*
--		 * ATA PASS-THROUGH INFORMATION AVAILABLE
--		 * Always in descriptor format sense.
--		 */
--		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
-+		/* ATA PASS-THROUGH INFORMATION AVAILABLE */
-+		ata_scsi_set_sense(qc->dev, cmd, RECOVERED_ERROR, 0, 0x1D);
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -766,7 +766,7 @@ start_journal_io:
+ 		if (first_block < journal->j_tail)
+ 			freed += journal->j_last - journal->j_first;
+ 		/* Update tail only if we free significant amount of space */
+-		if (freed < jbd2_journal_get_max_txn_bufs(journal))
++		if (freed < journal->j_max_transaction_buffers)
+ 			update_tail = 0;
  	}
+ 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1698,6 +1698,11 @@ journal_t *jbd2_journal_init_inode(struc
+ 	return journal;
  }
  
++static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
++{
++	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
++}
++
+ /*
+  * Given a journal_t structure, initialise the various fields for
+  * startup of a new journaling session.  We use this both when creating
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1660,11 +1660,6 @@ int jbd2_wait_inode_data(journal_t *jour
+ int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
+ int jbd2_fc_release_bufs(journal_t *journal);
+ 
+-static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
+-{
+-	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
+-}
+-
+ /*
+  * is_journal_abort
+  *
 
 
 
