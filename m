@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2F2941AFF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:50:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1114941E48
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86BECB233EC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F5B81C23460
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A47618801A;
-	Tue, 30 Jul 2024 16:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58E21A76D8;
+	Tue, 30 Jul 2024 17:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz3v/CKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPyPZfaE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1B3183CDB;
-	Tue, 30 Jul 2024 16:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27541A76B2;
+	Tue, 30 Jul 2024 17:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358009; cv=none; b=evbjle1Tq+mbXORuP54EQHDwtDwq3I4dbThH/jKWMlhEwwDe/Yn7qEf4YB97fqjbf+/7T1CiYI1cauPFM3lWnvcp51BuEGO+xkcQPkOdrQbdvw47EGp0ZTVm3w78SoMJMuUk/3WQecDZv4iw0tEP7PaCSaRFIdZYySPbsneifXo=
+	t=1722360456; cv=none; b=PHGfJHwRLx9bgiwNkf1XWoPq6NcqFjt/+5r1SAWBrADTcUyKVmAEH6P6FSJ7Kgt6b5Gsewa8x9ODcm6iPnfoTyBltIA2Wg1iYolGPGQmH8BEI5Tl6CNd7b9qe6kHCVwilsCPvBbaT0U+zbBu8+Bh9P2DijpLNrK3PC67OLZyEes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358009; c=relaxed/simple;
-	bh=M7WoOCIovlYrDjnNWYZsR1NRfAdTwxdEBfhYfo8qlUU=;
+	s=arc-20240116; t=1722360456; c=relaxed/simple;
+	bh=kcGP2ZtZkJ0+CX7HWbxvVZ4/l2pAbQB3SpRM9AcsvJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l639PdymMItD4lb8UA9YzBDfZ6XI/SBK8qL1Znv8gsCNot+Bz854m8ILCOTG1ifndvo4Fjdw3j+9eppLioFlJh+HRR+WjZt11Fs+A8qvesm+UYN2T2Hp3AE+Int2YnOC82AZpEjGNEwcRsTm4fua5Alb8nPl+3oPHocCQPFEL68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz3v/CKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB433C32782;
-	Tue, 30 Jul 2024 16:46:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ctDMXVzdP33gb4cf3TeNxttMSv0RzYlhZqSL+UAWXk5SAiMyeDXtIYO7CNrStQ8yXnJf+BZV/c5sngDQuCOwP8VzdWix+Tahz1xcHqUmq38/U3fsjNOLITF6vVuiD3g6E0QECXNkKaRSn8XuZPlqu3CDMyqlzrS4PP1Gq1fKq0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPyPZfaE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABD6C32782;
+	Tue, 30 Jul 2024 17:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358009;
-	bh=M7WoOCIovlYrDjnNWYZsR1NRfAdTwxdEBfhYfo8qlUU=;
+	s=korg; t=1722360456;
+	bh=kcGP2ZtZkJ0+CX7HWbxvVZ4/l2pAbQB3SpRM9AcsvJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xz3v/CKKOvkY5Rrnu562f03ybglIPvosA+On3HptyBGu3XG4g6x3lCH7fK3r1SZeN
-	 hk2qzQNqFQyPBcmt3SWnVsIH7pU82rByJENbwNgN/JrA9C/pgQekbg399Hhc6YnnXG
-	 I1aNLb0PukOgqpbRuL+bK0wriIPvSWbms0Jv2buw=
+	b=LPyPZfaE68Kn3ve69lI5R+PZY/cnVPUbHsvfTH6QxqLawppdFqzPxaZ/HohZS9Atu
+	 xw9s01y12hVvH9t+KNPs60VghR7asId/vXLn8SurdLDsDLBuT17V0+C3xfKHRIRHyg
+	 TzD8HG/ivjXdSf+n9sDqTmbd4dC2YgU7aGHJhXY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shreyas Deodhar <sdeodhar@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 348/440] scsi: qla2xxx: Fix for possible memory corruption
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.10 705/809] drm/i915/dp: Reset intel_dp->link_trained before retraining the link
 Date: Tue, 30 Jul 2024 17:49:41 +0200
-Message-ID: <20240730151629.403945575@linuxfoundation.org>
+Message-ID: <20240730151752.770787686@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shreyas Deodhar <sdeodhar@marvell.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit c03d740152f78e86945a75b2ad541bf972fab92a upstream.
+commit d13e2a6e95e6b87f571c837c71a3d05691def9bb upstream.
 
-Init Control Block is dereferenced incorrectly.  Correctly dereference ICB
+Regularly retraining a link during an atomic commit happens with the
+given pipe/link already disabled and hence intel_dp->link_trained being
+false. Ensure this also for retraining a DP SST link via direct calls to
+the link training functions (vs. an actual commit as for DP MST). So far
+nothing depended on this, however the next patch will depend on
+link_trained==false for changing the LTTPR mode to non-transparent.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shreyas Deodhar <sdeodhar@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240710171057.35066-4-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: <stable@vger.kernel.org> # v5.15+
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240708190029.271247-2-imre.deak@intel.com
+(cherry picked from commit a4d5ce61765c08ab364aa4b327f6739b646e6cfa)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -4667,7 +4667,7 @@ static void
- qla2x00_number_of_exch(scsi_qla_host_t *vha, u32 *ret_cnt, u16 max_cnt)
- {
- 	u32 temp;
--	struct init_cb_81xx *icb = (struct init_cb_81xx *)&vha->hw->init_cb;
-+	struct init_cb_81xx *icb = (struct init_cb_81xx *)vha->hw->init_cb;
- 	*ret_cnt = FW_DEF_EXCHANGES_CNT;
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -5267,6 +5267,8 @@ int intel_dp_retrain_link(struct intel_e
+ 		    !intel_dp_mst_is_master_trans(crtc_state))
+ 			continue;
  
- 	if (max_cnt > vha->hw->max_exchg)
++		intel_dp->link_trained = false;
++
+ 		intel_dp_check_frl_training(intel_dp);
+ 		intel_dp_pcon_dsc_configure(intel_dp, crtc_state);
+ 		intel_dp_start_link_train(intel_dp, crtc_state);
 
 
 
