@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6FD941D70
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F79B941A95
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F2AB297B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:15:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A33D28205D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E54B189539;
-	Tue, 30 Jul 2024 17:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE262154C0C;
+	Tue, 30 Jul 2024 16:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNpqaMB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWT7BNep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCEE1A76B7;
-	Tue, 30 Jul 2024 17:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB36F757FC;
+	Tue, 30 Jul 2024 16:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359674; cv=none; b=dZr1CPdqOUYIZ3t/YCvLlF0UlqaUsqsEfuv5PwyUYKgMPQ4lDOEEh5F8NNgLgiFYRqz5nPeBOgj0LNNfgljP3Je4dL4MwhrsGdPSLR/EpI+x/8pE4tNEioZ9V7JWgU6moUtLyoV5T3THsdp3XjsW5eZWfHYkOLc2+ostPiq4C+4=
+	t=1722357921; cv=none; b=gG72yfTXO6u16sDAOGsPr67yf5EDmqs1NFbXMnZ8enCAuSf/UHIcLTzXWrAfAUodSE7Rv1klEPkVGGgT7mFkm6laV7P14rPeYUZrPizB9euOm77S13ssR4iG7Sj1yNWJHLnDm8pbXnfTc4kylErZGE5aI/j6+0YrR43s9/ZXiOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359674; c=relaxed/simple;
-	bh=kDIHgHu9N9O5dRKsOuW4mUMjGQvt+MIAAcRYjClXJMc=;
+	s=arc-20240116; t=1722357921; c=relaxed/simple;
+	bh=E2Bqsep+WYpAplFqRh4LaT/Ssz9rs6aE6CgIkBSEbKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dkm9zIqmT+HNbN+UglICP+8Nu9LjubxTgb3Hkox+hoiGwnVfViqyPCPGWEgT5vtvhDCN2vclo6HZ1MCHmq/pISQf7W5RY/xXLlGBOmlM6gUaUxVL59S7nrjrC2UBWxies0PrPTKGH0wrK4zYQp9/fBVnIBsdm4T7ZkNuSHEnPTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNpqaMB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917D8C32782;
-	Tue, 30 Jul 2024 17:14:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bwI1y2mmPxO4C9RIxnSOYW9fkzpxl/8V0gCieS9744PQkOLIFE4US0L4EL0deXQq461FLyU1oT0rKPmIqA5GH+Kaqv/YTE+AJnv8IuXDrYrFtcR1hg8hjcFzrufuyoM+u9rbLJS75+ziK16GHqELAzxCDWPxBKbOEEIItlc8BBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWT7BNep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274E4C4AF0C;
+	Tue, 30 Jul 2024 16:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359674;
-	bh=kDIHgHu9N9O5dRKsOuW4mUMjGQvt+MIAAcRYjClXJMc=;
+	s=korg; t=1722357921;
+	bh=E2Bqsep+WYpAplFqRh4LaT/Ssz9rs6aE6CgIkBSEbKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNpqaMB7uxhG/jd/iAYdvG0Gd2LXF1bQ3x01kEnevqj18pjftrlaa1NqvzQze6AY9
-	 Q+086PXB6d7ZiGet8RL5iHR44QkDwfARrRr03MFiXy2cZ79/PmlAk+LzhUeEbePdIK
-	 ucBCm4JaFMJr94LrVDEbDXo8ynsglJzWHhG6dTAY=
+	b=GWT7BNepz8W8OINOyYgRC5zBEmYNtON9zd/uusD1PBPPo+/sbYT1Rdd9Ejn++5tQh
+	 TA6MHr2McqkmjIaFc3V6ZTV6CM71jB5Pu3GUFIzhklHvAHjdS2hvOhKJxIVLOCrOtz
+	 Qg/Uzoa/dpKDfUQRodH5Oe9RgpjerAYVD3rni0AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Su Yue <glass.su@suse.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 517/809] md-cluster: fix hanging issue while a new disk adding
+Subject: [PATCH 6.6 286/568] PCI: endpoint: Fix error handling in epf_ntb_epc_cleanup()
 Date: Tue, 30 Jul 2024 17:46:33 +0200
-Message-ID: <20240730151745.159785700@linuxfoundation.org>
+Message-ID: <20240730151651.051558142@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit fff42f213824fa434a4b6cf906b4331fe6e9302b ]
+[ Upstream commit 6bba3c0ac5dc54737998a0982b2e272242c87e0f ]
 
-The commit 1bbe254e4336 ("md-cluster: check for timeout while a
-new disk adding") is correct in terms of code syntax but not
-suite real clustered code logic.
+There are two issues related to epf_ntb_epc_cleanup():
 
-When a timeout occurs while adding a new disk, if recv_daemon()
-bypasses the unlock for ack_lockres:CR, another node will be waiting
-to grab EX lock. This will cause the cluster to hang indefinitely.
+  1) It should call epf_ntb_config_sspad_bar_clear()
+  2) The epf_ntb_bind() function should call epf_ntb_epc_cleanup()
+     to cleanup.
 
-How to fix:
+I also changed the ordering a bit.  Unwinding should be done in the
+mirror order from how they are allocated.
 
-1. In dlm_lock_sync(), change the wait behaviour from forever to a
-   timeout, This could avoid the hanging issue when another node
-   fails to handle cluster msg. Another result of this change is
-   that if another node receives an unknown msg (e.g. a new msg_type),
-   the old code will hang, whereas the new code will timeout and fail.
-   This could help cluster_md handle new msg_type from different
-   nodes with different kernel/module versions (e.g. The user only
-   updates one leg's kernel and monitors the stability of the new
-   kernel).
-2. The old code for __sendmsg() always returns 0 (success) under the
-   design (must successfully unlock ->message_lockres). This commit
-   makes this function return an error number when an error occurs.
-
-Fixes: 1bbe254e4336 ("md-cluster: check for timeout while a new disk adding")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reviewed-by: Su Yue <glass.su@suse.com>
-Acked-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240709104120.22243-1-heming.zhao@suse.com
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Link: https://lore.kernel.org/linux-pci/aaffbe8d-7094-4083-8146-185f4a84e8a1@moroto.mountain
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-cluster.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/md-cluster.c b/drivers/md/md-cluster.c
-index 8e36a0feec098..b5a802ae17bb2 100644
---- a/drivers/md/md-cluster.c
-+++ b/drivers/md/md-cluster.c
-@@ -15,6 +15,7 @@
- 
- #define LVB_SIZE	64
- #define NEW_DEV_TIMEOUT 5000
-+#define WAIT_DLM_LOCK_TIMEOUT (30 * HZ)
- 
- struct dlm_lock_resource {
- 	dlm_lockspace_t *ls;
-@@ -130,8 +131,13 @@ static int dlm_lock_sync(struct dlm_lock_resource *res, int mode)
- 			0, sync_ast, res, res->bast);
- 	if (ret)
- 		return ret;
--	wait_event(res->sync_locking, res->sync_locking_done);
-+	ret = wait_event_timeout(res->sync_locking, res->sync_locking_done,
-+				WAIT_DLM_LOCK_TIMEOUT);
- 	res->sync_locking_done = false;
-+	if (!ret) {
-+		pr_err("locking DLM '%s' timeout!\n", res->name);
-+		return -EBUSY;
-+	}
- 	if (res->lksb.sb_status == 0)
- 		res->mode = mode;
- 	return res->lksb.sb_status;
-@@ -743,7 +749,7 @@ static void unlock_comm(struct md_cluster_info *cinfo)
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 1a4cdf98df703..3368f483f818d 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -810,8 +810,9 @@ static int epf_ntb_epc_init(struct epf_ntb *ntb)
   */
- static int __sendmsg(struct md_cluster_info *cinfo, struct cluster_msg *cmsg)
+ static void epf_ntb_epc_cleanup(struct epf_ntb *ntb)
  {
--	int error;
-+	int error, unlock_error;
- 	int slot = cinfo->slot_number - 1;
- 
- 	cmsg->slot = cpu_to_le32(slot);
-@@ -751,7 +757,7 @@ static int __sendmsg(struct md_cluster_info *cinfo, struct cluster_msg *cmsg)
- 	error = dlm_lock_sync(cinfo->message_lockres, DLM_LOCK_EX);
- 	if (error) {
- 		pr_err("md-cluster: failed to get EX on MESSAGE (%d)\n", error);
--		goto failed_message;
-+		return error;
- 	}
- 
- 	memcpy(cinfo->message_lockres->lksb.sb_lvbptr, (void *)cmsg,
-@@ -781,14 +787,10 @@ static int __sendmsg(struct md_cluster_info *cinfo, struct cluster_msg *cmsg)
- 	}
- 
- failed_ack:
--	error = dlm_unlock_sync(cinfo->message_lockres);
--	if (unlikely(error != 0)) {
-+	while ((unlock_error = dlm_unlock_sync(cinfo->message_lockres)))
- 		pr_err("md-cluster: failed convert to NL on MESSAGE(%d)\n",
--			error);
--		/* in case the message can't be released due to some reason */
--		goto failed_ack;
--	}
--failed_message:
-+			unlock_error);
-+
- 	return error;
+-	epf_ntb_db_bar_clear(ntb);
+ 	epf_ntb_mw_bar_clear(ntb, ntb->num_mws);
++	epf_ntb_db_bar_clear(ntb);
++	epf_ntb_config_sspad_bar_clear(ntb);
  }
+ 
+ #define EPF_NTB_R(_name)						\
+@@ -1351,7 +1352,7 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ 	ret = pci_register_driver(&vntb_pci_driver);
+ 	if (ret) {
+ 		dev_err(dev, "failure register vntb pci driver\n");
+-		goto err_bar_alloc;
++		goto err_epc_cleanup;
+ 	}
+ 
+ 	ret = vpci_scan_bus(ntb);
+@@ -1362,6 +1363,8 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ 
+ err_unregister:
+ 	pci_unregister_driver(&vntb_pci_driver);
++err_epc_cleanup:
++	epf_ntb_epc_cleanup(ntb);
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
  
 -- 
 2.43.0
