@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19536941C1A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:03:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8A1941DB5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE961C231E4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:03:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1961D1F2797C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA491A6192;
-	Tue, 30 Jul 2024 17:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26491A76B2;
+	Tue, 30 Jul 2024 17:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrw6wObu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYZ1/DHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C407D83A17;
-	Tue, 30 Jul 2024 17:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE41A76A9;
+	Tue, 30 Jul 2024 17:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358983; cv=none; b=q8JWZ2SsUVqJUxElZMMLpmcHay9gheI3NtLBgu2oVNSLv3Nes7f331hytOx0VOQmuBha9HeSsiT6c1MhnaBtA9gsCvkuYiQjmmNaz+8xfPxH+Wl4d7Hxwh4mC3Cp2OxFnqobRuVdjesNNHV4hL2gL89glj9A8nIKAqJAOmQiyQQ=
+	t=1722360032; cv=none; b=kB0P/tzi01TuzfpNWCk4QS24f4S182QbotHnLfvCda6VyrQ+glzaz6mnTaYG64FwMdcmnIEKfwwlAkuPC4rO/5kEscZe6o1E3KhSHhHVk9eisUF2hNt62NIM1Uiqp+u1fZGajB7L1/bJasFwC3oaI8nDF3iO2akjhsf1Y+5xHeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358983; c=relaxed/simple;
-	bh=PlZ27Z+TM4b2gT4s264HIv6QoPH6uGdYhQofuRRhN6w=;
+	s=arc-20240116; t=1722360032; c=relaxed/simple;
+	bh=ycRKs9ZDGJEIS0uCi4XFHZ8SXstjYr9QuX9WJ0uBfJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRGQiqSkTGZ7cRwzhkwsHE058JLKBZdVgP2dk5asL86jRrs/UG6rO53zike5Q0Lng9eAmloNaFVmuRWQePRJwcZNCEjzDhrVTf8DDikZVSLONLW8u9e9Y3fn3SHlf0stxQB64O5uURgu3vqohvh3F5dbiPkyq9EmZjzpCQORmjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrw6wObu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33FE1C32782;
-	Tue, 30 Jul 2024 17:03:03 +0000 (UTC)
+	 MIME-Version; b=qWdbanyfPiNdOj7/C+EC9g3756jzj5m4xBDeuaFOHxOZemxMHOlv/j82DvmI9hE1kIwWu3I+ojt9IE9odFDIPGzSHl03ZkO/I5SdV509CZppb3JlSNEgzuHmeAqonf6A6S1e3OroW+TVF3ADdjqkHuGde+6IylE4VOWZxZCO9Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYZ1/DHf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C354BC32782;
+	Tue, 30 Jul 2024 17:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358983;
-	bh=PlZ27Z+TM4b2gT4s264HIv6QoPH6uGdYhQofuRRhN6w=;
+	s=korg; t=1722360032;
+	bh=ycRKs9ZDGJEIS0uCi4XFHZ8SXstjYr9QuX9WJ0uBfJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrw6wObu83zp2VuAkgoBEqrlS1O+SoktC8fQt0dpwPLfbCZreNO93ZkPOYqRGd+tA
-	 iYbevgstm5vlWOids0srcUPmdCtzYsf4V0dhb+/81Dr3WXHcQY24Z9JVRqakirtJzb
-	 NqvS2YPbFuXytC0Br1S+1bOxrlpTu6ntb1O5cxDc=
+	b=fYZ1/DHf2pMJqooF7pL+7iZSZa+jac3juLSiKPNnpt+FbXx9InD5h5vgOPnMpqdBk
+	 Rx/GMMpsKVncgvMJ70lctcgOXwm8iPzjfxA86uw44hkl0mwWjNCJWrdktbIWWRHTnj
+	 AJiYoEOfwBWk5NI8mubuiderPPBqJIDFRY9T2Ef4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Nitesh Shetty <nj.shetty@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 439/440] nvme-pci: add missing condition check for existence of mapped data
+Subject: [PATCH 6.6 565/568] iommu: sprd: Avoid NULL deref in sprd_iommu_hw_en
 Date: Tue, 30 Jul 2024 17:51:12 +0200
-Message-ID: <20240730151632.919452327@linuxfoundation.org>
+Message-ID: <20240730151702.240728526@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit c31fad1470389666ac7169fe43aa65bf5b7e2cfd ]
+[ Upstream commit 630482ee0653decf9e2482ac6181897eb6cde5b8 ]
 
-nvme_map_data() is called when request has physical segments, hence
-the nvme_unmap_data() should have same condition to avoid dereference.
+In sprd_iommu_cleanup() before calling function sprd_iommu_hw_en()
+dom->sdev is equal to NULL, which leads to null dereference.
 
-Fixes: 4aedb705437f ("nvme-pci: split metadata handling from nvme_map_data / nvme_unmap_data")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9afea57384d4 ("iommu/sprd: Release dma buffer to avoid memory leak")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Reviewed-by: Chunyan Zhang <zhang.lyra@gmail.com>
+Link: https://lore.kernel.org/r/20240716125522.3690358-1-artem.chernyshev@red-soft.ru
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/sprd-iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 42ef44cc7a852..27446fa847526 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -910,7 +910,8 @@ static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
- 	blk_mq_start_request(req);
- 	return BLK_STS_OK;
- out_unmap_data:
--	nvme_unmap_data(dev, req);
-+	if (blk_rq_nr_phys_segments(req))
-+		nvme_unmap_data(dev, req);
- out_free_cmd:
- 	nvme_cleanup_cmd(req);
- 	return ret;
+diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
+index 2fa9afebd4f5f..c8e79a2d8b4c6 100644
+--- a/drivers/iommu/sprd-iommu.c
++++ b/drivers/iommu/sprd-iommu.c
+@@ -236,8 +236,8 @@ static void sprd_iommu_cleanup(struct sprd_iommu_domain *dom)
+ 
+ 	pgt_size = sprd_iommu_pgt_size(&dom->domain);
+ 	dma_free_coherent(dom->sdev->dev, pgt_size, dom->pgt_va, dom->pgt_pa);
+-	dom->sdev = NULL;
+ 	sprd_iommu_hw_en(dom->sdev, false);
++	dom->sdev = NULL;
+ }
+ 
+ static void sprd_iommu_domain_free(struct iommu_domain *domain)
 -- 
 2.43.0
 
