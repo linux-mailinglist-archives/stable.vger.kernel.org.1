@@ -1,61 +1,85 @@
-Return-Path: <stable+bounces-63047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374649416ED
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:05:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75149415C2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E666A283F32
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:05:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DBA41F25304
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A967183CA1;
-	Tue, 30 Jul 2024 16:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1111BA86F;
+	Tue, 30 Jul 2024 15:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVlR0bZs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TzjMdKM1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B90187FFB;
-	Tue, 30 Jul 2024 16:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60541BA869;
+	Tue, 30 Jul 2024 15:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355490; cv=none; b=rlvN+tMKpZNAYmfdOELxBaFPUcVxkP63lpKyipe+4+O7omppNR+45kqw+JLDZhAbDbX7277PB8fHuycfVpTwlgyMKnIyKbx64n/P2BbDjSjwaGeXwKx6C5dzHWqmnTRGh5bEGmUoYssOwITtGW58P3+SNt8g2BMQX94nPZWbY1w=
+	t=1722354728; cv=none; b=OGnqgSqZfiI7mAX7t8b2dn5csmxtsbJrIdp//JddFND5V9QLzM+4w83SKOag1eG2kO4Y0KF6saxdYozxn+VGFtbeY+K0eacEYMygG7TdkNqSrxYHkZW0GLqNHUF+s/XY+Z2KvVUnTy+NaA0N1fjotTazDORumTD3lqfy39GOrLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355490; c=relaxed/simple;
-	bh=ivRllV5663+MgRxBlNVeFwexOpt12L4Jl2ek9YEKYLA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKiRTdT654q1hu4NE4JlaFefKujw656DBTKWBHJyd4bU4+mT9UlbeH/sMOVdLEhjhBoLiTbPhqOjl5XJKrQoRa7BwChRfPHMDydlpG8eLN7OOdhYyLurZd0dWavETqsQVty/gozW+pOkSR0ITdUdRilAQ4TrhDsiLbIIE5vpUZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVlR0bZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA73C4AF0E;
-	Tue, 30 Jul 2024 16:04:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355490;
-	bh=ivRllV5663+MgRxBlNVeFwexOpt12L4Jl2ek9YEKYLA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVlR0bZs8D2w9jcD9dINykIQqaa5NkzNstXW7EF/xtdhZvntuv7IeqnDOCsCxkyCN
-	 ljn9j8xrFEaw4M8ZQuBiUBFiBPO7U45Kxnk3q77A0+rQVNXLDD1jTWGzkxKiUNt7k8
-	 CXqoo67xoOfmtN82qGc9cI//jDhKHLS49mRx0SP8=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Yue Sun <samsun1006219@gmail.com>,
-	Xingwei Lee <xrivendell7@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/440] jump_label: Fix concurrency issues in static_key_slow_dec()
-Date: Tue, 30 Jul 2024 17:45:32 +0200
-Message-ID: <20240730151619.753507378@linuxfoundation.org>
+	s=arc-20240116; t=1722354728; c=relaxed/simple;
+	bh=FL/qY9kZgeoZ8OVYj74nz1JqSGuDuc00dgkKFESUfNA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KdFkp7z++J95/A5eJk24ZHJfVYrhLY1AjJLJo67X8U+HQ1VG+pBXNq9HC6qraKE3dZbzxXgavqk3BN0ubu1V15fWNqrrDktj5t0I8eL0sA9sJDyHiPT8eTUuGTTl7+VuKM1rVvV1g6cn+fJAKEEqX/fbRb9CcrKanJ0uVXRDSOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TzjMdKM1; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2cb55418470so2922500a91.1;
+        Tue, 30 Jul 2024 08:52:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722354726; x=1722959526; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rGTJNgxfe9Ob3gBJFcR51TvMio1QbF0ml0yPuynT6so=;
+        b=TzjMdKM1/W7qHt4u1G8qLFjDyXe3IlPXnpU16rgVlnCLgFJcV6JRe0MLtchvP8bYYQ
+         RNTq2wjCtohhheoXagrkFT1R0CPXNlnUOepO42kdllJbtmdauoNnxeLk8D2ujmIA0HK3
+         fBfmXyOUrXjpOzB0bpjKMEh2QFFiW6I3vMtgo0xz+oWLy8Sxp+2YRBe8LwyNsvpze8Z6
+         Gs/NFlB33eZohnykS8uTUSidn/3lMviqF47/UXEYeGqvfvX7WMH2yGVWbXpDGGl/RMlQ
+         pfQZu3T35Yr19fvHVHzuZeNKk4Dh5nF6Ambr/4O2h8HSrMMsznhfJE1Y+6CiEUUiyiZZ
+         BdXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722354726; x=1722959526;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rGTJNgxfe9Ob3gBJFcR51TvMio1QbF0ml0yPuynT6so=;
+        b=G//WKlMGnTIhEuUxxuC0KlYqMM7bATnG1eHPmHi/isebd0QWzojWhiD89w1pVt9TX9
+         mEtso+0M6ezR9I0nhEw0iH630xOeRoanc+eBfnSjEbA0Dj46F+Ibr/cO3FMaQw42AKBu
+         4dU8nLQPkT5U8KJaw8aD3KmWlXFjUUJcEAmj6kcEPeVQco8YPXkR+Pabw0TykS90XT37
+         Ld4FLokKlQXrKNbq+QQATbYbgESuKSG/+/QQ2ixqxI544E9CSqQnnsTtauTsHGjDuj7B
+         VburL+uLvkA4gs0vGxfeywROCSTn5+EQbuP4Jo1ubHHkQK+KqBcbaHhVuH4jcaE4w296
+         8eDw==
+X-Forwarded-Encrypted: i=1; AJvYcCU5Lekpg/bR0/42TzNBAoPxEJCUH9M7AECQ7PRk5LdVCTZOyARA9yMrOzcDW9wPRpDk/PPe2tYM7JWOdQ1AETE/6Sqgs/6Z
+X-Gm-Message-State: AOJu0YwDrqoVAyw7jiDLnsFFixHzGCeRm5gd2OMoKy9I3w7ctKzWFq9A
+	EYBUN4i+tGf4FJQvhQqCyWEgt0PSTBagozm2cP8E52fae9quN6ztXHZafg==
+X-Google-Smtp-Source: AGHT+IF4b6FaThdPXhzvuE3TfYcb2tkeIxqSYmJ/MJuohBSEy7VD5QcKXAD5OZFnOzhaMkjSCNbAWA==
+X-Received: by 2002:a17:90a:9c7:b0:2c9:6278:27c9 with SMTP id 98e67ed59e1d1-2cf7e621f45mr9461877a91.38.1722354724200;
+        Tue, 30 Jul 2024 08:52:04 -0700 (PDT)
+Received: from localhost.localdomain (71-34-81-131.ptld.qwest.net. [71.34.81.131])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cdb7600054sm12788517a91.47.2024.07.30.08.52.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jul 2024 08:52:03 -0700 (PDT)
+From: "Gerecke, Jason" <killertofu@gmail.com>
+X-Google-Original-From: "Gerecke, Jason" <jason.gerecke@wacom.com>
+To: linux-input@vger.kernel.org,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Jiri Kosina <jikos@kernel.org>
+Cc: Ping Cheng <pinglinux@gmail.com>,
+	Joshua Dickens <Joshua@Joshua-Dickens.com>,
+	Erin Skomra <skomra@gmail.com>,
+	"Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/5] HID: wacom: Defer calculation of resolution until resolution_code is known
+Date: Tue, 30 Jul 2024 08:51:55 -0700
+Message-ID: <20240730155159.3156-1-jason.gerecke@wacom.com>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,148 +88,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-------------------
+The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
+for historic reasons. When the code to support twist was introduced in
+commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
+and twist usages"), we were careful to write it in such a way that it had
+HID calculate the resolution of the twist axis assuming ABS_RZ instead
+(so that we would get correct angular behavior). This was broken with
+the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
+resolution for older tablets"), which moved the resolution calculation
+to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
 
-From: Thomas Gleixner <tglx@linutronix.de>
+This commit moves the calculation of resolution after the point that
+we are finished setting things up for its proper use.
 
-[ Upstream commit 83ab38ef0a0b2407d43af9575bb32333fdd74fb2 ]
-
-The commit which tried to fix the concurrency issues of concurrent
-static_key_slow_inc() failed to fix the equivalent issues
-vs. static_key_slow_dec():
-
-CPU0                     CPU1
-
-static_key_slow_dec()
-  static_key_slow_try_dec()
-
-	key->enabled == 1
-	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
-	if (val == 1)
-	     return false;
-
-  jump_label_lock();
-  if (atomic_dec_and_test(&key->enabled)) {
-     --> key->enabled == 0
-   __jump_label_update()
-
-			 static_key_slow_dec()
-			   static_key_slow_try_dec()
-
-			     key->enabled == 0
-			     val = atomic_fetch_add_unless(&key->enabled, -1, 1);
-
-			      --> key->enabled == -1 <- FAIL
-
-There is another bug in that code, when there is a concurrent
-static_key_slow_inc() which enables the key as that sets key->enabled to -1
-so on the other CPU
-
-	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
-
-will succeed and decrement to -2, which is invalid.
-
-Cure all of this by replacing the atomic_fetch_add_unless() with a
-atomic_try_cmpxchg() loop similar to static_key_fast_inc_not_disabled().
-
-[peterz: add WARN_ON_ONCE for the -1 race]
-Fixes: 4c5ea0a9cd02 ("locking/static_key: Fix concurrent static_key_slow_inc()")
-Reported-by: Yue Sun <samsun1006219@gmail.com>
-Reported-by: Xingwei Lee <xrivendell7@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240610124406.422897838@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
+Cc: stable@vger.kernel.org
 ---
- kernel/jump_label.c | 45 +++++++++++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+ drivers/hid/wacom_wac.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/jump_label.c b/kernel/jump_label.c
-index d9c822bbffb8d..eec802175ccc6 100644
---- a/kernel/jump_label.c
-+++ b/kernel/jump_label.c
-@@ -131,7 +131,7 @@ bool static_key_fast_inc_not_disabled(struct static_key *key)
- 	STATIC_KEY_CHECK_USE(key);
- 	/*
- 	 * Negative key->enabled has a special meaning: it sends
--	 * static_key_slow_inc() down the slow path, and it is non-zero
-+	 * static_key_slow_inc/dec() down the slow path, and it is non-zero
- 	 * so it counts as "enabled" in jump_label_update().  Note that
- 	 * atomic_inc_unless_negative() checks >= 0, so roll our own.
- 	 */
-@@ -150,7 +150,7 @@ bool static_key_slow_inc_cpuslocked(struct static_key *key)
- 	lockdep_assert_cpus_held();
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index 1f4564982b958..2541fa2e0fa3b 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1878,12 +1878,14 @@ static void wacom_map_usage(struct input_dev *input, struct hid_usage *usage,
+ 	int fmax = field->logical_maximum;
+ 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
+ 	int resolution_code = code;
+-	int resolution = hidinput_calc_abs_res(field, resolution_code);
++	int resolution;
  
- 	/*
--	 * Careful if we get concurrent static_key_slow_inc() calls;
-+	 * Careful if we get concurrent static_key_slow_inc/dec() calls;
- 	 * later calls must wait for the first one to _finish_ the
- 	 * jump_label_update() process.  At the same time, however,
- 	 * the jump_label_update() call below wants to see
-@@ -247,20 +247,32 @@ EXPORT_SYMBOL_GPL(static_key_disable);
+ 	if (equivalent_usage == HID_DG_TWIST) {
+ 		resolution_code = ABS_RZ;
+ 	}
  
- static bool static_key_slow_try_dec(struct static_key *key)
- {
--	int val;
--
--	val = atomic_fetch_add_unless(&key->enabled, -1, 1);
--	if (val == 1)
--		return false;
-+	int v;
- 
- 	/*
--	 * The negative count check is valid even when a negative
--	 * key->enabled is in use by static_key_slow_inc(); a
--	 * __static_key_slow_dec() before the first static_key_slow_inc()
--	 * returns is unbalanced, because all other static_key_slow_inc()
--	 * instances block while the update is in progress.
-+	 * Go into the slow path if key::enabled is less than or equal than
-+	 * one. One is valid to shut down the key, anything less than one
-+	 * is an imbalance, which is handled at the call site.
-+	 *
-+	 * That includes the special case of '-1' which is set in
-+	 * static_key_slow_inc_cpuslocked(), but that's harmless as it is
-+	 * fully serialized in the slow path below. By the time this task
-+	 * acquires the jump label lock the value is back to one and the
-+	 * retry under the lock must succeed.
- 	 */
--	WARN(val < 0, "jump label: negative count!\n");
-+	v = atomic_read(&key->enabled);
-+	do {
-+		/*
-+		 * Warn about the '-1' case though; since that means a
-+		 * decrement is concurrent with a first (0->1) increment. IOW
-+		 * people are trying to disable something that wasn't yet fully
-+		 * enabled. This suggests an ordering problem on the user side.
-+		 */
-+		WARN_ON_ONCE(v < 0);
-+		if (v <= 1)
-+			return false;
-+	} while (!likely(atomic_try_cmpxchg(&key->enabled, &v, v - 1)));
++	resolution = hidinput_calc_abs_res(field, resolution_code);
 +
- 	return true;
- }
- 
-@@ -271,10 +283,11 @@ static void __static_key_slow_dec_cpuslocked(struct static_key *key)
- 	if (static_key_slow_try_dec(key))
- 		return;
- 
--	jump_label_lock();
--	if (atomic_dec_and_test(&key->enabled))
-+	guard(mutex)(&jump_label_mutex);
-+	if (atomic_cmpxchg(&key->enabled, 1, 0))
- 		jump_label_update(key);
--	jump_label_unlock();
-+	else
-+		WARN_ON_ONCE(!static_key_slow_try_dec(key));
- }
- 
- static void __static_key_slow_dec(struct static_key *key)
+ 	if (equivalent_usage == HID_GD_X) {
+ 		fmin += features->offset_left;
+ 		fmax -= features->offset_right;
 -- 
-2.43.0
-
-
+2.45.2
 
 
