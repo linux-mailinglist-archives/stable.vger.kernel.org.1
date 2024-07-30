@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-62783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6F2941246
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D4894124A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 14:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4077D1C211B2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05BEF1C22624
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 12:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D791A08A0;
-	Tue, 30 Jul 2024 12:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11F419FA76;
+	Tue, 30 Jul 2024 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mirid8/P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UiPgiLIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6904F19F499;
-	Tue, 30 Jul 2024 12:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB9019FA7B;
+	Tue, 30 Jul 2024 12:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722343537; cv=none; b=JgHS1+Lfj3+OFlMwabxEXiJ2ldEUnnXOTXqtuWPXWRGpAn4YKbBsHXRsCA78N1W4gbALlJmkJbxeZ8fE1Do4uKP7AnSZFfSvRfOzLsFEVSRYUW2/uxYFrJbCpnLNjjGWhm4aIPmtqrjlJNaNEcLgpmDEmM2fbbZQE5fcxyCcGOg=
+	t=1722343545; cv=none; b=DfvWab8GuMBUZqfOUV3Z5wRjmgkouS1RFP6NO2Mj4U0gmeIdsXWy6CIRTprR3jJAf01au90pwZo2748aj4qGiGTd438MI/hPBYwUlNX3I8MvHFVV6+4gwYRJ95k1YRiksBHbmadzApIjcfaT8Eztlg+b7JYfUTwu8m4uCfgRnHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722343537; c=relaxed/simple;
-	bh=j0dc/I1mH+hKG7ByUM1XwvbAYo0En9mwk7eUWGGkTms=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJZ4sk1W85HYGIjVOl0mRqCblkqavySnE4bDEyjVxssYx+xg2cy48qRnmJ3lgMGcApoRkmVkYipswVNWpywTbdM5PwzNnm/LOBK4EBk0yvvSz2kyPoCUBD4P9ExnKqg2tQ7dMyn8ff7JUj4u/7KgtwfFxqrK2rLRrdH4x3vzFIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mirid8/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17877C32782;
-	Tue, 30 Jul 2024 12:45:34 +0000 (UTC)
+	s=arc-20240116; t=1722343545; c=relaxed/simple;
+	bh=MZoXaD5jyWdeMosi7M733eJtz37s8XOPUobKJxpRSwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VOLSUQpSbqIMXfxo2yz84H7PlSCWtX0yUo2FQCS8wsYoHGP1D6nFZdOf8eEJUIw8uTxFvJN0oXL2UHTByvKNCz4JdGzrg6U8Vex4J/WPCWm8SOkQcHol5Ts3F0liJ32z/U9JTOAqnrHRt9eduPdSGcEN/GOVBIG7EREZe7vEdfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UiPgiLIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F897C32782;
+	Tue, 30 Jul 2024 12:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722343537;
-	bh=j0dc/I1mH+hKG7ByUM1XwvbAYo0En9mwk7eUWGGkTms=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mirid8/P1bemUtuVCZHxUKCLruTbwCiENWdLoiwD7rvwVu0kNrLoBr7Mwld3q0gEj
-	 JcKcIR9vTBor86OGrQY2WaHhZOUA+cJiKfWB0radWjhHoHZEnVldACUnhVooUEMS3F
-	 R1xVDO8l0Pda3Vho5TVY4Qmmro2iA0Og2f4O2cLVSkBauE7BLTKlwO/37YaM+t+J5/
-	 rUKp43VrgON3TWCHCPj+2+oVMsxCRqg2iU8wB3NHdTEYR26fXNaJuclwEWo/7t4gT2
-	 P6y88lPGYJqsRPNNSkRP128mS5eakN3fGWFYEG1BxdNHDzqK09vq1TJEoEauSBBXZH
-	 bwQgijFfBVU+g==
+	s=k20201202; t=1722343545;
+	bh=MZoXaD5jyWdeMosi7M733eJtz37s8XOPUobKJxpRSwQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UiPgiLIu+EnsuapivlT/Zzs3qYk9uF7NWCR4SZvzY13IyVD3wLPDn5nnbIAUORQfy
+	 6lujALv1TOgqPVN9fSxz8bZlOycGX+ztG9ubLKbjnVJWkexNTXzKSIH9FrkObFuqdE
+	 YpEjBsRNv4ttCCF1zCqU2yW5hYJ2RR+Pp6B34zOEjuPfaGhFU4yuQssYCrUVuGLeUU
+	 3+sgtlZ31u5xpLgIp+CjGU/xaprYFrlEWCPMHy2nRTfiKV4f2OpcLMDC/uzhXBq7mj
+	 XvLcdAl/abDDGCAfuQHrGcjj9fAPz2C/Z2/txcwvnzXX2PDmqmWS1Aan0n8hDRCKCF
+	 CYH354vk0I+iw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	Gao Xiang <xiang@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	netfs@lists.linux.dev,
-	linux-erofs@lists.ozlabs.org,
-	linux-fsdevel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.10 7/7] vfs: Fix potential circular locking through setxattr() and removexattr()
-Date: Tue, 30 Jul 2024 08:45:13 -0400
-Message-ID: <20240730124519.3093607-7-sashal@kernel.org>
+Cc: Chao Yu <chao@kernel.org>,
+	syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.6 1/7] f2fs: fix to do sanity check on F2FS_INLINE_DATA flag in inode during GC
+Date: Tue, 30 Jul 2024 08:45:31 -0400
+Message-ID: <20240730124542.3095044-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240730124519.3093607-1-sashal@kernel.org>
-References: <20240730124519.3093607-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,381 +60,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.10.2
+X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: David Howells <dhowells@redhat.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit c3a5e3e872f3688ae0dc57bb78ca633921d96a91 ]
+[ Upstream commit fc01008c92f40015aeeced94750855a7111b6929 ]
 
-When using cachefiles, lockdep may emit something similar to the circular
-locking dependency notice below.  The problem appears to stem from the
-following:
+syzbot reports a f2fs bug as below:
 
- (1) Cachefiles manipulates xattrs on the files in its cache when called
-     from ->writepages().
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/inline.c:258!
+CPU: 1 PID: 34 Comm: kworker/u8:2 Not tainted 6.9.0-rc6-syzkaller-00012-g9e4bc4bcae01 #0
+RIP: 0010:f2fs_write_inline_data+0x781/0x790 fs/f2fs/inline.c:258
+Call Trace:
+ f2fs_write_single_data_page+0xb65/0x1d60 fs/f2fs/data.c:2834
+ f2fs_write_cache_pages fs/f2fs/data.c:3133 [inline]
+ __f2fs_write_data_pages fs/f2fs/data.c:3288 [inline]
+ f2fs_write_data_pages+0x1efe/0x3a90 fs/f2fs/data.c:3315
+ do_writepages+0x35b/0x870 mm/page-writeback.c:2612
+ __writeback_single_inode+0x165/0x10b0 fs/fs-writeback.c:1650
+ writeback_sb_inodes+0x905/0x1260 fs/fs-writeback.c:1941
+ wb_writeback+0x457/0xce0 fs/fs-writeback.c:2117
+ wb_do_writeback fs/fs-writeback.c:2264 [inline]
+ wb_workfn+0x410/0x1090 fs/fs-writeback.c:2304
+ process_one_work kernel/workqueue.c:3254 [inline]
+ process_scheduled_works+0xa12/0x17c0 kernel/workqueue.c:3335
+ worker_thread+0x86d/0xd70 kernel/workqueue.c:3416
+ kthread+0x2f2/0x390 kernel/kthread.c:388
+ ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
- (2) The setxattr() and removexattr() system call handlers get the name
-     (and value) from userspace after taking the sb_writers lock, putting
-     accesses of the vma->vm_lock and mm->mmap_lock inside of that.
+The root cause is: inline_data inode can be fuzzed, so that there may
+be valid blkaddr in its direct node, once f2fs triggers background GC
+to migrate the block, it will hit f2fs_bug_on() during dirty page
+writeback.
 
- (3) The afs filesystem uses a per-inode lock to prevent multiple
-     revalidation RPCs and in writeback vs truncate to prevent parallel
-     operations from deadlocking against the server on one side and local
-     page locks on the other.
+Let's add sanity check on F2FS_INLINE_DATA flag in inode during GC,
+so that, it can forbid migrating inline_data inode's data block for
+fixing.
 
-Fix this by moving the getting of the name and value in {get,remove}xattr()
-outside of the sb_writers lock.  This also has the minor benefits that we
-don't need to reget these in the event of a retry and we never try to take
-the sb_writers lock in the event we can't pull the name and value into the
-kernel.
-
-Alternative approaches that might fix this include moving the dispatch of a
-write to the cache off to a workqueue or trying to do without the
-validation lock in afs.  Note that this might also affect other filesystems
-that use netfslib and/or cachefiles.
-
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.10.0-build2+ #956 Not tainted
- ------------------------------------------------------
- fsstress/6050 is trying to acquire lock:
- ffff888138fd82f0 (mapping.invalidate_lock#3){++++}-{3:3}, at: filemap_fault+0x26e/0x8b0
-
- but task is already holding lock:
- ffff888113f26d18 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x165/0x250
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #4 (&vma->vm_lock->lock){++++}-{3:3}:
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        down_write+0x3b/0x50
-        vma_start_write+0x6b/0xa0
-        vma_link+0xcc/0x140
-        insert_vm_struct+0xb7/0xf0
-        alloc_bprm+0x2c1/0x390
-        kernel_execve+0x65/0x1a0
-        call_usermodehelper_exec_async+0x14d/0x190
-        ret_from_fork+0x24/0x40
-        ret_from_fork_asm+0x1a/0x30
-
- -> #3 (&mm->mmap_lock){++++}-{3:3}:
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        __might_fault+0x7c/0xb0
-        strncpy_from_user+0x25/0x160
-        removexattr+0x7f/0x100
-        __do_sys_fremovexattr+0x7e/0xb0
-        do_syscall_64+0x9f/0x100
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #2 (sb_writers#14){.+.+}-{0:0}:
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        percpu_down_read+0x3c/0x90
-        vfs_iocb_iter_write+0xe9/0x1d0
-        __cachefiles_write+0x367/0x430
-        cachefiles_issue_write+0x299/0x2f0
-        netfs_advance_write+0x117/0x140
-        netfs_write_folio.isra.0+0x5ca/0x6e0
-        netfs_writepages+0x230/0x2f0
-        afs_writepages+0x4d/0x70
-        do_writepages+0x1e8/0x3e0
-        filemap_fdatawrite_wbc+0x84/0xa0
-        __filemap_fdatawrite_range+0xa8/0xf0
-        file_write_and_wait_range+0x59/0x90
-        afs_release+0x10f/0x270
-        __fput+0x25f/0x3d0
-        __do_sys_close+0x43/0x70
-        do_syscall_64+0x9f/0x100
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #1 (&vnode->validate_lock){++++}-{3:3}:
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        down_read+0x95/0x200
-        afs_writepages+0x37/0x70
-        do_writepages+0x1e8/0x3e0
-        filemap_fdatawrite_wbc+0x84/0xa0
-        filemap_invalidate_inode+0x167/0x1e0
-        netfs_unbuffered_write_iter+0x1bd/0x2d0
-        vfs_write+0x22e/0x320
-        ksys_write+0xbc/0x130
-        do_syscall_64+0x9f/0x100
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- -> #0 (mapping.invalidate_lock#3){++++}-{3:3}:
-        check_noncircular+0x119/0x160
-        check_prev_add+0x195/0x430
-        __lock_acquire+0xaf0/0xd80
-        lock_acquire.part.0+0x103/0x280
-        down_read+0x95/0x200
-        filemap_fault+0x26e/0x8b0
-        __do_fault+0x57/0xd0
-        do_pte_missing+0x23b/0x320
-        __handle_mm_fault+0x2d4/0x320
-        handle_mm_fault+0x14f/0x260
-        do_user_addr_fault+0x2a2/0x500
-        exc_page_fault+0x71/0x90
-        asm_exc_page_fault+0x22/0x30
-
- other info that might help us debug this:
-
- Chain exists of:
-   mapping.invalidate_lock#3 --> &mm->mmap_lock --> &vma->vm_lock->lock
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   rlock(&vma->vm_lock->lock);
-                                lock(&mm->mmap_lock);
-                                lock(&vma->vm_lock->lock);
-   rlock(mapping.invalidate_lock#3);
-
-  *** DEADLOCK ***
-
- 1 lock held by fsstress/6050:
-  #0: ffff888113f26d18 (&vma->vm_lock->lock){++++}-{3:3}, at: lock_vma_under_rcu+0x165/0x250
-
- stack backtrace:
- CPU: 0 PID: 6050 Comm: fsstress Not tainted 6.10.0-build2+ #956
- Hardware name: ASUS All Series/H97-PLUS, BIOS 2306 10/09/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x57/0x80
-  check_noncircular+0x119/0x160
-  ? queued_spin_lock_slowpath+0x4be/0x510
-  ? __pfx_check_noncircular+0x10/0x10
-  ? __pfx_queued_spin_lock_slowpath+0x10/0x10
-  ? mark_lock+0x47/0x160
-  ? init_chain_block+0x9c/0xc0
-  ? add_chain_block+0x84/0xf0
-  check_prev_add+0x195/0x430
-  __lock_acquire+0xaf0/0xd80
-  ? __pfx___lock_acquire+0x10/0x10
-  ? __lock_release.isra.0+0x13b/0x230
-  lock_acquire.part.0+0x103/0x280
-  ? filemap_fault+0x26e/0x8b0
-  ? __pfx_lock_acquire.part.0+0x10/0x10
-  ? rcu_is_watching+0x34/0x60
-  ? lock_acquire+0xd7/0x120
-  down_read+0x95/0x200
-  ? filemap_fault+0x26e/0x8b0
-  ? __pfx_down_read+0x10/0x10
-  ? __filemap_get_folio+0x25/0x1a0
-  filemap_fault+0x26e/0x8b0
-  ? __pfx_filemap_fault+0x10/0x10
-  ? find_held_lock+0x7c/0x90
-  ? __pfx___lock_release.isra.0+0x10/0x10
-  ? __pte_offset_map+0x99/0x110
-  __do_fault+0x57/0xd0
-  do_pte_missing+0x23b/0x320
-  __handle_mm_fault+0x2d4/0x320
-  ? __pfx___handle_mm_fault+0x10/0x10
-  handle_mm_fault+0x14f/0x260
-  do_user_addr_fault+0x2a2/0x500
-  exc_page_fault+0x71/0x90
-  asm_exc_page_fault+0x22/0x30
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/2136178.1721725194@warthog.procyon.org.uk
-cc: Alexander Viro <viro@zeniv.linux.org.uk>
-cc: Christian Brauner <brauner@kernel.org>
-cc: Jan Kara <jack@suse.cz>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Gao Xiang <xiang@kernel.org>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: netfs@lists.linux.dev
-cc: linux-erofs@lists.ozlabs.org
-cc: linux-fsdevel@vger.kernel.org
-[brauner: fix minor issues]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: syzbot+848062ba19c8782ca5c8@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000d103ce06174d7ec3@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xattr.c | 91 ++++++++++++++++++++++++++++--------------------------
- 1 file changed, 48 insertions(+), 43 deletions(-)
+ fs/f2fs/gc.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/xattr.c b/fs/xattr.c
-index f8b643f91a981..7672ce5486c53 100644
---- a/fs/xattr.c
-+++ b/fs/xattr.c
-@@ -630,10 +630,9 @@ int do_setxattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 			ctx->kvalue, ctx->size, ctx->flags);
- }
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 3f0632dd9d2e6..ca4249938337c 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1560,6 +1560,16 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+ 				continue;
+ 			}
  
--static long
--setxattr(struct mnt_idmap *idmap, struct dentry *d,
--	const char __user *name, const void __user *value, size_t size,
--	int flags)
-+static int path_setxattr(const char __user *pathname,
-+			 const char __user *name, const void __user *value,
-+			 size_t size, int flags, unsigned int lookup_flags)
- {
- 	struct xattr_name kname;
- 	struct xattr_ctx ctx = {
-@@ -643,33 +642,20 @@ setxattr(struct mnt_idmap *idmap, struct dentry *d,
- 		.kname    = &kname,
- 		.flags    = flags,
- 	};
-+	struct path path;
- 	int error;
- 
- 	error = setxattr_copy(name, &ctx);
- 	if (error)
- 		return error;
- 
--	error = do_setxattr(idmap, d, &ctx);
--
--	kvfree(ctx.kvalue);
--	return error;
--}
--
--static int path_setxattr(const char __user *pathname,
--			 const char __user *name, const void __user *value,
--			 size_t size, int flags, unsigned int lookup_flags)
--{
--	struct path path;
--	int error;
--
- retry:
- 	error = user_path_at(AT_FDCWD, pathname, lookup_flags, &path);
- 	if (error)
--		return error;
-+		goto out;
- 	error = mnt_want_write(path.mnt);
- 	if (!error) {
--		error = setxattr(mnt_idmap(path.mnt), path.dentry, name,
--				 value, size, flags);
-+		error = do_setxattr(mnt_idmap(path.mnt), path.dentry, &ctx);
- 		mnt_drop_write(path.mnt);
- 	}
- 	path_put(&path);
-@@ -677,6 +663,9 @@ static int path_setxattr(const char __user *pathname,
- 		lookup_flags |= LOOKUP_REVAL;
- 		goto retry;
- 	}
++			if (f2fs_has_inline_data(inode)) {
++				iput(inode);
++				set_sbi_flag(sbi, SBI_NEED_FSCK);
++				f2fs_err_ratelimited(sbi,
++					"inode %lx has both inline_data flag and "
++					"data block, nid=%u, ofs_in_node=%u",
++					inode->i_ino, dni.nid, ofs_in_node);
++				continue;
++			}
 +
-+out:
-+	kvfree(ctx.kvalue);
- 	return error;
- }
- 
-@@ -697,20 +686,32 @@ SYSCALL_DEFINE5(lsetxattr, const char __user *, pathname,
- SYSCALL_DEFINE5(fsetxattr, int, fd, const char __user *, name,
- 		const void __user *,value, size_t, size, int, flags)
- {
--	struct fd f = fdget(fd);
--	int error = -EBADF;
-+	struct xattr_name kname;
-+	struct xattr_ctx ctx = {
-+		.cvalue   = value,
-+		.kvalue   = NULL,
-+		.size     = size,
-+		.kname    = &kname,
-+		.flags    = flags,
-+	};
-+	int error;
- 
-+	CLASS(fd, f)(fd);
- 	if (!f.file)
--		return error;
-+		return -EBADF;
-+
- 	audit_file(f.file);
-+	error = setxattr_copy(name, &ctx);
-+	if (error)
-+		return error;
-+
- 	error = mnt_want_write_file(f.file);
- 	if (!error) {
--		error = setxattr(file_mnt_idmap(f.file),
--				 f.file->f_path.dentry, name,
--				 value, size, flags);
-+		error = do_setxattr(file_mnt_idmap(f.file),
-+				    f.file->f_path.dentry, &ctx);
- 		mnt_drop_write_file(f.file);
- 	}
--	fdput(f);
-+	kvfree(ctx.kvalue);
- 	return error;
- }
- 
-@@ -899,9 +900,17 @@ SYSCALL_DEFINE3(flistxattr, int, fd, char __user *, list, size_t, size)
-  * Extended attribute REMOVE operations
-  */
- static long
--removexattr(struct mnt_idmap *idmap, struct dentry *d,
--	    const char __user *name)
-+removexattr(struct mnt_idmap *idmap, struct dentry *d, const char *name)
- {
-+	if (is_posix_acl_xattr(name))
-+		return vfs_remove_acl(idmap, d, name);
-+	return vfs_removexattr(idmap, d, name);
-+}
-+
-+static int path_removexattr(const char __user *pathname,
-+			    const char __user *name, unsigned int lookup_flags)
-+{
-+	struct path path;
- 	int error;
- 	char kname[XATTR_NAME_MAX + 1];
- 
-@@ -910,25 +919,13 @@ removexattr(struct mnt_idmap *idmap, struct dentry *d,
- 		error = -ERANGE;
- 	if (error < 0)
- 		return error;
--
--	if (is_posix_acl_xattr(kname))
--		return vfs_remove_acl(idmap, d, kname);
--
--	return vfs_removexattr(idmap, d, kname);
--}
--
--static int path_removexattr(const char __user *pathname,
--			    const char __user *name, unsigned int lookup_flags)
--{
--	struct path path;
--	int error;
- retry:
- 	error = user_path_at(AT_FDCWD, pathname, lookup_flags, &path);
- 	if (error)
- 		return error;
- 	error = mnt_want_write(path.mnt);
- 	if (!error) {
--		error = removexattr(mnt_idmap(path.mnt), path.dentry, name);
-+		error = removexattr(mnt_idmap(path.mnt), path.dentry, kname);
- 		mnt_drop_write(path.mnt);
- 	}
- 	path_put(&path);
-@@ -954,15 +951,23 @@ SYSCALL_DEFINE2(lremovexattr, const char __user *, pathname,
- SYSCALL_DEFINE2(fremovexattr, int, fd, const char __user *, name)
- {
- 	struct fd f = fdget(fd);
-+	char kname[XATTR_NAME_MAX + 1];
- 	int error = -EBADF;
- 
- 	if (!f.file)
- 		return error;
- 	audit_file(f.file);
-+
-+	error = strncpy_from_user(kname, name, sizeof(kname));
-+	if (error == 0 || error == sizeof(kname))
-+		error = -ERANGE;
-+	if (error < 0)
-+		return error;
-+
- 	error = mnt_want_write_file(f.file);
- 	if (!error) {
- 		error = removexattr(file_mnt_idmap(f.file),
--				    f.file->f_path.dentry, name);
-+				    f.file->f_path.dentry, kname);
- 		mnt_drop_write_file(f.file);
- 	}
- 	fdput(f);
+ 			err = f2fs_gc_pinned_control(inode, gc_type, segno);
+ 			if (err == -EAGAIN) {
+ 				iput(inode);
 -- 
 2.43.0
 
