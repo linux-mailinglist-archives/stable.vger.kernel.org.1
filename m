@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E48B941B50
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:53:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26528941813
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:19:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FFD01C22E4C
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:53:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0C1D1F25596
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EE9189514;
-	Tue, 30 Jul 2024 16:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FC818C902;
+	Tue, 30 Jul 2024 16:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7mJ1U47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgoUtLad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BDB18801A;
-	Tue, 30 Jul 2024 16:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0357E184556;
+	Tue, 30 Jul 2024 16:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358404; cv=none; b=I5wO3Vc9GJ/uOu3rzdy4wDw/M4kLcVGzclTXDpRXBoF2/+YBJ6dIHhWAs6wQ5an56R3VzU+Y8o88qJo5oRGPcxsSfgP4qQvgMeNMU8pyZTrh8ntqZwPwzGFiE+eReNh3Dz3NiXTa9Xgh35JafPAYOpgmtUvv3kr5qZE1FsR9oVg=
+	t=1722356221; cv=none; b=fuoUvGZ9D8tM1cA+NBjykmTNBv/wObRx1+EV5aEitl77SQjjF31C6e08H3iGd3qIPMzPJiDdCJdtSCzfTd9LjWpMn3vKgt37Qy5s82UaT15OofwRSvGwFOcWTgBQAOllKJ4uby/ZCvJTWbagoyEGt6+mmi+8trc4qbkSIpyhNdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358404; c=relaxed/simple;
-	bh=fvdIlybOZp/9DafUqHNiY0Lu50IDFte2Z8vv2z06JCI=;
+	s=arc-20240116; t=1722356221; c=relaxed/simple;
+	bh=0o8f3YYG5o4Oq5HZsKAozNn5VyvEzrW2RG12XAIuuqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Huv1ke0ma0Ys98W7HhsCRqDLAqzRmH8CgECQ63w00TNkLkO2iW6Gad1p20QQfxeeBG/6zx4XVlBRDIC0xzhrahTsA69OiFKjGr+DYCQ1uvn+b7WHm/NwloFkj47872VqKapKpbWytGfk6SBxk2WohIoETE0bqUkOeSMbRGdmEe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7mJ1U47; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D599C4AF0C;
-	Tue, 30 Jul 2024 16:53:23 +0000 (UTC)
+	 MIME-Version; b=AkmtcRwsZIA5PYom7EvLuGpzwIh571FfUZLPNGMNyw/E4v9q8Byo1eMeYxCpnBp3lSJ6P8SjwHMHGDMRe5+8N39Gesv0cXIqHbjvWd5daOcYVizIAGFprmj0gqFylm4H+CPmvSeV5tCiJorulblADS+vXwRp3nUC1d4RQVXN468=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgoUtLad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1885AC4AF0C;
+	Tue, 30 Jul 2024 16:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358404;
-	bh=fvdIlybOZp/9DafUqHNiY0Lu50IDFte2Z8vv2z06JCI=;
+	s=korg; t=1722356220;
+	bh=0o8f3YYG5o4Oq5HZsKAozNn5VyvEzrW2RG12XAIuuqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7mJ1U47x/O2HG6EqGs7u7ZEZLFN9cVXTPJ+CQ5ppVArRV+ND/3Hsx1uxa90BkQfQ
-	 /joOT1DYNRNOuvmqDrNW58ubMhTRtGnT/Ja8zXS2TiZr3ak8JVeX3sFrf6V4FLbvTO
-	 h12b7W/lUiqr1FPxCoe81VAnJSJ+BeS2H3ahJug4=
+	b=IgoUtLadBBRpkfDRJIyNAPgWzkEPQe60NcoG7bzpkNkvRbrSoXHJjg2ne4SlCSVW3
+	 xkgYPgm0JPlaFJ+vGhSKg7KKSBnhoEVBTVGGMD7UH1iF9tTY2SKZy5yH3FclRU78Ay
+	 CtV2wKaSEjpZFtWFaYSfAcDRxGGQ06HZskqYYek8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 356/809] drm/amd/display: Add null check before access structs
+Subject: [PATCH 6.6 125/568] net/smc: set rmbs SG_MAX_SINGLE_ALLOC limitation only when CONFIG_ARCH_NO_SG_CHAIN is defined
 Date: Tue, 30 Jul 2024 17:43:52 +0200
-Message-ID: <20240730151738.704897255@linuxfoundation.org>
+Message-ID: <20240730151644.759063188@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit c96140000915b610d86f941450e15ca552de154a ]
+[ Upstream commit 3ac14b9dfbd345e891d48d89f6c2fa519848f0f4 ]
 
-In enable_phantom_plane, we should better check null pointer before
-accessing various structs.
+SG_MAX_SINGLE_ALLOC is used to limit maximum number of entries that
+will be allocated in one piece of scatterlist. When the entries of
+scatterlist exceeds SG_MAX_SINGLE_ALLOC, sg chain will be used. From
+commit 7c703e54cc71 ("arch: switch the default on ARCH_HAS_SG_CHAIN"),
+we can know that the macro CONFIG_ARCH_NO_SG_CHAIN is used to identify
+whether sg chain is supported. So, SMC-R's rmb buffer should be limited
+by SG_MAX_SINGLE_ALLOC only when the macro CONFIG_ARCH_NO_SG_CHAIN is
+defined.
 
-Fixes: 09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a3fe3d01bd0d ("net/smc: introduce sg-logic for RMBs")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Co-developed-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/smc/smc_core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c
-index 282d70e2b18ab..3d29169dd6bbf 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_mall_phantom.c
-@@ -750,6 +750,8 @@ static void enable_phantom_plane(struct dml2_context *ctx,
- 					ctx->config.svp_pstate.callbacks.dc,
- 					state,
- 					curr_pipe->plane_state);
-+			if (!phantom_plane)
-+				return;
- 		}
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index d520ee62c8ecd..f99bb9d0adcc6 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -1974,7 +1974,6 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
+  */
+ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
+ {
+-	const unsigned int max_scat = SG_MAX_SINGLE_ALLOC * PAGE_SIZE;
+ 	u8 compressed;
  
- 		memcpy(&phantom_plane->address, &curr_pipe->plane_state->address, sizeof(phantom_plane->address));
+ 	if (size <= SMC_BUF_MIN_SIZE)
+@@ -1984,9 +1983,11 @@ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
+ 	compressed = min_t(u8, ilog2(size) + 1,
+ 			   is_smcd ? SMCD_DMBE_SIZES : SMCR_RMBE_SIZES);
+ 
++#ifdef CONFIG_ARCH_NO_SG_CHAIN
+ 	if (!is_smcd && is_rmb)
+ 		/* RMBs are backed by & limited to max size of scatterlists */
+-		compressed = min_t(u8, compressed, ilog2(max_scat >> 14));
++		compressed = min_t(u8, compressed, ilog2((SG_MAX_SINGLE_ALLOC * PAGE_SIZE) >> 14));
++#endif
+ 
+ 	return compressed;
+ }
 -- 
 2.43.0
 
