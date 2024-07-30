@@ -1,133 +1,91 @@
-Return-Path: <stable+bounces-62636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB6794086A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 08:31:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADAB940873
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 08:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7C8B1F23E28
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 06:31:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 346021F217E0
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 06:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D4D16B3B7;
-	Tue, 30 Jul 2024 06:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A63A1684A5;
+	Tue, 30 Jul 2024 06:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LDnWj7h+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QXbDvMxW"
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EAD168481;
-	Tue, 30 Jul 2024 06:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB11E161914
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 06:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722321113; cv=none; b=W52wNMkRd497sLBQv5EUcAJXG9nMAI+E2mQ0u38BMvhk8noGNkaRegL90Bd3S1/T1VMJent4JnReAUT1XTZGKLEIX1pf4pYjrhr4y0sicj43bP684mzWJJlaaxJO1QFbox5ACpZqblt62qXIL0/DvsFm6iFiy5lw9noKkwhWBNo=
+	t=1722321379; cv=none; b=JNYgxWrUOFgpoqcFbi/BaowrcbNKcq0NqtgUzHDFlIiPcrIiC7A9j5jsrB7hOLDvGa2gjomPbnTDaYq86NA1ZflhW8AbsbEnebpDyBpR+X89iWdz+jKPX15Y13cM8zPjwI4PkB7TpPJOk/AWspL0bdXpj7laNWoSZxCqoIPs3jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722321113; c=relaxed/simple;
-	bh=OIdwXythHkoNdaeB3ZeMXCUAjEHgdqGq79Stvjbip4s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xosd3gT55ZisRgfWS3fhJj89wafcKa6bLS+uDh3cjaoedEY0uLag5QneneWnTpfakEZJSW19mShnYQqyO0CG9Ik+nujEyUibTmtelVDcSS1mR/XRp4lHXXDufg8SxhFsJdxlUvPi5lV0lfQYt0PLLLLouhaVGFWmL87WwqnN70U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LDnWj7h+; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id 4AD18C0005;
-	Tue, 30 Jul 2024 06:31:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1722321103;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=9oaw32SfWoWdpOCGj4cbaO4s/PkPuA9eMA+JWXWEy20=;
-	b=LDnWj7h+3M0k/9trK9YpfYCOEPHFvG5dja4cagBcM68icJxeMArucrSTXuRXUu2x5EBApk
-	XYznIeIRVt5GEhCaJZbSdQu0LC0UBvB9joWLdCZzYGvZG/NeKH0zfSYhIu9C0LVVomGPiK
-	NKMBbrz3Gma55Rsg4hmWOQ7rK9qyldAbOtp2pcgzrH2nfuUIE+BD98Qg6EimV66//LI1qi
-	s+0PWtfdRNw8+j6NQEHn5HPWv95n1OP8LbA05pIrlT8eiftPJIOE7xQfRfyWJeRZHZ5gyv
-	s+lQUjGjSeqA+CgY8MLkbeqSiho8jPGwPTOavjGlC1cb/wQoybCxYCGjDEkmHg==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Herve Codina <herve.codina@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v1] net: wan: fsl_qmc_hdlc: Discard received CRC
-Date: Tue, 30 Jul 2024 08:31:33 +0200
-Message-ID: <20240730063133.179598-1-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.45.0
+	s=arc-20240116; t=1722321379; c=relaxed/simple;
+	bh=uOvq+MhB4+zSd/Vt0H1pnDvcLKpcwozIOQ5FrDJDE2c=;
+	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=n4CdA+7kw7I+LgAcXF067AAx3swVFiRR4f8JZgStctN0Lr6IbbX6uMm8k+Sasw7Tz7A9pWtLOX5+NwzxhMi0mZCUm51UdbR3zE0CAME32Va1nvJQd+5A8hg32aQDh2B+pLmPLm9/9la6XeriDNiKmzWdt9CsX35LhVtuO0SqQkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QXbDvMxW; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52fd0904243so342676e87.3
+        for <stable@vger.kernel.org>; Mon, 29 Jul 2024 23:36:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722321375; x=1722926175; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:date:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=uOvq+MhB4+zSd/Vt0H1pnDvcLKpcwozIOQ5FrDJDE2c=;
+        b=QXbDvMxWDHT3gEm5lHQFdP1pMIuHMRPtUkUcHVNdNBvwkiLYnw9/O7GlTmsxe2KZkQ
+         j7DD9qJxCw2JpFe6Qd/gvqoKA+NAYXDVL0NtGbYkqYGh5ozQYeq00ZuUi8z3GKCAiykk
+         Ry/MNrCoCAeAIgLeCSVGoaPGnX8Y4lRqyM7EjMdLpfNFppfzjkJ/AD3MW6/EZEAG3gjl
+         EcdGvlufO6Y3zt28df5z/KsbmlPMVHkI2wvSmsQsaRUZSdHUnCjwSliKTDB8VgAJ+ZYE
+         7mSDYoGiBkyQ8koT46fsBEAQolTod/4+qc0E9d4daDbZiCaJH1MUK8/NG/dmv/X9NI8j
+         GUMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722321375; x=1722926175;
+        h=mime-version:user-agent:content-transfer-encoding:date:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uOvq+MhB4+zSd/Vt0H1pnDvcLKpcwozIOQ5FrDJDE2c=;
+        b=sfg5od7/OBpdwlml2hdEFJwxF3/ocX/C68Bb/9KYj69Kauuq9MHaw1uG4FffzoxdQx
+         QWlyBP0Dwbv//VK2uRk8SGblDmjbBcCFBqVWV8eMe/5qvsXJ1uccbcsidH30ypqs8KZ8
+         DX3/YaTvE2abruHsZugSWTwDF7w7qaReacG3IBaocO4UYSgwRgwED9/jyc7Ile2PA+Rk
+         iE7M5JxV/2Pjl+dJN7TktV9g22N6PQ7/f5l96ZTP8gzSvaVvhMPlqe9LqiO3SCrvBkk1
+         fIUPnknHsTVxoolzx+muBiRwJ1agX9Q5SLPSjbZvOuJSTtOVtNUIFjMzToxb+rBdITIk
+         8PNQ==
+X-Gm-Message-State: AOJu0YxYlEEYVtIONasV6sJpjY8OcWnqWc3C5Eqi6PO95t1UQpn+kHWe
+	NcmZ6JejogXQuPOo6jRlI4W2nEeduXqBXh13O8hjXVioIpVFrXVNq64iJw==
+X-Google-Smtp-Source: AGHT+IERc/0AhYw8B51f0neHAGMVg0/QFRLB5ysa1HufiHGSVf4FK3kPLj8Z5f8lgvj3kCT8b6t8RQ==
+X-Received: by 2002:a05:6512:110e:b0:52f:c22f:32a4 with SMTP id 2adb3069b0e04-52fd52d2d57mr5909703e87.6.1722321375191;
+        Mon, 29 Jul 2024 23:36:15 -0700 (PDT)
+Received: from axet-laptop.lan ([2001:470:28:187::a67])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5c19e8asm1758227e87.201.2024.07.29.23.36.13
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 23:36:14 -0700 (PDT)
+Message-ID: <8cd6293f66f9399a859330a348c79fa3dacb0202.camel@gmail.com>
+Subject: asus_wmi: Unknown key code 0xcf
+From: Alexey Kuznetsov <kuznetsov.alexey@gmail.com>
+To: stable@vger.kernel.org
+Date: Tue, 30 Jul 2024 09:36:13 +0300
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
 
-Received frame from QMC contains the CRC.
-Upper layers don't need this CRC and tcpdump mentioned trailing junk
-data due to this CRC presence.
+Hello!
 
-As some other HDLC driver, simply discard this CRC.
+My Asus Laptop (ASUS VivoBook PRO 15 OLED M3500QA-L1072) reporting this
+wmi code everytime I connect power cable.
 
-Fixes: d0f2258e79fd ("net: wan: Add support for QMC HDLC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/net/wan/fsl_qmc_hdlc.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+I got no key code on power disconnect.
 
-diff --git a/drivers/net/wan/fsl_qmc_hdlc.c b/drivers/net/wan/fsl_qmc_hdlc.c
-index 64b4bfa6fea7..8fcfbde31a1c 100644
---- a/drivers/net/wan/fsl_qmc_hdlc.c
-+++ b/drivers/net/wan/fsl_qmc_hdlc.c
-@@ -250,6 +250,7 @@ static void qmc_hcld_recv_complete(void *context, size_t length, unsigned int fl
- 	struct qmc_hdlc_desc *desc = context;
- 	struct net_device *netdev;
- 	struct qmc_hdlc *qmc_hdlc;
-+	size_t crc_size;
- 	int ret;
- 
- 	netdev = desc->netdev;
-@@ -268,15 +269,26 @@ static void qmc_hcld_recv_complete(void *context, size_t length, unsigned int fl
- 		if (flags & QMC_RX_FLAG_HDLC_CRC) /* CRC error */
- 			netdev->stats.rx_crc_errors++;
- 		kfree_skb(desc->skb);
--	} else {
--		netdev->stats.rx_packets++;
--		netdev->stats.rx_bytes += length;
-+		goto re_queue;
-+	}
- 
--		skb_put(desc->skb, length);
--		desc->skb->protocol = hdlc_type_trans(desc->skb, netdev);
--		netif_rx(desc->skb);
-+	/* Discard the CRC */
-+	crc_size = qmc_hdlc->is_crc32 ? 4 : 2;
-+	if (length < crc_size) {
-+		netdev->stats.rx_length_errors++;
-+		kfree_skb(desc->skb);
-+		goto re_queue;
- 	}
-+	length -= crc_size;
-+
-+	netdev->stats.rx_packets++;
-+	netdev->stats.rx_bytes += length;
-+
-+	skb_put(desc->skb, length);
-+	desc->skb->protocol = hdlc_type_trans(desc->skb, netdev);
-+	netif_rx(desc->skb);
- 
-+re_queue:
- 	/* Re-queue a transfer using the same descriptor */
- 	ret = qmc_hdlc_recv_queue(qmc_hdlc, desc, desc->dma_size);
- 	if (ret) {
--- 
-2.45.0
-
+[11238.502716] asus_wmi: Unknown key code 0xcf
 
