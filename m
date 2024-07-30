@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-64090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DBE941C12
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:02:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A166A941DFB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7CF71C2312E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:02:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B2781F2573D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABE1189502;
-	Tue, 30 Jul 2024 17:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2C61A76BD;
+	Tue, 30 Jul 2024 17:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcLxyOR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2iNtzeI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A481A6192;
-	Tue, 30 Jul 2024 17:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E151A76B2;
+	Tue, 30 Jul 2024 17:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358958; cv=none; b=IgOdO8n8DktNJnDe3rwS6zRkiPlGH59w44F+RqYx6czdkvVK8+LIMKsREyKXcEMdsNXP5ZJvvJPOSviCmabcr+vOZIdrFh3TLkqPXjtHFxkMOzrTy9Q0a5JgDuPnXAOnAPfWWa7dCbULo1T6oXb71X5FFcy+4DQWwGQl5W6NUsw=
+	t=1722360257; cv=none; b=J1n0ATy8BE4rMqubLSE7jaI1ux8WV8SlvSCCSSxEG7BKFoPHQMthopGjcDfLrK46LymNjNk9nof8dF6th68BQyQx3CrYBpf7KB9miycrfinA5Mp9IRPjVjJJs4mf1bHRlT1NL8ETEn8SgFocKCyTp50ngj+p22LT6SxpiwOJn8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358958; c=relaxed/simple;
-	bh=W18sHSEX+pfb7/XjmGI49i9vO0Ri8f+PTMc3m0tYOiU=;
+	s=arc-20240116; t=1722360257; c=relaxed/simple;
+	bh=GFcgtSEb8X4/CCLshYkJg91GBBexpHuW1G6GhiX5D28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBQQ8eYSDjq6fMqA5smpWqoq1i3+V7apS+seN6TbAcydSX49mfWjUwzXJfNl3B5nNoQWH7/nlLCVkO5OP5IOAtq8p13xyPAD9BbfEx04lk19I7yIg10lDA5qFCWR3BuN/YFjH5hI02r/eeWb3WykCdxFSsNGMenfz7OWzkT8mkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcLxyOR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4A6C32782;
-	Tue, 30 Jul 2024 17:02:37 +0000 (UTC)
+	 MIME-Version; b=fvQAEjYymhT9+9GQuCa2yjjKMDuYOHPxZhsN/V+Zj8SbLtsTG3UANmtpn8bq3mtCavrx2rr9sOD3fzkdfR4fVYtTe02hpyn8UvXaZFj5z94dkU2Hlyoz4tf3rjj80SNMF1XM8SgTD7RBbjs4+axiMKNrEwsquRKVtCtKKNx8hPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2iNtzeI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93CAC4AF0C;
+	Tue, 30 Jul 2024 17:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358958;
-	bh=W18sHSEX+pfb7/XjmGI49i9vO0Ri8f+PTMc3m0tYOiU=;
+	s=korg; t=1722360257;
+	bh=GFcgtSEb8X4/CCLshYkJg91GBBexpHuW1G6GhiX5D28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcLxyOR1z+9/itcGXkhlQgEyFvQsrcMeoVtKw2NPsIL44xLOtt5vm3SY94cLFUkdg
-	 ho1kdnsX3p8xHHghkBUOfX0PY1xDDGpiEnHedLahkK4EUvAicPlbKbWZh+enRDc8NN
-	 cVWdwERvHRIUi5fwM+Aed3pRf/OBuNIzwp531L3w=
+	b=I2iNtzeIBgbY5A4BZ4RieFL9Yr4CCSF6C1xk64wZ3f1BCoow4lyf5B83+RvJPMErE
+	 tzrR4xof+F9bpYDjF/FApKVvvNWVWF2O1ksGkqNc+OinBf6F/9mIEJd8ilhvT28q0q
+	 gLmuzoXtYJDyUES8K/qmP59Z5oWvqRscCeXblBIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Coffin <alex.coffin@maticrobots.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 412/568] jbd2: avoid infinite transaction commit loop
-Date: Tue, 30 Jul 2024 17:48:39 +0200
-Message-ID: <20240730151655.971322064@linuxfoundation.org>
+	tuhaowen <tuhaowen@uniontech.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.10 644/809] dev/parport: fix the array out-of-bounds risk
+Date: Tue, 30 Jul 2024 17:48:40 +0200
+Message-ID: <20240730151750.302333123@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +61,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: tuhaowen <tuhaowen@uniontech.com>
 
-commit 27ba5b67312a944576addc4df44ac3b709aabede upstream.
+commit ab11dac93d2d568d151b1918d7b84c2d02bacbd5 upstream.
 
-Commit 9f356e5a4f12 ("jbd2: Account descriptor blocks into
-t_outstanding_credits") started to account descriptor blocks into
-transactions outstanding credits. However it didn't appropriately
-decrease the maximum amount of credits available to userspace. Thus if
-the filesystem requests a transaction smaller than
-j_max_transaction_buffers but large enough that when descriptor blocks
-are added the size exceeds j_max_transaction_buffers, we confuse
-add_transaction_credits() into thinking previous handles have grown the
-transaction too much and enter infinite journal commit loop in
-start_this_handle() -> add_transaction_credits() trying to create
-transaction with enough credits available.
+Fixed array out-of-bounds issues caused by sprintf
+by replacing it with snprintf for safer data copying,
+ensuring the destination buffer is not overflowed.
 
-Fix the problem by properly accounting for transaction space reserved
-for descriptor blocks when verifying requested transaction handle size.
+Below is the stack trace I encountered during the actual issue:
 
-CC: stable@vger.kernel.org
-Fixes: 9f356e5a4f12 ("jbd2: Account descriptor blocks into t_outstanding_credits")
-Reported-by: Alexander Coffin <alex.coffin@maticrobots.com>
-Link: https://lore.kernel.org/all/CA+hUFcuGs04JHZ_WzA1zGN57+ehL2qmHOt5a7RMpo+rv6Vyxtw@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20240624170127.3253-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ 66.575408s] [pid:5118,cpu4,QThread,4]Kernel panic - not syncing: stack-protector:
+Kernel stack is corrupted in: do_hardware_base_addr+0xcc/0xd0 [parport]
+[ 66.575408s] [pid:5118,cpu4,QThread,5]CPU: 4 PID: 5118 Comm:
+QThread Tainted: G S W O 5.10.97-arm64-desktop #7100.57021.2
+[ 66.575439s] [pid:5118,cpu4,QThread,6]TGID: 5087 Comm: EFileApp
+[ 66.575439s] [pid:5118,cpu4,QThread,7]Hardware name: HUAWEI HUAWEI QingYun
+PGUX-W515x-B081/SP1PANGUXM, BIOS 1.00.07 04/29/2024
+[ 66.575439s] [pid:5118,cpu4,QThread,8]Call trace:
+[ 66.575469s] [pid:5118,cpu4,QThread,9] dump_backtrace+0x0/0x1c0
+[ 66.575469s] [pid:5118,cpu4,QThread,0] show_stack+0x14/0x20
+[ 66.575469s] [pid:5118,cpu4,QThread,1] dump_stack+0xd4/0x10c
+[ 66.575500s] [pid:5118,cpu4,QThread,2] panic+0x1d8/0x3bc
+[ 66.575500s] [pid:5118,cpu4,QThread,3] __stack_chk_fail+0x2c/0x38
+[ 66.575500s] [pid:5118,cpu4,QThread,4] do_hardware_base_addr+0xcc/0xd0 [parport]
+
+Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240708080430.8221-1-tuhaowen@uniontech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/parport/procfs.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -191,6 +191,13 @@ static void sub_reserved_credits(journal
- 	wake_up(&journal->j_wait_reserved);
- }
- 
-+/* Maximum number of blocks for user transaction payload */
-+static int jbd2_max_user_trans_buffers(journal_t *journal)
-+{
-+	return journal->j_max_transaction_buffers -
-+				journal->j_transaction_overhead_buffers;
-+}
-+
- /*
-  * Wait until we can add credits for handle to the running transaction.  Called
-  * with j_state_lock held for reading. Returns 0 if handle joined the running
-@@ -240,12 +247,12 @@ __must_hold(&journal->j_state_lock)
- 		 * big to fit this handle? Wait until reserved credits are freed.
- 		 */
- 		if (atomic_read(&journal->j_reserved_credits) + total >
--		    journal->j_max_transaction_buffers) {
-+		    jbd2_max_user_trans_buffers(journal)) {
- 			read_unlock(&journal->j_state_lock);
- 			jbd2_might_wait_for_commit(journal);
- 			wait_event(journal->j_wait_reserved,
- 				   atomic_read(&journal->j_reserved_credits) + total <=
--				   journal->j_max_transaction_buffers);
-+				   jbd2_max_user_trans_buffers(journal));
- 			__acquire(&journal->j_state_lock); /* fake out sparse */
- 			return 1;
+--- a/drivers/parport/procfs.c
++++ b/drivers/parport/procfs.c
+@@ -51,12 +51,12 @@ static int do_active_device(struct ctl_t
+ 	
+ 	for (dev = port->devices; dev ; dev = dev->next) {
+ 		if(dev == port->cad) {
+-			len += sprintf(buffer, "%s\n", dev->name);
++			len += snprintf(buffer, sizeof(buffer), "%s\n", dev->name);
  		}
-@@ -285,14 +292,14 @@ __must_hold(&journal->j_state_lock)
+ 	}
  
- 	needed = atomic_add_return(rsv_blocks, &journal->j_reserved_credits);
- 	/* We allow at most half of a transaction to be reserved */
--	if (needed > journal->j_max_transaction_buffers / 2) {
-+	if (needed > jbd2_max_user_trans_buffers(journal) / 2) {
- 		sub_reserved_credits(journal, rsv_blocks);
- 		atomic_sub(total, &t->t_outstanding_credits);
- 		read_unlock(&journal->j_state_lock);
- 		jbd2_might_wait_for_commit(journal);
- 		wait_event(journal->j_wait_reserved,
- 			 atomic_read(&journal->j_reserved_credits) + rsv_blocks
--			 <= journal->j_max_transaction_buffers / 2);
-+			 <= jbd2_max_user_trans_buffers(journal) / 2);
- 		__acquire(&journal->j_state_lock); /* fake out sparse */
- 		return 1;
+ 	if(!len) {
+-		len += sprintf(buffer, "%s\n", "none");
++		len += snprintf(buffer, sizeof(buffer), "%s\n", "none");
  	}
-@@ -322,12 +329,12 @@ static int start_this_handle(journal_t *
- 	 * size and limit the number of total credits to not exceed maximum
- 	 * transaction size per operation.
- 	 */
--	if ((rsv_blocks > journal->j_max_transaction_buffers / 2) ||
--	    (rsv_blocks + blocks > journal->j_max_transaction_buffers)) {
-+	if (rsv_blocks > jbd2_max_user_trans_buffers(journal) / 2 ||
-+	    rsv_blocks + blocks > jbd2_max_user_trans_buffers(journal)) {
- 		printk(KERN_ERR "JBD2: %s wants too many credits "
- 		       "credits:%d rsv_credits:%d max:%d\n",
- 		       current->comm, blocks, rsv_blocks,
--		       journal->j_max_transaction_buffers);
-+		       jbd2_max_user_trans_buffers(journal));
- 		WARN_ON(1);
- 		return -ENOSPC;
+ 
+ 	if (len > *lenp)
+@@ -87,19 +87,19 @@ static int do_autoprobe(struct ctl_table
  	}
+ 	
+ 	if ((str = info->class_name) != NULL)
+-		len += sprintf (buffer + len, "CLASS:%s;\n", str);
++		len += snprintf (buffer + len, sizeof(buffer) - len, "CLASS:%s;\n", str);
+ 
+ 	if ((str = info->model) != NULL)
+-		len += sprintf (buffer + len, "MODEL:%s;\n", str);
++		len += snprintf (buffer + len, sizeof(buffer) - len, "MODEL:%s;\n", str);
+ 
+ 	if ((str = info->mfr) != NULL)
+-		len += sprintf (buffer + len, "MANUFACTURER:%s;\n", str);
++		len += snprintf (buffer + len, sizeof(buffer) - len, "MANUFACTURER:%s;\n", str);
+ 
+ 	if ((str = info->description) != NULL)
+-		len += sprintf (buffer + len, "DESCRIPTION:%s;\n", str);
++		len += snprintf (buffer + len, sizeof(buffer) - len, "DESCRIPTION:%s;\n", str);
+ 
+ 	if ((str = info->cmdset) != NULL)
+-		len += sprintf (buffer + len, "COMMAND SET:%s;\n", str);
++		len += snprintf (buffer + len, sizeof(buffer) - len, "COMMAND SET:%s;\n", str);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -117,7 +117,7 @@ static int do_hardware_base_addr(struct
+ 				 void *result, size_t *lenp, loff_t *ppos)
+ {
+ 	struct parport *port = (struct parport *)table->extra1;
+-	char buffer[20];
++	char buffer[64];
+ 	int len = 0;
+ 
+ 	if (*ppos) {
+@@ -128,7 +128,7 @@ static int do_hardware_base_addr(struct
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += sprintf (buffer, "%lu\t%lu\n", port->base, port->base_hi);
++	len += snprintf (buffer, sizeof(buffer), "%lu\t%lu\n", port->base, port->base_hi);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -155,7 +155,7 @@ static int do_hardware_irq(struct ctl_ta
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += sprintf (buffer, "%d\n", port->irq);
++	len += snprintf (buffer, sizeof(buffer), "%d\n", port->irq);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -182,7 +182,7 @@ static int do_hardware_dma(struct ctl_ta
+ 	if (write) /* permissions prevent this anyway */
+ 		return -EACCES;
+ 
+-	len += sprintf (buffer, "%d\n", port->dma);
++	len += snprintf (buffer, sizeof(buffer), "%d\n", port->dma);
+ 
+ 	if (len > *lenp)
+ 		len = *lenp;
+@@ -213,7 +213,7 @@ static int do_hardware_modes(struct ctl_
+ #define printmode(x)							\
+ do {									\
+ 	if (port->modes & PARPORT_MODE_##x)				\
+-		len += sprintf(buffer + len, "%s%s", f++ ? "," : "", #x); \
++		len += snprintf(buffer + len, sizeof(buffer) - len, "%s%s", f++ ? "," : "", #x); \
+ } while (0)
+ 		int f = 0;
+ 		printmode(PCSPP);
 
 
 
