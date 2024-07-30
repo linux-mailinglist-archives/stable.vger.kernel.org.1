@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-63831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD31941B1F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:51:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D62494178E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:13:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37D55B20F04
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDE071C22F01
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E348418801C;
-	Tue, 30 Jul 2024 16:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D57818950C;
+	Tue, 30 Jul 2024 16:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bwyhg1jJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRCxE6H1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E014155CB3;
-	Tue, 30 Jul 2024 16:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF594184535;
+	Tue, 30 Jul 2024 16:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358090; cv=none; b=bVHaC4+nsy0xY1EOsRPN8aTiVSg1L2u+F1GjnqXu8c2WIxNN9tv0x1Ic7soVPDRne9E6039QrgUtcJyyGXVqxmDXHURd2cx5wVTHreBrbfL3VsTnlaIJxbVOBQBfa+iFEsNEgZkWrkTz2neFZlXegwgNF8To65S+YKEqDH/ktos=
+	t=1722355800; cv=none; b=Owr5v1mNrbV5MfWS0yfr5zM7u/p8CukJbcvGveRr4WRVfzhmvbGUVHdCa/Dc5G3KLFnJhVl51hdAhRstXbQKOolFNdjkON5QfGs6M0c5zaEmFdAldvD6i4Fl6avykUrIkT9cAIi4wHNXsjAftYzbTOmpRvA73+kvnfrWXXKfbIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358090; c=relaxed/simple;
-	bh=HlTAdkCozNnzI4QKcNotqhjqsDok/ELjtrGhSWyGOa0=;
+	s=arc-20240116; t=1722355800; c=relaxed/simple;
+	bh=WMEzaU4StKvWpBSEjx0pK908N9TNLQL/wmSLGay3ri8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnvSGoNochJFdN0gQPQPdd0pip8cq5pBkgXWKp0j/Xzes5IKgHzFMDrWvDy/ogiNHkrMltJ1E0mUcaXMtavg5muO+y36LtXlCkje4xEfDGeUo3+38eBiTUH1peiqOvwZH/NWzegCk+QzsmKi0g2loBSIClHiEE7Wqh1VFzs8xxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bwyhg1jJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B039C32782;
-	Tue, 30 Jul 2024 16:48:09 +0000 (UTC)
+	 MIME-Version; b=sdtAqmgEtOX5A3UxS2Q7sLQnvJcbJo2HIElCbHvBzSYgxBzuwkAaiVqhsLAEG9vjQ2O22XOT6kaEcYZw56/EF4V+vBhh1tnH7t30Ap+KjYdZ+ms7VsNUQuEY25xGvGsViWVG7Jh0MYKi7Sapkbeeo4sXy3tPyaBOzOd8LEM27/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRCxE6H1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D4EC32782;
+	Tue, 30 Jul 2024 16:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358090;
-	bh=HlTAdkCozNnzI4QKcNotqhjqsDok/ELjtrGhSWyGOa0=;
+	s=korg; t=1722355799;
+	bh=WMEzaU4StKvWpBSEjx0pK908N9TNLQL/wmSLGay3ri8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bwyhg1jJXiZJnoz7HECbfb+/eA5MLjjbrKT/jX07hTZtx18eVror+q2BezRbimLoz
-	 L9h/UEpXaVeI2WxV2txLMkVtbM3aFjGldBUGEXo/6i7RIB3hSzN2hLS5/XZ+KiA5XG
-	 12sCpuzz4rq0PYNCWUBGDRc9zHvr1TVOr3SnOWrk=
+	b=nRCxE6H1EXcONoMn7DviFV9HFLqPY1w8dKxxo0hy4boYRzJOw2YJIeJY2WxKS+NCf
+	 M3tpMNOMhkGvnVtR8wxiZdyy9Sqgjd3YiZdo4oq9p/cgI3jlxU4KAEZI3sJTxtgHKq
+	 IjC3LtVLdF8fhHoiMyVrUObcasCvtz4n0in36Puk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+	Adam Ford <aford173@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Marek Vasut <marex@denx.de>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 322/809] media: renesas: vsp1: Store RPF partition configuration per RPF instance
+Subject: [PATCH 6.6 091/568] arm64: dts: imx8mp: Fix pgc_mlmix location
 Date: Tue, 30 Jul 2024 17:43:18 +0200
-Message-ID: <20240730151737.324193323@linuxfoundation.org>
+Message-ID: <20240730151643.428618699@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit a213bc09b1025c771ee722ee341af1d84375db8a ]
+[ Upstream commit 106f68fc9da3d4835070b55a2229d2c54ef5cba1 ]
 
-The vsp1_partition structure stores the RPF partition configuration in a
-single field for all RPF instances, while each RPF can have its own
-configuration. Fix it by storing the configuration separately for each
-RPF instance.
+The pgc_mlmix shows a power-domain@24, but the reg value is
+IMX8MP_POWER_DOMAIN_MLMIX which is set to 4.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Fixes: ab45e8585182 ("media: v4l: vsp1: Allow entities to participate in the partition algorithm")
-Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+The stuff after the @ symbol should match the stuff referenced
+by 'reg' so reorder the pgc_mlmix so it to appear as power-domain@4.
+
+Fixes: 834464c8504c ("arm64: dts: imx8mp: add mlmix power domain")
+Fixes: 4bedc468b725 ("arm64: dts: imx8mp: Add NPU Node")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/vsp1/vsp1_pipe.h | 2 +-
- drivers/media/platform/renesas/vsp1/vsp1_rpf.c  | 8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 34 +++++++++++------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-index 674b5748d929e..85ecd53cda495 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_pipe.h
-@@ -73,7 +73,7 @@ struct vsp1_partition_window {
-  * @wpf: The WPF partition window configuration
-  */
- struct vsp1_partition {
--	struct vsp1_partition_window rpf;
-+	struct vsp1_partition_window rpf[VSP1_MAX_RPF];
- 	struct vsp1_partition_window uds_sink;
- 	struct vsp1_partition_window uds_source;
- 	struct vsp1_partition_window sru;
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-index c47579efc65f6..6055554fb0714 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_rpf.c
-@@ -315,8 +315,8 @@ static void rpf_configure_partition(struct vsp1_entity *entity,
- 	 * 'width' need to be adjusted.
- 	 */
- 	if (pipe->partitions > 1) {
--		crop.width = pipe->partition->rpf.width;
--		crop.left += pipe->partition->rpf.left;
-+		crop.width = pipe->partition->rpf[rpf->entity.index].width;
-+		crop.left += pipe->partition->rpf[rpf->entity.index].left;
- 	}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 56f72d264eee8..0b824120d5488 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -785,6 +785,23 @@ pgc_usb2_phy: power-domain@3 {
+ 						reg = <IMX8MP_POWER_DOMAIN_USB2_PHY>;
+ 					};
  
- 	if (pipe->interlaced) {
-@@ -371,7 +371,9 @@ static void rpf_partition(struct vsp1_entity *entity,
- 			  unsigned int partition_idx,
- 			  struct vsp1_partition_window *window)
- {
--	partition->rpf = *window;
-+	struct vsp1_rwpf *rpf = to_rwpf(&entity->subdev);
++					pgc_mlmix: power-domain@4 {
++						#power-domain-cells = <0>;
++						reg = <IMX8MP_POWER_DOMAIN_MLMIX>;
++						clocks = <&clk IMX8MP_CLK_ML_AXI>,
++							 <&clk IMX8MP_CLK_ML_AHB>,
++							 <&clk IMX8MP_CLK_NPU_ROOT>;
++						assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
++								  <&clk IMX8MP_CLK_ML_AXI>,
++								  <&clk IMX8MP_CLK_ML_AHB>;
++						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
++									 <&clk IMX8MP_SYS_PLL1_800M>,
++									 <&clk IMX8MP_SYS_PLL1_800M>;
++						assigned-clock-rates = <800000000>,
++								       <800000000>,
++								       <300000000>;
++					};
 +
-+	partition->rpf[rpf->entity.index] = *window;
- }
- 
- static const struct vsp1_entity_operations rpf_entity_ops = {
+ 					pgc_audio: power-domain@5 {
+ 						#power-domain-cells = <0>;
+ 						reg = <IMX8MP_POWER_DOMAIN_AUDIOMIX>;
+@@ -879,23 +896,6 @@ pgc_vpu_vc8000e: power-domain@22 {
+ 						reg = <IMX8MP_POWER_DOMAIN_VPU_VC8000E>;
+ 						clocks = <&clk IMX8MP_CLK_VPU_VC8KE_ROOT>;
+ 					};
+-
+-					pgc_mlmix: power-domain@24 {
+-						#power-domain-cells = <0>;
+-						reg = <IMX8MP_POWER_DOMAIN_MLMIX>;
+-						clocks = <&clk IMX8MP_CLK_ML_AXI>,
+-							 <&clk IMX8MP_CLK_ML_AHB>,
+-							 <&clk IMX8MP_CLK_NPU_ROOT>;
+-						assigned-clocks = <&clk IMX8MP_CLK_ML_CORE>,
+-								  <&clk IMX8MP_CLK_ML_AXI>,
+-								  <&clk IMX8MP_CLK_ML_AHB>;
+-						assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_800M>,
+-									 <&clk IMX8MP_SYS_PLL1_800M>,
+-									 <&clk IMX8MP_SYS_PLL1_800M>;
+-						assigned-clock-rates = <800000000>,
+-								       <800000000>,
+-								       <300000000>;
+-					};
+ 				};
+ 			};
+ 		};
 -- 
 2.43.0
 
