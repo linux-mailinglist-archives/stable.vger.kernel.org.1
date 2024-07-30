@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3AE7941EB1
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534F5941D94
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC389282EC5
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AA3F28C728
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAEA188017;
-	Tue, 30 Jul 2024 17:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0886E1A76B3;
+	Tue, 30 Jul 2024 17:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYHEYqTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWoP5lAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB0E1A76AD;
-	Tue, 30 Jul 2024 17:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB14B1A76AC;
+	Tue, 30 Jul 2024 17:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360723; cv=none; b=rkiAq1aaXu6JmFG3CdyfntB/eOj16MUTLLtLTh1QjGpxxxVFqzxLyf8wSVPdR2Mtr2gSiY//G7/w8Novg7gIovmT/CoBmsNL500b+luWEZXcv7HuDG9XL7Z2U90t+PNR2MS01ksyOcuqq/TaYZEGoBe9X6W5KW1hjvx1QwGKrpk=
+	t=1722359930; cv=none; b=qyjp5K+v8PP2PkmnpiMBbP47fHCAcJAICkRg/9TIv8yBB0HVcrmmKyKwojyEDZxTiOwZ6Zm2ogUXa6NiMp5fBW4nt0gWVYHys2hNNGpQZm9SeQniP7cPx0+ewQCaW1cmvipY74UoXJiFnyN8gLtYxP+aO/ULxU7JsWzjMcY6/zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360723; c=relaxed/simple;
-	bh=VC4jLouI8M6y6Q0IpLHYOL0sZgqDITBLtUcYIXGlAag=;
+	s=arc-20240116; t=1722359930; c=relaxed/simple;
+	bh=UAdiLRXMEGbqOhgW8ZOPU/KcpAq0FYbvI8eEWF+g+PU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6jCs8b2Rw/Q9mTHBvGcBv73RIzj4YMMgeZBJOTc4vXqArLdt1TINrIFqjcCuQpA8jg5nL6TlSNS5IBnnLW057P6vf9kGo5Is0fUAu/kCj1FNkqIBnQ8kOLB3k+1zK9+uP0rdvnav8ej7nXKX+p6AO0ygVHNeG5agbHNqRH6WFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYHEYqTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429B6C32782;
-	Tue, 30 Jul 2024 17:32:02 +0000 (UTC)
+	 MIME-Version; b=dxfNFHZQhV9O++HMHxRviQgubdmFMe/qpIrojVxHIYf/K8/9XCfhmuZM579iE7uPL/AYQpvxh+0AHTNAT8xbUO49kFsUnRFjskzCKHiUJqjQR0coRvdkSV1VB70KR7hceWFs5GhYuB3K3Y0t50Ub2N4X2TBk+QEupToyEfYkPdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWoP5lAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD714C4AF0E;
+	Tue, 30 Jul 2024 17:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360722;
-	bh=VC4jLouI8M6y6Q0IpLHYOL0sZgqDITBLtUcYIXGlAag=;
+	s=korg; t=1722359930;
+	bh=UAdiLRXMEGbqOhgW8ZOPU/KcpAq0FYbvI8eEWF+g+PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fYHEYqTBzvvraN6Pny5p3vlKU4NFF73jW27paQLuWtyxzfF1gUTfWYP30M2j/BomE
-	 2yEPjGNEA2wu4nIz60CaQZskcZE7Ukbw8oJ9rCrcwoz0qiTpoYF2p+YVPU3Y8lIRDh
-	 lgPLE3tyweQWsJlXGjzao3IGKiaVodb9RCoBdYOA=
+	b=jWoP5lAukac54tpU21i9wFk+tYLIFMNNw2OxLgUnJCD8YiY7mOmTHAWqw3jJqk5KA
+	 n9zDi0xZ4qhVKtuPQngFSp2VgidgvxFfEM0gZdDVUAK5CutPFvxIhdlGs/GvG+Yvy3
+	 xjq1WYiIKiPXmDg2A6CuMAY3JdsGO+te1RrR6Bow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 787/809] ASoC: sof: amd: fix for firmware reload failure in Vangogh platform
-Date: Tue, 30 Jul 2024 17:51:03 +0200
-Message-ID: <20240730151756.049906146@linuxfoundation.org>
+Subject: [PATCH 6.6 557/568] ASoC: sof: amd: fix for firmware reload failure in Vangogh platform
+Date: Tue, 30 Jul 2024 17:51:04 +0200
+Message-ID: <20240730151701.928830339@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -88,7 +88,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 deletion(-)
 
 diff --git a/sound/soc/sof/amd/pci-vangogh.c b/sound/soc/sof/amd/pci-vangogh.c
-index 16eb2994fbab9..eba5808401003 100644
+index d8be42fbcb6dd..b035e31fadaba 100644
 --- a/sound/soc/sof/amd/pci-vangogh.c
 +++ b/sound/soc/sof/amd/pci-vangogh.c
 @@ -34,7 +34,6 @@ static const struct sof_amd_acp_desc vangogh_chip_info = {
