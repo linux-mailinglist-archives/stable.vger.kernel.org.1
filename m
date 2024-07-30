@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C4D941984
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E41941988
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FFEB286B84
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79E0B1C23636
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841E915699E;
-	Tue, 30 Jul 2024 16:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA41F1A6192;
+	Tue, 30 Jul 2024 16:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXlI4VOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcRmzgS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EAC433A9;
-	Tue, 30 Jul 2024 16:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A15A8BE8;
+	Tue, 30 Jul 2024 16:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357200; cv=none; b=XNYRoPJmV1G/fq75dPpJf7iD7sYWyrRgJb66nkWc6KvTLcJZMZ4pKsdwpz9LAStjdx+mAD1/ct1RNY+wVPECB5WLfOBsaJ68IJJsqADYPLWQ4XCpTzhOmUp+8URd376Vozpz6eYLUNTFsTIbbaWZY6zdTADDlYVMClyngHxc4eQ=
+	t=1722357213; cv=none; b=oRCq+ae7oUd5SRmGjr0+hJJCAYrwomoYdNfZnw0p/pnqy6BQ1rzygDzCGoT5/QJBlXWKkKN2G536A/t1dFyiq2mPKEoDwjZvlzRMwiPWCWenlVl9NZtbxSvYDMZQPfCVMO0+eLXwZXiK3GRS/y7oNseDJoXgaaZjeDpJbXYgAks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357200; c=relaxed/simple;
-	bh=vs7GslxtXpjFhnHiYymjhMtZ21if8PyUxMqcuUbWlSU=;
+	s=arc-20240116; t=1722357213; c=relaxed/simple;
+	bh=WcmXgu77wXyeAzaU+DxC/VvLpUJlDh9gneZfqccD7dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3mx9n/w1/Aurbv2qpKquiGvvnh6yxkJgVba/fN/fcFxJsxCh3fQxh4sXRsJXAJzR09hSgeV5+HMkv/emhoT9bF0BP7Fh8OEcTOIMEwprbBoCtGCzTk669fMK2s0xGn7amIWUN/o4LekIMwlSJLRcGOTN0KEHt+vCCl3AN/6ol0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXlI4VOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC59C4AF0C;
-	Tue, 30 Jul 2024 16:33:19 +0000 (UTC)
+	 MIME-Version; b=i4Zu5t1SIpaS8SLhz4cX/HKcpmkD1J47Ki44UTNDd8wiJz5a38xeWj9vBCYwwD+XWanvFxCeMh89qPzeFxZCykcusJwctcVqofJWAzePGjUtuus/Ipr0L9cmkbc1p1T01BfQJ4yoB9lX/TwYI1V/9Wp391MtxYDag1fVVOOjf2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcRmzgS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F729C32782;
+	Tue, 30 Jul 2024 16:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357200;
-	bh=vs7GslxtXpjFhnHiYymjhMtZ21if8PyUxMqcuUbWlSU=;
+	s=korg; t=1722357213;
+	bh=WcmXgu77wXyeAzaU+DxC/VvLpUJlDh9gneZfqccD7dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXlI4VOgBgGwfZkftcj617v+s7TmKdMBsyP4QrLm6O/xPYGTZYe1IVvnR6dLCZW/x
-	 rw9XoIFtrPwVkq2uQlxoy7DoM8x3KRjSAIYri0ymSYX8tMgt7wmWrjlZ5yyngn4wnL
-	 Z/ClEZGw8TPAF12LaTWUz53BfVdtpbzwQnSZlR6s=
+	b=XcRmzgS8ry0UvLQKVp08UwkrW8hUtqOupZ3xAZSzCeUiGvGcxT75/EJBDBdUVemBB
+	 1Rpb0jJK687xmh9Sz7TVXVBZQrlJessE4ASFlwKgE3MPVLovnPsJaDxS/2TPUY2iTQ
+	 BJ0sp9LOnhFfqQwKElgDilG8vF3YdBUd59bPcGAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 232/809] wifi: virt_wifi: avoid reporting connection success with wrong SSID
-Date: Tue, 30 Jul 2024 17:41:48 +0200
-Message-ID: <20240730151733.771137239@linuxfoundation.org>
+Subject: [PATCH 6.10 233/809] bpf: helpers: fix bpf_wq_set_callback_impl signature
+Date: Tue, 30 Jul 2024 17:41:49 +0200
+Message-ID: <20240730151733.810439456@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,96 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit b5d14b0c6716fad7f0c94ac6e1d6f60a49f985c7 ]
+[ Upstream commit f56f4d541eab1ae060a46b56dd6ec9130d6e3a98 ]
 
-When user issues a connection with a different SSID than the one
-virt_wifi has advertised, the __cfg80211_connect_result() will
-trigger the warning: WARN_ON(bss_not_found).
+I realized this while having a map containing both a struct bpf_timer and
+a struct bpf_wq: the third argument provided to the bpf_wq callback is
+not the struct bpf_wq pointer itself, but the pointer to the value in
+the map.
 
-The issue is because the connection code in virt_wifi does not
-check the SSID from user space (it only checks the BSSID), and
-virt_wifi will call cfg80211_connect_result() with WLAN_STATUS_SUCCESS
-even if the SSID is different from the one virt_wifi has advertised.
-Eventually cfg80211 won't be able to find the cfg80211_bss and generate
-the warning.
+Which means that the users need to double cast the provided "value" as
+this is not a struct bpf_wq *.
 
-Fixed it by checking the SSID (from user space) in the connection code.
+This is a change of API, but there doesn't seem to be much users of bpf_wq
+right now, so we should be able to go with this right now.
 
-Fixes: c7cdba31ed8b ("mac80211-next: rtnetlink wifi simulation device")
-Reported-by: syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Link: https://patch.msgid.link/20240705023756.10954-1-en-wei.wu@canonical.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 81f1d7a583fa ("bpf: wq: add bpf_wq_set_callback_impl")
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Link: https://lore.kernel.org/r/20240708-fix-wq-v2-1-667e5c9fbd99@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virtual/virt_wifi.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ kernel/bpf/helpers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
-index 6a84ec58d618b..d2271a7644a01 100644
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -136,6 +136,8 @@ static struct ieee80211_supported_band band_5ghz = {
- /* Assigned at module init. Guaranteed locally-administered and unicast. */
- static u8 fake_router_bssid[ETH_ALEN] __ro_after_init = {};
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 3243c83ef3e39..7268370600f6e 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -2786,7 +2786,7 @@ __bpf_kfunc int bpf_wq_start(struct bpf_wq *wq, unsigned int flags)
+ }
  
-+#define VIRT_WIFI_SSID "VirtWifi"
-+
- static void virt_wifi_inform_bss(struct wiphy *wiphy)
+ __bpf_kfunc int bpf_wq_set_callback_impl(struct bpf_wq *wq,
+-					 int (callback_fn)(void *map, int *key, struct bpf_wq *wq),
++					 int (callback_fn)(void *map, int *key, void *value),
+ 					 unsigned int flags,
+ 					 void *aux__ign)
  {
- 	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
-@@ -146,8 +148,8 @@ static void virt_wifi_inform_bss(struct wiphy *wiphy)
- 		u8 ssid[8];
- 	} __packed ssid = {
- 		.tag = WLAN_EID_SSID,
--		.len = 8,
--		.ssid = "VirtWifi",
-+		.len = strlen(VIRT_WIFI_SSID),
-+		.ssid = VIRT_WIFI_SSID,
- 	};
- 
- 	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
-@@ -213,6 +215,8 @@ struct virt_wifi_netdev_priv {
- 	struct net_device *upperdev;
- 	u32 tx_packets;
- 	u32 tx_failed;
-+	u32 connect_requested_ssid_len;
-+	u8 connect_requested_ssid[IEEE80211_MAX_SSID_LEN];
- 	u8 connect_requested_bss[ETH_ALEN];
- 	bool is_up;
- 	bool is_connected;
-@@ -229,6 +233,12 @@ static int virt_wifi_connect(struct wiphy *wiphy, struct net_device *netdev,
- 	if (priv->being_deleted || !priv->is_up)
- 		return -EBUSY;
- 
-+	if (!sme->ssid)
-+		return -EINVAL;
-+
-+	priv->connect_requested_ssid_len = sme->ssid_len;
-+	memcpy(priv->connect_requested_ssid, sme->ssid, sme->ssid_len);
-+
- 	could_schedule = schedule_delayed_work(&priv->connect, HZ * 2);
- 	if (!could_schedule)
- 		return -EBUSY;
-@@ -252,12 +262,15 @@ static void virt_wifi_connect_complete(struct work_struct *work)
- 		container_of(work, struct virt_wifi_netdev_priv, connect.work);
- 	u8 *requested_bss = priv->connect_requested_bss;
- 	bool right_addr = ether_addr_equal(requested_bss, fake_router_bssid);
-+	bool right_ssid = priv->connect_requested_ssid_len == strlen(VIRT_WIFI_SSID) &&
-+			  !memcmp(priv->connect_requested_ssid, VIRT_WIFI_SSID,
-+				  priv->connect_requested_ssid_len);
- 	u16 status = WLAN_STATUS_SUCCESS;
- 
- 	if (is_zero_ether_addr(requested_bss))
- 		requested_bss = NULL;
- 
--	if (!priv->is_up || (requested_bss && !right_addr))
-+	if (!priv->is_up || (requested_bss && !right_addr) || !right_ssid)
- 		status = WLAN_STATUS_UNSPECIFIED_FAILURE;
- 	else
- 		priv->is_connected = true;
 -- 
 2.43.0
 
