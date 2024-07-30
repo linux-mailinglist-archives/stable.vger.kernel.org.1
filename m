@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-64333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75CCF941D5D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:16:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7A5941EBA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F36628B56E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D81C1C23279
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D54188017;
-	Tue, 30 Jul 2024 17:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCA6189503;
+	Tue, 30 Jul 2024 17:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uxj8dA5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqV86MCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923871A76D4;
-	Tue, 30 Jul 2024 17:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37621A76A5;
+	Tue, 30 Jul 2024 17:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359775; cv=none; b=etcRwWsYkiEHwB31VIVc8myhEGdjGHPngjOOnsG4sf7lGku/mpyEdtfuY89MjV/Ey2t5+GZCcVvE0wnLlA6O/a23IQ0cdK11Fx2qcjeUa9L1o6adFLZoQbPdpO038mOFoltKI8sVjcqYDI7DurzaOXl7lWT2janjY6migJEygyE=
+	t=1722360751; cv=none; b=HxeuOrgUKaR2o0MuM7Mp2cf6RvQ6lbe8RI+mtC/hOLu3Y4nr8ujRtt6zusb7/4YM5zYfXygwCTcFa8wOagTmVw40XsTvncVn/2kBG1bHGp9ds4Nr1mexO1P/QgVBSLEQi03CCaqVs6zir8OgEf6cJoOl6Bmtlnp15fFXF+vquFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359775; c=relaxed/simple;
-	bh=/x/Kvkgp8Wqh+XekbydRsEj5vn9Yx0mN+ja2riPtxdo=;
+	s=arc-20240116; t=1722360751; c=relaxed/simple;
+	bh=6HKrVpCh038ALVGKfmwKomASOXh2xU4n+pSFA20jBoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rC4HYvCCq/u0A1hZ2Id0BG1e1Tfyxa0fwBroMrUHurSiX+w9HdOhaVHM3TkMVEznjF6E+kGYHIy06Fy9akSUGb/WJL1B+mYdDXnk7hSUCojyDr5JnyYNWo7kSd4T3ECg58mssAPu4L9QH2dOANglfjL2aKVhQ0/rshPmPD4cUag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uxj8dA5H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EBEC32782;
-	Tue, 30 Jul 2024 17:16:14 +0000 (UTC)
+	 MIME-Version; b=O8dXhhdPKinS4BI2HHz4uy8gqEhiVNTpQb3xTurU2V6epW1dBhmEv/zDiKwFZix57U4XvLq9fXIzUKpcI/IEhc2ZxnXcfEhKt6ixtvGtveoXQjHUIDcbTj9oIEAcyepTkGpAV/Yc8WW9U/a43OlYED0s9p2ELq6lSXfO9D5Y7Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqV86MCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C54C32782;
+	Tue, 30 Jul 2024 17:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359775;
-	bh=/x/Kvkgp8Wqh+XekbydRsEj5vn9Yx0mN+ja2riPtxdo=;
+	s=korg; t=1722360751;
+	bh=6HKrVpCh038ALVGKfmwKomASOXh2xU4n+pSFA20jBoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uxj8dA5HoqmvZzzp9b2yRjt+3jHEYebpJyuQjVI24BAKG3hrXPpgt19PET4FvUdrd
-	 qCv5SuucOQRRXQDrOU6AfX9H5ovF5u7R3S37ag67rTw2jFikFJmjlU4NSE5b/056Qt
-	 x1yB3dwCr1OA8lRUsLS/Rl/ogGO3h8J5sepO/CDo=
+	b=eqV86MCTJ+hB0ZomRFVF4M80A+tJVsiX05ChH9oMnpxr/TCJ6/0wErjGVEyA/hDyE
+	 2qr7aIWiiP1NjKQZCV2Pp/of35Lq1dmNMQxHTlBvHhVeT+YonphJ7Foa7b58Ph3Ajb
+	 uFylVhPgUqDiIY2Akzbhd/nNXxCKY65wnxJ/NXVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liwei Song <liwei.song.lsong@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jiri Olsa <jolsa@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 534/568] tools/resolve_btfids: Fix comparison of distinct pointer types warning in resolve_btfids
+Subject: [PATCH 6.10 765/809] netfs: Fix writeback that needs to go to both server and cache
 Date: Tue, 30 Jul 2024 17:50:41 +0200
-Message-ID: <20240730151701.026804097@linuxfoundation.org>
+Message-ID: <20240730151755.181800045@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liwei Song <liwei.song.lsong@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 13c9b702e6cb8e406d5fa6b2dca422fa42d2f13e ]
+[ Upstream commit 212be98aa19303cbf376d61faf9de3ec9997c1cd ]
 
-Add a type cast for set8->pairs to fix below compile warning:
+When netfslib is performing writeback (ie. ->writepages), it maintains two
+parallel streams of writes, one to the server and one to the cache, but it
+doesn't mark either stream of writes as active until it gets some data that
+needs to be written to that stream.
 
-main.c: In function 'sets_patch':
-main.c:699:50: warning: comparison of distinct pointer types lacks a cast
-  699 |        BUILD_BUG_ON(set8->pairs != &set8->pairs[0].id);
-      |                                 ^~
+This is done because some folios will only be written to the cache
+(e.g. copying to the cache on read is done by marking the folios and
+letting writeback do the actual work) and sometimes we'll only be writing
+to the server (e.g. if there's no cache).
 
-Fixes: 9707ac4fe2f5 ("tools/resolve_btfids: Refactor set sorting with types from btf_ids.h")
-Signed-off-by: Liwei Song <liwei.song.lsong@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20240722083305.4009723-1-liwei.song.lsong@gmail.com
+Now, since we don't actually dispatch uploads and cache writes in parallel,
+but rather flip between the streams, depending on which has the lowest
+so-far-issued offset, and don't wait for the subreqs to finish before
+flipping, we can end up in a situation where, say, we issue a write to the
+server and this completes before we start the write to the cache.
+
+But because we only activate a stream when we first add a subreq to it, the
+result collection code may run before we manage to activate the stream -
+resulting in the folio being cleaned and having the writeback-in-progress
+mark removed.  At this point, the folio no longer belongs to us.
+
+This is only really a problem for folios that need to be written to both
+streams - and in that case, the upload to the server is started first,
+followed by the write to the cache - and the cache write may see a bad
+folio.
+
+Fix this by activating the cache stream up front if there's a cache
+available.  If there's a cache, then all data is going to be written to it.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/1599053.1721398818@warthog.procyon.org.uk
+cc: Jeff Layton <jlayton@kernel.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/resolve_btfids/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/netfs/write_issue.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/bpf/resolve_btfids/main.c b/tools/bpf/resolve_btfids/main.c
-index af393c7dee1f1..b3edc239fe562 100644
---- a/tools/bpf/resolve_btfids/main.c
-+++ b/tools/bpf/resolve_btfids/main.c
-@@ -696,7 +696,7 @@ static int sets_patch(struct object *obj)
- 			 * Make sure id is at the beginning of the pairs
- 			 * struct, otherwise the below qsort would not work.
- 			 */
--			BUILD_BUG_ON(set8->pairs != &set8->pairs[0].id);
-+			BUILD_BUG_ON((u32 *)set8->pairs != &set8->pairs[0].id);
- 			qsort(set8->pairs, set8->cnt, sizeof(set8->pairs[0]), cmp_id);
- 
- 			/*
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index d7c971df88660..32bc88bee5d18 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -122,6 +122,7 @@ struct netfs_io_request *netfs_create_write_req(struct address_space *mapping,
+ 	wreq->io_streams[1].transferred		= LONG_MAX;
+ 	if (fscache_resources_valid(&wreq->cache_resources)) {
+ 		wreq->io_streams[1].avail	= true;
++		wreq->io_streams[1].active	= true;
+ 		wreq->io_streams[1].prepare_write = wreq->cache_resources.ops->prepare_write_subreq;
+ 		wreq->io_streams[1].issue_write = wreq->cache_resources.ops->issue_write;
+ 	}
 -- 
 2.43.0
 
