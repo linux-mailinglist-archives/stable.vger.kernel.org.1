@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-63273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7337C94182D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C94D9941D6E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E4AF2833C9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04DC0B23DF2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F21B18A92F;
-	Tue, 30 Jul 2024 16:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA7C1A76AE;
+	Tue, 30 Jul 2024 17:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhYYiAbt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lt/9f6SH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CFE1A6186;
-	Tue, 30 Jul 2024 16:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C74D1A76A4;
+	Tue, 30 Jul 2024 17:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356290; cv=none; b=ogoj/pq4wYJ2UBd8ZiTTEO2SAF2LfHyYS7QQzsNfZJc74rLoVAY4kg95oLyqmgk0EGLWIkXsA+atdH2pp6Q5kslfDw1NU2CZwhmUwnjzxGl4JA/j8F2CQWuhAf4lWCPtJv17ZOVeDH0E+Vlg+uugw9FqakW4LnKQkYAk68Xir7w=
+	t=1722359793; cv=none; b=l4jI/xiAAuiN11WFWv38gtxXeQtnv5+MkkJIW6fZ1+dKF0V3QPw3RZzPbgBfZHcl3ax1saavGnlhk0rCjLw4JhtEqZSL/oaXlqWBL++CnF7E0H6EqeLp/Auc0bQjHKR2kdHFSauJvatJK08EQJ/EvGIPBi0Wl7N57mVbJ3My/Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356290; c=relaxed/simple;
-	bh=o9hWDKhWkJxe/AbVZbWCYgDqA4AztxMs6+woVQLvR8Y=;
+	s=arc-20240116; t=1722359793; c=relaxed/simple;
+	bh=at5BfkMCpDB6671ZCkKObazn5St1iYE7tnvpOEvSra0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nw+XNr4T3meYztoxNcz8gK8zP9uDxNvpYjNp9XdRXZPPH8oIMiwH+nz7y6/CbSK7/FQvsLf1Cn6gH79L98d4+o0UEHVkxhoQcZPjmqZsDsstp435z+lQcMLC+XWW+9cxBs0UnPnU+c8tX5kLiL/tkO8MJaiJjbXrkFt556jsVaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhYYiAbt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55131C32782;
-	Tue, 30 Jul 2024 16:18:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VXfioIwEkIBWGhKhrLyfChYXvrPN2CjfgRR31aRelnmSXD4mqMzfqqggNqjkEjrBmlmruD60X6tbivIUWNDgx0cztM7ow0WpkS222Ab92SYxFjOoOLGFDpDJQJ+AFydV9ZfwuhPXijfaABWJoB3E/wkmmYbRTGqnwEW/BTBZtXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lt/9f6SH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC11EC32782;
+	Tue, 30 Jul 2024 17:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356289;
-	bh=o9hWDKhWkJxe/AbVZbWCYgDqA4AztxMs6+woVQLvR8Y=;
+	s=korg; t=1722359793;
+	bh=at5BfkMCpDB6671ZCkKObazn5St1iYE7tnvpOEvSra0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhYYiAbtTIlAC5EOYLC4KN+Yfj9JaWuUbGFqtWRty2uStQwhKtf/APFI39PDs3tCY
-	 DLZjdrl4cVKLIiBXTq5aHKlQJWdAyNaE+d9T/TYBobxRAzlc/CS8/uLr8N7S7C3ZeE
-	 HcazMAzSkZyVZGMDJCDTcbe6uxTfC9yYUvPUOWuw=
+	b=Lt/9f6SHCiDg69dOJSveVXqI1h0P5fM+i9ARyoWeS7KzYmEF7wpQn5h+ePETLcGP9
+	 J4KnQ8PgQ9fVMB5qBd1Q7SfHcHaxuRwEIVC/ycjPY4LWYBjBi5qn8qXIfGzaOqRL+/
+	 GlQM/ZDuOrPvjhS/pA3OnkndBn//q1D8JVmmgbNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/440] SUNRPC: Fixup gss_status tracepoint error output
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.10 533/809] landlock: Dont lose track of restrictions on cred_transfer
 Date: Tue, 30 Jul 2024 17:46:49 +0200
-Message-ID: <20240730151622.747404939@linuxfoundation.org>
+Message-ID: <20240730151745.790173727@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit b9fae9f06d84ffab0f3f9118f3a96bbcdc528bf6 ]
+commit 39705a6c29f8a2b93cf5b99528a55366c50014d1 upstream.
 
-The GSS routine errors are values, not flags.
+When a process' cred struct is replaced, this _almost_ always invokes
+the cred_prepare LSM hook; but in one special case (when
+KEYCTL_SESSION_TO_PARENT updates the parent's credentials), the
+cred_transfer LSM hook is used instead.  Landlock only implements the
+cred_prepare hook, not cred_transfer, so KEYCTL_SESSION_TO_PARENT causes
+all information on Landlock restrictions to be lost.
 
-Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This basically means that a process with the ability to use the fork()
+and keyctl() syscalls can get rid of all Landlock restrictions on
+itself.
+
+Fix it by adding a cred_transfer hook that does the same thing as the
+existing cred_prepare hook. (Implemented by having hook_cred_prepare()
+call hook_cred_transfer() so that the two functions are less likely to
+accidentally diverge in the future.)
+
+Cc: stable@kernel.org
+Fixes: 385975dca53e ("landlock: Set up the security framework and manage credentials")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20240724-landlock-houdini-fix-v1-1-df89a4560ca3@google.com
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/rpcgss.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/landlock/cred.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/include/trace/events/rpcgss.h b/include/trace/events/rpcgss.h
-index 894d9fc8bd94a..e228a44af2915 100644
---- a/include/trace/events/rpcgss.h
-+++ b/include/trace/events/rpcgss.h
-@@ -54,7 +54,7 @@ TRACE_DEFINE_ENUM(GSS_S_UNSEQ_TOKEN);
- TRACE_DEFINE_ENUM(GSS_S_GAP_TOKEN);
+--- a/security/landlock/cred.c
++++ b/security/landlock/cred.c
+@@ -14,8 +14,8 @@
+ #include "ruleset.h"
+ #include "setup.h"
  
- #define show_gss_status(x)						\
--	__print_flags(x, "|",						\
-+	__print_symbolic(x, 						\
- 		{ GSS_S_BAD_MECH, "GSS_S_BAD_MECH" },			\
- 		{ GSS_S_BAD_NAME, "GSS_S_BAD_NAME" },			\
- 		{ GSS_S_BAD_NAMETYPE, "GSS_S_BAD_NAMETYPE" },		\
--- 
-2.43.0
-
+-static int hook_cred_prepare(struct cred *const new,
+-			     const struct cred *const old, const gfp_t gfp)
++static void hook_cred_transfer(struct cred *const new,
++			       const struct cred *const old)
+ {
+ 	struct landlock_ruleset *const old_dom = landlock_cred(old)->domain;
+ 
+@@ -23,6 +23,12 @@ static int hook_cred_prepare(struct cred
+ 		landlock_get_ruleset(old_dom);
+ 		landlock_cred(new)->domain = old_dom;
+ 	}
++}
++
++static int hook_cred_prepare(struct cred *const new,
++			     const struct cred *const old, const gfp_t gfp)
++{
++	hook_cred_transfer(new, old);
+ 	return 0;
+ }
+ 
+@@ -36,6 +42,7 @@ static void hook_cred_free(struct cred *
+ 
+ static struct security_hook_list landlock_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(cred_prepare, hook_cred_prepare),
++	LSM_HOOK_INIT(cred_transfer, hook_cred_transfer),
+ 	LSM_HOOK_INIT(cred_free, hook_cred_free),
+ };
+ 
 
 
 
