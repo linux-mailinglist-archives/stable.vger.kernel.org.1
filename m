@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-64545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88065941E56
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424BF941AB6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4244228147E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A60FB28856
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0FD1A76C2;
-	Tue, 30 Jul 2024 17:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8332D1898E4;
+	Tue, 30 Jul 2024 16:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zz98eQUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9zhk5oI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C161A76B2;
-	Tue, 30 Jul 2024 17:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4222F154C18;
+	Tue, 30 Jul 2024 16:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360477; cv=none; b=jPt13bdAGtTnFPPXyHVWp44Y08QzBZZZ7JFGpWqp9BRxwwKkso5UWR+1WRUaMZ6DPxCPf2d5w1pXhdzvr1pZiZuTo3Y7+em7qOgu8QUcDfhMgbR0Yr7S6s/nb8hHpKdTqnnmNQb72K6Ect4O1SG4hKPe74dgmfyzetVHgGuhm4Q=
+	t=1722357889; cv=none; b=ICG0LR/1c1JbWljeWRM4WYdh2xG4z4R1+r0g40oSmMRPv0Hymqb2xBxta0LtqMtdz30EY+Vsuke7JDEgBUEIukRlUT8kQouK6Ng+O78T9pCWR7VCrUFu2K5SM3A+rcbPCDebjMZWEgY8cea6NofKrkd7i9pFWBvAXa+N8bxY1uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360477; c=relaxed/simple;
-	bh=oM06HYlrx5ufMzad7B/D9ZOyjtyaPVqF/h74ijOooTY=;
+	s=arc-20240116; t=1722357889; c=relaxed/simple;
+	bh=nKxVN+cOZBEqQtEiS9tfMQ20viknUdzLhM+0scK+Cd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6rlJNtJWSdMI8SYiHC+WjdLc2Mj3kKuGKtsS6+xLPhqthqMoJayBpN1f4pTSwKsuDA3lmUTnQjkJtjdeeVDQ9TcoE87rUshfX6jueCNcZ/RqBxiBriSqLncWGcV2SbxKQE62gk5Nk1WmcQU/61EKrlcw+TetXrXv52sWzxQlHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz98eQUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F37C32782;
-	Tue, 30 Jul 2024 17:27:56 +0000 (UTC)
+	 MIME-Version; b=dVY+WIiEn8YNSeBQlRnzvEJTyI5iYVtnjRf+F7JSH/Tjs5bid9aPS6NefwJ8jp/qmKM1lsiuEkCwRPebZpaWv2acZKeTYz1E7uS889coOIGiGy6awjSqjABHT7ayXdSfENULYHzG2JQ/wVNJHk6Thw1qZkoCHaQ5ta62mgbE/x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9zhk5oI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE97C4AF0A;
+	Tue, 30 Jul 2024 16:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722360476;
-	bh=oM06HYlrx5ufMzad7B/D9ZOyjtyaPVqF/h74ijOooTY=;
+	s=korg; t=1722357888;
+	bh=nKxVN+cOZBEqQtEiS9tfMQ20viknUdzLhM+0scK+Cd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zz98eQUrW6mBuhUT2BE64ZF9vzdaF/ptdw7vMSxFD945Ebb/mQ1OdRvTrJh4k8RSj
-	 IclrYQ8DZbqOfuLHcZikt0nrCoL3vwugGzFsoWi2uGgdMSV/GIgzl39JkdcAtuMLFT
-	 wrrMAd3OszRsL1tXe4GpDbhNN21DMi63YoQfD2+g=
+	b=V9zhk5oIupHiQzfR30b5yt0NoJCyqArYYaQDTJU11U7h/T6p3fA1Ieb+ZV0n/46Tj
+	 dGnT9uxHff1ixGUIhvvAeF3rGoYzeB9ccUq6TndTjDneHUuigCkL79QYXLTHwwRNaK
+	 0IKY+9MM6bYdPK9n+809fvaQuCcxtEe49Emgu32I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, "Khalil, Amiri" <amiri.khalil@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>, Khalil@web.codeaurora.org
-Subject: [PATCH 6.10 693/809] perf stat: Fix the hard-coded metrics calculation on the hybrid
+	patches@lists.linux.dev,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.1 336/440] kbuild: Fix -S -c in x86 stack protector scripts
 Date: Tue, 30 Jul 2024 17:49:29 +0200
-Message-ID: <20240730151752.286991253@linuxfoundation.org>
+Message-ID: <20240730151628.943539481@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+References: <20240730151615.753688326@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 3612ca8e2935c4c142d99e33b8effa7045ce32b5 upstream.
+commit 3415b10a03945b0da4a635e146750dfe5ce0f448 upstream.
 
-The hard-coded metrics is wrongly calculated on the hybrid machine.
+After a recent change in clang to stop consuming all instances of '-S'
+and '-c' [1], the stack protector scripts break due to the kernel's use
+of -Werror=unused-command-line-argument to catch cases where flags are
+not being properly consumed by the compiler driver:
 
-$ perf stat -e cycles,instructions -a sleep 1
+  $ echo | clang -o - -x c - -S -c -Werror=unused-command-line-argument
+  clang: error: argument unused during compilation: '-c' [-Werror,-Wunused-command-line-argument]
 
- Performance counter stats for 'system wide':
+This results in CONFIG_STACKPROTECTOR getting disabled because
+CONFIG_CC_HAS_SANE_STACKPROTECTOR is no longer set.
 
-        18,205,487      cpu_atom/cycles/
-         9,733,603      cpu_core/cycles/
-         9,423,111      cpu_atom/instructions/     #  0.52  insn per cycle
-         4,268,965      cpu_core/instructions/     #  0.23  insn per cycle
+'-c' and '-S' both instruct the compiler to stop at different stages of
+the pipeline ('-S' after compiling, '-c' after assembling), so having
+them present together in the same command makes little sense. In this
+case, the test wants to stop before assembling because it is looking at
+the textual assembly output of the compiler for either '%fs' or '%gs',
+so remove '-c' from the list of arguments to resolve the error.
 
-The insn per cycle for cpu_core should be 4,268,965 / 9,733,603 = 0.44.
+All versions of GCC continue to work after this change, along with
+versions of clang that do or do not contain the change mentioned above.
 
-When finding the metric events, the find_stat() doesn't take the PMU
-type into account. The cpu_atom/cycles/ is wrongly used to calculate
-the IPC of the cpu_core.
-
-In the hard-coded metrics, the events from a different PMU are only
-SW_CPU_CLOCK and SW_TASK_CLOCK. They both have the stat type,
-STAT_NSECS. Except the SW CLOCK events, check the PMU type as well.
-
-Fixes: 0a57b910807a ("perf stat: Use counts rather than saved_value")
-Reported-by: Khalil, Amiri <amiri.khalil@intel.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240606180316.4122904-1-kan.liang@linux.intel.com
+Fixes: 4f7fd4d7a791 ("[PATCH] Add the -fstack-protector option to the CFLAGS")
+Fixes: 60a5317ff0f4 ("x86: implement x86_32 stack protector")
+Link: https://github.com/llvm/llvm-project/commit/6461e537815f7fa68cef06842505353cf5600e9c [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/stat-shadow.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ scripts/gcc-x86_32-has-stack-protector.sh |    2 +-
+ scripts/gcc-x86_64-has-stack-protector.sh |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/perf/util/stat-shadow.c
-+++ b/tools/perf/util/stat-shadow.c
-@@ -176,6 +176,13 @@ static double find_stat(const struct evs
- 		if (type != evsel__stat_type(cur))
- 			continue;
+--- a/scripts/gcc-x86_32-has-stack-protector.sh
++++ b/scripts/gcc-x86_32-has-stack-protector.sh
+@@ -5,4 +5,4 @@
+ # -mstack-protector-guard-reg, added by
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=81708
  
-+		/*
-+		 * Except the SW CLOCK events,
-+		 * ignore if not the PMU we're looking for.
-+		 */
-+		if ((type != STAT_NSECS) && (evsel->pmu != cur->pmu))
-+			continue;
-+
- 		aggr = &cur->stats->aggr[aggr_idx];
- 		if (type == STAT_NSECS)
- 			return aggr->counts.val;
+-echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -m32 -O0 -fstack-protector -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard - -o - 2> /dev/null | grep -q "%fs"
++echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -m32 -O0 -fstack-protector -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard - -o - 2> /dev/null | grep -q "%fs"
+--- a/scripts/gcc-x86_64-has-stack-protector.sh
++++ b/scripts/gcc-x86_64-has-stack-protector.sh
+@@ -1,4 +1,4 @@
+ #!/bin/sh
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -c -m64 -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
++echo "int foo(void) { char X[200]; return 3; }" | $* -S -x c -m64 -O0 -mcmodel=kernel -fno-PIE -fstack-protector - -o - 2> /dev/null | grep -q "%gs"
 
 
 
