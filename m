@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-63772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838E6941A8E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:45:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC62941733
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:09:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A546D1C23721
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:45:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11A45B26A6B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAAD155CB3;
-	Tue, 30 Jul 2024 16:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB071A305A;
+	Tue, 30 Jul 2024 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThRmito+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0o6/jj1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9FE189907;
-	Tue, 30 Jul 2024 16:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CE01A3053;
+	Tue, 30 Jul 2024 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357905; cv=none; b=lg4v8brPDA5GrWHQnoVRoUuJUJ8LJ0FYCIrrf3JM7EVSZrvShph+kalXgnIis6kswIfKxz2jY8pIYrCm7mVMSVuUmtM4N4sFPmnsQklWhT3mfmGW5cfXBcTQnTXf0k32nRyzjzA8+x2Oiz2tBPB70+C05cPLcyX3gkY0JPCxaNY=
+	t=1722355595; cv=none; b=a7Ns97j8jgOpnCdS2mu3WN44Zzvcj3i0RvRqUOxFEXXr0loEgvES2L56Lb4oB9VTDRCmCbFzQRsYFeAKvpTdFzUmVcxKHyrOIGp9UWf3pz1IbUw29TEezbx9Yb/9hdQlxISrPWXncxe804e4xG6xPWVVM6uCuAY7DLiS82QycKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357905; c=relaxed/simple;
-	bh=1lN5SRC3VE74B2XgwLd1wDXBR4k2EB2B+A1KotlULto=;
+	s=arc-20240116; t=1722355595; c=relaxed/simple;
+	bh=3UoIHgLPFT5Ncwbcwg/qw5Uay7vUcpPqc+c35Z1okhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sty4C68V3rnBoqqEES9S5uF/wOCH2qz1hryLIQabX8RfGhf8XfEVkXsFEvJutWRUtVMrZpYLAZt5dh/m80IyjdcZ+Yk53Wnn13FMARaLDOb1t7UXo7EsFpED5kbT73M7wudufLRtmfUC13FreFYyHPiv7/dSEoDNJFJdstKmtHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThRmito+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCC2C32782;
-	Tue, 30 Jul 2024 16:45:04 +0000 (UTC)
+	 MIME-Version; b=FMbBoUfm1kb6gZg12qPPvkbIiMhPp9Z1/wDTgoEfrJwJozsLo8ak3R5FjWvaeVOEV129eACmH9xesBoR8BTV7WRGx0M2sXGPDxxUc4F9698yD27eDDx9GArBZuTK2qYVj+rpLKjgt6VvbXtk+BVUv0IxCR4MkpNHFstHPwTp+hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0o6/jj1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851CEC4AF0C;
+	Tue, 30 Jul 2024 16:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357905;
-	bh=1lN5SRC3VE74B2XgwLd1wDXBR4k2EB2B+A1KotlULto=;
+	s=korg; t=1722355594;
+	bh=3UoIHgLPFT5Ncwbcwg/qw5Uay7vUcpPqc+c35Z1okhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThRmito+hGr4RW9mymmeM9xdORRlPiOiodPt4qhpGtE9hG8NfYv3PO1RW4ser6+/h
-	 5TgXzfJwSHFqbEOPY3b3tVwPQEgAQH7imWYXKOcoqPEYF/SLYp1Xp0gwahpANZ+/00
-	 nz4M0gUoMZ3naXwuT7Rb6sAIxcSUHhOpAJ8QFqeY=
+	b=D0o6/jj1vYUTw1HRCrJsx0XJMRvlSBsSIDP4lMnLv32keOkwqE+aWdDMVeZj+G80e
+	 hNZKN03WB/6SR6IXAa1lYy0DumrEAm1dANoaFBvyXZMQeWczb+eRd7sFiJEeuwDvnj
+	 GC5xHKAKvOkBhzB5pJ/w796uGrCUu1DwUtoAGNkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Marek Vasut <marex@denx.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 303/809] drm/bridge: samsung-dsim: Set P divider based on min/max of fin pll
+Subject: [PATCH 6.6 072/568] arm64: dts: mediatek: mt8183-kukui: Drop bogus output-enable property
 Date: Tue, 30 Jul 2024 17:42:59 +0200
-Message-ID: <20240730151736.560447186@linuxfoundation.org>
+Message-ID: <20240730151642.674925055@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 78c4c0011bb577a29906d8ca135795af2293c49e ]
+[ Upstream commit e9a9055fdcdc1e5a27cef118c5b4f09cdd2fa28e ]
 
-The P divider should be set based on the min and max values of
-the fin pll which may vary between different platforms.
-These ranges are defined per platform, but hard-coded values
-were used instead which resulted in a smaller range available
-on the i.MX8M[MNP] than what was possible.
+The "output-enable" property is set on uart1's RTS pin. This is bogus
+because the hardware does not actually have a controllable output
+buffer. Secondly, the implementation incorrectly treats this property
+as a request to switch the pin to GPIO output. This does not fit the
+intended semantic of "output-enable" and it does not have any affect
+either because the pin is muxed to the UART function, not the GPIO
+function.
 
-As noted by Frieder, there are descripencies between the reference
-manuals of the Mini, Nano and Plus, so I reached out to my NXP
-rep and got the following response regarding the varing notes
-in the documentation.
+Drop the property.
 
-"Yes it is definitely wrong, the one that is part of the NOTE in
-MIPI_DPHY_M_PLLPMS register table against PMS_P, PMS_M and PMS_S is
-not correct. I will report this to Doc team, the one customer should
-be take into account is the Table 13-40 DPHY PLL Parameters and the
-Note above."
-
-With this patch, the clock rates now match the values used in NXP's
-downstream kernel.
-
-Fixes: 846307185f0f ("drm/bridge: samsung-dsim: update PLL reference clock")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Tested-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240601144103.198299-1-aford173@gmail.com
+Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20240412075613.1200048-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 95fedc68b0ae5..8476650c477c2 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -574,8 +574,8 @@ static unsigned long samsung_dsim_pll_find_pms(struct samsung_dsim *dsi,
- 	u16 _m, best_m;
- 	u8 _s, best_s;
- 
--	p_min = DIV_ROUND_UP(fin, (12 * MHZ));
--	p_max = fin / (6 * MHZ);
-+	p_min = DIV_ROUND_UP(fin, (driver_data->pll_fin_max * MHZ));
-+	p_max = fin / (driver_data->pll_fin_min * MHZ);
- 
- 	for (_p = p_min; _p <= p_max; ++_p) {
- 		for (_s = 0; _s <= 5; ++_s) {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+index d846342c1d3b2..2c6587f260f82 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+@@ -775,7 +775,6 @@ pins-tx {
+ 		};
+ 		pins-rts {
+ 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
+-			output-enable;
+ 		};
+ 		pins-cts {
+ 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
+@@ -794,7 +793,6 @@ pins-tx {
+ 		};
+ 		pins-rts {
+ 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
+-			output-enable;
+ 		};
+ 		pins-cts {
+ 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
 -- 
 2.43.0
 
