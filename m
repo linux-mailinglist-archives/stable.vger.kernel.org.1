@@ -1,95 +1,52 @@
-Return-Path: <stable+bounces-62818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9389413AD
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:53:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFAF9413B3
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D81271F2457E
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 13:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99C102850C4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 13:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D691A08C5;
-	Tue, 30 Jul 2024 13:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696001A08A2;
+	Tue, 30 Jul 2024 13:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="SZS6Cj+D";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QAgBwod4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhXJtv8q"
 X-Original-To: stable@vger.kernel.org
-Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F95F1A08AE;
-	Tue, 30 Jul 2024 13:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8A31A08A0
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 13:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722347594; cv=none; b=e95ZYlWDQAmnQ2PLP+w+hmIS+bWqVYRiNGTE/rnNBGk8spS5OVXPTP98Lu0h79Zj+mPR4XZbetaq//KIcwJNHTag/kkXVoruB2HmYNzEAu0iDNOjYn/QqJeGU+k7i1mxh29lb9EdzhFP0ZJ2FQk3JtR4vjOY9G8qFz9wj4kPR24=
+	t=1722347715; cv=none; b=MbG7DAyCgKw6ENs1ullR/p+6t32bCTENyqSmUCVH3pLO/tnuaRRbMG+KyS9HsJArgYMr+JrBCiu7NidsajgntadUG2/QP8NoTgemAZXb4S26zM0w5b7YBrbLLLw6L0PBfF93Q/k3cdsIuf3roNi9gtMjBhAVxj9CSfM1CZF6oGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722347594; c=relaxed/simple;
-	bh=v+GdyHMBxPxewNSWLopSbrq6JyNNA4B9F0eCYvLWuEU=;
+	s=arc-20240116; t=1722347715; c=relaxed/simple;
+	bh=Rogg9SteGeUSP0qWJpYugdTfKB8dOmuQDZW1VS+NvLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NvLBln8rw8lfahsrdwgdOIsMzIsgBmKgHqD5sLAVTiKE1rUkVPAPrqtx0Eelbes8R+HLtxpqqc9dapPffPD4q4ZKz+H8B6cDpno+FVmcJRIFvYyhY1b0JNFUDTtPaB9JAaIVQCdjTWAgyI62cvYVX8Z3TlFwq9QzhcrSSA3d4G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=SZS6Cj+D; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QAgBwod4; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfout.nyi.internal (Postfix) with ESMTP id BB2A6138057D;
-	Tue, 30 Jul 2024 09:53:10 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Tue, 30 Jul 2024 09:53:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1722347590; x=1722433990; bh=PUtjY+8IDe
-	2YsJuBKLG+kluaMusGn//j0/vcDSgjktA=; b=SZS6Cj+DeAeMjfHVF+AzViVI27
-	NQsIRl6l88jmGXp9pejkXQF4tDYG/WdFpOefjpFoqPfsP2KlJCKsBYtmTuPM+4G3
-	HPwU0JOaHlTBL3zmqfwzaYQmQc8ukXmZ9GcJ+/d9/F2r6Ah6KuroUn1c2KM6RQjy
-	q9sWNbIlnO/Pl0g9SlUEk5mhfEhEFQC/uebuJ0EH4HFhKFCYhbtr9YFSP+wiQJ+0
-	LR+gqB6k55bEm5G16HxWhGUMUeyOWRvSTIrMGydsAixbYcYwRytReTh31uxbL+CM
-	CMx8kFosuJYl6yLW4c5U+Z7c0WTNayAN73DC7kgIhfmSca7NDX9arUUYGrrA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1722347590; x=1722433990; bh=PUtjY+8IDe2YsJuBKLG+kluaMusG
-	n//j0/vcDSgjktA=; b=QAgBwod4rKe+S8Vu5Q9trlLCO4kexKNUBlgc+mq4HlTk
-	w9T5ONWikrwwMq8nDdQtk2MHBZrS0gOQaEKbKOMqCbOuR2dcXtju7zwTj3ONzi2t
-	7OXFRgPHhAM6LAGOHRBr6nvrYzrxL5SJKI9hjtQYlUwxkho0JaQzNJizCenanGq9
-	fwcugD+bYrZfXNWcSOet3XPnUy6gLrmPcj6sIoWKnddLc7i+Qj+QVJxpi/hGbDah
-	YoK49MAJQzZthSzUL9/oHveWq+P218FU7qoBEbLLuI6f3FSACrSSBAzOvPF8hBal
-	kIEZhooOQpcVZm/kwPEg1Wtinijy1HcBEXXltnzRPg==
-X-ME-Sender: <xms:RvCoZsXYf57mHPE34z96yOyL8SCDlovw55WgWL0c4qW2exPzm3-oPg>
-    <xme:RvCoZglmwkxaIxRJzwnx6UrbYn9DlPHdJntbzFQYGWOBiL-37He2DLsnRrgCwhqoE
-    nTZojPzmC0Riw>
-X-ME-Received: <xmr:RvCoZgbgHSzKG49NoBJn40wrOLsJrPaxcKMW6L3wT7l14Z9fDE2ZJufGWjGz5xcJNJ7YSxcVGGn-DrTqPr5fuaSkfx1KksavJvfzKA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrjeeggdejtdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeejteeuhe
-    etkeeuhfelheekffffiefffeettdeigeekvdeigffgfeeuffekgfeuffenucffohhmrghi
-    nhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedt
-X-ME-Proxy: <xmx:RvCoZrUyaZ61WDGHc9WGBwR6a4bcj4SPo8xLIhxqL6w91N7g2kn73w>
-    <xmx:RvCoZmn5eOe93UsQPRCJqz7VlAaktaKQ3wdOOTMoWxW71lqOHYpPqw>
-    <xmx:RvCoZgckSbqgdua_Owt5wOSCZBfe8nBXtLcGWfJJ8is2AM31qeUksQ>
-    <xmx:RvCoZoEylMJbs7Eix04RydPgUjN5Yj8T8Kjv6HGIgqroBeYj8gmWIg>
-    <xmx:RvCoZr-D289iyccVoc4PwXUOk_n1UUmWWu8eCFBU4cgSEX8JMIOQOenL>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Jul 2024 09:53:09 -0400 (EDT)
-Date: Tue, 30 Jul 2024 15:53:07 +0200
-From: Greg KH <greg@kroah.com>
-To: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: stable@vger.kernel.org, johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: Re: [PATCH 6.6] wifi: mac80211: track capability/opmode NSS
- separately
-Message-ID: <2024073001-unarmored-friday-0b79@gregkh>
-References: <20240729225849.1352302-1-hauke@hauke-m.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UwHNidh61rtt3MQx6s6vD2dhH6NFp24U5mDx8gUVoAkjf5wCXdcYpDsxj/UF8cpOG8s5C7ngZoD+ANcNR5vjft18SpsiZf6NI9Bdf9niABWw1mRqIKFlh2b2FSTievTIOZIYFNl1VCKZ/71HzRUmni1RRmrwfbHB4BammB+Xpxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhXJtv8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831C8C4AF0A;
+	Tue, 30 Jul 2024 13:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722347714;
+	bh=Rogg9SteGeUSP0qWJpYugdTfKB8dOmuQDZW1VS+NvLs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AhXJtv8qLD4hdKUWr1lKlckTEZnPdmDotbAOM5+CBIUzxxbQQQBQgJHQgQCSIft+L
+	 Typ4FHGsPIyMipDtf7ntn9bCGJnyG8zzUPop/aCo4k8kQ6sRL+NCav/4GFXuA9dOTQ
+	 J86taUth/UBshCiTTVI+7fVq8fP2edxQzM9cQcP0=
+Date: Tue, 30 Jul 2024 15:55:10 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: asml.silence@gmail.com, ju.orth@gmail.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] io_uring/io-wq: limit retrying worker
+ initialisation" failed to apply to 6.1-stable tree
+Message-ID: <2024073003-cubicle-pod-1e67@gregkh>
+References: <2024072923-bodacious-claw-442b@gregkh>
+ <2f9bc94b-2c6b-46b9-b772-8ec00a637de9@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,44 +55,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240729225849.1352302-1-hauke@hauke-m.de>
+In-Reply-To: <2f9bc94b-2c6b-46b9-b772-8ec00a637de9@kernel.dk>
 
-On Tue, Jul 30, 2024 at 12:58:49AM +0200, Hauke Mehrtens wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
+On Mon, Jul 29, 2024 at 11:45:52AM -0600, Jens Axboe wrote:
+> On 7/29/24 1:55 AM, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.1-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 0453aad676ff99787124b9b3af4a5f59fbe808e2
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024072923-bodacious-claw-442b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 > 
-> [ Upstream commit a8bca3e9371dc5e276af4168be099b2a05554c2a ]
-> 
-> We're currently tracking rx_nss for each station, and that
-> is meant to be initialized to the capability NSS and later
-> reduced by the operating mode notification NSS.
-> 
-> However, we're mixing up capabilities and operating mode
-> NSS in the same variable. This forces us to recalculate
-> the NSS capability on operating mode notification RX,
-> which is a bit strange; due to the previous fix I had to
-> never keep rx_nss as zero, it also means that the capa is
-> never taken into account properly.
-> 
-> Fix all this by storing the capability value, that can be
-> recalculated unconditionally whenever needed, and storing
-> the operating mode notification NSS separately, taking it
-> into account when assigning the final rx_nss value.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: dd6c064cfc3f ("wifi: mac80211: set station RX-NSS on reconfig")
-> Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-> Link: https://msgid.link/20240228120157.0e1c41924d1d.I0acaa234e0267227b7e3ef81a59117c8792116bc@changeid
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> [Fixed trivial merge conflict in copyright year net/mac80211/sta_info.h]
-> Signed-off-by: Hauke Mehrtens <hauke@hauke-m.de>
-> ---
->  net/mac80211/cfg.c         |  2 +-
->  net/mac80211/ieee80211_i.h |  2 +-
->  net/mac80211/rate.c        |  2 +-
->  net/mac80211/sta_info.h    |  6 ++++-
->  net/mac80211/vht.c         | 46 ++++++++++++++++++--------------------
->  5 files changed, 30 insertions(+), 28 deletions(-)
-> 
+> Here's a 6.1 variant.
 
 Now queued up, thanks.
 
