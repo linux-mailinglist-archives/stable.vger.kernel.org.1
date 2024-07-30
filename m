@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-63813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5DB941B6A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:54:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD9B941D80
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B64B7B28515
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:47:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7007828C046
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA33F188018;
-	Tue, 30 Jul 2024 16:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CF61A76B4;
+	Tue, 30 Jul 2024 17:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KXpFnuP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o4M8/GC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694CD155CB3;
-	Tue, 30 Jul 2024 16:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3991A76A9;
+	Tue, 30 Jul 2024 17:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358034; cv=none; b=oYTouSHP6hbxcn+600KaPWeFlHZaWYz5/TpQmJKMOMGvHRK/1vUKVbkJRZc0zTYD68Ds+iyOGGzdfDy876c8k/oyT57UUzt+MscO8pcEkO7CU+3yapmAelNHEBGE19hIaoTB3rpwkLq8iz9RBlWneO78HX7cdPyTTCIf4hwxpFw=
+	t=1722359889; cv=none; b=q/hLsY7KWy7tyMjPmeXfYIorwTwPD1xFEc0Op7vK2yqFMddfNh0BBoKBxvP7ktt4aeGk1232o22G1rlnB2Bu+jjxz8VCyOh3ZzWSkLk4oSiPbN5HnxAbVSudPJpeikcm89zkLh+ZF75gNndiiQvK0ZnPUosJqasOAVWoifm8s7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358034; c=relaxed/simple;
-	bh=+Of3zykkiT7ouIYD2u2SRrf/0jxOMex287SuvQ4MDck=;
+	s=arc-20240116; t=1722359889; c=relaxed/simple;
+	bh=IIDrOk0YDGeud7FXo8rJFSzZMs4aSHwB+zv84F9tKiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBJtXhIEemtga3782DcjkTX4yV3a5W2fxZNhQetROkjYvsGKfhtRl/CsMJ+PpufBuSRF4iHTsrQ4AgGb1z4ng++3LCfYPIsjiOZEt5FCsNXC2sTAJzVyFCNStfSA04RP99Qglkii3c2LORRNiEDyHwc8Wpoe6TufRZSjvMCsDiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KXpFnuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E55C4AF0C;
-	Tue, 30 Jul 2024 16:47:13 +0000 (UTC)
+	 MIME-Version; b=DDRVu8OMxndT9TnVog9U6MXBv0/mTGVL3mGeDFMbdJLu87cRjgGFZCPtT2mY8c8biqEK9mdlzOCEKFBCHX2D4XqhQIJ5zkid+YGh8umMGSrR5Jsh0aK5Andf+KcoT9pYDmM/0hRzx+Hn62c9bN8Fv7deA4/ikS0/QCiEYTo9cOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o4M8/GC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6C4C4AF0E;
+	Tue, 30 Jul 2024 17:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358034;
-	bh=+Of3zykkiT7ouIYD2u2SRrf/0jxOMex287SuvQ4MDck=;
+	s=korg; t=1722359889;
+	bh=IIDrOk0YDGeud7FXo8rJFSzZMs4aSHwB+zv84F9tKiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KXpFnuPUlDpR9tMb7bLKgy6HygjzJGxrf5AE2Hrd//7GXu9COmmlTGRJwY23G4Aa
-	 ntlLgaTgwL1axgHY5mfRn83QGag6709bGqn3dx+HYwIiL/Qf7GZUGxaIj/okWevKfd
-	 u1pq9jwwS8y3ZJStGCIoAKOXM7hANl6h78DD4wBQ=
+	b=1o4M8/GCZ+Fs/+J9hNiALCl6H30/PQU+cErng9/Z2dqzWpV3ZzGryp9C6VPg6Ylrg
+	 v8TOQrATvkwNSAqL3uNOvqUVyp6CBXMLVl9TVu9xg7tIerP07bNVD7EreoSxMryF4f
+	 ssnfTBeG/X1lB1f7NoO2cx+kc0pKYX49J0FwlX3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 319/568] fs/ntfs3: Merge synonym COMPRESSION_UNIT and NTFS_LZNT_CUNIT
+	Chengen Du <chengen.du@canonical.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 550/809] af_packet: Handle outgoing VLAN packets without hardware offloading
 Date: Tue, 30 Jul 2024 17:47:06 +0200
-Message-ID: <20240730151652.345272563@linuxfoundation.org>
+Message-ID: <20240730151746.479299467@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +62,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Chengen Du <chengen.du@canonical.com>
 
-[ Upstream commit 487f8d482a7e51a640b8f955a398f906a4f83951 ]
+commit 79eecf631c14e7f4057186570ac20e2cfac3802e upstream.
 
-COMPRESSION_UNIT and NTFS_LZNT_CUNIT mean the same thing
-(1u<<NTFS_LZNT_CUNIT) determines the size for compression (in clusters).
+The issue initially stems from libpcap. The ethertype will be overwritten
+as the VLAN TPID if the network interface lacks hardware VLAN offloading.
+In the outbound packet path, if hardware VLAN offloading is unavailable,
+the VLAN tag is inserted into the payload but then cleared from the sk_buff
+struct. Consequently, this can lead to a false negative when checking for
+the presence of a VLAN tag, causing the packet sniffing outcome to lack
+VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
+tool may be unable to parse packets as expected.
 
-COMPRESS_MAX_CLUSTER is not used in the code.
+The TCI-TPID is missing because the prb_fill_vlan_info() function does not
+modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
+payload and not in the sk_buff struct. The skb_vlan_tag_present() function
+only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
+is stripped, preventing the packet capturing tool from determining the
+correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
+which means the packet capturing tool cannot parse the L3 header correctly.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Stable-dep-of: 25610ff98d4a ("fs/ntfs3: Fix transform resident to nonresident for compressed files")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
+Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
+Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240713114735.62360-1-chengen.du@canonical.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/attrib.c  | 2 +-
- fs/ntfs3/frecord.c | 2 +-
- fs/ntfs3/fslog.c   | 2 +-
- fs/ntfs3/inode.c   | 2 +-
- fs/ntfs3/ntfs.h    | 3 ---
- 5 files changed, 4 insertions(+), 7 deletions(-)
+ net/packet/af_packet.c |   86 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 84 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 7aadf50109994..47d388699f5f0 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -254,7 +254,7 @@ int attr_make_nonresident(struct ntfs_inode *ni, struct ATTRIB *attr,
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -538,6 +538,61 @@ static void *packet_current_frame(struct
+ 	return packet_lookup_frame(po, rb, rb->head, status);
+ }
  
- 	align = sbi->cluster_size;
- 	if (is_attr_compressed(attr))
--		align <<= COMPRESSION_UNIT;
-+		align <<= NTFS_LZNT_CUNIT;
- 	len = (rsize + align - 1) >> sbi->cluster_bits;
- 
- 	run_init(run);
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 22fe7f58ad638..424865dfca74b 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -1501,7 +1501,7 @@ int ni_insert_nonresident(struct ntfs_inode *ni, enum ATTR_TYPE type,
- 
- 	if (is_ext) {
- 		if (flags & ATTR_FLAG_COMPRESSED)
--			attr->nres.c_unit = COMPRESSION_UNIT;
-+			attr->nres.c_unit = NTFS_LZNT_CUNIT;
- 		attr->nres.total_size = attr->nres.alloc_size;
++static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
++{
++	u8 *skb_orig_data = skb->data;
++	int skb_orig_len = skb->len;
++	struct vlan_hdr vhdr, *vh;
++	unsigned int header_len;
++
++	if (!dev)
++		return 0;
++
++	/* In the SOCK_DGRAM scenario, skb data starts at the network
++	 * protocol, which is after the VLAN headers. The outer VLAN
++	 * header is at the hard_header_len offset in non-variable
++	 * length link layer headers. If it's a VLAN device, the
++	 * min_header_len should be used to exclude the VLAN header
++	 * size.
++	 */
++	if (dev->min_header_len == dev->hard_header_len)
++		header_len = dev->hard_header_len;
++	else if (is_vlan_dev(dev))
++		header_len = dev->min_header_len;
++	else
++		return 0;
++
++	skb_push(skb, skb->data - skb_mac_header(skb));
++	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
++	if (skb_orig_data != skb->data) {
++		skb->data = skb_orig_data;
++		skb->len = skb_orig_len;
++	}
++	if (unlikely(!vh))
++		return 0;
++
++	return ntohs(vh->h_vlan_TCI);
++}
++
++static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
++{
++	__be16 proto = skb->protocol;
++
++	if (unlikely(eth_type_vlan(proto))) {
++		u8 *skb_orig_data = skb->data;
++		int skb_orig_len = skb->len;
++
++		skb_push(skb, skb->data - skb_mac_header(skb));
++		proto = __vlan_get_protocol(skb, proto, NULL);
++		if (skb_orig_data != skb->data) {
++			skb->data = skb_orig_data;
++			skb->len = skb_orig_len;
++		}
++	}
++
++	return proto;
++}
++
+ static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
+ {
+ 	del_timer_sync(&pkc->retire_blk_timer);
+@@ -1007,10 +1062,16 @@ static void prb_clear_rxhash(struct tpac
+ static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
+ 			struct tpacket3_hdr *ppd)
+ {
++	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
++
+ 	if (skb_vlan_tag_present(pkc->skb)) {
+ 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
+ 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
+ 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
++		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
++		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
++		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 	} else {
+ 		ppd->hv1.tp_vlan_tci = 0;
+ 		ppd->hv1.tp_vlan_tpid = 0;
+@@ -2428,6 +2489,10 @@ static int tpacket_rcv(struct sk_buff *s
+ 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
+ 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
+ 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
++			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
++			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
++			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 		} else {
+ 			h.h2->tp_vlan_tci = 0;
+ 			h.h2->tp_vlan_tpid = 0;
+@@ -2457,7 +2522,8 @@ static int tpacket_rcv(struct sk_buff *s
+ 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
+ 	sll->sll_family = AF_PACKET;
+ 	sll->sll_hatype = dev->type;
+-	sll->sll_protocol = skb->protocol;
++	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
++		vlan_get_protocol_dgram(skb) : skb->protocol;
+ 	sll->sll_pkttype = skb->pkt_type;
+ 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+ 		sll->sll_ifindex = orig_dev->ifindex;
+@@ -3482,7 +3548,8 @@ static int packet_recvmsg(struct socket
+ 		/* Original length was stored in sockaddr_ll fields */
+ 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
+ 		sll->sll_family = AF_PACKET;
+-		sll->sll_protocol = skb->protocol;
++		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
++			vlan_get_protocol_dgram(skb) : skb->protocol;
  	}
  
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index c14ab9d5cfc70..75b594769b367 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -2996,7 +2996,7 @@ static struct ATTRIB *attr_create_nonres_log(struct ntfs_sb_info *sbi,
- 	if (is_ext) {
- 		attr->name_off = SIZEOF_NONRESIDENT_EX_LE;
- 		if (is_attr_compressed(attr))
--			attr->nres.c_unit = COMPRESSION_UNIT;
-+			attr->nres.c_unit = NTFS_LZNT_CUNIT;
- 
- 		attr->nres.run_off =
- 			cpu_to_le16(SIZEOF_NONRESIDENT_EX + name_size);
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 6af705ccba65a..fab86300eb8a2 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1498,7 +1498,7 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
- 			attr->size = cpu_to_le32(SIZEOF_NONRESIDENT_EX + 8);
- 			attr->name_off = SIZEOF_NONRESIDENT_EX_LE;
- 			attr->flags = ATTR_FLAG_COMPRESSED;
--			attr->nres.c_unit = COMPRESSION_UNIT;
-+			attr->nres.c_unit = NTFS_LZNT_CUNIT;
- 			asize = SIZEOF_NONRESIDENT_EX + 8;
+ 	sock_recv_cmsgs(msg, sk, skb);
+@@ -3539,6 +3606,21 @@ static int packet_recvmsg(struct socket
+ 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
+ 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
+ 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
++			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
++			struct net_device *dev;
++
++			rcu_read_lock();
++			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
++			if (dev) {
++				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
++				aux.tp_vlan_tpid = ntohs(skb->protocol);
++				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++			} else {
++				aux.tp_vlan_tci = 0;
++				aux.tp_vlan_tpid = 0;
++			}
++			rcu_read_unlock();
  		} else {
- 			attr->size = cpu_to_le32(SIZEOF_NONRESIDENT + 8);
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index b70288cc5f6fa..5bd69049227bf 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -82,9 +82,6 @@ typedef u32 CLST;
- #define RESIDENT_LCN   ((CLST)-2)
- #define COMPRESSED_LCN ((CLST)-3)
- 
--#define COMPRESSION_UNIT     4
--#define COMPRESS_MAX_CLUSTER 0x1000
--
- enum RECORD_NUM {
- 	MFT_REC_MFT		= 0,
- 	MFT_REC_MIRR		= 1,
--- 
-2.43.0
-
+ 			aux.tp_vlan_tci = 0;
+ 			aux.tp_vlan_tpid = 0;
 
 
 
