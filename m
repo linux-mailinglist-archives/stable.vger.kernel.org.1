@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-64159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE446941C62
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:06:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5733941C7B
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17695B21BE6
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:06:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53A81C2298F
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FA5188003;
-	Tue, 30 Jul 2024 17:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C611917C4;
+	Tue, 30 Jul 2024 17:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f55uz1Jp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTlV4+RE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496B61E86F;
-	Tue, 30 Jul 2024 17:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15401898F2;
+	Tue, 30 Jul 2024 17:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359188; cv=none; b=LGzuDm2tWneYdNqz64AOIVBdP0i0BclwVjqV0IaobfkC4LypozZG0UWKkonuf/bi86zPmKoUJFKlLjxygV4OfIbhsF3MofFqAKqBs1cK1uEN2L2gIusOgXGbgLfrE2ivQIOG6A2Lm3oSR1LuQfclbVcs6phnNFPFBFJLjLr9+Mw=
+	t=1722359194; cv=none; b=NNlH6CCHNWXCLkMwx9m5JQK8VFuyw4wvJ0y+IztNlxy2cexsdHk0B9oVZAFPkCsTERhAilRodLaIBGTk/YyVExhRVYZs0zF5q6fLPY3mPFxZD2/7DNV6RUYSOdYv0g9ajud8VPxReJxiw/KWBXFt6b/wNyxPKsGoDTaoSrgTuko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359188; c=relaxed/simple;
-	bh=GgsKJhWcWuFmi8C1VO0Wtppk0wY59mAmgwrYZnrNMFg=;
+	s=arc-20240116; t=1722359194; c=relaxed/simple;
+	bh=VG1CU6eqWMgdnN1G9jtzV/1hT7cD5Q+6woic/yAZh1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5stdjPYHHWnoAzYKdeYEfarN/WHPUpdth7jpJ3Bd/g24DZhTqlwNs3g5uEs/YPXnDkwXilBPKd61yJFgYB6MceRpTt/3x+9svovC0+w4XL1FHbkXEjGlE3fKvVBBZKCX8iD1Pabw8PdMxKLUmgdy0OOaIRUqRO9FZCemdlqYWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f55uz1Jp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE396C32782;
-	Tue, 30 Jul 2024 17:06:27 +0000 (UTC)
+	 MIME-Version; b=Rmpad/7kbiR9UHzUBn0kCvYco8WlVd5+/bz/mjCFj8P6Xxl9D7qLggCskwmgBb5D4MY/tZcyPQDuN+OnpdbQhfJ7XYsky2PL47HLT0NB6yEN0H4kwED9KiMArF2xsPiWibzyEsrbCAaOXhOimqP/o7lMUk5ZNkXNd3gnuQWVpC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTlV4+RE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45B3C4AF12;
+	Tue, 30 Jul 2024 17:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359188;
-	bh=GgsKJhWcWuFmi8C1VO0Wtppk0wY59mAmgwrYZnrNMFg=;
+	s=korg; t=1722359194;
+	bh=VG1CU6eqWMgdnN1G9jtzV/1hT7cD5Q+6woic/yAZh1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f55uz1Jpfs7SKrX9la6JRmcQzZu8Vi304rGl/JS229yStZZeJGlxe3dUTBTH/ZHks
-	 UiNQ9wLDHVkr0ySbbL+d6guMj3jxb45DqjgCkvV9g1FTcqdu9U/XfWx5wDa8LTCxtn
-	 mByLgv/bUU72JJm459BMneX1/9oRT4LYKk27JAPs=
+	b=GTlV4+RE7BtpB3Ynf3lJyqBIq15Q2ixvRdAHDSNGWuITflEO52fQa2Uz4Gw3WxwPz
+	 W2biayVo/7HkT5aJjPsBS+/F5/YtkjM0dbrVrj6YxBPz6NWChhDAahU+zWQDqPUZbw
+	 qSWa7GLIAJDsSPpnN7p3MEQgqVHyRjq5FXpl8Wqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nivas Varadharajan Mugunthakumar <nivasx.varadharajan.mugunthakumar@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 448/809] crypto: qat - extend scope of lock in adf_cfg_add_key_value_param()
-Date: Tue, 30 Jul 2024 17:45:24 +0200
-Message-ID: <20240730151742.402358430@linuxfoundation.org>
+Subject: [PATCH 6.10 449/809] clk: qcom: kpss-xcc: Return of_clk_add_hw_provider to transfer the error
+Date: Tue, 30 Jul 2024 17:45:25 +0200
+Message-ID: <20240730151742.442189282@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,50 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nivas Varadharajan Mugunthakumar <nivasx.varadharajan.mugunthakumar@intel.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 6424da7d8b938fe66e7e771eaa949bc7b6c29c00 ]
+[ Upstream commit 9db4585eca22fcd0422a94ac792f87dcbf74b643 ]
 
-The function adf_cfg_add_key_value_param() attempts to access and modify
-the key value store of the driver without locking.
+Return of_clk_add_hw_provider() in order to transfer the error if it
+fails.
 
-Extend the scope of cfg->lock to avoid a potential race condition.
-
-Fixes: 92bf269fbfe9 ("crypto: qat - change behaviour of adf_cfg_add_key_value_param()")
-Signed-off-by: Nivas Varadharajan Mugunthakumar <nivasx.varadharajan.mugunthakumar@intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 09be1a39e685 ("clk: qcom: kpss-xcc: register it as clk provider")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240704073606.1976936-1-nichen@iscas.ac.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_cfg.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/kpss-xcc.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg.c b/drivers/crypto/intel/qat/qat_common/adf_cfg.c
-index 8836f015c39c4..2cf102ad4ca82 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_cfg.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_cfg.c
-@@ -290,17 +290,19 @@ int adf_cfg_add_key_value_param(struct adf_accel_dev *accel_dev,
- 	 * 3. if the key exists with the same value, then return without doing
- 	 *    anything (the newly created key_val is freed).
- 	 */
-+	down_write(&cfg->lock);
- 	if (!adf_cfg_key_val_get(accel_dev, section_name, key, temp_val)) {
- 		if (strncmp(temp_val, key_val->val, sizeof(temp_val))) {
- 			adf_cfg_keyval_remove(key, section);
- 		} else {
- 			kfree(key_val);
--			return 0;
-+			goto out;
- 		}
- 	}
+diff --git a/drivers/clk/qcom/kpss-xcc.c b/drivers/clk/qcom/kpss-xcc.c
+index 23b0b11f00077..e7cfa8d22044e 100644
+--- a/drivers/clk/qcom/kpss-xcc.c
++++ b/drivers/clk/qcom/kpss-xcc.c
+@@ -58,9 +58,7 @@ static int kpss_xcc_driver_probe(struct platform_device *pdev)
+ 	if (IS_ERR(hw))
+ 		return PTR_ERR(hw);
  
--	down_write(&cfg->lock);
- 	adf_cfg_keyval_add(key_val, section);
-+
-+out:
- 	up_write(&cfg->lock);
- 	return 0;
+-	of_clk_add_hw_provider(dev->of_node, of_clk_hw_simple_get, hw);
+-
+-	return 0;
++	return of_clk_add_hw_provider(dev->of_node, of_clk_hw_simple_get, hw);
  }
+ 
+ static struct platform_driver kpss_xcc_driver = {
 -- 
 2.43.0
 
