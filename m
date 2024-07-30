@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-62868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9427D9415F9
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D589415FB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:55:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E228283769
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:55:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39DC283601
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 15:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B551B5833;
-	Tue, 30 Jul 2024 15:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754AD1B5839;
+	Tue, 30 Jul 2024 15:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9EoWY2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jiXqp5qI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED9829A2;
-	Tue, 30 Jul 2024 15:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B0229A2;
+	Tue, 30 Jul 2024 15:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722354898; cv=none; b=lJ428563vl0Xlvh0TM1F1XRTbCszoAZUoQK4OmW0JmQ8DESzjwkENtae0Isu7dD/5MyAuoOzJGMgSUa96nNyZo/+hWzO/TditdaCdBr8Mqq4yTqM+2GqpXj58EPV9Qssqg3BN5t8lLjGWH/9zANXPKOZ8WzHYskXARuT0lkNh8U=
+	t=1722354905; cv=none; b=IZT1KSpMhS9kbBUtP+akoIQ8alNtM/aHNyCHeYIjai0ATzun6AUKv15EFiJfvio1l08L8y+dJHmfc5Lp5PtrJVX1Dv1bnIjEP7BZ+HF6V5LmNAS8IZxz5JC65pqUX9g8Gy3V3Bfc3NKQ4J/652U/bQ39Y5Hi/+XCkAbvZEH+aXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722354898; c=relaxed/simple;
-	bh=bNUWPYyeeC0R+BYb3pmwWzrZ67Bnpq8ynqQesBCozME=;
+	s=arc-20240116; t=1722354905; c=relaxed/simple;
+	bh=BwZvOCMpKa4U6qUsx9TIfdRndcC8NGb6u2oq28LJOtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCq0gERwmEAjFRdl3434s/xOrPLfea++Nu9XchCeEhrtvtZUuolfgroaOXWCX7T0CekE9u7zLvmHNFxV+mUvJ0Vlni/aPynRYxN0g1x6hRCVExgEyIXO2m7cyvGrHRoRB8y8sg7r+LCRAeTQy/TiDFw6oQhPlifSc+Ltn+bucP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9EoWY2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033FBC32782;
-	Tue, 30 Jul 2024 15:54:57 +0000 (UTC)
+	 MIME-Version; b=F7MDJW7LOqD5MjdjxenIgugnD4sL57b8S+QQMHJdTDCppnWajI+tUhb/eeww+M9h0MtCON9LbZZdKlE5e1disw78EQEx56vAQwtELmSsq5p10saseX5VjKFjl37JwZxw6KHsq2cnGj5+VkqZv41zLU4n8zOo1Y3W+WCI5hhDqrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiXqp5qI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1D2C32782;
+	Tue, 30 Jul 2024 15:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722354898;
-	bh=bNUWPYyeeC0R+BYb3pmwWzrZ67Bnpq8ynqQesBCozME=;
+	s=korg; t=1722354905;
+	bh=BwZvOCMpKa4U6qUsx9TIfdRndcC8NGb6u2oq28LJOtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9EoWY2pEL9nib11VFet9VyFnOOREJWgd87Q9kA+rDpwA3/YPdDEWW+QVXOY9xTy2
-	 +HQ3GiIWXKB3bPoS2MQ7QjUbmfkT1rc/90cNY75Y/nEhD0oev1oWxpBuXxTmChetqv
-	 +R9wno7FsI5qisFZH8v36WIGKiyNsUwDuSmJwv8c=
+	b=jiXqp5qIRLHnkm7zxWySz1KoVaNh7y6m/HsxT/jwg+lXcUgwMgfmOTXJzcv6VJPbc
+	 9DkTYh3tGxX3ocEalw8DCJ/Peq+Zdfp1/rLKKaf50Tyv8yfztMv0PK3Go8MWxMTCO3
+	 qwJ/YeAPnW5kH5w2hNB9vKlPDQ65xYLX25flAZOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/440] arm64: dts: qcom: sm8250: switch UFS QMP PHY to new style of bindings
-Date: Tue, 30 Jul 2024 17:44:26 +0200
-Message-ID: <20240730151617.057892121@linuxfoundation.org>
+Subject: [PATCH 6.1 034/440] arm64: dts: qcom: sm8250: add power-domain to UFS PHY
+Date: Tue, 30 Jul 2024 17:44:27 +0200
+Message-ID: <20240730151617.096000190@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
 References: <20240730151615.753688326@linuxfoundation.org>
@@ -69,67 +69,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ba865bdcc688932980b8e5ec2154eaa33cd4a981 ]
+[ Upstream commit 154ed5ea328d8a97a4ef5d1447e6f06d11fe2bbe ]
 
-Change the UFS QMP PHY to use newer style of QMP PHY bindings (single
-resource region, no per-PHY subnodes).
+The UFS PHY is powered on via the UFS_PHY_GDSC power domain. Add
+corresponding power-domain the the PHY node.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: b7e2fba06622 ("arm64: dts: qcom: sm8250: Add UFS controller and PHY")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20231205032552.1583336-8-dmitry.baryshkov@linaro.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240501-qcom-phy-fixes-v1-9-f1fd15c33fb3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 154ed5ea328d ("arm64: dts: qcom: sm8250: add power-domain to UFS PHY")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 3d02adbc0b62f..194fb00051d66 100644
+index 194fb00051d66..6a2852584405e 100644
 --- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -2125,7 +2125,7 @@ ufs_mem_hc: ufshc@1d84000 {
- 				     "jedec,ufs-2.0";
- 			reg = <0 0x01d84000 0 0x3000>;
- 			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
--			phys = <&ufs_mem_phy_lanes>;
-+			phys = <&ufs_mem_phy>;
- 			phy-names = "ufsphy";
- 			lanes-per-direction = <2>;
- 			#reset-cells = <1>;
-@@ -2169,10 +2169,8 @@ ufs_mem_hc: ufshc@1d84000 {
- 
- 		ufs_mem_phy: phy@1d87000 {
- 			compatible = "qcom,sm8250-qmp-ufs-phy";
--			reg = <0 0x01d87000 0 0x1c0>;
--			#address-cells = <2>;
--			#size-cells = <2>;
--			ranges;
-+			reg = <0 0x01d87000 0 0x1000>;
-+
- 			clock-names = "ref",
- 				      "ref_aux";
- 			clocks = <&rpmhcc RPMH_CXO_CLK>,
-@@ -2180,16 +2178,10 @@ ufs_mem_phy: phy@1d87000 {
- 
+@@ -2179,6 +2179,8 @@ ufs_mem_phy: phy@1d87000 {
  			resets = <&ufs_mem_hc 0>;
  			reset-names = "ufsphy";
--			status = "disabled";
  
--			ufs_mem_phy_lanes: phy@1d87400 {
--				reg = <0 0x01d87400 0 0x16c>,
--				      <0 0x01d87600 0 0x200>,
--				      <0 0x01d87c00 0 0x200>,
--				      <0 0x01d87800 0 0x16c>,
--				      <0 0x01d87a00 0 0x200>;
--				#phy-cells = <0>;
--			};
-+			#phy-cells = <0>;
++			power-domains = <&gcc UFS_PHY_GDSC>;
 +
-+			status = "disabled";
- 		};
+ 			#phy-cells = <0>;
  
- 		ipa_virt: interconnect@1e00000 {
+ 			status = "disabled";
 -- 
 2.43.0
 
