@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-64048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E60F941BE0
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:00:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D117941D7C
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F482283C5B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:00:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B76091F268EB
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A1318454A;
-	Tue, 30 Jul 2024 17:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD57F1A76B5;
+	Tue, 30 Jul 2024 17:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rh+ICCo7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4rMjzny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACFF183CC3;
-	Tue, 30 Jul 2024 17:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7F71A76A9;
+	Tue, 30 Jul 2024 17:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358813; cv=none; b=DVHNohhqfbb0xJIHbnHSM5wODk3+/yLTO03lZVgH19ACLV4Rqn6FrBzQVF4uwsB1qtf0gl9n0CDgHLcowyTy6DiDe4ZxEhsN9Vn9LJ/MTlxPSFVFO02sJpT8TMzR4pkgcG4ogvrSbNpJ4MQfKWCrLAu4MIBNWP5vd502OkeKUpM=
+	t=1722359879; cv=none; b=giXzncFv4RMPUVjTg7l7qvm3ephXwcwQieTIkvART4cm83AM613mgfWUAntOe5sx6HFDVh36eMrG5Apy/bueFxwxcUhrmD1d2YykbFK4klFvVuH3MqdG005yFdsNOeRV6Z/0MKEfD8BN6+xI7l+trBGZjNTsroh+m2qbXkoVslY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358813; c=relaxed/simple;
-	bh=/JMNEozdpW+oxDyO18SeEgdooVKZ1UwgJS1bW8oTgn0=;
+	s=arc-20240116; t=1722359879; c=relaxed/simple;
+	bh=+Wsd50N8wn7SnCHu7v7UY7b4iir4KRbYv+w1WoPL9DQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NT5ghTN/xGIYneP9TjI1pZYBlKHNdw6DrkxcJJLOfn+jSAqfkpIAdAnaks+byEdElJwz4YArt6pZ0xCfhqzVgHWTSTd8QdlWplI9pZgoV0BkBhsvI54iq0CnsY7LvK3YQHLDGHRBlopn829SJTo3y938H5Abba3ipRn4Z3d7RR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rh+ICCo7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D870C32782;
-	Tue, 30 Jul 2024 17:00:12 +0000 (UTC)
+	 MIME-Version; b=sHZqRVMqq83uU3N5CXhDiXzJ26lejHf4CCAfVYwrDTaUlKSXcPC+HzrFx1UNtyl6jxyM+xHhmJFM36sWB4ftAXO2wqfWZ5hUtu7n/CW4lcWdo6Ib1Dwl/ABtrVvHXbZuD8X6J3VO9/lp4nRNSBBFGxwCpSRnmMTfw58TmA1g3vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4rMjzny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037A4C32782;
+	Tue, 30 Jul 2024 17:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358813;
-	bh=/JMNEozdpW+oxDyO18SeEgdooVKZ1UwgJS1bW8oTgn0=;
+	s=korg; t=1722359879;
+	bh=+Wsd50N8wn7SnCHu7v7UY7b4iir4KRbYv+w1WoPL9DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rh+ICCo7mUVICMo60w69CWkcWEITElivB0ScH5M1hamevmZ9wMNgLegzSKt4zn1Dm
-	 8uvbdjL7mPrpTGs2EA0igYqQi/+ay1npyLMYAGETAPclKXLiajyeSqVD7xyRUcFFbg
-	 OhhYcIRDC/mivNO00mYkJVZi9il0sPXNt8FgkWh8=
+	b=v4rMjznyQzIWMJNk/ET750L/n9b1QHw6Po1u+NntxhM6v22F3dbufNxtonDSCEaZh
+	 vgekomCxAPzjDjDzzftEXlI6b6KCAscGsoMVr6+k1J7XgTK8S95yYQn4NwRj8HodGl
+	 VTURIumDkMHpUyXPDMr5M7mwH3kBtgngchrHOMS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Conor Dooley <conor.dooley@microchip.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 424/440] spi: microchip-core: fix the issues in the isr
+Subject: [PATCH 6.6 550/568] spi: microchip-core: fix the issues in the isr
 Date: Tue, 30 Jul 2024 17:50:57 +0200
-Message-ID: <20240730151632.343728807@linuxfoundation.org>
+Message-ID: <20240730151701.657991212@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -100,10 +100,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-index d4c08d3668741..202ac889b5ae2 100644
+index 6092f20f0a607..1a19701cc6118 100644
 --- a/drivers/spi/spi-microchip-core.c
 +++ b/drivers/spi/spi-microchip-core.c
-@@ -389,21 +389,18 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
+@@ -380,21 +380,18 @@ static irqreturn_t mchp_corespi_interrupt(int irq, void *dev_id)
  	if (intfield == 0)
  		return IRQ_NONE;
  
@@ -131,7 +131,7 @@ index d4c08d3668741..202ac889b5ae2 100644
  
  	if (intfield & INT_RX_CHANNEL_OVERFLOW) {
  		mchp_corespi_write(spi, REG_INT_CLEAR, INT_RX_CHANNEL_OVERFLOW);
-@@ -488,8 +485,9 @@ static int mchp_corespi_transfer_one(struct spi_master *master,
+@@ -479,8 +476,9 @@ static int mchp_corespi_transfer_one(struct spi_master *master,
  	mchp_corespi_set_xfer_size(spi, (spi->tx_len > FIFO_DEPTH)
  				   ? FIFO_DEPTH : spi->tx_len);
  
