@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-63291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E849418A4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:24:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CAD941845
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92515B27629
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 769AC1C2363D
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA02518801B;
-	Tue, 30 Jul 2024 16:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D765183CC3;
+	Tue, 30 Jul 2024 16:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="na1L/ABP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tG6WVBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A737F1A6199;
-	Tue, 30 Jul 2024 16:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02D11A6185;
+	Tue, 30 Jul 2024 16:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722356351; cv=none; b=MywwFPxeNNPl4hAqHspNS1s0VKF8R2WR/yRDY5t+lrtJ/tg10mach24IuTWPE+f5BrKfQpuGp01vHOQb+/jVq9FyQgm5cpIXgO46w3a+P/mPCi8h5KcIrTIKwfTEX2iqRZnJZqsE4zbRjMtZgZUXdXE7KmZn4v5+yNSdNEeyzQs=
+	t=1722356364; cv=none; b=cOxXSp64I/wLg+bNcXgKYBu8sOSfStw7xVHQ1sD+viGBIGGBy/z4LDWEnkCcOdyWa53BkQgDrDKY5U4qXLKLx0FUPBn8+4JKErsvMap+EoDzciUp7iP5NsNbAfO1qwo/S5+m7JtogJxbOhuDAblA3wtRfoJ3Q8eh/bZGfKqbH3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722356351; c=relaxed/simple;
-	bh=FuLL64HinT/22NkuLu5MxphWWieAo3RohN3E4Fh4cW8=;
+	s=arc-20240116; t=1722356364; c=relaxed/simple;
+	bh=MblFA2xUHOX2vBHLOhXW+/UmZ74ahvgWwq7MPYb6y/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WamEU12eugCZP16dSZ6xAuuFbJsFPvWLFWoXN678DrVfRiRyklXp5bAGiYBG6iQe7nt9wz8V6fv+bcon1I6rez6MqqxAxPSe4PmPNCapgcLfDU01al1vCl2r2up+IGK/vHsOPVGws/2Oqu1tYLg5mEMCUsiyXR9K2FY4GjYTWl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=na1L/ABP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159D6C32782;
-	Tue, 30 Jul 2024 16:19:10 +0000 (UTC)
+	 MIME-Version; b=sH0d8r2SrWHcYuLlvEPltOdt5mIYeSedEOFwyzG8lwNCQkspCDG9pZkVlu4uCFW2lArm+PcuIRpNLTdAB0vS5S0HY7ry9JwLlWZQYgLyhpo5BeuV24qtYSmQ3zeA1i5ZY9JENVJGAoz5R6zryLwvrSjUSzRtkvlgaaz1ZtVvs0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tG6WVBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45811C32782;
+	Tue, 30 Jul 2024 16:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722356351;
-	bh=FuLL64HinT/22NkuLu5MxphWWieAo3RohN3E4Fh4cW8=;
+	s=korg; t=1722356364;
+	bh=MblFA2xUHOX2vBHLOhXW+/UmZ74ahvgWwq7MPYb6y/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=na1L/ABPRpodDfPzjnc8zdO4yc4eVLAI8NFaiFMVbsfV6uLsVLygWFGoQGmhoI8Sj
-	 0J44/gHESjEYIJHI7DqEkMiuQFCJ1DC1AQ0X2vogyFkOrh26wWFveWZVVK6Dti81Ux
-	 KxI7eco3FkU3WCruT2fZLLy20tvG3FZfJDifYV00=
+	b=2tG6WVBCTu2rhbK0Il4F03RW9bi52fAJCfdT2DYooKlv9AnShqFha21LdHNnTet6L
+	 BxcxEk3SL2gXKCphQsJG36PKTmJG+QSZNnsDXDJ6qqZMGNxHM38Sr26zdrHKeLQgP9
+	 CtgqfU4Ilfz9ABVviwbx/2YGOenqy7nFUJ2+nThw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanjun Yang <yangyj.ee@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Kees Cook <kees@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 142/809] ARM: Remove address checking for MMUless devices
-Date: Tue, 30 Jul 2024 17:40:18 +0200
-Message-ID: <20240730151730.217013703@linuxfoundation.org>
+Subject: [PATCH 6.10 143/809] x86/sev: Do RMP memory coverage check after max_pfn has been set
+Date: Tue, 30 Jul 2024 17:40:19 +0200
+Message-ID: <20240730151730.255525974@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -67,49 +66,112 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yanjun Yang <yangyj.ee@gmail.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-[ Upstream commit 3ccea4784fddd96fbd6c4497eb28b45dab638c2a ]
+[ Upstream commit 0440feb090790c6243bca85d6a794824e71ff26c ]
 
-Commit 169f9102f9198b ("ARM: 9350/1: fault: Implement
-copy_from_kernel_nofault_allowed()") added the function to check address
-before use. However, for devices without MMU, addr > TASK_SIZE will
-always fail.  This patch move this function after the #ifdef CONFIG_MMU
-statement.
+The RMP table is probed early in the boot process before max_pfn has been
+set, so the logic to check if the RMP covers all of system memory is not
+valid.
 
-Signed-off-by: Yanjun Yang <yangyj.ee@gmail.com>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218953
-Fixes: 169f9102f9198b ("ARM: 9350/1: fault: Implement copy_from_kernel_nofault_allowed()")
-Link: https://lore.kernel.org/r/20240611100947.32241-1-yangyj.ee@gmail.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Move the RMP memory coverage check from snp_probe_rmptable_info() into
+snp_rmptable_init(), which is well after max_pfn has been set. Also, fix
+the calculation to use PFN_UP instead of PHYS_PFN, in order to compute
+the required RMP size properly.
+
+Fixes: 216d106c7ff7 ("x86/sev: Add SEV-SNP host initialization support")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/bec4364c7e34358cc576f01bb197a7796a109169.1718984524.git.thomas.lendacky@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mm/fault.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/virt/svm/sev.c | 44 ++++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index 67c425341a951..ab01b51de5590 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -25,6 +25,8 @@
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index 0ae10535c6999..0ce17766c0e52 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -120,7 +120,7 @@ static __init void snp_enable(void *arg)
  
- #include "fault.h"
- 
-+#ifdef CONFIG_MMU
-+
- bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
+ bool snp_probe_rmptable_info(void)
  {
- 	unsigned long addr = (unsigned long)unsafe_src;
-@@ -32,8 +34,6 @@ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
- 	return addr >= TASK_SIZE && ULONG_MAX - addr >= size;
- }
+-	u64 max_rmp_pfn, calc_rmp_sz, rmp_sz, rmp_base, rmp_end;
++	u64 rmp_sz, rmp_base, rmp_end;
  
--#ifdef CONFIG_MMU
+ 	rdmsrl(MSR_AMD64_RMP_BASE, rmp_base);
+ 	rdmsrl(MSR_AMD64_RMP_END, rmp_end);
+@@ -137,28 +137,11 @@ bool snp_probe_rmptable_info(void)
+ 
+ 	rmp_sz = rmp_end - rmp_base + 1;
+ 
+-	/*
+-	 * Calculate the amount the memory that must be reserved by the BIOS to
+-	 * address the whole RAM, including the bookkeeping area. The RMP itself
+-	 * must also be covered.
+-	 */
+-	max_rmp_pfn = max_pfn;
+-	if (PHYS_PFN(rmp_end) > max_pfn)
+-		max_rmp_pfn = PHYS_PFN(rmp_end);
 -
- /*
-  * This is useful to dump out the page tables associated with
-  * 'addr' in mm 'mm'.
+-	calc_rmp_sz = (max_rmp_pfn << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
+-
+-	if (calc_rmp_sz > rmp_sz) {
+-		pr_err("Memory reserved for the RMP table does not cover full system RAM (expected 0x%llx got 0x%llx)\n",
+-		       calc_rmp_sz, rmp_sz);
+-		return false;
+-	}
+-
+ 	probed_rmp_base = rmp_base;
+ 	probed_rmp_size = rmp_sz;
+ 
+ 	pr_info("RMP table physical range [0x%016llx - 0x%016llx]\n",
+-		probed_rmp_base, probed_rmp_base + probed_rmp_size - 1);
++		rmp_base, rmp_end);
+ 
+ 	return true;
+ }
+@@ -206,9 +189,8 @@ void __init snp_fixup_e820_tables(void)
+  */
+ static int __init snp_rmptable_init(void)
+ {
++	u64 max_rmp_pfn, calc_rmp_sz, rmptable_size, rmp_end, val;
+ 	void *rmptable_start;
+-	u64 rmptable_size;
+-	u64 val;
+ 
+ 	if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+ 		return 0;
+@@ -219,10 +201,28 @@ static int __init snp_rmptable_init(void)
+ 	if (!probed_rmp_size)
+ 		goto nosnp;
+ 
++	rmp_end = probed_rmp_base + probed_rmp_size - 1;
++
++	/*
++	 * Calculate the amount the memory that must be reserved by the BIOS to
++	 * address the whole RAM, including the bookkeeping area. The RMP itself
++	 * must also be covered.
++	 */
++	max_rmp_pfn = max_pfn;
++	if (PFN_UP(rmp_end) > max_pfn)
++		max_rmp_pfn = PFN_UP(rmp_end);
++
++	calc_rmp_sz = (max_rmp_pfn << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
++	if (calc_rmp_sz > probed_rmp_size) {
++		pr_err("Memory reserved for the RMP table does not cover full system RAM (expected 0x%llx got 0x%llx)\n",
++		       calc_rmp_sz, probed_rmp_size);
++		goto nosnp;
++	}
++
+ 	rmptable_start = memremap(probed_rmp_base, probed_rmp_size, MEMREMAP_WB);
+ 	if (!rmptable_start) {
+ 		pr_err("Failed to map RMP table\n");
+-		return 1;
++		goto nosnp;
+ 	}
+ 
+ 	/*
 -- 
 2.43.0
 
