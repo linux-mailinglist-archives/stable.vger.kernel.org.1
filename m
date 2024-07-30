@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-63834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175CC941ADF
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B11C9941AE2
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C79CF2817DB
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3EBD1C22994
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62620183CD5;
-	Tue, 30 Jul 2024 16:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A8318455B;
+	Tue, 30 Jul 2024 16:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGLp50E+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Fau16Lu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205531A6166;
-	Tue, 30 Jul 2024 16:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E857C1A6166;
+	Tue, 30 Jul 2024 16:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358101; cv=none; b=kcf80aZpBze6c+YtGE5yHpOysIBvuBgGVHbTobu4S7K1zDYjGzrVbGxI40YY6+TSzE6mqWk8Yr+Nz3pKvs2t1aQY2kxEOp0PuJJ9kEcu8G+7I0Ocy4Npu256Ts1/T1Dsp+JzXcnLs79CF5kHR4DrMS6W3QMVgbWJreHP4drqGzA=
+	t=1722358111; cv=none; b=F+DP50269TcHCGHgvMp7ckcT6VD/OjDxsW3eHqYwiI1+OgXkOgvzGJYR3jmbTjhJmDLan3puCBRQP3nnkMu7LdIP9+/077enUoDLz8CXszRz3/DRiE5qf0x42+ndieSa6JaMQ/6oR/4BFxiHYj2/REQB+M1Fbw7kv2uG8q3XCmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358101; c=relaxed/simple;
-	bh=K5Ur1T0smxztMsOXq1x08qTFNAqDIhQzSJriWyBNoEc=;
+	s=arc-20240116; t=1722358111; c=relaxed/simple;
+	bh=InnZFp69UxQFuUtEgnPsZpPOwuNsZ7rCS8QB7fj4BDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDlrhosMOpEGvpfqN3YyFRzdgxrLBZnGS7/StH88dksMHXqqAsH+mQKhP8y0ssbScR9Ob1qUbtM6xsk5zu/+AiPBgTTnNBmqkFYwd1B9rhDECgpIQWqUgzx5fkcOk6xYTa2eEnb5RNJmluDYCnGosFFDZ9qX5C65vIqDxqwRB/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGLp50E+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78509C4AF0E;
-	Tue, 30 Jul 2024 16:48:20 +0000 (UTC)
+	 MIME-Version; b=VA08qDsEFfa0lxL50xbyvX+A1OrTyRDRQyGMNIvtOGxCxyikIFt0GY5jVhy8E240e/shYwm/QprDKH6u5E/73GAvYaRCyLPjBLOSTjbzuCf6nxsfpFK+GUHlFIlS7u6HE1OCJGz0HZEz57r6uQRzZ0Q3Cuc6HljppFbCjTLjnk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Fau16Lu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089D4C4AF0A;
+	Tue, 30 Jul 2024 16:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358101;
-	bh=K5Ur1T0smxztMsOXq1x08qTFNAqDIhQzSJriWyBNoEc=;
+	s=korg; t=1722358110;
+	bh=InnZFp69UxQFuUtEgnPsZpPOwuNsZ7rCS8QB7fj4BDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGLp50E+UyQK3VDgWM0rd0+4GmieYVQl1wEScDNN9k++2OPfeQ+Jsz/URvYtYyw7b
-	 drJP5+qFbwJaqqNB65O8A7BsDJi+5Kle5P2pixEBb8cWe0LBl8kuzAuisu+8qYqpEQ
-	 /DJoYPZnCn6Ivq/e1BdRBusqEog1WWyzIRcpjHUs=
+	b=2Fau16LuEHtoGMaEIthFPjOmSfDlX4NFbUMcC2693D6vLr+USEOKvUBom9StLcY8s
+	 ndsUf93n/0Xk4JR8Qha7jXRPhaoYR1rwMxm7PpkfIbTT98mPZLztZXS9p8aP5ecYR3
+	 4YXP3GIhHc+HZOeozXQoXMSzSjJGFux6NbWaX9ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Maxime Ripard <mripard@kernel.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 323/809] drm/ttm/tests: Let ttm_bo_test consider different ww_mutex implementation.
-Date: Tue, 30 Jul 2024 17:43:19 +0200
-Message-ID: <20240730151737.363816348@linuxfoundation.org>
+Subject: [PATCH 6.10 324/809] drm/mediatek: Add missing plane settings when async update
+Date: Tue, 30 Jul 2024 17:43:20 +0200
+Message-ID: <20240730151737.402180958@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
 References: <20240730151724.637682316@linuxfoundation.org>
@@ -66,60 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit f85376c890ef470b64a7fea22eea5af18822f05c ]
+[ Upstream commit 86b89dc669c400576dc23aa923bcf302f99e8e3a ]
 
-PREEMPT_RT has a different locking implementation for ww_mutex. The
-base mutex of struct ww_mutex is declared as struct WW_MUTEX_BASE. The
-latter is defined as `mutex' for non-PREEMPT_RT builds and `rt_mutex'
-for PREEMPT_RT builds.
+Fix an issue that plane coordinate was not saved when
+calling async update.
 
-Using mutex_lock() directly on the base mutex in
-ttm_bo_reserve_deadlock() leads to compile error on PREEMPT_RT.
+Fixes: 920fffcc8912 ("drm/mediatek: update cursors by using async atomic update")
 
-The locking-selftest has its own defines to deal with this and it is
-probably best to defines the needed one within the test program since
-their usefulness is limited outside of well known selftests.
-
-Provide ww_mutex_base_lock() which points to the correct function for
-PREEMPT_RT and non-PREEMPT_RT builds.
-
-Fixes: 995279d280d1e ("drm/ttm/tests: Add tests for ttm_bo functions")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240619144630.4DliKOmr@linutronix.de
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-1-a9d62d2e2c7e@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/tests/ttm_bo_test.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_plane.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
-index 1f8a4f8adc929..9cc367a795341 100644
---- a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
-+++ b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
-@@ -18,6 +18,12 @@
+diff --git a/drivers/gpu/drm/mediatek/mtk_plane.c b/drivers/gpu/drm/mediatek/mtk_plane.c
+index 4625deb21d406..a74b26d359857 100644
+--- a/drivers/gpu/drm/mediatek/mtk_plane.c
++++ b/drivers/gpu/drm/mediatek/mtk_plane.c
+@@ -227,6 +227,8 @@ static void mtk_plane_atomic_async_update(struct drm_plane *plane,
+ 	plane->state->src_y = new_state->src_y;
+ 	plane->state->src_h = new_state->src_h;
+ 	plane->state->src_w = new_state->src_w;
++	plane->state->dst.x1 = new_state->dst.x1;
++	plane->state->dst.y1 = new_state->dst.y1;
  
- #define BO_SIZE		SZ_8K
- 
-+#ifdef CONFIG_PREEMPT_RT
-+#define ww_mutex_base_lock(b)			rt_mutex_lock(b)
-+#else
-+#define ww_mutex_base_lock(b)			mutex_lock(b)
-+#endif
-+
- struct ttm_bo_test_case {
- 	const char *description;
- 	bool interruptible;
-@@ -142,7 +148,7 @@ static void ttm_bo_reserve_deadlock(struct kunit *test)
- 	bo2 = ttm_bo_kunit_init(test, test->priv, BO_SIZE);
- 
- 	ww_acquire_init(&ctx1, &reservation_ww_class);
--	mutex_lock(&bo2->base.resv->lock.base);
-+	ww_mutex_base_lock(&bo2->base.resv->lock.base);
- 
- 	/* The deadlock will be caught by WW mutex, don't warn about it */
- 	lock_release(&bo2->base.resv->lock.base.dep_map, 1);
+ 	mtk_plane_update_new_state(new_state, new_plane_state);
+ 	swap(plane->state->fb, new_state->fb);
 -- 
 2.43.0
 
