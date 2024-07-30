@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-63590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4F79419B3
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:35:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04D5941E24
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59B8F1F2644A
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:35:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95AA8B252A4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C4C146D6B;
-	Tue, 30 Jul 2024 16:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1076E1A76BD;
+	Tue, 30 Jul 2024 17:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjuChnBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBRBsdaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86418BE8;
-	Tue, 30 Jul 2024 16:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10B11A76A1;
+	Tue, 30 Jul 2024 17:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357318; cv=none; b=sOatwDI5wLn3MAhhVOOhxzKaXTz9NJvEv0c/Tx2EherqXVIh0TPrsH8jYFElh5YHv6+DKUfVaLXVv4Mq3N8golQfcg5j5GhGDwnrdM/vF+KZNKsfIq6RPQc/L5BrdlaCG9g3BBKa5zoEr93oGDkXpj3rWXGZcwCdzIWQPWm+0LM=
+	t=1722360227; cv=none; b=F4/7HTFB/XumFcVqIIRdwlDQcxQp80T+leZmi5a1Cg8hI9BcoPG8eFivicZC+/3H9SG2BQ/PFgElnKmtRbFBrH+Ny4xOKwaw7L8DX8xVcPk7mGmOC9Wx+h2yZ1UXcOcIDdNeHCY7QTDdPcoEBqRFSe5L0WBgFIytoGt61TxRJJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357318; c=relaxed/simple;
-	bh=cfIBG/pK4ysy9P3TWXgWkbu8srsFqpFFhpLrNwaQLmM=;
+	s=arc-20240116; t=1722360227; c=relaxed/simple;
+	bh=kShYshOLKEqY1KpN4dqxf2ECvMPSpEaPss4hF0MTGKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMVJGEtC1k865ZZ4m+ravdklKh+cEcX4UHbtZVCtzJVzQ/3eiZoD4KhzLMIkZqt1zsEWA05mist5F7xdRVrSELy6a7MFZN6EL2oq9PaoTNFzz1CcgdZhaFR6MPDp8iumF93A9keaLdO1HBlq2odAO+ZIACedL9cOaCKxlIHug1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjuChnBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C981C32782;
-	Tue, 30 Jul 2024 16:35:17 +0000 (UTC)
+	 MIME-Version; b=sNqbmcl+QBgSXO+/YW2ClFUEPy6JqCLxxq5FKy5kIoMW83O577OWqUP6HNI7hCG1Vvug0mj4Xx/OpMNqIVZ9EKANxwiRXi3TdctBXa5RCoSw/bqfQ8+4S9bJwCLkEbisHjk3fpPjl4QFmT+gr3u8a8WCHHdWc2gkNKXuLR+Q0+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBRBsdaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A8AC32782;
+	Tue, 30 Jul 2024 17:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357317;
-	bh=cfIBG/pK4ysy9P3TWXgWkbu8srsFqpFFhpLrNwaQLmM=;
+	s=korg; t=1722360227;
+	bh=kShYshOLKEqY1KpN4dqxf2ECvMPSpEaPss4hF0MTGKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjuChnBivmhAFQO555JXjcjXC/aPM9ClSVqHuu8jvXY2QVhFQTavu8OzywMAwILqj
-	 ORtZQK+HrGRfR/Wo2cEEIt/OW0bRU5xBMiaQUzKh5yCwQcEMwRxtwgSSE3RDqgSH7p
-	 mkxqZsA6jXa9QkXX9WO9Nr5yxcNezMAAGHkqQTMs=
+	b=qBRBsdaqKxoemqMFLR4pSWWiXuvLR7R1tugIQZU5CZLtkaSnKec9JHjJ/zwd3XBpf
+	 SHre+efIvwYb4nJGaI+ni28If61JPZQqnzJdyfMUIWRrltkGZ6vN1QZfou6ZhmRpDs
+	 ziCYs05CtPkV/Adbld4r2Zn0bRf5PLiEjE72KmUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengen Du <chengen.du@canonical.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 279/440] af_packet: Handle outgoing VLAN packets without hardware offloading
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.10 636/809] parisc: Fix warning at drivers/pci/msi/msi.h:121
 Date: Tue, 30 Jul 2024 17:48:32 +0200
-Message-ID: <20240730151626.728768231@linuxfoundation.org>
+Message-ID: <20240730151749.965565131@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,178 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengen Du <chengen.du@canonical.com>
+From: John David Anglin <dave@mx3210.local>
 
-commit 79eecf631c14e7f4057186570ac20e2cfac3802e upstream.
+commit 4c29ab84cfec17081aae7a7a28f8d2c93c42dcae upstream.
 
-The issue initially stems from libpcap. The ethertype will be overwritten
-as the VLAN TPID if the network interface lacks hardware VLAN offloading.
-In the outbound packet path, if hardware VLAN offloading is unavailable,
-the VLAN tag is inserted into the payload but then cleared from the sk_buff
-struct. Consequently, this can lead to a false negative when checking for
-the presence of a VLAN tag, causing the packet sniffing outcome to lack
-VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
-tool may be unable to parse packets as expected.
+Fix warning at drivers/pci/msi/msi.h:121.
 
-The TCI-TPID is missing because the prb_fill_vlan_info() function does not
-modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
-payload and not in the sk_buff struct. The skb_vlan_tag_present() function
-only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
-is stripped, preventing the packet capturing tool from determining the
-correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
-which means the packet capturing tool cannot parse the L3 header correctly.
+Recently, I added a PCI to PCIe bridge adaptor and a PCIe NVME card
+to my rp3440. Then, I noticed this warning at boot:
 
-Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
-Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
-Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengen Du <chengen.du@canonical.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240713114735.62360-1-chengen.du@canonical.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+ WARNING: CPU: 0 PID: 10 at drivers/pci/msi/msi.h:121 pci_msi_setup_msi_irqs+0x68/0x90
+ CPU: 0 PID: 10 Comm: kworker/u32:0 Not tainted 6.9.7-parisc64 #1  Debian 6.9.7-1
+ Hardware name: 9000/800/rp3440
+ Workqueue: async async_run_entry_fn
+
+We need to select PCI_MSI_ARCH_FALLBACKS when PCI_MSI is selected.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Cc: stable@vger.kernel.org	# v6.0+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c |   86 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 84 insertions(+), 2 deletions(-)
+ arch/parisc/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -541,6 +541,61 @@ static void *packet_current_frame(struct
- 	return packet_lookup_frame(po, rb, rb->head, status);
- }
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -86,6 +86,7 @@ config PARISC
+ 	select HAVE_SOFTIRQ_ON_OWN_STACK if IRQSTACKS
+ 	select TRACE_IRQFLAGS_SUPPORT
+ 	select HAVE_FUNCTION_DESCRIPTORS if 64BIT
++	select PCI_MSI_ARCH_FALLBACKS if PCI_MSI
  
-+static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
-+{
-+	u8 *skb_orig_data = skb->data;
-+	int skb_orig_len = skb->len;
-+	struct vlan_hdr vhdr, *vh;
-+	unsigned int header_len;
-+
-+	if (!dev)
-+		return 0;
-+
-+	/* In the SOCK_DGRAM scenario, skb data starts at the network
-+	 * protocol, which is after the VLAN headers. The outer VLAN
-+	 * header is at the hard_header_len offset in non-variable
-+	 * length link layer headers. If it's a VLAN device, the
-+	 * min_header_len should be used to exclude the VLAN header
-+	 * size.
-+	 */
-+	if (dev->min_header_len == dev->hard_header_len)
-+		header_len = dev->hard_header_len;
-+	else if (is_vlan_dev(dev))
-+		header_len = dev->min_header_len;
-+	else
-+		return 0;
-+
-+	skb_push(skb, skb->data - skb_mac_header(skb));
-+	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
-+	if (skb_orig_data != skb->data) {
-+		skb->data = skb_orig_data;
-+		skb->len = skb_orig_len;
-+	}
-+	if (unlikely(!vh))
-+		return 0;
-+
-+	return ntohs(vh->h_vlan_TCI);
-+}
-+
-+static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
-+{
-+	__be16 proto = skb->protocol;
-+
-+	if (unlikely(eth_type_vlan(proto))) {
-+		u8 *skb_orig_data = skb->data;
-+		int skb_orig_len = skb->len;
-+
-+		skb_push(skb, skb->data - skb_mac_header(skb));
-+		proto = __vlan_get_protocol(skb, proto, NULL);
-+		if (skb_orig_data != skb->data) {
-+			skb->data = skb_orig_data;
-+			skb->len = skb_orig_len;
-+		}
-+	}
-+
-+	return proto;
-+}
-+
- static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
- {
- 	del_timer_sync(&pkc->retire_blk_timer);
-@@ -1010,10 +1065,16 @@ static void prb_clear_rxhash(struct tpac
- static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
- 			struct tpacket3_hdr *ppd)
- {
-+	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
-+
- 	if (skb_vlan_tag_present(pkc->skb)) {
- 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
- 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
- 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
-+		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
-+		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
-+		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
- 	} else {
- 		ppd->hv1.tp_vlan_tci = 0;
- 		ppd->hv1.tp_vlan_tpid = 0;
-@@ -2431,6 +2492,10 @@ static int tpacket_rcv(struct sk_buff *s
- 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
- 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
- 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
-+			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
-+			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
- 		} else {
- 			h.h2->tp_vlan_tci = 0;
- 			h.h2->tp_vlan_tpid = 0;
-@@ -2460,7 +2525,8 @@ static int tpacket_rcv(struct sk_buff *s
- 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
- 	sll->sll_family = AF_PACKET;
- 	sll->sll_hatype = dev->type;
--	sll->sll_protocol = skb->protocol;
-+	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
-+		vlan_get_protocol_dgram(skb) : skb->protocol;
- 	sll->sll_pkttype = skb->pkt_type;
- 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
- 		sll->sll_ifindex = orig_dev->ifindex;
-@@ -3481,7 +3547,8 @@ static int packet_recvmsg(struct socket
- 		/* Original length was stored in sockaddr_ll fields */
- 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
- 		sll->sll_family = AF_PACKET;
--		sll->sll_protocol = skb->protocol;
-+		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
-+			vlan_get_protocol_dgram(skb) : skb->protocol;
- 	}
- 
- 	sock_recv_cmsgs(msg, sk, skb);
-@@ -3536,6 +3603,21 @@ static int packet_recvmsg(struct socket
- 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
- 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
- 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
-+			struct net_device *dev;
-+
-+			rcu_read_lock();
-+			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
-+			if (dev) {
-+				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
-+				aux.tp_vlan_tpid = ntohs(skb->protocol);
-+				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+			} else {
-+				aux.tp_vlan_tci = 0;
-+				aux.tp_vlan_tpid = 0;
-+			}
-+			rcu_read_unlock();
- 		} else {
- 			aux.tp_vlan_tci = 0;
- 			aux.tp_vlan_tpid = 0;
+ 	help
+ 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
 
 
 
