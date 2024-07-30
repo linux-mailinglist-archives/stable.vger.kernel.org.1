@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-64022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9A2941BC4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:58:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192029419D6
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FE391F210B2
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:58:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50F7DB29BE4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969E11898EB;
-	Tue, 30 Jul 2024 16:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48D818990F;
+	Tue, 30 Jul 2024 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAxJ3bMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXTatBRV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C72F17D8BB;
-	Tue, 30 Jul 2024 16:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE3A189905;
+	Tue, 30 Jul 2024 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358724; cv=none; b=Ak21klQMSAXNRxByNsgIRUjZTc6WFOA+aLFi0YWmoAHCWpbNMUtwmM7693G1KucqZFGErXKpx9uQJueT6iHHOzHFr6NMGfDWSe4KO9q8vBlNd8IfudVsEuMqlehNqZiMtIzDY7t6DXhBNtwiNbD0BStri/zBibw5hu3oOg3/zRg=
+	t=1722356679; cv=none; b=r99Z4Oeo1CGIE0Ad65WFghdUqS3JIti2pCCoDyQ4f4xg3ujMKvhH0FwF/K/3p7MXmCZzNOOSMrU4gpZbZCW1pFT8+gZiSLJuvz8fOXqf/AJRSMCdzsm4wzGy6Rw1ATQIgROARRwFp67bfEerAfnqfNDYRWKytnyXF66Gecr1kic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358724; c=relaxed/simple;
-	bh=99dEi/2mbzWmp4qnrK5PWd9NIjH3UKn68s+yA4ztFZ4=;
+	s=arc-20240116; t=1722356679; c=relaxed/simple;
+	bh=XfY+MbGHBns2OF4nOwSgmxC64k/57dYmmx4quuia6+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgS56rfLb4gMrtCidu/jtVmtBiUpqpDWmrrks4DjvsrWv2G1q0ldtrxl9H4kaShDR8TDArOHjAoBDcQAfjjPxOgM4mvsFBQq0/mRpEX3GQUCm4D2wuqd07niItHqxTGk8bkabrwO3wfboFVFlE/MO7Dc/g34wDz8u3b3MTIBsx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAxJ3bMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF94AC32782;
-	Tue, 30 Jul 2024 16:58:43 +0000 (UTC)
+	 MIME-Version; b=q9eWA+MiK0s2Nxn/CclDoE3ckc6E915Z13D9oZJsWE5M57FKL333cWm9vMLIEcHmo1bBNY4fn1mR92PilanKLb9azAfk0Pfoy4vVU6++KiwlQwH4yM9sHaqEblLmOn1RaAzF7J88wSeIhoIkfEpLepn5VH3DS6P337wtVjG48+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXTatBRV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEDAC4AF0E;
+	Tue, 30 Jul 2024 16:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722358724;
-	bh=99dEi/2mbzWmp4qnrK5PWd9NIjH3UKn68s+yA4ztFZ4=;
+	s=korg; t=1722356679;
+	bh=XfY+MbGHBns2OF4nOwSgmxC64k/57dYmmx4quuia6+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gAxJ3bMMx/08vWCD7ZaqjzAwWsdF6Kr/Tonhn4YUvdKIuy7n1KYL6HyfUlnoI8g/x
-	 /x3JNkiCGuBtapHCB4nB+P52HLRKT64Z8F/gq5Z5tJHp3DhvkjGk/iu+JZ/8xgWpMi
-	 K1M7U2sV/82EzJyt4VQ6Mccwa1dYatNkyD85Vdvs=
+	b=XXTatBRVmC0v4IC6XLfPJ0O8zl/t2/ZxLUSplTiSijOB/5IOINRr6/VdXTscM/p/M
+	 us4e3BLgpO2Y3P1RupX7QOyo5PhT0BDbvAJaYmZx1MWvfrcepBRN15s4pkbIgbn4p8
+	 kbJJ7q/2GxAcgM0hZOqsldsU0cxwx5NWznQE0WaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andy Chiu <andy.chiu@sifive.com>,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	kernel test robot <lkp@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 388/809] riscv: smp: fail booting up smp if inconsistent vlen is detected
+Subject: [PATCH 6.6 157/568] wifi: virt_wifi: dont use strlen() in const context
 Date: Tue, 30 Jul 2024 17:44:24 +0200
-Message-ID: <20240730151739.996302648@linuxfoundation.org>
+Message-ID: <20240730151646.016011557@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Chiu <andy.chiu@sifive.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 38a94c46660f5612c6ef37ec9754ec1543b038cd ]
+[ Upstream commit 6e909f489191b365364e9d636dec33b5dfd4e5eb ]
 
-Currently we only support Vector for SMP platforms, that is, all SMP
-cores have the same vlenb. If we happen to detect a mismatching vlen, it
-is better to just fail bootting it up to prevent further race/scheduling
-issues.
+Looks like not all compilers allow strlen(constant) as
+a constant, so don't do that. Instead, revert back to
+defining the length as the first submission had it.
 
-Also, move .Lsecondary_park forward and chage `tail smp_callin` into a
-regular call in the early assembly. So a core would be parked right
-after a return from smp_callin. Note that a successful smp_callin
-does not return.
-
-Fixes: 7017858eb2d7 ("riscv: Introduce riscv_v_vsize to record size of Vector context")
-Reported-by: Conor Dooley <conor.dooley@microchip.com>
-Closes: https://lore.kernel.org/linux-riscv/20240228-vicinity-cornstalk-4b8eb5fe5730@spud/
-Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Link: https://lore.kernel.org/r/20240510-zve-detection-v5-2-0711bdd26c12@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: b5d14b0c6716 ("wifi: virt_wifi: avoid reporting connection success with wrong SSID")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202407090934.NnR1TUbW-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202407090944.mpwLHGt9-lkp@intel.com/
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/head.S    | 19 ++++++++++++-------
- arch/riscv/kernel/smpboot.c | 14 +++++++++-----
- 2 files changed, 21 insertions(+), 12 deletions(-)
+ drivers/net/wireless/virtual/virt_wifi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
-index 4236a69c35cb3..a00f7523cb91f 100644
---- a/arch/riscv/kernel/head.S
-+++ b/arch/riscv/kernel/head.S
-@@ -165,9 +165,20 @@ secondary_start_sbi:
- #endif
- 	call .Lsetup_trap_vector
- 	scs_load_current
--	tail smp_callin
-+	call smp_callin
- #endif /* CONFIG_SMP */
+diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
+index cf1eb41e282a9..fb4d95a027fef 100644
+--- a/drivers/net/wireless/virtual/virt_wifi.c
++++ b/drivers/net/wireless/virtual/virt_wifi.c
+@@ -137,6 +137,7 @@ static struct ieee80211_supported_band band_5ghz = {
+ static u8 fake_router_bssid[ETH_ALEN] __ro_after_init = {};
  
-+.align 2
-+.Lsecondary_park:
-+	/*
-+	 * Park this hart if we:
-+	 *  - have too many harts on CONFIG_RISCV_BOOT_SPINWAIT
-+	 *  - receive an early trap, before setup_trap_vector finished
-+	 *  - fail in smp_callin(), as a successful one wouldn't return
-+	 */
-+	wfi
-+	j .Lsecondary_park
-+
- .align 2
- .Lsetup_trap_vector:
- 	/* Set trap vector to exception handler */
-@@ -181,12 +192,6 @@ secondary_start_sbi:
- 	csrw CSR_SCRATCH, zero
- 	ret
+ #define VIRT_WIFI_SSID "VirtWifi"
++#define VIRT_WIFI_SSID_LEN 8
  
--.align 2
--.Lsecondary_park:
--	/* We lack SMP support or have too many harts, so park this hart */
--	wfi
--	j .Lsecondary_park
--
- SYM_CODE_END(_start)
+ static void virt_wifi_inform_bss(struct wiphy *wiphy)
+ {
+@@ -148,7 +149,7 @@ static void virt_wifi_inform_bss(struct wiphy *wiphy)
+ 		u8 ssid[8];
+ 	} __packed ssid = {
+ 		.tag = WLAN_EID_SSID,
+-		.len = strlen(VIRT_WIFI_SSID),
++		.len = VIRT_WIFI_SSID_LEN,
+ 		.ssid = VIRT_WIFI_SSID,
+ 	};
  
- SYM_CODE_START(_start_kernel)
-diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-index 1319b29ce3b59..19baf0d574d35 100644
---- a/arch/riscv/kernel/smpboot.c
-+++ b/arch/riscv/kernel/smpboot.c
-@@ -214,6 +214,15 @@ asmlinkage __visible void smp_callin(void)
- 	struct mm_struct *mm = &init_mm;
- 	unsigned int curr_cpuid = smp_processor_id();
- 
-+	if (has_vector()) {
-+		/*
-+		 * Return as early as possible so the hart with a mismatching
-+		 * vlen won't boot.
-+		 */
-+		if (riscv_v_setup_vsize())
-+			return;
-+	}
-+
- 	/* All kernel threads share the same mm context.  */
- 	mmgrab(mm);
- 	current->active_mm = mm;
-@@ -226,11 +235,6 @@ asmlinkage __visible void smp_callin(void)
- 	numa_add_cpu(curr_cpuid);
- 	set_cpu_online(curr_cpuid, true);
- 
--	if (has_vector()) {
--		if (riscv_v_setup_vsize())
--			elf_hwcap &= ~COMPAT_HWCAP_ISA_V;
--	}
--
- 	riscv_user_isa_enable();
- 
- 	/*
+@@ -262,7 +263,7 @@ static void virt_wifi_connect_complete(struct work_struct *work)
+ 		container_of(work, struct virt_wifi_netdev_priv, connect.work);
+ 	u8 *requested_bss = priv->connect_requested_bss;
+ 	bool right_addr = ether_addr_equal(requested_bss, fake_router_bssid);
+-	bool right_ssid = priv->connect_requested_ssid_len == strlen(VIRT_WIFI_SSID) &&
++	bool right_ssid = priv->connect_requested_ssid_len == VIRT_WIFI_SSID_LEN &&
+ 			  !memcmp(priv->connect_requested_ssid, VIRT_WIFI_SSID,
+ 				  priv->connect_requested_ssid_len);
+ 	u16 status = WLAN_STATUS_SUCCESS;
 -- 
 2.43.0
 
