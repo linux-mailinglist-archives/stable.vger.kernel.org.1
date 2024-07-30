@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-63631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF9B9419E4
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:37:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4C29419EA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62E1A1F27732
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:37:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 162B02852F5
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE841898E0;
-	Tue, 30 Jul 2024 16:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EDE18B480;
+	Tue, 30 Jul 2024 16:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7MzIqqa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihQQIvsM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5C8146D6B;
-	Tue, 30 Jul 2024 16:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AB61A619B;
+	Tue, 30 Jul 2024 16:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722357450; cv=none; b=KLhCExq7F3P31njhLm7SBFvryNkm4vQqL5TDybty7tVgIxjvCY4KlToIt6DUycUFCkB4+s3SCSvuij2pe+8PFdVxk8ggqoh+S1FP0YIddUGwRMqcFeFot3igZsMFVtHT1g2lgW5uLEXf9AYXfrI3AZ66yQD1Wq+F2S5WrkXPbfs=
+	t=1722357460; cv=none; b=ohSe1hv2oLazFgEFD3n/16XYZaw9eQ5/3Sfvn6ptwbEU9GddlLjoce422df5UvJyayqYZPeje/TIVqLgnjCfw9a8FnwMKdL/BfJDsU4igc1JZO2A1GaE2mrX3wVUZdSBJqLUlI+wIhBYKYgGwfHyfTzLK+gBOW22q6x9ojTYhuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722357450; c=relaxed/simple;
-	bh=iiUOnuziFgbIP4l2OFrTVS3MtH2Zja+wgR3ZWYOqB3g=;
+	s=arc-20240116; t=1722357460; c=relaxed/simple;
+	bh=0nMfxBHt9qclRKl97+ju7Z/KVMIcZ+CBjZXrQ68mHy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nga+PfPcFDgFuzp60IpVsu04dGPbX8CfBr3W10PY74kDSGTiOwGvq7Xn1QMlsjuinuDMHEtd9KQFRS4tVLUVA/9u1w8hoLmYJm4sUotG/B+TVCxyywCw6/1GcJZYhEYWH0cSQKqMIFf/d/7hP9aZQ+K9IiaT+JcEmdYV7dzteF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7MzIqqa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E14C32782;
-	Tue, 30 Jul 2024 16:37:29 +0000 (UTC)
+	 MIME-Version; b=X3YTQ/+br+QbhPbHaAJw/27UeARLrlgJNMRy8N81X+PSQsLoaXtuii2P+DYYdvCaaEzP+70ydgjm/8b7o2EsbtSQY++4FBVfgOy7rzokPFV6eBCg0Vvuh+JYHWvvZiLlZ31KvnIxaooS7cwLs0MFPdVmNgNbuCin49oom9g6mos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihQQIvsM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F7FC32782;
+	Tue, 30 Jul 2024 16:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722357450;
-	bh=iiUOnuziFgbIP4l2OFrTVS3MtH2Zja+wgR3ZWYOqB3g=;
+	s=korg; t=1722357459;
+	bh=0nMfxBHt9qclRKl97+ju7Z/KVMIcZ+CBjZXrQ68mHy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7MzIqqa2XIF92zILOulLtpY3JerPz85tgWhHq8vqE3b9ivMIhV2LEdjMXFbaONTf
-	 HH22jrbrM3sGYxDeQKOYCYn5VxUkhM+F/9g+mcmD1/9d6h++4P/YsQmCibtRy2j8dj
-	 lsieECXMnEnLMob6uk62aBr6i59ItQnbo/+PbXz0=
+	b=ihQQIvsMTH2BYTANpU39O5+5AjhbtDkCq5iMyuRef1+/jM4aAWoYx4nZrLQ0oKctr
+	 IcWJDTmSgVZg6jwNTm9QL+fs6zBhzDLmCX7G3kYCq/p6fkGdCFivfPLDTwM9uNMLJG
+	 zEs/27lQJUSjtOATFTx1NmYeJ88HEOG6oOxK7DfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/568] iio: frequency: adrf6780: rm clk provider include
-Date: Tue, 30 Jul 2024 17:46:03 +0200
-Message-ID: <20240730151649.884656471@linuxfoundation.org>
+Subject: [PATCH 6.6 257/568] KVM: PPC: Book3S HV: Fix the set_one_reg for MMCR3
+Date: Tue, 30 Jul 2024 17:46:04 +0200
+Message-ID: <20240730151649.923093576@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
 References: <20240730151639.792277039@linuxfoundation.org>
@@ -66,34 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 
-[ Upstream commit e2261b4a4de2804698935eb44f98dc897e1c44c3 ]
+[ Upstream commit f9ca6a10be20479d526f27316cc32cfd1785ed39 ]
 
-The driver has no clock provider implementation, therefore remove the
-include.
+The kvmppc_set_one_reg_hv() wrongly get() the value
+instead of set() for MMCR3. Fix the same.
 
-Fixes: 63aaf6d06d87 ("iio: frequency: adrf6780: add support for ADRF6780")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Link: https://lore.kernel.org/r/20240530092835.36892-1-antoniu.miclaus@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 5752fe0b811b ("KVM: PPC: Book3S HV: Save/restore new PMU registers")
+Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/171759276847.1480.16387950124201117847.stgit@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/frequency/adrf6780.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/kvm/book3s_hv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/frequency/adrf6780.c b/drivers/iio/frequency/adrf6780.c
-index b4defb82f37e3..3f46032c92752 100644
---- a/drivers/iio/frequency/adrf6780.c
-+++ b/drivers/iio/frequency/adrf6780.c
-@@ -9,7 +9,6 @@
- #include <linux/bits.h>
- #include <linux/clk.h>
- #include <linux/clkdev.h>
--#include <linux/clk-provider.h>
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/iio/iio.h>
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 0429488ba170d..1e668e238a288 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -2484,7 +2484,7 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		vcpu->arch.mmcrs = set_reg_val(id, *val);
+ 		break;
+ 	case KVM_REG_PPC_MMCR3:
+-		*val = get_reg_val(id, vcpu->arch.mmcr[3]);
++		kvmppc_set_mmcr_hv(vcpu, 3, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_PMC1 ... KVM_REG_PPC_PMC8:
+ 		i = id - KVM_REG_PPC_PMC1;
 -- 
 2.43.0
 
