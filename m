@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-64136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A6F941C42
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:05:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E6F941E3E
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 19:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 924D128180B
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:05:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85CC81C236AA
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 17:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B00A18454A;
-	Tue, 30 Jul 2024 17:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A3E1A76BE;
+	Tue, 30 Jul 2024 17:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt9/NOg/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsJ7qOCA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDEC1A6192;
-	Tue, 30 Jul 2024 17:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728EB1A76AB;
+	Tue, 30 Jul 2024 17:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722359112; cv=none; b=A7vgpC7RQ4XfGsy99NpKtqTDR28U3EojiLt3xTzH6tN0+KEyz/uBpgExgyRPyJ3RGscJ0Ybx8s5KpZu0g3dYIx0TznIubCgaGV7HRKbNz9pNPvnAMuuIRQRb2/CC68wZ+woJRo1IJAq/E8hxJQhux5HiwiRmWbUxl817nPGWI9Y=
+	t=1722360424; cv=none; b=Wu5AVOykNSyXYs3AjYc7O+KutNkQq3/2xsKhKE8lsK82fh4E1/R4AiNOeDvP6QVMewlfeVx1IulR+gGl0Z4p8Qjtpz2GpmQ0m1p6nzvuP8kjvJzUfSZbWM0bESwRaZ08rEpYFxi69w79kjCG1sFY3wkf5ifcapgRnHFDjSNyFH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722359112; c=relaxed/simple;
-	bh=IjpcMMqTanEQqA/WGmBiZ6796PMwPO82nlZW94RZZpc=;
+	s=arc-20240116; t=1722360424; c=relaxed/simple;
+	bh=AwFdvN5IIE8NgTGL8DkLQ6jTt8Dw8XK447Ez2l94RG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwKL3q34hkR+xcog6lkFAE3O6liUrTIWJqwK4VQqPTXfZyqb9ngoYvpzuUghonoh9z4VkA1lJXhipip2PhUyo7fVf34deWUz/guxOTTw9EzN94zIZh9DQPTITqWkXWSG7TMWAKeVgoNS5gWD6UH0aRgLODilvDbpUZ1aa1X1Bjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt9/NOg/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6597DC32782;
-	Tue, 30 Jul 2024 17:05:11 +0000 (UTC)
+	 MIME-Version; b=t5q9Pu8dCg7JYRbJGU3/VfRLiRrwFVFUP1iYpl3BnMWC+IyKoX/aXuos6YfnFon0taSVW4a/JNGNCHYS7SOFK7tZeSCgtor6DqnmHtBWTtbWuS5nq5UldJ4SaDwei3q3mh/yc6mJu1mj34Fk6PdncE3PBMe5C17rxztPq+PLKJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsJ7qOCA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E60C4AF0C;
+	Tue, 30 Jul 2024 17:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722359111;
-	bh=IjpcMMqTanEQqA/WGmBiZ6796PMwPO82nlZW94RZZpc=;
+	s=korg; t=1722360424;
+	bh=AwFdvN5IIE8NgTGL8DkLQ6jTt8Dw8XK447Ez2l94RG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pt9/NOg/6JALkOHYT/9+h/KqVWhHGBf9oB7QCZGUfcvdDwOsyp269o5zXddu5e7A4
-	 8nnBbYh2zrOY4dyNqtZQor69N/MdzwG1ryRBmZLewKf6btovYQq36Occ/+tl76ZrMB
-	 wVRV4JLTh+ADQOOdKceAGpMdoSuBxpyq1VeojPtc=
+	b=SsJ7qOCAlwVHp0WfMQdutajuHoZ88sbLupJpcV3QXodZzu5KykGxjkx6lvV6BDJ8N
+	 t69RZz2Ed+jpTB82j4BmoOo3WfT3R5X2WIdy+gJ6Y+gAuMBjRfZdBamUaI9P5iYZv4
+	 d4pi/eQ8vWx2Guyo3XmXQVLXf7W+pY32sleMHBjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.6 433/568] fs/ntfs3: Update log->page_{mask,bits} if log->page_size changed
+	Ross Lagerwall <ross.lagerwall@citrix.com>,
+	Alain Knaff <alain@knaff.lu>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 664/809] decompress_bunzip2: fix rare decompression failure
 Date: Tue, 30 Jul 2024 17:49:00 +0200
-Message-ID: <20240730151656.794717018@linuxfoundation.org>
+Message-ID: <20240730151751.128453462@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Ross Lagerwall <ross.lagerwall@citrix.com>
 
-commit 2fef55d8f78383c8e6d6d4c014b9597375132696 upstream.
+commit bf6acd5d16057d7accbbb1bf7dc6d8c56eeb4ecc upstream.
 
-If an NTFS file system is mounted to another system with different
-PAGE_SIZE from the original system, log->page_size will change in
-log_replay(), but log->page_{mask,bits} don't change correspondingly.
-This will cause a panic because "u32 bytes = log->page_size - page_off"
-will get a negative value in the later read_log_page().
+The decompression code parses a huffman tree and counts the number of
+symbols for a given bit length.  In rare cases, there may be >= 256
+symbols with a given bit length, causing the unsigned char to overflow.
+This causes a decompression failure later when the code tries and fails to
+find the bit length for a given symbol.
 
-Cc: stable@vger.kernel.org
-Fixes: b46acd6a6a627d876898e ("fs/ntfs3: Add NTFS journal")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Since the maximum number of symbols is 258, use unsigned short instead.
+
+Link: https://lkml.kernel.org/r/20240717162016.1514077-1-ross.lagerwall@citrix.com
+Fixes: bc22c17e12c1 ("bzip2/lzma: library support for gzip, bzip2 and lzma decompression")
+Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Cc: Alain Knaff <alain@knaff.lu>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fslog.c |    3 +++
- 1 file changed, 3 insertions(+)
+ lib/decompress_bunzip2.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -3922,6 +3922,9 @@ check_restart_area:
- 		goto out;
- 	}
- 
-+	log->page_mask = log->page_size - 1;
-+	log->page_bits = blksize_bits(log->page_size);
-+
- 	/* If the file size has shrunk then we won't mount it. */
- 	if (log->l_size < le64_to_cpu(ra2->l_size)) {
- 		err = -EINVAL;
+--- a/lib/decompress_bunzip2.c
++++ b/lib/decompress_bunzip2.c
+@@ -232,7 +232,8 @@ static int INIT get_next_block(struct bu
+ 	   RUNB) */
+ 	symCount = symTotal+2;
+ 	for (j = 0; j < groupCount; j++) {
+-		unsigned char length[MAX_SYMBOLS], temp[MAX_HUFCODE_BITS+1];
++		unsigned char length[MAX_SYMBOLS];
++		unsigned short temp[MAX_HUFCODE_BITS+1];
+ 		int	minLen,	maxLen, pp;
+ 		/* Read Huffman code lengths for each symbol.  They're
+ 		   stored in a way similar to mtf; record a starting
 
 
 
