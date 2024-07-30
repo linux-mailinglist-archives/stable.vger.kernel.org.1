@@ -1,84 +1,73 @@
-Return-Path: <stable+bounces-62639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-62641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B0D94087D
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 08:39:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16949408DF
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 08:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E49C1F22532
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 06:39:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A55B22C70
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 06:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DA118F2C8;
-	Tue, 30 Jul 2024 06:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0720115B542;
+	Tue, 30 Jul 2024 06:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWEUQXje"
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035E01662F4
-	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 06:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4F41494B5
+	for <stable@vger.kernel.org>; Tue, 30 Jul 2024 06:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722321544; cv=none; b=OBaGu1EAIhVJTfnif3PMWLaCxoJ4v5hsawG8VE3kRAw4CsMrVWmHvaLb1QRIwboIjqFjgERCcuvQjqKSTbQnrxMroCBuph2lvTS4l9atDnH1eCZWN/iSuL5Vjt71hA5NBTZYK2MKOObGvgXpuepCIWAkr4Yf57t/qq+bO57u2LI=
+	t=1722322240; cv=none; b=Hb09j05b5VMAI8xLcaF2mPB/+r1eqyU+7AsJ4Gy4O66oemG1EFIml/m/QzmS8+AUbLvjCyj4SLNfyKqODQv+GEj8SSYJu/dgoQxbC75Awcae7vwLzbfvjzB/3Qp1+y6EcrXZ1a7Lx2EpyCNhy6wfk8dISS5+ZVIJwH46PieTpNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722321544; c=relaxed/simple;
-	bh=TXzEy75fc27ks3aqJAdaiuo5tSvQLbajFAv7VOAt+28=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=hXbFBm6PhCxtWjQaPyMcmbfoBjN1Hkwbc8z4MpKWuK51mDLQRrZpB3TF6O38r/0U1Oj3c67pHihmqy8DgTzFMshRqmLEw4a/90NEd/ILchcr+H1ZpnYu0+KinO2dFxjtpwMJuE4gtDj7WR0+Q7xrNlSBS0PFtSbkHCu2TMA1FQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from hverkuil by linuxtv.org with local (Exim 4.96)
-	(envelope-from <hverkuil@linuxtv.org>)
-	id 1sYgVg-0005Uf-2V;
-	Tue, 30 Jul 2024 06:39:00 +0000
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Tue, 30 Jul 2024 06:36:29 +0000
-Subject: [git:media_stage/fixes] media: intel/ipu6: select AUXILIARY_BUS in Kconfig
-To: linuxtv-commits@linuxtv.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, Bingbu Cao <bingbu.cao@intel.com>, stable@vger.kernel.org
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1sYgVg-0005Uf-2V@linuxtv.org>
+	s=arc-20240116; t=1722322240; c=relaxed/simple;
+	bh=2gdm028FXj6u7d5pCIoCaxkyQNJ3kKpwLHj0UJ7bVh8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cj77mUNRbGMl/he0VKhYrEEaL0o7eGDmyEyCddmEsIJ6asBF5oPebfNiWYGsP29JgfsXHcfUYGNw1UhYQrmgPPRx1v2pVMCWBYKMNyBqX+IZke9rTDrv5OVg0av3lCbnpTTUeZH03TLhGUEMTy0c81MhHFg9OVAWcYsdo4v7Oec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWEUQXje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DE2C32782;
+	Tue, 30 Jul 2024 06:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722322240;
+	bh=2gdm028FXj6u7d5pCIoCaxkyQNJ3kKpwLHj0UJ7bVh8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SWEUQXjeAftkyt6nz4ceblCQwWSwHyIe4whHO94jC6AtaxnAQOjKKbUkz+r9OfFJa
+	 lwjxaYIXw8LaPeU+jnTr6o8gBQylBmGNy4CWHscd4AGg0LcJo5wtl+krhshq523hd+
+	 Qq58y9/aW2zG/UKB2nK0iaUMLFyTGkDQUqJATDbA=
+Date: Tue, 30 Jul 2024 08:50:37 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alexey Kuznetsov <kuznetsov.alexey@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: asus_wmi: Unknown key code 0xcf
+Message-ID: <2024073006-padded-fraternal-e82a@gregkh>
+References: <8cd6293f66f9399a859330a348c79fa3dacb0202.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8cd6293f66f9399a859330a348c79fa3dacb0202.camel@gmail.com>
 
-This is an automatic generated email to let you know that the following patch were queued:
+On Tue, Jul 30, 2024 at 09:36:13AM +0300, Alexey Kuznetsov wrote:
+> Hello!
+> 
+> My Asus Laptop (ASUS VivoBook PRO 15 OLED M3500QA-L1072) reporting this
+> wmi code everytime I connect power cable.
+> 
+> I got no key code on power disconnect.
+> 
+> [11238.502716] asus_wmi: Unknown key code 0xcf
+> 
 
-Subject: media: intel/ipu6: select AUXILIARY_BUS in Kconfig
-Author:  Bingbu Cao <bingbu.cao@intel.com>
-Date:    Wed Jul 17 15:40:50 2024 +0800
+Please report this to the correct mailing list (the input list), stable
+is not where this can be resolved, sorry.
 
-Intel IPU6 PCI driver need register its devices on auxiliary
-bus, so it needs to select the AUXILIARY_BUS in Kconfig.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202407161833.7BEFXejx-lkp@intel.com/
-Fixes: c70281cc83d6 ("media: intel/ipu6: add Kconfig and Makefile")
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Cc: stable@vger.kernel.org # for v6.10
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
- drivers/media/pci/intel/ipu6/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
----
-
-diff --git a/drivers/media/pci/intel/ipu6/Kconfig b/drivers/media/pci/intel/ipu6/Kconfig
-index b7ab24b89836..40e20f0aa5ae 100644
---- a/drivers/media/pci/intel/ipu6/Kconfig
-+++ b/drivers/media/pci/intel/ipu6/Kconfig
-@@ -4,6 +4,7 @@ config VIDEO_INTEL_IPU6
- 	depends on VIDEO_DEV
- 	depends on X86 && X86_64 && HAS_DMA
- 	depends on IPU_BRIDGE || !IPU_BRIDGE
-+	select AUXILIARY_BUS
- 	select DMA_OPS
- 	select IOMMU_IOVA
- 	select VIDEO_V4L2_SUBDEV_API
+greg k-h
 
