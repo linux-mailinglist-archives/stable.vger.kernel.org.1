@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-63130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5832694177F
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:12:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C20B941AA4
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 18:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A5B12836CC
-	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:12:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCB6EB2855A
+	for <lists+stable@lfdr.de>; Tue, 30 Jul 2024 16:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85722189B83;
-	Tue, 30 Jul 2024 16:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7388E1898ED;
+	Tue, 30 Jul 2024 16:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVI1oa3z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjyopVvQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43521187FF2;
-	Tue, 30 Jul 2024 16:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F9D1A6192;
+	Tue, 30 Jul 2024 16:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355766; cv=none; b=PwfALn21MPxwA1ptOGD2aMMGBnHN68XhS4qp49bBkWZ4iQihzV3XrtooAXQUPNwgqwGoe94zWTA8Q9eV7B21DTh6mDH0Op36ZkD5kdLPI/uilTK5ZriNxfwyI8ViS9CcfcDxv2aKteJDglCeu+2br6LPpqbaAM6cccHUvq7BGQY=
+	t=1722357374; cv=none; b=cfnf+RuuYl7Q/CncQqcbf29y4o8DYkXo3KR5h0i1LBASFji3t8LjLFkS2NyuYRHp8Bl7sbDENuabsuRbBzHdyGasOUKRlzmXwLqWE7eyVyrWmeFIBP6doXPc8VdMOdteA58kyqBZvgMQoGHStLv0/+SydC1mawKNufaINMXdp+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355766; c=relaxed/simple;
-	bh=7TL/pJf787GFotqojdesXgAiM+8nJngvFp5mHF7H6nY=;
+	s=arc-20240116; t=1722357374; c=relaxed/simple;
+	bh=nPwIxx1/iPDF2NlmRKy+13iQufvFjeg5cKdg24xWx4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fN9SWaO6Zd2z0k4FseYQdj9THURgI9sUGh9J+kVayaWEpq1OFcu25u3iPzeb+DtkTIn3XtoSoVmGC92YgMUozAb+eNtNmRZur18H1YG3Ue8BHyo3bbUbHWvqV6xWG4vRDcc3ZvQgbxvyFc0/P8BlBoedIC6iqxhSF1btBhIGHcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVI1oa3z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32A9C32782;
-	Tue, 30 Jul 2024 16:09:25 +0000 (UTC)
+	 MIME-Version; b=QL8vLHrS3BuxPwTmV+Upx7K8F72/5f/YNDIv2BBaG3QGmFlyLqKJZWuvu9DhzF8m9NpGkkY0i+6Y/imx1n28fQfnUeDglctnj4Zt4LlBNQsh5yVPlnMDW687Nk54WV3CGqn6h5iAXDYgLKWB+efP1MHMjZJy3TPSdaeJbBygUIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjyopVvQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC88C4AF0A;
+	Tue, 30 Jul 2024 16:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722355766;
-	bh=7TL/pJf787GFotqojdesXgAiM+8nJngvFp5mHF7H6nY=;
+	s=korg; t=1722357373;
+	bh=nPwIxx1/iPDF2NlmRKy+13iQufvFjeg5cKdg24xWx4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVI1oa3zG5az+R2JVtdbbf4WCxne69wfKpDjXB21ipWDcpiczyw3XZs9cxJmQzwLk
-	 X7JxqlUKeN0Q81YHXstqXBlwAZS1XgD1pCCtkgYwApXz6eO0Km4WmZGr9Z6IpNaRh+
-	 OsWonfwM6MnHDwbWJnGZami1zKJfsL9C5lmkniKA=
+	b=TjyopVvQSeRpANN/g23CVmc0Pw46YGRaguNIhP95hjvFFvvMxAy6L4sP73+o9Eij+
+	 St0K3eIrQWURFMUR2DKIhuNv76wLokvmoLXjiFjNEXtYyXy4ifuNT0UVdpyrl5lGql
+	 KeMun86hry1WQGcCrVkQ/tqv/R8B2aqSDY3z2KyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Ben Hutchings <benh@debian.org>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/440] gss_krb5: Fix the error handling path for crypto_sync_skcipher_setkey
+Subject: [PATCH 6.6 242/568] ext4: dont track ranges in fast_commit if inode has inlined data
 Date: Tue, 30 Jul 2024 17:45:49 +0200
-Message-ID: <20240730151620.422315548@linuxfoundation.org>
+Message-ID: <20240730151649.340715664@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
-References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+References: <20240730151639.792277039@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-[ Upstream commit a3123341dc358952ce2bf8067fbdfb7eaadf71bb ]
+[ Upstream commit 7882b0187bbeb647967a7b5998ce4ad26ef68a9a ]
 
-If we fail to call crypto_sync_skcipher_setkey, we should free the
-memory allocation for cipher, replace err_return with err_free_cipher
-to free the memory of cipher.
+When fast-commit needs to track ranges, it has to handle inodes that have
+inlined data in a different way because ext4_fc_write_inode_data(), in the
+actual commit path, will attempt to map the required blocks for the range.
+However, inodes that have inlined data will have it's data stored in
+inode->i_block and, eventually, in the extended attribute space.
 
-Fixes: 4891f2d008e4 ("gss_krb5: import functionality to derive keys into the kernel")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Unfortunately, because fast commit doesn't currently support extended
+attributes, the solution is to mark this commit as ineligible.
+
+Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1039883
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Tested-by: Ben Hutchings <benh@debian.org>
+Fixes: 9725958bb75c ("ext4: fast commit may miss tracking unwritten range during ftruncate")
+Link: https://patch.msgid.link/20240618144312.17786-1-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/auth_gss/gss_krb5_keys.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/fast_commit.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/sunrpc/auth_gss/gss_krb5_keys.c b/net/sunrpc/auth_gss/gss_krb5_keys.c
-index 726c076950c04..fc4639687c0fd 100644
---- a/net/sunrpc/auth_gss/gss_krb5_keys.c
-+++ b/net/sunrpc/auth_gss/gss_krb5_keys.c
-@@ -161,7 +161,7 @@ u32 krb5_derive_key(const struct gss_krb5_enctype *gk5e,
- 	if (IS_ERR(cipher))
- 		goto err_return;
- 	if (crypto_sync_skcipher_setkey(cipher, inkey->data, inkey->len))
--		goto err_return;
-+		goto err_free_cipher;
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index b06de728b3b6c..5d473e50598f9 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -649,6 +649,12 @@ void ext4_fc_track_range(handle_t *handle, struct inode *inode, ext4_lblk_t star
+ 	if (ext4_test_mount_flag(inode->i_sb, EXT4_MF_FC_INELIGIBLE))
+ 		return;
  
- 	/* allocate and set up buffers */
++	if (ext4_has_inline_data(inode)) {
++		ext4_fc_mark_ineligible(inode->i_sb, EXT4_FC_REASON_XATTR,
++					handle);
++		return;
++	}
++
+ 	args.start = start;
+ 	args.end = end;
  
 -- 
 2.43.0
