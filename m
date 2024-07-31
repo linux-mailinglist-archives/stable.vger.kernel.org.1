@@ -1,233 +1,253 @@
-Return-Path: <stable+bounces-64798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FF7943669
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 21:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C4E9436A3
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 21:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B307284527
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 19:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9904C2814E9
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 19:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB6015FA7A;
-	Wed, 31 Jul 2024 19:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Jjb0j9zf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63E874413;
+	Wed, 31 Jul 2024 19:43:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E673060DCF
-	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 19:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006B51805E;
+	Wed, 31 Jul 2024 19:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722454201; cv=none; b=h2WOrfRym6hON6aUSEOzZ5rxXVmjmZSkbRwHA9moh4xasmS4r2N32BjGVOKq1d4pA2OdoMtlYaP7YVjD+j7bk+KYTC0x900+XB6t56k0VQ1fAZmhUj/Huvp1q3sRskJt16AJ/NRZq4ggmjrVWaniJXi+STjS7qkrwWy008SL3Gk=
+	t=1722455022; cv=none; b=Cod1LkBGooM8MYdqAC0ustifK7/KJwNwNC7evIumowQmCmqDjqQVDTgj21hfcXT10U+xq8AoBgjLviYFEN5weh1L4qpEPNjG7yItfa7DVLDNYvXEtQEBi+3Jq8lFwQSEgQptDSzuN5WFGIGQ0NoeCqgEYwv4eYxsB/iX528Kd2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722454201; c=relaxed/simple;
-	bh=8VEBFafnSr9VpBkGUOOfJzMmeWvifxk7DLlZrSgU4b0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aSe8L4KGSklF2CUknqv5G2F4+FIx7zWWo55e2FJrn3gPXithR9qHUCg3gue9NRR7YQVhrkVmS+XLEevBzLBpe/Yw12b6XC8MmyGg/Brmv7j8ShFur7fr/N8x74di12rSQK8r/Bj3CA7Jdq0fmg6Zd2v/7yn0+JFw34ohzypVqD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Jjb0j9zf; arc=none smtp.client-ip=209.85.221.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-4f521a22d74so2003843e0c.2
-        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 12:29:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722454196; x=1723058996; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ajHV6NX4xbC0/X/XUlTpJgiJmCRqspyluOYbTikblWw=;
-        b=Jjb0j9zfPcbIFE3sCYvH1EMgGz9A4BHSQnL6mlo3vnmLktVvyJWLeZCIgfwYYh7VRk
-         rPvQHuVVnl+G9uD1z+qVRaRHjYQT7TzgaPY9xu1r5sx8QN/DWnIZ4JtRzzbVVh+KBfzL
-         st6yvYMsy1GjW+gnEZWf5m7QkoYSi7osfbJQZVFTIaSaTa5/ckg2y+FTjGnO9tlxcJUV
-         GnpFcognvzAnJt7k2swAfTA1N5Bwni+budQMKQluMQ1vl5TPa32RvTE4BtQT24YUWR4n
-         VhC7wOn7qgVZAhnC+DsOYmoSHEa0QsjCVS2/m3mGTHmCfUZ7ow+pzxHdV8O+Y5vj4KMo
-         4MIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722454196; x=1723058996;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ajHV6NX4xbC0/X/XUlTpJgiJmCRqspyluOYbTikblWw=;
-        b=kT2D3U+0SI3WgfIpGfh+yBK6q/aaNbtAtFYF0r0+qATDe8qr+GDIbWC08+NfhKNDjS
-         EVJrXh8TlUjX047J8jizOW28DJGZjtOjFwgMormIqX/Ik+gwojF5PbSeO/U+SImlnA7e
-         dZuUVaI8iwEqRkxFUjzS8Iz1Nvb4hLAbArotVgwTrHqaVuadDbSY9AANlYWNz46gly4B
-         8tMQo4N0Qg3lgiJHSYK4IvkhkqIjhzqqo0czWSfam0ve+mAoS/05VcI/C6YE/7Td8Zsz
-         D7ZAAc859j5XHdIjhp+qVeN4Htzdqm2KAtyQvMyBG6JWCbSl5taaEnRNLe5sH+XRRJaD
-         Lfcw==
-X-Gm-Message-State: AOJu0YxSKlWwHQF5KvhWdmcuN6IH/tK8JdDk9kuUuCKUbQ3eQkc+sc66
-	Jq7k0FCHgYZXKgveQ5EBMLFEAt613bvL6JEmQN5n6o/L7eSae0Z822XPuj2pLwXbSjawMSr8dXQ
-	OmYNkydfqENYF7ejA65VDNRBscXtMjih5SgybOw==
-X-Google-Smtp-Source: AGHT+IFGOh29LmDbgQeNaPW8BywZKqEMuxk4LG7u9wPcpkJp43UNZWjn4ROEnmMSCiHxRRMDEiuIuZJG/HI/Hu5JbdQ=
-X-Received: by 2002:a05:6122:3c52:b0:4f5:21fb:5e49 with SMTP id
- 71dfb90a1353d-4f896714753mr489423e0c.14.1722454195700; Wed, 31 Jul 2024
- 12:29:55 -0700 (PDT)
+	s=arc-20240116; t=1722455022; c=relaxed/simple;
+	bh=fyMMWq0FoeH7PUl8TbT0u97X8HOomSa0etdreH5oW0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UACD+jqiJvkIld8HHH1BcSl9o+u0jjjimtIBUiiOaoeOadn6v3u6nbeVVCWS0vn93oCl03PE+j8KhbBID3S9dnhdScyNFtAPS91NGMGgRsqzGP0f6nuPAZbQjwFTwcRBLxWmAwZcpcrOsjIBpeS3twWiq+0eAEwK+G+zds6i2Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+Received: from i53875ac5.versanet.de ([83.135.90.197] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1sZFEN-00075I-7Y; Wed, 31 Jul 2024 21:43:27 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: Lee Jones <lee@kernel.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Dmitrii Osipenko <dmitry.osipenko@collabora.com>,
+ Mark Brown <broonie@kernel.org>, Urja <urja@urja.dev>,
+ linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Sebastian Reichel <sebastian.reichel@collabora.com>, kernel@collabora.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] mfd: rk8xx: Fix shutdown handler
+Date: Wed, 31 Jul 2024 21:43:24 +0200
+Message-ID: <3399645.RL5eaSpR8r@diego>
+In-Reply-To: <20240730180903.81688-1-sebastian.reichel@collabora.com>
+References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731095022.970699670@linuxfoundation.org>
-In-Reply-To: <20240731095022.970699670@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 1 Aug 2024 00:59:43 +0530
-Message-ID: <CA+G9fYsf0tqqUqLsMAZuLhhPVJaJvX7gw7nhdsbScntYVBLMXw@mail.gmail.com>
-Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, 31 Jul 2024 at 15:33, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.10.3 release.
-> There are 809 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 02 Aug 2024 09:47:47 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.10.3-rc3.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Am Dienstag, 30. Juli 2024, 20:05:05 CEST schrieb Sebastian Reichel:
+> When I converted rk808 to device managed resources I converted the rk808
+> specific pm_power_off handler to devm_register_sys_off_handler() using
+> SYS_OFF_MODE_POWER_OFF_PREPARE, which is allowed to sleep. I did this
+> because the driver's poweroff function makes use of regmap and the backend
+> of that might sleep.
+> 
+> But the PMIC poweroff function will kill off the board power and the
+> kernel does some extra steps after the prepare handler. Thus the prepare
+> handler should not be used for the PMIC's poweroff routine. Instead the
+> normal SYS_OFF_MODE_POWER_OFF phase should be used. The old pm_power_off
+> method is also being called from there, so this would have been a
+> cleaner conversion anyways.
+> 
+> But it still makes sense to investigate the sleep handling and check
+> if there are any issues. Apparently the Rockchip and Meson I2C drivers
+> (the only platforms using the PMICs handled by this driver) both have
+> support for atomic transfers and thus may be called from the proper
+> poweroff context.
+> 
+> Things are different on the SPI side. That is so far only used by rk806
+> and that one is only used by Rockchip RK3588. Unfortunately the Rockchip
+> SPI driver does not support atomic transfers. That means using the
+> normal POWER_OFF handler would introduce the following error splash
+> during shutdown on all RK3588 boards currently supported upstream:
+> 
+> [   13.761353] ------------[ cut here ]------------
+> [   13.761764] Voluntary context switch within RCU read-side critical section!
+> [   13.761776] WARNING: CPU: 0 PID: 1 at kernel/rcu/tree_plugin.h:330 rcu_note_context_switch+0x3ac/0x404
+> [   13.763219] Modules linked in:
+> [   13.763498] CPU: 0 UID: 0 PID: 1 Comm: systemd-shutdow Not tainted 6.10.0-12284-g2818a9a19514 #1499
+> [   13.764297] Hardware name: Rockchip RK3588 EVB1 V10 Board (DT)
+> [   13.764812] pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [   13.765427] pc : rcu_note_context_switch+0x3ac/0x404
+> [   13.765871] lr : rcu_note_context_switch+0x3ac/0x404
+> [   13.766314] sp : ffff800084f4b5b0
+> [   13.766609] x29: ffff800084f4b5b0 x28: ffff00040139b800 x27: 00007dfb4439ae80
+> [   13.767245] x26: ffff00040139bc80 x25: 0000000000000000 x24: ffff800082118470
+> [   13.767880] x23: 0000000000000000 x22: ffff000400300000 x21: ffff000400300000
+> [   13.768515] x20: ffff800083a9d600 x19: ffff0004fee48600 x18: fffffffffffed448
+> [   13.769151] x17: 000000040044ffff x16: 005000f2b5503510 x15: 0000000000000048
+> [   13.769787] x14: fffffffffffed490 x13: ffff80008473b3c0 x12: 0000000000000900
+> [   13.770421] x11: 0000000000000300 x10: ffff800084797bc0 x9 : ffff80008473b3c0
+> [   13.771057] x8 : 00000000ffffefff x7 : ffff8000847933c0 x6 : 0000000000000300
+> [   13.771692] x5 : 0000000000000301 x4 : 40000000fffff300 x3 : 0000000000000000
+> [   13.772328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000400300000
+> [   13.772964] Call trace:
+> [   13.773184]  rcu_note_context_switch+0x3ac/0x404
+> [   13.773598]  __schedule+0x94/0xb0c
+> [   13.773907]  schedule+0x34/0x104
+> [   13.774198]  schedule_timeout+0x84/0xfc
+> [   13.774544]  wait_for_completion_timeout+0x78/0x14c
+> [   13.774980]  spi_transfer_one_message+0x588/0x690
+> [   13.775403]  __spi_pump_transfer_message+0x19c/0x4ec
+> [   13.775846]  __spi_sync+0x2a8/0x3c4
+> [   13.776161]  spi_write_then_read+0x120/0x208
+> [   13.776543]  rk806_spi_bus_read+0x54/0x88
+> [   13.776905]  _regmap_raw_read+0xec/0x16c
+> [   13.777257]  _regmap_bus_read+0x44/0x7c
+> [   13.777601]  _regmap_read+0x60/0xd8
+> [   13.777915]  _regmap_update_bits+0xf4/0x13c
+> [   13.778289]  regmap_update_bits_base+0x64/0x98
+> [   13.778686]  rk808_power_off+0x70/0xfc
+> [   13.779024]  sys_off_notify+0x40/0x6c
+> [   13.779356]  atomic_notifier_call_chain+0x60/0x90
+> [   13.779776]  do_kernel_power_off+0x54/0x6c
+> [   13.780146]  machine_power_off+0x18/0x24
+> [   13.780499]  kernel_power_off+0x70/0x7c
+> [   13.780845]  __do_sys_reboot+0x210/0x270
+> [   13.781198]  __arm64_sys_reboot+0x24/0x30
+> [   13.781558]  invoke_syscall+0x48/0x10c
+> [   13.781897]  el0_svc_common+0x3c/0xe8
+> [   13.782228]  do_el0_svc+0x20/0x2c
+> [   13.782528]  el0_svc+0x34/0xd8
+> [   13.782806]  el0t_64_sync_handler+0x120/0x12c
+> [   13.783197]  el0t_64_sync+0x190/0x194
+> [   13.783527] ---[ end trace 0000000000000000 ]---
+> 
+> To avoid this we keep the SYS_OFF_MODE_POWER_OFF_PREPARE handler for the
+> SPI backend. This is not great, but at least avoids regressions and the
+> fix should be small enough to allow backporting.
+> 
+> As a side-effect this also works around a shutdown problem on the Asus
+> C201. For reasons unknown that skips calling the prepare handler and
+> directly calls the final shutdown handler.
+> 
+> Fixes: 4fec8a5a85c49 ("mfd: rk808: Convert to device managed resources")
+> Cc: stable@vger.kernel.org
+> Reported-by: Urja <urja@urja.dev>
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+On a QNAP-TS433:
+Tested-by: Heiko Stuebner <heiko@sntech.de>
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Change itself also looks nice and it definitly helps my qnap-mcu patches.
+Because the mcu needs to turn off its parts before and till now I worked
+around the issue by occupying another priority, while it should simply
+be part of the prepare + default-prio stage, so
 
-## Build
-* kernel: 6.10.3-rc3
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: df6b86a465e839f8a9912c0de79b3c5681d0f1d9
-* git describe: v6.10.2-810-gdf6b86a465e8
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.10.y/build/v6.10=
-.2-810-gdf6b86a465e8
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
 
-## Test Regressions (compared to v6.10.1-30-gbdc32598d900)
 
-## Metric Regressions (compared to v6.10.1-30-gbdc32598d900)
 
-## Test Fixes (compared to v6.10.1-30-gbdc32598d900)
+> ---
+>  drivers/mfd/rk8xx-core.c  | 15 +++++++++++++--
+>  drivers/mfd/rk8xx-i2c.c   |  2 +-
+>  drivers/mfd/rk8xx-spi.c   |  2 +-
+>  include/linux/mfd/rk808.h |  2 +-
+>  4 files changed, 16 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/mfd/rk8xx-core.c b/drivers/mfd/rk8xx-core.c
+> index 5eda3c0dbbdf..757ef8181328 100644
+> --- a/drivers/mfd/rk8xx-core.c
+> +++ b/drivers/mfd/rk8xx-core.c
+> @@ -692,10 +692,11 @@ void rk8xx_shutdown(struct device *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(rk8xx_shutdown);
+>  
+> -int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap *regmap)
+> +int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap *regmap, bool is_spi)
+>  {
+>  	struct rk808 *rk808;
+>  	const struct rk808_reg_data *pre_init_reg;
+> +	enum sys_off_mode pwr_off_mode = SYS_OFF_MODE_POWER_OFF;
+>  	const struct mfd_cell *cells;
+>  	int dual_support = 0;
+>  	int nr_pre_init_regs;
+> @@ -785,10 +786,20 @@ int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap
+>  	if (ret)
+>  		return dev_err_probe(dev, ret, "failed to add MFD devices\n");
+>  
+> +	/*
+> +	 * Currently the Rockchip SPI driver always sleeps when doing SPI
+> +	 * transfers. This is not allowed in the SYS_OFF_MODE_POWER_OFF
+> +	 * handler, so we are using the prepare handler as a workaround.
+> +	 * This should be removed once the Rockchip SPI driver has been
+> +	 * adapted.
+> +	 */
+> +	if (is_spi)
+> +		pwr_off_mode = SYS_OFF_MODE_POWER_OFF_PREPARE;
+> +
+>  	if (device_property_read_bool(dev, "rockchip,system-power-controller") ||
+>  	    device_property_read_bool(dev, "system-power-controller")) {
+>  		ret = devm_register_sys_off_handler(dev,
+> -				    SYS_OFF_MODE_POWER_OFF_PREPARE, SYS_OFF_PRIO_HIGH,
+> +				    pwr_off_mode, SYS_OFF_PRIO_HIGH,
+>  				    &rk808_power_off, rk808);
+>  		if (ret)
+>  			return dev_err_probe(dev, ret,
+> diff --git a/drivers/mfd/rk8xx-i2c.c b/drivers/mfd/rk8xx-i2c.c
+> index 69a6b297d723..a2029decd654 100644
+> --- a/drivers/mfd/rk8xx-i2c.c
+> +++ b/drivers/mfd/rk8xx-i2c.c
+> @@ -189,7 +189,7 @@ static int rk8xx_i2c_probe(struct i2c_client *client)
+>  		return dev_err_probe(&client->dev, PTR_ERR(regmap),
+>  				     "regmap initialization failed\n");
+>  
+> -	return rk8xx_probe(&client->dev, data->variant, client->irq, regmap);
+> +	return rk8xx_probe(&client->dev, data->variant, client->irq, regmap, false);
+>  }
+>  
+>  static void rk8xx_i2c_shutdown(struct i2c_client *client)
+> diff --git a/drivers/mfd/rk8xx-spi.c b/drivers/mfd/rk8xx-spi.c
+> index 3405fb82ff9f..20f9428f94bb 100644
+> --- a/drivers/mfd/rk8xx-spi.c
+> +++ b/drivers/mfd/rk8xx-spi.c
+> @@ -94,7 +94,7 @@ static int rk8xx_spi_probe(struct spi_device *spi)
+>  		return dev_err_probe(&spi->dev, PTR_ERR(regmap),
+>  				     "Failed to init regmap\n");
+>  
+> -	return rk8xx_probe(&spi->dev, RK806_ID, spi->irq, regmap);
+> +	return rk8xx_probe(&spi->dev, RK806_ID, spi->irq, regmap, true);
+>  }
+>  
+>  static const struct of_device_id rk8xx_spi_of_match[] = {
+> diff --git a/include/linux/mfd/rk808.h b/include/linux/mfd/rk808.h
+> index 69cbea78b430..be15b84cff9e 100644
+> --- a/include/linux/mfd/rk808.h
+> +++ b/include/linux/mfd/rk808.h
+> @@ -1349,7 +1349,7 @@ struct rk808 {
+>  };
+>  
+>  void rk8xx_shutdown(struct device *dev);
+> -int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap *regmap);
+> +int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap *regmap, bool is_spi);
+>  int rk8xx_suspend(struct device *dev);
+>  int rk8xx_resume(struct device *dev);
+>  
+> 
 
-## Metric Fixes (compared to v6.10.1-30-gbdc32598d900)
 
-## Test result summary
-total: 418796, pass: 365615, fail: 6357, skip: 46059, xfail: 765
 
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 254 total, 254 passed, 0 failed
-* arm64: 72 total, 72 passed, 0 failed
-* i386: 54 total, 54 passed, 0 failed
-* mips: 48 total, 48 passed, 0 failed
-* parisc: 6 total, 6 passed, 0 failed
-* powerpc: 68 total, 68 passed, 0 failed
-* riscv: 34 total, 34 passed, 0 failed
-* s390: 24 total, 24 passed, 0 failed
-* sh: 20 total, 20 passed, 0 failed
-* sparc: 12 total, 12 passed, 0 failed
-* x86_64: 62 total, 62 passed, 0 failed
 
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
