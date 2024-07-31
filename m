@@ -1,204 +1,139 @@
-Return-Path: <stable+bounces-64728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FCD9429B7
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 10:55:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C159429D6
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B53B828498A
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 08:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D34F01C21435
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD6A1A8BF2;
-	Wed, 31 Jul 2024 08:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77191A7F7C;
+	Wed, 31 Jul 2024 09:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="vjwe8mSv";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PJAcPdRB"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="kK7J7VAe"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487431A6166;
-	Wed, 31 Jul 2024 08:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95FD1CF93;
+	Wed, 31 Jul 2024 09:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722416122; cv=none; b=cssGWK4oJeNzCQ1Cng91OS7gVzz/Y8aBQY+RaGnmA28UOtis+MHs7OPeJmANYgtbAbkkShyxl0cQqXYD2hbJjl9pjHCDs+Ma7uewDaGtHDzDk/j0aF/i+B/MxtWTtpwThFdxpstYPzTeLQ7Gpr/H/Ptf3KtotGkKWucxyNx3pXE=
+	t=1722416552; cv=none; b=q0HYst0TgUFbRpM8q/Tcdum3nyYDyScOIQiYKxvTjHIWYzBG/ArMDB9KIFoyKeZnQqJEnSMnMUZUhUfaMV8mVzAfZvxH6cZcmnHdFC1hRuoSXldJptsdS4w5jyh2vkAZ08+cR5Uo6QdCYgM4YwU+FNOz1Z5X+JEL9mLlucnQtWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722416122; c=relaxed/simple;
-	bh=8NDiRi+10y1SIiwdA08fsiT9dMy1pZL4V0pvzaA2upM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tExvviyNQ5JsRSRWUy8nAnuTW7NYYYZsKqP5hr2K7aA730wCGtdh0b+1xGKqEQOcMxmD54ZOjflkDb5orUFCCIsKGkv6hnTynmTeqVUDAzoWSbIcrv4NnadFHBfuoDFeBak2bLZJJQ+NZcvO7/C4P3l2vwRlN0kuIwCnHaiW2fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=vjwe8mSv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PJAcPdRB; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 413BF1146E77;
-	Wed, 31 Jul 2024 04:55:18 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Wed, 31 Jul 2024 04:55:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1722416118; x=
-	1722502518; bh=vMA1vQSN5FVF2YHU0BsfEBv1ul6npqCvlOna7cdXU68=; b=v
-	jwe8mSv0zUGv4/spZMeApZen8UkYHRlA8UBwdkjwctoKNuN/887G4GFOX/uCMfEF
-	+Y+C63ZPqGql4AaNDdwaPjvJb5Arv/tzF9imYrIjfLU7bIz8dlme8AIgQYyueVHT
-	69VF3K4yoWfB290FHsBqWbYD+IOzMUMUs5Jyyz6vnCHGZevNrNCbyH/ug6abD0mo
-	fxb8+PmOiXtORHWoUyXSBsTWa+svEO2HrKQ84PtqE6ey8wI5Zo9wveHVp6hpNvlX
-	rxLzNqKHzMKWgLLE5yAAlAx+X3n8UlBZHcFwptK19NCnKDvk2Yx62ZnL3nEYPGNo
-	t1UpBC1ie5z0kixF9mfGg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1722416118; x=1722502518; bh=vMA1vQSN5FVF2YHU0BsfEBv1ul6n
-	pqCvlOna7cdXU68=; b=PJAcPdRBhmPdTUwxnWmSXdcRfVnUHmouVeGK3Q+CD6jw
-	D/INn9D67J0Vd1DPVrW4/Fqfbq9j94yI9LpND4LwF2uCwXP7txH5m0i52XXWu4GQ
-	u48Cp+0yjVWjp2k6DIDOE1hZ236LhZSCB3u72rlAUtloL8E3tRHbRfjnqsk6rkSe
-	B+pFyCZ9QvOkQHhUKJOddWs02+mw/TdJC3WzDc+RIl15fBRec6wVNRrFvV/odqCB
-	B+moTNe4XOrfvH1DtFwDgEezj3x75bEoqWdN3IO0ZDT3CSAA6hZoyMFx7kCw7luS
-	jJ3c2NZ3tqynspQqmoJy1iXzYP2a9UcP5BtJtfgTlw==
-X-ME-Sender: <xms:9vupZpugOml6e-n6jUR5ZHq4_nYeaAD3gFntlVAvBPyA_Rs0NSXEaw>
-    <xme:9vupZifAGzu-ToorjKNDGV8UPhd9dMSE9x4yNmfvAGSmDWE9cG5yG7WkvL3gys-kb
-    9Z-6NXDI96aFNGP6wA>
-X-ME-Received: <xmr:9vupZswyyAbUXCSf_qp-u_j3pWQFFtViodkXYEWyWBtpL5IhGpM6wAedqaCp-QN_BYOXrBbtdbZgR9ASwJRt8bJQDRqlb-YRsBZi>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrjeeigddutdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefvrghkrghs
-    hhhiucfurghkrghmohhtohcuoehoqdhtrghkrghshhhisehsrghkrghmohgttghhihdrjh
-    hpqeenucggtffrrghtthgvrhhnpeevieelhfdukeffheekffduudevvdefudelleefgeei
-    leejheejuedvgefhteevvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepohdqthgrkhgrshhh
-    ihesshgrkhgrmhhotggthhhirdhjphdpnhgspghrtghpthhtoheptd
-X-ME-Proxy: <xmx:9vupZgNV1MHx1mQds3-bI0YN9YmPNq4w9Rhl0gA0mv4sUP-oNI59Dw>
-    <xmx:9vupZp-o0IBuwb5l-8pOYovM59Ti7W0WCoj0Ev3gzd6mOYI8RANfhA>
-    <xmx:9vupZgVC0SUJCRXaMgKgz-RutyMANAiagjNIUe7SRUtLl79pGGZttA>
-    <xmx:9vupZqcro8ARq1ervbWOEsrXcZ9kUQ9e_gcJac_fOhT-hrTBLtODSA>
-    <xmx:9vupZskm9tid2OVvRMc9J9gpR1yCioPVACDDTwQZpaB1ZVhmtYJ8Lb-X>
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 Jul 2024 04:55:16 -0400 (EDT)
-Date: Wed, 31 Jul 2024 17:55:14 +0900
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: Edmund Raile <edmund.raile@protonmail.com>
-Cc: tiwai@suse.com, alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] ALSA: firewire-lib: restore process context
- workqueue to prevent deadlock
-Message-ID: <20240731085514.GA215770@workstation.local>
-Mail-Followup-To: Edmund Raile <edmund.raile@protonmail.com>,
-	tiwai@suse.com, alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org, stable@vger.kernel.org
-References: <20240730195318.869840-1-edmund.raile@protonmail.com>
+	s=arc-20240116; t=1722416552; c=relaxed/simple;
+	bh=AB2p6wGJjXid3HdQ0XFK5dg77scNWUczy0gxuj1MWjU=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=oHOknmiDRQxwMMaDt776FrHG+hm7rkBRxSuDjkJh/TmGAhyk5yt8sFGQudqg5n8rb6igdqBlkW0PBsb2bPsG0KQqOTFRNKC2t3p1gHJ/93RkxR1fuKvEkCgrug3AtsYx2V/LwHw9b8YNvAiqW2pyykrjASPTP5lqgv3LtJknB6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=kK7J7VAe; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (cpc89244-aztw30-2-0-cust6594.18-1.cable.virginm.net [86.31.185.195])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BE54C842;
+	Wed, 31 Jul 2024 11:01:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1722416500;
+	bh=AB2p6wGJjXid3HdQ0XFK5dg77scNWUczy0gxuj1MWjU=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=kK7J7VAeYxjrX8yUi76juI/Y+cxD45n9oJxi6ywK8xvW1++5xbyBwxcs3AlROGNvN
+	 kuk37VO6B4LtHK44FZo5fWewQVVuQB1kgI8bNQsHI2WrhaxL/+yOEMfoWs84TqeYRR
+	 WZ3xY+PmnCDG351Rd6FuEIUnyQtQv4CGlXQeyaIc=
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730195318.869840-1-edmund.raile@protonmail.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <cefc0b19-f065-4023-a536-56b2762ac967@ideasonboard.com>
+References: <20240729110437.199428-1-umang.jain@ideasonboard.com> <20240729110437.199428-3-umang.jain@ideasonboard.com> <ef05c39a-ad5c-4751-a758-f73a2d114823@kernel.org> <ZqijVf68ZQuFGKhU@kekkonen.localdomain> <729280cd-557f-43ba-b1a6-8d319977ca82@kernel.org> <20240730091011.GL300@pendragon.ideasonboard.com> <cefc0b19-f065-4023-a536-56b2762ac967@ideasonboard.com>
+Subject: Re: [PATCH v2 2/2] media: imx335: Fix reset-gpio handling
+From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, stable@vger.kernel.org, Tommaso Merciai <tomm.merciai@gmail.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Umang Jain <umang.jain@ideasonboard.com>
+Date: Wed, 31 Jul 2024 10:02:25 +0100
+Message-ID: <172241654546.392292.16164306008596010671@ping.linuxembedded.co.uk>
+User-Agent: alot/0.10
 
-Hi,
+Quoting Umang Jain (2024-07-31 06:41:35)
+> Hi all,
+>=20
+> On 30/07/24 2:40 pm, Laurent Pinchart wrote:
+> > On Tue, Jul 30, 2024 at 10:42:01AM +0200, Krzysztof Kozlowski wrote:
+> >> On 30/07/2024 10:24, Sakari Ailus wrote:
+> >>> Hi Krzysztof,
+> >>>
+> >>> On Mon, Jul 29, 2024 at 04:09:39PM +0200, Krzysztof Kozlowski wrote:
+> >>>> On 29/07/2024 13:04, Umang Jain wrote:
+> >>>>> Rectify the logical value of reset-gpio so that it is set to
+> >>>>> 0 (disabled) during power-on and to 1 (enabled) during power-off.
+> >>>>>
+> >>>>> Meanwhile at it, set the reset-gpio to GPIO_OUT_HIGH at initializat=
+ion
+> >>>>> time to make sure it starts off in reset.
+> >>>>>
+> >>>>> Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
+> >>>>> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+> >>>>> ---
+> >>>>>   drivers/media/i2c/imx335.c | 8 ++++----
+> >>>>>   1 file changed, 4 insertions(+), 4 deletions(-)
+> >>>>>
+> >>>> This will break all the users, so no. At least not without mentioning
+> >>>> ABI break and some sort of investigating how customers or users are
+> >>>> affected.
+> >>> I know the original authors aren't using the driver anymore and it to=
+ok
+> >>> quite a bit of time until others started to contribute to it so I sus=
+pect
+> >>> the driver hasn't been in use for that long. There are no instances o=
+f the
+> >>> device in the in-kernel DTS either.
+> >>>
+> >>> Any DTS author should have also noticed the issue but of course there=
+'s a
+> >>> risk someone could have just changed the polarity and not bothered to=
+ chech
+> >>> what it was supposed to be.
+> >>>
+> >>> I agree the commit message should be more vocal about the effects on
+> >>> existing DTS.
+> >> I can imagine that all users (out of tree, in this case) inverted
+> >> polarity in DTS based on what's implemented. You could go with some
+> >> trivial hack, like I did for one of codecs - see 738455858a2d ("ASoC:
+> >> codecs: wsa881x: Use proper shutdown GPIO polarity"), but I remember
+> >> Mark Brown rejected similar commit for newer drivers.
+> > I don't think there's any out-of-tree user, because when we started
+> > using the recently driver, it required lots of fixes to even work at
+> > all. I'll let Kieran and Umang comment on that, I haven't follow the
+> > development in details.
+>=20
+> indeed, initially we had to put up fixes like :
+>=20
+> 14a60786d72e ("media: imx335: Set reserved register to default value")
+> 81495a59baeba ("media: imx335: Fix active area height discrepency")
+>=20
+> to make the sensor work properly on our platforms. Only after that we=20
+> had a base to support more capabilities on the sensor (multiple lanes=20
+> support, flips, TPG etc.)
 
-On Tue, Jul 30, 2024 at 07:53:23PM +0000, Edmund Raile wrote:
-> This patchset serves to prevent an AB/BA deadlock:
-> 
-> thread 0:
->     * (lock A) acquire substream lock by
-> 	snd_pcm_stream_lock_irq() in
-> 	snd_pcm_status64()
->     * (lock B) wait for tasklet to finish by calling
->     	tasklet_unlock_spin_wait() in
-> 	tasklet_disable_in_atomic() in
-> 	ohci_flush_iso_completions() of ohci.c
-> 
-> thread 1:
->     * (lock B) enter tasklet
->     * (lock A) attempt to acquire substream lock,
->     	waiting for it to be released:
-> 	snd_pcm_stream_lock_irqsave() in
->     	snd_pcm_period_elapsed() in
-> 	update_pcm_pointers() in
-> 	process_ctx_payloads() in
-> 	process_rx_packets() of amdtp-stream.c
-> 
-> ? tasklet_unlock_spin_wait
->  </NMI>
->  <TASK>
-> ohci_flush_iso_completions firewire_ohci
-> amdtp_domain_stream_pcm_pointer snd_firewire_lib
-> snd_pcm_update_hw_ptr0 snd_pcm
-> snd_pcm_status64 snd_pcm
-> 
-> ? native_queued_spin_lock_slowpath
->  </NMI>
->  <IRQ>
-> _raw_spin_lock_irqsave
-> snd_pcm_period_elapsed snd_pcm
-> process_rx_packets snd_firewire_lib
-> irq_target_callback snd_firewire_lib
-> handle_it_packet firewire_ohci
-> context_tasklet firewire_ohci
-> 
-> The issue has been reported as a regression of kernel 5.14:
-> Link: https://lore.kernel.org/regressions/kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76hzeo4simnl@jn3eo7pe642q/T/#u
-> ("[REGRESSION] ALSA: firewire-lib: snd_pcm_period_elapsed deadlock
-> with Fireface 800")
-> 
-> Commit 7ba5ca32fe6e ("ALSA: firewire-lib: operate for period elapse event
-> in process context") removed the process context workqueue from
-> amdtp_domain_stream_pcm_pointer() and update_pcm_pointers() to remove
-> its overhead.
-> Commit b5b519965c4c ("ALSA: firewire-lib: obsolete workqueue for period
-> update") belongs to the same patch series and removed
-> the now-unused workqueue entirely.
-> 
-> Though being observed on RME Fireface 800, this issue would affect all
-> Firewire audio interfaces using ohci amdtp + pcm streaming.
-> 
-> ALSA streaming, especially under intensive CPU load will reveal this issue
-> the soonest due to issuing more hardIRQs, with time to occurrence ranging
-> from 2 secons to 30 minutes after starting playback.
-> 
-> to reproduce the issue:
-> direct ALSA playback to the device:
->   mpv --audio-device=alsa/sysdefault:CARD=Fireface800 Spor-Ignition.flac
-> Time to occurrence: 2s to 30m
-> Likelihood increased by:
->   - high CPU load
->     stress --cpu $(nproc)
->   - switching between applications via workspaces
->     tested with i915 in Xfce
-> PulsaAudio / PipeWire conceal the issue as they run PCM substream
-> without period wakeup mode, issuing less hardIRQs.
-> 
-> Cc: stable@vger.kernel.org
-> Backport note:
-> Also applies to and fixes on (tested):
-> 6.10.2, 6.9.12, 6.6.43, 6.1.102, 5.15.164
-> 
-> Edmund Raile (2):
->   Revert "ALSA: firewire-lib: obsolete workqueue for period update"
->   Revert "ALSA: firewire-lib: operate for period elapse event in process
->     context"
-> 
->  sound/firewire/amdtp-stream.c | 38 ++++++++++++++++++++++-------------
->  sound/firewire/amdtp-stream.h |  1 +
->  2 files changed, 25 insertions(+), 14 deletions(-)
+I would also add that we had to provide control for the regulators to be
+able to power the device as well in fea91ee73b7c ("media: i2c: imx335:
+Enable regulator supplies").
 
-They look good to me.
+Given the driver was posted from Intel, I would have anticipated perhaps
+the driver was in fact only actually tested by Intel on ACPI platforms -
+yet with no ACPI table registered in the driver - even that could likely
+be considered broken.
 
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Based on that I have a high confidence that there are no current users
+of this driver (except us).
 
-I appreciate your long effort to solve the issue.
-
-
-Thanks
-
-Takashi Sakamoto
+Umang, I see we need an updated patch with commit message to cover this,
+please consider the above to add in there too.
+--
+Kieran
 
