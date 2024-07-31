@@ -1,121 +1,153 @@
-Return-Path: <stable+bounces-64701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F21A942623
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 08:07:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064929426C5
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 08:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C23E3B21F90
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 06:07:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6075281DA5
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 06:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA93130E4A;
-	Wed, 31 Jul 2024 06:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D821607BA;
+	Wed, 31 Jul 2024 06:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2SlwS+j"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IKNWu+Ib"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E0A12CD8B;
-	Wed, 31 Jul 2024 06:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5E2946F;
+	Wed, 31 Jul 2024 06:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722406043; cv=none; b=qnfOzu6DJR06g5H71t5/Ua+rgiIZSykbRlKZpdg2jVFZwKVvJfCfAwe3248Hf8LLYGZKJVgaMhDM7acmpW0jSaKt8dqeWbbF7pRYIFzJoZ5zZsKfxgAtihALVl9hLJGJKN1uy2GWjIP0XpDXLgdaQDwe7/nCTYy0aaPFKAeMps0=
+	t=1722407441; cv=none; b=t2aBmHuJyuVvi4leFJFcA34kI48aksx1H4527eL/DzzjYyQdzkB9dpON4knE3TfHYUVDGdzBIoTD0GYkmgXdycmUE0EnHiQroZK1lCJrk2HT+vIBnoO/hMuDp8OlRsSpi23jWzUcgC9CSLDTbnCIbY03sVKgdL2SNnsLr1G0i6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722406043; c=relaxed/simple;
-	bh=m9H/vZfzxCiO48tSjGipkOtUHTQ4Uyip2hjeMCtMCqA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pgu8BN6q3DgmGm/XYLeme7fAGHEZlhhuh36OKHnPthiHF2rsXuGt2Dg3ZlklUKf8vbEW8vEvt2Ms9QOvBVrkPAYn4s2cu8Ga29dnypGpYzOCZFi9mfq37jJDGpCEQwm6Tu0jLDw4TQtsj5rH0eQ3X4MVX09Dy9DpdoEAgR6QaZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2SlwS+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4098C116B1;
-	Wed, 31 Jul 2024 06:07:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722406043;
-	bh=m9H/vZfzxCiO48tSjGipkOtUHTQ4Uyip2hjeMCtMCqA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c2SlwS+jpaXWYY091/o+2qnnDX4Um8yrPpS0AxL6ubKIuQ0cQwIiApldEOTv73GWb
-	 mPYhI6Jem8oVooUxH9sskfBfN3aNL9B4XURjDukQLAkNUtQQW0P8OgWHL/5R0Tb8It
-	 McfeN3sdfN0cNK0OCyS2ibT0Xq+9lSKc3aqthJeA=
-Date: Wed, 31 Jul 2024 08:07:15 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Frank Scheiner <frank.scheiner@web.de>
-Cc: akpm@linux-foundation.org, allen.lkml@gmail.com, broonie@kernel.org,
-	conor@kernel.org, f.fainelli@gmail.com, jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org, linux@roeck-us.net,
-	lkft-triage@lists.linaro.org, patches@kernelci.org,
-	patches@lists.linux.dev, pavel@denx.de, rwarsow@gmx.de,
-	shuah@kernel.org, srw@sladewatkins.net, stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com, torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.1 000/440] 6.1.103-rc1 review
-Message-ID: <2024073137-scouting-wooing-ec33@gregkh>
-References: <20240730151615.753688326@linuxfoundation.org>
- <de6f52bb-c670-4e03-9ce1-b4ee9b981686@web.de>
+	s=arc-20240116; t=1722407441; c=relaxed/simple;
+	bh=VoZzbEbuygW6Y1XpQzhisNfDVfNbaJsOtSIPT4inSSk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=poXDVmy80y/kceDee1dSfKkSh8hOsgiDfUwIAQ5BTxu8S71p1KzVQBg/Zp3cuFtYd+dGKs9C0nKwBSYOVH8fA0O684nVR8KHnlpXD2L5t9ozujBU8t6f/5bwiflontH/WtnaUFqCjLJ6xV36K/hTCo9YmpQ5g7Uow2HWdlHjLN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IKNWu+Ib; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46V5sfJN002730;
+	Wed, 31 Jul 2024 06:30:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=cKkOfFRtG2bqlHV27qO/MP
+	E9anCpMPKWRTVkSmCEDPo=; b=IKNWu+IbSCDbVq8NKvT5ChCWRhJa9l+SC0r7HX
+	H2Abstd5wnjHJjm6Pz7GSmYTxYv0iVRvdaQNQ98E7J37KUvFoS87bj2QrjXomYn7
+	uFByQO3IaggSFSX4iVHYuoJ0Dbkpb3J1KNkBJJ0IeaIze9ckdIw/bryVQNwUcyXb
+	PntvJeAAbpQ0mFAjqgEi9rmuviTGJiAw7Bbd76nVnwOlKj2uRRZzsl0LEGiXR5Q3
+	JHE6oqCIrNQrPUdkiwyMil9aQUs7q2vvkAxLKtQ7I9IToIKQBcPNp4b8ueJ47aqV
+	UBSqgv+ngXf1GrCF/ChEx46lR+v4JEeO0wcviA0ltgUM+ADQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40mqw7a47x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jul 2024 06:30:07 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46V6U5ii032672
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 31 Jul 2024 06:30:05 GMT
+Received: from hu-skakitap-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 30 Jul 2024 23:29:59 -0700
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Abhishek Sahu <absahu@codeaurora.org>,
+        "Rob
+ Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+CC: Stephen Boyd <sboyd@codeaurora.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, Ajit Pandey <quic_ajipan@quicinc.com>,
+        "Imran
+ Shaik" <quic_imrashai@quicinc.com>,
+        Taniya Das <quic_tdas@quicinc.com>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>, <stable@vger.kernel.org>,
+        "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        Bryan O'Donoghue
+	<bryan.odonoghue@linaro.org>,
+        Satya Priya Kakitapalli
+	<quic_skakitap@quicinc.com>
+Subject: [PATCH V3 0/8] Add camera clock controller support for SM8150
+Date: Wed, 31 Jul 2024 11:59:08 +0530
+Message-ID: <20240731062916.2680823-1-quic_skakitap@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de6f52bb-c670-4e03-9ce1-b4ee9b981686@web.de>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 0Ar3fT9FMecVPCpFyLz9coPLdi-dQtai
+X-Proofpoint-GUID: 0Ar3fT9FMecVPCpFyLz9coPLdi-dQtai
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-31_03,2024-07-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 spamscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1011 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407310047
 
-On Wed, Jul 31, 2024 at 01:24:25AM +0200, Frank Scheiner wrote:
-> Dear Greg,
-> 
-> 6259151c04d4e0085e00d2dcb471ebdd1778e72e from mainline is missing in
-> 6.1.103-rc1 and completes 39823b47bbd40502632ffba90ebb34fff7c8b5e8.
-> 
-> Please note that the second hunk from 6259151 needs to be modified to
-> cleanly apply to 6.1.103-rc1. Example on [1].
-> 
-> [1]:
-> https://github.com/linux-ia64/linux-stable-rc/blob/__mirror/patches/linux-6.1.y/6259151c04d4e0085e00d2dcb471ebdd1778e72e.patch
-> 
-> ****
-> 
-> ## Long version ##
-> 
-> This patch series breaks operation of the hp-sim kernel in ski. I think
-> it happens when trying to access the ext4 root FS in the simulation, see
-> for example [2] for more details.
-> 
-> [2]: https://github.com/linux-ia64/linux-stable-rc/issues/3
-> 
-> From the call trace:
-> ```
-> [...]
-> [<a0000001000263f0>] die+0x1b0/0x3e0
-> [<a00000010004bd40>] ia64_do_page_fault+0x680/0x9c0
-> [<a00000010000c4e0>] ia64_leave_kernel+0x0/0x280
-> [<a00000010063f6a0>] dd_limit_depth+0x80/0x140
-> [...]
-> ```
-> 
-> ...I tracked it down to [3] and following the linked discussion ([4]),
-> this is actually patch 2 of 2. And 1 of 2 ([5]) is in upstream, but not
-> in 6.1.103-rc1.
-> 
-> [3]:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=39823b47bbd40502632ffba90ebb34fff7c8b5e8
-> 
-> [4]: https://lore.kernel.org/all/20240509170149.7639-3-bvanassche@acm.org/
-> 
-> [5]:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6259151c04d4e0085e00d2dcb471ebdd1778e72e
-> 
-> Applying that patch ([5]) (plus adapting hunk #2 of it) on top of
-> 6.1.103-rc1 fixes it for me ([6]).
-> 
-> [6]:
-> https://github.com/linux-ia64/linux-stable-rc/actions/runs/10170700172#summary-28130632329
+Add camcc support and Regera PLL ops. Also, fix the pll post div mask.
 
-Thanks for this, I'll just drop the original offending commit here as
-that seems like the simplest way.  If these really need to be in the
-6.1.y tree, I'll be glad to take a backported series that people have
-tested to verify it all works properly.
+Changes in V3:
+ - Split the fixes into separate patches, remove RETAIN_FF flag for
+   gdscs and document the BIT(15) of pll alpha value.
+ - Link to v2: https://lore.kernel.org/all/20240702-camcc-support-sm8150-v2-1-4baf54ec7333@quicinc.com
 
-greg k-h
+Changes in v2:
+ - As per Konrad's comments, re-use the zonda pll code for regera, as
+   both are mostly same.
+ - Fix the zonda_set_rate API and also the pll_post_div shift used in
+   trion pll post div set rate API
+ - Link to v1: https://lore.kernel.org/r/20240229-camcc-support-sm8150-v1-0-8c28c6c87990@quicinc.com
+
+
+Satya Priya Kakitapalli (7):
+  clk: qcom: clk-alpha-pll: Fix the pll post div mask
+  clk: qcom: clk-alpha-pll: Fix the trion pll postdiv set rate API
+  clk: qcom: clk-alpha-pll: Fix zonda set_rate failure when PLL is
+    disabled
+  clk: qcom: clk-alpha-pll: Update set_rate for Zonda PLL
+  dt-bindings: clock: qcom: Add SM8150 camera clock controller
+  clk: qcom: Add camera clock controller driver for SM8150
+  arm64: dts: qcom: Add camera clock controller for sm8150
+
+Taniya Das (1):
+  clk: qcom: clk-alpha-pll: Add support for Regera PLL ops
+
+ .../bindings/clock/qcom,sm8150-camcc.yaml     |   77 +
+ arch/arm64/boot/dts/qcom/sa8155p.dtsi         |    4 +
+ arch/arm64/boot/dts/qcom/sm8150.dtsi          |   13 +
+ drivers/clk/qcom/Kconfig                      |    9 +
+ drivers/clk/qcom/Makefile                     |    1 +
+ drivers/clk/qcom/camcc-sm8150.c               | 2159 +++++++++++++++++
+ drivers/clk/qcom/clk-alpha-pll.c              |   57 +-
+ drivers/clk/qcom/clk-alpha-pll.h              |    5 +
+ include/dt-bindings/clock/qcom,sm8150-camcc.h |  135 ++
+ 9 files changed, 2456 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/qcom,sm8150-camcc.yaml
+ create mode 100644 drivers/clk/qcom/camcc-sm8150.c
+ create mode 100644 include/dt-bindings/clock/qcom,sm8150-camcc.h
+
+-- 
+2.25.1
+
 
