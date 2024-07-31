@@ -1,165 +1,86 @@
-Return-Path: <stable+bounces-64737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2283942B0A
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:45:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EB7942B3D
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BCE31F21C48
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:45:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC1D1F25ACB
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DED21AD3FD;
-	Wed, 31 Jul 2024 09:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24F61A7F7B;
+	Wed, 31 Jul 2024 09:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="b62FzbIZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VMYX3VUw"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DB41AD3E9;
-	Wed, 31 Jul 2024 09:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2DD2E62B
+	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 09:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722418770; cv=none; b=qhf8MQxFRl1O3bpgPBUe2sF7C5iLGYtsMv+0SNi8JeKUxz8TPOURQzrrT8WRwcdgKyDEZo1khFOZMxcwi4Is+gzd2d1QqS28utWegL3Ld4AsxzAUHDUAQVxuZBjnORERVyhDUJl1A8rf7Et9kSuXg5UZGhmVhQkfn4jUR/7Oo9A=
+	t=1722419407; cv=none; b=i8dtfgsVpKDtWzTq2hbFqsOfVnBRj0s0d9zhu3m1O12cqry7F620kmH+v4vi7FnhjTyL+XXC1CDhBuLhI8HQh4h2345+ILtgs2MinYKC78nlg/INSJBQChZozSLxMD1HO0EEXzXsP8Wpx87HtO6HcmczPMCimq9TXwpO1cvfqio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722418770; c=relaxed/simple;
-	bh=5ujX0aXhjVcZ++VxQ8+WAlrI00TCumU0UQ1Quewl8ak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=orSe5XvzQqAKuoEaXVZgar0G0YbjypLl2PGmEDwxOMFGTAgamByhkXPJzTQ50Lxg3t5fOAq73+B7VX5JoLACu9MXBH/1BG1hiEskRd1HvABM526Dlj2PWWGFR4FvAXljpYtxDP038wkLajIQrlPVsYZZCYt7wcQaCp76iOIGqRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=b62FzbIZ; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DB937842;
-	Wed, 31 Jul 2024 11:38:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1722418718;
-	bh=5ujX0aXhjVcZ++VxQ8+WAlrI00TCumU0UQ1Quewl8ak=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b62FzbIZ1u9S0HjFk6UpU3LKK+ylkau7CgrV1lc0vzgMCTub5jg8+JXojuddkHcQP
-	 /BYw+26Bvz1HzP284yoQoLBziBHVGcNdm8naBkc/sKf2pjl+BE81N+6/qGQGJpUecc
-	 nOQFzcY5TiSTnDIiKfCQN/HZF1gYGGEJe60ErD4Y=
-Date: Wed, 31 Jul 2024 12:39:05 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-media@vger.kernel.org, stable@vger.kernel.org,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Subject: Re: [PATCH v2 2/2] media: imx335: Fix reset-gpio handling
-Message-ID: <20240731093905.GQ8146@pendragon.ideasonboard.com>
-References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
- <20240729110437.199428-3-umang.jain@ideasonboard.com>
- <ef05c39a-ad5c-4751-a758-f73a2d114823@kernel.org>
- <ZqijVf68ZQuFGKhU@kekkonen.localdomain>
- <729280cd-557f-43ba-b1a6-8d319977ca82@kernel.org>
- <20240730091011.GL300@pendragon.ideasonboard.com>
- <cefc0b19-f065-4023-a536-56b2762ac967@ideasonboard.com>
- <172241654546.392292.16164306008596010671@ping.linuxembedded.co.uk>
- <c4f697d7-16a0-46d2-be34-45f6a8efaec8@kernel.org>
+	s=arc-20240116; t=1722419407; c=relaxed/simple;
+	bh=TdambeWN8mEW8xNOTUJ4HyHJdaU9zUZOdPUICdRRuOM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=ZyErJr065cdCsHIpm5SqQDb8qzUb8lusVPZn4mn9CuBPIOOdOaRKgat31H+e7BjpDajiDQ08qt1qjiI1wE49CgCEzCz0Oh1bUCuHksY75L7Ed0VZ1Qj+a+GoGfbUWM/oGpZ5CVGq79TxZM7FwLnY6ljjHcleynu79aExpc/tIPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VMYX3VUw; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso516476866b.0
+        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 02:50:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722419404; x=1723024204; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JUs5+7tDQ6c4YCsH01ZcbUFpSrnJ5OsqAqUSMK+9qCY=;
+        b=VMYX3VUwH+Ml2rv9LhGnX/xMArTYvDSsLLTBTP+AftAYjNHoL3crdNbLqGCHZvPox7
+         wekHsjEf0yEFjsTmmGe0HMSWygGTZlgv519JXDg2bKtHcW99TiYMzDToyzYTlwRZSiZQ
+         MKhbtTNSqVGofFYvxhZXgkSiPBtLav1Y0FCjHJsbhMI4AN0RaB/QVQs/kKJWLGyo6GMJ
+         a+MVIOOnmrO7IXrTCe+L0FEGXOxVvePfDLMrwQCz3N0AVmkOzi/xZED7RK2NhQoyH1kP
+         qcW9tqi4M3q4b627CNKAWQVQgb84HJSOA442FQbRHLB13iTmLZk9c4dFiTGyybCLbTU4
+         qyPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722419404; x=1723024204;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JUs5+7tDQ6c4YCsH01ZcbUFpSrnJ5OsqAqUSMK+9qCY=;
+        b=fkryAHVga53+joI+lGE+Sk+pYzGb35DZVbnQEXaJ9fnFQ0alsPb1rOQGMbWT7GuwyG
+         QFk28ixWOxKjV4wRJc78+UgQRV6EEjpful3SWF6He8T9rj3EhyYK8vTzgVxwkhsFqAPL
+         DFZaWO47vanPS8Ej7Hvh4p2C4Pfu7WivGzoyfF+gWZF+abgKuxF/tawRm3Uw61Embqc9
+         MHS0yp6lTwGhFFxmtlBOeKN9IgApqky+LbAqGTLBczlK9pyQYRzNoQ8PoX+mGh2Tne4U
+         70zS5/CWwmGK5RbAA1n/j+QWGuR82/V5mq4NXSGQDI67z05Sy7z8lK2+p6CcuGnCGtMd
+         +u0g==
+X-Gm-Message-State: AOJu0Yya6B5wKrMhMVs9oghWr5bUPE5J2d+icpWm+Yj8+0z1e5cpzxbT
+	dc67YHGBCpcI4f6tKAu15RxeqxiSrk5y4lc4pEDkBJKAKfCe9SG1ZUE8N+JnZSN61N2DjV+BfzG
+	yTXS81bP+qTvy9CJix3SnvO8ciINSRERW
+X-Google-Smtp-Source: AGHT+IHQXAnah21hZoMmvITiAfn5yV+Qff3/bcRUa6mQhKtJ977xGe+IiARUr9Fx5Sq4FNRRkYAg8A8Atg7TSp363jM=
+X-Received: by 2002:a17:907:3da7:b0:a7d:a080:bb7 with SMTP id
+ a640c23a62f3a-a7da0800e5bmr89470066b.36.1722419403625; Wed, 31 Jul 2024
+ 02:50:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <c4f697d7-16a0-46d2-be34-45f6a8efaec8@kernel.org>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Wed, 31 Jul 2024 11:49:27 +0200
+Message-ID: <CAHkwnC9B9TxSei36tkBe_GE4q=1DudUyD2uo9VuCa940qABHjA@mail.gmail.com>
+Subject: Telit FE990 hardware support from v6.6 to v6.1
+To: stable@vger.kernel.org
+Cc: Daniele Palmas <dnlplm@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jul 31, 2024 at 11:06:38AM +0200, Krzysztof Kozlowski wrote:
-> On 31/07/2024 11:02, Kieran Bingham wrote:
-> > Quoting Umang Jain (2024-07-31 06:41:35)
-> >> On 30/07/24 2:40 pm, Laurent Pinchart wrote:
-> >>> On Tue, Jul 30, 2024 at 10:42:01AM +0200, Krzysztof Kozlowski wrote:
-> >>>> On 30/07/2024 10:24, Sakari Ailus wrote:
-> >>>>> Hi Krzysztof,
-> >>>>>
-> >>>>> On Mon, Jul 29, 2024 at 04:09:39PM +0200, Krzysztof Kozlowski wrote:
-> >>>>>> On 29/07/2024 13:04, Umang Jain wrote:
-> >>>>>>> Rectify the logical value of reset-gpio so that it is set to
-> >>>>>>> 0 (disabled) during power-on and to 1 (enabled) during power-off.
-> >>>>>>>
-> >>>>>>> Meanwhile at it, set the reset-gpio to GPIO_OUT_HIGH at initialization
-> >>>>>>> time to make sure it starts off in reset.
-> >>>>>>>
-> >>>>>>> Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
-> >>>>>>> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-> >>>>>>> ---
-> >>>>>>>   drivers/media/i2c/imx335.c | 8 ++++----
-> >>>>>>>   1 file changed, 4 insertions(+), 4 deletions(-)
-> >>>>>>>
-> >>>>>> This will break all the users, so no. At least not without mentioning
-> >>>>>> ABI break and some sort of investigating how customers or users are
-> >>>>>> affected.
-> >>>>>
-> >>>>> I know the original authors aren't using the driver anymore and it took
-> >>>>> quite a bit of time until others started to contribute to it so I suspect
-> >>>>> the driver hasn't been in use for that long. There are no instances of the
-> >>>>> device in the in-kernel DTS either.
-> >>>>>
-> >>>>> Any DTS author should have also noticed the issue but of course there's a
-> >>>>> risk someone could have just changed the polarity and not bothered to chech
-> >>>>> what it was supposed to be.
-> >>>>>
-> >>>>> I agree the commit message should be more vocal about the effects on
-> >>>>> existing DTS.
-> >>>>
-> >>>> I can imagine that all users (out of tree, in this case) inverted
-> >>>> polarity in DTS based on what's implemented. You could go with some
-> >>>> trivial hack, like I did for one of codecs - see 738455858a2d ("ASoC:
-> >>>> codecs: wsa881x: Use proper shutdown GPIO polarity"), but I remember
-> >>>> Mark Brown rejected similar commit for newer drivers.
-> >>>
-> >>> I don't think there's any out-of-tree user, because when we started
-> >>> using the recently driver, it required lots of fixes to even work at
-> >>> all. I'll let Kieran and Umang comment on that, I haven't follow the
-> >>> development in details.
-> >>
-> >> indeed, initially we had to put up fixes like :
-> >>
-> >> 14a60786d72e ("media: imx335: Set reserved register to default value")
-> >> 81495a59baeba ("media: imx335: Fix active area height discrepency")
-> >>
-> >> to make the sensor work properly on our platforms. Only after that we 
-> >> had a base to support more capabilities on the sensor (multiple lanes 
-> >> support, flips, TPG etc.)
-> > 
-> > I would also add that we had to provide control for the regulators to be
-> > able to power the device as well in fea91ee73b7c ("media: i2c: imx335:
-> > Enable regulator supplies").
-> 
-> Hm? That's not a proof of anything. Supplies are often turned on by default.
-> 
-> > Given the driver was posted from Intel, I would have anticipated perhaps
-> > the driver was in fact only actually tested by Intel on ACPI platforms -
-> > yet with no ACPI table registered in the driver - even that could likely
-> > be considered broken.
-> 
-> Nope, that does not work like that. Their platforms and such sensors are
-> often used on DT based boards.
+Hi,
+please include in v6.1 the commit 0724869ede9c169429bb622e2d28f97995a95656
+"bus: mhi: host: pci_generic: add support for Telit FE990 modem"
+https://lore.kernel.org/all/20230804094039.365102-1-dnlplm@gmail.com/
 
-What DT-platforms would that be ?
-
-> Not mentioning even PRP0001.
-
-I don't think PRP0001 is used by Intel for camera sensors.
-
-Sakari, do you have any information about all this ? Do you think
-there's a risk that the driver is currently used by anyone with a
-mainline kernel ?
-
-> > Based on that I have a high confidence that there are no current users
-> > of this driver (except us).
-> 
-> Nope, wrong conclusions, not that many arguments.
-
+Thanks
 -- 
-Regards,
-
-Laurent Pinchart
+Fabio Porcedda
 
