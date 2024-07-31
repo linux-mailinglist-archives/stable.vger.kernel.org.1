@@ -1,91 +1,105 @@
-Return-Path: <stable+bounces-64761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56377942D51
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 13:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F13942D5C
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 13:37:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A67283174
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:36:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A5A72870FF
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4121AD9D9;
-	Wed, 31 Jul 2024 11:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EED1AE87F;
+	Wed, 31 Jul 2024 11:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="bxLoMOPO"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF9C1AC447;
-	Wed, 31 Jul 2024 11:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEB61AE879
+	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 11:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722425769; cv=none; b=R5Es8n+PrmaiFGa3qYPoouzDzvZVOeW6UDU4YbqgqQh5YbPSXyWsBAiuJLXlBa620HrlJcRFi3z/lr8xTH0OWn3ozDfqxYA/Ufai4MFHoZtVwsZ4Pqp4AxznehKh05sD31HkA7T3kR8/crv8fHheV1U4VYWhyHb/QAKAs6ToBYk=
+	t=1722425834; cv=none; b=bwqe8tfisq/8egGWC4d4NVPz4tFkhNlGAWQTHepwUq3s+fkPEbgtrlH718MjBRfH7uVSLpLEP8P2jcMmFYoxrlv7FKsRSvS/3GO9qkEqgIPNBzuYZ3eKpQOJqppxtJBTmS4//o76XW0A/VoHr5Ecu7rvKK+yT+MUO++h2BpzMWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722425769; c=relaxed/simple;
-	bh=6vTBV9+mdhv+EHYrb1lvIvVGi44E3Oq+SM9h5Vo2K2c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N3Jc+iXOBPJoy3tVBsvYZzCYsg/Op7ibxxgFdjVi76oU/Zpet8Mto0G0ZqfH28lr+vQsNBUSoVsCrn5wJp7V4rUb5XWjU68/vEg9M0nNUbHJW3S4KGyagEkZk7xeHaXTdWctQwK7dG1PSsWPaS0N8/iAMNuEmrTYCSZlRJ3EcqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Received: from i53875ac5.versanet.de ([83.135.90.197] helo=phil.lan)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sZ7cT-0003Dc-Jz; Wed, 31 Jul 2024 13:35:49 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Quentin Schulz <foss+kernel@0leil.net>,
-	Rob Herring <robh@kernel.org>,
-	Judy Hsiao <judyhsiao@chromium.org>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	stable@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 0/2] fix eMMC/SPI flash corruption when audio has been used on RK3399 Puma
-Date: Wed, 31 Jul 2024 13:35:47 +0200
-Message-Id: <172242573602.2549881.5467215847844665967.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240731-puma-emmc-6-v1-0-4e28eadf32d0@cherry.de>
-References: <20240731-puma-emmc-6-v1-0-4e28eadf32d0@cherry.de>
+	s=arc-20240116; t=1722425834; c=relaxed/simple;
+	bh=gmAAodUXdgnNESvRXNAekJJqooqvvUxv3wuMM+/4RoA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mNHyTZidrYpvxns6oAoZoxJIi01xAZ0b3k5JqipQEUk3fR9jaXjMMlORewOJhKW+FE1EJ2npSqIB9sT7aK4eq7kR9V3yKZa380/h3eepmgFBeNrk2GczzZWgEVUuywrQHwNNFzg+iirjWvKxqryUVEKGzOtCaaBYzkljZ2zpRhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=bxLoMOPO; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a7a8e73b29cso440034766b.3
+        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 04:37:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1722425831; x=1723030631; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5iVqiOcI/Lm61Kn6z1In0PhQoNC9BfNgfzLWAbxhDSI=;
+        b=bxLoMOPOeudPozRvAPyB7PabtaNkaJp9NcIjy/NUHVUHtZy91XIeOZFdzZEqHTQWgR
+         MtUxk5AV7lcG1PbWvNlM5IgjD6iNy1yXFsmlxkuT4AUs1yF5WffguciTZrncOJ4la9TR
+         YnI5p6HwgEYW8UjjtNSwuXG2qfKAOMVyQ3/bWbAsiGP8LUIfotLsicQsMs8N9CeyPeti
+         ymMXVq94xmEGSpEYKMrQzj1GlB9x9eGADLRR8SxUuZy9RouPx0G15ssbdl4dTK8iEvFt
+         QbH8lJT8pSA0UJjyb5oGmX/T5flpOKEkI7sXJzaWW5sh9YXbnhXqil2bD+R6KTzJZtHa
+         AcCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722425831; x=1723030631;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5iVqiOcI/Lm61Kn6z1In0PhQoNC9BfNgfzLWAbxhDSI=;
+        b=Abq2BXmqOdSRBb5adUDc4RMSPBkXyMR8eLeGvY3o5Jn+ip46wN5jy1JYGr32TGiVwc
+         feOMjsLQ9iHytke2GDjV+6oeNWTyWroY+WAfiDSxhUJff41NMu5XVdrhsKApYRl/ORw4
+         8wbeFLZyyWjdR8MXeToD4lc5VkN0X6+HzwZ5waD1CwUOE8Rt8rmHhlIex8nwiRB1g2LO
+         2Gysgt7j9ZuPck8uxvaYlLHPUeQSoT8A5Ldu0+33pa6OFBGpfBLAqJa3y82UtNFJ6BvH
+         oyoQYPerT9ASCPG5UHNYGzYMd+SvR6/efzTjjrcldOpPl1unZjSVm4ipkfQwmBpIF1Ia
+         tr9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW+jfzzVHSpLXRbgxap5ba/3CIJM56ZpXEYdfYlgRs3KyD2cUlyR5lmMwAWLyVd7iIoDsUCP4UDgYYg1g5ADKaGIUB7ntxb
+X-Gm-Message-State: AOJu0YzQX61hg2Jm0o0xclgKYp+E5UycMKL+6zzOsqKgdOGRdT9atZhm
+	SgTV0NngoSAMmeD82IgS6wZ+KGAg+WLJ0tjRH1iy0a9whIjP0Uao12SJVk5LoBnAJ9WrS5E0r1W
+	cqDhP42vRc2D6iGObwy38g8euSAM//+IQoRi9Zw==
+X-Google-Smtp-Source: AGHT+IGKzF7L3tGT7YjvoFGJDwdINXnVaS2Vxa/MttoDWTfIP0ZESkvvOTXarzXIGvRKUq2y7x6k6CcvXSEnf4eYun4=
+X-Received: by 2002:a17:907:6d1b:b0:a77:e55a:9e8c with SMTP id
+ a640c23a62f3a-a7d40128ab4mr796501666b.47.1722425831422; Wed, 31 Jul 2024
+ 04:37:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20240729091532.855688-1-max.kellermann@ionos.com>
+ <3575457.1722355300@warthog.procyon.org.uk> <CAKPOu+9_TQx8XaB2gDKzwN-YoN69uKoZGiCDPQjz5fO-2ztdFQ@mail.gmail.com>
+ <CAKPOu+-4C7qPrOEe=trhmpqoC-UhCLdHGmeyjzaUymg=k93NEA@mail.gmail.com> <3717298.1722422465@warthog.procyon.org.uk>
+In-Reply-To: <3717298.1722422465@warthog.procyon.org.uk>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Wed, 31 Jul 2024 13:37:00 +0200
+Message-ID: <CAKPOu+-4LQM2-Ciro0LbbhVPa+YyHD3BnLL+drmG5Ca-b4wmLg@mail.gmail.com>
+Subject: Re: [PATCH] netfs, ceph: Revert "netfs: Remove deprecated use of
+ PG_private_2 as a second writeback flag"
+To: David Howells <dhowells@redhat.com>
+Cc: Ilya Dryomov <idryomov@gmail.com>, Xiubo Li <xiubli@redhat.com>, 
+	Jeff Layton <jlayton@kernel.org>, willy@infradead.org, ceph-devel@vger.kernel.org, 
+	netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 31 Jul 2024 13:05:27 +0200, Quentin Schulz wrote:
-> In commit 91419ae0420f ("arm64: dts: rockchip: use BCLK to GPIO switch
-> on rk3399"), an additional pinctrl state was added whose default pinmux
-> is for 8ch i2s0. However, Puma only has 2ch i2s0. It's been overriding
-> the pinctrl-0 property but the second property override was missed in
-> the aforementioned commit.
-> 
-> On Puma, a hardware slider called "BIOS Disable/Normal Boot" can disable
-> eMMC and SPI to force booting from SD card. Another software-controlled
-> GPIO is then configured to override this behavior to make eMMC and SPI
-> available without human intervention. This is currently done in U-Boot
-> and it was enough until the aforementioned commit.
-> 
-> [...]
+On Wed, Jul 31, 2024 at 12:41=E2=80=AFPM David Howells <dhowells@redhat.com=
+> wrote:
 
-Applied, thanks!
+> >  ------------[ cut here ]------------
+> >  WARNING: CPU: 13 PID: 3621 at fs/ceph/caps.c:3386
+> > ceph_put_wrbuffer_cap_refs+0x416/0x500
+>
+> Is that "WARN_ON_ONCE(ci->i_auth_cap);" for you?
 
-[1/2] arm64: dts: rockchip: fix eMMC/SPI corruption when audio has been used on RK3399 Puma
-      commit: bb94a157b37ec23f53906a279320f6ed64300eba
-[2/2] arm64: dts: rockchip: override BIOS_DISABLE signal via GPIO hog on RK3399 Puma
-      commit: 741f5ba7ccba5d7ae796dd11c320e28045524771
+Yes, and that happens because no "capsnap" was found, because the
+"snapc" parameter is 0x356 (NETFS_FOLIO_COPY_TO_CACHE); no
+snap_context with address 0x356 could be found, of course.
 
-Best regards,
--- 
-Heiko Stuebner <heiko@sntech.de>
+Max
 
