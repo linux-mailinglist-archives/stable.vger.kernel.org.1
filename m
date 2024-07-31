@@ -1,104 +1,319 @@
-Return-Path: <stable+bounces-64732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D51942A54
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49679942A5D
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41D421F250F1
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:24:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BED9A1F22AB3
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DF11AAE24;
-	Wed, 31 Jul 2024 09:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266961AAE0F;
+	Wed, 31 Jul 2024 09:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="BA2isd2h"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FXfc3F3V"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A611A8BE5;
-	Wed, 31 Jul 2024 09:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23D418C908
+	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 09:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722417841; cv=none; b=U/HityyGcXtI3PMu9LwY/iLUxIw21AcvWBrJnxzfPzVwgjCD9h3VvoPCPihgWG4ZYVESjhW5HvAON/o/NF29+RY42hp+fv/IY5rR7qgekGvBlz0ZQmqHMXuEhrvXu28kTqr4UnYGBKbLQDgKEmjbg2pGkdPFOwkVAG6zTNxcm0E=
+	t=1722417891; cv=none; b=bLJrzrpLUvzJ1ZnWljZZtjyGo5XqIITMv9ki0o4r9B2blpkyblCiCwILWsRebTEwneYmZzvaFBagmDDH4CCgJMu99A9XtSGeYD1VFHh9QhxNKM0OE8Td6+UUO6dSPTi0rZ8bqLSQTTC3oAmpfrJlUWTWJ+NY9GjEbRit5cqnzKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722417841; c=relaxed/simple;
-	bh=d+0qhvwccHRNYP7gB2J1RJP6B7fuEbs+FdSBOgXKONc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Yomu93xNe3syLj2SXNQ0xFgbSOQc9MWmr0d31CRE9MSIe5NL3UbAp6pv3JrE2rbc/8UIjI776RDeRPnCuKGMEQEcj1P8I2JB0DH944phCCtqAKHG33OJqIOdM5ZCTajRNj1n+7kPLk6Bjo0x3Ony+j+JOkWdpQwG/46kLPlS4nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=BA2isd2h; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1722417784; x=1723022584; i=markus.elfring@web.de;
-	bh=0YmNy+yZCoJdyxtRmqU9DnXpRRd2Yx16nCVHhrQoPMI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=BA2isd2hoBTUGxqViXo1jxACTMcqCndC1NusIza1e4/+646x6+82yMjc+DYI0iFM
-	 t6I0w4OBKEl42YHUvYPFR3IQ9Zvd17WNXj+UNbMeMqpMG2OmlypOhEvU9Jj9cwJj2
-	 Oqunx/+pZekAg8rtKLdN4iZ10zxnUt7i8zHnHMoH8MWqP2eShKfX2GR6LTElvS8il
-	 CaIiWej3y71IZQTaiYlpNRT2OsSeX3sXiIwdYJczriiomSMoRcXVQ0npqkECuA23b
-	 59Ohm1+3uQQQfCD97hlzJ6hgiTu7bWQiBEOFuNRCgKCqnrwIn7mKcCYdRrZKY5pFg
-	 dmnHcG2KoLQVeFN4Uw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.88.95]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M1rTG-1sWtge05Wq-001lGJ; Wed, 31
- Jul 2024 11:23:04 +0200
-Message-ID: <6c6d2e8e-1392-4c1b-aa39-46149ff2956c@web.de>
-Date: Wed, 31 Jul 2024 11:23:01 +0200
+	s=arc-20240116; t=1722417891; c=relaxed/simple;
+	bh=fG5zEN4/OYnH4Ea1wxNDQjwF7O/D2cXJJAGtoBvW6gI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bFi1PPM3hH7R15i0vgTPJge9Q4QqsN3V+aVeM7vzMRAw6YEIFGEY867ciin0+1wUAdyT28WIHHpI1IrTyZJ4i601RbfrchuMHl6j5wdW6zE/A38EUMhg6g9M+b6nq1ZGvXy93TiRFRRnrSssleasO9SwyEEfc8yvC1ekia5rPa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FXfc3F3V; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-831a5b7d250so1559123241.3
+        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 02:24:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722417888; x=1723022688; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9U6B3eA0nTVhJpWK8GAmbelSceBL2zWty5rlbP1eltI=;
+        b=FXfc3F3VII40qtNmZKddhToUp/cOTchVaYSBMOkxhem4mEuaqJyC/kZEMb5ur1PH9W
+         46U7stPkYp8j1ZO2ucDVc+dKZQqI+c6wZZg+M3ko44dZ7NTorlNnDWHb3htdEt0pCo86
+         LAjyTti3KGvqoSvaKwVFixbDoTuF0qm+RpH5tjI3wOY19kNR1QxC3qqH08b99grqyUmh
+         04U38+mt5BiHYFevk252zNV4Sfvm3Zl9WgcaGeFIJh8IYqB0E6ka1kOujO8DGV3hfnDa
+         RmmqLFdsmVgj7BcheSKEZDwW2NZ+ZWsOmXFpksQIZfP+T5kYcdACRY8AsIlaRbvd5Dvf
+         2sMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722417888; x=1723022688;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9U6B3eA0nTVhJpWK8GAmbelSceBL2zWty5rlbP1eltI=;
+        b=qgg4u8EkbZ1sovJ1vGKkfhgoNWegrIyJaXUdAhH9CurIx61nV9Qa0w3qWd6Wfd7/NI
+         dmmBBJTsFTEtlMoNDt9H0zDeoO8kxUqXTbu6OxPSRLvmqGxP7SGCpt43bIPM4i9q6+A2
+         2dStuHm93YoMc3BO6iI/rw5M+my9Nnvy6xGmflIgZYOK9XjI/qvVgbvXQGZOoT3O81GA
+         KN0xctWi69zLu2WMd5BFWQ537ERDUJgKikS+HWBD89m8H1SDAPVgv49/ojBpl5n8p9am
+         aaU80UNAQGDtrheuaBH+rJ3FwPEeW9YHYoIc5qzIqMfxoGGULY+Esc0qqUSf4lYx/oIN
+         FKRw==
+X-Gm-Message-State: AOJu0Yzsvps5hPERakVJ8yRT7lZkAiERB6TCnIo7DhO6O4H4lZfb9F90
+	xTFjekUIQYzK4GOQFbtEdetyecHpDpwVZuDBFn2y6uyMRzBA7v40d2nxcTF/oPbwX31zGleqoO/
+	xE9a5E0W0PcK25Y6HV0LzN7bFvuZQT85aZo7sDw==
+X-Google-Smtp-Source: AGHT+IEe9L20tBDxvHleFT578FLgVcCVJa+aGBr3BMV5F11tK2Vd8zjUk5F3wTen3LHMUKGhrJgvD3fPH5S/a41bJD0=
+X-Received: by 2002:a05:6102:32d0:b0:493:2177:981b with SMTP id
+ ada2fe7eead31-493fa1d22f9mr16644772137.17.1722417887716; Wed, 31 Jul 2024
+ 02:24:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Herve Codina <herve.codina@bootlin.com>, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Simon Horman <horms@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20240730063104.179553-1-herve.codina@bootlin.com>
-Subject: Re: [PATCH net] net: wan: fsl_qmc_hdlc: Convert carrier_lock spinlock
- to a mutex
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240730063104.179553-1-herve.codina@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ptvWP2JpA+KQ0oIRv9Hv1yCYM6e8ZIPJX3xm8Jrs46Z0EYQIqAO
- GTmbcWD4zNO8atDH8Qk5/8G2dLdADEYw64kLSUwUQhW7HcDvzjgdREg5AtiwDq3XbAXIYIU
- PIrsil/Woseyo+psqQdJ3UtIttMstZsiaY3amt2lW0HetwPxLfkmZg7ZYHBgb5RevM6GwZT
- uyR8HNRV2dQUiouIRmyfg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wduvmi2tmRY=;ycowwX4dgWkZRr2SN8rxOYtybyH
- BsaNdh8FrLq0bxUnmtcLmTxQM9V26OJv9OswClzpFUO9VmaQ8561jja/JquD0WKSKsQHATLJ4
- Ja243VQjxtTJADdVtP51Q5wCB5PNhpbeEdkz1AQJN22Nou1WBfXYtbfVJAloQAURq7sJcZS+3
- AeOeIyhZeLlMc4vSXF5Mfi0Pn8bwDh3+GERNPnN0esQANY0vwqw9XXs+owhTuzzBraAU3AfrK
- 2O2vmkt5roG3iugmdoNtzDk1jzfOJh7Lj7Bqh3vOxEKqg76aMj5DDG31tXBaGxv0W2z3htfLr
- 5qcIExaulObRJKhjzX74bTLzfTyXR7cYz4GcWM0K1sMJnCt+Hu4e1P7yfd5uRmhLD3Tt+5gNG
- tlLzMBE83gI7gbiY79guOPG8BEsTWjzKoe+NkCNtBVAxGqHzlaL51lFLyI2zQ6kCwIymGIDfJ
- cXtOI7OROfs33qe5VetOItaake1ysbnnt0WAU5xPlDpJB39XjHh4IRwcpP1y1ukMhNzAi6EkU
- jXLjsI45MoY0ZYrInQ4iukNtMnONXMA9FxK3PEg5s20GpKbt1wCYZx3jk3MtpFW1HpxstyrLu
- uT3ZJUUHcqzl2m/e9gJMHZU1Rwh5Mqb0W+jxvVQ61hctcvF44z91uZsrfzFTUP2uUFx1Y/zwG
- mWbQx1cGIvvqFA/fNn4ZbNOV9ID84MpUcxvrKs26ar/Zfn0J17CV+fjokSc5mma/lFKPLU4md
- vXHCU9oXFyjemUTCPnvV1gtUE/Zn2IUQWLbVafJxd4XnlrzTJ5HC/+vdROjvsxhT6F0HA35hw
- vHmGqNXj/CeEFX6d5XVbua0g==
+References: <20240730151615.753688326@linuxfoundation.org>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 31 Jul 2024 14:54:35 +0530
+Message-ID: <CA+G9fYuGGbhKgt6dD2pBCK1y4M3-KUhPZcw21gYtUFzQ32KLdg@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/440] 6.1.103-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, linux-ext4 <linux-ext4@vger.kernel.org>, 
+	linux-block <linux-block@vger.kernel.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+Content-Type: text/plain; charset="UTF-8"
 
-=E2=80=A6
-> hold, framer_get_status() is called witch in turn takes a mutex.
-=E2=80=A6
+On Tue, 30 Jul 2024 at 21:21, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.103 release.
+> There are 440 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 01 Aug 2024 15:14:54 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.103-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-                                      which?
+As others reported the boot failures and bisection results.
+I started validating 6.1.103-rc2 results.
 
-Regards,
-Markus
+[only for the record]
+The stable-rc 6.1 boot failed on all devices due to the following kernel panic.
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Boot crash log:
+----------
+<1>[    6.427635] Unable to handle kernel NULL pointer dereference at
+virtual address 00000000000000d0
+<1>[    6.428491] Mem abort info:
+<1>[    6.428852]   ESR = 0x0000000096000004
+<1>[    6.429458]   EC = 0x25: DABT (current EL), IL = 32 bits
+<1>[    6.430263]   SET = 0, FnV = 0
+<1>[    6.430677]   EA = 0, S1PTW = 0
+<1>[    6.431170]   FSC = 0x04: level 0 translation fault
+<1>[    6.431711] Data abort info:
+<1>[    6.432167]   ISV = 0, ISS = 0x00000004
+<1>[    6.432667]   CM = 0, WnR = 0
+<1>[    6.433136] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000100005000
+<1>[    6.433848] [00000000000000d0] pgd=0000000000000000, p4d=0000000000000000
+<0>[    6.435845] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+<4>[    6.436795] Modules linked in: ip_tables x_tables
+<4>[    6.437973] CPU: 1 PID: 1 Comm: systemd Tainted: G
+  N 6.1.103-rc1 #1
+<4>[    6.438884] Hardware name: linux,dummy-virt (DT)
+<4>[    6.439800] pstate: 02400009 (nzcv daif +PAN -UAO +TCO -DIT
+-SSBS BTYPE=--)
+<4>[ 6.440501] pc : dd_limit_depth (block/mq-deadline.c:609
+block/mq-deadline.c:630)
+<4>[ 6.442475] lr : __blk_mq_alloc_requests (block/blk-mq.c:474)
+<4>[    6.443041] sp : ffff80000802b7a0
+<4>[    6.443397] x29: ffff80000802b7b0 x28: 7fffffffffffffff x27:
+0000000000000000
+<4>[    6.444406] x26: ffffa2ac0d3e5328 x25: ffff0000c0ad9cc0 x24:
+ffff0000c15986a0
+<4>[    6.445160] x23: 0000000000000001 x22: ffff0000c0ad9cc0 x21:
+ffff80000802ba38
+<4>[    6.445905] x20: ffff0000c0ad9cc0 x19: ffff80000802b820 x18:
+0000000000000000
+<4>[    6.446654] x17: 0000000000000000 x16: 0000000000000000 x15:
+ffffffffffffffff
+<4>[    6.447404] x14: ffffffffffffffff x13: ffffffffffffffff x12:
+ffffffffffffffff
+<4>[    6.448159] x11: 0000000000000000 x10: 0000000000000000 x9 :
+ffffa2ac0c60feb0
+<4>[    6.448953] x8 : ffff80000802b668 x7 : 0000000000000000 x6 :
+0000000000000001
+<4>[    6.449694] x5 : ffffa2ac0ea3f000 x4 : 0000000000000000 x3 :
+ffff0000c0f7bc00
+<4>[    6.450440] x2 : ffff0000c0ad9cc0 x1 : ffff80000802b820 x0 :
+0000000000000000
+<4>[    6.451329] Call trace:
+<4>[ 6.451720] dd_limit_depth (block/mq-deadline.c:609 block/mq-deadline.c:630)
+<4>[ 6.452228] blk_mq_submit_bio (block/blk-mq.c:2911 block/blk-mq.c:3011)
+<4>[ 6.452712] __submit_bio (block/blk-core.c:595)
+<4>[ 6.453098] submit_bio_noacct_nocheck (include/linux/bio.h:614
+block/blk-core.c:668 block/blk-core.c:696)
+<4>[ 6.453610] submit_bio_noacct (block/blk-core.c:799)
+<4>[ 6.454026] submit_bio (block/blk-core.c:828)
+<4>[ 6.454440] ext4_io_submit (fs/ext4/page-io.c:380)
+<4>[ 6.454884] ext4_writepages (fs/ext4/inode.c:2876)
+<4>[ 6.455328] do_writepages (mm/page-writeback.c:2491)
+<4>[ 6.455788] filemap_fdatawrite_wbc (mm/filemap.c:388 mm/filemap.c:378)
+<4>[ 6.456243] __filemap_fdatawrite_range (mm/filemap.c:422)
+<4>[ 6.456750] file_write_and_wait_range (mm/filemap.c:774)
+<4>[ 6.457249] ext4_sync_file (fs/ext4/fsync.c:151)
+<4>[ 6.457644] vfs_fsync_range (fs/sync.c:189)
+<4>[ 6.458095] do_fsync (fs/sync.c:202 fs/sync.c:212)
+<4>[ 6.458491] __arm64_sys_fsync (fs/sync.c:218)
+<4>[ 6.458899] invoke_syscall (arch/arm64/include/asm/current.h:19
+arch/arm64/kernel/syscall.c:57)
+<4>[ 6.459349] el0_svc_common.constprop.0
+(arch/arm64/include/asm/daifflags.h:28
+arch/arm64/kernel/syscall.c:148)
+<4>[ 6.459864] do_el0_svc (arch/arm64/kernel/syscall.c:205)
+<4>[ 6.460272] el0_svc (arch/arm64/include/asm/daifflags.h:28
+arch/arm64/kernel/entry-common.c:133
+arch/arm64/kernel/entry-common.c:142
+arch/arm64/kernel/entry-common.c:638)
+<4>[ 6.460644] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:656)
+<4>[ 6.461099] el0t_64_sync (arch/arm64/kernel/entry.S:585)
+<0>[ 6.461765] Code: f9400022 d50323bf f9401820 f9400443 (f9406802)
+All code
+========
+   0: f9400022 ldr x2, [x1]
+   4: d50323bf autiasp
+   8: f9401820 ldr x0, [x1, #48]
+   c: f9400443 ldr x3, [x2, #8]
+  10:* f9406802 ldr x2, [x0, #208] <-- trapping instruction
+
+Code starting with the faulting instruction
+===========================================
+   0: f9406802 ldr x2, [x0, #208]
+<4>[    6.463039] ---[ end trace 0000000000000000 ]---
+<4>[    6.464924] ------------[ cut here ]------------
+<4>[ 6.465459] WARNING: CPU: 1 PID: 1 at kernel/exit.c:816 do_exit
+(kernel/exit.c:816 (discriminator 1))
+<4>[    6.466537] Modules linked in: ip_tables x_tables
+<4>[    6.467108] CPU: 1 PID: 1 Comm: systemd Tainted: G      D
+  N 6.1.103-rc1 #1
+<4>[    6.467792] Hardware name: linux,dummy-virt (DT)
+<4>[    6.468226] pstate: 42400009 (nZcv daif +PAN -UAO +TCO -DIT
+-SSBS BTYPE=--)
+<4>[ 6.468843] pc : do_exit (kernel/exit.c:816 (discriminator 1))
+<4>[ 6.469218] lr : do_exit (kernel/exit.c:816 (discriminator 1))
+<4>[    6.469612] sp : ffff80000802b370
+<4>[    6.469941] x29: ffff80000802b3a0 x28: ffffa2ac0dbe3f48 x27:
+ffffa2ac0dbe3f40
+<4>[    6.470683] x26: 0000000000000000 x25: 0000000000000001 x24:
+ffff80000802b472
+<4>[    6.471437] x23: 0000000000000001 x22: 000000000000000b x21:
+ffff0000c02c0000
+<4>[    6.472185] x20: ffff0000c02dc000 x19: ffff0000c02b8000 x18:
+0000000000000006
+<4>[    6.472916] x17: 3030303030303030 x16: 3030303030303020 x15:
+ffff80000802af00
+<4>[    6.473652] x14: 0000000000000000 x13: 205d393330333634 x12:
+2e36202020205b3e
+<4>[    6.474386] x11: 3030303030206563 x10: ffffa2ac0eabb978 x9 :
+ffffa2ac0d379d20
+<4>[    6.475118] x8 : ffff80000802b278 x7 : 0000000000000000 x6 :
+0000000000000001
+<4>[    6.475845] x5 : ffffa2ac0ea3f000 x4 : ffffa2ac0ea3f2e8 x3 :
+0000000000000000
+<4>[    6.476576] x2 : ffff0000c02b8000 x1 : ffff0000c02b8000 x0 :
+ffff80000802ba38
+<4>[    6.477310] Call trace:
+<4>[ 6.477595] do_exit (kernel/exit.c:816 (discriminator 1))
+<4>[ 6.477948] make_task_dead
+(arch/arm64/include/asm/atomic_ll_sc.h:95 (discriminator 2)
+arch/arm64/include/asm/atomic.h:52 (discriminator 2)
+include/linux/atomic/atomic-arch-fallback.h:440 (discriminator 2)
+include/linux/atomic/atomic-instrumented.h:199 (discriminator 2)
+kernel/exit.c:968 (discriminator 2))
+<4>[ 6.478357] die (arch/arm64/kernel/traps.c:239)
+<4>[ 6.478697] die_kernel_fault (arch/arm64/mm/fault.c:307)
+<4>[ 6.479134] __do_kernel_fault (arch/arm64/mm/fault.c:404)
+<4>[ 6.479574] do_page_fault (arch/arm64/mm/fault.c:658)
+<4>[ 6.479962] do_translation_fault (arch/arm64/mm/fault.c:671)
+<4>[ 6.480411] do_mem_abort (arch/arm64/mm/fault.c:803 (discriminator 1))
+<4>[ 6.480781] el1_abort (arch/arm64/include/asm/daifflags.h:28
+arch/arm64/kernel/entry-common.c:368)
+<4>[ 6.481142] el1h_64_sync_handler (arch/arm64/kernel/entry-common.c:455)
+<4>[ 6.481588] el1h_64_sync (arch/arm64/kernel/entry.S:580)
+<4>[ 6.481958] dd_limit_depth (block/mq-deadline.c:609 block/mq-deadline.c:630)
+<4>[ 6.482355] blk_mq_submit_bio (block/blk-mq.c:2911 block/blk-mq.c:3011)
+<4>[ 6.482778] __submit_bio (block/blk-core.c:595)
+<4>[ 6.483184] submit_bio_noacct_nocheck (include/linux/bio.h:614
+block/blk-core.c:668 block/blk-core.c:696)
+<4>[ 6.483650] submit_bio_noacct (block/blk-core.c:799)
+<4>[ 6.484098] submit_bio (block/blk-core.c:828)
+<4>[ 6.484454] ext4_io_submit (fs/ext4/page-io.c:380)
+<4>[ 6.484858] ext4_writepages (fs/ext4/inode.c:2876)
+<4>[ 6.485285] do_writepages (mm/page-writeback.c:2491)
+<4>[ 6.485670] filemap_fdatawrite_wbc (mm/filemap.c:388 mm/filemap.c:378)
+<4>[ 6.486122] __filemap_fdatawrite_range (mm/filemap.c:422)
+<4>[ 6.486587] file_write_and_wait_range (mm/filemap.c:774)
+<4>[ 6.487048] ext4_sync_file (fs/ext4/fsync.c:151)
+<4>[ 6.487463] vfs_fsync_range (fs/sync.c:189)
+<4>[ 6.487848] do_fsync (fs/sync.c:202 fs/sync.c:212)
+<4>[ 6.488223] __arm64_sys_fsync (fs/sync.c:218)
+<4>[ 6.488649] invoke_syscall (arch/arm64/include/asm/current.h:19
+arch/arm64/kernel/syscall.c:57)
+<4>[ 6.489039] el0_svc_common.constprop.0
+(arch/arm64/include/asm/daifflags.h:28
+arch/arm64/kernel/syscall.c:148)
+<4>[ 6.489522] do_el0_svc (arch/arm64/kernel/syscall.c:205)
+<4>[ 6.489876] el0_svc (arch/arm64/include/asm/daifflags.h:28
+arch/arm64/kernel/entry-common.c:133
+arch/arm64/kernel/entry-common.c:142
+arch/arm64/kernel/entry-common.c:638)
+<4>[ 6.490212] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:656)
+<4>[ 6.490682] el0t_64_sync (arch/arm64/kernel/entry.S:585)
+<4>[    6.491191] ---[ end trace 0000000000000000 ]---
+<0>[    6.492871] Kernel panic - not syncing: Attempted to kill init!
+exitcode=0x0000000b
+<2>[    6.493803] SMP: stopping secondary CPUs
+<0>[    6.494951] Kernel Offset: 0x22ac04000000 from 0xffff800008000000
+<0>[    6.495536] PHYS_OFFSET: 0x40000000
+<0>[    6.495944] CPU features: 0x00000,000d3cbf,e69a773f
+<0>[    6.496943] Memory Limit: none
+<0>[    6.497664] ---[ end Kernel panic - not syncing: Attempted to
+kill init! exitcode=0x0000000b ]---
+
+
+Links to boot log:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.102-441-ga90fe3a94186/testrun/24742768/suite/boot/test/gcc-13-lkftconfig-devicetree/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.102-441-ga90fe3a94186/testrun/24742768/suite/boot/test/gcc-13-lkftconfig-devicetree/details/
+ - Config: https://storage.tuxsuite.com/public/linaro/lkft/builds/2jyP6yz35Go9caJsvrdNOlq0X9t/config
+ - Build: https://storage.tuxsuite.com/public/linaro/lkft/builds/2jyP6yz35Go9caJsvrdNOlq0X9t/
+
+metadata:
+----------
+  ## Build
+* kernel: 6.1.103-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: a90fe3a941868870c281a880358b14d42f530b07
+* git describe: v6.1.102-441-ga90fe3a94186
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.102-441-ga90fe3a94186
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
