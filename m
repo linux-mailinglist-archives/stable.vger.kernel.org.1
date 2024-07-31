@@ -1,140 +1,115 @@
-Return-Path: <stable+bounces-64771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110C49430E6
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 15:32:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928FF9430EA
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 15:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0935B226B6
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 13:32:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CA4CB24085
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 13:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849921B1503;
-	Wed, 31 Jul 2024 13:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wZEP2s1J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A32A1B29CF;
+	Wed, 31 Jul 2024 13:32:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943071AE843
-	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 13:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A9D1AD9CB;
+	Wed, 31 Jul 2024 13:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722432716; cv=none; b=KO6oQESAeCPHfTanyjC523NdWiWXMSNuTW03+05TW5R6cQgkg6NhaAdutAJ9vgBKgrOEMx1XuBkA5shEBI080OpaTCxl7yT7bormgD1tTNFnqVfE1zCNRhncqXHX7ZBbvHJWXZnNqkmkaAnHw5GsWWXF3+QLgk9aMvoXFgRY9Hg=
+	t=1722432722; cv=none; b=S8XQMonQ5ehEdv7PWrLrXKwtkMCRX8Lh9HrdPur4G9RAWjXxoaxu5cyg9HQhArVyl1cLq5Gtsz1/EybidQl10P+A+go6XHr/XMZ6Is2F/ocVVucEK8axQjR0/nefQOTr1V63dyMhpPCztFToVYl9A3XJVoJYgNsublFC9UvA9rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722432716; c=relaxed/simple;
-	bh=P2Zc2kRlUTzQWuiLdA1pFWHC6xvaH6zfnCz8JHSEIs8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IBYzhM4th9lq90soo8DQ+8ExXbvKUudFXzXAPqxI/QhR/ggTyaWlutbRCWuVUs+uOy5LDCPzBlaKh0SZJrlSTwPZS8uDpQP0ylle47N4x1FNkIDYoIBx/Vqc3ZhxQzbWLn5y/lruxkd6yrSVytYlY7FgN6/VVEla2nByDxdF7wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wZEP2s1J; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-52ed741fe46so6499580e87.0
-        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 06:31:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722432713; x=1723037513; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mu/jrHV9aX6kTVP3aSVpeXFR1odPgGfcDv5EihSzkVY=;
-        b=wZEP2s1JDOHjfRaoa3j1T/vvA/AMIAw9Byv8YAx8c9708Qk8BjIjIdnL+1nYleLwDo
-         hXNGL4VoorUaCgD/5kQNDjf7S9GMUuvrPQMeQvI8USqBlmgR8y5ywkPmGfouP8tBOYRS
-         T0T8o9yGlLP3YuFjWXDvpzYzETN6wOHBUO1F3Y1DU22JdVGNm7Uh070c0Ksa2Huhj9zA
-         eXvALTbveik9vBeQPxJbXEtkHRWzlN/whkwGWp09rxRHLFVpx7f7F5Alou2+Gra2/r+A
-         ihZZOgzffHWxXRboxaFcqPsp8Ajn2Pk+iClxkAV2V7hhfal5SoraVk+4gpXX4JlnkP+s
-         D6wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722432713; x=1723037513;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mu/jrHV9aX6kTVP3aSVpeXFR1odPgGfcDv5EihSzkVY=;
-        b=fW3Rbu2cmr0qvT+sfcfszEEYkeqYslqsuduLZe6B4kbuKOF0y3qAOHvlEIySo6Immq
-         C3TUuWy9YvBK/t92VNjO3VBs3vVObYuMOSyxIDCcu0V7xfXRzzaPm1VgY4UHKVlPx3fm
-         IJJiNHLFj33Kg9pe3D1LaAQt+I1GALjjC4RYTBtyI7f2GI7TnIi+EdZd6SlFmujfjXfo
-         1QoUBPPObyfQNspppsvyBXmfbJcYjN5BF0wzOiY1woharWNv34NpwC5RM6JlppqufJDc
-         mefZQ1agSt2vzaJ27y6CELgHPgVVm3pdM4KkL1alq9MRlVqil6R2cL63zlIezYBnSeNj
-         eEBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYZl9etSAeL1emWVEqA+gEzmVRaPs2GG4b9A8ZI6UkzcOGpuAxrX9niy32cDwhu3QaH3tTjTtop0EqxAhKcEinzjFjyEGS
-X-Gm-Message-State: AOJu0YxE52lLBCUCbRrgjNPwTBFLPNz5g29bJYlpJdmzsWsvhqd4FGVr
-	u33HRFJEgTUHO3Vq1b4HivsqinFBtG+LnqJ72bZQ89l40d2rRTDGxK9SnJ3Kq4s=
-X-Google-Smtp-Source: AGHT+IF9yysuesy1AWwQPiU83pnAbyqHjqnagriUsXCkmX5PJrirOfJMTi1oEuRwoiTJE5k2d+aUKA==
-X-Received: by 2002:a19:5e16:0:b0:52e:7f6b:5786 with SMTP id 2adb3069b0e04-5309b2d9ee6mr7399994e87.61.1722432712551;
-        Wed, 31 Jul 2024 06:31:52 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5c2ce6esm2242763e87.267.2024.07.31.06.31.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 06:31:52 -0700 (PDT)
-Date: Wed, 31 Jul 2024 16:31:50 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Abhishek Sahu <absahu@codeaurora.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@codeaurora.org>, 
-	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, Ajit Pandey <quic_ajipan@quicinc.com>, 
-	Imran Shaik <quic_imrashai@quicinc.com>, Taniya Das <quic_tdas@quicinc.com>, 
-	Jagadeesh Kona <quic_jkona@quicinc.com>, stable@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: Re: [PATCH V3 8/8] arm64: dts: qcom: Add camera clock controller for
- sm8150
-Message-ID: <dlrkizo76pr57f5ijdxb65u3mz2arfs376cpalpv6j6aphmk24@4f6mrbxujyke>
-References: <20240731062916.2680823-1-quic_skakitap@quicinc.com>
- <20240731062916.2680823-9-quic_skakitap@quicinc.com>
+	s=arc-20240116; t=1722432722; c=relaxed/simple;
+	bh=ZrOrYZWPguaGZbZEYM0RvPWlavBLs7B2YJ4QWINxkJs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gQfRzYSxDK+Sv7obsdbBspyuYS7JFM8/f/8Bkzqg6YtOVCRi8WQpJeYXukKueuZ61eaKTGmwz0cfQ2uL06kdylpkWJrHH+h1cAEtxBwTYKmg9N08U2ZkCwPakAkV4cQYs0TA7naz/UkS3j2j3lp1V2Y7i12u5fXrkFcsxoci2/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+From: Sam James <sam@gentoo.org>
+To: Peter Zijlstra <peterz@infradead.org>, Greg KH <gregkh@linuxfoundation.org>
+Cc: matoro <matoro_mailinglist_kernel@matoro.tk>,  John David Anglin
+ <dave.anglin@bell.net>,  Linux Parisc <linux-parisc@vger.kernel.org>,
+  Deller <deller@gmx.de>,  John David Anglin <dave@parisc-linux.org>,
+ stable@vger.kernel.org
+Subject: Re: Crash on boot with CONFIG_JUMP_LABEL in 6.10
+In-Reply-To: <20240731110617.GZ33588@noisy.programming.kicks-ass.net> (Peter
+	Zijlstra's message of "Wed, 31 Jul 2024 13:06:17 +0200")
+Organization: Gentoo
+References: <096cad5aada514255cd7b0b9dbafc768@matoro.tk>
+	<bebe64f6-b1e1-4134-901c-f911c4a6d2e6@bell.net>
+	<11e13a9d-3942-43a5-b265-c75b10519a19@bell.net>
+	<cb2c656129d3a4100af56c74e2ae3060@matoro.tk>
+	<20240731110617.GZ33588@noisy.programming.kicks-ass.net>
+Date: Wed, 31 Jul 2024 14:31:55 +0100
+Message-ID: <877cd1bsc4.fsf@gentoo.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240731062916.2680823-9-quic_skakitap@quicinc.com>
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-On Wed, Jul 31, 2024 at 11:59:16AM GMT, Satya Priya Kakitapalli wrote:
-> Add device node for camera clock controller on Qualcomm
-> SM8150 platform.
-> 
-> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-> ---
->  arch/arm64/boot/dts/qcom/sa8155p.dtsi |  4 ++++
->  arch/arm64/boot/dts/qcom/sm8150.dtsi  | 13 +++++++++++++
->  2 files changed, 17 insertions(+)
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Peter Zijlstra <peterz@infradead.org> writes:
 
-Minor nit below.
+> On Tue, Jul 30, 2024 at 08:36:13PM -0400, matoro wrote:
+>> On 2024-07-30 09:50, John David Anglin wrote:
+>> > On 2024-07-30 9:41 a.m., John David Anglin wrote:
+>> > > On 2024-07-29 7:11 p.m., matoro wrote:
+>> > > > Hi all, just bumped to the newest mainline starting with 6.10.2
+>> > > > and immediately ran into a crash on boot. Fully reproducible,
+>> > > > reverting back to last known good (6.9.8) resolves the issue.=C2=A0
+>> > > > Any clue what's going on here?
+>> > > > I=C2=A0can=C2=A0provide=C2=A0full=C2=A0boot=C2=A0logs,=C2=A0start=
+=C2=A0bisecting,=C2=A0etc=C2=A0if=C2=A0needed...
+>> > > 6.10.2 built and booted okay on my c8000 with the attached config.
+>> > > You could start
+>> > > with it and incrementally add features to try to identify the one
+>> > > that causes boot failure.
+>> > Oh, I have an experimental clocksource patch installed.=C2=A0 You will=
+ need
+>> > to regenerate config
+>> > with "make oldconfig" to use the current timer code.=C2=A0 Probably, t=
+his
+>> > would happen automatically.
+>> > >=20
+>> > > Your config would be needed to duplicate.=C2=A0 =C2=A0 Full boot log=
+ would also help.
+>> >=20
+>> > Dave
+>>=20
+>> Hi Dave, bisecting quickly revealed the cause here.
+>
+> https://lkml.kernel.org/r/20240731105557.GY33588@noisy.programming.kicks-=
+ass.net
 
-> @@ -3759,6 +3760,18 @@ camnoc_virt: interconnect@ac00000 {
->  			qcom,bcm-voters = <&apps_bcm_voter>;
->  		};
->  
-> +		camcc: clock-controller@ad00000 {
-> +			compatible = "qcom,sm8150-camcc";
-> +			reg = <0 0x0ad00000 0 0x10000>;
-> +			clocks = <&rpmhcc RPMH_CXO_CLK>,
-> +				 <&gcc GCC_CAMERA_AHB_CLK>;
-> +			power-domains = <&rpmhpd SM8150_MMCX>;
-> +			required-opps = <&rpmhpd_opp_low_svs>;
+Greg, I see tglx's jump_label fix is queued for 6.10.3 but this one
+isn't as it came too late. Is there any chance of chucking it in? It's
+pretty nasty.
 
-Is the required-opps necessary?
+thanks,
+sam
 
-> +			#clock-cells = <1>;
-> +			#reset-cells = <1>;
-> +			#power-domain-cells = <1>;
-> +		};
-> +
->  		mdss: display-subsystem@ae00000 {
->  			compatible = "qcom,sm8150-mdss";
->  			reg = <0 0x0ae00000 0 0x1000>;
-> -- 
-> 2.25.1
-> 
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-With best wishes
-Dmitry
+-----BEGIN PGP SIGNATURE-----
+
+iOUEARYKAI0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCZqo8zF8UgAAAAAAuAChp
+c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB
+NkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MA8cc2FtQGdlbnRv
+by5vcmcACgkQc4QJ9SDfkZAp6gD+Jm3iAhmMIV9r5hvD6WNKeZdCdAYrODOt99Is
+RcnaizEA/1U+frbXA8Gr1fY7tf906NsumEtw8yk+6GhBs1nrXY0B
+=OHJC
+-----END PGP SIGNATURE-----
+--=-=-=--
 
