@@ -1,88 +1,120 @@
-Return-Path: <stable+bounces-64778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47986943210
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 16:33:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7AC943251
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 16:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03BBF2870CF
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 14:33:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 494741F27346
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 14:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365A31BBBC0;
-	Wed, 31 Jul 2024 14:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4B41AE85E;
+	Wed, 31 Jul 2024 14:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="RmK7GQRA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49C21AE85E;
-	Wed, 31 Jul 2024 14:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AFA1BBBC5;
+	Wed, 31 Jul 2024 14:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722436390; cv=none; b=ryWsLFkFbHDZGVyNV11HcgNHN0bqVCpQnPnNrF9jHPxYzfY5ycybUqZ6QlM5yR47KztKJPNf6sLBY+Wa7C1l4aD3xYDNVzwaeI8P4Am4s3qMK2deqoy6PFYEn0TXdhbWWDf37Sy5jidsYpm2GaleHxIsjqeOjC/0SgoHbIc47q0=
+	t=1722436979; cv=none; b=ZSvj75IWMbokewGVs5KCa+FQlxy2dFVwtpNk++wp4yAVEKxqE/iuKUSMmpVq8XkyWlB1drMegelHFJ1Y7AT2rNtKxwSg/uZ9Lcd1PfmXnEkyVFXVY64K8zGcq0+tTnn+1AvxukO2Y5Q0PsDwOHdEA4Nsqs8hIXdxRi6ZW6M5IhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722436390; c=relaxed/simple;
-	bh=WkvxrXPefTtG5XQXwsJM0bzYPLImtaxazIwI1lyCocI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bicl5Mow/iThaa0bdDSc2P3smBL6YVFm1btlTQz73iIaDvVbv723RcEptDyYd7DsUb5mLAOKsj7jHyYBJo+4zeFFmrzemKRvxBDhU0HjhKeTYbb/qLyfu1ur8e4femFZ9hy7qseGHwVQ91E2veOtIqkEo0XaHDehooUMqu1RaFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=15.184.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-X-QQ-mid: bizesmtpsz12t1722436369tdub3n
-X-QQ-Originating-IP: nlDW+JflpgvVOoz5Cpa3YnzZo+s9nlaZD/t8jyQyPA0=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 31 Jul 2024 22:32:47 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 15301098886600835381
-From: WangYuli <wangyuli@uniontech.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	dominique.martinet@atmark-techno.com,
-	tsbogend@alpha.franken.de
-Cc: leesongyang@outlook.com,
-	bhelgaas@google.com,
-	rdunlap@infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	guanwentao@uniontech.com,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 4.19+] MIPS: Octeron: remove source file executable bit
-Date: Wed, 31 Jul 2024 22:32:45 +0800
-Message-ID: <1F49853AED366C76+20240731143245.204547-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.43.4
+	s=arc-20240116; t=1722436979; c=relaxed/simple;
+	bh=03o06WRPMECBH8cNLsTZ+D+b1SXhalEQ2Hoe+OeZjbE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bF+FcPYFzdecnK96YWxHHYzbLu1o42MgpcPSe8v+amrZd+2cg5ijxRhUuGzin8dX4IoHG5J+8UOwSMxyND9LfyzDCdSP7CZFTdHzTAnjFp+NC9QSe2GhKz2Z2dhVBOJSskYrQpnGfAqV1wKGVnzSnV3GP//FmZdKdxV5Io97dRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=RmK7GQRA; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2f0dfdc9e16so72470181fa.2;
+        Wed, 31 Jul 2024 07:42:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1722436976; x=1723041776; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7+eaS7WmK/h+AxO7xK0Tq5m6QMfSwjAwlMf/qchy6iw=;
+        b=RmK7GQRATtmefFbwvqygIrm4KSXjT7RIGXgZuVl7dxEoYi0whGTVQ5zBwce4Z25T9i
+         WAQReh+mc3IPFEJtoWF2RTh8C5EAK0EwOLJC37RovkHRYf9MBIRzVM08O+dfa4gMKG3k
+         /N8XWdKm30JLcKrIIsCHGyDFGK1EVwk0DqsbbcaVXLnYPrHh1+/mm3fhJzTyBUL+aEYy
+         dTGaYhf9krBMq2FN+BEgaL2EYHfJvboyB9uwYparNall+hGQisTgpUFPMPPJWy6q7fTH
+         rmntLYlP5spX700gbzW5usl0TCJa6DvWtAnXSAthI02fAfjR5ATwDwJfqUSlW2S93rvS
+         P4Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722436976; x=1723041776;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7+eaS7WmK/h+AxO7xK0Tq5m6QMfSwjAwlMf/qchy6iw=;
+        b=eiL84ZLxVfZQATdne8C80P/JCeol7qgtm8v3CipKYBn3N9k4IgCEVvaxyVBr31aoX2
+         /7QhP/mJ50l+ugK4m3eM7c/IeesEKBJ7rgLq2Vs+gZaCAg6wbJzYmCKva4+q1juRtDL4
+         REVkjLcunIlztredvgAajynnIXSBJSxWGC79oeAZeyTrDIl+ndCJe7b+4BFnOnkUl5Qz
+         sSL1NQTh1Z+nmMSu9z2LqNHeVB9wm5KoobJHhaBH05yQL4ZANXtM9MS622L6sjGGyVeu
+         XzY9FjU9arl0F9zy+KeyQq7klka+bsDFZZpZxKe08s5bnXsvdXTdpPlRYAro33eTT+kb
+         ss8A==
+X-Forwarded-Encrypted: i=1; AJvYcCV7/UbdNSAywANsN2mGQ6ynHKBWjbeOQxuUdBXHTaojpaJarEQ6iYcK4Dwj3bGPQ2nAloRCNMNhOfBrMgx05o+eHcK1Ae2hvodSDbSe8VhujF1GU9CjlRsbLUp7v5VrG8OrXLBf
+X-Gm-Message-State: AOJu0YySNdY64dXaMnEGmcNlq1zUkFKWC3weLeVubexfdNmjdYl1urvj
+	gIFFT9ayu9+55wGVouBfXioU5BKBViVoxjVIn7iBRAvZ88Ac2/M=
+X-Google-Smtp-Source: AGHT+IFXclmu5DEIX5SRJTwTFkq5JFNwJWu6kCEgvQ/1i3mVfeno0N3amnMwKWgaIPb8PCQESr5PZQ==
+X-Received: by 2002:a2e:9609:0:b0:2ef:2a60:c1c1 with SMTP id 38308e7fff4ca-2f12ee1663bmr90480651fa.21.1722436975606;
+        Wed, 31 Jul 2024 07:42:55 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057724.dip0.t-ipconnect.de. [91.5.119.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb6403bsm24239425e9.35.2024.07.31.07.42.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jul 2024 07:42:54 -0700 (PDT)
+Message-ID: <018c2396-3a00-47db-be60-4a49e3668a9d@googlemail.com>
+Date: Wed, 31 Jul 2024 16:42:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/440] 6.1.103-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240730151615.753688326@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240730151615.753688326@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Am 30.07.2024 um 17:43 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.103 release.
+> There are 440 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 01 Aug 2024 15:14:54 +0000.
+> Anything received after that time might be too late.
 
-commit 89c7f5078935872cf47a713a645affb5037be694 upstream
+Just for the record: this builds on my 2-socket Ivy Bridge Xeon E5-2697 v2 server, but 
+fails to boot due to a kernel panic which others have already reported.
 
-This does not matter the least, but there is no other .[ch] file in the
-repo that is executable, so clean this up.
+Looking for testing -rc2...
 
-Fixes: 29b83a64df3b ("MIPS: Octeon: Add PCIe link status check")
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
----
- arch/mips/pci/pcie-octeon.c | 0
- 1 file changed, 0 insertions(+), 0 deletions(-)
- mode change 100755 => 100644 arch/mips/pci/pcie-octeon.c
+Beste Grüße,
+Peter Schneider
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-old mode 100755
-new mode 100644
 -- 
-2.43.4
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
