@@ -1,73 +1,66 @@
-Return-Path: <stable+bounces-64844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFF7943ABC
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:19:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8603943ABF
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B9DF1C21B23
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 165DB1C219E8
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A488F70;
-	Thu,  1 Aug 2024 00:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C611514DC;
+	Thu,  1 Aug 2024 00:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oOtNJbPd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nL3qkbbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F0E634;
-	Thu,  1 Aug 2024 00:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76F713B2A5;
+	Thu,  1 Aug 2024 00:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471020; cv=none; b=RGoF5IGBXnK0hWT9rjzD9kvhu7CKNhRZ93rwZPTRnYB/GR2D0spNJb3AhPU68fRo4iwOmEsbQnkfEWzwP9elnl/nOWAatjJk6KaEgh9RUWZKfoIJknfXAKovfchsNkQWInRyj/ydzBlDCsrsosLwQgm70kXDm2KUGvm5AaZF49Y=
+	t=1722471024; cv=none; b=R8FLVk4tCOki+9joA6Jqc5EUGDDLqWCqy311uO0wCZ0IdqOiUB7aGI5ZmdrlC7Q3ARsGAuSY8c1x0cqiTEhfw0eZoXJgjQZMEEmMCwnvFvMOzVBMeQjSny/MXovm0vTvTxa3T58ei4fBDX3NhGpFabNMYbFoDVGiEgQd/NOTBio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471020; c=relaxed/simple;
-	bh=9uq9hU9Kf4NkxDp1BJZg/eWYxzZPlBlb+KcL7Ctq3xY=;
+	s=arc-20240116; t=1722471024; c=relaxed/simple;
+	bh=54RIT+Onb6an8cT92H4szPSbam51k7rmIL1nt84hD2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHBwxSmLxCHOgnEH+pk1FPUBql8cO9hKnkBzdS5CK5AkHxJNL5U7vwruAljpp3OVpi9cdFypS77I+D3PHWAD59vTt+QvnQ2vnJ8lUaYHQ1rLmGngymQLDvBmHmSQ10mZ3P5/nJYLvD6n+sPQpywKhM2ClUTLnv8ETM/a7NECJkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oOtNJbPd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D43FC116B1;
-	Thu,  1 Aug 2024 00:10:17 +0000 (UTC)
+	 MIME-Version; b=CN2GHqNyw8UD24zXnPQXBRHe7/FHuvLu9MkwLyM2lJlvGQYcJt0ZcANOcY0MGLyo2o50z44GUs7upDle5n50wNtZhWEqPRyoGHqQRr8HnYPl7gdbEONmjI+q7cwEcBR7X9ffJcIS+2Qq2AS6u1xe7x0rnX+dPzUcxagqam6C2EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nL3qkbbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BCEC116B1;
+	Thu,  1 Aug 2024 00:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471019;
-	bh=9uq9hU9Kf4NkxDp1BJZg/eWYxzZPlBlb+KcL7Ctq3xY=;
+	s=k20201202; t=1722471024;
+	bh=54RIT+Onb6an8cT92H4szPSbam51k7rmIL1nt84hD2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOtNJbPdNls+Z9ygIOlqdvWHm6XmXga9/JG35hrZ8JFFk1tyhEuqK+xhD1YW9Qis4
-	 wM6bj0hMqRO5l2WCcYdlofANilT28CmxR5u+5IDJtkNGIDwTRv4/wyfrMlbb2hoDeO
-	 tjQKnNyP4yYUFkYeTRyQx/N2cIpg7vLlLGbw22hLP9BBTS8Qya8ZlGwwqbsAozYvcu
-	 NEQBhCvC/Mk9fariOnHtVZnLI9KYipFeXPUhP4nYCyGdXlFT34EkIHzyq80g071zrz
-	 bDdquZ2WJJ97BuOSmZT40pwUJoso7wQwfQkcJrOmzAx1jIvsDuUTN8sJ+muVaJe0SX
-	 sd+WHcdd5Sxdw==
+	b=nL3qkbbTiAztJwY907NWsqUO0m9VyhslWHiotDyQBNpqQ57fCNgdgIfwZkuxniMyT
+	 Vosnnwio0R559ORTi/yQEVqbKk1DAnmQTMD2Rh5WtbhwNmeAIBGA2InmP06uMaBPx7
+	 d78zLztTtJWd9jtRHcD+ENUB+FPEL1hZsnZoI0dY0PtCW7FB0MKVDpB3jKBVCRDIHc
+	 Q8xwx/mKimqhtdOm9NaXbnRuvnlImQQzQGpSUGQwVLbZvfkbbBPTMtWMyMusk1b9BD
+	 3fhli+FX6N8YtreJQFJO8/JnnmndZkYc4mHAWyLkYjPz0BYVTwUQPkgUJxDH9JDH3D
+	 GO3lBWhapiipQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
 	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	hamza.mahfooz@amd.com,
-	lewis.huang@amd.com,
-	mghaddar@amd.com,
-	michael.strauss@amd.com,
-	srinivasan.shanmugam@amd.com,
-	Bhawanpreet.Lakha@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 019/121] drm/amd/display: Skip updating link encoder for unknown eng_id
-Date: Wed, 31 Jul 2024 19:59:17 -0400
-Message-ID: <20240801000834.3930818-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 020/121] drm/amd/display: Check msg_id before processing transcation
+Date: Wed, 31 Jul 2024 19:59:18 -0400
+Message-ID: <20240801000834.3930818-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -84,35 +77,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit efabdce3db9f3d306084c8946983f3d895810a6b ]
+[ Upstream commit fa71face755e27dc44bc296416ebdf2c67163316 ]
 
-This prevents accessing to negative index of link_encoders array.
+[WHY & HOW]
+HDCP_MESSAGE_ID_INVALID (-1) is not a valid msg_id nor is it a valid
+array index, and it needs checking before used.
 
-This fixes an OVERRUN issue reported by Coverity.
+This fixes 4 OVERRUN issues reported by Coverity.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Acked-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_factory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-index cf22b8f28ba6c..2c3f5d6622851 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-@@ -390,7 +390,7 @@ static void link_destruct(struct dc_link *link)
- 		 * the dynamic assignment of link encoders to streams. Virtual links
- 		 * are not assigned encoder resources on creation.
- 		 */
--		if (link->link_id.id != CONNECTOR_ID_VIRTUAL) {
-+		if (link->link_id.id != CONNECTOR_ID_VIRTUAL && link->eng_id != ENGINE_ID_UNKNOWN) {
- 			link->dc->res_pool->link_encoders[link->eng_id - ENGINE_ID_DIGA] = NULL;
- 			link->dc->res_pool->dig_link_enc_count--;
- 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+index 99e17c164ce7b..1d3e8f0b915b6 100644
+--- a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
++++ b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
+@@ -128,13 +128,21 @@ static bool hdmi_14_process_transaction(
+ 	const uint8_t hdcp_i2c_addr_link_primary = 0x3a; /* 0x74 >> 1*/
+ 	const uint8_t hdcp_i2c_addr_link_secondary = 0x3b; /* 0x76 >> 1*/
+ 	struct i2c_command i2c_command;
+-	uint8_t offset = hdcp_i2c_offsets[message_info->msg_id];
++	uint8_t offset;
+ 	struct i2c_payload i2c_payloads[] = {
+-		{ true, 0, 1, &offset },
++		{ true, 0, 1, 0 },
+ 		/* actual hdcp payload, will be filled later, zeroed for now*/
+ 		{ 0 }
+ 	};
+ 
++	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
++		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
++		return false;
++	}
++
++	offset = hdcp_i2c_offsets[message_info->msg_id];
++	i2c_payloads[0].data = &offset;
++
+ 	switch (message_info->link) {
+ 	case HDCP_LINK_SECONDARY:
+ 		i2c_payloads[0].address = hdcp_i2c_addr_link_secondary;
+@@ -308,6 +316,11 @@ static bool dp_11_process_transaction(
+ 	struct dc_link *link,
+ 	struct hdcp_protection_message *message_info)
+ {
++	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
++		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
++		return false;
++	}
++
+ 	return dpcd_access_helper(
+ 		link,
+ 		message_info->length,
 -- 
 2.43.0
 
