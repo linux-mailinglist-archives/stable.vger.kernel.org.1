@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-64745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0FDC942BAC
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 12:10:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC56D942BB0
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 12:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC3AB20F19
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 10:10:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5700CB21BD5
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 10:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8841AC447;
-	Wed, 31 Jul 2024 10:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C4F1AD3F2;
+	Wed, 31 Jul 2024 10:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHXi8JZm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gaeC24Gt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39901AC437;
-	Wed, 31 Jul 2024 10:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9C61AAE1F;
+	Wed, 31 Jul 2024 10:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722420638; cv=none; b=qHvlfVhRF4MG/T2dQY5UI1xN9aqYrCWJy29eAsvmWTggMKtdALaAnsejTSy82ASNmtsQVZeSodSJKlOhlC2L8TYFWlM7U/1jVAld7UGtcaykqgXUqXCT0eHKqyGazOtKZQYqInCX272rBuo0+p79g5KdGGAE+EwrijKunNrCN2o=
+	t=1722420641; cv=none; b=n2lVarZZwpj68/QGqot3otDTtJ0ITNzDeRAx1OzibD3XMWQZVYnSRUBbdBi0urd6EhjlkiIo2D6qhBd3OdF9DtLMG4FPTadn6SIm8RBaUNUnbwyPu3UdQnbu3xI8JUTHy8yyTKx2OWIiiMgmLHQgf70wNrCpExabfw4i1pJ5giQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722420638; c=relaxed/simple;
-	bh=H8Dt8TRfu+FKsLww2oDHhCRoGlO5idEYzWV180422Jw=;
+	s=arc-20240116; t=1722420641; c=relaxed/simple;
+	bh=mcoK9LmrP202DQiIDF28yqP/Wm3eTVzX8tzTOTUmoAY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rAWgtFfjDpDKX4UigVyj32Kh0Xw3FJ/Z6hNLVce7rGt+kk1xwhlibVAiL1rzp9wsT4JrURyEXrXVQMMSLfRbSQ4YQQX7kbsDwA4ks4oal+mOCLzdcicys90tL6XID/Z79fUn0WOuggZyABiEuGEkFtwdc4tTj06FJJ+OyHNJHO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHXi8JZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FE3C4AF0E;
-	Wed, 31 Jul 2024 10:10:35 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=rTYvG4pew7BtsLvdfaKUEyxWJujjnL7vAZfDw7dPivBj0soGzGYFZxqeGmx3qQRermKe0a2ENEQnratChjOj3llgvZOsi9zO7TZPbE6vplEatWA7UzZc1TNTk7jWcrvq1IEBT2RXg9fummm32+ohoxAxzIthZbWIYJ31ndNHF1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gaeC24Gt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA592C4AF0C;
+	Wed, 31 Jul 2024 10:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722420638;
-	bh=H8Dt8TRfu+FKsLww2oDHhCRoGlO5idEYzWV180422Jw=;
+	s=k20201202; t=1722420640;
+	bh=mcoK9LmrP202DQiIDF28yqP/Wm3eTVzX8tzTOTUmoAY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ZHXi8JZmYg/E1xsKvJZ/Ati9mTTFqY5Z48J2Ng5ynET3AuDAhDHJnHd0TRl/djgVi
-	 NssnY5CI0qpvho14w5OSkQVZxy9K4d7A8Ky9W/U4RdJ4mtbEyGJbqRS5P0NdiNJHxP
-	 vGgRjslj17M+rFDs4c/pO8sZ//vUuPWQT7pRoxu9r09ILt6oFUpmKG/DaUNTXDd1zl
-	 oR0MWtF05+B/jc4Pmrdnzy5o2UrZTJ0ZiwyCu9j3WNex2EvG1mlZEHLD+p/6yBs8g7
-	 Aaypo7iGl7DYzX+SNj3EZr9pi79A8gu5kJPkpqVu/qLUWDeCjgrQYZliO/py4Cnj9h
-	 Vxty4d4zGGWVQ==
+	b=gaeC24GtLZmFaiiW6aeo7wP7A6N+qxppCwVG83UKh8Rr4zdkhY4uPiMYBEHUFLZ6k
+	 KOwijVh/QE1jdLB5YXys5gWaBe6HdtS+75FRU0kQ1ILb0kLofVxsO6MnX3z3bn28pL
+	 56lhn2fkDS+cfMOWsQYtKbl9l9XFkm2wrW82mhg/ldF7RWCJ44JHRDqWrjbgtDgCsQ
+	 GjCl//Ssq2JmguQBbYUcHQPY7n2hGg0vsyR/Pseqdekernxs1fKT0Qc/CxDgHHW3Em
+	 fzRdqVoT+rHvwHL0GRPU93YiTD0EdmB5UzcI8nh7zhhmSKgPcXIRwJ1lnOn0+9lWq1
+	 LyPfSrFMvOEHQ==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 31 Jul 2024 12:10:14 +0200
-Subject: [PATCH net 1/2] mptcp: fix bad RCVPRUNED mib accounting
+Date: Wed, 31 Jul 2024 12:10:15 +0200
+Subject: [PATCH net 2/2] mptcp: fix duplicate data handling
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240731-upstream-net-20240731-mptcp-dup-data-v1-1-bde833fa628a@kernel.org>
+Message-Id: <20240731-upstream-net-20240731-mptcp-dup-data-v1-2-bde833fa628a@kernel.org>
 References: <20240731-upstream-net-20240731-mptcp-dup-data-v1-0-bde833fa628a@kernel.org>
 In-Reply-To: <20240731-upstream-net-20240731-mptcp-dup-data-v1-0-bde833fa628a@kernel.org>
 To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
@@ -62,69 +62,78 @@ To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1600; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=B/IpD4eT5lsmU2JoZeqN31jRGBuOWnvRkoQrDPft8yw=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmqg2YhQwvfFDP40KU2RFMHcfK7PKTzl1i2eapZ
- O07AQtI+Q2JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZqoNmAAKCRD2t4JPQmmg
- cynOD/9Dl/Nb3D4GsnwPqGjv5vj164TQMI0CPsqRsfooaNRsE8jRLWflKslWfQrlesNV+oFDnbO
- DGL04ppWvM4ydxnfVneZAXJWl+eNyj4461s0GnFWPQzqaEE/3rncw/AAaVCTpoliHzZJUbkrrp+
- T0HD9qYHXqCWeVnfVhdPa7Tzjeji7570dosC56mvT1aLhcAP9tGdpkF9fpigaEDOVfeVPLZoTwt
- EMNiorNor6ZczQXRpx5h/wrxNoZpwEEWWhJr7YjBXyQLcK7xYSqnMWOVXGj+IDIFv4RjFWB9G5s
- MMvAIgq/VW1hWihYvNHGqhqKVOmyc0UM/5u+3QS0XMkQwigh419cWgKAbam1kribE3f0kqoBol5
- LeOiuYbERa3Qn6avpek0ETp7jbrcZd6VbZ5lcZiUYPUjgCdSuPxdBf3LYz41eR5jRZLxC0/EVtC
- EiHi60uCIIUQWiwQoQ24znot3MGuRvYHDT0hkGl1Vq3h18f9brHM2sEGHwDEkQjsF04m+LYDyHY
- OwG7gXZrhVEcodOvhQN18jEbiu9u8d18W4eRcrLnlpQJ/W07WgTH5EYFH4fdRybgaB+5oG/PrAD
- YJALASt3fndTNAAWQqOOCF6OnrzmnC7YfbJdZqtHZ59bcqs5C5uFQuHq0HUH5bcLJKDIdVDyOfA
- 8AviwiuMPslFF2g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2111; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=JqfstQqq0JRT5Fp57RkyUDj9RgOgTzdxW2LL9v2v+s8=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmqg2YV5OWiY+8t9DVjxlTKa83MnV9kq+4PFviI
+ t0agQiGkHOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZqoNmAAKCRD2t4JPQmmg
+ cyXWEADhwq48kgatRefVmpcR3KOOixaGnWRGkEgu6ShLL6BMyOxwfJDz936aqPDmP3JpZa8lf4l
+ H/ZfHIYe1By2iPkmdsRxhZPxkzDtPnwzh7NV7ul+NVsapn2zAOmXTceoQzIUY59y0wT00fFua/n
+ y05le07oeC/teIIs/UXCHbLhdbMxsMTpX6yMHO9EzFxjbQtzpR4guridn3uMDGKFYPn6J/R8vkF
+ DsFOtcaK3W+PxI9BGZs2OEsaPxzdoEUjp+yFfNM4PyZRZCI8feiYEfsMDF/vrc6qil1T1+NGA+W
+ GEWNOW+wT0SSrZQmM+qyS8qKOZ2VROmTTbY7wocgK27mJsQNZvAfndsp2psf6kU93LMddlg5tfH
+ GtzHqN27vXEWYdc86gdWSWeTu1YNmn0r7UP/ZnaDx8bnmTSUU6k5M1VjBQRFpBf+icGHJ0BNWPh
+ pAcpJ/nxJg6J8x43GRd6rD81rXmXSHC1AUXIitwQAvxmZjhWm9airIan2krBMVW02S6JLMpy2TP
+ oK/PGtcIEhpSO0FgHAs02we/SEPlKcKcMQxNMDhUW33QiBoy2tpveuHs0AyZ0ej08yLMgYsfjVR
+ 9DDHpyzbL0jj+y1bAfceQuscebPMAD8f/AKabhiyfzhyFzsGMqzJz2QYxPe48BB9Wk4dxrCVwd+
+ zoriRgz0kLCD5zg==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-Since its introduction, the mentioned MIB accounted for the wrong
-event: wake-up being skipped as not-needed on some edge condition
-instead of incoming skb being dropped after landing in the (subflow)
-receive queue.
+When a subflow receives and discards duplicate data, the mptcp
+stack assumes that the consumed offset inside the current skb is
+zero.
 
-Move the increment in the correct location.
+With multiple subflows receiving data simultaneously such assertion
+does not held true. As a result the subflow-level copied_seq will
+be incorrectly increased and later on the same subflow will observe
+a bad mapping, leading to subflow reset.
 
-Fixes: ce599c516386 ("mptcp: properly account bulk freed memory")
+Address the issue taking into account the skb consumed offset in
+mptcp_subflow_discard_data().
+
+Fixes: 04e4cd4f7ca4 ("mptcp: cleanup mptcp_subflow_discard_data()")
 Cc: stable@vger.kernel.org
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/501
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/protocol.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/mptcp/subflow.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index a2fc54ed68c0..0d536b183a6c 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -350,8 +350,10 @@ static bool __mptcp_move_skb(struct mptcp_sock *msk, struct sock *ssk,
- 	skb_orphan(skb);
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 0e4b5bfbeaa1..a21c712350c3 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1230,14 +1230,22 @@ static void mptcp_subflow_discard_data(struct sock *ssk, struct sk_buff *skb,
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+ 	bool fin = TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN;
+-	u32 incr;
++	struct tcp_sock *tp = tcp_sk(ssk);
++	u32 offset, incr, avail_len;
  
- 	/* try to fetch required memory from subflow */
--	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize))
-+	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize)) {
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
- 		goto drop;
-+	}
+-	incr = limit >= skb->len ? skb->len + fin : limit;
++	offset = tp->copied_seq - TCP_SKB_CB(skb)->seq;
++	if (WARN_ON_ONCE(offset > skb->len))
++		goto out;
  
- 	has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
- 
-@@ -844,10 +846,8 @@ void mptcp_data_ready(struct sock *sk, struct sock *ssk)
- 		sk_rbuf = ssk_rbuf;
- 
- 	/* over limit? can't append more skbs to msk, Also, no need to wake-up*/
--	if (__mptcp_rmem(sk) > sk_rbuf) {
--		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
-+	if (__mptcp_rmem(sk) > sk_rbuf)
- 		return;
--	}
- 
- 	/* Wake-up the reader only for in-sequence data */
- 	mptcp_data_lock(sk);
+-	pr_debug("discarding=%d len=%d seq=%d", incr, skb->len,
+-		 subflow->map_subflow_seq);
++	avail_len = skb->len - offset;
++	incr = limit >= avail_len ? avail_len + fin : limit;
++
++	pr_debug("discarding=%d len=%d offset=%d seq=%d", incr, skb->len,
++		 offset, subflow->map_subflow_seq);
+ 	MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DUPDATA);
+ 	tcp_sk(ssk)->copied_seq += incr;
++
++out:
+ 	if (!before(tcp_sk(ssk)->copied_seq, TCP_SKB_CB(skb)->end_seq))
+ 		sk_eat_skb(ssk, skb);
+ 	if (mptcp_subflow_get_map_offset(subflow) >= subflow->map_data_len)
 
 -- 
 2.45.2
