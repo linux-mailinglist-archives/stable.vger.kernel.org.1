@@ -1,120 +1,114 @@
-Return-Path: <stable+bounces-64694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F1E94252A
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 05:44:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C48C942538
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 06:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3165D283B37
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 03:44:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 090B6B23551
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 04:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECADA219FF;
-	Wed, 31 Jul 2024 03:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D0418052;
+	Wed, 31 Jul 2024 04:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="c024FdBo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NzX1IEjK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F7C1BC20
-	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 03:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028A817BB6;
+	Wed, 31 Jul 2024 04:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722397470; cv=none; b=pFBujpJyDPoNU0pjV3E1pEH6bSIbgHpuC8uAvINokrmUX1iZGw2ZJz32p6V6wbzVwH40EcKIEz9K4Y45XFQwMsaYrFNWmSPBDrgHA6KZc89f5oK26FQkNdJAHXSGja+qIIdIWtHrzTl2XDfWNd4XoKRtTbHLe6RNcJhNocYJxwo=
+	t=1722398702; cv=none; b=KI6CvtXbgnLF0ijTctKZMloIPVEosr//gjtkN0W7pegLiCx/Y24KlfaQQ9ouOeNKo4WfJ5wxIIweS64t0G/MqdOyEmwY6gULrJh1obbnga/rUNDc6vLr+tRD3JE7eCrnaPqDO+doAaumdT4JT/7MGVxifan0WY//HD4L0Tjicu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722397470; c=relaxed/simple;
-	bh=OSVnN8tXzjBnuh8EDyw1UDmViT36WcO5dTyBCaOFmEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkFUFtO8lErBG0E/5ze5Noc5+XuSIrxuhhKYOl+CNnr5rTCnHw7vJI0qn9i8wHUnV0GRu5kUQmBd7I++jC3on1kwVFaW0cVEZYNdCGIPH4KDD7s2nXxkKq8CUK2uVjnYXnhsTHUKXy1BVl+5PhaX987SMlFq0hZQFJIGtNxhlE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=c024FdBo; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7ae3d7222d4so2553852a12.3
-        for <stable@vger.kernel.org>; Tue, 30 Jul 2024 20:44:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1722397468; x=1723002268; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UNo1lCfbQqGMSbbgOcd9nX2zDqzbGx3C0Iq0m1Inhbk=;
-        b=c024FdBoslqLLRltTlZwEVlxv2ud0mmdB3mKgbDu6/WMDYn/RKdOkinYeSu4jplhfa
-         /GpclPxdsEpUVFJITNwYt4J9Fo0ICcEu0dA1l5teYEqN3n+/Rnzwy1HgX2xCcqrYBlRk
-         kNx8Vy+1K9xJ8eG5VyAY0HZBwCzNARaUuLr4I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722397468; x=1723002268;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UNo1lCfbQqGMSbbgOcd9nX2zDqzbGx3C0Iq0m1Inhbk=;
-        b=HvDzk8WLc7ou6PmL/HIjGSWhnlmskhcNZIOFV2dO3CMh8u83XuEgIRmtj+2PxR9QN7
-         stEulm7LjI6xWWJquvoGNSvmYdIT6OwGN2nHsOzl67mmwr/uqZ/Jt4rimWuq9bmd/1R1
-         OtHfP0i8wJuJbJp+7wOyrpaMPG9ymZWTmFwQBzZTNv9O5jNLG6/Af9rK1rL/TPSiGL0e
-         2ZnOEkrMOWIn2NwzpzPiwY2jBTD0rcYx31adV4R52PqAk/tSRMHP9rTKp5cpzNK6VVjt
-         yLV1fFRrilnDEyBwjkebRYCKhFHeYA61IYNuJKuMPvLn35ajmphBR+Dk8rWpXNpGpJXP
-         gU4w==
-X-Forwarded-Encrypted: i=1; AJvYcCV5PcZTr4iISdtBeaT+wIE55YOWp7oPO7nIo2VbT8rNJIRCOVMUCgV58OHO8zG6hKTGVS/Ao2Cq+qsiMS8HGqGlQn8dfmgt
-X-Gm-Message-State: AOJu0Yz3SkOLTeyOTM5bOLmRCMaA/QkftCovC6wzjJ31O7/TYRu8npwY
-	i1KHQN/dWLOiBrvDBcQVzDfXC9DY9XjsmA6oxJZgrNS4VOHRW14U0Mtgm8V3nw==
-X-Google-Smtp-Source: AGHT+IE4FtnaiOt7PwGIeleyxseVrMrvg2bK54AvWowVA2QcZrnOLaPels+TJcjIfagIHeg10n/CWA==
-X-Received: by 2002:a05:6a21:328c:b0:1c3:b47d:d53f with SMTP id adf61e73a8af0-1c4a12e1129mr17571072637.25.1722397468531;
-        Tue, 30 Jul 2024 20:44:28 -0700 (PDT)
-Received: from wenstp920.tpe.corp.google.com ([2401:fa00:1:10:1cfb:e012:babc:3f68])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead81230bsm9093008b3a.120.2024.07.30.20.44.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 20:44:28 -0700 (PDT)
-From: Chen-Yu Tsai <wenst@chromium.org>
-To: Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Chen-Yu Tsai <wenst@chromium.org>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= <nfraprado@collabora.com>,
+	s=arc-20240116; t=1722398702; c=relaxed/simple;
+	bh=d6algDVYoftIHDHhjf16Zeq4a+y/Awxuwre1H3Pn0+8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mrq+IXIoX9wwC9Nrdnq+vjCJeRFpHooQq92McRmsQDhS3YjirF71uU8d8mZbO+aci1NPq8hs1Cym52UAfIQBbYydBnaqApo1Z6uAzl7ah++2RDdIQVN22ID1lKqFKJkVZfpLyy5Hxn+YW3ltjmFBajX9/aMFvYVCCf0XX59JtBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NzX1IEjK; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722398701; x=1753934701;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d6algDVYoftIHDHhjf16Zeq4a+y/Awxuwre1H3Pn0+8=;
+  b=NzX1IEjKtzcjjJtirzB79sXeM4Z95TN+Ef4C1UnCSe2mQkjIwo8CEQ4P
+   gjexdgRYt3aqFbOCViaQFyfsOxIy0+QPTfhk1WIDTD3rkRJGt9BcDRSWx
+   SjYlfhOBJUDaIwJ0pJq/6GKvtTZ8VaWYtCzkZezTv+i1834e6m+uKlCCe
+   lUMVjWmi70auNO3c6jzajSVcHe+qD/EjjbyTC73Hm0tA1nZChqrGq61FA
+   hD2IeInq9+QcRpVa8dbbS7RPxtwKSMHZET69K5IGxDTnd+aLMD9SZiKU6
+   Fcs4+vfF52/J+E23m67OOdJ2V9xN/vtQ9E01EG4OwAuf/4FyPQ2zOUl36
+   g==;
+X-CSE-ConnectionGUID: OKfpQ7IKT8mknwrKu1im6Q==
+X-CSE-MsgGUID: 5TiVbyXORLuS0k4O7HYPCw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="24016064"
+X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; 
+   d="scan'208";a="24016064"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 21:05:00 -0700
+X-CSE-ConnectionGUID: muf4eRAQRxS5oGwELv4tqg==
+X-CSE-MsgGUID: CN/5l5RDTxm25BbJwSepfA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; 
+   d="scan'208";a="59183050"
+Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 21:04:59 -0700
+Date: Tue, 30 Jul 2024 21:04:58 -0700
+From: Andi Kleen <ak@linux.intel.com>
+To: Andrii Nakryiko <andrii@kernel.org>
+Cc: bpf@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
+	adobriyan@gmail.com, shakeel.butt@linux.dev, hannes@cmpxchg.org,
+	osandov@osandov.com, song@kernel.org, jannh@google.com,
 	stable@vger.kernel.org
-Subject: [PATCH 2/3] arm64: dts: mediatek: mt8395-nio-12l: Mark USB 3.0 on xhci1 as disabled
-Date: Wed, 31 Jul 2024 11:44:09 +0800
-Message-ID: <20240731034411.371178-3-wenst@chromium.org>
-X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
-In-Reply-To: <20240731034411.371178-1-wenst@chromium.org>
-References: <20240731034411.371178-1-wenst@chromium.org>
+Subject: Re: [PATCH v3 bpf-next 01/10] lib/buildid: harden build ID parsing
+ logic
+Message-ID: <Zqm36i0Afe48193Z@tassilo>
+References: <20240730203914.1182569-1-andrii@kernel.org>
+ <20240730203914.1182569-2-andrii@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240730203914.1182569-2-andrii@kernel.org>
 
-USB 3.0 on xhci1 is not used, as the controller shares the same PHY as
-pcie1. The latter is enabled to support the M.2 PCIe WLAN card on this
-design.
+>  	while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
+>  		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_offs);
+>  
+> +		name_sz = READ_ONCE(nhdr->n_namesz);
+> +		desc_sz = READ_ONCE(nhdr->n_descsz);
+>  		if (nhdr->n_type == BUILD_ID &&
+> -		    nhdr->n_namesz == sizeof("GNU") &&
+> -		    !strcmp((char *)(nhdr + 1), "GNU") &&
+> -		    nhdr->n_descsz > 0 &&
+> -		    nhdr->n_descsz <= BUILD_ID_SIZE_MAX) {
+> -			memcpy(build_id,
+> -			       note_start + note_offs +
+> -			       ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhdr),
+> -			       nhdr->n_descsz);
+> -			memset(build_id + nhdr->n_descsz, 0,
+> -			       BUILD_ID_SIZE_MAX - nhdr->n_descsz);
+> +		    name_sz == note_name_sz &&
+> +		    strcmp((char *)(nhdr + 1), note_name) == 0 &&
 
-Mark USB 3.0 as disabled on this controller using the
-"mediatek,u3p-dis-msk" property.
+Doesn't the strcmp need a boundary check to be inside note_size too?
 
-Fixes: 96564b1e2ea4 ("arm64: dts: mediatek: Introduce the MT8395 Radxa NIO 12L board")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
----
- arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts | 1 +
- 1 file changed, 1 insertion(+)
+Other it may read into the next page, which could be unmapped, causing a fault.
+Given it's unlikely that this happen, and the end has guard pages,
+but there are some users of set_memory_np.
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
-index 4b5f6cf16f70..096fa999aa59 100644
---- a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
-@@ -898,6 +898,7 @@ &xhci1 {
- 	usb2-lpm-disable;
- 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
- 	vbus-supply = <&vsys>;
-+	mediatek,u3p-dis-msk = <1>;
- 	status = "okay";
- };
- 
--- 
-2.46.0.rc1.232.g9752f9e123-goog
+You could just move the later checks earlier.
+
+The rest looks good to me.
+
+-Andi
 
 
