@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-64717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95229427A5
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E32839427B3
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:19:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D73A1F25FAA
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 07:15:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D5891F21A65
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 07:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6974E1A4B38;
-	Wed, 31 Jul 2024 07:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E48E1A4F0A;
+	Wed, 31 Jul 2024 07:19:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12EC34CDE;
-	Wed, 31 Jul 2024 07:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A379B1A71E0;
+	Wed, 31 Jul 2024 07:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722410148; cv=none; b=MD5uuH5F0ILaqtX0B28l2c21ozeb1BntbtQArWevgkzSPqtbK40Asm44qqxm8uf70E6Wg5GZ0r/afnGpODErXT6sn6qux7OLxzDs75/vmAMX7jfFEV44kTtD32Ahci9TA1CPupbg67mskjIclqMq9pHo8E/zPJqn+umEmxhw9hg=
+	t=1722410342; cv=none; b=eIMDXOWKRSaNNAJ2cbfI0/PQRep3TrOuqqkmm2inqjOXFPsJAJ+jSV4iTQs6f5URfVfy0tlGn2tff7LZ7sjkNJckiKkIAmQL3DL22lQx03UGU6izOlnhchxYyOzi28eNr7QS7021OdENn1uHsduA/5TsAyD5a/GMnDno4uNjgfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722410148; c=relaxed/simple;
-	bh=XDH+XoNDRwZetUkmIzIfgIXFNPu4yL0TQBCKwJ0QhjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r5HgQq8jAJCpl2E/G5RMEPJ7OXduoaR/ha2OcX5B5EFNnH8WowQfsL8tUmi9UdlVnH54r4st99kBEeMLOHuxpExsGwkDUr/zndBn+ejP+Mc9098rzHQKWYGj4yRoXgAlWdyO9UXiFx2ho1ZpPdIdvXo1lX/seEe7vbwhMUq/1Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=18.194.254.142
+	s=arc-20240116; t=1722410342; c=relaxed/simple;
+	bh=SMivB/R5w7b87D6n0/gTww/ilT/MBruZU7ZTcYg57dA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oFCq7GMlrfjS0ttnJIXZcwJCot2xctbrNCis48UxYj+4s6t5vQfZmDYOIpuTvI9sDHXG15NOGSBjLjCadVlm45RCALHsvx0+rKPLcz0G2emAdIQ00HA44xVmzi+4D+YP2GCWAeQHWnnw1/4IywBc2+injDPsqczHC/ellBLND34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=54.204.34.129
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-X-QQ-mid: bizesmtpsz13t1722410123toi7hb
-X-QQ-Originating-IP: NjX5CDpy6uVrOOnF6b+RGaCU2h4IvTKExtNn+fp+44Q=
+X-QQ-mid: bizesmtpsz5t1722410311try9sf4
+X-QQ-Originating-IP: C5w+M+Kj2iBjfhCctdGi3rxO6aiEPtaKJp8lEDpKgyA=
 Received: from localhost.localdomain ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 31 Jul 2024 15:15:20 +0800 (CST)
+	id ; Wed, 31 Jul 2024 15:18:29 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 9501571679352240106
+X-BIZMAIL-ID: 14924432582986564659
 From: WangYuli <wangyuli@uniontech.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org,
@@ -51,9 +51,9 @@ Cc: keith.busch@intel.com,
 	hmy <huanglin@uniontech.com>,
 	Wentao Guan <guanwentao@uniontech.com>,
 	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.4/5.10] nvme/pci: Add APST quirk for Lenovo N60z laptop
-Date: Wed, 31 Jul 2024 15:15:19 +0800
-Message-ID: <9243A56C7835B52C+20240731071519.109778-1-wangyuli@uniontech.com>
+Subject: [PATCH 5.15+] nvme/pci: Add APST quirk for Lenovo N60z laptop
+Date: Wed, 31 Jul 2024 15:18:27 +0800
+Message-ID: <722C75CD96F242C0+20240731071827.112255-1-wangyuli@uniontech.com>
 X-Mailer: git-send-email 2.43.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -81,11 +81,11 @@ Signed-off-by: Keith Busch <kbusch@kernel.org>
  1 file changed, 7 insertions(+)
 
 diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 486e44d20b43..e4776cff4208 100644
+index 5a3ba7e39054..d73b8eb76b8f 100644
 --- a/drivers/nvme/host/pci.c
 +++ b/drivers/nvme/host/pci.c
-@@ -2821,6 +2821,13 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
- 			return NVME_QUIRK_SIMPLE_SUSPEND;
+@@ -2968,6 +2968,13 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
+ 			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
  	}
  
 +	/*
