@@ -1,155 +1,165 @@
-Return-Path: <stable+bounces-64736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FC8942AAC
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:37:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2283942B0A
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E6C1C209C6
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:37:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BCE31F21C48
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA15B1AB50A;
-	Wed, 31 Jul 2024 09:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DED21AD3FD;
+	Wed, 31 Jul 2024 09:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zL+OcRKB"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="b62FzbIZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E761A8C18
-	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 09:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DB41AD3E9;
+	Wed, 31 Jul 2024 09:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722418663; cv=none; b=Kb9dsNaZoZEhYy9Oweiq3bcloQamKO/4G/hMhbGNhL7J/tNZt6grfKYyZ/7CcJVM8R/sOwmoUAEOxZt6HYKjEZ/HkYKM4VLHKDuR+yVs+wizTBZTNKR6szvgbmbmWPtfOBj0se3Zdf7PhKprvUt332tFnY6Z2AXBzrf2E8M9DK0=
+	t=1722418770; cv=none; b=qhf8MQxFRl1O3bpgPBUe2sF7C5iLGYtsMv+0SNi8JeKUxz8TPOURQzrrT8WRwcdgKyDEZo1khFOZMxcwi4Is+gzd2d1QqS28utWegL3Ld4AsxzAUHDUAQVxuZBjnORERVyhDUJl1A8rf7Et9kSuXg5UZGhmVhQkfn4jUR/7Oo9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722418663; c=relaxed/simple;
-	bh=3PqYnVZVjS8Nchubqr5TZb9ZbM9gnu42tzIZibGM38k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BoVconxzBALEn2cgXyjSrUSCZBpyyHLpGZDdXn6chKDQv9uVHjmUoMfB0Bq5X4FLm1Y3ogKIx+nVdj9h2B6T+hCR6Zc7WNnST9rrgdwG4zPOIxoWtUR/cqtMYVsbDc9kbcIE+HM3kzGYFq2lYDXQSm4ASiX4G3wxz6WPIoLw1Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zL+OcRKB; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4f6c9e8e0f2so1685964e0c.3
-        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 02:37:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722418659; x=1723023459; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KUB2XfCmuTVubROS/hczkI5vuM+eVf8X/sAgSSkYLs0=;
-        b=zL+OcRKBsCiyclo0+DZyLAm4X0o55M4cplNreqSoGDOPCt+E3sW8WCAH5QGD87v2Cc
-         xyfbKwOhG2GaPgFxrIyUACzSpueEGGXlrMujL9MnEm4+GubW2HkXjjT//JN8YrJKjAI2
-         H+4lcKIhwoX/mEFFadDknOKPbRzm2flPZaBV+3BIoBP2fVuyK/6OsmzufJj5XJYCUdJS
-         X0/7IA6DNJQOADrnlpxOGD/SMjhKhBQE/ppZSXexPOIMpq68oFPT2iod5QWfPOtmFyba
-         vc0eReBqbcNQXEe5smxc70+8DzX5mJ0gy/plwRmM16WeKHwLAwd4sRWiI0Nbeg9uvsOj
-         L+3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722418659; x=1723023459;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KUB2XfCmuTVubROS/hczkI5vuM+eVf8X/sAgSSkYLs0=;
-        b=R1xOJLyDMRthx8pTbZMDBEVa2U25QeXJYdCqp50mefDngOzibz0xVZIWVm94F8QC8c
-         hRSyc7Isxb38eoU2l/bMwOrnDV28ua51GcbpSpPqbRHYA/ywDKgxQZew5CXE2NI19ife
-         JkpTxxnql1z/g+FBQHR8EIdwE5KWyEMnTnzObKJFyPd8qH+roAC4HxNlb5/34Ny4MxNL
-         swDnxI4ec07R4I7UbqdBJy2aMZf7J2uCIAPh0bkCQGqmE5RfjJMgpWfQ0wpTeNCoaWe9
-         GeDNDpBG1IF5+Dcmsv5ZPHkMzmHA7tYqUE95xJeHC8qnd7mH4y859efcTKGrhHy8LUdG
-         Ilfg==
-X-Gm-Message-State: AOJu0YygpMVjMYZ+YmwIcvYLOTxmTc3TxNi4/k7wsVcw+p9skaoNNWp4
-	FbDL53coDl29mQCUWGt+vtSF3F/Wy+s1VRgk1FIEvT2J+DCvXBKGcjJHZx0Afab7zOnX1cBQ8gZ
-	Zup5CLeNXd/W+pFYzKi9XCoLp2QHPNI5nWg7X/g==
-X-Google-Smtp-Source: AGHT+IFwnHFkgq2DRdLx+mwGenItfQdCUaBvRiNx3dWS7SZyP0MZEu7BMjqAOHN1DQFd77LTqPl7sD/Jd5/SE6O03hI=
-X-Received: by 2002:a05:6102:548b:b0:493:bbd7:3ec0 with SMTP id
- ada2fe7eead31-493fad0d470mr11329869137.23.1722418659376; Wed, 31 Jul 2024
- 02:37:39 -0700 (PDT)
+	s=arc-20240116; t=1722418770; c=relaxed/simple;
+	bh=5ujX0aXhjVcZ++VxQ8+WAlrI00TCumU0UQ1Quewl8ak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=orSe5XvzQqAKuoEaXVZgar0G0YbjypLl2PGmEDwxOMFGTAgamByhkXPJzTQ50Lxg3t5fOAq73+B7VX5JoLACu9MXBH/1BG1hiEskRd1HvABM526Dlj2PWWGFR4FvAXljpYtxDP038wkLajIQrlPVsYZZCYt7wcQaCp76iOIGqRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=b62FzbIZ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DB937842;
+	Wed, 31 Jul 2024 11:38:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1722418718;
+	bh=5ujX0aXhjVcZ++VxQ8+WAlrI00TCumU0UQ1Quewl8ak=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b62FzbIZ1u9S0HjFk6UpU3LKK+ylkau7CgrV1lc0vzgMCTub5jg8+JXojuddkHcQP
+	 /BYw+26Bvz1HzP284yoQoLBziBHVGcNdm8naBkc/sKf2pjl+BE81N+6/qGQGJpUecc
+	 nOQFzcY5TiSTnDIiKfCQN/HZF1gYGGEJe60ErD4Y=
+Date: Wed, 31 Jul 2024 12:39:05 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-media@vger.kernel.org, stable@vger.kernel.org,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Subject: Re: [PATCH v2 2/2] media: imx335: Fix reset-gpio handling
+Message-ID: <20240731093905.GQ8146@pendragon.ideasonboard.com>
+References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
+ <20240729110437.199428-3-umang.jain@ideasonboard.com>
+ <ef05c39a-ad5c-4751-a758-f73a2d114823@kernel.org>
+ <ZqijVf68ZQuFGKhU@kekkonen.localdomain>
+ <729280cd-557f-43ba-b1a6-8d319977ca82@kernel.org>
+ <20240730091011.GL300@pendragon.ideasonboard.com>
+ <cefc0b19-f065-4023-a536-56b2762ac967@ideasonboard.com>
+ <172241654546.392292.16164306008596010671@ping.linuxembedded.co.uk>
+ <c4f697d7-16a0-46d2-be34-45f6a8efaec8@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731073151.415444841@linuxfoundation.org>
-In-Reply-To: <20240731073151.415444841@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 31 Jul 2024 15:07:28 +0530
-Message-ID: <CA+G9fYsGYtFhoSZbv_s=3TCSYis-pSPDJ3LJwxbtv1_9+Q61JQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/441] 6.1.103-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Thomas Richter <tmricht@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Dan Carpenter <dan.carpenter@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <c4f697d7-16a0-46d2-be34-45f6a8efaec8@kernel.org>
 
-On Wed, 31 Jul 2024 at 13:34, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.103 release.
-> There are 441 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 02 Aug 2024 07:30:23 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.103-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Wed, Jul 31, 2024 at 11:06:38AM +0200, Krzysztof Kozlowski wrote:
+> On 31/07/2024 11:02, Kieran Bingham wrote:
+> > Quoting Umang Jain (2024-07-31 06:41:35)
+> >> On 30/07/24 2:40 pm, Laurent Pinchart wrote:
+> >>> On Tue, Jul 30, 2024 at 10:42:01AM +0200, Krzysztof Kozlowski wrote:
+> >>>> On 30/07/2024 10:24, Sakari Ailus wrote:
+> >>>>> Hi Krzysztof,
+> >>>>>
+> >>>>> On Mon, Jul 29, 2024 at 04:09:39PM +0200, Krzysztof Kozlowski wrote:
+> >>>>>> On 29/07/2024 13:04, Umang Jain wrote:
+> >>>>>>> Rectify the logical value of reset-gpio so that it is set to
+> >>>>>>> 0 (disabled) during power-on and to 1 (enabled) during power-off.
+> >>>>>>>
+> >>>>>>> Meanwhile at it, set the reset-gpio to GPIO_OUT_HIGH at initialization
+> >>>>>>> time to make sure it starts off in reset.
+> >>>>>>>
+> >>>>>>> Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
+> >>>>>>> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+> >>>>>>> ---
+> >>>>>>>   drivers/media/i2c/imx335.c | 8 ++++----
+> >>>>>>>   1 file changed, 4 insertions(+), 4 deletions(-)
+> >>>>>>>
+> >>>>>> This will break all the users, so no. At least not without mentioning
+> >>>>>> ABI break and some sort of investigating how customers or users are
+> >>>>>> affected.
+> >>>>>
+> >>>>> I know the original authors aren't using the driver anymore and it took
+> >>>>> quite a bit of time until others started to contribute to it so I suspect
+> >>>>> the driver hasn't been in use for that long. There are no instances of the
+> >>>>> device in the in-kernel DTS either.
+> >>>>>
+> >>>>> Any DTS author should have also noticed the issue but of course there's a
+> >>>>> risk someone could have just changed the polarity and not bothered to chech
+> >>>>> what it was supposed to be.
+> >>>>>
+> >>>>> I agree the commit message should be more vocal about the effects on
+> >>>>> existing DTS.
+> >>>>
+> >>>> I can imagine that all users (out of tree, in this case) inverted
+> >>>> polarity in DTS based on what's implemented. You could go with some
+> >>>> trivial hack, like I did for one of codecs - see 738455858a2d ("ASoC:
+> >>>> codecs: wsa881x: Use proper shutdown GPIO polarity"), but I remember
+> >>>> Mark Brown rejected similar commit for newer drivers.
+> >>>
+> >>> I don't think there's any out-of-tree user, because when we started
+> >>> using the recently driver, it required lots of fixes to even work at
+> >>> all. I'll let Kieran and Umang comment on that, I haven't follow the
+> >>> development in details.
+> >>
+> >> indeed, initially we had to put up fixes like :
+> >>
+> >> 14a60786d72e ("media: imx335: Set reserved register to default value")
+> >> 81495a59baeba ("media: imx335: Fix active area height discrepency")
+> >>
+> >> to make the sensor work properly on our platforms. Only after that we 
+> >> had a base to support more capabilities on the sensor (multiple lanes 
+> >> support, flips, TPG etc.)
+> > 
+> > I would also add that we had to provide control for the regulators to be
+> > able to power the device as well in fea91ee73b7c ("media: i2c: imx335:
+> > Enable regulator supplies").
+> 
+> Hm? That's not a proof of anything. Supplies are often turned on by default.
+> 
+> > Given the driver was posted from Intel, I would have anticipated perhaps
+> > the driver was in fact only actually tested by Intel on ACPI platforms -
+> > yet with no ACPI table registered in the driver - even that could likely
+> > be considered broken.
+> 
+> Nope, that does not work like that. Their platforms and such sensors are
+> often used on DT based boards.
 
+What DT-platforms would that be ?
 
-On the 6.1.103-rc2 (and 6.1.103-rc1 ) s390 builds failed with gcc and
-clang due to
-following warnings / errors.
+> Not mentioning even PRP0001.
 
-* s390, build
-  - clang-18-defconfig
-  - clang-nightly-defconfig
-  - gcc-13-defconfig
-  - gcc-8-defconfig-fe40093d
+I don't think PRP0001 is used by Intel for camera sensors.
 
-Build log:
---------
-arch/s390/kernel/perf_cpum_cf.c: In function 'cfdiag_diffctr':
-arch/s390/kernel/perf_cpum_cf.c:226:22: error: implicit declaration of
-function 'cpum_cf_read_setsize'; did you mean 'cpum_cf_ctrset_size'?
-[-Werror=implicit-function-declaration]
-  226 |                 if (!cpum_cf_read_setsize(i))
-      |                      ^~~~~~~~~~~~~~~~~~~~
-      |                      cpum_cf_ctrset_size
-cc1: some warnings being treated as errors
+Sakari, do you have any information about all this ? Do you think
+there's a risk that the driver is currently used by anyone with a
+mainline kernel ?
 
-commit log:
---------
-  s390/cpum_cf: Fix endless loop in CF_DIAG event stop
-  [ Upstream commit e6ce1f12d777f6ee22b20e10ae6a771e7e6f44f5 ]
+> > Based on that I have a high confidence that there are no current users
+> > of this driver (except us).
+> 
+> Nope, wrong conclusions, not that many arguments.
 
+-- 
+Regards,
 
-Metadata:
---------
-  build_name: gcc-13-defconfig
-  config: https://storage.tuxsuite.com/public/linaro/lkft/builds/2k0Kna66eRxxtDjqsue5mHG0j8L/config
-  download_url:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2k0Kna66eRxxtDjqsue5mHG0j8L/
-  git_describe: v6.1.102-442-g5ad01ec1b787
-  git_repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  git_sha: 5ad01ec1b7877a0e30c018e28e3909f96dbcef8d
-  git_short_log: 5ad01ec1b787 ("Linux 6.1.103-rc2")
-  compiler{'name': 's390x-linux-gnu-gcc', 'version': '13',
-'version_full': 's390x-linux-gnu-gcc (Debian 13.2.0-12) 13.2.0'}
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Laurent Pinchart
 
