@@ -1,202 +1,198 @@
-Return-Path: <stable+bounces-64781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5042D94327C
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 16:54:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 513A8943292
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 17:00:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06BE0286CCA
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 14:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B381C2291E
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 15:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9C71BBBD0;
-	Wed, 31 Jul 2024 14:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45C9125BA;
+	Wed, 31 Jul 2024 15:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ejDdzrgX"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DkniVtbG"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2064.outbound.protection.outlook.com [40.107.96.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DDF186E4F
-	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 14:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722437673; cv=none; b=p4dNiL0TvgWQZS4pdjH9hKi1FJUyZIucKGtOYGX8NX36DZmayvotBnE/upAGMGWX9WXQUjWGanUtoCk68YWJiykTLyKeTMvhFaAo9k4DClrUJdeHX/JpjSPcXXJj29o7JG/wk3hnQyW3hlpi6OYl1Ly8RdK9ab3OVys9thi5xGg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722437673; c=relaxed/simple;
-	bh=RG1ZTDwc212jfYUgpyrOzTI8JADghBOyl1tlLGGXRqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aS2UCi54ogOB/05YbCjWwXpIUtG5QWQrf/yr1MGQZ0tOIPqIsIcAO1X99+zj9OYV227vVy2XEdBw32qToHtwWNsSmVG4vQizCcZycuDP6IUWLIzAoUO0C6PlOd5q/N8dhmsuDYHR+j/yMDwjB8wQa1AIENU4gR9QDBwCE8vEtLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ejDdzrgX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722437671;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GBTw0W2rbsk4F+ekcQcaksXYFFFBotjI+RQovJOgbjU=;
-	b=ejDdzrgXrfym7xHppSKOr4cvKnE6wwKYrk5/1uN8yfwX07FIeZCcZWazLZ7RY/pAwUI9qA
-	NKsQzIVila339MNUUcYWeN6BoBnA/zgScSjsY4QHfQEbDmzduwGym8yEChCvFs4ScKTSgZ
-	2IEYRV5fEUJzBNeO1JYATkmIAcpqgUw=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-QhL_qShhOSGp8vNM-tNU0w-1; Wed, 31 Jul 2024 10:54:28 -0400
-X-MC-Unique: QhL_qShhOSGp8vNM-tNU0w-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7a1da9c3d40so40013185a.2
-        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 07:54:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722437667; x=1723042467;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GBTw0W2rbsk4F+ekcQcaksXYFFFBotjI+RQovJOgbjU=;
-        b=lfu7ZmwAO5cA7ddyN0otZL5tunafZOSYsqv4XV1NdDmV7ppsyko23XzEb/B53yJIGN
-         t7hPQQsnbU6QDwVm/4GVQx0NNwo9QoGpRwmkdtoYU0cal6O72EV6479xo0UTDtV9FMou
-         yilWcP0T/F+VM6mrMI+bn1iTaeLEQxTClw41Z+XO9xi4PSXh4U2goZGB1HRlQoJvj31a
-         7w8A87jTe3mv+UtGtzuN+ST2dKECZNOjzQh1JbIiZZGxMBPPbVrq/UpdjVzEZB5qigBs
-         2dR4Y9B+bnJ+bT9SunKmE9bDMpjzCf/6DOQuRWe+J/fbxlSDRwtz0VISYrupjYyW/wpD
-         r+gw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbDvf1FwiDABQ3Bm/vaKsxAISiCTnzXo9spJlRKaemgSE8aHrNdht9jSj2wS3GVon56ZMPg0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMhDRDIsypd7+3H5PTuJ9U/Qdt5wg/7bKVMIMHOuSYAqghwvad
-	Nxj8HE53684ACY4ZREYZMCdsbnw1a9pJelcX+y2mdlxA7lDqXvOH0qtae//5T6PJfc48uD6jcDQ
-	Ce9pFEEjXrIzdw1vcvFJeqo8sSAw4qzO+wZLFxHoI8ulmYoiDENMyog==
-X-Received: by 2002:a05:620a:3198:b0:79d:6273:9993 with SMTP id af79cd13be357-7a1d697f7bdmr1364523285a.6.1722437667452;
-        Wed, 31 Jul 2024 07:54:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFEB61L/K7pQEACsFHzusBL/JC7NLuKoHSkhKCOykCWw/2D3jzpOFiVeWNKiYGZ886kry2gcA==
-X-Received: by 2002:a05:620a:3198:b0:79d:6273:9993 with SMTP id af79cd13be357-7a1d697f7bdmr1364521485a.6.1722437667024;
-        Wed, 31 Jul 2024 07:54:27 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1f3840e29sm338681985a.79.2024.07.31.07.54.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 07:54:26 -0700 (PDT)
-Date: Wed, 31 Jul 2024 10:54:24 -0400
-From: Peter Xu <peterx@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	James Houghton <jthoughton@google.com>, stable@vger.kernel.org,
-	Oscar Salvador <osalvador@suse.de>,
-	Muchun Song <muchun.song@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: Re: [PATCH v3] mm/hugetlb: fix hugetlb vs. core-mm PT locking
-Message-ID: <ZqpQILQ7A_7qTvtq@x1n>
-References: <20240731122103.382509-1-david@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E764A3232;
+	Wed, 31 Jul 2024 15:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722438014; cv=fail; b=G7vNcDgICnqOjZJfJHXGcRaiuYkHKOteIl5VO0eWSvSfqZujIPVlvHn7dXr5rPGLfoyIBeW9uUUSU7b5aXdC8mIE1HJPh69xT5IQPmuXs1azN5nj+00MubMZXWMeuXNfE56c1tD8g10i8CHpr8ttoLVrdYQQ99lFlFoh/2+/fNo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722438014; c=relaxed/simple;
+	bh=0UlqRJGUlF6yelFuMnvtXkQG/LcIOt7Az5P2yfFze9M=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=VKz5GjIiLkWTzl/NyaESu1Vd5kFdwrVTCrsH9huvzYtEY660IBvirQiUQfB+eBaNVwW4zpEElRnk4gZgMTOiKRm2mjcpSo2AxW+baFt+Y/Zhx/iHXxdKdfciQE2GiwYJo8SqUHqUdnNHpPrZDkKvzOd1bnP+FoW4FJPnnPJI290=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DkniVtbG; arc=fail smtp.client-ip=40.107.96.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vftU208S2d7NnPtvZFGXGF77VfT6wjigBgP9jeTeQ2BgLxfYaWLY2KMWgx0IG1nOaSaPCW8pgVQweUPUy2L1uBW74DCOzl4LIn4/fltcEj4+W+oOCwk2MZYg8APgTYis9zdMSFiLAnp6KiZ1sS46Nc9lKucHpMLB8oYZEaZVOr7njrIchXm1wEj5vQlOdmSkTQhMNLCfWDbAgsgEwbcDZaqC9/1elQ6sc5AcpzfOxMaZQr+MlIAiVWEgLTrO0fk/TDSNyDT6NhxosWo/ZvD1YplkLxl2CToJVPUzQVCe4dcu7zdOt7QSj8eNgfOKFMn+NjoN6HVZkq3GOMqfsobwnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=doXqGm/6FIr9h8K1DsySdACw7xiIVU9al38vVW03gHw=;
+ b=tMvFylZKtzOiFauFZEhOtVu9luh/2K2gFcQeBxVufsUOAvDnsw1hoymcHu20iGRxlhEeRSC5HbMxRmJ94wi0NRfUqGtQ14Mi13PCM+WD1tE1PqJfOoZmfN3TOPsAcAay17W5ycX7CdByodvOBYzIytHUg0qSLs+XCZkFYneYRlFMw3onyrGXT+ILKwICvSD6R8NPVnYxBhSSVwoyiozp6LRDD0YvAB/DubqTMFSrMcOuaUKlGrIqP7Zck5RPS14MHmuay570jp/QgzFb62dRX5Uvng0DFiG6Ib6djMJjHWdHJMXP+DdyFE2UNvIJiYPC69jcz6KVBFoBhqCVL8LRSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=doXqGm/6FIr9h8K1DsySdACw7xiIVU9al38vVW03gHw=;
+ b=DkniVtbGAwmUW0r4YlKD4h6Xn6BU/1L7GWStiQMU4F/h0y9EB2t/HdV3RhcEjTvTcMj529+E2K4KU2qqKzY78sw8Vxz8/9J2aYLxlbEw3cXAiPsvlOrsJaFG6ljnROT8H41eV/KsFJ5xUdJq0pNQhhz+Z0LpVc+/GrDYSTu4i0GA8fGIw+IdpWS6Uhg2jwor1OY4Zi4RnUyr5O4GHsUSSxnq8KOminRa5nSYuFK9lyTql41BeCbOOP3IIY5C1eD5CHqE5K4Q6LUx4ZaaoaKyTrherFk+ifI0RQaHQOSwVgz1XpbWxnxm45A4L1ilIX6Y7G3fcgBoVu13mglUUYGRfg==
+Received: from PH0P220CA0022.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:d3::21)
+ by IA1PR12MB8189.namprd12.prod.outlook.com (2603:10b6:208:3f0::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.26; Wed, 31 Jul
+ 2024 15:00:09 +0000
+Received: from SN1PEPF00036F3E.namprd05.prod.outlook.com
+ (2603:10b6:510:d3:cafe::5c) by PH0P220CA0022.outlook.office365.com
+ (2603:10b6:510:d3::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.21 via Frontend
+ Transport; Wed, 31 Jul 2024 15:00:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF00036F3E.mail.protection.outlook.com (10.167.248.22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7828.19 via Frontend Transport; Wed, 31 Jul 2024 15:00:08 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 31 Jul
+ 2024 07:59:55 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 31 Jul
+ 2024 07:59:55 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Wed, 31 Jul 2024 07:59:54 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
+In-Reply-To: <20240731095022.970699670@linuxfoundation.org>
+References: <20240731095022.970699670@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240731122103.382509-1-david@redhat.com>
+Message-ID: <7d1f6072-fd63-403e-a473-4f419f1badf1@rnnvmail205.nvidia.com>
+Date: Wed, 31 Jul 2024 07:59:54 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3E:EE_|IA1PR12MB8189:EE_
+X-MS-Office365-Filtering-Correlation-Id: e43cedb5-d65a-4a8a-0371-08dcb1717830
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TFRRWGREakRYVlZ3czBHMTYvaUR2MHgySjl1OGdFTElYNHlIL3NhRFY3amcv?=
+ =?utf-8?B?eHhEbTFETnFuUGkxZ0twWTd5dlpwZlM4ak5ydTI3QUx3RUE5YVpJR095WXVa?=
+ =?utf-8?B?VGJlRXdZQlR5YUlVeEJPbmpsenVONnNTVjBCd205R1dSTGN4UVllNkdBZlBZ?=
+ =?utf-8?B?QU1KaC9Nc05GakIvMlF0WG1tK0FGQ3ZRSFdmc1ZqV0pOMzJROE9YSzcvcHRk?=
+ =?utf-8?B?UU1HVGlaZ0RkRGN2VjA3eDFFcXlKallzeENnck5VQm9GNDhlSFIxNGJ3djNr?=
+ =?utf-8?B?YmhhQjRFVmxyUnpMNnBOWTZOMFdVRVdTbW0rbUtKS0Vac2pMZFRuK3JZSllH?=
+ =?utf-8?B?RkRabnhpaml4TDY1NmhoajNMOVM5amVtZExxcFZKTlY2L3NFT1N0VUIxeFZY?=
+ =?utf-8?B?RUZUanpRbXI0SUxwcE9rRVhNZ2VwWG8xZEpXVGdGWEtndXVWbHN4SHhhYnJZ?=
+ =?utf-8?B?YlRHdTVaSkdIMnErU2lKQnV2SFcxTnNZWVFwSnRKMVMvNEpnZHRjM0hWNDIy?=
+ =?utf-8?B?RnYrT3ZHaHcyOFJBTHB4SGNydHVmODdyRkhSWHlFOVNCREh1NVhEYlpOZ1hs?=
+ =?utf-8?B?UmpEVEFNVlp4L1lBeVJaT01FZnRBSHp6REFZQ1dEa1hUZ3crWEJMN1E5Z2xJ?=
+ =?utf-8?B?ekxkdUxEUTl4ZEorRGxyeFY1VURpRDMwWXZwenJJQXh2QnhvcU5lT3YvZWN1?=
+ =?utf-8?B?dXFkc2NVNHZzVGFXUmlHNW1nUlJQcEtyWGpOdHBzZmtIbEhGeVVkL3pFNVdo?=
+ =?utf-8?B?aWZqM0tic2orMzBiZVBQVUdFTVNvTDVmclludzBBNlF0WnlCaUVlMUxRbmda?=
+ =?utf-8?B?d1hxeEtNODdDcjZKL0pqUEJuZGJkSjE4SHlSS0RnOVRFZkRWbnpmaklicnFS?=
+ =?utf-8?B?TXhxbDF3RDhoNHJpV0dEWlhVS3d1d0s4NVZyWWFiUEVYWngvMlJMR21vb1pR?=
+ =?utf-8?B?RVFhb3BGWTRJS2dIeGl3YmdBOFEzN3dlUlRkaFZxYUo0QllPdWorT2tLSGVq?=
+ =?utf-8?B?Q2hXVU9qUjdHQnNYSEJSK1I3ZXVJekY0Nzc5MGRJWU5DYm15Y2gwcldmblkx?=
+ =?utf-8?B?ckp6NHF2WDBsWVFrbzIrRkYwdTFVYkV2S0U0WDV3SUV2bkZEWEs2TXlZYnZm?=
+ =?utf-8?B?UjN4MUxyQjdyYzdGL0NWdEg2N015d1dHcFpQRWNzVTF1ODhnRzhGeE4wWmZz?=
+ =?utf-8?B?dUF2Rks2Tjc4REpuWkNwT0RMR1JrY1RZaVYwU2NqVnRqaDVaNHJJMnZNeUVs?=
+ =?utf-8?B?RGVmUWNTRjFQRjAvSkREdFdwZGlQdkdYUHFSRGZWYW1QV2xOOWcxSnU1akg5?=
+ =?utf-8?B?MlBQOWhhZk9xUEthVHpENlcrMFo4bmsyaGtmTWd1UHVWZTBSRGVKaGZEUzJu?=
+ =?utf-8?B?aHZKMkt1cHJyalhodmFRbWRZdlVpQWc0d2t4VmU2NUF3ckgzSnJVaWFiSEtt?=
+ =?utf-8?B?TzIrZ2NoMUZaVkFjb05wdDNuRnoySFZ6K0hNWEl4VHpqMjZUelAwM1JMVFZx?=
+ =?utf-8?B?cmhSU3BnMTNCUkQzejcxVnh3ZkhiMnBTZmh6MUNYVTRzYzNTbXdEc3ZzaUJH?=
+ =?utf-8?B?UmtsZkllcnVKT3M1SVQzYmZuNDdtaU5FL3l0N2pOVTZBOHFRWTI0a0wwd1R1?=
+ =?utf-8?B?R09ZeE9xRFRWRVRQaGRlQzRNS05lUXBNU1lXMnhwcVJUVlRLNFF1RDFVNjhN?=
+ =?utf-8?B?VjNzbUlzY2J0ZXA5UFZwYkZvWTVhR25IT2pSeUQxUktSQ3VGMURrTnJyQjVP?=
+ =?utf-8?B?VEtMMDlZVEFJV045Ny9mVmt1T1kycXJ4aUxOekFhanlaeURFNkxERlNHdDdh?=
+ =?utf-8?B?U3lqdFBQalp1bFUvMWtrSXVTdGpWbXo1dWh3ZU5PcUpIQkwwQktoRTF1VzVH?=
+ =?utf-8?B?WFg4b3V5b0dMTWJMQ3Y5ZWJvcGc0QytZOEY1WWZhTDdpWk9sQ0FNZ3JXMVZH?=
+ =?utf-8?Q?gDLsXpcp5TgjgWXIU8X56SZNAHiQHDNo?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2024 15:00:08.4038
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e43cedb5-d65a-4a8a-0371-08dcb1717830
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F3E.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8189
 
-On Wed, Jul 31, 2024 at 02:21:03PM +0200, David Hildenbrand wrote:
-> We recently made GUP's common page table walking code to also walk hugetlb
-> VMAs without most hugetlb special-casing, preparing for the future of
-> having less hugetlb-specific page table walking code in the codebase.
-> Turns out that we missed one page table locking detail: page table locking
-> for hugetlb folios that are not mapped using a single PMD/PUD.
+On Wed, 31 Jul 2024 12:03:16 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.3 release.
+> There are 809 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Assume we have hugetlb folio that spans multiple PTEs (e.g., 64 KiB
-> hugetlb folios on arm64 with 4 KiB base page size). GUP, as it walks the
-> page tables, will perform a pte_offset_map_lock() to grab the PTE table
-> lock.
+> Responses should be made by Fri, 02 Aug 2024 09:47:47 +0000.
+> Anything received after that time might be too late.
 > 
-> However, hugetlb that concurrently modifies these page tables would
-> actually grab the mm->page_table_lock: with USE_SPLIT_PTE_PTLOCKS, the
-> locks would differ. Something similar can happen right now with hugetlb
-> folios that span multiple PMDs when USE_SPLIT_PMD_PTLOCKS.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.3-rc3.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
 > 
-> This issue can be reproduced [1], for example triggering:
+> thanks,
 > 
-> [ 3105.936100] ------------[ cut here ]------------
-> [ 3105.939323] WARNING: CPU: 31 PID: 2732 at mm/gup.c:142 try_grab_folio+0x11c/0x188
-> [ 3105.944634] Modules linked in: [...]
-> [ 3105.974841] CPU: 31 PID: 2732 Comm: reproducer Not tainted 6.10.0-64.eln141.aarch64 #1
-> [ 3105.980406] Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-4.fc40 05/24/2024
-> [ 3105.986185] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [ 3105.991108] pc : try_grab_folio+0x11c/0x188
-> [ 3105.994013] lr : follow_page_pte+0xd8/0x430
-> [ 3105.996986] sp : ffff80008eafb8f0
-> [ 3105.999346] x29: ffff80008eafb900 x28: ffffffe8d481f380 x27: 00f80001207cff43
-> [ 3106.004414] x26: 0000000000000001 x25: 0000000000000000 x24: ffff80008eafba48
-> [ 3106.009520] x23: 0000ffff9372f000 x22: ffff7a54459e2000 x21: ffff7a546c1aa978
-> [ 3106.014529] x20: ffffffe8d481f3c0 x19: 0000000000610041 x18: 0000000000000001
-> [ 3106.019506] x17: 0000000000000001 x16: ffffffffffffffff x15: 0000000000000000
-> [ 3106.024494] x14: ffffb85477fdfe08 x13: 0000ffff9372ffff x12: 0000000000000000
-> [ 3106.029469] x11: 1fffef4a88a96be1 x10: ffff7a54454b5f0c x9 : ffffb854771b12f0
-> [ 3106.034324] x8 : 0008000000000000 x7 : ffff7a546c1aa980 x6 : 0008000000000080
-> [ 3106.038902] x5 : 00000000001207cf x4 : 0000ffff9372f000 x3 : ffffffe8d481f000
-> [ 3106.043420] x2 : 0000000000610041 x1 : 0000000000000001 x0 : 0000000000000000
-> [ 3106.047957] Call trace:
-> [ 3106.049522]  try_grab_folio+0x11c/0x188
-> [ 3106.051996]  follow_pmd_mask.constprop.0.isra.0+0x150/0x2e0
-> [ 3106.055527]  follow_page_mask+0x1a0/0x2b8
-> [ 3106.058118]  __get_user_pages+0xf0/0x348
-> [ 3106.060647]  faultin_page_range+0xb0/0x360
-> [ 3106.063651]  do_madvise+0x340/0x598
-> 
-> Let's make huge_pte_lockptr() effectively use the same PT locks as any
-> core-mm page table walker would. Add ptep_lockptr() to obtain the PTE
-> page table lock using a pte pointer -- unfortunately we cannot convert
-> pte_lockptr() because virt_to_page() doesn't work with kmap'ed page
-> tables we can have with CONFIG_HIGHPTE.
-> 
-> Take care of PTE tables possibly spanning multiple pages, and take care of
-> CONFIG_PGTABLE_LEVELS complexity when e.g., PMD_SIZE == PUD_SIZE. For
-> example, with CONFIG_PGTABLE_LEVELS == 2, core-mm would detect
-> with hugepagesize==PMD_SIZE pmd_leaf() and use the pmd_lockptr(), which
-> would end up just mapping to the per-MM PT lock.
-> 
-> There is one ugly case: powerpc 8xx, whereby we have an 8 MiB hugetlb
-> folio being mapped using two PTE page tables.  While hugetlb wants to take
-> the PMD table lock, core-mm would grab the PTE table lock of one of both
-> PTE page tables.  In such corner cases, we have to make sure that both
-> locks match, which is (fortunately!) currently guaranteed for 8xx as it
-> does not support SMP and consequently doesn't use split PT locks.
-> 
-> [1] https://lore.kernel.org/all/1bbfcc7f-f222-45a5-ac44-c5a1381c596d@redhat.com/
-> 
-> Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic follow_page_mask code")
-> Reviewed-by: James Houghton <jthoughton@google.com>
-> Cc: <stable@vger.kernel.org>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> greg k-h
 
-Nitpick: I wonder whether some of the lines can be simplified if we write
-it downwards from PUD, like,
+All tests passing for Tegra ...
 
-huge_pte_lockptr()
-{
-        if (size >= PUD_SIZE)
-           return pud_lockptr(...);
-        if (size >= PMD_SIZE)
-           return pmd_lockptr(...);
-        /* Sub-PMD only applies to !CONFIG_HIGHPTE, see pte_alloc_huge() */
-        WARN_ON(IS_ENABLED(CONFIG_HIGHPTE));
-        return ptep_lockptr(...);
-}
+Test results for stable-v6.10:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    116 tests:	116 pass, 0 fail
 
-The ">=" checks should avoid checking over pgtable level, iiuc.
+Linux version:	6.10.3-rc3-gdf6b86a465e8
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-The other nitpick is, I didn't yet find any arch that use non-zero order
-page for pte pgtables.  I would give it a shot with dropping the mask thing
-then see what explodes (which I don't expect any, per my read..), but yeah
-I understand we saw some already due to other things, so I think it's fine
-in this hugetlb path (that we're removing) we do a few more math if you
-think that's easier for you.
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Acked-by: Peter Xu <peterx@redhat.com>
-
-Thanks,
-
--- 
-Peter Xu
-
+Jon
 
