@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-64879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D41F943B67
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:27:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 887A5943B6B
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9B21C206A5
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:27:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9CEB1C218C0
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33083184528;
-	Thu,  1 Aug 2024 00:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7E7184557;
+	Thu,  1 Aug 2024 00:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iMV+21Yy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXgrVyfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8604183CC3;
-	Thu,  1 Aug 2024 00:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96FC14882D;
+	Thu,  1 Aug 2024 00:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471276; cv=none; b=igY0eHxAlfbfDq2Hvy6k/DzZfrUZw+70Llib4eh6nJitp+R0Ad+XsqKO3M5dviUuCSZappcMOa0XWAj0CaXSYwEMXxjmUWgE8Aj97rlfYAw0zdAbY4WCI2+4NDWU8h4gXevvv2a5GPBor5s4mOtwprRmmcrllldgPo3FQ616xYo=
+	t=1722471278; cv=none; b=QXBtEKAYpwjlwVehhPR3rZyb+kx3cuJN07/mwoKkpGmWgjHFUuiqlcBGZjeT5klTnfHcWB3sxKEabFt8M/Z2BhdNIiRbdmqOhd+Q1rwccZ0JokCkqe6CzXxK74vAY9RMceN2am45bAN/0T68dNoTrsFvUL/Nohv2jth2Gmkok5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471276; c=relaxed/simple;
-	bh=c7h2qCNge6oqAZEQO/VOGmgfKeBOTAktulPHHQX7VNI=;
+	s=arc-20240116; t=1722471278; c=relaxed/simple;
+	bh=eXx+fKJKXest4nlAVASo2A3GPzpSbmH7UoTRWS4j2VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0oLt0UiIlW3bPZNpT2YUcHGLyiBPMChF10d1iJ8qMeHq8B9F6s6l+OAR6M+Wx3f5FTrXMS3O1e43A0RphZJMaGVo6xwhItiVrRSI+DOWOaiIchcrN05/Wp0K3v4draQU1wBnK3Uh0zcHKW9pOQ41DhB7hRPBZhwLUahFWEc5AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iMV+21Yy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BAAC4AF16;
-	Thu,  1 Aug 2024 00:14:34 +0000 (UTC)
+	 MIME-Version; b=ouOAy4eVhgPj1kkimTP+SQ5Bo1rLE1ONDpLv5IKHI2PUrN6yGSpFR4byhek+wEREW+glAwVWAhddgz9GaD20bDiyQ8GB2zEyl1wi279j1EtLX1PZO5/8JRMrZhosC5zKeLM1tpQUnmA3yc50FMUSGpw3QGOj+iUuTlKQfj9XvTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXgrVyfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB1BC4AF0C;
+	Thu,  1 Aug 2024 00:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471275;
-	bh=c7h2qCNge6oqAZEQO/VOGmgfKeBOTAktulPHHQX7VNI=;
+	s=k20201202; t=1722471278;
+	bh=eXx+fKJKXest4nlAVASo2A3GPzpSbmH7UoTRWS4j2VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMV+21YytigUMG0jg9mQWTLIwpdQVc2LCNhp/Ssj323K4DHSQ0X9OIiq2pbgD76OK
-	 0YWl1r+NNSjwOYza5tsL8DVySNp0zh7pRaWZ1nOEHUTi7J39mOO2p+7GruTjc47s19
-	 eD6R8pJhy9BybbR93u2PW25N/dCxeAIvdztqtEy22hN394xKJA8RIG/0mZ3llBIYuv
-	 YfRXdi3FO1CIb2LcTjgQOFTqJilNIJRnRxATO63k3n7uiqgDj7VnHCz/5ATkh6w/Hr
-	 /nnDkxo7XLGBxAqU+6K1axdbxnNV5PECpzzM4HLwq2r1h4fI7rfOwXECucOvLj2APA
-	 HU29plJzIumVA==
+	b=IXgrVyfkLbbsgmm3HybF7QwmePyzJCfzrhKBlNsRqmhttZFpp6/ct8EOQlRV89s5f
+	 HZ3vOBCqyRQ+pzwJ3ZkAIL52HuNks2XBR03I25GdoEceTOtoI9sMRGZWV7MWWtBoDP
+	 MCjJkOalqYOqpSQGecnPNptBPIvlyJ1OediJyuq3P5X/HkQp3ZwZxQ4Z/kdlSO+iUS
+	 fwm0DZ2D7Wc8RxUFCr1s7O4ys/JxP2SJq/+w9LZoZ6TwCMPmc5pxusOYpThXx0Bx/4
+	 BGA0pruvCajP8ZIQXQUKpo90KYoLAltmgvcLaWnAIehVmD9kwFjCAiI356ih6FUhNW
+	 HuCCwfJ4DedwQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jagadeesh Kona <quic_jkona@quicinc.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+Cc: yunshui <jiangyunshui@kylinos.cn>,
+	syzbot <syzkaller@googlegroups.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>,
-	sudeep.holla@arm.com,
-	rafael@kernel.org,
-	arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 054/121] cpufreq: scmi: Avoid overflow of target_freq in fast switch
-Date: Wed, 31 Jul 2024 19:59:52 -0400
-Message-ID: <20240801000834.3930818-54-sashal@kernel.org>
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	andrii@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 055/121] bpf, net: Use DEV_STAT_INC()
+Date: Wed, 31 Jul 2024 19:59:53 -0400
+Message-ID: <20240801000834.3930818-55-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -69,39 +74,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Jagadeesh Kona <quic_jkona@quicinc.com>
+From: yunshui <jiangyunshui@kylinos.cn>
 
-[ Upstream commit 074cffb5020ddcaa5fafcc55655e5da6ebe8c831 ]
+[ Upstream commit d9cbd8343b010016fcaabc361c37720dcafddcbe ]
 
-Conversion of target_freq to HZ in scmi_cpufreq_fast_switch()
-can lead to overflow if the multiplied result is greater than
-UINT_MAX, since type of target_freq is unsigned int. Avoid this
-overflow by assigning target_freq to unsigned long variable for
-converting it to HZ.
+syzbot/KCSAN reported that races happen when multiple CPUs updating
+dev->stats.tx_error concurrently. Adopt SMP safe DEV_STATS_INC() to
+update the dev->stats fields.
 
-Signed-off-by: Jagadeesh Kona <quic_jkona@quicinc.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: yunshui <jiangyunshui@kylinos.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240523033520.4029314-1-jiangyunshui@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/filter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 3b4f6bfb2f4cf..b87fd127aa433 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -63,9 +63,9 @@ static unsigned int scmi_cpufreq_fast_switch(struct cpufreq_policy *policy,
- 					     unsigned int target_freq)
- {
- 	struct scmi_data *priv = policy->driver_data;
-+	unsigned long freq = target_freq;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 9933851c685e7..ed8b582c21b97 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2279,12 +2279,12 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
  
--	if (!perf_ops->freq_set(ph, priv->domain_id,
--				target_freq * 1000, true))
-+	if (!perf_ops->freq_set(ph, priv->domain_id, freq * 1000, true))
- 		return target_freq;
+ 	err = bpf_out_neigh_v6(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		dev->stats.tx_errors++;
++		DEV_STATS_INC(dev, tx_errors);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	dev->stats.tx_errors++;
++	DEV_STATS_INC(dev, tx_errors);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+@@ -2385,12 +2385,12 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
  
- 	return 0;
+ 	err = bpf_out_neigh_v4(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		dev->stats.tx_errors++;
++		DEV_STATS_INC(dev, tx_errors);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	dev->stats.tx_errors++;
++	DEV_STATS_INC(dev, tx_errors);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
 -- 
 2.43.0
 
