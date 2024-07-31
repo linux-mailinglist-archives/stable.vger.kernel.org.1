@@ -1,142 +1,171 @@
-Return-Path: <stable+bounces-64811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA61943913
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:40:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE949439AA
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA1F9B2669D
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 22:40:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E461C21861
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 23:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2E316D9AA;
-	Wed, 31 Jul 2024 22:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048A916EB53;
+	Wed, 31 Jul 2024 23:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PL8kEFJU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rWJxDY56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CE016D4DE;
-	Wed, 31 Jul 2024 22:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9D416E88F;
+	Wed, 31 Jul 2024 23:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722465636; cv=none; b=Q2xXLVn8ksxESfifAEsuu2e0LYC3IKT50WjBbfSAPcAptRwMsHtiqaYydI2zKvpEnK7n0HXj21wO4FenRWHh9I+Vb4qutoYp9qI0OCBzE9qZeqkMIRQhrYkkmmZ7EzbOs3P6ophRqhb1SAgtoNCmnkwDOu1LBtvsftWAKqgCmjY=
+	t=1722470160; cv=none; b=exQNJmHx91Bj+5SByh62Npt9bYH9gLyzDO7oW6lp+N/Nu1whY/yuRkMy3G3AM93X+Rd/YRmVYyyiXovtQ4kE7w5v7ek4k2CdkCqUpeFIBj8q3H4EJvfEKs0ul7FGLYbm62QTnbkT0T2mrfX/NBposJfSwCskGQWDDNmLxwfSDus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722465636; c=relaxed/simple;
-	bh=tETh/Vi+zu7QxmeEC8V1A7sujbIPE5A3qowdiWZFMAI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SGVS0YMxYZh6CgmdUK60KSuTz/I/fW+kDhrNyQrvTG0gJmL7bLK9Jismv69ENoVU/h33HvMZHlvLSECENWRLXDf5ki4IB0W7kzCNx7UJe92AiomqgHzZ6G6Rn3JMUqxX0XwhYWDEnxCU2+H7yI45I5UQnLJPvM0by0oMLAMTavs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PL8kEFJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0C1C116B1;
-	Wed, 31 Jul 2024 22:40:34 +0000 (UTC)
+	s=arc-20240116; t=1722470160; c=relaxed/simple;
+	bh=+Abq/rqdY1RUxDHUVYq5lWpkBS30D/0VHdh8rC1TNNo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ddo7kVuxH7P6n2qWWIkLL+r9aGGh9QXUeRVbwSufdiOZDTRWNcpEYjvd20qhj26bQ/ZGxwdc4pO5m8Bl8A2Iph7v71oa4uiFkhnUwdU4X3P6BvbHxIjqZTyzcKj6id0rGVfVukkjSbxCuX3LLzV7jjoYivUZkyE7yEvNJFVVaxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rWJxDY56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D387C116B1;
+	Wed, 31 Jul 2024 23:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722465636;
-	bh=tETh/Vi+zu7QxmeEC8V1A7sujbIPE5A3qowdiWZFMAI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PL8kEFJUwuKDQ96sVz+7vf2ksowpTkoFYV+yVS9QjA9oNKxIOf/6frotb6tnoWpun
-	 4k9o3DRE7j+SMXqK5JzRTIS9LHV2sEiqvbxqdy7ZvvsUyPdCCyA66XB5LCGKv3bkDX
-	 ZdZwrozaMUB3i33hU6jPz8JREYhnUR7xDl08BIzDGWCqi3X5EggyZTKV6frumtv4I3
-	 5IePQzVuyA4kgaxmV19SY97cOuQALXDCz9JIGBY4azGGPupjd87G2yTiu0PfUidN8Z
-	 iImaeUiqqMiQLggEZO6a2cqq+oxn20PE+j/2J/d9vL6GTtV1INzypIDIca0q1e+KCk
-	 5f8Kb+f/l/F+Q==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	broonie@kernel.org,
-	damon@lists.linux.dev
-Subject: Re: [PATCH 6.6 000/568] 6.6.44-rc1 review
-Date: Wed, 31 Jul 2024 15:40:31 -0700
-Message-Id: <20240731224031.55620-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
-References: 
+	s=k20201202; t=1722470160;
+	bh=+Abq/rqdY1RUxDHUVYq5lWpkBS30D/0VHdh8rC1TNNo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rWJxDY56RHASxGKfFIowfkJI+MOs3oLk4jFLqYx/rAdyPO/xMfsTqrL01KJNIf2Fb
+	 pTvj4ipjbmlchUNaiJC3e04/902z1fWIFLV51dgGgra819OGETCN0gZosqe7RNPI6q
+	 16iXhzcIGIxsLVnYx2iDI2Jd3idrBdJqedHIYoAAAceFWDG4EO8qC+TpsZgUTnQVgD
+	 UCmu6+OzZyVLFVkSLgqtJ4EZHraNdK+OMazVGIjEp+Dcvt8OSdKOuhyN9HDFjabnRU
+	 TEsJ9u/iv4C0V3jiVgVx8RXVq85ftM9kLBlZMHyxQVF5zoWCbAiqU9lFcjfgeUbhWr
+	 9gISeVX+l+WfA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Leesoo Ahn <lsahn@ooseel.net>,
+	John Johansen <john.johansen@canonical.com>,
+	Sasha Levin <sashal@kernel.org>,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	apparmor@lists.ubuntu.com,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 1/2] apparmor: fix possible NULL pointer dereference
+Date: Wed, 31 Jul 2024 19:55:55 -0400
+Message-ID: <20240731235557.3929433-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Leesoo Ahn <lsahn@ooseel.net>
 
-On Tue, 30 Jul 2024 17:41:47 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+[ Upstream commit 3dd384108d53834002be5630132ad5c3f32166ad ]
 
-> This is the start of the stable review cycle for the 6.6.44 release.
-> There are 568 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 01 Aug 2024 15:14:54 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.44-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+profile->parent->dents[AAFS_PROF_DIR] could be NULL only if its parent is made
+from __create_missing_ancestors(..) and 'ent->old' is NULL in
+aa_replace_profiles(..).
+In that case, it must return an error code and the code, -ENOENT represents
+its state that the path of its parent is not existed yet.
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+BUG: kernel NULL pointer dereference, address: 0000000000000030
+PGD 0 P4D 0
+PREEMPT SMP PTI
+CPU: 4 PID: 3362 Comm: apparmor_parser Not tainted 6.8.0-24-generic #24
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:aafs_create.constprop.0+0x7f/0x130
+Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
+RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ? show_regs+0x6d/0x80
+ ? __die+0x24/0x80
+ ? page_fault_oops+0x99/0x1b0
+ ? kernelmode_fixup_or_oops+0xb2/0x140
+ ? __bad_area_nosemaphore+0x1a5/0x2c0
+ ? find_vma+0x34/0x60
+ ? bad_area_nosemaphore+0x16/0x30
+ ? do_user_addr_fault+0x2a2/0x6b0
+ ? exc_page_fault+0x83/0x1b0
+ ? asm_exc_page_fault+0x27/0x30
+ ? aafs_create.constprop.0+0x7f/0x130
+ ? aafs_create.constprop.0+0x51/0x130
+ __aafs_profile_mkdir+0x3d6/0x480
+ aa_replace_profiles+0x83f/0x1270
+ policy_update+0xe3/0x180
+ profile_load+0xbc/0x150
+ ? rw_verify_area+0x47/0x140
+ vfs_write+0x100/0x480
+ ? __x64_sys_openat+0x55/0xa0
+ ? syscall_exit_to_user_mode+0x86/0x260
+ ksys_write+0x73/0x100
+ __x64_sys_write+0x19/0x30
+ x64_sys_call+0x7e/0x25c0
+ do_syscall_64+0x7f/0x180
+ entry_SYSCALL_64_after_hwframe+0x78/0x80
+RIP: 0033:0x7be9f211c574
+Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
+RSP: 002b:00007ffd26f2b8c8 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00005d504415e200 RCX: 00007be9f211c574
+RDX: 0000000000001fc1 RSI: 00005d504418bc80 RDI: 0000000000000004
+RBP: 0000000000001fc1 R08: 0000000000001fc1 R09: 0000000080000000
+R10: 0000000000000000 R11: 0000000000000202 R12: 00005d504418bc80
+R13: 0000000000000004 R14: 00007ffd26f2b9b0 R15: 00007ffd26f2ba30
+ </TASK>
+Modules linked in: snd_seq_dummy snd_hrtimer qrtr snd_hda_codec_generic snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_seq_midi snd_seq_midi_event snd_rawmidi snd_seq snd_seq_device i2c_i801 snd_timer i2c_smbus qxl snd soundcore drm_ttm_helper lpc_ich ttm joydev input_leds serio_raw mac_hid binfmt_misc msr parport_pc ppdev lp parport efi_pstore nfnetlink dmi_sysfs qemu_fw_cfg ip_tables x_tables autofs4 hid_generic usbhid hid ahci libahci psmouse virtio_rng xhci_pci xhci_pci_renesas
+CR2: 0000000000000030
+---[ end trace 0000000000000000 ]---
+RIP: 0010:aafs_create.constprop.0+0x7f/0x130
+Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
+RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
 
-Tested-by: SeongJae Park <sj@kernel.org>
-
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] 7d0be44d622f ("Linux 6.6.44-rc1")
-
-Thanks,
-SJ
-
-[...]
-
+Signed-off-by: Leesoo Ahn <lsahn@ooseel.net>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ security/apparmor/apparmorfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_m68k.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
+index bcfea073e3f2e..01b923d97a446 100644
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -1692,6 +1692,10 @@ int __aafs_profile_mkdir(struct aa_profile *profile, struct dentry *parent)
+ 		struct aa_profile *p;
+ 		p = aa_deref_parent(profile);
+ 		dent = prof_dir(p);
++		if (!dent) {
++			error = -ENOENT;
++			goto fail2;
++		}
+ 		/* adding to parent that previously didn't have children */
+ 		dent = aafs_create_dir("profiles", dent);
+ 		if (IS_ERR(dent))
+-- 
+2.43.0
+
 
