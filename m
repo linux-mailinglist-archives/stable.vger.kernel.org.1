@@ -1,259 +1,234 @@
-Return-Path: <stable+bounces-64764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B48E942E26
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 14:23:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D11B942EA3
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 14:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 058372874CD
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 12:23:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADFB81F25510
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 12:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36AD1B010C;
-	Wed, 31 Jul 2024 12:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAC41B14F7;
+	Wed, 31 Jul 2024 12:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rzfkowe2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Fq0Dk+YT"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3836E1AE874
-	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 12:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66C01B142A
+	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 12:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722428476; cv=none; b=QXPsJmgP+dKKwueVe7622pAecAW1X3bzu+uyDOhKj1u2eH7mLpjr2psho5UuOGpLMyBHZ2ZNaGHxJsFcLJrkPTO00py56NgyFhM45WsV9+uN6sNODlk4lreqW5HVgq/CBXoeMbOoWB+LlrjzZeq+XMQULNE6e8i5y3kjtxhN//8=
+	t=1722429315; cv=none; b=ZoTPZsJl/DXgtIDb79rvOh9aO2eyh160t3J+ifSV6jN8E4tZ6e6QQb9QtlOmWJxhaSPN3AftkRYOIY/4FgAQgkMr8h2nQfjzs8FMXX1rOOXFbpeaxjWUuasj4pWyrebITYH8D7uogJPCnEq1WVICjgw2RjjJXLsrz2fKMu2ljyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722428476; c=relaxed/simple;
-	bh=l1LspisWQQdp97UiLG2RIp87QcdG17vt7kG5xRkEdjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s3EZNuMp6QbokL6dieYyV3rkveOdQEvuL/o1CGpUjPNlT6mxuy3J7MPazgi7nWQuZgMBLALtp5HuF4vRKb4mnCIt+ESbzmRQveaczvYQgL/+uBD7/X4eE/xqZxV/OjHE+aGhqseSiw6fxWWlNpvxA48lIy6+89J/fe5wAusxFs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rzfkowe2; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722428473;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4v7hdRCoEPujGr8jK0JqsH11PIwi+iIoAMYv6jnJbDo=;
-	b=Rzfkowe2dpfdncQGsUEHEEsu0F9QD48gqzUWmYUiNXBnfiPPjFIrp1K/aeSUh2EtIE/mMx
-	rchPUUhJdBVf7TrBFQQvI6eVF+LjM2UgeenKRAd4Q0/FpWqdmp5J5eJUV5ItwZCDkLBuuC
-	5m1SqZzPS3+GjxgnUi5faMVa9AHuIF0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-452-QNNGEfMfNBWqurKlxIlLVw-1; Wed,
- 31 Jul 2024 08:21:10 -0400
-X-MC-Unique: QNNGEfMfNBWqurKlxIlLVw-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5C18E1954226;
-	Wed, 31 Jul 2024 12:21:08 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.39.194.74])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A868C1955D42;
-	Wed, 31 Jul 2024 12:21:04 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	David Hildenbrand <david@redhat.com>,
-	James Houghton <jthoughton@google.com>,
-	stable@vger.kernel.org,
-	Peter Xu <peterx@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Muchun Song <muchun.song@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH v3] mm/hugetlb: fix hugetlb vs. core-mm PT locking
-Date: Wed, 31 Jul 2024 14:21:03 +0200
-Message-ID: <20240731122103.382509-1-david@redhat.com>
+	s=arc-20240116; t=1722429315; c=relaxed/simple;
+	bh=F7g6Jwb0g+6zJzbakncV3Hcpjd44JyJqciMFM3KHbkY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DLUh5MHcbZDTlV5DrrHLGQ1fDhuUlxFH0+0C8+7Z66OJNt4COSqXwc0Pr1vYN3jTWRxM/RCoWjFvgty/UPP7CGyYUlU6KktEEuto4dProZ8b+J9PED/koQ596jDoAFIjnA3xloUtlupuqW21hFmX6Mv0ilnT8BmJY5+amVuAjdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Fq0Dk+YT; arc=none smtp.client-ip=209.85.217.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-493d748ba72so1497241137.3
+        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 05:35:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722429313; x=1723034113; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9plYtmRP80+wBlogJewa2d7p+Jj8DwjpEDlvgRHRWB0=;
+        b=Fq0Dk+YTzwRDG/fKkbe/amDNLOOvrkAVP3ALPEeceBaphyCWOkJqGoMmROnmE0oHS9
+         sJ4HswK8I5X2L1iugJicSc04QK9box5nTIZIMRUWdWVBQEwJ8R7XTWfLW9/Lh9tY4xQn
+         oHM0gXPGCuZJ/0+9+iOHyebktPxC/n/BpARyVOpDyHpJBU8iv8c4fGH6IZvwg5jSouwt
+         EiTKlua0Rc5qxgaV0wzm9Z7BAI6wIknmJMagMWSWyxETZ4ak67CKl4iLi+2d9DRgdrmQ
+         WT0PKHOcvKVO+KF/Un4aho9RzCtEY4KOeIkaYcs4MmrkcEHK/q9UzYro6/QqBKBDKmPI
+         +law==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722429313; x=1723034113;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9plYtmRP80+wBlogJewa2d7p+Jj8DwjpEDlvgRHRWB0=;
+        b=Z5oyQd141uGGUZgH8BQGsJxxdWogXynMAR6+E9NkPqnCgO9OGSmXQ4PfYQ71bVs/f7
+         2vYcnOFvR5x0gY9Y8JktjkUdLS19+gkSbAWHHDwwFU+Q81cVsjuhxhA8KoRIpuWemjc+
+         Gzfv8UnntrthMj+zqlnfr0rTryNaS7OWVPmAM4TlTwiU+FrfSSef2AicCCN3tB2hkl+u
+         2mPH3iQLLcf+AVnS+HbDxuZBlbfjexohReqLKNLWU3tg615z4NvSRrNSOzdYO1QkUkf4
+         4IQdtAF0eqpWYhQSPUIAkCBATQNibWnVhfIjfU+WNa667zU5eAatB/ntCkZKfUnbl0bb
+         rdAA==
+X-Gm-Message-State: AOJu0Yw9CK/uZMVBKnuQx8fERfK/MKIUrrtavy516rFWYaW6NSUxOF/Q
+	qTV6VrTjlKTy8pa3xFsP1V6H4eMjv12cU5SzmimUAoHX7sVuNGw8ohviJGpAxjgKO5kUz3oZwuz
+	a6xUYT0GaEikA8tbidy82jBNdSE+3fNU4ae9Y+Q==
+X-Google-Smtp-Source: AGHT+IGN7M9FJCdRY3tkah4AXjZbzv47boPqqFbb4PPEhjPuCbgfBfVFwzyXe0/MWeRtskwNEueTT6O9SNvE7rYef2A=
+X-Received: by 2002:a05:6102:548b:b0:493:e713:c0ff with SMTP id
+ ada2fe7eead31-493fa15f9b3mr17451687137.4.1722429312654; Wed, 31 Jul 2024
+ 05:35:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+References: <20240730151639.792277039@linuxfoundation.org>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 31 Jul 2024 18:05:01 +0530
+Message-ID: <CA+G9fYuotiGuEVYgNp5hGh3tWJcGykZycfH7kzAC2PgxwPWfrQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/568] 6.6.44-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We recently made GUP's common page table walking code to also walk hugetlb
-VMAs without most hugetlb special-casing, preparing for the future of
-having less hugetlb-specific page table walking code in the codebase.
-Turns out that we missed one page table locking detail: page table locking
-for hugetlb folios that are not mapped using a single PMD/PUD.
+On Tue, 30 Jul 2024 at 21:21, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.44 release.
+> There are 568 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 01 Aug 2024 15:14:54 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.44-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Assume we have hugetlb folio that spans multiple PTEs (e.g., 64 KiB
-hugetlb folios on arm64 with 4 KiB base page size). GUP, as it walks the
-page tables, will perform a pte_offset_map_lock() to grab the PTE table
-lock.
 
-However, hugetlb that concurrently modifies these page tables would
-actually grab the mm->page_table_lock: with USE_SPLIT_PTE_PTLOCKS, the
-locks would differ. Something similar can happen right now with hugetlb
-folios that span multiple PMDs when USE_SPLIT_PMD_PTLOCKS.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-This issue can be reproduced [1], for example triggering:
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-[ 3105.936100] ------------[ cut here ]------------
-[ 3105.939323] WARNING: CPU: 31 PID: 2732 at mm/gup.c:142 try_grab_folio+0x11c/0x188
-[ 3105.944634] Modules linked in: [...]
-[ 3105.974841] CPU: 31 PID: 2732 Comm: reproducer Not tainted 6.10.0-64.eln141.aarch64 #1
-[ 3105.980406] Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-4.fc40 05/24/2024
-[ 3105.986185] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ 3105.991108] pc : try_grab_folio+0x11c/0x188
-[ 3105.994013] lr : follow_page_pte+0xd8/0x430
-[ 3105.996986] sp : ffff80008eafb8f0
-[ 3105.999346] x29: ffff80008eafb900 x28: ffffffe8d481f380 x27: 00f80001207cff43
-[ 3106.004414] x26: 0000000000000001 x25: 0000000000000000 x24: ffff80008eafba48
-[ 3106.009520] x23: 0000ffff9372f000 x22: ffff7a54459e2000 x21: ffff7a546c1aa978
-[ 3106.014529] x20: ffffffe8d481f3c0 x19: 0000000000610041 x18: 0000000000000001
-[ 3106.019506] x17: 0000000000000001 x16: ffffffffffffffff x15: 0000000000000000
-[ 3106.024494] x14: ffffb85477fdfe08 x13: 0000ffff9372ffff x12: 0000000000000000
-[ 3106.029469] x11: 1fffef4a88a96be1 x10: ffff7a54454b5f0c x9 : ffffb854771b12f0
-[ 3106.034324] x8 : 0008000000000000 x7 : ffff7a546c1aa980 x6 : 0008000000000080
-[ 3106.038902] x5 : 00000000001207cf x4 : 0000ffff9372f000 x3 : ffffffe8d481f000
-[ 3106.043420] x2 : 0000000000610041 x1 : 0000000000000001 x0 : 0000000000000000
-[ 3106.047957] Call trace:
-[ 3106.049522]  try_grab_folio+0x11c/0x188
-[ 3106.051996]  follow_pmd_mask.constprop.0.isra.0+0x150/0x2e0
-[ 3106.055527]  follow_page_mask+0x1a0/0x2b8
-[ 3106.058118]  __get_user_pages+0xf0/0x348
-[ 3106.060647]  faultin_page_range+0xb0/0x360
-[ 3106.063651]  do_madvise+0x340/0x598
+## Build
+* kernel: 6.6.44-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 7d0be44d622fe39aeb7f09de19807d1dce272100
+* git describe: v6.6.43-569-g7d0be44d622f
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.4=
+3-569-g7d0be44d622f
 
-Let's make huge_pte_lockptr() effectively use the same PT locks as any
-core-mm page table walker would. Add ptep_lockptr() to obtain the PTE
-page table lock using a pte pointer -- unfortunately we cannot convert
-pte_lockptr() because virt_to_page() doesn't work with kmap'ed page
-tables we can have with CONFIG_HIGHPTE.
+## Test Regressions (compared to v6.6.42-17-ge83c10183573)
 
-Take care of PTE tables possibly spanning multiple pages, and take care of
-CONFIG_PGTABLE_LEVELS complexity when e.g., PMD_SIZE == PUD_SIZE. For
-example, with CONFIG_PGTABLE_LEVELS == 2, core-mm would detect
-with hugepagesize==PMD_SIZE pmd_leaf() and use the pmd_lockptr(), which
-would end up just mapping to the per-MM PT lock.
+## Metric Regressions (compared to v6.6.42-17-ge83c10183573)
 
-There is one ugly case: powerpc 8xx, whereby we have an 8 MiB hugetlb
-folio being mapped using two PTE page tables.  While hugetlb wants to take
-the PMD table lock, core-mm would grab the PTE table lock of one of both
-PTE page tables.  In such corner cases, we have to make sure that both
-locks match, which is (fortunately!) currently guaranteed for 8xx as it
-does not support SMP and consequently doesn't use split PT locks.
+## Test Fixes (compared to v6.6.42-17-ge83c10183573)
 
-[1] https://lore.kernel.org/all/1bbfcc7f-f222-45a5-ac44-c5a1381c596d@redhat.com/
+## Metric Fixes (compared to v6.6.42-17-ge83c10183573)
 
-Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic follow_page_mask code")
-Reviewed-by: James Houghton <jthoughton@google.com>
-Cc: <stable@vger.kernel.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
+## Test result summary
+total: 246982, pass: 213532, fail: 3566, skip: 29419, xfail: 465
 
-Third time is the charm?
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 127 total, 127 passed, 0 failed
+* arm64: 36 total, 36 passed, 0 failed
+* i386: 27 total, 27 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 17 total, 17 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 31 total, 30 passed, 1 failed
 
-Retested on arm64 and x86-64. Cross-compiled on a bunch of others.
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
 
-v2 -> v3:
-* Handle CONFIG_PGTABLE_LEVELS oddities as good as possible. It's a mess.
-  Remove the size >= P4D_SIZE check and simply default to the
-  &mm->page_table_lock.
-* Align the PTE pointer to the start of the page table to handle PTE page
-  tables bigger than a single page (unclear if this could currently trigger).
-* Extend patch description
-
-v1 -> 2:
-* Extend patch description
-* Drop "mm: let pte_lockptr() consume a pte_t pointer"
-* Introduce ptep_lockptr() in this patch
-
----
- include/linux/hugetlb.h | 27 +++++++++++++++++++++++++--
- include/linux/mm.h      | 22 ++++++++++++++++++++++
- 2 files changed, 47 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index c9bf68c239a01..e6437a06e2346 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -944,9 +944,32 @@ static inline bool htlb_allow_alloc_fallback(int reason)
- static inline spinlock_t *huge_pte_lockptr(struct hstate *h,
- 					   struct mm_struct *mm, pte_t *pte)
- {
--	if (huge_page_size(h) == PMD_SIZE)
-+	unsigned long size = huge_page_size(h);
-+
-+	VM_WARN_ON(size == PAGE_SIZE);
-+
-+	/*
-+	 * hugetlb must use the exact same PT locks as core-mm page table
-+	 * walkers would. When modifying a PTE table, hugetlb must take the
-+	 * PTE PT lock, when modifying a PMD table, hugetlb must take the PMD
-+	 * PT lock etc.
-+	 *
-+	 * The expectation is that any hugetlb folio smaller than a PMD is
-+	 * always mapped into a single PTE table and that any hugetlb folio
-+	 * smaller than a PUD (but at least as big as a PMD) is always mapped
-+	 * into a single PMD table.
-+	 *
-+	 * If that does not hold for an architecture, then that architecture
-+	 * must disable split PT locks such that all *_lockptr() functions
-+	 * will give us the same result: the per-MM PT lock.
-+	 */
-+	if (size < PMD_SIZE && !IS_ENABLED(CONFIG_HIGHPTE))
-+		/* pte_alloc_huge() only applies with !CONFIG_HIGHPTE */
-+		return ptep_lockptr(mm, pte);
-+	else if (size < PUD_SIZE || CONFIG_PGTABLE_LEVELS == 2)
- 		return pmd_lockptr(mm, (pmd_t *) pte);
--	VM_BUG_ON(huge_page_size(h) == PAGE_SIZE);
-+	else if (size < P4D_SIZE || CONFIG_PGTABLE_LEVELS == 3)
-+		return pud_lockptr(mm, (pud_t *) pte);
- 	return &mm->page_table_lock;
- }
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index b100df8cb5857..f6c7fe8f5746f 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2926,6 +2926,24 @@ static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
- 	return ptlock_ptr(page_ptdesc(pmd_page(*pmd)));
- }
- 
-+static inline struct page *ptep_pgtable_page(pte_t *pte)
-+{
-+	unsigned long mask = ~(PTRS_PER_PTE * sizeof(pte_t) - 1);
-+
-+	BUILD_BUG_ON(IS_ENABLED(CONFIG_HIGHPTE));
-+	return virt_to_page((void *)((unsigned long)pte & mask));
-+}
-+
-+static inline struct ptdesc *ptep_ptdesc(pte_t *pte)
-+{
-+	return page_ptdesc(ptep_pgtable_page(pte));
-+}
-+
-+static inline spinlock_t *ptep_lockptr(struct mm_struct *mm, pte_t *pte)
-+{
-+	return ptlock_ptr(ptep_ptdesc(pte));
-+}
-+
- static inline bool ptlock_init(struct ptdesc *ptdesc)
- {
- 	/*
-@@ -2950,6 +2968,10 @@ static inline spinlock_t *pte_lockptr(struct mm_struct *mm, pmd_t *pmd)
- {
- 	return &mm->page_table_lock;
- }
-+static inline spinlock_t *ptep_lockptr(struct mm_struct *mm, pte_t *pte)
-+{
-+	return &mm->page_table_lock;
-+}
- static inline void ptlock_cache_init(void) {}
- static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
- static inline void ptlock_free(struct ptdesc *ptdesc) {}
--- 
-2.45.2
-
+--
+Linaro LKFT
+https://lkft.linaro.org
 
