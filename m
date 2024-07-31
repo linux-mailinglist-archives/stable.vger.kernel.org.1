@@ -1,128 +1,76 @@
-Return-Path: <stable+bounces-64697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318899425E4
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 07:41:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F299425F0
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 07:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B3A2876F5
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 05:41:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B50371F23712
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 05:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF354C634;
-	Wed, 31 Jul 2024 05:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7DE4965B;
+	Wed, 31 Jul 2024 05:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="kej4nhI4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfVA3CuI"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E7149643;
-	Wed, 31 Jul 2024 05:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC112946F;
+	Wed, 31 Jul 2024 05:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722404505; cv=none; b=FLN83kHL95yaJMjZ0B10jehFi8HM2Rg1oCsXMSJiBsqZwjH8CvqZ5WfdH9BwVVyM6KPRPLvJTS4P6KSTOUwN9uqPSYRfyPT87hoZZyxZOFU7O9UUZTeAfTlCyj2J1abi6kzylwUSC1zNIj5QMSR72hMNqPQVSAggKTTNUaf/bW0=
+	t=1722404789; cv=none; b=m+UKfy3IPTtFRtNjxiqAJADPhlJlCTJoxKL/gdHE+FOZDuaRKqHfVeF13fi1OJ1n5pLOs6QrJ7Gre938XrpjcecufymQKRZ/FjlRAWoh5x5Eh9eSRXDTMkqxr5OFZLJ5XgdGMlP0b6+0I9Ot0RBaKrX2eFZ7wkc9KiB+wGbOMgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722404505; c=relaxed/simple;
-	bh=SYX0hQh7ONEqqew2stg31w9fGPl4k5OEpC9Da6F1hcY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RfKP6G2IZrIlxJrVVBd4DIotvsLtO+dwDdPzrBz9NKItBe/HkRXSiBOyivrItw3WbI8el+Nwkxx8TzZ3RTo58ueqgKG8CC7SpIwvwTFI3LAth1xS788qlVDoBn89TY1221IivC9u3fDpDDsraoY1tSZXr42QPZKnbPrJLIzG7Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=kej4nhI4; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [IPV6:2405:201:2015:f873:55d7:c02e:b2eb:ee3f] (unknown [IPv6:2405:201:2015:f873:55d7:c02e:b2eb:ee3f])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id EE43A7E4;
-	Wed, 31 Jul 2024 07:40:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1722404453;
-	bh=SYX0hQh7ONEqqew2stg31w9fGPl4k5OEpC9Da6F1hcY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kej4nhI4lTjAUgdJmYq2vxzD+G4oZnKLhgThMi/oeRNp3461R82K98M7Nee7XyMBf
-	 bclvLtnMeCLP6MiMsz3UV8IhE5A6Mk79cNu9lEHh8cRFQnYqksA/Jm+ya5eYHAJn9F
-	 TM7hq287a6R6Z/0f0BNMsEoPm0A1DKc6pqmjdsnA=
-Message-ID: <cefc0b19-f065-4023-a536-56b2762ac967@ideasonboard.com>
-Date: Wed, 31 Jul 2024 11:11:35 +0530
+	s=arc-20240116; t=1722404789; c=relaxed/simple;
+	bh=AYf7Rp+ExjXXveWaylltspquL/pn6LYHTRfVUNAcWVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hue5OisPtl93xaV7Mrma+PGezwhRQOgnecY6AuEjJK4OYDNnrs0K12jiw+RxNp5UW7bTYV1tNsKqUx1FumjpnUDY7gEjOoo817Va8llYPZhZEQOo7furNCFZNz2RI7J85dmJItAfMCMyCBZK9QkgXR1rFiObjFeSjdUS1ZpBgso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfVA3CuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00FCC116B1;
+	Wed, 31 Jul 2024 05:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1722404789;
+	bh=AYf7Rp+ExjXXveWaylltspquL/pn6LYHTRfVUNAcWVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HfVA3CuIUjg8pslGMOE2R+drub5VurTmZqFr/wwpkfj0B+a8ZPYSE+fsoULEhOtrd
+	 Wo7TxF8Mc1RpkrR5brVJthrBEEObORUW5tAi+gJEIXsacXN5LiLEgyOirDVdzYsDK1
+	 X9O2tQ0B8ssRZAELhOEiXLoNK6tIdy2UeiBD6/JM=
+Date: Wed, 31 Jul 2024 07:46:26 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.10 259/809] virtio_net: add support for Byte Queue
+ Limits
+Message-ID: <2024073119-gentleman-busybody-8091@gregkh>
+References: <20240730151724.637682316@linuxfoundation.org>
+ <20240730151734.824711848@linuxfoundation.org>
+ <20240730153217-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] media: imx335: Fix reset-gpio handling
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- stable@vger.kernel.org, Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Tommaso Merciai <tomm.merciai@gmail.com>,
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
- <20240729110437.199428-3-umang.jain@ideasonboard.com>
- <ef05c39a-ad5c-4751-a758-f73a2d114823@kernel.org>
- <ZqijVf68ZQuFGKhU@kekkonen.localdomain>
- <729280cd-557f-43ba-b1a6-8d319977ca82@kernel.org>
- <20240730091011.GL300@pendragon.ideasonboard.com>
-Content-Language: en-US
-From: Umang Jain <umang.jain@ideasonboard.com>
-In-Reply-To: <20240730091011.GL300@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240730153217-mutt-send-email-mst@kernel.org>
 
-Hi all,
+On Tue, Jul 30, 2024 at 03:33:18PM -0400, Michael S. Tsirkin wrote:
+> On Tue, Jul 30, 2024 at 05:42:15PM +0200, Greg Kroah-Hartman wrote:
+> > 6.10-stable review patch.  If anyone has any objections, please let me know.
+> 
+> Wow.
+> 
+> It's clearly a feature, not a bugfix. And a risky one, at that.
+> 
+> Applies to any stable tree.
 
-On 30/07/24 2:40 pm, Laurent Pinchart wrote:
-> On Tue, Jul 30, 2024 at 10:42:01AM +0200, Krzysztof Kozlowski wrote:
->> On 30/07/2024 10:24, Sakari Ailus wrote:
->>> Hi Krzysztof,
->>>
->>> On Mon, Jul 29, 2024 at 04:09:39PM +0200, Krzysztof Kozlowski wrote:
->>>> On 29/07/2024 13:04, Umang Jain wrote:
->>>>> Rectify the logical value of reset-gpio so that it is set to
->>>>> 0 (disabled) during power-on and to 1 (enabled) during power-off.
->>>>>
->>>>> Meanwhile at it, set the reset-gpio to GPIO_OUT_HIGH at initialization
->>>>> time to make sure it starts off in reset.
->>>>>
->>>>> Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
->>>>> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
->>>>> ---
->>>>>   drivers/media/i2c/imx335.c | 8 ++++----
->>>>>   1 file changed, 4 insertions(+), 4 deletions(-)
->>>>>
->>>> This will break all the users, so no. At least not without mentioning
->>>> ABI break and some sort of investigating how customers or users are
->>>> affected.
->>> I know the original authors aren't using the driver anymore and it took
->>> quite a bit of time until others started to contribute to it so I suspect
->>> the driver hasn't been in use for that long. There are no instances of the
->>> device in the in-kernel DTS either.
->>>
->>> Any DTS author should have also noticed the issue but of course there's a
->>> risk someone could have just changed the polarity and not bothered to chech
->>> what it was supposed to be.
->>>
->>> I agree the commit message should be more vocal about the effects on
->>> existing DTS.
->> I can imagine that all users (out of tree, in this case) inverted
->> polarity in DTS based on what's implemented. You could go with some
->> trivial hack, like I did for one of codecs - see 738455858a2d ("ASoC:
->> codecs: wsa881x: Use proper shutdown GPIO polarity"), but I remember
->> Mark Brown rejected similar commit for newer drivers.
-> I don't think there's any out-of-tree user, because when we started
-> using the recently driver, it required lots of fixes to even work at
-> all. I'll let Kieran and Umang comment on that, I haven't follow the
-> development in details.
+Now dropped, thanks.
 
-indeed, initially we had to put up fixes like :
-
-14a60786d72e ("media: imx335: Set reserved register to default value")
-81495a59baeba ("media: imx335: Fix active area height discrepency")
-
-to make the sensor work properly on our platforms. Only after that we 
-had a base to support more capabilities on the sensor (multiple lanes 
-support, flips, TPG etc.)
-
->
-
+greg k-h
 
