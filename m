@@ -1,50 +1,59 @@
-Return-Path: <stable+bounces-64757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B87942CCB
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 13:07:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56377942D51
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 13:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC7941C20DCA
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:07:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A67283174
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 11:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAD91B0125;
-	Wed, 31 Jul 2024 11:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXQ0o2Hv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4121AD9D9;
+	Wed, 31 Jul 2024 11:36:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C396C1B0115;
-	Wed, 31 Jul 2024 11:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF9C1AC447;
+	Wed, 31 Jul 2024 11:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722423989; cv=none; b=fFvY5a4z0VX1gippA2Vf5G/+eQX+18jSZ/H0sPKl41gaLBtZeVYn4/7DP4vX/R18pgpKwMG+rU+asP0of1ueUMpabqe5JHF4lXPxtr+9BhHaC5Li5p861t4GNDgKa0PGGY+WZDa29ds50vpCkx3GZd5hj3GesZJ9gmrrev4Ic58=
+	t=1722425769; cv=none; b=R5Es8n+PrmaiFGa3qYPoouzDzvZVOeW6UDU4YbqgqQh5YbPSXyWsBAiuJLXlBa620HrlJcRFi3z/lr8xTH0OWn3ozDfqxYA/Ufai4MFHoZtVwsZ4Pqp4AxznehKh05sD31HkA7T3kR8/crv8fHheV1U4VYWhyHb/QAKAs6ToBYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722423989; c=relaxed/simple;
-	bh=vSxE9dZVA5Q6GagAMbC/uiWZrzBxnN5FNeRgFv7dSkY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XxsbTaLDyOlkKLOt8T3JP2K+ruEF8Fk15tjDOvGeafmh3/yw7VkOLAdycMarvipVat1F6MIBQe5TMuoNk7oT/iE6ocOkFb33AMy240g/V9NDJ1j+7BgFvqyj8XI6GNr2Hq8cKngWZMxRjwS4WJJ28SjoiOcips0zzUI9nkCA+XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXQ0o2Hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFB5C4AF09;
-	Wed, 31 Jul 2024 11:06:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722423989;
-	bh=vSxE9dZVA5Q6GagAMbC/uiWZrzBxnN5FNeRgFv7dSkY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=GXQ0o2HvIsiHxJi7qiok77XRnJPOreCqL1GIk2Pk2DMFcNSZ8iWMCZObZAqTMLePG
-	 JvqCzfkY9RsmKgdLzBmSjdv2JHCFNrvgNjfHs4mJtAEfNjwqADWPtvO48+EvX9hHNO
-	 Js5OTZ/qB1K5s7dBe+/yaNA1wHz0ULy5pQV4eJh4vk7QU7PtwXFKVaJnRfkCCKmsGk
-	 eDfDdXQ0y7GSI2DSql9gqLAAy0iyxA2IOerNHQNhiktRo8/vprCDQFq/fersoZVeaL
-	 O2yALOj0tRkWD4WchRJOdZ32AoFW0L3w5GQZcXt53no7Q5YVfnlQGh0cu8ACxC95NZ
-	 kGcRw1EcduZYQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 31 Jul 2024 13:05:57 +0200
-Subject: [PATCH net 5/7] mptcp: pm: do not ignore 'subflow' if 'signal'
- flag is also set
+	s=arc-20240116; t=1722425769; c=relaxed/simple;
+	bh=6vTBV9+mdhv+EHYrb1lvIvVGi44E3Oq+SM9h5Vo2K2c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=N3Jc+iXOBPJoy3tVBsvYZzCYsg/Op7ibxxgFdjVi76oU/Zpet8Mto0G0ZqfH28lr+vQsNBUSoVsCrn5wJp7V4rUb5XWjU68/vEg9M0nNUbHJW3S4KGyagEkZk7xeHaXTdWctQwK7dG1PSsWPaS0N8/iAMNuEmrTYCSZlRJ3EcqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+Received: from i53875ac5.versanet.de ([83.135.90.197] helo=phil.lan)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1sZ7cT-0003Dc-Jz; Wed, 31 Jul 2024 13:35:49 +0200
+From: Heiko Stuebner <heiko@sntech.de>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Quentin Schulz <foss+kernel@0leil.net>,
+	Rob Herring <robh@kernel.org>,
+	Judy Hsiao <judyhsiao@chromium.org>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	stable@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/2] fix eMMC/SPI flash corruption when audio has been used on RK3399 Puma
+Date: Wed, 31 Jul 2024 13:35:47 +0200
+Message-Id: <172242573602.2549881.5467215847844665967.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240731-puma-emmc-6-v1-0-4e28eadf32d0@cherry.de>
+References: <20240731-puma-emmc-6-v1-0-4e28eadf32d0@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,126 +61,31 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-5-c8a9b036493b@kernel.org>
-References: <20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-0-c8a9b036493b@kernel.org>
-In-Reply-To: <20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-0-c8a9b036493b@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3888; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=vSxE9dZVA5Q6GagAMbC/uiWZrzBxnN5FNeRgFv7dSkY=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmqhqiJJixt2T17TbHTeIvdJlCr3A5AFQFcvdN3
- Pa5IBG39xKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZqoaogAKCRD2t4JPQmmg
- c9OQEADX6153k9W+4S1S4qaARvs/quggdZGgZfaQeSPCstSxk0klZoNIIlwUa84dpgBpmIJOJ7n
- 0MReIIULkJUDYQtNBHeb6g0fz49Q+e4rHA+txEv3BeZZg/R1xbLzoOt/N3eTJk9gcDdU6ZIRmby
- vjchFAoAdXpxNT939DW3w87wg8qQ5pMZrRwnU2uYxZUDmKa2/kmuGGQzsaVVrQQdPOnD4nU7K5j
- ZhEa8GXA6m7tmVCRf3AmHlQVlPbsVDkXRM2SZkAf7LKXX5Rzcj3YVpzNmizoSumfA8OmKSqoFE5
- d4O9i+0omuUpfx5/ns3UkXH0G1g/eihmQ333G52q0PTx5mW9DhU0tH9LZ6fHzK8ItyvpPBpCHeZ
- PTmFWTXGhcp2jwXgdWbixZXguSwQpZO9ESRzA43THA6YRSzP98bUi5ZH1GJB9w9oS9YLglYmyzz
- FmmGKgJrWqi8bJwJy5aXK5sDuM/ikFqqgvqZixM7cqC8dD3MIYEQI2EhbKs0wPD39liZo/NRIPq
- fMFU53IQTNm3RYXR6al4Ww/OvcQTcd0P0m5qVWWe1voiwioZjlUD8OvlZuvTdj7jvaav0ZbMNm7
- mBT/pXl9TxLsTSvjHhTONTfBgE2FPgGVzbiSXrYMSvKsSepA9L1evyc84TDd3JB8hORy69UzEeo
- CPLDqKGYPLwESkQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-Up to the 'Fixes' commit, having an endpoint with both the 'signal' and
-'subflow' flags, resulted in the creation of a subflow and an address
-announcement using the address linked to this endpoint. After this
-commit, only the address announcement was done, ignoring the 'subflow'
-flag.
+On Wed, 31 Jul 2024 13:05:27 +0200, Quentin Schulz wrote:
+> In commit 91419ae0420f ("arm64: dts: rockchip: use BCLK to GPIO switch
+> on rk3399"), an additional pinctrl state was added whose default pinmux
+> is for 8ch i2s0. However, Puma only has 2ch i2s0. It's been overriding
+> the pinctrl-0 property but the second property override was missed in
+> the aforementioned commit.
+> 
+> On Puma, a hardware slider called "BIOS Disable/Normal Boot" can disable
+> eMMC and SPI to force booting from SD card. Another software-controlled
+> GPIO is then configured to override this behavior to make eMMC and SPI
+> available without human intervention. This is currently done in U-Boot
+> and it was enough until the aforementioned commit.
+> 
+> [...]
 
-That's because the same bitmap is used for the two flags. It is OK to
-keep this single bitmap, the already selected local endpoint simply have
-to be re-used, but not via select_local_address() not to look at the
-just modified bitmap.
+Applied, thanks!
 
-Note that it is unusual to set the two flags together: creating a new
-subflow using a new local address will implicitly advertise it to the
-other peer. So in theory, no need to advertise it explicitly as well.
-Maybe there are use-cases -- the subflow might not reach the other peer
-that way, we can ask the other peer to try initiating the new subflow
-without delay -- or very likely the user is confused, and put both flags
-"just to be sure at least the right one is set". Still, if it is
-allowed, the kernel should do what has been asked: using this endpoint
-to announce the address and to create a new subflow from it.
+[1/2] arm64: dts: rockchip: fix eMMC/SPI corruption when audio has been used on RK3399 Puma
+      commit: bb94a157b37ec23f53906a279320f6ed64300eba
+[2/2] arm64: dts: rockchip: override BIOS_DISABLE signal via GPIO hog on RK3399 Puma
+      commit: 741f5ba7ccba5d7ae796dd11c320e28045524771
 
-An alternative is to forbid the use of the two flags together, but
-that's probably too late, there are maybe use-cases, and it was working
-before. This patch will avoid people complaining subflows are not
-created using the endpoint they added with the 'subflow' and 'signal'
-flag.
-
-Note that with the current patch, the subflow might not be created in
-some corner cases, e.g. if the 'subflows' limit was reached when sending
-the ADD_ADDR, but changed later on. It is probably not worth splitting
-id_avail_bitmap per target ('signal', 'subflow'), which will add another
-large field to the msk "just" to track (again) endpoints. Anyway,
-currently when the limits are changed, the kernel doesn't check if new
-subflows can be created or removed, because we would need to keep track
-of the received ADD_ADDR, and more. It sounds OK to assume that the
-limits should be properly configured before establishing new
-connections.
-
-Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/pm_netlink.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 2be7af377cda..4cae2aa7be5c 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -512,8 +512,8 @@ __lookup_addr(struct pm_nl_pernet *pernet, const struct mptcp_addr_info *info)
- 
- static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- {
-+	struct mptcp_pm_addr_entry *local, *signal_and_subflow = NULL;
- 	struct sock *sk = (struct sock *)msk;
--	struct mptcp_pm_addr_entry *local;
- 	unsigned int add_addr_signal_max;
- 	unsigned int local_addr_max;
- 	struct pm_nl_pernet *pernet;
-@@ -579,6 +579,9 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 		msk->pm.add_addr_signaled++;
- 		mptcp_pm_announce_addr(msk, &local->addr, false);
- 		mptcp_pm_nl_addr_send_ack(msk);
-+
-+		if (local->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)
-+			signal_and_subflow = local;
- 	}
- 
- subflow:
-@@ -589,9 +592,14 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
- 		bool fullmesh;
- 		int i, nr;
- 
--		local = select_local_address(pernet, msk);
--		if (!local)
--			break;
-+		if (signal_and_subflow) {
-+			local = signal_and_subflow;
-+			signal_and_subflow = NULL;
-+		} else {
-+			local = select_local_address(pernet, msk);
-+			if (!local)
-+				break;
-+		}
- 
- 		fullmesh = !!(local->flags & MPTCP_PM_ADDR_FLAG_FULLMESH);
- 
-
+Best regards,
 -- 
-2.45.2
-
+Heiko Stuebner <heiko@sntech.de>
 
