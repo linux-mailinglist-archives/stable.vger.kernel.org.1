@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-64835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D375943A97
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:17:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 655E7943A99
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE10DB2111A
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:17:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19CAB2817BD
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E76E1113;
-	Thu,  1 Aug 2024 00:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1CC1FDD;
+	Thu,  1 Aug 2024 00:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLet+QaI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M2UVUzbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A25CA48;
-	Thu,  1 Aug 2024 00:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A780D2C9D;
+	Thu,  1 Aug 2024 00:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722470964; cv=none; b=iJoRXO87cE6NlZobT0ppMxfySk+QCmNcu65tmBnAHMLGBgIhjFXNRMxZrIAGEHVbRYw2qKJov3dlerv+kDywmv0pq+1prlIGHE1Ccb4vZAk6g603eXWXWaZH8NpaA3bv1V/pLGQFUccZNTPBg1htYxxyzRnWoBuzouIE/vUSlF4=
+	t=1722470970; cv=none; b=qZ70oNHQ6ZSQ7ymDZhPjmexA1f+PFYWkFD6oaU8cUBGSMpML/6uxNoH0sHi9ksNMsiwtrvTYDp3NvCY0JOAWdmNDvSvCx4EH2FaqYVIcI1PBvxrKxL9KE57agAxU3BWXyUMi5PI95L1n4gg0fJahE6+hBWBDn9nuHENxJge7KHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722470964; c=relaxed/simple;
-	bh=sBY+V2qU4wz571bmWgNjlbPpEzs7l4V4b9kJKruLpuI=;
+	s=arc-20240116; t=1722470970; c=relaxed/simple;
+	bh=6jjm4sK46/QFBy2SuZL1kv7tKZCasavK+06W0R0S/E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8g8iV+iLJnVtwdm7yAOal2AlLywBUMqJURG6aVWqomIEOB2ge1fFEgtSYlQ7im2kgYVelVti3HdHRmkHbY4/nTkaDbiEc+hoXfl76FwYP3ObtGNUW8rDTjXhYE4g5LEM1ZVrc8CBRNdtqd9xYX96nNg1reDaEPzyp2SC9gLFfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLet+QaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AC0C32786;
-	Thu,  1 Aug 2024 00:09:21 +0000 (UTC)
+	 MIME-Version; b=C6aSGx1oeaXt51T7Lj3foXZFHLcqShjyqzbl/wkF9XboesVD63FeOkWM0wgsR4wfrrjE/gS6DYRWCJTrM+idX0AimWiu/ir3HoKWkjzkHaU9MZiLTVZFHuXMVewn71fF925uB90TRGGBYDqbzqmWl4/Vpc/4cP8otQNd5/uQsC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M2UVUzbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD33C32786;
+	Thu,  1 Aug 2024 00:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722470963;
-	bh=sBY+V2qU4wz571bmWgNjlbPpEzs7l4V4b9kJKruLpuI=;
+	s=k20201202; t=1722470970;
+	bh=6jjm4sK46/QFBy2SuZL1kv7tKZCasavK+06W0R0S/E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLet+QaIT5QNtMCnSg0SMJEHTnyxaGh6qEhZzrLKpDPu81WGqir6OW/4whA9AmdLF
-	 nYK7Y7QK55Om/o77crR8Hp2AFLVQ+Rc0PUaMTBJIfmHuu6YNy1b+beyX9IBCo2inZB
-	 /Rj7LHGBnGjbH2q3QN8ukHWSzaB3IGIzm8dFPYXZvlJUT+d1mwiwqua+j3m7rZE2Z7
-	 V8eIiJdINyczPVXAT9iuMKPnbpPdYEUQjDxiOGA6NZ4dMkB2tDSknHL8wV0jJNLpyo
-	 7tfc5MdnUqlh1SjDTMgxBTTSLTy24ewyziKbMLKkI8ZBxv9Hm7QSPaFAbjQmKgIh+N
-	 YNjKbXQIVzuOQ==
+	b=M2UVUzbCtiRimp3u3enzBIF/d+YVC1AGAZgtXzaZQNjt31so9gW8npGlfVAuUvNYh
+	 V61Ld+tqDr+06dap4AMeSO9cbE4akNy0lrRzmrpbzUJOZcEgTxNUdKVm7nmHZzYA9g
+	 lxxr2J/l43KDSVdj+zgpX7rS98IPXie8W1+YGdITbkvgm646G27W1aCn8DAolreE4o
+	 C+6tJMI3bK92mm5ua27a6Ot/FwTqZWpy8FmsaMZis7RU4Rwkx2crGLrLKwYk44L95f
+	 Jf1Ydzqw0eI0q1bwiMGoSJbEjP0XoyZtxN7c5eU7m07G+rMBG0OJOPxpkDax7jV+Kf
+	 mja7hf3vZkoiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
+Cc: Hersen Wu <hersenxs.wu@amd.com>,
 	Harry Wentland <harry.wentland@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
@@ -56,12 +56,16 @@ Cc: Alex Hung <alex.hung@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	hersenxs.wu@amd.com,
+	alex.hung@amd.com,
+	hamza.mahfooz@amd.com,
+	roman.li@amd.com,
+	mario.limonciello@amd.com,
+	Wayne.Lin@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 010/121] drm/amd/display: Check gpio_id before used as array index
-Date: Wed, 31 Jul 2024 19:59:08 -0400
-Message-ID: <20240801000834.3930818-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 011/121] drm/amd/display: Add NULL pointer and OVERRUN check within amdgpu_dm irq register
+Date: Wed, 31 Jul 2024 19:59:09 -0400
+Message-ID: <20240801000834.3930818-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -76,78 +80,376 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 2a5626eeb3b5eec7a36886f9556113dd93ec8ed6 ]
+[ Upstream commit 6e41709eb1d9207d88e46026baf9cc850206b374 ]
 
-[WHY & HOW]
-GPIO_ID_UNKNOWN (-1) is not a valid value for array index and therefore
-should be checked in advance.
+[WHY]
+Coverity reports OVERRUN issues within amdgpu_dm
+interrupt registers. Do not check index value before
+access array. Do not check NULL pointer.
 
-This fixes 5 OVERRUN issues reported by Coverity.
+[HOW]
+Add index value check for array. Add check for
+pointer from amdgpu_dm_irq_register_interrupt.
 
 Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 169 +++++++++++++-----
+ 1 file changed, 128 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-index 663c17f52779c..d19d5c1770222 100644
---- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-+++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-@@ -239,6 +239,9 @@ static bool is_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return false;
-+
- 	return service->busyness[id][en];
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 3cdcadd41be1a..e9aac7f7cfdce 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3561,7 +3561,7 @@ static void handle_hpd_rx_irq(void *param)
+ 	mutex_unlock(&aconnector->hpd_lock);
  }
  
-@@ -247,6 +250,9 @@ static void set_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
+-static void register_hpd_handlers(struct amdgpu_device *adev)
++static int register_hpd_handlers(struct amdgpu_device *adev)
  {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = true;
- }
+ 	struct drm_device *dev = adev_to_drm(adev);
+ 	struct drm_connector *connector;
+@@ -3573,11 +3573,17 @@ static void register_hpd_handlers(struct amdgpu_device *adev)
+ 	int_params.current_polarity = INTERRUPT_POLARITY_DEFAULT;
  
-@@ -255,6 +261,9 @@ static void set_pin_free(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = false;
- }
+ 	if (dc_is_dmub_outbox_supported(adev->dm.dc)) {
+-		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD, dmub_hpd_callback, true))
++		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD,
++			dmub_hpd_callback, true)) {
+ 			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
++			return -EINVAL;
++		}
  
-@@ -263,7 +272,7 @@ enum gpio_result dal_gpio_service_lock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
+-		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD_IRQ, dmub_hpd_callback, true))
++		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD_IRQ,
++			dmub_hpd_callback, true)) {
+ 			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
++			return -EINVAL;
++		}
  	}
-@@ -277,7 +286,7 @@ enum gpio_result dal_gpio_service_unlock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
+ 
+ 	list_for_each_entry(connector,
+@@ -3593,9 +3599,16 @@ static void register_hpd_handlers(struct amdgpu_device *adev)
+ 			int_params.int_context = INTERRUPT_LOW_IRQ_CONTEXT;
+ 			int_params.irq_source = dc_link->irq_source_hpd;
+ 
+-			amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-					handle_hpd_irq,
+-					(void *) aconnector);
++			if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++				int_params.irq_source  < DC_IRQ_SOURCE_HPD1 ||
++				int_params.irq_source  > DC_IRQ_SOURCE_HPD6) {
++				DRM_ERROR("Failed to register hpd irq!\n");
++				return -EINVAL;
++			}
++
++			if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++				handle_hpd_irq, (void *) aconnector))
++				return -ENOMEM;
+ 		}
+ 
+ 		if (dc_link->irq_source_hpd_rx != DC_IRQ_SOURCE_INVALID) {
+@@ -3604,11 +3617,19 @@ static void register_hpd_handlers(struct amdgpu_device *adev)
+ 			int_params.int_context = INTERRUPT_LOW_IRQ_CONTEXT;
+ 			int_params.irq_source =	dc_link->irq_source_hpd_rx;
+ 
+-			amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-					handle_hpd_rx_irq,
+-					(void *) aconnector);
++			if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++				int_params.irq_source  < DC_IRQ_SOURCE_HPD1RX ||
++				int_params.irq_source  > DC_IRQ_SOURCE_HPD6RX) {
++				DRM_ERROR("Failed to register hpd rx irq!\n");
++				return -EINVAL;
++			}
++
++			if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++				handle_hpd_rx_irq, (void *) aconnector))
++				return -ENOMEM;
+ 		}
  	}
++	return 0;
+ }
+ 
+ #if defined(CONFIG_DRM_AMD_DC_SI)
+@@ -3649,13 +3670,21 @@ static int dce60_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, i + 1, 0);
+ 
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source  < DC_IRQ_SOURCE_VBLANK1 ||
++			int_params.irq_source  > DC_IRQ_SOURCE_VBLANK6) {
++			DRM_ERROR("Failed to register vblank irq!\n");
++			return -EINVAL;
++		}
++
+ 		c_irq_params = &adev->dm.vblank_params[int_params.irq_source - DC_IRQ_SOURCE_VBLANK1];
+ 
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_crtc_high_irq, c_irq_params);
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_crtc_high_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	/* Use GRPH_PFLIP interrupt */
+@@ -3671,14 +3700,21 @@ static int dce60_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, i, 0);
+ 
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source  < DC_IRQ_SOURCE_PFLIP_FIRST ||
++			int_params.irq_source  > DC_IRQ_SOURCE_PFLIP_LAST) {
++			DRM_ERROR("Failed to register pflip irq!\n");
++			return -EINVAL;
++		}
++
+ 		c_irq_params = &adev->dm.pflip_params[int_params.irq_source - DC_IRQ_SOURCE_PFLIP_FIRST];
+ 
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_pflip_high_irq, c_irq_params);
+-
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_pflip_high_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	/* HPD */
+@@ -3689,9 +3725,9 @@ static int dce60_register_irq_handlers(struct amdgpu_device *adev)
+ 		return r;
+ 	}
+ 
+-	register_hpd_handlers(adev);
++	r = register_hpd_handlers(adev);
+ 
+-	return 0;
++	return r;
+ }
+ #endif
+ 
+@@ -3735,13 +3771,21 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, i, 0);
+ 
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source  < DC_IRQ_SOURCE_VBLANK1 ||
++			int_params.irq_source  > DC_IRQ_SOURCE_VBLANK6) {
++			DRM_ERROR("Failed to register vblank irq!\n");
++			return -EINVAL;
++		}
++
+ 		c_irq_params = &adev->dm.vblank_params[int_params.irq_source - DC_IRQ_SOURCE_VBLANK1];
+ 
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_crtc_high_irq, c_irq_params);
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_crtc_high_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	/* Use VUPDATE interrupt */
+@@ -3756,13 +3800,21 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, i, 0);
+ 
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source  < DC_IRQ_SOURCE_VUPDATE1 ||
++			int_params.irq_source  > DC_IRQ_SOURCE_VUPDATE6) {
++			DRM_ERROR("Failed to register vupdate irq!\n");
++			return -EINVAL;
++		}
++
+ 		c_irq_params = &adev->dm.vupdate_params[int_params.irq_source - DC_IRQ_SOURCE_VUPDATE1];
+ 
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_vupdate_high_irq, c_irq_params);
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_vupdate_high_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	/* Use GRPH_PFLIP interrupt */
+@@ -3778,14 +3830,21 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, i, 0);
+ 
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source  < DC_IRQ_SOURCE_PFLIP_FIRST ||
++			int_params.irq_source  > DC_IRQ_SOURCE_PFLIP_LAST) {
++			DRM_ERROR("Failed to register pflip irq!\n");
++			return -EINVAL;
++		}
++
+ 		c_irq_params = &adev->dm.pflip_params[int_params.irq_source - DC_IRQ_SOURCE_PFLIP_FIRST];
+ 
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_pflip_high_irq, c_irq_params);
+-
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_pflip_high_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	/* HPD */
+@@ -3796,9 +3855,9 @@ static int dce110_register_irq_handlers(struct amdgpu_device *adev)
+ 		return r;
+ 	}
+ 
+-	register_hpd_handlers(adev);
++	r = register_hpd_handlers(adev);
+ 
+-	return 0;
++	return r;
+ }
+ 
+ /* Register IRQ sources and initialize IRQ callbacks */
+@@ -3850,13 +3909,21 @@ static int dcn10_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, i, 0);
+ 
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source  < DC_IRQ_SOURCE_VBLANK1 ||
++			int_params.irq_source  > DC_IRQ_SOURCE_VBLANK6) {
++			DRM_ERROR("Failed to register vblank irq!\n");
++			return -EINVAL;
++		}
++
+ 		c_irq_params = &adev->dm.vblank_params[int_params.irq_source - DC_IRQ_SOURCE_VBLANK1];
+ 
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(
+-			adev, &int_params, dm_crtc_high_irq, c_irq_params);
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_crtc_high_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	/* Use otg vertical line interrupt */
+@@ -3874,9 +3941,11 @@ static int dcn10_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, vrtl_int_srcid[i], 0);
+ 
+-		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID) {
+-			DRM_ERROR("Failed to register vline0 irq %d!\n", vrtl_int_srcid[i]);
+-			break;
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source < DC_IRQ_SOURCE_DC1_VLINE0 ||
++			int_params.irq_source > DC_IRQ_SOURCE_DC6_VLINE0) {
++			DRM_ERROR("Failed to register vline0 irq!\n");
++			return -EINVAL;
+ 		}
+ 
+ 		c_irq_params = &adev->dm.vline0_params[int_params.irq_source
+@@ -3885,8 +3954,10 @@ static int dcn10_register_irq_handlers(struct amdgpu_device *adev)
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_dcn_vertical_interrupt0_high_irq, c_irq_params);
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_dcn_vertical_interrupt0_high_irq,
++			c_irq_params))
++			return -ENOMEM;
+ 	}
+ #endif
+ 
+@@ -3909,13 +3980,21 @@ static int dcn10_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, i, 0);
+ 
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source  < DC_IRQ_SOURCE_VUPDATE1 ||
++			int_params.irq_source  > DC_IRQ_SOURCE_VUPDATE6) {
++			DRM_ERROR("Failed to register vupdate irq!\n");
++			return -EINVAL;
++		}
++
+ 		c_irq_params = &adev->dm.vupdate_params[int_params.irq_source - DC_IRQ_SOURCE_VUPDATE1];
+ 
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_vupdate_high_irq, c_irq_params);
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_vupdate_high_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	/* Use GRPH_PFLIP interrupt */
+@@ -3932,14 +4011,21 @@ static int dcn10_register_irq_handlers(struct amdgpu_device *adev)
+ 		int_params.irq_source =
+ 			dc_interrupt_to_irq_source(dc, i, 0);
+ 
++		if (int_params.irq_source == DC_IRQ_SOURCE_INVALID ||
++			int_params.irq_source  < DC_IRQ_SOURCE_PFLIP_FIRST ||
++			int_params.irq_source  > DC_IRQ_SOURCE_PFLIP_LAST) {
++			DRM_ERROR("Failed to register pflip irq!\n");
++			return -EINVAL;
++		}
++
+ 		c_irq_params = &adev->dm.pflip_params[int_params.irq_source - DC_IRQ_SOURCE_PFLIP_FIRST];
+ 
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_pflip_high_irq, c_irq_params);
+-
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_pflip_high_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	/* HPD */
+@@ -3950,9 +4036,9 @@ static int dcn10_register_irq_handlers(struct amdgpu_device *adev)
+ 		return r;
+ 	}
+ 
+-	register_hpd_handlers(adev);
++	r = register_hpd_handlers(adev);
+ 
+-	return 0;
++	return r;
+ }
+ /* Register Outbox IRQ sources and initialize IRQ callbacks */
+ static int register_outbox_irq_handlers(struct amdgpu_device *adev)
+@@ -3983,8 +4069,9 @@ static int register_outbox_irq_handlers(struct amdgpu_device *adev)
+ 		c_irq_params->adev = adev;
+ 		c_irq_params->irq_src = int_params.irq_source;
+ 
+-		amdgpu_dm_irq_register_interrupt(adev, &int_params,
+-				dm_dmub_outbox1_low_irq, c_irq_params);
++		if (!amdgpu_dm_irq_register_interrupt(adev, &int_params,
++			dm_dmub_outbox1_low_irq, c_irq_params))
++			return -ENOMEM;
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
