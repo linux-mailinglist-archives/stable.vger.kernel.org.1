@@ -1,145 +1,209 @@
-Return-Path: <stable+bounces-64714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7525E94274D
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:03:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CF3942787
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 286952841D4
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 07:03:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC39D1C22B81
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 07:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9191A616F;
-	Wed, 31 Jul 2024 07:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC7D15884D;
+	Wed, 31 Jul 2024 07:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="g128npLw"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eHionC9k"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8211A4F2D;
-	Wed, 31 Jul 2024 07:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A871A4B3D
+	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 07:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722409388; cv=none; b=Id1/K2FxC67VPalmVt0xlyOUee/3Us3sYztTRMRcK3OZQB98VoOsAAg6HAoXJSfL8oJtArZe1mPDPtXLLYSmugVb8d2lzQQhM1do2J8fAwGMtJgLbOTgL0DKhgpGko4DOEKAAQggHE61CL75ibavLyDM1hjhvghlVlHM+EEy8Zg=
+	t=1722409648; cv=none; b=P8hKVob1d45F2wjjrpYhakxg6X2si6MyKsCm/Wc52RneRxO8WsxxFQznv4mib/85ChsGRRfQjGwvwfa37qeOgVFnCCrwZkKLfIGImaexf4oZiPQ72YiouYD+wjzMqED7QFnxfHmwAaLuYtp4i33dicchlK05k8tPbF+KS1r8kZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722409388; c=relaxed/simple;
-	bh=dkOkY+B0/cyoFmPI2OdnhUFer6WrrHex+z/Q5THTpcg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=n+OqnW2hrB9Jff8G09ykiAIvt07Z66S2PJdAguo/eeTgK5UgfeerU46SvqDzuKu3/w2du4+BV7Im1H1W0LphbPmWiaQzAvAoHmkXz+mr7SFjKCU8iifb2EtVeFKRSfiRqR81Kdcrlh79H5QtUgNDYugm2M00JjI/vL5nirStgIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=g128npLw; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.29.25] (unknown [IPv6:2405:201:2015:f873:55f8:639e:8e9f:12ec])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 27D75144C;
-	Wed, 31 Jul 2024 09:02:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1722409338;
-	bh=dkOkY+B0/cyoFmPI2OdnhUFer6WrrHex+z/Q5THTpcg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=g128npLwemLjujaENCfvYbZAzH0yaq505ZO47BvznBeJuY8ByKKgpQjun9DvJAH+X
-	 vRsgOijAyIuACJgzSTglgunqAoinEoAOiPwwkYL23vBdztC2kUd0VJmHgcQ/NXNJiO
-	 g56i0aDRPF5Vm+DijExQ3ZMg1bAUwbychKQhvy3Q=
-From: Umang Jain <umang.jain@ideasonboard.com>
-Date: Wed, 31 Jul 2024 12:32:42 +0530
-Subject: [PATCH v3 2/2] media: imx335: Fix reset-gpio handling
+	s=arc-20240116; t=1722409648; c=relaxed/simple;
+	bh=YPyvNeoLsZV/8SRLmt6tzoyEftxMwY363Jj6/4Cvt9E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T+UlTTB5Umr+f90cyrhZVjUQHStHCq2bvHfzWlPDI7o4lEp7CS4IMCaXKuE5RtskmAua8dhA/V5OIbYk5H2iTnB87ST69AmQUZi2NM+QzToqzVt/QwBiDt+AJao6zsh1Gq8eY1i5qeMaCCg+SOhp6yE2J+rQV7wfnfvT3wELaQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eHionC9k; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a7d638a1f27so234238266b.2
+        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 00:07:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722409644; x=1723014444; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tpy+nnibbUxT24aBwgVje1ug92d+vgtxsaPNSOQztMA=;
+        b=eHionC9kHczv8tcQqz5cZjTfT7cdrCDbCE2t+C+Iwmd8zOXaCrlMjAq3nHriPU9Ujp
+         FJAjDtKvfA3boYEr0XzxhZhBLIX3wyp0cneyvO0Vdx21KffCh7G3Qwo/Pko0Y05nb077
+         UCV8tBrndQt3d6fgJU/BvznNdyoFf3T6xM3HDaRyXLCnkgj+XcyNTwEoV/SFf0S1izSH
+         p5N6LEEcaHw8+90+Vp2a42mTYiJ78+vBNKLCic7bqzOjIvrQzTkwaftg09WGUp6GPE9G
+         uarhMXT2AsrCkCIIWRj3+1CM8WvVFdO9WXXYu44CggiXFTQjcsfio7fsXiPZDLHs7xWy
+         EeAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722409644; x=1723014444;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tpy+nnibbUxT24aBwgVje1ug92d+vgtxsaPNSOQztMA=;
+        b=FF3BIpa06m3VV7SBrSFlAfOdRoOvyVOUwhAur7wxFbzi0V3jv3pAY1JBUiIF1ro4fO
+         ktH/pufsCRYENKBCDp1yqLt2rW9vY16OFlx5th7iBFShWLbwIPRgJtgl/KPgsGmDTcIJ
+         RQq0cseI8KSUVhTxz2Cak3i/M84Pxk6AoH361lkz586PkkvQcuHzjHsHRrdstn7YK6E8
+         cIzdtSMCFfWf/riFW7s2qrFtsG/eDwTh30cftRpmVLIFpl+xUBZnNOdlGEtCio4TCzNB
+         pXtEtedGZIAgZ7SUI6ORHChdPxK6LuIWbD4gjh9X10C/a+rBUiuHzAzhVF8e3yun5seR
+         YjfQ==
+X-Gm-Message-State: AOJu0Yybo+QFAyC+s9nlfMABkoMBUV4N8+xerM/TqHLy1fCE3YG8xL4p
+	ZRNp2csn9NCYYXR2v2iKEVf2QwU96WZACuqK/4ro7nkGZrxnZrAsH6RAVlME60WPgCuUejEVlHS
+	8Q/ZZZx654BHyK124ZXjDOfy77q5RUx4DkFVwCw==
+X-Google-Smtp-Source: AGHT+IGZexRCl8N0H7iNZBGguludMOGdSOIQzKBFKm/K8c3Qp5kaS9pSyHKHgpZH79otFq1q9zgflZQKxZFwQLjP0Sw=
+X-Received: by 2002:a05:6402:51cc:b0:5a1:de88:a5ef with SMTP id
+ 4fb4d7f45d1cf-5b02317f4c0mr11460864a12.27.1722409643609; Wed, 31 Jul 2024
+ 00:07:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240731-imx335-gpio-v3-2-443bfa6ce864@ideasonboard.com>
-References: <20240731-imx335-gpio-v3-0-443bfa6ce864@ideasonboard.com>
-In-Reply-To: <20240731-imx335-gpio-v3-0-443bfa6ce864@ideasonboard.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- "Paul J. Murphy" <paul.j.murphy@intel.com>, 
- Daniele Alessandrelli <daniele.alessandrelli@intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Martina Krasteva <martinax.krasteva@intel.com>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, 
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Umang Jain <umang.jain@ideasonboard.com>, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722409375; l=2193;
- i=umang.jain@ideasonboard.com; s=20240731; h=from:subject:message-id;
- bh=dkOkY+B0/cyoFmPI2OdnhUFer6WrrHex+z/Q5THTpcg=;
- b=aHtk6nfQ3/4g+Uszq64ruRfgME2MRH39/fIvSRh1R2OI7mMpDTXr1wj+1g1Ij1Ps/Nip+4iH0
- aS/nPto3/NQCEbI6EgL2sS41b8imnpNFN7wOq4hc4zDHN9rWKclibHr
-X-Developer-Key: i=umang.jain@ideasonboard.com; a=ed25519;
- pk=7pvnIBNsDpFUMiph0Vlhrr01+rAn5fSIn/QtDeLeXL0=
+References: <20240730151724.637682316@linuxfoundation.org>
+In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 31 Jul 2024 12:37:10 +0530
+Message-ID: <CA+G9fYvDT-Ek263796cuaOLCPMDAC3Gu6OkG=dSAP9CfBPYU5w@mail.gmail.com>
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Rectify the logical value of reset-gpio so that it is set to
-0 (disabled) during power-on and to 1 (enabled) during power-off.
+On Tue, 30 Jul 2024 at 21:22, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.10.3 release.
+> There are 809 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 01 Aug 2024 15:14:54 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Meanwhile at it, set the reset-gpio to GPIO_OUT_HIGH at initialization
-time to make sure it starts off in reset. Also drop the "Set XCLR"
-comment which is not-so-informative.
 
-Cc: stable@vger.kernel.org
-Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
----
- drivers/media/i2c/imx335.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+As others reported,
 
-diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
-index cd150606a8a9..79b6d60bf6af 100644
---- a/drivers/media/i2c/imx335.c
-+++ b/drivers/media/i2c/imx335.c
-@@ -1057,7 +1057,7 @@ static int imx335_parse_hw_config(struct imx335 *imx335)
- 
- 	/* Request optional reset pin */
- 	imx335->reset_gpio = devm_gpiod_get_optional(imx335->dev, "reset",
--						     GPIOD_OUT_LOW);
-+						     GPIOD_OUT_HIGH);
- 	if (IS_ERR(imx335->reset_gpio)) {
- 		dev_err(imx335->dev, "failed to get reset gpio %ld\n",
- 			PTR_ERR(imx335->reset_gpio));
-@@ -1170,8 +1170,7 @@ static int imx335_power_on(struct device *dev)
- 
- 	usleep_range(500, 550); /* Tlow */
- 
--	/* Set XCLR */
--	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
- 
- 	ret = clk_prepare_enable(imx335->inclk);
- 	if (ret) {
-@@ -1184,7 +1183,7 @@ static int imx335_power_on(struct device *dev)
- 	return 0;
- 
- error_reset:
--	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
- 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
- 
- 	return ret;
-@@ -1201,7 +1200,7 @@ static int imx335_power_off(struct device *dev)
- 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
- 	struct imx335 *imx335 = to_imx335(sd);
- 
--	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
- 	clk_disable_unprepare(imx335->inclk);
- 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
- 
+Following perf build warnings / errors noticed on stable-rc 6.10 for x86_64,
+arm64, arm and i386 with gcc-13 toolchain.
 
--- 
-2.45.0
+Perf build regressions:
+----
+* arm, build
+  - gcc-13-lkftconfig-perf
+* arm64, build
+  - gcc-13-lkftconfig-perf
+* i386, build
+  - gcc-13-lkftconfig-perf
+* x86_64, build
+  - gcc-13-lkftconfig-perf
 
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Perf build logs:
+-------------
+tests/pmu.c: In function 'test__name_len':
+tests/pmu.c:400:32: error: too few arguments to function
+'pmu_name_len_no_suffix'
+  400 |         TEST_ASSERT_VAL("cpu", pmu_name_len_no_suffix("cpu")
+== strlen("cpu"));
+      |                                ^~~~~~~~~~~~~~~~~~~~~~
+tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
+   15 |         if (!(cond)) {
+          \
+      |               ^~~~
+In file included from tools/perf/util/evsel.h:13,
+                 from tools/perf/util/evlist.h:14,
+                 from tests/pmu.c:2:
+tools/perf/util/pmus.h:8:5: note: declared here
+    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
+      |     ^~~~~~~~~~~~~~~~~~~~~~
+tests/pmu.c:401:33: error: too few arguments to function
+'pmu_name_len_no_suffix'
+  401 |         TEST_ASSERT_VAL("i915", pmu_name_len_no_suffix("i915")
+== strlen("i915"));
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~
+tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
+   15 |         if (!(cond)) {
+          \
+      |               ^~~~
+tools/perf/util/pmus.h:8:5: note: declared here
+    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
+      |     ^~~~~~~~~~~~~~~~~~~~~~
+tests/pmu.c:402:36: error: too few arguments to function
+'pmu_name_len_no_suffix'
+  402 |         TEST_ASSERT_VAL("cpum_cf",
+pmu_name_len_no_suffix("cpum_cf") == strlen("cpum_cf"));
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~
+tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
+   15 |         if (!(cond)) {
+          \
+      |               ^~~~
+tools/perf/util/pmus.h:8:5: note: declared here
+    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
+      |     ^~~~~~~~~~~~~~~~~~~~~~
+tests/pmu.c:405:33: error: too few arguments to function
+'pmu_name_len_no_suffix'
+  405 |
+pmu_name_len_no_suffix(uncore_chas[i]) ==
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~
+tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
+   15 |         if (!(cond)) {
+          \
+      |               ^~~~
+tools/perf/util/pmus.h:8:5: note: declared here
+    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
+      |     ^~~~~~~~~~~~~~~~~~~~~~
+tests/pmu.c:410:33: error: too few arguments to function
+'pmu_name_len_no_suffix'
+  410 |                                 pmu_name_len_no_suffix(mrvl_ddrs[i]) ==
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~
+tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
+   15 |         if (!(cond)) {
+          \
+      |               ^~~~
+tools/perf/util/pmus.h:8:5: note: declared here
+    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
+      |     ^~~~~~~~~~~~~~~~~~~~~~
+tests/pmu.c: In function 'test__name_cmp':
+tests/pmu.c:418:34: error: implicit declaration of function
+'pmu_name_cmp'; did you mean 'test__name_cmp'?
+[-Werror=implicit-function-declaration]
+  418 |         TEST_ASSERT_EQUAL("cpu", pmu_name_cmp("cpu", "cpu"), 0);
+      |                                  ^~~~~~~~~~~~
+tests/tests.h:23:13: note: in definition of macro 'TEST_ASSERT_EQUAL'
+   23 |         if (val != expected) {
+          \
+      |             ^~~
+cc1: all warnings being treated as errors
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
