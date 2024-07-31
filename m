@@ -1,106 +1,92 @@
-Return-Path: <stable+bounces-64774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5FB943123
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 15:41:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A077F9431EC
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 16:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D7BE1C217CA
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 13:41:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5626F1F26294
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 14:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E2D1B29AA;
-	Wed, 31 Jul 2024 13:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F55A1B580C;
+	Wed, 31 Jul 2024 14:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYHqC2Ww"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="AmA52vQB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0737C16C86F;
-	Wed, 31 Jul 2024 13:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A7B1B580A;
+	Wed, 31 Jul 2024 14:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722433267; cv=none; b=kKXMoicYO5J/5eHB4fOLbVaM8K9Hj3sXI0oGo8/VXyloH0PJxJU6O2AjNxhs/3K86H5Uvtil10IMGRVizjmGTJ1J/RoA4uSO1aqnVDukxjPIqzAi3gv5S1TJMUWldAbWhNHWmnyxlX7Z8gl/YJ0wSFNiXQQtHBqPgI4RSpQPakk=
+	t=1722435721; cv=none; b=O332SCSVoaf7aWZRCiiwt3fc5SMY1mxZSfHlTaSqkBY3f2IFi+3JkZ69tlFtQQvItfm51UrzwhcIGUhNvojMkvakDwx1bemh8QdR3HCLI+zcjo2MENVVvgNXginYr5qnV+Bx7OF7tejn33X6adiCJQCSjGCO8Q6Iml8HF5QhVbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722433267; c=relaxed/simple;
-	bh=JyXIamiKWny/0n0henYkJEDGIBxvTwJExYomK7HjifU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UO1WD/xtdDGSUmjlOdCJf3Z9V1eJF/W95R2yRzpCiAgjTb92EQgb6fyTPCyIu52V2GNCO+a6GfXt6t5GTTEemkRxo2wpVZzewQyjAuk6g5XYASHrROJcN0NCQwBiVDxChWo6r1Hp3XMfw/vLo38iFJuxilQE+sSc9D+oEuRa0C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYHqC2Ww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0418C116B1;
-	Wed, 31 Jul 2024 13:41:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722433266;
-	bh=JyXIamiKWny/0n0henYkJEDGIBxvTwJExYomK7HjifU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SYHqC2Ww1rz1a9lNNnDzdwscOh5+2B3xhCYWoOd7G+Rxvg6YvXUKy1oA/IHfpQDNh
-	 koRFdtciYHnWEcd75mgzzCmB9c+RbHiqU3i++gk+kY4agh1FyO4dBAU6jJYc8DlM26
-	 lcoOFuexKViC2590X2jmj7bzYiShJpHq615Xzz1k=
-Date: Wed, 31 Jul 2024 15:41:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sam James <sam@gentoo.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	matoro <matoro_mailinglist_kernel@matoro.tk>,
-	John David Anglin <dave.anglin@bell.net>,
-	Linux Parisc <linux-parisc@vger.kernel.org>, Deller <deller@gmx.de>,
-	John David Anglin <dave@parisc-linux.org>, stable@vger.kernel.org
-Subject: Re: Crash on boot with CONFIG_JUMP_LABEL in 6.10
-Message-ID: <2024073133-attentive-important-d419@gregkh>
-References: <096cad5aada514255cd7b0b9dbafc768@matoro.tk>
- <bebe64f6-b1e1-4134-901c-f911c4a6d2e6@bell.net>
- <11e13a9d-3942-43a5-b265-c75b10519a19@bell.net>
- <cb2c656129d3a4100af56c74e2ae3060@matoro.tk>
- <20240731110617.GZ33588@noisy.programming.kicks-ass.net>
- <877cd1bsc4.fsf@gentoo.org>
+	s=arc-20240116; t=1722435721; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=aCqZoUMvO4NQHxrTV4NB665kVGPDWu0klWU/ouVIRo/ZorYNxfKrE+ogPrybY8pd99yEZvhFSJ5i51001o7wqzGjp8/nS+zbpwpJITputePfHYYxM1rUjn+1CIE7xrc/i8zEboa6z41roduTdnBOpQj8bDKHB2emamtdO5P6n2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=AmA52vQB; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1722435712; x=1723040512; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=AmA52vQBGSSda90U8G7NlZ6XP+LMphYGzr60ISqlYB9x500Pj8v0TjPfaMqIYNWB
+	 HJxjMW93blY+ERbYWRiQ4KD2M8+RewuyO+gEiVowl/ou2axKiZ+lRf2nRohOOAayz
+	 /Gdr3sInQ3hT2P24wYBD6Vg1VkNeAbgjDxL2sF6640i72SCZ2gKha737LxyLtkpN6
+	 1zuIzwU+0IdfeN09mjYYtIRaizxewqAclwiH9tzZvSXuNoDQKTDj5u3t0VUT2jysY
+	 SxO5KodZyvHJefKrRut5GQ3B6Kful8XEaG8wqnSEWyZGtIU1nS1gjYcN0U2WPMFdD
+	 RFjP6XhCNj5QA+wyZw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.32.146]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M6ll8-1sbvyE03fa-00Fcmw; Wed, 31
+ Jul 2024 16:09:16 +0200
+Message-ID: <0a468772-3cf0-41cb-90a5-273873063f1f@gmx.de>
+Date: Wed, 31 Jul 2024 16:09:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <877cd1bsc4.fsf@gentoo.org>
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:ARIgxMkGePLC7ZLhy6qw/7piEYKvYDhl5P61SNS2rbcjEYyef3B
+ 9xLc6ymV5BhpsafjvP09wUuCTybEnugd//d70yee4rDjXcbqHVZ3rPYZOk/F3BgxiXeriSB
+ 7Xbb55JVRsGbaluCN3QxcAFlMTY6+plRbJyXF0oG+PlHSCwcRBER+FHcUPvTxZX/EzLpuD1
+ grpXrFoU8CyDU1+ytTQAA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:iOG4lTWkQUA=;/ROP9UjhhEghsoHigUbLIZejgS+
+ sMxzt22RNud0BTxaBAJ/60sM4PUjUErQEkWTcN1IHBAGHxR4bOAyoVg2KY6T6D8YujBo96WvN
+ Xdy0KnEWRSmxoaGUEkhGcdgzyQt2MexhJzxk+q6GjJTcV+LQ+3az5VDiW+LOcHml343c0eN+r
+ 1phH/LHuSKjIAYG1LDLnjibzz1lb4ZrMZW7tHavbaJoPv3cnnfaQj0FAWwb26mmKyje0BJzGQ
+ 9TNKsMtWdcPUF+Y/SmsNB0S/KE6ZXMEdVO9DLHUDvHIq0Zv5W5j6mydn44YtYfrh9nq1SHw9J
+ caDtRhBI9wq7S2YipC0H0mPmYCG3tQplQZL+IAsVmk6ZDYXhUIhzD/GFMaNUS0OtW/ZgqfdNG
+ AqCMSwdXFa2iKMXkFZNJX3/Wfesd63miYxpuDZsTKhyci8N29tx9Kc3Vdq7LwNfZ+w1cbNIc1
+ AZSk3O8NGbt7BGuSC87/w0ulkligrtooXrLYWKpTRo4Q9DDgUi2iJk0JQ/OW7DKQjByScP6G/
+ fi5LSKVF2Ioo5yRKEu2WIxQuVFmebqfPwfxKJwlzoXkRggm4qOOH8DL03Z1pthv+gbAcOhp66
+ MtP0f8PUht92g/zMvvc3TZU6gG2iJgpKFeCfwHxHAu2IOI3ZmBRV7sz1yYne4MwG9x61fSpuW
+ VpFbDb4I5rxh3qAxC9M8krbgiewKy1FG/7SfFm/oqpNZZ6wGXi0FZay1mKA8r5UKMSV/spraO
+ O94WqhWOoaJQKmKzUKYXxqDjku1/JxozQcH0HJyb9uoGENgpYxlR+CvHiyYfhp893sXnhDdO8
+ vJ5IrD/q465rWB/mU1ViCLUQ==
 
-On Wed, Jul 31, 2024 at 02:31:55PM +0100, Sam James wrote:
-> Peter Zijlstra <peterz@infradead.org> writes:
-> 
-> > On Tue, Jul 30, 2024 at 08:36:13PM -0400, matoro wrote:
-> >> On 2024-07-30 09:50, John David Anglin wrote:
-> >> > On 2024-07-30 9:41 a.m., John David Anglin wrote:
-> >> > > On 2024-07-29 7:11 p.m., matoro wrote:
-> >> > > > Hi all, just bumped to the newest mainline starting with 6.10.2
-> >> > > > and immediately ran into a crash on boot. Fully reproducible,
-> >> > > > reverting back to last known good (6.9.8) resolves the issue. 
-> >> > > > Any clue what's going on here?
-> >> > > > I can provide full boot logs, start bisecting, etc if needed...
-> >> > > 6.10.2 built and booted okay on my c8000 with the attached config.
-> >> > > You could start
-> >> > > with it and incrementally add features to try to identify the one
-> >> > > that causes boot failure.
-> >> > Oh, I have an experimental clocksource patch installed.  You will need
-> >> > to regenerate config
-> >> > with "make oldconfig" to use the current timer code.  Probably, this
-> >> > would happen automatically.
-> >> > > 
-> >> > > Your config would be needed to duplicate.    Full boot log would also help.
-> >> > 
-> >> > Dave
-> >> 
-> >> Hi Dave, bisecting quickly revealed the cause here.
-> >
-> > https://lkml.kernel.org/r/20240731105557.GY33588@noisy.programming.kicks-ass.net
-> 
-> Greg, I see tglx's jump_label fix is queued for 6.10.3 but this one
-> isn't as it came too late. Is there any chance of chucking it in? It's
-> pretty nasty.
+Hi Greg
 
-What is the git id of this in Linus's tree?
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-thanks,
+Thanks
 
-greg k-h
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
