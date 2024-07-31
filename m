@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-64878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09DA2943B65
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:27:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D41F943B67
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86C11F21355
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:27:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9B21C206A5
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACE8183CD2;
-	Thu,  1 Aug 2024 00:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33083184528;
+	Thu,  1 Aug 2024 00:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJX/Cxz6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iMV+21Yy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86110183CA6;
-	Thu,  1 Aug 2024 00:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8604183CC3;
+	Thu,  1 Aug 2024 00:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471274; cv=none; b=OpMPZKJ7FxPPlLTB9HXvbWFTpR6oxchdVIOIhsCbxRAeCjxPRGgqKPLS2i2yB6C+WZbe35j+IoFyLHjSGXuNQNWrP+68tNiBo4OoFQW+1Etp8MMTQOj4uEHDeTGTgEEGhMRhh/naWWrHs1FX2o6lsH1GVnnfgZwuFF8z/DwXblI=
+	t=1722471276; cv=none; b=igY0eHxAlfbfDq2Hvy6k/DzZfrUZw+70Llib4eh6nJitp+R0Ad+XsqKO3M5dviUuCSZappcMOa0XWAj0CaXSYwEMXxjmUWgE8Aj97rlfYAw0zdAbY4WCI2+4NDWU8h4gXevvv2a5GPBor5s4mOtwprRmmcrllldgPo3FQ616xYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471274; c=relaxed/simple;
-	bh=z0kPG+8i0YtyeC1UePHtGH+PiVUeD566BDbFxMMRRcY=;
+	s=arc-20240116; t=1722471276; c=relaxed/simple;
+	bh=c7h2qCNge6oqAZEQO/VOGmgfKeBOTAktulPHHQX7VNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tflhQEwxRsVOiSVDxqg5dedlVDOEGIdMjqphhuF8oHoMh9e10mDGU1NpWjCw+Q4H/169pGlZd2geVXd4Ii51U7BAYKZi7SULJOkmJe6O2gI58BgUDpJKZdf8RTErYgnKKrpKnYQcKALsNHEr/ema9f4ZvvzpUpv9hoYst4G1+lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJX/Cxz6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43CCCC4AF0E;
-	Thu,  1 Aug 2024 00:14:32 +0000 (UTC)
+	 MIME-Version; b=h0oLt0UiIlW3bPZNpT2YUcHGLyiBPMChF10d1iJ8qMeHq8B9F6s6l+OAR6M+Wx3f5FTrXMS3O1e43A0RphZJMaGVo6xwhItiVrRSI+DOWOaiIchcrN05/Wp0K3v4draQU1wBnK3Uh0zcHKW9pOQ41DhB7hRPBZhwLUahFWEc5AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iMV+21Yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BAAC4AF16;
+	Thu,  1 Aug 2024 00:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471274;
-	bh=z0kPG+8i0YtyeC1UePHtGH+PiVUeD566BDbFxMMRRcY=;
+	s=k20201202; t=1722471275;
+	bh=c7h2qCNge6oqAZEQO/VOGmgfKeBOTAktulPHHQX7VNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJX/Cxz6M0ja4iXAdihsP5IkWH4Lmhsrd06Uy89mDNxeh5RQc6OmL0ZRdMmH6Feqy
-	 SVlbNgKm6hbYRqJQGBJNzEGpAqDYdsl7nOZj361GidY87aK89OPhVdzZECsgNQHTJe
-	 KSMR8Aj60btiluJ9GTv92B6pHMTtgYNDeGF3piig2zgKDqWue/DvAEvE4WnZATXNxN
-	 h2Wd4wV0kJCHZkrOTvL0xXD1/6dq3sQWhNwoQInoSW+CT+n+VK3TGZ/5XXuod98JJo
-	 p65mdCjHN5xo0Yo+WTFESPTzVPwXzYiGPa26CFd/5rrxGtHmVCaSB8R6zYkoD+HhEA
-	 0NRfNMn4ILBCA==
+	b=iMV+21YytigUMG0jg9mQWTLIwpdQVc2LCNhp/Ssj323K4DHSQ0X9OIiq2pbgD76OK
+	 0YWl1r+NNSjwOYza5tsL8DVySNp0zh7pRaWZ1nOEHUTi7J39mOO2p+7GruTjc47s19
+	 eD6R8pJhy9BybbR93u2PW25N/dCxeAIvdztqtEy22hN394xKJA8RIG/0mZ3llBIYuv
+	 YfRXdi3FO1CIb2LcTjgQOFTqJilNIJRnRxATO63k3n7uiqgDj7VnHCz/5ATkh6w/Hr
+	 /nnDkxo7XLGBxAqU+6K1axdbxnNV5PECpzzM4HLwq2r1h4fI7rfOwXECucOvLj2APA
+	 HU29plJzIumVA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+Cc: Jagadeesh Kona <quic_jkona@quicinc.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lucas.demarchi@intel.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 053/121] drm/xe: Fix xe_pm_runtime_get_if_active return
-Date: Wed, 31 Jul 2024 19:59:51 -0400
-Message-ID: <20240801000834.3930818-53-sashal@kernel.org>
+	sudeep.holla@arm.com,
+	rafael@kernel.org,
+	arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 054/121] cpufreq: scmi: Avoid overflow of target_freq in fast switch
+Date: Wed, 31 Jul 2024 19:59:52 -0400
+Message-ID: <20240801000834.3930818-54-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -68,71 +64,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Jagadeesh Kona <quic_jkona@quicinc.com>
 
-[ Upstream commit 46edb0a3eb16cebc2db6f9b6f7c19813d52bfcc9 ]
+[ Upstream commit 074cffb5020ddcaa5fafcc55655e5da6ebe8c831 ]
 
-Current callers of this function are already taking the result
-to a boolean and using in an if. It might be a problem because
-current function might return negative error codes on failure,
-without increasing the reference counter.
+Conversion of target_freq to HZ in scmi_cpufreq_fast_switch()
+can lead to overflow if the multiplied result is greater than
+UINT_MAX, since type of target_freq is unsigned int. Avoid this
+overflow by assigning target_freq to unsigned long variable for
+converting it to HZ.
 
-In this scenario we could end up with extra 'put' call ending
-in unbalanced scenarios.
-
-Let's fix it, while aligning with the current xe_pm_get_if_in_use
-style.
-
-Tested-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240522170105.327472-1-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Jagadeesh Kona <quic_jkona@quicinc.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pm.c | 8 ++++----
- drivers/gpu/drm/xe/xe_pm.h | 2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/cpufreq/scmi-cpufreq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index 37fbeda12d3bd..19eb12a91cf56 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -505,12 +505,12 @@ int xe_pm_runtime_get_ioctl(struct xe_device *xe)
-  * xe_pm_runtime_get_if_active - Get a runtime_pm reference if device active
-  * @xe: xe device instance
-  *
-- * Returns: Any number greater than or equal to 0 for success, negative error
-- * code otherwise.
-+ * Return: True if device is awake (regardless the previous number of references)
-+ * and a new reference was taken, false otherwise.
-  */
--int xe_pm_runtime_get_if_active(struct xe_device *xe)
-+bool xe_pm_runtime_get_if_active(struct xe_device *xe)
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 3b4f6bfb2f4cf..b87fd127aa433 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -63,9 +63,9 @@ static unsigned int scmi_cpufreq_fast_switch(struct cpufreq_policy *policy,
+ 					     unsigned int target_freq)
  {
--	return pm_runtime_get_if_active(xe->drm.dev);
-+	return pm_runtime_get_if_active(xe->drm.dev) > 0;
- }
+ 	struct scmi_data *priv = policy->driver_data;
++	unsigned long freq = target_freq;
  
- /**
-diff --git a/drivers/gpu/drm/xe/xe_pm.h b/drivers/gpu/drm/xe/xe_pm.h
-index 18b0613fe57b9..f694005db2782 100644
---- a/drivers/gpu/drm/xe/xe_pm.h
-+++ b/drivers/gpu/drm/xe/xe_pm.h
-@@ -29,7 +29,7 @@ int xe_pm_runtime_resume(struct xe_device *xe);
- void xe_pm_runtime_get(struct xe_device *xe);
- int xe_pm_runtime_get_ioctl(struct xe_device *xe);
- void xe_pm_runtime_put(struct xe_device *xe);
--int xe_pm_runtime_get_if_active(struct xe_device *xe);
-+bool xe_pm_runtime_get_if_active(struct xe_device *xe);
- bool xe_pm_runtime_get_if_in_use(struct xe_device *xe);
- void xe_pm_runtime_get_noresume(struct xe_device *xe);
- bool xe_pm_runtime_resume_and_get(struct xe_device *xe);
+-	if (!perf_ops->freq_set(ph, priv->domain_id,
+-				target_freq * 1000, true))
++	if (!perf_ops->freq_set(ph, priv->domain_id, freq * 1000, true))
+ 		return target_freq;
+ 
+ 	return 0;
 -- 
 2.43.0
 
