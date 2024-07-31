@@ -1,70 +1,73 @@
-Return-Path: <stable+bounces-64843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F02943AB9
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:18:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFF7943ABC
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 372B41F2155D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:18:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B9DF1C21B23
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77EE14F9E4;
-	Thu,  1 Aug 2024 00:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A488F70;
+	Thu,  1 Aug 2024 00:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mjYyM5so"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oOtNJbPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AA614F9DA;
-	Thu,  1 Aug 2024 00:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F0E634;
+	Thu,  1 Aug 2024 00:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471014; cv=none; b=slQdrf/AtzYCodxE+DqelGWHHCOOnr2O6CzstWOv7g8wsfQ22IUm2SvELpvESUWDVbhm8nTKGoo+yna8d/F++QY0EJrWsKFIlj81bo1INGodqM5NpMKPoieDFCCXF4YgMaumAnXDe1OvltnfGFFhrkZhhRSP7LjoSfyxxutP9IY=
+	t=1722471020; cv=none; b=RGoF5IGBXnK0hWT9rjzD9kvhu7CKNhRZ93rwZPTRnYB/GR2D0spNJb3AhPU68fRo4iwOmEsbQnkfEWzwP9elnl/nOWAatjJk6KaEgh9RUWZKfoIJknfXAKovfchsNkQWInRyj/ydzBlDCsrsosLwQgm70kXDm2KUGvm5AaZF49Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471014; c=relaxed/simple;
-	bh=W3oUaL901wpWKL883MvvjPg/OCyqaTMhpUbRlCxZ0QI=;
+	s=arc-20240116; t=1722471020; c=relaxed/simple;
+	bh=9uq9hU9Kf4NkxDp1BJZg/eWYxzZPlBlb+KcL7Ctq3xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZYw1lnKSGvYHprzVsKPUoj25ti77SqYX5y0eUyGXSW+BgIaZxDNYym89TZb2xFjXFWNJHcdntKEZt7QrvtzkladCLfblKxg2nOVJBzN6JahzoY5JCHLopPmYDbM1z7GR7z1KJb47CFbCwqcuGWAxRB5uH7COwVRuRowmzbHC9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mjYyM5so; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8D7C32786;
-	Thu,  1 Aug 2024 00:10:12 +0000 (UTC)
+	 MIME-Version; b=NHBwxSmLxCHOgnEH+pk1FPUBql8cO9hKnkBzdS5CK5AkHxJNL5U7vwruAljpp3OVpi9cdFypS77I+D3PHWAD59vTt+QvnQ2vnJ8lUaYHQ1rLmGngymQLDvBmHmSQ10mZ3P5/nJYLvD6n+sPQpywKhM2ClUTLnv8ETM/a7NECJkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oOtNJbPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D43FC116B1;
+	Thu,  1 Aug 2024 00:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471014;
-	bh=W3oUaL901wpWKL883MvvjPg/OCyqaTMhpUbRlCxZ0QI=;
+	s=k20201202; t=1722471019;
+	bh=9uq9hU9Kf4NkxDp1BJZg/eWYxzZPlBlb+KcL7Ctq3xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjYyM5soyJOVBBNmVJvLX2C4I6OV/HvrdAw6IQTnMl+L0JFediCbTJY4AhHRgr/GR
-	 OB/bwTda4Qx7S4Auno9IHNBU/JpAFwBkH44a/5Wysr8uNUlAtkpwlfEbsQLTMF6f7M
-	 MIFRMmuizv70/dF4f25Zbb+CEL0pZ1Rpu+N6wlKzPLV2m035KQxvRKyHVLa0e654xZ
-	 Qm8T7V6oYdLGVzB1kahUDAJ2hQRqqqLjciBmvRIJ9Vxw0Aot3X1AAiOosdCLU1TfEJ
-	 cr9iyAhvEfkPvdAKvRfE+PD1AMo8+3y9zGg+dNQQCSyMjsOojXpZg59SDa7bloCXus
-	 OCeTxUIXyqOMQ==
+	b=oOtNJbPdNls+Z9ygIOlqdvWHm6XmXga9/JG35hrZ8JFFk1tyhEuqK+xhD1YW9Qis4
+	 wM6bj0hMqRO5l2WCcYdlofANilT28CmxR5u+5IDJtkNGIDwTRv4/wyfrMlbb2hoDeO
+	 tjQKnNyP4yYUFkYeTRyQx/N2cIpg7vLlLGbw22hLP9BBTS8Qya8ZlGwwqbsAozYvcu
+	 NEQBhCvC/Mk9fariOnHtVZnLI9KYipFeXPUhP4nYCyGdXlFT34EkIHzyq80g071zrz
+	 bDdquZ2WJJ97BuOSmZT40pwUJoso7wQwfQkcJrOmzAx1jIvsDuUTN8sJ+muVaJe0SX
+	 sd+WHcdd5Sxdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
 	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	roman.li@amd.com,
 	hamza.mahfooz@amd.com,
-	aric.cyr@amd.com,
-	joshua.aberback@amd.com,
+	lewis.huang@amd.com,
+	mghaddar@amd.com,
+	michael.strauss@amd.com,
+	srinivasan.shanmugam@amd.com,
+	Bhawanpreet.Lakha@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 018/121] drm/amd/display: Check num_valid_sets before accessing reader_wm_sets[]
-Date: Wed, 31 Jul 2024 19:59:16 -0400
-Message-ID: <20240801000834.3930818-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 019/121] drm/amd/display: Skip updating link encoder for unknown eng_id
+Date: Wed, 31 Jul 2024 19:59:17 -0400
+Message-ID: <20240801000834.3930818-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -81,38 +84,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit b38a4815f79b87efb196cd5121579fc51e29a7fb ]
+[ Upstream commit efabdce3db9f3d306084c8946983f3d895810a6b ]
 
-[WHY & HOW]
-num_valid_sets needs to be checked to avoid a negative index when
-accessing reader_wm_sets[num_valid_sets - 1].
+This prevents accessing to negative index of link_encoders array.
 
 This fixes an OVERRUN issue reported by Coverity.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Acked-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/link/link_factory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
-index 5ef0879f6ad9c..aea4bb46856ef 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn21/rn_clk_mgr.c
-@@ -484,7 +484,8 @@ static void build_watermark_ranges(struct clk_bw_params *bw_params, struct pp_sm
- 			ranges->reader_wm_sets[num_valid_sets].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
- 
- 			/* Modify previous watermark range to cover up to max */
--			ranges->reader_wm_sets[num_valid_sets - 1].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
-+			if (num_valid_sets > 0)
-+				ranges->reader_wm_sets[num_valid_sets - 1].max_fill_clk_mhz = PP_SMU_WM_SET_RANGE_CLK_UNCONSTRAINED_MAX;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+index cf22b8f28ba6c..2c3f5d6622851 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+@@ -390,7 +390,7 @@ static void link_destruct(struct dc_link *link)
+ 		 * the dynamic assignment of link encoders to streams. Virtual links
+ 		 * are not assigned encoder resources on creation.
+ 		 */
+-		if (link->link_id.id != CONNECTOR_ID_VIRTUAL) {
++		if (link->link_id.id != CONNECTOR_ID_VIRTUAL && link->eng_id != ENGINE_ID_UNKNOWN) {
+ 			link->dc->res_pool->link_encoders[link->eng_id - ENGINE_ID_DIGA] = NULL;
+ 			link->dc->res_pool->dig_link_enc_count--;
  		}
- 		num_valid_sets++;
- 	}
 -- 
 2.43.0
 
