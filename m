@@ -1,209 +1,104 @@
-Return-Path: <stable+bounces-64715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CF3942787
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:08:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7640D94278E
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 09:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC39D1C22B81
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 07:08:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1089BB2137F
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 07:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC7D15884D;
-	Wed, 31 Jul 2024 07:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eHionC9k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1855E1A4F10;
+	Wed, 31 Jul 2024 07:11:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A871A4B3D
-	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 07:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AD81A4F0A;
+	Wed, 31 Jul 2024 07:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722409648; cv=none; b=P8hKVob1d45F2wjjrpYhakxg6X2si6MyKsCm/Wc52RneRxO8WsxxFQznv4mib/85ChsGRRfQjGwvwfa37qeOgVFnCCrwZkKLfIGImaexf4oZiPQ72YiouYD+wjzMqED7QFnxfHmwAaLuYtp4i33dicchlK05k8tPbF+KS1r8kZQ=
+	t=1722409878; cv=none; b=c/27kLvZYQyPMdhB+hWKglRFV4ZTQmB5Om1NFaK75AtStk86fQxaBJY3GkyStq1tuM6iTKgBSIxaJPbwrdwPjwd8lmQL2WH1kQn61L7OwRyryDWhAITtII2a5p2gcxu8pka23m3oy3dm/bSw0kaRv9woSHDsgDXx5pRNTVQ+BNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722409648; c=relaxed/simple;
-	bh=YPyvNeoLsZV/8SRLmt6tzoyEftxMwY363Jj6/4Cvt9E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T+UlTTB5Umr+f90cyrhZVjUQHStHCq2bvHfzWlPDI7o4lEp7CS4IMCaXKuE5RtskmAua8dhA/V5OIbYk5H2iTnB87ST69AmQUZi2NM+QzToqzVt/QwBiDt+AJao6zsh1Gq8eY1i5qeMaCCg+SOhp6yE2J+rQV7wfnfvT3wELaQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eHionC9k; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a7d638a1f27so234238266b.2
-        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 00:07:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722409644; x=1723014444; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tpy+nnibbUxT24aBwgVje1ug92d+vgtxsaPNSOQztMA=;
-        b=eHionC9kHczv8tcQqz5cZjTfT7cdrCDbCE2t+C+Iwmd8zOXaCrlMjAq3nHriPU9Ujp
-         FJAjDtKvfA3boYEr0XzxhZhBLIX3wyp0cneyvO0Vdx21KffCh7G3Qwo/Pko0Y05nb077
-         UCV8tBrndQt3d6fgJU/BvznNdyoFf3T6xM3HDaRyXLCnkgj+XcyNTwEoV/SFf0S1izSH
-         p5N6LEEcaHw8+90+Vp2a42mTYiJ78+vBNKLCic7bqzOjIvrQzTkwaftg09WGUp6GPE9G
-         uarhMXT2AsrCkCIIWRj3+1CM8WvVFdO9WXXYu44CggiXFTQjcsfio7fsXiPZDLHs7xWy
-         EeAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722409644; x=1723014444;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Tpy+nnibbUxT24aBwgVje1ug92d+vgtxsaPNSOQztMA=;
-        b=FF3BIpa06m3VV7SBrSFlAfOdRoOvyVOUwhAur7wxFbzi0V3jv3pAY1JBUiIF1ro4fO
-         ktH/pufsCRYENKBCDp1yqLt2rW9vY16OFlx5th7iBFShWLbwIPRgJtgl/KPgsGmDTcIJ
-         RQq0cseI8KSUVhTxz2Cak3i/M84Pxk6AoH361lkz586PkkvQcuHzjHsHRrdstn7YK6E8
-         cIzdtSMCFfWf/riFW7s2qrFtsG/eDwTh30cftRpmVLIFpl+xUBZnNOdlGEtCio4TCzNB
-         pXtEtedGZIAgZ7SUI6ORHChdPxK6LuIWbD4gjh9X10C/a+rBUiuHzAzhVF8e3yun5seR
-         YjfQ==
-X-Gm-Message-State: AOJu0Yybo+QFAyC+s9nlfMABkoMBUV4N8+xerM/TqHLy1fCE3YG8xL4p
-	ZRNp2csn9NCYYXR2v2iKEVf2QwU96WZACuqK/4ro7nkGZrxnZrAsH6RAVlME60WPgCuUejEVlHS
-	8Q/ZZZx654BHyK124ZXjDOfy77q5RUx4DkFVwCw==
-X-Google-Smtp-Source: AGHT+IGZexRCl8N0H7iNZBGguludMOGdSOIQzKBFKm/K8c3Qp5kaS9pSyHKHgpZH79otFq1q9zgflZQKxZFwQLjP0Sw=
-X-Received: by 2002:a05:6402:51cc:b0:5a1:de88:a5ef with SMTP id
- 4fb4d7f45d1cf-5b02317f4c0mr11460864a12.27.1722409643609; Wed, 31 Jul 2024
- 00:07:23 -0700 (PDT)
+	s=arc-20240116; t=1722409878; c=relaxed/simple;
+	bh=H5BOo9P2TXbND+GiR9lKx61g3ZNzCZr2BZVJADEb/xw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FVqKXEg6l04w7A6QK/AWiKuVhxjGBxrNjnPZXTtXbnEz3aHhulHuR2NU7eiWUmbUGAYShiGPyJQiLM6MevUJkh5635mEpxPASukFodAVREgL+vh2GYzMU4/DPkz0uWFkSOJ4LE5klyt0oYAQg/NkEXAMzvAvla64g2yWB7w9V98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+X-QQ-mid: bizesmtp82t1722409846t9y894bn
+X-QQ-Originating-IP: FOg9DxHI9YWI5+Z3ZM+7/3WT6X/u1/eRWdy2vDnql8U=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 31 Jul 2024 15:10:44 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 17477064754091558293
+From: WangYuli <wangyuli@uniontech.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: keith.busch@intel.com,
+	axboe@fb.com,
+	hch@lst.de,
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	xuerpeng@uniontech.com,
+	WangYuli <wangyuli@uniontech.com>,
+	hmy <huanglin@uniontech.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 4.19] nvme/pci: Add APST quirk for Lenovo N60z laptop
+Date: Wed, 31 Jul 2024 15:10:34 +0800
+Message-ID: <579BC59E06EFBC7F+20240731071034.106350-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.43.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240730151724.637682316@linuxfoundation.org>
-In-Reply-To: <20240730151724.637682316@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 31 Jul 2024 12:37:10 +0530
-Message-ID: <CA+G9fYvDT-Ek263796cuaOLCPMDAC3Gu6OkG=dSAP9CfBPYU5w@mail.gmail.com>
-Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-On Tue, 30 Jul 2024 at 21:22, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.10.3 release.
-> There are 809 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 01 Aug 2024 15:14:54 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.3-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+commit ab091ec536cb7b271983c0c063b17f62f3591583 upstream
 
+There is a hardware power-saving problem with the Lenovo N60z
+board. When turn it on and leave it for 10 hours, there is a
+20% chance that a nvme disk will not wake up until reboot.
 
-As others reported,
+Link: https://lore.kernel.org/all/2B5581C46AC6E335+9c7a81f1-05fb-4fd0-9fbb-108757c21628@uniontech.com
+Signed-off-by: hmy <huanglin@uniontech.com>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+---
+ drivers/nvme/host/pci.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Following perf build warnings / errors noticed on stable-rc 6.10 for x86_64,
-arm64, arm and i386 with gcc-13 toolchain.
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 163497ef48fd..a243c066d923 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2481,6 +2481,13 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
+ 			return NVME_QUIRK_NO_APST;
+ 	}
+ 
++	/*
++	 * NVMe SSD drops off the PCIe bus after system idle
++	 * for 10 hours on a Lenovo N60z board.
++	 */
++	if (dmi_match(DMI_BOARD_NAME, "LXKT-ZXEG-N6"))
++		return NVME_QUIRK_NO_APST;
++
+ 	return 0;
+ }
+ 
+-- 
+2.43.4
 
-Perf build regressions:
-----
-* arm, build
-  - gcc-13-lkftconfig-perf
-* arm64, build
-  - gcc-13-lkftconfig-perf
-* i386, build
-  - gcc-13-lkftconfig-perf
-* x86_64, build
-  - gcc-13-lkftconfig-perf
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Perf build logs:
--------------
-tests/pmu.c: In function 'test__name_len':
-tests/pmu.c:400:32: error: too few arguments to function
-'pmu_name_len_no_suffix'
-  400 |         TEST_ASSERT_VAL("cpu", pmu_name_len_no_suffix("cpu")
-== strlen("cpu"));
-      |                                ^~~~~~~~~~~~~~~~~~~~~~
-tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
-   15 |         if (!(cond)) {
-          \
-      |               ^~~~
-In file included from tools/perf/util/evsel.h:13,
-                 from tools/perf/util/evlist.h:14,
-                 from tests/pmu.c:2:
-tools/perf/util/pmus.h:8:5: note: declared here
-    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
-      |     ^~~~~~~~~~~~~~~~~~~~~~
-tests/pmu.c:401:33: error: too few arguments to function
-'pmu_name_len_no_suffix'
-  401 |         TEST_ASSERT_VAL("i915", pmu_name_len_no_suffix("i915")
-== strlen("i915"));
-      |                                 ^~~~~~~~~~~~~~~~~~~~~~
-tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
-   15 |         if (!(cond)) {
-          \
-      |               ^~~~
-tools/perf/util/pmus.h:8:5: note: declared here
-    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
-      |     ^~~~~~~~~~~~~~~~~~~~~~
-tests/pmu.c:402:36: error: too few arguments to function
-'pmu_name_len_no_suffix'
-  402 |         TEST_ASSERT_VAL("cpum_cf",
-pmu_name_len_no_suffix("cpum_cf") == strlen("cpum_cf"));
-      |                                    ^~~~~~~~~~~~~~~~~~~~~~
-tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
-   15 |         if (!(cond)) {
-          \
-      |               ^~~~
-tools/perf/util/pmus.h:8:5: note: declared here
-    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
-      |     ^~~~~~~~~~~~~~~~~~~~~~
-tests/pmu.c:405:33: error: too few arguments to function
-'pmu_name_len_no_suffix'
-  405 |
-pmu_name_len_no_suffix(uncore_chas[i]) ==
-      |                                 ^~~~~~~~~~~~~~~~~~~~~~
-tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
-   15 |         if (!(cond)) {
-          \
-      |               ^~~~
-tools/perf/util/pmus.h:8:5: note: declared here
-    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
-      |     ^~~~~~~~~~~~~~~~~~~~~~
-tests/pmu.c:410:33: error: too few arguments to function
-'pmu_name_len_no_suffix'
-  410 |                                 pmu_name_len_no_suffix(mrvl_ddrs[i]) ==
-      |                                 ^~~~~~~~~~~~~~~~~~~~~~
-tests/tests.h:15:15: note: in definition of macro 'TEST_ASSERT_VAL'
-   15 |         if (!(cond)) {
-          \
-      |               ^~~~
-tools/perf/util/pmus.h:8:5: note: declared here
-    8 | int pmu_name_len_no_suffix(const char *str, unsigned long *num);
-      |     ^~~~~~~~~~~~~~~~~~~~~~
-tests/pmu.c: In function 'test__name_cmp':
-tests/pmu.c:418:34: error: implicit declaration of function
-'pmu_name_cmp'; did you mean 'test__name_cmp'?
-[-Werror=implicit-function-declaration]
-  418 |         TEST_ASSERT_EQUAL("cpu", pmu_name_cmp("cpu", "cpu"), 0);
-      |                                  ^~~~~~~~~~~~
-tests/tests.h:23:13: note: in definition of macro 'TEST_ASSERT_EQUAL'
-   23 |         if (val != expected) {
-          \
-      |             ^~~
-cc1: all warnings being treated as errors
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
