@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-64824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB10F9439C9
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:59:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031379439CB
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:59:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70873285E88
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 23:59:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1C351F22D1A
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 23:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50E918B463;
-	Wed, 31 Jul 2024 23:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B96F18B490;
+	Wed, 31 Jul 2024 23:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgThJ03G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOJyIKTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F693173346;
-	Wed, 31 Jul 2024 23:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AC618B489;
+	Wed, 31 Jul 2024 23:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722470193; cv=none; b=mkDPif0hTQufXg9gojwmyBNvoYO9i/m8azr4tIPm7Ax9wcEr7S4WWxOTxBTQ0ruZRTpnUArms+wgVw//YNv5kRByercn5Fhafb61S9Gmcudwd182LbStWa3dYr8jI2OPoqj713nN322HffraC2kIGro0ZPguzsggC6w+ccFAG8Q=
+	t=1722470194; cv=none; b=I8OLNZgqOfGJD7tBhRky61vsbpQiinwrPLWzWdsPoxgOErgruej/JPYy+STTvp79dk13scqJ2eS1AxZP+Yjs5/gEJdg7b/2MooxSrekshVSzEtRBo7GoKi7hSio3HndKY0OThuMRi/iXuwnOZKsnORrSD/vaq1DMi5trMEHvF7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722470193; c=relaxed/simple;
-	bh=YKD/k48rsjF1ZuCuwRH0+3qnaOMN7Zrzel5JaoKtrOs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ru5BW6Zd3T5ircIQfgY7XtucvVLxoWfhu1QwqIyNBOZGWVKMaaX9/tgeHS7skRdDiJZ0pFBYDk6VQVW0L0CcXG4AuOo66LCXGkOWYT9/HL8XWw2j8uHzZGjhuBSjMF6zxET12YgNSR6Vtd76wUT6e6pEQvmkBIjY8wHC+2DZSS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgThJ03G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6CAC32786;
-	Wed, 31 Jul 2024 23:56:30 +0000 (UTC)
+	s=arc-20240116; t=1722470194; c=relaxed/simple;
+	bh=8roy8Xw2jj/VUUAXDLqEtyfSX75T55OU+WbOye7wrto=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uDlzLCt1ziNHOxKhmjCw7FNiq//rPE46XLGSNYpx0bPb+LZGUBf/Dp6aZtpau7/qNb9PssbEvNcbxs+apu9X6Z8Lu092HvRgWXs3ZNTmJq5LZLNM0FG1QgpWM69QsIueQK0NwLg2gSZwBI3Z3dw0b6YAjZDBpu1Gdlew129NtDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOJyIKTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9143EC4AF0C;
+	Wed, 31 Jul 2024 23:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722470192;
-	bh=YKD/k48rsjF1ZuCuwRH0+3qnaOMN7Zrzel5JaoKtrOs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OgThJ03Gx1/YFds/uKvbH0WXORzOyi5mFJAv9Oo915rftnGMqsh8dbabYjK7ZX3ci
-	 WJec4yMXMryu5GGoF+UurPGCB0ygV2ews+UeMmbRu/578We69+1vAnGSv6yj/3hfNP
-	 DFATGEydvIqg+Coodk0Z5CBRjZ21hdLrB6ruuQDzTWpCL4XOsAHigkZNXu7/mRbb5Z
-	 zzUJF7NcL0cVZrNVQRfMLqAt33Iutu5mtG05JWNz3J1nzuoCiJ8XbpJXZlOWFvyRk/
-	 thXoDemAdV4AaDmx4Df6pCytdAwGcDFarbT9U68kENtmMVy3TcQLOGBePzuILzQzPZ
-	 ivEOKTHE+nwNA==
+	s=k20201202; t=1722470193;
+	bh=8roy8Xw2jj/VUUAXDLqEtyfSX75T55OU+WbOye7wrto=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aOJyIKTQMvuUvlg5Y6+P1amhoJ4O6lBK3C+xy6c5g3TNR6pNW5apfDzplFtLYI7Tz
+	 g/hubAajM0yEHS+5VN+9JovrHu9OzrcfJiRtHEervYSRmsi+2EoAohxQWkw5kpeR1Q
+	 uRWYE4jjyA6KWcIA/y6B21ypT30c1/zs5V4sJNk3o4pEqOLxHWIGQi3s+DoC/+Dl34
+	 secGByXQZ9GbiY9wNKSPwloXUDSQoU8W1si4tx43EAyMd3f2JKaDH/bQz91n+yZnVG
+	 Cig65bEQT2EaM4fHQZihq54dQX+VWghPtl6iuMoUD7xFgREE+0xrc/h+/Oz0ii2bWE
+	 YXGondBW7apew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leesoo Ahn <lsahn@ooseel.net>,
-	John Johansen <john.johansen@canonical.com>,
+Cc: WangYuli <wangyuli@uniontech.com>,
+	hmy <huanglin@uniontech.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 1/2] apparmor: fix possible NULL pointer dereference
-Date: Wed, 31 Jul 2024 19:56:27 -0400
-Message-ID: <20240731235629.3929769-1-sashal@kernel.org>
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 4.19 2/2] nvme/pci: Add APST quirk for Lenovo N60z laptop
+Date: Wed, 31 Jul 2024 19:56:28 -0400
+Message-ID: <20240731235629.3929769-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240731235629.3929769-1-sashal@kernel.org>
+References: <20240731235629.3929769-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,105 +68,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.319
 Content-Transfer-Encoding: 8bit
 
-From: Leesoo Ahn <lsahn@ooseel.net>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 3dd384108d53834002be5630132ad5c3f32166ad ]
+[ Upstream commit ab091ec536cb7b271983c0c063b17f62f3591583 ]
 
-profile->parent->dents[AAFS_PROF_DIR] could be NULL only if its parent is made
-from __create_missing_ancestors(..) and 'ent->old' is NULL in
-aa_replace_profiles(..).
-In that case, it must return an error code and the code, -ENOENT represents
-its state that the path of its parent is not existed yet.
+There is a hardware power-saving problem with the Lenovo N60z
+board. When turn it on and leave it for 10 hours, there is a
+20% chance that a nvme disk will not wake up until reboot.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000030
-PGD 0 P4D 0
-PREEMPT SMP PTI
-CPU: 4 PID: 3362 Comm: apparmor_parser Not tainted 6.8.0-24-generic #24
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:aafs_create.constprop.0+0x7f/0x130
-Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
-RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- ? show_regs+0x6d/0x80
- ? __die+0x24/0x80
- ? page_fault_oops+0x99/0x1b0
- ? kernelmode_fixup_or_oops+0xb2/0x140
- ? __bad_area_nosemaphore+0x1a5/0x2c0
- ? find_vma+0x34/0x60
- ? bad_area_nosemaphore+0x16/0x30
- ? do_user_addr_fault+0x2a2/0x6b0
- ? exc_page_fault+0x83/0x1b0
- ? asm_exc_page_fault+0x27/0x30
- ? aafs_create.constprop.0+0x7f/0x130
- ? aafs_create.constprop.0+0x51/0x130
- __aafs_profile_mkdir+0x3d6/0x480
- aa_replace_profiles+0x83f/0x1270
- policy_update+0xe3/0x180
- profile_load+0xbc/0x150
- ? rw_verify_area+0x47/0x140
- vfs_write+0x100/0x480
- ? __x64_sys_openat+0x55/0xa0
- ? syscall_exit_to_user_mode+0x86/0x260
- ksys_write+0x73/0x100
- __x64_sys_write+0x19/0x30
- x64_sys_call+0x7e/0x25c0
- do_syscall_64+0x7f/0x180
- entry_SYSCALL_64_after_hwframe+0x78/0x80
-RIP: 0033:0x7be9f211c574
-Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d d5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
-RSP: 002b:00007ffd26f2b8c8 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00005d504415e200 RCX: 00007be9f211c574
-RDX: 0000000000001fc1 RSI: 00005d504418bc80 RDI: 0000000000000004
-RBP: 0000000000001fc1 R08: 0000000000001fc1 R09: 0000000080000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 00005d504418bc80
-R13: 0000000000000004 R14: 00007ffd26f2b9b0 R15: 00007ffd26f2ba30
- </TASK>
-Modules linked in: snd_seq_dummy snd_hrtimer qrtr snd_hda_codec_generic snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_seq_midi snd_seq_midi_event snd_rawmidi snd_seq snd_seq_device i2c_i801 snd_timer i2c_smbus qxl snd soundcore drm_ttm_helper lpc_ich ttm joydev input_leds serio_raw mac_hid binfmt_misc msr parport_pc ppdev lp parport efi_pstore nfnetlink dmi_sysfs qemu_fw_cfg ip_tables x_tables autofs4 hid_generic usbhid hid ahci libahci psmouse virtio_rng xhci_pci xhci_pci_renesas
-CR2: 0000000000000030
----[ end trace 0000000000000000 ]---
-RIP: 0010:aafs_create.constprop.0+0x7f/0x130
-Code: 4c 63 e0 48 83 c4 18 4c 89 e0 5b 41 5c 41 5d 41 5e 41 5f 5d 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 c3 cc cc cc cc <4d> 8b 55 30 4d 8d ba a0 00 00 00 4c 89 55 c0 4c 89 ff e8 7a 6a ae
-RSP: 0018:ffffc9000b2c7c98 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00000000000041ed RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc9000b2c7cd8 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffffff82baac10
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  00007be9f22cf740(0000) GS:ffff88817bc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000030 CR3: 0000000134b08000 CR4: 00000000000006f0
-
-Signed-off-by: Leesoo Ahn <lsahn@ooseel.net>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Link: https://lore.kernel.org/all/2B5581C46AC6E335+9c7a81f1-05fb-4fd0-9fbb-108757c21628@uniontech.com
+Signed-off-by: hmy <huanglin@uniontech.com>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/apparmorfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/nvme/host/pci.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
-index 80012d21f0386..1223b2648a549 100644
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -1593,6 +1593,10 @@ int __aafs_profile_mkdir(struct aa_profile *profile, struct dentry *parent)
- 		struct aa_profile *p;
- 		p = aa_deref_parent(profile);
- 		dent = prof_dir(p);
-+		if (!dent) {
-+			error = -ENOENT;
-+			goto fail2;
-+		}
- 		/* adding to parent that previously didn't have children */
- 		dent = aafs_create_dir("profiles", dent);
- 		if (IS_ERR(dent))
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 163497ef48fd7..a243c066d9234 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2481,6 +2481,13 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
+ 			return NVME_QUIRK_NO_APST;
+ 	}
+ 
++	/*
++	 * NVMe SSD drops off the PCIe bus after system idle
++	 * for 10 hours on a Lenovo N60z board.
++	 */
++	if (dmi_match(DMI_BOARD_NAME, "LXKT-ZXEG-N6"))
++		return NVME_QUIRK_NO_APST;
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
