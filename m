@@ -1,71 +1,66 @@
-Return-Path: <stable+bounces-64827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD88943A5C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:13:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1793C943A65
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 183B1282A93
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:13:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF1C01F2129C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B166A33C;
-	Thu,  1 Aug 2024 00:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8396146D4C;
+	Thu,  1 Aug 2024 00:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8BSwUKb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rCWbA8v2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38D2143C4E;
-	Thu,  1 Aug 2024 00:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E6A146A74;
+	Thu,  1 Aug 2024 00:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722470926; cv=none; b=ds+UI1+bQMDMY+qePWtvPcgCpHuwoQDo2GkIUX5nb0CgpB4l6/H4CZYSIrmB6CpYwEIglhRHlYAhwf/1D0P5tUAL09Rjs72BZlt2W7VsXXQWSOGQfTXv7D6jZBITPIxjkkVrevwFMpmU3+fbiT0foCR4vQCTQQbUC4SfmXKOR2Q=
+	t=1722470930; cv=none; b=ua2w6Jtsu2ruxt03PnN6sKfwQ5/R4+OUL2plZO2mv5Y+BYRwX88PWPWDtA1J3iXy9grmmaWqw2xe2FT2ry9wphbLFrdheBPR+oHFZOanipnK+m7f2LUD/vPO1IP7ftU9T3tVN+h2POCiE2Mjm+cjp0rJkQFOXhYREbsZVRR98I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722470926; c=relaxed/simple;
-	bh=BnGl+S9DPQCf1fZ+mW44vIcrSAsnmWOpuVFMqSXfzqM=;
+	s=arc-20240116; t=1722470930; c=relaxed/simple;
+	bh=iUrRRL7mz7ujbO+O1A61PnTruGlIHpHZ+70IF0VySGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=idhQXpJ8fAmqcNNWMTL0fg/l/UwQadlq05i6VsNqHr5c3T87nIFHLLyHRjfdxhOXgq5M7n77FTVKlpSbxCcTXAQdO2Qu0JVaId5R1Pvzl2O5mydtaabsTRX+Z7dc345Ak0K4LPDXGmgLwscyHIfD2UeISx0+33TSYgwCiyl65yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8BSwUKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0F6C116B1;
-	Thu,  1 Aug 2024 00:08:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PfKEEjrqNNolUGsdGECcCF+hYbRWQjhqr1Fj9cwNzqDaPZE+G9w/o3r2c0tVWplzi7eMYA0OR0mmek0LVCFIkqPtJkZu1kB+//ZsRHiZIyzjDL3/Lb06XcTSgO6JknTTN7Uklyx/pRMn3VdCmrpBAk8m4dnxpZBMScDHR87MHz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rCWbA8v2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E21FC4AF0F;
+	Thu,  1 Aug 2024 00:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722470925;
-	bh=BnGl+S9DPQCf1fZ+mW44vIcrSAsnmWOpuVFMqSXfzqM=;
+	s=k20201202; t=1722470930;
+	bh=iUrRRL7mz7ujbO+O1A61PnTruGlIHpHZ+70IF0VySGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8BSwUKbj22N5EtYrQXhOnTwSLs1St2oC17Hc1M+i0Jc+oW9B84ZSRTYAus87q8lc
-	 JJDVhbbqp63/U06uPlZsctFeTM8CIomnZ+nU9oOF9WgvoldWb+sdmouYCOBmxAwOPP
-	 rtrXW76xckqi1JKvh9McNRrhuGjfddx64uHHtS/aiPv4I3lv56i/U669g+rwfE7Mly
-	 bO35sPj+xsyF4AdCJBNSbzUkeVGZGflWCGsF1n0CrP3oMl4A6yfx9JsR3046if9DaO
-	 OG4vjGfWrk5g1cknPmAlbZqTgAgb8hmkPQUegHfQ+gBzXaxUBtLl+NkGIVpi8LYTC7
-	 he23CQroMprcg==
+	b=rCWbA8v2+rjZ6gLQ8CXZ9bLvXqTC/z1Rt3G+HBzeA9ehEtMR5NkgSTxmwMZ8QgvBr
+	 BpqJIQOxUiXYGuhATXKT0v9i2ac/cvjP/nCIsJpqUe4R2UrKIVCUt5vruDh5ojbId3
+	 xwkVNuWQY8nUSzpf89/0ORarP/gmZJDwDjgRLxxjTh/DgfumvTw4w/VmHxLMY3UAKU
+	 2zRoiyZta3iQzzsU3aUcwSbo1S8YqxSTSIQ6rHjZCKkTNogsD5IPsGdOQvX3JobNwO
+	 0XlrjR77FEYOWC73cBlR7/ZtbZaZ4fgQlLZfUxN3XxSlExeUIYDv5WSG4u3uNUqFAZ
+	 sF55z2ZJ83JGg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alvin Lee <alvin.lee2@amd.com>,
-	Sohaib Nadeem <sohaib.nadeem@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+Cc: Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	wenjing.liu@amd.com,
-	alex.hung@amd.com,
-	aurabindo.pillai@amd.com,
-	dillon.varone@amd.com,
+	Jun.Ma2@amd.com,
+	vitaly.prosyak@amd.com,
+	hannes@cmpxchg.org,
+	friedrich.vock@gmx.de,
+	andrealmeid@igalia.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 002/121] drm/amd/display: Assign linear_pitch_alignment even for VM
-Date: Wed, 31 Jul 2024 19:59:00 -0400
-Message-ID: <20240801000834.3930818-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 003/121] drm/amdgpu: fix overflowed array index read warning
+Date: Wed, 31 Jul 2024 19:59:01 -0400
+Message-ID: <20240801000834.3930818-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -75,41 +70,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 984debc133efa05e62f5aa1a7a1dd8ca0ef041f4 ]
+[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
 
-[Description]
-Assign linear_pitch_alignment so we don't cause a divide by 0
-error in VM environments
+Clear overflowed array index read warning by cast operation.
 
-Reviewed-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 236876d95185b..da237f718dbdd 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1421,6 +1421,7 @@ struct dc *dc_create(const struct dc_init_data *init_params)
- 		return NULL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 06f0a6534a94f..15c2406564700 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -473,8 +473,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
+ 					size_t size, loff_t *pos)
+ {
+ 	struct amdgpu_ring *ring = file_inode(f)->i_private;
+-	int r, i;
+ 	uint32_t value, result, early[3];
++	loff_t i;
++	int r;
  
- 	if (init_params->dce_environment == DCE_ENV_VIRTUAL_HW) {
-+		dc->caps.linear_pitch_alignment = 64;
- 		if (!dc_construct_ctx(dc, init_params))
- 			goto destruct_dc;
- 	} else {
+ 	if (*pos & 3 || size & 3)
+ 		return -EINVAL;
 -- 
 2.43.0
 
