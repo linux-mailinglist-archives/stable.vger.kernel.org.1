@@ -1,120 +1,124 @@
-Return-Path: <stable+bounces-64807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C25943781
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 23:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB469437A8
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 23:18:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3E9B283DE4
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 21:04:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A444C2848C0
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 21:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29580168C26;
-	Wed, 31 Jul 2024 21:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AF11607B0;
+	Wed, 31 Jul 2024 21:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ca9RYeeg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gW8tycoB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CD613C8F4;
-	Wed, 31 Jul 2024 21:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9231BC40
+	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 21:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722459839; cv=none; b=TltGIYjwHfbvq/8qqIGzvDE6ltTsDIDmCYQxGhVO3AcqtxQGFN255Zcx0xheRp4oS1+6eSr0AcmgWaA89u4bUhpS1U14g7LGgjCsiBBTYrthK1TQO17doDGCy0D5hHRJEiRzzSs3s4rXn7dKDEGtwunwHFBFHjX4LAjPpGyYhjA=
+	t=1722460715; cv=none; b=oexcoiGDPaYPlo6XPsJ+E9LcO/3UkSEdASIDxfAIIcqSVCWCf5KHgzSeQR0eYra/sU19FDXD8qO9gqXdR1ODMd2HnLBc72xJjhplC607YvtV5xiXYUVIpYx5jH8fV1gs5qYcBZBlvWiPbW5mzaf6kPnhLZI/aw7D3T8iyqHAcKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722459839; c=relaxed/simple;
-	bh=AUkJ686A8RH4qcFlXPTcSnFatT/ytf00l23UxvbQAAs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UXJmLP08J2tCs3tzhVod3t+b1bLnEuEJyFbYdT0B9+aQcYrZr5Gg+dn5JmVnj+UesLSt2EBF6oHh5NdZQoG1ujnoOiHgeFAqbefEI69brHq5W5hXblmr1TCnE0N34J/4RlugVPll8RE/QyGFS/+o7NzXMK/7cl2nEmlbJaWP27A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ca9RYeeg; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2cb4b6ecb3dso4155260a91.3;
-        Wed, 31 Jul 2024 14:03:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722459838; x=1723064638; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9HPGA+i9bLxv8+ywKzP8zynz5mLJCS77FFmzEIhkQ6g=;
-        b=Ca9RYeegsC4kUwSHnRfR1Yx2SjRyoEHm4NRDdMFU5bMBo9xnfcRVAq94cbO7+zCy1g
-         8lbgrywfnGkEBbliD2jkRRWhckkfU0AWBbd2TJSkU8q/t8vJQzatVnyvBhatL03amVeV
-         5kK5JDiy+JUIZYvM1O10bRhGy2KLZdrZ53nEXvqo/d1+2NAFKgHFtDPXHBv6oWvILtWQ
-         8KkeTIoE5wmmMGqCEnKt2oCjIQcS9t1sqRlYzxuVCFTh3Ui6L5O0ogbO0v28upcFpkb6
-         1OYVe/xYQ/ltuuVaSnbjwfKJBPQ1bCsxOi5jFAplYZnkCVNPAPQFS6ChCtsKTf/eWoME
-         FYwQ==
+	s=arc-20240116; t=1722460715; c=relaxed/simple;
+	bh=NqiclvbCP2OQ7Ina8jDYF9/McnZrsd+Z4GR+MnQQhls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XGlN5lyOrDV50HEr/pLF99SIBdKn1mQCsZDXcF8X5dNJydFb7oDIU8VCiOfuMpaM/vEqTCxB3jOpt4BuJXnDpacSfyAQgJVe/l/JrzY9p58r0Vcr5ho0bj42z4PMxNW41auMgCRlma7yhFvqRmXUEdmkOZVmcTBdzOVkOTg5Kw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gW8tycoB; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722460712;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bKdInG1OtpKpxRilEfiRw+XNZcY8cbOzLiAZonQhq90=;
+	b=gW8tycoBJO1ORvyVeCX7SwITAU3n1uxR5hkxPeIcR/u7UubyGI4xztkgQ3SPD3N8qSxPu8
+	rZoTRwLYanOD2wwcnu/+q0EMdB044J9l+kUkuuPURU758HtzVh85VvA/OY+rEApxVZNpat
+	5TxvNVGsudeU1dqXT6RX6ivdRXH3h+Q=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-A0Mj2rUBMJKUkN4wNQjOmw-1; Wed, 31 Jul 2024 17:18:30 -0400
+X-MC-Unique: A0Mj2rUBMJKUkN4wNQjOmw-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-52f0108a53dso8259900e87.0
+        for <stable@vger.kernel.org>; Wed, 31 Jul 2024 14:18:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722459838; x=1723064638;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9HPGA+i9bLxv8+ywKzP8zynz5mLJCS77FFmzEIhkQ6g=;
-        b=fDA/TXD0qaSFLxKPoKwdLp49ej5bw9Fwrnlc+8I49aEgYee17gxkW1PBXWadBWvWEL
-         QhDqv03HF/ZJgoIBMy3A0T1mrouTAj2DEKggRC0GpZxVDV6UDRuCj3kubQByLXYpIHDO
-         5UtoON+ikMrtj3eGu+EK4+KQM8SyM1eA0zFxCIphGjAYY4Zv5f2Zm9kBZKnxUA+2yoeq
-         zUgK4SjGpJXXjhsDQI+Nh6Mnbq9dRHEVCn3mBIF2U586ZT9qfJ7ii+DnyvwJ03p5XkNh
-         D3dW/+6DaRvf2OBvjlo+HyV975QV7v/fD0iUa8lwl2DOZGjB2+gsu66hEbWqX+dw4Hpy
-         gSDA==
-X-Forwarded-Encrypted: i=1; AJvYcCUL442njezhaIW66ZqSdnDLRTaeyuaDIYGBp7w19//aBiGeqie4RCyg1weUQCcjJ3NhqYEnBTbmyPptatQ6GzIvGS4f2BMdcZtFjc/AvdSdO577prQYCQ5wziW9H/AbiLho6D16
-X-Gm-Message-State: AOJu0YzkS30dMGIl2XF1QIB1kTAqtG/wZ1lmVUWRu7QrSqLrVapmhIsx
-	4hq9mHnqbV9bHavhhkohB9pii/N3qgA0QbpXS4Oz+l3NqwxMaFGk
-X-Google-Smtp-Source: AGHT+IFk10AYWxbSh1MmvpWEmpv9q0UkSPOj4nAsBLWAvUgWZuIy6nbW6vx6nkjdyo27E1GFlvccQg==
-X-Received: by 2002:a17:90a:a110:b0:2c9:a56b:8db6 with SMTP id 98e67ed59e1d1-2cfe7b73301mr634074a91.37.1722459837737;
-        Wed, 31 Jul 2024 14:03:57 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-2cfcb85b7a5sm2146765a91.1.2024.07.31.14.03.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jul 2024 14:03:57 -0700 (PDT)
-Message-ID: <66c69c35-6486-4b84-9315-3a88232694be@gmail.com>
-Date: Wed, 31 Jul 2024 14:03:52 -0700
+        d=1e100.net; s=20230601; t=1722460709; x=1723065509;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bKdInG1OtpKpxRilEfiRw+XNZcY8cbOzLiAZonQhq90=;
+        b=EN8wQOa5ywwEWDbVmarECltgGNrWbcO1ef3LaiuSONpx/hb0C+6AVgOsardjkmzv5N
+         93IgBiJOUaFy+CH9cc4rAxznr9GNPzUxfp/wQmSiVzv7ivrB+cR/IdOROIDsoK4yLj1Y
+         h/uygi0YWLmtcISozc1UxTURNozia7fLh7yVYxZ/G2XTCazEwATDDg1ctmNHAjY0Rj/P
+         FMctH4JWMMAizoanQnGdexpfi7fy/Nct5mfrjEk+q/bw2Q343mfWyyBg4KQO9Ic4v6vx
+         RnMIaR/Ig5Zj5/ZcS8zuOB38fgEDmdqPfNulOsSwGLvH8BBEA+7PeP0Wm+qcO1Cy3i3B
+         8BOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDgPZ+A45qHXMO1M4Dr/TG+MgZNa12zWi6//fJvjbgc3hZT7e1c1C1z+/zS45iN4zAj6wg/+e+Y62BLhlgVm/YtTDBnTCl
+X-Gm-Message-State: AOJu0YzBupFKpJ8bD3cP/T/rZw6FroHUAD5nkwNFiGjYhlkZvutFw2T8
+	eWCvBNLzeJRHAs2WUZYOa2B5kW0f7pW1pViKVu97tXJ/4reVE+UHKTYIzaLl018+S2o32j2DZqH
+	1uOqyafpmUYQgX1FnH6L0kFhOzh/kcmme8gCYuBIEJUkkYupydNPpZQ==
+X-Received: by 2002:a05:6512:b05:b0:52e:9fd3:f0ca with SMTP id 2adb3069b0e04-530b61c8b29mr166281e87.33.1722460709331;
+        Wed, 31 Jul 2024 14:18:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFAl7TOmiwrb7SR7IgnOM2SF/1zCAF5fHO3YQpg6C1uxKqXSkE3RpxPj0fCYXGG+w88vd9rOw==
+X-Received: by 2002:a05:6512:b05:b0:52e:9fd3:f0ca with SMTP id 2adb3069b0e04-530b61c8b29mr166260e87.33.1722460708510;
+        Wed, 31 Jul 2024 14:18:28 -0700 (PDT)
+Received: from redhat.com ([2.55.14.19])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac63b59c95sm9280320a12.50.2024.07.31.14.18.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Jul 2024 14:18:27 -0700 (PDT)
+Date: Wed, 31 Jul 2024 17:18:22 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Pirko <jiri@nvidia.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.10 259/809] virtio_net: add support for Byte Queue
+ Limits
+Message-ID: <20240731171750-mutt-send-email-mst@kernel.org>
+References: <20240730151724.637682316@linuxfoundation.org>
+ <20240730151734.824711848@linuxfoundation.org>
+ <20240730153217-mutt-send-email-mst@kernel.org>
+ <2024073119-gentleman-busybody-8091@gregkh>
+ <Zqph1kRQx0FU4L3I@nanopsycho.orion>
+ <2024073128-emergency-backspin-11ff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240731095022.970699670@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240731095022.970699670@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024073128-emergency-backspin-11ff@gregkh>
 
-On 7/31/24 03:03, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.3 release.
-> There are 809 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jul 31, 2024 at 06:12:35PM +0200, Greg Kroah-Hartman wrote:
+> On Wed, Jul 31, 2024 at 06:09:58PM +0200, Jiri Pirko wrote:
+> > Wed, Jul 31, 2024 at 07:46:26AM CEST, gregkh@linuxfoundation.org wrote:
+> > >On Tue, Jul 30, 2024 at 03:33:18PM -0400, Michael S. Tsirkin wrote:
+> > >> On Tue, Jul 30, 2024 at 05:42:15PM +0200, Greg Kroah-Hartman wrote:
+> > >> > 6.10-stable review patch.  If anyone has any objections, please let me know.
+> > >> 
+> > >> Wow.
+> > >> 
+> > >> It's clearly a feature, not a bugfix. And a risky one, at that.
+> > >> 
+> > >> Applies to any stable tree.
+> > >
+> > >Now dropped, thanks.
+> > 
+> > I wonder, how this got into the stable queue?
 > 
-> Responses should be made by Fri, 02 Aug 2024 09:47:47 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.3-rc3.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Stable-dep-of: f8321fa75102 ("virtio_net: Fix napi_skb_cache_put warning")
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Well, hmm. Something to fix in the auto-backport machinery then.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Florian
+MST
 
 
