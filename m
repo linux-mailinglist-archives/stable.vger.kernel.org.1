@@ -1,110 +1,118 @@
-Return-Path: <stable+bounces-64795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADE2943496
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 19:00:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A45943513
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 19:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E904E285A8C
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 17:00:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB88B281D96
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 17:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAFD1BD02F;
-	Wed, 31 Jul 2024 17:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0006D33CFC;
+	Wed, 31 Jul 2024 17:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="F3OeRkMG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B188912B8B;
-	Wed, 31 Jul 2024 17:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FB0200CD;
+	Wed, 31 Jul 2024 17:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722445212; cv=none; b=tJI9v0VL+E8RzpojtTKHsdK3H+KiJJR+1LD50U5X8XlAYGFlt9bkX6ULvgZnpG7wPO6/ubBkxB/S2YviR522FYzI2ChhWaDAhY6+zRQHbCxd5s6GCHbkhKydaGdoWvQvkubxe+M3YBSEjPR4f/lZA22OYwPpCJkNI7KLGNShEV8=
+	t=1722447609; cv=none; b=BqiEbP27bIVFcavnrYmmb5wU/fPmQOh840jju4ig2tWiFf5ojCTrQmxruXWoQ+X1aCvNl3vvseLmBY6u3TLzuRYLsxk+6XWPC8XAP/mqQVn7eFJ01qvc9rpq2TfLsijejUj+JkACHMskDKP370BMyqSf+NdnpjJRTlNqDckMx8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722445212; c=relaxed/simple;
-	bh=FzOcWg3ydDqPokvS0+peckNMd6IQ8EkTJOZDmhSS428=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=f0FU9zec66IrgsjDzOF1HPpQON90j9mD9PAvJfn8MJ/W38fto17VxoxVcd2vlt+3iqUyM2ub/rfr1XJqGCNMywhDQvtDpsHMnyxmdZDncbCQHvACKKoyjjWAx+K9UoU4g/WP7q8qkxJM8W9ZIlOuUVXQfEXXuwPPAzT5OVt2JM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
-From: Sam James <sam@gentoo.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,  matoro
- <matoro_mailinglist_kernel@matoro.tk>,  John David Anglin
- <dave.anglin@bell.net>,  Linux Parisc <linux-parisc@vger.kernel.org>,
-  Deller <deller@gmx.de>,  John David Anglin <dave@parisc-linux.org>,
-  stable@vger.kernel.org
-Subject: Re: Crash on boot with CONFIG_JUMP_LABEL in 6.10
-In-Reply-To: <2024073133-attentive-important-d419@gregkh> (Greg KH's message
-	of "Wed, 31 Jul 2024 15:41:03 +0200")
-Organization: Gentoo
-References: <096cad5aada514255cd7b0b9dbafc768@matoro.tk>
-	<bebe64f6-b1e1-4134-901c-f911c4a6d2e6@bell.net>
-	<11e13a9d-3942-43a5-b265-c75b10519a19@bell.net>
-	<cb2c656129d3a4100af56c74e2ae3060@matoro.tk>
-	<20240731110617.GZ33588@noisy.programming.kicks-ass.net>
-	<877cd1bsc4.fsf@gentoo.org>
-	<2024073133-attentive-important-d419@gregkh>
-Date: Wed, 31 Jul 2024 18:00:05 +0100
-Message-ID: <87sevpa44q.fsf@gentoo.org>
+	s=arc-20240116; t=1722447609; c=relaxed/simple;
+	bh=qSbr8OvtWym6DEXzgOAzgjMAQzTFcZiG6JjJfcid5+4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UZU4SHCLH1SYqDImw0dsEpvcrwNQVKD6IAq/rfZEMvx/YWsn4nmVMvo05Y2T/DJi6fm7meFsII76UPref3BQcn0HeZG5zXWeWmRbfLSR/DWrxLDON4jYn69Ggq+wENsmEcMThBVIYfQFVmFRG4Hb5cZwRCYRxQ1yPeC619njeNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=F3OeRkMG; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4281faefea9so27707085e9.2;
+        Wed, 31 Jul 2024 10:40:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1722447606; x=1723052406; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tqdkQ35fC7p3H1I0RUbNW3ITakHFi6YBp9Jz0zA9POc=;
+        b=F3OeRkMGbIHdS2JEyVN3Gd9AVzd67tJttoaI5Wrv9sJoZty2128P3ogNhL/b0DYzeK
+         jX4M4ZQnrkeblAxWr/OIyWjXTUqUQDFHWvnknLa/vBWXySWg39nNprWPGG2maacO6hxm
+         2ty3icyDZQpK0IPY7oH6kBZ8zsZye0XI0lwm3ANbWpzBD6wFtNZmNODluh3QygsXJzpa
+         4VO0Xz7lZsTu4QjpJUzhw1OsffpseuIlaLj6QwEiB9Tr2ftWzn4LFGqJkkB8KNwKxjB4
+         YXJ+KIKCQtBV1QlzFv8wR48drRILWnHuKGfAOTuYM/jIkTdw3qRTpcs/tbpRXaMTDjEd
+         kACw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722447606; x=1723052406;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tqdkQ35fC7p3H1I0RUbNW3ITakHFi6YBp9Jz0zA9POc=;
+        b=EB3xei5P+j5idZPi0kChFQvYQHcTDS+UmhUxsWQBk+icZkeGPyKMrmVkS3wapC7Luh
+         UInvW4haTebE4qcjsG08Cx4fM01M+/U9L4nF0TmwIm60pdyXDb1/H4A+eXVOrErGLs5C
+         cD4A1N/Oj3IYjteDu9b4krzMRqZ66sBehw12/YueGTD3MzUziEENl5TKV9wwMuN1jxyv
+         37Xf0/vwpdpWyZUpDaAKXHwSey//I/GA6aVK3JpPJPIb97rj8sODbZHAChkaUoVi50Rc
+         8gSE+DNE/jieomxlgxuovqAXR2YRG2F10ZGvT0ctDMSQQyD73pURWaDG+DJSNpPvAs5L
+         up+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWgMF5GVEJ0biD0hpgklLXxOZIPBYYg83E29YLrvte9jGAyqzeLPpm09f3fsSq/JmNQ+NvHCHcv3o9IzqUiLwnApaltf+YwvhGmsfw36rb0M4KcAbXCusjDAiP98+idEcY4zRWa
+X-Gm-Message-State: AOJu0YyhntKLchGrmfQBd7MNRJy0wOyFHPIwCL77OZHYx+2NDkEgraBf
+	vYD/TcH0zK5A3hsnbWuYukpIPC/Y9ljytQCcahyYPp2AxTm3acQ=
+X-Google-Smtp-Source: AGHT+IGROOi3Jog7R7laQl63oVgL7DF1626ttLOvpuvHk1Fc6jzdWGkszuT+TKFYYdIs0lz92qpxQA==
+X-Received: by 2002:a05:600c:4743:b0:428:18d9:9963 with SMTP id 5b1f17b1804b1-428b01fa085mr1295965e9.22.1722447606151;
+        Wed, 31 Jul 2024 10:40:06 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057724.dip0.t-ipconnect.de. [91.5.119.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb9d464sm29181655e9.42.2024.07.31.10.40.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jul 2024 10:40:05 -0700 (PDT)
+Message-ID: <b04044e0-d62c-494e-903a-331793163eb2@googlemail.com>
+Date: Wed, 31 Jul 2024 19:40:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/568] 6.6.44-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240730151639.792277039@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240730151639.792277039@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Greg KH <gregkh@linuxfoundation.org> writes:
+Am 30.07.2024 um 17:41 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.44 release.
+> There are 568 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-> On Wed, Jul 31, 2024 at 02:31:55PM +0100, Sam James wrote:
->> Peter Zijlstra <peterz@infradead.org> writes:
->>=20
->> > On Tue, Jul 30, 2024 at 08:36:13PM -0400, matoro wrote:
->> >> On 2024-07-30 09:50, John David Anglin wrote:
->> >> > On 2024-07-30 9:41 a.m., John David Anglin wrote:
->> >> > > On 2024-07-29 7:11 p.m., matoro wrote:
->> >> > > > Hi all, just bumped to the newest mainline starting with 6.10.2
->> >> > > > and immediately ran into a crash on boot. Fully reproducible,
->> >> > > > reverting back to last known good (6.9.8) resolves the issue.=
-=C2=A0
->> >> > > > Any clue what's going on here?
->> >> > > > I=C2=A0can=C2=A0provide=C2=A0full=C2=A0boot=C2=A0logs,=C2=A0sta=
-rt=C2=A0bisecting,=C2=A0etc=C2=A0if=C2=A0needed...
->> >> > > 6.10.2 built and booted okay on my c8000 with the attached config.
->> >> > > You could start
->> >> > > with it and incrementally add features to try to identify the one
->> >> > > that causes boot failure.
->> >> > Oh, I have an experimental clocksource patch installed.=C2=A0 You w=
-ill need
->> >> > to regenerate config
->> >> > with "make oldconfig" to use the current timer code.=C2=A0 Probably=
-, this
->> >> > would happen automatically.
->> >> > >=20
->> >> > > Your config would be needed to duplicate.=C2=A0 =C2=A0 Full boot =
-log would also help.
->> >> >=20
->> >> > Dave
->> >>=20
->> >> Hi Dave, bisecting quickly revealed the cause here.
->> >
->> > https://lkml.kernel.org/r/20240731105557.GY33588@noisy.programming.kic=
-ks-ass.net
->>=20
->> Greg, I see tglx's jump_label fix is queued for 6.10.3 but this one
->> isn't as it came too late. Is there any chance of chucking it in? It's
->> pretty nasty.
->
-> What is the git id of this in Linus's tree?
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Ah, you're right, it's not there. Sorry, I thought I'd seen it pulled.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
->
-> thanks,
->
-> greg k-h
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
