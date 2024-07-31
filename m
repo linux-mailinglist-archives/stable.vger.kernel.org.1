@@ -1,253 +1,194 @@
-Return-Path: <stable+bounces-64799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C4E9436A3
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 21:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05AA49436A7
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 21:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9904C2814E9
-	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 19:43:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD528281B63
+	for <lists+stable@lfdr.de>; Wed, 31 Jul 2024 19:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63E874413;
-	Wed, 31 Jul 2024 19:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169E71805E;
+	Wed, 31 Jul 2024 19:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="wA90v6ky"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006B51805E;
-	Wed, 31 Jul 2024 19:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D67E3BBE3
+	for <stable@vger.kernel.org>; Wed, 31 Jul 2024 19:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722455022; cv=none; b=Cod1LkBGooM8MYdqAC0ustifK7/KJwNwNC7evIumowQmCmqDjqQVDTgj21hfcXT10U+xq8AoBgjLviYFEN5weh1L4qpEPNjG7yItfa7DVLDNYvXEtQEBi+3Jq8lFwQSEgQptDSzuN5WFGIGQ0NoeCqgEYwv4eYxsB/iX528Kd2g=
+	t=1722455048; cv=none; b=Fqw91UgAfiTtZhDZqqpK27lSVMLNlP+lYgZ6h2CzvAknAgwFvSdF6dvqVXqyI+xtRUbpQditQJfrKoKApLrwUTMAdCLjvGWAxoaR5epYmYKwFDQJkomSdzaop+vcafEZKAQx4dp/kefbvXJyjqb+IQF/qUN+m7IV0PJjb0UnT8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722455022; c=relaxed/simple;
-	bh=fyMMWq0FoeH7PUl8TbT0u97X8HOomSa0etdreH5oW0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UACD+jqiJvkIld8HHH1BcSl9o+u0jjjimtIBUiiOaoeOadn6v3u6nbeVVCWS0vn93oCl03PE+j8KhbBID3S9dnhdScyNFtAPS91NGMGgRsqzGP0f6nuPAZbQjwFTwcRBLxWmAwZcpcrOsjIBpeS3twWiq+0eAEwK+G+zds6i2Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Received: from i53875ac5.versanet.de ([83.135.90.197] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sZFEN-00075I-7Y; Wed, 31 Jul 2024 21:43:27 +0200
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To: Lee Jones <lee@kernel.org>,
- Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Dmitrii Osipenko <dmitry.osipenko@collabora.com>,
- Mark Brown <broonie@kernel.org>, Urja <urja@urja.dev>,
- linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Sebastian Reichel <sebastian.reichel@collabora.com>, kernel@collabora.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] mfd: rk8xx: Fix shutdown handler
-Date: Wed, 31 Jul 2024 21:43:24 +0200
-Message-ID: <3399645.RL5eaSpR8r@diego>
-In-Reply-To: <20240730180903.81688-1-sebastian.reichel@collabora.com>
-References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
+	s=arc-20240116; t=1722455048; c=relaxed/simple;
+	bh=6x1M180eaHDroVe7k6rzwMRYLlHLrdf5L76No5YBXMc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zn3tFu7sMSIbsjem8OCazajerK9k0s5P0ocq95RGyqcZdGaX9TcbDikqt9ouTl7Kegxf4nzGat1KhITx8iJzhldwcoBIqqyEAFXzXezNuDBqOJmKBI1z074dvzU4ElxHvlND8yLIkVcFYxV11Y1/W+brwIJXuPZk8MNq64lkPuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=wA90v6ky; arc=none smtp.client-ip=193.222.135.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 24051 invoked from network); 31 Jul 2024 21:44:01 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1722455041; bh=q07+jOy3Ed9mQauc7wsqveqYmCjuI5OGEKaX1cXwEyE=;
+          h=Subject:To:Cc:From;
+          b=wA90v6kyg319KSX6EQ250GcAomjLekzndMLkXUjgj4b2gJ7GzufXZRcF4ffVtrmRK
+           A/dgMJUL1j/W78hlZLQU2Zzvhhkb1T/ohNDEyopLbM7PU3VC2qyPT7P/xtoMR6njq2
+           vlWYgyec0Fq4XZcxfcGZJCk6zECOquqiQFd9kBGE=
+Received: from aaen12.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.117.12])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <gregkh@linuxfoundation.org>; 31 Jul 2024 21:44:01 +0200
+Message-ID: <974b072b-9696-42c9-8cec-f68454eedc33@o2.pl>
+Date: Wed, 31 Jul 2024 21:43:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.10 678/809] md/raid1: set max_sectors during early
+ return from choose_slow_rdev()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Song Liu <song@kernel.org>,
+ Yu Kuai <yukuai3@huawei.com>, Paul Luse <paul.e.luse@linux.intel.com>,
+ Xiao Ni <xni@redhat.com>, Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
+References: <20240730151724.637682316@linuxfoundation.org>
+ <20240730151751.683503374@linuxfoundation.org>
+Content-Language: en-GB
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+In-Reply-To: <20240730151751.683503374@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 0016bc94910de5aa5be2e80f71dff402
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [sWOF]                               
 
-Am Dienstag, 30. Juli 2024, 20:05:05 CEST schrieb Sebastian Reichel:
-> When I converted rk808 to device managed resources I converted the rk808
-> specific pm_power_off handler to devm_register_sys_off_handler() using
-> SYS_OFF_MODE_POWER_OFF_PREPARE, which is allowed to sleep. I did this
-> because the driver's poweroff function makes use of regmap and the backend
-> of that might sleep.
-> 
-> But the PMIC poweroff function will kill off the board power and the
-> kernel does some extra steps after the prepare handler. Thus the prepare
-> handler should not be used for the PMIC's poweroff routine. Instead the
-> normal SYS_OFF_MODE_POWER_OFF phase should be used. The old pm_power_off
-> method is also being called from there, so this would have been a
-> cleaner conversion anyways.
-> 
-> But it still makes sense to investigate the sleep handling and check
-> if there are any issues. Apparently the Rockchip and Meson I2C drivers
-> (the only platforms using the PMICs handled by this driver) both have
-> support for atomic transfers and thus may be called from the proper
-> poweroff context.
-> 
-> Things are different on the SPI side. That is so far only used by rk806
-> and that one is only used by Rockchip RK3588. Unfortunately the Rockchip
-> SPI driver does not support atomic transfers. That means using the
-> normal POWER_OFF handler would introduce the following error splash
-> during shutdown on all RK3588 boards currently supported upstream:
-> 
-> [   13.761353] ------------[ cut here ]------------
-> [   13.761764] Voluntary context switch within RCU read-side critical section!
-> [   13.761776] WARNING: CPU: 0 PID: 1 at kernel/rcu/tree_plugin.h:330 rcu_note_context_switch+0x3ac/0x404
-> [   13.763219] Modules linked in:
-> [   13.763498] CPU: 0 UID: 0 PID: 1 Comm: systemd-shutdow Not tainted 6.10.0-12284-g2818a9a19514 #1499
-> [   13.764297] Hardware name: Rockchip RK3588 EVB1 V10 Board (DT)
-> [   13.764812] pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [   13.765427] pc : rcu_note_context_switch+0x3ac/0x404
-> [   13.765871] lr : rcu_note_context_switch+0x3ac/0x404
-> [   13.766314] sp : ffff800084f4b5b0
-> [   13.766609] x29: ffff800084f4b5b0 x28: ffff00040139b800 x27: 00007dfb4439ae80
-> [   13.767245] x26: ffff00040139bc80 x25: 0000000000000000 x24: ffff800082118470
-> [   13.767880] x23: 0000000000000000 x22: ffff000400300000 x21: ffff000400300000
-> [   13.768515] x20: ffff800083a9d600 x19: ffff0004fee48600 x18: fffffffffffed448
-> [   13.769151] x17: 000000040044ffff x16: 005000f2b5503510 x15: 0000000000000048
-> [   13.769787] x14: fffffffffffed490 x13: ffff80008473b3c0 x12: 0000000000000900
-> [   13.770421] x11: 0000000000000300 x10: ffff800084797bc0 x9 : ffff80008473b3c0
-> [   13.771057] x8 : 00000000ffffefff x7 : ffff8000847933c0 x6 : 0000000000000300
-> [   13.771692] x5 : 0000000000000301 x4 : 40000000fffff300 x3 : 0000000000000000
-> [   13.772328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000400300000
-> [   13.772964] Call trace:
-> [   13.773184]  rcu_note_context_switch+0x3ac/0x404
-> [   13.773598]  __schedule+0x94/0xb0c
-> [   13.773907]  schedule+0x34/0x104
-> [   13.774198]  schedule_timeout+0x84/0xfc
-> [   13.774544]  wait_for_completion_timeout+0x78/0x14c
-> [   13.774980]  spi_transfer_one_message+0x588/0x690
-> [   13.775403]  __spi_pump_transfer_message+0x19c/0x4ec
-> [   13.775846]  __spi_sync+0x2a8/0x3c4
-> [   13.776161]  spi_write_then_read+0x120/0x208
-> [   13.776543]  rk806_spi_bus_read+0x54/0x88
-> [   13.776905]  _regmap_raw_read+0xec/0x16c
-> [   13.777257]  _regmap_bus_read+0x44/0x7c
-> [   13.777601]  _regmap_read+0x60/0xd8
-> [   13.777915]  _regmap_update_bits+0xf4/0x13c
-> [   13.778289]  regmap_update_bits_base+0x64/0x98
-> [   13.778686]  rk808_power_off+0x70/0xfc
-> [   13.779024]  sys_off_notify+0x40/0x6c
-> [   13.779356]  atomic_notifier_call_chain+0x60/0x90
-> [   13.779776]  do_kernel_power_off+0x54/0x6c
-> [   13.780146]  machine_power_off+0x18/0x24
-> [   13.780499]  kernel_power_off+0x70/0x7c
-> [   13.780845]  __do_sys_reboot+0x210/0x270
-> [   13.781198]  __arm64_sys_reboot+0x24/0x30
-> [   13.781558]  invoke_syscall+0x48/0x10c
-> [   13.781897]  el0_svc_common+0x3c/0xe8
-> [   13.782228]  do_el0_svc+0x20/0x2c
-> [   13.782528]  el0_svc+0x34/0xd8
-> [   13.782806]  el0t_64_sync_handler+0x120/0x12c
-> [   13.783197]  el0t_64_sync+0x190/0x194
-> [   13.783527] ---[ end trace 0000000000000000 ]---
-> 
-> To avoid this we keep the SYS_OFF_MODE_POWER_OFF_PREPARE handler for the
-> SPI backend. This is not great, but at least avoids regressions and the
-> fix should be small enough to allow backporting.
-> 
-> As a side-effect this also works around a shutdown problem on the Asus
-> C201. For reasons unknown that skips calling the prepare handler and
-> directly calls the final shutdown handler.
-> 
-> Fixes: 4fec8a5a85c49 ("mfd: rk808: Convert to device managed resources")
-> Cc: stable@vger.kernel.org
-> Reported-by: Urja <urja@urja.dev>
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+W dniu 30.07.2024 o 17:49, Greg Kroah-Hartman pisze:
+> 6.10-stable review patch.  If anyone has any objections, please let me know.
+>
+> ------------------
+>
+> From: Mateusz Jończyk <mat.jonczyk@o2.pl>
+>
+> commit 36a5c03f232719eb4e2d925f4d584e09cfaf372c upstream.
+>
+> Linux 6.9+ is unable to start a degraded RAID1 array with one drive,
+> when that drive has a write-mostly flag set. During such an attempt,
+> the following assertion in bio_split() is hit:
+>
+> 	BUG_ON(sectors <= 0);
+>
+> Call Trace:
+> 	? bio_split+0x96/0xb0
+> 	? exc_invalid_op+0x53/0x70
+> 	? bio_split+0x96/0xb0
+> 	? asm_exc_invalid_op+0x1b/0x20
+> 	? bio_split+0x96/0xb0
+> 	? raid1_read_request+0x890/0xd20
+> 	? __call_rcu_common.constprop.0+0x97/0x260
+> 	raid1_make_request+0x81/0xce0
+> 	? __get_random_u32_below+0x17/0x70
+> 	? new_slab+0x2b3/0x580
+> 	md_handle_request+0x77/0x210
+> 	md_submit_bio+0x62/0xa0
+> 	__submit_bio+0x17b/0x230
+> 	submit_bio_noacct_nocheck+0x18e/0x3c0
+> 	submit_bio_noacct+0x244/0x670
+>
+> After investigation, it turned out that choose_slow_rdev() does not set
+> the value of max_sectors in some cases and because of it,
+> raid1_read_request calls bio_split with sectors == 0.
+>
+> Fix it by filling in this variable.
+>
+> This bug was introduced in
+> commit dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from read_balance()")
+> but apparently hidden until
+> commit 0091c5a269ec ("md/raid1: factor out helpers to choose the best rdev from read_balance()")
+> shortly thereafter.
+>
+> Cc: stable@vger.kernel.org # 6.9.x+
+> Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+> Fixes: dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from read_balance()")
+> Cc: Song Liu <song@kernel.org>
+> Cc: Yu Kuai <yukuai3@huawei.com>
+> Cc: Paul Luse <paul.e.luse@linux.intel.com>
+> Cc: Xiao Ni <xni@redhat.com>
+> Cc: Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
+> Link: https://lore.kernel.org/linux-raid/20240706143038.7253-1-mat.jonczyk@o2.pl/
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-On a QNAP-TS433:
-Tested-by: Heiko Stuebner <heiko@sntech.de>
+Hello,
 
-Change itself also looks nice and it definitly helps my qnap-mcu patches.
-Because the mcu needs to turn off its parts before and till now I worked
-around the issue by occupying another priority, while it should simply
-be part of the prepare + default-prio stage, so
+FYI there is a second regression in Linux 6.9 - 6.11, which occurs with RAID
+component devices with a write-mostly flag when a new device is added
+to the array. (A write-mostly flag on a device specifies that the kernel is to
+avoid reading from such a device, if possible. It is enabled only manually with
+a mdadm command line switch and can be beneficial when devices are of
+different speed). The kernel than reads from the wrong component device
+before it is synced, which may result in data corruption.
 
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/lkml/9952f532-2554-44bf-b906-4880b2e88e3a@o2.pl/T/
 
+This is not caused by this patch, but only linked by similar functions and the
+write-mostly flag being involved in both cases. The issue is that without this
+patch, the kernel will fail to start or keep running a RAID array with a single
+write-mostly device and the user will not be able to add another device to it,
+which triggered the second regression.
 
+Paul was of the opinion that this first patch should land nonetheless.
+I would like you to decide whether to ship it now or defer it.
 
-> ---
->  drivers/mfd/rk8xx-core.c  | 15 +++++++++++++--
->  drivers/mfd/rk8xx-i2c.c   |  2 +-
->  drivers/mfd/rk8xx-spi.c   |  2 +-
->  include/linux/mfd/rk808.h |  2 +-
->  4 files changed, 16 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/mfd/rk8xx-core.c b/drivers/mfd/rk8xx-core.c
-> index 5eda3c0dbbdf..757ef8181328 100644
-> --- a/drivers/mfd/rk8xx-core.c
-> +++ b/drivers/mfd/rk8xx-core.c
-> @@ -692,10 +692,11 @@ void rk8xx_shutdown(struct device *dev)
->  }
->  EXPORT_SYMBOL_GPL(rk8xx_shutdown);
->  
-> -int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap *regmap)
-> +int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap *regmap, bool is_spi)
->  {
->  	struct rk808 *rk808;
->  	const struct rk808_reg_data *pre_init_reg;
-> +	enum sys_off_mode pwr_off_mode = SYS_OFF_MODE_POWER_OFF;
->  	const struct mfd_cell *cells;
->  	int dual_support = 0;
->  	int nr_pre_init_regs;
-> @@ -785,10 +786,20 @@ int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap
->  	if (ret)
->  		return dev_err_probe(dev, ret, "failed to add MFD devices\n");
->  
-> +	/*
-> +	 * Currently the Rockchip SPI driver always sleeps when doing SPI
-> +	 * transfers. This is not allowed in the SYS_OFF_MODE_POWER_OFF
-> +	 * handler, so we are using the prepare handler as a workaround.
-> +	 * This should be removed once the Rockchip SPI driver has been
-> +	 * adapted.
-> +	 */
-> +	if (is_spi)
-> +		pwr_off_mode = SYS_OFF_MODE_POWER_OFF_PREPARE;
-> +
->  	if (device_property_read_bool(dev, "rockchip,system-power-controller") ||
->  	    device_property_read_bool(dev, "system-power-controller")) {
->  		ret = devm_register_sys_off_handler(dev,
-> -				    SYS_OFF_MODE_POWER_OFF_PREPARE, SYS_OFF_PRIO_HIGH,
-> +				    pwr_off_mode, SYS_OFF_PRIO_HIGH,
->  				    &rk808_power_off, rk808);
->  		if (ret)
->  			return dev_err_probe(dev, ret,
-> diff --git a/drivers/mfd/rk8xx-i2c.c b/drivers/mfd/rk8xx-i2c.c
-> index 69a6b297d723..a2029decd654 100644
-> --- a/drivers/mfd/rk8xx-i2c.c
-> +++ b/drivers/mfd/rk8xx-i2c.c
-> @@ -189,7 +189,7 @@ static int rk8xx_i2c_probe(struct i2c_client *client)
->  		return dev_err_probe(&client->dev, PTR_ERR(regmap),
->  				     "regmap initialization failed\n");
->  
-> -	return rk8xx_probe(&client->dev, data->variant, client->irq, regmap);
-> +	return rk8xx_probe(&client->dev, data->variant, client->irq, regmap, false);
->  }
->  
->  static void rk8xx_i2c_shutdown(struct i2c_client *client)
-> diff --git a/drivers/mfd/rk8xx-spi.c b/drivers/mfd/rk8xx-spi.c
-> index 3405fb82ff9f..20f9428f94bb 100644
-> --- a/drivers/mfd/rk8xx-spi.c
-> +++ b/drivers/mfd/rk8xx-spi.c
-> @@ -94,7 +94,7 @@ static int rk8xx_spi_probe(struct spi_device *spi)
->  		return dev_err_probe(&spi->dev, PTR_ERR(regmap),
->  				     "Failed to init regmap\n");
->  
-> -	return rk8xx_probe(&spi->dev, RK806_ID, spi->irq, regmap);
-> +	return rk8xx_probe(&spi->dev, RK806_ID, spi->irq, regmap, true);
->  }
->  
->  static const struct of_device_id rk8xx_spi_of_match[] = {
-> diff --git a/include/linux/mfd/rk808.h b/include/linux/mfd/rk808.h
-> index 69cbea78b430..be15b84cff9e 100644
-> --- a/include/linux/mfd/rk808.h
-> +++ b/include/linux/mfd/rk808.h
-> @@ -1349,7 +1349,7 @@ struct rk808 {
->  };
->  
->  void rk8xx_shutdown(struct device *dev);
-> -int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap *regmap);
-> +int rk8xx_probe(struct device *dev, int variant, unsigned int irq, struct regmap *regmap, bool is_spi);
->  int rk8xx_suspend(struct device *dev);
->  int rk8xx_resume(struct device *dev);
->  
-> 
+Greetings,
 
-
-
+Mateusz
 
 
