@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-64918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AED943C64
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:37:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AADB943C6D
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8816A1C20D9B
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:37:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C25285B33
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1FF31BF313;
-	Thu,  1 Aug 2024 00:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3915E1BF328;
+	Thu,  1 Aug 2024 00:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4DFNPgc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RX4+BPtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583D01BF308;
-	Thu,  1 Aug 2024 00:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D6A14C5AE;
+	Thu,  1 Aug 2024 00:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471424; cv=none; b=N3KOrmjX7PhH49w5uN46ay8oE/0IekjWjnuY/4cuPenF1pDgDg9j6sDmrXyrWOPmF70AQQ6z2h0aZsWLAlgIEw/mpPpMl92Bz9x+iPPU1QKX/71YvGbmfPntu203FEYOnwnyzyhD5CdJJ/d0tK3g8HS18KKJWWVYRhdXvT3Vno0=
+	t=1722471426; cv=none; b=AR7i7qJMTicFbU40JzKN+eFmiLkgyNcYxSjeHhZZHqQoTJNVytedmyrge4uNtW3gp0JikhzqeUCR1MaZy3tvNjtJNRN1OiczSprs3bUIjBkP2X0uS1+siG/wbWsVciE/MJ6a9B8vrh5SyoTD/KnvEoxLPi8tyQUqDsRUnGCc7us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471424; c=relaxed/simple;
-	bh=Cu9u7/IC/vzqe1yfpc+sjG23kEBqYrFG0a0R4YHkCa4=;
+	s=arc-20240116; t=1722471426; c=relaxed/simple;
+	bh=Yl9B4bekSsZJl1S5dXDTfmH5Qepr+jC/AtijGyvIzNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsKAlyZSB7sCAQ7mpaAS5f80FL8Q123Q+9qN6us7qXVQorWTu9JbFuaWLsIMAf3jCSyDmLREnyRt0h7YjhiMSQhFnlxcnVdCW+LvfjFL2vC6NR7iQXWvV8tAGNfcGLoW+d0dBJAUqUhV7lTHxanuNInqbHCozDrW9h/oy6GfxMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4DFNPgc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB24C116B1;
-	Thu,  1 Aug 2024 00:17:02 +0000 (UTC)
+	 MIME-Version; b=JIgGVScNZVslWlpFcH9lgkTCWTi7wnNRaFsb93CCi5hCDsoqIocC5RoD0Gq+m5fA4Vuq1JcGoQxq3xj6H2hBOFXPQ107zjxmlL33DPNuvy0ob5iDlVhjtg0cjsaVkcaZCm/JUlUyIMiu3Ac43e2SyYa/HJOCTI7PScSIlAa13dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RX4+BPtb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B485CC4AF0F;
+	Thu,  1 Aug 2024 00:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471424;
-	bh=Cu9u7/IC/vzqe1yfpc+sjG23kEBqYrFG0a0R4YHkCa4=;
+	s=k20201202; t=1722471425;
+	bh=Yl9B4bekSsZJl1S5dXDTfmH5Qepr+jC/AtijGyvIzNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4DFNPgcCmrNRB7Jo45QkQicBPXl+Q2H522FxHoHdpwI6HxmZDFifs6SugmgtM1jG
-	 BDaRz3qSegkNLtiJhcJZCgYBdWAbBuGybjLBn2Ih2UBxW9g5FHm4hDg6l/SVc3TdzJ
-	 eDYTDe0WS+H303or0iGBlwjj4Y2rkHhNhWLCuWI35glJNqodN8udiLOluuvEuu8fyy
-	 FxLBAzhb+eEnxGqyd6MPWOA7JUa+4FWUxXXVgp/UeMq3pm2rLaxPlfq7TRtzJMVc2b
-	 GK+T1wIWLjGjRrmUeZchD2vEs65YtEt9fygCWiJS/g+YqqSI07Wyx7hiWA1ZhKCxRF
-	 /2T2k7+LH9glA==
+	b=RX4+BPtb29ks/QznazfD587TUnz/EK9brhC+0RBVTW9NhvcOW7FbJJEb2AIWeCzLw
+	 4dIoCVljxP+1NxaHu372/8WXrNOG8NiU8JHxY0WDT2gIar72Xw3CMH4r+9RuBv5v2D
+	 /V8IYkaomdIGMfpV07e6+qUtfIWDcF4096gtuxqUfmWkY0lncGaUOSa5+lYZDi/u8c
+	 9z7V/m2yM48FO53ZqouvGdjPJluulujg0m1A5MlfDhFjhsRPSfDNiACaT0iR0iqpAa
+	 GW+ey7T1QEoJLiqEiqY4hUBmS1m8Wxq3uqyDa86AYCWzCokcnXxHrP7Ky9ri7TsF8n
+	 C3tNayhCUatVQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Joerg Roedel <jroedel@suse.de>,
+Cc: Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>,
-	joro@8bytes.org,
-	will@kernel.org,
-	jernej.skrabec@gmail.com,
-	samuel@sholland.org,
-	iommu@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.10 093/121] iommu: sun50i: allocate page tables from below 4 GiB
-Date: Wed, 31 Jul 2024 20:00:31 -0400
-Message-ID: <20240801000834.3930818-93-sashal@kernel.org>
+	jack@suse.com
+Subject: [PATCH AUTOSEL 6.10 094/121] udf: Avoid excessive partition lengths
+Date: Wed, 31 Jul 2024 20:00:32 -0400
+Message-ID: <20240801000834.3930818-94-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -72,69 +64,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 7b9331a3ae93adfae54c6a56d23513e1f7db5dcb ]
+[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
 
-The Allwinner IOMMU is a strict 32-bit device, with its input addresses,
-the page table root pointer as well as both level's page tables and also
-the target addresses all required to be below 4GB.
-The Allwinner H6 SoC only supports 32-bit worth of physical addresses
-anyway, so this isn't a problem so far, but the H616 and later SoCs extend
-the PA space beyond 32 bit to accommodate more DRAM.
-To make sure we stay within the 32-bit PA range required by the IOMMU,
-force the memory for the page tables to come from below 4GB. by using
-allocations with the DMA32 flag.
-Also reject any attempt to map target addresses beyond 4GB, and print a
-warning to give users a hint while this fails.
+Avoid mounting filesystems where the partition would overflow the
+32-bits used for block number. Also refuse to mount filesystems where
+the partition length is so large we cannot safely index bits in a
+block bitmap.
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20240616224056.29159-3-andre.przywara@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sun50i-iommu.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/udf/super.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
-index c519b991749d7..b5221579c9815 100644
---- a/drivers/iommu/sun50i-iommu.c
-+++ b/drivers/iommu/sun50i-iommu.c
-@@ -601,6 +601,14 @@ static int sun50i_iommu_map(struct iommu_domain *domain, unsigned long iova,
- 	u32 *page_table, *pte_addr;
- 	int ret = 0;
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 9381a66c6ce58..8411db883cbce 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1110,12 +1110,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 	struct udf_part_map *map;
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct partitionHeaderDesc *phd;
++	u32 sum;
+ 	int err;
  
-+	/* the IOMMU can only handle 32-bit addresses, both input and output */
-+	if ((uint64_t)paddr >> 32) {
-+		ret = -EINVAL;
-+		dev_warn_once(iommu->dev,
-+			      "attempt to map address beyond 4GB\n");
-+		goto out;
+ 	map = &sbi->s_partmaps[p_index];
+ 
+ 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
+ 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
++	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
++			       &sum)) {
++		udf_err(sb, "Partition %d has invalid location %u + %u\n",
++			p_index, map->s_partition_root, map->s_partition_len);
++		return -EFSCORRUPTED;
 +	}
-+
- 	page_table = sun50i_dte_get_page_table(sun50i_domain, iova, gfp);
- 	if (IS_ERR(page_table)) {
- 		ret = PTR_ERR(page_table);
-@@ -681,7 +689,8 @@ sun50i_iommu_domain_alloc_paging(struct device *dev)
- 	if (!sun50i_domain)
- 		return NULL;
  
--	sun50i_domain->dt = iommu_alloc_pages(GFP_KERNEL, get_order(DT_SIZE));
-+	sun50i_domain->dt = iommu_alloc_pages(GFP_KERNEL | GFP_DMA32,
-+					      get_order(DT_SIZE));
- 	if (!sun50i_domain->dt)
- 		goto err_free_domain;
- 
-@@ -996,7 +1005,7 @@ static int sun50i_iommu_probe(struct platform_device *pdev)
- 
- 	iommu->pt_pool = kmem_cache_create(dev_name(&pdev->dev),
- 					   PT_SIZE, PT_SIZE,
--					   SLAB_HWCACHE_ALIGN,
-+					   SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA32,
- 					   NULL);
- 	if (!iommu->pt_pool)
- 		return -ENOMEM;
+ 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
+ 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
+@@ -1171,6 +1178,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 		bitmap->s_extPosition = le32_to_cpu(
+ 				phd->unallocSpaceBitmap.extPosition);
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
++		/* Check whether math over bitmap won't overflow. */
++		if (check_add_overflow(map->s_partition_len,
++				       sizeof(struct spaceBitmapDesc) << 3,
++				       &sum)) {
++			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
++				map->s_partition_len);
++			return -EFSCORRUPTED;
++		}
+ 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
+ 			  p_index, bitmap->s_extPosition);
+ 	}
 -- 
 2.43.0
 
