@@ -1,61 +1,73 @@
-Return-Path: <stable+bounces-65160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE0E943F4B
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:37:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8FF943F4D
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3E231C21201
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:36:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DD321C2130B
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1EF1E2874;
-	Thu,  1 Aug 2024 00:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1AA1E2F29;
+	Thu,  1 Aug 2024 00:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLu5Qzl3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nKq+Rf8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756271E286C;
-	Thu,  1 Aug 2024 00:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0191E2F25;
+	Thu,  1 Aug 2024 00:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472693; cv=none; b=ozQjvGUMPfeZabXrAwAtB5bIvJf+5ZYMfJfAt0KJfblSHE3Vxji+KLDS1bMj8+llvOU73Foq6y9sQYDwi6p5WegRwXat9hZ/XHvyRl7z8/sKUibmzZtpH8dOFtSdEMK1bk4ctK0GwE00XEoGt/dYTYSCMh5CGYu3QEO+dub804I=
+	t=1722472698; cv=none; b=Tfv7ze+VlEs8pbffzDbeQ2qcRoTz5W9eHqoVMzZICzZDfhrZQ9LLzi9/Uj1b17HKkg09vo5/vfDDQBRHAuIBq/Vl9PdGrKhvwG1ipcL9RoERN2OZxFLnNlUWzJ3aZ0OtIAM6NjojVA6pjPezoDHwp9Fq6mGeic+SgPBagD02UAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472693; c=relaxed/simple;
-	bh=0gp7rOlZePoJ4UoagGIGzzZNnmMI7XlwpB28othjJVM=;
+	s=arc-20240116; t=1722472698; c=relaxed/simple;
+	bh=iPtXXTOTTCYO9TZk2WP4rJQlnMKoQ1qRcUuwJj8voEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrjljB/wevO4IF+j8jfa9IznbJoIPHV64wslohIIXEay5zIoHhNH01CpP83YNJ361LfV1Pf2nM73atgV/imnt30OvFYCvHcc4Rno6tRf7EpMma9t7goYPeltHnILwo71xp0JX3xbTnxx4lYvcnBuUAObhFcDpFhJarQEY2VWwKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLu5Qzl3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFB2C4AF0E;
-	Thu,  1 Aug 2024 00:38:11 +0000 (UTC)
+	 MIME-Version; b=abhCeQiXZgUVtI90NysIafRukXkE0ZX/tB5HTRabkyeYSgaGrO/8rnaNQT1ci95uiOucoUCFdrv4IEqbfddYHOja3UZ2U2uKP7UCSN0TAPIDSswJOV2dm7PGTg0T6RvfF1+iDY8bfKeNEd1ogUQBWHWVHsWgqVQLml35vGDkvio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nKq+Rf8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054E8C116B1;
+	Thu,  1 Aug 2024 00:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472693;
-	bh=0gp7rOlZePoJ4UoagGIGzzZNnmMI7XlwpB28othjJVM=;
+	s=k20201202; t=1722472698;
+	bh=iPtXXTOTTCYO9TZk2WP4rJQlnMKoQ1qRcUuwJj8voEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLu5Qzl3ZkkEI/0RmfAMrXl/Bt88D7UOWS/yFYLF+skzbTIOIiFKQ8m+kdU3QYwqn
-	 yrSNdsyOQpMp7cnnui/zIySZ4A5wN0AaYcpTudv4pxfIqYLqcFjXVWJyO9xLUZJlSu
-	 BJinEfZmqwLJZDGGUmVnhYqM64AJfZdSZ2GgN+VDGf+iK6Eb30kMweeJ9TY53soWle
-	 pJDLDzHORpbt0XXj/PNFnvmg9SLuTMLszMjBuE0p/lm5hdgOozXKWs6tCnRpea4bRI
-	 a5D9xa0983ZUZBqGMuO6cP8t7/NNtob1u/OtZaRK6RsiDzYhr8YKi+rcWM6EcvaivF
-	 liEelQFClw6jA==
+	b=nKq+Rf8KUuPnzFW/EWyzmSbDQSqLlpYY9cVN5e6wcXNZ75cw/c5qNajQM0lqLBhYr
+	 tQc2sFgMh7ekjLHOpL69Erkj3OofznA5mrzlSgWxZBkgtBYILCFSc08OkAjILweusK
+	 dyZvZxpyVJaIfChSDeQ4g6Y3Y5CXumW7XU9VN4cEJ9HrXDwrJACoXyvaqs6oaWdPOX
+	 WCWCxS+RWqPR1qQcLKQX2Bztgs5/oBKp+vEPTrwEkMNn+152nEX7pYFmpg+ztgOUm0
+	 jS3Fb008Qfbar/xhnHtniS3Y6AdCvlUid8hz2ROYkFLeN47otam9yIFBQhElG5L3ol
+	 Jnv37VHHl9aYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
+Cc: winstang <winstang@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 23/38] wifi: cfg80211: make hash table duplicates more survivable
-Date: Wed, 31 Jul 2024 20:35:29 -0400
-Message-ID: <20240801003643.3938534-23-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	wenjing.liu@amd.com,
+	alex.hung@amd.com,
+	jun.lei@amd.com,
+	hamza.mahfooz@amd.com,
+	george.shen@amd.com,
+	dillon.varone@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.10 24/38] drm/amd/display: added NULL check at start of dc_validate_stream
+Date: Wed, 31 Jul 2024 20:35:30 -0400
+Message-ID: <20240801003643.3938534-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
 References: <20240801003643.3938534-1-sashal@kernel.org>
@@ -70,129 +82,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: winstang <winstang@amd.com>
 
-[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
+[ Upstream commit 26c56049cc4f1705b498df013949427692a4b0d5 ]
 
-Jiazi Li reported that they occasionally see hash table duplicates
-as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
-isn't clear how that happens, nor have I been able to reproduce it,
-but if it does happen, the kernel crashes later, when it tries to
-unhash the entry that's now not hashed.
+[Why]
+prevent invalid memory access
 
-Try to make this situation more survivable by removing the BSS from
-the list(s) as well, that way it's fully leaked here (as had been
-the intent in the hash insert error path), and no longer reachable
-through the list(s) so it shouldn't be unhashed again later.
+[How]
+check if dc and stream are NULL
 
-Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Co-authored-by: winstang <winstang@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: winstang <winstang@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 76a27b6d45d28..e8a9ce0392957 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1510,7 +1510,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
- }
- EXPORT_SYMBOL(cfg80211_get_bss);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 0a13c06eea447..6a993cdb101ee 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2914,6 +2914,9 @@ void resource_build_bit_depth_reduction_params(struct dc_stream_state *stream,
  
--static void rb_insert_bss(struct cfg80211_registered_device *rdev,
-+static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
- 			  struct cfg80211_internal_bss *bss)
+ enum dc_status dc_validate_stream(struct dc *dc, struct dc_stream_state *stream)
  {
- 	struct rb_node **p = &rdev->bss_tree.rb_node;
-@@ -1526,7 +1526,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
- 
- 		if (WARN_ON(!cmp)) {
- 			/* will sort of leak this BSS */
--			return;
-+			return false;
- 		}
- 
- 		if (cmp < 0)
-@@ -1537,6 +1537,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
- 
- 	rb_link_node(&bss->rbn, parent, p);
- 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
-+	return true;
- }
- 
- static struct cfg80211_internal_bss *
-@@ -1563,6 +1564,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
- 	return NULL;
- }
- 
-+static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
-+				struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
++	if (dc == NULL || stream == NULL)
++		return DC_ERROR_UNEXPECTED;
 +
-+	if (!rb_insert_bss(rdev, bss))
-+		return;
-+	list_add_tail(&bss->list, &rdev->bss_list);
-+	rdev->bss_entries++;
-+}
-+
-+static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
-+                                struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	rb_erase(&bss->rbn, &rdev->bss_tree);
-+	if (!rb_insert_bss(rdev, bss)) {
-+		list_del(&bss->list);
-+		if (!list_empty(&bss->hidden_list))
-+			list_del_init(&bss->hidden_list);
-+		if (!list_empty(&bss->pub.nontrans_list))
-+			list_del_init(&bss->pub.nontrans_list);
-+		rdev->bss_entries--;
-+	}
-+	rdev->bss_generation++;
-+}
-+
- static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
- 				   struct cfg80211_internal_bss *new)
- {
-@@ -1838,9 +1867,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 			bss_ref_get(rdev, pbss);
- 		}
- 
--		list_add_tail(&new->list, &rdev->bss_list);
--		rdev->bss_entries++;
--		rb_insert_bss(rdev, new);
-+		cfg80211_insert_bss(rdev, new);
- 		found = new;
- 	}
- 
-@@ -2702,10 +2729,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
- 			rdev->bss_generation++;
- 	}
--
--	rb_erase(&cbss->rbn, &rdev->bss_tree);
--	rb_insert_bss(rdev, cbss);
--	rdev->bss_generation++;
-+	cfg80211_rehash_bss(rdev, cbss);
- 
- 	list_for_each_entry_safe(nontrans_bss, tmp,
- 				 &cbss->pub.nontrans_list,
-@@ -2713,9 +2737,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 		bss = container_of(nontrans_bss,
- 				   struct cfg80211_internal_bss, pub);
- 		bss->pub.channel = chan;
--		rb_erase(&bss->rbn, &rdev->bss_tree);
--		rb_insert_bss(rdev, bss);
--		rdev->bss_generation++;
-+		cfg80211_rehash_bss(rdev, bss);
- 	}
- 
- done:
+ 	struct dc_link *link = stream->link;
+ 	struct timing_generator *tg = dc->res_pool->timing_generators[0];
+ 	enum dc_status res = DC_OK;
 -- 
 2.43.0
 
