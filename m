@@ -1,81 +1,95 @@
-Return-Path: <stable+bounces-65239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78218944A0C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 13:07:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C71944C64
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 15:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD9E1F29A51
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 11:07:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEF7F1C25DF9
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 13:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF7118452D;
-	Thu,  1 Aug 2024 11:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TqFMV6Tz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83F61B8E93;
+	Thu,  1 Aug 2024 13:00:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FA1183CC7;
-	Thu,  1 Aug 2024 11:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FF41A4B55;
+	Thu,  1 Aug 2024 13:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722510459; cv=none; b=HJt0leyYWQynjfpnGh5JqDAHYchTsX43JH04Se8awdmU/cGQl/GN8aiQzbQndKEs7vr6kmi/ME6B+cz+tAPFN3fCO8fDPIFNHGAvtrgYYaYvUUZHhyU86KQ8J7D+MosGSVFr+7QpF6BkG8OMk1DYEagFZyPrKJb17/qzaw8ikaQ=
+	t=1722517221; cv=none; b=eR3tg2+3j12vi3tsQRtYSth0sBQ7LDrdePM4dmFhXpBeLgDd74t5jaskJwU72SJvNaOFdUMTz5kZey2QYaEHmYdyQrpX9x6WApnGOfX0RvXjAvArmb4fzDEWKE9UWClLDys47rJfppBsg+gjoisJO9zBhFEjcrlaao93fT4PvAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722510459; c=relaxed/simple;
-	bh=nrXRn6jo3q8qJ+8iBWQWvu/KEr3WFZfgkq++HuYZ+gg=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=If3zlgCfqlLRbDWIHBnKD1BxMG5TS7kLSXdhCbw0gfmwk7OtjqNYCgFMiYk2YqAq9S2nIA6AAnhkOICAAHYiGfy1Ji9aSO+xkrHnOowTQWt3T2ocBOvCS8B8KFp0iasyc8TwRADaGLYvXuOhhXNFyRAP9pfpY30SW1AY07gk3+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TqFMV6Tz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABFFC4AF0A;
-	Thu,  1 Aug 2024 11:07:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722510459;
-	bh=nrXRn6jo3q8qJ+8iBWQWvu/KEr3WFZfgkq++HuYZ+gg=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=TqFMV6TziDZEp/jyXZpcLcKKrNs+p9CBazrZHPMTzQ+kCE5H3fxILjKIExtJZOYeb
-	 rdig2Ke9qujtGBlJ2DcpBHPBNZovGHElIMYEpSg5swC2Va580MpTdcDvzDlvS4Hob1
-	 rhS49bz10AFiTrJfhVNfk7WhV658ePC5XCVbHkrqs6jZGGlTO9zdhMrefQPAOhahlj
-	 DiFggen8Iye1lBGTXZunySNa4UgXP5hefMDNHAsoZUUa1ZHySWX3WqKIo96ZVIadDX
-	 PBtrwy4RgByzf7UxKTUHArKkthgMcmu487Xv7MnChPjcC6jWfdvs/Q5En2vZzjCAiL
-	 0d1s/64dkSK5Q==
-Date: Thu, 1 Aug 2024 13:07:37 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: "Gerecke, Jason" <killertofu@gmail.com>
-cc: linux-input@vger.kernel.org, 
-    Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
-    Ping Cheng <pinglinux@gmail.com>, 
-    Joshua Dickens <Joshua@Joshua-Dickens.com>, Erin Skomra <skomra@gmail.com>, 
-    "Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>, 
-    Jason Gerecke <jason.gerecke@wacom.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] HID: wacom: Defer calculation of resolution until
- resolution_code is known
-In-Reply-To: <20240730155159.3156-1-jason.gerecke@wacom.com>
-Message-ID: <nycvar.YFH.7.76.2408011305530.12664@cbobk.fhfr.pm>
-References: <20240730155159.3156-1-jason.gerecke@wacom.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1722517221; c=relaxed/simple;
+	bh=kOzKLb8Be8mSq/zYvwMasuEkLwPYZu/V680ihchVzj0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z7j3heIZZq8DjvEqkEuOoKmFItZLn3IVtRdrH/ushzQq/0jAi0s2S2FVyV7EsxP5Js7qdG7zzDQ0ZRhC6cIrmP92tihTLy4A9AS0eHBo4FL/bM0cF+kqlSAqvIrvOiC+qxM5Wi1Sawxv/wPP1SBiOuLN7D9tG8isnBs391QULBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 5F11F1C008E; Thu,  1 Aug 2024 15:00:12 +0200 (CEST)
+Date: Thu, 1 Aug 2024 15:00:11 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/440] 6.1.103-rc3 review
+Message-ID: <ZquG2xoGJ//tHLvA@duo.ucw.cz>
+References: <20240731100057.990016666@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="bo/1npVvdSUvBvJ7"
+Content-Disposition: inline
+In-Reply-To: <20240731100057.990016666@linuxfoundation.org>
 
-Hi Jason,
 
-this doesn't really look like a patch series, but rather a collection of 
-independent, assorted fixes and improvements, right?
+--bo/1npVvdSUvBvJ7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-From my POV, patches 1, 2 and 3 seem like 6.11-rc material to me, while 4 
-and 5 seem to be 6.12 merge window material. Do you agree?
+Hi!
 
-Thanks,
+> This is the start of the stable review cycle for the 6.1.103 release.
+> There are 440 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
--- 
-Jiri Kosina
-SUSE Labs
+CIP testing did not find any problems here:
 
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--bo/1npVvdSUvBvJ7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZquG2wAKCRAw5/Bqldv6
+8mw1AKCgDTQxE53LHwZuAmaEm9WlF+F24QCcC2u5LG81Wl4icxZNzKCK0zgBMqQ=
+=Ifl8
+-----END PGP SIGNATURE-----
+
+--bo/1npVvdSUvBvJ7--
 
