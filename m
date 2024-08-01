@@ -1,142 +1,131 @@
-Return-Path: <stable+bounces-65229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FEF94460E
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 10:01:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F075894462A
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 10:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C50071F22DF0
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 08:01:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14481F225C9
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 08:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31590208A0;
-	Thu,  1 Aug 2024 08:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A92615747C;
+	Thu,  1 Aug 2024 08:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TbzanXrv"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="ZBkk28MY"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7578E1EB490
-	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 08:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5416B3E47B
+	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 08:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722499292; cv=none; b=gH8FZ/k/QIFpu33yiFdRSF0kpt3aJ+lLHCIDsWyws52pNUXhD4egI5HvYYH++hzCGLz3glXU5oOqUmx1Vh9PtYXrkeSa5bQ3im9ZKLP4x64yl3pWZrYDEFeMClLAvIbPUMAPvVB1LgdZeCGmJHx8CH/9Lpa0kAXBTyb+nxmXxsk=
+	t=1722499506; cv=none; b=K2JJWLPYgfTkgdpg1/fGwTXfKMt0dMUFmTcT3Qk7FJ4cM0bpHes2PMbBjakjkQ/K/YfvskI1GYZtZchJk+cmr3FpOr5Wsu38SV3jdPYuv5vM8XmBH01BwUJS5GAA3jWr5G2GXZIV1JOP/EpxjV9zzC7BTJZ7ZOsdwHZQuQceWw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722499292; c=relaxed/simple;
-	bh=Bgzl+Yau9ChklaOFiE/zntI5cfQezV0JW3SA8Iu4Dgw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Py9Sf9FLOCYMS62WMKQv83eKEgetvgt/wgbza7BmpsKmAWL/TvRVAGujgRZC7kBoXTpiJzKUd1sv7zEsh0oZGQoLxge4zZeW4lH7A83vH+wlkEuJbDSBXQT70SgoRzYC6EXNQaYvK5LP2dTBvAP6bpzuVltLjwuGaYgLe5i3t9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TbzanXrv; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722499289;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BJT8BerayjO+edRHg4OqqoNW2Fn4Tnno7cm6u5lzb9Y=;
-	b=TbzanXrvmQCYeOwjCVV8OfaGnOaKWXPg3WsIJe+gd8XDBp1QgxQzCcrIjONVK1F0NW0+9u
-	TZIe9GIma3xFTA6FpNbD1ovC6VVVGJjWNwdgTud41ZSydwIDoQ7F4AbM1pJFGEHxOt8kMT
-	Ce+w8vPl//BEpjqTOgMLI2maeEiadpc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-315-v1C6Tkq4Nv23s0EwXchEeg-1; Thu,
- 01 Aug 2024 04:01:26 -0400
-X-MC-Unique: v1C6Tkq4Nv23s0EwXchEeg-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AFF331955F45;
-	Thu,  1 Aug 2024 08:01:24 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.225.183])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id CB2D51955D42;
-	Thu,  1 Aug 2024 08:01:21 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Thu,  1 Aug 2024 10:01:24 +0200 (CEST)
-Date: Thu, 1 Aug 2024 10:01:20 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Aleksa Sarai <cyphar@cyphar.com>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Daan De Meyer <daan.j.demeyer@gmail.com>, Tejun Heo <tj@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
-Message-ID: <20240801080120.GA4038@redhat.com>
-References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
- <20240731145132.GC16718@redhat.com>
- <20240801-report-strukturiert-48470c1ac4e8@brauner>
+	s=arc-20240116; t=1722499506; c=relaxed/simple;
+	bh=7zfcPWvAnMZtQ0hKzCtL3oX3MOgy/pixFvoxh7mLZo4=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=YwmilCvAP9Jxp/nY/g+T9IvMzHP3fY/2H35c2nVuiy+eK8ZBDiVEHo7ZYBRXPc0fiEBtUhzEoo5YFBh/jLTKBL8W//eioPMG7YvXzX/tT17yjgcL7tiWJ92GX2u+mwKFXdue6Dvy8gortuvUFEZ99jafMDQLYHaaJuidbJ7v4I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=ZBkk28MY; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
+	by cmsmtp with ESMTPS
+	id ZQdfsPu0hjnP5ZQo3sd6hF; Thu, 01 Aug 2024 08:05:03 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id ZQo2sXfrSks1PZQo3sSyly; Thu, 01 Aug 2024 08:05:03 +0000
+X-Authority-Analysis: v=2.4 cv=Ud+aS7SN c=1 sm=1 tr=0 ts=66ab41af
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=yoJbH4e0A30A:10 a=VwQbUJbxAAAA:8 a=HaFmDPmJAAAA:8
+ a=o4oUe0vuTkceCX_PDYEA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bIxp1EyNdg7hPOJ4wr2j1sNmxSWc3ZBlMiYwBiSO3jQ=; b=ZBkk28MYYfbfMuTURR6pmZVWCo
+	4EQ1ew3zpxYpCbLj6cZGc3lB59zdiKwwOQ3h0Oa7ymY81Dq0saYXcjpS+W8z25hkiskV6DxLgRy//
+	4vIn5L0ONtJYm7vjXH+mn9uGAfjtDy99KBU1H3QEsXKnMYk3Hp9oqOA+eJ3RQONeP9MGdADPlo1AJ
+	g63okaZFT1g8W3krxV1+Jhstc52HAtF4rhINXxw7bw31GGBKqccnk2Q/V2PG0gHatRNso58reMf38
+	HITWWguivPobSINrC7erAoWGCmDfzc15mjlLOx2MedLhmNF1/3icxrIMmPqXjzz/3hrEL0d/mfPBI
+	GJmdS2VQ==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:60454 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sZQny-000Mhs-1I;
+	Thu, 01 Aug 2024 02:04:58 -0600
+Subject: Re: [PATCH 6.1 000/440] 6.1.103-rc3 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240731100057.990016666@linuxfoundation.org>
+In-Reply-To: <20240731100057.990016666@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <6ee4cb6b-e4a0-3196-d651-d9a05f7f9dde@w6rz.net>
+Date: Thu, 1 Aug 2024 01:04:51 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240801-report-strukturiert-48470c1ac4e8@brauner>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sZQny-000Mhs-1I
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:60454
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfORtsqKbQdqsyt0KqHnW7lQrIB9GbugrgGFtIx5p+p8o/3ge8UplLQa+E6vXcp4O6UEaAxybmH1CeKBCYqq1qbMIdgAU+gYk6RcfhmSQcTqDfYPr4Vgr
+ 2hT0E0SYqwPwrIbSomaybIJfilOB5LUkq+4pQow52Ng28BAjdoavYfqlL/E05NAVKdrZywmZlMxtsw==
 
-OK, I won't argue, but ....
-
-On 08/01, Christian Brauner wrote:
+On 7/31/24 3:02 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.103 release.
+> There are 440 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> On Wed, Jul 31, 2024 at 04:51:33PM GMT, Oleg Nesterov wrote:
-> > On 07/31, Christian Brauner wrote:
-> > >
-> > > It's currently possible to create pidfds for kthreads but it is unclear
-> > > what that is supposed to mean. Until we have use-cases for it and we
-> > > figured out what behavior we want block the creation of pidfds for
-> > > kthreads.
-> >
-> > Hmm... could you explain your concerns? Why do you think we should disallow
-> > pidfd_open(pid-of-kthread) ?
+> Responses should be made by Fri, 02 Aug 2024 09:59:35 +0000.
+> Anything received after that time might be too late.
 >
-> It basically just works now and it's not intentional - at least not on
-> my part. You can't send signals to them,
-
-Yes, you can't send signals to kthread. So what?
-
-You can't send signals to the normal processes if check_kill_permission()
-fails. And even if you are root, you can't send an unhandled signal via
-pidfd = pidfd_open(1).
-
-> you may or may not get notified
-> via poll when a kthread exits.
-
-Why? the exiting kthread should not differ in this respect?
-
-> (So imho this causes more confusion then it is actually helpful. If we
-> add supports for kthreads I'd also like pidfs to gain a way to identify
-> them via statx() or fdinfo.)
-
-/proc/$pid/status has a "Kthread" field...
-
-> > > @@ -2403,6 +2416,12 @@ __latent_entropy struct task_struct *copy_process(
-> > >  	if (clone_flags & CLONE_PIDFD) {
-> > >  		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
-> > >
-> > > +		/* Don't create pidfds for kernel threads for now. */
-> > > +		if (args->kthread) {
-> > > +			retval = -EINVAL;
-> > > +			goto bad_fork_free_pid;
-> >
-> > Do we really need this check? Userspace can't use args->kthread != NULL,
-> > the kernel users should not use CLONE_PIDFD.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.103-rc3.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 >
-> Yeah, I know. That's really just proactive so that user of e.g.,
-> copy_process() such as vhost or so on don't start handing out pidfds for
-> stuff without requring changes to the helper itself.
+> thanks,
+>
+> greg k-h
 
-Then I'd suggest WARN_ON_ONCE(args->kthread).
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-But as I said I won't argue. I see nothing wrong in this patch.
-
-Oleg.
+Tested-by: Ron Economos <re@w6rz.net>
 
 
