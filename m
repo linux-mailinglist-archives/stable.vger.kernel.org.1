@@ -1,188 +1,140 @@
-Return-Path: <stable+bounces-65246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE00944EF4
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 17:18:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EDE944F09
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 17:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1365E1F23843
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 15:18:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A41111C2298D
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 15:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E36113BC2F;
-	Thu,  1 Aug 2024 15:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3329D1A57F3;
+	Thu,  1 Aug 2024 15:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b="juBQ5Auu"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="rUfvYyZs"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B41B1369AE
-	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 15:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9C113B5AF;
+	Thu,  1 Aug 2024 15:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722525479; cv=none; b=jePTm4honWmvD2X5DVbH+DOb8s5onx4jXDKSuxUqxSeSVaPM2XZZ2mKS4QbCxBFeqcu5TdLcddDqJUonquxvLzYARq/44ZZnT+W5jU0YDORCOadDiO3NmPlzFSe8k3WBdsMVVy0IbZwzYUyE+GiH00Zf+2xp0fiQ0MbdjncMbPk=
+	t=1722525749; cv=none; b=LVXluBh8jefw0dDq67qYzglHiPZCDCXUFl4fiQ2szLrbmjV7YsGFvFL/7LcKwUF2NI0jDwgGUFbAl7NafZOYspnDtR663buqOCf0Enf5ll6gndCmbWAXMGA/txv3OSpY7cErnMQrEDTNq/yS7rfhCkVz6oOOTjODMc0Zoov1gj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722525479; c=relaxed/simple;
-	bh=BGVJPebnq8UwEOe9CaxzMtb96nncel6ZuVxq0Oxfjdk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HPwgq7dO55fD4x2Kq2r2dcxWuO1grAfQoV8lr1CwQ13WconBFGcr5Mkt0ksQJwEPCe/hwzPyk6fqsnfQh41C/Kib86d4K7m0e3Azrdj59AHKsbTGq8g2y+akpuDzLLqcgnICF6jFmRk9s6jqginRjy9ipdO0IFDZBebHobkmuc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b=juBQ5Auu; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1722525455; x=1723130255; i=friedrich.vock@gmx.de;
-	bh=BGVJPebnq8UwEOe9CaxzMtb96nncel6ZuVxq0Oxfjdk=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=juBQ5Auu6bzKuxOBAIAb/9o94BimCz45q2Eq19N1D6C7i1MWXng30D0BRKQ2xwXT
-	 3R7bn/pDBhc+Xct/0SUyfO8+FuoxIFeUWeTOM/E5PH3XxYRnGL6HWBYVpazf+yYo/
-	 wUVojFW+ZBpe+v+dL8sAv2kZRs7f4xVtZCSXixJLqvTchY8S4QUQW2Ay2hmv6m6ST
-	 RrU1dfEkEXYAk8PhDMMe9PFctxc9goy0I7W5Qxrk1lnTay5bPHarfgKbtcwRCuUEf
-	 cHKd5w91wx1Vgivw6/fXYamGTdKs8Pf+2bXXd8UGmxVbyJILp1bfLJCQdo5fgSuAC
-	 yt4lQ0lGj7EyYmSAng==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.177.3] ([213.152.114.245]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MFsUv-1sTCRU1e6p-008uFA; Thu, 01
- Aug 2024 17:17:35 +0200
-Message-ID: <641ce39c-a6a6-4448-bb2a-9c12d2873c1c@gmx.de>
-Date: Thu, 1 Aug 2024 17:17:34 +0200
+	s=arc-20240116; t=1722525749; c=relaxed/simple;
+	bh=zWV9fwEvLkpA9pAeJ3oXXYHMJLMCa0NehNRH5O/nh8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XaXE+O7IXUppGctMtziI1JAPJz5x+SPfAQUq9HJ4Oowqf9ixfyBkcg3UKWJGzBLP/+ZEcOgbl310AXeD/gGS4mWQtSjETzRssmi8z/HiO5FWrFLa3z998vexMEmQPy2fpiGOwAZskokpTC2QedzgL9oMQ5zuxhhORvc7syfG67o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=rUfvYyZs; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1722525744;
+	bh=zWV9fwEvLkpA9pAeJ3oXXYHMJLMCa0NehNRH5O/nh8Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rUfvYyZsOxApkTth73GusmRQGJN5JbQZgYt/0D1/aWxoQ3Nt+bKxILAE34nC8yFxW
+	 YrmqkM9sIUv152l8ePXuya1qxFIQvHalvOAPjyC3T/Tls0ckcaS/BzS+gH1mDnaQoN
+	 JhFeoA4PyVB7brI689Ndzi7PU0gQQbzoo6ERWQgq0iNIALzmegacW2yM6k3msYRnCl
+	 1FZbjC25KfTJvt/xIQL/8oPgoa1i31vTnX+DH6SoWNlz0B8ypmS0FtfDtScp6peiOD
+	 Rbtuu+0FRrvFBH2ZTefICx0CtY55HwS3Vw8Ur+FFWByq3Hm9VBvNY4TeCP5vcpugM2
+	 bxmGdQFEG1GXA==
+Received: from mercury (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sre)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C6BF73782167;
+	Thu,  1 Aug 2024 15:22:24 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id 70DF5106097C; Thu, 01 Aug 2024 17:22:24 +0200 (CEST)
+Date: Thu, 1 Aug 2024 17:22:24 +0200
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Lee Jones <lee@kernel.org>
+Cc: Dmitrii Osipenko <dmitry.osipenko@collabora.com>, 
+	Mark Brown <broonie@kernel.org>, Urja <urja@urja.dev>, Heiko Stuebner <heiko@sntech.de>, 
+	linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel@collabora.com, stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] mfd: rk8xx: Fix shutdown handler
+Message-ID: <ih7hiojzuvqzpyipj66mgu5pmcderltabim7s5dnfzm6qpztbh@jqkst5tfw5ra>
+References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
+ <20240801131823.GB1019230@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] drm/amdgpu: Forward soft recovery errors to userspace
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Joshua Ashton <joshua@froggi.es>, amd-gfx@lists.freedesktop.org,
- "Olsak, Marek" <Marek.Olsak@amd.com>
-Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
- =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
- stable@vger.kernel.org
-References: <20240307190447.33423-1-joshua@froggi.es>
- <d9632885-35da-4e4a-b952-2b6a0c38c35b@amd.com>
-Content-Language: en-US
-From: Friedrich Vock <friedrich.vock@gmx.de>
-Autocrypt: addr=friedrich.vock@gmx.de; keydata=
- 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
- f7+xmX0X3AMtWz/15Y+7cPO2
-In-Reply-To: <d9632885-35da-4e4a-b952-2b6a0c38c35b@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5ij2xz22fzghfnfr"
+Content-Disposition: inline
+In-Reply-To: <20240801131823.GB1019230@google.com>
+
+
+--5ij2xz22fzghfnfr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:nTvKfMWnEvLQDe4yB1AZcdH5YcD3YIM3gAFv9uO57UybLg2FahP
- 5NyA8tkBsks/haeG+uXfbz4UDtJzWThrclSG1NEgjF4q02xkyf2NEj+2Iih9UbqviHatM3x
- bJLMwx9tcF7hIfFPVPzTBJ8GMih47FFQDjcgsZ4eeppwLDwQABys8FzhV0LyQarVvWOzsgw
- Q4VMOcu1avIIJdsY/PDsw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:jmEL+whHZxY=;OL0ECRSvzzyzvKprZ7tBVwuh9h0
- abR6gk4L9IvBSyL3JS3h4972xHcH4x0UksA+T+jXZeo/BGr9/6T3zYAKanWsqjy0ls310XkqZ
- fg6S/ACHBHFy3mFFnvdwZ1/6appm5ZmshUM7JjaogSbLxY1LKUb9dMQH4fQBvQTP5w8w6UCq+
- E3sFUjvkrjrJHZ5yEb6yBMqWZJvrWEsa0F4IMru5MBc8GvSP5Iy6bAFpr2SrUZ7l6SxSadXuK
- RhGUZH+stfEis4d+MEV9HjM3upOF4mlKVxY87ER+wNhiG1KkD2h2MPhU1LAl0KyeapKtTWDOl
- Q8n/ZytzWVnHk+IEdcqWdhZ70PNybJUM9KCMDgO4602xV9uq6fO6V7OylKR26XaGJADJOgLgF
- xpw4ntYmRaTfvAzqVQVtU1FSSRkHGnUVfwHjgzmVngCnWlS9n8qyC9G9rbdrthxBAcrimoiwF
- AWQS3VwLoNKxnxJFvITFPNtiT1360PThZgTdamziaBebtVKZh0uhE7K6N230wNlRY4TjoiymF
- NM82sBpArqucgo6YMniex0hXrKX2Fct+rV40vRL3N9wvETw4fjzLkdwVer4w9FeLa5bQLOTlT
- BtCtQ5YHtTRcYXPduScHp9WeE2mntkEyTc1rDgVJpb4WZKWr5yCC3E4DwiWYRT5TxM3xXtmd5
- egoDvKI8nEM2qASfYGddvqOheI4qKU9b2Uce03RhNG7IWB+aRCOG323v/bt7kyxvQ0YcxySXa
- Yn7ZOueG2XQ28gLwb2nuSaagv27i+FMrGhcN+70QF7o6b4ge1hu7D/JeKXR/5EtDnCP6Hz/h3
- 8oQFWGUCTYKktGI5Li4Ltt7lYVABPIvxR0L1rC5gTraVo=
 
-Hi,
+Hello Lee,
 
-I happened to come across an issue just now again where soft recovery
-fails to get reported to userspace properly, causing apps to submit
-hanging work in a loop (which ended up hanging the entire machine) - it
-seems like this patch never made it into amd-staging-drm-next. Given
-that it has a Reviewed-by and everything, was this just an oversight or
-are there some blockers to pushing it that I missed?
+On Thu, Aug 01, 2024 at 02:18:23PM GMT, Lee Jones wrote:
+> > +	/*
+> > +	 * Currently the Rockchip SPI driver always sleeps when doing SPI
+> > +	 * transfers. This is not allowed in the SYS_OFF_MODE_POWER_OFF
+> > +	 * handler, so we are using the prepare handler as a workaround.
+> > +	 * This should be removed once the Rockchip SPI driver has been
+> > +	 * adapted.
+> > +	 */
+>=20
+> So why not just adapt the SPI driver now?
 
-If not, I'd be grateful if the patch could get merged.
+This patch is simple and thus can easily be backported, so that the
+Acer Chromebook shutdown is fixed in the stable kernels. SPI based
+rkxx has been using SYS_OFF_MODE_POWER_OFF_PREPARE from the start,
+so it's not a regression.
 
-Thanks,
-Friedrich
+As far as I could see the SPI framework does not have something
+comparable to the I2C .xfer_atomic handler. So fixing up the
+Rockchip SPI driver probably involves creating some SPI core
+helpers. I'm not yet sure about the best way to deal with this.
+But I guess it will be better not having to backport all of the
+requires changes to stable.
 
-On 08.03.24 09:33, Christian K=C3=B6nig wrote:
-> Am 07.03.24 um 20:04 schrieb Joshua Ashton:
->> As we discussed before[1], soft recovery should be
->> forwarded to userspace, or we can get into a really
->> bad state where apps will keep submitting hanging
->> command buffers cascading us to a hard reset.
->
-> Marek you are in favor of this like forever.=C2=A0 So I would like to re=
-quest
-> you to put your Reviewed-by on it and I will just push it into our
-> internal kernel branch.
->
-> Regards,
-> Christian.
->
->>
->> 1:
->> https://lore.kernel.org/all/bf23d5ed-9a6b-43e7-84ee-8cbfd0d60f18@froggi=
-.es/
->> Signed-off-by: Joshua Ashton <joshua@froggi.es>
->>
->> Cc: Friedrich Vock <friedrich.vock@gmx.de>
->> Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
->> Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
->> Cc: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
->> Cc: stable@vger.kernel.org
->> ---
->> =C2=A0 drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 3 +--
->> =C2=A0 1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
->> b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
->> index 4b3000c21ef2..aebf59855e9f 100644
->> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
->> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
->> @@ -262,9 +262,8 @@ amdgpu_job_prepare_job(struct drm_sched_job
->> *sched_job,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct dma_fence *fence =3D NULL;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int r;
->> -=C2=A0=C2=A0=C2=A0 /* Ignore soft recovered fences here */
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 r =3D drm_sched_entity_error(s_entity);
->> -=C2=A0=C2=A0=C2=A0 if (r && r !=3D -ENODATA)
->> +=C2=A0=C2=A0=C2=A0 if (r)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto error;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!fence && job->gang_submit)
->
+In any case I think the next step in this direction is discussing
+how to handle this in general for SPI.
+
+> What's the bet that if accepted, this hack is still here in 5 years time?
+
+Even if I don't work on this now, I would expect somebody to have
+issues with broken shutdown on RK3588 boards before 5 years are
+over :)
+
+Greetings,
+
+-- Sebastian
+
+--5ij2xz22fzghfnfr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmarqCsACgkQ2O7X88g7
++prvRA//QpziJs2zje1Qs5sT0QdiKwVULJnHSVmN2UsJp8Nw8PlCA7Mroafv8j9l
+rrWa+8tAEtNgwOrjqKJQRt3wDg5kIK/w1MOJ+JN1Du+miRL1Wa8c2TB51E8dLjZC
+gFPg5jZMcqon5+36cDEOn7x8nNv5rZyWcYf6PKtdtz1/88KhFPX55J9uX7rR9WGR
+hRci+TllwouFpCAXe5CI2TSUWE69Bma3hrzpuFC8iqTesC6K42qqaV74JkuKMRLx
+uoJ3zwBMChMZsrPjf8sFQpl/DQc3/kGOJsf19QjvYa+IOyDYUAWsxDDURyyifiXG
+dQhXNyWe93tXKtqwqO1aQ9n/faqMvfN22mpUM/9/XRy7E9OZ62x4pW7CgspIDRUD
+DN5CntPyOdGOAvY0v87PwwGo17LMH5BHP/TycsCAjBV1Euld8JAwK5VXBdZehYs0
+Wf3TJ32Vu6dNugbXthA5p+l+auW8cFw9mYujAo5N++ao0VoVRYh8XdzUj6EcuYDn
+v38wN8S8nzqoH9qgrjsopJ5e936s7uw5soeLnjtHPZmXxopFaXo82ky1MUBLeQeW
+1gjeYMSqwicmW/XruQy5mm+8SCzI95d9l9GiJXavEmyBWBC1R2J1cory+m2KOvEZ
+IZACNzdWQwXOyjzKtG0wLkxqB+6UsNg2NUebLYUO5div78AcDnQ=
+=6MRC
+-----END PGP SIGNATURE-----
+
+--5ij2xz22fzghfnfr--
 
