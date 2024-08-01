@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-65188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1620A943F8C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:44:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D59944052
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 04:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C463E282183
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:44:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B95E8B2D805
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2053A1A99C9;
-	Thu,  1 Aug 2024 00:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCF71A99FC;
+	Thu,  1 Aug 2024 00:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TxXS/FDD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F9tD8yLU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08E81A99C0;
-	Thu,  1 Aug 2024 00:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03B51A99F0;
+	Thu,  1 Aug 2024 00:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472801; cv=none; b=o0N4u6keIOBdEmarYDwio3KrXpuYTFp79WrUozleKqJoZyf6T8nddd4JuXK7oYV9QV0M8VHpDqzfXOEcEVJ+n0N9AxuChEmTykdCJ2ekzhuj322JzK5YAORrnjspS5oWGiSGPwi0c7iBMIpYpthOw7lC7q5uaULQvhnkB3XfLXw=
+	t=1722472803; cv=none; b=hp5waDIG8NzKPWfDTke9gghYPRfRcRnKLOEma8EkuEWIWpOIO7E/auHTvQ9zK0C+4brv55yOrhnVJ05xJxbd7qQYoLkAwQAqRkrpmVPkX8ksXGthMSty5ea1jB7LYWG2T21eLNBp8NoOk0sm8hcLfD8aRFVf5xANVf4X/0EHSKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472801; c=relaxed/simple;
-	bh=na8NJrzzyPWYqXIyfQezWiXxK8ilJO4lTx7HY47C8mI=;
+	s=arc-20240116; t=1722472803; c=relaxed/simple;
+	bh=1S5xV8iSrC7tAFZ1yMI39/6iucFfVsril84naCHv+MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DB7TJGnrTfZ0BJ9xsgfpfUzI+hv828OmCLIX29L3iAwk5ErXRkynyaGzcqCm8vmWmQTgqUb5+Jfme0DMBHEbQMPYxXw1XfRf9d7VM4swRNXoAbVwq47T7TNsPD+o6emr1wYSBrdtx8UTOZnVimmfESbjOSLuUpIU1bGbHY6WRWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TxXS/FDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EE4C32786;
-	Thu,  1 Aug 2024 00:40:00 +0000 (UTC)
+	 MIME-Version; b=gqDYS/MEPaHVnsP4yfIrTYdj3J5gZbSqXJwbKXzJcLo0JMexvjwtkDVcytpN+oql9P0FgV3W5IvdFX86N6E13LVPiqvLDowyEtk07wamA3oKVXdOVIt3q2BhU0dJligrCID4rLsMgE7Ng4iF2C+HqtcikNvzWeD93k8vrBGqZZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F9tD8yLU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3175BC32786;
+	Thu,  1 Aug 2024 00:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472801;
-	bh=na8NJrzzyPWYqXIyfQezWiXxK8ilJO4lTx7HY47C8mI=;
+	s=k20201202; t=1722472803;
+	bh=1S5xV8iSrC7tAFZ1yMI39/6iucFfVsril84naCHv+MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TxXS/FDD24rOSijWOiX72DVTDdaiaFlV79WfmwTZYFPucI3nb+d6kIT3uCxUMlNSY
-	 Xk5YN1B45bOoGbWbqOrH5Td18PH30qW384i8DChcgA0HHwkOwnLdoN/6l1kmQtKV1Z
-	 xnxTXEipIUsLaRX/pE8leb0x2EGifISMxqfVgftuU/b5W7oE3F0sqmgjWM/x7FM/dx
-	 6KAcUntssivh1r8xdaT2e965cXJNHlxd4uAD6M83uWVDidUiDkgc+LncBQaN7Ec4qq
-	 cRF+ZVqEfujf1kMo8rtJENPEor0DkkPpWqBYjgM4mfP1vHP4WbS+Apfqln8OBE8tAi
-	 f1rE+TVp71Ykg==
+	b=F9tD8yLUClW8bhf4NdLox3CtxJJksYSXeYtD8aDeR2wTwuzmKizCMtY+/3F/6YNy2
+	 U8woV3BwpwHogxtTDQ0s6TXlbzdjQV9tLRHhbepxQuLOH2I7CYwHj6A39BXh7YLUvb
+	 Gx+snwTPpdzKiK/1fnpBnd2Fu0Hmcr2BU1pgZFO6EeKNGm3gNy9L6KyLnaeCMG/a7R
+	 UuiWVWMSpp+gd1K18K2OArCluwVv8g/8TKtg88wrFjvpIGzCgWyyu9+wwQpLWi9jxD
+	 Pa7KjWaugxYcUrOBZKkTfTitjEDpRJ56Jnxjn6xyHjQxpeAtjqAIzKgemmVOWh52hw
+	 pa0kNgvCaEYDw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
+Cc: Shantanu Goel <sgoel01@yahoo.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jack@suse.com
-Subject: [PATCH AUTOSEL 5.4 13/22] udf: Avoid excessive partition lengths
-Date: Wed, 31 Jul 2024 20:38:42 -0400
-Message-ID: <20240801003918.3939431-13-sashal@kernel.org>
+	stern@rowland.harvard.edu,
+	linux-usb@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	usb-storage@lists.one-eyed-alien.net
+Subject: [PATCH AUTOSEL 5.4 14/22] usb: uas: set host status byte on data completion error
+Date: Wed, 31 Jul 2024 20:38:43 -0400
+Message-ID: <20240801003918.3939431-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003918.3939431-1-sashal@kernel.org>
 References: <20240801003918.3939431-1-sashal@kernel.org>
@@ -64,60 +69,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.281
 Content-Transfer-Encoding: 8bit
 
-From: Jan Kara <jack@suse.cz>
+From: Shantanu Goel <sgoel01@yahoo.com>
 
-[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
+[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
 
-Avoid mounting filesystems where the partition would overflow the
-32-bits used for block number. Also refuse to mount filesystems where
-the partition length is so large we cannot safely index bits in a
-block bitmap.
+Set the host status byte when a data completion error is encountered
+otherwise the upper layer may end up using the invalid zero'ed data.
+The following output was observed from scsi/sd.c prior to this fix.
 
-Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
-Signed-off-by: Jan Kara <jack@suse.cz>
+[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
+[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
+[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
+
+Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/usb/storage/uas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index 0f8b3cb355852..2d3eabf955c55 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1082,12 +1082,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
- 	struct udf_part_map *map;
- 	struct udf_sb_info *sbi = UDF_SB(sb);
- 	struct partitionHeaderDesc *phd;
-+	u32 sum;
- 	int err;
- 
- 	map = &sbi->s_partmaps[p_index];
- 
- 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
- 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
-+	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
-+			       &sum)) {
-+		udf_err(sb, "Partition %d has invalid location %u + %u\n",
-+			p_index, map->s_partition_root, map->s_partition_len);
-+		return -EFSCORRUPTED;
-+	}
- 
- 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
- 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
-@@ -1143,6 +1150,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
- 		bitmap->s_extPosition = le32_to_cpu(
- 				phd->unallocSpaceBitmap.extPosition);
- 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
-+		/* Check whether math over bitmap won't overflow. */
-+		if (check_add_overflow(map->s_partition_len,
-+				       sizeof(struct spaceBitmapDesc) << 3,
-+				       &sum)) {
-+			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
-+				map->s_partition_len);
-+			return -EFSCORRUPTED;
-+		}
- 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
- 			  p_index, bitmap->s_extPosition);
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index 678903d1ce4da..7493b4d9d1f58 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -424,6 +424,7 @@ static void uas_data_cmplt(struct urb *urb)
+ 			uas_log_cmd_state(cmnd, "data cmplt err", status);
+ 		/* error: no data transfered */
+ 		scsi_set_resid(cmnd, sdb->length);
++		set_host_byte(cmnd, DID_ERROR);
+ 	} else {
+ 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
  	}
 -- 
 2.43.0
