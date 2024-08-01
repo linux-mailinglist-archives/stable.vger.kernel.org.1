@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-65127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B8E943EED
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:29:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66469943EF2
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:29:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9EE71F21159
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:29:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97FAC1C22B87
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8501DD39E;
-	Thu,  1 Aug 2024 00:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30A71DCC71;
+	Thu,  1 Aug 2024 00:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qac840hd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGg7kvFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73BE1DD392;
-	Thu,  1 Aug 2024 00:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714811A617D;
+	Thu,  1 Aug 2024 00:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472517; cv=none; b=A+RLIMH8U+Br95P3+zWjUnKbJZgFTTqjHwULlmhfclycCtKpIoC986edbk2CQrifYM2uO9KbTUscX+yUH/CbHWQ6BGDfuqzLG13tv1MMNNc/RbzxdfvdUs3DFb7VahjL+AsWfK6ZbcB4KG7ZniduCfqtIm/PtGtVLYiwC5Jg9tE=
+	t=1722472522; cv=none; b=nAaw1wpJz6GkgSNkMiIUX5cbNDAAzH/3QoDEpweKOQ+s0wtJeGTtHsk+VB0MvYPyQZDFIkqJcu0cIkpy+gCScGeBbgcBgnYecTEY6nR29dB8/Cs/+duDnvk4CoeBWCZtkNO6ofI/v+gTLEoqcRqStI2UF1YdQuZ1SY4oc0j/qVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472517; c=relaxed/simple;
-	bh=5zfISgYw25AJ/G+BhlY8037e8UEmkJsLaeb/tdlBl2Y=;
+	s=arc-20240116; t=1722472522; c=relaxed/simple;
+	bh=L7+VrIpIwWLuWLlG8x/fO+bqChqwHUkr6r+2VIkykqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkncWGuT8c8zXGQ7JzdbhYnkS7UffOvaaGLJOzv/JZegl0e5slxoiYO1pSia+XhysVv1uy7iUE4LWo0l3a+T6qQVyf1JiWUBOVzVMBRZWKTjPevMcIhVIRiy6CYnlyYm/h5JVJchypMPS6sdpYIbrknUDV2v84+Rvf977O+homc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qac840hd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2809EC116B1;
-	Thu,  1 Aug 2024 00:35:16 +0000 (UTC)
+	 MIME-Version; b=RptDxaM7Vz1xJmLdfvAq9f3hCGPN7kkY189pRhCEjdCUAE+bkFRpCC/Mn4ywFKruaVeLMPjlYS31OSaNyOZJqJ7QyDkupZedJXUIGwScw1tGWYHmM/9pdvq7A3//Yacp0JOqryCb8RUDjW5huQFPFhoqF3J4rHDC2gPRwA6j5Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGg7kvFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55416C116B1;
+	Thu,  1 Aug 2024 00:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472517;
-	bh=5zfISgYw25AJ/G+BhlY8037e8UEmkJsLaeb/tdlBl2Y=;
+	s=k20201202; t=1722472522;
+	bh=L7+VrIpIwWLuWLlG8x/fO+bqChqwHUkr6r+2VIkykqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qac840hdJyjL/wXdFvgUG49TWSHtFKphWEnACghSxhqVd3bwm+dYGoGrkuGESq7Yh
-	 DLpx0sbaiIRxh8I7xriW3bI9zT7P5f8EF/nOW0kmfsWtfgj3o4ZQnRsaiHqLfE07+M
-	 yl3sHe/iLIcucD8s7W5+MJAEqaYaa0ih/3qGBwX0Te9Flw/f/PfN0pRSzkrDy/KHNl
-	 K9yR4iNSm72o5ZIrT2itxu/RC/lWwbXqfqTFoZlPbeWUUJHKS9aE5i7HhGsiYBJt1r
-	 py5T8nvNLaK7v1NuvdiMyOfg758rdkiK+6chy++3jWjOuTNrNEh/uQW0k7w4csEwYT
-	 hf++R2ikZ/7tA==
+	b=CGg7kvFOOWk2puaFps6tKy1eL2OgSBK9gsKVlg/FB/vmu9JyuGbZYVlpI8KsOvTHb
+	 64mFFINSKYJdgu7oBZ8Q14QKQUqPpUE5hDpM/4JsWCx4qbRHUuoCEBAi4cF1Ro5+wx
+	 iJRcWVQqJLKJCRNvdRPrHFwTGtW50IY70vqyX6yEgXWtCfxnwmfbORVuraeUDCvkNp
+	 LrPbs+Rbs4Q3vjjwlVysdgt8Z4oaly23R68NFWp2dWjjZnSJcnuE6Z1VZDAVfT44rb
+	 FbROTI8UKBqPajXr3BokgcytPmPfKPjmDgNfv6VVWV9wuQOWreTGZl4QtCmX6KZ14T
+	 0XZsXVdDY2Yog==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shantanu Goel <sgoel01@yahoo.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Alex Hung <alex.hung@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	stern@rowland.harvard.edu,
-	linux-usb@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net
-Subject: [PATCH AUTOSEL 5.15 37/47] usb: uas: set host status byte on data completion error
-Date: Wed, 31 Jul 2024 20:31:27 -0400
-Message-ID: <20240801003256.3937416-37-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	marcelomspessoto@gmail.com,
+	wenjing.liu@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.15 38/47] drm/amd/display: Check HDCP returned status
+Date: Wed, 31 Jul 2024 20:31:28 -0400
+Message-ID: <20240801003256.3937416-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003256.3937416-1-sashal@kernel.org>
 References: <20240801003256.3937416-1-sashal@kernel.org>
@@ -69,39 +77,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Shantanu Goel <sgoel01@yahoo.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
+[ Upstream commit 5d93060d430b359e16e7c555c8f151ead1ac614b ]
 
-Set the host status byte when a data completion error is encountered
-otherwise the upper layer may end up using the invalid zero'ed data.
-The following output was observed from scsi/sd.c prior to this fix.
+[WHAT & HOW]
+Check mod_hdcp_execute_and_set() return values in authenticated_dp.
 
-[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
-[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
-[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
+This fixes 3 CHECKED_RETURN issues reported by Coverity.
 
-Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/uas.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../amd/display/modules/hdcp/hdcp1_execution.c    | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index 11a551a9cd057..aa61b1041028d 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -422,6 +422,7 @@ static void uas_data_cmplt(struct urb *urb)
- 			uas_log_cmd_state(cmnd, "data cmplt err", status);
- 		/* error: no data transfered */
- 		scsi_set_resid(cmnd, sdb->length);
-+		set_host_byte(cmnd, DID_ERROR);
- 	} else {
- 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+index 6ec918af3bffc..119b00aadd9a4 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+@@ -433,17 +433,20 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
  	}
+ 
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
++		if (!mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
+ 				&input->bstatus_read, &status,
+-				hdcp, "bstatus_read");
++				hdcp, "bstatus_read"))
++			goto out;
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(check_link_integrity_dp,
++		if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
+ 				&input->link_integrity_check, &status,
+-				hdcp, "link_integrity_check");
++				hdcp, "link_integrity_check"))
++			goto out;
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
++		if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
+ 				&input->reauth_request_check, &status,
+-				hdcp, "reauth_request_check");
++				hdcp, "reauth_request_check"))
++			goto out;
+ out:
+ 	return status;
+ }
 -- 
 2.43.0
 
