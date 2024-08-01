@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-64886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A150F943B98
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE05A943B9E
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 693982827ED
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:29:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A1F4283E41
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575C218A6C7;
-	Thu,  1 Aug 2024 00:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1D5189BB7;
+	Thu,  1 Aug 2024 00:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bnOsXhTN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tbrAYCVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A89F189BBD;
-	Thu,  1 Aug 2024 00:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7458418B498;
+	Thu,  1 Aug 2024 00:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471298; cv=none; b=bTpfMPmOhm2lea90DrIFpzi8Smlr09DlSssuJJ8ef8fwl7zh2+QFru2ecjtjpHzHTjv7IBWvb6XNuLTzQ7lgLZxkw7WvODGzaEaY8zB7v9NDC4w2VumMvNzLtFfy1udPJtwwDp2+fdD1/CjLms9NpinjJYz78LbcPNmZtJD9zA4=
+	t=1722471299; cv=none; b=gin8u0QVu3D/FQfcQkbc4tB0ieAqXZFNbsdY6Qa5V8RnTWjUYtcN3NOJiG7FjPkBfYFfvKz2AQeRjrIq5zJciAP7V7qrjA47IqwZZIKRL4KkL3nawCD2NVvankABhViqMYrSTdNq4X0xFSyyz5T2U7z2rH1GMhGZnWP1uENnBCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471298; c=relaxed/simple;
-	bh=dam+d36SAZLr3CX830BlK3Vb4G+3I/Cxso1OcgrzSHk=;
+	s=arc-20240116; t=1722471299; c=relaxed/simple;
+	bh=WD0AoDodMfXRZhATLIYNle/2CHmU9VT/Djh5YD8KUVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=boV2zyAC8GoIBGcDkYOOF362H1pLuBk+xOabtZf3n4hBRpO5GMfvYVy+oDj467i+Vn5eJjVH1rB8IBqsg+TWX64Gb9q6XnbyakRwuq4gBkqUuuVWoMPuG3NHnvjLNR1Tz3b/uRI+edw4uK11R/mVhkEhXioIwEJlEAUfVZXaTwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bnOsXhTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD72C116B1;
-	Thu,  1 Aug 2024 00:14:56 +0000 (UTC)
+	 MIME-Version; b=hJ7CFT30qKWIyapcHYBjU3SozwdyK68CGv8o20UXSJRfa0NZbWJinscLdphv0fi490PRpDeCtRRM4+xhrOyqiebTU1p0//q7DywHlo+w0rIB61ewEKIDIMQtCk1/jM/SF1nTy/y9ty7jQUPTMnEhj3bMMqp9rOAcopB42Xk0AHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tbrAYCVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7ADC116B1;
+	Thu,  1 Aug 2024 00:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471297;
-	bh=dam+d36SAZLr3CX830BlK3Vb4G+3I/Cxso1OcgrzSHk=;
+	s=k20201202; t=1722471299;
+	bh=WD0AoDodMfXRZhATLIYNle/2CHmU9VT/Djh5YD8KUVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnOsXhTN8W84DqjvDNcYP1Tk6FZcZeJKMtYFbeuF41rLNkOy1OtS9q+wQtfxm8iPv
-	 XJhWjCGdq3iPu2YX0nG6eFHr9ILxu4p96CWTz13o0OElyiDLaxKPoH+nT9YjasH+rK
-	 K2jDr65LdhnvqWldlRx7Mlxl075uUrsEpJlaTZMUOc9TStkoO1nZvun4pqEZ3na42s
-	 bC6z2zhCeK2ZZyYnafJzPrC/tTJF6P6Y8591Zj5Z7Vf31cp0UWS75jXWpfSVJe8K2+
-	 9Qys5U/on/L9B4D7tllkOnXcELvUbk4wi3islbt7HxiwmtyKX1DPizWkVgbap7k2RD
-	 d0lEtzGqxWgjQ==
+	b=tbrAYCVYfEy8yajcGvwUYr8cJ1TJ1lBKCqb3X9jGEXV3lrCwpFLmnh54u4EMD+hrz
+	 31/HfK3PPdPfb6feUXZMzh8evyca7jUbOhArsphAU+XUNw6BeBYM6b3+Dk66Ngssn2
+	 jotqVx4bsgHRZSKrfL8wz5L0xkGpte26H0XdofrZsEIuhbeN6aqQLZnt9V8unGCN7I
+	 9DoeXiDzUas0Ct/1xp+ztNtvm8vVh/HdVOLvISPn9bKpiQX6CmkueZF4bYy6NGT6WB
+	 iVoBWKlYKCA16h3WEtPCEZkdS4YqcjVQRqyZhW6N3rlbiAomtwmqgQASXEaumLwgzf
+	 PQrDu4u+4ff+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Richard Maina <quic_rmaina@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chris Lew <quic_clew@quicinc.com>,
+Cc: Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mathieu.poirier@linaro.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 061/121] remoteproc: qcom_q6v5_pas: Add hwspinlock bust on stop
-Date: Wed, 31 Jul 2024 19:59:59 -0400
-Message-ID: <20240801000834.3930818-61-sashal@kernel.org>
+	brgl@bgdev.pl,
+	linus.walleij@linaro.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 062/121] gpiolib: cdev: Add INIT_KFIFO() for linereq events
+Date: Wed, 31 Jul 2024 20:00:00 -0400
+Message-ID: <20240801000834.3930818-62-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -68,111 +67,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Richard Maina <quic_rmaina@quicinc.com>
+From: Kent Gibson <warthog618@gmail.com>
 
-[ Upstream commit 568b13b65078e2b557ccf47674a354cecd1db641 ]
+[ Upstream commit 35d848e7a1cbba2649ed98cf58e0cdc7ee560c7a ]
 
-When remoteproc goes down unexpectedly this results in a state where any
-acquired hwspinlocks will remain locked possibly resulting in deadlock.
-In order to ensure all locks are freed we include a call to
-qcom_smem_bust_hwspin_lock_by_host() during remoteproc shutdown.
+The initialisation of the linereq events kfifo relies on the struct being
+zeroed and a subsequent call to kfifo_alloc().  The call to kfifo_alloc()
+is deferred until edge detection is first enabled for the linereq.  If the
+kfifo is inadvertently accessed before the call to kfifo_alloc(), as was
+the case in a recently discovered bug, it behaves as a FIFO of size 1 with
+an element size of 0, so writes and reads to the kfifo appear successful
+but copy no actual data.
 
-For qcom_q6v5_pas remoteprocs, each remoteproc has an assigned smem
-host_id. Remoteproc can pass this id to smem to try and bust the lock on
-remoteproc stop.
+As a defensive measure, initialise the kfifo with INIT_KFIFO() when the
+events kfifo is constructed.  This initialises the kfifo element size
+and zeroes its data pointer, so any inadvertant access prior to the
+kfifo_alloc() call will trigger an oops.
 
-This edge case only occurs with q6v5_pas watchdog crashes. The error
-fatal case has handling to clear the hwspinlock before the error fatal
-interrupt is triggered.
-
-Signed-off-by: Richard Maina <quic_rmaina@quicinc.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-4-c8b924ffa5a2@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Kent Gibson <warthog618@gmail.com>
+Link: https://lore.kernel.org/r/20240529131953.195777-2-warthog618@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpio/gpiolib-cdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 54d8005d40a34..8458bcfe9e19e 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -52,6 +52,7 @@ struct adsp_data {
- 	const char *ssr_name;
- 	const char *sysmon_name;
- 	int ssctl_id;
-+	unsigned int smem_host_id;
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index 5639abce6ec57..62a6af8e53d0e 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1780,6 +1780,7 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
  
- 	int region_assign_idx;
- 	int region_assign_count;
-@@ -81,6 +82,7 @@ struct qcom_adsp {
- 	int lite_pas_id;
- 	unsigned int minidump_id;
- 	int crash_reason_smem;
-+	unsigned int smem_host_id;
- 	bool decrypt_shutdown;
- 	const char *info_name;
- 
-@@ -399,6 +401,9 @@ static int adsp_stop(struct rproc *rproc)
- 	if (handover)
- 		qcom_pas_handover(&adsp->q6v5);
- 
-+	if (adsp->smem_host_id)
-+		ret = qcom_smem_bust_hwspin_lock_by_host(adsp->smem_host_id);
-+
- 	return ret;
- }
- 
-@@ -727,6 +732,7 @@ static int adsp_probe(struct platform_device *pdev)
- 	adsp->pas_id = desc->pas_id;
- 	adsp->lite_pas_id = desc->lite_pas_id;
- 	adsp->info_name = desc->sysmon_name;
-+	adsp->smem_host_id = desc->smem_host_id;
- 	adsp->decrypt_shutdown = desc->decrypt_shutdown;
- 	adsp->region_assign_idx = desc->region_assign_idx;
- 	adsp->region_assign_count = min_t(int, MAX_ASSIGN_COUNT, desc->region_assign_count);
-@@ -1196,6 +1202,7 @@ static const struct adsp_data sm8550_adsp_resource = {
- 	.ssr_name = "lpass",
- 	.sysmon_name = "adsp",
- 	.ssctl_id = 0x14,
-+	.smem_host_id = 2,
- };
- 
- static const struct adsp_data sm8550_cdsp_resource = {
-@@ -1216,6 +1223,7 @@ static const struct adsp_data sm8550_cdsp_resource = {
- 	.ssr_name = "cdsp",
- 	.sysmon_name = "cdsp",
- 	.ssctl_id = 0x17,
-+	.smem_host_id = 5,
- };
- 
- static const struct adsp_data sm8550_mpss_resource = {
-@@ -1236,6 +1244,7 @@ static const struct adsp_data sm8550_mpss_resource = {
- 	.ssr_name = "mpss",
- 	.sysmon_name = "modem",
- 	.ssctl_id = 0x12,
-+	.smem_host_id = 1,
- 	.region_assign_idx = 2,
- 	.region_assign_count = 1,
- 	.region_assign_vmid = QCOM_SCM_VMID_MSS_MSA,
-@@ -1275,6 +1284,7 @@ static const struct adsp_data sm8650_cdsp_resource = {
- 	.ssr_name = "cdsp",
- 	.sysmon_name = "cdsp",
- 	.ssctl_id = 0x17,
-+	.smem_host_id = 5,
- 	.region_assign_idx = 2,
- 	.region_assign_count = 1,
- 	.region_assign_shared = true,
-@@ -1299,6 +1309,7 @@ static const struct adsp_data sm8650_mpss_resource = {
- 	.ssr_name = "mpss",
- 	.sysmon_name = "modem",
- 	.ssctl_id = 0x12,
-+	.smem_host_id = 1,
- 	.region_assign_idx = 2,
- 	.region_assign_count = 3,
- 	.region_assign_vmid = QCOM_SCM_VMID_MSS_MSA,
+ 	mutex_init(&lr->config_mutex);
+ 	init_waitqueue_head(&lr->wait);
++	INIT_KFIFO(lr->events);
+ 	lr->event_buffer_size = ulr.event_buffer_size;
+ 	if (lr->event_buffer_size == 0)
+ 		lr->event_buffer_size = ulr.num_lines * 16;
 -- 
 2.43.0
 
