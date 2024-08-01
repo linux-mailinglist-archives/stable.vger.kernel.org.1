@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-65128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66469943EF2
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:29:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AF5943EF5
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97FAC1C22B87
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:29:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAFF91F227DF
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30A71DCC71;
-	Thu,  1 Aug 2024 00:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5445A1BDA94;
+	Thu,  1 Aug 2024 00:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGg7kvFO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SrgK3252"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714811A617D;
-	Thu,  1 Aug 2024 00:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA581BDA8B;
+	Thu,  1 Aug 2024 00:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472522; cv=none; b=nAaw1wpJz6GkgSNkMiIUX5cbNDAAzH/3QoDEpweKOQ+s0wtJeGTtHsk+VB0MvYPyQZDFIkqJcu0cIkpy+gCScGeBbgcBgnYecTEY6nR29dB8/Cs/+duDnvk4CoeBWCZtkNO6ofI/v+gTLEoqcRqStI2UF1YdQuZ1SY4oc0j/qVw=
+	t=1722472524; cv=none; b=QPH+93sD3xUxwuDBvRHUbkpkTQniDHR6TCTkVwAS0ZA3ytVaIVre/AcULxFRq5nV6Pnpn6ZreiLexBKUjm4NtBGZNJQcZkza6YdarcoscnpYCpoJIGICixW2OIOuBNwhuC1vBkFFI3ScdxBQKLg+KhVLy5jidnvTl52vahAKFi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472522; c=relaxed/simple;
-	bh=L7+VrIpIwWLuWLlG8x/fO+bqChqwHUkr6r+2VIkykqM=;
+	s=arc-20240116; t=1722472524; c=relaxed/simple;
+	bh=VIDEt+zUCbHxo7WFFhbzlhOw5RPJS+Ev6gYLNqEXYeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RptDxaM7Vz1xJmLdfvAq9f3hCGPN7kkY189pRhCEjdCUAE+bkFRpCC/Mn4ywFKruaVeLMPjlYS31OSaNyOZJqJ7QyDkupZedJXUIGwScw1tGWYHmM/9pdvq7A3//Yacp0JOqryCb8RUDjW5huQFPFhoqF3J4rHDC2gPRwA6j5Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGg7kvFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55416C116B1;
-	Thu,  1 Aug 2024 00:35:20 +0000 (UTC)
+	 MIME-Version; b=NXGCB0Jkojd7KyRJB0Hdn3Qc86fmU693bb84GwZmzrYokLDL4eUk8HLzKHn9AsnKHlm97bRRhgmgUYSwqrDheBtNhlkH8QoKvrZJtWO20Ucuh1xvJPkhRIVs/xLK7FWsTiq0h7HuoLRVcO0Y9TOIzhyvIqNprXqfmHcAYT/zObo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SrgK3252; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FB5C116B1;
+	Thu,  1 Aug 2024 00:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472522;
-	bh=L7+VrIpIwWLuWLlG8x/fO+bqChqwHUkr6r+2VIkykqM=;
+	s=k20201202; t=1722472523;
+	bh=VIDEt+zUCbHxo7WFFhbzlhOw5RPJS+Ev6gYLNqEXYeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGg7kvFOOWk2puaFps6tKy1eL2OgSBK9gsKVlg/FB/vmu9JyuGbZYVlpI8KsOvTHb
-	 64mFFINSKYJdgu7oBZ8Q14QKQUqPpUE5hDpM/4JsWCx4qbRHUuoCEBAi4cF1Ro5+wx
-	 iJRcWVQqJLKJCRNvdRPrHFwTGtW50IY70vqyX6yEgXWtCfxnwmfbORVuraeUDCvkNp
-	 LrPbs+Rbs4Q3vjjwlVysdgt8Z4oaly23R68NFWp2dWjjZnSJcnuE6Z1VZDAVfT44rb
-	 FbROTI8UKBqPajXr3BokgcytPmPfKPjmDgNfv6VVWV9wuQOWreTGZl4QtCmX6KZ14T
-	 0XZsXVdDY2Yog==
+	b=SrgK32523kO2LpTkt95/7zNvU5VNEAGW+tLaBkxkFDMKgGSdwbYs16kvLHd11MNXO
+	 w6tQggNmYqh9ZdB/D80TE4uovxJe6VrgmcHMrAlgCVe4+aNq2mr0oPCnyZI0z5zK25
+	 xyp6FRz2EONhETTryESfb72RIEoZzA/V7FXULp7oH1WJKjuvaf9BmIuWEPB6WjCKSG
+	 Rp05tziPMKY+EDacVpkrxAVk8XE6ZhRwvrW6AlgLJ0eV4FcGWDwjbv5mLNo9Ti0lLn
+	 NEGInG7ADHTtpwNOaspt5wln2A5uN3fQJPkY7fk+TapceXLd2k4G2yKCUk+bp2cNjv
+	 fItIKCq4xhF3g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	marcelomspessoto@gmail.com,
-	wenjing.liu@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 38/47] drm/amd/display: Check HDCP returned status
-Date: Wed, 31 Jul 2024 20:31:28 -0400
-Message-ID: <20240801003256.3937416-38-sashal@kernel.org>
+	lizefan.x@bytedance.com,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	cgroups@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 39/47] cgroup: Protect css->cgroup write under css_set_lock
+Date: Wed, 31 Jul 2024 20:31:29 -0400
+Message-ID: <20240801003256.3937416-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003256.3937416-1-sashal@kernel.org>
 References: <20240801003256.3937416-1-sashal@kernel.org>
@@ -77,55 +68,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 5d93060d430b359e16e7c555c8f151ead1ac614b ]
+[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
 
-[WHAT & HOW]
-Check mod_hdcp_execute_and_set() return values in authenticated_dp.
+The writing of css->cgroup associated with the cgroup root in
+rebind_subsystems() is currently protected only by cgroup_mutex.
+However, the reading of css->cgroup in both proc_cpuset_show() and
+proc_cgroup_show() is protected just by css_set_lock. That makes the
+readers susceptible to racing problems like data tearing or caching.
+It is also a problem that can be reported by KCSAN.
 
-This fixes 3 CHECKED_RETURN issues reported by Coverity.
+This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
+css->cgroup. Alternatively, the writing of css->cgroup can be moved
+under css_set_lock as well which is done by this patch.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/modules/hdcp/hdcp1_execution.c    | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ kernel/cgroup/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-index 6ec918af3bffc..119b00aadd9a4 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-@@ -433,17 +433,20 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
- 	}
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index be467aea457e7..84e85561a87c0 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1802,9 +1802,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
+ 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
+ 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
+ 		ss->root = dst_root;
+-		css->cgroup = dcgrp;
  
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
-+		if (!mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
- 				&input->bstatus_read, &status,
--				hdcp, "bstatus_read");
-+				hdcp, "bstatus_read"))
-+			goto out;
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(check_link_integrity_dp,
-+		if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
- 				&input->link_integrity_check, &status,
--				hdcp, "link_integrity_check");
-+				hdcp, "link_integrity_check"))
-+			goto out;
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
-+		if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
- 				&input->reauth_request_check, &status,
--				hdcp, "reauth_request_check");
-+				hdcp, "reauth_request_check"))
-+			goto out;
- out:
- 	return status;
- }
+ 		spin_lock_irq(&css_set_lock);
++		css->cgroup = dcgrp;
+ 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
+ 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
+ 					 e_cset_node[ss->id]) {
 -- 
 2.43.0
 
