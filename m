@@ -1,69 +1,66 @@
-Return-Path: <stable+bounces-64967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234B1943D14
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:50:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E25943D16
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BBE1B21365
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:50:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD72A28337C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9D5157478;
-	Thu,  1 Aug 2024 00:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44692139DA;
+	Thu,  1 Aug 2024 00:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pcRwUBf+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vMpnL83N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BE0156F5B;
-	Thu,  1 Aug 2024 00:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE8515749A;
+	Thu,  1 Aug 2024 00:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471787; cv=none; b=fJ0ocxoPrU4C0MYBGAg03J1I9j1/ktOwff98Hk1NR+p+15rF1ardf2W9WQXGLGUxkskQrBjM2rlA+KYQmkg8P+t/sgm7GgbQd5FY09JbsHjDAdRyHCXwaCnnxyBNRdOtRfD7lFvFyoEpD3JXZHfpctcqCJ4X7XnChXDWy3Z+WR0=
+	t=1722471791; cv=none; b=kAl/RwMeXnvv/v/HiO1noGboX2DvatzTB9fzruDT9woLr/LFw3oDjEWoegQ010AOvayXnfpRz0HdXl+930gVNF7fgWSQUJynKsMCQBb2weY20piCvYFEHQ/y58LMqSIDeCr8WCqVpASiYBrCtwUA/0/uw4Y23bA3aFejQ59A+HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471787; c=relaxed/simple;
-	bh=5dv3H7JAxGTY9qF4NzFQWWyQru6NosY6yTo7xygdZMw=;
+	s=arc-20240116; t=1722471791; c=relaxed/simple;
+	bh=mdtSGVThuocfhAncG/yE9HLunHNL+4zIVSo0VUb1UGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j44R9EhMR92iQfYBJtVSM2Bk+ghkETV8sfSfNpJ3VNe4cnpt2DmDjqE7DZUUIWuw/GlWguKB4udYA+bIbRU/5KnIAjzvbQ3rkjTK1NgK25UsaBnuEpXkoqGni/52ZDU0df/FNqQwAj7cZ/bN1k2kbR8/2Fyeh1xsWULq8ovOiYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pcRwUBf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5591C32786;
-	Thu,  1 Aug 2024 00:23:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HjjBaP8AOPyUeeh2BmkL9rdL+tErOejAs5T/Pr7j/avKgTexvEQQe7X8AOMEEV6u9WRCcSYX5jZIlmtZYDRJfapeb29rtOjsMAJUalu6UvzcKGx3aHFRu1/2jeYnf/hg83Ud7hUx0W/6v3mpH5fha0vC2hGKO8jEm5PHUDIX0AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vMpnL83N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4606C4AF0E;
+	Thu,  1 Aug 2024 00:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471786;
-	bh=5dv3H7JAxGTY9qF4NzFQWWyQru6NosY6yTo7xygdZMw=;
+	s=k20201202; t=1722471791;
+	bh=mdtSGVThuocfhAncG/yE9HLunHNL+4zIVSo0VUb1UGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pcRwUBf+hu2YNNsX7ME8A93meKcN3oT8eESOCDkS/E83GZO/0zGGc7eRjQYmJ2NDf
-	 cViAUKogpCO+95IO7h+20mdFvmj5nWaYWQjXmDcpXIHGlLxXApDhPnQxx+lGpP5Xvf
-	 eFyBW+LiwbTir8aU1GtGygEkScH8zX+/PbwGjZLHetJGJFWD4PLwchNIyghB8g+11q
-	 jQjGzetjjWmjUXjWPR0U/sjydbUSMosJzHT3X22Qx4u4mWK+AcDh/PqmYmwtO/5E+B
-	 x/1NjcLuZMsIeQEftLwOhGYVLnRJxrQ5D+0bCgGfoecw1CaYN1A1ltKCmR6BvERX2N
-	 V4mOJLXkBov/g==
+	b=vMpnL83NEem4PPUrj1N3Oul2PdhY9E4ixcpqiYo/FIGBSTHELJJkwq3qwfvyNbDoA
+	 dTrZMj0a5GNMroUdjQ+pJHJ+c9YW7Wt8nKUy3Ktg7ecTgCWxNIS6Dva778yL3mWMgP
+	 DwqfVTVcd1L9QuUuZ9SAThigPmyc8GURaiOfpsi6WdIJagzDnj5W9N7hLYHPBJuM/k
+	 wLI3AcrcOProDD5FylOKlUv8HyAEi+N4Zzdnrlyce6KaqHOR4AywiW0DQE/JHAh+CT
+	 b1JOuhuvRurkiMWJfJJw8y03x+szpWcq1tGEBarZYvgrEgS3DcE9mAt7Gcrep7z2YF
+	 Wsr3h5m6wAvtA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Asad Kamal <asad.kamal@amd.com>,
+Cc: Ma Jun <Jun.Ma2@amd.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	mario.limonciello@amd.com,
-	candice.li@amd.com,
-	Jun.Ma2@amd.com,
-	victorchengchi.lu@amd.com,
+	shashank.sharma@amd.com,
+	hannes@cmpxchg.org,
 	andrealmeid@igalia.com,
-	hamza.mahfooz@amd.com,
+	friedrich.vock@gmx.de,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 21/83] drm/amd/amdgpu: Check tbo resource pointer
-Date: Wed, 31 Jul 2024 20:17:36 -0400
-Message-ID: <20240801002107.3934037-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 22/83] drm/amdgpu: Fix out-of-bounds write warning
+Date: Wed, 31 Jul 2024 20:17:37 -0400
+Message-ID: <20240801002107.3934037-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -79,35 +76,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Asad Kamal <asad.kamal@amd.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 6cd2b872643bb29bba01a8ac739138db7bd79007 ]
+[ Upstream commit be1684930f5262a622d40ce7a6f1423530d87f89 ]
 
-Validate tbo resource pointer, skip if NULL
+Check the ring type value to fix the out-of-bounds
+write warning
 
-Signed-off-by: Asad Kamal <asad.kamal@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index e1227b7c71b16..8c95b877155a3 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4479,7 +4479,8 @@ static int amdgpu_device_recover_vram(struct amdgpu_device *adev)
- 		shadow = vmbo->shadow;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 0bedffc4eb435..f44b303ae287a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -352,7 +352,7 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
+ 	ring->max_dw = max_dw;
+ 	ring->hw_prio = hw_prio;
  
- 		/* No need to recover an evicted BO */
--		if (shadow->tbo.resource->mem_type != TTM_PL_TT ||
-+		if (!shadow->tbo.resource ||
-+		    shadow->tbo.resource->mem_type != TTM_PL_TT ||
- 		    shadow->tbo.resource->start == AMDGPU_BO_INVALID_OFFSET ||
- 		    shadow->parent->tbo.resource->mem_type != TTM_PL_VRAM)
- 			continue;
+-	if (!ring->no_scheduler) {
++	if (!ring->no_scheduler && ring->funcs->type < AMDGPU_HW_IP_NUM) {
+ 		hw_ip = ring->funcs->type;
+ 		num_sched = &adev->gpu_sched[hw_ip][hw_prio].num_scheds;
+ 		adev->gpu_sched[hw_ip][hw_prio].sched[(*num_sched)++] =
 -- 
 2.43.0
 
