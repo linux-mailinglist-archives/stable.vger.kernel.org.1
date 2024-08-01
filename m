@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-65060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F39C943DF3
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:13:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F565943E64
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:22:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF3AC281D66
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:13:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2620B24DCA
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E851D09FE;
-	Thu,  1 Aug 2024 00:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713A31D172E;
+	Thu,  1 Aug 2024 00:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSgeFqYu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3XPw3lr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39324148311;
-	Thu,  1 Aug 2024 00:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D791D1727;
+	Thu,  1 Aug 2024 00:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472217; cv=none; b=XHkdT4WzknwlkspkU58Qlpi91z9cPC81AEJbMwTvrvQbzsvH0XkcOpbZuCXyMcP8HZgr5pBDA4cgEkDQv397MQgYhKEHLnwxmDk+bAOITA19VCLOPugZaWt9xv1K8F6BZqvCiAxgq7M9VLyBh+2mg+r2GGwa8d+8OSUutTjX/uw=
+	t=1722472219; cv=none; b=JtkLX5U30knz742lV2jRws3wEDSyyyKNp0RQZC4GovZpCmpIixZoL71Cb0GeoCI+z0vqqFjC4kgXH/NDtOfmOnBKbEWZywHPLkoHfza5rH05FLsMkpy55GxTdkNY+7MwXnOeeC4v8aDHcnS35SaBlWxalo6BranJm4l0/vSF84k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472217; c=relaxed/simple;
-	bh=3dNmDyrVzL/5VJctZY1xc/77qmq5Zday9dQ7WM40AEs=;
+	s=arc-20240116; t=1722472219; c=relaxed/simple;
+	bh=cT734ZYDA0Jz+rKWc+j6YT2431NQG6GWzEm+gZfSA84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cy8L9nnVDTiV7v6pfgAhst9Jc702A/aRvaoTfNGH4BP29dysCg+aBajIKyvKh2Yy7zbzPwOLC8FzmgckXj8WPqESCFJirphWV61fXjuBZdKxtuQiUb8oF+sGCNM3caVaKTREZD55+06Yb+elCBMS+y0KQgMS0iI2zzyHuEI3Nmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSgeFqYu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C31AC32786;
-	Thu,  1 Aug 2024 00:30:15 +0000 (UTC)
+	 MIME-Version; b=lOHuIBckC2GmZLSLQHd+YI4+qXVHjR8kUkLggyrsLCEq5ZH+Jn0Skm/SlBaISZdEDQL5JOWQ+JafuQP4bbozsV6rcTeM6DPWwBsSdWrLITRUmrYK9qkOIeZUfGNcuy0d/96dnQQjXBSAhaVckqJQhXiF91PELGRHB4XXszIwDMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3XPw3lr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E471C116B1;
+	Thu,  1 Aug 2024 00:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472217;
-	bh=3dNmDyrVzL/5VJctZY1xc/77qmq5Zday9dQ7WM40AEs=;
+	s=k20201202; t=1722472218;
+	bh=cT734ZYDA0Jz+rKWc+j6YT2431NQG6GWzEm+gZfSA84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSgeFqYuKjKrqudB9QcqDppcmKhyZFPf661uXjFBBSNEzBlmnNsVr2r7fRDM5Fw8F
-	 Fs1tLtbC96Ws7xJ9mPWe6VJ6i5jL8iVw2mcqscbaaQNGMRlpYKiQw3Fxxhs55ocDv1
-	 aggMUE3aZFSeZ+uBvZ58JVuSh8MVt1Hwyea9kDlsSYCxlvoEOx1lY6AN0bV20XWn5C
-	 3kKEh4kE3Doto18JX/+X07yDpbckIHYu+bxJrnn+yY4ZSgkLFL2caLhGIlcgZIM1LD
-	 gIf6LnFw2PiVVHthORn1n5p8/pV1mMCwmW31eaUNVyeAg0Hb3Q0zVXBFOceohi9YSV
-	 mXW1C32cGZkGA==
+	b=j3XPw3lrR/N5QNxKekfpN/vL7ENZkh/mcJGxarDXtzLUlZyNwzPQRrSuL25hWzxae
+	 dKPx9MaOeMD9j4bgegyaYGxFrfBrIzP+BoWrzHNPAzkGFkX3EnNWtujMXSJoAAYcbS
+	 ymAbg/75PHNGCMuVDF4R8neawToLWs3uL4IH+JQwK2f+h5fxBe4KCJKN+3fA6WU0VC
+	 /KIPLa/q6jvOi+oMbmTiD0Q3D1NKk2R45dfNq2b+ouI7EJvHXKt4p5CCewFqwl3Eir
+	 iA2VJnClKJg36pt3ViD6dmeFFnTGE1oHseR3ZfoaOOQiku9bkhYAKlWpfpeIL/9qRQ
+	 m5d6jEi/dEwbA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Richard Maina <quic_rmaina@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Chris Lew <quic_clew@quicinc.com>,
+Cc: Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	corbet@lwn.net,
-	linux-remoteproc@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 31/61] hwspinlock: Introduce hwspin_lock_bust()
-Date: Wed, 31 Jul 2024 20:25:49 -0400
-Message-ID: <20240801002803.3935985-31-sashal@kernel.org>
+	brgl@bgdev.pl,
+	linus.walleij@linaro.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 32/61] gpiolib: cdev: Add INIT_KFIFO() for linereq events
+Date: Wed, 31 Jul 2024 20:25:50 -0400
+Message-ID: <20240801002803.3935985-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -71,135 +67,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Richard Maina <quic_rmaina@quicinc.com>
+From: Kent Gibson <warthog618@gmail.com>
 
-[ Upstream commit 7c327d56597d8de1680cf24e956b704270d3d84a ]
+[ Upstream commit 35d848e7a1cbba2649ed98cf58e0cdc7ee560c7a ]
 
-When a remoteproc crashes or goes down unexpectedly this can result in
-a state where locks held by the remoteproc will remain locked possibly
-resulting in deadlock. This new API hwspin_lock_bust() allows
-hwspinlock implementers to define a bust operation for freeing previously
-acquired hwspinlocks after verifying ownership of the acquired lock.
+The initialisation of the linereq events kfifo relies on the struct being
+zeroed and a subsequent call to kfifo_alloc().  The call to kfifo_alloc()
+is deferred until edge detection is first enabled for the linereq.  If the
+kfifo is inadvertently accessed before the call to kfifo_alloc(), as was
+the case in a recently discovered bug, it behaves as a FIFO of size 1 with
+an element size of 0, so writes and reads to the kfifo appear successful
+but copy no actual data.
 
-Signed-off-by: Richard Maina <quic_rmaina@quicinc.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-1-c8b924ffa5a2@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+As a defensive measure, initialise the kfifo with INIT_KFIFO() when the
+events kfifo is constructed.  This initialises the kfifo element size
+and zeroes its data pointer, so any inadvertant access prior to the
+kfifo_alloc() call will trigger an oops.
+
+Signed-off-by: Kent Gibson <warthog618@gmail.com>
+Link: https://lore.kernel.org/r/20240529131953.195777-2-warthog618@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/locking/hwspinlock.rst     | 11 ++++++++++
- drivers/hwspinlock/hwspinlock_core.c     | 28 ++++++++++++++++++++++++
- drivers/hwspinlock/hwspinlock_internal.h |  3 +++
- include/linux/hwspinlock.h               |  6 +++++
- 4 files changed, 48 insertions(+)
+ drivers/gpio/gpiolib-cdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/locking/hwspinlock.rst b/Documentation/locking/hwspinlock.rst
-index 6f03713b70039..2ffaa3cbd63f1 100644
---- a/Documentation/locking/hwspinlock.rst
-+++ b/Documentation/locking/hwspinlock.rst
-@@ -85,6 +85,17 @@ is already free).
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index be51bd00d2fd2..d50b910080654 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1812,6 +1812,7 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
  
- Should be called from a process context (might sleep).
- 
-+::
-+
-+  int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id);
-+
-+After verifying the owner of the hwspinlock, release a previously acquired
-+hwspinlock; returns 0 on success, or an appropriate error code on failure
-+(e.g. -EOPNOTSUPP if the bust operation is not defined for the specific
-+hwspinlock).
-+
-+Should be called from a process context (might sleep).
-+
- ::
- 
-   int hwspin_lock_timeout(struct hwspinlock *hwlock, unsigned int timeout);
-diff --git a/drivers/hwspinlock/hwspinlock_core.c b/drivers/hwspinlock/hwspinlock_core.c
-index fd5f5c5a5244d..425597151dd3e 100644
---- a/drivers/hwspinlock/hwspinlock_core.c
-+++ b/drivers/hwspinlock/hwspinlock_core.c
-@@ -302,6 +302,34 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
- }
- EXPORT_SYMBOL_GPL(__hwspin_unlock);
- 
-+/**
-+ * hwspin_lock_bust() - bust a specific hwspinlock
-+ * @hwlock: a previously-acquired hwspinlock which we want to bust
-+ * @id: identifier of the remote lock holder, if applicable
-+ *
-+ * This function will bust a hwspinlock that was previously acquired as
-+ * long as the current owner of the lock matches the id given by the caller.
-+ *
-+ * Context: Process context.
-+ *
-+ * Returns: 0 on success, or -EINVAL if the hwspinlock does not exist, or
-+ * the bust operation fails, and -EOPNOTSUPP if the bust operation is not
-+ * defined for the hwspinlock.
-+ */
-+int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id)
-+{
-+	if (WARN_ON(!hwlock))
-+		return -EINVAL;
-+
-+	if (!hwlock->bank->ops->bust) {
-+		pr_err("bust operation not defined\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return hwlock->bank->ops->bust(hwlock, id);
-+}
-+EXPORT_SYMBOL_GPL(hwspin_lock_bust);
-+
- /**
-  * of_hwspin_lock_simple_xlate - translate hwlock_spec to return a lock id
-  * @bank: the hwspinlock device bank
-diff --git a/drivers/hwspinlock/hwspinlock_internal.h b/drivers/hwspinlock/hwspinlock_internal.h
-index 29892767bb7a0..f298fc0ee5adb 100644
---- a/drivers/hwspinlock/hwspinlock_internal.h
-+++ b/drivers/hwspinlock/hwspinlock_internal.h
-@@ -21,6 +21,8 @@ struct hwspinlock_device;
-  * @trylock: make a single attempt to take the lock. returns 0 on
-  *	     failure and true on success. may _not_ sleep.
-  * @unlock:  release the lock. always succeed. may _not_ sleep.
-+ * @bust:    optional, platform-specific bust handler, called by hwspinlock
-+ *	     core to bust a specific lock.
-  * @relax:   optional, platform-specific relax handler, called by hwspinlock
-  *	     core while spinning on a lock, between two successive
-  *	     invocations of @trylock. may _not_ sleep.
-@@ -28,6 +30,7 @@ struct hwspinlock_device;
- struct hwspinlock_ops {
- 	int (*trylock)(struct hwspinlock *lock);
- 	void (*unlock)(struct hwspinlock *lock);
-+	int (*bust)(struct hwspinlock *lock, unsigned int id);
- 	void (*relax)(struct hwspinlock *lock);
- };
- 
-diff --git a/include/linux/hwspinlock.h b/include/linux/hwspinlock.h
-index bfe7c1f1ac6d1..f0231dbc47771 100644
---- a/include/linux/hwspinlock.h
-+++ b/include/linux/hwspinlock.h
-@@ -68,6 +68,7 @@ int __hwspin_lock_timeout(struct hwspinlock *, unsigned int, int,
- int __hwspin_trylock(struct hwspinlock *, int, unsigned long *);
- void __hwspin_unlock(struct hwspinlock *, int, unsigned long *);
- int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name);
-+int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id);
- int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock);
- struct hwspinlock *devm_hwspin_lock_request(struct device *dev);
- struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
-@@ -127,6 +128,11 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
- {
- }
- 
-+static inline int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id)
-+{
-+	return 0;
-+}
-+
- static inline int of_hwspin_lock_get_id(struct device_node *np, int index)
- {
- 	return 0;
+ 	mutex_init(&lr->config_mutex);
+ 	init_waitqueue_head(&lr->wait);
++	INIT_KFIFO(lr->events);
+ 	lr->event_buffer_size = ulr.event_buffer_size;
+ 	if (lr->event_buffer_size == 0)
+ 		lr->event_buffer_size = ulr.num_lines * 16;
 -- 
 2.43.0
 
