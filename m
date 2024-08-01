@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-65074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613F8943EA9
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:25:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F7D943E16
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4FD9B2CE17
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:17:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4732C1F22673
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FA719AD78;
-	Thu,  1 Aug 2024 00:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C1419EEB4;
+	Thu,  1 Aug 2024 00:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S3HRAs+u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SU2WVovm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024401D4EC9;
-	Thu,  1 Aug 2024 00:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E780A19E81F;
+	Thu,  1 Aug 2024 00:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472256; cv=none; b=X0QHkkTS30VdJRO2UpIUiWcGYALkRVerFXnmHrT2TBBEy5tVX3gatCUxUGBTk0OXWxv8zB7A+edyWV9lnMVY9fy56oD0hZ0LyaEi9Cmc4zHyXzTtLH3OrAA6Cgm7oz9rJXn6kZe+TAgYAjq52dmTg0xnpTmxUYAhC25G/eco3jE=
+	t=1722472257; cv=none; b=kD9hQY8Yt2cZ7uFbvI7sfE/uCmpw90Eh3PdDQictg1W4Bz9ljiaDvAKG1YzdRAx2UJfoWFb/dnDYpUu1MbYEDCqnrvT3ndqdUmhE32vvfdT9sVKX17G9d/bjnbL3znvYg1R6wP79wtvI9rSW7YB2L+rCjorGwTjwX80fJWqVl58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472256; c=relaxed/simple;
-	bh=XnPP389Q+Yy4UtqdusLZFaBX12G1yQmJtrBdZkh07Pw=;
+	s=arc-20240116; t=1722472257; c=relaxed/simple;
+	bh=Dhk6FM7Rw9QLpeF9RIf5C6qB9BslZfKULbvsvrkpfec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oL+YiCwpu4UVqO4nR1Q0DlDAKaSBmuSU/HysTNncEtiUQKnim2Mah4Yz8yqk3fxCpcH4bGRUKYZ1uNV4/6xtA5VmQOF7RqnPUMAcpEzOCKcT7bql8Z/hl46IyA+2vam2ZDe0CHhKIznsDHYFUKDkVD1lDjR0PEpRgVez2mnlbd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S3HRAs+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C5BC116B1;
-	Thu,  1 Aug 2024 00:30:54 +0000 (UTC)
+	 MIME-Version; b=YqYUzi5SZp4Edsv/dr84uUDZb4ynlONg9PWfGOEXgExkGdrCvLfDRs1eQseQgroPvzPgRLSueHWHrv4l6/SiRyoL+V/i74DDM1lcMuwmoRlaGjGSSnZZOuPnBVBEBEpEIJULRpl2firQXdBugEn9QvG94t2yxFQnLxvtzTIoZO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SU2WVovm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2659BC4AF0C;
+	Thu,  1 Aug 2024 00:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472255;
-	bh=XnPP389Q+Yy4UtqdusLZFaBX12G1yQmJtrBdZkh07Pw=;
+	s=k20201202; t=1722472256;
+	bh=Dhk6FM7Rw9QLpeF9RIf5C6qB9BslZfKULbvsvrkpfec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3HRAs+uqVufrIITL3FHpSwfAxDA5o3tSTU/UT2lb96bV752D1zVgOFiabSIHgsCx
-	 YQFp69Zke8LRrp9xAaXONQapkI2MBhDMXIkGbGnmlC4wl5BMEDbZQidTc+OGgzs9Q/
-	 lOhZJjNquqS0ZrfCbPp+NT0GoOywXrOD1/Kc5V7MutHs3Ry7OdkQbvVUdsEslrnNp5
-	 yqHNZFkOnNtwd4PR3tReEH7y85lUZqXDSiTmpBu545aBHealUeTLMAp0ZFjhiszxsJ
-	 DiC0EPKiXzjGl9J/Aae7nqH0/XiM2tj0+w+3cemX9FAogXmrQREyipGf1UQrFQ15/b
-	 4aqixiUhvvnwA==
+	b=SU2WVovmg4k8HVzNr7p7PmwfZU38hM6CLYuB3ahUlA1/7080bzywf9aePXFOVxe7M
+	 sLA/qPmXAF1mMnVO70G1Yfa3zKjsQgmjp/3kimNat0+sj+DvHtPEYjHTBXaXSbGgSx
+	 PBZq22MpzHzANWZtssl3mAXjYZzi2Q0+8kL7mozmpU6LLCdEybKGR81vO9/w8CUGYB
+	 n4/OKaOQr8nMfbSM90895GkdhqBTsTOw2+1lo38jBObTb2kVaNnsq6kdwCmNk8+LuU
+	 6wPd69Koqji1Aptr1v52xDLjhIYxeSPwE+PfcDF6mpVBs/fzo9g5fp40gHJo6ezRft
+	 jY3LZ+raJccZA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Alexander Potapenko <glider@google.com>,
+Cc: Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 6.1 45/61] x86/kmsan: Fix hook for unaligned accesses
-Date: Wed, 31 Jul 2024 20:26:03 -0400
-Message-ID: <20240801002803.3935985-45-sashal@kernel.org>
+	jack@suse.com
+Subject: [PATCH AUTOSEL 6.1 46/61] udf: Avoid excessive partition lengths
+Date: Wed, 31 Jul 2024 20:26:04 -0400
+Message-ID: <20240801002803.3935985-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -69,54 +64,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit bf6ab33d8487f5e2a0998ce75286eae65bb0a6d6 ]
+[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
 
-When called with a 'from' that is not 4-byte-aligned, string_memcpy_fromio()
-calls the movs() macro to copy the first few bytes, so that 'from' becomes
-4-byte-aligned before calling rep_movs(). This movs() macro modifies 'to', and
-the subsequent line modifies 'n'.
+Avoid mounting filesystems where the partition would overflow the
+32-bits used for block number. Also refuse to mount filesystems where
+the partition length is so large we cannot safely index bits in a
+block bitmap.
 
-As a result, on unaligned accesses, kmsan_unpoison_memory() uses the updated
-(aligned) values of 'to' and 'n'. Hence, it does not unpoison the entire
-region.
-
-Save the original values of 'to' and 'n', and pass those to
-kmsan_unpoison_memory(), so that the entire region is unpoisoned.
-
-Signed-off-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Link: https://lore.kernel.org/r/20240523215029.4160518-1-bjohannesmeyer@gmail.com
+Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/iomem.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/udf/super.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/x86/lib/iomem.c b/arch/x86/lib/iomem.c
-index e0411a3774d49..5eecb45d05d5d 100644
---- a/arch/x86/lib/iomem.c
-+++ b/arch/x86/lib/iomem.c
-@@ -25,6 +25,9 @@ static __always_inline void rep_movs(void *to, const void *from, size_t n)
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 6dc9d8dad88eb..f58ce0ba66130 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1076,12 +1076,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 	struct udf_part_map *map;
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct partitionHeaderDesc *phd;
++	u32 sum;
+ 	int err;
  
- static void string_memcpy_fromio(void *to, const volatile void __iomem *from, size_t n)
- {
-+	const void *orig_to = to;
-+	const size_t orig_n = n;
-+
- 	if (unlikely(!n))
- 		return;
+ 	map = &sbi->s_partmaps[p_index];
  
-@@ -39,7 +42,7 @@ static void string_memcpy_fromio(void *to, const volatile void __iomem *from, si
+ 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
+ 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
++	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
++			       &sum)) {
++		udf_err(sb, "Partition %d has invalid location %u + %u\n",
++			p_index, map->s_partition_root, map->s_partition_len);
++		return -EFSCORRUPTED;
++	}
+ 
+ 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
+ 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
+@@ -1137,6 +1144,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 		bitmap->s_extPosition = le32_to_cpu(
+ 				phd->unallocSpaceBitmap.extPosition);
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
++		/* Check whether math over bitmap won't overflow. */
++		if (check_add_overflow(map->s_partition_len,
++				       sizeof(struct spaceBitmapDesc) << 3,
++				       &sum)) {
++			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
++				map->s_partition_len);
++			return -EFSCORRUPTED;
++		}
+ 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
+ 			  p_index, bitmap->s_extPosition);
  	}
- 	rep_movs(to, (const void *)from, n);
- 	/* KMSAN must treat values read from devices as initialized. */
--	kmsan_unpoison_memory(to, n);
-+	kmsan_unpoison_memory(orig_to, orig_n);
- }
- 
- static void string_memcpy_toio(volatile void __iomem *to, const void *from, size_t n)
 -- 
 2.43.0
 
