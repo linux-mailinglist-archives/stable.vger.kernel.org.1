@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-64943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1271B943CDC
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:44:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F1D943CD9
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6B8928206B
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:44:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E10E1C21F76
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089AD205E2D;
-	Thu,  1 Aug 2024 00:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A241205E3C;
+	Thu,  1 Aug 2024 00:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYmdLwqf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ln91V4wJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B192013A3F0;
-	Thu,  1 Aug 2024 00:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2307B205E33;
+	Thu,  1 Aug 2024 00:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471506; cv=none; b=GDfRp/LAge1w6Lt/PM340lA0ILHOkrl34ILPbAi9+vlR6nq/gTa7YSiJyUCkGbaDDnKo1QjMHZ4+dDLRdinR3PDbpT4E0EVR+i74P+juh/y/BsQWfHa57YN7BbyfybcwTbo+FWVZn7HsJMGnqCksir5hYDr7HhZfuX4V21Xt2dI=
+	t=1722471506; cv=none; b=HaSj48x5K+KFK+tvSmuPJRaXGhXb46saEdsrSpnDU0ZU2GQgpnvhU1eBwVgcK5luJ3bNpKf93clr6tWdY5Z6iaV/ivYMOSgUcxHTwqxczuToNjSdqWS3Yt0c+QA3JhPnxxYdK0co524K1zSCYEa6KBsTryQGM477Wwq8Bwj829E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1722471506; c=relaxed/simple;
-	bh=EnUEvHvbyAQWtZYVX6zVsMAma+OH+8r/lAB2a2IlOU8=;
+	bh=om46sI1vhmu9oga3q7OagZDioQlA3bnPpNwRS3kEZzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwuoQi/1i1wrvHD1z9j8oYnpLJB9mIknx+ATUfAKxb8T0pJIoFH92T80eZYkgso0lJLb5mY7ElliNGTXTYR3TMePF4YOeG2GOuoV5RJ5sQnFMi0elrtCOzzeM/dkheTzDWARSxfV+QWSpjp1HQ0PYfQzS/kbyYA1/rSn64Skt14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYmdLwqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AE1C116B1;
-	Thu,  1 Aug 2024 00:18:23 +0000 (UTC)
+	 MIME-Version; b=KpYqsZr6ivWcKSsBLJeCIGl4RB47PAacKTckYVRhb3rD1YFuGbyMzWAVsu6Ccx5WJ90t2ApjVj6Eo6vQzJzL7lUXr5injxagqlQWeCDOAa15AuA0I3fh5Jem0Y/zCAlhnPq7LXWz5R2Q8m+/6yD4iTm0KpYkSca8OCRAqXoeYS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ln91V4wJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9280C32786;
+	Thu,  1 Aug 2024 00:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471504;
-	bh=EnUEvHvbyAQWtZYVX6zVsMAma+OH+8r/lAB2a2IlOU8=;
+	s=k20201202; t=1722471506;
+	bh=om46sI1vhmu9oga3q7OagZDioQlA3bnPpNwRS3kEZzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYmdLwqfylmUyeMvh4hcWmh+f/+NeAOfoMbonHfbFMwagz+QQbD/Gyq9yfvRm9Vc3
-	 y0R/LSydo9tSklZPOwMLVxS65Ggc0IAfxa2gSHe5IWt/X/kwm15hAIsNm0/4vfCsZh
-	 eRV7pzH2fmOczIkpJORS1nMIzTjy5dB0KQOA9b9WEGxlaWVi0q2cU3PI/bKrurGMWp
-	 nZcrUkAJp6pCY08gsycPUFalYz3kBEnGzUoswZ92HihC00XF7fPQdcsbUUlC3x2EV0
-	 hwWRO8cZ+ZU2SZOXvs+0gXVZDa1j4BJqvTQVoY41/6TMJ8NBXki7ps8tnPpPgOCbHB
-	 MONT4L61FZ51g==
+	b=ln91V4wJTKhp8+pw1QWyCSmhKtRJhw3NqxP/pAsXnmAGaTff2pew1mCqWXRBJHOki
+	 bSDC53/NGTzqXBKVXlyXnKfaIOexYtiyBUt2rYMEbUMX+jAbuyFgpGDqmWMaOJSy16
+	 kcQ4+aGvCJPkzKejrbC4CQJLX6WpFwDKdCq3Z7sG8ygLDN/Sog9QupjganFzrBYX7t
+	 SE2zzKNHEWN4LcB3STUB6+3phxRz3Q8CGyruC/uqAz1lO4uTDe1hH0KJlPG+NE0qvs
+	 v8zi0esQ6/Lua7BMOqXDowyyJTlO8LOOA510NGGcDVFGRPaNBJ2+Sj1ogxrzWNVsSn
+	 70OrXlAccxUNw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Guenter Roeck <linux@roeck-us.net>,
+Cc: Andreas Ziegler <ziegler.andreas@siemens.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	linux-hwmon@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 117/121] hwmon: (w83627ehf) Fix underflows seen when writing limit attributes
-Date: Wed, 31 Jul 2024 20:00:55 -0400
-Message-ID: <20240801000834.3930818-117-sashal@kernel.org>
+	ast@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 118/121] libbpf: Add NULL checks to bpf_object__{prev_map,next_map}
+Date: Wed, 31 Jul 2024 20:00:56 -0400
+Message-ID: <20240801000834.3930818-118-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -65,42 +68,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Andreas Ziegler <ziegler.andreas@siemens.com>
 
-[ Upstream commit 5c1de37969b7bc0abcb20b86e91e70caebbd4f89 ]
+[ Upstream commit cedc12c5b57f7efa6dbebfb2b140e8675f5a2616 ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+In the current state, an erroneous call to
+bpf_object__find_map_by_name(NULL, ...) leads to a segmentation
+fault through the following call chain:
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+  bpf_object__find_map_by_name(obj = NULL, ...)
+  -> bpf_object__for_each_map(pos, obj = NULL)
+  -> bpf_object__next_map((obj = NULL), NULL)
+  -> return (obj = NULL)->maps
+
+While calling bpf_object__find_map_by_name with obj = NULL is
+obviously incorrect, this should not lead to a segmentation
+fault but rather be handled gracefully.
+
+As __bpf_map__iter already handles this situation correctly, we
+can delegate the check for the regular case there and only add
+a check in case the prev or next parameter is NULL.
+
+Signed-off-by: Andreas Ziegler <ziegler.andreas@siemens.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240703083436.505124-1-ziegler.andreas@siemens.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/w83627ehf.c | 4 ++--
+ tools/lib/bpf/libbpf.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
-index fe960c0a624f7..7d7d70afde655 100644
---- a/drivers/hwmon/w83627ehf.c
-+++ b/drivers/hwmon/w83627ehf.c
-@@ -895,7 +895,7 @@ store_target_temp(struct device *dev, struct device_attribute *attr,
- 	if (err < 0)
- 		return err;
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 5401f2df463d2..5edb717647847 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -10336,7 +10336,7 @@ __bpf_map__iter(const struct bpf_map *m, const struct bpf_object *obj, int i)
+ struct bpf_map *
+ bpf_object__next_map(const struct bpf_object *obj, const struct bpf_map *prev)
+ {
+-	if (prev == NULL)
++	if (prev == NULL && obj != NULL)
+ 		return obj->maps;
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 127000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->target_temp[nr] = val;
-@@ -920,7 +920,7 @@ store_tolerance(struct device *dev, struct device_attribute *attr,
- 		return err;
- 
- 	/* Limit the temp to 0C - 15C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 15);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 15000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	reg = w83627ehf_read_value(data, W83627EHF_REG_TOLERANCE[nr]);
+ 	return __bpf_map__iter(prev, obj, 1);
+@@ -10345,7 +10345,7 @@ bpf_object__next_map(const struct bpf_object *obj, const struct bpf_map *prev)
+ struct bpf_map *
+ bpf_object__prev_map(const struct bpf_object *obj, const struct bpf_map *next)
+ {
+-	if (next == NULL) {
++	if (next == NULL && obj != NULL) {
+ 		if (!obj->nr_maps)
+ 			return NULL;
+ 		return obj->maps + obj->nr_maps - 1;
 -- 
 2.43.0
 
