@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-65019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C87943D95
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:02:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B63943D98
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96BA51C22075
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:02:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C077F1F21B2C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3051CBE06;
-	Thu,  1 Aug 2024 00:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2D91CBE36;
+	Thu,  1 Aug 2024 00:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lfv4vnqn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cs8yuN9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA721CBE00;
-	Thu,  1 Aug 2024 00:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655721CBE28;
+	Thu,  1 Aug 2024 00:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471955; cv=none; b=TOEdvlWEX2PAh8ieW6uWsaqE5cFq/1q52vwPQjS7KHfOQeCwzcFlohxT5Pwsg92hiKOjCyYxAxtvpyPer9lyy7sWyjHQ1agOTrHZ9AaTD0eKfpEAu6DOvEFEKEACiJ+Yl0tRpsx0wE8d0YCjDVKNwJxMXAQNm1It4QCM72LfD/A=
+	t=1722471957; cv=none; b=fNsIrmR7jM4KVadCUmOVbTEAAn0Kz1YPUgj9qzi3L5Sm9RXpNyfXr9sqwSIT2Wia6K+yJCJfVhQS3NZNqVGvqtK7a+s9XGqZ23XiE/LgQNoeFfYww3E4K1YPPj//Ofuy3UZ+ZQ+H/Hla+2xwRSl+Sf+TozNNGTmENt+nm7Gng08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471955; c=relaxed/simple;
-	bh=ZlkbVzx6o60TnUXN4lglQyzQ70Wm8UYEBaVCsEAlAJo=;
+	s=arc-20240116; t=1722471957; c=relaxed/simple;
+	bh=zG7zwTNzZpJGhl48N6vwkJx0GeMhonMcxgLMd8V2Fig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0IAB6PcX2duCdn8YCor5D8jhg9NDbt/S2l8qWNb6y4xPtwoCdiUONXTJv7B5S7X5TaSCST5V32ZrysdSTRR9l0/FoIqhB3IykVUw1cV7IB0embfFTtikuSeQoseq1KUO5Q5KESN8p3z+TRAsH8bvypjfdQN5wH/qezHUe/6uOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lfv4vnqn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720BFC116B1;
-	Thu,  1 Aug 2024 00:25:54 +0000 (UTC)
+	 MIME-Version; b=UqkL6sW+iEd65rF3oPBMSjSIzgDKsHRJSaH581Qg+n+L3m4jOQtkPOSVmYu2TRqHM9OMb8TTvFhLXIM/RXIX8KGMhHZPXFfDxxNoIAL/WBy+5PbaYI8b33P96C3me3G9m6RtSwJxZlZjntEtDyHTrVSMTvVj6UScqTzwc8b2ITk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cs8yuN9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BE8C32786;
+	Thu,  1 Aug 2024 00:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471955;
-	bh=ZlkbVzx6o60TnUXN4lglQyzQ70Wm8UYEBaVCsEAlAJo=;
+	s=k20201202; t=1722471957;
+	bh=zG7zwTNzZpJGhl48N6vwkJx0GeMhonMcxgLMd8V2Fig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lfv4vnqnBhsAyVjYDJ/b6Sb4/hv34BBkXQGjjinUY0yH3/f9M1n1D48mS16Gnldii
-	 5wpQsVE6k5PC821R58l938KGT/uOgEcDCU49UPb/lSgaWQ4m9XEEefSHRG/Q5CzI/W
-	 7lG1uqj2virAecyfS+5fwtD+mwnKQtwZO0bL7B7V1+QFHZ5brnUdSVogjgmfN4QONk
-	 jx5bMiktprI5k2u5S1PUZQwMDXXkAh/5S2vUfdYrLH7LoCQ6SUeQZhi5iqKS2boUiO
-	 oWUdqo/2eJYqRF7Di9z+flxuqqz5hJASo7hrfOTwNUQLdLuoO+eNp5tWGsu6fEzjAG
-	 3C5dG+W15+gqQ==
+	b=Cs8yuN9y5upZ+usjHqzizrbwxHtOzLjaH8qVa2bWhXiXDCF0ZZT++matuduM7v7Pd
+	 DLYX0rGtJQ0wiV9LwcN7DTHrmksuDl78xoDyCRcMgpcdOFS+bxQI7IoxMg4BjHCeL8
+	 o91QfnKvXu2GPKixHUX3ALi0v915bJiIIUbVBWVBak88gCVuWPogFKyMnv7YyVR1Cs
+	 mlyz5Y3pjlBJoBYJwbPu+0jcWFgxf2CesIT/C4qfJeSFAVKhYz7UPLaafWlNa8omI8
+	 yBRLjMW02yT0JXxKZTK055qBUCNa/DBE9H4Frgz7MjTPrAy2Jj4g7C33xDgIE7xeNd
+	 UGE9kYlWEgntA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 73/83] devres: Initialize an uninitialized struct member
-Date: Wed, 31 Jul 2024 20:18:28 -0400
-Message-ID: <20240801002107.3934037-73-sashal@kernel.org>
+Cc: Krishna Kumar <krishnak@linux.ibm.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 74/83] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
+Date: Wed, 31 Jul 2024 20:18:29 -0400
+Message-ID: <20240801002107.3934037-74-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -64,33 +69,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Krishna Kumar <krishnak@linux.ibm.com>
 
-[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
+[ Upstream commit 335e35b748527f0c06ded9eebb65387f60647fda ]
 
-Initialize an uninitialized struct member for driver API
-devres_open_group().
+The hotplug driver for powerpc (pci/hotplug/pnv_php.c) causes a kernel
+crash when we try to hot-unplug/disable the PCIe switch/bridge from
+the PHB.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The crash occurs because although the MSI data structure has been
+released during disable/hot-unplug path and it has been assigned
+with NULL, still during unregistration the code was again trying to
+explicitly disable the MSI which causes the NULL pointer dereference and
+kernel crash.
+
+The patch fixes the check during unregistration path to prevent invoking
+pci_disable_msi/msix() since its data structure is already freed.
+
+Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
+Closes: https://lore.kernel.org/all/1981605666.2142272.1703742465927.JavaMail.zimbra@raptorengineeringinc.com/
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240701074513.94873-2-krishnak@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devres.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/hotplug/pnv_php.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 3df0025d12aa4..3beedeaa0ffca 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -567,6 +567,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
- 	grp->id = grp;
- 	if (id)
- 		grp->id = id;
-+	grp->color = 0;
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index 881d420637bf1..092c9ac0d26d2 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -39,7 +39,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 				bool disable_device)
+ {
+ 	struct pci_dev *pdev = php_slot->pdev;
+-	int irq = php_slot->irq;
+ 	u16 ctrl;
  
- 	spin_lock_irqsave(&dev->devres_lock, flags);
- 	add_dr(dev, &grp->node[0]);
+ 	if (php_slot->irq > 0) {
+@@ -58,7 +57,7 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 		php_slot->wq = NULL;
+ 	}
+ 
+-	if (disable_device || irq > 0) {
++	if (disable_device) {
+ 		if (pdev->msix_enabled)
+ 			pci_disable_msix(pdev);
+ 		else if (pdev->msi_enabled)
 -- 
 2.43.0
 
