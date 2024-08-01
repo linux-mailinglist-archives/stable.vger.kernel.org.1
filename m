@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-64939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CE0943CD1
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:43:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD227943CD4
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E48F1F21DC8
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:43:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62F9D1F229DA
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B34201253;
-	Thu,  1 Aug 2024 00:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464AA201271;
+	Thu,  1 Aug 2024 00:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUOH9RY8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCu9xlwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A958D20124B;
-	Thu,  1 Aug 2024 00:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF630201266;
+	Thu,  1 Aug 2024 00:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471500; cv=none; b=uoJ0C+dnFDz+jKcd1/J/owCiLNzq+NIvx+ztWJ5u/Pmp66BiM9WOP5HO9jRAw/uxJ+lm/Jx4vU5CsbSC4rEw58Ib4Qy0mPr9ffUqny1ekIEtUpoULzdphlaU2Ir/VotYjIt2eCBTcjjaF5t7JKjWa9sFRq9bOjPXZiU7mkRawaM=
+	t=1722471502; cv=none; b=Tk/s5YgVsN/fDBY30Bg88NtY3ikKQgi3nVlDdi8UGVWQZ234vcmLHrNp6GhXMAp/i55LQ37rGlWdJWRqNisYBWDJw7xZEtiQgbfU/n62uMfDkjbsC3dBCcgQZA9sOJnox90GfMvL2qRrU28ZnOIant4dqavS1mKsC2l+cSjhVKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471500; c=relaxed/simple;
-	bh=uBph3efFG9HrQy6rP0uFdUZbaR0H4P06F2wEw3Aha88=;
+	s=arc-20240116; t=1722471502; c=relaxed/simple;
+	bh=yFrTlkQ1b/c3693c04WmwfwMEimCCvzvbSfloTa6nBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hxHoNEecMa0n9TANHskmBJijWPBs4JwQX9oDezroPVoexJ0qJ+2hj09JA4dPr0RoSdhcRZuol7QzCIq6Sf5B+3iQ+PgaqZFEzTvdKYYA0gPiMWKoFWLEoRsRFCuNrBdJ/J6enOEFPZMli/G7W89Lkk1ZbQ8iLOfYoSF3U6x8fVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUOH9RY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AFBC116B1;
-	Thu,  1 Aug 2024 00:18:19 +0000 (UTC)
+	 MIME-Version; b=EFFXsS7MyCzyt3/96gEMrHz/Lshf8rN5QPZWGvPLDC6Clfg5fBtsptREZTizunltoLkVxft2x65xLoenKfnUoP00GV04YzmbDNbp+ARCSZF56nJmKeIU4moWStQef2oBr09hiFPQEmTFReNFw0yH8dSVzAGBC4lU4j4JPWUxNWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCu9xlwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CEAC32786;
+	Thu,  1 Aug 2024 00:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471500;
-	bh=uBph3efFG9HrQy6rP0uFdUZbaR0H4P06F2wEw3Aha88=;
+	s=k20201202; t=1722471501;
+	bh=yFrTlkQ1b/c3693c04WmwfwMEimCCvzvbSfloTa6nBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUOH9RY8y/IU2eX0hdCsxmDsTkS/YWlUTQIW3exDkImuW9daGzVX1eoI2H31Tej26
-	 yVr627jOAv8LYnH1WNgMV96wg7ozb14MQ2Oyko28IcUx8ouIg61cu1nMpfQ9tqdBN6
-	 KW+l6edfMXjaFSTXOknjXQ7t2A5LMC0dazDRB4q4R71JTWcRsn0eg4dMgVvXzzDca5
-	 aOAdrZcVLRz8Jihz9GIF0T5Ju+SVdLKzA6UlJ6RhANRwWiIdU3XMPRYRhk6v9rkhL4
-	 4blN5Q4v35ceyTQHJEK52eXg2c7JgG7mj3JNZh3bOdxmqcT4qF2GqRvWuFOUtZS5oW
-	 2e6FU3xoDaPQQ==
+	b=TCu9xlwc5hUtzgmdXEfmKCS8cvkc/Gep8oCBZYgHRgoGplGUREXk/yJAPkER5jrng
+	 /Ifxn8DILHGgKA5gcq3ohvaJWgYhnoLWn7VIU5WIDDcyIchpITx3zqoR1SWmzoPju9
+	 j7sbsl/E7kXxQtqmZF6jQVnX+oh2yTzWO9t1yXlBnr9dX6bIMIdul0MMkQmEEGfDii
+	 RykCxdObiiawpBJxN7/SrbQbuu3WAoxZ/AnX/59oqB1HUG+NGO3H/RQ7wXpt5I0gnb
+	 GkqVXLRyl5JTPubykdvmot3V2E/2juP1W7uoIv1sPyEFHQi0FtxCdiaNuyrT70mAC2
+	 QtMOv+gRtZ4FQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 114/121] block: factor out a blk_write_zeroes_limit helper
-Date: Wed, 31 Jul 2024 20:00:52 -0400
-Message-ID: <20240801000834.3930818-114-sashal@kernel.org>
+	jdelvare@suse.com,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 115/121] hwmon: (lm95234) Fix underflows seen when writing limit attributes
+Date: Wed, 31 Jul 2024 20:00:53 -0400
+Message-ID: <20240801000834.3930818-115-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -66,63 +65,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 73a768d5f95533574bb8ace34eb683a88c40509e ]
+[ Upstream commit af64e3e1537896337405f880c1e9ac1f8c0c6198 ]
 
-Contrary to the comment in __blkdev_issue_write_zeroes, nothing here
-checks for a potential bi_size overflow.  Add a helper mirroring
-the secure erase code for the check.
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
+negative number such as -9223372036854775808 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20240701165219.1571322-6-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-lib.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/hwmon/lm95234.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-lib.c b/block/blk-lib.c
-index 442da9dad0421..297bcf6896930 100644
---- a/block/blk-lib.c
-+++ b/block/blk-lib.c
-@@ -103,24 +103,28 @@ int blkdev_issue_discard(struct block_device *bdev, sector_t sector,
- }
- EXPORT_SYMBOL(blkdev_issue_discard);
+diff --git a/drivers/hwmon/lm95234.c b/drivers/hwmon/lm95234.c
+index 67b9d7636ee42..37e8e9679aeb6 100644
+--- a/drivers/hwmon/lm95234.c
++++ b/drivers/hwmon/lm95234.c
+@@ -301,7 +301,8 @@ static ssize_t tcrit2_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret < 0)
+ 		return ret;
  
-+static sector_t bio_write_zeroes_limit(struct block_device *bdev)
-+{
-+	sector_t bs_mask = (bdev_logical_block_size(bdev) >> 9) - 1;
-+
-+	return min(bdev_write_zeroes_sectors(bdev),
-+		(UINT_MAX >> SECTOR_SHIFT) & ~bs_mask);
-+}
-+
- static int __blkdev_issue_write_zeroes(struct block_device *bdev,
- 		sector_t sector, sector_t nr_sects, gfp_t gfp_mask,
- 		struct bio **biop, unsigned flags)
- {
- 	struct bio *bio = *biop;
--	unsigned int max_sectors;
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, index ? 255 : 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, (index ? 255 : 127) * 1000),
++				1000);
  
- 	if (bdev_read_only(bdev))
- 		return -EPERM;
--
--	/* Ensure that max_sectors doesn't overflow bi_size */
--	max_sectors = bdev_write_zeroes_sectors(bdev);
--
--	if (max_sectors == 0)
-+	if (!bdev_write_zeroes_sectors(bdev))
- 		return -EOPNOTSUPP;
+ 	mutex_lock(&data->update_lock);
+ 	data->tcrit2[index] = val;
+@@ -350,7 +351,7 @@ static ssize_t tcrit1_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret < 0)
+ 		return ret;
  
- 	while (nr_sects) {
--		unsigned int len = min_t(sector_t, nr_sects, max_sectors);
-+		unsigned int len = min_t(sector_t, nr_sects,
-+				bio_write_zeroes_limit(bdev));
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
  
- 		bio = blk_next_bio(bio, bdev, 0, REQ_OP_WRITE_ZEROES, gfp_mask);
- 		bio->bi_iter.bi_sector = sector;
+ 	mutex_lock(&data->update_lock);
+ 	data->tcrit1[index] = val;
+@@ -391,7 +392,7 @@ static ssize_t tcrit1_hyst_store(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	val = DIV_ROUND_CLOSEST(val, 1000);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
+ 	val = clamp_val((int)data->tcrit1[index] - val, 0, 31);
+ 
+ 	mutex_lock(&data->update_lock);
+@@ -431,7 +432,7 @@ static ssize_t offset_store(struct device *dev, struct device_attribute *attr,
+ 		return ret;
+ 
+ 	/* Accuracy is 1/2 degrees C */
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 500), -128, 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	data->toffset[index] = val;
 -- 
 2.43.0
 
