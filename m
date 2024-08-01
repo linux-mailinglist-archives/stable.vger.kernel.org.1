@@ -1,140 +1,94 @@
-Return-Path: <stable+bounces-65248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970EE944F2D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 17:28:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3ACE944F51
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 17:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 517372885B8
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 15:28:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 324461C239CA
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 15:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9111A4F30;
-	Thu,  1 Aug 2024 15:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F9D1B3F30;
+	Thu,  1 Aug 2024 15:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b="myULy7ds"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="NRItRBSJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5A11AE879;
-	Thu,  1 Aug 2024 15:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD321B373D;
+	Thu,  1 Aug 2024 15:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722526100; cv=none; b=uAQu677nI0gfk+OnuCH25NaaGh92g8ci1yUmWdl9P76fFd5Dqo7kZ0U2c14DHEVb22R+oLcigdCcbkJGVeBbljCKJ4fbsrSKUNS+hXDwHPhx6zJfYXzyLOkhsLkYg1jSD9dkfdOAx42RShkLAH2FtQzvkIYXjVSm+6iEIkkoz4E=
+	t=1722526301; cv=none; b=WDt4v4L6BeW021jPZSwlwbNIbXAkJR2bz1XSfZCiF4waLgfa+idaU8UszW7Hp+/Kbnj7q5l+jX7wcT8KwgEs6XE/8HR6EyBfeinuFux6fDWlK0Wsqs/j2T+UnYDbWuQkta3z1dV/7R90IbrKMh9wQsFdmjUEQTc3enCceFdabVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722526100; c=relaxed/simple;
-	bh=vR0GCYpDfGgwHUwaBDWrMwxJHGitKXvoejBTCLYoHLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qcTmXm3g17N0H8yzy4he79CSKPIRQBrr4G51nABR8VYW3d2EsrcROz1/K92Kz+YwtqaazHKf4uIKnz8EeD5Q6i6u9LRCrjhw0asisC/HMXUSlncP2Pr+J5N2t2pBJk6ve/93lVIRUz7Z0l1x6lBRxRTWRL7boUqPGBXb1U5VK3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b=myULy7ds; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1722526080; x=1723130880; i=s.l-h@gmx.de;
-	bh=s5steqZuXqO5dcKmNt0JEiMYsuG6O6pAwh6AEb+ZvVs=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=myULy7dsmfcGO8MS2D8I6pgFVqrKBoJNGe1UG/gVLVTa3CLuC/UgQW3nwnrv/183
-	 5sDbbampfXKBQH/bTo1QpIAhdW5havGxueN+rh+NiFeD17hbNOMyuOo1OBm2AFk4H
-	 x+IhHmSjCFvTqg6CcTyXWMLHYZyd+I3MQsFwWWNbJHnrGzGWYz6yAOl9kC32/HtiT
-	 f3nvoYnsXOrxJmKxYJqPRiQVUD2QBdJYXAR7l4NK6Z/0n5FypdFZyAnmEpwXwIM4t
-	 fPko6cpO9CMC6KfEoon87FqgD2AQey7P0/hcO0NZe2TqgTpXGZZyitXP7jrJCwLkb
-	 X1Ih9LKeTxsd8TxjQw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mir ([94.31.83.155]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MA7GS-1sNx980lII-001dLA; Thu, 01
- Aug 2024 17:28:00 +0200
-Date: Thu, 1 Aug 2024 17:27:55 +0200
-From: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, Zheng Yejian
- <zhengyejian1@huawei.com>, Sean Young <sean@mess.org>, Hans Verkuil
- <hverkuil-cisco@xs4all.nl>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.10 288/809] media: dvb-usb: Fix unexpected infinite
- loop in dvb_usb_read_remote_control()
-Message-ID: <20240801172755.63c53206@mir>
-In-Reply-To: <20240801165146.38991f60@mir>
-References: <20240730151724.637682316@linuxfoundation.org>
-	<20240730151735.968317438@linuxfoundation.org>
-	<20240801165146.38991f60@mir>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1722526301; c=relaxed/simple;
+	bh=2jRCBWR/aLkT7KAayor4Iw2u43asLIbw0roCYH6ypl4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LyKhXDU+FOvyML8BMuVFMwTSVmAfvPz+XOh+Iu5eymO7uZv9p2Jm3XLgIiiS+toQhJ8rcU+6cRh3tMPVtbuD4kmCEj9M0AFDYu/4W4ZVvjdDB+auLKLAca9Ym+8KjjrnKPnZdKMK9DcPLU3zMzxVY05+LNMO8rf1a2WKXBngJhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=NRItRBSJ; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1722526297;
+	bh=2jRCBWR/aLkT7KAayor4Iw2u43asLIbw0roCYH6ypl4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NRItRBSJRVegw4rJC0J9/rKUdd8kB6WSh/ypdAC20YBBk6SiK9yV6T7tXikomfHaF
+	 l7wqwu3noUyBWGuu6BTESX60m5Nc+/xCOBpvUHn7X5aO2RrkkWKoQrZlVHPr6YUYtV
+	 uFbXhaKqDPCWfM9bj1wB5IxEqxBgMctVu5fix3l0PXofOFuxXR5DBIg8bcV7IYSeeu
+	 z2Bi3oMv/eC7ym6KkKWuwmpHiFUSsd65EqK7o3oiYwWfuXmVdeYklhp0VbauyGapez
+	 w0wxMioaDEzxa1gBrxK/CXtiDVeGqYgGxnsASJhMJdSu0hKEz7KpRcXht6DZFovW9j
+	 /RLVBHtACtoEw==
+Received: from [100.109.49.129] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dmitry.osipenko)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id B69703782139;
+	Thu,  1 Aug 2024 15:31:36 +0000 (UTC)
+Message-ID: <c4d6da27-3b23-4a96-bad0-17f2392287ef@collabora.com>
+Date: Thu, 1 Aug 2024 18:31:33 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+j1x3XHG4I3fMbmI5DLDqxIh4n70CxyJPv7TMGxTLHLGMgwW7eZ
- Tp0MG51swDtSH+kymX7utFEIBMCvwAGzG66S/5wkMYRC6thrAv2YzKjr68rrhLxkHd8jWZf
- w3eXw+TLFhLDzjuEzogBVQkEGb+1UUZOr2pLWvunXJeOs8XIjFwkxlNgxXzjTicYh4IULRL
- cCbAidEp1OIl1uKHBJiAw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:t8IaiN6Qiog=;F6zmoGBeWdyucjM7mELLpF1BpiB
- I/+YYLUgyRHv4FvsxheLbGl1QEt5LowGPAiFzsPkieE9mX2TByaOr8N3Wh0R83YftPVYS3WLS
- Q6Cggzcom6xuQosVaMS/EnIZOTSF293z7It0338Gi6hiceyIRguOeuX+6iG1D+k5vEcow3TkE
- 8fIOYonUDNh3szy1Wv6g3HQtJxyQnfRtN7GV95XLvwUSXmAdFkoJ4iBHOCzS9sFet4CHAsS98
- RBWfm/EGfeY8qgAD14NJPueJG+qS3YndA7i220y8z/9jgMYvwQcPPc6QqxEyePOJHUlgWlMTX
- n480fb281q47XJtrpeIROpCPd5Y5/Hlzo8y6KV/zR/hyQF42nvD5+aD+mJKOAa9gMz0IxQtJe
- CZJi9m2UcL9mZLe2vCNlLKAnh+KfhNpUIp/qTFsB6JYsLHRzxyh8i5fhs3JL8Fg+KHPp4eIsR
- 6abcx3WPMfst/xGqCWm+khBGhKAWTB8IDIJpaHJXfg6a+rHgjWUPJLJU6AL2V6olAY7233VZs
- aTlR0S0d7KsJVbG4vwiSNTSxbgxDeuJDT8pfmfeeFfBTC6QUoJxQV2rFhdN3MOfMkryHcKIwG
- PGV8fmrdgkMA4M65L4m5BYexOllvzfUCX+2sIMf1vjjYe/+V1QlAdZwzbh8M4lMNI1jM5QuvO
- EpRoedIPlOvY01QMNahkTfXMJyBNxpN89KB9hxfn66RuYFQYTLQPtBU4nmmp4MnWPAO5PImNj
- hZNFEw17M+mO+CvCGMDCY8zVOpnOta1VHnytMXsClvEn39qi1Gy/dRwoNSkko1d3CTvoyMWuk
- dTkdZciBzGD+d/sXEzNa8qMg==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] mfd: rk8xx: Fix shutdown handler
+To: Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Lee Jones <lee@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Urja <urja@urja.dev>,
+ Heiko Stuebner <heiko@sntech.de>, linux-rockchip@lists.infradead.org,
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel@collabora.com, stable@vger.kernel.org
+References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
+Content-Language: en-US
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20240730180903.81688-1-sebastian.reichel@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi
+On 7/30/24 21:05, Sebastian Reichel wrote:
+> +	/*
+> +	 * Currently the Rockchip SPI driver always sleeps when doing SPI
+> +	 * transfers. This is not allowed in the SYS_OFF_MODE_POWER_OFF
+> +	 * handler, so we are using the prepare handler as a workaround.
+> +	 * This should be removed once the Rockchip SPI driver has been
+> +	 * adapted.
+> +	 */
+> +	if (is_spi)
+> +		pwr_off_mode = SYS_OFF_MODE_POWER_OFF_PREPARE;
 
-On 2024-08-01, Stefan Lippers-Hollmann wrote:
-> On 2024-07-30, Greg Kroah-Hartman wrote:
-> > 6.10-stable review patch.  If anyone has any objections, please let me=
- know.
-> >
-> > ------------------
-> >
-> > From: Zheng Yejian <zhengyejian1@huawei.com>
-> >
-> > [ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
-> >
-> > Infinite log printing occurs during fuzz test:
-> >
-> >   rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
-> >   ...
-> >   dvb-usb: schedule remote query interval to 100 msecs.
-> >   dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialize=
-d ...
-> >   dvb-usb: bulk message failed: -22 (1/0)
-> >   dvb-usb: bulk message failed: -22 (1/0)
-> >   dvb-usb: bulk message failed: -22 (1/0)
-> >   ...
-> >   dvb-usb: bulk message failed: -22 (1/0)
-> >
-> > Looking into the codes, there is a loop in dvb_usb_read_remote_control=
-(),
-> > that is in rc_core_dvb_usb_remote_init() create a work that will call
-> > dvb_usb_read_remote_control(), and this work will reschedule itself at
-> > 'rc_interval' intervals to recursively call dvb_usb_read_remote_contro=
-l(),
-> > see following code snippet:
-> [...]
->
-> This patch, as part of v6.10.3-rc3 breaks my TeVii s480 dual DVB-S2
-> card, reverting just this patch from v6.10-rc3 fixes the situation
-> again (a co-installed Microsoft Xbox One Digital TV DVB-T2 Tuner
-> keeps working).
-[...]
+This prevents the syscore_shutdown() step from execution. Is it better
+than not powering off?
 
-Btw. I can also reproduce this (both breakage and 'fix' by reverting
-this patch) on a another x86_64 system that only has a single TeVii
-s480 dual DVB-S2 card (and no further v4l devices) installed. So I'm
-seeing this on both sandy-bridge and raptor-lake x86_64 systems.
+I'd rather skip registration of the power-off handlers in a case of SPI :)
 
-Regards
-	Stefan Lippers-Hollmann
+-- 
+Best regards,
+Dmitry
+
 
