@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-65155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF37943F36
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:35:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EAA943F3A
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AFE31F242BD
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:35:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8981E1C20F44
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC281BF32D;
-	Thu,  1 Aug 2024 00:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCF11C0A7C;
+	Thu,  1 Aug 2024 00:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JN7YwjgT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iJ0F9t9z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5141BE87C;
-	Thu,  1 Aug 2024 00:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2641C0A74;
+	Thu,  1 Aug 2024 00:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472684; cv=none; b=jHfFqdfRdKF2s5cfX3sDwLVdyTZCBzK0AHImIrtxvi8J5woX8bL33PAbgH3Mq9fiCLXZGTbEpUu7iDp6pctDJglzcYF4gM1ARaky+FYAV6Rje62HEyylJ03KUIFiCOBWbsm5ku1nAaUX897TQG/8Hau/iNoZ2n3HgnG8sGpfbI0=
+	t=1722472686; cv=none; b=t0wL/FUkhcBeG6f0nN+Nk2og0srSflVsRjAbFQYl4UXxNvXa70C0C9jTZobXcTf2VK1UUi2aYFK2abZR6z7M9NIdN4z5g816rpm3Q6Dhdiw/EkS5IVdw7xUDK3hkQN3U6W57u4TeB9Uz/OD/hZrAN1tJCyxelQ4EgA+WtMv0ERY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472684; c=relaxed/simple;
-	bh=AD63yG5vTEoEuFTqe9zrz6n1nLcYLbIIyUjYULAzZjs=;
+	s=arc-20240116; t=1722472686; c=relaxed/simple;
+	bh=+T3ciHa949uEkErt/yXJwrqiGPNj6zzhv94e/0Z2npo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OT+BqT9Xk0sayWvIQercm8uV+DxCshjzqaZ9cI6P5JDs1i4qjyniSB5zptcrgbJ/gm3YM7ONpXMht4r9QcIBYuDD0x8KHn9VqlSV8EnHmmKVOR908O1ADlQaoHYQ7VdUv8gi65Yn+tTdhm/DRW0UPz1PrK3Q+XLKvjA0wFtpggo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JN7YwjgT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92381C4AF0E;
-	Thu,  1 Aug 2024 00:38:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QdiKupttaXuKyx+Ap9h0PbWK5zC9lyjz+RCrF7/LwOn7TQHzyGdt5dIEPz6x2+fvQ/ou1fvVF8Mfe7DXzw8rFQ2WkIrWZds71POCjUyNZ5y/iLj/ZoTHgq3xNh0fTxf5m2qfUqW1QB/zHH0eHhAC0KTAR5GuESO1uLLFVnv3DRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iJ0F9t9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99A1C32786;
+	Thu,  1 Aug 2024 00:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472684;
-	bh=AD63yG5vTEoEuFTqe9zrz6n1nLcYLbIIyUjYULAzZjs=;
+	s=k20201202; t=1722472686;
+	bh=+T3ciHa949uEkErt/yXJwrqiGPNj6zzhv94e/0Z2npo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JN7YwjgTD5M8kHWo+m8elTcuwoUdmB6mOdMMMWksSDu67Bne3N9aXZR/Uwy4CCGeZ
-	 Te2kHjT9dlZ+Qdxl3ORuGT3v/wIvP0PeYTA59jEVKLpOWHP5rFuyScyLiHUsLBFWSp
-	 Oor1IQoRj1zy8FRdJdkr8jzFe3lhc+fLYMwgqRfdEc2GkqqDPqoBB7du7GKU5v9n+E
-	 39gHZLAG9PM90VthjbS4a197uiCngdeHsemtPFHGiO4a/uHaGDyIOL8/ZyIKja/i2m
-	 31VtNq96oh4RlBPg21asMXlzi1mPPC3uuzsQPyQty43LSAFkCKuqh+iwo31Liyd7oO
-	 lQZ+wMb0uul+w==
+	b=iJ0F9t9zj5tQ8XfayLsJKjsIbAK0TVBLUf4X8QxvbKd/foKT3IiKA9JVHpe271mxp
+	 4n2tOwZyFwuD8hlQu6Y+cTjobQ9o8GpNZ55ijO/0SRx91Df43wRa2o27RzEJ/rHC2L
+	 RW2VitbHiDQmIAUbvDJiXFpW743VVslbDRJvf8wHmH5RGNmbHMhQX6atxA9AjusgCT
+	 Uv7YFZfE98NX7z4bLtRl3PXbRaUz+XSHG0ijg9pwm2BNZOu2WDehFh7xv1Z80gqNv4
+	 T+Kc5uKkDmW7FiMy8wAo0sWtM0OpkMOTGNBF9Vy8Fbi9Ulq562RxLIQObhsVZd6jaL
+	 GukCcUMfif+YQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: yunshui <jiangyunshui@kylinos.cn>,
-	syzbot <syzkaller@googlegroups.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+Cc: Aleksandr Mishin <amishin@t-argos.ru>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	martin.lau@linux.dev,
-	ast@kernel.org,
-	andrii@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 18/38] bpf, net: Use DEV_STAT_INC()
-Date: Wed, 31 Jul 2024 20:35:24 -0400
-Message-ID: <20240801003643.3938534-18-sashal@kernel.org>
+	jonnyc@amazon.com,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 19/38] PCI: al: Check IORESOURCE_BUS existence during probe
+Date: Wed, 31 Jul 2024 20:35:25 -0400
+Message-ID: <20240801003643.3938534-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
 References: <20240801003643.3938534-1-sashal@kernel.org>
@@ -69,62 +65,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: yunshui <jiangyunshui@kylinos.cn>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit d9cbd8343b010016fcaabc361c37720dcafddcbe ]
+[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
 
-syzbot/KCSAN reported that races happen when multiple CPUs updating
-dev->stats.tx_error concurrently. Adopt SMP safe DEV_STATS_INC() to
-update the dev->stats fields.
+If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
+of_pci_parse_bus_range(), so NULL pointer dereference should not happen
+here.
 
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: yunshui <jiangyunshui@kylinos.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240523033520.4029314-1-jiangyunshui@kylinos.cn
+But that's hard to verify, so check for NULL anyway.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index a3101cdfd47b9..001da7ccb7089 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2266,12 +2266,12 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
+diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
+index f973fbca90cf7..ac772fb11aa73 100644
+--- a/drivers/pci/controller/dwc/pcie-al.c
++++ b/drivers/pci/controller/dwc/pcie-al.c
+@@ -250,18 +250,24 @@ static struct pci_ops al_child_pci_ops = {
+ 	.write = pci_generic_config_write,
+ };
  
- 	err = bpf_out_neigh_v6(net, skb, dev, nh);
- 	if (unlikely(net_xmit_eval(err)))
--		dev->stats.tx_errors++;
-+		DEV_STATS_INC(dev, tx_errors);
- 	else
- 		ret = NET_XMIT_SUCCESS;
- 	goto out_xmit;
- out_drop:
--	dev->stats.tx_errors++;
-+	DEV_STATS_INC(dev, tx_errors);
- 	kfree_skb(skb);
- out_xmit:
- 	return ret;
-@@ -2379,12 +2379,12 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
+-static void al_pcie_config_prepare(struct al_pcie *pcie)
++static int al_pcie_config_prepare(struct al_pcie *pcie)
+ {
+ 	struct al_pcie_target_bus_cfg *target_bus_cfg;
+ 	struct pcie_port *pp = &pcie->pci->pp;
+ 	unsigned int ecam_bus_mask;
++	struct resource_entry *ft;
+ 	u32 cfg_control_offset;
++	struct resource *bus;
+ 	u8 subordinate_bus;
+ 	u8 secondary_bus;
+ 	u32 cfg_control;
+ 	u32 reg;
+-	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
  
- 	err = bpf_out_neigh_v4(net, skb, dev, nh);
- 	if (unlikely(net_xmit_eval(err)))
--		dev->stats.tx_errors++;
-+		DEV_STATS_INC(dev, tx_errors);
- 	else
- 		ret = NET_XMIT_SUCCESS;
- 	goto out_xmit;
- out_drop:
--	dev->stats.tx_errors++;
-+	DEV_STATS_INC(dev, tx_errors);
- 	kfree_skb(skb);
- out_xmit:
- 	return ret;
++	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
++	if (!ft)
++		return -ENODEV;
++
++	bus = ft->res;
+ 	target_bus_cfg = &pcie->target_bus_cfg;
+ 
+ 	ecam_bus_mask = (pcie->ecam_size >> 20) - 1;
+@@ -295,6 +301,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
+ 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
+ 
+ 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
++
++	return 0;
+ }
+ 
+ static int al_pcie_host_init(struct pcie_port *pp)
+@@ -313,7 +321,9 @@ static int al_pcie_host_init(struct pcie_port *pp)
+ 	if (rc)
+ 		return rc;
+ 
+-	al_pcie_config_prepare(pcie);
++	rc = al_pcie_config_prepare(pcie);
++	if (rc)
++		return rc;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
