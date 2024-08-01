@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-64985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B321943D41
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:54:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02513943D45
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC122866A6
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF231F2021C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A341C3F04;
-	Thu,  1 Aug 2024 00:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23EBB1C3F2B;
+	Thu,  1 Aug 2024 00:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXTiNjbr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmMGIQOv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9F3130A73;
-	Thu,  1 Aug 2024 00:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD361C3F22;
+	Thu,  1 Aug 2024 00:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471857; cv=none; b=PlmXqlKPADB5iXrh6aaXiBKHRPsHE+N6VHs/RjvkyThCDnzGja17mawvnGVWWvyee+f9iA52IOb5HNDPHIXTZkFDbcpwC0ILZdNr8i/NKzw50O+CF5L3OnwhqgWuFDrpDRQ91VjxWdvxrccISw+dkXg7oHuyfU+hLKqOW4R9aT4=
+	t=1722471858; cv=none; b=R+epbCgjG+lErZWeuCVCitPs1hlRLdiJG3BntLjhK9cuJl5EzcRSqNxzMhW4+3n3i3VsIc7LO3yLlSA6/EJJ+tau5TR6OMu0LUtbdc/c0EKI4fpXAoA78gCgGNRn2IlSWpUWYJss7sEFh1uD4oynmPkjLdMhelsbP11JunNA2uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471857; c=relaxed/simple;
-	bh=RColRDGhXyRYuVSwACqASDaDSCK4w3PDTdkl/ovss3Y=;
+	s=arc-20240116; t=1722471858; c=relaxed/simple;
+	bh=EVPwq1sDcAQhcspKyjX8dbFlGtklH7gDVyYBehEBk90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A59QrKHc0lS7eYoLnJFIIEg7k3Fb27w7Wbv+OTOYmpWGEtoHn/B93crk+q1cRn18G2SDTnjfBfBSXprYiTtyK/uSC5JNM+U0FI97wD3z3Vzzf5O3qLjpzDCklatcy1nX6ONvWCR5IUbWKEg6qLBDRbfUySxM3WUcp97jSrlE5tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXTiNjbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEFFC4AF0E;
-	Thu,  1 Aug 2024 00:24:15 +0000 (UTC)
+	 MIME-Version; b=mgmVVtYwja+XdTt6dRUqyHbDlUFFxySNcrrtsQzFZ5JA9b3bcuX9N+UlnNF3rhkSUBUQ3AG6NAh1edXceR9ktRS+n5B4wp6A6/rS47mBJ0EpFyRsVEFYWQG3y/ORfT9p/QjzV3z11nvd6f8C3lqcNf0y/hHD7MR0p9JvBZxYiW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmMGIQOv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C38CC116B1;
+	Thu,  1 Aug 2024 00:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471856;
-	bh=RColRDGhXyRYuVSwACqASDaDSCK4w3PDTdkl/ovss3Y=;
+	s=k20201202; t=1722471858;
+	bh=EVPwq1sDcAQhcspKyjX8dbFlGtklH7gDVyYBehEBk90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXTiNjbr2ooJMd/dGK3yuNRQbVGTFH69esf80jNf0+scsL2LsiL254EaSmXVMWNNu
-	 5Nt21TM+09t05cUrhBXBh5qfhgMnGOaj4U/XyQARjy8rfXDQVRg8nwmJye5tazmLwz
-	 QWrXX4f3RDwULdMJfJGLsF9Nt6bi3vCvDl1Flt08Cd4d4w0OHOmBmmCI5BkGYHMSK8
-	 /el/qDUd4pCGqMQTCvUdMNtetjfDcZy7Z5fY7p1rIJNbmssL1951H4iRJspgHj6/J/
-	 KGro1c32sKxUH00D8VuLZ06Ov3RI3kPQo5UIV8jkN8cmL39n8FoKlKLIMwfHB4JuUB
-	 HpodEU8gTMLDg==
+	b=QmMGIQOvuk3uO3kNxFBPm+ln8DrFN8GZvvtRpbTmDXooC2CE9p1O4R9xrqAu1gfO3
+	 z1541NS+792g1u9s4XDHCfNPsGswJeoNQUcdGS31ioJQfE/QeJZR5ZZzsNOiVvLzjv
+	 tqZcSmbn/PX2oFQsWzmg3/pc+ZWXWKZFklkYwSEwuobACO5xj20gbKfOi8r7eTL3iV
+	 0KArZ97RFphdV+S3JBbEHrKM3CgYkcbx+jwiCQou8tXcrg+EBLMIH4duXnfrhk1Rck
+	 rDZI18BfCI3bG0lZs7GcatT7NNTZsZ0pzFYm0W1ElptsDzCMvqsIPO/Eg4zncZksEo
+	 0BsgoqnL9R2fw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aleksandr Mishin <amishin@t-argos.ru>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+Cc: Richard Maina <quic_rmaina@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Chris Lew <quic_clew@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jonnyc@amazon.com,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 39/83] PCI: al: Check IORESOURCE_BUS existence during probe
-Date: Wed, 31 Jul 2024 20:17:54 -0400
-Message-ID: <20240801002107.3934037-39-sashal@kernel.org>
+	peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	linux-remoteproc@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 40/83] hwspinlock: Introduce hwspin_lock_bust()
+Date: Wed, 31 Jul 2024 20:17:55 -0400
+Message-ID: <20240801002107.3934037-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -65,86 +66,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Richard Maina <quic_rmaina@quicinc.com>
 
-[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
+[ Upstream commit 7c327d56597d8de1680cf24e956b704270d3d84a ]
 
-If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
-of_pci_parse_bus_range(), so NULL pointer dereference should not happen
-here.
+When a remoteproc crashes or goes down unexpectedly this can result in
+a state where locks held by the remoteproc will remain locked possibly
+resulting in deadlock. This new API hwspin_lock_bust() allows
+hwspinlock implementers to define a bust operation for freeing previously
+acquired hwspinlocks after verifying ownership of the acquired lock.
 
-But that's hard to verify, so check for NULL anyway.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Richard Maina <quic_rmaina@quicinc.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Chris Lew <quic_clew@quicinc.com>
+Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-1-c8b924ffa5a2@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ Documentation/locking/hwspinlock.rst     | 11 ++++++++++
+ drivers/hwspinlock/hwspinlock_core.c     | 28 ++++++++++++++++++++++++
+ drivers/hwspinlock/hwspinlock_internal.h |  3 +++
+ include/linux/hwspinlock.h               |  6 +++++
+ 4 files changed, 48 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
-index b8cb77c9c4bd2..3132b27bc0064 100644
---- a/drivers/pci/controller/dwc/pcie-al.c
-+++ b/drivers/pci/controller/dwc/pcie-al.c
-@@ -242,18 +242,24 @@ static struct pci_ops al_child_pci_ops = {
- 	.write = pci_generic_config_write,
+diff --git a/Documentation/locking/hwspinlock.rst b/Documentation/locking/hwspinlock.rst
+index 6f03713b70039..2ffaa3cbd63f1 100644
+--- a/Documentation/locking/hwspinlock.rst
++++ b/Documentation/locking/hwspinlock.rst
+@@ -85,6 +85,17 @@ is already free).
+ 
+ Should be called from a process context (might sleep).
+ 
++::
++
++  int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id);
++
++After verifying the owner of the hwspinlock, release a previously acquired
++hwspinlock; returns 0 on success, or an appropriate error code on failure
++(e.g. -EOPNOTSUPP if the bust operation is not defined for the specific
++hwspinlock).
++
++Should be called from a process context (might sleep).
++
+ ::
+ 
+   int hwspin_lock_timeout(struct hwspinlock *hwlock, unsigned int timeout);
+diff --git a/drivers/hwspinlock/hwspinlock_core.c b/drivers/hwspinlock/hwspinlock_core.c
+index ada694ba9f958..f279dd010b73e 100644
+--- a/drivers/hwspinlock/hwspinlock_core.c
++++ b/drivers/hwspinlock/hwspinlock_core.c
+@@ -302,6 +302,34 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
+ }
+ EXPORT_SYMBOL_GPL(__hwspin_unlock);
+ 
++/**
++ * hwspin_lock_bust() - bust a specific hwspinlock
++ * @hwlock: a previously-acquired hwspinlock which we want to bust
++ * @id: identifier of the remote lock holder, if applicable
++ *
++ * This function will bust a hwspinlock that was previously acquired as
++ * long as the current owner of the lock matches the id given by the caller.
++ *
++ * Context: Process context.
++ *
++ * Returns: 0 on success, or -EINVAL if the hwspinlock does not exist, or
++ * the bust operation fails, and -EOPNOTSUPP if the bust operation is not
++ * defined for the hwspinlock.
++ */
++int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id)
++{
++	if (WARN_ON(!hwlock))
++		return -EINVAL;
++
++	if (!hwlock->bank->ops->bust) {
++		pr_err("bust operation not defined\n");
++		return -EOPNOTSUPP;
++	}
++
++	return hwlock->bank->ops->bust(hwlock, id);
++}
++EXPORT_SYMBOL_GPL(hwspin_lock_bust);
++
+ /**
+  * of_hwspin_lock_simple_xlate - translate hwlock_spec to return a lock id
+  * @bank: the hwspinlock device bank
+diff --git a/drivers/hwspinlock/hwspinlock_internal.h b/drivers/hwspinlock/hwspinlock_internal.h
+index 29892767bb7a0..f298fc0ee5adb 100644
+--- a/drivers/hwspinlock/hwspinlock_internal.h
++++ b/drivers/hwspinlock/hwspinlock_internal.h
+@@ -21,6 +21,8 @@ struct hwspinlock_device;
+  * @trylock: make a single attempt to take the lock. returns 0 on
+  *	     failure and true on success. may _not_ sleep.
+  * @unlock:  release the lock. always succeed. may _not_ sleep.
++ * @bust:    optional, platform-specific bust handler, called by hwspinlock
++ *	     core to bust a specific lock.
+  * @relax:   optional, platform-specific relax handler, called by hwspinlock
+  *	     core while spinning on a lock, between two successive
+  *	     invocations of @trylock. may _not_ sleep.
+@@ -28,6 +30,7 @@ struct hwspinlock_device;
+ struct hwspinlock_ops {
+ 	int (*trylock)(struct hwspinlock *lock);
+ 	void (*unlock)(struct hwspinlock *lock);
++	int (*bust)(struct hwspinlock *lock, unsigned int id);
+ 	void (*relax)(struct hwspinlock *lock);
  };
  
--static void al_pcie_config_prepare(struct al_pcie *pcie)
-+static int al_pcie_config_prepare(struct al_pcie *pcie)
+diff --git a/include/linux/hwspinlock.h b/include/linux/hwspinlock.h
+index bfe7c1f1ac6d1..f0231dbc47771 100644
+--- a/include/linux/hwspinlock.h
++++ b/include/linux/hwspinlock.h
+@@ -68,6 +68,7 @@ int __hwspin_lock_timeout(struct hwspinlock *, unsigned int, int,
+ int __hwspin_trylock(struct hwspinlock *, int, unsigned long *);
+ void __hwspin_unlock(struct hwspinlock *, int, unsigned long *);
+ int of_hwspin_lock_get_id_byname(struct device_node *np, const char *name);
++int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id);
+ int devm_hwspin_lock_free(struct device *dev, struct hwspinlock *hwlock);
+ struct hwspinlock *devm_hwspin_lock_request(struct device *dev);
+ struct hwspinlock *devm_hwspin_lock_request_specific(struct device *dev,
+@@ -127,6 +128,11 @@ void __hwspin_unlock(struct hwspinlock *hwlock, int mode, unsigned long *flags)
  {
- 	struct al_pcie_target_bus_cfg *target_bus_cfg;
- 	struct dw_pcie_rp *pp = &pcie->pci->pp;
- 	unsigned int ecam_bus_mask;
-+	struct resource_entry *ft;
- 	u32 cfg_control_offset;
-+	struct resource *bus;
- 	u8 subordinate_bus;
- 	u8 secondary_bus;
- 	u32 cfg_control;
- 	u32 reg;
--	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
+ }
  
-+	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
-+	if (!ft)
-+		return -ENODEV;
-+
-+	bus = ft->res;
- 	target_bus_cfg = &pcie->target_bus_cfg;
- 
- 	ecam_bus_mask = (pcie->ecam_size >> PCIE_ECAM_BUS_SHIFT) - 1;
-@@ -287,6 +293,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
- 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
- 
- 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
-+
++static inline int hwspin_lock_bust(struct hwspinlock *hwlock, unsigned int id)
++{
 +	return 0;
- }
- 
- static int al_pcie_host_init(struct dw_pcie_rp *pp)
-@@ -305,7 +313,9 @@ static int al_pcie_host_init(struct dw_pcie_rp *pp)
- 	if (rc)
- 		return rc;
- 
--	al_pcie_config_prepare(pcie);
-+	rc = al_pcie_config_prepare(pcie);
-+	if (rc)
-+		return rc;
- 
++}
++
+ static inline int of_hwspin_lock_get_id(struct device_node *np, int index)
+ {
  	return 0;
- }
 -- 
 2.43.0
 
