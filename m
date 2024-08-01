@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-64998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAB3943D66
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:57:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8578E943D68
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C0C3B25D8D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:57:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46E332845D0
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEBE14264C;
-	Thu,  1 Aug 2024 00:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4601A4FAF;
+	Thu,  1 Aug 2024 00:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glsG0Jz2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ujDWoIHv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2381C5E68;
-	Thu,  1 Aug 2024 00:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F4C1A4FA6;
+	Thu,  1 Aug 2024 00:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471890; cv=none; b=mfEaed/r6f0uqes1imYjnsgd32x2vmQegQYr0stMEJQJ+O66HgJovoFxN6ATwvVvBuIPyYQQd2zDXp0RSy5P/wBd4/DA2gVP0T//12AGYKB2UdT6zu9IHwZlg4ZyQV5qqhSC/itgE3MIN/NFoRd+g8OZIEozZuNRURqdx+LA3y4=
+	t=1722471895; cv=none; b=Y4X2iUJAVeJstlQ2Ogxzjkj2rTHyd828LLJGawGfTXTPpbFuj6LJvG8mvB67PTf2AJBVLmlrtLpEWhpEta42iMSFgtQKbu+3rEVV21GKH9toNxPRk/t/xQA7EGIAtBBJRZjelS9f3SoBT69eTcdBIQP+A+dXANFqa53Cv8gdgfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471890; c=relaxed/simple;
-	bh=sJhZN1nywhtMs+jOxZKuOfxvk//enzoo4plEAcHIS+U=;
+	s=arc-20240116; t=1722471895; c=relaxed/simple;
+	bh=JYUibu9T9JrFP6ao9bNLHOKxT2m4lvus2ioT4oQS0ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHBMYfyBQZYkL8SM6TgBIZEwCy2lzqbZhNfUh4WqZQ6AxlWWCcWAM1BdqMfS3fgN4d6fl0Tj/crWUUjhFT7sylt12LVLu4cq0Hhlv+P59kQg2oU4g9ne4OJwohxDuhT3yuT6AXSkqmXvQF/YTowr873W56yEkPy1Qr3STFOPiDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glsG0Jz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D82C116B1;
-	Thu,  1 Aug 2024 00:24:46 +0000 (UTC)
+	 MIME-Version; b=A8RZS6lO1vlsJnyVP16rutN0JZGbtOe6q9tm+AYZQABd5dlsXg2BQPAEu0H5igpT3MpaEHE2/67hKa2gGNybGLAeKc0+qxnoa9zoFBk6j81uvp5LbwkKeoopQqPO92c9W6cOl7z3shJk26GC5xkOGc57Z5IDO7WKJEyzeHPWDSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ujDWoIHv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8085C4AF11;
+	Thu,  1 Aug 2024 00:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471889;
-	bh=sJhZN1nywhtMs+jOxZKuOfxvk//enzoo4plEAcHIS+U=;
+	s=k20201202; t=1722471894;
+	bh=JYUibu9T9JrFP6ao9bNLHOKxT2m4lvus2ioT4oQS0ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glsG0Jz21y825DW9hznmL3OzLEiRlEySeUt9G9eHPobAWpNr61Zk9+uaG3eVHZQ1v
-	 ueyNDWbz4dkWXl5tVJv7n1jDexd4rd1KpohXcj9XB98zs80KV1dKvjMFtL3M+KnPC+
-	 WDNllW8b8lXNtAdzM7QSOpi3lMhVntSNxE9j8Cfp7t86yeME5noQV+oGAx47x3SC4p
-	 Ir7malp2pKAyvHN8IpYfJUWOwDN86kmGta8fAo/fOPLJtpXRS84bHsgOldaL9G7xYf
-	 +/9xDPHEW9CieAYBVXKQI6g+j6qB51avH8YP+33TssAiBK04K8+vEjRzpRfCJQ1p3T
-	 VfgIl8VbhzOsQ==
+	b=ujDWoIHvXaiavT0jTKod6CCHsY93oqFhuP8igjMqnow3el+YmlH0HFB5cnpL4rIn4
+	 Uk42vAzWoD6ra1yrxzJ9rjuhC7O0wRzzd+b0yhVgE5aAPe/IyZBli/8FxfBep6BC7D
+	 5AJv6I2bDxLC33hTya/cwi0gPsW5528WGARL0DFWuNd6apaVpdRrJ3GSrdh12oAfWY
+	 1rLVraphgxZ4hrBPRdT4g5qrMiEkBtvvvZFdoTS7LRbexMml56KSIhlRFPMBniqNOW
+	 o1W96f+XDGrodoIVDWrQbXTECqrUscaIDMs6TvgJ3jMSK9ivA/ap8LCDSOIJLAtcfJ
+	 Zwe8uZgdmT6/w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Wayne Lin <wayne.lin@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
+Cc: Wenjing Liu <wenjing.liu@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
 	Zaeem Mohamed <zaeem.mohamed@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
@@ -58,17 +58,17 @@ Cc: Wayne Lin <wayne.lin@amd.com>,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
 	alex.hung@amd.com,
-	mwen@igalia.com,
-	joshua@froggi.es,
-	mario.limonciello@amd.com,
-	Roman.Li@amd.com,
+	george.shen@amd.com,
+	michael.strauss@amd.com,
 	Bhawanpreet.Lakha@amd.com,
-	rdunlap@infradead.org,
+	hersenxs.wu@amd.com,
+	daniel.sa@amd.com,
+	yao.wang1@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 52/83] drm/amd/display: Correct the defined value for AMDGPU_DMUB_NOTIFICATION_MAX
-Date: Wed, 31 Jul 2024 20:18:07 -0400
-Message-ID: <20240801002107.3934037-52-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 53/83] drm/amd/display: use preferred link settings for dp signal only
+Date: Wed, 31 Jul 2024 20:18:08 -0400
+Message-ID: <20240801002107.3934037-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -83,38 +83,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Wayne Lin <wayne.lin@amd.com>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-[ Upstream commit ad28d7c3d989fc5689581664653879d664da76f0 ]
+[ Upstream commit abf34ca465f5cd182b07701d3f3d369c0fc04723 ]
 
-[Why & How]
-It actually exposes '6' types in enum dmub_notification_type. Not 5. Using smaller
-number to create array dmub_callback & dmub_thread_offload has potential to access
-item out of array bound. Fix it.
+[why]
+We set preferred link settings for virtual signal. However we don't support
+virtual signal for UHBR link rate. If preferred is set to UHBR link rate, we
+will allow virtual signal with UHBR link rate which causes system crashes.
 
-Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
 Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../dc/link/protocols/link_dp_capability.c    | 24 ++++++++-----------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-index 9e4cc5eeda767..88606b805330d 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -49,7 +49,7 @@
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index 16f4865e4246d..3d589072fe307 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -908,21 +908,17 @@ bool link_decide_link_settings(struct dc_stream_state *stream,
  
- #define AMDGPU_DM_MAX_NUM_EDP 2
+ 	memset(link_setting, 0, sizeof(*link_setting));
  
--#define AMDGPU_DMUB_NOTIFICATION_MAX 5
-+#define AMDGPU_DMUB_NOTIFICATION_MAX 6
- 
- #define HDMI_AMD_VENDOR_SPECIFIC_DATA_BLOCK_IEEE_REGISTRATION_ID 0x00001A
- #define AMD_VSDB_VERSION_3_FEATURECAP_REPLAYMODE 0x40
+-	/* if preferred is specified through AMDDP, use it, if it's enough
+-	 * to drive the mode
+-	 */
+-	if (link->preferred_link_setting.lane_count !=
+-			LANE_COUNT_UNKNOWN &&
+-			link->preferred_link_setting.link_rate !=
+-					LINK_RATE_UNKNOWN) {
++	if (dc_is_dp_signal(stream->signal)  &&
++			link->preferred_link_setting.lane_count != LANE_COUNT_UNKNOWN &&
++			link->preferred_link_setting.link_rate != LINK_RATE_UNKNOWN) {
++		/* if preferred is specified through AMDDP, use it, if it's enough
++		 * to drive the mode
++		 */
+ 		*link_setting = link->preferred_link_setting;
+-		return true;
+-	}
+-
+-	/* MST doesn't perform link training for now
+-	 * TODO: add MST specific link training routine
+-	 */
+-	if (stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST) {
++	} else if (stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST) {
++		/* MST doesn't perform link training for now
++		 * TODO: add MST specific link training routine
++		 */
+ 		decide_mst_link_settings(link, link_setting);
+ 	} else if (link->connector_signal == SIGNAL_TYPE_EDP) {
+ 		/* enable edp link optimization for DSC eDP case */
 -- 
 2.43.0
 
