@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-64887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE05A943B9E
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9BE0943BA9
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A1F4283E41
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:29:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31818284CD8
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1D5189BB7;
-	Thu,  1 Aug 2024 00:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6638F18E03B;
+	Thu,  1 Aug 2024 00:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tbrAYCVY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyA/zzYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7458418B498;
-	Thu,  1 Aug 2024 00:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22699148311;
+	Thu,  1 Aug 2024 00:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471299; cv=none; b=gin8u0QVu3D/FQfcQkbc4tB0ieAqXZFNbsdY6Qa5V8RnTWjUYtcN3NOJiG7FjPkBfYFfvKz2AQeRjrIq5zJciAP7V7qrjA47IqwZZIKRL4KkL3nawCD2NVvankABhViqMYrSTdNq4X0xFSyyz5T2U7z2rH1GMhGZnWP1uENnBCg=
+	t=1722471301; cv=none; b=uWsROTBGrIjxfNkvdMuIYOrwmXCYCMsgZOJhitDhF3nvMJpgX+hIBpA8D53vzTvW0QPoCljDdyrAFmmmmO6vCx0lqnOcHcgz80LmEBQ2dxe7fb7RcSSPDwnrpiAyNHjYrxqbuWkGQ+VseTuxUFGbmVQ4XZkEO0QlpznUNUJnl+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471299; c=relaxed/simple;
-	bh=WD0AoDodMfXRZhATLIYNle/2CHmU9VT/Djh5YD8KUVk=;
+	s=arc-20240116; t=1722471301; c=relaxed/simple;
+	bh=aQOPGRDuca0jP6BFG+wUCutmfPwa2tzy8A7TzRxZPUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJ7CFT30qKWIyapcHYBjU3SozwdyK68CGv8o20UXSJRfa0NZbWJinscLdphv0fi490PRpDeCtRRM4+xhrOyqiebTU1p0//q7DywHlo+w0rIB61ewEKIDIMQtCk1/jM/SF1nTy/y9ty7jQUPTMnEhj3bMMqp9rOAcopB42Xk0AHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tbrAYCVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7ADC116B1;
-	Thu,  1 Aug 2024 00:14:58 +0000 (UTC)
+	 MIME-Version; b=a4uWF6Sg5VieF5kCVjK3e+1D3Ns3kYgEjPYvpgTcsTRam2MJI1WmZAzaOSIYAWQml2oV1nergtsTNIMArrXHBa8wuQP9RMtP5a4xkqA6TUifFO1GzrjNCDhpYiGb6Y0sIBau3rYekjwtgcDLk0gSFjdXlQCKucv57P3N2LUBxlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyA/zzYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA99EC32786;
+	Thu,  1 Aug 2024 00:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471299;
-	bh=WD0AoDodMfXRZhATLIYNle/2CHmU9VT/Djh5YD8KUVk=;
+	s=k20201202; t=1722471300;
+	bh=aQOPGRDuca0jP6BFG+wUCutmfPwa2tzy8A7TzRxZPUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tbrAYCVYfEy8yajcGvwUYr8cJ1TJ1lBKCqb3X9jGEXV3lrCwpFLmnh54u4EMD+hrz
-	 31/HfK3PPdPfb6feUXZMzh8evyca7jUbOhArsphAU+XUNw6BeBYM6b3+Dk66Ngssn2
-	 jotqVx4bsgHRZSKrfL8wz5L0xkGpte26H0XdofrZsEIuhbeN6aqQLZnt9V8unGCN7I
-	 9DoeXiDzUas0Ct/1xp+ztNtvm8vVh/HdVOLvISPn9bKpiQX6CmkueZF4bYy6NGT6WB
-	 iVoBWKlYKCA16h3WEtPCEZkdS4YqcjVQRqyZhW6N3rlbiAomtwmqgQASXEaumLwgzf
-	 PQrDu4u+4ff+A==
+	b=iyA/zzYMsv6mvxdQtZrv77/ojZEoQ5drCWRqiXa93JSUlsaG7FmqFyH7zdjb1fUBJ
+	 2IIKNIHFbB3MqPjcKCRdNsMH/uaTpz9S9TphMdRZXHLTt9WWzcCDW139PxVqciaq4a
+	 GD5xX1ah8Yu5pISbeK55lx4zo6mhj4Q0QZX5t9wcy4TAqbZaAMkOMZQk5Sd3DhrFXT
+	 a+djssUEJguY8UkKLBzSuAd6ddXlX7+ybuAyp+rSlS8mF67OZZI261ueIiAMXrhcvF
+	 zb1iTLGHuSLWIIJIlPHRVCK+Jncsqg6Z2dI0xFVsID6IrLne2kWxWjG+9KrHBW9FTp
+	 mCiWCIwSZ1mzQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+Cc: Ken Sloat <ksloat@designlinxhs.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Sean Anderson <sean.anderson@seco.com>,
 	Sasha Levin <sashal@kernel.org>,
-	brgl@bgdev.pl,
-	linus.walleij@linaro.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 062/121] gpiolib: cdev: Add INIT_KFIFO() for linereq events
-Date: Wed, 31 Jul 2024 20:00:00 -0400
-Message-ID: <20240801000834.3930818-62-sashal@kernel.org>
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 063/121] pwm: xilinx: Fix u32 overflow issue in 32-bit width PWM mode.
+Date: Wed, 31 Jul 2024 20:00:01 -0400
+Message-ID: <20240801000834.3930818-63-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -67,43 +66,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Ken Sloat <ksloat@designlinxhs.com>
 
-[ Upstream commit 35d848e7a1cbba2649ed98cf58e0cdc7ee560c7a ]
+[ Upstream commit 56f45266df67aa0f5b2a6881c8c4d16dbfff6b7d ]
 
-The initialisation of the linereq events kfifo relies on the struct being
-zeroed and a subsequent call to kfifo_alloc().  The call to kfifo_alloc()
-is deferred until edge detection is first enabled for the linereq.  If the
-kfifo is inadvertently accessed before the call to kfifo_alloc(), as was
-the case in a recently discovered bug, it behaves as a FIFO of size 1 with
-an element size of 0, so writes and reads to the kfifo appear successful
-but copy no actual data.
+This timer HW supports 8, 16 and 32-bit timer widths. This
+driver currently uses a u32 to store the max possible value
+of the timer. However, statements perform addition of 2 in
+xilinx_pwm_apply() when calculating the period_cycles and
+duty_cycles values. Since priv->max is a u32, this will
+result in an overflow to 1 which will not only be incorrect
+but fail on range comparison. This results in making it
+impossible to set the PWM in this timer mode.
 
-As a defensive measure, initialise the kfifo with INIT_KFIFO() when the
-events kfifo is constructed.  This initialises the kfifo element size
-and zeroes its data pointer, so any inadvertant access prior to the
-kfifo_alloc() call will trigger an oops.
+There are two obvious solutions to the current problem:
+1. Cast each instance where overflow occurs to u64.
+2. Change priv->max from a u32 to a u64.
 
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240529131953.195777-2-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Solution #1 requires more code modifications, and leaves
+opportunity to introduce similar overflows if other math
+statements are added in the future. These may also go
+undetected if running in non 32-bit timer modes.
+
+Solution #2 is the much smaller and cleaner approach and
+thus the chosen method in this patch.
+
+This was tested on a Zynq UltraScale+ with multiple
+instances of the PWM IP.
+
+Signed-off-by: Ken Sloat <ksloat@designlinxhs.com>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Link: https://lore.kernel.org/r/SJ0P222MB0107490C5371B848EF04351CA1E19@SJ0P222MB0107.NAMP222.PROD.OUTLOOK.COM
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/clocksource/timer-xilinx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 5639abce6ec57..62a6af8e53d0e 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1780,6 +1780,7 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
+diff --git a/include/clocksource/timer-xilinx.h b/include/clocksource/timer-xilinx.h
+index c0f56fe6d22ae..d116f18de899c 100644
+--- a/include/clocksource/timer-xilinx.h
++++ b/include/clocksource/timer-xilinx.h
+@@ -41,7 +41,7 @@ struct regmap;
+ struct xilinx_timer_priv {
+ 	struct regmap *map;
+ 	struct clk *clk;
+-	u32 max;
++	u64 max;
+ };
  
- 	mutex_init(&lr->config_mutex);
- 	init_waitqueue_head(&lr->wait);
-+	INIT_KFIFO(lr->events);
- 	lr->event_buffer_size = ulr.event_buffer_size;
- 	if (lr->event_buffer_size == 0)
- 		lr->event_buffer_size = ulr.num_lines * 16;
+ /**
 -- 
 2.43.0
 
