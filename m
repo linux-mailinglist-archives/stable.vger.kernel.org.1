@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-65117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D87943EC8
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:27:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9970A943ECD
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:27:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5BB71C2273E
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:27:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EF091F2297A
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6981DAC4C;
-	Thu,  1 Aug 2024 00:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6321A6161;
+	Thu,  1 Aug 2024 00:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nI5ek6gn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlOcyHhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472EF1DAC4F;
-	Thu,  1 Aug 2024 00:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293271DAC76;
+	Thu,  1 Aug 2024 00:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472490; cv=none; b=vF5nk9xmDhYuWt72GrFqnJUHWZgFjqvIUrweX4Ttg+vW2iEGgoEBWolqp5q273Fw0HttpIcsJZhtXb3CRYJESMTkE+lF/8SN/T7BENaUhJtnRYWY8r/PViksKeoHfYZgNisGQ0G8Eyf+wmYi1n8zJiPwZQ5iVc3uhb0ZHGDOkeM=
+	t=1722472492; cv=none; b=cMvJzWwaT/KTFgdorGXOX6QCjx+lI0MG1XTohUvbMbbzETF+G8MqCe9ckWGW7QUof/m7lEi9TBgddPR/WAI7jnGNCpY4MlNhDSi1FLgDstyI+q6tyiFZI/THkG8q5MxPtsxHTx50WqZFvhtjmah9pis0+POsSob4NFBnSI7+67w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472490; c=relaxed/simple;
-	bh=aJIcq9DyBcTZ6CEstHojdKv4tBo6t34vo3PjqiZntm4=;
+	s=arc-20240116; t=1722472492; c=relaxed/simple;
+	bh=n7vWZjyWV/GaxQtxgyPbyC5TObQk4ygvhVDuU6Al6Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYWhxRUa6iQaap3p1uSg7lpFfKMcZ4Hy8OSPn2ceHsQFAOHFDhcs51r7K58XGwZ2E3F3pt5YIxyQZxkon/oRj5KRoqyqjYdoD+f5tTQiyWfG3pQpBAlD7WXj3mm4PDFhYc1ayIq9W6CE0UhBayJ3zMXr2EgErjEi8HBefCQnCl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nI5ek6gn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310E8C4AF15;
-	Thu,  1 Aug 2024 00:34:49 +0000 (UTC)
+	 MIME-Version; b=nBm4KGPlLyrp7Tdmu3YABc3HBxv5PO7xFrmD/7Oz7VZAh7mBCNEpHg2hjx3w4jNDUmr3glsbkeLTPQi5kaC6+r1TS9tZpk5SprnC7rx1X1i7mYexBh2KO0rhxPcuRa9gjiYUtpR/gfjP0+ZOBFOzAln4McTzwYZfLPwLnCOeD0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlOcyHhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A700CC4AF0E;
+	Thu,  1 Aug 2024 00:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472490;
-	bh=aJIcq9DyBcTZ6CEstHojdKv4tBo6t34vo3PjqiZntm4=;
+	s=k20201202; t=1722472491;
+	bh=n7vWZjyWV/GaxQtxgyPbyC5TObQk4ygvhVDuU6Al6Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nI5ek6gnhf3k/xpOSTmXcIutInHs3eKZHJ/OVFQ9unHemeTi743jH1e3/suOJukZW
-	 X5C34dA6Jmke0Si5i2Ta1iCmO16qAZYgMcMoaJA1H311NKF3Zl4R0CUIbUlsqMXs4H
-	 FGqXW2t05PajQYP8guHozbCCd4CnnTcAo85l9PVLCsZrboO0Lsvz/aP6jNMKNJ1uRS
-	 89EvqH3rz6q6sFuiuML1YAr0eRFJjZCaP3Lf0QpK3fnKol7u0JW19Zgkfp1RPe1d45
-	 5Lq8UuZpMAQyUPRL40CbDEMjQndMXqLnk6MobRD4xxRECG8PhUCc+kX1LfSYmVF6eI
-	 nVyWpAz/6mpJA==
+	b=jlOcyHhDIjO4gtKQThMAiq89yUuy50IUU+spj2yVXKQWv2T1KrS2pmH0ScTp4kYFL
+	 Fa0hgvSL5FZdwSBiB2sE6f4+AqXWAoItZsMcCKLyazezKY6g5D6MlLf9N2FYKtkMl1
+	 4cmPYYS87ZZUdK1KEFc27I/PYbkzE9JGFTetXhGhH0Q+K7fXY1uVJsGKGh6kDZ3ccm
+	 ZgBTAhAmIqEE7yxd5gk0mRAJnk343edRwINHH+CSNgnSrtDFbDgPC+32oydjMobNVC
+	 KFObBgKvyAi6dGr9FSWtehvzzDbEIgfO0caw9WuQu7VPNTp3HNm+kjExyTu69FyLee
+	 C8XyBioUTxYDA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+Cc: Casey Schaufler <casey@schaufler-ca.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
 	Sasha Levin <sashal@kernel.org>,
-	brgl@bgdev.pl,
-	linus.walleij@linaro.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 27/47] gpiolib: cdev: Add INIT_KFIFO() for linereq events
-Date: Wed, 31 Jul 2024 20:31:17 -0400
-Message-ID: <20240801003256.3937416-27-sashal@kernel.org>
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 28/47] smack: tcp: ipv4, fix incorrect labeling
+Date: Wed, 31 Jul 2024 20:31:18 -0400
+Message-ID: <20240801003256.3937416-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003256.3937416-1-sashal@kernel.org>
 References: <20240801003256.3937416-1-sashal@kernel.org>
@@ -67,43 +68,67 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Casey Schaufler <casey@schaufler-ca.com>
 
-[ Upstream commit 35d848e7a1cbba2649ed98cf58e0cdc7ee560c7a ]
+[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
 
-The initialisation of the linereq events kfifo relies on the struct being
-zeroed and a subsequent call to kfifo_alloc().  The call to kfifo_alloc()
-is deferred until edge detection is first enabled for the linereq.  If the
-kfifo is inadvertently accessed before the call to kfifo_alloc(), as was
-the case in a recently discovered bug, it behaves as a FIFO of size 1 with
-an element size of 0, so writes and reads to the kfifo appear successful
-but copy no actual data.
+Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
+when a label 'foo' connects to a label 'bar' with tcp/ipv4,
+'foo' always gets 'foo' in returned ipv4 packets. So,
+1) returned packets are incorrectly labeled ('foo' instead of 'bar')
+2) 'bar' can write to 'foo' without being authorized to write.
 
-As a defensive measure, initialise the kfifo with INIT_KFIFO() when the
-events kfifo is constructed.  This initialises the kfifo element size
-and zeroes its data pointer, so any inadvertant access prior to the
-kfifo_alloc() call will trigger an oops.
+Here is a scenario how to see this:
 
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240529131953.195777-2-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+* Take two machines, let's call them C and S,
+   with active Smack in the default state
+   (no settings, no rules, no labeled hosts, only builtin labels)
+
+* At S, add Smack rule 'foo bar w'
+   (labels 'foo' and 'bar' are instantiated at S at this moment)
+
+* At S, at label 'bar', launch a program
+   that listens for incoming tcp/ipv4 connections
+
+* From C, at label 'foo', connect to the listener at S.
+   (label 'foo' is instantiated at C at this moment)
+   Connection succeedes and works.
+
+* Send some data in both directions.
+* Collect network traffic of this connection.
+
+All packets in both directions are labeled with the CIPSO
+of the label 'foo'. Hence, label 'bar' writes to 'foo' without
+being authorized, and even without ever being known at C.
+
+If anybody cares: exactly the same happens with DCCP.
+
+This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
+and it looks unintentional. At least, no explanation was provided.
+
+I changed returned packes label into the 'bar',
+to bring it into line with the Smack documentation claims.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ security/smack/smack_lsm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index c2f9d95d1086f..f65eb9bcecc78 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1454,6 +1454,7 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index e9d2ef3deccd1..25c46b56fae8d 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4225,7 +4225,7 @@ static int smack_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
+ 	rcu_read_unlock();
  
- 	mutex_init(&lr->config_mutex);
- 	init_waitqueue_head(&lr->wait);
-+	INIT_KFIFO(lr->events);
- 	lr->event_buffer_size = ulr.event_buffer_size;
- 	if (lr->event_buffer_size == 0)
- 		lr->event_buffer_size = ulr.num_lines * 16;
+ 	if (hskp == NULL)
+-		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
++		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
+ 	else
+ 		netlbl_req_delattr(req);
+ 
 -- 
 2.43.0
 
