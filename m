@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-65056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F169943DE6
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:12:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57637943DEA
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5034A1C2198D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:12:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C09A1F2218C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730C31AED29;
-	Thu,  1 Aug 2024 00:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452BE1D0DE4;
+	Thu,  1 Aug 2024 00:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bszhs9Ip"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WU0mzxxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C065192B79;
-	Thu,  1 Aug 2024 00:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24061D0DD2;
+	Thu,  1 Aug 2024 00:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472209; cv=none; b=DfUVHGp+XcIEMDgiPHHvlfCUWcvATvnjt08I/l8eJdavTRr3xuqSAYVnZP66+QWxW7oT2JOYJDpT1Z0AqYbZkPuMHTdJ7FPiGAfMjCNlO8EGcTTPWVqIp7gOTZqywQeuxrVpyPRGvt1j0dStXny/fgqVuACvniJCv8RXYkmsMrc=
+	t=1722472211; cv=none; b=aSzF8VxXacjo3jJT99ggm2VZpWMZx/1gnEaWqKczxlSql49Oy/SwGL8fidALoDO0CitZlEt+ZAGx7Js3nbpAajkLSwcoJ6SupcAW59mrVMcq8DxfTgojcWqf6aMFu6EXKmjEoVaTjrMiTVMqqoJonq777384z2gNDzLmpx/0AcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472209; c=relaxed/simple;
-	bh=5HkpZF+C9dwJjcFENfmNhps01cjNjs3wQgezjJIbfjE=;
+	s=arc-20240116; t=1722472211; c=relaxed/simple;
+	bh=odM96JhS4fDeDEnXY4eab7LZPhFYf/3AFpfz4YJLqgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZqTx3V6y2/2Q1bbGFZok9d/Vurw5THH9BLhZY7w+tAtTg4RGUMKLkE4tKkg53qoLpOwwglpnbckhkYMGM8hOg/Ko0suvWDRMSFDb6ogj9TfITfISRnK7ad3SxTpBnrz9cDFGhh+cJZZknajtR+XCyKUxA4zWbj9ldFB4BOZxOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bszhs9Ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23982C4AF0C;
-	Thu,  1 Aug 2024 00:30:08 +0000 (UTC)
+	 MIME-Version; b=qgcEmzx0Sd1WajqTvoeImU8LcV6obKUujic3xuz49B7YnXDCre+ttXuVJC4UxhhB4ziBJmNzGbASS6oDqSjNoa5JtKS+fz/0aNr3XF4n9z0RgvKymz11NTN43b1smhOmg8YS/iu8BMU1y3IUpuLGYjz0sUtDzmhJPWmK9QB+CzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WU0mzxxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9350AC116B1;
+	Thu,  1 Aug 2024 00:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472209;
-	bh=5HkpZF+C9dwJjcFENfmNhps01cjNjs3wQgezjJIbfjE=;
+	s=k20201202; t=1722472210;
+	bh=odM96JhS4fDeDEnXY4eab7LZPhFYf/3AFpfz4YJLqgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bszhs9IpqCOm7+kM+Ju5MWbj+66wCujzRzzELJxDXTcZxLIERYnHRupDHhC3obJlH
-	 Mj5AZVKR9svQIvK9AAw/nF5lnKFL11hfUXmxcloL/LU4Ww1QtxVAvGoo5/sEAh3POJ
-	 e9/RTSExT+O5qAu8ERdXoWh+mqJHXFsQFaLnxB65dVqFiJFmwF62GQRne1Tuh9hUlF
-	 y1/U+/oRbjXErd7YUkzMcjZMZQ/D/AK6h8xjEELGoTidwmH2yLW4WtVlfeEmfBCfZ7
-	 CRLFv058Vp12df4cTchm73obgnTcNokTCHJBT1gefTj2xFvjSrXaZaA5AdpIqYJEUI
-	 d+eyI12iYOxcg==
+	b=WU0mzxxjYQLCnpkvrGXhzXlOygngo3btVYlBbB5y7CwvFQcGfynPBbc8XXYdD/Y7G
+	 Yom9TfjFPlGLYY0m7kvpU3h1jgWDLBQ0bKAIwaZ3KznMy/u9hLH6kdXXkOOMv8Tv2s
+	 UPhBevNkcLaWEbmW6WavWDhm892yN6ozlsNBZ1Hwxj80puNkpvzdlxFw+xaQq5e33n
+	 4LiD6vB11/hycvKvCEVsfdbPor/3SJnKS1wGcPdNWSjtA98xWmsKTKJEfc3ZKa6qj9
+	 1K/FR8nft9ER6stdh0TXZTlLT4NH9/JI9aty5ZrjwwTqOci3IxpdPMPK3Jda5BsPGe
+	 iE2gF+oYuP/ug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Jagadeesh Kona <quic_jkona@quicinc.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 27/61] wifi: iwlwifi: fw: avoid bad FW config on RXQ DMA failure
-Date: Wed, 31 Jul 2024 20:25:45 -0400
-Message-ID: <20240801002803.3935985-27-sashal@kernel.org>
+	sudeep.holla@arm.com,
+	rafael@kernel.org,
+	arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 28/61] cpufreq: scmi: Avoid overflow of target_freq in fast switch
+Date: Wed, 31 Jul 2024 20:25:46 -0400
+Message-ID: <20240801002803.3935985-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -66,56 +69,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jagadeesh Kona <quic_jkona@quicinc.com>
 
-[ Upstream commit 6ccfc7c49b6d99e3b857afb064e56a004b0a5e03 ]
+[ Upstream commit 074cffb5020ddcaa5fafcc55655e5da6ebe8c831 ]
 
-In practice, iwl_trans_get_rxq_dma_data() will not fail,
-it only can do that if called with the wrong arguments.
-But it does have an error value and doesn't initialize
-the argument when it fails, so don't use the value then.
+Conversion of target_freq to HZ in scmi_cpufreq_fast_switch()
+can lead to overflow if the multiplied result is greater than
+UINT_MAX, since type of target_freq is unsigned int. Avoid this
+overflow by assigning target_freq to unsigned long variable for
+converting it to HZ.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240512072733.faf3a1b87589.I77c950173cb914676fbd28483e5ef420bb9f1bc9@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jagadeesh Kona <quic_jkona@quicinc.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/init.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/cpufreq/scmi-cpufreq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/init.c b/drivers/net/wireless/intel/iwlwifi/fw/init.c
-index 135bd48bfe9fa..d8b083be5b6b5 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/init.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/init.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-  * Copyright (C) 2017 Intel Deutschland GmbH
-- * Copyright (C) 2019-2021 Intel Corporation
-+ * Copyright (C) 2019-2021, 2024 Intel Corporation
-  */
- #include "iwl-drv.h"
- #include "runtime.h"
-@@ -135,7 +135,9 @@ int iwl_configure_rxq(struct iwl_fw_runtime *fwrt)
- 		struct iwl_trans_rxq_dma_data data;
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 028df8a5f537a..079940c69ee0b 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -62,9 +62,9 @@ static unsigned int scmi_cpufreq_fast_switch(struct cpufreq_policy *policy,
+ 					     unsigned int target_freq)
+ {
+ 	struct scmi_data *priv = policy->driver_data;
++	unsigned long freq = target_freq;
  
- 		cmd->data[i].q_num = i + 1;
--		iwl_trans_get_rxq_dma_data(fwrt->trans, i + 1, &data);
-+		ret = iwl_trans_get_rxq_dma_data(fwrt->trans, i + 1, &data);
-+		if (ret)
-+			goto out;
+-	if (!perf_ops->freq_set(ph, priv->domain_id,
+-				target_freq * 1000, true))
++	if (!perf_ops->freq_set(ph, priv->domain_id, freq * 1000, true))
+ 		return target_freq;
  
- 		cmd->data[i].fr_bd_cb = cpu_to_le64(data.fr_bd_cb);
- 		cmd->data[i].urbd_stts_wrptr =
-@@ -149,6 +151,7 @@ int iwl_configure_rxq(struct iwl_fw_runtime *fwrt)
- 
- 	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
- 
-+out:
- 	kfree(cmd);
- 
- 	if (ret)
+ 	return 0;
 -- 
 2.43.0
 
