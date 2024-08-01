@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-65020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B63943D98
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:03:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36152943D9A
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C077F1F21B2C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:03:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C94631F21422
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2D91CBE36;
-	Thu,  1 Aug 2024 00:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7E41CC440;
+	Thu,  1 Aug 2024 00:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cs8yuN9y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OzD7XwaG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655721CBE28;
-	Thu,  1 Aug 2024 00:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BD7130AC8;
+	Thu,  1 Aug 2024 00:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471957; cv=none; b=fNsIrmR7jM4KVadCUmOVbTEAAn0Kz1YPUgj9qzi3L5Sm9RXpNyfXr9sqwSIT2Wia6K+yJCJfVhQS3NZNqVGvqtK7a+s9XGqZ23XiE/LgQNoeFfYww3E4K1YPPj//Ofuy3UZ+ZQ+H/Hla+2xwRSl+Sf+TozNNGTmENt+nm7Gng08=
+	t=1722471959; cv=none; b=Bic50nx78kqtKiuE2WD/YzT+HEFfk95a2doZ/Kt4h9VN4fpHw1OxXbPIvUziXw3HCW648gTtxnUhrDQWM1n/nsJjxZEo6qtSPj8+x4hyVjGACrVKzXW27PFzc8nSWsXTdJQZyVh+stpKaBK7harxlQFJPUwxk/34CaDW0+BNaqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471957; c=relaxed/simple;
-	bh=zG7zwTNzZpJGhl48N6vwkJx0GeMhonMcxgLMd8V2Fig=;
+	s=arc-20240116; t=1722471959; c=relaxed/simple;
+	bh=EDYZzjC771Qx559qsRLXwCDDw+Gia+YTMRMYJxjam9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqkL6sW+iEd65rF3oPBMSjSIzgDKsHRJSaH581Qg+n+L3m4jOQtkPOSVmYu2TRqHM9OMb8TTvFhLXIM/RXIX8KGMhHZPXFfDxxNoIAL/WBy+5PbaYI8b33P96C3me3G9m6RtSwJxZlZjntEtDyHTrVSMTvVj6UScqTzwc8b2ITk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cs8yuN9y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BE8C32786;
-	Thu,  1 Aug 2024 00:25:55 +0000 (UTC)
+	 MIME-Version; b=j+lkudQFQtVsaHeziq1bUb4ZHHA3pOEJGpFXikrktS2ivBWUWeqvJk3eDZgEUOEaK0qucUzNQWtl2ihXCIljb+Y+4YGfVEl0UaV/su+iMpzmxaRJqIWIaeGb140UeEeoYd4o4m/buchrgILz/3g0hrUV621Za4e645bZN0W7dWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OzD7XwaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831ABC4AF0E;
+	Thu,  1 Aug 2024 00:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471957;
-	bh=zG7zwTNzZpJGhl48N6vwkJx0GeMhonMcxgLMd8V2Fig=;
+	s=k20201202; t=1722471958;
+	bh=EDYZzjC771Qx559qsRLXwCDDw+Gia+YTMRMYJxjam9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cs8yuN9y5upZ+usjHqzizrbwxHtOzLjaH8qVa2bWhXiXDCF0ZZT++matuduM7v7Pd
-	 DLYX0rGtJQ0wiV9LwcN7DTHrmksuDl78xoDyCRcMgpcdOFS+bxQI7IoxMg4BjHCeL8
-	 o91QfnKvXu2GPKixHUX3ALi0v915bJiIIUbVBWVBak88gCVuWPogFKyMnv7YyVR1Cs
-	 mlyz5Y3pjlBJoBYJwbPu+0jcWFgxf2CesIT/C4qfJeSFAVKhYz7UPLaafWlNa8omI8
-	 yBRLjMW02yT0JXxKZTK055qBUCNa/DBE9H4Frgz7MjTPrAy2Jj4g7C33xDgIE7xeNd
-	 UGE9kYlWEgntA==
+	b=OzD7XwaGTAHE0D1Hqy2i/S7DpPOFpu9sgs+K203/yekX7Cbe8NGVEC5Ua1Jw23NS5
+	 VP9YP44HpSO5S+StYUmv6rfItu+FLVEeYdeIJrf38MBM4CIsOnIfWFSU3N6e9lY7Gy
+	 lwSvc9dswr7/u2+EMkZ/W7Q+RYLU523CTADqoLXVm6Tn+9WsmemN8d7hVgA92XZvn+
+	 RLH66LN6X30PrXrD7rVBE1xI9Cjghv5LwzlumxIpiwBy7qYa9PYjkVGuJ5l00hdThf
+	 YxyI7CEoft3pPsHOXeGoKcnMZkypcE2EjWTc8KxvFL4dxFwQqbKolNC2BbGqzPaHNO
+	 P156oYuDzxWXg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krishna Kumar <krishnak@linux.ibm.com>,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Alexander Potapenko <glider@google.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 74/83] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
-Date: Wed, 31 Jul 2024 20:18:29 -0400
-Message-ID: <20240801002107.3934037-74-sashal@kernel.org>
+	virtualization@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 75/83] virtio_ring: fix KMSAN error for premapped mode
+Date: Wed, 31 Jul 2024 20:18:30 -0400
+Message-ID: <20240801002107.3934037-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -69,56 +68,60 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Krishna Kumar <krishnak@linux.ibm.com>
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-[ Upstream commit 335e35b748527f0c06ded9eebb65387f60647fda ]
+[ Upstream commit 840b2d39a2dc1b96deb3f5c7fef76c9b24f08f51 ]
 
-The hotplug driver for powerpc (pci/hotplug/pnv_php.c) causes a kernel
-crash when we try to hot-unplug/disable the PCIe switch/bridge from
-the PHB.
+Add kmsan for virtqueue_dma_map_single_attrs to fix:
 
-The crash occurs because although the MSI data structure has been
-released during disable/hot-unplug path and it has been assigned
-with NULL, still during unregistration the code was again trying to
-explicitly disable the MSI which causes the NULL pointer dereference and
-kernel crash.
+BUG: KMSAN: uninit-value in receive_buf+0x45ca/0x6990
+ receive_buf+0x45ca/0x6990
+ virtnet_poll+0x17e0/0x3130
+ net_rx_action+0x832/0x26e0
+ handle_softirqs+0x330/0x10f0
+ [...]
 
-The patch fixes the check during unregistration path to prevent invoking
-pci_disable_msi/msix() since its data structure is already freed.
+Uninit was created at:
+ __alloc_pages_noprof+0x62a/0xe60
+ alloc_pages_noprof+0x392/0x830
+ skb_page_frag_refill+0x21a/0x5c0
+ virtnet_rq_alloc+0x50/0x1500
+ try_fill_recv+0x372/0x54c0
+ virtnet_open+0x210/0xbe0
+ __dev_open+0x56e/0x920
+ __dev_change_flags+0x39c/0x2000
+ dev_change_flags+0xaa/0x200
+ do_setlink+0x197a/0x7420
+ rtnl_setlink+0x77c/0x860
+ [...]
 
-Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
-Closes: https://lore.kernel.org/all/1981605666.2142272.1703742465927.JavaMail.zimbra@raptorengineeringinc.com/
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
-Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240701074513.94873-2-krishnak@linux.ibm.com
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Message-Id: <20240606111345.93600-1-xuanzhuo@linux.alibaba.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Ilya Leoshkevich <iii@linux.ibm.com>  # s390x
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/virtio/virtio_ring.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 881d420637bf1..092c9ac0d26d2 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -39,7 +39,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
- 				bool disable_device)
+diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
+index 6f7e5010a6735..80669e05bf0ee 100644
+--- a/drivers/virtio/virtio_ring.c
++++ b/drivers/virtio/virtio_ring.c
+@@ -3126,8 +3126,10 @@ dma_addr_t virtqueue_dma_map_single_attrs(struct virtqueue *_vq, void *ptr,
  {
- 	struct pci_dev *pdev = php_slot->pdev;
--	int irq = php_slot->irq;
- 	u16 ctrl;
+ 	struct vring_virtqueue *vq = to_vvq(_vq);
  
- 	if (php_slot->irq > 0) {
-@@ -58,7 +57,7 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
- 		php_slot->wq = NULL;
- 	}
+-	if (!vq->use_dma_api)
++	if (!vq->use_dma_api) {
++		kmsan_handle_dma(virt_to_page(ptr), offset_in_page(ptr), size, dir);
+ 		return (dma_addr_t)virt_to_phys(ptr);
++	}
  
--	if (disable_device || irq > 0) {
-+	if (disable_device) {
- 		if (pdev->msix_enabled)
- 			pci_disable_msix(pdev);
- 		else if (pdev->msi_enabled)
+ 	return dma_map_single_attrs(vring_dma_dev(vq), ptr, size, dir, attrs);
+ }
 -- 
 2.43.0
 
