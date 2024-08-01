@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-64926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB27943CA0
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:40:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F759943CA2
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 316FA288516
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:40:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 901271C21F4E
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB7C1C8FA0;
-	Thu,  1 Aug 2024 00:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3C714D2BE;
+	Thu,  1 Aug 2024 00:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6nCt9Ee"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TXhmQTJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76AD314D2BE;
-	Thu,  1 Aug 2024 00:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFAD1C8FA7;
+	Thu,  1 Aug 2024 00:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471466; cv=none; b=e/IjYNZO+cPjwz3Ng6CBrH3ICw3TRNp2LdGILi9P297z7LC/hHuOcF8d/sLfjrrwK86pNJRZrMpSJ5k2zfN070KbEOh1BiVTEivV9//JiUymmz0OjXIqRlhwCNsN/xqKsvU21yq+LYbVnx3dR6Rw7dwsLYtC51hAwqYgjlyhECA=
+	t=1722471469; cv=none; b=d3zTcQ7XbIZpYqEQE+wA/x8epnToxlcdsiuPHTJDoFK76POZT1jzZF6TAhDCE1pYnrb89kUk4a4Qu3QmQ1AkiFnpom8k0vmO1BepK58BD/HD66zmCC+CdKmEN3rKlr3La2lPkHyLNrCOIdoYzHQ0MHT9dd0JXN5v3q1l1SjIV2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471466; c=relaxed/simple;
-	bh=SWgEroS/GkL8CcFagMVaUBw49wtARMIKIVtQQ+y/E0M=;
+	s=arc-20240116; t=1722471469; c=relaxed/simple;
+	bh=Hw6ITTl3y/NjjKIWH7saNeWj85HAD6+zCV157PNEz6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqVm0DQmBZ96aBaITZEEtcx5d9M3QEIfsZqrgX6drTSQtECg85sYQ2wu9tg8Qzzrjermt93BteXhnex6RL7rMsqmIWiSnn3rTJoJrimlualOkXkgyLQ8k8+OVD2431tRo67Gt7QO7kgSxyEEqnp2o1/DdtAZbwZTGdErF8Jaxtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6nCt9Ee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52912C4AF0C;
-	Thu,  1 Aug 2024 00:17:44 +0000 (UTC)
+	 MIME-Version; b=Cm3tn0laD/hQrkktwIPUXcpI+lzwlxbx10KHoCQUYeVdM418mXWhynWfTf0eZHAuH17gzGce2KmN3QvRY2qr95WX6YyC1LH6RJOqSnJ4KngBSDh4KDGaLT54hSh2tcr49d0jeCKlpqWLsIvge1K91mVveI5dIF30OYRPrJtjOds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TXhmQTJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E514C116B1;
+	Thu,  1 Aug 2024 00:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471466;
-	bh=SWgEroS/GkL8CcFagMVaUBw49wtARMIKIVtQQ+y/E0M=;
+	s=k20201202; t=1722471469;
+	bh=Hw6ITTl3y/NjjKIWH7saNeWj85HAD6+zCV157PNEz6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6nCt9Ee8VfopqLNhGT4Es4GqiQivFc4oBhJe2N7ZNcMznWw6xI5vnrCFa+pFVXzY
-	 ttOOUBp9tpCLq9F8fz3ohEDI/IRlQzzgaE95nGI0tyqPqPDYmsLpunl8AZI0ILCoOI
-	 o0CwuR7GU9U0iYU/nYQnUgBCiFmJxoCOm98UpNrf+tDeiRU/9yzqoHczvpGk/wjIJA
-	 3ckB95gZLq5BPeJBOGHdSWORgrlxANl+VNLUo/piK1uKGMYd6C5F0Oa7gYct0XgIHu
-	 331h2n9m2JwVMaVq2h0zqFVh4+JvxHUq80lXGFMzq0o5Tzr0yfwvSxSP5BLYv3TJ67
-	 glWBCE75Ir8qQ==
+	b=TXhmQTJ82kZm0jxwdWHTagu2MfxWPuaFSAsrrVVSzQN/aCiFM4EClkVfa+tYyXFtw
+	 XUvDBN/89x12fwcuSHKtMw9oQULQHPqTnPaILPRRw2hgHSZvhGZkzLQTEFHTj1G4k5
+	 t6yueq1Ct531QtixaZCO+1Zd7hPl8o4guYs7B8mJpLKyAKepHLjpDEk6Obgm3x1p/U
+	 xh0Y7WLcvbo5WFyHuHvn96BDOn1QP4H5pyURNN+oZcpvzpp6MGtTHDQl4L1J9OYdVW
+	 UQPW+/DSoTw4Ea3HJMqr9pK56qdJbjKC+kQIbbDeOsvNarA3xD88Jj38ezkh4sqq/m
+	 ykPkW1sEFZxNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bob Zhou <bob.zhou@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+	Breno Leitao <leitao@debian.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	Felix.Kuehling@amd.com,
-	Yunxiang.Li@amd.com,
-	yifan1.zhang@amd.com,
-	lijo.lazar@amd.com,
-	Hawking.Zhang@amd.com,
-	srinivasan.shanmugam@amd.com,
-	mario.limonciello@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 101/121] drm/amdgpu: add missing error handling in function amdgpu_gmc_flush_gpu_tlb_pasid
-Date: Wed, 31 Jul 2024 20:00:39 -0400
-Message-ID: <20240801000834.3930818-101-sashal@kernel.org>
+	aneesh.kumar@kernel.org,
+	mahesh@linux.ibm.com,
+	hbathini@linux.ibm.com,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.10 102/121] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+Date: Wed, 31 Jul 2024 20:00:40 -0400
+Message-ID: <20240801000834.3930818-102-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -77,38 +69,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Bob Zhou <bob.zhou@amd.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit 9ff2e14cf013fa887e269bdc5ea3cffacada8635 ]
+[ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
 
-Fix the unchecked return value warning reported by Coverity,
-so add error handling.
+Smatch warns:
 
-Signed-off-by: Bob Zhou <bob.zhou@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
+  spectre issue 'args.args' [r] (local cap)
+
+The 'nargs' and 'nret' locals come directly from a user-supplied
+buffer and are used as indexes into a small stack-based array and as
+inputs to copy_to_user() after they are subject to bounds checks.
+
+Use array_index_nospec() after the bounds checks to clamp these values
+for speculative execution.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/rtas.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index 08b9dfb653355..1f02d282cfcd7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -720,7 +720,11 @@ int amdgpu_gmc_flush_gpu_tlb_pasid(struct amdgpu_device *adev, uint16_t pasid,
- 			ndw += kiq->pmf->invalidate_tlbs_size;
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 8064d9c3de862..f7e86e09c49fa 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -19,6 +19,7 @@
+ #include <linux/lockdep.h>
+ #include <linux/memblock.h>
+ #include <linux/mutex.h>
++#include <linux/nospec.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+ #include <linux/reboot.h>
+@@ -1916,6 +1917,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+ 	    || nargs + nret > ARRAY_SIZE(args.args))
+ 		return -EINVAL;
  
- 		spin_lock(&adev->gfx.kiq[inst].ring_lock);
--		amdgpu_ring_alloc(ring, ndw);
-+		r = amdgpu_ring_alloc(ring, ndw);
-+		if (r) {
-+			spin_unlock(&adev->gfx.kiq[inst].ring_lock);
-+			goto error_unlock_reset;
-+		}
- 		if (adev->gmc.flush_tlb_needs_extra_type_2)
- 			kiq->pmf->kiq_invalidate_tlbs(ring, pasid, 2, all_hub);
- 
++	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
++	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
++
+ 	/* Copy in args. */
+ 	if (copy_from_user(args.args, uargs->args,
+ 			   nargs * sizeof(rtas_arg_t)) != 0)
 -- 
 2.43.0
 
