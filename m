@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-65174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E518943F69
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:40:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAC8943F6F
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 170E9280E5D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAFAB1F283C0
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2106A1E4F08;
-	Thu,  1 Aug 2024 00:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CE81E5655;
+	Thu,  1 Aug 2024 00:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tWB9ltp2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWBNjy/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCB41E4EFE;
-	Thu,  1 Aug 2024 00:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE721E564F;
+	Thu,  1 Aug 2024 00:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472726; cv=none; b=maQMi+utzM2qAsfXfVNWLEBF4wTfDeMJ3CA9xYuDPvkiAJHk9LZXpAhkOPJnB7QzAFtn17+EZcYrBXSMI8Ktz7gW7cpgHcRP2mlCE9WHbZYokbnlXB1NH9S4NmeakLjuxKQ5UKQVWYpdhOKrjLaplX/Hv+Waq6RDeqG12zb/+So=
+	t=1722472730; cv=none; b=mxztZZzShZErMYm+j+kX4s3co+da5PDnPZj+bi1An1OI9+HpkVJ+D1w8l9aY5I1B5ZFuxGM/ly8NVNJ44rsdeZR2ejp/9QJMjPRfG6+ISFypIPhVOkzxFr9vxvLu52+yH2GTtVRihisMYpZdAd5XqnOqbIwY/Qs2Xompo/AOMyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472726; c=relaxed/simple;
-	bh=ASK0R6WhsZLnJDYmu57syN4fShPd6cBH2o0eR4UoDwc=;
+	s=arc-20240116; t=1722472730; c=relaxed/simple;
+	bh=Nh8jBYjDktKvKPL0C1JI3mSUaOWowveMciHPpddwskI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=msfyitPWb5UbqTF9oFr4tBkF03R+1xqt1oUerXSzPwkEJhtOm6jIZ5OpQboyBN8ccHP9/y7elM59w5vZVPE6LpdGp7z/amHNdjzhf7SLMpTw4tJ7SgRjhsaKzPKCmSKGRUI6uPzeQCKyEfeiAbVdvbVtBVQtozNtPpmegAM0d6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tWB9ltp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A517C4AF0C;
-	Thu,  1 Aug 2024 00:38:45 +0000 (UTC)
+	 MIME-Version; b=Bq1ihyDHhQKz92pgrAQayxMcM5l64reppiF2nShpfSowaJChgnf5jp4Ltoxr8ICMyIXkDUGULXe7HJCwrPeUm5BUCKMXa0vFD5MuArsgNHUJbXF4kT+SJ/DVYD1vvdSUFmbEpcmsUZot+oEMwN/HDm8RO8sPiwOAtHfa6kRonqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWBNjy/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0510FC116B1;
+	Thu,  1 Aug 2024 00:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472726;
-	bh=ASK0R6WhsZLnJDYmu57syN4fShPd6cBH2o0eR4UoDwc=;
+	s=k20201202; t=1722472730;
+	bh=Nh8jBYjDktKvKPL0C1JI3mSUaOWowveMciHPpddwskI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWB9ltp2j1Pj320QaUxb+vYoNMtlOEfuXk4FJK87Cw9iOYNGpaj1gjuy7ahJR/KIU
-	 B1VtKVrd/qNbCq3LWpU91B7U8eM1xw2XrTA3HsqCgoHAyf1mjiyxCuS/wHqE6DHFvg
-	 SaRrC4042CtN3vfbztxPp7f0H/wmwMThI4LhqLmqRP1/Ghxaavn0gfG+PdQlXg9nvo
-	 7WRNd0OKTfTgBcZZmFFh69El+mQjJil+NxGSlRGgS/x2fgnzqaFrSu72pF5MY/bdi3
-	 vK357cQF7Uf7nem/UGJJcmbP/U1bNh8wzsU4QTbgBZvO7Y7tA3dESfkrtGzFsyxQ5p
-	 S0WuUVfk5LVng==
+	b=FWBNjy/Kxvx/QDDP4K1L1jnXrU/gUuDzD5CCiPP1u4lnC4FZ/rYbDlF6swMHUugrJ
+	 Km/eGa3cx5OHjd3OcOGBV1p0tNAW5udIwyFof9YyIUAgtVIXoaU4xnRlTrwhYjLWVL
+	 dBvylnp4kD3a1hVosjkjDOvVNKdAvWSMu0hUIKloWELODwWiMA56IQlpz5CD/uDehA
+	 Qf8EYbRgfeJVYdjiShoW4ArhyhVA8KC7P9KdoofhXZR15F7CO5XLhxzjmGUyv4y1y+
+	 GCOhvN03bH1fC/+oSK2iXxVVST9rA9AwMJY82+Aq+kju4oT0bSNWjCYoNzAVsFMwym
+	 OpxNlbl5vARpg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andreas Ziegler <ziegler.andreas@siemens.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 37/38] libbpf: Add NULL checks to bpf_object__{prev_map,next_map}
-Date: Wed, 31 Jul 2024 20:35:43 -0400
-Message-ID: <20240801003643.3938534-37-sashal@kernel.org>
+	dmantipov@yandex.ru,
+	linus.walleij@linaro.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 38/38] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
+Date: Wed, 31 Jul 2024 20:35:44 -0400
+Message-ID: <20240801003643.3938534-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
 References: <20240801003643.3938534-1-sashal@kernel.org>
@@ -68,57 +69,110 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Ziegler <ziegler.andreas@siemens.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit cedc12c5b57f7efa6dbebfb2b140e8675f5a2616 ]
+[ Upstream commit c145eea2f75ff7949392aebecf7ef0a81c1f6c14 ]
 
-In the current state, an erroneous call to
-bpf_object__find_map_by_name(NULL, ...) leads to a segmentation
-fault through the following call chain:
+mwifiex_get_priv_by_id() returns the priv pointer corresponding to
+the bss_num and bss_type, but without checking if the priv is actually
+currently in use.
+Unused priv pointers do not have a wiphy attached to them which can
+lead to NULL pointer dereferences further down the callstack.  Fix
+this by returning only used priv pointers which have priv->bss_mode
+set to something else than NL80211_IFTYPE_UNSPECIFIED.
 
-  bpf_object__find_map_by_name(obj = NULL, ...)
-  -> bpf_object__for_each_map(pos, obj = NULL)
-  -> bpf_object__next_map((obj = NULL), NULL)
-  -> return (obj = NULL)->maps
+Said NULL pointer dereference happened when an Accesspoint was started
+with wpa_supplicant -i mlan0 with this config:
 
-While calling bpf_object__find_map_by_name with obj = NULL is
-obviously incorrect, this should not lead to a segmentation
-fault but rather be handled gracefully.
+network={
+        ssid="somessid"
+        mode=2
+        frequency=2412
+        key_mgmt=WPA-PSK WPA-PSK-SHA256
+        proto=RSN
+        group=CCMP
+        pairwise=CCMP
+        psk="12345678"
+}
 
-As __bpf_map__iter already handles this situation correctly, we
-can delegate the check for the regular case there and only add
-a check in case the prev or next parameter is NULL.
+When waiting for the AP to be established, interrupting wpa_supplicant
+with <ctrl-c> and starting it again this happens:
 
-Signed-off-by: Andreas Ziegler <ziegler.andreas@siemens.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240703083436.505124-1-ziegler.andreas@siemens.com
+| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
+| Mem abort info:
+|   ESR = 0x0000000096000004
+|   EC = 0x25: DABT (current EL), IL = 32 bits
+|   SET = 0, FnV = 0
+|   EA = 0, S1PTW = 0
+|   FSC = 0x04: level 0 translation fault
+| Data abort info:
+|   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+|   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+| user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
+| [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
+| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+| Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
++mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
++imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
+| CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
+| Hardware name: somemachine (DT)
+| Workqueue: events sdio_irq_work
+| pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+| lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
+| sp : ffff8000818b3a70
+| x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
+| x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
+| x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
+| x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
+| x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
+| x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
+| x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
+| x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
+| x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
+| Call trace:
+|  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+|  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
+|  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
+|  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
+|  mwifiex_process_event+0x110/0x238 [mwifiex]
+|  mwifiex_main_process+0x428/0xa44 [mwifiex]
+|  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
+|  process_sdio_pending_irqs+0x64/0x1b8
+|  sdio_irq_work+0x4c/0x7c
+|  process_one_work+0x148/0x2a0
+|  worker_thread+0x2fc/0x40c
+|  kthread+0x110/0x114
+|  ret_from_fork+0x10/0x20
+| Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
+| ---[ end trace 0000000000000000 ]---
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240703072409.556618-1-s.hauer@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 015ed8253f739..33cdcfe106344 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -9005,7 +9005,7 @@ __bpf_map__iter(const struct bpf_map *m, const struct bpf_object *obj, int i)
- struct bpf_map *
- bpf_map__next(const struct bpf_map *prev, const struct bpf_object *obj)
- {
--	if (prev == NULL)
-+	if (prev == NULL && obj != NULL)
- 		return obj->maps;
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index f4e3dce10d654..5b14fe08811e8 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -1310,6 +1310,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
  
- 	return __bpf_map__iter(prev, obj, 1);
-@@ -9014,7 +9014,7 @@ bpf_map__next(const struct bpf_map *prev, const struct bpf_object *obj)
- struct bpf_map *
- bpf_map__prev(const struct bpf_map *next, const struct bpf_object *obj)
- {
--	if (next == NULL) {
-+	if (next == NULL && obj != NULL) {
- 		if (!obj->nr_maps)
- 			return NULL;
- 		return obj->maps + obj->nr_maps - 1;
+ 	for (i = 0; i < adapter->priv_num; i++) {
+ 		if (adapter->priv[i]) {
++			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
++				continue;
++
+ 			if ((adapter->priv[i]->bss_num == bss_num) &&
+ 			    (adapter->priv[i]->bss_type == bss_type))
+ 				break;
 -- 
 2.43.0
 
