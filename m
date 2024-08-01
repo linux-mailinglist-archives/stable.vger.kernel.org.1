@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-64987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E117943D48
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:55:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42033943D4A
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:55:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D818A1F2159B
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:55:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 734221C21114
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A159916E875;
-	Thu,  1 Aug 2024 00:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2033F1C461E;
+	Thu,  1 Aug 2024 00:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ii9v+JWD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6AMTSxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5746B1C3F3F;
-	Thu,  1 Aug 2024 00:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87161C4613;
+	Thu,  1 Aug 2024 00:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471860; cv=none; b=E6M8OrxSLrUrXQ6cuju2ITctRkv2zQ/6zlD+fLGBN1HYvf3KBlF8oHQBETBDlpJhQuBQUAWOig56MmagnZy4XNLZr2YmFb/sQXtacU8cyFKAsuvsqUiUrw4VTKYo2s7TnIjV0MNPl1XICBiW6z6HXPv0JZ04ARPicPWquzSDoLg=
+	t=1722471861; cv=none; b=ml6Ak2j7iTQ3Sx6wZTRNpQX0vxG3iZcvwB6Y5gh1KbogLfVyFaaRBFQgKSGXmtQfTDou0RJ/GfBWFYc0uAwIRyewX8LPL/a4mUs+ZPm01Lv1WyYBoZZ9j7Gi1100bP8uvveXY3T0ls2vnMeM1cxTY+RwsHs0IhZCFG/+NuBCQis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471860; c=relaxed/simple;
-	bh=OGPKlWuS1SDXLw/3WKnGKWeKnCkGaqcGHRo5M2vr8FI=;
+	s=arc-20240116; t=1722471861; c=relaxed/simple;
+	bh=7ya/jMk4w9FtisSvlpnfylu0JSBrBUBhQgTzbZ2uyFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C56sImq5iW3FidMDFfwYGPub+dg8PrfaSsRRmeJQXJelW0KV+TAQhKLydHLxuXX/K+PCzKCztuPYx07aGR3kY8ZGYnrGanNPW3wJDV8GkxdD3TVUCHMsUKcD+qrGBNkF2xEHfYj47rfNxFkDGqcKZgTlIDqSmuF3BiS+npax98E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ii9v+JWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431D8C32786;
-	Thu,  1 Aug 2024 00:24:19 +0000 (UTC)
+	 MIME-Version; b=OC4zLf8C0SXBS0XObZ/R3CO5meF+KlWKWRiSIStQvu4UAf/H2scv4FjgB5C+KmY0A9JR7TmjV7qJJ+hIagLSPeP1UreXZ/bVwdNcFQQOVbVzc/Wf5DA7tjy/S2ag34+ox+UABGTuLUi/1b1sSFGXgB9U7Y1gTF2uUj4DQDlvbvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6AMTSxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2838C116B1;
+	Thu,  1 Aug 2024 00:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471860;
-	bh=OGPKlWuS1SDXLw/3WKnGKWeKnCkGaqcGHRo5M2vr8FI=;
+	s=k20201202; t=1722471861;
+	bh=7ya/jMk4w9FtisSvlpnfylu0JSBrBUBhQgTzbZ2uyFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ii9v+JWDPQTH+vF//FzlAFH8OW8YZjeg4ygy/j7Gj3Atl8/omG1IsLkVCYb7JWglx
-	 Io/vfcL5R3csOjwPlVY2q1sDnty2RrGI3dC/UpaGYnxVbppIWNqD7HWwGSNlgGpGt9
-	 Ma6gB1B4u3eV+o0AiOBY6PS9lwHjEKCDhqhlGqjA6QgxLZU9bg53T3vIVU0oy6WwJS
-	 e1B18Hl1/VWweAlA8Ll2YS1WATdjtDWLhLcX0/wUcDgAjJPQpN3VorAU/zZtHgDxe3
-	 Yyu4YgZKl/DhZOtea4W5uruz7aYKraa4dmcAyJh2EymwCgROxcSRVvMH9JSfY+DtCH
-	 5cr2hrTSSDDag==
+	b=e6AMTSxdpg60BsFylspzTNXmVwATKNVNgaNFIKI5fPno0TrMmiQ7btKNDyTyxq6UB
+	 p0xiCqTMtb+AFefBJLHiUH+Kfk3ycOC69K+6IkosjA95B9Wie6VTDWNuhfmPR/ZDla
+	 4PEBa5aSS7Bi/YWPKEwFijZqqSUjJAQi3wdI1m3tn3DQF2MAs7WRQ7BeDOEk6trijH
+	 KGlNMWU6gbBXQQfdzv6dX4/C62rlFtGuBzO+zVrrSPibEfUgL8CJm5O8ihZKr6X47l
+	 sPaQJ5fPFQmMcUpmPE89dLCn5A7lu2GOcQchuN+qdJkwJCbjt+ft/QFohGuvkiKdB+
+	 79+folYwmhoRg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chris Lew <quic_clew@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	konrad.dybcio@linaro.org,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 41/83] soc: qcom: smem: Add qcom_smem_bust_hwspin_lock_by_host()
-Date: Wed, 31 Jul 2024 20:17:56 -0400
-Message-ID: <20240801002107.3934037-41-sashal@kernel.org>
+	brgl@bgdev.pl,
+	linus.walleij@linaro.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 42/83] gpiolib: cdev: Add INIT_KFIFO() for linereq events
+Date: Wed, 31 Jul 2024 20:17:57 -0400
+Message-ID: <20240801002107.3934037-42-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -67,74 +67,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Chris Lew <quic_clew@quicinc.com>
+From: Kent Gibson <warthog618@gmail.com>
 
-[ Upstream commit 2e3f0d693875db698891ffe89a18121bda5b95b8 ]
+[ Upstream commit 35d848e7a1cbba2649ed98cf58e0cdc7ee560c7a ]
 
-Add qcom_smem_bust_hwspin_lock_by_host to enable remoteproc to bust the
-hwspin_lock owned by smem. In the event the remoteproc crashes
-unexpectedly, the remoteproc driver can invoke this API to try and bust
-the hwspin_lock and release the lock if still held by the remoteproc
-device.
+The initialisation of the linereq events kfifo relies on the struct being
+zeroed and a subsequent call to kfifo_alloc().  The call to kfifo_alloc()
+is deferred until edge detection is first enabled for the linereq.  If the
+kfifo is inadvertently accessed before the call to kfifo_alloc(), as was
+the case in a recently discovered bug, it behaves as a FIFO of size 1 with
+an element size of 0, so writes and reads to the kfifo appear successful
+but copy no actual data.
 
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Link: https://lore.kernel.org/r/20240529-hwspinlock-bust-v3-3-c8b924ffa5a2@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+As a defensive measure, initialise the kfifo with INIT_KFIFO() when the
+events kfifo is constructed.  This initialises the kfifo element size
+and zeroes its data pointer, so any inadvertant access prior to the
+kfifo_alloc() call will trigger an oops.
+
+Signed-off-by: Kent Gibson <warthog618@gmail.com>
+Link: https://lore.kernel.org/r/20240529131953.195777-2-warthog618@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/smem.c       | 26 ++++++++++++++++++++++++++
- include/linux/soc/qcom/smem.h |  2 ++
- 2 files changed, 28 insertions(+)
+ drivers/gpio/gpiolib-cdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index d4a89d2bb43bb..2e8568d6cde94 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -359,6 +359,32 @@ static struct qcom_smem *__smem;
- /* Timeout (ms) for the trylock of remote spinlocks */
- #define HWSPINLOCK_TIMEOUT	1000
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index d526a4c91e82e..0b1531557f04f 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1855,6 +1855,7 @@ static int linereq_create(struct gpio_device *gdev, void __user *ip)
  
-+/* The qcom hwspinlock id is always plus one from the smem host id */
-+#define SMEM_HOST_ID_TO_HWSPINLOCK_ID(__x) ((__x) + 1)
-+
-+/**
-+ * qcom_smem_bust_hwspin_lock_by_host() - bust the smem hwspinlock for a host
-+ * @host:	remote processor id
-+ *
-+ * Busts the hwspin_lock for the given smem host id. This helper is intended
-+ * for remoteproc drivers that manage remoteprocs with an equivalent smem
-+ * driver instance in the remote firmware. Drivers can force a release of the
-+ * smem hwspin_lock if the rproc unexpectedly goes into a bad state.
-+ *
-+ * Context: Process context.
-+ *
-+ * Returns: 0 on success, otherwise negative errno.
-+ */
-+int qcom_smem_bust_hwspin_lock_by_host(unsigned int host)
-+{
-+	/* This function is for remote procs, so ignore SMEM_HOST_APPS */
-+	if (host == SMEM_HOST_APPS || host >= SMEM_HOST_COUNT)
-+		return -EINVAL;
-+
-+	return hwspin_lock_bust(__smem->hwlock, SMEM_HOST_ID_TO_HWSPINLOCK_ID(host));
-+}
-+EXPORT_SYMBOL_GPL(qcom_smem_bust_hwspin_lock_by_host);
-+
- /**
-  * qcom_smem_is_available() - Check if SMEM is available
-  *
-diff --git a/include/linux/soc/qcom/smem.h b/include/linux/soc/qcom/smem.h
-index a36a3b9d4929e..03187bc958518 100644
---- a/include/linux/soc/qcom/smem.h
-+++ b/include/linux/soc/qcom/smem.h
-@@ -14,4 +14,6 @@ phys_addr_t qcom_smem_virt_to_phys(void *p);
- 
- int qcom_smem_get_soc_id(u32 *id);
- 
-+int qcom_smem_bust_hwspin_lock_by_host(unsigned int host);
-+
- #endif
+ 	mutex_init(&lr->config_mutex);
+ 	init_waitqueue_head(&lr->wait);
++	INIT_KFIFO(lr->events);
+ 	lr->event_buffer_size = ulr.event_buffer_size;
+ 	if (lr->event_buffer_size == 0)
+ 		lr->event_buffer_size = ulr.num_lines * 16;
 -- 
 2.43.0
 
