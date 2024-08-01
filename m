@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-65122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48002943EDF
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:28:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48745943EE2
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 795F81C22A0D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:28:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0F4A1F225A5
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E09D1DC480;
-	Thu,  1 Aug 2024 00:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E501DC48C;
+	Thu,  1 Aug 2024 00:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWNrNo3I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dt1qbj7Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCDC1DC475;
-	Thu,  1 Aug 2024 00:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A73E1DC49D;
+	Thu,  1 Aug 2024 00:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472506; cv=none; b=Lt984/pZ4WxRKlprKilMOJQ6GZh4+cNK4Ol2ajSmWc1VM8KENa4QjyD2hn/urlUUEpttGNXS42Ln1u1ZYsfnbRY6T2KJ//GwBgkVPHEgTcOdKiB0TFlJe8EJuVmaRRdgDMxFvdeqmsKtOoOsRXAyZF/TLsqpI+Em3u9NaKpOBGE=
+	t=1722472509; cv=none; b=ED/Wpz8Ilt7zZjfjDdEawsAZsNBGfhCyGf1oQ7+zkeXBZB4iYkob5kOHPRjm4yAO+TYNPji2+3TmIABFKQeC87vpfTS8kWE/aGKlLDDC2OkaG50C4+/EObZl823Xkj/l9BjPH0G5R3WR4TQuAd6x+erNZKyDLhUNg3hnht4i7CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472506; c=relaxed/simple;
-	bh=xcoIfImOFi2tDBSbN1yCQgnHc11HHTOxBLdS8rblFww=;
+	s=arc-20240116; t=1722472509; c=relaxed/simple;
+	bh=307qREhbpyxkCHQgzbDT+5+r8N0fY6sOKVFVij9DM24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3Xcb+/EK0ypVeY7okXtf6s8NqYTrIm0R8ZXholkLexjQpWQuSJLyNizooFIe9eA7uDrGjoKWwRs9GZPxr4iCRYy/taqgHSp8d/wYmqHyPPh//HZ4SCQU8uXTdrIOHCWT6nSF9M97Y/qy2UvshLSjuEw0n1pwR/NGy83VgtKa1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWNrNo3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7F1C116B1;
-	Thu,  1 Aug 2024 00:35:04 +0000 (UTC)
+	 MIME-Version; b=ndYzwtkgC35TALSBBZ3Thwyfuipq1c/lIvQzJMb7nx16TOzgm2aUP3ZkksXBeladSS7rmDZwaPqqBnEGjMbCpPsj50nWFllDC2coCWRSjJrhB5pUWd7QUIhRS9qnnl2nZyFDdwTMMp3ZHn6ZjRouEFv+H+FRjMdtEEVDx6U5dDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dt1qbj7Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E471DC116B1;
+	Thu,  1 Aug 2024 00:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472505;
-	bh=xcoIfImOFi2tDBSbN1yCQgnHc11HHTOxBLdS8rblFww=;
+	s=k20201202; t=1722472508;
+	bh=307qREhbpyxkCHQgzbDT+5+r8N0fY6sOKVFVij9DM24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWNrNo3Ib141f1PAooq76AlrIGWBSx+vsab+3u57WAe3tr3XUhTAWvxIoL8ejVwmx
-	 nbZ2TB4qulgMO7qFeEUuwu+RPU1otJ/vWacPJQed3+AcphhFad1CfiK/LPBvE/cIEn
-	 sIThgG0fD4BCj3Q0Tvf0rGzfzsxqZsM8XUgKRKoPyRP0Uh2pCxJ4M05Kqm0UGgGM8v
-	 xhKEmVKQsFUxqEYXMbkBxMbvEXY1+/Kx8Kcz4HKXpbWd/3hh/62ekKjxwbdrGvkWM9
-	 GPbht784wGn9qOuguZ+QEGL4l5oavuu0Axsud64QRFcqcT+MbZg8PPWzUlRM7JGX+s
-	 D6V8QqlbgBSzA==
+	b=dt1qbj7Z6gROkk23E/SFstEf6Qw6wt/TuNd0dh0HnTmTP0ePQlD4Lpzk4tnbieaLD
+	 2ujmbo9A/VIPeLdyec2qBTSDCEIJQ7m7183pGKx49q33SWKwNZb8ZL8gDB56ubi7Yl
+	 QI+IX5Eq9M2f5lmeckSkJ1qmcBg/AyImoVAfv+KcM7q8m4WfXkD/WEHkz8I4DR95Hg
+	 ggVYFzdlBbLSgVdHH4aWAz5W77UVzrehACSbp9Eg+e6uK3kO4lzpioJKfGMGSQX1OX
+	 QEwwEQi474IWnB5ZCud4tc7h4zAkPMUXMEOB6gI8jRKtvgyTr3JHG6/szURwZVArsz
+	 Ru+g3koyhOhtQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jaroslav Kysela <perex@perex.cz>,
 	Sasha Levin <sashal@kernel.org>,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 32/47] drm/amd/display: Skip wbscl_set_scaler_filter if filter is null
-Date: Wed, 31 Jul 2024 20:31:22 -0400
-Message-ID: <20240801003256.3937416-32-sashal@kernel.org>
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 33/47] ALSA: vmaster: Return error for invalid input values
+Date: Wed, 31 Jul 2024 20:31:23 -0400
+Message-ID: <20240801003256.3937416-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003256.3937416-1-sashal@kernel.org>
 References: <20240801003256.3937416-1-sashal@kernel.org>
@@ -74,39 +67,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c4d31653c03b90e51515b1380115d1aedad925dd ]
+[ Upstream commit 10457f5042b4890a667e2f15a2e783490dda44d2 ]
 
-Callers can pass null in filter (i.e. from returned from the function
-wbscl_get_filter_coeffs_16p) and a null check is added to ensure that is
-not the case.
+So far the vmaster code has been tolerant about the input values and
+accepts any values by correcting internally.  But now our own selftest
+starts complaining about this behavior, so let's be picky and change
+the behavior to return -EINVAL for invalid input values instead.
 
-This fixes 4 NULL_RETURNS issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/r/1d44be36-9bb9-4d82-8953-5ae2a4f09405@molgen.mpg.de
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/20240616073454.16512-2-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/core/vmaster.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-index 880954ac0b027..1b3cba5b1d749 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-@@ -690,6 +690,9 @@ static void wbscl_set_scaler_filter(
- 	int pair;
- 	uint16_t odd_coef, even_coef;
- 
-+	if (!filter)
-+		return;
+diff --git a/sound/core/vmaster.c b/sound/core/vmaster.c
+index ab36f9898711a..24d6f2325605c 100644
+--- a/sound/core/vmaster.c
++++ b/sound/core/vmaster.c
+@@ -204,6 +204,12 @@ static int follower_put(struct snd_kcontrol *kcontrol,
+ 	err = follower_init(follower);
+ 	if (err < 0)
+ 		return err;
++	for (ch = 0; ch < follower->info.count; ch++) {
++		if (ucontrol->value.integer.value[ch] < follower->info.min_val ||
++		    ucontrol->value.integer.value[ch] > follower->info.max_val)
++			return -EINVAL;
++	}
 +
- 	for (phase = 0; phase < (NUM_PHASES / 2 + 1); phase++) {
- 		for (pair = 0; pair < tap_pairs; pair++) {
- 			even_coef = filter[phase * taps + 2 * pair];
+ 	for (ch = 0; ch < follower->info.count; ch++) {
+ 		if (follower->vals[ch] != ucontrol->value.integer.value[ch]) {
+ 			changed = 1;
+@@ -344,6 +350,8 @@ static int master_put(struct snd_kcontrol *kcontrol,
+ 	new_val = ucontrol->value.integer.value[0];
+ 	if (new_val == old_val)
+ 		return 0;
++	if (new_val < master->info.min_val || new_val > master->info.max_val)
++		return -EINVAL;
+ 
+ 	err = sync_followers(master, old_val, new_val);
+ 	if (err < 0)
 -- 
 2.43.0
 
