@@ -1,142 +1,166 @@
-Return-Path: <stable+bounces-65261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AE094524C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 19:53:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB4F945255
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 19:56:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 837F1B24CD5
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 17:53:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA511F23038
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 17:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BC31B9B3D;
-	Thu,  1 Aug 2024 17:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9581B4C49;
+	Thu,  1 Aug 2024 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="G/bhEbg1"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="VC94o7R/"
 X-Original-To: stable@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C6B1B3742;
-	Thu,  1 Aug 2024 17:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147761B32D9
+	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 17:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722534781; cv=none; b=NYgzQu3+8V3LxkjbKKTunaNfdN9mmQF8SPWN5Apk9TMJnUVLReAxUy1uRZGVEYYEn4W3+MFdTrap9EfH+n0l1r7908fTY9JJDuNR16/w+b90qLEp5IeP1xpT3zueZ7fB12hhDK2yfZ0OmbBdZ7sFw76DPUrp664OWRX2/PaQPd4=
+	t=1722534960; cv=none; b=q4zs6J/UM1DbPMV5NZSaN/2bDbNGsP980ck4zjMrVvozQRbu0unCBYS0t+1qkqxCEtBG1RfE2+tniLohXeJjexrT6aX5hTkWODoLBi5tiJRFOn9UkmxiEngpbBPWJTubE7K5ZiCnZ9Ph7HM2w+etQ0yd72FSCA+bcDif6e3Mc7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722534781; c=relaxed/simple;
-	bh=plPRch7khvdAriYZO0F9005i5wgrSxJb/YiEPJWYkFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ohOSFy/artks2sJVKWtBrptz2loUegFyNrKdTA5TpHH5VgnrH6DPqHf75DOlJbmdVIFPMKoN9hHoyxSEYv50JJtyQ8Py6mF4v6KPq6NkN+Dioxb0G/rWGqMEwTOlAgRpfm5byl+8jq/dMuMzlwO7Ywt83DyXp/zF2a7ilD/7gBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=G/bhEbg1; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1722534777;
-	bh=plPRch7khvdAriYZO0F9005i5wgrSxJb/YiEPJWYkFM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G/bhEbg1eVN3rqNZzOh80+QsuKt9VtBremwQMBtx5urDTORG4Fx6F+wMCDpMIZfIc
-	 2mkejcpQInq1yKR6XbpgR5WIKQ132JPwAvpRH1ZXzXOejsBqq0gl0f4buhLs3+rbQ2
-	 uigzrA4eqyWpY1KdbucqiM+jUYI3DTLQX4v0BkikCVI2vAPTjaJaQOh8YIqpyJGfcW
-	 TAdC84s5F7klp5+rTwp9avBKKJC7z9JG8rKzQ5Z7iyxpNJmDh4NT83xqVBrB8AsXZD
-	 /dbEQw3imsPrqJniqsXZdW21lnYjiKDX9pAu/v2skFrgUmeX96TAdCfhZPMjbLJntf
-	 FZC/DElIEujjw==
-Received: from mercury (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 95623378000B;
-	Thu,  1 Aug 2024 17:52:57 +0000 (UTC)
-Received: by mercury (Postfix, from userid 1000)
-	id 3E709106097C; Thu, 01 Aug 2024 19:52:57 +0200 (CEST)
-Date: Thu, 1 Aug 2024 19:52:57 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>
-Cc: Lee Jones <lee@kernel.org>, 
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>, Mark Brown <broonie@kernel.org>, Urja <urja@urja.dev>, 
-	linux-rockchip@lists.infradead.org, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel@collabora.com, stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] mfd: rk8xx: Fix shutdown handler
-Message-ID: <wad5fdqxwoq2wy35wbhwk5jinpgyz6xmxnt5aqddci777qctsd@qay2lr2ubkws>
-References: <20240730180903.81688-1-sebastian.reichel@collabora.com>
- <c4d6da27-3b23-4a96-bad0-17f2392287ef@collabora.com>
- <22969419.5W6oEpyPa8@diego>
+	s=arc-20240116; t=1722534960; c=relaxed/simple;
+	bh=ql+eDrfAcu/Zdnp4XJgV4jt+bF0Yq8Z/VW0hlH6g9Z4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J0J0ids+zsIllJbN7dnkSnqKrSGH9M+J+2ZYNKgWSiTgtBLY0dyAx0EUOVY+9gptLBCrMIid7HHWSUuMILHPiU44HqvzWV19Qo1Kw6ZytegIYsibnDZZMhSsawaSEd0ejkL+Q/awJVJPWpal9TRa6cNLeobjfGSOAw2az9QLVHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=VC94o7R/; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-70b2421471aso4632343a12.0
+        for <stable@vger.kernel.org>; Thu, 01 Aug 2024 10:55:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1722534958; x=1723139758; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3fdN3/DLiamzo5QjdRkCvIbvGru1UX7f39kFhf5XVSE=;
+        b=VC94o7R/dKGr0eHoeWjzG7Tkk71IJ0icYs7SIkp5vZ3uFUH+4l3iQ3BPDhKR/vgzHj
+         J4RHpjQYeLQOYcfAyiItMWUcEBVgXR9/zMhvnLdhAvzcsya4fcU/Y7Mfk/pyWox/melM
+         xtaqBpO8V6Rr0Bm7J1uid0xYDEWhGlh/tWFsE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722534958; x=1723139758;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3fdN3/DLiamzo5QjdRkCvIbvGru1UX7f39kFhf5XVSE=;
+        b=kOO+yh7x2Hj3V7S9sMlE22wqDIXjkYtSHpU055QAv6O6+8Esxvm6ghsQmFnKG5i33R
+         qIiTh/MWaG++cfpFx2akAkmJChoQxmipDaL2TCQUp8ah21z9KvHd1297tjStpc7bKxTt
+         /0uKFhsdHytvAmm349esSr0swulVF5dHUk23WIe+o1t+8oUBD8UdGDP46O3eFYR03Cps
+         Qkvoc9aiTDyJLRQlJOH17EC41dxMpjl8VmOgBBURmUGlZ8ALx6buyCihCIdFtGiOi3Hx
+         sv+ZPaDvwGxmgoLIj5L68x9ZbnykpB3FCKOfc3MctbxmLjQY2v5V1uwRk/QFpPFlw8jV
+         mDHw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGou8e/4OQBHsCojoV29TLE72H2nK05l6KNyuwQMygq+QtUJzvvcqvh3UAVZmf5/3Y/NR064FZRXsxpFtjE8izx6iPMe5x
+X-Gm-Message-State: AOJu0YwXCiSKBQeNqdeZMueL9ib6ogrlNFgO6yVZccBCpQnahl1rsacM
+	P3+bs3+8vO4JqM3EBF9SiYcJ/BqN5PafO1/fzFAWYtttJeONMc1x0A4hXcgeEff7I7SZwCb0iCI
+	=
+X-Google-Smtp-Source: AGHT+IGztRaX8jV6rVIE8EZ+NclDD0ImAVKFb7YTdV4ZG6l/jeJGfvm3NGI+86rosOyO2gUT6yHYGA==
+X-Received: by 2002:a05:6a20:840b:b0:1c3:ff33:24b9 with SMTP id adf61e73a8af0-1c69954a34fmr1412376637.3.1722534958139;
+        Thu, 01 Aug 2024 10:55:58 -0700 (PDT)
+Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ece3c19sm103321b3a.134.2024.08.01.10.55.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Aug 2024 10:55:57 -0700 (PDT)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	ian.forbes@broadcom.com,
+	martin.krastev@broadcom.com,
+	maaz.mombasawala@broadcom.com,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/vmwgfx: Prevent unmapping active read buffers
+Date: Thu,  1 Aug 2024 13:55:46 -0400
+Message-ID: <20240801175548.17185-1-zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sjgkp6qu6zakxj2y"
-Content-Disposition: inline
-In-Reply-To: <22969419.5W6oEpyPa8@diego>
+Content-Transfer-Encoding: 8bit
 
+The kms paths keep a persistent map active to read and compare the cursor
+buffer. These maps can race with each other in simple scenario where:
+a) buffer "a" mapped for update
+b) buffer "a" mapped for compare
+c) do the compare
+d) unmap "a" for compare
+e) update the cursor
+f) unmap "a" for update
+At step "e" the buffer has been unmapped and the read contents is bogus.
 
---sjgkp6qu6zakxj2y
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Prevent unmapping of active read buffers by simply keeping a count of
+how many paths have currently active maps and unmap only when the count
+reaches 0.
 
-Hi,
+Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and CursorBypass 4")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.19+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.c | 13 +++++++++++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.h |  1 +
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-On Thu, Aug 01, 2024 at 07:41:44PM GMT, Heiko St=FCbner wrote:
-> Am Donnerstag, 1. August 2024, 17:31:33 CEST schrieb Dmitry Osipenko:
-> > On 7/30/24 21:05, Sebastian Reichel wrote:
-> > > +	/*
-> > > +	 * Currently the Rockchip SPI driver always sleeps when doing SPI
-> > > +	 * transfers. This is not allowed in the SYS_OFF_MODE_POWER_OFF
-> > > +	 * handler, so we are using the prepare handler as a workaround.
-> > > +	 * This should be removed once the Rockchip SPI driver has been
-> > > +	 * adapted.
-> > > +	 */
-> > > +	if (is_spi)
-> > > +		pwr_off_mode =3D SYS_OFF_MODE_POWER_OFF_PREPARE;
-> >=20
-> > This prevents the syscore_shutdown() step from execution. Is it better
-> > than not powering off?
-> >=20
-> > I'd rather skip registration of the power-off handlers in a case of SPI=
- :)
->=20
-> Or blasphemous thought, we could live with the warning-splash for a bit.
->=20
-> From Sebastian's log I assume the WARNING comes from the
-> wait_for_completion() in spi_transfer_wait(), and I guess the transfer
-> with the poweroff command itself will already have happened then?
->=20
-> So the device is most likely still powered off in that case?
-> Not sure how much of "bad taste" that thought is though ;-)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+index f42ebc4a7c22..a0e433fbcba6 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+@@ -360,6 +360,8 @@ void *vmw_bo_map_and_cache_size(struct vmw_bo *vbo, size_t size)
+ 	void *virtual;
+ 	int ret;
+ 
++	atomic_inc(&vbo->map_count);
++
+ 	virtual = ttm_kmap_obj_virtual(&vbo->map, &not_used);
+ 	if (virtual)
+ 		return virtual;
+@@ -383,11 +385,17 @@ void *vmw_bo_map_and_cache_size(struct vmw_bo *vbo, size_t size)
+  */
+ void vmw_bo_unmap(struct vmw_bo *vbo)
+ {
++	int map_count;
++
+ 	if (vbo->map.bo == NULL)
+ 		return;
+ 
+-	ttm_bo_kunmap(&vbo->map);
+-	vbo->map.bo = NULL;
++	map_count = atomic_dec_return(&vbo->map_count);
++
++	if (!map_count) {
++		ttm_bo_kunmap(&vbo->map);
++		vbo->map.bo = NULL;
++	}
+ }
+ 
+ 
+@@ -421,6 +429,7 @@ static int vmw_bo_init(struct vmw_private *dev_priv,
+ 	vmw_bo->tbo.priority = 3;
+ 	vmw_bo->res_tree = RB_ROOT;
+ 	xa_init(&vmw_bo->detached_resources);
++	atomic_set(&vmw_bo->map_count, 0);
+ 
+ 	params->size = ALIGN(params->size, PAGE_SIZE);
+ 	drm_gem_private_object_init(vdev, &vmw_bo->tbo.base, params->size);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+index 62b4342d5f7c..dc13f1e996c1 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+@@ -90,6 +90,7 @@ struct vmw_bo {
+ 	u32 res_prios[TTM_MAX_BO_PRIORITY];
+ 	struct xarray detached_resources;
+ 
++	atomic_t map_count;
+ 	atomic_t cpu_writers;
+ 	/* Not ref-counted.  Protected by binding_mutex */
+ 	struct vmw_resource *dx_query_ctx;
+-- 
+2.43.0
 
-Yes, as far as I could see it works fine (the splash from the commit
-message is from exactly this solution running on RK3588 EVB1 and the
-board was powered off properly as far as I can tell). But it felt a
-bit strange to knowingly introduce an error splash in a fix intended
-for being backported to the stable trees, so I switched to the current
-version before sending.
-
--- Sebastian
-
---sjgkp6qu6zakxj2y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmary3QACgkQ2O7X88g7
-+prEYA//Uzr1RcaVsc7UcEd+nR7XbTVEUENkCiIRu3A94zcGi/bF5oS11QxvbLvY
-3LaPGcAdLg9goCYf4umh/k4lUNrFrlPA5733nLg6XTl3IWoeLTSLrpsLOWLGELre
-usMKLB+ZbJsmWY9h0YBD6x8tru8d30Zi6DU90oVq4bJXUFLyfVxoFunUwD2pp1Zo
-59FU6xPMsncOf/1tecfIIXTYUfREjBU+mzoY7GRaHhk0H4hSZ5Ubn9xw3kOoPeE4
-55sQnmjWUWHI6CSpdDtnbGIDR0p2pQfpbEpJNyR+exvQWj/QlWvCJ1/VfoQpiCXC
-LHXQeq9QiXcdHM/u39yZIhrVD7CokAyM/DDKnYCnV7T41vLeYB/+LE01HQpnIYyq
-pcGM/BlLgOer/BLuwgkNYxshmqE75+BLaJxfA6Weh4Lkd1V3QtIxn6PKL4cFAdtS
-c2FHk3qhHHdKhX2Ruy0WEiB96zCaBITsQm9EAiUrin7VzrYxxq69FA2LFRiJcRpH
-PihEXDhRFYe7qEmIXzOa1vhsKvH7FFqfjTUY+dbPFzyMXwSI5iOX4FKYBvS3iNtj
-b+UY2HpaWLs/vlaCiDGJT6q656KcShB0dQkZKNmfNL5XM2S8pAzGqbjpAdt2IYlL
-5kyFxnwWs268HZ7epaey/dRkajBiUI2WJGsOIvg9L0d0LrL4T+Q=
-=taLl
------END PGP SIGNATURE-----
-
---sjgkp6qu6zakxj2y--
 
