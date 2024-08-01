@@ -1,131 +1,255 @@
-Return-Path: <stable+bounces-65230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F075894462A
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 10:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49697944632
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 10:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14481F225C9
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 08:05:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1D661F23609
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 08:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A92615747C;
-	Thu,  1 Aug 2024 08:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5027616D4D8;
+	Thu,  1 Aug 2024 08:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="ZBkk28MY"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="IvV3a+1h";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mOmx0YdH";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="IvV3a+1h";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mOmx0YdH"
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5416B3E47B
-	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 08:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246341662E2;
+	Thu,  1 Aug 2024 08:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722499506; cv=none; b=K2JJWLPYgfTkgdpg1/fGwTXfKMt0dMUFmTcT3Qk7FJ4cM0bpHes2PMbBjakjkQ/K/YfvskI1GYZtZchJk+cmr3FpOr5Wsu38SV3jdPYuv5vM8XmBH01BwUJS5GAA3jWr5G2GXZIV1JOP/EpxjV9zzC7BTJZ7ZOsdwHZQuQceWw8=
+	t=1722499602; cv=none; b=BwONxcPzBcfxGF/VgMzNI9kd5cIdiESyW8LGt9b9ua7z9IXCBnBWyv9MI+IT5UAopJ+q5Wg7Ff2P9Mt2KzS9LJma+bwSj/OfZwsQSOpTQq0Ftf0q4NgHgJZCmnXegXOr81+QwYykOD8cnRLqxPyOUf82AlKDqsLCGfxi48Wxvhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722499506; c=relaxed/simple;
-	bh=7zfcPWvAnMZtQ0hKzCtL3oX3MOgy/pixFvoxh7mLZo4=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=YwmilCvAP9Jxp/nY/g+T9IvMzHP3fY/2H35c2nVuiy+eK8ZBDiVEHo7ZYBRXPc0fiEBtUhzEoo5YFBh/jLTKBL8W//eioPMG7YvXzX/tT17yjgcL7tiWJ92GX2u+mwKFXdue6Dvy8gortuvUFEZ99jafMDQLYHaaJuidbJ7v4I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=ZBkk28MY; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-	by cmsmtp with ESMTPS
-	id ZQdfsPu0hjnP5ZQo3sd6hF; Thu, 01 Aug 2024 08:05:03 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id ZQo2sXfrSks1PZQo3sSyly; Thu, 01 Aug 2024 08:05:03 +0000
-X-Authority-Analysis: v=2.4 cv=Ud+aS7SN c=1 sm=1 tr=0 ts=66ab41af
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=yoJbH4e0A30A:10 a=VwQbUJbxAAAA:8 a=HaFmDPmJAAAA:8
- a=o4oUe0vuTkceCX_PDYEA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bIxp1EyNdg7hPOJ4wr2j1sNmxSWc3ZBlMiYwBiSO3jQ=; b=ZBkk28MYYfbfMuTURR6pmZVWCo
-	4EQ1ew3zpxYpCbLj6cZGc3lB59zdiKwwOQ3h0Oa7ymY81Dq0saYXcjpS+W8z25hkiskV6DxLgRy//
-	4vIn5L0ONtJYm7vjXH+mn9uGAfjtDy99KBU1H3QEsXKnMYk3Hp9oqOA+eJ3RQONeP9MGdADPlo1AJ
-	g63okaZFT1g8W3krxV1+Jhstc52HAtF4rhINXxw7bw31GGBKqccnk2Q/V2PG0gHatRNso58reMf38
-	HITWWguivPobSINrC7erAoWGCmDfzc15mjlLOx2MedLhmNF1/3icxrIMmPqXjzz/3hrEL0d/mfPBI
-	GJmdS2VQ==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:60454 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1sZQny-000Mhs-1I;
-	Thu, 01 Aug 2024 02:04:58 -0600
-Subject: Re: [PATCH 6.1 000/440] 6.1.103-rc3 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240731100057.990016666@linuxfoundation.org>
-In-Reply-To: <20240731100057.990016666@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <6ee4cb6b-e4a0-3196-d651-d9a05f7f9dde@w6rz.net>
-Date: Thu, 1 Aug 2024 01:04:51 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1722499602; c=relaxed/simple;
+	bh=KXQltPNjga0Igfnq/81KleTMWsF5jL+UuuFf8qMwbSQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t/GUXpVXsti+oZrqLnoqTaYdZm0PiryXJhxJLYWO4K6LI/byXJTW/W7xXaO5uhIvwp6LMpx7+N43fZvHjzpt9eA3esIWyKcvxQtyEhD1ChoHFVH9JwwYeY4ZkljVOk9ycrySpDKPmojNx/lOD0ilNc2fSt2F3QaLTBQd7+Za+w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=IvV3a+1h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mOmx0YdH; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=IvV3a+1h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mOmx0YdH; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 440F11FB3D;
+	Thu,  1 Aug 2024 08:06:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1722499598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ceRe+g78mgzXvP7Pn16SKcrYPRGfu9OFsDe8NwfsDx0=;
+	b=IvV3a+1h5kVX300Mc2JiZDFOHSryVZvWX7iQpF9AdxA7uH22t7BuVHVMEimQ5/stJKlkvu
+	SSE6M1g0UPSqi6iFEUpTXtjlCbyEQU+Ss1XPQqHBJqaWODoL4U0GeCu2P0nmGiNXOwGfrk
+	Xv9DNdNFY2dhN6vve5dMn+knlMunvJY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1722499598;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ceRe+g78mgzXvP7Pn16SKcrYPRGfu9OFsDe8NwfsDx0=;
+	b=mOmx0YdH6ki0agTW3TUbHfvcXCIewn1wEaVaE/ad8WmIt47Wiuj4bXGiQ/XkaoioVUbbp0
+	3MHfVDjqGfyD0nCA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1722499598; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ceRe+g78mgzXvP7Pn16SKcrYPRGfu9OFsDe8NwfsDx0=;
+	b=IvV3a+1h5kVX300Mc2JiZDFOHSryVZvWX7iQpF9AdxA7uH22t7BuVHVMEimQ5/stJKlkvu
+	SSE6M1g0UPSqi6iFEUpTXtjlCbyEQU+Ss1XPQqHBJqaWODoL4U0GeCu2P0nmGiNXOwGfrk
+	Xv9DNdNFY2dhN6vve5dMn+knlMunvJY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1722499598;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ceRe+g78mgzXvP7Pn16SKcrYPRGfu9OFsDe8NwfsDx0=;
+	b=mOmx0YdH6ki0agTW3TUbHfvcXCIewn1wEaVaE/ad8WmIt47Wiuj4bXGiQ/XkaoioVUbbp0
+	3MHfVDjqGfyD0nCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 226DA13946;
+	Thu,  1 Aug 2024 08:06:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZtgRCA5Cq2anDAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 01 Aug 2024 08:06:38 +0000
+Message-ID: <319812ce-a15f-4004-a166-d281b8525616@suse.cz>
+Date: Thu, 1 Aug 2024 10:06:37 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: list_lru: fix UAF for memory cgroup
 Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1sZQny-000Mhs-1I
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:60454
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfORtsqKbQdqsyt0KqHnW7lQrIB9GbugrgGFtIx5p+p8o/3ge8UplLQa+E6vXcp4O6UEaAxybmH1CeKBCYqq1qbMIdgAU+gYk6RcfhmSQcTqDfYPr4Vgr
- 2hT0E0SYqwPwrIbSomaybIJfilOB5LUkq+4pQow52Ng28BAjdoavYfqlL/E05NAVKdrZywmZlMxtsw==
+To: Muchun Song <songmuchun@bytedance.com>, akpm@linux-foundation.org
+Cc: hannes@cmpxchg.org, muchun.song@linux.dev, nphamcs@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Shakeel Butt <shakeel.butt@linux.dev>, stable@vger.kernel.org
+References: <20240801024603.1865-1-songmuchun@bytedance.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ EP+ylKVEKb0Q2A==
+In-Reply-To: <20240801024603.1865-1-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-4.09 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[cmpxchg.org,linux.dev,gmail.com,kvack.org,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,linux.dev:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -4.09
 
-On 7/31/24 3:02 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.103 release.
-> There are 440 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 02 Aug 2024 09:59:35 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.103-rc3.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 8/1/24 04:46, Muchun Song wrote:
+> The mem_cgroup_from_slab_obj() is supposed to be called under rcu
+> lock or cgroup_mutex or others which could prevent returned memcg
+> from being freed. Fix it by adding missing rcu read lock.
+> 
+> Fixes: 0a97c01cd20b ("list_lru: allow explicit memcg and NUMA node selection")
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: <stable@vger.kernel.org>
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Tested-by: Ron Economos <re@w6rz.net>
+> ---
+> v2:
+>  Only grab rcu lock when necessary (Vlastimil Babka)
+> 
+>  mm/list_lru.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/list_lru.c b/mm/list_lru.c
+> index a29d96929d7c7..9b7ff06e9d326 100644
+> --- a/mm/list_lru.c
+> +++ b/mm/list_lru.c
+> @@ -85,6 +85,7 @@ list_lru_from_memcg_idx(struct list_lru *lru, int nid, int idx)
+>  }
+>  #endif /* CONFIG_MEMCG */
+>  
+> +/* The caller must ensure the memcg lifetime. */
+>  bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
+>  		    struct mem_cgroup *memcg)
+>  {
+> @@ -109,14 +110,22 @@ EXPORT_SYMBOL_GPL(list_lru_add);
+>  
+>  bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
+>  {
+> +	bool ret;
+>  	int nid = page_to_nid(virt_to_page(item));
+> -	struct mem_cgroup *memcg = list_lru_memcg_aware(lru) ?
+> -		mem_cgroup_from_slab_obj(item) : NULL;
+>  
+> -	return list_lru_add(lru, item, nid, memcg);
+> +	if (list_lru_memcg_aware(lru)) {
+> +		rcu_read_lock();
+> +		ret = list_lru_add(lru, item, nid, mem_cgroup_from_slab_obj(item));
+> +		rcu_read_unlock();
+> +	} else {
+> +		ret = list_lru_add(lru, item, nid, NULL);
+> +	}
+> +
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(list_lru_add_obj);
+>  
+> +/* The caller must ensure the memcg lifetime. */
+>  bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
+>  		    struct mem_cgroup *memcg)
+>  {
+> @@ -139,11 +148,18 @@ EXPORT_SYMBOL_GPL(list_lru_del);
+>  
+>  bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
+>  {
+> +	bool ret;
+>  	int nid = page_to_nid(virt_to_page(item));
+> -	struct mem_cgroup *memcg = list_lru_memcg_aware(lru) ?
+> -		mem_cgroup_from_slab_obj(item) : NULL;
+>  
+> -	return list_lru_del(lru, item, nid, memcg);
+> +	if (list_lru_memcg_aware(lru)) {
+> +		rcu_read_lock();
+> +		ret = list_lru_del(lru, item, nid, mem_cgroup_from_slab_obj(item));
+> +		rcu_read_unlock();
+> +	} else {
+> +		ret = list_lru_del(lru, item, nid, NULL);
+> +	}
+> +
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(list_lru_del_obj);
+>  
 
 
