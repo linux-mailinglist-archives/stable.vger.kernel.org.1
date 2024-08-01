@@ -1,73 +1,65 @@
-Return-Path: <stable+bounces-65161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8FF943F4D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:37:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1560F943F6A
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:40:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DD321C2130B
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:37:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A644BB2B82C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1AA1E2F29;
-	Thu,  1 Aug 2024 00:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA51A1E2F47;
+	Thu,  1 Aug 2024 00:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nKq+Rf8K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9y+HnfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0191E2F25;
-	Thu,  1 Aug 2024 00:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DF41E2F3E;
+	Thu,  1 Aug 2024 00:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472698; cv=none; b=Tfv7ze+VlEs8pbffzDbeQ2qcRoTz5W9eHqoVMzZICzZDfhrZQ9LLzi9/Uj1b17HKkg09vo5/vfDDQBRHAuIBq/Vl9PdGrKhvwG1ipcL9RoERN2OZxFLnNlUWzJ3aZ0OtIAM6NjojVA6pjPezoDHwp9Fq6mGeic+SgPBagD02UAQ=
+	t=1722472703; cv=none; b=pxvuhCPLy1VWTi/AVN4dkTnajOHrWmO0Iwyem1E4RHcVeqUmVk8IFzl0kXHfYvQCJbsqvhcvGwoTSW76hCV4Lib5RZvfWjIxsCsPSd7gmeZ21tLQ+UgH8/gCbOkAIwW7ZRx8mw0HyR3D79RFCYOiMhKwnKJSS28a9XPsZyar+EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472698; c=relaxed/simple;
-	bh=iPtXXTOTTCYO9TZk2WP4rJQlnMKoQ1qRcUuwJj8voEk=;
+	s=arc-20240116; t=1722472703; c=relaxed/simple;
+	bh=xcoIfImOFi2tDBSbN1yCQgnHc11HHTOxBLdS8rblFww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abhCeQiXZgUVtI90NysIafRukXkE0ZX/tB5HTRabkyeYSgaGrO/8rnaNQT1ci95uiOucoUCFdrv4IEqbfddYHOja3UZ2U2uKP7UCSN0TAPIDSswJOV2dm7PGTg0T6RvfF1+iDY8bfKeNEd1ogUQBWHWVHsWgqVQLml35vGDkvio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nKq+Rf8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054E8C116B1;
-	Thu,  1 Aug 2024 00:38:15 +0000 (UTC)
+	 MIME-Version; b=YFSKT1FyqaaMx/7xgep0lf3AGyygWJsQUwUdu67Wzg6L8mGngh1IPRq0YTEa+ojHu72rtSXOn4BfXM+oK34qMEi4gMw9aS8xTu7cptuvc5n9zOopzqlTrKwbD7ux2qeoyyrUQpfOXk2mFKD0wcoEwSP+/+Ffp3QkxLOCpqHeAzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9y+HnfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D22EC32786;
+	Thu,  1 Aug 2024 00:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472698;
-	bh=iPtXXTOTTCYO9TZk2WP4rJQlnMKoQ1qRcUuwJj8voEk=;
+	s=k20201202; t=1722472703;
+	bh=xcoIfImOFi2tDBSbN1yCQgnHc11HHTOxBLdS8rblFww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKq+Rf8KUuPnzFW/EWyzmSbDQSqLlpYY9cVN5e6wcXNZ75cw/c5qNajQM0lqLBhYr
-	 tQc2sFgMh7ekjLHOpL69Erkj3OofznA5mrzlSgWxZBkgtBYILCFSc08OkAjILweusK
-	 dyZvZxpyVJaIfChSDeQ4g6Y3Y5CXumW7XU9VN4cEJ9HrXDwrJACoXyvaqs6oaWdPOX
-	 WCWCxS+RWqPR1qQcLKQX2Bztgs5/oBKp+vEPTrwEkMNn+152nEX7pYFmpg+ztgOUm0
-	 jS3Fb008Qfbar/xhnHtniS3Y6AdCvlUid8hz2ROYkFLeN47otam9yIFBQhElG5L3ol
-	 Jnv37VHHl9aYw==
+	b=t9y+HnfXJssItG7QR8vYza9jI25addZIzT3Yp8Yk3a5p9Sw99z1iFE2UxG+q97Jfl
+	 I26PtRHIrkpnVMGgZqCmdKCGaaazhwDkgd8ZclXTqr6NUab2mSG9FhgJPygT8g+dXE
+	 /ku8ehmx6/FsS57P/kCZy3zAOCuL81Kjwyu6OAGHPdH+LyjW70XwNTqVzF8LbQIEIQ
+	 f0mpth9JShHeg/HRR47Gk064GqX87LPIxI99I+fSylgpL+uvc6TZ8u4v/9ncj/jXTy
+	 B3sXlOZiK8zDAqf8WmItD4nBNYv86P7Uu2b3MGdKhYdJnfd7b4NQIW4SA7BREH1Xnq
+	 PVyCRXrVRvTOA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: winstang <winstang@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+Cc: Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
 	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	wenjing.liu@amd.com,
-	alex.hung@amd.com,
-	jun.lei@amd.com,
-	hamza.mahfooz@amd.com,
-	george.shen@amd.com,
-	dillon.varone@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.10 24/38] drm/amd/display: added NULL check at start of dc_validate_stream
-Date: Wed, 31 Jul 2024 20:35:30 -0400
-Message-ID: <20240801003643.3938534-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 25/38] drm/amd/display: Skip wbscl_set_scaler_filter if filter is null
+Date: Wed, 31 Jul 2024 20:35:31 -0400
+Message-ID: <20240801003643.3938534-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
 References: <20240801003643.3938534-1-sashal@kernel.org>
@@ -82,41 +74,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: winstang <winstang@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 26c56049cc4f1705b498df013949427692a4b0d5 ]
+[ Upstream commit c4d31653c03b90e51515b1380115d1aedad925dd ]
 
-[Why]
-prevent invalid memory access
+Callers can pass null in filter (i.e. from returned from the function
+wbscl_get_filter_coeffs_16p) and a null check is added to ensure that is
+not the case.
 
-[How]
-check if dc and stream are NULL
+This fixes 4 NULL_RETURNS issues reported by Coverity.
 
-Co-authored-by: winstang <winstang@amd.com>
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Signed-off-by: winstang <winstang@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 0a13c06eea447..6a993cdb101ee 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -2914,6 +2914,9 @@ void resource_build_bit_depth_reduction_params(struct dc_stream_state *stream,
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
+index 880954ac0b027..1b3cba5b1d749 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
+@@ -690,6 +690,9 @@ static void wbscl_set_scaler_filter(
+ 	int pair;
+ 	uint16_t odd_coef, even_coef;
  
- enum dc_status dc_validate_stream(struct dc *dc, struct dc_stream_state *stream)
- {
-+	if (dc == NULL || stream == NULL)
-+		return DC_ERROR_UNEXPECTED;
++	if (!filter)
++		return;
 +
- 	struct dc_link *link = stream->link;
- 	struct timing_generator *tg = dc->res_pool->timing_generators[0];
- 	enum dc_status res = DC_OK;
+ 	for (phase = 0; phase < (NUM_PHASES / 2 + 1); phase++) {
+ 		for (pair = 0; pair < tap_pairs; pair++) {
+ 			even_coef = filter[phase * taps + 2 * pair];
 -- 
 2.43.0
 
