@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-65055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F4D943DE4
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:11:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F169943DE6
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53B0C2830E0
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:11:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5034A1C2198D
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E5B156F2A;
-	Thu,  1 Aug 2024 00:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730C31AED29;
+	Thu,  1 Aug 2024 00:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFwfIXDX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bszhs9Ip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F372916D302;
-	Thu,  1 Aug 2024 00:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C065192B79;
+	Thu,  1 Aug 2024 00:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472206; cv=none; b=EZ6BzeJKwnlKQh+keCHEcfSk4xbwHdVcqwpNkyIYNNsXf/ouefLuTlv2rKk4sjd9DGfsgAJsEyA5svPLkIEtIs2HytHkL42cVb2WatwLQUn8sjoFFHI6njmzr1Jw9+vCpNz+Wd+Lm+U5Vch5BdTjIQwfOvg090+nDyee+BFP/B4=
+	t=1722472209; cv=none; b=DfUVHGp+XcIEMDgiPHHvlfCUWcvATvnjt08I/l8eJdavTRr3xuqSAYVnZP66+QWxW7oT2JOYJDpT1Z0AqYbZkPuMHTdJ7FPiGAfMjCNlO8EGcTTPWVqIp7gOTZqywQeuxrVpyPRGvt1j0dStXny/fgqVuACvniJCv8RXYkmsMrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472206; c=relaxed/simple;
-	bh=0bI9+w/hFpDnETbZHXp4jVTxP5Q7S2zAMabv/M1qWRY=;
+	s=arc-20240116; t=1722472209; c=relaxed/simple;
+	bh=5HkpZF+C9dwJjcFENfmNhps01cjNjs3wQgezjJIbfjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DR+z5iLaYzM9OGIkj9dnJC1UYvaJIzOLwmDlvI5zOqzKXnySQePjdLeVLXK0GhnG5U92SRzqv6B0r2g9NfJqlwUQx4sSyqvElZtQJuwGw/SC1MOFRuDsCEopgspUOmgsSbkl4rXXzqn0mx71eorQ8dxBekSgQK2sgkpjb/EAHDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DFwfIXDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217F9C32786;
-	Thu,  1 Aug 2024 00:30:04 +0000 (UTC)
+	 MIME-Version; b=cZqTx3V6y2/2Q1bbGFZok9d/Vurw5THH9BLhZY7w+tAtTg4RGUMKLkE4tKkg53qoLpOwwglpnbckhkYMGM8hOg/Ko0suvWDRMSFDb6ogj9TfITfISRnK7ad3SxTpBnrz9cDFGhh+cJZZknajtR+XCyKUxA4zWbj9ldFB4BOZxOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bszhs9Ip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23982C4AF0C;
+	Thu,  1 Aug 2024 00:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472205;
-	bh=0bI9+w/hFpDnETbZHXp4jVTxP5Q7S2zAMabv/M1qWRY=;
+	s=k20201202; t=1722472209;
+	bh=5HkpZF+C9dwJjcFENfmNhps01cjNjs3wQgezjJIbfjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFwfIXDXOjOheW5vXFbF87+B85bfFJhGVsM/EXODHMGqW/lCuC9QzFMfQVZ6FwwBF
-	 XUqJnAryjaXA/8eNLUeVWoK1E/zOQpIiPRHxR0J3SyC42GoJPn5TakV7kmTTzKG7tI
-	 tLFPj9/Kib6QQZsnU9Cs93nQrEPK4Kv7kh2yV/5k4t3Sa/mUAAJxnRpDlSfNuwTHNv
-	 crNgrIEZ/25ZYeAgnuMCwqWvRNxk9ItPYsnHfc+bb++sjPlOe8BpvpKfD/4108Mm1F
-	 tDs3eVl5fAW6e9abD4Xkhn8+X2yWtJo73ZwrbgAVuSGJS8RyZdoKGc2ISiUDMZbqAW
-	 fOuVsWapumX/w==
+	b=Bszhs9IpqCOm7+kM+Ju5MWbj+66wCujzRzzELJxDXTcZxLIERYnHRupDHhC3obJlH
+	 Mj5AZVKR9svQIvK9AAw/nF5lnKFL11hfUXmxcloL/LU4Ww1QtxVAvGoo5/sEAh3POJ
+	 e9/RTSExT+O5qAu8ERdXoWh+mqJHXFsQFaLnxB65dVqFiJFmwF62GQRne1Tuh9hUlF
+	 y1/U+/oRbjXErd7YUkzMcjZMZQ/D/AK6h8xjEELGoTidwmH2yLW4WtVlfeEmfBCfZ7
+	 CRLFv058Vp12df4cTchm73obgnTcNokTCHJBT1gefTj2xFvjSrXaZaA5AdpIqYJEUI
+	 d+eyI12iYOxcg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tao Zhou <tao.zhou1@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 26/61] drm/amdgpu: update type of buf size to u32 for eeprom functions
-Date: Wed, 31 Jul 2024 20:25:44 -0400
-Message-ID: <20240801002803.3935985-26-sashal@kernel.org>
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 27/61] wifi: iwlwifi: fw: avoid bad FW config on RXQ DMA failure
+Date: Wed, 31 Jul 2024 20:25:45 -0400
+Message-ID: <20240801002803.3935985-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -72,69 +66,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Tao Zhou <tao.zhou1@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 2aadb520bfacec12527effce3566f8df55e5d08e ]
+[ Upstream commit 6ccfc7c49b6d99e3b857afb064e56a004b0a5e03 ]
 
-Avoid overflow issue.
+In practice, iwl_trans_get_rxq_dma_data() will not fail,
+it only can do that if called with the wrong arguments.
+But it does have an error value and doesn't initialize
+the argument when it fails, so don't use the value then.
 
-Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240512072733.faf3a1b87589.I77c950173cb914676fbd28483e5ef420bb9f1bc9@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c | 6 +++---
- drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/init.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-index d6c4293829aab..3e4912f1f92af 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-@@ -179,7 +179,7 @@ static int __amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
-  * Returns the number of bytes read/written; -errno on error.
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/init.c b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+index 135bd48bfe9fa..d8b083be5b6b5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/init.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+  * Copyright (C) 2017 Intel Deutschland GmbH
+- * Copyright (C) 2019-2021 Intel Corporation
++ * Copyright (C) 2019-2021, 2024 Intel Corporation
   */
- static int amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
--			      u8 *eeprom_buf, u16 buf_size, bool read)
-+			      u8 *eeprom_buf, u32 buf_size, bool read)
- {
- 	const struct i2c_adapter_quirks *quirks = i2c_adap->quirks;
- 	u16 limit;
-@@ -226,7 +226,7 @@ static int amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
+ #include "iwl-drv.h"
+ #include "runtime.h"
+@@ -135,7 +135,9 @@ int iwl_configure_rxq(struct iwl_fw_runtime *fwrt)
+ 		struct iwl_trans_rxq_dma_data data;
  
- int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
- 		       u32 eeprom_addr, u8 *eeprom_buf,
--		       u16 bytes)
-+		       u32 bytes)
- {
- 	return amdgpu_eeprom_xfer(i2c_adap, eeprom_addr, eeprom_buf, bytes,
- 				  true);
-@@ -234,7 +234,7 @@ int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
+ 		cmd->data[i].q_num = i + 1;
+-		iwl_trans_get_rxq_dma_data(fwrt->trans, i + 1, &data);
++		ret = iwl_trans_get_rxq_dma_data(fwrt->trans, i + 1, &data);
++		if (ret)
++			goto out;
  
- int amdgpu_eeprom_write(struct i2c_adapter *i2c_adap,
- 			u32 eeprom_addr, u8 *eeprom_buf,
--			u16 bytes)
-+			u32 bytes)
- {
- 	return amdgpu_eeprom_xfer(i2c_adap, eeprom_addr, eeprom_buf, bytes,
- 				  false);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-index 6935adb2be1f1..8083b8253ef43 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-@@ -28,10 +28,10 @@
+ 		cmd->data[i].fr_bd_cb = cpu_to_le64(data.fr_bd_cb);
+ 		cmd->data[i].urbd_stts_wrptr =
+@@ -149,6 +151,7 @@ int iwl_configure_rxq(struct iwl_fw_runtime *fwrt)
  
- int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
- 		       u32 eeprom_addr, u8 *eeprom_buf,
--		       u16 bytes);
-+		       u32 bytes);
+ 	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
  
- int amdgpu_eeprom_write(struct i2c_adapter *i2c_adap,
- 			u32 eeprom_addr, u8 *eeprom_buf,
--			u16 bytes);
-+			u32 bytes);
++out:
+ 	kfree(cmd);
  
- #endif
+ 	if (ret)
 -- 
 2.43.0
 
