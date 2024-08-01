@@ -1,71 +1,74 @@
-Return-Path: <stable+bounces-64955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190AD943CF6
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:47:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32929943CF8
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A7ED1C20A56
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:47:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63C881C20D11
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8AF14F9CC;
-	Thu,  1 Aug 2024 00:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C63313D889;
+	Thu,  1 Aug 2024 00:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gxvm9q7x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZInq6htM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB53812E1D1;
-	Thu,  1 Aug 2024 00:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A26C12E1D1;
+	Thu,  1 Aug 2024 00:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471713; cv=none; b=uNgOTY3uZBQHBvPmgyz4aKmf37T0L75FqBfPxaDP1179X4tmI68+OokcEMBPdPdoedxVYsohMniKZ0301cq13OEfM0s10lxEe12slXOMzcZdLHQfh55hKYPDhVPWpYcurUJJ78KBLwc5yC0KaLWOjk36V1Qd6eK3KlgoFFzbfng=
+	t=1722471719; cv=none; b=Sz7za9prYhLsEx6Du/ROXb2ggRR7Pxw2AqqANX1xEGIvE4+cLyFO3tH3M6v/mjE8xgMPNdOu5NtEA3GBGjvFOly71DWHbscb75Z1uni4PWkh25i0hFYoeq68LFfxpgo3m+mYWW6IDBmpwIngKnxb8YW7GBm7f8aHYuq+E4Xsfdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471713; c=relaxed/simple;
-	bh=+zuTLK1ZQgh3EOdx9Tj637JC/P/f2GOPL0shaDH8ZCw=;
+	s=arc-20240116; t=1722471719; c=relaxed/simple;
+	bh=cwPs0m+gOE625z9U+MG2gyHPE54rMUGLpyR1T9LRCtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJibzRkuP7LrfHw81OE6I7ZWgXfAmyk9XrK97P30fdiu67gt3wMuhcWBR8lGKnLH5YF1sTiOiPEBT49gchqUSJm8G5A7thiuhCiiGMWwSZ0LGB/JQXGq5cV4MuZsfUQA+R3xnGpnFpQijB2CrPTcB7t3inV23GZ79NcFAyhyEZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gxvm9q7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EB5C32786;
-	Thu,  1 Aug 2024 00:21:51 +0000 (UTC)
+	 MIME-Version; b=K609HgRDm7B3QPbiK6+ehefIT7gkJI3EyLefpLFnWoj+gXK/IUe9yjlAu9HJ/XcQEHx55O7m0TJm+qKhIEUtT+vIDOlD0kqpzvKxMgXb3ykJ7slTRw/tAjOxS4uRmPRO2gxm6TSHZoxNxwZavJIfWb3z11fi7LqK3Spu1AatDk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZInq6htM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A0AC4AF0C;
+	Thu,  1 Aug 2024 00:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471713;
-	bh=+zuTLK1ZQgh3EOdx9Tj637JC/P/f2GOPL0shaDH8ZCw=;
+	s=k20201202; t=1722471719;
+	bh=cwPs0m+gOE625z9U+MG2gyHPE54rMUGLpyR1T9LRCtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gxvm9q7x+RZONl82+HYyQrlvNrqkkV6XL2n3vjPCaaTTfp9LiF1fzQC0ZXgAVf15k
-	 qtrbO2noyz63SBd6ac8jAAXEtRG+REetZb9shE/Rao350fJ7Gn1xioWkO9dkc5Tdme
-	 ny6yKNrp6P/U/FlEbLHi7fs/9VKlnRmhTsh434TZUUvHZCJpVuE9xaoq/vmyE0ggO8
-	 UOwGZiAb/KN+NgM/UFarIOYiABM08VpFWFWsfqFA2O1UFDK6UfoSxtwIrlkbymtXH8
-	 g3d3Bb8/Nc3f9I351Y5c3a/ivYHzpTvzm0IN8v8v0bsakvU2XFG5D/P3pX//TSTRt7
-	 /uhEDqXFA/6LA==
+	b=ZInq6htMt1Sg9vDmkZ4x5ZgoC7Ps6pbX2ThlyEuyLSPfYz5hWkmy5PlY+az9BgcjQ
+	 ztO+Gtu9RAE7W0MxWsxfs6p2+6C7Bf8KvuDuIrZRcuPgZi871IMzYh2TBV+8fyaPB8
+	 iKPsCoBr5fTRoqBJpo5r4g/k7c7MCqq4Q5T+UcNIATwZeTnsLwuZAIePzbmvVJtoAv
+	 W4nya80THcHnjObOj9aJDA0vdbzpYI3yiaKqedKAQ3Z/96f1p2rlXQvn0C8F+3qs2b
+	 KRBHR13ELDtXPQT0y81IPfc1ggZyGO8pbnFAK0UZK5wEWNKxjwiQIDzKy8jtEXLFn9
+	 X4rFsokcmY2NA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hersen Wu <hersenxs.wu@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
+Cc: Alex Hung <alex.hung@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
 	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	alex.hung@amd.com,
-	hamza.mahfooz@amd.com,
-	roman.li@amd.com,
-	mario.limonciello@amd.com,
-	Wayne.Lin@amd.com,
+	wenjing.liu@amd.com,
+	aurabindo.pillai@amd.com,
+	zhikai.zhai@amd.com,
+	ivlipski@amd.com,
+	michael.strauss@amd.com,
+	sungjoon.kim@amd.com,
+	cruise.hung@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 09/83] drm/amd/display: Stop amdgpu_dm initialize when stream nums greater than 6
-Date: Wed, 31 Jul 2024 20:17:24 -0400
-Message-ID: <20240801002107.3934037-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 10/83] drm/amd/display: Check index for aux_rd_interval before using
+Date: Wed, 31 Jul 2024 20:17:25 -0400
+Message-ID: <20240801002107.3934037-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -80,43 +83,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 84723eb6068c50610c5c0893980d230d7afa2105 ]
+[ Upstream commit 9ba2ea6337b4f159aecb177555a6a81da92d302e ]
 
-[Why]
-Coverity reports OVERRUN warning. Should abort amdgpu_dm
-initialize.
+aux_rd_interval has size of 7 and should be checked.
 
-[How]
-Return failure to amdgpu_dm_init.
+This fixes 3 OVERRUN and 1 INTEGER_OVERFLOW issues reported by Coverity.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/link/protocols/link_dp_training.c  | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 7fa95a81b69bd..5eef17f092ceb 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4443,7 +4443,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+index 16a62e0187122..9d1adfc09fb2a 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+@@ -914,10 +914,10 @@ static enum dc_status configure_lttpr_mode_non_transparent(
+ 			/* Driver does not need to train the first hop. Skip DPCD read and clear
+ 			 * AUX_RD_INTERVAL for DPTX-to-DPIA hop.
+ 			 */
+-			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA)
++			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA && repeater_cnt > 0 && repeater_cnt < MAX_REPEATER_CNT)
+ 				link->dpcd_caps.lttpr_caps.aux_rd_interval[--repeater_cnt] = 0;
  
- 	/* There is one primary plane per CRTC */
- 	primary_planes = dm->dc->caps.max_streams;
--	ASSERT(primary_planes <= AMDGPU_MAX_PLANES);
-+	if (primary_planes > AMDGPU_MAX_PLANES) {
-+		DRM_ERROR("DM: Plane nums out of 6 planes\n");
-+		return -EINVAL;
-+	}
- 
- 	/*
- 	 * Initialize primary planes, implicit planes for legacy IOCTLS.
+-			for (repeater_id = repeater_cnt; repeater_id > 0; repeater_id--) {
++			for (repeater_id = repeater_cnt; repeater_id > 0 && repeater_id < MAX_REPEATER_CNT; repeater_id--) {
+ 				aux_interval_address = DP_TRAINING_AUX_RD_INTERVAL_PHY_REPEATER1 +
+ 						((DP_REPEATER_CONFIGURATION_AND_STATUS_SIZE) * (repeater_id - 1));
+ 				core_link_read_dpcd(
 -- 
 2.43.0
 
