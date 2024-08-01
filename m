@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-65165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146CB943F54
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:38:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9297E943FC1
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4806281092
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:38:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6E71B26D6C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DA21C10E3;
-	Thu,  1 Aug 2024 00:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8A61C0DFA;
+	Thu,  1 Aug 2024 00:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0CQa+Zg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bwy5o7fg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF891C10DB;
-	Thu,  1 Aug 2024 00:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7932A7E9;
+	Thu,  1 Aug 2024 00:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472709; cv=none; b=aORiu0RwFq9Pa8iG/oEDQZitOBITSKYM2f2BJSgxVvjDNbZPOouxiMycrWRBzjafN9MJTzXjCdFCmafvZoW5VbDqJEaNVPM9SCcXS8ZlMsSiGT/MMBlsoPdhSLwVV51vvyV+6mfHDVA18pt8f2iPuMh7g5KhO4Zo1mLHoKqdYbg=
+	t=1722472713; cv=none; b=L2K4XaU15I24SFLTd0uT1VhGzLOdOzh9OqnRYEkz4XfIHIoJBHbMOxpTOJYxB1Xpz7sqJ/iAS6IIJ3Qqq/c3FIuchbCG6RGJCWxYsABcmMexjzdsGw92z+ufCJkuXELReP3ABjN7Wiz5Z9LqTwhoyvOYXEvlVDxwCuNrCvOIvF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472709; c=relaxed/simple;
-	bh=d0QJq9U3/wNyI9o1Og4zAxRhooA1NgbhTuVMJq66esY=;
+	s=arc-20240116; t=1722472713; c=relaxed/simple;
+	bh=NbqnkNm54YARazMoAHscVDuOCUJdGW2n3rExvuwRPpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nc6sqgpppdEN3xx+ahQiIs95dDbtbIhz1F5wabpIH8Sv6rVcVC3MRW2yZt2lLrRKr5lYXZDRgPfHE2LIv4I/I4FPd7e/1RwKyWpP338bQ7seDEqnz/HX3i3Q9YVMyZSPETgjGqd2zCfIjO4v2JV3evflp8Qi3tvKdHqQkZRD6EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0CQa+Zg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4E5C116B1;
-	Thu,  1 Aug 2024 00:38:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EfqmIJJxuYMEqKdXG0V7b7P1veeihwlae+Ut0mEPu09dyxQdtIo5QWCsQdqPLv2Mt7BYkoj/eGmlM9bzyC3XLdjpJcBHeOzwmsXFIFh7LQg3se8sHhX7nmMKifrxk0DM0ttnOB8V7tFokaYSFm1ga2vqdBD825Exr89HY3UH7dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bwy5o7fg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8EBC116B1;
+	Thu,  1 Aug 2024 00:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472708;
-	bh=d0QJq9U3/wNyI9o1Og4zAxRhooA1NgbhTuVMJq66esY=;
+	s=k20201202; t=1722472713;
+	bh=NbqnkNm54YARazMoAHscVDuOCUJdGW2n3rExvuwRPpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0CQa+Zg9sFdSJwOQUK8f1lXz0og9QEbOtoPTlMyK1pFGHI1ag+CDo65J1XZuoH8N
-	 WsKusomUsK0136wPP9Jm8k57RXq0WY9WsYGy03dmatlonlWGDEDyP7nsrZi74rGOYa
-	 pwbr+MYdWgRj4S+odWKgO3k0rxEL133JAp6M8RxGqLg0kLtVJcU88w1P3MTEZyXb3j
-	 7J2LvGs5X8qXUbEtzTxQO3BQVMT99mT++R87gcwZuRKIfNaW1bd+6qwNsi/nFc2jXN
-	 vNylCny5dT+uXCltAyJt9Tyh0cU1gmw4dWx8TheCXSQSAqFn+2Es+O3yBdY/QHqifp
-	 eIcxsyh/v4c6Q==
+	b=Bwy5o7fgJZbuSM6MAhlcqQrqGL+XpFQyn7M4N43uRW25KcfeKnDJ7uA0UQkPOr8DC
+	 oIDFHobQrxe1CGlsm4yDl6hLt8pPOCxz2uluYeC7af9uDEapKi7IIV76JcPjk3Y6o7
+	 01vjb+BONB6dlep83L3lJBIg7OMNO7FJWLgSYLo+cyetCO8qX6WJoK15/QykynOphj
+	 bzYxPMU86vBXplgtnm1gKyBjDmT82bGP7InC5UOA++1FjDbfvk/W3RXRtzIVhzVXlm
+	 gK3hASo1V1OKEh5ompV3CV6yr0aZxaNavKIBQruzVnxxO5xiFgDTU144ocK/DNmBE2
+	 tbDELVB46Tazw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
+Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jack@suse.com
-Subject: [PATCH AUTOSEL 5.10 28/38] udf: Avoid excessive partition lengths
-Date: Wed, 31 Jul 2024 20:35:34 -0400
-Message-ID: <20240801003643.3938534-28-sashal@kernel.org>
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alexghiti@rivosinc.com,
+	peterlin@andestech.com,
+	akpm@linux-foundation.org,
+	christophe.leroy@csgroup.eu,
+	suagrfillet@gmail.com,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 29/38] riscv: mm: Take memory hotplug read-lock during kernel page table dump
+Date: Wed, 31 Jul 2024 20:35:35 -0400
+Message-ID: <20240801003643.3938534-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
 References: <20240801003643.3938534-1-sashal@kernel.org>
@@ -59,66 +70,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Jan Kara <jack@suse.cz>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
+[ Upstream commit 37992b7f1097ba79ca75ba5a26ddcf0f54f91a08 ]
 
-Avoid mounting filesystems where the partition would overflow the
-32-bits used for block number. Also refuse to mount filesystems where
-the partition length is so large we cannot safely index bits in a
-block bitmap.
+During memory hot remove, the ptdump functionality can end up touching
+stale data. Avoid any potential crashes (or worse), by holding the
+memory hotplug read-lock while traversing the page table.
 
-Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
-Signed-off-by: Jan Kara <jack@suse.cz>
+This change is analogous to arm64's commit bf2b59f60ee1 ("arm64/mm:
+Hold memory hotplug lock while walking for kernel page table dump").
+
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20240605114100.315918-8-bjorn@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/riscv/mm/ptdump.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index 4af9ce34ee804..d5da1bce82731 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1075,12 +1075,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
- 	struct udf_part_map *map;
- 	struct udf_sb_info *sbi = UDF_SB(sb);
- 	struct partitionHeaderDesc *phd;
-+	u32 sum;
- 	int err;
+diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
+index ace74dec7492c..b5a8c7c20d120 100644
+--- a/arch/riscv/mm/ptdump.c
++++ b/arch/riscv/mm/ptdump.c
+@@ -6,6 +6,7 @@
+ #include <linux/efi.h>
+ #include <linux/init.h>
+ #include <linux/debugfs.h>
++#include <linux/memory_hotplug.h>
+ #include <linux/seq_file.h>
+ #include <linux/ptdump.h>
  
- 	map = &sbi->s_partmaps[p_index];
+@@ -324,7 +325,9 @@ void ptdump_check_wx(void)
  
- 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
- 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
-+	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
-+			       &sum)) {
-+		udf_err(sb, "Partition %d has invalid location %u + %u\n",
-+			p_index, map->s_partition_root, map->s_partition_len);
-+		return -EFSCORRUPTED;
-+	}
+ static int ptdump_show(struct seq_file *m, void *v)
+ {
++	get_online_mems();
+ 	ptdump_walk(m, m->private);
++	put_online_mems();
  
- 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
- 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
-@@ -1136,6 +1143,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
- 		bitmap->s_extPosition = le32_to_cpu(
- 				phd->unallocSpaceBitmap.extPosition);
- 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
-+		/* Check whether math over bitmap won't overflow. */
-+		if (check_add_overflow(map->s_partition_len,
-+				       sizeof(struct spaceBitmapDesc) << 3,
-+				       &sum)) {
-+			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
-+				map->s_partition_len);
-+			return -EFSCORRUPTED;
-+		}
- 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
- 			  p_index, bitmap->s_extPosition);
- 	}
+ 	return 0;
+ }
 -- 
 2.43.0
 
