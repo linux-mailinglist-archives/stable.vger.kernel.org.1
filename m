@@ -1,432 +1,188 @@
-Return-Path: <stable+bounces-65245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396AF944E82
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 16:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE00944EF4
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 17:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3764D1C21F0C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 14:52:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1365E1F23843
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 15:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F741A99C5;
-	Thu,  1 Aug 2024 14:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E36113BC2F;
+	Thu,  1 Aug 2024 15:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b="g+pomVEO"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b="juBQ5Auu"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43AD1A57D4;
-	Thu,  1 Aug 2024 14:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B41B1369AE
+	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 15:17:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722523937; cv=none; b=H//THb1kY6NCN2rf7igNqaLo6T8U22kb/oelzXSrqX4WgmvfuzS0msqQfEVgW/cbG9qj+YEGB4R564VNSwrpVZAYZ8mzSFEaLC+jwQwMlTNuomQl6BeJ7bAKSuWr3bSDMIFW/ebPJyyezq+fuZEg1kYlXeposoNo0o8YB9jN6HI=
+	t=1722525479; cv=none; b=jePTm4honWmvD2X5DVbH+DOb8s5onx4jXDKSuxUqxSeSVaPM2XZZ2mKS4QbCxBFeqcu5TdLcddDqJUonquxvLzYARq/44ZZnT+W5jU0YDORCOadDiO3NmPlzFSe8k3WBdsMVVy0IbZwzYUyE+GiH00Zf+2xp0fiQ0MbdjncMbPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722523937; c=relaxed/simple;
-	bh=Sx4LnAokAVGxFMDmzqEOYf2mouairaMnqeQ+nlwUmBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TrpNVDO5OdEHomDnzvcUmlvBkImzLxkQogVTg0CZPDMb1YxLRc8ufUhKgkXV2KXANGmgvl8bB72R8/y11DeNhOdwc1HNLVxfkA7DA5/RNOh0M1CTuDX45mOTSNN6n3Ca/FxTdQYpLJrUmpoLug9HjZG/4ak0OPlkwlXf2Z9Qb+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b=g+pomVEO; arc=none smtp.client-ip=212.227.17.22
+	s=arc-20240116; t=1722525479; c=relaxed/simple;
+	bh=BGVJPebnq8UwEOe9CaxzMtb96nncel6ZuVxq0Oxfjdk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HPwgq7dO55fD4x2Kq2r2dcxWuO1grAfQoV8lr1CwQ13WconBFGcr5Mkt0ksQJwEPCe/hwzPyk6fqsnfQh41C/Kib86d4K7m0e3Azrdj59AHKsbTGq8g2y+akpuDzLLqcgnICF6jFmRk9s6jqginRjy9ipdO0IFDZBebHobkmuc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b=juBQ5Auu; arc=none smtp.client-ip=212.227.15.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1722523909; x=1723128709; i=s.l-h@gmx.de;
-	bh=sZjAK1kGV4/ZQxNAwHNKAASAXTed3HSFE5bcvquk0W4=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=g+pomVEOgYEQ/fX5mmEvYi37IQee/4pt1OYCmQfyZNfmICWIu8HYsspM7Xes8mGr
-	 POkPhhKz9FaISQxH9krlb7HXXTPF2qdar8+ozhUYlNqWLKaThHEIYRS+vhhY5kaWl
-	 yv2jXOvORFftD9/MnSu7vRDVeCkxbPr7mNE16pL6F9dBwyvHDywcTkJnV2AWOIde9
-	 tMzurTH8+8LVpqNSj6UuAZiP9i8ppHbtkZ93pxwrSnOdyDKQgRH4Wqtccx3IOHP78
-	 OjOpa96bCnxU29/7Kxo0Tein1PGPqL6Ihw88iHII0S9sAAAkh3QoFvZAAksxHhIbV
-	 odhA9Ik4VLxCu4koXg==
+	s=s31663417; t=1722525455; x=1723130255; i=friedrich.vock@gmx.de;
+	bh=BGVJPebnq8UwEOe9CaxzMtb96nncel6ZuVxq0Oxfjdk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=juBQ5Auu6bzKuxOBAIAb/9o94BimCz45q2Eq19N1D6C7i1MWXng30D0BRKQ2xwXT
+	 3R7bn/pDBhc+Xct/0SUyfO8+FuoxIFeUWeTOM/E5PH3XxYRnGL6HWBYVpazf+yYo/
+	 wUVojFW+ZBpe+v+dL8sAv2kZRs7f4xVtZCSXixJLqvTchY8S4QUQW2Ay2hmv6m6ST
+	 RrU1dfEkEXYAk8PhDMMe9PFctxc9goy0I7W5Qxrk1lnTay5bPHarfgKbtcwRCuUEf
+	 cHKd5w91wx1Vgivw6/fXYamGTdKs8Pf+2bXXd8UGmxVbyJILp1bfLJCQdo5fgSuAC
+	 yt4lQ0lGj7EyYmSAng==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mir ([94.31.83.155]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M59C8-1sadcG3Oyq-00DEBy; Thu, 01
- Aug 2024 16:51:48 +0200
-Date: Thu, 1 Aug 2024 16:51:46 +0200
-From: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, Zheng Yejian
- <zhengyejian1@huawei.com>, Sean Young <sean@mess.org>, Hans Verkuil
- <hverkuil-cisco@xs4all.nl>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.10 288/809] media: dvb-usb: Fix unexpected infinite
- loop in dvb_usb_read_remote_control()
-Message-ID: <20240801165146.38991f60@mir>
-In-Reply-To: <20240730151735.968317438@linuxfoundation.org>
-References: <20240730151724.637682316@linuxfoundation.org>
-	<20240730151735.968317438@linuxfoundation.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Received: from [192.168.177.3] ([213.152.114.245]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MFsUv-1sTCRU1e6p-008uFA; Thu, 01
+ Aug 2024 17:17:35 +0200
+Message-ID: <641ce39c-a6a6-4448-bb2a-9c12d2873c1c@gmx.de>
+Date: Thu, 1 Aug 2024 17:17:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] drm/amdgpu: Forward soft recovery errors to userspace
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Joshua Ashton <joshua@froggi.es>, amd-gfx@lists.freedesktop.org,
+ "Olsak, Marek" <Marek.Olsak@amd.com>
+Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+ =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>,
+ stable@vger.kernel.org
+References: <20240307190447.33423-1-joshua@froggi.es>
+ <d9632885-35da-4e4a-b952-2b6a0c38c35b@amd.com>
+Content-Language: en-US
+From: Friedrich Vock <friedrich.vock@gmx.de>
+Autocrypt: addr=friedrich.vock@gmx.de; keydata=
+ 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
+ f7+xmX0X3AMtWz/15Y+7cPO2
+In-Reply-To: <d9632885-35da-4e4a-b952-2b6a0c38c35b@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6y+TVMDKWnyXo7sJWyCKe3sH4G/iapGv9ps9hTyfDBoL6oqJAZz
- ciBTQUfG2fVpkjqSiCf+frWYA5SDhy1Uox4ITQSAtV/OnSWO6GFhkb+D7oAvkA4SbB40Dg8
- VFDVjexeUWEYkAdNEZlY5v+cBpwxcIXffEx9IcwJn0w+hU63Xr83gxZ/vCwDxmNwpYtmD/U
- uB3fwju21+Bo/iDHMV0RA==
+X-Provags-ID: V03:K1:nTvKfMWnEvLQDe4yB1AZcdH5YcD3YIM3gAFv9uO57UybLg2FahP
+ 5NyA8tkBsks/haeG+uXfbz4UDtJzWThrclSG1NEgjF4q02xkyf2NEj+2Iih9UbqviHatM3x
+ bJLMwx9tcF7hIfFPVPzTBJ8GMih47FFQDjcgsZ4eeppwLDwQABys8FzhV0LyQarVvWOzsgw
+ Q4VMOcu1avIIJdsY/PDsw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:W4ijU84EKZk=;CqkFqytxP7qM7kLUTsdkZfAWi0S
- 117zJDBzCqhse+Ov023B7zFj/O+jCLN0Ejixzdm3i+ZCUOjTMCHFViIDqwUjlb5nD6M6QEuk2
- wyrjVz4XK3Q4E/tOibe12r1Lh6RqGeT6E0eouGaL55PFdGXOBjc2a2DMjSsnPx2EnSGNoJ/JL
- lOYz7SFaTqofO7SFZRacv+ii2OXj+ROtA2wAz1HJGdGR3rZoPANZznBjiOYZb9d2LyE+AaBOg
- x7ySOjsZKynZqbOsc11r2Mt1DueDwBtlBjgW7FHqKgo3E5DgewNXAjdGwnIWfCOVHnGICsczi
- QnXwtFu4e2jynwTiXpH4kE1k/t1h06mBTVcouL46sSqEMnEc9grZMM7VlcZnyaN4EYezWlBD7
- R3KYXzzgjB69B37pTrfn1oKOBic2Y9ix8oRbbu4SiR9f0DgEODtnIMv1WkJ2IQiFGLnzDFw8B
- TwFX1ltcyOO+GRzZtW5gNgpGNkJtpjNahSmOqYOSKH+EAjteBv9kPjA1bWhf3d9T9+pAl80LW
- cl3svGKUfDurWMj1LIx7Br19/vxFraryT6LPCvakzn3kFH4lU0jssMddzLR36fdDCofLMh9/2
- RL2vpFggWf1058en3kJqvK8xfwG0SvYNRDzW3W3k+z99W2ajGVDNiFctpqJdjmio3pgbenkPz
- dkdfP8xj64JGFdy4JPtrCaZC0+Jn3JBOPrFHlMhHgj0AENbTfchFqV3bOwuORPtfNOalMDfft
- ZVjqkiCyQcxUoiT6K0ZdFY+LAaHA8S5ZZ4hMqWLfA4Yp1KKRJM4yt1XXKXYH+ZS1ozIO02SdK
- z7I56q2goaa5BzYyphVgOk3g==
+UI-OutboundReport: notjunk:1;M01:P0:jmEL+whHZxY=;OL0ECRSvzzyzvKprZ7tBVwuh9h0
+ abR6gk4L9IvBSyL3JS3h4972xHcH4x0UksA+T+jXZeo/BGr9/6T3zYAKanWsqjy0ls310XkqZ
+ fg6S/ACHBHFy3mFFnvdwZ1/6appm5ZmshUM7JjaogSbLxY1LKUb9dMQH4fQBvQTP5w8w6UCq+
+ E3sFUjvkrjrJHZ5yEb6yBMqWZJvrWEsa0F4IMru5MBc8GvSP5Iy6bAFpr2SrUZ7l6SxSadXuK
+ RhGUZH+stfEis4d+MEV9HjM3upOF4mlKVxY87ER+wNhiG1KkD2h2MPhU1LAl0KyeapKtTWDOl
+ Q8n/ZytzWVnHk+IEdcqWdhZ70PNybJUM9KCMDgO4602xV9uq6fO6V7OylKR26XaGJADJOgLgF
+ xpw4ntYmRaTfvAzqVQVtU1FSSRkHGnUVfwHjgzmVngCnWlS9n8qyC9G9rbdrthxBAcrimoiwF
+ AWQS3VwLoNKxnxJFvITFPNtiT1360PThZgTdamziaBebtVKZh0uhE7K6N230wNlRY4TjoiymF
+ NM82sBpArqucgo6YMniex0hXrKX2Fct+rV40vRL3N9wvETw4fjzLkdwVer4w9FeLa5bQLOTlT
+ BtCtQ5YHtTRcYXPduScHp9WeE2mntkEyTc1rDgVJpb4WZKWr5yCC3E4DwiWYRT5TxM3xXtmd5
+ egoDvKI8nEM2qASfYGddvqOheI4qKU9b2Uce03RhNG7IWB+aRCOG323v/bt7kyxvQ0YcxySXa
+ Yn7ZOueG2XQ28gLwb2nuSaagv27i+FMrGhcN+70QF7o6b4ge1hu7D/JeKXR/5EtDnCP6Hz/h3
+ 8oQFWGUCTYKktGI5Li4Ltt7lYVABPIvxR0L1rC5gTraVo=
 
-Hi
+Hi,
 
-On 2024-07-30, Greg Kroah-Hartman wrote:
-> 6.10-stable review patch.  If anyone has any objections, please let me k=
-now.
+I happened to come across an issue just now again where soft recovery
+fails to get reported to userspace properly, causing apps to submit
+hanging work in a loop (which ended up hanging the entire machine) - it
+seems like this patch never made it into amd-staging-drm-next. Given
+that it has a Reviewed-by and everything, was this just an oversight or
+are there some blockers to pushing it that I missed?
+
+If not, I'd be grateful if the patch could get merged.
+
+Thanks,
+Friedrich
+
+On 08.03.24 09:33, Christian K=C3=B6nig wrote:
+> Am 07.03.24 um 20:04 schrieb Joshua Ashton:
+>> As we discussed before[1], soft recovery should be
+>> forwarded to userspace, or we can get into a really
+>> bad state where apps will keep submitting hanging
+>> command buffers cascading us to a hard reset.
 >
-> ------------------
+> Marek you are in favor of this like forever.=C2=A0 So I would like to re=
+quest
+> you to put your Reviewed-by on it and I will just push it into our
+> internal kernel branch.
 >
-> From: Zheng Yejian <zhengyejian1@huawei.com>
+> Regards,
+> Christian.
 >
-> [ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
+>>
+>> 1:
+>> https://lore.kernel.org/all/bf23d5ed-9a6b-43e7-84ee-8cbfd0d60f18@froggi=
+.es/
+>> Signed-off-by: Joshua Ashton <joshua@froggi.es>
+>>
+>> Cc: Friedrich Vock <friedrich.vock@gmx.de>
+>> Cc: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+>> Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
+>> Cc: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
+>> Cc: stable@vger.kernel.org
+>> ---
+>> =C2=A0 drivers/gpu/drm/amd/amdgpu/amdgpu_job.c | 3 +--
+>> =C2=A0 1 file changed, 1 insertion(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+>> index 4b3000c21ef2..aebf59855e9f 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_job.c
+>> @@ -262,9 +262,8 @@ amdgpu_job_prepare_job(struct drm_sched_job
+>> *sched_job,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct dma_fence *fence =3D NULL;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int r;
+>> -=C2=A0=C2=A0=C2=A0 /* Ignore soft recovered fences here */
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 r =3D drm_sched_entity_error(s_entity);
+>> -=C2=A0=C2=A0=C2=A0 if (r && r !=3D -ENODATA)
+>> +=C2=A0=C2=A0=C2=A0 if (r)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto error;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!fence && job->gang_submit)
 >
-> Infinite log printing occurs during fuzz test:
->
->   rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
->   ...
->   dvb-usb: schedule remote query interval to 100 msecs.
->   dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialized =
-...
->   dvb-usb: bulk message failed: -22 (1/0)
->   dvb-usb: bulk message failed: -22 (1/0)
->   dvb-usb: bulk message failed: -22 (1/0)
->   ...
->   dvb-usb: bulk message failed: -22 (1/0)
->
-> Looking into the codes, there is a loop in dvb_usb_read_remote_control()=
-,
-> that is in rc_core_dvb_usb_remote_init() create a work that will call
-> dvb_usb_read_remote_control(), and this work will reschedule itself at
-> 'rc_interval' intervals to recursively call dvb_usb_read_remote_control(=
-),
-> see following code snippet:
-[...]
-
-This patch, as part of v6.10.3-rc3 breaks my TeVii s480 dual DVB-S2
-card, reverting just this patch from v6.10-rc3 fixes the situation
-again (a co-installed Microsoft Xbox One Digital TV DVB-T2 Tuner
-keeps working).
-
-broken, v6.10.3-rc3:
-
-$ dmesg | grep -i -e dvb -e dw21 -e usb\ 4
-[    0.999122] usb 1-1: new high-speed USB device number 2 using ehci-pci
-[    1.023123] usb 4-1: new high-speed USB device number 2 using ehci-pci
-[    1.130247] usb 1-1: New USB device found, idVendor=3D9022, idProduct=
-=3Dd482, bcdDevice=3D 0.01
-[    1.130257] usb 1-1: New USB device strings: Mfr=3D0, Product=3D0, Seri=
-alNumber=3D0
-[    1.152323] usb 4-1: New USB device found, idVendor=3D9022, idProduct=
-=3Dd481, bcdDevice=3D 0.01
-[    1.152329] usb 4-1: New USB device strings: Mfr=3D0, Product=3D0, Seri=
-alNumber=3D0
-[    6.701033] dvb-usb: found a 'TeVii S480.2 USB' in cold state, will try=
- to load a firmware
-[    6.701178] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    6.701179] dw2102: start downloading DW210X firmware
-[    6.703715] dvb-usb: found a 'Microsoft Xbox One Digital TV Tuner' in c=
-old state, will try to load a firmware
-[    6.703974] dvb-usb: downloading firmware from file 'dvb-usb-dib0700-1.=
-20.fw'
-[    6.756432] usb 1-1: USB disconnect, device number 2
-[    6.862119] dvb-usb: found a 'TeVii S480.2 USB' in warm state.
-[    6.862194] dvb-usb: TeVii S480.2 USB error while loading driver (-22)
-[    6.862209] dvb-usb: found a 'TeVii S480.1 USB' in cold state, will try=
- to load a firmware
-[    6.862244] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    6.862245] dw2102: start downloading DW210X firmware
-[    6.914811] usb 4-1: USB disconnect, device number 2
-[    7.014131] dvb-usb: found a 'TeVii S480.1 USB' in warm state.
-[    7.014487] dvb-usb: TeVii S480.1 USB error while loading driver (-22)
-[    7.014538] usbcore: registered new interface driver dw2102
-[    7.278244] dvb-usb: found a 'Microsoft Xbox One Digital TV Tuner' in w=
-arm state.
-[    7.278403] dvb-usb: will pass the complete MPEG2 transport stream to t=
-he software demuxer.
-[    7.278915] dvbdev: DVB: registering new adapter (Microsoft Xbox One Di=
-gital TV Tuner)
-[    7.279137] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' r=
-egistered.
-[    7.460377] usb 6-5: DVB: registering adapter 0 frontend 0 (Panasonic M=
-N88472)...
-[    7.460389] dvbdev: dvb_create_media_entity: media entity 'Panasonic MN=
-88472' registered.
-[    7.460822] dvb-usb: Microsoft Xbox One Digital TV Tuner successfully i=
-nitialized and connected.
-[    7.460998] usbcore: registered new interface driver dvb_usb_dib0700
-[    8.496278] usb 1-1: new high-speed USB device number 3 using ehci-pci
-[    8.625238] usb 1-1: config 1 interface 0 altsetting 0 bulk endpoint 0x=
-81 has invalid maxpacket 2
-[    8.626608] usb 1-1: New USB device found, idVendor=3D9022, idProduct=
-=3Dd660, bcdDevice=3D 0.00
-[    8.626613] usb 1-1: New USB device strings: Mfr=3D1, Product=3D2, Seri=
-alNumber=3D0
-[    8.626616] usb 1-1: Product: DVBS2BOX
-[    8.626618] usb 1-1: Manufacturer: TBS-Tech
-[    8.627027] dvb-usb: found a 'TeVii S660 USB' in cold state, will try t=
-o load a firmware
-[    8.627079] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    8.627081] dw2102: start downloading DW210X firmware
-[    8.655186] usb 4-1: new high-speed USB device number 3 using ehci-pci
-[    8.781321] dvb-usb: found a 'TeVii S660 USB' in warm state.
-[    8.781775] dvb-usb: TeVii S660 USB error while loading driver (-22)
-[    8.784340] usb 4-1: config 1 interface 0 altsetting 0 bulk endpoint 0x=
-81 has invalid maxpacket 2
-[    8.785705] usb 4-1: New USB device found, idVendor=3D9022, idProduct=
-=3Dd660, bcdDevice=3D 0.00
-[    8.785714] usb 4-1: New USB device strings: Mfr=3D1, Product=3D2, Seri=
-alNumber=3D0
-[    8.785718] usb 4-1: Product: DVBS2BOX
-[    8.785721] usb 4-1: Manufacturer: TBS-Tech
-[    8.786247] dvb-usb: found a 'TeVii S660 USB' in cold state, will try t=
-o load a firmware
-[    8.786299] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    8.786301] dw2102: start downloading DW210X firmware
-[    8.941215] dvb-usb: found a 'TeVii S660 USB' in warm state.
-[    8.941532] dvb-usb: TeVii S660 USB error while loading driver (-22)
-[   16.107993] mn88472 12-0018: downloading firmware from file 'dvb-demod-=
-mn88472-02.fw'
-
-working, v6.10.3-rc3 with this patch reverted:
-
-$ dmesg | grep -i -e dvb -e dw21 -e usb\ 4
-[    1.136231] usb 1-1: new high-speed USB device number 2 using ehci-pci
-[    1.161156] usb 4-1: new high-speed USB device number 2 using ehci-pci
-[    1.267579] usb 1-1: New USB device found, idVendor=3D9022, idProduct=
-=3Dd482, bcdDevice=3D 0.01
-[    1.267588] usb 1-1: New USB device strings: Mfr=3D0, Product=3D0, Seri=
-alNumber=3D0
-[    1.291329] usb 4-1: New USB device found, idVendor=3D9022, idProduct=
-=3Dd481, bcdDevice=3D 0.01
-[    1.291338] usb 4-1: New USB device strings: Mfr=3D0, Product=3D0, Seri=
-alNumber=3D0
-[    3.135217] dvb-usb: found a 'TeVii S480.2 USB' in cold state, will try=
- to load a firmware
-[    3.135430] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    3.135432] dw2102: start downloading DW210X firmware
-[    3.166588] dvb-usb: found a 'Microsoft Xbox One Digital TV Tuner' in c=
-old state, will try to load a firmware
-[    3.167079] dvb-usb: downloading firmware from file 'dvb-usb-dib0700-1.=
-20.fw'
-[    3.188357] usb 1-1: USB disconnect, device number 2
-[    3.287145] dvb-usb: found a 'TeVii S480.2 USB' in warm state.
-[    3.287222] dvb-usb: will pass the complete MPEG2 transport stream to t=
-he software demuxer.
-[    3.287254] dvbdev: DVB: registering new adapter (TeVii S480.2 USB)
-[    3.287258] usb 1-1: media controller created
-[    3.287355] dvb-usb: MAC address: 01:01:01:01:01:01
-[    3.287499] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' r=
-egistered.
-[    3.290759] dvb-usb: no frontend was attached by 'TeVii S480.2 USB'
-[    3.315441] rc rc0: lirc_dev: driver dw2102 registered at minor =3D 0, =
-scancode receiver, no transmitter
-[    3.315640] dvb-usb: schedule remote query interval to 150 msecs.
-[    3.315646] dvb-usb: TeVii S480.2 USB successfully initialized and conn=
-ected.
-[    3.315730] dvb-usb: found a 'TeVii S480.1 USB' in cold state, will try=
- to load a firmware
-[    3.315786] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    3.315790] dw2102: start downloading DW210X firmware
-[    3.340783] dvb-usb: TeVii S480.2 USB successfully deinitialized and di=
-sconnected.
-[    3.369557] usb 4-1: USB disconnect, device number 2
-[    3.470172] dvb-usb: found a 'TeVii S480.1 USB' in warm state.
-[    3.470320] dvb-usb: will pass the complete MPEG2 transport stream to t=
-he software demuxer.
-[    3.470371] dvbdev: DVB: registering new adapter (TeVii S480.1 USB)
-[    3.470377] usb 4-1: media controller created
-[    3.470516] dvb-usb: MAC address: a1:a1:a1:a1:a1:a1
-[    3.470724] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' r=
-egistered.
-[    3.472540] dvb-usb: no frontend was attached by 'TeVii S480.1 USB'
-[    3.474008] rc rc1: lirc_dev: driver dw2102 registered at minor =3D 0, =
-scancode receiver, no transmitter
-[    3.474268] dvb-usb: schedule remote query interval to 150 msecs.
-[    3.474274] dvb-usb: TeVii S480.1 USB successfully initialized and conn=
-ected.
-[    3.474331] usbcore: registered new interface driver dw2102
-[    3.511730] dvb-usb: TeVii S480.1 USB successfully deinitialized and di=
-sconnected.
-[    3.743260] dvb-usb: found a 'Microsoft Xbox One Digital TV Tuner' in w=
-arm state.
-[    3.743496] dvb-usb: will pass the complete MPEG2 transport stream to t=
-he software demuxer.
-[    3.744132] dvbdev: DVB: registering new adapter (Microsoft Xbox One Di=
-gital TV Tuner)
-[    3.744363] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' r=
-egistered.
-[    3.924797] usb 6-5: DVB: registering adapter 0 frontend 0 (Panasonic M=
-N88472)...
-[    3.924805] dvbdev: dvb_create_media_entity: media entity 'Panasonic MN=
-88472' registered.
-[    3.925073] dvb-usb: Microsoft Xbox One Digital TV Tuner successfully i=
-nitialized and connected.
-[    3.925220] usbcore: registered new interface driver dvb_usb_dib0700
-[    4.928291] usb 1-1: new high-speed USB device number 3 using ehci-pci
-[    5.057227] usb 1-1: config 1 interface 0 altsetting 0 bulk endpoint 0x=
-81 has invalid maxpacket 2
-[    5.060100] usb 1-1: New USB device found, idVendor=3D9022, idProduct=
-=3Dd660, bcdDevice=3D 0.00
-[    5.060106] usb 1-1: New USB device strings: Mfr=3D1, Product=3D2, Seri=
-alNumber=3D0
-[    5.060109] usb 1-1: Product: DVBS2BOX
-[    5.060112] usb 1-1: Manufacturer: TBS-Tech
-[    5.060517] dvb-usb: found a 'TeVii S660 USB' in cold state, will try t=
-o load a firmware
-[    5.060560] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    5.060562] dw2102: start downloading DW210X firmware
-[    5.105152] usb 4-1: new high-speed USB device number 3 using ehci-pci
-[    5.214345] dvb-usb: found a 'TeVii S660 USB' in warm state.
-[    5.214663] dvb-usb: will pass the complete MPEG2 transport stream to t=
-he software demuxer.
-[    5.215024] dvbdev: DVB: registering new adapter (TeVii S660 USB)
-[    5.215031] usb 1-1: media controller created
-[    5.234371] usb 4-1: config 1 interface 0 altsetting 0 bulk endpoint 0x=
-81 has invalid maxpacket 2
-[    5.235622] usb 4-1: New USB device found, idVendor=3D9022, idProduct=
-=3Dd660, bcdDevice=3D 0.00
-[    5.235632] usb 4-1: New USB device strings: Mfr=3D1, Product=3D2, Seri=
-alNumber=3D0
-[    5.235635] usb 4-1: Product: DVBS2BOX
-[    5.235638] usb 4-1: Manufacturer: TBS-Tech
-[    5.236096] dvb-usb: found a 'TeVii S660 USB' in cold state, will try t=
-o load a firmware
-[    5.236154] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
-[    5.236157] dw2102: start downloading DW210X firmware
-[    5.390220] dvb-usb: found a 'TeVii S660 USB' in warm state.
-[    5.390437] dvb-usb: will pass the complete MPEG2 transport stream to t=
-he software demuxer.
-[    5.390831] dvbdev: DVB: registering new adapter (TeVii S660 USB)
-[    5.390837] usb 4-1: media controller created
-[    5.457940] dvb-usb: MAC address: 00:18:bd:XX:XX:XX
-[    5.458189] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' r=
-egistered.
-[    5.559308] dw2102: Attached ds3000+ts2020!
-[    5.559318] usb 1-1: DVB: registering adapter 1 frontend 0 (Montage Tec=
-hnology DS3000)...
-[    5.559327] dvbdev: dvb_create_media_entity: media entity 'Montage Tech=
-nology DS3000' registered.
-[    5.560578] rc rc1: lirc_dev: driver dw2102 registered at minor =3D 1, =
-scancode receiver, no transmitter
-[    5.560745] dvb-usb: schedule remote query interval to 150 msecs.
-[    5.560748] dvb-usb: TeVii S660 USB successfully initialized and connec=
-ted.
-[    5.643009] dvb-usb: MAC address: 00:18:bd:XX:XX:XX
-[    5.643244] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' r=
-egistered.
-[    5.756627] dw2102: Attached ds3000+ts2020!
-[    5.756632] usb 4-1: DVB: registering adapter 2 frontend 0 (Montage Tec=
-hnology DS3000)...
-[    5.756641] dvbdev: dvb_create_media_entity: media entity 'Montage Tech=
-nology DS3000' registered.
-[    5.758025] rc rc2: lirc_dev: driver dw2102 registered at minor =3D 2, =
-scancode receiver, no transmitter
-[    5.758194] dvb-usb: schedule remote query interval to 150 msecs.
-[    5.758197] dvb-usb: TeVii S660 USB successfully initialized and connec=
-ted.
-[   12.578584] mn88472 12-0018: downloading firmware from file 'dvb-demod-=
-mn88472-02.fw'
-[   12.732107] ds3000_firmware_ondemand: Waiting for firmware upload (dvb-=
-fe-ds3000.fw)...
-[   13.338071] ds3000_firmware_ondemand: Waiting for firmware upload (dvb-=
-fe-ds3000.fw)...
-[   13.339290] ds3000_firmware_ondemand: Waiting for firmware upload (dvb-=
-fe-ds3000.fw)...
-[   13.970274] ds3000_firmware_ondemand: Waiting for firmware upload (dvb-=
-fe-ds3000.fw)...
-
-The https://www.linuxtv.org/wiki/index.php/TeVii_S480 is a PCIe card
-which combines a USB host controller with two onboard TeVii s660 USB
-DVB-S2 cards.
-
-07:00.0 USB controller [0c03]: MosChip Semiconductor Technology Ltd. MCS99=
-90 PCIe to 4-Port USB 2.0 Host Controller [9710:9990]
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device [a000:40=
-00]
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-07:00.1 USB controller [0c03]: MosChip Semiconductor Technology Ltd. MCS99=
-90 PCIe to 4-Port USB 2.0 Host Controller [9710:9990]
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device [a000:40=
-00]
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-07:00.2 USB controller [0c03]: MosChip Semiconductor Technology Ltd. MCS99=
-90 PCIe to 4-Port USB 2.0 Host Controller [9710:9990]
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device [a000:40=
-00]
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-07:00.3 USB controller [0c03]: MosChip Semiconductor Technology Ltd. MCS99=
-90 PCIe to 4-Port USB 2.0 Host Controller [9710:9990]
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device [a000:40=
-00]
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-07:00.4 USB controller [0c03]: MosChip Semiconductor Technology Ltd. MCS99=
-90 PCIe to 4-Port USB 2.0 Host Controller [9710:9990]
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device [a000:40=
-00]
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-07:00.5 USB controller [0c03]: MosChip Semiconductor Technology Ltd. MCS99=
-90 PCIe to 4-Port USB 2.0 Host Controller [9710:9990]
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device [a000:40=
-00]
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-07:00.6 USB controller [0c03]: MosChip Semiconductor Technology Ltd. MCS99=
-90 PCIe to 4-Port USB 2.0 Host Controller [9710:9990]
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device [a000:40=
-00]
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-07:00.7 USB controller [0c03]: MosChip Semiconductor Technology Ltd. MCS99=
-90 PCIe to 4-Port USB 2.0 Host Controller [9710:9990]
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device [a000:40=
-00]
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-
-:  Bus 001.Port 001: Dev 001, Class=3Droot_hub, Driver=3Dehci-pci/1p, 480M
-    |__ Port 001: Dev 003, If 0, Class=3DVendor Specific Class, Driver=3Dd=
-w2102, 480M
-/:  Bus 002.Port 001: Dev 001, Class=3Droot_hub, Driver=3Dehci-pci/1p, 480=
-M
-/:  Bus 003.Port 001: Dev 001, Class=3Droot_hub, Driver=3Dehci-pci/1p, 480=
-M
-/:  Bus 004.Port 001: Dev 001, Class=3Droot_hub, Driver=3Dehci-pci/1p, 480=
-M
-    |__ Port 001: Dev 003, If 0, Class=3DVendor Specific Class, Driver=3Dd=
-w2102, 480M
-
-Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 001 Device 003: ID 9022:d660 TeVii Technology Ltd. DVB-S2 S660
-Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 004 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-Bus 004 Device 003: ID 9022:d660 TeVii Technology Ltd. DVB-S2 S660
-
-Regards
-	Stefan Lippers-Hollmann
 
