@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-64906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433D2943C21
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:34:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DF6943C28
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7108C1C21C1C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:34:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B212EB26F17
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D751A4F11;
-	Thu,  1 Aug 2024 00:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75E11A4F34;
+	Thu,  1 Aug 2024 00:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/92wCo5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dPPE5x0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1607A14B94E;
-	Thu,  1 Aug 2024 00:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E111A4F2A;
+	Thu,  1 Aug 2024 00:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471388; cv=none; b=ZdkP9oi1+RF0FgJVFioRFKuoTBO9/7CZZpFmWPGOhgHDYLhcDC7M16EiwS3kSzrf6zwo6HE0RgbjGpDwwjlMjAVDBWzMziDo7CnTy7c1OwxANzAUP9PgbS7qUEgqW3wvoeF4+FX10b43rd2zykuPEYhZCunGjPKE5ubHCvqP3eo=
+	t=1722471389; cv=none; b=s0Zb9tOe49hMVvhaU4r+8R079dnQ9iheKrFnvUGlZD2dbaxLgR1nGw1OUTIIL5YT9DTF1y/tvOCWbhjC3rAUfl8NU5aVQWITp6908VhNhFUF7ZQZuYiZJyLtklUnDUpTU+IooSH2djilWfbvBAd+gdwohq9FS1sXNh0H5OyyD5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471388; c=relaxed/simple;
-	bh=GCYeZ+s1AD2VNXhrhF1gjDx7P1Cnb4MLBbCIKetoeSc=;
+	s=arc-20240116; t=1722471389; c=relaxed/simple;
+	bh=QLcTNm+RBtlSWiQhNrt10XbpFP9m/MvdWMz1GAJ+/ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VV1+Co/0AoXyfX4IYFIGD1uxC9SP48aFzWSAeQO6nLQSUZYS5xmGNDsIObWjJ0Kf/JSXsoWPBkKswMI8fFfzJ4YXYsEFPlwFiNSmWl3+NN2AZ1q48h0a0c8PyLmYG79QxU0XOoW01tzxdGCdcdYgEVrV6GVzUGpHwQrO+lteock=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/92wCo5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0386C116B1;
-	Thu,  1 Aug 2024 00:16:25 +0000 (UTC)
+	 MIME-Version; b=OFEJyNdeocEYVwhNBE8ieUzUEjTUPNdrIXUy7LqUJRily6/KIuzjQ7Fbyb50UmOJu2uKXmjQgbLz9PphZ8CxjIFAgA0V5A2jBxnM3X+s+X3pMH7YoCGoEBVFBCVJFuqrtVZ+eL2PZK0ePThWW9Pae2Rt/dPa+K0R/Ok2Oii01X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dPPE5x0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F31C116B1;
+	Thu,  1 Aug 2024 00:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471387;
-	bh=GCYeZ+s1AD2VNXhrhF1gjDx7P1Cnb4MLBbCIKetoeSc=;
+	s=k20201202; t=1722471389;
+	bh=QLcTNm+RBtlSWiQhNrt10XbpFP9m/MvdWMz1GAJ+/ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/92wCo5O4se7rhoPi3gvamZQnqfWzFWZhrFjSJk6cRnsULde1ZX7ckCWgdr3zfkk
-	 kAbmgx0WgKtnRozdbAlVZrOJPwDTGXM8Bd1Doa3m3+C51+oXDnpF51KC4uy5JhCVjp
-	 c+0Rqb0SpJIiornQWGbA1fd2sNEVq5tuLnC+yZXI75/C5JOdv40/89xTRmSnY0fQd0
-	 fEDcXMqzNadT18yB6g96hGpslFaQLKz7W0X7n3xJHv90KcoK+69kV35BnsG3RmPLCf
-	 tbY4H+iUgrxuWxIudTDf0oEo4DX8w/bM2d8boDHeR/uYXWrqqMDONDkMs5r72mo10O
-	 0/hn7luz0POTg==
+	b=dPPE5x0KclP6YB+czP4L/kJ/4gjUCkiJ17fPym51sR8en3EIhlHbpKIdtvr2/KOUQ
+	 cdNnnEdBdky2okMvFXYvqmOTrFLO+2OV3ZFWcodem3EuKNbOitYgu76MqszbvLUV/1
+	 n+xoPto+FLxivfjjLbBwWgVEHCBIO+MRkUvqoVxYtEt4qT8kOUOL8iDSFOBOeCFZlQ
+	 d6b8cetyfKA4vGhj94xjfXFZqiaaTHwJF/+2gEDa758DXuiMsCwS/fiEAXANteg326
+	 p+pzz1bTxzoKURndUR7FEHR/5WzoReoiesp7OIm+EF7Uf33zcfJTmASSWK44nEUQ24
+	 gPdikcT2oaw+w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Jens Axboe <axboe@r7625.kernel.dk>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 081/121] drm/amd/display: Skip wbscl_set_scaler_filter if filter is null
-Date: Wed, 31 Jul 2024 20:00:19 -0400
-Message-ID: <20240801000834.3930818-81-sashal@kernel.org>
+	asml.silence@gmail.com,
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 082/121] io_uring/io-wq: make io_wq_work flags atomic
+Date: Wed, 31 Jul 2024 20:00:20 -0400
+Message-ID: <20240801000834.3930818-82-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -74,39 +66,181 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Jens Axboe <axboe@r7625.kernel.dk>
 
-[ Upstream commit c4d31653c03b90e51515b1380115d1aedad925dd ]
+[ Upstream commit 3474d1b93f897ab33ce160e759afd47d5f412de4 ]
 
-Callers can pass null in filter (i.e. from returned from the function
-wbscl_get_filter_coeffs_16p) and a null check is added to ensure that is
-not the case.
+The work flags can be set/accessed from different tasks, both the
+originator of the request, and the io-wq workers. While modifications
+aren't concurrent, it still makes KMSAN unhappy. There's no real
+downside to just making the flag reading/manipulation use proper
+atomics here.
 
-This fixes 4 NULL_RETURNS issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/io_uring_types.h |  2 +-
+ io_uring/io-wq.c               | 19 ++++++++++---------
+ io_uring/io-wq.h               |  2 +-
+ io_uring/io_uring.c            | 12 ++++++------
+ 4 files changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-index 994fb732a7cb7..a0d437f0ce2ba 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-@@ -690,6 +690,9 @@ static void wbscl_set_scaler_filter(
- 	int pair;
- 	uint16_t odd_coef, even_coef;
+diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+index 7abdc09271245..abf5c6622af6d 100644
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -50,7 +50,7 @@ struct io_wq_work_list {
  
-+	if (!filter)
-+		return;
-+
- 	for (phase = 0; phase < (NUM_PHASES / 2 + 1); phase++) {
- 		for (pair = 0; pair < tap_pairs; pair++) {
- 			even_coef = filter[phase * taps + 2 * pair];
+ struct io_wq_work {
+ 	struct io_wq_work_node list;
+-	unsigned flags;
++	atomic_t flags;
+ 	/* place it here instead of io_kiocb as it fills padding and saves 4B */
+ 	int cancel_seq;
+ };
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 7d3316fe9bfc4..913c92249522e 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -159,7 +159,7 @@ static inline struct io_wq_acct *io_get_acct(struct io_wq *wq, bool bound)
+ static inline struct io_wq_acct *io_work_get_acct(struct io_wq *wq,
+ 						  struct io_wq_work *work)
+ {
+-	return io_get_acct(wq, !(work->flags & IO_WQ_WORK_UNBOUND));
++	return io_get_acct(wq, !(atomic_read(&work->flags) & IO_WQ_WORK_UNBOUND));
+ }
+ 
+ static inline struct io_wq_acct *io_wq_get_acct(struct io_worker *worker)
+@@ -451,7 +451,7 @@ static void __io_worker_idle(struct io_wq *wq, struct io_worker *worker)
+ 
+ static inline unsigned int io_get_work_hash(struct io_wq_work *work)
+ {
+-	return work->flags >> IO_WQ_HASH_SHIFT;
++	return atomic_read(&work->flags) >> IO_WQ_HASH_SHIFT;
+ }
+ 
+ static bool io_wait_on_hash(struct io_wq *wq, unsigned int hash)
+@@ -592,8 +592,9 @@ static void io_worker_handle_work(struct io_wq_acct *acct,
+ 
+ 			next_hashed = wq_next_work(work);
+ 
+-			if (unlikely(do_kill) && (work->flags & IO_WQ_WORK_UNBOUND))
+-				work->flags |= IO_WQ_WORK_CANCEL;
++			if (do_kill &&
++			    (atomic_read(&work->flags) & IO_WQ_WORK_UNBOUND))
++				atomic_or(IO_WQ_WORK_CANCEL, &work->flags);
+ 			wq->do_work(work);
+ 			io_assign_current_work(worker, NULL);
+ 
+@@ -891,7 +892,7 @@ static bool io_wq_worker_wake(struct io_worker *worker, void *data)
+ static void io_run_cancel(struct io_wq_work *work, struct io_wq *wq)
+ {
+ 	do {
+-		work->flags |= IO_WQ_WORK_CANCEL;
++		atomic_or(IO_WQ_WORK_CANCEL, &work->flags);
+ 		wq->do_work(work);
+ 		work = wq->free_work(work);
+ 	} while (work);
+@@ -926,7 +927,7 @@ static bool io_wq_work_match_item(struct io_wq_work *work, void *data)
+ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work)
+ {
+ 	struct io_wq_acct *acct = io_work_get_acct(wq, work);
+-	unsigned long work_flags = work->flags;
++	unsigned int work_flags = atomic_read(&work->flags);
+ 	struct io_cb_cancel_data match = {
+ 		.fn		= io_wq_work_match_item,
+ 		.data		= work,
+@@ -939,7 +940,7 @@ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work)
+ 	 * been marked as one that should not get executed, cancel it here.
+ 	 */
+ 	if (test_bit(IO_WQ_BIT_EXIT, &wq->state) ||
+-	    (work->flags & IO_WQ_WORK_CANCEL)) {
++	    (work_flags & IO_WQ_WORK_CANCEL)) {
+ 		io_run_cancel(work, wq);
+ 		return;
+ 	}
+@@ -982,7 +983,7 @@ void io_wq_hash_work(struct io_wq_work *work, void *val)
+ 	unsigned int bit;
+ 
+ 	bit = hash_ptr(val, IO_WQ_HASH_ORDER);
+-	work->flags |= (IO_WQ_WORK_HASHED | (bit << IO_WQ_HASH_SHIFT));
++	atomic_or(IO_WQ_WORK_HASHED | (bit << IO_WQ_HASH_SHIFT), &work->flags);
+ }
+ 
+ static bool __io_wq_worker_cancel(struct io_worker *worker,
+@@ -990,7 +991,7 @@ static bool __io_wq_worker_cancel(struct io_worker *worker,
+ 				  struct io_wq_work *work)
+ {
+ 	if (work && match->fn(work, match->data)) {
+-		work->flags |= IO_WQ_WORK_CANCEL;
++		atomic_or(IO_WQ_WORK_CANCEL, &work->flags);
+ 		__set_notify_signal(worker->task);
+ 		return true;
+ 	}
+diff --git a/io_uring/io-wq.h b/io_uring/io-wq.h
+index 2b2a6406dd8ee..b3b004a7b6252 100644
+--- a/io_uring/io-wq.h
++++ b/io_uring/io-wq.h
+@@ -56,7 +56,7 @@ bool io_wq_worker_stopped(void);
+ 
+ static inline bool io_wq_is_hashed(struct io_wq_work *work)
+ {
+-	return work->flags & IO_WQ_WORK_HASHED;
++	return atomic_read(&work->flags) & IO_WQ_WORK_HASHED;
+ }
+ 
+ typedef bool (work_cancel_fn)(struct io_wq_work *, void *);
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index c326e2127dd4d..846c1cecdb0aa 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -461,9 +461,9 @@ static void io_prep_async_work(struct io_kiocb *req)
+ 	}
+ 
+ 	req->work.list.next = NULL;
+-	req->work.flags = 0;
++	atomic_set(&req->work.flags, 0);
+ 	if (req->flags & REQ_F_FORCE_ASYNC)
+-		req->work.flags |= IO_WQ_WORK_CONCURRENT;
++		atomic_or(IO_WQ_WORK_CONCURRENT, &req->work.flags);
+ 
+ 	if (req->file && !(req->flags & REQ_F_FIXED_FILE))
+ 		req->flags |= io_file_get_flags(req->file);
+@@ -479,7 +479,7 @@ static void io_prep_async_work(struct io_kiocb *req)
+ 			io_wq_hash_work(&req->work, file_inode(req->file));
+ 	} else if (!req->file || !S_ISBLK(file_inode(req->file)->i_mode)) {
+ 		if (def->unbound_nonreg_file)
+-			req->work.flags |= IO_WQ_WORK_UNBOUND;
++			atomic_or(IO_WQ_WORK_UNBOUND, &req->work.flags);
+ 	}
+ }
+ 
+@@ -519,7 +519,7 @@ static void io_queue_iowq(struct io_kiocb *req)
+ 	 * worker for it).
+ 	 */
+ 	if (WARN_ON_ONCE(!same_thread_group(req->task, current)))
+-		req->work.flags |= IO_WQ_WORK_CANCEL;
++		atomic_or(IO_WQ_WORK_CANCEL, &req->work.flags);
+ 
+ 	trace_io_uring_queue_async_work(req, io_wq_is_hashed(&req->work));
+ 	io_wq_enqueue(tctx->io_wq, &req->work);
+@@ -1813,14 +1813,14 @@ void io_wq_submit_work(struct io_wq_work *work)
+ 	io_arm_ltimeout(req);
+ 
+ 	/* either cancelled or io-wq is dying, so don't touch tctx->iowq */
+-	if (work->flags & IO_WQ_WORK_CANCEL) {
++	if (atomic_read(&work->flags) & IO_WQ_WORK_CANCEL) {
+ fail:
+ 		io_req_task_queue_fail(req, err);
+ 		return;
+ 	}
+ 	if (!io_assign_file(req, def, issue_flags)) {
+ 		err = -EBADF;
+-		work->flags |= IO_WQ_WORK_CANCEL;
++		atomic_or(IO_WQ_WORK_CANCEL, &work->flags);
+ 		goto fail;
+ 	}
+ 
 -- 
 2.43.0
 
