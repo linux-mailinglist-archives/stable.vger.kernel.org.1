@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-65062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454ED943DFA
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:14:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767A6943DF8
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2E79B29ED3
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:13:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15BD51F215F3
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7023D1D1745;
-	Thu,  1 Aug 2024 00:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420411D0DD2;
+	Thu,  1 Aug 2024 00:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7ap+HiZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CSdW/yYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF711D173D;
-	Thu,  1 Aug 2024 00:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF05F194139;
+	Thu,  1 Aug 2024 00:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472220; cv=none; b=dRD34Bx35qQ3vFakBVWowu4gG8cdasssrVDlB1F7kawSSsEKSOfNR43ExuP0xbCH/Qk0LMhL+Nmiw8Qs3zMfMwBY+T90cJn1NL7HCYdFVkGzi+H456ye1yQ51UPy8DF9xJ7worD132QUG2UAbPTBVqe6TY+z4ntv0O20oRpr9YI=
+	t=1722472222; cv=none; b=DenQPdgVYACgMB1rVs7pheQ2iVnRwhbWxGlHw5ygp0lzxnpgc1AKY8zaBnDG/T+y6bX0jzjO4R6qNUdRbpIui3cZeT9o+pdJjlzzLpGYka78tobrLHtxhzHML5DqlIgAfBvpQPGBFC4Nlrq3BJbVMN4/BNA6cP3SFCbmq3J2nCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472220; c=relaxed/simple;
-	bh=aQOPGRDuca0jP6BFG+wUCutmfPwa2tzy8A7TzRxZPUw=;
+	s=arc-20240116; t=1722472222; c=relaxed/simple;
+	bh=oM/X7u292WynIc0c7dCQAPziPZvIVDKUQaLBaEsICFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gjmXKS9sR3bJLRKRynET3KROZlwKilNdRVGGC9FgteoIX/1V6iSegbc0Z2/z/L2mHipz5wnLsf2kahNe56F30E+gEJhHNM/U+2mpNVWkzHZJJtVi53fOLgObDWhCCkuM03slvzF42VieV8NJzpMuaPN+AZxsbzmC9IPKBg0qrTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7ap+HiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F4CC32786;
-	Thu,  1 Aug 2024 00:30:19 +0000 (UTC)
+	 MIME-Version; b=bKdQOPo677KabXrcsOorCjreCox7HYNGrEkmhCG9jDFhgti1sByfvAp014IgbKdNRWyYKGP8S06UG2ely2pB2htL/uuQYF8ZBgRBbfO/OBIU2GFFrZuggIBjVeHo1lWPMMA/4dwbmqbOUjWqq+pRpAuFgfJspa0jzaxTEf10J6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CSdW/yYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAD2C116B1;
+	Thu,  1 Aug 2024 00:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472220;
-	bh=aQOPGRDuca0jP6BFG+wUCutmfPwa2tzy8A7TzRxZPUw=;
+	s=k20201202; t=1722472221;
+	bh=oM/X7u292WynIc0c7dCQAPziPZvIVDKUQaLBaEsICFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7ap+HiZuKlSI5svQOoyzBvxheD0AzRJcFg3je9eaDLcemNkkZO1t946gjfHONOkw
-	 l9hP29IbUy6sVf4Z50QWqvbZAsmOIBNvzr/hNgE6SyipBfSVW9D7UrQZam2o0MyLdl
-	 7G/K/YJmYdjPn00jAc59gqCbNNfSetx/569zEHa5EkBqvx+fNVdPOSdxBKX85Jzazo
-	 cxvgP4VnDQ50kHnv08Cgo1BI7YZAftOOQI2C6jbCamMlZibF5dkGwsIrBW5tUMmgR6
-	 i3ZeIi9YbYjKSeWOLCmF+1s9kvD7ifVBIB95U2R2F5J+Th3TJACBJ7nzGYWhvKuT2z
-	 trTZcur4UgLnw==
+	b=CSdW/yYaDw8+pQOKb7qGNSJKG7tOuJJ51OeF9L+rRxfjsphoeTOTIDY5KUjm33iF+
+	 N3TeDTDF79qEEzL30T5oqRER4zo/wSTe3yWSFrsX9lYogeS8d55c9hV4HWUW7jiqJG
+	 XLJKrx5Q+JX6B/EdcMN1K1mThCsK3N17oAZxnvrXeKLP/ThHticGxNETgWotAPAaSC
+	 GdGJIAHn5cD0OtrB6xdLibg62zwTP/r4Z5wOrCooUJ/xyySj4yXzqz0X/RSInzYUAc
+	 QbcZ7HQkqzFiBvyzHjO2SBj8P07mWxpv2xjk+bNfvFX8jdYUGeX0GXTcNfETQr1J5L
+	 DpHwGpzFHjiRw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ken Sloat <ksloat@designlinxhs.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Sean Anderson <sean.anderson@seco.com>,
+Cc: Casey Schaufler <casey@schaufler-ca.com>,
+	Konstantin Andreev <andreev@swemel.ru>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 33/61] pwm: xilinx: Fix u32 overflow issue in 32-bit width PWM mode.
-Date: Wed, 31 Jul 2024 20:25:51 -0400
-Message-ID: <20240801002803.3935985-33-sashal@kernel.org>
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 34/61] smack: tcp: ipv4, fix incorrect labeling
+Date: Wed, 31 Jul 2024 20:25:52 -0400
+Message-ID: <20240801002803.3935985-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -66,57 +68,67 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Ken Sloat <ksloat@designlinxhs.com>
+From: Casey Schaufler <casey@schaufler-ca.com>
 
-[ Upstream commit 56f45266df67aa0f5b2a6881c8c4d16dbfff6b7d ]
+[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
 
-This timer HW supports 8, 16 and 32-bit timer widths. This
-driver currently uses a u32 to store the max possible value
-of the timer. However, statements perform addition of 2 in
-xilinx_pwm_apply() when calculating the period_cycles and
-duty_cycles values. Since priv->max is a u32, this will
-result in an overflow to 1 which will not only be incorrect
-but fail on range comparison. This results in making it
-impossible to set the PWM in this timer mode.
+Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
+when a label 'foo' connects to a label 'bar' with tcp/ipv4,
+'foo' always gets 'foo' in returned ipv4 packets. So,
+1) returned packets are incorrectly labeled ('foo' instead of 'bar')
+2) 'bar' can write to 'foo' without being authorized to write.
 
-There are two obvious solutions to the current problem:
-1. Cast each instance where overflow occurs to u64.
-2. Change priv->max from a u32 to a u64.
+Here is a scenario how to see this:
 
-Solution #1 requires more code modifications, and leaves
-opportunity to introduce similar overflows if other math
-statements are added in the future. These may also go
-undetected if running in non 32-bit timer modes.
+* Take two machines, let's call them C and S,
+   with active Smack in the default state
+   (no settings, no rules, no labeled hosts, only builtin labels)
 
-Solution #2 is the much smaller and cleaner approach and
-thus the chosen method in this patch.
+* At S, add Smack rule 'foo bar w'
+   (labels 'foo' and 'bar' are instantiated at S at this moment)
 
-This was tested on a Zynq UltraScale+ with multiple
-instances of the PWM IP.
+* At S, at label 'bar', launch a program
+   that listens for incoming tcp/ipv4 connections
 
-Signed-off-by: Ken Sloat <ksloat@designlinxhs.com>
-Reviewed-by: Michal Simek <michal.simek@amd.com>
-Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-Link: https://lore.kernel.org/r/SJ0P222MB0107490C5371B848EF04351CA1E19@SJ0P222MB0107.NAMP222.PROD.OUTLOOK.COM
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+* From C, at label 'foo', connect to the listener at S.
+   (label 'foo' is instantiated at C at this moment)
+   Connection succeedes and works.
+
+* Send some data in both directions.
+* Collect network traffic of this connection.
+
+All packets in both directions are labeled with the CIPSO
+of the label 'foo'. Hence, label 'bar' writes to 'foo' without
+being authorized, and even without ever being known at C.
+
+If anybody cares: exactly the same happens with DCCP.
+
+This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
+and it looks unintentional. At least, no explanation was provided.
+
+I changed returned packes label into the 'bar',
+to bring it into line with the Smack documentation claims.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/clocksource/timer-xilinx.h | 2 +-
+ security/smack/smack_lsm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/clocksource/timer-xilinx.h b/include/clocksource/timer-xilinx.h
-index c0f56fe6d22ae..d116f18de899c 100644
---- a/include/clocksource/timer-xilinx.h
-+++ b/include/clocksource/timer-xilinx.h
-@@ -41,7 +41,7 @@ struct regmap;
- struct xilinx_timer_priv {
- 	struct regmap *map;
- 	struct clk *clk;
--	u32 max;
-+	u64 max;
- };
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index b0a483e40c827..75b3e91d5a5f8 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4290,7 +4290,7 @@ static int smack_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
+ 	rcu_read_unlock();
  
- /**
+ 	if (hskp == NULL)
+-		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
++		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
+ 	else
+ 		netlbl_req_delattr(req);
+ 
 -- 
 2.43.0
 
