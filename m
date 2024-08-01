@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-65150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79596943F2A
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:34:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB35943F2C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F0B41F22893
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:34:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB2CA282A39
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBCD1E09B4;
-	Thu,  1 Aug 2024 00:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DD11E09D1;
+	Thu,  1 Aug 2024 00:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWKdkQEu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FwkT86bE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13041E09A8;
-	Thu,  1 Aug 2024 00:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171481E09C8;
+	Thu,  1 Aug 2024 00:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472664; cv=none; b=dCHXWxR1NoTTs/sgRuzfqM+/0QqX/D4m4P/vT/3QfU6luLXLrhlLdHJtuZee4etXRqU5hufdm5whQipHOwu0uObQfrEmO2ru0skA+pMVoDhBtVIHbH4t4eh9ALrCnkTdIiSV77dGCveKPy0z13CEFzR+iqiFR+Q019p7CMEeSk4=
+	t=1722472668; cv=none; b=ivLkeyTHW4YKlHZ9zcmx+vCkkZjlOHotRFJLT97CpNMJVYnL9c/Ia4HULNuurYp7Ula0QeW7crK9EtCCUyFVREPpG0cQeKeAw82xKDQrzYHl7Lql3WToZpocYib2mFktp6i7idIVXTWei6elKtjK2G8caGHlB+5m7Lyc5DNYMJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472664; c=relaxed/simple;
-	bh=7vuee0hX1tvccHycJ1qHdHIQFEvjn+IER4RlBpeh7Eo=;
+	s=arc-20240116; t=1722472668; c=relaxed/simple;
+	bh=/TJO27vsNKgNcS2i3huSkC6KKLh0ladBKB8pVWogTbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stXpbTQZRUpdLb23MCgFbMrQB5DkI2h1nc0atA0foqZE2D+2nncG/dzVMXl8dzgAP5KrvHg56j/GEtKGv/2lHLO6KD3bNlKbjhDGgacbyYRSjOL8uW0DmeCvXse/mJhSPtfvPWBAh3b50nJWQloEdW6oRA0SAZdH8Vqu1R9MMYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWKdkQEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0889CC4AF0C;
-	Thu,  1 Aug 2024 00:37:41 +0000 (UTC)
+	 MIME-Version; b=RntbMLLKbSgCbkEXm3kCSuNiUkew3cB5Q/my2pbQjpnrsTqgoUVV6lhY2mPn5zCitno+XpYR/b/UUYwx6NUpa4+H9nGGtTvgVOyQN6JxopTwY4xWD+ltCNvePN3FtPAR9c+Wk5ErVHwZsTGk/Noe/fsohB94QsaIFtqGw7hG8GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FwkT86bE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3C7C4AF0C;
+	Thu,  1 Aug 2024 00:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472663;
-	bh=7vuee0hX1tvccHycJ1qHdHIQFEvjn+IER4RlBpeh7Eo=;
+	s=k20201202; t=1722472667;
+	bh=/TJO27vsNKgNcS2i3huSkC6KKLh0ladBKB8pVWogTbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWKdkQEuz+OOo2QH7/4gp8aezxhsnkjh3c7C1azRt24p4h+YurmuhtQ3EQltQIYmR
-	 XgFBFZb1Oq/vxQ94gWWwz7sUjK7tO43yzfr2cQN4u1xG8X4eHgkZL+LiycMxNbD5NC
-	 fkd4oZLT+bsKCyas7cVRyudqhbm5cOzx90m9kUFUHWXPbrvamtG8pvtZ5F6ZBwZSTD
-	 a/FdJsZWklRAXWN4Xxbkn/oy27hFsT7VaLvcSRlNXVuagjbX1WQ4nlHFDj/M847wHN
-	 ZSUH+wwpE990O4JjJ5dbZjjy79pcDmFbONcki4XiBgFz5f6Az8GIXGYYMyRvabXZlT
-	 agH5AXb6css0A==
+	b=FwkT86bESd+t9ct/HNYl4JkeL0ZkUB6S47jIWpppt7Q8NfYH5QgI8hJYjgXwBWMhv
+	 whWLTRy0TseqK61wuqFPKejaWtFPd+BX+THJnJQXBnUKCFokIpOFmOWYKGsb7lSHPW
+	 fEJsJJ63XHvCJEaS4MdiCLiJVW13Ihf0TKTd2qz0/aaERnYrOwzrfcHdjFkIPYNRL1
+	 7/7ApJEgn96w0RexhKpeymEvxb8Ck/h+s2lnYjuVv5Qoa2YXZdMqHaU6lL9tD+0Otm
+	 Hvt99NWR2VZ07fb3tAb5QCsTdrvpB0FV5n5TImr9OBoNXVGm4BMyjAMXD/Quhb2vS7
+	 U0kfkdvWc54Ow==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -51,13 +51,14 @@ Cc: Tim Huang <Tim.Huang@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	guchun.chen@amd.com,
-	srinivasan.shanmugam@amd.com,
+	Hawking.Zhang@amd.com,
+	lijo.lazar@amd.com,
+	electrodeyt@gmail.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.10 13/38] drm/amdgpu: fix ucode out-of-bounds read warning
-Date: Wed, 31 Jul 2024 20:35:19 -0400
-Message-ID: <20240801003643.3938534-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 14/38] drm/amdgpu: fix mc_data out-of-bounds read warning
+Date: Wed, 31 Jul 2024 20:35:20 -0400
+Message-ID: <20240801003643.3938534-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
 References: <20240801003643.3938534-1-sashal@kernel.org>
@@ -74,32 +75,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 8944acd0f9db33e17f387fdc75d33bb473d7936f ]
+[ Upstream commit 51dfc0a4d609fe700750a62f41447f01b8c9ea50 ]
 
-Clear warning that read ucode[] may out-of-bounds.
+Clear warning that read mc_data[i-1] may out-of-bounds.
 
 Signed-off-by: Tim Huang <Tim.Huang@amd.com>
 Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-index 78ac6dbe70d84..854b218602574 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-@@ -213,6 +213,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
- 		struct amdgpu_firmware_info *ucode;
- 
- 		id = fw_type_convert(cgs_device, type);
-+		if (id >= AMDGPU_UCODE_ID_MAXIMUM)
-+			return -EINVAL;
-+
- 		ucode = &adev->firmware.ucode[id];
- 		if (ucode->fw == NULL)
- 			return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
+index 469352e2d6ecf..436d436b2ea23 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
+@@ -1626,6 +1626,8 @@ int amdgpu_atombios_init_mc_reg_table(struct amdgpu_device *adev,
+ 										(u32)le32_to_cpu(*((u32 *)reg_data + j));
+ 									j++;
+ 								} else if ((reg_table->mc_reg_address[i].pre_reg_data & LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
++									if (i == 0)
++										continue;
+ 									reg_table->mc_reg_table_entry[num_ranges].mc_data[i] =
+ 										reg_table->mc_reg_table_entry[num_ranges].mc_data[i - 1];
+ 								}
 -- 
 2.43.0
 
