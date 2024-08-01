@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-65011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2B3943D82
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:01:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5DA943D86
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE64F1C2243B
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:00:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E6171C22291
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0611C9DD3;
-	Thu,  1 Aug 2024 00:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE58F1C9DED;
+	Thu,  1 Aug 2024 00:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJbimywW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NV1Wj4CQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF8E1C9DC1;
-	Thu,  1 Aug 2024 00:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35191C9DE1;
+	Thu,  1 Aug 2024 00:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471929; cv=none; b=H2E+BYkUhyegTuiOXsojalamOVUPeFHRbKH0JpOG7dl75cyqGRW5X9ZbOy6fpNSuBwiHJWQrSFvPdu4TSINNldWqrR4bugszC9h17vsuoHAaV5GqNgIOkBIpTlE72fgrvKOABkcVJywYZ/p2EmpcS62Y07DjmPpNyWM6chmraFI=
+	t=1722471930; cv=none; b=IILYEyRMr99cfhhGEXpZnNdePBy8Bd9L7/iTt4PLyZxXHFD3fzjHmS8PDqrxIWNm6ZeuW7P50VIQQMM1mKGuvvWjdd8s0qMOj3ofq0X7Z2VN4+CBUn3qO2en6HMHZr/gdDIcfE8dDe+tDutdvMw8f7JyWvdq5ztRbegDMuggls8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471929; c=relaxed/simple;
-	bh=9fXbwdzhwFMnniC7O2MzvI1C74jiNEkZl50KxhJ9O8E=;
+	s=arc-20240116; t=1722471930; c=relaxed/simple;
+	bh=v3ZmhvwoRxOca8R0n0ipeDTKy50TAw5w+XASHSJRXDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u6U0EeVvTYy3MEFToId7y9szLlFAUWczeW5ve/F8B6HsaWdBErdJGJNnAtUOAeQx8rnks2d4Rouw5DMgpT4pFAQRSDo1wagO1Vi2RrF7yFBDzEo7mypuKZ2xx58m+GL7jNYJYjVw0Zt2i8J+kEYT2svhoB/JNCwtUUeeGgBiLUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJbimywW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09597C4AF0F;
-	Thu,  1 Aug 2024 00:25:26 +0000 (UTC)
+	 MIME-Version; b=WewFIpv/PzScHHM7k+tdm8iVC2I5j44DonhpBG13FhMD6ApkSUVhJI2PD561CFRg0uK0aeBAMd5pyZcOE0UYQ24Ep7se9NJjeJAfsouJ7ok8s7MJysuto2BzbrCBx49DebjJVwMssF8F2ovPrpeLEXSi0eImvvdpcNm94b6pGzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NV1Wj4CQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53498C4AF0C;
+	Thu,  1 Aug 2024 00:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471928;
-	bh=9fXbwdzhwFMnniC7O2MzvI1C74jiNEkZl50KxhJ9O8E=;
+	s=k20201202; t=1722471930;
+	bh=v3ZmhvwoRxOca8R0n0ipeDTKy50TAw5w+XASHSJRXDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJbimywWovhjK3XQpNZVijyDknn0rBmZK7Mj72i7aJhsG8EH5nx0b+6Fswt9+9PlE
-	 1SqVV4Dy1smfQazN6eQ1FRX/1KNlDYFORpuMqzNW6em/tpT++I4XNcnoSLdvY5Ebg/
-	 wSv9UrJjkrJdbLBGXVwxzesGD3hMYH6bxmawvyDlcb0lZcyYhuXDzMCQxM6N8iTg9q
-	 TUALpgJQJs1QnbJx++dybyIixroYNVU8vn2XheRbofPsBZgfpxJt9WKyt5OldFrdXx
-	 M8lXn6oyGKRhVbJkJfGV+0RgmdSLJY3RiIo1BFpRqRELE893P4jhaKWaVe6XlJLQow
-	 NO8KDot/1vsPA==
+	b=NV1Wj4CQDqT32CcfdGaMMwglLCyp6PvNZdW5uCL1oImKvQTTwYoJST+zy+FqUrXKu
+	 MjQ5eSPsLYcCQje2FC8gk+tBhIVI5/sDg1JCp68nivFkGAoGIFDaKJlf6OMlO8vU8Z
+	 1dmeITgAVcZCb/wxHu8TmzVohtLnOXqebUg4/ypLvShsWnI6p38UmYWpogsMs+sLS5
+	 952XCzOPIaTsYvx1w225yMAJqULYNdxsKH1LRAGRnx70DfCqDfSzLcQzuX6/0NCpO/
+	 DW9lxfafM/px08GcY0PRrnjGrnoPrjCjd05U2+JPSgKTnvxZdDyGspCXbEvrEfozMl
+	 ORPsnEe+KrQ4w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+Cc: Shantanu Goel <sgoel01@yahoo.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alexghiti@rivosinc.com,
-	peterlin@andestech.com,
-	akpm@linux-foundation.org,
-	christophe.leroy@csgroup.eu,
-	suagrfillet@gmail.com,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 65/83] riscv: mm: Take memory hotplug read-lock during kernel page table dump
-Date: Wed, 31 Jul 2024 20:18:20 -0400
-Message-ID: <20240801002107.3934037-65-sashal@kernel.org>
+	stern@rowland.harvard.edu,
+	linux-usb@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	usb-storage@lists.one-eyed-alien.net
+Subject: [PATCH AUTOSEL 6.6 66/83] usb: uas: set host status byte on data completion error
+Date: Wed, 31 Jul 2024 20:18:21 -0400
+Message-ID: <20240801002107.3934037-66-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -70,55 +64,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Shantanu Goel <sgoel01@yahoo.com>
 
-[ Upstream commit 37992b7f1097ba79ca75ba5a26ddcf0f54f91a08 ]
+[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
 
-During memory hot remove, the ptdump functionality can end up touching
-stale data. Avoid any potential crashes (or worse), by holding the
-memory hotplug read-lock while traversing the page table.
+Set the host status byte when a data completion error is encountered
+otherwise the upper layer may end up using the invalid zero'ed data.
+The following output was observed from scsi/sd.c prior to this fix.
 
-This change is analogous to arm64's commit bf2b59f60ee1 ("arm64/mm:
-Hold memory hotplug lock while walking for kernel page table dump").
+[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
+[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
+[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20240605114100.315918-8-bjorn@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/ptdump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/storage/uas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
-index e9090b38f8117..dbc2baa95eade 100644
---- a/arch/riscv/mm/ptdump.c
-+++ b/arch/riscv/mm/ptdump.c
-@@ -6,6 +6,7 @@
- #include <linux/efi.h>
- #include <linux/init.h>
- #include <linux/debugfs.h>
-+#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
- #include <linux/ptdump.h>
- 
-@@ -351,7 +352,9 @@ void ptdump_check_wx(void)
- 
- static int ptdump_show(struct seq_file *m, void *v)
- {
-+	get_online_mems();
- 	ptdump_walk(m, m->private);
-+	put_online_mems();
- 
- 	return 0;
- }
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index 451d9569163a7..f794cb39cc313 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -422,6 +422,7 @@ static void uas_data_cmplt(struct urb *urb)
+ 			uas_log_cmd_state(cmnd, "data cmplt err", status);
+ 		/* error: no data transfered */
+ 		scsi_set_resid(cmnd, sdb->length);
++		set_host_byte(cmnd, DID_ERROR);
+ 	} else {
+ 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
+ 	}
 -- 
 2.43.0
 
