@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-64914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A57C943C45
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:36:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F657943C4B
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE8D1281574
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:36:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB3D2B26FEA
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCD114BFA3;
-	Thu,  1 Aug 2024 00:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C251BE233;
+	Thu,  1 Aug 2024 00:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N06vg2eI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzYlhmMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47108136E3F;
-	Thu,  1 Aug 2024 00:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5171BE22C;
+	Thu,  1 Aug 2024 00:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471414; cv=none; b=VQX1G1Ynblv5IbT3uA/AClyKBYySZzLUeC5NowMhaCaSl4Sa2Mae2B4Frnrp/YzhqD5QYTYEpRF8hhDqFudWbMTNN95Z9PeidE5DedKb6G2cYDzwdYSOxpc/18BU1XYwM05z0J0E66EPHN1yk2dD5jRpdJ+PwXIJqMCd/YCnlNU=
+	t=1722471416; cv=none; b=SsoNnBz/7AAdB2NP4JYSDFmTdcF8X64VU13IWO8mQYXxsxGkuIXWJQcc5wvrnTUzVot29ktOjjDX+WHelEznAVMIsLWzniNlgDSX4mpnqW5dbr8CiUXZGlUUTwGWVv/5O5n2/ZZNgFq7hy0KaWWlpqpj634FDHT+pALAlkapZG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471414; c=relaxed/simple;
-	bh=wqvCfGhTJfX5N11u3OLFAOWJEbtfauWDxqT2+qsQgIQ=;
+	s=arc-20240116; t=1722471416; c=relaxed/simple;
+	bh=5B3jDTKFbGnvLZkE4B5MYaNhqhyCTyrK6VP++3rLpEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2RNABwsc6akrrcQH2AUkSf0bICtoB/HmzmRp78NDJWUjpRcz9n4DrqErKpG+bQZqOz16KOkhZs1Y+Kg7N+Fw0dNuKv8xolGYj+3xYOQ2vq8ADwlBhSQF2IoKXPEKkjuZyoX9vzfrRmT9I4ahUl/+C1Qz2x0rEcXoBwGwBJ2lW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N06vg2eI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157EDC32786;
-	Thu,  1 Aug 2024 00:16:51 +0000 (UTC)
+	 MIME-Version; b=bXI/Z2w7iH/LLnqTIeM1IaForN5H9oy8X9OkTFCkVUQ4HM5LH8ZgsXtQIwRkA9as+ifZNVJ9pcJAHdj5JxJjuP6ffI9nwlo/B1Yq96Qwj9f83EwmF6wnBMVmkPCpiSv20lDS63wrAmh97TmqVEL03y+rSB5Lt4+ruRBw5hk/lPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzYlhmMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F9AC4AF0C;
+	Thu,  1 Aug 2024 00:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471414;
-	bh=wqvCfGhTJfX5N11u3OLFAOWJEbtfauWDxqT2+qsQgIQ=;
+	s=k20201202; t=1722471415;
+	bh=5B3jDTKFbGnvLZkE4B5MYaNhqhyCTyrK6VP++3rLpEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N06vg2eIy3zOtud3Xjc93YZKDj57M8FyS57pwIcr/syjoZxwg/QES5ItP2v3fLWS3
-	 WZlP7qopWe2U+jcIs/y1YX77UJA8gjIPdRrE+p+n0cBemCHJW5TnjjdDczi8qYUe7F
-	 woRQIM5uSECdsY2ijMgARsAuZbGuCBb//7SiklumRuSUajKkimEw4mJLxHOtiGWq+Z
-	 FWVJHMcJ9g7lEZPBB43u52P2lx19OWXN6e0rm+0zpZ5Q6teZZzZRf9bMqlXj/3JRu2
-	 4kSgXia3HOqcIJpi/aQU8iCn7Pco9Bje3PalAsyAImcg7+TGcEMiPMZ3hXz08aDxR2
-	 Pksefqr2uCWBw==
+	b=kzYlhmMwwRiq/l+siTKBMT7hdMGnFMyMoFooxFzCG2j2DMuHV+I+wBSfOSGbSPrjn
+	 ElXxpnxMLTl8XUhID3QNu3BWZYU3YgHb3rMF6Xfc5SRcpeiHE0Nl6mwdIfjvqkI2oK
+	 8orp6a14MG/0Gr44De0Ry47MK0BHrmlW3G9trSnsFMaQJh5y10zx0iYpPaht7ui1NB
+	 RJki4V44ZnuTuMsQxCiPpFrjEzqvAEZwaQ/D5RdvxCLBC5T39M8rqlFWQgfQT5K5PU
+	 WHbcnoXTBu6tviWTqQYKbuJ92FvEGuPYLTXT4/tvEwNzlJ6huaChtWuQkU0NoDovKf
+	 QwEw4+b8QY+VQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
+Cc: Alexey Dobriyan <adobriyan@gmail.com>,
 	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	ast@kernel.org,
-	peterz@infradead.org,
-	jgross@suse.com,
-	jpoimboe@kernel.org,
-	leitao@debian.org,
-	arnd@arndb.de
-Subject: [PATCH AUTOSEL 6.10 089/121] x86/alternatives: Make FineIBT mode Kconfig selectable
-Date: Wed, 31 Jul 2024 20:00:27 -0400
-Message-ID: <20240801000834.3930818-89-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH AUTOSEL 6.10 090/121] ELF: fix kernel.randomize_va_space double read
+Date: Wed, 31 Jul 2024 20:00:28 -0400
+Message-ID: <20240801000834.3930818-90-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -77,94 +68,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <keescook@chromium.org>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-[ Upstream commit d6f635bcaca8d38dfa47ee20658705f9eff156b5 ]
+[ Upstream commit 2a97388a807b6ab5538aa8f8537b2463c6988bd2 ]
 
-Since FineIBT performs checking at the destination, it is weaker against
-attacks that can construct arbitrary executable memory contents. As such,
-some system builders want to run with FineIBT disabled by default. Allow
-the "cfi=kcfi" boot param mode to be selectable through Kconfig via the
-newly introduced CONFIG_CFI_AUTO_DEFAULT.
+ELF loader uses "randomize_va_space" twice. It is sysctl and can change
+at any moment, so 2 loads could see 2 different values in theory with
+unpredictable consequences.
 
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240501000218.work.998-kees@kernel.org
+Issue exactly one load for consistent value across one exec.
+
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Link: https://lore.kernel.org/r/3329905c-7eb8-400a-8f0a-d87cff979b5b@p183
 Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig              | 9 +++++++++
- arch/x86/include/asm/cfi.h    | 2 +-
- arch/x86/kernel/alternative.c | 8 ++++----
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ fs/binfmt_elf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 1d7122a1883e8..56e301921d2a1 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2427,6 +2427,15 @@ config STRICT_SIGALTSTACK_SIZE
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index a43897b03ce94..777405719de85 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1003,7 +1003,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	if (elf_read_implies_exec(*elf_ex, executable_stack))
+ 		current->personality |= READ_IMPLIES_EXEC;
  
- 	  Say 'N' unless you want to really enforce this check.
+-	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
++	const int snapshot_randomize_va_space = READ_ONCE(randomize_va_space);
++	if (!(current->personality & ADDR_NO_RANDOMIZE) && snapshot_randomize_va_space)
+ 		current->flags |= PF_RANDOMIZE;
  
-+config CFI_AUTO_DEFAULT
-+	bool "Attempt to use FineIBT by default at boot time"
-+	depends on FINEIBT
-+	default y
-+	help
-+	  Attempt to use FineIBT by default at boot time. If enabled,
-+	  this is the same as booting with "cfi=auto". If disabled,
-+	  this is the same as booting with "cfi=kcfi".
-+
- source "kernel/livepatch/Kconfig"
+ 	setup_new_exec(bprm);
+@@ -1251,7 +1252,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	mm->end_data = end_data;
+ 	mm->start_stack = bprm->p;
  
- endmenu
-diff --git a/arch/x86/include/asm/cfi.h b/arch/x86/include/asm/cfi.h
-index 7cd7525579051..31d19c815f992 100644
---- a/arch/x86/include/asm/cfi.h
-+++ b/arch/x86/include/asm/cfi.h
-@@ -93,7 +93,7 @@
-  *
-  */
- enum cfi_mode {
--	CFI_DEFAULT,	/* FineIBT if hardware has IBT, otherwise kCFI */
-+	CFI_AUTO,	/* FineIBT if hardware has IBT, otherwise kCFI */
- 	CFI_OFF,	/* Taditional / IBT depending on .config */
- 	CFI_KCFI,	/* Optionally CALL_PADDING, IBT, RETPOLINE */
- 	CFI_FINEIBT,	/* see arch/x86/kernel/alternative.c */
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 89de612432728..7fcba437abaee 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -885,8 +885,8 @@ void __init_or_module apply_seal_endbr(s32 *start, s32 *end) { }
- 
- #endif /* CONFIG_X86_KERNEL_IBT */
- 
--#ifdef CONFIG_FINEIBT
--#define __CFI_DEFAULT	CFI_DEFAULT
-+#ifdef CONFIG_CFI_AUTO_DEFAULT
-+#define __CFI_DEFAULT	CFI_AUTO
- #elif defined(CONFIG_CFI_CLANG)
- #define __CFI_DEFAULT	CFI_KCFI
- #else
-@@ -994,7 +994,7 @@ static __init int cfi_parse_cmdline(char *str)
- 		}
- 
- 		if (!strcmp(str, "auto")) {
--			cfi_mode = CFI_DEFAULT;
-+			cfi_mode = CFI_AUTO;
- 		} else if (!strcmp(str, "off")) {
- 			cfi_mode = CFI_OFF;
- 			cfi_rand = false;
-@@ -1254,7 +1254,7 @@ static void __apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
- 		      "FineIBT preamble wrong size: %ld", fineibt_preamble_size))
- 		return;
- 
--	if (cfi_mode == CFI_DEFAULT) {
-+	if (cfi_mode == CFI_AUTO) {
- 		cfi_mode = CFI_KCFI;
- 		if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT))
- 			cfi_mode = CFI_FINEIBT;
+-	if ((current->flags & PF_RANDOMIZE) && (randomize_va_space > 1)) {
++	if ((current->flags & PF_RANDOMIZE) && (snapshot_randomize_va_space > 1)) {
+ 		/*
+ 		 * For architectures with ELF randomization, when executing
+ 		 * a loader directly (i.e. no interpreter listed in ELF
 -- 
 2.43.0
 
