@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-64933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BB6943CBE
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:41:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB4B943CC1
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C4CD2899A8
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:41:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89BC1B2293D
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CBA1CB339;
-	Thu,  1 Aug 2024 00:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649E01D3644;
+	Thu,  1 Aug 2024 00:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="alIHr3GT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3sWPoVv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AC31CB32E;
-	Thu,  1 Aug 2024 00:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C03413A243;
+	Thu,  1 Aug 2024 00:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471488; cv=none; b=HRlYBGQ93AjC69bVwF2W0fPPA/VtTZND/b/PjE1ItDQe41Uisrj3ykioy3YonLlomaYjbNt2v4V38Iw0fg37vyWsudW6xhNBTMUbfYaKKguWLc4ncMDfheIS4Wc6GOs+aWnDc2vFuG34y3IRauobPEnFeBgf42szEuDRbBjmNpg=
+	t=1722471493; cv=none; b=Odk4RjIiPHrnhfoqYkxL1vhem1JKRUSuBZ8Y0KAOQ2+38WBKuXpNKBKny4/oQeBcnaXhjbvrehHEe+/n9z3iutPlw3HSZEHklCOLUukn9AOKo8r7sz5qkjFese0zMNwYMvtEaJpK72RveKUwUogtq3N2zo39o0qnZDpkiQP34Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471488; c=relaxed/simple;
-	bh=ZlkbVzx6o60TnUXN4lglQyzQ70Wm8UYEBaVCsEAlAJo=;
+	s=arc-20240116; t=1722471493; c=relaxed/simple;
+	bh=ycidui46Gmttz+Hw1zuY0ii6yJV6fpP0BH2pgijwDMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDtgE6tBk/SG1yLJxVGTMAep3xDzbUjrmw+drZ1h1INFEXmcfxBETmdABjDDtHeoatMOfUVfahk8HrUSzyPNxVFlDkG/5cRvMAAja6X0nKNTnxQOoGNa/pP73AJ+/QViumRS98oO7FpGoOsPF3/woCGscpEXSgfvl+m/fV6tj/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=alIHr3GT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DD9C32786;
-	Thu,  1 Aug 2024 00:18:07 +0000 (UTC)
+	 MIME-Version; b=svVCnpf6WtlWYjSFAqImMAJBfc876ktWIHwalTKymWyB9zhZk71tX/YW9tE1YZRIERri9S1El/VvhNRjCAb1CgmZN5w1rF5CHMEXkKJDmqHlq1BAA5o5SDD+4JUveihOjthoCoEFUhVlFwfnEyuO7Eg0HZ3Qqv2Afy/H7ZVTIao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3sWPoVv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DF6C116B1;
+	Thu,  1 Aug 2024 00:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471488;
-	bh=ZlkbVzx6o60TnUXN4lglQyzQ70Wm8UYEBaVCsEAlAJo=;
+	s=k20201202; t=1722471492;
+	bh=ycidui46Gmttz+Hw1zuY0ii6yJV6fpP0BH2pgijwDMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alIHr3GTaLzuma8NjnEG5RGDQUC7dlaq3WamkvHUF1vbes4i+WxaVsp4w6NEmlHFT
-	 cJCQmXgYA+Art5j4bipPiqD2nl2bvtU5RgQ4KwNSvRXM0wvuSqRPL8iT5BCACO3wef
-	 nHh32ZIXKBTBUkSF6mP/QVDbkQYM30kARMVdfloWS6Lzkpth6zwuvnUd6NxsFVCUAJ
-	 Kxupflgd6HCEeuM3dWrPMwmab7c9Sdv1/NFtvyvc/tftuc69T0fbbiQcNYaiew5iGa
-	 voNWydGWz4eM7rm3b0f78Ul9zokeT4zMxtTTp1FwvcBO/hC5a9YDjowtdqhBvwTRaW
-	 fNkjf/u0/ArLQ==
+	b=O3sWPoVvoEsaZ1PemiHL1uyzLJ+aO085r5utS5kVQ8V4z23t9F/gd8GLDY8hDtfTY
+	 b40tIwGIclMtLNGZCrcSwRTL3d6bJUu92laLmUB3H0brQtUR8yUD6yDLl+9X/NRN2W
+	 uqrpmZhICLF0b5KFvyt/uAiqDuMp1L6RyuS3SoKBtCbrsc1WkjPg0DlpmjhhnHuXWk
+	 CT0u7p4yYmHR91rN2pD7iLE22ruHvbL7N2xpgr7urYnmu5wV8UL3x+lOoo8+y+Msxh
+	 UZGR8i8SqUhflJYniKUVEB3E/k+T5Kl7hmb5sM55aoc8dpN60DpHnFRvlqJRZ/6FV+
+	 18g5+idr8Cx+g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.10 108/121] devres: Initialize an uninitialized struct member
-Date: Wed, 31 Jul 2024 20:00:46 -0400
-Message-ID: <20240801000834.3930818-108-sashal@kernel.org>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	gregory.greenman@intel.com,
+	shaul.triebitz@intel.com,
+	quic_adisi@quicinc.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 109/121] wifi: iwlwifi: mvm: don't send an ROC command with max_delay = 0
+Date: Wed, 31 Jul 2024 20:00:47 -0400
+Message-ID: <20240801000834.3930818-109-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -64,33 +70,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
+[ Upstream commit 187accaa328dc4de98064eef176841b8a4716f96 ]
 
-Initialize an uninitialized struct member for driver API
-devres_open_group().
+The firmware can't handle that (it will crash with ASSERT 300A).
+This happened because we looked at vif->bss_conf which is not
+the right bss_conf to look at in case of an MLD connection.
+Fix iwl_mvm_roc_duration_and_delay to iterate on the active links to
+get the right value for the dtim_interval.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20240703064027.e12f8d84c8fd.I3dd9f720c678c06ec7a5bf7ca56e21cf0b614c8c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devres.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/wireless/intel/iwlwifi/mvm/time-event.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 3df0025d12aa4..3beedeaa0ffca 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -567,6 +567,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
- 	grp->id = grp;
- 	if (id)
- 		grp->id = id;
-+	grp->color = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+index 31bc80cdcb7d5..97cfd72312f2f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+@@ -984,12 +984,21 @@ void iwl_mvm_roc_duration_and_delay(struct ieee80211_vif *vif,
+ 				    u32 *duration_tu,
+ 				    u32 *delay)
+ {
+-	u32 dtim_interval = vif->bss_conf.dtim_period *
+-		vif->bss_conf.beacon_int;
++	struct ieee80211_bss_conf *link_conf;
++	unsigned int link_id;
++	u32 dtim_interval = 0;
  
- 	spin_lock_irqsave(&dev->devres_lock, flags);
- 	add_dr(dev, &grp->node[0]);
+ 	*delay = AUX_ROC_MIN_DELAY;
+ 	*duration_tu = MSEC_TO_TU(duration_ms);
+ 
++	rcu_read_lock();
++	for_each_vif_active_link(vif, link_conf, link_id) {
++		dtim_interval =
++			max_t(u32, dtim_interval,
++			      link_conf->dtim_period * link_conf->beacon_int);
++	}
++	rcu_read_unlock();
++
+ 	/*
+ 	 * If we are associated we want the delay time to be at least one
+ 	 * dtim interval so that the FW can wait until after the DTIM and
+@@ -998,8 +1007,10 @@ void iwl_mvm_roc_duration_and_delay(struct ieee80211_vif *vif,
+ 	 * Since we want to use almost a whole dtim interval we would also
+ 	 * like the delay to be for 2-3 dtim intervals, in case there are
+ 	 * other time events with higher priority.
++	 * dtim_interval should never be 0, it can be 1 if we don't know it
++	 * (we haven't heard any beacon yet).
+ 	 */
+-	if (vif->cfg.assoc) {
++	if (vif->cfg.assoc && !WARN_ON(!dtim_interval)) {
+ 		*delay = min_t(u32, dtim_interval * 3, AUX_ROC_MAX_DELAY);
+ 		/* We cannot remain off-channel longer than the DTIM interval */
+ 		if (dtim_interval <= *duration_tu) {
 -- 
 2.43.0
 
