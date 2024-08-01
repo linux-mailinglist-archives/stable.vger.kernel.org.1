@@ -1,183 +1,105 @@
-Return-Path: <stable+bounces-65220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2449443C6
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 08:16:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 176BE944502
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 08:58:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3933CB23FB7
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 06:16:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C87E1282356
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 06:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14E3189531;
-	Thu,  1 Aug 2024 06:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB7615855C;
+	Thu,  1 Aug 2024 06:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZkQQwUTJ"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD40C189532
-	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 06:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A149A158554;
+	Thu,  1 Aug 2024 06:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722492718; cv=none; b=eHDWN3VVOkqltZVqW7gdSZ8wB973T67M4Juv837fndXUVkAeTRNpbQ/ARKlZBT16xRGmEkqvMFh6lygk2ACneZKlmU9GqJhGTi5YeMOt1quX/UpaYF3j95RoZgQK1dh2BKHEYgUklfqvCwpmnhGpy9eAp1L3yYxwQh1x7YBifqg=
+	t=1722495491; cv=none; b=jwaHASXCRTyhICRgJjCE0krLpCUWVsNMQ4oqXNAdF1YxmcjqmDSty7LG9VGRnSMaTVZOcdUJP1cqdbtfpocXZ6cTpGrlMskhtxyyB1jMaSHmFMQrSNZ+3xVitoBAtd8zrbSYBJwmJsnI+JJTYpJfV7VsDbMLTKcWGKIo3+TvLHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722492718; c=relaxed/simple;
-	bh=xpJ4z5TWcyrJT+BgcyJUrNahwDnMDSXzwV2nw3E1qvM=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=mrzMsohYFU/s5hSi7C4kAJ+xNq/SBYUXlauAT7lTCZy/DEZR7IhPt9A+kVZ+2tWQsfkji3Z9hpLYxmdjUDi+1jFMVUml1QxcCXgXANesHdFPAqIjHEMGIcXUZRl6cVSI9sUWfd8S9ZHmlqrXEEeLT336K71TiCro+6d/g+jyXZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4WZJWT54Pwz4f3jMG
-	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 14:11:33 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id B04DF1A1640
-	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 14:11:47 +0800 (CST)
-Received: from [10.174.176.73] (unknown [10.174.176.73])
-	by APP4 (Coremail) with SMTP id gCh0CgBXzIIgJ6tmFQHHAQ--.55783S3;
-	Thu, 01 Aug 2024 14:11:46 +0800 (CST)
-Subject: Re: [PATCH 6.10 678/809] md/raid1: set max_sectors during early
- return from choose_slow_rdev()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Mateusz_Jo=c5=84czyk?= <mat.jonczyk@o2.pl>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- Song Liu <song@kernel.org>, Paul Luse <paul.e.luse@linux.intel.com>,
- Xiao Ni <xni@redhat.com>, Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>,
- "yukuai (C)" <yukuai3@huawei.com>
-References: <20240730151724.637682316@linuxfoundation.org>
- <20240730151751.683503374@linuxfoundation.org>
- <974b072b-9696-42c9-8cec-f68454eedc33@o2.pl>
- <2024080111-poet-bok-e8d4@gregkh>
-From: Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <f23851f1-6902-d65a-f180-14ab95f13e9c@huaweicloud.com>
-Date: Thu, 1 Aug 2024 14:11:44 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	s=arc-20240116; t=1722495491; c=relaxed/simple;
+	bh=X5/nIHI6eSt6inS+c/hwkA36ObfofUnYr2d5oV0hHoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cFIBCJqJMDdCJoXrNLsJD8YAJgm7QdFFLnI+owgB9ndF16kzW25Yr9REmVUwiQ432jnUP9DwmiwslrqUn+z2Zd9WoNnFyOmZzhhkOv7pnS9TfJnppcsc4/M6LHGYnjRwfJ6dHYRXt0/gm60hVxRAMpAb4laMcKe08HfWQp97C1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZkQQwUTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD3BC4AF09;
+	Thu,  1 Aug 2024 06:58:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722495491;
+	bh=X5/nIHI6eSt6inS+c/hwkA36ObfofUnYr2d5oV0hHoI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZkQQwUTJverPhMso19gcLwM8l9Rx9EkzC3s2uCCB/DPdWMFXTMeXKBbK/+/2XB/KG
+	 r3vF5BWys9vxHtQIWuTDi2eZVSerscTF3yhCbOchsnnYqGdFKgzdlAx2xG2lZ+Csza
+	 zl65GC5CS9zYWEoqI4jKwNamzqq20LJ4eoR/k5MuYZ1HxkI5YEkbWWR0RhFlNnh0Vr
+	 yn1An6LURyglPIQ7NhyBa1P+KfiJn5615IfCFw/vupWuCNr8dWwIpG5z4tKcZK8gc9
+	 NnuRnKohHqlnQWoJL56lhueuhhCLl5iC+EbUA4DYdvHRSLp1Qu+TCRfiKSFjSZttfp
+	 1TIdikt4VGn6A==
+Date: Thu, 1 Aug 2024 08:58:05 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Aleksa Sarai <cyphar@cyphar.com>, Tycho Andersen <tandersen@netflix.com>, 
+	Daan De Meyer <daan.j.demeyer@gmail.com>, Tejun Heo <tj@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
+Message-ID: <20240801-report-strukturiert-48470c1ac4e8@brauner>
+References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
+ <20240731145132.GC16718@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2024080111-poet-bok-e8d4@gregkh>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgBXzIIgJ6tmFQHHAQ--.55783S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxCrW5uryrCr13WFyUAFyxKrg_yoWrGF4kpF
-	W3KF4akrs5XrWUCanFv3WFqFy8tw4DAr43Xr1rJw18u3Z0vrZ7KF4fWr1F9a4DCry3W348
-	Wa4qgasFga4vva7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkEb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UAwI
-	DUUUUU=
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240731145132.GC16718@redhat.com>
 
-Hi,
-
-在 2024/08/01 13:01, Greg Kroah-Hartman 写道:
-> On Wed, Jul 31, 2024 at 09:43:58PM +0200, Mateusz Jończyk wrote:
->> W dniu 30.07.2024 o 17:49, Greg Kroah-Hartman pisze:
->>> 6.10-stable review patch.  If anyone has any objections, please let me know.
->>>
->>> ------------------
->>>
->>> From: Mateusz Jończyk <mat.jonczyk@o2.pl>
->>>
->>> commit 36a5c03f232719eb4e2d925f4d584e09cfaf372c upstream.
->>>
->>> Linux 6.9+ is unable to start a degraded RAID1 array with one drive,
->>> when that drive has a write-mostly flag set. During such an attempt,
->>> the following assertion in bio_split() is hit:
->>>
->>> 	BUG_ON(sectors <= 0);
->>>
->>> Call Trace:
->>> 	? bio_split+0x96/0xb0
->>> 	? exc_invalid_op+0x53/0x70
->>> 	? bio_split+0x96/0xb0
->>> 	? asm_exc_invalid_op+0x1b/0x20
->>> 	? bio_split+0x96/0xb0
->>> 	? raid1_read_request+0x890/0xd20
->>> 	? __call_rcu_common.constprop.0+0x97/0x260
->>> 	raid1_make_request+0x81/0xce0
->>> 	? __get_random_u32_below+0x17/0x70
->>> 	? new_slab+0x2b3/0x580
->>> 	md_handle_request+0x77/0x210
->>> 	md_submit_bio+0x62/0xa0
->>> 	__submit_bio+0x17b/0x230
->>> 	submit_bio_noacct_nocheck+0x18e/0x3c0
->>> 	submit_bio_noacct+0x244/0x670
->>>
->>> After investigation, it turned out that choose_slow_rdev() does not set
->>> the value of max_sectors in some cases and because of it,
->>> raid1_read_request calls bio_split with sectors == 0.
->>>
->>> Fix it by filling in this variable.
->>>
->>> This bug was introduced in
->>> commit dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from read_balance()")
->>> but apparently hidden until
->>> commit 0091c5a269ec ("md/raid1: factor out helpers to choose the best rdev from read_balance()")
->>> shortly thereafter.
->>>
->>> Cc: stable@vger.kernel.org # 6.9.x+
->>> Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
->>> Fixes: dfa8ecd167c1 ("md/raid1: factor out choose_slow_rdev() from read_balance()")
->>> Cc: Song Liu <song@kernel.org>
->>> Cc: Yu Kuai <yukuai3@huawei.com>
->>> Cc: Paul Luse <paul.e.luse@linux.intel.com>
->>> Cc: Xiao Ni <xni@redhat.com>
->>> Cc: Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
->>> Link: https://lore.kernel.org/linux-raid/20240706143038.7253-1-mat.jonczyk@o2.pl/
->>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>
->> Hello,
->>
->> FYI there is a second regression in Linux 6.9 - 6.11, which occurs with RAID
->> component devices with a write-mostly flag when a new device is added
->> to the array. (A write-mostly flag on a device specifies that the kernel is to
->> avoid reading from such a device, if possible. It is enabled only manually with
->> a mdadm command line switch and can be beneficial when devices are of
->> different speed). The kernel than reads from the wrong component device
->> before it is synced, which may result in data corruption.
->>
->> Link: https://lore.kernel.org/lkml/9952f532-2554-44bf-b906-4880b2e88e3a@o2.pl/T/
->>
->> This is not caused by this patch, but only linked by similar functions and the
->> write-mostly flag being involved in both cases. The issue is that without this
->> patch, the kernel will fail to start or keep running a RAID array with a single
->> write-mostly device and the user will not be able to add another device to it,
->> which triggered the second regression.
->>
->> Paul was of the opinion that this first patch should land nonetheless.
->> I would like you to decide whether to ship it now or defer it.
+On Wed, Jul 31, 2024 at 04:51:33PM GMT, Oleg Nesterov wrote:
+> On 07/31, Christian Brauner wrote:
+> >
+> > It's currently possible to create pidfds for kthreads but it is unclear
+> > what that is supposed to mean. Until we have use-cases for it and we
+> > figured out what behavior we want block the creation of pidfds for
+> > kthreads.
 > 
-> Is there a fix for this anywhere?  If not, being in sync with Linus's
-> tree is probably the best solution for now.
+> Hmm... could you explain your concerns? Why do you think we should disallow
+> pidfd_open(pid-of-kthread) ?
 
-The second regression is not related to this patch, and another fix
-should be applied to mainline and then backport to stable, hence this
-lts patch should be merged.
+It basically just works now and it's not intentional - at least not on
+my part. You can't send signals to them, you may or may not get notified
+via poll when a kthread exits. If we ever want this to be useful I would
+like to enable it explicitly.
 
-Thanks,
-Kuai
+Plus, this causes confusion in userspace. When you have qemu running
+with kvm support then kvm creates several kthreads (that inherit the
+cgroup of the calling process). If you try to kill those instances via
+systemctl kill or systemctl stop then pidfds for these kthreads are
+opened but sending a signal to them is meaningless.
 
+(So imho this causes more confusion then it is actually helpful. If we
+add supports for kthreads I'd also like pidfs to gain a way to identify
+them via statx() or fdinfo.)
+
+> > @@ -2403,6 +2416,12 @@ __latent_entropy struct task_struct *copy_process(
+> >  	if (clone_flags & CLONE_PIDFD) {
+> >  		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
+> >  
+> > +		/* Don't create pidfds for kernel threads for now. */
+> > +		if (args->kthread) {
+> > +			retval = -EINVAL;
+> > +			goto bad_fork_free_pid;
 > 
-> thanks,
-> 
-> greg k-h
-> .
-> 
+> Do we really need this check? Userspace can't use args->kthread != NULL,
+> the kernel users should not use CLONE_PIDFD.
 
+Yeah, I know. That's really just proactive so that user of e.g.,
+copy_process() such as vhost or so on don't start handing out pidfds for
+stuff without requring changes to the helper itself.
 
