@@ -1,74 +1,69 @@
-Return-Path: <stable+bounces-64966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA93D943D11
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:49:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 234B1943D14
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDB991C2204A
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:49:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BBE1B21365
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026DB156C4D;
-	Thu,  1 Aug 2024 00:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9D5157478;
+	Thu,  1 Aug 2024 00:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/YrvzGJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pcRwUBf+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AC613DDDD;
-	Thu,  1 Aug 2024 00:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BE0156F5B;
+	Thu,  1 Aug 2024 00:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471781; cv=none; b=b606v4mBtrbYzVaoF5t33OplK1Xy1Lk55bkYwSTgON3gP6Mf3DASGit//+ftmMbnmvmIRNRtO8T3TInpabPuNKG5LKSU8U53uRQ8uRArOah+j3IBbe7RmjR2fPzrxWyZ107XHuTf9RR06q19/SCKkuf6rRqY356Jz65PgpCF2p8=
+	t=1722471787; cv=none; b=fJ0ocxoPrU4C0MYBGAg03J1I9j1/ktOwff98Hk1NR+p+15rF1ardf2W9WQXGLGUxkskQrBjM2rlA+KYQmkg8P+t/sgm7GgbQd5FY09JbsHjDAdRyHCXwaCnnxyBNRdOtRfD7lFvFyoEpD3JXZHfpctcqCJ4X7XnChXDWy3Z+WR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471781; c=relaxed/simple;
-	bh=oN8h7yYj3znNgxFi3tx4IFtmd/cKtHRpvkD6FO0DkQY=;
+	s=arc-20240116; t=1722471787; c=relaxed/simple;
+	bh=5dv3H7JAxGTY9qF4NzFQWWyQru6NosY6yTo7xygdZMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YJAv1FdID1B7fFLG+jyMih00sodijfgj9OTWteXenY/HJOhLK0cQY+qfwIoe44hjDU+A/S3yeh+Ppy53nPZo39w35elTblkL86qlDeENqYSK09xUkskUvHCaW3aP+S2WEmGwICTAmmFQVF0M2T1FkuVJ/DtiIFjOkE3rvMqxkPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/YrvzGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE72C116B1;
-	Thu,  1 Aug 2024 00:22:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j44R9EhMR92iQfYBJtVSM2Bk+ghkETV8sfSfNpJ3VNe4cnpt2DmDjqE7DZUUIWuw/GlWguKB4udYA+bIbRU/5KnIAjzvbQ3rkjTK1NgK25UsaBnuEpXkoqGni/52ZDU0df/FNqQwAj7cZ/bN1k2kbR8/2Fyeh1xsWULq8ovOiYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pcRwUBf+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5591C32786;
+	Thu,  1 Aug 2024 00:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471781;
-	bh=oN8h7yYj3znNgxFi3tx4IFtmd/cKtHRpvkD6FO0DkQY=;
+	s=k20201202; t=1722471786;
+	bh=5dv3H7JAxGTY9qF4NzFQWWyQru6NosY6yTo7xygdZMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/YrvzGJd3v+7g9nl4eVPJ88WzlLzHo+V+kk2xPsbEAgk3ZVCj/hhEvV7gf/UUqyr
-	 VG26Vvl6kfY5+liHuaioJ0MG61LTT1tGJvn9UTtGaKCHz4nN+/LBg8OtD2sOFFIrKg
-	 XxEJK2PqumCCDj+U34EmQp26byz96kLbeLcYtI2slLPMKRAm7eq3GGWK2i8cLWMqj/
-	 8b19ftnUXzhvXAJu90VQq1oe2X7M3lKqP3Dm4MFIiyHQrA2db0gq+yw8210zOL6UoN
-	 w5MTr9BwiCc7Zt2sMHXfbOqSnQsao1EyqH2JhAclDNAXkC4Namy9WHxIM12QoXIW7g
-	 mdaTyhHOSWA3g==
+	b=pcRwUBf+hu2YNNsX7ME8A93meKcN3oT8eESOCDkS/E83GZO/0zGGc7eRjQYmJ2NDf
+	 cViAUKogpCO+95IO7h+20mdFvmj5nWaYWQjXmDcpXIHGlLxXApDhPnQxx+lGpP5Xvf
+	 eFyBW+LiwbTir8aU1GtGygEkScH8zX+/PbwGjZLHetJGJFWD4PLwchNIyghB8g+11q
+	 jQjGzetjjWmjUXjWPR0U/sjydbUSMosJzHT3X22Qx4u4mWK+AcDh/PqmYmwtO/5E+B
+	 x/1NjcLuZMsIeQEftLwOhGYVLnRJxrQ5D+0bCgGfoecw1CaYN1A1ltKCmR6BvERX2N
+	 V4mOJLXkBov/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hersen Wu <hersenxs.wu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+Cc: Asad Kamal <asad.kamal@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	alvin.lee2@amd.com,
-	chaitanya.dhere@amd.com,
-	wenjing.liu@amd.com,
+	Hawking.Zhang@amd.com,
+	mario.limonciello@amd.com,
+	candice.li@amd.com,
+	Jun.Ma2@amd.com,
+	victorchengchi.lu@amd.com,
+	andrealmeid@igalia.com,
 	hamza.mahfooz@amd.com,
-	sohaib.nadeem@amd.com,
-	samson.tam@amd.com,
-	Qingqing.Zhuo@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 20/83] drm/amd/display: Fix index may exceed array range within fpu_update_bw_bounding_box
-Date: Wed, 31 Jul 2024 20:17:35 -0400
-Message-ID: <20240801002107.3934037-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 21/83] drm/amd/amdgpu: Check tbo resource pointer
+Date: Wed, 31 Jul 2024 20:17:36 -0400
+Message-ID: <20240801002107.3934037-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -78,119 +73,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Asad Kamal <asad.kamal@amd.com>
 
-[ Upstream commit 188fd1616ec43033cedbe343b6579e9921e2d898 ]
+[ Upstream commit 6cd2b872643bb29bba01a8ac739138db7bd79007 ]
 
-[Why]
-Coverity reports OVERRUN warning. soc.num_states could
-be 40. But array range of bw_params->clk_table.entries is 8.
+Validate tbo resource pointer, skip if NULL
 
-[How]
-Assert if soc.num_states greater than 8.
-
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Asad Kamal <asad.kamal@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c | 10 ++++++++++
- drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c | 10 ++++++++++
- drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c   | 10 ++++++++++
- drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c | 10 ++++++++++
- 4 files changed, 40 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
-index e2bcd205aa936..8da97a96b1ceb 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn302/dcn302_fpu.c
-@@ -304,6 +304,16 @@ void dcn302_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
- 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
- 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index e1227b7c71b16..8c95b877155a3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4479,7 +4479,8 @@ static int amdgpu_device_recover_vram(struct amdgpu_device *adev)
+ 		shadow = vmbo->shadow;
  
-+		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
-+		 * MAX_NUM_DPM_LVL is 8.
-+		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
-+		 * DC__VOLTAGE_STATES is 40.
-+		 */
-+		if (num_states > MAX_NUM_DPM_LVL) {
-+			ASSERT(0);
-+			return;
-+		}
-+
- 		dcn3_02_soc.num_states = num_states;
- 		for (i = 0; i < dcn3_02_soc.num_states; i++) {
- 			dcn3_02_soc.clock_limits[i].state = i;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
-index 3eb3a021ab7d7..c283780ad0621 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn303/dcn303_fpu.c
-@@ -299,6 +299,16 @@ void dcn303_fpu_update_bw_bounding_box(struct dc *dc, struct clk_bw_params *bw_p
- 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
- 		}
- 
-+		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
-+		 * MAX_NUM_DPM_LVL is 8.
-+		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
-+		 * DC__VOLTAGE_STATES is 40.
-+		 */
-+		if (num_states > MAX_NUM_DPM_LVL) {
-+			ASSERT(0);
-+			return;
-+		}
-+
- 		dcn3_03_soc.num_states = num_states;
- 		for (i = 0; i < dcn3_03_soc.num_states; i++) {
- 			dcn3_03_soc.clock_limits[i].state = i;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index cf3b400c8619b..3d82cbef12740 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -2885,6 +2885,16 @@ void dcn32_update_bw_bounding_box_fpu(struct dc *dc, struct clk_bw_params *bw_pa
- 				dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
- 			}
- 
-+			/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
-+			 * MAX_NUM_DPM_LVL is 8.
-+			 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
-+			 * DC__VOLTAGE_STATES is 40.
-+			 */
-+			if (num_states > MAX_NUM_DPM_LVL) {
-+				ASSERT(0);
-+				return;
-+			}
-+
- 			dcn3_2_soc.num_states = num_states;
- 			for (i = 0; i < dcn3_2_soc.num_states; i++) {
- 				dcn3_2_soc.clock_limits[i].state = i;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
-index b26fcf86014c7..ae2196c36f218 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn321/dcn321_fpu.c
-@@ -789,6 +789,16 @@ void dcn321_update_bw_bounding_box_fpu(struct dc *dc, struct clk_bw_params *bw_p
- 			dram_speed_mts[num_states++] = bw_params->clk_table.entries[j++].memclk_mhz * 16;
- 		}
- 
-+		/* bw_params->clk_table.entries[MAX_NUM_DPM_LVL].
-+		 * MAX_NUM_DPM_LVL is 8.
-+		 * dcn3_02_soc.clock_limits[DC__VOLTAGE_STATES].
-+		 * DC__VOLTAGE_STATES is 40.
-+		 */
-+		if (num_states > MAX_NUM_DPM_LVL) {
-+			ASSERT(0);
-+			return;
-+		}
-+
- 		dcn3_21_soc.num_states = num_states;
- 		for (i = 0; i < dcn3_21_soc.num_states; i++) {
- 			dcn3_21_soc.clock_limits[i].state = i;
+ 		/* No need to recover an evicted BO */
+-		if (shadow->tbo.resource->mem_type != TTM_PL_TT ||
++		if (!shadow->tbo.resource ||
++		    shadow->tbo.resource->mem_type != TTM_PL_TT ||
+ 		    shadow->tbo.resource->start == AMDGPU_BO_INVALID_OFFSET ||
+ 		    shadow->parent->tbo.resource->mem_type != TTM_PL_VRAM)
+ 			continue;
 -- 
 2.43.0
 
