@@ -1,58 +1,73 @@
-Return-Path: <stable+bounces-64996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AF6943D61
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:57:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 647B0943D64
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 967F51F21C59
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:57:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CB882835BD
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2542B1C5E64;
-	Thu,  1 Aug 2024 00:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902D71C5E93;
+	Thu,  1 Aug 2024 00:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhgIxK6n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rp6zm/O5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE0E1411DE;
-	Thu,  1 Aug 2024 00:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5741C5E68;
+	Thu,  1 Aug 2024 00:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471878; cv=none; b=tZ0D5/jTeJfUeSKny8TyFxunC/R9B3Kvu21CQqREsqeJ8UpKx0/ipJoWjDvZFNaOEo5arf5O4MCqvFCjgDKrhntnYPVC0AvpaOb/6ZhtRkrINkg/kCC7el7m5fDVXpaEl4SKqypmPdUcVubf6Ub96mzG4OiJwa01oeGCxaeoEH4=
+	t=1722471884; cv=none; b=iDqKJ0GXdpUM275WF0cTSBmSF6KaWUKhZK2KtFOolacXZQv8tl0i4yNfcstO5h59emAAcJawnPC57z0upn7ledMKwMizf8cMf8RFIjOVm8uAz2cAtSUaBbPUi0Vq55nl08w/av52+w9rP12v1lhsJrjriZbj7A71NSfZs+HHFDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471878; c=relaxed/simple;
-	bh=jK++fEcjlrnuZogHA0A28gCg01sR5JP/w9DktcUETgY=;
+	s=arc-20240116; t=1722471884; c=relaxed/simple;
+	bh=33K2KQ2UCBY2K6eR3q27pBpmbJri+Oj+oWH2YTGzw2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CM1gJPdOjhNmhmq0kl944Tl97BjG0tfTyGloVWHTcaPB0tife3gz0NGmPN6Us+QdhWstGuP1HvjaRHZrthJXLsRFgDxzhWbLjj5hIaaikpFT3na1pE81HZOYXOcc0XTgpuIXrqeDo21vV5rx/QY6jWUXzHF5Kwa59TvIsPniQ60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhgIxK6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63845C4AF0C;
-	Thu,  1 Aug 2024 00:24:37 +0000 (UTC)
+	 MIME-Version; b=HZF1BkJCryQrvoKC5GJzAJxpauoLo61AvOhwHj97NwV04Ss7LrHlJ7H/fDStdkvo5UtdDRZ50/oZWPe2WX/16BPvjFmosiRU8UKmTKbvoBV8zu8VSGxBasOszW+wFU7+NtdxpR7XbyRzzASuehvIH9+/DSzDYCNvGok8FxoG7aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rp6zm/O5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51382C32786;
+	Thu,  1 Aug 2024 00:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471878;
-	bh=jK++fEcjlrnuZogHA0A28gCg01sR5JP/w9DktcUETgY=;
+	s=k20201202; t=1722471884;
+	bh=33K2KQ2UCBY2K6eR3q27pBpmbJri+Oj+oWH2YTGzw2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BhgIxK6nlffsAAtSgRgH/ro4x3w/x2rrBfkk81Lhhe8zes/4AOGfXTaIaYssQEBk9
-	 rjYfIcCkn+msfZMsED08TrglSrESTqeOjZsUmHJXffmSZ0vddFYOYLmJkBokn8YpEU
-	 XqQFvpuYp46dAqWJ4A5hu15gfFsa9RvZmT6/pDmFOjQE9qJabQnMV0O3Za+eQOcT/r
-	 syz+vxEaGgJqbIQ2uEBXSjhikzPgB3FgZX/2vqsG1WVG3Yn6LeNfZhc4KsBjStVIeb
-	 pfAW8zpNMVcJWcxRVxdfaJ73+4MbtGvJWg4T2UHHoAU+Uy34b4fMLNW7mhm6yz7myL
-	 hlCTHc0fGJNRg==
+	b=Rp6zm/O50hUO5j8+psm2Sohn9lZbWLXaYK9jfihfDlQ1UYjyOkH3n8VINCE2zFp/W
+	 OalwymPexHD0HZC+3AMHCEzhswP9o44l+1gGpI7Uvq9kMDxmhVjQ7oa7amHCmDaXxK
+	 PGEqLR7yl+oBVX1iUGfm7IQOZmJwnKGA+0dSvCFTgCgEE5NxNYQRI/DH46OYW6aIYB
+	 iZuH74MOTXSTZOeOZMvag4VZNjwB28lhmax775RkxvSnc7v5tR5Cn5Eow3v+DLp3/i
+	 Uw21u2TjiVFvmQth9bj5DifYt3DeGYKQ7BGnV5KZLtrhV0/TcUg65E0ITonIw1t8zc
+	 7EEe8u9WxTiWw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Julien Stephan <jstephan@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: winstang <winstang@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 50/83] driver: iio: add missing checks on iio_info's callback access
-Date: Wed, 31 Jul 2024 20:18:05 -0400
-Message-ID: <20240801002107.3934037-50-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	wenjing.liu@amd.com,
+	jun.lei@amd.com,
+	alex.hung@amd.com,
+	hamza.mahfooz@amd.com,
+	george.shen@amd.com,
+	dillon.varone@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.6 51/83] drm/amd/display: added NULL check at start of dc_validate_stream
+Date: Wed, 31 Jul 2024 20:18:06 -0400
+Message-ID: <20240801002107.3934037-51-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -67,172 +82,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Julien Stephan <jstephan@baylibre.com>
+From: winstang <winstang@amd.com>
 
-[ Upstream commit c4ec8dedca961db056ec85cb7ca8c9f7e2e92252 ]
+[ Upstream commit 26c56049cc4f1705b498df013949427692a4b0d5 ]
 
-Some callbacks from iio_info structure are accessed without any check, so
-if a driver doesn't implement them trying to access the corresponding
-sysfs entries produce a kernel oops such as:
+[Why]
+prevent invalid memory access
 
-[ 2203.527791] Unable to handle kernel NULL pointer dereference at virtual address 00000000 when execute
-[...]
-[ 2203.783416] Call trace:
-[ 2203.783429]  iio_read_channel_info_avail from dev_attr_show+0x18/0x48
-[ 2203.789807]  dev_attr_show from sysfs_kf_seq_show+0x90/0x120
-[ 2203.794181]  sysfs_kf_seq_show from seq_read_iter+0xd0/0x4e4
-[ 2203.798555]  seq_read_iter from vfs_read+0x238/0x2a0
-[ 2203.802236]  vfs_read from ksys_read+0xa4/0xd4
-[ 2203.805385]  ksys_read from ret_fast_syscall+0x0/0x54
-[ 2203.809135] Exception stack(0xe0badfa8 to 0xe0badff0)
-[ 2203.812880] dfa0:                   00000003 b6f10f80 00000003 b6eab000 00020000 00000000
-[ 2203.819746] dfc0: 00000003 b6f10f80 7ff00000 00000003 00000003 00000000 00020000 00000000
-[ 2203.826619] dfe0: b6e1bc88 bed80958 b6e1bc94 b6e1bcb0
-[ 2203.830363] Code: bad PC value
-[ 2203.832695] ---[ end trace 0000000000000000 ]---
+[How]
+check if dc and stream are NULL
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Link: https://lore.kernel.org/r/20240530-iio-core-fix-segfault-v3-1-8b7cd2a03773@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Co-authored-by: winstang <winstang@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: winstang <winstang@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-core.c  |  7 ++++++-
- drivers/iio/industrialio-event.c |  9 +++++++++
- drivers/iio/inkern.c             | 32 ++++++++++++++++++++++----------
- 3 files changed, 37 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 5e1a85ca12119..121bde49ccb7d 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -752,9 +752,11 @@ static ssize_t iio_read_channel_info(struct device *dev,
- 							INDIO_MAX_RAW_ELEMENTS,
- 							vals, &val_len,
- 							this_attr->address);
--	else
-+	else if (indio_dev->info->read_raw)
- 		ret = indio_dev->info->read_raw(indio_dev, this_attr->c,
- 				    &vals[0], &vals[1], this_attr->address);
-+	else
-+		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 84923c5400d32..733e445331ea5 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -3927,6 +3927,9 @@ void resource_build_bit_depth_reduction_params(struct dc_stream_state *stream,
  
- 	if (ret < 0)
- 		return ret;
-@@ -836,6 +838,9 @@ static ssize_t iio_read_channel_info_avail(struct device *dev,
- 	int length;
- 	int type;
- 
-+	if (!indio_dev->info->read_avail)
-+		return -EINVAL;
-+
- 	ret = indio_dev->info->read_avail(indio_dev, this_attr->c,
- 					  &vals, &type, &length,
- 					  this_attr->address);
-diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-index 19f7a91157ee4..f67e4afa5f94b 100644
---- a/drivers/iio/industrialio-event.c
-+++ b/drivers/iio/industrialio-event.c
-@@ -285,6 +285,9 @@ static ssize_t iio_ev_state_store(struct device *dev,
- 	if (ret < 0)
- 		return ret;
- 
-+	if (!indio_dev->info->write_event_config)
-+		return -EINVAL;
-+
- 	ret = indio_dev->info->write_event_config(indio_dev,
- 		this_attr->c, iio_ev_attr_type(this_attr),
- 		iio_ev_attr_dir(this_attr), val);
-@@ -300,6 +303,9 @@ static ssize_t iio_ev_state_show(struct device *dev,
- 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
- 	int val;
- 
-+	if (!indio_dev->info->read_event_config)
-+		return -EINVAL;
-+
- 	val = indio_dev->info->read_event_config(indio_dev,
- 		this_attr->c, iio_ev_attr_type(this_attr),
- 		iio_ev_attr_dir(this_attr));
-@@ -318,6 +324,9 @@ static ssize_t iio_ev_value_show(struct device *dev,
- 	int val, val2, val_arr[2];
- 	int ret;
- 
-+	if (!indio_dev->info->read_event_value)
-+		return -EINVAL;
-+
- 	ret = indio_dev->info->read_event_value(indio_dev,
- 		this_attr->c, iio_ev_attr_type(this_attr),
- 		iio_ev_attr_dir(this_attr), iio_ev_attr_info(this_attr),
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 7a1f6713318a3..b855565384757 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -562,6 +562,7 @@ EXPORT_SYMBOL_GPL(devm_iio_channel_get_all);
- static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
- 			    enum iio_chan_info_enum info)
+ enum dc_status dc_validate_stream(struct dc *dc, struct dc_stream_state *stream)
  {
-+	const struct iio_info *iio_info = chan->indio_dev->info;
- 	int unused;
- 	int vals[INDIO_MAX_RAW_ELEMENTS];
- 	int ret;
-@@ -573,15 +574,18 @@ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
- 	if (!iio_channel_has_info(chan->channel, info))
- 		return -EINVAL;
- 
--	if (chan->indio_dev->info->read_raw_multi) {
--		ret = chan->indio_dev->info->read_raw_multi(chan->indio_dev,
--					chan->channel, INDIO_MAX_RAW_ELEMENTS,
--					vals, &val_len, info);
-+	if (iio_info->read_raw_multi) {
-+		ret = iio_info->read_raw_multi(chan->indio_dev,
-+					       chan->channel,
-+					       INDIO_MAX_RAW_ELEMENTS,
-+					       vals, &val_len, info);
- 		*val = vals[0];
- 		*val2 = vals[1];
-+	} else if (iio_info->read_raw) {
-+		ret = iio_info->read_raw(chan->indio_dev,
-+					 chan->channel, val, val2, info);
- 	} else {
--		ret = chan->indio_dev->info->read_raw(chan->indio_dev,
--					chan->channel, val, val2, info);
-+		return -EINVAL;
- 	}
- 
- 	return ret;
-@@ -801,11 +805,15 @@ static int iio_channel_read_avail(struct iio_channel *chan,
- 				  const int **vals, int *type, int *length,
- 				  enum iio_chan_info_enum info)
- {
-+	const struct iio_info *iio_info = chan->indio_dev->info;
++	if (dc == NULL || stream == NULL)
++		return DC_ERROR_UNEXPECTED;
 +
- 	if (!iio_channel_has_available(chan->channel, info))
- 		return -EINVAL;
- 
--	return chan->indio_dev->info->read_avail(chan->indio_dev, chan->channel,
--						 vals, type, length, info);
-+	if (iio_info->read_avail)
-+		return iio_info->read_avail(chan->indio_dev, chan->channel,
-+					    vals, type, length, info);
-+	return -EINVAL;
- }
- 
- int iio_read_avail_channel_attribute(struct iio_channel *chan,
-@@ -995,8 +1003,12 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
- static int iio_channel_write(struct iio_channel *chan, int val, int val2,
- 			     enum iio_chan_info_enum info)
- {
--	return chan->indio_dev->info->write_raw(chan->indio_dev,
--						chan->channel, val, val2, info);
-+	const struct iio_info *iio_info = chan->indio_dev->info;
-+
-+	if (iio_info->write_raw)
-+		return iio_info->write_raw(chan->indio_dev,
-+					   chan->channel, val, val2, info);
-+	return -EINVAL;
- }
- 
- int iio_write_channel_attribute(struct iio_channel *chan, int val, int val2,
+ 	struct dc_link *link = stream->link;
+ 	struct timing_generator *tg = dc->res_pool->timing_generators[0];
+ 	enum dc_status res = DC_OK;
 -- 
 2.43.0
 
