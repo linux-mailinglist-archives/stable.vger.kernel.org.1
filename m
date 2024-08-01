@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-64897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F42943BE2
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:31:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 468FC943BE5
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C8301C20C7D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:31:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0CCB281B1A
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0087E1A0725;
-	Thu,  1 Aug 2024 00:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB381A2C18;
+	Thu,  1 Aug 2024 00:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UR17j6q5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFeOk97A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C771A0709;
-	Thu,  1 Aug 2024 00:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477DF1A2C03;
+	Thu,  1 Aug 2024 00:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471320; cv=none; b=TMqGHDha4L6AV4SA/4KTLe6BJ/BY6mazIL3jhO0nRT4luMxMwMPaRhcotwDkvvigBDAoce1bpVhzSOY6rT/u0M62GshvxKqZOi9eWB4gTyk9eo5mzz9y+7J5PKcBCQ6FsVk6n32rAItR4rm1pplV6IWeUX00ra/Rnutvc6ldqGw=
+	t=1722471322; cv=none; b=nYABnMnwH2AuqQ4ZwEzPiO8WdBwPRhTUAE4qIHTrR2k+QnctlWqHybuuaZwAK1EXMEudU1/zbVf1fZkzqhbthIOs8w+9gFwcpTCSNBOeZXc0I3aj0gtAiShXEkayTAoTGZU+AGm2sFsTEmCgsYsWgkGFZpL/n2f2sqlLIYZuO5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471320; c=relaxed/simple;
-	bh=rVoUFnLM61H4ARDswLT6GUbwPViK07YnUmJwC9YMPiA=;
+	s=arc-20240116; t=1722471322; c=relaxed/simple;
+	bh=v7SxaHk712SJkQcxYXR/E/V6XPOirmkRolJHxkrNSJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZrtCEE+J/93yCzsBJycoPbYImGUwp/axDXns5kmzMOarkD8L5yX5CP4JgklkYvG8W5Tt1ydaZZOxMQ56CNLpOu8XMoZne9qSt+e+pQnvScRda8okhYGSrYQVX3erO6b71K2jlSFH/MPw2duZyf2Lc13nszXA6plqfeLc5rZKpfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UR17j6q5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AE9C116B1;
-	Thu,  1 Aug 2024 00:15:19 +0000 (UTC)
+	 MIME-Version; b=W2M3hztofw3sWZGcOdDl/MKWu8g9mIX8cmYSGtv1KuoQTxnf2Jt58AOQPfNO4em0gW0vLLh0x0Vra1++gLBuSoMR/mIKMNTa1wABM082wYVsOOjp1L3bcKNnb2+VhrhM57BrWlLcHtHSmiwP4DSeU40R0WdZ+OssSFxgLibwbUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFeOk97A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1B5C4AF0C;
+	Thu,  1 Aug 2024 00:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471320;
-	bh=rVoUFnLM61H4ARDswLT6GUbwPViK07YnUmJwC9YMPiA=;
+	s=k20201202; t=1722471322;
+	bh=v7SxaHk712SJkQcxYXR/E/V6XPOirmkRolJHxkrNSJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UR17j6q5Q2ZeFmMZYxfiGO0S+dKXRMJgV7bh2sGyZArAyB00kMbX68jBjaPBuce/y
-	 YlgW/ZQV1LPSSxYZ3mfF0OnWQAyzdlF4IHXTzq9E6FtEuZSwcc0AIC68aO0vjGnYNv
-	 k2dm4aLIjwwnA5hWpMtx2kPCeXV/Gknghw869iS3vkJLmz9rz9Rwd3DJ6SPjJaA1ZN
-	 yMsRlsutBuV8f2Ettt2GRUE81d7O/tjSkFrPuQOrYvNcn1+VQj5vjuMusLPVcwhwhj
-	 XXpXDdFDiVSLQxim//kscBia2/+Gkwk35Mci2gKBsWdgseI/by9pLXkL+Dn2R7gYob
-	 j3OAOTb+TRyNQ==
+	b=UFeOk97AO/XcM+8bpnfmNGRVUpwEI+iFtTDrlD9WrOGXNcSGjSHKXgZcr4rRBkoEJ
+	 vfMPSdltcUAzwZnlzdhmtS07BC79gmceA83SoUEUwORR05SH7VV1zbEvXS5Jo/1/4C
+	 B5h7hDLDa9iBgoZORy6cMTVSHqLb0ui5xUJ5MC5sKov7CYdCodAVOB/BxB4wL0h9Wu
+	 3aMfqCktHSW8Wf474+YqmIyBtAdd0miH6IenIvFO73J/Tcr4XVDaqhEWbq+zqGxMC8
+	 vSeWYLvIzLXQE+b+O60bKCIzEFSOBC/eo8oy7pno8ZTx1AKzdpzKhkWtWmwQ4bqd4z
+	 NHXqQfwFO4lYA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
+Cc: Julien Stephan <jstephan@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 072/121] wifi: cfg80211: make hash table duplicates more survivable
-Date: Wed, 31 Jul 2024 20:00:10 -0400
-Message-ID: <20240801000834.3930818-72-sashal@kernel.org>
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 073/121] driver: iio: add missing checks on iio_info's callback access
+Date: Wed, 31 Jul 2024 20:00:11 -0400
+Message-ID: <20240801000834.3930818-73-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -70,128 +67,172 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Julien Stephan <jstephan@baylibre.com>
 
-[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
+[ Upstream commit c4ec8dedca961db056ec85cb7ca8c9f7e2e92252 ]
 
-Jiazi Li reported that they occasionally see hash table duplicates
-as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
-isn't clear how that happens, nor have I been able to reproduce it,
-but if it does happen, the kernel crashes later, when it tries to
-unhash the entry that's now not hashed.
+Some callbacks from iio_info structure are accessed without any check, so
+if a driver doesn't implement them trying to access the corresponding
+sysfs entries produce a kernel oops such as:
 
-Try to make this situation more survivable by removing the BSS from
-the list(s) as well, that way it's fully leaked here (as had been
-the intent in the hash insert error path), and no longer reachable
-through the list(s) so it shouldn't be unhashed again later.
+[ 2203.527791] Unable to handle kernel NULL pointer dereference at virtual address 00000000 when execute
+[...]
+[ 2203.783416] Call trace:
+[ 2203.783429]  iio_read_channel_info_avail from dev_attr_show+0x18/0x48
+[ 2203.789807]  dev_attr_show from sysfs_kf_seq_show+0x90/0x120
+[ 2203.794181]  sysfs_kf_seq_show from seq_read_iter+0xd0/0x4e4
+[ 2203.798555]  seq_read_iter from vfs_read+0x238/0x2a0
+[ 2203.802236]  vfs_read from ksys_read+0xa4/0xd4
+[ 2203.805385]  ksys_read from ret_fast_syscall+0x0/0x54
+[ 2203.809135] Exception stack(0xe0badfa8 to 0xe0badff0)
+[ 2203.812880] dfa0:                   00000003 b6f10f80 00000003 b6eab000 00020000 00000000
+[ 2203.819746] dfc0: 00000003 b6f10f80 7ff00000 00000003 00000003 00000000 00020000 00000000
+[ 2203.826619] dfe0: b6e1bc88 bed80958 b6e1bc94 b6e1bcb0
+[ 2203.830363] Code: bad PC value
+[ 2203.832695] ---[ end trace 0000000000000000 ]---
 
-Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Link: https://lore.kernel.org/r/20240530-iio-core-fix-segfault-v3-1-8b7cd2a03773@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ drivers/iio/industrialio-core.c  |  7 ++++++-
+ drivers/iio/industrialio-event.c |  9 +++++++++
+ drivers/iio/inkern.c             | 32 ++++++++++++++++++++++----------
+ 3 files changed, 37 insertions(+), 11 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 0222ede0feb60..39965cda04789 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1604,7 +1604,7 @@ struct cfg80211_bss *__cfg80211_get_bss(struct wiphy *wiphy,
- }
- EXPORT_SYMBOL(__cfg80211_get_bss);
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index fa7cc051b4c49..2f185b3869495 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -758,9 +758,11 @@ static ssize_t iio_read_channel_info(struct device *dev,
+ 							INDIO_MAX_RAW_ELEMENTS,
+ 							vals, &val_len,
+ 							this_attr->address);
+-	else
++	else if (indio_dev->info->read_raw)
+ 		ret = indio_dev->info->read_raw(indio_dev, this_attr->c,
+ 				    &vals[0], &vals[1], this_attr->address);
++	else
++		return -EINVAL;
  
--static void rb_insert_bss(struct cfg80211_registered_device *rdev,
-+static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
- 			  struct cfg80211_internal_bss *bss)
+ 	if (ret < 0)
+ 		return ret;
+@@ -842,6 +844,9 @@ static ssize_t iio_read_channel_info_avail(struct device *dev,
+ 	int length;
+ 	int type;
+ 
++	if (!indio_dev->info->read_avail)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->read_avail(indio_dev, this_attr->c,
+ 					  &vals, &type, &length,
+ 					  this_attr->address);
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index 910c1f14abd55..a64f8fbac597e 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -285,6 +285,9 @@ static ssize_t iio_ev_state_store(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
++	if (!indio_dev->info->write_event_config)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->write_event_config(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr), val);
+@@ -300,6 +303,9 @@ static ssize_t iio_ev_state_show(struct device *dev,
+ 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
+ 	int val;
+ 
++	if (!indio_dev->info->read_event_config)
++		return -EINVAL;
++
+ 	val = indio_dev->info->read_event_config(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr));
+@@ -318,6 +324,9 @@ static ssize_t iio_ev_value_show(struct device *dev,
+ 	int val, val2, val_arr[2];
+ 	int ret;
+ 
++	if (!indio_dev->info->read_event_value)
++		return -EINVAL;
++
+ 	ret = indio_dev->info->read_event_value(indio_dev,
+ 		this_attr->c, iio_ev_attr_type(this_attr),
+ 		iio_ev_attr_dir(this_attr), iio_ev_attr_info(this_attr),
+diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+index 485e6fc44a04c..39cf26d69d17a 100644
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -543,6 +543,7 @@ EXPORT_SYMBOL_GPL(devm_iio_channel_get_all);
+ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
+ 			    enum iio_chan_info_enum info)
  {
- 	struct rb_node **p = &rdev->bss_tree.rb_node;
-@@ -1620,7 +1620,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
++	const struct iio_info *iio_info = chan->indio_dev->info;
+ 	int unused;
+ 	int vals[INDIO_MAX_RAW_ELEMENTS];
+ 	int ret;
+@@ -554,15 +555,18 @@ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
+ 	if (!iio_channel_has_info(chan->channel, info))
+ 		return -EINVAL;
  
- 		if (WARN_ON(!cmp)) {
- 			/* will sort of leak this BSS */
--			return;
-+			return false;
- 		}
+-	if (chan->indio_dev->info->read_raw_multi) {
+-		ret = chan->indio_dev->info->read_raw_multi(chan->indio_dev,
+-					chan->channel, INDIO_MAX_RAW_ELEMENTS,
+-					vals, &val_len, info);
++	if (iio_info->read_raw_multi) {
++		ret = iio_info->read_raw_multi(chan->indio_dev,
++					       chan->channel,
++					       INDIO_MAX_RAW_ELEMENTS,
++					       vals, &val_len, info);
+ 		*val = vals[0];
+ 		*val2 = vals[1];
++	} else if (iio_info->read_raw) {
++		ret = iio_info->read_raw(chan->indio_dev,
++					 chan->channel, val, val2, info);
+ 	} else {
+-		ret = chan->indio_dev->info->read_raw(chan->indio_dev,
+-					chan->channel, val, val2, info);
++		return -EINVAL;
+ 	}
  
- 		if (cmp < 0)
-@@ -1631,6 +1631,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
- 
- 	rb_link_node(&bss->rbn, parent, p);
- 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
-+	return true;
- }
- 
- static struct cfg80211_internal_bss *
-@@ -1657,6 +1658,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
- 	return NULL;
- }
- 
-+static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
-+				struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	if (!rb_insert_bss(rdev, bss))
-+		return;
-+	list_add_tail(&bss->list, &rdev->bss_list);
-+	rdev->bss_entries++;
-+}
-+
-+static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
-+                                struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	rb_erase(&bss->rbn, &rdev->bss_tree);
-+	if (!rb_insert_bss(rdev, bss)) {
-+		list_del(&bss->list);
-+		if (!list_empty(&bss->hidden_list))
-+			list_del_init(&bss->hidden_list);
-+		if (!list_empty(&bss->pub.nontrans_list))
-+			list_del_init(&bss->pub.nontrans_list);
-+		rdev->bss_entries--;
-+	}
-+	rdev->bss_generation++;
-+}
-+
- static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
- 				   struct cfg80211_internal_bss *new)
+ 	return ret;
+@@ -750,11 +754,15 @@ static int iio_channel_read_avail(struct iio_channel *chan,
+ 				  const int **vals, int *type, int *length,
+ 				  enum iio_chan_info_enum info)
  {
-@@ -1969,9 +1998,7 @@ __cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 			bss_ref_get(rdev, bss_from_pub(tmp->pub.transmitted_bss));
- 		}
++	const struct iio_info *iio_info = chan->indio_dev->info;
++
+ 	if (!iio_channel_has_available(chan->channel, info))
+ 		return -EINVAL;
  
--		list_add_tail(&new->list, &rdev->bss_list);
--		rdev->bss_entries++;
--		rb_insert_bss(rdev, new);
-+		cfg80211_insert_bss(rdev, new);
- 		found = new;
- 	}
+-	return chan->indio_dev->info->read_avail(chan->indio_dev, chan->channel,
+-						 vals, type, length, info);
++	if (iio_info->read_avail)
++		return iio_info->read_avail(chan->indio_dev, chan->channel,
++					    vals, type, length, info);
++	return -EINVAL;
+ }
  
-@@ -3349,19 +3376,14 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
- 			rdev->bss_generation++;
- 	}
--
--	rb_erase(&cbss->rbn, &rdev->bss_tree);
--	rb_insert_bss(rdev, cbss);
--	rdev->bss_generation++;
-+	cfg80211_rehash_bss(rdev, cbss);
+ int iio_read_avail_channel_attribute(struct iio_channel *chan,
+@@ -917,8 +925,12 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
+ static int iio_channel_write(struct iio_channel *chan, int val, int val2,
+ 			     enum iio_chan_info_enum info)
+ {
+-	return chan->indio_dev->info->write_raw(chan->indio_dev,
+-						chan->channel, val, val2, info);
++	const struct iio_info *iio_info = chan->indio_dev->info;
++
++	if (iio_info->write_raw)
++		return iio_info->write_raw(chan->indio_dev,
++					   chan->channel, val, val2, info);
++	return -EINVAL;
+ }
  
- 	list_for_each_entry_safe(nontrans_bss, tmp,
- 				 &cbss->pub.nontrans_list,
- 				 nontrans_list) {
- 		bss = bss_from_pub(nontrans_bss);
- 		bss->pub.channel = chan;
--		rb_erase(&bss->rbn, &rdev->bss_tree);
--		rb_insert_bss(rdev, bss);
--		rdev->bss_generation++;
-+		cfg80211_rehash_bss(rdev, bss);
- 	}
- 
- done:
+ int iio_write_channel_attribute(struct iio_channel *chan, int val, int val2,
 -- 
 2.43.0
 
