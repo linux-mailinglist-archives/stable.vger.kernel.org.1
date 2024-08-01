@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-64915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F657943C4B
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B86A943C58
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB3D2B26FEA
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:36:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A026B2317F
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C251BE233;
-	Thu,  1 Aug 2024 00:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4601BE860;
+	Thu,  1 Aug 2024 00:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzYlhmMw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSSK+PqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5171BE22C;
-	Thu,  1 Aug 2024 00:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F931BE855;
+	Thu,  1 Aug 2024 00:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471416; cv=none; b=SsoNnBz/7AAdB2NP4JYSDFmTdcF8X64VU13IWO8mQYXxsxGkuIXWJQcc5wvrnTUzVot29ktOjjDX+WHelEznAVMIsLWzniNlgDSX4mpnqW5dbr8CiUXZGlUUTwGWVv/5O5n2/ZZNgFq7hy0KaWWlpqpj634FDHT+pALAlkapZG0=
+	t=1722471419; cv=none; b=TlBrNhIpzS3mNEK4/YRqJMN7sBM0k/ESjLs+2BsaaNKGpKQxhLWJkD2BfIxwEn8GfFJa4JUjw8ilv4fYbwfAEutAm+UeQLX7KR2NfpwZ85RpNIqTBrnTFOkHw91ih1EwluZh/JpltJQ3tPYDVtbmfqfDACZ7hD01sU3N9qLbqQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471416; c=relaxed/simple;
-	bh=5B3jDTKFbGnvLZkE4B5MYaNhqhyCTyrK6VP++3rLpEA=;
+	s=arc-20240116; t=1722471419; c=relaxed/simple;
+	bh=ESNMqqSSifGjTIF9jtKdskNaQNhl1748NcdFTZEQUts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXI/Z2w7iH/LLnqTIeM1IaForN5H9oy8X9OkTFCkVUQ4HM5LH8ZgsXtQIwRkA9as+ifZNVJ9pcJAHdj5JxJjuP6ffI9nwlo/B1Yq96Qwj9f83EwmF6wnBMVmkPCpiSv20lDS63wrAmh97TmqVEL03y+rSB5Lt4+ruRBw5hk/lPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzYlhmMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F9AC4AF0C;
-	Thu,  1 Aug 2024 00:16:54 +0000 (UTC)
+	 MIME-Version; b=NP0p5tWMNpaCQFkHbue7neTCT9dkrbsRE0IcaU08M35qbT5R2VCcwElxE3nCy/fjrZK9ExWhiVkygPbB647gQtSOmTQOfdU6i5Gg5m47Wb1acgxc2Ru6thkW6wD7pmt2QZ7ihvq1bs9If2hIjbVXomc09zZybhbMOxmBmOixC5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSSK+PqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FBFC4AF0C;
+	Thu,  1 Aug 2024 00:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471415;
-	bh=5B3jDTKFbGnvLZkE4B5MYaNhqhyCTyrK6VP++3rLpEA=;
+	s=k20201202; t=1722471418;
+	bh=ESNMqqSSifGjTIF9jtKdskNaQNhl1748NcdFTZEQUts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kzYlhmMwwRiq/l+siTKBMT7hdMGnFMyMoFooxFzCG2j2DMuHV+I+wBSfOSGbSPrjn
-	 ElXxpnxMLTl8XUhID3QNu3BWZYU3YgHb3rMF6Xfc5SRcpeiHE0Nl6mwdIfjvqkI2oK
-	 8orp6a14MG/0Gr44De0Ry47MK0BHrmlW3G9trSnsFMaQJh5y10zx0iYpPaht7ui1NB
-	 RJki4V44ZnuTuMsQxCiPpFrjEzqvAEZwaQ/D5RdvxCLBC5T39M8rqlFWQgfQT5K5PU
-	 WHbcnoXTBu6tviWTqQYKbuJ92FvEGuPYLTXT4/tvEwNzlJ6huaChtWuQkU0NoDovKf
-	 QwEw4+b8QY+VQ==
+	b=qSSK+PqOEtnOr8AY0NQWITQ8s01+ReSAKOs6EbCeGhMXehLS0urb1UWt5aARzlznH
+	 c7cEQpHWmPWG+QbRhLEL60RFOBq21EeczIkdHvDN42h7kQ2aoq6eiGT5zU2F6UaTCm
+	 7JU4mlJyGa4qbLvt/6esdWAKQVlYYdO2iD3NJBtkJhB/PbDFvnC8mE/lsykjayGGQq
+	 GpnCC6dpuNpukhv6nF6slKEzl92BKBtJIT7HLVNlfQNjqsc+IYOGFqFF9gbxc2pfZY
+	 WQOUhV4gKTMNIO4iI65//TeF+18+I/s44+qQ3wcJOiL86Q6q1GcE8Mo+9OOIMm9xNq
+	 OnO8tMwlJzVoQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexey Dobriyan <adobriyan@gmail.com>,
-	Kees Cook <kees@kernel.org>,
+Cc: Rakesh Ughreja <rughreja@habana.ai>,
+	Ofir Bitton <obitton@habana.ai>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH AUTOSEL 6.10 090/121] ELF: fix kernel.randomize_va_space double read
-Date: Wed, 31 Jul 2024 20:00:28 -0400
-Message-ID: <20240801000834.3930818-90-sashal@kernel.org>
+	ogabbay@kernel.org,
+	ttayar@habana.ai,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.10 091/121] accel/habanalabs/gaudi2: unsecure edma max outstanding register
+Date: Wed, 31 Jul 2024 20:00:29 -0400
+Message-ID: <20240801000834.3930818-91-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -68,47 +67,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Rakesh Ughreja <rughreja@habana.ai>
 
-[ Upstream commit 2a97388a807b6ab5538aa8f8537b2463c6988bd2 ]
+[ Upstream commit 3309887c6ff8ca2ac05a74e1ee5d1c44829f63f2 ]
 
-ELF loader uses "randomize_va_space" twice. It is sysctl and can change
-at any moment, so 2 loads could see 2 different values in theory with
-unpredictable consequences.
+Netowrk EDMAs uses more outstanding transfers so this needs to be
+programmed by EDMA firmware.
 
-Issue exactly one load for consistent value across one exec.
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Link: https://lore.kernel.org/r/3329905c-7eb8-400a-8f0a-d87cff979b5b@p183
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Rakesh Ughreja <rughreja@habana.ai>
+Reviewed-by: Ofir Bitton <obitton@habana.ai>
+Signed-off-by: Ofir Bitton <obitton@habana.ai>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/accel/habanalabs/gaudi2/gaudi2_security.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index a43897b03ce94..777405719de85 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1003,7 +1003,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 	if (elf_read_implies_exec(*elf_ex, executable_stack))
- 		current->personality |= READ_IMPLIES_EXEC;
- 
--	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
-+	const int snapshot_randomize_va_space = READ_ONCE(randomize_va_space);
-+	if (!(current->personality & ADDR_NO_RANDOMIZE) && snapshot_randomize_va_space)
- 		current->flags |= PF_RANDOMIZE;
- 
- 	setup_new_exec(bprm);
-@@ -1251,7 +1252,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 	mm->end_data = end_data;
- 	mm->start_stack = bprm->p;
- 
--	if ((current->flags & PF_RANDOMIZE) && (randomize_va_space > 1)) {
-+	if ((current->flags & PF_RANDOMIZE) && (snapshot_randomize_va_space > 1)) {
- 		/*
- 		 * For architectures with ELF randomization, when executing
- 		 * a loader directly (i.e. no interpreter listed in ELF
+diff --git a/drivers/accel/habanalabs/gaudi2/gaudi2_security.c b/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
+index 34bf80c5a44bf..307ccb912ccd6 100644
+--- a/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
++++ b/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
+@@ -479,6 +479,7 @@ static const u32 gaudi2_pb_dcr0_edma0_unsecured_regs[] = {
+ 	mmDCORE0_EDMA0_CORE_CTX_TE_NUMROWS,
+ 	mmDCORE0_EDMA0_CORE_CTX_IDX,
+ 	mmDCORE0_EDMA0_CORE_CTX_IDX_INC,
++	mmDCORE0_EDMA0_CORE_WR_COMP_MAX_OUTSTAND,
+ 	mmDCORE0_EDMA0_CORE_RD_LBW_RATE_LIM_CFG,
+ 	mmDCORE0_EDMA0_QM_CQ_CFG0_0,
+ 	mmDCORE0_EDMA0_QM_CQ_CFG0_1,
 -- 
 2.43.0
 
