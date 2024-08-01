@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-64945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D28A943CE7
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:45:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6187943CE4
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5027B28660
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:45:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75E5A1F2286C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F116721019A;
-	Thu,  1 Aug 2024 00:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A9D2101B7;
+	Thu,  1 Aug 2024 00:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jhq5/ivs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7G/NV8H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A1A14F119;
-	Thu,  1 Aug 2024 00:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF132101B2;
+	Thu,  1 Aug 2024 00:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471512; cv=none; b=S7WnJiVT6B9bSyaLEuDNG/GjPo/WjlJaTfKYmTBTKNQizb7hprKByBvRHIXBGiSeynuU6ooTSbyVJjCtGETMqRKN4bDg1TL/SXqXekIJLQ72Hi5ittBn95Liwq+uWXtK9P/TwV+ur6LEj+FqvDKsSHub60hJ8qa5EFvs/mKRueM=
+	t=1722471515; cv=none; b=hxF+RrpbXCzGUpyF9mFok0DMyglPjLRh6HPblQI8zGEjoRue5eErnqXUwuzi4O3vcFj84aBw37RkvTWuKiJsxKzwiQiyzeE5ukoQ/020A0gDDBwiRM1EQ6l34XPYh7Zu39LXtLiE5ZKZAg0yN/21Sx5DvZjNCombX5QLTl2mle0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471512; c=relaxed/simple;
-	bh=hdOKbkVaoeaSVYbEzNMA/7itCNviLJ6uECwRblaueAM=;
+	s=arc-20240116; t=1722471515; c=relaxed/simple;
+	bh=ufngkK1NW5FJJk3y562A9XzeMfpxXgZhI0+V1MKWuaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fY81wWdaFrCBXzbBWfMvyTUp0B/fH4kaOoXhtHNSy6aYgDw0IKFghGLzhmCw8ls2eqqFEv50erbz2WKjC7qR+LEx8z3fjx47JRe6VTyT14vlebOMBkWcPS1vQpd6qKuVcFFh0+7QwxanWri7RFwxlBrSjcQWBdCGYeYwxdfi/+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jhq5/ivs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37A2C116B1;
-	Thu,  1 Aug 2024 00:18:29 +0000 (UTC)
+	 MIME-Version; b=tJYnHSjKhHMMc0oXg/za0Sw0YK3QePSS3TYVBXWdN9vYA9zmo7K22cRXK5kBdE2h+prHmzY51MPL2D/Pdsgin4HyeJ0iHL7fscnoFw7Cz4CCvuBJDaQAasX2WCwErcCGqM5T4u6XHJDWDGaspYgulSRITaaZ00xCrrU3Nq9meno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7G/NV8H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4C2C32786;
+	Thu,  1 Aug 2024 00:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471511;
-	bh=hdOKbkVaoeaSVYbEzNMA/7itCNviLJ6uECwRblaueAM=;
+	s=k20201202; t=1722471514;
+	bh=ufngkK1NW5FJJk3y562A9XzeMfpxXgZhI0+V1MKWuaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jhq5/ivsEB42AYB43JNf37YEUGHjMos/bDow2VzGBOq/x2vc6pjvm5+QFBo1TOCyU
-	 c+GY0pWbYaYyI2NMpBtHiFfpgDMQenCYQb1RPEXWAEb2kRuvIbvozldHBU95UgcjyK
-	 Rvrq+ijoE/8OYx+T76PezN4RK7o0d9PwT+CbfUswgw4HYGN5h6XssPTFDovsObjk1w
-	 +DHZuEgkLgMpyCWIwLwsOaxhois0b/25lwXpSTz9yMYfUzMUYTkiYOK9zStf5NQGNc
-	 6Q+Jh9DHgYRArUaKi3Wg5VwKWJ9Eaz/Eah+1oq/y46BHQCdkn1XhNGsjp4QeI0CSrr
-	 hBu52GLfAZT1A==
+	b=j7G/NV8H0m6pohW4k5M+xOvZY6yUw57KaGchVXGP82P9+mxy0xi+mHoQQBcJfJcCt
+	 rUu0AD4mupo8/kB5XTohgVU4vVjn4ZMC/1xkNY7SKZteerqwebNaLpHzRno0wZDe1K
+	 tcMQqgDsPCCL7BZKmSLXMoD0Wt7qZGOgC9f7qvQ7YwSqr2CpbHX0/2b0nhMcqxbl6c
+	 MXifeW0UlhrIxQ1fuBLaui0p6QYfHp4BeyuWih5ibMKIAub95K9SzCbjpbOB2cMWUh
+	 7v/03cMSSexo8StIKOYHeaJFkT6Ugn6KoaYzuvG8XtnUjVubsW7aTReCm7iJwEWt0J
+	 4NBAx5Mf3Z7CA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dmantipov@yandex.ru,
-	linus.walleij@linaro.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 120/121] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
-Date: Wed, 31 Jul 2024 20:00:58 -0400
-Message-ID: <20240801000834.3930818-120-sashal@kernel.org>
+	kees@kernel.org,
+	gustavoars@kernel.org,
+	linux-i3c@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 121/121] i3c: mipi-i3c-hci: Error out instead on BUG_ON() in IBI DMA setup
+Date: Wed, 31 Jul 2024 20:00:59 -0400
+Message-ID: <20240801000834.3930818-121-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -69,110 +67,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit c145eea2f75ff7949392aebecf7ef0a81c1f6c14 ]
+[ Upstream commit 8a2be2f1db268ec735419e53ef04ca039fc027dc ]
 
-mwifiex_get_priv_by_id() returns the priv pointer corresponding to
-the bss_num and bss_type, but without checking if the priv is actually
-currently in use.
-Unused priv pointers do not have a wiphy attached to them which can
-lead to NULL pointer dereferences further down the callstack.  Fix
-this by returning only used priv pointers which have priv->bss_mode
-set to something else than NL80211_IFTYPE_UNSPECIFIED.
+Definitely condition dma_get_cache_alignment * defined value > 256
+during driver initialization is not reason to BUG_ON(). Turn that to
+graceful error out with -EINVAL.
 
-Said NULL pointer dereference happened when an Accesspoint was started
-with wpa_supplicant -i mlan0 with this config:
-
-network={
-        ssid="somessid"
-        mode=2
-        frequency=2412
-        key_mgmt=WPA-PSK WPA-PSK-SHA256
-        proto=RSN
-        group=CCMP
-        pairwise=CCMP
-        psk="12345678"
-}
-
-When waiting for the AP to be established, interrupting wpa_supplicant
-with <ctrl-c> and starting it again this happens:
-
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
-| Mem abort info:
-|   ESR = 0x0000000096000004
-|   EC = 0x25: DABT (current EL), IL = 32 bits
-|   SET = 0, FnV = 0
-|   EA = 0, S1PTW = 0
-|   FSC = 0x04: level 0 translation fault
-| Data abort info:
-|   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-|   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-| user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
-| [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
-| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-| Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
-+mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
-+imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
-| CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
-| Hardware name: somemachine (DT)
-| Workqueue: events sdio_irq_work
-| pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-| pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-| lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
-| sp : ffff8000818b3a70
-| x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
-| x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
-| x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
-| x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
-| x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
-| x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
-| x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
-| x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
-| x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
-| x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
-| Call trace:
-|  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-|  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
-|  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
-|  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
-|  mwifiex_process_event+0x110/0x238 [mwifiex]
-|  mwifiex_main_process+0x428/0xa44 [mwifiex]
-|  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
-|  process_sdio_pending_irqs+0x64/0x1b8
-|  sdio_irq_work+0x4c/0x7c
-|  process_one_work+0x148/0x2a0
-|  worker_thread+0x2fc/0x40c
-|  kthread+0x110/0x114
-|  ret_from_fork+0x10/0x20
-| Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
-| ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240703072409.556618-1-s.hauer@pengutronix.de
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20240628131559.502822-3-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index 175882485a195..c5164ae41b547 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.h
-+++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -1287,6 +1287,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 4e01a95cc4d0a..1a96bf5a0bf87 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -294,7 +294,10 @@ static int hci_dma_init(struct i3c_hci *hci)
  
- 	for (i = 0; i < adapter->priv_num; i++) {
- 		if (adapter->priv[i]) {
-+			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
-+				continue;
-+
- 			if ((adapter->priv[i]->bss_num == bss_num) &&
- 			    (adapter->priv[i]->bss_type == bss_type))
- 				break;
+ 		rh->ibi_chunk_sz = dma_get_cache_alignment();
+ 		rh->ibi_chunk_sz *= IBI_CHUNK_CACHELINES;
+-		BUG_ON(rh->ibi_chunk_sz > 256);
++		if (rh->ibi_chunk_sz > 256) {
++			ret = -EINVAL;
++			goto err_out;
++		}
+ 
+ 		ibi_status_ring_sz = rh->ibi_status_sz * rh->ibi_status_entries;
+ 		ibi_data_ring_sz = rh->ibi_chunk_sz * rh->ibi_chunks_total;
 -- 
 2.43.0
 
