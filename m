@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-64938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84A5943CCE
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:43:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CE0943CD1
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15C8C1C20DEC
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:43:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E48F1F21DC8
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF67200134;
-	Thu,  1 Aug 2024 00:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B34201253;
+	Thu,  1 Aug 2024 00:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDKuuAT3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUOH9RY8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC8020012A;
-	Thu,  1 Aug 2024 00:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A958D20124B;
+	Thu,  1 Aug 2024 00:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471499; cv=none; b=M4/7upbAqR34F1PfTbFArdHkPQ2p7Ec/EKegiPNjDK41yT2kd7WlD/4FAhFOV0OjsnnrOZwbI4RkBzQAiOzBtr55H0h7ZmgVP1ryT395ufU9tFlN27dYNKFQm9DAOa9fFBWpgMHlZkToR5RuUI8vkiYZhAgxJBCTpfqywKC3+2Y=
+	t=1722471500; cv=none; b=uoJ0C+dnFDz+jKcd1/J/owCiLNzq+NIvx+ztWJ5u/Pmp66BiM9WOP5HO9jRAw/uxJ+lm/Jx4vU5CsbSC4rEw58Ib4Qy0mPr9ffUqny1ekIEtUpoULzdphlaU2Ir/VotYjIt2eCBTcjjaF5t7JKjWa9sFRq9bOjPXZiU7mkRawaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471499; c=relaxed/simple;
-	bh=l9NLnbXp66CIG7hLL4iBUYawhXlpWD5GfOxrLUoG+Vg=;
+	s=arc-20240116; t=1722471500; c=relaxed/simple;
+	bh=uBph3efFG9HrQy6rP0uFdUZbaR0H4P06F2wEw3Aha88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZ3gvrOfQqfttY/yw48ACSOW9eKmqmoUkBV3htpGjvHbyKOROuD01B6i6aypGZlLChGg1INgC+WD7IJXK9H6J1FQv/M7Mpq2tsaX4vb8SioQpaLRxSLq24l/sJI/YKSeYRSB5xFaEsy5YiRzJU1exQPbADssbO3OEJbsTFlTdw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDKuuAT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E9BC4AF0F;
-	Thu,  1 Aug 2024 00:18:17 +0000 (UTC)
+	 MIME-Version; b=hxHoNEecMa0n9TANHskmBJijWPBs4JwQX9oDezroPVoexJ0qJ+2hj09JA4dPr0RoSdhcRZuol7QzCIq6Sf5B+3iQ+PgaqZFEzTvdKYYA0gPiMWKoFWLEoRsRFCuNrBdJ/J6enOEFPZMli/G7W89Lkk1ZbQ8iLOfYoSF3U6x8fVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUOH9RY8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AFBC116B1;
+	Thu,  1 Aug 2024 00:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471499;
-	bh=l9NLnbXp66CIG7hLL4iBUYawhXlpWD5GfOxrLUoG+Vg=;
+	s=k20201202; t=1722471500;
+	bh=uBph3efFG9HrQy6rP0uFdUZbaR0H4P06F2wEw3Aha88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDKuuAT3psuytobhsUWSjyllLqjSK8wx7FRhaocNUv0B37zIYw6KSDk66r5B4BoVb
-	 bSq3uAb+53Hh76c1wa48ISsM1YR8yCjYBpaAoAlfwsPm9eX7vqoyQ9vIyfWgMYu+ih
-	 +KkD58CVYBHGLSvke4l9HChFiaMDiJ/hNd+krMF1IVWco1U16DfK0sdAORVbIQjIAa
-	 mAFxxUcXSL7WYXS0sU1OqY0PC3tgc0SEYTO2EGxwMcmceOWeYVruvYbpTkiqVJ/gyC
-	 S9swM546prxGDt+XtIAROsW/079kfaiTips7IBxwnu7NNurdV/A0ch8LL4mm6Y3CXi
-	 zjwuz6rVz286g==
+	b=VUOH9RY8y/IU2eX0hdCsxmDsTkS/YWlUTQIW3exDkImuW9daGzVX1eoI2H31Tej26
+	 yVr627jOAv8LYnH1WNgMV96wg7ozb14MQ2Oyko28IcUx8ouIg61cu1nMpfQ9tqdBN6
+	 KW+l6edfMXjaFSTXOknjXQ7t2A5LMC0dazDRB4q4R71JTWcRsn0eg4dMgVvXzzDca5
+	 aOAdrZcVLRz8Jihz9GIF0T5Ju+SVdLKzA6UlJ6RhANRwWiIdU3XMPRYRhk6v9rkhL4
+	 4blN5Q4v35ceyTQHJEK52eXg2c7JgG7mj3JNZh3bOdxmqcT4qF2GqRvWuFOUtZS5oW
+	 2e6FU3xoDaPQQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Igor Pylypiv <ipylypiv@google.com>,
-	Terrence Adams <tadamsjr@google.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
+Cc: Christoph Hellwig <hch@lst.de>,
 	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	jinpu.wang@cloud.ionos.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 113/121] scsi: pm80xx: Set phy->enable_completion only when we wait for it
-Date: Wed, 31 Jul 2024 20:00:51 -0400
-Message-ID: <20240801000834.3930818-113-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 114/121] block: factor out a blk_write_zeroes_limit helper
+Date: Wed, 31 Jul 2024 20:00:52 -0400
+Message-ID: <20240801000834.3930818-114-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -69,64 +66,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit e4f949ef1516c0d74745ee54a0f4882c1f6c7aea ]
+[ Upstream commit 73a768d5f95533574bb8ace34eb683a88c40509e ]
 
-pm8001_phy_control() populates the enable_completion pointer with a stack
-address, sends a PHY_LINK_RESET / PHY_HARD_RESET, waits 300 ms, and
-returns. The problem arises when a phy control response comes late.  After
-300 ms the pm8001_phy_control() function returns and the passed
-enable_completion stack address is no longer valid. Late phy control
-response invokes complete() on a dangling enable_completion pointer which
-leads to a kernel crash.
+Contrary to the comment in __blkdev_issue_write_zeroes, nothing here
+checks for a potential bi_size overflow.  Add a helper mirroring
+the secure erase code for the check.
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Terrence Adams <tadamsjr@google.com>
-Link: https://lore.kernel.org/r/20240627155924.2361370-2-tadamsjr@google.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20240701165219.1571322-6-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ block/blk-lib.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index a5a31dfa45122..ee2da8e49d4cf 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -166,7 +166,6 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 	unsigned long flags;
- 	pm8001_ha = sas_phy->ha->lldd_ha;
- 	phy = &pm8001_ha->phy[phy_id];
--	pm8001_ha->phy[phy_id].enable_completion = &completion;
+diff --git a/block/blk-lib.c b/block/blk-lib.c
+index 442da9dad0421..297bcf6896930 100644
+--- a/block/blk-lib.c
++++ b/block/blk-lib.c
+@@ -103,24 +103,28 @@ int blkdev_issue_discard(struct block_device *bdev, sector_t sector,
+ }
+ EXPORT_SYMBOL(blkdev_issue_discard);
  
- 	if (PM8001_CHIP_DISP->fatal_errors(pm8001_ha)) {
- 		/*
-@@ -190,6 +189,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 				rates->maximum_linkrate;
- 		}
- 		if (pm8001_ha->phy[phy_id].phy_state ==  PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -198,6 +198,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 		break;
- 	case PHY_FUNC_HARD_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -206,6 +207,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 		break;
- 	case PHY_FUNC_LINK_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
++static sector_t bio_write_zeroes_limit(struct block_device *bdev)
++{
++	sector_t bs_mask = (bdev_logical_block_size(bdev) >> 9) - 1;
++
++	return min(bdev_write_zeroes_sectors(bdev),
++		(UINT_MAX >> SECTOR_SHIFT) & ~bs_mask);
++}
++
+ static int __blkdev_issue_write_zeroes(struct block_device *bdev,
+ 		sector_t sector, sector_t nr_sects, gfp_t gfp_mask,
+ 		struct bio **biop, unsigned flags)
+ {
+ 	struct bio *bio = *biop;
+-	unsigned int max_sectors;
+ 
+ 	if (bdev_read_only(bdev))
+ 		return -EPERM;
+-
+-	/* Ensure that max_sectors doesn't overflow bi_size */
+-	max_sectors = bdev_write_zeroes_sectors(bdev);
+-
+-	if (max_sectors == 0)
++	if (!bdev_write_zeroes_sectors(bdev))
+ 		return -EOPNOTSUPP;
+ 
+ 	while (nr_sects) {
+-		unsigned int len = min_t(sector_t, nr_sects, max_sectors);
++		unsigned int len = min_t(sector_t, nr_sects,
++				bio_write_zeroes_limit(bdev));
+ 
+ 		bio = blk_next_bio(bio, bdev, 0, REQ_OP_WRITE_ZEROES, gfp_mask);
+ 		bio->bi_iter.bi_sector = sector;
 -- 
 2.43.0
 
