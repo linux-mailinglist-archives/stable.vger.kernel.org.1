@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-64932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD4A943CBB
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:41:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BB6943CBE
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99FA8B24206
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:41:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C4CD2899A8
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303CC1CB31C;
-	Thu,  1 Aug 2024 00:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CBA1CB339;
+	Thu,  1 Aug 2024 00:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeQx1zWg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="alIHr3GT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9AF1CB317;
-	Thu,  1 Aug 2024 00:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AC31CB32E;
+	Thu,  1 Aug 2024 00:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471488; cv=none; b=Viwnc2vulSs0ojiDcjK67hTH0CvY2iwSXng8uaq6qJ8pYIhghHrmlbgR8tlohcTihk1GwPGZ9LJ9hwz7fjeDGE/cvPlc/1pjPzvARF7K8AJ4lKb68VF3HIyfgM8WlHEGegnon/arpsEl0VLd+yO4xINeJFOsA56k1VchjyTqEX0=
+	t=1722471488; cv=none; b=HRlYBGQ93AjC69bVwF2W0fPPA/VtTZND/b/PjE1ItDQe41Uisrj3ykioy3YonLlomaYjbNt2v4V38Iw0fg37vyWsudW6xhNBTMUbfYaKKguWLc4ncMDfheIS4Wc6GOs+aWnDc2vFuG34y3IRauobPEnFeBgf42szEuDRbBjmNpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1722471488; c=relaxed/simple;
-	bh=MyxFag4pLvPdYkUcDlgL1xkABfBZqiGJ1mTFCb2NG5Y=;
+	bh=ZlkbVzx6o60TnUXN4lglQyzQ70Wm8UYEBaVCsEAlAJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BUKmXvRnlPd9BG4qNSOjWpcFa5O1Ojg7aYRQ8ddWxSuEWkkATCOJNybg4gnpNazGcWo6WVd+iTFK88ZDB1vJ8fxBcLlMdGKSuZlW+txcCUpBY0kHH90B4HKm6VF4z1/KJ6VQngpwnZCSuaMl13ppzE3T5Zr1Pl/aOSOw1LmoqBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GeQx1zWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202CDC116B1;
-	Thu,  1 Aug 2024 00:18:06 +0000 (UTC)
+	 MIME-Version; b=EDtgE6tBk/SG1yLJxVGTMAep3xDzbUjrmw+drZ1h1INFEXmcfxBETmdABjDDtHeoatMOfUVfahk8HrUSzyPNxVFlDkG/5cRvMAAja6X0nKNTnxQOoGNa/pP73AJ+/QViumRS98oO7FpGoOsPF3/woCGscpEXSgfvl+m/fV6tj/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=alIHr3GT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DD9C32786;
+	Thu,  1 Aug 2024 00:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471487;
-	bh=MyxFag4pLvPdYkUcDlgL1xkABfBZqiGJ1mTFCb2NG5Y=;
+	s=k20201202; t=1722471488;
+	bh=ZlkbVzx6o60TnUXN4lglQyzQ70Wm8UYEBaVCsEAlAJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GeQx1zWg7F4z6ACwOJV2O3bQdPZB9Yi/Iwbj4tQfvGRdIlcc1rXKWliBl4pE5NJCh
-	 8hPPa2Hj4/o5vypYKPlp8NqP3Q5wtEVQ4IVDjucB7SS2/vwmijv/i+XymojPp8Jiz2
-	 IT/CQoUqnQKO6SfcxyMSkj9s3QeFIoNBREFXy8NHj1disVnmcCC9JiITRy2rwDciX5
-	 6bFDRIT6yQm/7PeAHG0AVVYNg2KT6jkSzzBcmO/Ta1v1GYEZWr4bPqQaZhjM+RoIrU
-	 nsgKi65w1dTeiVs4SSoly1MxFImFb7Ne1WGCu7D51F3NPKk+ZJyGhP4enyzyk9OTzO
-	 nsqRzqa7/I7yQ==
+	b=alIHr3GTaLzuma8NjnEG5RGDQUC7dlaq3WamkvHUF1vbes4i+WxaVsp4w6NEmlHFT
+	 cJCQmXgYA+Art5j4bipPiqD2nl2bvtU5RgQ4KwNSvRXM0wvuSqRPL8iT5BCACO3wef
+	 nHh32ZIXKBTBUkSF6mP/QVDbkQYM30kARMVdfloWS6Lzkpth6zwuvnUd6NxsFVCUAJ
+	 Kxupflgd6HCEeuM3dWrPMwmab7c9Sdv1/NFtvyvc/tftuc69T0fbbiQcNYaiew5iGa
+	 voNWydGWz4eM7rm3b0f78Ul9zokeT4zMxtTTp1FwvcBO/hC5a9YDjowtdqhBvwTRaW
+	 fNkjf/u0/ArLQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Sasha Levin <sashal@kernel.org>,
-	richard@nod.at,
-	johannes@sipsolutions.net,
-	jirislaby@kernel.org,
-	gregkh@linuxfoundation.org,
-	roberto.sassu@huawei.com,
-	benjamin@sipsolutions.net,
-	linux-um@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 107/121] um: line: always fill *error_out in setup_one_line()
-Date: Wed, 31 Jul 2024 20:00:45 -0400
-Message-ID: <20240801000834.3930818-107-sashal@kernel.org>
+Cc: Zijun Hu <quic_zijuhu@quicinc.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 108/121] devres: Initialize an uninitialized struct member
+Date: Wed, 31 Jul 2024 20:00:46 -0400
+Message-ID: <20240801000834.3930818-108-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -71,42 +64,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 824ac4a5edd3f7494ab1996826c4f47f8ef0f63d ]
+[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
 
-The pointer isn't initialized by callers, but I have
-encountered cases where it's still printed; initialize
-it in all possible cases in setup_one_line().
+Initialize an uninitialized struct member for driver API
+devres_open_group().
 
-Link: https://patch.msgid.link/20240703172235.ad863568b55f.Iaa1eba4db8265d7715ba71d5f6bb8c7ff63d27e9@changeid
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/line.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/base/devres.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/um/drivers/line.c b/arch/um/drivers/line.c
-index d82bc3fdb86e7..43d8959cc746f 100644
---- a/arch/um/drivers/line.c
-+++ b/arch/um/drivers/line.c
-@@ -383,6 +383,7 @@ int setup_one_line(struct line *lines, int n, char *init,
- 			parse_chan_pair(NULL, line, n, opts, error_out);
- 			err = 0;
- 		}
-+		*error_out = "configured as 'none'";
- 	} else {
- 		char *new = kstrdup(init, GFP_KERNEL);
- 		if (!new) {
-@@ -406,6 +407,7 @@ int setup_one_line(struct line *lines, int n, char *init,
- 			}
- 		}
- 		if (err) {
-+			*error_out = "failed to parse channel pair";
- 			line->init_str = NULL;
- 			line->valid = 0;
- 			kfree(new);
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index 3df0025d12aa4..3beedeaa0ffca 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -567,6 +567,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
+ 	grp->id = grp;
+ 	if (id)
+ 		grp->id = id;
++	grp->color = 0;
+ 
+ 	spin_lock_irqsave(&dev->devres_lock, flags);
+ 	add_dr(dev, &grp->node[0]);
 -- 
 2.43.0
 
