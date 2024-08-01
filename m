@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-65040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9093B943DC4
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:08:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1495D943DCF
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0DF11C21DCB
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:08:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30D22B26CB1
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908D418952E;
-	Thu,  1 Aug 2024 00:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B89189B80;
+	Thu,  1 Aug 2024 00:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HrbnUyOi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s5qQoyaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBAC1494B3;
-	Thu,  1 Aug 2024 00:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11F61494B3;
+	Thu,  1 Aug 2024 00:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472135; cv=none; b=fzw7+/NmE7r42oPKdQYZmaIUP28vIJjVhr39osCtzku9Fskhzs9l74Zovln1TALGKftnFOwOIArWclHhvCIKe0Sl+PzgFNmvu03KQH6OZMGIWP4vKv888YRUkCVDquzSUsCIlBFruTGpQT+VMNQCTwFQfQdZlzi6wmL6EiEtbcs=
+	t=1722472139; cv=none; b=tD68Yfglhc9NXCFalUyq494EOUhMWGscS2+8c+sbocUcOiLL9IcJOeXQk4++Xvp0qxZoCdO9r932USBynR3KCeQolGl51jJDPd573U7UqdJunSkUODiWsgenlce2MAitmlmfPcHoo8WSsDfKlH3WqnFEIrCkIIUe5Q42ipzgfRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472135; c=relaxed/simple;
-	bh=snnPO8GLX3D7Eq+joehxfeEUxyBZ7azPh1/Vs4yuTVs=;
+	s=arc-20240116; t=1722472139; c=relaxed/simple;
+	bh=8Cx5YxP0p8yCWtM9LldCAc2RHlHB0BD+5/0AT9HxaVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnhtM0JYYbOrnwfH4csMp1camSWIrsqJ71mw2uppU6CVT5dve6SU8otFopA1j+CvlBV7QAdZpfxkZCrACyP/jSW0aV6gXv3fFCLAIqs3PdRo1QPe0XnnFF50yNM1FqknZjnm4O7+V999ljqaUA60/EgSm3Le3xmms2hKi3GpXHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HrbnUyOi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0761DC116B1;
-	Thu,  1 Aug 2024 00:28:52 +0000 (UTC)
+	 MIME-Version; b=n+5lidSmfwXPeAzJsVUiS9buVNbIM4P1/4osLJH+7QJo/XZN8hj0yhAsodm8i6l5KQ0/qKLZcmfmcm8Vrr1xOaoffMJ2Ksjo/QF/aeFtNgkSEGfoLzGt9Rhw3ftiC9TmtpZldvaJeAIbozY5J+iycMCCdvrx43277e/0/l/GYC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s5qQoyaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53153C4AF0F;
+	Thu,  1 Aug 2024 00:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472134;
-	bh=snnPO8GLX3D7Eq+joehxfeEUxyBZ7azPh1/Vs4yuTVs=;
+	s=k20201202; t=1722472139;
+	bh=8Cx5YxP0p8yCWtM9LldCAc2RHlHB0BD+5/0AT9HxaVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HrbnUyOiY94lDA68WU0O2DmYGc3N6c3IvTS2UgenTTgGUPFTQhRE5hriiqrABQPX4
-	 5ByTSqaY4bL6FIEEw5m7EtkhVtqRc4jlPrSwtCS0O2AJMBd6b6y2ltlRGBEZYMEF2E
-	 6ABSntG5c300BvhuFTAscmUvEYQdnH1pZVRunCgK5X6uVDEwBkGyrCICh7JscAbwaK
-	 rAuQIMkwM7c4NRieXisT/9nJmJHdRmstZ9QHJTnJbdkDU11Dmuuv4B5xz/PFm1QFwD
-	 323DFtBrM/pI/emiT3aLb5/57FK0wnQj4clMDPb+XVpyoFPeebtlDw+ifXCpzy1qgE
-	 uvCBz3q2FKpAA==
+	b=s5qQoyaIMNknPqxhdiAwkd5QrFQxrvUl7McWIIUHuvPooTJKlUMwtobIutNJKck1c
+	 Gl7vdIg3lglJim/ZhfJf5LugNxQvcb0ookV7HL+3omEAFwYQup/uO7dwQivyLYgb+2
+	 SiA4tUQrJ1/N66PE3QPkw5ZM2S68xvAHc+fX02T+3f5cUSWkO5WXaRDruiCAkW7EFd
+	 vrtd6yq78gNc0W3/31UjkAY3E3kVt2OZ+7PwQnD8LgoMadV0rmiipeYh5BJdyAuasq
+	 meGjV97gia38mZsemYmw2JJ3lq7UDcB/yPZi+tfUwuew6QTvEkgX7RWdDHe3xKvJi1
+	 0geOpzEtdWYhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
+Cc: Hersen Wu <hersenxs.wu@amd.com>,
 	Harry Wentland <harry.wentland@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
@@ -56,11 +56,12 @@ Cc: Alex Hung <alex.hung@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
+	alex.hung@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 11/61] drm/amd/display: Check msg_id before processing transcation
-Date: Wed, 31 Jul 2024 20:25:29 -0400
-Message-ID: <20240801002803.3935985-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 12/61] drm/amd/display: Fix Coverity INTEGER_OVERFLOW within dal_gpio_service_create
+Date: Wed, 31 Jul 2024 20:25:30 -0400
+Message-ID: <20240801002803.3935985-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -75,66 +76,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit fa71face755e27dc44bc296416ebdf2c67163316 ]
+[ Upstream commit c6077aa66fa230d12f37fef01161ef080d13b726 ]
 
-[WHY & HOW]
-HDCP_MESSAGE_ID_INVALID (-1) is not a valid msg_id nor is it a valid
-array index, and it needs checking before used.
+[Why]
+For subtraction, coverity reports integer overflow
+warning message when variable type is uint32_t.
 
-This fixes 4 OVERRUN issues reported by Coverity.
+[How]
+Change variable type to int32_t.
 
 Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
-index 4233955e3c47b..c9851492ec84a 100644
---- a/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
-+++ b/drivers/gpu/drm/amd/display/dc/hdcp/hdcp_msg.c
-@@ -131,13 +131,21 @@ static bool hdmi_14_process_transaction(
- 	const uint8_t hdcp_i2c_addr_link_primary = 0x3a; /* 0x74 >> 1*/
- 	const uint8_t hdcp_i2c_addr_link_secondary = 0x3b; /* 0x76 >> 1*/
- 	struct i2c_command i2c_command;
--	uint8_t offset = hdcp_i2c_offsets[message_info->msg_id];
-+	uint8_t offset;
- 	struct i2c_payload i2c_payloads[] = {
--		{ true, 0, 1, &offset },
-+		{ true, 0, 1, 0 },
- 		/* actual hdcp payload, will be filled later, zeroed for now*/
- 		{ 0 }
- 	};
- 
-+	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
-+		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
-+		return false;
-+	}
-+
-+	offset = hdcp_i2c_offsets[message_info->msg_id];
-+	i2c_payloads[0].data = &offset;
-+
- 	switch (message_info->link) {
- 	case HDCP_LINK_SECONDARY:
- 		i2c_payloads[0].address = hdcp_i2c_addr_link_secondary;
-@@ -311,6 +319,11 @@ static bool dp_11_process_transaction(
- 	struct dc_link *link,
- 	struct hdcp_protection_message *message_info)
+diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+index 2f8ca831afa2b..f2037d78f71ab 100644
+--- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
++++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
+@@ -56,7 +56,7 @@ struct gpio_service *dal_gpio_service_create(
+ 	struct dc_context *ctx)
  {
-+	if (message_info->msg_id == HDCP_MESSAGE_ID_INVALID) {
-+		DC_LOG_ERROR("%s: Invalid message_info msg_id - %d\n", __func__, message_info->msg_id);
-+		return false;
-+	}
-+
- 	return dpcd_access_helper(
- 		link,
- 		message_info->length,
+ 	struct gpio_service *service;
+-	uint32_t index_of_id;
++	int32_t index_of_id;
+ 
+ 	service = kzalloc(sizeof(struct gpio_service), GFP_KERNEL);
+ 
+@@ -112,7 +112,7 @@ struct gpio_service *dal_gpio_service_create(
+ 	return service;
+ 
+ failure_2:
+-	while (index_of_id) {
++	while (index_of_id > 0) {
+ 		--index_of_id;
+ 		kfree(service->busyness[index_of_id]);
+ 	}
 -- 
 2.43.0
 
