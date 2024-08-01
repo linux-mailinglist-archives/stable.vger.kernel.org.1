@@ -1,70 +1,60 @@
-Return-Path: <stable+bounces-65079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA44B943E20
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:18:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4949943E23
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EDD31F226FB
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:18:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5E551C2243F
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8859D19FA8E;
-	Thu,  1 Aug 2024 00:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922CD1D6182;
+	Thu,  1 Aug 2024 00:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WD+UiMPV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="okJgImih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AFD19FA65;
-	Thu,  1 Aug 2024 00:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FDC19FA92;
+	Thu,  1 Aug 2024 00:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472273; cv=none; b=km5SfoJjBJFCcJMrWRzw0mOTouU76KR487z7U9yvM7mgDZr7RFQptMiJ+l9JHhrGES3GfmOq4y9S1DBJilAPwZQkN9Ke4ximcGUFbZ+Wysyv61Nlv4LBYh6OrmsLDcpi0Caj5pp9uSFSaGX1JH+lD9S9/SNbnH8boZ5UpeZCdE8=
+	t=1722472275; cv=none; b=JafQ4d8pLVWsN8OXI0Xnh5jPieOIkRyaqsb9sFndBL9UFNN9cuzrtSFWsQCIVEb1oJ3fNrhy2WNav8M1+k0d1je2C2ojipghFxsJ/VQv+lasJY34xbpwsBIxRsNIlXU5Qr8G5/yx4lMMq7azPdtI7pwMu7/mcf7iEB9ZDkiua2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472273; c=relaxed/simple;
-	bh=c1MzbQTkm/Q39eCRZqYS3+IUXU4/3LUeV/eGDaZQZcc=;
+	s=arc-20240116; t=1722472275; c=relaxed/simple;
+	bh=CD6Jx+aTI+3Lv99v/xOm4/THGDtLnHkNjrNWCrQ0syk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBIYm8T4zNQgbVFazcsFwzDKJDMNQO9t50JHWja31NEwPuNrfovTFP8kQ8h9IsrU6nOZ+6SmbK6loPe3Dj0jwD3e/F1RENKCOiSB2+i43YwoTIrhjGtB9tJugTmeBNK0CCf5GEBW3g7L3Izb3exR4Tzyj0t6G4a2fo+NzWMK4VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WD+UiMPV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DFAC116B1;
-	Thu,  1 Aug 2024 00:31:10 +0000 (UTC)
+	 MIME-Version; b=FkeZNHwWSHtCd9eSLA7Vjt0Qgy1kDwknED6SPKREV1olSsa3UQbiARyfZA1z965FpmgO7abtrzyK2u8XuP9XMg0DEewXVeFlr7jSrRIzwZ+B2rMg83zekcADTDJUVAZfXOhJ0KZvw4CKxVSFQV8H2seBMg+PFAPwBYK1pOY0QTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=okJgImih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C62C116B1;
+	Thu,  1 Aug 2024 00:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472273;
-	bh=c1MzbQTkm/Q39eCRZqYS3+IUXU4/3LUeV/eGDaZQZcc=;
+	s=k20201202; t=1722472274;
+	bh=CD6Jx+aTI+3Lv99v/xOm4/THGDtLnHkNjrNWCrQ0syk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WD+UiMPVL/wS3gZFpVc5grKkQbiiC3cI0PNlA07IYRUGTTZeGCm5rNckAVtm2jKxK
-	 VMkM8gUBHeYiq0W2eXaYHFlvE8jxkIDnSweEJ04xBHpVuyKGDA9b1JoKWOicAEpoTN
-	 YPt3ZvK3FT7q4nUo9u2HSpr+XIcgibFzf3/abycJuStUZx8vjh1/RFEZPsf5n3ZlTr
-	 V8oeWb3aKNLdHYRhlpqYgP2uOmRoaKOr9vo7qfAcLFgGYwLBeu9UmieRR5wL6eA9kY
-	 iRuM2oKrVqtFbG2MSFE/ZnHbaKAaJDtI3iImTCBsziOI0OLF34fQUSXAqh7NDY2UmD
-	 UN3+pfl9qiKfA==
+	b=okJgImihSn3ytl0b8YuCjZ9fEWkAHFoEluWFjs7z3S4TMMTZwhjilzPo9RnY5HaB9
+	 tz4o3I0FhOUyLhSDvDotbPFnceYX/z6EuL0CfV4QgFbsrDCWcvWS1N1GPaQyB391Ky
+	 jp95iZAm3N1NIOWixBRKX6Ll+aGx+e1XL5vrMUKFvS0oEFb/QT13ncfJqZjXlsyhkD
+	 J2AJki3ZT4YoAi9EYMY+YgMrZ2jAOFx6dtDouKvwcjNdYb+aEHSfoCoZgMFlBQeVop
+	 BIFfZHE5qri5D4ABTTknrWk0BZB4HRKkNYVZY7WQYLIDVQ+mSJAAGlCaM6D3pqKUhO
+	 MYJmcFNGxbOMg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Sean Anderson <sean.anderson@linux.dev>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	hamza.mahfooz@amd.com,
-	roman.li@amd.com,
-	mario.limonciello@amd.com,
-	Wayne.Lin@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 50/61] drm/amd/display: Check denominator pbn_div before used
-Date: Wed, 31 Jul 2024 20:26:08 -0400
-Message-ID: <20240801002803.3935985-50-sashal@kernel.org>
+	laurent.pinchart@ideasonboard.com,
+	kishon@kernel.org,
+	michal.simek@amd.com,
+	linux-phy@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 51/61] phy: zynqmp: Take the phy mutex in xlate
+Date: Wed, 31 Jul 2024 20:26:09 -0400
+Message-ID: <20240801002803.3935985-51-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -79,38 +69,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.102
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 116a678f3a9abc24f5c9d2525b7393d18d9eb58e ]
+[ Upstream commit d79c6840917097285e03a49f709321f5fb972750 ]
 
-[WHAT & HOW]
-A denominator cannot be 0, and is checked before used.
+Take the phy mutex in xlate to protect against concurrent
+modification/access to gtr_phy. This does not typically cause any
+issues, since in most systems the phys are only xlated once and
+thereafter accessed with the phy API (which takes the locks). However,
+we are about to allow userspace to access phys for debugging, so it's
+important to avoid any data races.
 
-This fixes 1 DIVIDE_BY_ZERO issue reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://lore.kernel.org/r/20240628205540.3098010-5-sean.anderson@linux.dev
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/xilinx/phy-zynqmp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 2c6caddf1de34..b7d2fa77d828b 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6765,7 +6765,7 @@ static int dm_update_mst_vcpi_slots_for_dsc(struct drm_atomic_state *state,
- 			}
- 		}
+diff --git a/drivers/phy/xilinx/phy-zynqmp.c b/drivers/phy/xilinx/phy-zynqmp.c
+index 9be9535ad7ab7..67c45336bb2c0 100644
+--- a/drivers/phy/xilinx/phy-zynqmp.c
++++ b/drivers/phy/xilinx/phy-zynqmp.c
+@@ -790,6 +790,7 @@ static struct phy *xpsgtr_xlate(struct device *dev,
+ 	phy_type = args->args[1];
+ 	phy_instance = args->args[2];
  
--		if (j == dc_state->stream_count)
-+		if (j == dc_state->stream_count || pbn_div == 0)
- 			continue;
- 
- 		slot_num = DIV_ROUND_UP(pbn, pbn_div);
++	guard(mutex)(&gtr_phy->phy->mutex);
+ 	ret = xpsgtr_set_lane_type(gtr_phy, phy_type, phy_instance);
+ 	if (ret < 0) {
+ 		dev_err(gtr_dev->dev, "Invalid PHY type and/or instance\n");
 -- 
 2.43.0
 
