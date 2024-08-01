@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-65177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335B3943F73
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:41:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC097943F75
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:41:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E138D28363B
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:41:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72B841F229C3
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAE114D2AB;
-	Thu,  1 Aug 2024 00:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21B41C2326;
+	Thu,  1 Aug 2024 00:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2dUSgsK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNNG2ej8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0F01E566B;
-	Thu,  1 Aug 2024 00:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9CD25760;
+	Thu,  1 Aug 2024 00:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472765; cv=none; b=l5tlztm8McktqMZ2S/THErXygb2wnxQe/6/yODN6GR3XxPyqSfeNQDuskmns053n8wNRDei6ltS8Rlfy0epZ+5O0BGs7W1OzyCXeuJeJjHph4x9+gWleYTw2XlkiN7+qJbuZbzHBg6xe2JRupKDIK5Cq0P8gl5+C7w5unh+QSWg=
+	t=1722472771; cv=none; b=F0sEuSCJiPC398llc52SKQOoyAnqeHIPs3XGRUG6xYUeYrJRB/KxuxoP6VNH8bn6LuCT1+q+wk/0t+nEYz6IecTzNqMTELEq345WHry+gD4n8yTJNxsl7VWq9loAfnDALmK6Yb3RUPyzwyTU2z7kkgj3ksaeZ2Fid1DbaKCTj5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472765; c=relaxed/simple;
-	bh=e6tCVlq9Gha8Xqm80eYqImuzc4euvjwD/IBv0jKvKZ8=;
+	s=arc-20240116; t=1722472771; c=relaxed/simple;
+	bh=YUOKHtCGRMiJcZsp1siXNPvJs6Y1pBOnUG+ESB4yCrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQOWJ+oe6yNqm3cQNdAxHZ8DPfhESJcpsJK4L6SVduElno4MuP6bUQD9NRiZqJK7hEeFqT5YEPkceEbnUPcFqvz/TPhIunvHzPw2Oby796NHsm3RnyNo4omRpink5u9Li5bH1prq4B57QkwhPNQNTV25Yi7bLgM8uFygkw8ZjKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2dUSgsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DCDC116B1;
-	Thu,  1 Aug 2024 00:39:23 +0000 (UTC)
+	 MIME-Version; b=GRhgnSV4DZPjS+Oe5ZUrBykmTrsQx1PMOfIhUvzWBRFIB1TfRlL96bPY4xgj+N0HZvF2heSqV8mR3D1HciqYQXIh/My3Qs1DOfUiFuBsqdop7rZjTrd5QwJxoMyJ1qtmbcpRkP/YET3DximHN6ChEksCenkQdBMmOWk8UHQ0CTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNNG2ej8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2727AC116B1;
+	Thu,  1 Aug 2024 00:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472765;
-	bh=e6tCVlq9Gha8Xqm80eYqImuzc4euvjwD/IBv0jKvKZ8=;
+	s=k20201202; t=1722472771;
+	bh=YUOKHtCGRMiJcZsp1siXNPvJs6Y1pBOnUG+ESB4yCrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2dUSgsK0l4JpfnC9HWfw2nrf14EMoMhFG+Mt3x5P3Uu5Ira8bfIekk6SGrtzo33M
-	 tuRkYym3YXUr5imaR8aJOxTFqEinro/Ngb8EZDQw1Bqk+tZycNZ6j3DSaG82Jh+E0T
-	 2+haxPGrEkt2FZdCKDeCYLEXuRSWUtNyAqA7EXJxc/nAgUIGPlqrAVY+ut0EyhU32O
-	 /awbW7wgHN/qUTDbsaEE3P/QxT1ami46XuSUalvJhC+cx7W2RJgmChyOjL6pLR/fSg
-	 09b0tYdNzmDQIm7qINaWPhp6wYvpKsXKTojsB1BYpljiEyMy45tjzyVzLC2ltV7nD4
-	 nWiEtb+LrLLxQ==
+	b=MNNG2ej8g/hVolVWaH9up1VTC4SVQjP9DUgX6NQwITvuqb+dNxG1aZJ9nJk+OtIKM
+	 x/pYSjN6AM2pvclIFv0lQA7U+0Hn9LFrZE5FIHSUOEN/BKGs2O90MJrXbUCXNGzwUu
+	 8wFsIzL5iSvsSKs2VtC9hQTT0CPmEvbSw0t3KJ/1/jaI4rmGp/DGmbem2Mor3WwpOi
+	 C+dFT/PF7xc4S7hctv5HwrcWp6RpXf6CQFG4aVD5D+37suNYoth1/YXEjmGH3qyUgt
+	 itXLSLOqD2IOHNg2fE9xMFzhlyEcRIxeP8f1xSkrjr8b/zSmn6XvkWbedVq8GPLQqN
+	 U/ogCEE6lVh4g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
+Cc: Hersen Wu <hersenxs.wu@amd.com>,
 	Harry Wentland <harry.wentland@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
@@ -56,12 +56,16 @@ Cc: Alex Hung <alex.hung@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	hersenxs.wu@amd.com,
+	alex.hung@amd.com,
+	hamza.mahfooz@amd.com,
+	roman.li@amd.com,
+	mario.limonciello@amd.com,
+	Wayne.Lin@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.4 02/22] drm/amd/display: Check gpio_id before used as array index
-Date: Wed, 31 Jul 2024 20:38:31 -0400
-Message-ID: <20240801003918.3939431-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 03/22] drm/amd/display: Stop amdgpu_dm initialize when stream nums greater than 6
+Date: Wed, 31 Jul 2024 20:38:32 -0400
+Message-ID: <20240801003918.3939431-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003918.3939431-1-sashal@kernel.org>
 References: <20240801003918.3939431-1-sashal@kernel.org>
@@ -76,78 +80,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.281
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 2a5626eeb3b5eec7a36886f9556113dd93ec8ed6 ]
+[ Upstream commit 84723eb6068c50610c5c0893980d230d7afa2105 ]
 
-[WHY & HOW]
-GPIO_ID_UNKNOWN (-1) is not a valid value for array index and therefore
-should be checked in advance.
+[Why]
+Coverity reports OVERRUN warning. Should abort amdgpu_dm
+initialize.
 
-This fixes 5 OVERRUN issues reported by Coverity.
+[How]
+Return failure to amdgpu_dm_init.
 
 Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-index 0be817f8cae6b..f76ec0dd29e7b 100644
---- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-+++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-@@ -242,6 +242,9 @@ static bool is_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return false;
-+
- 	return service->busyness[id][en];
- }
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 3bfc4aa328c6f..869b38908b28d 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2263,7 +2263,10 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
  
-@@ -250,6 +253,9 @@ static void set_pin_busy(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = true;
- }
+ 	/* There is one primary plane per CRTC */
+ 	primary_planes = dm->dc->caps.max_streams;
+-	ASSERT(primary_planes <= AMDGPU_MAX_PLANES);
++	if (primary_planes > AMDGPU_MAX_PLANES) {
++		DRM_ERROR("DM: Plane nums out of 6 planes\n");
++		return -EINVAL;
++	}
  
-@@ -258,6 +264,9 @@ static void set_pin_free(
- 	enum gpio_id id,
- 	uint32_t en)
- {
-+	if (id == GPIO_ID_UNKNOWN)
-+		return;
-+
- 	service->busyness[id][en] = false;
- }
- 
-@@ -266,7 +275,7 @@ enum gpio_result dal_gpio_service_lock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
- 	}
-@@ -280,7 +289,7 @@ enum gpio_result dal_gpio_service_unlock(
- 	enum gpio_id id,
- 	uint32_t en)
- {
--	if (!service->busyness[id]) {
-+	if (id != GPIO_ID_UNKNOWN && !service->busyness[id]) {
- 		ASSERT_CRITICAL(false);
- 		return GPIO_RESULT_OPEN_FAILED;
- 	}
+ 	/*
+ 	 * Initialize primary planes, implicit planes for legacy IOCTLS.
 -- 
 2.43.0
 
