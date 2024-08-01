@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-65203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61EFD943FAC
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18476943FAF
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C8DA280CFA
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:48:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A0B280A96
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765331E9AD3;
-	Thu,  1 Aug 2024 00:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965051E9AF2;
+	Thu,  1 Aug 2024 00:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rxv/ee1S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qU7okuhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7441E9AC7;
-	Thu,  1 Aug 2024 00:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511171E9AEB;
+	Thu,  1 Aug 2024 00:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472854; cv=none; b=nIwc6SL78rh6KGU0vqBQlwYiAytNjr8IIrudqNmcx51oju5Um2XTRzc3eFFmD9kWZnxbKheiTR95zxL4SgNdxE8iEKmhu9I5EPcz/Amkrp07EaO/eKaZ+NqAEG9cdtYkZc7Rkb3PUg7FGLXqm1Em9e26nH8o/7RM6DE4LMfPRow=
+	t=1722472855; cv=none; b=YLLvCMdKIx/YfvPmSPum4RGoMEEJqqaJbDisx/G5WdDfiS3dQOh4KzavK4A+q6pu5hgotxZ1Ps6brdqlglqH7+ut0kXJ3x0faEBVycUSg7oT73CTMXs96Fi/Hg089nS2K23Oc11/cM9NSmo5jQzLm+g8Q0NQdOjm/xaO6EvxdzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472854; c=relaxed/simple;
-	bh=xpNOueL8LsTpELZTogQwevQccaGHx3UJJeuEUYFzloE=;
+	s=arc-20240116; t=1722472855; c=relaxed/simple;
+	bh=mIiXgnnx25YrOFDqip8rpqIwym2nNNd4VipQ/hvcu1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZtHm8Vb7Sk/SLhp/JXaVlNo+AOg90rsRnhuKkjFEq+zahyIyrVlF5qODC98iXqkp6+NTXPjEW7gCZqGUmmUUdujDA8VbcHFlKECeSR8/i7kAYpVLmyNi4x3fbTTa1jElBg8K1IFW7Mmt5z+BI9YAr4qfH1FBFKVoBshXlpslOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rxv/ee1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC5BC4AF0C;
-	Thu,  1 Aug 2024 00:40:52 +0000 (UTC)
+	 MIME-Version; b=N4kob2VGRWRB2yjm8MdQ6EZ0l2xwLe0OmV1V551OJnY+LMxkwgD7YMRkfiUelMtj8HybuWbiFek/sJCU2nz1+cMGqigsRyGT03sYGSpdc9l17aiVulL1iNeYb4uL7CwXycjNEqZBaexjQLLO0qvxwvRsftpViP7k0Din5roLKWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qU7okuhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826B4C116B1;
+	Thu,  1 Aug 2024 00:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472854;
-	bh=xpNOueL8LsTpELZTogQwevQccaGHx3UJJeuEUYFzloE=;
+	s=k20201202; t=1722472855;
+	bh=mIiXgnnx25YrOFDqip8rpqIwym2nNNd4VipQ/hvcu1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxv/ee1SHz+Ksny0xphP2JbrlQ1bQYVSj5nkxcsPGb44VhbewqzFN2WwYbocvkAH3
-	 c+z5or8FzYcLEScoF30p56VMAps5SrdfmP6xyxWgKcdwQw4gU+5t1RpSGLI87LryFj
-	 onn4E/pN3iPWSGOcrMCI37WjF/0tDqeexGX/T6h1Ln/4JHZBn0PSann1dZfB/PVIra
-	 02sHnIwOywCXxVJvq2GVB8sVzyJ7p/fVdnqGJc9YvYWXaH6ZYFaZmL81buJvX3tM/p
-	 9CexARZbm2NVxTf1q5czot9oU2PqMpBWLbl0BMyAhXVkJ54laMWLiJ9VAOGVl8ZPC/
-	 /OyA1qYNDVNZg==
+	b=qU7okuhjELXVxoibtw9bYqW13btY4/mS1dA6QvFke0kBQtl4EQsnxGkJN7AA1SulG
+	 VcL+n8zq6Ni/aVbOey1B0rfwm3w35MyzGIF58oLD/TmNck2PDibKH3CnqUux9GGGjh
+	 P1Nmdy0yQKEf2zCAdTeZQr2fQn9W6GXh63jPWt4uomhuvBypxNAh6UX0aQSOpNhuAQ
+	 BAIwZW2IhG7wHpHoWhEFF20qk9nCcPrDy+DsWetW9heJzYYap8tK/pWAjjsW87Wthv
+	 aDm5EvWj0eLBS61EQ2OLXrwyJKB++A7T/Z3uLuid+rX0HR5kq6CAlSnZ6ZKiXh/tGC
+	 fn+VQAZIIqPYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexey Dobriyan <adobriyan@gmail.com>,
-	Kees Cook <kees@kernel.org>,
+Cc: Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH AUTOSEL 4.19 06/14] ELF: fix kernel.randomize_va_space double read
-Date: Wed, 31 Jul 2024 20:40:14 -0400
-Message-ID: <20240801004037.3939932-6-sashal@kernel.org>
+	jack@suse.com
+Subject: [PATCH AUTOSEL 4.19 07/14] udf: Avoid excessive partition lengths
+Date: Wed, 31 Jul 2024 20:40:15 -0400
+Message-ID: <20240801004037.3939932-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801004037.3939932-1-sashal@kernel.org>
 References: <20240801004037.3939932-1-sashal@kernel.org>
@@ -68,47 +64,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.319
 Content-Transfer-Encoding: 8bit
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 2a97388a807b6ab5538aa8f8537b2463c6988bd2 ]
+[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
 
-ELF loader uses "randomize_va_space" twice. It is sysctl and can change
-at any moment, so 2 loads could see 2 different values in theory with
-unpredictable consequences.
+Avoid mounting filesystems where the partition would overflow the
+32-bits used for block number. Also refuse to mount filesystems where
+the partition length is so large we cannot safely index bits in a
+block bitmap.
 
-Issue exactly one load for consistent value across one exec.
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Link: https://lore.kernel.org/r/3329905c-7eb8-400a-8f0a-d87cff979b5b@p183
-Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/udf/super.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index c41c568ad1b8a..af8830878fa0b 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -876,7 +876,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 	if (elf_read_implies_exec(loc->elf_ex, executable_stack))
- 		current->personality |= READ_IMPLIES_EXEC;
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index bce48a07790cb..077bc40df130e 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1047,12 +1047,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 	struct udf_part_map *map;
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct partitionHeaderDesc *phd;
++	u32 sum;
+ 	int err;
  
--	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
-+	const int snapshot_randomize_va_space = READ_ONCE(randomize_va_space);
-+	if (!(current->personality & ADDR_NO_RANDOMIZE) && snapshot_randomize_va_space)
- 		current->flags |= PF_RANDOMIZE;
+ 	map = &sbi->s_partmaps[p_index];
  
- 	setup_new_exec(bprm);
-@@ -1136,7 +1137,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 	current->mm->end_data = end_data;
- 	current->mm->start_stack = bprm->p;
+ 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
+ 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
++	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
++			       &sum)) {
++		udf_err(sb, "Partition %d has invalid location %u + %u\n",
++			p_index, map->s_partition_root, map->s_partition_len);
++		return -EFSCORRUPTED;
++	}
  
--	if ((current->flags & PF_RANDOMIZE) && (randomize_va_space > 1)) {
-+	if ((current->flags & PF_RANDOMIZE) && (snapshot_randomize_va_space > 1)) {
- 		/*
- 		 * For architectures with ELF randomization, when executing
- 		 * a loader directly (i.e. no interpreter listed in ELF
+ 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
+ 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
+@@ -1108,6 +1115,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 		bitmap->s_extPosition = le32_to_cpu(
+ 				phd->unallocSpaceBitmap.extPosition);
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
++		/* Check whether math over bitmap won't overflow. */
++		if (check_add_overflow(map->s_partition_len,
++				       sizeof(struct spaceBitmapDesc) << 3,
++				       &sum)) {
++			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
++				map->s_partition_len);
++			return -EFSCORRUPTED;
++		}
+ 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
+ 			  p_index, bitmap->s_extPosition);
+ 	}
 -- 
 2.43.0
 
