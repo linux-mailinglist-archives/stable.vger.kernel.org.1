@@ -1,128 +1,160 @@
-Return-Path: <stable+bounces-65236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5E1944835
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 11:27:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E533494493F
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 12:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3AF51F26E2C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 09:27:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 210C81C215BA
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 10:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B07184531;
-	Thu,  1 Aug 2024 09:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6496171658;
+	Thu,  1 Aug 2024 10:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b="sWclGiG+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ECi9NtrR"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11747184540;
-	Thu,  1 Aug 2024 09:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E15F446A1;
+	Thu,  1 Aug 2024 10:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722504254; cv=none; b=Nzhb7x16ri5ouARBzVrBsGulbo3/0YNfVF27dyXeKS4FpV0TEe8X/t0QDwACBRMqNLAV2p2siUXs0ocKBbsLMJKuIxTqZdNBymYz8uvbFx8iCrFZ/xGIL1vALdkT4VGfIS9eE3OWHSlu/QzUaXKFXJ6IHBCP3TSSr2b/7s6El7g=
+	t=1722507843; cv=none; b=VwH2QtJw3VmWluFn43THqA8s/5VKqpwLmVOOnmziJcaSnApf72f0t7cL7v7oei5qQ8VGQFEUha7G61Xu2fSko/NzvGEvgyvriLlREqXJCb+NlXlNu5En85806D9niN7KI1o30F7xjAr5CT3pQKR4s4lkMjxrHIs9JTYS8V5CJkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722504254; c=relaxed/simple;
-	bh=gy+1SJ7LKRchbuurwZ6K9qa1t2fPMXsZCG1sdumE7xM=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=pD1zoG9pTPq9Gf2NDbTktJeuBqB8t+o7VTxoKvKff0hKt72FEnsbh2HrRzSTchrWwfaLZo7D/el8Dwe2FJoqSECAncplQLWIHEYL1ZLDgIi+DkqaXiwHZaoRodTH3nTkmJ2y6Uj5S1MWKeW/CzIurTqn/F0Dlg2QNugIaN2VIZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=frank.scheiner@web.de header.b=sWclGiG+; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1722504222; x=1723109022; i=frank.scheiner@web.de;
-	bh=M/O8i2ZhmAtuCeZ0w9M2qWBIAu61DhuhrRUTTjUV/FI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=sWclGiG++gHXYGe7Td3KTkAYOOBDlgoPLlPygV6MP36eN5sYF2qxC5S2ICjYTaFK
-	 M1w0H58lH7kC6UFzcabkgp0Y7RCfL7xCnb7sTAGQTsw4jOAtfK3uXm0A5xwV2pjmj
-	 l5UDxW9qqGDiRC2xywLHjUpMsNjPtzfTncQgL5lzk0UHyk5Y4WoNkq5pDR9h6TaCv
-	 hiX16SY++Ryz9QEpbSYQH074PTtpuVL6fxwgZfTpI8p0ldI9Pvwa2F/Axcg7rFopZ
-	 vTLQHVNwxWio73N/4FiKwbzirxdSXYxMAD4PWamJLVdfYrauQsxntnc5zy/FFj54b
-	 qBdusUtsK5Sf9r7FdA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.30] ([79.200.215.229]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N3oyy-1s99n40vnU-014Q5H; Thu, 01
- Aug 2024 11:23:42 +0200
-Message-ID: <2269aca0-29dc-4968-8cb2-de798408a9ca@web.de>
-Date: Thu, 1 Aug 2024 11:23:40 +0200
+	s=arc-20240116; t=1722507843; c=relaxed/simple;
+	bh=2qqKLa49EvzmM19MRf9Bcfq/xYYI+V8D6kv7dmOhKVY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JmZR2ZaAmGuvcFmTDddjcUyyT7LrVeRWeDg6BwBsiS4GTzscCO1Yb0X71Mj4R3VK4gIPey/ntGy9HsRgYWrWqZBr4wNGySmbxGT7gk9qtFxiWpY+Z/K5F/kfE/45QNxZhdSETCY6mHGuQ2BPG623y8Lp/mPSDd/DTCywWFSLyqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ECi9NtrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055C8C4AF0E;
+	Thu,  1 Aug 2024 10:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722507843;
+	bh=2qqKLa49EvzmM19MRf9Bcfq/xYYI+V8D6kv7dmOhKVY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ECi9NtrRXeYu40pM7Jmh/4wt2ajtq7MPUdnzean5RfI3hBLLw/von4XF8eMTiCj/b
+	 kcRZie+561VzfExlC6A1o/AQYT7im8AWqGf1CTN+8RdMjTxvHtUOZFPz71so3ZDClc
+	 BrObgHuabYbANJ8jpgQF7I3D7FkoE7hYt6nW3XrvKfbQcs6EJ0oIBlPg86TsQZfiNN
+	 LR96QFYXWXRefSh5u5l6FuVOLxl612AAkaY1hIzhIGa4+3+9GKk5sSN+G+1ItQHMm1
+	 ow0sb6iYdomI+aefOmvne3dTnzxXeFiLMgcZc8xE23Nss1+Dx8nV5Y35mRvjoxWm/g
+	 /FBmS3Ax/zk0A==
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3db3763e924so309075b6e.2;
+        Thu, 01 Aug 2024 03:24:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUy9TqmrxaIKlz2jiEgpNngXFey/RssqfmzJjS1mWZ/BjwY4T65Z9tXMbc/yHyXZyjXnGsENNtXTw==@vger.kernel.org, AJvYcCVWM0AdqiLbT12hrQT7gpfMNLrnKm2lVCFKEDIZs/xSoYnHPGQjrtqnrTHs31nLUkIRUU+RKS5s@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIlEnFuLQRMebU4WYpvDk5YrwtSetTcSCRccI9h5eIN7qIFCWn
+	SLQS4d0afJsuiYdEmxzAGEsMaIDA8JzVvnBrcRkhh7XCQZeHl39Ke4utW75IkDmemUUWyUkC3XW
+	F9n+HcaHVXmyO2CxAQU3I5AiXSE4=
+X-Google-Smtp-Source: AGHT+IFSc0QSvBW/YVrvyVouC9aOFYfVQ5CbvNkJfU37sydbsMcTetupYjsIJy8Su3F3gmHoo8mJXk5LjGMR4RHSaio=
+X-Received: by 2002:a05:6871:3329:b0:258:476d:a781 with SMTP id
+ 586e51a60fabf-2687a3cee76mr1163991fac.3.1722507842262; Thu, 01 Aug 2024
+ 03:24:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org, allen.lkml@gmail.com, broonie@kernel.org,
- conor@kernel.org, f.fainelli@gmail.com, jonathanh@nvidia.com,
- linux-kernel@vger.kernel.org, linux@roeck-us.net,
- lkft-triage@lists.linaro.org, patches@kernelci.org, patches@lists.linux.dev,
- pavel@denx.de, rwarsow@gmx.de, shuah@kernel.org, srw@sladewatkins.net,
- stable@vger.kernel.org, sudipm.mukherjee@gmail.com,
- torvalds@linux-foundation.org
-References: <20240731100057.990016666@linuxfoundation.org>
-Subject: Re: [PATCH 6.1 000/440] 6.1.103-rc3 review
-Content-Language: en-US
-From: Frank Scheiner <frank.scheiner@web.de>
-In-Reply-To: <20240731100057.990016666@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20240801000834.3930818-1-sashal@kernel.org> <20240801000834.3930818-69-sashal@kernel.org>
+In-Reply-To: <20240801000834.3930818-69-sashal@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 1 Aug 2024 12:23:51 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hPDBWZA4zwrnkam=6a5APjviccoEh6gEHEQegpjpnAtA@mail.gmail.com>
+Message-ID: <CAJZ5v0hPDBWZA4zwrnkam=6a5APjviccoEh6gEHEQegpjpnAtA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.10 069/121] thermal: trip: Use READ_ONCE() for
+ lockless access to trip properties
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, rafael@kernel.org, daniel.lezcano@linaro.org, 
+	linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ygsQwcEyzlFHO00Fj5Bj0BacckmXHPZuqY5WIR/uRBV3R5Py7sN
- MYczILA38ndDO+IdBlc8FTtPq1PH8XZtyA/RTFIMSTz3Wq7wLGMQL3lpgNvLCnEDQo0DW+i
- VlVX5u23A7DLmDfYSKKHia55H36TgXCPJobXIUl9NKbfNfwDspEUjX6hSc47RA+pTVGsbf6
- fCkkbx824OR4eLZKCaO5g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:KchN4cz3j3c=;Az+3Q4LsEmwuoT4MTTUwCa6N2S5
- YnSBXPd6Z4tGXQTQoVzTVjo+EImYT5ApEb/oJ5ebJJSqUNERbYzfmVQbYG7U6h4ZgToyss/zZ
- 9HfnnntZaQ99rmEUe12WDiQ4VpxqBxcYwYnYZ8aRf/GxP8YMy9pGVDd/Wwuesab+D6Rzm+vnZ
- XLFLa/MgUhDqd2zL5gh+9tPr5K9vOQ2ybVNlCSQaNMP51Dc2Wyvv7WIypE7mw1hsNR+dFO7rv
- DMId8/LES0uWDQO3zj341JV8gU5vyMzuimplOXCu4pRfPufsb7FlwMTTyQhQreo1aZsMwnJC+
- di+8v3iH23QDcVZ/UVPqUZWnNhx3xXATvS3kpXsUc/eEGMPcPyfZGQgCUblfZz0DhLRRE0r31
- 3ysvUpZSwu1b8crTILBa6ASra3j2jQATUJBJ/opwjSNbIFWK7VsKOdPHdS16E68nJixGuj3v7
- ZkW1X3PpYmoX7AphdZKkjO+7Sg5DEjujtZB9WBQbcT+w/vS2Z/AVuic0uUVZEMrsaHFINWE8e
- oPhFBLwbMOo1QQRyEx8cTjBQIYOLcjPYI4Htm7mWmRxm2/hco4QHBlznLtPFkfntUKJJlETYF
- RoZ5cJ9Tn/ObYVOTG+DFKiM4LSORyLgIbrXMxzxBlVOf7GLB0m66jlFx47AVDLU4y4AmwLoVA
- 1l7hPNk92MTCQhBDYwRLp97lXvj4n1Dmgz3uFY+ykcnIroYPviIwZAOmGCnn3mYRR9In5x6Li
- fc4EgpZyD9USKZqfUXYz26oC3xJ9M5wvpkwzcO8VIsuRtd18zr2jYrQuL1ZUW/MKnLLd//4hW
- pyBET5GCZHEMSyYeWp7VwsvA==
 
-> This is the start of the stable review cycle for the 6.1.103 release.
-> There are 440 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, Aug 1, 2024 at 2:15=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
+e:
 >
-> Responses should be made by Fri, 02 Aug 2024 09:59:35 +0000.
-> Anything received after that time might be too late.
+> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 >
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.10=
-3-rc3.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.gi=
-t linux-6.1.y
-> and the diffstat can be found below.
+> [ Upstream commit a52641bc6293a24f25956a597e7f32148b0e2bb8 ]
 >
-> thanks,
+> When accessing trip temperature and hysteresis without locking, it is
+> better to use READ_ONCE() to prevent compiler optimizations possibly
+> affecting the read from being applied.
 >
-> greg k-h
+> Of course, for the READ_ONCE() to be effective, WRITE_ONCE() needs to
+> be used when updating their values.
+>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Cross-builds for ia64/hp-sim and runs fine in ski ([1]).
+This is more of a matter of annotation than practical issue.  That's
+why I haven't even added a Fixes: tag to it.
 
-[1]:
-https://github.com/linux-ia64/linux-stable-rc/actions/runs/10191315715#sum=
-mary-28192715031
+Whether or not to take it into "stable" is up to you.  It certainly is
+low-risk in any case.
 
-Tested-by: Frank Scheiner <frank.scheiner@web.de>
-
-****
-
-Thanks for fixing the issue with rc1.
-
-Cheers,
-Frank
+> ---
+>  drivers/thermal/thermal_sysfs.c | 6 +++---
+>  drivers/thermal/thermal_trip.c  | 2 +-
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sy=
+sfs.c
+> index 88211ccdfbd62..5be6113e7c80f 100644
+> --- a/drivers/thermal/thermal_sysfs.c
+> +++ b/drivers/thermal/thermal_sysfs.c
+> @@ -150,7 +150,7 @@ trip_point_temp_show(struct device *dev, struct devic=
+e_attribute *attr,
+>         if (sscanf(attr->attr.name, "trip_point_%d_temp", &trip_id) !=3D =
+1)
+>                 return -EINVAL;
+>
+> -       return sprintf(buf, "%d\n", tz->trips[trip_id].trip.temperature);
+> +       return sprintf(buf, "%d\n", READ_ONCE(tz->trips[trip_id].trip.tem=
+perature));
+>  }
+>
+>  static ssize_t
+> @@ -174,7 +174,7 @@ trip_point_hyst_store(struct device *dev, struct devi=
+ce_attribute *attr,
+>         trip =3D &tz->trips[trip_id].trip;
+>
+>         if (hyst !=3D trip->hysteresis) {
+> -               trip->hysteresis =3D hyst;
+> +               WRITE_ONCE(trip->hysteresis, hyst);
+>
+>                 thermal_zone_trip_updated(tz, trip);
+>         }
+> @@ -194,7 +194,7 @@ trip_point_hyst_show(struct device *dev, struct devic=
+e_attribute *attr,
+>         if (sscanf(attr->attr.name, "trip_point_%d_hyst", &trip_id) !=3D =
+1)
+>                 return -EINVAL;
+>
+> -       return sprintf(buf, "%d\n", tz->trips[trip_id].trip.hysteresis);
+> +       return sprintf(buf, "%d\n", READ_ONCE(tz->trips[trip_id].trip.hys=
+teresis));
+>  }
+>
+>  static ssize_t
+> diff --git a/drivers/thermal/thermal_trip.c b/drivers/thermal/thermal_tri=
+p.c
+> index 49e63db685172..b4e7411b2fe74 100644
+> --- a/drivers/thermal/thermal_trip.c
+> +++ b/drivers/thermal/thermal_trip.c
+> @@ -152,7 +152,7 @@ void thermal_zone_set_trip_temp(struct thermal_zone_d=
+evice *tz,
+>         if (trip->temperature =3D=3D temp)
+>                 return;
+>
+> -       trip->temperature =3D temp;
+> +       WRITE_ONCE(trip->temperature, temp);
+>         thermal_notify_tz_trip_change(tz, trip);
+>
+>         if (temp =3D=3D THERMAL_TEMP_INVALID) {
+> --
+> 2.43.0
+>
 
