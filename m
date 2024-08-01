@@ -1,61 +1,71 @@
-Return-Path: <stable+bounces-64946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6187943CE4
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:45:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DE0943CF9
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75E5A1F2286C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:45:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77AF1B24E4B
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A9D2101B7;
-	Thu,  1 Aug 2024 00:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247A32B9AA;
+	Thu,  1 Aug 2024 00:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7G/NV8H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6JhSkWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF132101B2;
-	Thu,  1 Aug 2024 00:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BD514286;
+	Thu,  1 Aug 2024 00:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471515; cv=none; b=hxF+RrpbXCzGUpyF9mFok0DMyglPjLRh6HPblQI8zGEjoRue5eErnqXUwuzi4O3vcFj84aBw37RkvTWuKiJsxKzwiQiyzeE5ukoQ/020A0gDDBwiRM1EQ6l34XPYh7Zu39LXtLiE5ZKZAg0yN/21Sx5DvZjNCombX5QLTl2mle0=
+	t=1722471672; cv=none; b=YfoPMnjZr7O1+FgFW3AQwsNTB8niWZWxb4uc4gikPQ9+/p4aU2xwy/Yz8KR/irIFPfqqXimwuiM5xXyiZ918hNLE+yprUXFFJXYWdahkDK/0t7TVBMFYvdvvpeV6CzLIyWlUz+4jPAm+ovV33LVC4c2ksQnN+vAiFCy2AdTbvls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471515; c=relaxed/simple;
-	bh=ufngkK1NW5FJJk3y562A9XzeMfpxXgZhI0+V1MKWuaE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJYnHSjKhHMMc0oXg/za0Sw0YK3QePSS3TYVBXWdN9vYA9zmo7K22cRXK5kBdE2h+prHmzY51MPL2D/Pdsgin4HyeJ0iHL7fscnoFw7Cz4CCvuBJDaQAasX2WCwErcCGqM5T4u6XHJDWDGaspYgulSRITaaZ00xCrrU3Nq9meno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7G/NV8H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4C2C32786;
-	Thu,  1 Aug 2024 00:18:33 +0000 (UTC)
+	s=arc-20240116; t=1722471672; c=relaxed/simple;
+	bh=89FfziLV5sHr6MLxIivB2F/+Pw47DQ+9bnql9lzbtZ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kSzMUlTTf+h/OoZkI07PcaEDdnmTHuh9Y0xL8ETaVJKuYRnS4E2LUulnuxZpX9dEKaoiv9YMCTBkH9kSrBnV8c8lIlMATdEet+18aGsN/xeRZ8bYhsJoEszFbjN2jM0qy2PqkF48+GOx+muofC4Zw1bVexZ2Su5NUA8/sx/Yi3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6JhSkWV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87B8C116B1;
+	Thu,  1 Aug 2024 00:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471514;
-	bh=ufngkK1NW5FJJk3y562A9XzeMfpxXgZhI0+V1MKWuaE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7G/NV8H0m6pohW4k5M+xOvZY6yUw57KaGchVXGP82P9+mxy0xi+mHoQQBcJfJcCt
-	 rUu0AD4mupo8/kB5XTohgVU4vVjn4ZMC/1xkNY7SKZteerqwebNaLpHzRno0wZDe1K
-	 tcMQqgDsPCCL7BZKmSLXMoD0Wt7qZGOgC9f7qvQ7YwSqr2CpbHX0/2b0nhMcqxbl6c
-	 MXifeW0UlhrIxQ1fuBLaui0p6QYfHp4BeyuWih5ibMKIAub95K9SzCbjpbOB2cMWUh
-	 7v/03cMSSexo8StIKOYHeaJFkT6Ugn6KoaYzuvG8XtnUjVubsW7aTReCm7iJwEWt0J
-	 4NBAx5Mf3Z7CA==
+	s=k20201202; t=1722471672;
+	bh=89FfziLV5sHr6MLxIivB2F/+Pw47DQ+9bnql9lzbtZ0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=B6JhSkWVPdifm9vT2T2WtjN/82ei9XF+MgAkYOvYzfXaSEBFOETekcgBKeYybn3SL
+	 ae9LFE04fnTcJnlWOXVZ3+5H77I9ZdEtspiTQhP3Hx1uC0reB5OGvu6KiTkfIEpHEd
+	 WDyd2GLuOpj4iABqnPMyjWfUXwEB1NIPdrf1SokjVmKyGhtN60pNnR3hult6KquxYo
+	 YaeVQSRTWc2jchsN9462GnGMKIReGt/dFNOp1kdp5ACkC+OZcovenP6rq0mVCCbw//
+	 +xwnfBFD9x1ZWEZx5vCPVL2ND6pN8OD4FCDLyiMKVlWbWt2hclD2aBWvSt2pu8fSDd
+	 Juwg+lzmqiM8Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: Alvin Lee <alvin.lee2@amd.com>,
+	Sohaib Nadeem <sohaib.nadeem@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kees@kernel.org,
-	gustavoars@kernel.org,
-	linux-i3c@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 121/121] i3c: mipi-i3c-hci: Error out instead on BUG_ON() in IBI DMA setup
-Date: Wed, 31 Jul 2024 20:00:59 -0400
-Message-ID: <20240801000834.3930818-121-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	wenjing.liu@amd.com,
+	alex.hung@amd.com,
+	aurabindo.pillai@amd.com,
+	dillon.varone@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.6 01/83] drm/amd/display: Assign linear_pitch_alignment even for VM
+Date: Wed, 31 Jul 2024 20:17:16 -0400
+Message-ID: <20240801002107.3934037-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
-References: <20240801000834.3930818-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,41 +74,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.10.2
+X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Alvin Lee <alvin.lee2@amd.com>
 
-[ Upstream commit 8a2be2f1db268ec735419e53ef04ca039fc027dc ]
+[ Upstream commit 984debc133efa05e62f5aa1a7a1dd8ca0ef041f4 ]
 
-Definitely condition dma_get_cache_alignment * defined value > 256
-during driver initialization is not reason to BUG_ON(). Turn that to
-graceful error out with -EINVAL.
+[Description]
+Assign linear_pitch_alignment so we don't cause a divide by 0
+error in VM environments
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20240628131559.502822-3-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index 4e01a95cc4d0a..1a96bf5a0bf87 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -294,7 +294,10 @@ static int hci_dma_init(struct i3c_hci *hci)
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 72db370e2f21f..50e643bfdfbad 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1298,6 +1298,7 @@ struct dc *dc_create(const struct dc_init_data *init_params)
+ 		return NULL;
  
- 		rh->ibi_chunk_sz = dma_get_cache_alignment();
- 		rh->ibi_chunk_sz *= IBI_CHUNK_CACHELINES;
--		BUG_ON(rh->ibi_chunk_sz > 256);
-+		if (rh->ibi_chunk_sz > 256) {
-+			ret = -EINVAL;
-+			goto err_out;
-+		}
- 
- 		ibi_status_ring_sz = rh->ibi_status_sz * rh->ibi_status_entries;
- 		ibi_data_ring_sz = rh->ibi_chunk_sz * rh->ibi_chunks_total;
+ 	if (init_params->dce_environment == DCE_ENV_VIRTUAL_HW) {
++		dc->caps.linear_pitch_alignment = 64;
+ 		if (!dc_construct_ctx(dc, init_params))
+ 			goto destruct_dc;
+ 	} else {
 -- 
 2.43.0
 
