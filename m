@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-65052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A170E943DDD
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A99C943DE0
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4130F1F22538
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:11:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA061F22567
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C9218E059;
-	Thu,  1 Aug 2024 00:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930B28814;
+	Thu,  1 Aug 2024 00:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9yojU2z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agSbEuXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6BF16C695;
-	Thu,  1 Aug 2024 00:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E50913B5A5;
+	Thu,  1 Aug 2024 00:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472189; cv=none; b=qs26BScGp0DxFZM29gEbHsjk4hBMjWUoLOYw7E4XyZx0RkVTY4IDXYUrsw2+YCLSmMaEwJFtvtiqFEpV+5u0E3/fsyaOTjNQWZIDgirAdFk8CsKt6T7qbygaC3D8r0g/ZhHTm0Ez7isIhW7swBijQHvWs67fYo4X2C2zKnDYKLw=
+	t=1722472194; cv=none; b=H3gT96pwXgVGc2YONnLMh1WCvD2EVdhEjxBOYd6lU6kGgKXujhcFbMpveUYf+94eXxHCYn2jMZB+h6asxPYv3bSrMwr4ruVCZyEDQO/qGMX7BSv5UhBIhZlmrH5oYHlfnT23pd8ULVNuZ+SYVtBG+ZVET5QEk+CS6sksXtkvbBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472189; c=relaxed/simple;
-	bh=rWMDJJ742n99uxKa6jUDYnFaQNv1BbRTSwUpX+tRzQY=;
+	s=arc-20240116; t=1722472194; c=relaxed/simple;
+	bh=HfwLPxSnQMQpUNvWflGQhEO5wetyHsAshCLDwjhOdCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPbHbSuc5duRgsU0WCQ9/0OrNvKjN2b5sYAGmF9nptnoYq9h+t3gwbKHp54Ic8hn4o0wWcRPuH28yoV0chLMFbQccb7jN+3OjAdaoMbdq4UYpLRioNe3R1St5dcx5Z+0OHdASly6gHU1pnGo5FU943/Z0iBrTIaEwSwwd1Y16XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9yojU2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B3EC32786;
-	Thu,  1 Aug 2024 00:29:46 +0000 (UTC)
+	 MIME-Version; b=SwcViXG0XQ9q9MvywoGKSumk9i+4cjOJr/uTEyB3w9QaDiJ4COrM1TcZTup7yJ8QaSm9WIyWTiFPn3Fe82kXWLuKWoxqbnCtLh2WsF5JHOjtwT6CY3zNwZqnaTKzlouASYuRvbwRCWUrktp0Qr80FpV1t91PzDYuNcKe013VLcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agSbEuXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05EC2C116B1;
+	Thu,  1 Aug 2024 00:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472189;
-	bh=rWMDJJ742n99uxKa6jUDYnFaQNv1BbRTSwUpX+tRzQY=;
+	s=k20201202; t=1722472194;
+	bh=HfwLPxSnQMQpUNvWflGQhEO5wetyHsAshCLDwjhOdCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n9yojU2zsyjBQdXkbC0AufV5PYl84dtKCo5IAR8yJjSmiOjReyVmPoGKZkLVPjUhn
-	 9UDW8Y98nN6MQd1sv54RkjQ0ylKcabQyw71+c44VBNtjsy9Z9RysAQmXTG6c/QK4vi
-	 8AtUIIqTeUR9A8MhhmQo2ANlX09eaFjjZF6Wjo0cezlmJ/by8vOCuWnOyRBJMwZadq
-	 ieJgNGxTUY9zw7kuQ94hCav8SCiD1fN/W8F8wncRn0wV42tSF3wBF7+vDjLy7/wYqG
-	 5uKEhpvSEqaeWILpLoMljrY/9Rus2/wZAZwosppPGoCfEB0uPLnaQyjGCHqkS6Rb8v
-	 PaTzInFNx3r+w==
+	b=agSbEuXux+YnHDAEMm+pSwRR6CaONhdrTNdFHsTN+FY17GRYNy1tcz34PLVThftep
+	 aqGW7eTnBLHPTLcqrTcr31DwPheWpPh+G7Ttd7a14T1JiO/rvurWnCEAEUcs01c9ZS
+	 FUyXiFHDxWns9D3nfSVbYCXM/FHB+CNLN7e1Xr1k0bhwj2EmGoNHE+qneBrQCshW5N
+	 HLorRa+J6DTIXQkrbtqdP5id5Fy3/3qz+9uf6fSmmZB0ZC1oqnYhtLQ7IGrQSmq5He
+	 pBCsVQu+pBQ1FGEOnnirtXz2Y5mg0dN7yN8ekq2xPOYXZb9xANSvpFKg2v4goiNpA+
+	 VU9tjx5KPFgDw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -55,17 +55,16 @@ Cc: Jesse Zhang <jesse.zhang@amd.com>,
 	daniel@ffwll.ch,
 	Hawking.Zhang@amd.com,
 	lijo.lazar@amd.com,
-	mario.limonciello@amd.com,
-	candice.li@amd.com,
-	Jun.Ma2@amd.com,
-	victorchengchi.lu@amd.com,
-	andrealmeid@igalia.com,
-	hamza.mahfooz@amd.com,
+	le.ma@amd.com,
+	Likun.Gao@amd.com,
+	shiwu.zhang@amd.com,
+	YiPeng.Chai@amd.com,
+	kevinyang.wang@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 23/61] drm/amdgpu: fix dereference after null check
-Date: Wed, 31 Jul 2024 20:25:41 -0400
-Message-ID: <20240801002803.3935985-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 24/61] drm/amdgpu: fix the waring dereferencing hive
+Date: Wed, 31 Jul 2024 20:25:42 -0400
+Message-ID: <20240801002803.3935985-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -82,31 +81,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit b1f7810b05d1950350ac2e06992982974343e441 ]
+[ Upstream commit 1940708ccf5aff76de4e0b399f99267c93a89193 ]
 
-check the pointer hive before use.
+Check the amdgpu_hive_info *hive that maybe is NULL.
 
 Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 Reviewed-by: Tim Huang <Tim.Huang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 98ed116b5a48e..1334e540bb67a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5390,7 +5390,7 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
- 	 * to put adev in the 1st position.
- 	 */
- 	INIT_LIST_HEAD(&device_list);
--	if (!amdgpu_sriov_vf(adev) && (adev->gmc.xgmi.num_physical_nodes > 1)) {
-+	if (!amdgpu_sriov_vf(adev) && (adev->gmc.xgmi.num_physical_nodes > 1) && hive) {
- 		list_for_each_entry(tmp_adev, &hive->device_list, gmc.xgmi.head) {
- 			list_add_tail(&tmp_adev->reset_list, &device_list);
- 			if (gpu_reset_for_dev_remove && adev->shutdown)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index 8764ff7ed97e0..f8740ad08af41 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -1297,6 +1297,9 @@ static void psp_xgmi_reflect_topology_info(struct psp_context *psp,
+ 	uint8_t dst_num_links = node_info.num_links;
+ 
+ 	hive = amdgpu_get_xgmi_hive(psp->adev);
++	if (WARN_ON(!hive))
++		return;
++
+ 	list_for_each_entry(mirror_adev, &hive->device_list, gmc.xgmi.head) {
+ 		struct psp_xgmi_topology_info *mirror_top_info;
+ 		int j;
 -- 
 2.43.0
 
