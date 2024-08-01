@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-64903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-64904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6905943BFE
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 772A4943C12
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 02:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D7641F21870
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EADF21F21E48
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 00:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D707114A605;
-	Thu,  1 Aug 2024 00:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78BA14B07C;
+	Thu,  1 Aug 2024 00:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6PDliWV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEb0rqN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94102134407;
-	Thu,  1 Aug 2024 00:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46FD14A629;
+	Thu,  1 Aug 2024 00:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471366; cv=none; b=A6oSeYS9roCPtXyBc4kUsbrrw24Hr9J8Rsr4ON0qb/fmn9JTESrxC/OndnZTViMtbYEpJDx/YMrq4/borkSEob4ftWv8T6kajbdodQkY0NIPzltS5ccZa5zsg9bgnHYj6QgmEuWWMInD8n65eEqHzt017sDhi0sb74f2GulFXs4=
+	t=1722471378; cv=none; b=R4g2HlOPkSVBIT6zyD+eENQdNRhbofg/KaVZ4K2mjvKan4J4FRK/WjdRT2TBH5RuiE+3U9xSTYRQ/YGNY6NJ55crLYh+yDx+3+5X6f5RmCAERYten3Qjaci4C5oq/3sShrcEFes6omkO3xy1vrku7Wv/T1hqCD0J0oL+GaSzEAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471366; c=relaxed/simple;
-	bh=BevY77iRPP2rcLSSLdc/Qw8M9iWbWGhbWK26o/OAXLQ=;
+	s=arc-20240116; t=1722471378; c=relaxed/simple;
+	bh=Ql4idpPEwSG2odetp/Oqw0NEhP/uQ2tRKugeqUNQb6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iC8PVNG8twq9v6qFpjBcMePf0MRWtd62blCI6YbqBuswLohGzBBraWXDjkpRho0az+Pnt4kYv1USRQ5xHDWFDO1QdEcb+tSoqdmgiqJi9sp3M/JDgRNzKLR3fb4ZpOFjT06NacXrFK/Mz1bGM6mJ+16AHglnWwBhORc7dBKHzwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6PDliWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76435C116B1;
-	Thu,  1 Aug 2024 00:16:03 +0000 (UTC)
+	 MIME-Version; b=LyY4ADI0LcB+zJN/kuYPpk/NSpMxRNVowCkUczNfgEQcTr+x9Qy7hw9SdRPqwRghMVT5ZjILlIlB8cppnmxvWl21HD7D7/4J/qLtVGOBjoKkoDvSxNuNFgo6bWLbVwHSFk7Dbxv1hqkCX1YFJVesOtjIU3ZbaJDlq/5m+kZ3dJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEb0rqN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94452C32786;
+	Thu,  1 Aug 2024 00:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471366;
-	bh=BevY77iRPP2rcLSSLdc/Qw8M9iWbWGhbWK26o/OAXLQ=;
+	s=k20201202; t=1722471378;
+	bh=Ql4idpPEwSG2odetp/Oqw0NEhP/uQ2tRKugeqUNQb6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6PDliWVkPxhq9W8L3IBIFwvjG66PZil7XgeILDiBh4bkD7DG9wm/NNZl7Ca752vw
-	 s6D3M99Kl6tuBQJ+YfweoEOXjdojmzhC3EhJOMF7KjGTek2aaX6rLiguMW4VDvQa38
-	 eRsv29iDlhsPWsMYCcvYm7ptTByGuiwOjWTOqooBjOI1DU3fyqMYJIv5kzfKeNBY2P
-	 6YdcEX/q9NIHR1u/PlE2Psp4caHUMg0Anp/TQtIKv+HSQqTeUnKzFkPFOh7ARseG8d
-	 prYzs1AUtm8walo0LJeBtJ6JEZ95ZcdMrMlqVUbEQShXOdYTulYxKPYn/ncEn3Cisg
-	 Wgg3OWCQmyUUA==
+	b=KEb0rqN5XhFd4W+w3dY3rv+z52yZfdEvSDeRX2TzfDkXWUZyUnLZA0OOlYin66Adg
+	 TBrBFBkAkI8EOcFfu6nhBwivSYkcOMM6RbsGwkrHhB2Z63kAYlMzmlW5BgJDhOrL+Z
+	 shcFrZ7wflHmy46yWDqprU1VAlS5OSJows5AoZgg0bbSTLWWTJa8clNcgZdHIA0B5Q
+	 ELIkh3hQnt2CnPTXkohw1ll7kCoykp3J585VGeA52M274IZGPbhsC0Q8GopMxdKB5K
+	 rJUt/iwU9c7n/0p42y3rXtSajFuZwhBMEI85C0GWVrWhZ8BPNbP0J7QAJWk7t4Bneq
+	 f/PRWgLviZ+Sw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+Cc: Alex Hung <alex.hung@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
 	Zaeem Mohamed <zaeem.mohamed@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
@@ -57,17 +57,20 @@ Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	charlene.liu@amd.com,
-	Qingqing.Zhuo@amd.com,
+	chuchang@amd.com,
+	jun.lei@amd.com,
+	nicholas.kazlauskas@amd.com,
+	camille.cho@amd.com,
+	lewis.huang@amd.com,
+	anthony.koo@amd.com,
+	srinivasan.shanmugam@amd.com,
 	wayne.lin@amd.com,
-	ahmed.ahmed@amd.com,
-	wenjing.liu@amd.com,
-	daniel.miess@amd.com,
+	dan.carpenter@linaro.org,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 078/121] drm/amd/display: Disable DMCUB timeout for DCN35
-Date: Wed, 31 Jul 2024 20:00:16 -0400
-Message-ID: <20240801000834.3930818-78-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 079/121] drm/amd/display: Avoid overflow from uint32_t to uint8_t
+Date: Wed, 31 Jul 2024 20:00:17 -0400
+Message-ID: <20240801000834.3930818-79-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -82,49 +85,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 7c70e60fbf4bff1123f0e8d5cb1ae71df6164d7f ]
+[ Upstream commit d6b54900c564e35989cf6813e4071504fa0a90e0 ]
 
-[Why]
-DMCUB can intermittently take longer than expected to process commands.
+[WHAT & HOW]
+dmub_rb_cmd's ramping_boundary has size of uint8_t and it is assigned
+0xFFFF. Fix it by changing it to uint8_t with value of 0xFF.
 
-Old ASIC policy was to continue while logging a diagnostic error - which
-works fine for ASIC without IPS, but with IPS this could lead to a race
-condition where we attempt to access DCN state while it's inaccessible,
-leading to a system hang when the NIU port is not disabled or register
-accesses that timeout and the display configuration in an undefined
-state.
+This fixes 2 INTEGER_OVERFLOW issues reported by Coverity.
 
-[How]
-We need to investigate why these accesses take longer than expected, but
-for now we should disable the timeout on DCN35 to avoid this race
-condition. Since the waits happen only at lower interrupt levels the
-risk of taking too long at higher IRQ and causing a system watchdog
-timeout are minimal.
-
-Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
 Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c       | 2 +-
+ drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-index 28c4599076989..915d68cc04e9c 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -785,6 +785,7 @@ static const struct dc_debug_options debug_defaults_drv = {
- 	.ips2_entry_delay_us = 800,
- 	.disable_dmub_reallow_idle = false,
- 	.static_screen_wait_frames = 2,
-+	.disable_timeout = true,
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
+index b851fc65f5b7c..5c2d6642633d9 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
+@@ -258,7 +258,7 @@ bool dmub_abm_set_pipe(struct abm *abm,
+ {
+ 	union dmub_rb_cmd cmd;
+ 	struct dc_context *dc = abm->ctx;
+-	uint32_t ramping_boundary = 0xFFFF;
++	uint8_t ramping_boundary = 0xFF;
  
- static const struct dc_panel_config panel_config_defaults = {
+ 	memset(&cmd, 0, sizeof(cmd));
+ 	cmd.abm_set_pipe.header.type = DMUB_CMD__ABM;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
+index 804be977ea47b..3de65a9f0e6f2 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
+@@ -142,7 +142,7 @@ static bool dmub_abm_set_pipe(struct abm *abm, uint32_t otg_inst,
+ {
+ 	union dmub_rb_cmd cmd;
+ 	struct dc_context *dc = abm->ctx;
+-	uint32_t ramping_boundary = 0xFFFF;
++	uint8_t ramping_boundary = 0xFF;
+ 
+ 	memset(&cmd, 0, sizeof(cmd));
+ 	cmd.abm_set_pipe.header.type = DMUB_CMD__ABM;
 -- 
 2.43.0
 
