@@ -1,192 +1,215 @@
-Return-Path: <stable+bounces-65256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B9C945029
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 18:09:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D89E945074
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 18:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E4C528741D
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 16:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313531C23EA8
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 16:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFE5137742;
-	Thu,  1 Aug 2024 16:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD63E13C3D5;
+	Thu,  1 Aug 2024 16:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E7NU5kdn"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fuj8ElKg"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E0C1DA58;
-	Thu,  1 Aug 2024 16:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF84C139CEE
+	for <stable@vger.kernel.org>; Thu,  1 Aug 2024 16:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722528577; cv=none; b=hUlBKNI25uXKJNO6imYLYvvsytKCOeh2y7gR0QmatBxIekErD/H6WCHuucUkUGxLAmuu7nsYizD7yfrwprs6nfxebVo1CVWDptK6rxbm+nFGi8u6VprjLosG/DUMKcWs01IVHP9BUEoNiWxkvFFm2RSZ327Qyalwh5snzFA8rb0=
+	t=1722529500; cv=none; b=PzJXpDOHQurWDmID5ij5b0nBWdLdjuV0lMsYUD4fSpH9NGoXI6FWHihUYNpzmdkuwcyjNZB0AWzELASuzADcKfRFS6eThVPmIna7wNmloeKDeTh3XngVAbi0dg6ZlXNGF5NP7+6Ad7ed1N/uIHkS8Cg6R8f5mqub4u/+zy4EELE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722528577; c=relaxed/simple;
-	bh=H3arMyqvh7LzvoEkqhspzcdXwUMwdie1CwdkMGrc86g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rM/c/xJB3U0SybxMzoMzcZZX9tV2HqIJHDHLAqeb95GaFGUuYA862AWV5+WWhULXfcAnZpQ49vfD8njelFdsD+TI4Kmw6BsCFRkjUby3Wre+ZzlQkF1lRECoiBmUyckpmq1OaQDqfIXlF3Ak6YLI0pgvPwCyaRDOewS9KVEbLTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E7NU5kdn; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722528576; x=1754064576;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=H3arMyqvh7LzvoEkqhspzcdXwUMwdie1CwdkMGrc86g=;
-  b=E7NU5kdnXEZmydh1RizrhlJEXYAvHQw8jZS8gvexs86qV1PdFBL6ylEV
-   UY4aXvg6zlP0U71wMbEvOCtHe780FZavI/Tp/33svzih6QC9hl+e/uGoR
-   06V0XuUYtbxMQ68GAcf9cEMm+JSAK9EO5PEQLAmmrA7dOrlTASt0F7fUf
-   DlbnUzMx7X3KZKk7XvnKLHwFxfLyXugb5zK/WSf9XXyh7qyFFm2pIw8G9
-   iqZwZmTTpUB4rx2wCyJKPs+cmvSIa8x5SG18YoBoPEvFoVEYf9KT3x2g7
-   qH+YbkyL3FOju23FkQ8A6EqDP/u5r3X7Nl8bCN8p/CG0/sYehgL2z0E74
-   Q==;
-X-CSE-ConnectionGUID: MMY5ISEAQjuCZ/MouklT6g==
-X-CSE-MsgGUID: tLXp7S3eQeWmvFJE6mZ3Bw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="20342898"
-X-IronPort-AV: E=Sophos;i="6.09,255,1716274800"; 
-   d="scan'208";a="20342898"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2024 09:09:34 -0700
-X-CSE-ConnectionGUID: dzZ6hq2hTieSPAzqog4uSQ==
-X-CSE-MsgGUID: cPyPh3TwQo+b33B/sfswZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,255,1716274800"; 
-   d="scan'208";a="54737261"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2024 09:09:31 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 8FB3311F9F0;
-	Thu,  1 Aug 2024 19:09:28 +0300 (EEST)
-Date: Thu, 1 Aug 2024 16:09:28 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	linux-media@vger.kernel.org, stable@vger.kernel.org,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Subject: Re: [PATCH v2 2/2] media: imx335: Fix reset-gpio handling
-Message-ID: <ZquzONl9PihjhdCZ@kekkonen.localdomain>
-References: <20240729110437.199428-1-umang.jain@ideasonboard.com>
- <20240729110437.199428-3-umang.jain@ideasonboard.com>
- <ef05c39a-ad5c-4751-a758-f73a2d114823@kernel.org>
- <ZqijVf68ZQuFGKhU@kekkonen.localdomain>
- <729280cd-557f-43ba-b1a6-8d319977ca82@kernel.org>
- <20240730091011.GL300@pendragon.ideasonboard.com>
- <cefc0b19-f065-4023-a536-56b2762ac967@ideasonboard.com>
- <172241654546.392292.16164306008596010671@ping.linuxembedded.co.uk>
- <c4f697d7-16a0-46d2-be34-45f6a8efaec8@kernel.org>
- <20240731093905.GQ8146@pendragon.ideasonboard.com>
+	s=arc-20240116; t=1722529500; c=relaxed/simple;
+	bh=2ELs703CL/0NY9BPIdHEydpSa7yuGw+agEEZ+mFR5JA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PYFYF7y1vbs3bI8iaICYettaxIu5QB5tmERxLAlzukOozZRmmXPIWtjlKH7wOqHAwieROmtXm/Kk8vDW3DFCGrd1H778c+ZU7HjlvGKmcp8ke+A1R5VDkQxSdrOfmMDMYFUtAsRiC3es/7QRm/lsh1ShqvJNWUxkz4DN46gap5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fuj8ElKg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722529497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=XFJbBcXlBHpS4nW4qWAr2psaRpKUFfF+QCupervOmU0=;
+	b=Fuj8ElKgWcbG+Bovqo5LJOscz1yANnRaXncyz5aTnoslRTJfbWdFcBCN73n3NXbwtLIkJa
+	+6ZK3lW2LsDtwBpynItJqalGxjNilvKKP5rnRV7gD7J7s4wdpWR0ERf88k/1CExlpunrNu
+	s3zcRzKZ3KL2jXov+eb0hTLCYuBtwwQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-663-9qBU16LDNLKAk-FQzQwhMQ-1; Thu, 01 Aug 2024 12:24:56 -0400
+X-MC-Unique: 9qBU16LDNLKAk-FQzQwhMQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-42816aacabcso43148495e9.1
+        for <stable@vger.kernel.org>; Thu, 01 Aug 2024 09:24:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722529495; x=1723134295;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XFJbBcXlBHpS4nW4qWAr2psaRpKUFfF+QCupervOmU0=;
+        b=iANGniGXdj5KswdJpDY4RgBzXulqZ/BkrOSAudi/QBsn8gWoOZkG/4y/CCv3HqPHwo
+         IiDWGLcpjNUXniR/QHbDbI0ZBr+BW6OEsE87iyP6Rs7Fl/YXyiCAfAEiQj2IPV6WHcmJ
+         aXhoOW3Jk00jrf8DnkBx+Zser89YYD2iVUREvbAUXunV0oC9u4XSVLhFwH3WJamK/UCR
+         3A8lU+qoRS5VaLvE+UguJdvqZaS57/L/MCP8WiovbKOWvmx+u+G/mJbtCQ4QUy5UXxgq
+         btSMFqNmF6IUA+xHlhkgjGBVimTPkJ6sE1EhElEj0Vuk60GYW0pRJtJDTu2vclooTrAl
+         LgMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWcxjfdneHZvK/+EjVjKwuXOMM7cNcOrlEKriwbTGTjpefd/4LlqqJr+kv/9yN7gtHm2nieoTrueV4pr7UtpYKyOC/Ybqj
+X-Gm-Message-State: AOJu0YzuFfaSZ1lIy9O4JAH0ekybILvIGPY9QpA3xwBFM398vCzAeyc4
+	dlyDHmrJCY2eJyDyTOfBWREp3wD97PpkDZaQ4IK9VsYIh/BI/9wMn85lM9WXQtaejnZrLunicpW
+	MmeNRjsndlNlUxdABC6QAoToKOVKRchZ/QrLUCH5ziITnL5dfPE75Ew==
+X-Received: by 2002:a05:600c:1d04:b0:426:6353:4b7c with SMTP id 5b1f17b1804b1-428e6ae0069mr3474335e9.8.1722529495461;
+        Thu, 01 Aug 2024 09:24:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcBHQ5w690BMvZwXjhN/NXKdFYYgT0IoingmGcp8yVg7PSZ5XdC4JQa4Zt6D00jN47WvkTzg==
+X-Received: by 2002:a05:600c:1d04:b0:426:6353:4b7c with SMTP id 5b1f17b1804b1-428e6ae0069mr3474105e9.8.1722529494961;
+        Thu, 01 Aug 2024 09:24:54 -0700 (PDT)
+Received: from [192.168.3.141] (p4ff235e4.dip0.t-ipconnect.de. [79.242.53.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-428e6e0357asm2331665e9.12.2024.08.01.09.24.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Aug 2024 09:24:54 -0700 (PDT)
+Message-ID: <8cc5b94c-f861-4ca1-b339-704140ad9255@redhat.com>
+Date: Thu, 1 Aug 2024 18:24:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240731093905.GQ8146@pendragon.ideasonboard.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/hugetlb: fix hugetlb vs. core-mm PT locking
+To: Peter Xu <peterx@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ James Houghton <jthoughton@google.com>, stable@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Muchun Song <muchun.song@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>
+References: <20240731122103.382509-1-david@redhat.com>
+ <541f6c23-77ad-4d46-a8ed-fb18c9b635b3@redhat.com> <ZquTHvK0Rc0xBA4y@x1n>
+ <934885c5-512b-41bf-8501-b568ece34e18@redhat.com> <ZquyrTTUgvFF65ov@x1n>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <ZquyrTTUgvFF65ov@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Laurent, Krzysztof,
-
-On Wed, Jul 31, 2024 at 12:39:05PM +0300, Laurent Pinchart wrote:
-> On Wed, Jul 31, 2024 at 11:06:38AM +0200, Krzysztof Kozlowski wrote:
-> > On 31/07/2024 11:02, Kieran Bingham wrote:
-> > > Quoting Umang Jain (2024-07-31 06:41:35)
-> > >> On 30/07/24 2:40 pm, Laurent Pinchart wrote:
-> > >>> On Tue, Jul 30, 2024 at 10:42:01AM +0200, Krzysztof Kozlowski wrote:
-> > >>>> On 30/07/2024 10:24, Sakari Ailus wrote:
-> > >>>>> Hi Krzysztof,
-> > >>>>>
-> > >>>>> On Mon, Jul 29, 2024 at 04:09:39PM +0200, Krzysztof Kozlowski wrote:
-> > >>>>>> On 29/07/2024 13:04, Umang Jain wrote:
-> > >>>>>>> Rectify the logical value of reset-gpio so that it is set to
-> > >>>>>>> 0 (disabled) during power-on and to 1 (enabled) during power-off.
-> > >>>>>>>
-> > >>>>>>> Meanwhile at it, set the reset-gpio to GPIO_OUT_HIGH at initialization
-> > >>>>>>> time to make sure it starts off in reset.
-> > >>>>>>>
-> > >>>>>>> Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
-> > >>>>>>> Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-> > >>>>>>> ---
-> > >>>>>>>   drivers/media/i2c/imx335.c | 8 ++++----
-> > >>>>>>>   1 file changed, 4 insertions(+), 4 deletions(-)
-> > >>>>>>>
-> > >>>>>> This will break all the users, so no. At least not without mentioning
-> > >>>>>> ABI break and some sort of investigating how customers or users are
-> > >>>>>> affected.
-> > >>>>>
-> > >>>>> I know the original authors aren't using the driver anymore and it took
-> > >>>>> quite a bit of time until others started to contribute to it so I suspect
-> > >>>>> the driver hasn't been in use for that long. There are no instances of the
-> > >>>>> device in the in-kernel DTS either.
-> > >>>>>
-> > >>>>> Any DTS author should have also noticed the issue but of course there's a
-> > >>>>> risk someone could have just changed the polarity and not bothered to chech
-> > >>>>> what it was supposed to be.
-> > >>>>>
-> > >>>>> I agree the commit message should be more vocal about the effects on
-> > >>>>> existing DTS.
-> > >>>>
-> > >>>> I can imagine that all users (out of tree, in this case) inverted
-> > >>>> polarity in DTS based on what's implemented. You could go with some
-> > >>>> trivial hack, like I did for one of codecs - see 738455858a2d ("ASoC:
-> > >>>> codecs: wsa881x: Use proper shutdown GPIO polarity"), but I remember
-> > >>>> Mark Brown rejected similar commit for newer drivers.
-> > >>>
-> > >>> I don't think there's any out-of-tree user, because when we started
-> > >>> using the recently driver, it required lots of fixes to even work at
-> > >>> all. I'll let Kieran and Umang comment on that, I haven't follow the
-> > >>> development in details.
-> > >>
-> > >> indeed, initially we had to put up fixes like :
-> > >>
-> > >> 14a60786d72e ("media: imx335: Set reserved register to default value")
-> > >> 81495a59baeba ("media: imx335: Fix active area height discrepency")
-> > >>
-> > >> to make the sensor work properly on our platforms. Only after that we 
-> > >> had a base to support more capabilities on the sensor (multiple lanes 
-> > >> support, flips, TPG etc.)
-> > > 
-> > > I would also add that we had to provide control for the regulators to be
-> > > able to power the device as well in fea91ee73b7c ("media: i2c: imx335:
-> > > Enable regulator supplies").
-> > 
-> > Hm? That's not a proof of anything. Supplies are often turned on by default.
-> > 
-> > > Given the driver was posted from Intel, I would have anticipated perhaps
-> > > the driver was in fact only actually tested by Intel on ACPI platforms -
-> > > yet with no ACPI table registered in the driver - even that could likely
-> > > be considered broken.
-> > 
-> > Nope, that does not work like that. Their platforms and such sensors are
-> > often used on DT based boards.
+On 01.08.24 18:07, Peter Xu wrote:
+> On Thu, Aug 01, 2024 at 05:35:20PM +0200, David Hildenbrand wrote:
+>> Hi Peter,
 > 
-> What DT-platforms would that be ?
+> [...]
 > 
-> > Not mentioning even PRP0001.
+>>>> +	else if (size >= PUD_SIZE)
+>>>> +		return pud_lockptr(mm, (pud_t *) pte);
+>>>> +	else if (size >= PMD_SIZE || IS_ENABLED(CONFIG_HIGHPTE))
+>>>
+>>> I thought this HIGHPTE can also be dropped? Because in HIGHPTE it should
+>>> never have lower-than-PMD huge pages or we're in trouble.  That's why I
+>>> kept one WARN_ON() in my pesudo code but only before trying to take the pte
+>>> lockptr.
+>>
+>> Then the compiler won't optimize out the ptep_lockptr() call and we'll run
+>> into a build error. And I think the HIGHPTE builderror serves good purpose.
+>>
+>> In file included from <command-line>:
+>> In function 'ptep_lockptr',
+>>      inlined from 'huge_pte_lockptr' at ./include/linux/hugetlb.h:974:9,
+>>      inlined from 'huge_pte_lock' at ./include/linux/hugetlb.h:1248:8,
+>>      inlined from 'pagemap_scan_hugetlb_entry' at fs/proc/task_mmu.c:2581:8:
+>> ././include/linux/compiler_types.h:510:45: error: call to '__compiletime_assert_256' declared with attribute error: BUILD_BUG_ON failed: IS_ENABLED(CONFIG_HIGHPTE)
+>>    510 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>>        |                                             ^
+>> ././include/linux/compiler_types.h:491:25: note: in definition of macro '__compiletime_assert'
+>>    491 |                         prefix ## suffix();                             \
+>>        |                         ^~~~~~
+>> ././include/linux/compiler_types.h:510:9: note: in expansion of macro '_compiletime_assert'
+>>    510 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>>        |         ^~~~~~~~~~~~~~~~~~~
+>> ./include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+>>     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>>        |                                     ^~~~~~~~~~~~~~~~~~
+>> ./include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+>>     50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+>>        |         ^~~~~~~~~~~~~~~~
+>> ./include/linux/mm.h:2874:9: note: in expansion of macro 'BUILD_BUG_ON'
+>>   2874 |         BUILD_BUG_ON(IS_ENABLED(CONFIG_HIGHPTE));
 > 
-> I don't think PRP0001 is used by Intel for camera sensors.
-
-The original author is no longer using the driver nor it is used for its
-original purpose any more. The next users were quite probably Kieran and
-Umang late last year.
-
+> Ahh.. this is in "ifdef USE_SPLIT_PTE_PTLOCKS" section.  I'm thinking maybe
+> we should drop this BUILD_BUG_ON - it says "HIGHPTE shouldn't co-exist with
+> USE_SPLIT_PTE_PTLOCKS", but I think it can?
 > 
-> Sakari, do you have any information about all this ? Do you think
-> there's a risk that the driver is currently used by anyone with a
-> mainline kernel ?
+> Said that, I think I can also understand your point, where you see
+> ptep_lockptr() a hugetlb-only function, in that case the BUILD_BUG_ON would
+> make sense in hugetlb world.
+> 
+> So.. per my previous nitpick suggestion, IIUC we'll need to drop this
+> BUILD_BUG_ON, just to say "USE_SPLIT_PTE_PTLOCKS can work with HIGHPTE" and
+> perhaps slightly more readable; we'll rely on the WARN_ON to guard HIGHPTE
+> won't use pte lock.
 
-I think it's extremely unlikely the driver has been or continues to be in
-use on ACPI based systems.
+I really don't want to  drop the BUILD_BUG_ON. The function cannot 
+possibly work with HIGHPTE, especially once used in other context by 
+accident.
+
+So I'll leave it like that. Feel free to optimize the hugetlb code 
+further once the fix has landed (e.g., really optimize it out if we 
+cannot possibly have such hugetlb sizes).
+
+Thanks!
 
 -- 
-Kind regards,
+Cheers,
 
-Sakari Ailus
+David / dhildenb
+
 
