@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-65167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE401943F57
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:38:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9485943F5A
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 657161F277F1
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:38:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90CC92836D7
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F4A1E3CB3;
-	Thu,  1 Aug 2024 00:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1133A1C2301;
+	Thu,  1 Aug 2024 00:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2dbc+/g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qBnHy4ZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0211E3CAA;
-	Thu,  1 Aug 2024 00:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD9213775B;
+	Thu,  1 Aug 2024 00:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472714; cv=none; b=GHa8YU4ajr2l6MEtCAWqUr0zB4IpCbA7Q7Khe87W0bQJNp3pyh5n5dT+ZP4rVBZNIS9wYJO9EqQzUw6cvDMujP1mJr5QB7/2Xm7tYypDPLe5JZLlQpvPKmAbmlO9tsW7vex3YncQdSVTTiiUROZo6ietcGORctwEJwrPBUMqEOw=
+	t=1722472716; cv=none; b=t2X85M83idemW5zmTMXMjxvWdxL/hUGCosLcrS+hNo/cVoZe0B1b8NgjvNo2jftU2lUV7iz1i5LHHbjeBm8d0wvZmGzwjAQXb9iHd/CSit88ln2/cnY4e1IY2axrLi9XsTLXBlIBEpU+NfzDMxfcW9d7anfuhO01yldER1/eGw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472714; c=relaxed/simple;
-	bh=VJolDZfVtPLBOBkEyWqu07UH6tU3pqiYF5mWBFg916o=;
+	s=arc-20240116; t=1722472716; c=relaxed/simple;
+	bh=G18znVv8Awy0nqLe3UcKJM8x74ytyQbdXqD68nCkYLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZJyum1wqbN5LKN2KBO3d7P8vQvz8LMFkitSalPQ42KgfxdQUrS24oNhS+y69hbBwjzEz64HsQ8yj7TjV06Di+Ls7okVaWPhP/w2dCESX6EW/K9MiUjr2H8lMuqDJWpMsxUxgT1bOg3nnZfjXrwOR6urE+APfYwlT5VCmEa5FAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T2dbc+/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C12FC32786;
-	Thu,  1 Aug 2024 00:38:33 +0000 (UTC)
+	 MIME-Version; b=r+UyYe035eet90jwcR408XYtEFwECi3XeYETXbiMLbd+QrZi3q0h68eCAuhRFHzoOdcRIVi4Aquk4cqGV8AZz2e1AavDANnzlVJjbW23juojvxDMDf03fHjulfuDRA88B8unR7cPi7W67ZyJ+WvHvUXog/w++FQ4AliEfn+zkmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qBnHy4ZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377C5C116B1;
+	Thu,  1 Aug 2024 00:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472714;
-	bh=VJolDZfVtPLBOBkEyWqu07UH6tU3pqiYF5mWBFg916o=;
+	s=k20201202; t=1722472716;
+	bh=G18znVv8Awy0nqLe3UcKJM8x74ytyQbdXqD68nCkYLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2dbc+/gbDcrRL/sJ4F6HU4HyHKpRu+rkR2dcuWN5ehR9RtguL6+L3YJCs0SjXibk
-	 IdYIDAyDrPEu6aR6etECFKITyH0+y+LDbpwXsrnHVBAHh0DDTCXuxzcEUJfreB80Gr
-	 wV5H7ZdumNJ95pS6G/1Ck1aljZZWtbskIsaEHKyS2P4uXXc6pyb95SFPL7PNomjB0r
-	 3hKcdF+1DnOlHuSwGsMYU0w5Zoc7254H/gX3r4TAuQEpIDJtbPYXkmzufQjwq9HyLh
-	 +vdffUcqZ8RM9xoMrRBjcAPhn6toFUF4eFa7XVLkH4IxC+7AWMIjtx3hFSil6f0Dp9
-	 WA/0/Kl3B/8Cw==
+	b=qBnHy4ZTtCyRVz6umH4CCb+7ytLp8vqh2D5MTyAtTHCc206otFxXvHyoWTVbYkyZ5
+	 x4WvV2b4tgb/sOPseoaEBc7pjnJpdMhG/TqmmjIecBPeY8scQZTnTOZA9z/pQ2bEMg
+	 aGa0Blk80VOfJpID+JSLQVjoaXyT58VCCGz5JMQG6WaOD05vUYG897BiQT6zQw5Y7M
+	 wlE+XlpPqNIYQ/RfyR+ysmQCNgFoTzBtQzc7O4ojHUzG4Uhb4IiDe2Zwc/+87+eB1j
+	 9zyIzcND1LyioToOVFSszoZkrzYC5MROQelrxrmHZgJujDfVFXS/6PcJBFsJjUKCXR
+	 ssz/VFJDcqpvg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Shantanu Goel <sgoel01@yahoo.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	stern@rowland.harvard.edu,
-	linux-usb@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net
-Subject: [PATCH AUTOSEL 5.10 30/38] usb: uas: set host status byte on data completion error
-Date: Wed, 31 Jul 2024 20:35:36 -0400
-Message-ID: <20240801003643.3938534-30-sashal@kernel.org>
+	lizefan.x@bytedance.com,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	cgroups@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 31/38] cgroup: Protect css->cgroup write under css_set_lock
+Date: Wed, 31 Jul 2024 20:35:37 -0400
+Message-ID: <20240801003643.3938534-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
 References: <20240801003643.3938534-1-sashal@kernel.org>
@@ -69,39 +68,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Shantanu Goel <sgoel01@yahoo.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
+[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
 
-Set the host status byte when a data completion error is encountered
-otherwise the upper layer may end up using the invalid zero'ed data.
-The following output was observed from scsi/sd.c prior to this fix.
+The writing of css->cgroup associated with the cgroup root in
+rebind_subsystems() is currently protected only by cgroup_mutex.
+However, the reading of css->cgroup in both proc_cpuset_show() and
+proc_cgroup_show() is protected just by css_set_lock. That makes the
+readers susceptible to racing problems like data tearing or caching.
+It is also a problem that can be reported by KCSAN.
 
-[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
-[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
-[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
+This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
+css->cgroup. Alternatively, the writing of css->cgroup can be moved
+under css_set_lock as well which is done by this patch.
 
-Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/uas.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/cgroup/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index ff6f41e7e0683..ea1680c4cc065 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -424,6 +424,7 @@ static void uas_data_cmplt(struct urb *urb)
- 			uas_log_cmd_state(cmnd, "data cmplt err", status);
- 		/* error: no data transfered */
- 		scsi_set_resid(cmnd, sdb->length);
-+		set_host_byte(cmnd, DID_ERROR);
- 	} else {
- 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
- 	}
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 11400eba61242..e7b84b754748c 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1773,9 +1773,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
+ 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
+ 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
+ 		ss->root = dst_root;
+-		css->cgroup = dcgrp;
+ 
+ 		spin_lock_irq(&css_set_lock);
++		css->cgroup = dcgrp;
+ 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
+ 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
+ 					 e_cset_node[ss->id]) {
 -- 
 2.43.0
 
