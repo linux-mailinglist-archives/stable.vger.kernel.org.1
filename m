@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-65093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B961943E50
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01348943E54
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A83B1F21071
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:21:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8E81F2270C
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4376F1A072C;
-	Thu,  1 Aug 2024 00:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1785C1A2559;
+	Thu,  1 Aug 2024 00:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vn/FVhOx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pMdUtXJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011361A0722;
-	Thu,  1 Aug 2024 00:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84931A256A;
+	Thu,  1 Aug 2024 00:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472389; cv=none; b=CJuBzZIudqdQPx4UI38lRmfbBAgar0+9eETXYqRjHkx5LYbe/mFOjLt27Vqj0S3XX/LrLBdh1jisKBhdQGd9Oao+ib7q0W0sSQ5FQyAg32PcWg+wck2gplpNu3D+zMqcS5eyPvCH6pv1k7o5fhPlVs273pgIBhQqo4yEo3BuraI=
+	t=1722472393; cv=none; b=EyhS67W3cdZhyOhBbxHjeQlC25LogTFNYg3kvYpjyErt81V7CjIajF+U3mwaLCqbnsZmTnIpiAApp6K9UC8K2/GlHePjWaWTH/eYLMwml8WlSJSQ2k7PQt36JvGw1BV/913JmHcmB/ZjQMOmhe15ykyvRgj+mYiFhNpAz/NPPMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472389; c=relaxed/simple;
-	bh=onH4nwG0PEBMdqEH7lbkYWYYlADZyb3z7vMJkMN6TLs=;
+	s=arc-20240116; t=1722472393; c=relaxed/simple;
+	bh=nTM7HYpIjDGojVI8Bjqq5lNQj65xZvmldy11U0D1yYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJOVWHxFzPT5XsBEIzbE8XeHGzMdvq4VcwiXnx1CVGJwCQfXELR5XyZMBQLnHQSXNXsvqk/UwUdbjr3IhSwDT91cKmjTooD7dhQDncNvU29WmqWCYUh9kn+98h6ARCGZjC1wadnTbhGpJPIrps703sjNqmc3T8B759HaSrkwKd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vn/FVhOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C937FC32786;
-	Thu,  1 Aug 2024 00:33:06 +0000 (UTC)
+	 MIME-Version; b=JaXtnoDfvuEAN3ub6ar+AvpU+icXMMEXccDOVkQajKJqKwn9K1oFZRNc6sQuYFjZuyBqO8hXB3c0gIGfodqMvz7vxCa8zooxabsLABmU42+ZVIWVjcNMnbYlmmYpJi1SAiMU8+n0Ar3JtPg1bOqI2xUyprHK+90z4kOi46dRUDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pMdUtXJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D5FC116B1;
+	Thu,  1 Aug 2024 00:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472388;
-	bh=onH4nwG0PEBMdqEH7lbkYWYYlADZyb3z7vMJkMN6TLs=;
+	s=k20201202; t=1722472393;
+	bh=nTM7HYpIjDGojVI8Bjqq5lNQj65xZvmldy11U0D1yYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vn/FVhOxcFiHp9d1vJHpmpcTdYRfwRlOgnwl+0F+QE9uZIKvVjoKfqO/BpMAkWcyd
-	 NlhKHWO5BVSom8V8qbHjy81t0KnylSRhjGQTcLo5dc/At3/C4xo9Mz43H3QS/Omk0m
-	 gJXzRQk6x8ryPWaaOzgCk1+WkTP3Lc6Cxhe9Iv2ObpfThdtvMf7mBQwEeqXWVWgQ/W
-	 fUZ30Zn9yNXmBYQ2m+wI35bf6yFY85oPXy5TtmNeAO1qH6/6Wq1ccMLi3PvHrn3KUx
-	 Pu3Zrd5VisS8AaZpwso79SGuADEx0SZZbOHKIFke/FkCZIUDasv+6ZCXE5rfPm+Gfr
-	 d8d9aqRhBKPnA==
+	b=pMdUtXJWPQAnSN/7ju/azKl8QnUGDEILMw+735xC4FTZ3L5RaOi4x9FzRkVseKm2g
+	 tCl4CubgGrPcpAvCAvbbQTVovRNnLPIK+QIhPNOe0japOX1OssBSOvIgxxVIoqgRQq
+	 k5CBR0iQbVWGT0q+4prZWoiGyJd7LwcjaXQLB7TK3Pm9UJvrW54cNWVnrHqPMQKQU6
+	 ejVy+1lglN2Rs7wBQPGWVJPc97hiYTTv4oELMkdeB8AggRSHEELsrfpXTiRMmtttjD
+	 wWIrXm0SlQlFgWOeN4l93LcDrx6lPke4fqKQC+YRwkmbtEWfhklBgSUMlVdF5cVc0M
+	 EhUHCbP8eMZ4w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ma Jun <Jun.Ma2@amd.com>,
+Cc: Jesse Zhang <jesse.zhang@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
@@ -53,14 +54,16 @@ Cc: Ma Jun <Jun.Ma2@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	sunran001@208suo.com,
+	Jun.Ma2@amd.com,
 	kevinyang.wang@amd.com,
-	jesse.zhang@amd.com,
+	ruanjinjie@huawei.com,
+	mario.limonciello@amd.com,
+	bob.zhou@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 03/47] drm/amdgpu/pm: Check the return value of smum_send_msg_to_smc
-Date: Wed, 31 Jul 2024 20:30:53 -0400
-Message-ID: <20240801003256.3937416-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 04/47] drm/amd/pm: fix warning using uninitialized value of max_vid_step
+Date: Wed, 31 Jul 2024 20:30:54 -0400
+Message-ID: <20240801003256.3937416-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003256.3937416-1-sashal@kernel.org>
 References: <20240801003256.3937416-1-sashal@kernel.org>
@@ -75,47 +78,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 579f0c21baec9e7506b6bb3f60f0a9b6d07693b4 ]
+[ Upstream commit 17e3bea65cdc453695b2fe4ff26d25d17f5339e9 ]
 
-Check the return value of smum_send_msg_to_smc, otherwise
-we might use an uninitialized variable "now"
+Check the return of pp_atomfwctrl_get_Voltage_table_v4
+as it may fail to initialize max_vid_step
+V2: change the check condition (Tim Huang)
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 Reviewed-by: Tim Huang <Tim.Huang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-index cf74621f94a75..8b46214fc6fe3 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu10_hwmgr.c
-@@ -1026,7 +1026,9 @@ static int smu10_print_clock_levels(struct pp_hwmgr *hwmgr,
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index e6336654c5655..259bf8e702ce2 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -2575,8 +2575,11 @@ static int vega10_init_smc_table(struct pp_hwmgr *hwmgr)
+ 		}
+ 	}
  
- 	switch (type) {
- 	case PP_SCLK:
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetGfxclkFrequency, &now);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetGfxclkFrequency, &now);
-+		if (ret)
-+			return ret;
+-	pp_atomfwctrl_get_voltage_table_v4(hwmgr, VOLTAGE_TYPE_VDDC,
++	result = pp_atomfwctrl_get_voltage_table_v4(hwmgr, VOLTAGE_TYPE_VDDC,
+ 			VOLTAGE_OBJ_SVID2,  &voltage_table);
++	PP_ASSERT_WITH_CODE(!result,
++			"Failed to get voltage table!",
++			return result);
+ 	pp_table->MaxVidStep = voltage_table.max_vid_step;
  
- 	/* driver only know min/max gfx_clk, Add level 1 for all other gfx clks */
- 		if (now == data->gfx_max_freq_limit/100)
-@@ -1047,7 +1049,9 @@ static int smu10_print_clock_levels(struct pp_hwmgr *hwmgr,
- 					i == 2 ? "*" : "");
- 		break;
- 	case PP_MCLK:
--		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetFclkFrequency, &now);
-+		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetFclkFrequency, &now);
-+		if (ret)
-+			return ret;
- 
- 		for (i = 0; i < mclk_table->count; i++)
- 			size += sprintf(buf + size, "%d: %uMhz %s\n",
+ 	pp_table->GfxDpmVoltageMode =
 -- 
 2.43.0
 
