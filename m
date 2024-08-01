@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-65071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B58943E0C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:16:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB720943E0F
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35CDF1C2142C
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:16:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD03D1C21B52
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C231D4171;
-	Thu,  1 Aug 2024 00:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FE519DFA4;
+	Thu,  1 Aug 2024 00:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g4TiB2/H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kS6gH3cW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6D71D4169;
-	Thu,  1 Aug 2024 00:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68068132111;
+	Thu,  1 Aug 2024 00:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472246; cv=none; b=GdueRIVFAM3gH/YS8F+pS3BmNTyUNfhIDZK8AQd63pvyMIAiqXWiDn98lbzYLlylTvmueY5OW0ff0RQVtXztEogFDz+d8aRLqDo3p6unVY5wPPoKXExUKi73LOnvXQLSDdkau2qdgh+bsyg5drZ/PoXwkVnupDNtXCAQ27SPcVo=
+	t=1722472250; cv=none; b=eCRAGwOXipFR7jesSLtK0leBCdT71Rv3GMj/JdAWq8WCJ3YP5NOCfQz+KqZN58ADmZlfqP958QX5kE56/10tFcOxQOotFq0wsdYS8EYTTzHKNLiwbyQYq91LDYvWOhpaVvTVgtzsMe0z+YjDZi2b2vY8Cru4GEHsrs5lCEwmZNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472246; c=relaxed/simple;
-	bh=zea6lzRx4uDEN6AQ26mHTJ1keGNuC+w2mmC3WzU+Rds=;
+	s=arc-20240116; t=1722472250; c=relaxed/simple;
+	bh=dA6SUaOM8ZUdtfmX8iKTHsOdPq/3dC4vnr1HvU3RJbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEE3jDl+awvkT/NVKDpz7hMfnAb1qOz1PIb52tiixAz4+hqvQ2nd5fn9lI/m0V57B+VZJiEixutapZOFzAWfP95Uh9kBngi9NPX5B4HhidoojmG407s8I2k809i4KJXp7qVqz5v7RG0LoYbP/gwbhNxjC9UQQFFi0CpjIK0FNzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g4TiB2/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D25C4AF0E;
-	Thu,  1 Aug 2024 00:30:45 +0000 (UTC)
+	 MIME-Version; b=bu8ghO2xVoGpM6RaSDM+P9IdJGaLLmHaUz/B9wCqhdlGx/wK/Wh79RdLa3Xl/hkFG2KyST/2+UJ0iKVDKrW2tYz4X64ayl4DRaohiNQDlyqTFknBVdLCJzp+oQag5gI66USHTX8vghIRHeJ29/zVFwrFTC/XRE6c8efvOSenXRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kS6gH3cW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6691C116B1;
+	Thu,  1 Aug 2024 00:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472246;
-	bh=zea6lzRx4uDEN6AQ26mHTJ1keGNuC+w2mmC3WzU+Rds=;
+	s=k20201202; t=1722472250;
+	bh=dA6SUaOM8ZUdtfmX8iKTHsOdPq/3dC4vnr1HvU3RJbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4TiB2/HlO9+audh5WklgYjQukMxcg8X3J9FtxOIyn/WFLa0da+4z3Am2y66m6lU9
-	 5WIadf28HvKzBW78TmMZp8zGpZQUBKvc/hMBn5Pi9c025qUMsYHH/yzrJaY7iuc9nC
-	 PtYHQN2kNr7KI04Kwsm9QCHl4wtu7CXddmeJTPzCM/Ql4XBI9pv2yXLMjZdpbr7fDq
-	 B/QdXZZyE8FagS3QQ8vVUhbQB6STtJ8K0jyA0Db7/Qsz+PmM9Lu3bv4ByXiVKVknmp
-	 12QHfN6iXkZokKQ9uYCqfMf6OxsJuxBaYi8ZMtWgD8UDW4qXVIk4OnGrjekbJ8TfnU
-	 +BqToI3CL96Bg==
+	b=kS6gH3cWZX71nJFCpFig1ZtPSqVjRpWLkHWGLtT2qPIi/cTPk8JlwyiHudZYceb1T
+	 sLCZ2hixOK1iFxNFEFidpDVSiHAD5bB9FeHYmVlqJtnX1Oe3/w2M3jyKcU4lGdphZ8
+	 mRGlquAutPaSEeL3ViFWCh1MRqRbcbukS1e3XsQsBeUvJ/Em5rkfgAkohZhWdjHswf
+	 9Gve5w23MLEl8BdlodX+UGE1PbHWluDfMcJoXWYnZVvvmpmcu4Pg/Cr4hHDyUF982a
+	 FZ1Mhzwxvb/rQt4GxNj+L9Y7WirLSfHfcSj1khg4GIcXTSkWqNfFbKexQ6d8ntLveX
+	 yYoKBPYwlVKXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Takashi Iwai <tiwai@suse.de>,
 	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Jaroslav Kysela <perex@perex.cz>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>,
 	tiwai@suse.com,
+	cujomalainey@chromium.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 42/61] ALSA: vmaster: Return error for invalid input values
-Date: Wed, 31 Jul 2024 20:26:00 -0400
-Message-ID: <20240801002803.3935985-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 43/61] ALSA: control: Apply sanity check of input values for user elements
+Date: Wed, 31 Jul 2024 20:26:01 -0400
+Message-ID: <20240801002803.3935985-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -69,49 +72,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 10457f5042b4890a667e2f15a2e783490dda44d2 ]
+[ Upstream commit 50ed081284fe2bfd1f25e8b92f4f6a4990e73c0a ]
 
-So far the vmaster code has been tolerant about the input values and
-accepts any values by correcting internally.  But now our own selftest
-starts complaining about this behavior, so let's be picky and change
-the behavior to return -EINVAL for invalid input values instead.
+Although we have already a mechanism for sanity checks of input values
+for control writes, it's not applied unless the kconfig
+CONFIG_SND_CTL_INPUT_VALIDATION is set due to the performance reason.
+Nevertheless, it still makes sense to apply the same check for user
+elements despite of its cost, as that's the only way to filter out the
+invalid values; the user controls are handled solely in ALSA core
+code, and there is no corresponding driver, after all.
+
+This patch adds the same input value validation for user control
+elements at its put callback.  The kselftest will be happier with this
+change, as the incorrect values will be bailed out now with errors.
+
+For other normal controls, the check is applied still only when
+CONFIG_SND_CTL_INPUT_VALIDATION is set.
 
 Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Closes: https://lore.kernel.org/r/1d44be36-9bb9-4d82-8953-5ae2a4f09405@molgen.mpg.de
 Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/20240616073454.16512-2-tiwai@suse.de
+Link: https://lore.kernel.org/20240616073454.16512-4-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/vmaster.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/core/control.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/vmaster.c b/sound/core/vmaster.c
-index d0f11f37889b5..4f1b208576a34 100644
---- a/sound/core/vmaster.c
-+++ b/sound/core/vmaster.c
-@@ -204,6 +204,12 @@ static int follower_put(struct snd_kcontrol *kcontrol,
- 	err = follower_init(follower);
- 	if (err < 0)
- 		return err;
-+	for (ch = 0; ch < follower->info.count; ch++) {
-+		if (ucontrol->value.integer.value[ch] < follower->info.min_val ||
-+		    ucontrol->value.integer.value[ch] > follower->info.max_val)
-+			return -EINVAL;
-+	}
-+
- 	for (ch = 0; ch < follower->info.count; ch++) {
- 		if (follower->vals[ch] != ucontrol->value.integer.value[ch]) {
- 			changed = 1;
-@@ -344,6 +350,8 @@ static int master_put(struct snd_kcontrol *kcontrol,
- 	new_val = ucontrol->value.integer.value[0];
- 	if (new_val == old_val)
- 		return 0;
-+	if (new_val < master->info.min_val || new_val > master->info.max_val)
-+		return -EINVAL;
+diff --git a/sound/core/control.c b/sound/core/control.c
+index 82aa1af1d1d87..92266c97238da 100644
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1477,12 +1477,16 @@ static int snd_ctl_elem_user_get(struct snd_kcontrol *kcontrol,
+ static int snd_ctl_elem_user_put(struct snd_kcontrol *kcontrol,
+ 				 struct snd_ctl_elem_value *ucontrol)
+ {
+-	int change;
++	int err, change;
+ 	struct user_element *ue = kcontrol->private_data;
+ 	unsigned int size = ue->elem_data_size;
+ 	char *dst = ue->elem_data +
+ 			snd_ctl_get_ioff(kcontrol, &ucontrol->id) * size;
  
- 	err = sync_followers(master, old_val, new_val);
- 	if (err < 0)
++	err = sanity_check_input_values(ue->card, ucontrol, &ue->info, false);
++	if (err < 0)
++		return err;
++
+ 	change = memcmp(&ucontrol->value, dst, size) != 0;
+ 	if (change)
+ 		memcpy(dst, &ucontrol->value, size);
 -- 
 2.43.0
 
