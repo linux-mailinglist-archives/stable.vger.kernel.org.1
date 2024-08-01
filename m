@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-65112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD22943EB3
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:25:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D3F943EB6
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 03:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A72F28242F
-	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:25:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 300AA1C20DE8
+	for <lists+stable@lfdr.de>; Thu,  1 Aug 2024 01:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54591A4F26;
-	Thu,  1 Aug 2024 00:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0261BC9EF;
+	Thu,  1 Aug 2024 00:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aajDsqCN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqGrvh3O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635101A4F1B;
-	Thu,  1 Aug 2024 00:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B652F1BC9E6;
+	Thu,  1 Aug 2024 00:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472481; cv=none; b=o4noCBtv8E+gW8nTsNdRgITh9rAW38fSpBO0GoBhxDj5VVOLNXL+QPs1y+5VDM6iCnv6j+Hs5hEYmcU9ZgEfxaCO4oAolGh12BpbAD/3LSirBeUik8pgag/wwN9O9MGfgi7AulXK3Y+mvWSZkO80psOdaRBruPdfYrzvHkx7BgM=
+	t=1722472482; cv=none; b=hXkbEIJj7TO1GKgDGKYCTuJe7iORSrDrAGmSmomYOPdEOAyvapjcAUL9tgODKBVkFnl+z3/M4fwVr+mGRddLf5uCLsg7p+1KS9HKKs5JCc52ar15o2mx+IK8QjdgBhi/dT14kjbs/VXoW9Yx7y4ZtmwLgT44WABEYwgUCEWnYY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472481; c=relaxed/simple;
-	bh=m/qLhf7Iy3IXINAWH/3QJcrMjGzV7AuiwKF8xM8HaDQ=;
+	s=arc-20240116; t=1722472482; c=relaxed/simple;
+	bh=yZ3UY4/gDa7REF4ZddaQg0d7YWsZBbr+sWxa2cYFNhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHR0ri9LKnVzUCBrEM1XM/vyib5o0jvFKqblhwsc2LzmIwIIZ7WkGmUygZ5IzC7Zw7UeMqSp/RnkW2CW43StA23JHWnqCj7ki4CvBARfj8uaFH/1vwA3xdlH17pYMqUFQ3A7kNi8bD/wKPpv5XgNCkpVVfhzIO5EdRHT8I4Py3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aajDsqCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7691EC32786;
-	Thu,  1 Aug 2024 00:34:39 +0000 (UTC)
+	 MIME-Version; b=OSg1EKpC9eOqgVMX8GJQjTl+m5OpCtZ/RiAZGW7yEMkWYhUJg7YTdJIl1fMBDoUt5YzBH1kRraiaL/DDa59J5lYptknmiVhCtJ5MY2sV25c0667KXXbLY0/o9WShbrQfMIYlRTIhARLt1hbIZgm385hCsqDjN33o9DZaC5Kz/os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqGrvh3O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE26C4AF0C;
+	Thu,  1 Aug 2024 00:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472480;
-	bh=m/qLhf7Iy3IXINAWH/3QJcrMjGzV7AuiwKF8xM8HaDQ=;
+	s=k20201202; t=1722472482;
+	bh=yZ3UY4/gDa7REF4ZddaQg0d7YWsZBbr+sWxa2cYFNhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aajDsqCNOQ57AOMIvBOFtb4zf2yH+u5E9+DS0KvESfUnNZwBOnsv5ZnL6b/XZ1OBQ
-	 ewUFbfmipkgWlCcT334jmV5nZgjQRKYkDw5ojeW5ZBxss2JThPUfQIWIweaK8xbUNg
-	 +BWTsStvfPqOOPqyOLVNOlmlUypUAhlKUSM4+SLB18Ej/XbZ20d1SDt0IMyy3GB9JT
-	 1dTHRd2Wzy6SUrb3BFAS7akdlig08HG8qelVqP4q5cZuSR12WZghaDZMjVzLVW6znZ
-	 jHa8IzgQzr8UKz+GZ2tw3rMZx7DZ0saalu/CwwqbrLm0JcWLpM8rGGC4Jdcx3jXABx
-	 2xGRo8p7VVbaw==
+	b=EqGrvh3OFRPQ1jqawx0rM1LZVuNm9+7otw1pPAIDjbxISTp5qm6o5X0aDWzCUst6e
+	 eH0eo4yJS72loxmvoy2q6Wrv4n6gCVLa9nArZS/fjJB7A5wcIXa+12goJwVMUm7tkv
+	 NeqQyziZTugx7VGJl3QfZ4Sujr4s2d4mxmZU57kFvSoGABY8vbs9r0rIE4IhPbWXPI
+	 cK6pFi49mgino6yLDGtwrf/dFpA6NIlB/NaJicZ7dmpj9xKfEXu4OG9Bac8QQcDn9N
+	 p+bpo0B7LdAL2qqG98XffvXIOyW1sqt135oych//AQC34vOKPM9+TxsG1tgbtGvPVq
+	 5sjFJe91i/l7g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tao Zhou <tao.zhou1@amd.com>,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Jagadeesh Kona <quic_jkona@quicinc.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 22/47] drm/amdgpu: update type of buf size to u32 for eeprom functions
-Date: Wed, 31 Jul 2024 20:31:12 -0400
-Message-ID: <20240801003256.3937416-22-sashal@kernel.org>
+	sudeep.holla@arm.com,
+	rafael@kernel.org,
+	arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 23/47] cpufreq: scmi: Avoid overflow of target_freq in fast switch
+Date: Wed, 31 Jul 2024 20:31:13 -0400
+Message-ID: <20240801003256.3937416-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801003256.3937416-1-sashal@kernel.org>
 References: <20240801003256.3937416-1-sashal@kernel.org>
@@ -72,69 +69,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.164
 Content-Transfer-Encoding: 8bit
 
-From: Tao Zhou <tao.zhou1@amd.com>
+From: Jagadeesh Kona <quic_jkona@quicinc.com>
 
-[ Upstream commit 2aadb520bfacec12527effce3566f8df55e5d08e ]
+[ Upstream commit 074cffb5020ddcaa5fafcc55655e5da6ebe8c831 ]
 
-Avoid overflow issue.
+Conversion of target_freq to HZ in scmi_cpufreq_fast_switch()
+can lead to overflow if the multiplied result is greater than
+UINT_MAX, since type of target_freq is unsigned int. Avoid this
+overflow by assigning target_freq to unsigned long variable for
+converting it to HZ.
 
-Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Jagadeesh Kona <quic_jkona@quicinc.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c | 6 +++---
- drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/cpufreq/scmi-cpufreq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-index 4d9eb0137f8c4..48652c2a17cc0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
-@@ -177,7 +177,7 @@ static int __amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
-  * Returns the number of bytes read/written; -errno on error.
-  */
- static int amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
--			      u8 *eeprom_buf, u16 buf_size, bool read)
-+			      u8 *eeprom_buf, u32 buf_size, bool read)
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index c24e6373d3417..eb3f1952f9864 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -61,9 +61,9 @@ static unsigned int scmi_cpufreq_fast_switch(struct cpufreq_policy *policy,
+ 					     unsigned int target_freq)
  {
- 	const struct i2c_adapter_quirks *quirks = i2c_adap->quirks;
- 	u16 limit;
-@@ -224,7 +224,7 @@ static int amdgpu_eeprom_xfer(struct i2c_adapter *i2c_adap, u32 eeprom_addr,
+ 	struct scmi_data *priv = policy->driver_data;
++	unsigned long freq = target_freq;
  
- int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
- 		       u32 eeprom_addr, u8 *eeprom_buf,
--		       u16 bytes)
-+		       u32 bytes)
- {
- 	return amdgpu_eeprom_xfer(i2c_adap, eeprom_addr, eeprom_buf, bytes,
- 				  true);
-@@ -232,7 +232,7 @@ int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
+-	if (!perf_ops->freq_set(ph, priv->domain_id,
+-				target_freq * 1000, true))
++	if (!perf_ops->freq_set(ph, priv->domain_id, freq * 1000, true))
+ 		return target_freq;
  
- int amdgpu_eeprom_write(struct i2c_adapter *i2c_adap,
- 			u32 eeprom_addr, u8 *eeprom_buf,
--			u16 bytes)
-+			u32 bytes)
- {
- 	return amdgpu_eeprom_xfer(i2c_adap, eeprom_addr, eeprom_buf, bytes,
- 				  false);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-index 6935adb2be1f1..8083b8253ef43 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.h
-@@ -28,10 +28,10 @@
- 
- int amdgpu_eeprom_read(struct i2c_adapter *i2c_adap,
- 		       u32 eeprom_addr, u8 *eeprom_buf,
--		       u16 bytes);
-+		       u32 bytes);
- 
- int amdgpu_eeprom_write(struct i2c_adapter *i2c_adap,
- 			u32 eeprom_addr, u8 *eeprom_buf,
--			u16 bytes);
-+			u32 bytes);
- 
- #endif
+ 	return 0;
 -- 
 2.43.0
 
