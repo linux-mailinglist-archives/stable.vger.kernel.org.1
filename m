@@ -1,249 +1,186 @@
-Return-Path: <stable+bounces-65270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A46945559
-	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 02:24:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA2D945575
+	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 02:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C831F2142B
-	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 00:24:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46AF7285FF5
+	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 00:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3F7B64E;
-	Fri,  2 Aug 2024 00:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7AB11CB8;
+	Fri,  2 Aug 2024 00:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JcwKsoFJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J6Q0NI7M"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1F1D520;
-	Fri,  2 Aug 2024 00:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722558161; cv=fail; b=V9mlPRSW4gZwdQb3NnlYCMochegLWp0UH0/8hiVlbCfVmi1Oc0Mr76eeKmm/4glVyhd0ydPKiG/+zNRE5UxopA+G/U3O4pahk1iiUSTIHKoQuXGzDMQeGxs8IFyDxlxLY9LXbwa0gQZhWPmuw2c2oEpeA20UertyMfbYGyz0fhw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722558161; c=relaxed/simple;
-	bh=hbBc8r7TzBOn25GeVcdDA1RprPowWL/H4Gcq7hkggmA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=t0nFV1XNNPXDYwwIHStPrEXU3CMLmjgfgR3jOal7ITAhvIzaC8hZk/S1KgaFRfiJHxxBqw35cfghC2WwnkLQlSn26wD2bT712AWVz5u9Ck2HIdpxKGeVYT3mZ1gj3c7J1O5zhKLu9ezTh4r57T5IrWqMOnU1FU3sLQ5Z5XJkpDw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JcwKsoFJ; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722558159; x=1754094159;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=hbBc8r7TzBOn25GeVcdDA1RprPowWL/H4Gcq7hkggmA=;
-  b=JcwKsoFJ+7/qQHKiYsYmJdlnezD10/jlzGzBP9TQJJTo1vChh1II8epF
-   K7rK4pQAkxeg3w3/FFKET64LPUmC1GGwbq3R6bRboXWUW7rBe4HlwtrFz
-   V5uwn7nLYJra6dON4gKenTm0Hn6a3Ty6mXXKf5cdscj3hAE0e4ZOIXLG5
-   uPVO7Ywop470zRjJGKbeiR9o5M3rhh5NfDAb4O85ftN0a7XC1VnPhGM9Q
-   VAD13/M0b1l9Rp/MLbm/jiQJvOUllzHR/WPCsRrsM3nj2a2mTdj7Dawad
-   8LmhV6m0gHWbanOVzXBJKKN+Z7kgaPXFX8CKl0KHQCJCgVEI9kAmKw0/I
-   g==;
-X-CSE-ConnectionGUID: jtY9z0aGSZSZishE67zU5A==
-X-CSE-MsgGUID: YUYxxlh7SFOb7DnokRLegg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="24427386"
-X-IronPort-AV: E=Sophos;i="6.09,256,1716274800"; 
-   d="scan'208";a="24427386"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2024 17:22:38 -0700
-X-CSE-ConnectionGUID: MY052sFLRY2COopiqjUAcg==
-X-CSE-MsgGUID: ow/VdfF/Tb+xYdMg8hEfGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,256,1716274800"; 
-   d="scan'208";a="55463057"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 01 Aug 2024 17:22:38 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 1 Aug 2024 17:22:37 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 1 Aug 2024 17:22:37 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.46) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 1 Aug 2024 17:22:37 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xW8XCNNiUa09Gbm+vW5mpuwcHgyS9Mg6uaJDYWhiP9nYOHGbpkQD/PsK/Dd28fT968AA8IfaPodt2ZLlv/9IHteoxIGWnT1rpplVnBE3+Z+GS7JOZAvEQ9x0u4CFHkvXWUGtTHxmTkXf0YL9xIdz1EPLdIXWCytbgHAnveoQ5KiSj+DhDC7GR99hthml/8mik6+JpEmcA1llOQ+fiJPuWOluzvrh5gycOYqQxk0Wu4RODZ2/mn42jF0fxRy1CF3jf1C+8uNjTkZAGJA34GblFpIRsC7OVMWfSG7MirLRcO6zEECjZ/cwRMPHX6+H8Ih9ElijRoD+/KiRw+fD2NF7aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nPrbhoGCz6YCIkx9oUgrHGy9p++JnWyx5zecfUU0eBA=;
- b=uzZ/K1Prhpiud5QsiLEIVcopQ8ZDD9EeYQzmnNh+/g/nRJ/dc8CAeVUbonUqAiGCEKeyQcXlyS1q9tt9IA5NtBo1dc6jQevlwoYoeiD/FokJf1v1IGg9dgEXJnxBHNgQnnmwT7rkPfOQ8pxI2ybDrNKr03R0jutxy9Fh/mNnIYuN6RZP8Ofi+kjO+e1DCYZJmscT34u3ZUam7AwfAQsQl8lomyO280sVxDXKodelU9EvVYqqPQpSPp10GGxvZuUor7Q0mxSsLcxyNmYgUE33rkVAml7QaRyGgK+1LpRm/oXhvsjqVOm2iDPZtiYqiwQsNEXp+O19JkfDuCtv52roSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB5911.namprd11.prod.outlook.com (2603:10b6:303:16b::16)
- by DM6PR11MB4707.namprd11.prod.outlook.com (2603:10b6:5:2a6::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.23; Fri, 2 Aug
- 2024 00:22:34 +0000
-Received: from MW4PR11MB5911.namprd11.prod.outlook.com
- ([fe80::1d00:286c:1800:c2f2]) by MW4PR11MB5911.namprd11.prod.outlook.com
- ([fe80::1d00:286c:1800:c2f2%6]) with mapi id 15.20.7828.023; Fri, 2 Aug 2024
- 00:22:34 +0000
-From: "Singh, Krishneil K" <krishneil.k.singh@intel.com>
-To: Simon Horman <horms@kernel.org>, "Lobakin, Aleksander"
-	<aleksander.lobakin@intel.com>
-CC: "Linga, Pavan Kumar" <pavan.kumar.linga@intel.com>, "NEX SW NCIS OSDT ITP
- Upstreaming" <nex.sw.ncis.osdt.itp.upstreaming@intel.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Eric Dumazet
-	<edumazet@google.com>, "Kubiak, Michal" <michal.kubiak@intel.com>, "Nguyen,
- Anthony L" <anthony.l.nguyen@intel.com>, Jakub Kicinski <kuba@kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-net 2/3] idpf: fix memleak in vport
- interrupt configuration
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-net 2/3] idpf: fix memleak in vport
- interrupt configuration
-Thread-Index: AQHa3c823qiXEyuJ10695m6I89Cee7IJMqAAgAn1xoA=
-Date: Fri, 2 Aug 2024 00:22:34 +0000
-Message-ID: <MW4PR11MB5911A86FD4BDA2D38651A5ACBAB32@MW4PR11MB5911.namprd11.prod.outlook.com>
-References: <20240724134024.2182959-1-aleksander.lobakin@intel.com>
- <20240724134024.2182959-3-aleksander.lobakin@intel.com>
- <20240726161608.GP97837@kernel.org>
-In-Reply-To: <20240726161608.GP97837@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW4PR11MB5911:EE_|DM6PR11MB4707:EE_
-x-ms-office365-filtering-correlation-id: db5c4a17-6b3f-416f-8209-08dcb28934a6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?Pp6l1vdBIqC4AG18P8vhW3B5EAPj66LrRbbza0N8GYRAA1Vx0N1Nn/hcG3Pd?=
- =?us-ascii?Q?QmBUyGcpvCTy0ruuMt97JlAMm2V7T3VgMJOQCbgeW50FZOPjyED6RQ3t9MVk?=
- =?us-ascii?Q?RCcRbMYUJ+dkWoTelRMKsxnHJPPyYLyB3LnusjlO3ntqUvFn0S+/zAwbCOQb?=
- =?us-ascii?Q?nptwrqBsHoRRsGap5npC23YT4RX/Ck6JZDy0kBUN3lmolKTfiL0l5pROF9X1?=
- =?us-ascii?Q?GKSpfLNsCl8PzrHfuwj49KKsdXpyZZoidFJ+Hc2bmRdwM5sDOC2hc/6FvWQZ?=
- =?us-ascii?Q?StLuWueldSX3to4P9Vg7Kc+9e9CiSZEqU37aQRqKyIT2w68FDEoQA2EHaA6b?=
- =?us-ascii?Q?3jAUQmtleNXVh2r1Bw4SUdDsqfH+JwinDPpuqT5K1we07WjtnipvHtBdhk4K?=
- =?us-ascii?Q?GjvlN8P2hLXWizNoZ9cePONh0EfWxlOMsCmzDhbSyNRM0m1yhv8a4g77e6Gc?=
- =?us-ascii?Q?cBURtJ9N19qSF0vyYCtosCVGCkqmqkDgKFbG6BflbJ9Gham2QaHGCQRiYfHV?=
- =?us-ascii?Q?QWVLTPmAEKMWYfePtXiIKS3eXuuK+EOPs5hb7wrrOGcJ7tfEn/eaWb1VE5Xq?=
- =?us-ascii?Q?qdux6/gx2EThISWf9R6hhPKk6YScuXKlfiOAJcY0gR2qq8sWn6S0QAfaL2oQ?=
- =?us-ascii?Q?JAwmmrPk/hV1oCrP7lZs8OfOGzDK+IOSlD/WQM+N8qyI0fcK6f5w688zskVA?=
- =?us-ascii?Q?bf8aqYAW8Jb9OBQWj1UEyF5bI79AVev2LVcH1i9mCpKXIucM4ygUN7zMcymG?=
- =?us-ascii?Q?YH/u6t1n2m5KkH59lDz0Oq7OE7zru1/b8pMPFU0fDhzPhy0IQTdj4Wes42qD?=
- =?us-ascii?Q?1u7owCzfyxZeKysMamlF39/qImkyocFb9PZOSzcEWNTMqvfuXuBp7Qd5BKHG?=
- =?us-ascii?Q?n8ANfQgCzFbOUcaCpiUvJJ91HVavgzkuhJJVfooXSLAn7+vfWpTsoZw1xOWi?=
- =?us-ascii?Q?aDog33QVi3YvXSp3Cit6n/DJQXlxbSlV9x5t5QbxrpCz4q9hkGvu/PaHzo44?=
- =?us-ascii?Q?ItZwzmOrpCKkGVrovVuiORgdlBAYcxtqqJAUkdlCk0AAA55Wj+sjgVUuLjVS?=
- =?us-ascii?Q?3EXlTvb5fNWtU/YgKSpMxyn9SAWgTJx8UrVCMEq0WHWHqFkY6Z25861Hy+NE?=
- =?us-ascii?Q?04y/F3WadZXwxXdBwJhElNCtlSdAzAweT3XSHSMQ31heSStomCUJUu1lZvbB?=
- =?us-ascii?Q?DWGJK4ZTTXHPD4obInlmqzhUZfVck4bydCTUfKLrsFOjGbfvx3yFG1zHKlS4?=
- =?us-ascii?Q?bqlMrT78s3IsDhIzcMZqV5sZrM16ZXtbT3dEiTb42A8UBxGIUZaOGkSyI5B1?=
- =?us-ascii?Q?0WGvSnnuyI/VEnGQis0feU1NsfhBwYBrIBa7RB0NYQ36XZ0rEPEb8PmZJRc5?=
- =?us-ascii?Q?FgG9QYnJ52q/iFMKrgti7ZiRg+PckcgpOpszYrW7jHxTWzhLRQ=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5911.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0cvL1WLQWGTzNS3HZiQG0gkAybA7FEUtAAwrkNGgT4bVB4sQk7c4uCwZHVag?=
- =?us-ascii?Q?xfn3VuiJfoe2CqI/GJkMSk7hqhdTI73cmVpegi5vS8EbeJpqRpsUKcoL0KDi?=
- =?us-ascii?Q?fvh5RvmNlHnVzcs6FKm2TtUpxSMFMB9PsJrtn2RW9SafBP7OoOXovgJybsCf?=
- =?us-ascii?Q?wAqSmQ3lx67/wPt9iQW9y19S4uVZgZfoZMNTLguJ6aOe/QEsGlPadOxq2oQm?=
- =?us-ascii?Q?VPPBbolBfVqBk1l0pr9JLamAyqNt9ScZIw8DBE6Gbm+lcH2bAbwDlKghrDI8?=
- =?us-ascii?Q?8dkLub4rFHpx4dYy0v10DF0nrmm3WmYOCwGkVbCDu54CanQq6LZzz9qRpJKM?=
- =?us-ascii?Q?hKRUFQ2PlXdfO4euyvnRyhvLj+wKr1Pi74fU+Tgah6QAvRvd94rKfcZS65u7?=
- =?us-ascii?Q?/5uFcYP00I7+tqpCc2TuLWhnydjm46DrbglRsGIHVGd8JsR5tPizgp+pvvmN?=
- =?us-ascii?Q?uLB1h1HY7N6IFKvOujcwQXYzoIg7s0DLWMEroMqRhh6jNYEFVZ2bm3WpvYao?=
- =?us-ascii?Q?uZ9wniV9PhRERRXHVYXCNiy2M6QihuxtXcquKBIy7NxVES0i4u6qbhbEAWz4?=
- =?us-ascii?Q?sKqSwp0kvwhm/Pd9hUVlNuN1l9GVFa2o52U/N4TTBWmtb4d0+/j+6GY0qiGo?=
- =?us-ascii?Q?k9IhFQTO2GI0MAV11MmNKq4PWX4AmL91xNACyJw3hV7RuDZ6mJiuzpF2chs7?=
- =?us-ascii?Q?l9YMrpDJzfdjjKwPx7z2iC7V1PHZxigFp/3UXCNSO8dYaO8NwDMmR0yuVeAv?=
- =?us-ascii?Q?GGYMZrc0+wNqkc+AnLTg25jTYuvdksGE+1/iNNY7LPNz0CrA25juBBSHGla+?=
- =?us-ascii?Q?0oRflkMhLJsKnxIa5U0kTPqsokPcE2JtWI7hlJh4rXr03DxgaZaKPU3RAR4Q?=
- =?us-ascii?Q?w3Uejmo+8ShmjLYBvVmEAkMUBKjpEkGXtLZBVXDLFT/Q8zu27z60+JX8H9yD?=
- =?us-ascii?Q?2fAMp3Prk6fF3NlW/DNBWmLN8U0/VRy7W0n48dSaxL/TeGoOC142M+dQytc3?=
- =?us-ascii?Q?Urx6Aw2dJIHWEXddyMSLQvkBS2pgK3qWPrNS7pYwEeRc4GRvW3xqfjtZi9yd?=
- =?us-ascii?Q?zulBWQk4cGu9OuRT2rT28VF0yGTQFMiePkS61fZg5rbpMM5iJTZ0c/7uBVYZ?=
- =?us-ascii?Q?4PmsegYQrzQxnsShI1FxvbMYv+uTb0KqEdxmjkBr4tvwTMk65IP9anseMRFK?=
- =?us-ascii?Q?fdhUglVPplqW/NUzFiJO4cSPWPpCIsEjIx5uNwJgeLPy1Mbhrg1s4NXBYz6T?=
- =?us-ascii?Q?x13JLLoNQL04GnIchqkxdM3femz9/mf1Zpqf5+ekpmA6ir/1dvVzqiXHLEMc?=
- =?us-ascii?Q?QQ5+2hNP9HNXRbIFJR/hHTgy5S0d1chstRoOCsj7GgzEZ7VOrTrlE2culpLo?=
- =?us-ascii?Q?lzAfxXMzGhXFWrQBjc3217kMIr4k134f9vpx8Fe/1VEYh41wrnZJ3KaBVtIY?=
- =?us-ascii?Q?G1DADkMlrvRQVCcn6GwxU2DynnqytfkQgktOJgGy2CvdYqc3ocK73Q5kTR23?=
- =?us-ascii?Q?tJVU3s4R7QzWFAvT7txldNd0m7xtAHuDjQHbXDTR5j99lnhbJ8PDO+Gh8EjS?=
- =?us-ascii?Q?Y7i1Qxi2emImAdzEQrOLFwsq7pbFKamF0wSAo07AOZ2Iu8VGVqku9TT7cGxx?=
- =?us-ascii?Q?Aw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7298D520;
+	Fri,  2 Aug 2024 00:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722558888; cv=none; b=h0Rd/B8HGN9QEBKthX0vDaPaa+9h+IE2BlXcGLHbgE4L3IzwDaOX4SKGLSBJyoAoVk8wRGbRD2AWcmEPAizokGfMJodI45zI8++Ve8heKdwcZstLPLk+hf5Yy9E0Fu3jbYCkWjYtqnhY+62Lx1k+Isyoztyv2YpsD3QG2lcsVaM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722558888; c=relaxed/simple;
+	bh=ZVhOko/Es2Cy0eD/eIbDqzj6uBX2CIFzIfGTkRBHbXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mOLHwzO1wj6YLlUH64sIfVz03hJ+rEXZZV+YI3Uf0Sh+p38ZAxMG731Bx4rdbF9p6dJ0Zk/0ENLhu3n1R91zQLmRta9QGBOiLOppQ4jHld00h9all09zqrMT6KttYUpabEDTg9z7eX4ZUph1L+rInGsFvlSP2bhQZwtP8HikYMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J6Q0NI7M; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2f035ae0fe0so87855071fa.3;
+        Thu, 01 Aug 2024 17:34:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722558885; x=1723163685; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=r4TxVSYutmdmVBr6Vm91nJQyTFo86VmYkWwujCrGEo4=;
+        b=J6Q0NI7MS46sCeDNXH9iwPZF4u1qCCoIutMnrdP00mgqhFI8nxTBdrmx9zaMbIaH2/
+         1wHBfBPZZ1f8kAjFDEhwQQz30Orwe3EXcQZJ8fFS3xQ06so442LfwGJtvAYTLgNXsMVW
+         4oICNHs04/ouXPYpSN8DprgxXAr3AFvNR89XeLoOA4TjKZSiVM214hSMJCS+7aBH+QOp
+         Uh+AXoDoe1BDs/PApApDDyIQKPozMOxXEPZ/U6zkT9lGnlP9ZmPqdmMZAjFAyeBeE/9/
+         qFbD9/CFekvxOP5/cGF7IgMovlPOqzcJXcP+Z3YuKdqkiGFynwOfiRQUviFJE+Hlongw
+         JwjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722558885; x=1723163685;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r4TxVSYutmdmVBr6Vm91nJQyTFo86VmYkWwujCrGEo4=;
+        b=oHnYFzBlLrzgkhduq91smi0EFizPL2DpPev9VxDCj/7v3b2INnQ4wwfas6TZqqEbhB
+         zQi8IHlllN7OeW5BaMSC2V0j9MvUoEZsbZoReSu0DAV7koocLH6AmEJ1M/hMxX8eZKWo
+         y+tv3w7MIdkthohWWy/TBp30U77bD75MwerLo+yK1ZMm91Gljwe0BV5Jt+L3x8cwsztG
+         tK4JhGF/bIpni1BUJpXOZVIw8LYDnDrpqZDjMlyqIhyHhH5xAM7Hp4JRFPIupVkG6RsA
+         fojWImollCYdP2oeYEqwtDwFEkLa7klYHv8ULuqk9zuAx0JUaDQO9c+/ZDv0bzrh38NK
+         T1QA==
+X-Forwarded-Encrypted: i=1; AJvYcCXoik333iOg6RI5XyqNmXCnUl4nMktO1mRmwPm0jKXKc1SFPq05TKWlGvB5uZCZr5G8zNrV+XU5GNQJkuVuv5gYWTYHiOdO4oBCJJtf79YjS6MGybkTmQVUDMuIfAMBox8sHnYos3hMmMqe24ttWn6jLDFO8CjsGKuLevv4/LWs
+X-Gm-Message-State: AOJu0YyfRt4Ux7J9+q8m6Bm+8Ofi1NJgCdj+e60zHdsDDUqsBaJvBpMR
+	Q/3ndwDVY4r79jG5E80eDr2TscXmV2wMd0BaCkIlqf8k3aUeMUw2
+X-Google-Smtp-Source: AGHT+IG/FMK3bNVlrP15HVAL29rwgIgSr3VJBp7bNTiL3KfUs6zHWiqpafjB1eMUpCtsYUlpQ6PkVw==
+X-Received: by 2002:a05:651c:104d:b0:2ee:494c:c3d3 with SMTP id 38308e7fff4ca-2f15ab395afmr11770781fa.43.1722558884154;
+        Thu, 01 Aug 2024 17:34:44 -0700 (PDT)
+Received: from mobilestation ([176.213.10.205])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f15e250619sm362831fa.79.2024.08.01.17.34.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Aug 2024 17:34:43 -0700 (PDT)
+Date: Fri, 2 Aug 2024 03:34:41 +0300
+From: Serge Semin <fancer.lancer@gmail.com>
+To: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+Cc: manivannan.sadhasivam@linaro.org, vkoul@kernel.org, 
+	quic_shazhuss@quicinc.com, quic_nitegupt@quicinc.com, quic_ramkri@quicinc.com, 
+	quic_nayiluri@quicinc.com, quic_krichai@quicinc.com, quic_vbadigan@quicinc.com, 
+	stable@vger.kernel.org, Cai Huoqing <cai.huoqing@linux.dev>, dmaengine@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] dmaengine: dw-edma: Do not enable watermark
+ interrupts for HDMA
+Message-ID: <mhfcw7yuv55me2d7kf6jh3eggzebq6riv5im4nbvx6qrzsg2mr@xpq3srpzemkb>
+References: <1721740773-23181-1-git-send-email-quic_msarkar@quicinc.com>
+ <1721740773-23181-3-git-send-email-quic_msarkar@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5911.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db5c4a17-6b3f-416f-8209-08dcb28934a6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Aug 2024 00:22:34.2920
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sOiiXps4ZiChKwAqz4u+YKJVeTWxc8oNU8CkSY+qWPMkGrbQkx3+076jui+V08BWkpCNM62mew+y5sG0SNdhUMVYxYv3QxGHVZj33sHkMlE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4707
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1721740773-23181-3-git-send-email-quic_msarkar@quicinc.com>
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Simon Horman
-> Sent: Friday, July 26, 2024 9:16 AM
-> To: Lobakin, Aleksander <aleksander.lobakin@intel.com>
-> Cc: Linga, Pavan Kumar <pavan.kumar.linga@intel.com>; NEX SW NCIS OSDT IT=
-P
-> Upstreaming <nex.sw.ncis.osdt.itp.upstreaming@intel.com>;
-> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; stable@vger.kernel.=
-org;
-> Eric Dumazet <edumazet@google.com>; Kubiak, Michal
-> <michal.kubiak@intel.com>; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; Jakub Kicinski <kuba@kernel.org>; intel-wir=
-ed-
-> lan@lists.osuosl.org; Paolo Abeni <pabeni@redhat.com>; David S. Miller
-> <davem@davemloft.net>
-> Subject: Re: [Intel-wired-lan] [PATCH iwl-net 2/3] idpf: fix memleak in v=
-port
-> interrupt configuration
->=20
-> On Wed, Jul 24, 2024 at 03:40:23PM +0200, Alexander Lobakin wrote:
-> > From: Michal Kubiak <michal.kubiak@intel.com>
-> >
-> > The initialization of vport interrupt consists of two functions:
-> >  1) idpf_vport_intr_init() where a generic configuration is done
-> >  2) idpf_vport_intr_req_irq() where the irq for each q_vector is
-> >    requested.
-> >
-> > The first function used to create a base name for each interrupt using
-> > "kasprintf()" call. Unfortunately, although that call allocated memory
-> > for a text buffer, that memory was never released.
-> >
-> > Fix this by removing creating the interrupt base name in 1).
-> > Instead, always create a full interrupt name in the function 2), becaus=
-e
-> > there is no need to create a base name separately, considering that the
-> > function 2) is never called out of idpf_vport_intr_init() context.
-> >
-> > Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
-> > Cc: stable@vger.kernel.org # 6.7
-> > Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-> > Reviewed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> > Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
->=20
-> Reviewed-by: Simon Horman <horms@kernel.org>
+On Tue, Jul 23, 2024 at 06:49:32PM +0530, Mrinmay Sarkar wrote:
+> DW_HDMA_V0_LIE and DW_HDMA_V0_RIE are initialized as BIT(3) and BIT(4)
+> respectively in dw_hdma_control enum. But as per HDMA register these
+> bits are corresponds to LWIE and RWIE bit i.e local watermark interrupt
+> enable and remote watermarek interrupt enable. In linked list mode LWIE
+> and RWIE bits only enable the local and remote watermark interrupt.
+> 
+> Since the watermark interrupts are not used but enabled, this leads to
+> spurious interrupts getting generated. So remove the code that enables
+> them to avoid generating spurious watermark interrupts.
+> 
+> And also rename DW_HDMA_V0_LIE to DW_HDMA_V0_LWIE and DW_HDMA_V0_RIE to
+> DW_HDMA_V0_RWIE as there is no LIE and RIE bits in HDMA and those bits
+> are corresponds to LWIE and RWIE bits.
+> 
+> Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
+> cc: stable@vger.kernel.org
+> Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+> ---
+>  drivers/dma/dw-edma/dw-hdma-v0-core.c | 17 +++--------------
+>  1 file changed, 3 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+> index fa89b3a..9ad2e28 100644
+> --- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
+> +++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+> @@ -17,8 +17,8 @@ enum dw_hdma_control {
+>  	DW_HDMA_V0_CB					= BIT(0),
+>  	DW_HDMA_V0_TCB					= BIT(1),
+>  	DW_HDMA_V0_LLP					= BIT(2),
+> -	DW_HDMA_V0_LIE					= BIT(3),
+> -	DW_HDMA_V0_RIE					= BIT(4),
+> +	DW_HDMA_V0_LWIE					= BIT(3),
+> +	DW_HDMA_V0_RWIE					= BIT(4),
+>  	DW_HDMA_V0_CCS					= BIT(8),
+>  	DW_HDMA_V0_LLE					= BIT(9),
+>  };
+> @@ -195,25 +195,14 @@ static void dw_hdma_v0_write_ll_link(struct dw_edma_chunk *chunk,
+>  static void dw_hdma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
+>  {
+>  	struct dw_edma_burst *child;
+> -	struct dw_edma_chan *chan = chunk->chan;
+>  	u32 control = 0, i = 0;
+> -	int j;
+>  
+>  	if (chunk->cb)
+>  		control = DW_HDMA_V0_CB;
+>  
+> -	j = chunk->bursts_alloc;
+> -	list_for_each_entry(child, &chunk->burst->list, list) {
+> -		j--;
+> -		if (!j) {
+> -			control |= DW_HDMA_V0_LIE;
+> -			if (!(chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
+> -				control |= DW_HDMA_V0_RIE;
+> -		}
+> -
+> +	list_for_each_entry(child, &chunk->burst->list, list)
+>  		dw_hdma_v0_write_ll_data(chunk, i++, control, child->sz,
+>  					 child->sar, child->dar);
+> -	}
 
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Hm, in case of DW EDMA the LIE/RIE flags of the LL entries gets to be
+moved to the LIE/RIE flags of the channel context register by the
+DMA-engine. In its turn the context register LIE/RIE flags determine
+whether the Local and Remote Done/Abort IRQs being raised. So without
+the LIE/RIE flags being set in the LL-entries the IRQs won't be raised
+and the whole procedure won't work. I have doubts it works differently
+in case of HDMA because changing the semantics would cause
+implementing additional logic in the DW HDMA RTL-model. Seeing the DW
+HDMA IP-core supports the eDMA compatibility mode it would needlessly
+expand the controller size. What are the rest of the CONTROL1 register
+fields? There must be LIE/RIE flags someplace there for the non-LL
+transfers and to preserve the values retrieved from the LL-entries.
 
+Moreover the DW eDMA HW manual has a dedicated chapter called
+"Interrupts and Error Handling" with a very demonstrative figures
+describing the way the flags work. Does the DW HDMA databook have
+something like that?
+
+Please also note, the DW _EDMA_ LIE and RIE flags can be also utilized
+for the intermediate IRQ raising, to implement the runtime LL-entries
+recycling pattern. The IRQ in that case is called as "watermark" IRQ
+in the DW EDMA HW databook, but the flags are still called as just
+LIE/RIE.
+
+-Serge(y)
+
+>  
+>  	control = DW_HDMA_V0_LLP | DW_HDMA_V0_TCB;
+>  	if (!chunk->cb)
+> -- 
+> 2.7.4
+> 
 
