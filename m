@@ -1,86 +1,116 @@
-Return-Path: <stable+bounces-65279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD729456EA
-	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 06:21:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71527945722
+	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 06:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A19DB22C16
-	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 04:21:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BE921F244E3
+	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 04:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072671B813;
-	Fri,  2 Aug 2024 04:21:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=main.intartek.com header.i=@main.intartek.com header.b="duyc++/F"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3001C693;
+	Fri,  2 Aug 2024 04:36:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from intartek.com (intartek.com [185.20.185.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2D079E5
-	for <stable@vger.kernel.org>; Fri,  2 Aug 2024 04:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.20.185.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F4A256D;
+	Fri,  2 Aug 2024 04:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722572474; cv=none; b=dDEW3+0rNQQ91MgpZKQZcWdqXCIs1slsI3RIcj4ut7KDT28XojJnnRe3IIPS+qfEA7D75/eQZFP7GzlyQ7Axp4I9BqU0rLbyK87CNEHB5lKrJCJT+KY//ilceJMf8XzjTBKVeIB/tc9wDiCyRVrbJpl6qO3pYzilw0fibjX17/E=
+	t=1722573403; cv=none; b=OAh00zaHfpbvarbKhTlicqINhRse93oXd+Yd8G9jMTs4si7Sm8t5+d3cg/+4y3bug+03xXmRATudkxbsZxrfqRmx6sum07ff1vE/9qU5mTLRosVRwim7eiAoIV/PLRiX/RHL1ZaH/sl+YtVUcmV2BKTeMpyvRuUHnopXNb7EJoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722572474; c=relaxed/simple;
-	bh=Kiwvf2KW8rCAPOIP4QWJM2jan3rHv+jqKTzoXipejxs=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g++LwFUrc/JZD3wSQTZukrg/zWtrgaVfNDKZbAK0tHUvpk+uhz3XpNZaw+VqOhaZEqHQv8dA4rZwgddwBkSITVjOBsl3jNiJWE57D7U7DzqstR/o4KYGxu6Dx6+YdpKAYWNlEoRzkrxdRApFbiEaeAqURo0CDpmARyWmpeoV9yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=main.intartek.com; spf=pass smtp.mailfrom=main.intartek.com; dkim=pass (2048-bit key) header.d=main.intartek.com header.i=@main.intartek.com header.b=duyc++/F; arc=none smtp.client-ip=185.20.185.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=main.intartek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=main.intartek.com
-Received: from 239.32.165.34.bc.googleusercontent.com (239.32.165.34.bc.googleusercontent.com [34.165.32.239])
-	by intartek.com (Postfix) with ESMTPA id A006282375
-	for <stable@vger.kernel.org>; Fri,  2 Aug 2024 04:19:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=main.intartek.com;
-	s=202406; t=1722572399;
-	bh=Kiwvf2KW8rCAPOIP4QWJM2jan3rHv+jqKTzoXipejxs=;
-	h=Reply-To:From:To:Subject:Date:From;
-	b=duyc++/FrhttCNFYKY0my7SL6JyQwH7QxxhDMWJ+RxFYrzUNM0HwCt4yix4uAO+O6
-	 OFQAUZyM0voGxAAJ3kGuNA3Jybfo5FMt94ZBqcbCPTVCTmIbQaJCKLgqOSJ+ZFaXKX
-	 vuY5zuz6TAPnA9G3Umm1YBYXP5CeMoEdQn/J9+Jd0AI5Qj2LhhVKmNMVdd+MBN1m9V
-	 evh4vu41k36QyzV1Ii7EUleB0phtEHQlzmjvJCUWe7eWGkNZSmuWvGT+VxfVl5s3JE
-	 v4jxVvNq4zUHVEm8eA8eMBx1Xem4QhqaAWe4GxI7UglSTCDBYXzrJpxWQANXLtiT9T
-	 Qd94hjAduFE5A==
-Reply-To: "Antonov|DPR" <antonov@neftelensk.su>
-From: "Antonov|DPR" <privateservices@main.intartek.com>
-To: stable@vger.kernel.org
-Subject: Kazakhstan Crude Oil Product Offer REF:fqgzib01
-Date: 2 Aug 2024 04:19:59 +0000
-Message-ID: <20240802041959.C2B04711A75BCE2D@main.intartek.com>
+	s=arc-20240116; t=1722573403; c=relaxed/simple;
+	bh=L6008oDfcpGOdp3sZj7mO4v81wzU3PhcgEhuJkxXEyk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CtEpxeu5M/lVPaed9A2+tJdAL5hTMTpJPp1a7gmsL+JvOjaDw9M1YODVQi2C47m+5c4p9NGcbq5OSI1+sdZF1/VyWkvpJ79rmMAdNTziG3MJy04GeKmtZmVtFYIVg1+/9eG736bZF/zrddcp35tTvrBYAjtSvLWfoovn7VGMMDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAB3ngE9YqxmqRTsAg--.50979S2;
+	Fri, 02 Aug 2024 12:36:20 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	make24@iscas.ac.cn,
+	bskeggs@redhat.com,
+	airlied@redhat.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] drm/nouveau: fix a possible null pointer dereference
+Date: Fri,  2 Aug 2024 12:36:12 +0800
+Message-Id: <20240802043612.1568426-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAB3ngE9YqxmqRTsAg--.50979S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFykCryUWr4DuFyDCF1ftFb_yoW8GFWkpF
+	srG34YyFW5JFZruF18Ja4avF15G3W7JF1xuw10van3C3ZayryUtryrXryYgryfAFW3Kr12
+	qwnFvFy7WF12krJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU122NtUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Dear stable,
+In ch7006_encoder_get_modes(), the return value of drm_mode_duplicate() is
+used directly in drm_mode_probed_add(), which will lead to a NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-I hope this message finds you well. My name is Antonov, and I am=20
-a sales representative authorized by leading refineries in=20
-Kazakhstan to negotiate the sale of crude oil products worldwide.
+Cc: stable@vger.kernel.org
+Fixes: 6ee738610f41 ("drm/nouveau: Add DRM driver for NVIDIA GPUs")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/gpu/drm/i2c/ch7006_drv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-If you are interested in purchasing crude oil products, we can=20
-facilitate the process. The refinery has sufficient product=20
-allocation to supply to serious buyers.
+diff --git a/drivers/gpu/drm/i2c/ch7006_drv.c b/drivers/gpu/drm/i2c/ch7006_drv.c
+index 131512a5f3bd..48bf6e4e8bdb 100644
+--- a/drivers/gpu/drm/i2c/ch7006_drv.c
++++ b/drivers/gpu/drm/i2c/ch7006_drv.c
+@@ -229,6 +229,7 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
+ {
+ 	struct ch7006_priv *priv = to_ch7006_priv(encoder);
+ 	const struct ch7006_mode *mode;
++	struct drm_display_mode *encoder_mode = NULL;
+ 	int n = 0;
+ 
+ 	for (mode = ch7006_modes; mode->mode.clock; mode++) {
+@@ -236,8 +237,11 @@ static int ch7006_encoder_get_modes(struct drm_encoder *encoder,
+ 		    ~mode->valid_norms & 1<<priv->norm)
+ 			continue;
+ 
+-		drm_mode_probed_add(connector,
+-				drm_mode_duplicate(encoder->dev, &mode->mode));
++		encoder_mode = drm_mode_duplicate(encoder->dev, &mode->mode);
++		if (!encoder_mode)
++			return 0;
++
++		drm_mode_probed_add(connector, encoder_mode);
+ 
+ 		n++;
+ 	}
+-- 
+2.25.1
 
-We currently offer a range of products including Petcoke, Ultra-
-Low Sulphur Diesel, East Siberia-Pacific Ocean (ESPO) Blend,=20
-Russian Light Cycle Oil (LCO), LNG, LPG, Jet Fuel, and more. All=20
-our products meet SGS and GOST-R standards, and we guarantee=20
-timely delivery.
-
-Thank you for your attention. I look forward to your response and=20
-to discussing further details.
-
-Best regards,=20=20
-Antonov
-
-Message REF1: ieztudr02Q
-Message Timestamp: 8/2/2024 4:19:59 a.m.
 
