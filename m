@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-65281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F19945726
-	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 06:42:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 971F994572E
+	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 06:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87C13B21184
-	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 04:42:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C83CA1C23437
+	for <lists+stable@lfdr.de>; Fri,  2 Aug 2024 04:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62DE1CA85;
-	Fri,  2 Aug 2024 04:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8725A1BC4B;
+	Fri,  2 Aug 2024 04:48:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3006256D;
-	Fri,  2 Aug 2024 04:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18973715E;
+	Fri,  2 Aug 2024 04:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722573719; cv=none; b=Zv3owJEdcgXC6JwMCPio9b3j1XHioxwhA0pSDE9vYks/0ZBBZeTwnAEywvqbrbnvI9dISCwqsE0wrmcqOGvjvK2aaekbVF0S7QXGXi5pZHW+TWbnzGRlbUrEOr1fzmAwWdNsZ7FnZKTVbZzlNpS82GnI/H63EuWaAJgzqNfZojo=
+	t=1722574087; cv=none; b=aqQVGalLYVdth8aKROuAaCAyMC7y/lrPtYm6imN/zfPMR2fZotiX0sCaGOYugVbVHpOSnEMldZARrvZYz3XNjoIafALugdNLk8YyN0g4Bt6IVBRA17Z8b8h1B6/xTDj00snaEIT/hQ0ZahlEUUJnpBBqyibPOK4E/bxTAxivfJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722573719; c=relaxed/simple;
-	bh=tR5qH+CDKQnhLl3ghv2WT12nhh4dsdsYHHcR3zXyqh8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XeiPoEYEJCyetpLNEtjADHoNu0uZtuNAkOHSixQTUakzAXYBvlC4tfc0VMbuT4T3vBhQa2wa+ove2lu+F3QO9fVju3wZjaqzLxuZn77ctqgo/VLRX0D8EtOK9q7dnW3WynKOjQhgHiDEoCTC6A50aUxXqVMn6DC093LVFyJtiw4=
+	s=arc-20240116; t=1722574087; c=relaxed/simple;
+	bh=+kNvqMnTo91nb7DgrwbHiZHaESPi+L4LHpTotwAZIIE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ohLi1FWJP63hyuEJ4rnFhwmf5gQAAmbi7UssWilkVzHu5sB+Lqclk/Nh4i845FU9bj5paPmRWKFOyRE+6ytyzdg/XIyi1ILRcaNMpIp8IKYfbxX1xYK9X/iCdKjTGNLVqLsl+vxVZPcYnsg/2wIKoFHaIDFe0DUMMzJQ0I7wtXM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAAnLvp_Y6xmgEjsAg--.50454S2;
-	Fri, 02 Aug 2024 12:41:42 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAC3vfnrZKxm1IPsAg--.50587S2;
+	Fri, 02 Aug 2024 12:47:49 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: kristo@kernel.org,
-	bp@alien8.de,
-	tony.luck@intel.com,
-	james.morse@arm.com,
-	mchehab@kernel.org,
-	rric@kernel.org
-Cc: linux-edac@vger.kernel.org,
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	noralf@tronnes.org,
+	sam@ravnborg.org
+Cc: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 RESEND] EDAC/ti: Fix possible null pointer dereference in _emif_get_id()
-Date: Fri,  2 Aug 2024 12:41:34 +0800
-Message-Id: <20240802044134.1569313-1-make24@iscas.ac.cn>
+Subject: [PATCH v4 RESEND] drm/client: fix null pointer dereference in drm_client_modeset_probe
+Date: Fri,  2 Aug 2024 12:47:36 +0800
+Message-Id: <20240802044736.1570345-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -53,13 +54,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAAnLvp_Y6xmgEjsAg--.50454S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrZr1DZrWDtrWDAFW5Zw13Jwb_yoW8JrW8pw
-	47WFW5AryUtry29r4vv34kZFy5C3WkJayDK340k39Y9w15XF97Jry09ry7tFyYyrW8Gay3
-	Xw4rtFs8XFWUJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:rQCowAC3vfnrZKxm1IPsAg--.50587S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw45GFyrWF48ZF4rArW5Wrg_yoW8GFWUpr
+	43Gr90yFWjvF9rCFs2va97uF17A3W3Jr48GF17Aanxu3Z0qr1jyryYvFy5WFy7Gry3JF15
+	tFnayFW2qF18AaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
 	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
 	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
 	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWUJV
@@ -72,48 +73,43 @@ X-Coremail-Antispam: 1UD129KBjvJXoWrZr1DZrWDtrWDAFW5Zw13Jwb_yoW8JrW8pw
 	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbCPfPUUUUU==
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-In _emif_get_id(), of_get_address() may return NULL which is later
-dereferenced. Fix this bug by adding NULL check.
-
-Found by code review.
+In drm_client_modeset_probe(), the return value of drm_mode_duplicate() is
+assigned to modeset->mode, which will lead to a possible NULL pointer
+dereference on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
 Cc: stable@vger.kernel.org
-Fixes: 86a18ee21e5e ("EDAC, ti: Add support for TI keystone and DRA7xx EDAC")
+Fixes: cf13909aee05 ("drm/fb-helper: Move out modeset config code")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
+Changes in v4:
+- modified patch, set ret and break to handle error rightly.
 Changes in v3:
-- added the patch operations omitted in PATCH v2 RESEND compared to PATCH 
-v2. Sorry for my oversight.
+- modified patch as suggestions, returned error directly when failing to 
+get modeset->mode.
 Changes in v2:
-- added Cc stable line.
+- added the recipient's email address, due to the prolonged absence of a 
+response from the recipients.
+- added Cc stable.
 ---
- drivers/edac/ti_edac.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/drm_client_modeset.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/edac/ti_edac.c b/drivers/edac/ti_edac.c
-index 29723c9592f7..6f3da8d99eab 100644
---- a/drivers/edac/ti_edac.c
-+++ b/drivers/edac/ti_edac.c
-@@ -207,6 +207,9 @@ static int _emif_get_id(struct device_node *node)
- 	int my_id = 0;
+diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
+index 31af5cf37a09..cee5eafbfb81 100644
+--- a/drivers/gpu/drm/drm_client_modeset.c
++++ b/drivers/gpu/drm/drm_client_modeset.c
+@@ -880,6 +880,11 @@ int drm_client_modeset_probe(struct drm_client_dev *client, unsigned int width,
  
- 	addrp = of_get_address(node, 0, NULL, NULL);
-+	if (!addrp)
-+		return -EINVAL;
+ 			kfree(modeset->mode);
+ 			modeset->mode = drm_mode_duplicate(dev, mode);
++			if (!modeset->mode) {
++				ret = -ENOMEM;
++				break;
++			}
 +
- 	my_addr = (u32)of_translate_address(node, addrp);
- 
- 	for_each_matching_node(np, ti_edac_of_match) {
-@@ -214,6 +217,9 @@ static int _emif_get_id(struct device_node *node)
- 			continue;
- 
- 		addrp = of_get_address(np, 0, NULL, NULL);
-+		if (!addrp)
-+			return -EINVAL;
-+
- 		addr = (u32)of_translate_address(np, addrp);
- 
- 		edac_printk(KERN_INFO, EDAC_MOD_NAME,
+ 			drm_connector_get(connector);
+ 			modeset->connectors[modeset->num_connectors++] = connector;
+ 			modeset->x = offset->x;
 -- 
 2.25.1
 
