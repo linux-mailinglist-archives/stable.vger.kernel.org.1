@@ -1,147 +1,164 @@
-Return-Path: <stable+bounces-65334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6754D946B7D
-	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 01:38:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E54946B7F
+	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 01:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E851C211BC
-	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 23:38:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55BC5281896
+	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 23:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37D974063;
-	Sat,  3 Aug 2024 23:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA18C6A8CF;
+	Sat,  3 Aug 2024 23:47:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533D51755C;
-	Sat,  3 Aug 2024 23:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9733CF1;
+	Sat,  3 Aug 2024 23:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722728317; cv=none; b=aDFEyByJG8aNw5sTZpkpdhGQanxfAH4qQO0XzUusp3seVxkTExAt2XQE/qFRqGibTk4DsddRgSfFOxYl67N1/iCU00HHz8jYdT+0bvKnVD5W0r1qF0lYroQknIBh6TrGw1FqytuZ3y96IYQrxm8ZOEVNsMazzwTyfzWfAupM18E=
+	t=1722728825; cv=none; b=T/HNq+5kl3a9v/MX5HYVqW/WXtG7JTQKI7cmBaI5qvm5Q5MhmRYrHGCcHuhr7M1+6Jk7WBCP3XkdjFcIg/0JgM3FvvQDYegRNYgJ0P2rhsc521Rmv4a6mLUlnSg7aImppuv13wHzM5QN21XKho/xISt5T8HI7owkqIZTo4lKHWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722728317; c=relaxed/simple;
-	bh=DKdJ8ZmPQiV1AKw6W1zusg/7WPyZQpoiTNot2qWt4ik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dPY2+gafvFGFBol5ygpnYdKOxClXpjVB+XsbBobKOpmvk7WYkBxUKPI4x69mZUgYSHvu9wqekI+99+ps2wfExmbgc+XZlKlA8U/afmxTYFIeX5tiJOYgnHp459XXvq3miQGM6a9KE17apY5z9WmnDnYxsZoPbipGz9ykNys8sZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1saOKJ-0000000082J-1Qgu;
-	Sat, 03 Aug 2024 23:38:19 +0000
-Date: Sun, 4 Aug 2024 00:38:11 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Huang-Huang Bao <i@eh5.me>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Richard Kojedzinszky <richard@kojedz.in>,
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: rockchip: correct RK3328 iomux width flag for
- GPIO2-B pins
-Message-ID: <Zq6_Y_0wdAIibfIU@makrotopia.org>
-References: <20240709105428.1176375-1-i@eh5.me>
+	s=arc-20240116; t=1722728825; c=relaxed/simple;
+	bh=R6K9nq15xBo+GehSNZFvLlClP1yu00WXnw4WNpoNQqg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PBMUQunPq85kBQ1oEJGbM62Z9ItQtiWYMt0JV5D+Km6Hf1RS9QRaCM+WoUrUXGR5cNzQB5kN0kxtTkYeJAZWJ3V3NvoUxG96E0jBfoGHuGH0LZmI79hz4P3/mr1wP7BUXWKYlUoLaayecCB080dGkuKRuCJlJw1DRW7y2p7jvOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1saOSb-001yal-1T;
+	Sat, 03 Aug 2024 23:46:52 +0000
+Received: from ben by deadeye with local (Exim 4.98)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1saOSa-00000000fny-01DL;
+	Sun, 04 Aug 2024 01:46:52 +0200
+Message-ID: <d294468326cb036ca5f47697e28860530de12ce7.camel@decadent.org.uk>
+Subject: Re: [PATCH 6.10 534/809] mm: huge_memory: use !CONFIG_64BIT to
+ relax huge page alignment on 32 bit machines
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+  cve@kernel.org
+Cc: patches@lists.linux.dev, Yang Shi <yang@os.amperecomputing.com>, 
+ Yves-Alexis Perez <corsac@debian.org>, David Hildenbrand
+ <david@redhat.com>, Christoph Lameter <cl@linux.com>, Jiri Slaby
+ <jirislaby@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Rik van Riel <riel@surriel.com>, Salvatore Bonaccorso <carnil@debian.org>,
+ Suren Baghdasaryan <surenb@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>
+Date: Sun, 04 Aug 2024 01:46:45 +0200
+In-Reply-To: <20240730151745.829576651@linuxfoundation.org>
+References: <20240730151724.637682316@linuxfoundation.org>
+	 <20240730151745.829576651@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-sCaeamASO5v8UnH0+an/"
+User-Agent: Evolution 3.52.3-1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240709105428.1176375-1-i@eh5.me>
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
-On Tue, Jul 09, 2024 at 06:54:28PM +0800, Huang-Huang Bao wrote:
-> The base iomux offsets for each GPIO pin line are accumulatively
-> calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
-> If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
-> IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
-> bytes, otherwise it would increase by 4 bytes.
-> 
-> Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
-> into 4 bytes space with write mask, it actually take 8 bytes width for
-> whole GPIO2-B line.
-> 
-> Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
-> GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
-> iomux offset for line after GPIO2-B to be calculated wrong. Fix the
-> iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
-> correctly increased by 8, matching the actual width of GPIO2-B iomux.
-> 
-> Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
-> Cc: stable@vger.kernel.org
-> Reported-by: Richard Kojedzinszky <richard@kojedz.in>
-> Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
-> Tested-by: Richard Kojedzinszky <richard@kojedz.in>
-> Signed-off-by: Huang-Huang Bao <i@eh5.me>
 
-Indeed fixes issues on RK3328 which appeared with the backport of
-commit in Fixes:-tag to linux-stable. Thank you for taking care of that.
+--=-sCaeamASO5v8UnH0+an/
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: Daniel Golle <daniel@makrotopia.org>
+On Tue, 2024-07-30 at 17:46 +0200, Greg Kroah-Hartman wrote:
+> 6.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Yang Shi <yang@os.amperecomputing.com>
+>=20
+> commit d9592025000b3cf26c742f3505da7b83aedc26d5 upstream.
+>=20
+> Yves-Alexis Perez reported commit 4ef9ad19e176 ("mm: huge_memory: don't
+> force huge page alignment on 32 bit") didn't work for x86_32 [1].  It is
+> because x86_32 uses CONFIG_X86_32 instead of CONFIG_32BIT.
+>=20
+> !CONFIG_64BIT should cover all 32 bit machines.
+>=20
+> [1] https://lore.kernel.org/linux-mm/CAHbLzkr1LwH3pcTgM+aGQ31ip2bKqiqEQ8=
+=3DFQB+t2c3dhNKNHA@mail.gmail.com/
+>=20
+> Link: https://lkml.kernel.org/r/20240712155855.1130330-1-yang@os.ampereco=
+mputing.com
+> Fixes: 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment on=
+ 32 bit")
+[...]
 
-> ---
-> 
-> I have double checked the iomux offsets in debug message match iomux
-> register definitions in "GRF Register Description" section in RK3328
-> TRM[1].
-> 
-> [1]: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
-> 
-> Kernel pinctrl debug message with dyndbg="file pinctrl-rockchip.c +p":
->   rockchip-pinctrl pinctrl: bank 0, iomux 0 has iom_offset 0x0 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 0, iomux 1 has iom_offset 0x4 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 0, iomux 2 has iom_offset 0x8 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 0, iomux 3 has iom_offset 0xc drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 1, iomux 0 has iom_offset 0x10 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 1, iomux 1 has iom_offset 0x14 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 1, iomux 2 has iom_offset 0x18 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 1, iomux 3 has iom_offset 0x1c drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 2, iomux 0 has iom_offset 0x20 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 2, iomux 1 has iom_offset 0x24 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 2, iomux 2 has iom_offset 0x2c drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 2, iomux 3 has iom_offset 0x34 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 3, iomux 0 has iom_offset 0x38 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 3, iomux 1 has iom_offset 0x40 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 3, iomux 2 has iom_offset 0x48 drv_offset 0x0
->   rockchip-pinctrl pinctrl: bank 3, iomux 3 has iom_offset 0x4c drv_offset 0x0
-> 
-> The "Closes" links to test report from original reporter with original
-> issue contained, which was not delivered to any mailing list thus not
-> available on the web.
-> 
-> Added CC stable as the problematic e8448a6c817c fixed by this patch was
-> recently merged to stable kernels.
-> 
-> Sorry for the inconvenience caused,
-> Huang-Huang
-> 
->  drivers/pinctrl/pinctrl-rockchip.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> 
-> base-commit: 4376e966ecb78c520b0faf239d118ecfab42a119
-> --
-> 2.45.2
-> 
-> diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-> index 3f56991f5b89..f6da91941fbd 100644
-> --- a/drivers/pinctrl/pinctrl-rockchip.c
-> +++ b/drivers/pinctrl/pinctrl-rockchip.c
-> @@ -3813,7 +3813,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
->  	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
->  	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
->  	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
-> -			     0,
-> +			     IOMUX_WIDTH_2BIT,
->  			     IOMUX_WIDTH_3BIT,
->  			     0),
->  	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
+The original breakage actually occurred in 5.18 with this commit:
+
+commit 1854bc6e2420472676c5c90d3d6b15f6cd640e40
+Author: William Kucharski <william.kucharski@oracle.com>
+Date:   Sun Sep 22 08:43:15 2019 -0400
+=20
+    mm/readahead: Align file mappings for non-DAX
+
+The previous fix referred to above (commit 4ef9ad19e176) was already
+backported to 6.1 and 6.7, and CVE-2024-26621 was assigned to the bug.
+
+This new fix also needs to be applied to 6.1.  *Both* fixes need to be
+applied to 6.6 since the previous fix missed this branch.
+
+I believe a new CVE ID also needs to be assigned to cover the
+architectures missed in the previous fix.  So far as I can see, the
+only architectures supporting huge pages on 32-bit CPUs (as of
+6.11-rc1) are arc, arm, mips, and x86.  Of those only mips defines
+CONFIG_32BIT in 32-bit configurations, and was covered by the previous
+fix.  The other three are covered by the new fix.
+
+To summarise:
+
+CVE-2024-26621:
+- covers 64-bit compat and mips32 native
+- fixed by commit 4ef9ad19e176
+- fix is needed in 6.6
+
+CVE ID to be assigned:
+- covers arc, arm, and x86_32 native
+- fixed by commit d9592025000b
+- fix is needed in 6.1 and 6.6
+
+Ben.
+
+--=20
+Ben Hutchings
+To err is human; to really foul things up requires a computer.
+
+
+--=-sCaeamASO5v8UnH0+an/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmauwWYACgkQ57/I7JWG
+EQljnRAAzFtIX6bgmndn1d8mbFbHN78xChiZ+eqk2Pf62Df421WIIz0gcx1bzhct
+C2p+G5ILWPI8o4VAlvekOVtoUWL8roRkR86CprpPT919ScHc3t40D3xEOBuViyX1
+6SmtO9qTYH7H1aDFpmuE9zIakBVgJNiCMk9Ei7ueGhIa0C7HUItUqH1QsUEjFdpy
+CXlvJvuracj/vcH56t/TLCp9iqD7WPJ7mdRHrtoURdNZE0GUO5U1ZG4L2Vwdxo2D
+U2Z5VevSNkjUr6gQ6L8ttbMnEfDCfYGLmt89sTXaEhWQdq/Zsxy1JNqhig1EdSkO
+S69oMKLl9LyhuS0hCy1wl2XiMrYya5ZbUKWNkczJm1CEzVJ4QZ5KM+Cv57YnP/C+
+7n0YRmVrbX/h5Z6TflIT6eKZXXZAOGEtOlf0d1k3NFlHL8wbFIZGzazsJFkvURgt
+8uxhkBgtcbSTC2Z1jih8M8K7QjUje33Qf5GU2h3Fw68TZsWrV3FsixtBb1ESyw7l
+olxl8FDhmr+nmEKMrCPmIVI12W81yz/a41z6m9NBNYOIGTwuNgzu+LQU0Gd7aYe/
+CIElANTMr8oVFwHTVlVICv4OMP2qTc/AU0gkGZZV34eNDgXexD7v5MQJisUd1kWZ
+RClN0xGmPvqW2d3ffvlWjglz7FuCC86ZnWa+pKLopN2QVaCHw4g=
+=xAw8
+-----END PGP SIGNATURE-----
+
+--=-sCaeamASO5v8UnH0+an/--
 
