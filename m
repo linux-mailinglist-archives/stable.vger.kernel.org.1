@@ -1,1062 +1,245 @@
-Return-Path: <stable+bounces-65327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E52946A82
-	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 18:09:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87003946A97
+	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 19:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5091E1C20A86
-	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 16:09:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 059B11F2161A
+	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 17:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1A11514CC;
-	Sat,  3 Aug 2024 16:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB3012B64;
+	Sat,  3 Aug 2024 17:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b="GGFwGmUI"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0nfnqOvG"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3CC2B9BC;
-	Sat,  3 Aug 2024 16:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8444E14006
+	for <stable@vger.kernel.org>; Sat,  3 Aug 2024 17:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722701361; cv=none; b=DKYHbCMqTzttyvieVoUuNWlN1+NMLWtGIYfgg7e9QNi5tyx7yzGys9CcNeOd3L7Eps3dqsn1zNXLWtGvSSjXKmeExYyv01yAyUTwADQSWwK0zcJ+bL9drkDQwl8nqARPXZ34gU9bVEAqLrTenM0MZ90TKYkyIfMWBVyzGobgRmY=
+	t=1722704980; cv=none; b=nKLNIzCuExb93PZacpI5bsD2I84DMxeovOf4cSG8IUbOT2w3f6/rUaQsJ+RLnzrDohqg0H5IvgmpfM9Lq0Zl60TfxUfGHAt/fw1DbIvR3FHPryTE0FTYwaMXijTUq5c+BvjBut7wrTiCx0XvPxtw95Ku8T9yH5Lc57U7dlxttHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722701361; c=relaxed/simple;
-	bh=9A7iCF6zv/opOx5edCvUiK6k/UcLzk4/WarXeecC1lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l4UKqquxZpLpDyKxAYSfxgBj4Ds+6s6YfwMxJiqsy9T7UhRo7AoO+LjVfVtGQnIidolGdezyBOtknhO/VpFBFtOnxAu0ycEFTJk76sZPTztkGCvEYhsP8hVF+Aizf75H15crGlBLUWJAVoDz4fOFshfzNcSbzxGJanQzq9dEuRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b=GGFwGmUI; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1722701336; x=1723306136; i=s.l-h@gmx.de;
-	bh=+cHClZbdGxIMOk8LL9YxgGVTm9K2LsxdELopQfuv6Ts=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=GGFwGmUIuw2NaaIPU1KEMakaSqL+BdMXKscI1jlyppxJxC5GUNgGAWGY7CFagYU9
-	 bknydWgT+y3/X5YaypFHcoY0uvRMgDbokCEVewL6D5DTej3+qjXjajWDO1jTHPN3m
-	 zeNISrNmw0pymq6D0QMxLzBl2iatfP9L/7vP4aKdFYgLheIYjHHfxhc5PxG0QEmyh
-	 NVLzXbag/MacwzUE3pPIrlqFMMabxl1hDF/Cx0c9+bFYltfDsT8GrWkSsJqsxOuTk
-	 mG08OZH/d8zNCOArlQiu3xadIb0ALfNX1WpG80n1xOcwAHzwfDuAbkw3zVwhO5Akg
-	 MLOwkqtxq8K5xC/KOw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mir ([94.31.83.155]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MQMuR-1swT1d1auv-00LS1Q; Sat, 03
- Aug 2024 18:08:56 +0200
-Date: Sat, 3 Aug 2024 18:08:52 +0200
-From: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-To: Sean Young <sean@mess.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>, Hans
- Verkuil <hverkuil-cisco@xs4all.nl>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.10 288/809] media: dvb-usb: Fix unexpected infinite
- loop in dvb_usb_read_remote_control()
-Message-ID: <20240803180852.6eb5f0cb@mir>
-In-Reply-To: <Zq5KcGd8g4t2d11x@gofer.mess.org>
-References: <20240730151724.637682316@linuxfoundation.org>
-	<20240730151735.968317438@linuxfoundation.org>
-	<20240801165146.38991f60@mir>
-	<Zq5KcGd8g4t2d11x@gofer.mess.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1722704980; c=relaxed/simple;
+	bh=WWbgVeE/Cg0KbJCdgM87SpDv9IR2A3JW26CZZpThANc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OpIKdci6FLgDgGz0/Edu4QEWDo6B+Q1lgSB4/ynVJLFOAmUjoO+8XWGcOxy3z0b0L6Wv0T4nVnmb1SZ8gkT9kFJ3/ny5EA4wat4XPzBMVMvg8MFIITFqUdYxdHjAWTPzlbzFvONxip0ik5i6qGrHSlk3sd6GnC49aofk4uZ+pCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0nfnqOvG; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-44fee2bfd28so96021cf.1
+        for <stable@vger.kernel.org>; Sat, 03 Aug 2024 10:09:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722704977; x=1723309777; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uJmgT6oTpLrEgwNYBG6iDU6/PwiyyeFSzdFO7EuJwL4=;
+        b=0nfnqOvGSUNLlllJNlzpfwtIcjsFxbQxzdhFVjoUy52J4pCdOQRqt7+cElzyviiVs6
+         gd0FFHnhsjM1aQaAht5x4gBjXWG/CKiqWptQW11Hljr4XzLYo9HwhLpS92OFrYE4VdBA
+         9WO79ibxhs3Qfkdkg9mC9fVZE86Gm7VaGWvfqwPwc2whk9LcDZW3KZ6PsBFn4zx6jthQ
+         BHGKmPOpy5ql9ZMhIl4mQ57nzjauChl1oC386MtVWAWCdrq4NhOemxHwunB1owxUvYYa
+         hH8dUQXgWEepkX7Rqt0h+4Sn+rl5Xn8gPNBb9WSgB2a+rQLDILN4URGqFahEtXv4zVve
+         gTKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722704977; x=1723309777;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uJmgT6oTpLrEgwNYBG6iDU6/PwiyyeFSzdFO7EuJwL4=;
+        b=OMkaJ+EE5aTw0GF947okcYbMC0xE9zbwkQH2mxoFSljUcoojMbfg1zwZp1SKHVa1Uk
+         0V5RKVBCSOip4p7BYlDZVZJMTaEsG/2I98FcP4QObOhG5DmOCVAnxzLOEg23taaPbzSt
+         HW+sxekCWkRPpfRjUa6vA95A5uqkW0w7qhsB/Bu5C995sWtLgNLmhFUI5Z4y0SVNesl/
+         ibGm7hd/Sbi8I8IyJYZaJ/dmypsv6KzA72yF1hE94zf7n/eLD8H+bNmmyn/x233fswe2
+         ql8ueGTGKihq1gHKO0otwZ9i/wgWQohv+OA3dFPQgVTopuBkN8U8qZjMMhkK0PqhrpW3
+         goAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJHvDuatnr4ztbx6JRThcIYCWZ5BfLBFUZoBMKlBw73vEiPWW1M/4RwYCOxhKz1C3D0R/NX9bTWUbbP0znBSz3ZK38vIfx
+X-Gm-Message-State: AOJu0YzV2SUgEM/NEWh4uApvPYNC5RsJ9VfDo7V5ySj2efHnUwU6Jt8l
+	LcvScsf/6rehO0Joi5pM0p9ioljI7y8p0ojQC8RK5dBj9iIOUNX2PwUbOVn0xbKahMDcivYMxD7
+	BbkwstYuIgF1MLtjyRa9dohsur+pRMx7IgiJY
+X-Google-Smtp-Source: AGHT+IF65CauaimP3NlXguEo+6ib8VGPl94a1Rq/hA9I/V2MtuTtcR15tRDCJOV1vVIreODcBjNKh0YrXFu5xHR3u2U=
+X-Received: by 2002:a05:622a:591:b0:44f:ea7a:2119 with SMTP id
+ d75a77b69052e-4519ae21848mr1632181cf.18.1722704977148; Sat, 03 Aug 2024
+ 10:09:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
+ <CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com>
+ <0f9f7a2e-23c3-43fe-b5c1-dab3a7b31c2d@126.com> <CACePvbXU8K4wxECroEPr5T3iAsG6cCDLa12WmrvEBMskcNmOuQ@mail.gmail.com>
+ <b5f5b215-fdf2-4287-96a9-230a87662194@126.com> <CACePvbV4L-gRN9UKKuUnksfVJjOTq_5Sti2-e=pb_w51kucLKQ@mail.gmail.com>
+ <00a27e2b-0fc2-4980-bc4e-b383f15d3ad9@126.com>
+In-Reply-To: <00a27e2b-0fc2-4980-bc4e-b383f15d3ad9@126.com>
+From: Yu Zhao <yuzhao@google.com>
+Date: Sat, 3 Aug 2024 11:08:59 -0600
+Message-ID: <CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZUmErNAXoXmw@mail.gmail.com>
+Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
+ LRU batch
+To: Ge Yang <yangge1116@126.com>
+Cc: Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
+	stable@vger.kernel.org, Barry Song <21cnbao@gmail.com>, 
+	David Hildenbrand <david@redhat.com>, baolin.wang@linux.alibaba.com, liuzixing@hygon.cn, 
+	Hugh Dickins <hughd@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6QuJDInwptWbzgfuju7pAmx0ICFJ1QMLWnNoejNczATEnatdiRf
- xqNqlbI0KlzO1sR9BbebD9ekUmSLUkNjJO1NMhzdqMhGeFolFAFBac+1mD3bIsp1es8pEW9
- yFDbNnmDs6BdI4RV8pVknW+Gy1PCfwBjOhukdALq32uE4oCCdRvYY4fKh0DPrrkOy9LtmvY
- iu855W44ONBd0frINv6wg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:22aJDk7QQOc=;IyINya9YFLKpYtQITfc3IMw3hhi
- VTyBwaC4jy4o60dwr5klEQoVZha7mwYiU4bfuy1r2kXzSab2Zngjr5SHnWZStIbxk+6kBK0bE
- VGTg3PxNDnNwpnK6LGXhM7LEuZnj1w3H4pQStlC+PQ0Q1f83jArgkEA+3RQMgqYrAuHZQ+Imq
- nP7Ts0LLqYPqjofxfxZyMuofjbpcW007jlTCirjNvBVxkb2adBFyCkBRGRDl0WpVeqbX4V1Y4
- z1IBgvVUXTE3jv6g8LmRwK6cWYmzTJqC75QDp/ic5jOGQo6DeSlcvA0A83g3r0BCRtSc1iRHf
- n0eqnqzoCpNeVX+ApEgVaPG8FwJfgeCPZ/z/9fJda90MpshVIAZe/1kFfIM5OHGTdubged5Bd
- i/wbsMgeEx+rhA7mGaPm5P9redSrQw1ZhsQlrI0upe8iM7wQxxAgOBWditttM1oSrBTJU4gsJ
- 9ER8WCPQLcZtTSsJKQFOrJLh5Y1NB/IeNwlzgczIaZWL9J7KElioBFBC4FqD5Wgg4hk2pa7nd
- 7rW4UfoK1fVoAeOq+mD1Z+ff4xJBycMXvoCMgphGrGbKlsQW4RZ6j/D94uLyo8I3HxY9ZMqDE
- Q7idZRso4QBVE90xtFtp7tLInkDe7EcYDu7+Nc7/uAO4WCqaWLmrNpXrrf0pKBHyTI7WlySAJ
- L+fuPyNEiliL7safFo/waiWIYVTBQIkxns6kmFaBpflJivCKN90XJReriE3ETg3GcQx45nXSb
- Ynf7J9Nrets4CkCHgbFgphDATwOxe7M/YoCf7lsvE3UQcW4mdOZisxorfZqq4mEavtdfn1PS2
- OfBuCL/j3/ljw2m797EZ1foQ==
 
-Hi
-
-On 2024-08-03, Sean Young wrote:
-> On Thu, Aug 01, 2024 at 04:51:46PM +0200, Stefan Lippers-Hollmann wrote:
-> > Hi
+On Sat, Aug 3, 2024 at 2:31=E2=80=AFAM Ge Yang <yangge1116@126.com> wrote:
+>
+>
+>
+> =E5=9C=A8 2024/8/3 4:18, Chris Li =E5=86=99=E9=81=93:
+> > On Thu, Aug 1, 2024 at 6:56=E2=80=AFPM Ge Yang <yangge1116@126.com> wro=
+te:
+> >>
+> >>
+> >>
+> >>>> I can't reproduce this problem, using tmpfs to compile linux.
+> >>>> Seems you limit the memory size used to compile linux, which leads t=
+o
+> >>>> OOM. May I ask why the memory size is limited to 481280kB? Do I also
+> >>>> need to limit the memory size to 481280kB to test?
+> >>>
+> >>> Yes, you need to limit the cgroup memory size to force the swap
+> >>> action. I am using memory.max =3D 470M.
+> >>>
+> >>> I believe other values e.g. 800M can trigger it as well. The reason t=
+o
+> >>> limit the memory to cause the swap action.
+> >>> The goal is to intentionally overwhelm the memory load and let the
+> >>> swap system do its job. The 470M is chosen to cause a lot of swap
+> >>> action but not too high to cause OOM kills in normal kernels.
+> >>> In another word, high enough swap pressure but not too high to bust
+> >>> into OOM kill. e.g. I verify that, with your patch reverted, the
+> >>> mm-stable kernel can sustain this level of swap pressure (470M)
+> >>> without OOM kill.
+> >>>
+> >>> I borrowed the 470M magic value from Hugh and verified it works with
+> >>> my test system. Huge has a similar swab test up which is more
+> >>> complicated than mine. It is the inspiration of my swap stress test
+> >>> setup.
+> >>>
+> >>> FYI, I am using "make -j32" on a machine with 12 cores (24
+> >>> hyperthreading). My typical swap usage is about 3-5G. I set my
+> >>> swapfile size to about 20G.
+> >>> I am using zram or ssd as the swap backend.  Hope that helps you
+> >>> reproduce the problem.
+> >>>
+> >> Hi Chris,
+> >>
+> >> I try to construct the experiment according to your suggestions above.
 > >
-> > On 2024-07-30, Greg Kroah-Hartman wrote:
-> > > 6.10-stable review patch.  If anyone has any objections, please let =
-me know.
-> > >
-> > > ------------------
-> > >
-> > > From: Zheng Yejian <zhengyejian1@huawei.com>
-> > >
-> > > [ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
-> > >
-> > > Infinite log printing occurs during fuzz test:
-> > >
-> > >   rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
-> > >   ...
-> > >   dvb-usb: schedule remote query interval to 100 msecs.
-> > >   dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initiali=
-zed ...
-> > >   dvb-usb: bulk message failed: -22 (1/0)
-> > >   dvb-usb: bulk message failed: -22 (1/0)
-> > >   dvb-usb: bulk message failed: -22 (1/0)
-> > >   ...
-> > >   dvb-usb: bulk message failed: -22 (1/0)
-> > >
-> > > Looking into the codes, there is a loop in dvb_usb_read_remote_contr=
-ol(),
-> > > that is in rc_core_dvb_usb_remote_init() create a work that will cal=
-l
-> > > dvb_usb_read_remote_control(), and this work will reschedule itself =
-at
-> > > 'rc_interval' intervals to recursively call dvb_usb_read_remote_cont=
-rol(),
-> > > see following code snippet:
-> > [...]
+> > Hi Ge,
 > >
-> > This patch, as part of v6.10.3-rc3 breaks my TeVii s480 dual DVB-S2
-> > card, reverting just this patch from v6.10-rc3 fixes the situation
-> > again (a co-installed Microsoft Xbox One Digital TV DVB-T2 Tuner
-> > keeps working).
->
-> Thanks for reporting this ...
->
-> So looking at the commit, it must be that one of the usb endpoints is
-> neither a send/receiver bulk endpoint. Would you mind sending a lusb -v
-> of the device, I think something like:
->
-> 	lsusb -v -d 9022:d482
->
-> Should do it, or -d 9022::d481
-
-It doesn't show up as 9022:d482 or 9022:d481, but as two 9022:d660.
-
-system 1, raptor-lake:
-
-# lsusb -v -d 9022:d660
-
-Bus 001 Device 003: ID 9022:d660 TeVii Technology Ltd. DVB-S2 S660
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x9022 TeVii Technology Ltd.
-  idProduct          0xd660 DVB-S2 S660
-  bcdDevice            0.00
-  iManufacturer           1 TBS-Tech
-  iProduct                2 DVBS2BOX
-  iSerial                 0
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower                0mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0 [unknown]
-      bInterfaceProtocol      0
-      iInterface              0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0002  1x 2 bytes
-        bInterval               0
-Device Qualifier (for other device speed):
-  bLength                10
-  bDescriptorType         6
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  bNumConfigurations      1
-Device Status:     0x0000
-  (Bus Powered)
-
-Bus 002 Device 003: ID 9022:d660 TeVii Technology Ltd. DVB-S2 S660
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x9022 TeVii Technology Ltd.
-  idProduct          0xd660 DVB-S2 S660
-  bcdDevice            0.00
-  iManufacturer           1 TBS-Tech
-  iProduct                2 DVBS2BOX
-  iSerial                 0
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower                0mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0 [unknown]
-      bInterfaceProtocol      0
-      iInterface              0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0002  1x 2 bytes
-        bInterval               0
-Device Qualifier (for other device speed):
-  bLength                10
-  bDescriptorType         6
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  bNumConfigurations      1
-Device Status:     0x0000
-  (Bus Powered)
-
-# lspci -vvv -d 9710:9990
-07:00.0 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 10 [OHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin A routed to IRQ 178
-        IOMMU group: 23
-        Region 0: Memory at 85407000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee00998  Data: 0000
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 10W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 256 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Capabilities: [100 v1] Virtual Channel
-                Caps:   LPEVC=3D0 RefClk=3D100ns PATEntryBits=3D1
-                Arb:    Fixed- WRR32- WRR64- WRR128-
-                Ctrl:   ArbSelect=3DFixed
-                Status: InProgress-
-                VC0:    Caps:   PATOffset=3D00 MaxTimeSlots=3D1 RejSnoopTr=
-ans-
-                        Arb:    Fixed- WRR32- WRR64- WRR128- TWRR128- WRR2=
-56-
-                        Ctrl:   Enable+ ID=3D0 ArbSelect=3DFixed TC/VC=3Df=
+> > Sorry to hear that you were not able to reproduce it.
+> >
+> >> High swap pressure can be triggered, but OOM can't be reproduced. The
+> >> specific steps are as follows:
+> >> root@ubuntu-server-2204:/home/yangge# cp workspace/linux/ /dev/shm/ -r=
 f
-                        Status: NegoPending- InProgress-
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
+> >
+> > I use a slightly different way to setup the tmpfs:
+> >
+> > Here is section of my script:
+> >
+> >          if ! [ -d $tmpdir ]; then
+> >                  sudo mkdir -p $tmpdir
+> >                  sudo mount -t tmpfs -o size=3D100% nodev $tmpdir
+> >          fi
+> >
+> >          sudo mkdir -p $cgroup
+> >          sudo sh -c "echo $mem > $cgroup/memory.max" || echo setup
+> > memory.max error
+> >          sudo sh -c "echo 1 > $cgroup/memory.oom.group" || echo setup
+> > oom.group error
+> >
+> > Per run:
+> >
+> >         # $workdir is under $tmpdir
+> >          sudo rm -rf $workdir
+> >          mkdir -p $workdir
+> >          cd $workdir
+> >          echo "Extracting linux tree"
+> >          XZ_OPT=3D'-T0 -9 =E2=80=93memory=3D75%' tar xJf $linux_src || =
+die "xz
+> > extract failed"
+> >
+> >          sudo sh -c "echo $BASHPID > $cgroup/cgroup.procs"
+> >          echo "Cleaning linux tree, setup defconfig"
+> >          cd $workdir/linux
+> >          make -j$NR_TASK clean
+> >          make defconfig > /dev/null
+> >          echo Kernel compile run $i
+> >          /usr/bin/time -a -o $log make --silent -j$NR_TASK  || die "mak=
+e failed"
+> > >
+>
+> Thanks.
+>
+> >> root@ubuntu-server-2204:/home/yangge# sync
+> >> root@ubuntu-server-2204:/home/yangge# echo 3 > /proc/sys/vm/drop_cache=
+s
+> >> root@ubuntu-server-2204:/home/yangge# cd /sys/fs/cgroup/
+> >> root@ubuntu-server-2204:/sys/fs/cgroup/# mkdir kernel-build
+> >> root@ubuntu-server-2204:/sys/fs/cgroup/# cd kernel-build
+> >> root@ubuntu-server-2204:/sys/fs/cgroup/kernel-build# echo 470M > memor=
+y.max
+> >> root@ubuntu-server-2204:/sys/fs/cgroup/kernel-build# echo $$ > cgroup.=
+procs
+> >> root@ubuntu-server-2204:/sys/fs/cgroup/kernel-build# cd /dev/shm/linux=
+/
+> >> root@ubuntu-server-2204:/dev/shm/linux# make clean && make -j24
+> >
+> > I am using make -j 32.
+> >
+> > Your step should work.
+> >
+> > Did you enable MGLRU in your .config file? Mine did. I attached my
+> > config file here.
+> >
+>
+> The above test didn't enable MGLRU.
+>
+> When MGLRU is enabled, I can reproduce OOM very soon. The cause of
+> triggering OOM is being analyzed.
 
-07:00.1 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 20 [EHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin A routed to IRQ 174
-        IOMMU group: 23
-        Region 0: Memory at 85406000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee008d8  Data: 0000
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 10W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 256 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
+I think this is one of the potential side effects -- Huge mentioned
+earlier about isolate_lru_folios():
+https://lore.kernel.org/linux-mm/503f0df7-91e8-07c1-c4a6-124cad9e65e7@googl=
+e.com/
 
-07:00.2 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 10 [OHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin B routed to IRQ 190
-        IOMMU group: 23
-        Region 0: Memory at 85405000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee009f8  Data: 0000
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 10W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 256 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
+Try this:
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index cfa839284b92..778bf5b7ef97 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4320,7 +4320,7 @@ static bool sort_folio(struct lruvec *lruvec,
+struct folio *folio, struct scan_c
+        }
 
-07:00.3 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 20 [EHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin B routed to IRQ 173
-        IOMMU group: 23
-        Region 0: Memory at 85404000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee008b8  Data: 0000
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 10W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 256 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
+        /* ineligible */
+-       if (zone > sc->reclaim_idx || skip_cma(folio, sc)) {
++       if (!folio_test_lru(folio) || zone > sc->reclaim_idx ||
+skip_cma(folio, sc)) {
+                gen =3D folio_inc_gen(lruvec, folio, false);
+                list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone=
+]);
+                return true;
 
-07:00.4 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 10 [OHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin C routed to IRQ 191
-        IOMMU group: 23
-        Region 0: Memory at 85403000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee00b18  Data: 0000
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 10W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 256 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
 
-07:00.5 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 20 [EHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin C routed to IRQ 176
-        IOMMU group: 23
-        Region 0: Memory at 85402000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee00938  Data: 0000
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 10W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 256 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
 
-07:00.6 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 10 [OHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin D routed to IRQ 192
-        IOMMU group: 23
-        Region 0: Memory at 85401000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee00b38  Data: 0000
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 10W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 256 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-
-07:00.7 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 20 [EHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR- FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin D routed to IRQ 175
-        IOMMU group: 23
-        Region 0: Memory at 85400000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee00918  Data: 0000
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 10W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 256 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM+ AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-
-########
-
-system 2, sandy-bridge:
-
-# lsusb -v -d 9022:d660
-
-Bus 003 Device 003: ID 9022:d660 TeVii Technology Ltd. DVB-S2 S660
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x9022 TeVii Technology Ltd.
-  idProduct          0xd660 DVB-S2 S660
-  bcdDevice            0.00
-  iManufacturer           1 TBS-Tech
-  iProduct                2 DVBS2BOX
-  iSerial                 0
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower                0mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0 [unknown]
-      bInterfaceProtocol      0
-      iInterface              0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0002  1x 2 bytes
-        bInterval               0
-Device Qualifier (for other device speed):
-  bLength                10
-  bDescriptorType         6
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  bNumConfigurations      1
-Device Status:     0x0000
-  (Bus Powered)
-
-Bus 006 Device 003: ID 9022:d660 TeVii Technology Ltd. DVB-S2 S660
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x9022 TeVii Technology Ltd.
-  idProduct          0xd660 DVB-S2 S660
-  bcdDevice            0.00
-  iManufacturer           1 TBS-Tech
-  iProduct                2 DVBS2BOX
-  iSerial                 0
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower                0mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0 [unknown]
-      bInterfaceProtocol      0
-      iInterface              0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0200  1x 512 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0002  1x 2 bytes
-        bInterval               0
-Device Qualifier (for other device speed):
-  bLength                10
-  bDescriptorType         6
-  bcdUSB               2.00
-  bDeviceClass            0 [unknown]
-  bDeviceSubClass         0 [unknown]
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  bNumConfigurations      1
-Device Status:     0x0000
-  (Bus Powered)
-
-# lspci -vvv -d 9710:9990
-01:00.0 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 10 [OHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR+ FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 32 bytes
-        Interrupt: pin A routed to IRQ 29
-        Region 0: Memory at f7b07000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee20004  Data: 0021
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 25W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Capabilities: [100 v1] Virtual Channel
-                Caps:   LPEVC=3D0 RefClk=3D100ns PATEntryBits=3D1
-                Arb:    Fixed- WRR32- WRR64- WRR128-
-                Ctrl:   ArbSelect=3DFixed
-                Status: InProgress-
-                VC0:    Caps:   PATOffset=3D00 MaxTimeSlots=3D1 RejSnoopTr=
-ans-
-                        Arb:    Fixed- WRR32- WRR64- WRR128- TWRR128- WRR2=
-56-
-                        Ctrl:   Enable+ ID=3D0 ArbSelect=3DFixed TC/VC=3D0=
-1
-                        Status: NegoPending- InProgress-
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-
-01:00.1 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 20 [EHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR+ FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin A routed to IRQ 27
-        Region 0: Memory at f7b06000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee04004  Data: 0021
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 25W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-
-01:00.2 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 10 [OHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR+ FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 32 bytes
-        Interrupt: pin B routed to IRQ 32
-        Region 0: Memory at f7b05000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee01004  Data: 0021
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 25W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-
-01:00.3 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 20 [EHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR+ FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin B routed to IRQ 24
-        Region 0: Memory at f7b04000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee40004  Data: 0020
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 25W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-
-01:00.4 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 10 [OHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR+ FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 32 bytes
-        Interrupt: pin C routed to IRQ 33
-        Region 0: Memory at f7b03000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee02004  Data: 0022
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 25W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-
-01:00.5 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 20 [EHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR+ FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin C routed to IRQ 25
-        Region 0: Memory at f7b02000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee80004  Data: 0020
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 25W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-
-01:00.6 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 10 [OHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR+ FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 32 bytes
-        Interrupt: pin D routed to IRQ 34
-        Region 0: Memory at f7b01000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee04004  Data: 0022
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 25W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ohci-pci
-        Kernel modules: ohci_pci
-
-01:00.7 USB controller: MosChip Semiconductor Technology Ltd. MCS9990 PCIe=
- to 4-Port USB 2.0 Host Controller (prog-if 20 [EHCI])
-        Subsystem: Asix Electronics Corporation (Wrong ID) Device 4000
-        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr=
-- Stepping- SERR+ FastB2B- DisINTx+
-        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=3Dfast >TAbort- <=
-TAbort- <MAbort- >SERR- <PERR- INTx-
-        Latency: 0, Cache Line Size: 64 bytes
-        Interrupt: pin D routed to IRQ 26
-        Region 0: Memory at f7b00000 (32-bit, non-prefetchable) [size=3D4K=
-]
-        Capabilities: [50] MSI: Enable+ Count=3D1/1 Maskable- 64bit+
-                Address: 00000000fee01004  Data: 0020
-        Capabilities: [78] Power Management version 3
-                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=3D375mA PME(D0+,D1+=
-,D2+,D3hot+,D3cold+)
-                Status: D0 NoSoftRst+ PME-Enable- DSel=3D0 DScale=3D0 PME-
-        Capabilities: [80] Express (v1) Endpoint, IntMsgNum 0
-                DevCap: MaxPayload 256 bytes, PhantFunc 0, Latency L0s unl=
-imited, L1 unlimited
-                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset- Sl=
-otPowerLimit 25W TEE-IO-
-                DevCtl: CorrErr- NonFatalErr- FatalErr- UnsupReq-
-                        RlxdOrd- ExtTag- PhantFunc- AuxPwr- NoSnoop+
-                        MaxPayload 128 bytes, MaxReadReq 512 bytes
-                DevSta: CorrErr- NonFatalErr- FatalErr- UnsupReq- AuxPwr+ =
-TransPend-
-                LnkCap: Port #1, Speed 2.5GT/s, Width x1, ASPM not support=
-ed
-                        ClockPM+ Surprise- LLActRep- BwNot- ASPMOptComp-
-                LnkCtl: ASPM Disabled; RCB 64 bytes, LnkDisable- CommClk-
-                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
-                LnkSta: Speed 2.5GT/s, Width x1
-                        TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
-        Kernel driver in use: ehci-pci
-        Kernel modules: ehci_pci
-
-I hope this helps a little.
-
-Regards
-	Stefan Lippers-Hollmann
+> >> Please help to see which step does not meet your requirements.
+> >
+> > How many cores does your server have? I assume your RAM should be
+> > plenty on that server.
+> >
+>
+> My server has 64 cores (128 hyperthreading) and 160G of RAM.
 
