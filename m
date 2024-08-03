@@ -1,82 +1,128 @@
-Return-Path: <stable+bounces-65330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E810946ABB
-	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 19:53:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7DC946ACC
+	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 20:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFE7C281ABD
-	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 17:53:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D3E51C20B06
+	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 18:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33A513AD8;
-	Sat,  3 Aug 2024 17:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6DD17BD2;
+	Sat,  3 Aug 2024 18:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ig6wEoAB"
 X-Original-To: stable@vger.kernel.org
-Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1764C74
-	for <stable@vger.kernel.org>; Sat,  3 Aug 2024 17:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.254.214
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717C715E89;
+	Sat,  3 Aug 2024 18:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722707603; cv=none; b=DMC33K8N3W8iIG6jnJobCkskaYtgs8mjjC/CiEonFlXbpuVZhCefZiRZWLhzEqKGiwsnwr6L3RAoo70c6+cvs7tLsHOt32lwrk7QhYFcS1QTFj60zvauv6ReR+8JIjb4iKFfFIPUPaV/kSVsYEP1NcHa1JPpBh9X6iiLpVcoZH4=
+	t=1722709024; cv=none; b=bawqSWJflN8zwRo5rqztWo8/GKI9uFGge3AFoq/MttlQFPWvtzApaWIFOvwsvanbssK3V5Kt/lO6dN7Uo9AXFbQ8dH+W/atNlZogOPRxmSm9UyrIWcwmib10xhLKVDltL6vkRyYLzrea+lSdJpVWw5zHQ/MSLLDiBnP0HuI0fK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722707603; c=relaxed/simple;
-	bh=m7OpUkYbqLkzyS+tlUf+Cjj3u6nTKSyxTGr52UL23N8=;
-	h=To:From:Subject:Date:Message-ID:References:Mime-Version:
-	 Content-Type; b=V1ewiH6+QeSb71dR/pDe5rcUorNtA5fwKUhxWaKB/qY90h78y3kUVQWRl6FWSg/vzwta3330LebHpU0KBxqgZuaQrGREd51Fkv8NSsX+BrSYa5gbYWEwtqQl8kNTvykHSOzx4jLpysTAi+tRWg0C7Yerlh0gozBbUGseXQ2SaAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=elrepo.org; spf=pass smtp.mailfrom=m.gmane-mx.org; arc=none smtp.client-ip=116.202.254.214
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=elrepo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.gmane-mx.org
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-	(envelope-from <glks-stable4@m.gmane-mx.org>)
-	id 1saIrS-0003HF-OP
-	for stable@vger.kernel.org; Sat, 03 Aug 2024 19:48:10 +0200
-X-Injected-Via-Gmane: http://gmane.org/
-To: stable@vger.kernel.org
-From: Akemi Yagi <toracat@elrepo.org>
-Subject: Re: bpf tool build failure in latest stable-rc 6.1.103-rc3 due to
- missing backport
-Date: Sat, 3 Aug 2024 17:48:05 -0000 (UTC)
-Message-ID: <v8lqgl$15bq$1@ciao.gmane.io>
-References: <1722571545-7009-1-git-send-email-hargar@linux.microsoft.com>
+	s=arc-20240116; t=1722709024; c=relaxed/simple;
+	bh=ZbP1XcN0ax1Cb5kQ38tJDDhPz7zzEmmpqlBnAVRPiMY=;
+	h=Date:To:From:Subject:Message-Id; b=Xg1wI4Ddb8Bz4AbzXXXAfdHE2vW/oqZjMD9vErz6iCmjVsXNgkZojFyaofN4FpPjjvVLgJo4mevKfI2+EUDIPnMRhoy+WYFC4kILeeWNZ9UEjNdAHmx3mw2mlYsUWee3r2lLokaTRP2W4jBCj3IcQT7IfGn884vq08TEoP+7spA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ig6wEoAB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FAFC116B1;
+	Sat,  3 Aug 2024 18:17:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1722709023;
+	bh=ZbP1XcN0ax1Cb5kQ38tJDDhPz7zzEmmpqlBnAVRPiMY=;
+	h=Date:To:From:Subject:From;
+	b=Ig6wEoAB1J53TR/4I78319z/s9ZM/baYwfsAV9g8Dl11p9rsWtHMHyf8PSjWk2kpT
+	 zuVm+53jZEO2Qoxl5z5bUlL3Wsei7sQNHbSLa12CWOi0IR9JpKe+4foNTOCZrGp1BD
+	 ijeAKsAcm4aF2Jn+mE8RPUP/aECLZnlkH6lu1uDU=
+Date: Sat, 03 Aug 2024 11:17:03 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mcgrof@kernel.org,mark.rutland@arm.com,linux@armlinux.org.uk,linus.walleij@linaro.org,kees@kernel.org,alex@ghiti.fr,davidgow@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-only-enforce-minimum-stack-gap-size-if-its-sensible.patch added to mm-unstable branch
+Message-Id: <20240803181703.C7FAFC116B1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-User-Agent: Pan/0.149 (Bellevue; 4c157ba git@gitlab.gnome.org:GNOME/pan.git)
 
-On Thu, 01 Aug 2024 21:05:45 -0700, Hardik Garg wrote:
 
-> bpf tool build fails for the latest stable-rc 6.1.103-rc3 The error
-> details are as follows:
-> prog.c: In function 'load_with_options':
-> prog.c:1710:23: warning: implicit declaration of function
-> 'create_and_mount_bpffs_dir' [-Wimplicit-function-declaration]
->  1710 |                 err = create_and_mount_bpffs_dir(pinmaps);
->       |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~
+The patch titled
+     Subject: mm: only enforce minimum stack gap size if it's sensible
+has been added to the -mm mm-unstable branch.  Its filename is
+     mm-only-enforce-minimum-stack-gap-size-if-its-sensible.patch
 
-> The commit causing this failure in 6.1.103-rc3:
-> bc1605fcb33bf7a300cd3ac5c409a16bda1626ba
-> 
-> It appears that the commit from the 6.10 series is missing in this
-> release candidate:
-> 478a535ae54a ("bpftool: Mount bpffs on provided dir instead of parent
-> dir") 
-> 
-> Thanks,
-> Hardik
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-only-enforce-minimum-stack-gap-size-if-its-sensible.patch
 
-Build of final 6.1.103 fails due to the reported issue.
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Can we drop this commit until we figure out a proper fix?
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Thanks,
-Akemi
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: David Gow <davidgow@google.com>
+Subject: mm: only enforce minimum stack gap size if it's sensible
+Date: Sat, 3 Aug 2024 15:46:41 +0800
+
+The generic mmap_base code tries to leave a gap between the top of the
+stack and the mmap base address, but enforces a minimum gap size (MIN_GAP)
+of 128MB, which is too large on some setups.  In particular, on arm tasks
+without ADDR_LIMIT_32BIT, the STACK_TOP value is less than 128MB, so it's
+impossible to fit such a gap in.
+
+Only enforce this minimum if MIN_GAP < MAX_GAP, as we'd prefer to honour
+MAX_GAP, which is defined proportionally, so scales better and always
+leaves us with both _some_ stack space and some room for mmap.
+
+This fixes the usercopy KUnit test suite on 32-bit arm, as it doesn't set
+any personality flags so gets the default (in this case 26-bit) task size.
+This test can be run with: ./tools/testing/kunit/kunit.py run --arch arm
+usercopy --make_options LLVM=1
+
+Link: https://lkml.kernel.org/r/20240803074642.1849623-2-davidgow@google.com
+Fixes: dba79c3df4a2 ("arm: use generic mmap top-down layout and brk randomization")
+Signed-off-by: David Gow <davidgow@google.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/util.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/util.c~mm-only-enforce-minimum-stack-gap-size-if-its-sensible
++++ a/mm/util.c
+@@ -463,7 +463,7 @@ static unsigned long mmap_base(unsigned
+ 	if (gap + pad > gap)
+ 		gap += pad;
+ 
+-	if (gap < MIN_GAP)
++	if (gap < MIN_GAP && MIN_GAP < MAX_GAP)
+ 		gap = MIN_GAP;
+ 	else if (gap > MAX_GAP)
+ 		gap = MAX_GAP;
+_
+
+Patches currently in -mm which might be from davidgow@google.com are
+
+mm-only-enforce-minimum-stack-gap-size-if-its-sensible.patch
 
 
