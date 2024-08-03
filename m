@@ -1,128 +1,130 @@
-Return-Path: <stable+bounces-65331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7DC946ACC
-	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 20:17:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13852946B1C
+	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 21:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D3E51C20B06
-	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 18:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9265B281705
+	for <lists+stable@lfdr.de>; Sat,  3 Aug 2024 19:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6DD17BD2;
-	Sat,  3 Aug 2024 18:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E66F44369;
+	Sat,  3 Aug 2024 19:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ig6wEoAB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gbO9Vzhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717C715E89;
-	Sat,  3 Aug 2024 18:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330B518E10;
+	Sat,  3 Aug 2024 19:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722709024; cv=none; b=bawqSWJflN8zwRo5rqztWo8/GKI9uFGge3AFoq/MttlQFPWvtzApaWIFOvwsvanbssK3V5Kt/lO6dN7Uo9AXFbQ8dH+W/atNlZogOPRxmSm9UyrIWcwmib10xhLKVDltL6vkRyYLzrea+lSdJpVWw5zHQ/MSLLDiBnP0HuI0fK0=
+	t=1722714784; cv=none; b=d+FFtj9zlXP5KM+ISWraAW82btvrqKWbKN7qknOHOhOitDF9KziICMcb2efrsViQzmuUy4rAbQiRJoit7gzIoXiryNJ6Q5udVCcA8T3vLJqYVs+uQ59bRlW6czFt3AU3ipFhE5FvovzkUwflXdcvgA7LFNb/d97KPzrbVxl+RGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722709024; c=relaxed/simple;
-	bh=ZbP1XcN0ax1Cb5kQ38tJDDhPz7zzEmmpqlBnAVRPiMY=;
-	h=Date:To:From:Subject:Message-Id; b=Xg1wI4Ddb8Bz4AbzXXXAfdHE2vW/oqZjMD9vErz6iCmjVsXNgkZojFyaofN4FpPjjvVLgJo4mevKfI2+EUDIPnMRhoy+WYFC4kILeeWNZ9UEjNdAHmx3mw2mlYsUWee3r2lLokaTRP2W4jBCj3IcQT7IfGn884vq08TEoP+7spA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ig6wEoAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FAFC116B1;
-	Sat,  3 Aug 2024 18:17:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1722709023;
-	bh=ZbP1XcN0ax1Cb5kQ38tJDDhPz7zzEmmpqlBnAVRPiMY=;
-	h=Date:To:From:Subject:From;
-	b=Ig6wEoAB1J53TR/4I78319z/s9ZM/baYwfsAV9g8Dl11p9rsWtHMHyf8PSjWk2kpT
-	 zuVm+53jZEO2Qoxl5z5bUlL3Wsei7sQNHbSLa12CWOi0IR9JpKe+4foNTOCZrGp1BD
-	 ijeAKsAcm4aF2Jn+mE8RPUP/aECLZnlkH6lu1uDU=
-Date: Sat, 03 Aug 2024 11:17:03 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mcgrof@kernel.org,mark.rutland@arm.com,linux@armlinux.org.uk,linus.walleij@linaro.org,kees@kernel.org,alex@ghiti.fr,davidgow@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-only-enforce-minimum-stack-gap-size-if-its-sensible.patch added to mm-unstable branch
-Message-Id: <20240803181703.C7FAFC116B1@smtp.kernel.org>
+	s=arc-20240116; t=1722714784; c=relaxed/simple;
+	bh=cO1njgqj1MdIys3zEUAKB60pjD++czAPnaJB2qZeMjI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hOEFQe0pF17ExVY9b6OXM/ACt9buFG8GejcuJiFFHAPeN0t/6StEBvUdRXvCoJ5520YWbGYHzRub8eBIuxN8nltxYDYd1qhWPeVQARkjEQVgVH1T1N4hMrWRL+Qqfv7K95ESDY6xVLZ17XhDlgW6q/gmH6i7YuRwWSiBo9KyAXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gbO9Vzhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B7D03C116B1;
+	Sat,  3 Aug 2024 19:53:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722714783;
+	bh=cO1njgqj1MdIys3zEUAKB60pjD++czAPnaJB2qZeMjI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=gbO9Vzhe4Q2t6M6Anaf72tuWGNoTztkRwaVXobXonM3K+z2Uzg3ROlaTF38HLekI/
+	 PC0+IE5UB/JY/Hyut9ornpJY3yc7cy536OYVO95dYWk8OKt5nFhj+ZCPe9XNglS7WZ
+	 DRZZ2wzrSAHQ2Yu3/igaATrLQjTL9m4s98x8GPcjHuVCvtkS5iHr3oS2nS5ptN1MTn
+	 THUBG3Wid/0fwNNZb5ZR13OwKI3Vq7Rvr5E1ZIbt3l+w/InH6PIdeXYE80a4yCDJKt
+	 dmp27AhhoAh4cMf4oyaxbtHECZTBRep8utKwn3n3MkGWZPvucV0TDoO2wXlFCE1eiX
+	 lwVc/qkjMf35A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D901C3DA4A;
+	Sat,  3 Aug 2024 19:53:03 +0000 (UTC)
+From: Janne Grunau via B4 Relay <devnull+j.jannau.net@kernel.org>
+Date: Sat, 03 Aug 2024 21:52:55 +0200
+Subject: [PATCH] wifi: brcmfmac: cfg80211: Handle SSID based pmksa deletion
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240803-brcmfmac_pmksa_del_ssid-v1-1-4e85f19135e1@jannau.net>
+X-B4-Tracking: v=1; b=H4sIAJaKrmYC/x3MQQqAIBBA0avErBOsKYiuEiGmYw1lhQMRRHdPW
+ r7F/w8IJSaBvngg0cXCx55RlQW4xe4zKfbZUOu60Z1GNSUXQ7TOnHEVazxtRoS9QoctBcIWUUO
+ uz0SB7/88jO/7AZiy8PppAAAA
+To: Arend van Spriel <arend.vanspriel@broadcom.com>, 
+ Kalle Valo <kvalo@kernel.org>, Hector Martin <marcan@marcan.st>, 
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
+ brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org, 
+ asahi@lists.linux.dev, stable@vger.kernel.org, Janne Grunau <j@jannau.net>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1950; i=j@jannau.net;
+ h=from:subject:message-id;
+ bh=kwa63Uu8k2lWu1jh8mzzIZRococdlt5kl/m4MUAUTEw=;
+ b=owGbwMvMwCW2UNrmdq9+ahrjabUkhrR1XfMEpu1b+fuSsfFsHu0AC7n/HqLvPkyYsUf8qoPE2
+ WVB35WOd5SyMIhxMciKKbIkab/sYFhdoxhT+yAMZg4rE8gQBi5OAZjI3HmMDPcyXdbdTkgSbX8v
+ +P1v2493CbJP93htlxD64/Ku96rAllBGhnYeTsmJeakhXxj4GP6WHDzR8etU5P9NPK1xZpKlydc
+ 6mQE=
+X-Developer-Key: i=j@jannau.net; a=openpgp;
+ fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+X-Endpoint-Received: by B4 Relay for j@jannau.net/default with auth_id=62
+X-Original-From: Janne Grunau <j@jannau.net>
+Reply-To: j@jannau.net
 
+From: Janne Grunau <j@jannau.net>
 
-The patch titled
-     Subject: mm: only enforce minimum stack gap size if it's sensible
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-only-enforce-minimum-stack-gap-size-if-its-sensible.patch
+wpa_supplicant 2.11 sends since 1efdba5fdc2c ("Handle PMKSA flush in the
+driver for SAE/OWE offload cases") SSID based PMKSA del commands.
+brcmfmac is not prepared and tries to dereference the NULL bssid and
+pmkid pointers in cfg80211_pmksa. PMKID_V3 operations support SSID based
+updates so copy the SSID.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-only-enforce-minimum-stack-gap-size-if-its-sensible.patch
-
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: David Gow <davidgow@google.com>
-Subject: mm: only enforce minimum stack gap size if it's sensible
-Date: Sat, 3 Aug 2024 15:46:41 +0800
-
-The generic mmap_base code tries to leave a gap between the top of the
-stack and the mmap base address, but enforces a minimum gap size (MIN_GAP)
-of 128MB, which is too large on some setups.  In particular, on arm tasks
-without ADDR_LIMIT_32BIT, the STACK_TOP value is less than 128MB, so it's
-impossible to fit such a gap in.
-
-Only enforce this minimum if MIN_GAP < MAX_GAP, as we'd prefer to honour
-MAX_GAP, which is defined proportionally, so scales better and always
-leaves us with both _some_ stack space and some room for mmap.
-
-This fixes the usercopy KUnit test suite on 32-bit arm, as it doesn't set
-any personality flags so gets the default (in this case 26-bit) task size.
-This test can be run with: ./tools/testing/kunit/kunit.py run --arch arm
-usercopy --make_options LLVM=1
-
-Link: https://lkml.kernel.org/r/20240803074642.1849623-2-davidgow@google.com
-Fixes: dba79c3df4a2 ("arm: use generic mmap top-down layout and brk randomization")
-Signed-off-by: David Gow <davidgow@google.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a96202acaea4 ("wifi: brcmfmac: cfg80211: Add support for PMKID_V3 operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Janne Grunau <j@jannau.net>
 ---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
- mm/util.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/util.c~mm-only-enforce-minimum-stack-gap-size-if-its-sensible
-+++ a/mm/util.c
-@@ -463,7 +463,7 @@ static unsigned long mmap_base(unsigned
- 	if (gap + pad > gap)
- 		gap += pad;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 5fe0e671ecb3..826b768196e2 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -4320,9 +4320,16 @@ brcmf_pmksa_v3_op(struct brcmf_if *ifp, struct cfg80211_pmksa *pmksa,
+ 		/* Single PMK operation */
+ 		pmk_op->count = cpu_to_le16(1);
+ 		length += sizeof(struct brcmf_pmksa_v3);
+-		memcpy(pmk_op->pmk[0].bssid, pmksa->bssid, ETH_ALEN);
+-		memcpy(pmk_op->pmk[0].pmkid, pmksa->pmkid, WLAN_PMKID_LEN);
+-		pmk_op->pmk[0].pmkid_len = WLAN_PMKID_LEN;
++		if (pmksa->bssid)
++			memcpy(pmk_op->pmk[0].bssid, pmksa->bssid, ETH_ALEN);
++		if (pmksa->pmkid) {
++			memcpy(pmk_op->pmk[0].pmkid, pmksa->pmkid, WLAN_PMKID_LEN);
++			pmk_op->pmk[0].pmkid_len = WLAN_PMKID_LEN;
++		}
++		if (pmksa->ssid && pmksa->ssid_len) {
++			memcpy(pmk_op->pmk[0].ssid.SSID, pmksa->ssid, pmksa->ssid_len);
++			pmk_op->pmk[0].ssid.SSID_len = pmksa->ssid_len;
++		}
+ 		pmk_op->pmk[0].time_left = cpu_to_le32(alive ? BRCMF_PMKSA_NO_EXPIRY : 0);
+ 	}
  
--	if (gap < MIN_GAP)
-+	if (gap < MIN_GAP && MIN_GAP < MAX_GAP)
- 		gap = MIN_GAP;
- 	else if (gap > MAX_GAP)
- 		gap = MAX_GAP;
-_
 
-Patches currently in -mm which might be from davidgow@google.com are
+---
+base-commit: 0c3836482481200ead7b416ca80c68a29cfdaabd
+change-id: 20240803-brcmfmac_pmksa_del_ssid-3c35efe35330
 
-mm-only-enforce-minimum-stack-gap-size-if-its-sensible.patch
+Best regards,
+-- 
+Janne Grunau <j@jannau.net>
+
 
 
