@@ -1,119 +1,163 @@
-Return-Path: <stable+bounces-65343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA7D946DB6
-	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 11:01:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F409D946E37
+	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 12:00:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30E441F21333
-	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 09:01:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FA201C2112F
+	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 10:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68381F94A;
-	Sun,  4 Aug 2024 09:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CF22557A;
+	Sun,  4 Aug 2024 10:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yi2MryGf"
+	dkim=pass (2048-bit key) header.d=mess.org header.i=@mess.org header.b="sOKuQREX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gofer.mess.org (gofer.mess.org [88.97.38.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F041BC40
-	for <stable@vger.kernel.org>; Sun,  4 Aug 2024 09:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B9A210EC
+	for <stable@vger.kernel.org>; Sun,  4 Aug 2024 10:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=88.97.38.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722762060; cv=none; b=uW0MAYSYZcEPBPWxCfruV7Yz+ReU8mYFtJBUw/Ty/5X8KwSBXtPs4DBlLG/OURh4fFdqEgtVGn4AKzI4GkeB74evwPnvFVtvi4bdXnhz4uy7rxIfh287wPUetZvDMoiKajfsxmAanaq7hHSX40E5reHDPIp6HpJJq3YTGB2/I4Y=
+	t=1722765610; cv=none; b=d9epoMsLrjx3NzgzqnZS8/l43x5Xch7XC5IgTvXd+EiJtTLfunio6uxk5l6sdF+o0dFHP7FTSaCI4/ijuzhNPx1EUXXjNhPxskXbNfEyB7o9J7hA9tY9jRCoyFHNQDTrTcfyWwl1IkPJw3AixYBZ3IvlZslLhDcAhtnPMqy2hDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722762060; c=relaxed/simple;
-	bh=6douQ4r2VxBlUL7tGaGwEWLLUW2L8btVaNP1WvxxqPc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XlmMfAdiubFyIV8J4gKUJ+RKcUqZtOlRFfOhX3nxYX+4JUc2TxbyAuRL3s3cL9L1GhRaAPhNaA+7kevtA5h0sb/TsiFxDZy5CXBh+EOIh6HswnJ/MvVP/Hy0qJamggz/Fy0TOKacVFmxafDbDRIdzj9O84CrFmbCyR01BFmvuf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yi2MryGf; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5b9fe5ea355so3713a12.0
-        for <stable@vger.kernel.org>; Sun, 04 Aug 2024 02:00:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722762057; x=1723366857; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6douQ4r2VxBlUL7tGaGwEWLLUW2L8btVaNP1WvxxqPc=;
-        b=yi2MryGfRfL5+OaS3j0+ZbkZ2XfT1kiRtxk+Cm+UG7NwQHmPOeftQtD8QNoxrqapYv
-         SzwrQR/TJHgn+gFVZSqz7o9N8vD1JWmMNCli7O8I8npxQc0uKf4FhtZnM9uhGZ3x8kgz
-         /vruJykneqHkCs/HL7J8pom5mix3YZ56zaG/BSmvFmn6K4YnxzFGC8EREeConDh3AO0I
-         LazwDIhDtS/wDpksIlJECXePQgB2qAbRg1CtsCG4b4dBn6QDelmPPzam45gUl4o++J3W
-         B9RrQhAYa3r6Sjzv07WX71ENOGqk4cufYcvWw3HeBfYlgX1txvo10/nhJahzFO+tAg+Z
-         t+nA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722762057; x=1723366857;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6douQ4r2VxBlUL7tGaGwEWLLUW2L8btVaNP1WvxxqPc=;
-        b=qa+UbZZ0jiCrNZ72Hw64W5YnyjcJHL527tXi62u0UHcoK8/hGeTGHskm6bCalaSA64
-         kB25jBHP9+1cnWOEmC9Qt/5YZSr4Ef5YTAgkjjk2A7XW7ovlU/yTbfzENBUmnmpTLf+F
-         b+JjNz06TvB+jUvCJOpg0MF7MsfphI5Wo8ZnqVsIfV0urMqw7JGH5r9oh3v1QgeRjxwJ
-         NwuhTMdFerwdm7wLamb/jKHy8S9QYmQ9VrOysqpViIBaX4trFNkhV7moFcyqtq45omRe
-         849gHUG1rG+ndgWNJ88mBNwa5rZR/eutZQS28gNqfBbbb4/VQgEQw08IBlXRbTF/FA77
-         Bc/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUZNc1j+hpRasqMT8XMculgUpxdSD6nIKgSm00RBCt5Of2RFlgpzGNG/WIxhlMiXPlkHmrFVGg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYxiKDmdRvXalk42PMCoedrgNGRth5FmKQ/MPFj6uFUMylvm+E
-	JKx/uhUT0zCCJ/kQK5zlDpdxpKsDaRnrE9EcJpohm5JGzw5+AonAvI/hDfPOfMFMdcFynV8ujxw
-	PgqXXaX5ZXssmgMRuljn3h5hVAEllgbTKbYJl
-X-Google-Smtp-Source: AGHT+IHsOaLbEQDa/SLhfvl6vLUewKN8IIB9s8eNAiEJa6lQ5kE9/RutK1KXfjzWrUXk4vVOzUic+NxyV5tQ3pnhzzE=
-X-Received: by 2002:a05:6402:2816:b0:58b:b1a0:4a2d with SMTP id
- 4fb4d7f45d1cf-5b9c7adc509mr156359a12.1.1722762056858; Sun, 04 Aug 2024
- 02:00:56 -0700 (PDT)
+	s=arc-20240116; t=1722765610; c=relaxed/simple;
+	bh=0AttI12sKCmifb/7pHMqUOGd42+V7EHR24QYtJmAOXg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qns3iO77dVxAhiVU7MxqfcHIAG6GIMW2VYLbP+mtRdJIq3uES2g60vZjqpVICryXZTdtlm8RI54I84+3u81boRghEOhkixIHtfLiDAzdGIgv7fCVRPee3uMSXcQQcu1OY4jZPL4vg8pMQxggiot1AiDL8Cym99XnaIkDqqAcoRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mess.org; spf=pass smtp.mailfrom=mess.org; dkim=pass (2048-bit key) header.d=mess.org header.i=@mess.org header.b=sOKuQREX; arc=none smtp.client-ip=88.97.38.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mess.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mess.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
+	t=1722765606; bh=0AttI12sKCmifb/7pHMqUOGd42+V7EHR24QYtJmAOXg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sOKuQREXElg3gOLJyYKw6zGfeGiHpUsMMVpOw9OOD2BhjEGSek3d8VPgUA1gam151
+	 +sCoe5cEAquJuGskLc26eys2MqaE/P81bJ+21uClWxgkcNOP6G6O8K3U+ZNTueaD/w
+	 nNHy7yD5mP+PerPR65ofs501J15ppbFgoG2y6PYtwdB09CLrel/NtzKmfbx0TEco7U
+	 /YcNELFx+m2Fijtv3WbumqrBiZLMAu1XrbmW9qVR1/A/5e/uAcs7x46Q/moY17EHpT
+	 1WGh2+TVOJsufGjjEAV9DIRPUGH5iUuMJEoNpqm6WesJtM1NT9GEVNdDn0t9bIyM5E
+	 eqj8JiXgoJdbA==
+Received: by gofer.mess.org (Postfix, from userid 1000)
+	id 09F5E1000C2; Sun,  4 Aug 2024 11:00:06 +0100 (BST)
+Date: Sun, 4 Aug 2024 11:00:05 +0100
+From: Sean Young <sean@mess.org>
+To: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.10 288/809] media: dvb-usb: Fix unexpected infinite
+ loop in dvb_usb_read_remote_control()
+Message-ID: <Zq9RJWcUyPU9JZs9@gofer.mess.org>
+References: <20240730151724.637682316@linuxfoundation.org>
+ <20240730151735.968317438@linuxfoundation.org>
+ <20240801165146.38991f60@mir>
+ <Zq5KcGd8g4t2d11x@gofer.mess.org>
+ <20240803180852.6eb5f0cb@mir>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240726122814.729082-1-kyletso@google.com> <CAGZ6i=165A5k59MKqZxH4DvB8XNsZJ+26_0SuMZ+hidam2qRLA@mail.gmail.com>
-In-Reply-To: <CAGZ6i=165A5k59MKqZxH4DvB8XNsZJ+26_0SuMZ+hidam2qRLA@mail.gmail.com>
-From: Kyle Tso <kyletso@google.com>
-Date: Sun, 4 Aug 2024 17:00:40 +0800
-Message-ID: <CAGZ6i=0shz-2cW6BD-MUm4jEz9hXCM9ZsP5kwD9bS52PZgmYdQ@mail.gmail.com>
-Subject: Re: [PATCH v2] usb: dwc3: Runtime get and put usb power_supply handle
-To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, raychi@google.com
-Cc: badhri@google.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	royluo@google.com, bvanassche@acm.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240803180852.6eb5f0cb@mir>
 
-On Fri, Aug 2, 2024 at 3:55=E2=80=AFPM Kyle Tso <kyletso@google.com> wrote:
->
-> On Fri, Jul 26, 2024 at 8:28=E2=80=AFPM Kyle Tso <kyletso@google.com> wro=
-te:
+On Sat, Aug 03, 2024 at 06:08:52PM +0200, Stefan Lippers-Hollmann wrote:
+> Hi
+> 
+> On 2024-08-03, Sean Young wrote:
+> > On Thu, Aug 01, 2024 at 04:51:46PM +0200, Stefan Lippers-Hollmann wrote:
+> > > Hi
+> > >
+> > > On 2024-07-30, Greg Kroah-Hartman wrote:
+> > > > 6.10-stable review patch.  If anyone has any objections, please let me know.
+> > > >
+> > > > ------------------
+> > > >
+> > > > From: Zheng Yejian <zhengyejian1@huawei.com>
+> > > >
+> > > > [ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
+> > > >
+> > > > Infinite log printing occurs during fuzz test:
+> > > >
+> > > >   rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
+> > > >   ...
+> > > >   dvb-usb: schedule remote query interval to 100 msecs.
+> > > >   dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialized ...
+> > > >   dvb-usb: bulk message failed: -22 (1/0)
+> > > >   dvb-usb: bulk message failed: -22 (1/0)
+> > > >   dvb-usb: bulk message failed: -22 (1/0)
+> > > >   ...
+> > > >   dvb-usb: bulk message failed: -22 (1/0)
+> > > >
+> > > > Looking into the codes, there is a loop in dvb_usb_read_remote_control(),
+> > > > that is in rc_core_dvb_usb_remote_init() create a work that will call
+> > > > dvb_usb_read_remote_control(), and this work will reschedule itself at
+> > > > 'rc_interval' intervals to recursively call dvb_usb_read_remote_control(),
+> > > > see following code snippet:
+> > > [...]
+> > >
+> > > This patch, as part of v6.10.3-rc3 breaks my TeVii s480 dual DVB-S2
+> > > card, reverting just this patch from v6.10-rc3 fixes the situation
+> > > again (a co-installed Microsoft Xbox One Digital TV DVB-T2 Tuner
+> > > keeps working).
 > >
-> > It is possible that the usb power_supply is registered after the probe
-> > of dwc3. In this case, trying to get the usb power_supply during the
-> > probe will fail and there is no chance to try again. Also the usb
-> > power_supply might be unregistered at anytime so that the handle of it
-> > in dwc3 would become invalid. To fix this, get the handle right before
-> > calling to power_supply functions and put it afterward.
+> > Thanks for reporting this ...
 > >
-> > Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control=
-")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Kyle Tso <kyletso@google.com>
-> > ---
-> > v1 -> v2:
-> > - move power_supply_put out of interrupt context
+> > So looking at the commit, it must be that one of the usb endpoints is
+> > neither a send/receiver bulk endpoint. Would you mind sending a lusb -v
+> > of the device, I think something like:
 > >
->
-> Hi maintainers,
->
-> It seems that there are some problems in version 2. I will send out
-> version 3 later.
->
-> Kyle
+> > 	lsusb -v -d 9022:d482
+> >
+> > Should do it, or -d 9022::d481
+> 
+> It doesn't show up as 9022:d482 or 9022:d481, but as two 9022:d660.
+> 
+> system 1, raptor-lake:
+> 
+> # lsusb -v -d 9022:d660
+> 
+> Bus 001 Device 003: ID 9022:d660 TeVii Technology Ltd. DVB-S2 S660
 
-version 3 sent
+-snip-
 
-https://lore.kernel.org/all/20240804084612.2561230-1-kyletso@google.com/
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x82  EP 2 IN
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0200  1x 512 bytes
+>         bInterval               1
+>       Endpoint Descriptor:
+>         bLength                 7
+>         bDescriptorType         5
+>         bEndpointAddress     0x81  EP 1 IN
+>         bmAttributes            2
+>           Transfer Type            Bulk
+>           Synch Type               None
+>           Usage Type               Data
+>         wMaxPacketSize     0x0002  1x 2 bytes
+>         bInterval               0
 
-Kyle
+For this device, we do both a bulk snd/rcv to endpoint 1, but the descriptor
+says it's an IN endpoint only. So, commit 
+2052138b7da52ad5ccaf74f736d00f39a1c9198c rejects the device as being invalid.
+
+At the moment, I'm not sure why this works without the patch, surely a bulk
+send to endpoint 1 should fail; there is no out entry.
+
+I'm poking around in the usb code, in the mean time if anyone has any ideas,
+that would be appreciated.
+
+
+Sean
 
