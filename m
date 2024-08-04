@@ -1,178 +1,172 @@
-Return-Path: <stable+bounces-65350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA1694702F
-	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 19:52:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54153947042
+	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 20:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2CA02813E5
-	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 17:52:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F99C1C20AC9
+	for <lists+stable@lfdr.de>; Sun,  4 Aug 2024 18:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0012513A265;
-	Sun,  4 Aug 2024 17:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA99558BC;
+	Sun,  4 Aug 2024 18:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QFHLgijJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YtPnUEwc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CEE137750
-	for <stable@vger.kernel.org>; Sun,  4 Aug 2024 17:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0612744D;
+	Sun,  4 Aug 2024 18:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722793926; cv=none; b=g4UMYCgu+DB2Lp0r0WIoATGaMbJ2iVlP8t2zC8/ERQMEkMP/On1MCd7ttn+mYaRiv9xfA+xT1HyzhRaPSiqmmqaEDJVw3scQjxntwAxevOqYueNjh3JR/H3WczRVbEQJY9XkY3mFzH7vjCAKtPSQvl5/c3uVcwgHaJZ5CJx7MJ4=
+	t=1722796590; cv=none; b=A6QeZlAqI6PSldJcfbe5uHKFtfAFxSkcAECNKR4Mka+W08EyKIh5enpVxwomDjoBDp94cGlFgRuitljpnXPhbPfwjWbGj/0ubp0clzIXzMfE+sbuicb/5hES13QuJDE8fjZG0XKnPilfBOCzd761paZvd/jvoRwm3HZIf8gbBmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722793926; c=relaxed/simple;
-	bh=M6rWXZf52qIB+Mm9mbU8jueBVd1OR1uH8vfQMN8Q+3w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=li4G4+M5OSC3Dj3ZE2AIpLPtV67Thg/AJ/BFEKzqtuxHnGF1apPwd2BHuI/cdKA81vSlxkCsqATmhMMhqo2cM7Jd7liej0PTRl2WoGmp+ODC/x48/xw2SZErxzr4q6vQi2PdOPuuMw0rQLUXYGloTU4GltppSD0JHg0Xcfi3Okk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QFHLgijJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35284C4AF0F
-	for <stable@vger.kernel.org>; Sun,  4 Aug 2024 17:52:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722793926;
-	bh=M6rWXZf52qIB+Mm9mbU8jueBVd1OR1uH8vfQMN8Q+3w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QFHLgijJf+7B9dQqaPB8dB3AAoCQB4Q2G40f9FBIpUxyK8sXyy77KnL9+eSb6ierd
-	 fIvvEs7ah+GIHGSBMYer6SjPCAdTWIg/DR22exrMQ0wyKEqhQdd5jYuCmV5UNjA11S
-	 hdOxRKd4jg3V3C1++DaoLm5PudzlKle8wOHpz3KLIxe818uI4qNTv+rm5m04IoRtU3
-	 wOEjyus4D9utMs3RLSPxG4VXaV2OHQZhXWm6XJ9sAcltcqV7hnNbOvQiXBZS7PTIp5
-	 /qK1ZP2FOGk/enyaSvKINEqLicx1cN4IgWvU7RRc90XuriT+hA4mOYIzIUUPtGu2j4
-	 rgdzAYn4WY4/Q==
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-690af536546so7650687b3.3
-        for <stable@vger.kernel.org>; Sun, 04 Aug 2024 10:52:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXauk2DAP28r+AlhW8j0WoRUjfzpgbkIdLT+2IEwjJv3zdDIRmdHacmPHCMpos/5Ry9nzhPJRrfNNXJ7yVkPQi/ltxib2CU
-X-Gm-Message-State: AOJu0YxD2M4qfYJORs54CiZmrxL/hrAK4muMLhLngnSPgCfHlIIvnYlr
-	sDRcXY1h+D8yRggFd1pBKuTxE8Naat0HRo7Naw4Isn/v7u+EzjdPANgl0lP+z7570Y7cxyqb2x+
-	HAInQq6F+BihQxnV/whl/V8slfkYFwad3a0hQuQ==
-X-Google-Smtp-Source: AGHT+IG8rqmKvFu0oePREvl9xWibUHtyMYHj/OiX5IKUkVz8roXdJrHtnmfFBi0m7m9mKhYS4OWM5/Hm8dUGnRVO1og=
-X-Received: by 2002:a81:c242:0:b0:65f:dfd9:b672 with SMTP id
- 00721157ae682-6895f9e5cdamr102427917b3.11.1722793925477; Sun, 04 Aug 2024
- 10:52:05 -0700 (PDT)
+	s=arc-20240116; t=1722796590; c=relaxed/simple;
+	bh=fwU1ZT+QSgiD639FYphCCzxaDviFaMljcAhW3SdEvM0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OoFfJFYY0q/NYNG4uqztCE9AGmsnPAtn2i5REdcww0sOn+NNhIJXqKl8FzdRrv7XVJcJgNvpHuBbTMUeClvXYtUqtG6qpIxgwb45/CRJitOw3pKCW8KtWsAev0wtOjT3YFtu/HPhSJNMnNgIL+ywWvTY4bsjueQB4L+zhf/1UK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YtPnUEwc; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1fc491f9b55so76711835ad.3;
+        Sun, 04 Aug 2024 11:36:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722796587; x=1723401387; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=NYN7zG5VPUuLVvkcbGwAPPe8uDQFTuuTIsqIl/+g+/c=;
+        b=YtPnUEwcaDYfCklFCBdbL3TwAS8W5Pmh9NS0QKx1XQXRwFlDGYy07vZt9bjHtcC6S2
+         JxHE6lAhXqwzmkSKbuGXmk1vJ0ZPF+6W3r0tqmWYuJuwNffWkrxOOMPUEqxVYS4HAdG7
+         2QnPaOZwVTrF+35me+HRaTVLqI44u+lqUfwqQFIHXwfNKV+gKJKkF4hU9gf4Nmslu2T4
+         3sbAKNQdsuPuPp1nAkPgB8bImzLe3o5yW5hoAt99A1q9O7S9iE8yBRaqMidz5sIwHWHk
+         ylrjVJVv6OATcvHFaf/pKobL7qWJjUt+GDMaXmYGKkTVtIEsqPd2tBpCiB/1LcPfS9Ck
+         X84Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722796587; x=1723401387;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NYN7zG5VPUuLVvkcbGwAPPe8uDQFTuuTIsqIl/+g+/c=;
+        b=g/+XmYxRz1MlWgpIw4acqJ8PIQEU8loAUT72Obvz7/QxR+KCr9+n8/qIzPmmoPG7Ys
+         tBlEtitHBeaodQJ5POBnPg0liiTAMS89dERVIVFIPC5pMGUl7pSR7TZLI+donk7/VmOd
+         TqUUkHYSt6phYeUKmTULio168fEJPVxbrZhBv/Aoeoxl3vXBZM2Vill7Vus6QkRK2Jb2
+         aRVqzhVqIIbbJvLSPMCrAd390Y1/as/IMNWe8QNWqdwhjVE7w45hem+KuPc2PfynSQx4
+         JOqKmRsuvsYhLglviidtUcW/SkYG+ZE1EKgKnG1LQjLve7Em2urvx+GrBNVJeUWe4m9R
+         n/Tg==
+X-Forwarded-Encrypted: i=1; AJvYcCWarg7Wsuuva5DcT3G9pxe/cBuCR/bSCsHyUjWkMLf7ZwAerGbj58PRQvUTlUYdMO7/8UD1UmRvZ1FfR5chUbJKVztq3cofKHwW1LAD9/FTC1AA6hm/0dY4V9fg4qz0cLgNvWvU
+X-Gm-Message-State: AOJu0YxWFI8LFpLH60Mvro0Q6GnByyOYKfTq/bC0ZB8DIvrKODQNco0v
+	h7dUvFlbVY/JcCDSkxbq80RZY0Xsiwpk4DIgiYndBnL6lQ/3+NUL
+X-Google-Smtp-Source: AGHT+IE67elTeBcuN97roZwVNiCI67d3pvnYBM/HUAmAaKyD3qnZgGOsvHknt/0Z3YS8ZfHAoKrutQ==
+X-Received: by 2002:a17:903:290:b0:1fc:419d:871c with SMTP id d9443c01a7336-1ff5722e7a0mr89980645ad.9.1722796587408;
+        Sun, 04 Aug 2024 11:36:27 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff5905ee12sm52726385ad.167.2024.08.04.11.36.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Aug 2024 11:36:26 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
+Date: Sun, 4 Aug 2024 11:36:24 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1719038884-1903-1-git-send-email-yangge1116@126.com>
- <CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q5-3BN9JiD9W_KA@mail.gmail.com>
- <0f9f7a2e-23c3-43fe-b5c1-dab3a7b31c2d@126.com> <CACePvbXU8K4wxECroEPr5T3iAsG6cCDLa12WmrvEBMskcNmOuQ@mail.gmail.com>
- <b5f5b215-fdf2-4287-96a9-230a87662194@126.com> <CACePvbV4L-gRN9UKKuUnksfVJjOTq_5Sti2-e=pb_w51kucLKQ@mail.gmail.com>
- <00a27e2b-0fc2-4980-bc4e-b383f15d3ad9@126.com> <CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZUmErNAXoXmw@mail.gmail.com>
- <CAMgjq7CLObfnEcPgrPSHtRw0RtTXLjiS=wjGnOT+xv1BhdCRHg@mail.gmail.com> <CAMgjq7DLGczt=_yWNe-CY=U8rW+RBrx+9VVi4AJU3HYr-BdLnQ@mail.gmail.com>
-In-Reply-To: <CAMgjq7DLGczt=_yWNe-CY=U8rW+RBrx+9VVi4AJU3HYr-BdLnQ@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 4 Aug 2024 10:51:54 -0700
-X-Gmail-Original-Message-ID: <CACePvbXJKskfo-bd5jr2GfagaFDoYz__dbQTKmq2=rqOpJzqYQ@mail.gmail.com>
-Message-ID: <CACePvbXJKskfo-bd5jr2GfagaFDoYz__dbQTKmq2=rqOpJzqYQ@mail.gmail.com>
-Subject: Re: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to
- LRU batch
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Ge Yang <yangge1116@126.com>, Yu Zhao <yuzhao@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org, 
-	Barry Song <21cnbao@gmail.com>, David Hildenbrand <david@redhat.com>, baolin.wang@linux.alibaba.com, 
-	liuzixing@hygon.cn, Hugh Dickins <hughd@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ allen.lkml@gmail.com, broonie@kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+References: <20240731095022.970699670@linuxfoundation.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240731095022.970699670@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Aug 4, 2024 at 5:22=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrote=
-:
->
-> > Hi Yu, I tested your patch, on my system, the OOM still exists (96
-> > core and 256G RAM), test memcg is limited to 512M and 32 thread ().
-> >
-> > And I found the OOM seems irrelevant to either your patch or Ge's
-> > patch. (it may changed the OOM chance slight though)
-> >
-> > After the very quick OOM (it failed to untar the linux source code),
-> > checking lru_gen_full:
-> > memcg    47 /build-kernel-tmpfs
-> >  node     0
-> >         442       1691      29405           0
-> >                      0          0r          0e          0p         57r
-> >        617e          0p
-> >                      1          0r          0e          0p          0r
-> >          4e          0p
-> >                      2          0r          0e          0p          0r
-> >          0e          0p
-> >                      3          0r          0e          0p          0r
-> >          0e          0p
-> >                                 0           0           0           0
-> >          0           0
-> >         443       1683      57748         832
-> >                      0          0           0           0           0
-> >          0           0
-> >                      1          0           0           0           0
-> >          0           0
-> >                      2          0           0           0           0
-> >          0           0
-> >                      3          0           0           0           0
-> >          0           0
-> >                                 0           0           0           0
-> >          0           0
-> >         444       1670      30207         133
-> >                      0          0           0           0           0
-> >          0           0
-> >                      1          0           0           0           0
-> >          0           0
-> >                      2          0           0           0           0
-> >          0           0
-> >                      3          0           0           0           0
-> >          0           0
-> >                                 0           0           0           0
-> >          0           0
-> >         445       1662          0           0
-> >                      0          0R         34T          0          57R
-> >        238T          0
-> >                      1          0R          0T          0           0R
-> >          0T          0
-> >                      2          0R          0T          0           0R
-> >          0T          0
-> >                      3          0R          0T          0           0R
-> >         81T          0
-> >                             13807L        324O        867Y       2538N
-> >         63F         18A
-> >
-> > If I repeat the test many times, it may succeed by chance, but the
-> > untar process is very slow and generates about 7000 generations.
-> >
-> > But if I change the untar cmdline to:
-> > python -c "import sys; sys.stdout.buffer.write(open('$linux_src',
-> > mode=3D'rb').read())" | tar zx
-> >
-> > Then the problem is gone, it can untar the file successfully and very f=
-ast.
-> >
-> > This might be a different issue reported by Chris, I'm not sure.
->
-> After more testing, I think these are two problems (note I changed the
-> memcg limit to 600m later so the compile test can run smoothly).
->
-> 1. OOM during the untar progress (can be workarounded by the untar
-> cmdline I mentioned above).
+Hi,
 
-There are two different issues here.
-My recent test script has moved the untar phase out of memcg limit
-(mostly I want to multithreading untar) so the bisect I did is only
-catch the second one.
-The untar issue might not be a regression from this patch.
+On 7/31/24 03:03, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.3 release.
+> There are 809 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 02 Aug 2024 09:47:47 +0000.
+> Anything received after that time might be too late.
+> 
+[ ... ]
 
-> 2. OOM during the compile progress (this should be the one Chris encounte=
-red).
->
-> Both 1 and 2 only exist for MGLRU.
-> 1 can be workarounded using the cmdline I mentioned above.
-> 2 is caused by Ge's patch, and 1 is not.
->
-> I can confirm Yu's patch fixed 2 on my system, but the 1 seems still a
-> problem, it's not related to this patch, maybe can be discussed
-> elsewhere.
+> Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>      genirq: Set IRQF_COND_ONESHOT in request_irq()
+> 
 
-I will do a test run now with Yu's patch and report back.
+With this patch in v6.10.3, all my parisc64 qemu tests get stuck with repeated error messages
 
-Chris
+[    0.000000] =============================================================================
+[    0.000000] BUG kmem_cache_node (Not tainted): objects 21 > max 16
+[    0.000000] -----------------------------------------------------------------------------
+
+This never stops until the emulation aborts.
+
+Reverting this patch fixes the problem for me.
+
+I noticed a similar problem in the mainline kernel but it is either spurious there
+or the problem has been fixed.
+
+Guenter
+
 
