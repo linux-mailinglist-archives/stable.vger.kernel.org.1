@@ -1,157 +1,152 @@
-Return-Path: <stable+bounces-65367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6039477BE
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 10:59:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A01E947897
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 11:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51F741C213A1
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 08:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E439281700
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 09:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC89D14F9E6;
-	Mon,  5 Aug 2024 08:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECF6154C1E;
+	Mon,  5 Aug 2024 09:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lv8666Vr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2/hJLDsq"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="hGl362aO"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98E614D71A;
-	Mon,  5 Aug 2024 08:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D91E152E02;
+	Mon,  5 Aug 2024 09:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722848165; cv=none; b=qcx7UlTd6djhIvytWqWB+VZ94BCgLAT+IPD3/Gkct+iZ2jbzIgGdlSdKWzJbsXxMcx3GQUtoCmE1IhqTOpW+MkY7TGR3OQJHn4+b/zgbiM6tTRQMC4yftaG4eE55HgQ04InQWalnzJHs4HGa089QUM3S3tryxHrXbmXW7pCMeFQ=
+	t=1722850831; cv=none; b=D+HCodnf0sNJBhehVM7da64Kfh/BvRiOWTqbD3G+Y8fahsgFDN38OJtkrHFTZqYoFY3bInDVHhda+DhvXl0cmPQzPeOgPmMhuUjM4llOLU4kIE12EBMJacyLNJ0PtDxptEJU3HnaI3G1GhWcHGywQU3yyIsoh5Ab+pXVoE5KkKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722848165; c=relaxed/simple;
-	bh=s1n91oB+uxsmRXvCFdhDBqrbPSA/dUPO6Se1kMtbbH8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=K1UscGnIMhBO8G/5mAXEWaUPobjga6QGMMiMYWqc6x1OcrHJ0m9Ia0PiqLf5P1TxgZ3eNJjH83rhSlY2wTOtiolsFpMN0wTi4HYyMEjxGkH9rOyh+vJGAP4Eam+OIFxo52RvPiJ2QESdaln4qV1xzwLtDB0kU0cl9nAF7J/Avpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lv8666Vr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2/hJLDsq; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722848162;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aYRnHbF7uXJvUBwRmwiJny8X7HtTaLwwFTRZxyG9X6Y=;
-	b=Lv8666Vr1mOH5nc/u/LKNi4o9/k6Y2bC6/+MdC4cNgMJjg0l5iNRJXQbpOpeKFfthhWV/I
-	YdYlVRVk2m3nB2BRXeU1qhtSBL6vpgssRJ7rOm2QVCKKNQhFgQnIpzrf7yAwac0BRRSlpw
-	aEwtMeuIEbPsHjKYdb92FgdaHEGzyeweDR9I9TTpSAwfA4+GmmxR9VMol/iahJ1SO/W29h
-	4KDy3nrSce/RUSsUGYmlFf/1KpyoeHwUQRzbYeaTFWXDRsjk6Ozi5XoxdNZxcAhnW92EUg
-	JxycSfDqoMV2Jn8v/HnFVIj4ml0FFdZryfWgY7Dp3xYOSWodLHCmKQBuHcVByA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722848162;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aYRnHbF7uXJvUBwRmwiJny8X7HtTaLwwFTRZxyG9X6Y=;
-	b=2/hJLDsqaWg3/AO8GEqw9fyyCk/zVcpC2TK5cUg+kac9wg4hviG8UorLCpwyOFgjBCxXE8
-	WcIpeKpGpwcgExBQ==
-To: Guenter Roeck <linux@roeck-us.net>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org,
- pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org, "Rafael J.
- Wysocki" <rafael.j.wysocki@intel.com>, Helge Deller <deller@gmx.de>,
- Parisc List <linux-parisc@vger.kernel.org>
-Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-In-Reply-To: <a8a81b3d-b005-4b6f-991b-c31cdb5513e5@roeck-us.net>
-References: <20240731095022.970699670@linuxfoundation.org>
- <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
- <a8a81b3d-b005-4b6f-991b-c31cdb5513e5@roeck-us.net>
-Date: Mon, 05 Aug 2024 10:56:01 +0200
-Message-ID: <87ikwf5owu.ffs@tglx>
+	s=arc-20240116; t=1722850831; c=relaxed/simple;
+	bh=coe0y78UwhKWJW7PsD0qo2yJRLRh9q2BOig3oj68HQo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nK4s9y5n72zcnRMEMv3QPN4EqQk39Lf1Z4TI0yLqI9PfErCALYoZd7QQDXFrr3wkKMSFAnCjvBGUIF7WGWoZWTZN8H542urzus8sKNu+qwP3tSDmFri9bXLZWWxjTsSz52M29jPLlUWHYB5GqgPD8hu9sUMra/1O6zN1pfbejkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=hGl362aO; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1722850825;
+	bh=coe0y78UwhKWJW7PsD0qo2yJRLRh9q2BOig3oj68HQo=;
+	h=From:Subject:Date:To:Cc:From;
+	b=hGl362aOY8oo8UMA43uXHtXmYbv4HU8OmSbokDLS3HQ7llP6Yey7a7FwS0SSZy99L
+	 TnqoJzzmqUtp2IVCs02TSVpeRRgXVR07Es6lvfRDCRUmHsMbw15InnCR0Dpp83Klp8
+	 oIOg47K0ZPryu0/SmtoaGzyZiUU4KS9IWyLlAFhs=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH v2 0/6] sysctl: prepare sysctl core for const struct
+ ctl_table
+Date: Mon, 05 Aug 2024 11:39:34 +0200
+Message-Id: <20240805-sysctl-const-api-v2-0-52c85f02ee5e@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANadsGYC/32NQQ6CMBBFr0JmbQ0MCMLKexgWzTDYSUwhnYoSw
+ t2tHMDle8l/fwPlIKzQZRsEXkRl8gnwlAE56x9sZEgMmGOVN9gaXZXi09DkNRo7i2nK9lKN5VA
+ jFZBmc+BRPkfy3id2onEK6/GwFD/7J7YUJjdka7xSY9sK6fZmUVVyL3f2HKHf9/0LdLV+urUAA
+ AA=
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+ Kees Cook <kees@kernel.org>, Joel Granados <j.granados@samsung.com>
+Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722850824; l=2956;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=coe0y78UwhKWJW7PsD0qo2yJRLRh9q2BOig3oj68HQo=;
+ b=mcs2aApIig8exj75ncJO707C1zdo7AeYfoUdUpv7tiyQAW0CPOSCzcf1TZXAp+AdX9aQQa/Cj
+ ODvKICIDz1OAPwVHuzRVIk68A9Q3RMBW0HIi+4aTCK4WTExdaEKuAr9
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Sun, Aug 04 2024 at 20:28, Guenter Roeck wrote:
-> On 8/4/24 11:36, Guenter Roeck wrote:
->>> Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>> =C2=A0=C2=A0=C2=A0=C2=A0 genirq: Set IRQF_COND_ONESHOT in request_irq()
->>>
->>=20
->> With this patch in v6.10.3, all my parisc64 qemu tests get stuck with re=
-peated error messages
->>=20
->> [=C2=A0=C2=A0=C2=A0 0.000000] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> [=C2=A0=C2=A0=C2=A0 0.000000] BUG kmem_cache_node (Not tainted): objects=
- 21 > max 16
->> [=C2=A0=C2=A0=C2=A0 0.000000] ------------------------------------------=
------------------------------------
+Adapt the internal and external APIs of the sysctl core to handle
+read-only instances of "struct ctl_table".
 
-Do you have a full boot log? It's unclear to me at which point of the boot
-process this happens. Is this before or after the secondary CPUs have
-been brought up?
+Patch 1: Bugfix for the sysctl core, the bug can be reliably triggered
+         with the series applied
+Patch 2: Trivial preparation commit for the sysctl BPF hook
+Patch 3: Adapts the internal sysctl APIs
+Patch 4: Adapts the external sysctl APIs
+Patch 5: Constifies the sysctl internal tables as proof that it works
+Patch 6: Updates scripts/const_structs.checkpatch for "struct ctl_table"
 
->> This never stops until the emulation aborts.
+Motivation
+==========
 
-Do you have a recipe how to reproduce?
+Moving structures containing function pointers into unmodifiable .rodata
+prevents attackers or bugs from corrupting and diverting those pointers.
 
->> Reverting this patch fixes the problem for me.
->>=20
->> I noticed a similar problem in the mainline kernel but it is either spur=
-ious there
->> or the problem has been fixed.
->>=20
->
-> As a follow-up, the patch below (on top of v6.10.3) "fixes" the problem f=
-or me.
-> I guess that suggests some kind of race condition.
->
->
-> @@ -2156,6 +2157,8 @@ int request_threaded_irq(unsigned int irq, irq_hand=
-ler_t handler,
->          struct irq_desc *desc;
->          int retval;
->
-> +       udelay(1);
-> +
->          if (irq =3D=3D IRQ_NOTCONNECTED)
->                  return -ENOTCONN;
+Also the "struct ctl_table" exposed by the sysctl core were never meant
+to be mutated by users.
 
-That all makes absolutely no sense to me.
+For this goal changes to both the sysctl core and "const" qualifiers for
+various sysctl APIs are necessary.
 
-IRQF_COND_ONESHOT has only an effect on shared interrupts, when the
-interrupt was already requested with IRQF_ONESHOT.
+Full Process
+============
 
-If this is really a race then the following must be true:
+* Drop ctl_table modifications from the sysctl core ([0], in mainline)
+* Constify arguments to ctl_table_root::{set_ownership,permissions}
+  ([1], in mainline)
+* Migrate users of "ctl_table_header::ctl_table_arg" to "const".
+  (in mainline)
+* Afterwards convert "ctl_table_header::ctl_table_arg" itself to const.
+  (in mainline)
+* Prepare helpers used to implement proc_handlers throughout the tree to
+  use "const struct ctl_table *". ([2], in mainline)
+* Afterwards switch over all proc_handlers callbacks to use
+  "const struct ctl_table *" in one commit. (in mainline)
+* Switch over the internals of the sysctl core to "const struct ctl_table *" (this series)
+* Switch include/linux/sysctl.h to "const struct ctl_table *" (this series)
+* Transition instances of "struct ctl_table" through the tree to const (to be done)
 
-1) no delay
+This series is meant to be applied through the sysctl tree.
 
-   CPU0                                 CPU1
-   request_irq(IRQF_ONESHOT)
-                                        request_irq(IRQF_COND_ONESHOT)
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+Changes in v2:
+- Avoid spurious permanent empty tables (patch 1)
+- Link to v1: https://lore.kernel.org/r/20240729-sysctl-const-api-v1-0-ca628c7a942c@weissschuh.net
 
-2) delay
+---
+Thomas Weißschuh (6):
+      sysctl: avoid spurious permanent empty tables
+      bpf: Constify ctl_table argument of filter function
+      sysctl: move internal interfaces to const struct ctl_table
+      sysctl: allow registration of const struct ctl_table
+      sysctl: make internal ctl_tables const
+      const_structs.checkpatch: add ctl_table
 
-   CPU0                                 CPU1
-                                        request_irq(IRQF_COND_ONESHOT)
-   request_irq(IRQF_ONESHOT)
+ fs/proc/internal.h               |   2 +-
+ fs/proc/proc_sysctl.c            | 100 +++++++++++++++++++++------------------
+ include/linux/bpf-cgroup.h       |   2 +-
+ include/linux/sysctl.h           |  12 ++---
+ kernel/bpf/cgroup.c              |   2 +-
+ scripts/const_structs.checkpatch |   1 +
+ 6 files changed, 63 insertions(+), 56 deletions(-)
+---
+base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+change-id: 20240729-sysctl-const-api-73954f3d62c1
 
-   In this case the request on CPU 0 fails with -EBUSY ...
-
-Confused
-
-        tglx
-
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
 
 
