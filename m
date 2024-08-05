@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-65419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3380E9480ED
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E7C9480F1
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:00:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63EB41C21D69
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:00:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FE021C21E98
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC3216F26D;
-	Mon,  5 Aug 2024 17:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC79816F8EB;
+	Mon,  5 Aug 2024 17:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVEXTMvh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8ONGOzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF81C16EC0C;
-	Mon,  5 Aug 2024 17:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A6715FCFB;
+	Mon,  5 Aug 2024 17:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722880625; cv=none; b=VYRO33+RXd5Ur1AXs1z3sDR9+l7FgmbXrDIE841Baj6HXn64vg+HgqswNjY72O3SniBsG6zQkxsd7HqCTwKudUO14r2uC+MsUwujwHbih2OrRTx7FOBSIRY7MgR1gGLnHEGV/Kzufz4335oy788mXCGz+dMGFuhKyEkcNugA8is=
+	t=1722880629; cv=none; b=RCQZMH+d3it13C1QIvZjnIifW/2oZQdBxAD12p2THcWYoMQoAVNk3eNcggoSIaolSJXvKkygjBzDaOxaKXkBXfdwEm5h9BbI3ykqZhvNo8P/HYyV1/DLOJPLT4Ojdw46l1CZ95xoufGU5y78OeRsoJKPoijTVzqfFTN2b+34z7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722880625; c=relaxed/simple;
-	bh=xBTX0nsqSZKq03J1AoMBXer2WviaQP7T3jueQEcAQ6Y=;
+	s=arc-20240116; t=1722880629; c=relaxed/simple;
+	bh=D/p/sm0X47naiWpZmPaylW7bn5QRjiP+yFSrDBMSf7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlSRmzm19FQCpTqKJVrKNWlfONunbduI+p78JZgWFTA/phmzvt+7gl20b4WVI+PdBlCWM8NtVPMa6px1NYYWYTj50dmuJqKbYkH+xOgliWsvveWdMP+jt5nnX+BAHfKZgV1RvZTVdzO4amQiqWRyu/+gdPlpkHfd3Wdv7pk0b7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVEXTMvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F33C4AF0B;
-	Mon,  5 Aug 2024 17:57:04 +0000 (UTC)
+	 MIME-Version; b=s2mkzlvXu7Q1dds+Aa4nGFvw7IVfUql/0oHBrEn0rurhNO6ARJCu8OTdLizDw8KJUfVYFlWlcTlYrLsGdpB5SY4tmllqksdXmn0i/7nwZZE7Cb3aCeORV6K2cW79eQUZDmxw7ggWnhEFMigLO/8ww5mtjVlWXtziB7v805dCOGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8ONGOzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F82C4AF0B;
+	Mon,  5 Aug 2024 17:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722880625;
-	bh=xBTX0nsqSZKq03J1AoMBXer2WviaQP7T3jueQEcAQ6Y=;
+	s=k20201202; t=1722880629;
+	bh=D/p/sm0X47naiWpZmPaylW7bn5QRjiP+yFSrDBMSf7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVEXTMvhcFTCMO/S78SvnY7oq4GNoeQSYq808UpdwVGVtdd859x5gv8htEyHi2lrF
-	 LV/IDzah+es3YUnhYKbybOFceyoqifUZLFyxQrK9qkxFvfPB8OlBMSBC/qP5nsRV9L
-	 yU/d0xYEZB2SwHIXpmrncIiEnLuMJ1/E39HEo/BBvg/dgiqo8JQ7pvm1PgAKWgZCKg
-	 v1H4ZqGq8uDIbDfGVCY+aTf0R9dJxLlLzEbPfTAWZL8B7UIonSqkJelmRlHvo9s5kL
-	 NgHXwqyNkyh7pGWrocKoKJvjlgJFSrnGtAF+/yuSMAquULorbTcU3BP0aOsVwMBCs8
-	 UdwXEjLwI4lYg==
+	b=V8ONGOzXkZR58aPgjeCZ4AfCnTRFC7ZvdqgjiPTTc44RMeCrrLji4Teaj+5RWrELk
+	 EkMNVhBCUb+9HSRshicYmVoXZxwsfXeSfcYOLJVaK1KMGJwG5KiXEnZM6d4hoEhGaQ
+	 1usycOBxyPoxm9ksv5+amsQ0Qpr3S6J9qRKPtCuJTK7VUV14fCe7OWhXqRhMCm9YAU
+	 cvQ9wx6tI+K5Zdfk7Mbs80X25vb8N5izIiQdxokKVKRJF9V3q8qYMnUZz8vSxSkUub
+	 8F/k4PUX0fj0TY9UbEMoxdrhwFFe9nvgiJ6K10JDQXKkclzVtO+ILc60J1L9Gfr7Gm
+	 HWh3EKPVl9kgw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
+Cc: Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Alex Vesker <valex@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 14/16] ALSA: seq: ump: Explicitly reset RPN with Null RPN
-Date: Mon,  5 Aug 2024 13:55:46 -0400
-Message-ID: <20240805175618.3249561-14-sashal@kernel.org>
+	saeedm@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 15/16] net/mlx5: DR, Fix 'stack guard page was hit' error in dr_rule
+Date: Mon,  5 Aug 2024 13:55:47 -0400
+Message-ID: <20240805175618.3249561-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805175618.3249561-1-sashal@kernel.org>
 References: <20240805175618.3249561-1-sashal@kernel.org>
@@ -66,80 +73,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.3
 Content-Transfer-Encoding: 8bit
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Yevgeny Kliteynik <kliteyn@nvidia.com>
 
-[ Upstream commit 98ea612dd1150adb61cd2a0e93875e1cc77e6b87 ]
+[ Upstream commit 94a3ad6c081381fa9ee523781789802b4ed00faf ]
 
-RPN with 127:127 is treated as a Null RPN, just to reset the
-parameters, and it's not translated to MIDI2.  Although the current
-code can work as is in most cases, better to implement the RPN reset
-explicitly for Null message.
+This patch reduces the size of hw_ste_arr_optimized array that is
+allocated on stack from 640 bytes (5 match STEs + 5 action STES)
+to 448 bytes (2 match STEs + 5 action STES).
+This fixes the 'stack guard page was hit' issue, while still fitting
+majority of the usecases (up to 2 match STEs).
 
-Link: https://patch.msgid.link/20240731130528.12600-6-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Reviewed-by: Alex Vesker <valex@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_convert.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/steering/dr_rule.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index b4d78710966dd..3d266f301deee 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -789,6 +789,15 @@ static int paf_ev_to_ump_midi2(const struct snd_seq_event *event,
- 	return 1;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_rule.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_rule.c
+index 042ca03491243..d1db04baa1fa6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_rule.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_rule.c
+@@ -7,7 +7,7 @@
+ /* don't try to optimize STE allocation if the stack is too constaraining */
+ #define DR_RULE_MAX_STES_OPTIMIZED 0
+ #else
+-#define DR_RULE_MAX_STES_OPTIMIZED 5
++#define DR_RULE_MAX_STES_OPTIMIZED 2
+ #endif
+ #define DR_RULE_MAX_STE_CHAIN_OPTIMIZED (DR_RULE_MAX_STES_OPTIMIZED + DR_ACTION_MAX_STES)
  
-+static void reset_rpn(struct ump_cvt_to_ump_bank *cc)
-+{
-+	cc->rpn_set = 0;
-+	cc->nrpn_set = 0;
-+	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
-+	cc->cc_data_msb = cc->cc_data_lsb = 0;
-+	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
-+}
-+
- /* set up the MIDI2 RPN/NRPN packet data from the parsed info */
- static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
- 		    union snd_ump_midi2_msg *data,
-@@ -817,11 +826,7 @@ static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
- 					     cc->cc_data_lsb);
- 	data->rpn.channel = channel;
- 
--	cc->rpn_set = 0;
--	cc->nrpn_set = 0;
--	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
--	cc->cc_data_msb = cc->cc_data_lsb = 0;
--	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
-+	reset_rpn(cc);
- 	return 1;
- }
- 
-@@ -843,11 +848,15 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
- 		ret = fill_rpn(cc, data, channel, true);
- 		cc->rpn_set = 1;
- 		cc->cc_rpn_msb = val;
-+		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
-+			reset_rpn(cc);
- 		return ret;
- 	case UMP_CC_RPN_LSB:
- 		ret = fill_rpn(cc, data, channel, true);
- 		cc->rpn_set = 1;
- 		cc->cc_rpn_lsb = val;
-+		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
-+			reset_rpn(cc);
- 		return ret;
- 	case UMP_CC_NRPN_MSB:
- 		ret = fill_rpn(cc, data, channel, true);
-@@ -961,6 +970,8 @@ static int ctrl14_ev_to_ump_midi2(const struct snd_seq_event *event,
- 		cc->cc_rpn_msb = msb;
- 		cc->cc_rpn_lsb = lsb;
- 		cc->rpn_set = 1;
-+		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
-+			reset_rpn(cc);
- 		return ret;
- 	case UMP_CC_NRPN_MSB:
- 	case UMP_CC_NRPN_LSB:
 -- 
 2.43.0
 
