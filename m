@@ -1,138 +1,120 @@
-Return-Path: <stable+bounces-65368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89B1947895
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 11:40:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0B8947964
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 12:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D9A1C20283
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 09:40:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63510280D51
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 10:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C058D154C04;
-	Mon,  5 Aug 2024 09:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CCC155CAC;
+	Mon,  5 Aug 2024 10:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="Djcyn6q8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YWsw0LvP"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F047214A609;
-	Mon,  5 Aug 2024 09:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E16155C91;
+	Mon,  5 Aug 2024 10:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722850831; cv=none; b=UNHv3Bi1P5QkAcHXrn2CJg6OqAhRRfdrbG6K90H6aJw2PvAoaPbd4jhYiDX07wCOC1UoniX8qxDtvnw6rLvV3wc9lAjS+8kJefDOurhV8SmYsdO2rA+k5IyrccXsbEuOe6fKMad+q+Ptx3DUPjnlqlNgFKCY/uuK8NmaLdpy3f4=
+	t=1722853257; cv=none; b=gj2gmaW8HkfbrcgMD6awngfGPL9u/fmZekBqt73lCUGOizkt7HF+GY3u/8eIZdflbiZM/p7diu6pD8lCGL9zqDFXPPEq/N6o0rZYSDkHkrAcucocJ8oSRZJ+9axWeFFGxUPhckymgvzo8PHeOCpke+U3YWJkppkxNiP61iNwz8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722850831; c=relaxed/simple;
-	bh=WtcLac89cqaa8TlTPPbJpfye9uK9JkL4Eft9RJam5x8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=g+g1tBt1Zit0Ci1el9WZasooCn3N5XQDAXw0byOl1kvK9SXz76aKXG5noiEFQdGr2KkDKm9/JVdMAPKaJt8gMb1d9AsOHop7bTGr+1UY3fj7p5md++YxzECSKxgPJ8f2zcNemqTmbX4tWGJcLe8DlDU1inMsj1EonoOlLTy72ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=Djcyn6q8; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1722850825;
-	bh=WtcLac89cqaa8TlTPPbJpfye9uK9JkL4Eft9RJam5x8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Djcyn6q8XdTIFGgERhT+8uTuVj/l+yw/59+KESKXb82ia2udUurLDLe58wOYJ815Z
-	 ZAe/abUzoPIDAy2qETDiwgFZxDPAWq7lF65dhgBtqI1wb6zAhFRZPUTZUwYs18R0hx
-	 4rHh4Pu3w3UAD+JOf9BpVmEUoG2OqwvUKa/QQafo=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 05 Aug 2024 11:39:35 +0200
-Subject: [PATCH v2 1/6] sysctl: avoid spurious permanent empty tables
+	s=arc-20240116; t=1722853257; c=relaxed/simple;
+	bh=n4v5gmWtmqYQInKnJ/Js6GzVrvaIyNCeY/904bJqLK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PF6DTOErLTa4RK1UEdzh50Sv4pTG3bM0bdTNiADsjLNjgOUb5YnRozQOkYZiSnwhEbDaxf2LbZi938ebhQO4/E3mSEzkbI8zuv8Qd8phomJHhAgky2bJrTVF7fHAotqo7UHFWdLbwmaXFly7gCB5u+yMvoWdiwZcMEC2bNdFX4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YWsw0LvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DEDC4AF0D;
+	Mon,  5 Aug 2024 10:20:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722853257;
+	bh=n4v5gmWtmqYQInKnJ/Js6GzVrvaIyNCeY/904bJqLK8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YWsw0LvPLdgFkGHOZy8F4Nh7/wtWSTrTPl2QPrRpyGngvna126B98z0g1q3VJvKhV
+	 32pgQUcb4d78RpOvLH1RYkZhrzALxtmnGFvuq0A1/DpVTf+8Z8WaduFkoREIDdrDLQ
+	 WECgYryvu3tNlbkQWL+p2bWF/sDoQPQdUjyR3eafW7rJgGY/CGxY0Gl9q58+xrKjZX
+	 K8v/AaPNpIcFPUkXZIKgsd7dbA712/eR0HPGQU7uojF8XR+I49LB6zzxKpjv6+5Ibu
+	 iZH038xKggv+FZE0W45Kl8BijJFTQ67gwq2QQWs2z1jVU+Ru4FWhAtQIKhEWeegQVv
+	 xQX4NbNKzADxg==
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	stable@vger.kernel.org,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 03/13] serial: don't use uninitialized value in uart_poll_init()
+Date: Mon,  5 Aug 2024 12:20:36 +0200
+Message-ID: <20240805102046.307511-4-jirislaby@kernel.org>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240805102046.307511-1-jirislaby@kernel.org>
+References: <20240805102046.307511-1-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240805-sysctl-const-api-v2-1-52c85f02ee5e@weissschuh.net>
-References: <20240805-sysctl-const-api-v2-0-52c85f02ee5e@weissschuh.net>
-In-Reply-To: <20240805-sysctl-const-api-v2-0-52c85f02ee5e@weissschuh.net>
-To: Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, 
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
- Jiri Olsa <jolsa@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
- Kees Cook <kees@kernel.org>, Joel Granados <j.granados@samsung.com>
-Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722850824; l=2410;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=WtcLac89cqaa8TlTPPbJpfye9uK9JkL4Eft9RJam5x8=;
- b=iFLyKCah+OT86AEz0GgKOzw6q1AHQmfYiAe3EpUPohFjZtfQRh9I94+yKIZy8ivyA9I/NdyIX
- xe2KWiFhpqQAQ3rPyK9Xj+NxSWFbdjDt3cH5CTpNzGYH9yiMbXSXNmO
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-The test if a table is a permanently empty one, inspects the address of
-the registered ctl_table argument.
-However as sysctl_mount_point is an empty array and does not occupy and
-space it can end up sharing an address with another object in memory.
-If that other object itself is a "struct ctl_table" then registering
-that table will fail as it's incorrectly recognized as permanently empty.
+Coverity reports (as CID 1536978) that uart_poll_init() passes
+uninitialized pm_state to uart_change_pm(). It is in case the first 'if'
+takes the true branch (does "goto out;").
 
-Avoid this issue by adding a dummy element to the array so that is not
-empty anymore.
-Explicitly register the table with zero elements as otherwise the dummy
-element would be recognized as a sentinel element which would lead to a
-runtime warning from the sysctl core.
+Fix this and simplify the function by simple guard(mutex). The code
+needs no labels after this at all. And it is pretty clear that the code
+has not fiddled with pm_state at that point.
 
-While the issue seems not being encountered at this time, this seems
-mostly to be due to luck.
-Also a future change, constifying sysctl_mount_point and root_table, can
-reliably trigger this issue on clang 18.
-
-Given that empty arrays are non-standard in the first place it seems
-prudent to avoid them if possible.
-
-Fixes: 4a7b29f65094 ("sysctl: move sysctl type to ctl_table_header")
-Fixes: a35dd3a786f5 ("sysctl: drop now unnecessary out-of-bounds check")
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Fixes: 5e227ef2aa38 (serial: uart_poll_init() should power on the UART)
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/proc_sysctl.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/tty/serial/serial_core.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index 9553e77c9d31..d11ebc055ce0 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -29,8 +29,13 @@ static const struct inode_operations proc_sys_inode_operations;
- static const struct file_operations proc_sys_dir_file_operations;
- static const struct inode_operations proc_sys_dir_operations;
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 3afe77f05abf..d63e9b636e02 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -2690,14 +2690,13 @@ static int uart_poll_init(struct tty_driver *driver, int line, char *options)
+ 	int ret = 0;
  
--/* Support for permanently empty directories */
--static struct ctl_table sysctl_mount_point[] = { };
-+/*
-+ * Support for permanently empty directories.
-+ * Must be non-empty to avoid sharing an address with other tables.
-+ */
-+static struct ctl_table sysctl_mount_point[] = {
-+	{ }
-+};
+ 	tport = &state->port;
+-	mutex_lock(&tport->mutex);
++
++	guard(mutex)(&tport->mutex);
  
- /**
-  * register_sysctl_mount_point() - registers a sysctl mount point
-@@ -42,7 +47,7 @@ static struct ctl_table sysctl_mount_point[] = { };
-  */
- struct ctl_table_header *register_sysctl_mount_point(const char *path)
- {
--	return register_sysctl(path, sysctl_mount_point);
-+	return register_sysctl_sz(path, sysctl_mount_point, 0);
+ 	port = uart_port_check(state);
+ 	if (!port || port->type == PORT_UNKNOWN ||
+-	    !(port->ops->poll_get_char && port->ops->poll_put_char)) {
+-		ret = -1;
+-		goto out;
+-	}
++	    !(port->ops->poll_get_char && port->ops->poll_put_char))
++		return -1;
+ 
+ 	pm_state = state->pm_state;
+ 	uart_change_pm(state, UART_PM_STATE_ON);
+@@ -2717,10 +2716,10 @@ static int uart_poll_init(struct tty_driver *driver, int line, char *options)
+ 		ret = uart_set_options(port, NULL, baud, parity, bits, flow);
+ 		console_list_unlock();
+ 	}
+-out:
++
+ 	if (ret)
+ 		uart_change_pm(state, pm_state);
+-	mutex_unlock(&tport->mutex);
++
+ 	return ret;
  }
- EXPORT_SYMBOL(register_sysctl_mount_point);
  
-
 -- 
 2.46.0
 
