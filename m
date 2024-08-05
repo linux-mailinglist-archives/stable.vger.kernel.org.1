@@ -1,130 +1,348 @@
-Return-Path: <stable+bounces-65397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6838C947E6B
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 17:44:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD19947E73
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 17:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 151C31C21D14
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 15:44:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D864B23453
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 15:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F4315A86A;
-	Mon,  5 Aug 2024 15:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B2F14901F;
+	Mon,  5 Aug 2024 15:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Q8QUGhS0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ayb207jW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C655155C8D
-	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 15:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2587B4D8AF
+	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 15:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722872645; cv=none; b=C6dqmOQyCJzfrQjjfZ4E+v23mR13Jbe9e7NMfHeCocJqQTFc0nlGw8hdkG3EZw6bMEGorIru0VOtJimUO0kF+iDZ6nOaFGttjSIVuwS8gMdD/y9c5GSbgjjx/YtVnRxbxJxTmsaJaIMMHVuBv9qS2fOndR19MU49gk55cHDO2qo=
+	t=1722872756; cv=none; b=EBZyg3F4bg8oYb9btqCt9B/NYe2j2vxa9wfP5uuAon1bCf0gHFXiLIV1xTwPDUX1AiqDrWhRMe8z0CfYxws3/7oXAJNpuqzHI8uSVpzutjUkhHacRpapMFOkFcEMy6DZSbVPvztLLUf7gADkJI3PX8PaHZLpTIcnVo44VG/Lxew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722872645; c=relaxed/simple;
-	bh=WJQF1e1lGe1DHP8xXL81uq1JAQ4RrIakU9ICRRYsaow=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LQ0XbFD0iqBTLri1UlmuXyAAtPwmKdJ9gs2Q5ljYPcE3P02c3NV0I4MEAHAuIjAPDrvhUGl+JJ5kgxhIKT7dsGNq1u4n220Nc1njilovCr9tNiLZ4QZ6Pmhcc4B/o0iC+Inij2Pzg0nHeynr2oafM7TrYSP3zi3z+qPtj8ovG7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Q8QUGhS0; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-447d6edc6b1so51838731cf.0
-        for <stable@vger.kernel.org>; Mon, 05 Aug 2024 08:44:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1722872642; x=1723477442; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=chvXENSfxaRr9pj6GM068Pc8pK4QQqniclzsqJg41Ag=;
-        b=Q8QUGhS03sv1yZ2cpQOLBjhaQUNEMgaBH+YWYVEJzzO0qIZkYn2Sl4/ldILE2UNMKi
-         Tfqb+x1ntu2xbrfy0csL5OHUSry58tTbox14Sx1HQexBwS3UAX0inTLJaWV7GXNfv3Xl
-         WUY+XNrJoFH7OlBKCJs1b+Yd1KPSRewT+2zw0=
+	s=arc-20240116; t=1722872756; c=relaxed/simple;
+	bh=j5Uv25CTOYlUpavsEpr0Ns8/eFSMPGpCF/oZOSqJNlU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LCCGbH3yQqQUi7DlRH8sO3+GbSAu69wo1HvVru7WizBdC5Xys7MV6FXKbkfCW7jw9nYy2c5GuufbVQM8jRk1HlNLTgs5RGbX75fSttcKaCV4XQq4702xfwd/CMLsrt9Ss1HY0He3/q+3L7ZFObX3qaeTT+Cg4F2Xy6bkAeTonn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ayb207jW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722872753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S4iwKDgHUmnVrUBbpp8w2UcZ/4fISxkc4J9qTt9x01I=;
+	b=Ayb207jWK8HGVBTOmd8h+tave/Hr6H3UqICJOUfi4iMfd4pPmh9at2Eq/kcJjh+F0LZocH
+	4XVxm43QFlORLSP7wcBNyOFiEQHP7QYngdNKwKIwfY4Y0xt8z9Zdiy5UOYjyTZbG132JHd
+	8t/RIbyAktF+wVyC9buqU3MNWeD9EOc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-671-gzlyaAfINdG15T7Ei9vGKQ-1; Mon, 05 Aug 2024 11:45:51 -0400
+X-MC-Unique: gzlyaAfINdG15T7Ei9vGKQ-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a7dc32f39c6so313899366b.2
+        for <stable@vger.kernel.org>; Mon, 05 Aug 2024 08:45:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722872642; x=1723477442;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=chvXENSfxaRr9pj6GM068Pc8pK4QQqniclzsqJg41Ag=;
-        b=rjg9CUhe4FboFbpnYJE4zPhCkJnwSZzJeKmP4s3ENSXKRwamQjyHNM/CH55bfuDLZ/
-         B/fLUo2HofBPEn2kK0psgEUEDsxFPk2TFJE78Y0x8uZnWhbpNaZICtet9YsI8uKyffkZ
-         1L/zr45QQCNQnjESed9roml17vFChO51ry7BiNUrpIV+wf3zlbO3G1JrF7eUDoO1EAGD
-         1Ah9YFfbw8EQn76GKp/DNg992cOeD7AU1aXQwO7lphSUw40eChwlwYz4uc0E1z3ZBUwF
-         8YausLqLAbRUvb+MaqAOgBP48MV5smpqGSXHY5YGDT5Dg5z1LkFZz6SgZ/TYwstU5ILH
-         ChJg==
-X-Forwarded-Encrypted: i=1; AJvYcCXES+8LeVfhZ3aFGBF/UURQmx3YuCP6JYpEf+2zGW9ph2lswRr7DEEUnEditkYCV4Mw4r25w527uvxX5i3gOgonrmN+87gp
-X-Gm-Message-State: AOJu0Yy+hmQGEmdwSAU9aD/wzx1zhpsEunM/fGWzDyomICzcqeay3zDa
-	IeH3Z6W4Sh/z5SPT2o1BkxlKUwPq98O3Y+8XmIE0PacWrmy4AWOfZK5dgtTBG4n57iDkVmNrZHs
-	=
-X-Google-Smtp-Source: AGHT+IHF36IsAh9jHR8niunqdTcY38wpzPTBeO61MtlgPHM6WOykFN22+EC7AmP017Mjf4DJF9U1XA==
-X-Received: by 2002:ac8:5acb:0:b0:446:63e9:dc81 with SMTP id d75a77b69052e-451892cc1a5mr130496321cf.63.1722872641463;
-        Mon, 05 Aug 2024 08:44:01 -0700 (PDT)
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com. [209.85.160.170])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4518a7572c3sm30449311cf.60.2024.08.05.08.44.00
-        for <stable@vger.kernel.org>
+        d=1e100.net; s=20230601; t=1722872750; x=1723477550;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S4iwKDgHUmnVrUBbpp8w2UcZ/4fISxkc4J9qTt9x01I=;
+        b=iOfpGPqgmv8h5p1qcDtC/PrWyCTi9AK8332gblpSOAigqNI/hShjHCuNAf2TSUcz2c
+         myrQgqXj/8VGP6Az0SWviqcp+i3H35uiS7FG7nLEbiK/h1aUfYhTAIgD/6tctCQybhwG
+         DOzoRF0Cbo76HPUmzu5siKiE4yp7PoQg67HUFXz6OEBgJURNW6mpDRlRO+Qs2e+QT52N
+         Efx3KbCY6Uie5R9J9qHtMwmQP4JSrCvX6Faup8JVO2L2QuZgYIZQaREVUhTba0v/sHQ/
+         cReUGHJOnjvom7V+cPMr+mb6u+Lg5QoTSxngdackcs/rUvtPtcSi1zySG2ESRLdPL6O2
+         bwsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSpe7f6XZhTKoShrWUNmV4UKxbm1qoFoxhZfWPxM03ncgEZ6kUO7OGVIq3W5leRcBut0etAoPG4SshudEUtNYvkgKEs8OM
+X-Gm-Message-State: AOJu0YztLcnM4zG2pgta3dCpCUPXOA/uQSab1dPzxHfr1gy3xwPJtEff
+	yG6oLN2mhn9GeCH5MDmxUQYcl55+0uHdxSFdUpTScMe0jkXTvKu2SRM61fjWgPP7UFjBuqJMdEv
+	3+IFr4uAJlGQW292vaQRNiKhnlt1TYJFt06qjCnsEBkq/PnN3j7iUXg==
+X-Received: by 2002:a17:907:1b10:b0:a7d:3ab9:6a5d with SMTP id a640c23a62f3a-a7dc5130c90mr730345866b.69.1722872750234;
+        Mon, 05 Aug 2024 08:45:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFo04Sa6g3Vg0jT4zuHL7kQ/eErvdNwA+GPT0MKgfSzgJvZpYHn0GBCbFeKIiHUOzk2RSFhxw==
+X-Received: by 2002:a17:907:1b10:b0:a7d:3ab9:6a5d with SMTP id a640c23a62f3a-a7dc5130c90mr730268466b.69.1722872720746;
+        Mon, 05 Aug 2024 08:45:20 -0700 (PDT)
+Received: from [10.40.98.157] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9d4dd45sm464397466b.104.2024.08.05.08.45.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Aug 2024 08:44:00 -0700 (PDT)
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-44fee2bfd28so462881cf.1
-        for <stable@vger.kernel.org>; Mon, 05 Aug 2024 08:44:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUSpJcpHdYZn/Wv/8ZpT/D9XxPO6mWkZXiT6mub2pytcisaAeAKAOnHjcn6d+ED7OlOBlBdc2KCCQVGD8BXmVPMJfJkMXQQ
-X-Received: by 2002:a05:622a:591:b0:44f:ea7a:2119 with SMTP id
- d75a77b69052e-4519ae21848mr5655501cf.18.1722872639887; Mon, 05 Aug 2024
- 08:43:59 -0700 (PDT)
+        Mon, 05 Aug 2024 08:45:20 -0700 (PDT)
+Message-ID: <5c5120a7-4739-4d92-a5b8-9b9c60edc3b7@redhat.com>
+Date: Mon, 5 Aug 2024 17:45:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240805102046.307511-1-jirislaby@kernel.org> <20240805102046.307511-4-jirislaby@kernel.org>
-In-Reply-To: <20240805102046.307511-4-jirislaby@kernel.org>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 5 Aug 2024 08:43:48 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=X1a1a=kkJ9bWXWOmu0hz6HqRuK=Vo=bhvFfSzeAWSWyw@mail.gmail.com>
-Message-ID: <CAD=FV=X1a1a=kkJ9bWXWOmu0hz6HqRuK=Vo=bhvFfSzeAWSWyw@mail.gmail.com>
-Subject: Re: [PATCH 03/13] serial: don't use uninitialized value in uart_poll_init()
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: gregkh@linuxfoundation.org, linux-serial@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] platform/x86: ideapad-laptop: Stop calling
+ i8042_command()
+To: Maxim Mikityanskiy <maxtram95@gmail.com>
+Cc: Ike Panhc <ike.pan@canonical.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Andy Shevchenko <andy@kernel.org>, platform-driver-x86@vger.kernel.org,
+ linux-input@vger.kernel.org, Jonathan Denose <jdenose@chromium.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, stable@vger.kernel.org
+References: <20240805141608.170844-1-hdegoede@redhat.com>
+ <ZrDwF919M0YZTqde@mail.gmail.com>
+Content-Language: en-US
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <ZrDwF919M0YZTqde@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Maxim,
 
-On Mon, Aug 5, 2024 at 3:21=E2=80=AFAM Jiri Slaby (SUSE) <jirislaby@kernel.=
-org> wrote:
->
-> Coverity reports (as CID 1536978) that uart_poll_init() passes
-> uninitialized pm_state to uart_change_pm(). It is in case the first 'if'
-> takes the true branch (does "goto out;").
->
-> Fix this and simplify the function by simple guard(mutex). The code
-> needs no labels after this at all. And it is pretty clear that the code
-> has not fiddled with pm_state at that point.
->
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> Fixes: 5e227ef2aa38 (serial: uart_poll_init() should power on the UART)
-> Cc: stable@vger.kernel.org
-> Cc: Douglas Anderson <dianders@chromium.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/tty/serial/serial_core.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
+On 8/5/24 5:30 PM, Maxim Mikityanskiy wrote:
+> On Mon, 05 Aug 2024 at 16:16:08 +0200, Hans de Goede wrote:
+>> Commit 07a4a4fc83dd ("ideapad: add Lenovo IdeaPad Z570 support (part 2)")
+>> added an i8042_command(..., I8042_CMD_AUX_[EN|DIS]ABLE) call to
+>> the ideapad-laptop driver to suppress the touchpad events at the PS/2
+>> AUX controller level.
+>>
+>> Commit c69e7d843d2c ("platform/x86: ideapad-laptop: Only toggle ps2 aux
+>> port on/off on select models") limited this to only do this by default
+>> on the IdeaPad Z570 to replace a growing list of models on which
+>> the i8042_command() call was disabled by quirks because it was causing
+>> issues.
+>>
+>> A recent report shows that this is causing issues even on the Z570 for
+>> which it was originally added because it can happen on resume before
+>> the i8042 controller's own resume() method has run:
+>>
+>> [   50.241235] ideapad_acpi VPC2004:00: PM: calling acpi_subsys_resume+0x0/0x5d @ 4492, parent: PNP0C09:00
+>> [   50.242055] snd_hda_intel 0000:00:0e.0: PM: pci_pm_resume+0x0/0xed returned 0 after 13511 usecs
+>> [   50.242120] snd_hda_codec_realtek hdaudioC0D0: PM: calling hda_codec_pm_resume+0x0/0x19 [snd_hda_codec] @ 4518, parent: 0000:00:0e.0
+>> [   50.247406] i8042: [49434] a8 -> i8042 (command)
+>> [   50.247468] ideapad_acpi VPC2004:00: PM: acpi_subsys_resume+0x0/0x5d returned 0 after 6220 usecs
+>> ...
+>> [   50.247883] i8042 kbd 00:01: PM: calling pnp_bus_resume+0x0/0x9d @ 4492, parent: pnp0
+>> [   50.247894] i8042 kbd 00:01: PM: pnp_bus_resume+0x0/0x9d returned 0 after 0 usecs
+>> [   50.247906] i8042 aux 00:02: PM: calling pnp_bus_resume+0x0/0x9d @ 4492, parent: pnp0
+>> [   50.247916] i8042 aux 00:02: PM: pnp_bus_resume+0x0/0x9d returned 0 after 0 usecs
+>> ...
+>> [   50.248301] i8042 i8042: PM: calling platform_pm_resume+0x0/0x41 @ 4492, parent: platform
+>> [   50.248377] i8042: [49434] 55 <- i8042 (flush, kbd)
+>> [   50.248407] i8042: [49435] aa -> i8042 (command)
+>> [   50.248601] i8042: [49435] 00 <- i8042 (return)
+>> [   50.248604] i8042: [49435] i8042 controller selftest: 0x0 != 0x55
+> 
+> What exactly is the issue? Is it just a few errors in dmesg, or does
+> 8042 stop responding completely?
 
-Thanks for the fix! Looks good.
+When this issue happens at resume the touchpad stops sending events
+completely because the i8042 driver's resume() method fails and exits
+early.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> 
+> I've seen something similar when I enabled the touchpad while moving the
+> cursor, but it was just a matter of a few lines in dmesg and a protocol
+> resync, both touchpad and keyboard worked after that.
 
-NOTE: I'm happy to defer to others, but personally I'd consider
-breaking this into two changes: one that fixes the problem without
-using guard() (which should be pretty simple) and one that switches to
-guard(). The issue is that at the time the bug was introduced the
-guard() syntax didn't exist and that means backporting will be a bit
-of a pain.
+Right, the problem is that in this case the i8042's resume() method
+is failing, which I believe causes the Elan ps/2 driver to not get
+re-attached to the aux port on resume.
 
-Oh, though I guess maybe it doesn't matter since the bug was
-introduced in 6.4 and that's not an LTS kernel so nobody cares? ...and
-guard() is in 6.6, so maybe things are fine the way you have it.
+
+> 
+>> Dmitry (input subsys maintainer) pointed out that just sending
+>> KEY_TOUCHPAD_OFF/KEY_TOUCHPAD_ON which the ideapad-laptop driver
+>> already does should be sufficient and that it then is up to userspace
+>> to filter out touchpad events after having received a KEY_TOUCHPAD_OFF.
+> 
+> I believe it's not the case (at least it wasn't back then). The whole
+> point of my patch in the first place was to make touchpad toggle work
+> properly on Z570.
+> 
+> Userspace (GNOME) supports two variants of hardware:
+> 
+> 1. Laptops that disable touchpad themselves and send out
+> KEY_TOUCHPAD_ON/OFF to report the status. Upon receiving these keycodes,
+> GNOME just shows the status pop-up and relies on firmware to disable the
+> touchpad.
+> 
+> 2. Laptops that just send KEY_TOUCHPAD_TOGGLE whenever the key is
+> pressed. GNOME maintains its own touchpad state and disables it in
+> software (as well as showing the pop-up).
+
+You're right I had forgotten about this. There is really no reason
+why GNOME cannot also suppress events after a TOUCHPAD_OFF event,
+but atm it indeed does not do this. We could fix this by patching:
+plugins/media-keys/gsd-media-keys-manager.c of gnome-settings-daemon
+to also update the TOUCHPAD_ENABLED_KEY setting when receiving
+KEY_TOUCHPAD_ON/OFF. Something which I think we should do to,
+but that will not help solve this bug since we cannot rely
+on users having a fixed g-s-d.
+
+So: self-NACK for this patch. (which is a bummer because I really
+liked being able to just remove this)
+
+> That means, userspace is not filtering out events upon receiving
+> KEY_TOUCHPAD_OFF. If we wanted to rely on that, we would need to send
+> KEY_TOUCHPAD_TOGGLE from the driver, but we actually can't, because Z570
+> is weird. It maintains the touchpad state in firmware to light up the
+> status LED, but the firmware doesn't do the actual touchpad disablement.
+> 
+> That is, if we use TOGGLE, the LED will get out of sync. If we use
+> ON/OFF, the touchpad won't be disabled, unless we do it in the kernel.
+
+Ack.
+
+So how about this instead:
+
+diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+index 1ace711f7442..b7fa06f793cb 100644
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1574,7 +1574,7 @@ static void ideapad_sync_touchpad_state(struct ideapad_private *priv, bool send_
+ 	 * touchpad off and on. We send KEY_TOUCHPAD_OFF and
+ 	 * KEY_TOUCHPAD_ON to not to get out of sync with LED
+ 	 */
+-	if (priv->features.ctrl_ps2_aux_port)
++	if (send_events && priv->features.ctrl_ps2_aux_port)
+ 		i8042_command(&param, value ? I8042_CMD_AUX_ENABLE : I8042_CMD_AUX_DISABLE);
+ 
+ 	/*
+
+Maxmime, if you still have your Z570 can you check if the touchpad state after a suspend/resume
+correctly reflects the state before suspend/resume in both touchpad on / off states ?
+
+Jonathan, as the reporter of the original suspend/resume issue, can you check if
+a kernel with this patch + ideapad-laptop re-enabled no longer has the suspend/resume
+issue you were seeing ?
+
+Regards,
+
+Hans
+
+
+
+
+
+> 
+>> Given all the problems the i8042_command() call has been causing just
+>> removing it indeed seems best, so this removes it completely. Note that
+>> this only impacts the Ideapad Z570 since it was already disabled by
+>> default on all other models.
+> 
+> While I agree that i8042_command() is not a perfect solution, I don't
+> like the idea of breaking the touchpad toggle, even if "only one" laptop
+> model is affected. Can we suppress input events from the touchpad in
+> some other way, purely in software? I.e. don't call i8042_command(),
+> don't disrupt the PS/2 protocol, but instead let ideapad-laptop tell
+> psmouse to stop generating input events for a while?
+> 
+>> Fixes: c69e7d843d2c ("platform/x86: ideapad-laptop: Only toggle ps2 aux port on/off on select models")
+>> Reported-by: Jonathan Denose <jdenose@chromium.org>
+>> Closes: https://lore.kernel.org/linux-input/20231102075243.1.Idb37ff8043a29f607beab6440c32b9ae52525825@changeid/
+>> Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+>> Cc: Maxim Mikityanskiy <maxtram95@gmail.com>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>  drivers/platform/x86/ideapad-laptop.c | 37 ---------------------------
+>>  1 file changed, 37 deletions(-)
+>>
+>> diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
+>> index 1ace711f7442..255fb56ec9ee 100644
+>> --- a/drivers/platform/x86/ideapad-laptop.c
+>> +++ b/drivers/platform/x86/ideapad-laptop.c
+>> @@ -18,7 +18,6 @@
+>>  #include <linux/device.h>
+>>  #include <linux/dmi.h>
+>>  #include <linux/fb.h>
+>> -#include <linux/i8042.h>
+>>  #include <linux/init.h>
+>>  #include <linux/input.h>
+>>  #include <linux/input/sparse-keymap.h>
+>> @@ -144,7 +143,6 @@ struct ideapad_private {
+>>  		bool hw_rfkill_switch     : 1;
+>>  		bool kbd_bl               : 1;
+>>  		bool touchpad_ctrl_via_ec : 1;
+>> -		bool ctrl_ps2_aux_port    : 1;
+>>  		bool usb_charging         : 1;
+>>  	} features;
+>>  	struct {
+>> @@ -182,12 +180,6 @@ MODULE_PARM_DESC(set_fn_lock_led,
+>>  	"Enable driver based updates of the fn-lock LED on fn-lock changes. "
+>>  	"If you need this please report this to: platform-driver-x86@vger.kernel.org");
+>>  
+>> -static bool ctrl_ps2_aux_port;
+>> -module_param(ctrl_ps2_aux_port, bool, 0444);
+>> -MODULE_PARM_DESC(ctrl_ps2_aux_port,
+>> -	"Enable driver based PS/2 aux port en-/dis-abling on touchpad on/off toggle. "
+>> -	"If you need this please report this to: platform-driver-x86@vger.kernel.org");
+>> -
+>>  static bool touchpad_ctrl_via_ec;
+>>  module_param(touchpad_ctrl_via_ec, bool, 0444);
+>>  MODULE_PARM_DESC(touchpad_ctrl_via_ec,
+>> @@ -1560,7 +1552,6 @@ static void ideapad_fn_lock_led_exit(struct ideapad_private *priv)
+>>  static void ideapad_sync_touchpad_state(struct ideapad_private *priv, bool send_events)
+>>  {
+>>  	unsigned long value;
+>> -	unsigned char param;
+>>  	int ret;
+>>  
+>>  	/* Without reading from EC touchpad LED doesn't switch state */
+>> @@ -1568,15 +1559,6 @@ static void ideapad_sync_touchpad_state(struct ideapad_private *priv, bool send_
+>>  	if (ret)
+>>  		return;
+>>  
+>> -	/*
+>> -	 * Some IdeaPads don't really turn off touchpad - they only
+>> -	 * switch the LED state. We (de)activate KBC AUX port to turn
+>> -	 * touchpad off and on. We send KEY_TOUCHPAD_OFF and
+>> -	 * KEY_TOUCHPAD_ON to not to get out of sync with LED
+>> -	 */
+>> -	if (priv->features.ctrl_ps2_aux_port)
+>> -		i8042_command(&param, value ? I8042_CMD_AUX_ENABLE : I8042_CMD_AUX_DISABLE);
+>> -
+>>  	/*
+>>  	 * On older models the EC controls the touchpad and toggles it on/off
+>>  	 * itself, in this case we report KEY_TOUCHPAD_ON/_OFF. Some models do
+>> @@ -1699,23 +1681,6 @@ static const struct dmi_system_id hw_rfkill_list[] = {
+>>  	{}
+>>  };
+>>  
+>> -/*
+>> - * On some models the EC toggles the touchpad muted LED on touchpad toggle
+>> - * hotkey presses, but the EC does not actually disable the touchpad itself.
+>> - * On these models the driver needs to explicitly enable/disable the i8042
+>> - * (PS/2) aux port.
+>> - */
+>> -static const struct dmi_system_id ctrl_ps2_aux_port_list[] = {
+>> -	{
+>> -	/* Lenovo Ideapad Z570 */
+>> -	.matches = {
+>> -		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+>> -		DMI_MATCH(DMI_PRODUCT_VERSION, "Ideapad Z570"),
+>> -		},
+>> -	},
+>> -	{}
+>> -};
+>> -
+>>  static void ideapad_check_features(struct ideapad_private *priv)
+>>  {
+>>  	acpi_handle handle = priv->adev->handle;
+>> @@ -1725,8 +1690,6 @@ static void ideapad_check_features(struct ideapad_private *priv)
+>>  		set_fn_lock_led || dmi_check_system(set_fn_lock_led_list);
+>>  	priv->features.hw_rfkill_switch =
+>>  		hw_rfkill_switch || dmi_check_system(hw_rfkill_list);
+>> -	priv->features.ctrl_ps2_aux_port =
+>> -		ctrl_ps2_aux_port || dmi_check_system(ctrl_ps2_aux_port_list);
+>>  	priv->features.touchpad_ctrl_via_ec = touchpad_ctrl_via_ec;
+>>  
+>>  	if (!read_ec_data(handle, VPCCMD_R_FAN, &val))
+>> -- 
+>> 2.45.2
+>>
+> 
+
 
