@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-65423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98EF19480FA
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:01:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD589480FD
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:01:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22382B23F8A
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:01:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95BD5B2408A
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97781166F37;
-	Mon,  5 Aug 2024 17:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5B416A938;
+	Mon,  5 Aug 2024 17:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jnzuUtuT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OnJiJsIS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57365166F31;
-	Mon,  5 Aug 2024 17:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C979C16133C;
+	Mon,  5 Aug 2024 17:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722880661; cv=none; b=Jy9pH9qQ/1jJa0Bst+/QY4hxMkBl4PqBMOhZB+7B0pQsHcQNfprMtvEAK2QKtyISHJeQl0cUMWS5/Yb4YxUSSM21YON6G77+co005wtR756jVY4nGc6xW6idi8qd5kevSBDYxLMlVAM9aDWmuCXNCI6rtAhC9NPIjiT8riLQ+mc=
+	t=1722880668; cv=none; b=sSEJBwqmmyxknhGZ5xsKLN4ebo/IdoI/n3yKulT8nc8qv0LikMS7NPKmT3RjI2QadykHiV+AUawHjMMdOpb5/EjXZeVp1eoy9zMhOeOxjfiHb7lAYrN+iKfeKRg0Q6sUrdg8HPYofN3vulO1lh65wUDzYATlgKI6QEGyxNM3UYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722880661; c=relaxed/simple;
-	bh=RRDV/CmIBNFMCcfOFkxZeKbtfZsrblNvgdeMEQIeIs8=;
+	s=arc-20240116; t=1722880668; c=relaxed/simple;
+	bh=tMivHo/kyJjaTn3w5/jG0sT3rIYqeuw5htpvr53llsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO/2vMVv762ZCT9ycR8vwS+bLm7Z3u8Ayn+8Rm3CCJj7yQnJQKcu0C71kGdL9FBiDscqSjPp55x2Hi9pZZtdgyJLxRhudR4CyhWUJo6fD/oA43jGwvrv9mpv8zXc42VQcW5uOAC5drJlC7WRP1yTT3gVXn0OE7Ilj802we+t+Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jnzuUtuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE023C4AF1D;
-	Mon,  5 Aug 2024 17:57:39 +0000 (UTC)
+	 MIME-Version; b=ClfeEqTkOb8YvWyEPxjl1NPpEFe/toDh8ho8yiec5HIwPqDggIgw0dfIejics6RYPuVE0tjhSr6EYpX9q3B8Mlw2BVFYEnX3DssRNnLrmLuwr2jeUwHyKBPFt6JwHmXM/uHZycew9sffUmT8uFkICrbdDc+NV5iAS6JUdPJcJuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OnJiJsIS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58ADC32782;
+	Mon,  5 Aug 2024 17:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722880661;
-	bh=RRDV/CmIBNFMCcfOFkxZeKbtfZsrblNvgdeMEQIeIs8=;
+	s=k20201202; t=1722880668;
+	bh=tMivHo/kyJjaTn3w5/jG0sT3rIYqeuw5htpvr53llsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnzuUtuTAuO5gPAafJ3dv1E64AY7Zf+h90wZbKFocA+8IrRdLzeBMVf7G+kK2k6Fh
-	 JMEyWNsVAOsU/tw9Jsu6V4HIVKIIZ2aRqy5p8SkMFvJXRf/SATRsYHKcKoaXJOVARE
-	 dGHQG0afFX7loql4TqDrJk6MAwR3e4GzDmAictPnZs1gDPyBFktwi8BAlsD2bLIwdp
-	 6O9n2bY9kZbyOt0bkPfrwmeNl/FRICG7px7gTdiNpI4Pt9RCuzL2wo3kIhLb27yEH5
-	 8DGPlf0Hl1qOhFxyJjgGSYefPeWHmUdK/2nMiFo/G4RterPx3MLBPqQhFUi/kowxxv
-	 f5xEdT20URosA==
+	b=OnJiJsISmVTZphID0IgpMTWP4Hiie05oqXI1XxgSrFhl0w7WnjM3zBs5M88TByxup
+	 8OfbPqGMbKE3PFyTDGn5nejIO+HiwDWqdJ6OpHzxDbBwGqWSzvMaqPXtOaINT6T29q
+	 kBpvpoJd1Re/FqFdUs6bisiqliF/X0zXi3OWq+UpqYAAJrNGVeP2r7t3IoHD+LDmVO
+	 GkScQxvBL8w06UKs6ryBYA/WoMrwRkWxCi4ysDecs20Tor/YScEP1j5jx9cknh3JVq
+	 1Wbgo+VZTnMJ/LnSHkBIeLakBz8dULDTo63g9UUgzy/ZkoaUI4zknTqw/7n7qZuda7
+	 kiGOSgtNLFneA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philip Mueller <philm@manjaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+Cc: Kyoungrul Kim <k831.kim@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 02/15] drm: panel-orientation-quirks: Add quirk for OrangePi Neo
-Date: Mon,  5 Aug 2024 13:56:59 -0400
-Message-ID: <20240805175736.3252615-2-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	peter.wang@mediatek.com,
+	manivannan.sadhasivam@linaro.org,
+	avri.altman@wdc.com,
+	beanhuo@micron.com,
+	alim.akhtar@samsung.com,
+	ebiggers@google.com,
+	minwoo.im@samsung.com,
+	quic_mnaresh@quicinc.com,
+	cw9316.lee@samsung.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 03/15] scsi: ufs: core: Check LSDBS cap when !mcq
+Date: Mon,  5 Aug 2024 13:57:00 -0400
+Message-ID: <20240805175736.3252615-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805175736.3252615-1-sashal@kernel.org>
 References: <20240805175736.3252615-1-sashal@kernel.org>
@@ -70,39 +76,86 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.44
 Content-Transfer-Encoding: 8bit
 
-From: Philip Mueller <philm@manjaro.org>
+From: Kyoungrul Kim <k831.kim@samsung.com>
 
-[ Upstream commit d60c429610a14560085d98fa6f4cdb43040ca8f0 ]
+[ Upstream commit 0c60eb0cc320fffbb8b10329d276af14f6f5e6bf ]
 
-This adds a DMI orientation quirk for the OrangePi Neo Linux Gaming
-Handheld.
+If the user sets use_mcq_mode to 0, the host will try to activate the LSDB
+mode unconditionally even when the LSDBS of device HCI cap is 1. This makes
+commands time out and causes device probing to fail.
 
-Signed-off-by: Philip Mueller <philm@manjaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240715045818.1019979-1-philm@manjaro.org
+To prevent that problem, check the LSDBS cap when MCQ is not supported.
+
+Signed-off-by: Kyoungrul Kim <k831.kim@samsung.com>
+Link: https://lore.kernel.org/r/20240709232520epcms2p8ebdb5c4fccc30a6221390566589bf122@epcms2p8
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/ufs/core/ufshcd.c | 16 ++++++++++++++++
+ include/ufs/ufshcd.h      |  1 +
+ include/ufs/ufshci.h      |  1 +
+ 3 files changed, 18 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 5db52d6c5c35c..039da0d1a613b 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -414,6 +414,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_leftside_up,
-+	}, {	/* OrangePi Neo */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "OrangePi"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "NEO-01"),
-+		},
-+		.driver_data = (void *)&lcd1200x1920_rightside_up,
- 	}, {	/* Samsung GalaxyBook 10.6 */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 808979a093505..d8e323fbcf21a 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -2281,7 +2281,17 @@ static inline int ufshcd_hba_capabilities(struct ufs_hba *hba)
+ 		return err;
+ 	}
+ 
++	/*
++	 * The UFSHCI 3.0 specification does not define MCQ_SUPPORT and
++	 * LSDB_SUPPORT, but [31:29] as reserved bits with reset value 0s, which
++	 * means we can simply read values regardless of version.
++	 */
+ 	hba->mcq_sup = FIELD_GET(MASK_MCQ_SUPPORT, hba->capabilities);
++	/*
++	 * 0h: legacy single doorbell support is available
++	 * 1h: indicate that legacy single doorbell support has been removed
++	 */
++	hba->lsdb_sup = !FIELD_GET(MASK_LSDB_SUPPORT, hba->capabilities);
+ 	if (!hba->mcq_sup)
+ 		return 0;
+ 
+@@ -10384,6 +10394,12 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
+ 	}
+ 
+ 	if (!is_mcq_supported(hba)) {
++		if (!hba->lsdb_sup) {
++			dev_err(hba->dev, "%s: failed to initialize (legacy doorbell mode not supported)\n",
++				__func__);
++			err = -EINVAL;
++			goto out_disable;
++		}
+ 		err = scsi_add_host(host, hba->dev);
+ 		if (err) {
+ 			dev_err(hba->dev, "scsi_add_host failed\n");
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index e4da397360682..2a7d6f269d9e3 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -1064,6 +1064,7 @@ struct ufs_hba {
+ 	bool ext_iid_sup;
+ 	bool scsi_host_added;
+ 	bool mcq_sup;
++	bool lsdb_sup;
+ 	bool mcq_enabled;
+ 	struct ufshcd_res_info res[RES_MAX];
+ 	void __iomem *mcq_base;
+diff --git a/include/ufs/ufshci.h b/include/ufs/ufshci.h
+index d5accacae6bca..ae93b30d25893 100644
+--- a/include/ufs/ufshci.h
++++ b/include/ufs/ufshci.h
+@@ -75,6 +75,7 @@ enum {
+ 	MASK_OUT_OF_ORDER_DATA_DELIVERY_SUPPORT	= 0x02000000,
+ 	MASK_UIC_DME_TEST_MODE_SUPPORT		= 0x04000000,
+ 	MASK_CRYPTO_SUPPORT			= 0x10000000,
++	MASK_LSDB_SUPPORT			= 0x20000000,
+ 	MASK_MCQ_SUPPORT			= 0x40000000,
+ };
+ 
 -- 
 2.43.0
 
