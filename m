@@ -1,127 +1,135 @@
-Return-Path: <stable+bounces-65379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3786947B77
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 14:58:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C998947B83
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 15:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2080A1C2121A
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 12:58:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 383642819C3
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 13:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3BE15A86A;
-	Mon,  5 Aug 2024 12:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6335615746B;
+	Mon,  5 Aug 2024 13:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="GJwuZrx3"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kg4ikPJt";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ahjw1xw3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFD615A865
-	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 12:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26CA1514C9;
+	Mon,  5 Aug 2024 13:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722862615; cv=none; b=hBXjk3vxC7ipmJHt+aE/idDXGTP2lf8CQ+vjO8m4Z/jbR+G3p5rT8wP1Yv7xcHg0BKPdFFwkEqJKdwztrAHzz5/ncQT+AWRQtPXLWZi5CEcF3LlJH7jZe0e57lofcUueC1V0pFwN6eTJr0G6GF4qe07p+iJ/O5L9lazSS9mH9Ss=
+	t=1722863146; cv=none; b=A/VnWmBEDI3MYH2ARbPbj3fGsPFdXfQitGMRhYyIIWrmcYjlWALq6AdJVFQOvGcOf2+cX2eemwegETdTlfUgUriyRXZdGPrvW7b+IBPt9qEUrn2OqA3rdbiKjFl3fiKYYG69nBYyRSP7QNX0DopBNoR98fiEcMC0QW/YLIihr8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722862615; c=relaxed/simple;
-	bh=meap2/Rvum81A9212ej+lOTfNq9jT8DdvVTkvZKz4pA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qIaOVnjvy0VjNHpZRfxyxEg3An3zb4qzlzKXmljtF+w9Q3qXNWNyq2snUpi07xkrRGZTdn0NXHK9tNfqBiQucGfQTfkmtRFjMqkEkobIi9M8AHRAVJ7mgApYO397wkTMYTjV6k3I6lqNXLenk/PiTnTvDJiA3oEw2oZC1lXlKB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=GJwuZrx3; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ef27bfd15bso129592671fa.2
-        for <stable@vger.kernel.org>; Mon, 05 Aug 2024 05:56:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1722862611; x=1723467411; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucAW2YItCVD1AvFmAIVer0cm7JI4a2OFw03lJ7TlpOA=;
-        b=GJwuZrx3Fftukzlt0Zmel2PJp8BvFx/NsR8y9nz3i0E6SOkQTmqCcoeJNwoqGtZZSo
-         afCzP2si83fCKh844HdvaNdb7qyyf53D8Z7RzcRULKx2YTxoq1LoC8Rhdpz2oGqR794+
-         rCbJPS60ufnNgn+PKjTXJ37zdJBjkngSkIaAFCclFoLdwwFfDjjHQY397BhOO5brhYgu
-         yrG66xrYQ8NZ7hhgYvkh3ew9zxGZKZkWyGjnCAtSu/lTu0+1AYmXx0asNiyeDnQnzLS2
-         hUcqG7t7Vmv1qAl0K6zXqQEYf/qLmPaXdXvGaBU1TWkXhYPrwIAqUN6v6nd4xDTwIjLL
-         NAdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722862611; x=1723467411;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ucAW2YItCVD1AvFmAIVer0cm7JI4a2OFw03lJ7TlpOA=;
-        b=rXvoqEhWUI90vq+pkwrMcXCa/xEVp/2KzGt8X/4puSxkep2aPTeux4p++8a3+qdB4N
-         hKjJD73UJXFVzmyik+igN70jk8vxYQ+12CA/DDLWDmhc4cpucrk5DHGRWZAjWgaKdltI
-         nr/2GymgbC+45f8OZnxMWSRPAkIlivjL/3pwvw9otXG+VYiRLFV2QiBfHQXZgqs41t3P
-         WhEW4V7u6jDM+PIOw+XNpddyYoDe5rMduRO2Z21Y7a8B+by+Ct5ItZGnIzUufCxQY2A9
-         AiRzvkF5gDs6SK7NkL1HQGAxdBhc/yNpVMiO01vYafsINfT6StA7rw0e0XO5F7RFIHo6
-         AxOg==
-X-Gm-Message-State: AOJu0YxDtuUkgi+akvh5nqG35+yN2y+m+5Kv5rmg0uquOjAAM3fZLegD
-	2fRQlhRSmAo/zHeCD2LlbZbjmPiojVDZmJhS0WqhZt9+iAkFII+EYT8aSy7CMfI=
-X-Google-Smtp-Source: AGHT+IGyN3Pyr2wYhLf+g+0wD7OW/YEv6/2pS7z42VReoLlQ8SUdeSHB3FTdMkYtirTJAIBlBSzrCw==
-X-Received: by 2002:a2e:96d1:0:b0:2ef:208f:9ec0 with SMTP id 38308e7fff4ca-2f15aa92e12mr83757761fa.14.1722862611191;
-        Mon, 05 Aug 2024 05:56:51 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:b41:c160:215c:4f6d:331d:d824? ([2a01:e0a:b41:c160:215c:4f6d:331d:d824])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb97fbasm199948345e9.41.2024.08.05.05.56.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Aug 2024 05:56:50 -0700 (PDT)
-Message-ID: <1d3b8483-446a-427a-b987-ed88248ede55@6wind.com>
-Date: Mon, 5 Aug 2024 14:56:49 +0200
+	s=arc-20240116; t=1722863146; c=relaxed/simple;
+	bh=eFN2sPjVj5Yl+84tJnzvzW2EDQWSMAAqlSRg3KNu8UE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gzdhwzkZXTqstNCiC378sX3hszEwyjbCFLA1o7cZmb1II4kgtvQTdQ6mDk52L1aS1/PvU0aSLoaMZVKb1/YGnCPNCorbIFI/7YH7FWFFCBqGQK7d5L8SN1YQIrYtyCdfvdotmI5O8T4EJwTgwPXfRB3nJUlvNZkOFa7osyqMU+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kg4ikPJt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ahjw1xw3; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1722863143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+te1bapzfw1K0ACXvja14/L2YeBsUai9y6dAgdsVyfs=;
+	b=kg4ikPJtXUVsT0uC1mLh6dKyr+y6H8wz1zNyFBgvZpjTKm0O1qUO7ZQhlCTaEY74SCt64I
+	C+Dn1ALQz7pf3G0Ylg3YN4GwarHEovSWCmQvYs79me//GsVCmzNt2f62ni0zOf1ZEzueDI
+	bqFktrgjwlgJccyEpBiZxAz0FvxS0PJjB4cFoPqwQnFAalqN8lvxwgcXHvX9LiX473vNUq
+	JoWCbAJ4djAOyfAxQgCIhzMQ83xm8mn9wn3YhFyqFg+K/tlmrWgYph7KoCE2wJz6woZ90r
+	yfg0reLK6fGi2YorzcChUk6Zv4E9u9LCnqRsva/rq4+t2G7CT+eDMKzq3q+hjg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1722863143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+te1bapzfw1K0ACXvja14/L2YeBsUai9y6dAgdsVyfs=;
+	b=Ahjw1xw3snzg3wiknX1wLQcRTZkcZgwxGwmNUfQz9AmQlm5S1SnDLMn5LxYSGRtBLCZGZ6
+	30sl+5IuabXuc8Cg==
+To: Felix Moessbauer <felix.moessbauer@siemens.com>,
+ linux-kernel@vger.kernel.org
+Cc: Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, jan.kiszka@siemens.com, Felix Moessbauer
+ <felix.moessbauer@siemens.com>, stable@vger.kernel.org, Sebastian Andrzej
+ Siewior <bigeasy@linutronix.de>
+Subject: Re: [PATCH 2/2] hrtimer: Ignore slack time for RT tasks in
+ hrtimer_start_range_ns()
+In-Reply-To: <20240805124116.21394-3-felix.moessbauer@siemens.com>
+References: <20240805124116.21394-1-felix.moessbauer@siemens.com>
+ <20240805124116.21394-3-felix.moessbauer@siemens.com>
+Date: Mon, 05 Aug 2024 15:05:42 +0200
+Message-ID: <87a5hr5dcp.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: Patch "ipv4: fix source address selection with route leak" has
- been added to the 5.15-stable tree
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-References: <20240803145547.888173-1-sashal@kernel.org>
- <fa631c09-60e4-4fec-98ce-3f02fd412408@6wind.com> <ZrC2VY4GfDRv5T5i@sashalap>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <ZrC2VY4GfDRv5T5i@sashalap>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Le 05/08/2024 à 13:24, Sasha Levin a écrit :
-> On Mon, Aug 05, 2024 at 09:43:53AM +0200, Nicolas Dichtel wrote:
->> Le 03/08/2024 à 16:55, Sasha Levin a écrit :
->>> This is a note to let you know that I've just added the patch titled
->>>
->>>     ipv4: fix source address selection with route leak
->>>
->>> to the 5.15-stable tree which can be found at:
->>>    
->>> http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>
->>> The filename of the patch is:
->>>      ipv4-fix-source-address-selection-with-route-leak.patch
->>> and it can be found in the queue-5.15 subdirectory.
->>>
->>> If you, or anyone else, feels it should not be added to the stable tree,
->>> please let <stable@vger.kernel.org> know about it.
->> I'm not sure I fully understand the process, but Greg already sent a mail
->> because this patch doesn't compile on the 5.15 stable branch.
->>
->> I sent a backport:
->> https://lore.kernel.org/stable/20240802085305.2749750-1-nicolas.dichtel@6wind.com/
-> 
-> Appologies, I haven't seen your backport, but instead I've picked up
-> 40867d74c374 ("net: Add l3mdev index to flow struct and avoid oif reset
-> for port devices") as a dependency to address the build failure.
-> 
-No problem, it's fine for me. I will launch the selftests to check the backport.
-I've just sent another backport for the last patch of the series.
+On Mon, Aug 05 2024 at 14:41, Felix Moessbauer wrote:
+> RT tasks do not have any timerslack, as this induces jitter. By
+> that, the timer slack is already ignored in the nanosleep family and
+> schedule_hrtimeout_range() (fixed in 0c52310f2600).
+>
+> The hrtimer_start_range_ns function is indirectly used by glibc-2.33+
+> for timed waits on condition variables. These are sometimes used in
+> RT applications for realtime queue processing. At least on the
+> combination of kernel 5.10 and glibc-2.31, the timed wait on condition
+> variables in rt tasks was precise (no slack), however glibc-2.33
+> changed the internal wait implementation, exposing the kernel bug.
 
-https://lore.kernel.org/stable/2024072906-causation-conceal-2567@gregkh/T/#m7065a276c15cc43e31b92b49465a6e6c6b85d7a2
+That's hardly a bug. It's an oversight.
+
+> This patch makes the timer slack consistent across all hrtimer
+
+"This patch" ....
+
+> programming code, by ignoring the timerslack for rt tasks also in the
+> last remaining location in hrtimer_start_range_ns().
+>
+> Similar to 0c52310f2600, this fix should be backported as well.
+
+This is not part of the change log.
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+> ---
+>  kernel/time/hrtimer.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+> index 2b1469f61d9c..1b26e095114d 100644
+> --- a/kernel/time/hrtimer.c
+> +++ b/kernel/time/hrtimer.c
+> @@ -1274,7 +1274,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+>   * hrtimer_start_range_ns - (re)start an hrtimer
+>   * @timer:	the timer to be added
+>   * @tim:	expiry time
+> - * @delta_ns:	"slack" range for the timer
+> + * @delta_ns:	"slack" range for the timer for SCHED_OTHER tasks
+>   * @mode:	timer mode: absolute (HRTIMER_MODE_ABS) or
+>   *		relative (HRTIMER_MODE_REL), and pinned (HRTIMER_MODE_PINNED);
+>   *		softirq based mode is considered for debug purpose only!
+> @@ -1299,6 +1299,10 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+>  
+>  	base = lock_hrtimer_base(timer, &flags);
+>  
+> +	/* rt-tasks do not have a timer slack for obvious reasons */
+> +	if (rt_task(current))
+> +		delta_ns = 0;
+
+        task_is_realtime()
+
+please
+
+Thanks,
+
+        tglx
 
