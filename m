@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-65446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02D194813D
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:07:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED0694813F
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39660B22A56
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:07:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ED31B24090
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247CA16D9B7;
-	Mon,  5 Aug 2024 17:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9367D17C9F9;
+	Mon,  5 Aug 2024 17:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsdTJP3T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRnU2GLF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63AD16D9A8;
-	Mon,  5 Aug 2024 17:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F35B15F323;
+	Mon,  5 Aug 2024 17:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722880758; cv=none; b=mRacYyOaNPKj0JnU2WebTj8BdQQUSWU1FAMNC4rit9Pjo/2+713jmieJZdPFX2r5PrrFDh1tboGRy8MJfKG9JxLIdfwcX2+tKIWQzXPyCMzug2fFGo2JAbdE2ITww5lo8+DXGVtXgEnmEwUsLNB0KdDylaS3nCizZ76sFIbjnzQ=
+	t=1722880763; cv=none; b=WieR/gULrbODSQtY9qy1RDITmWjKd42QxuHsdi4Rm9+o3cKdmVTHOS/DJBIDsQ+UkDFKwG62VIdUYYgDNbaDlrHQku3aJwxzSmPccDrAW720kDkiyYAId/l/pK/aYbbvmE+huE/irj5rj4rHS+UutgC3XwB9X3CpGIo/yWGbMsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722880758; c=relaxed/simple;
-	bh=9ksv/G/aFOuCm5jYIeueKidNCRidn+d+FACT/CaLoco=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VecmObCzQcN9AqINrR3GFmVuKxi/70YP+80TFwrsJFaAi9FEtBvco3HNnXvw8NyAW80UzFIKt8us2u3OKfPzDddAaw+3Z5HiFqsYZgThCdLaoG+1Ba8uY1nE02ppIs/+TJDq0C06JW4bihgDQXInwmP+xdEwZ3ZJ153jiQh8FcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsdTJP3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6763CC32782;
-	Mon,  5 Aug 2024 17:59:17 +0000 (UTC)
+	s=arc-20240116; t=1722880763; c=relaxed/simple;
+	bh=ZVJ7VDq597zPx97wDGqG57CW7ubgGhk7+LXHOkck35o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SfA6IzNRIEUkJGq+Qemcvv3KQ2lbr99B34lCxgFvyddQO/Wp0R84AewPzLUedBngDxVw/YV8Jmx7j2571sYm1h8N04BZd3jZHaD1RQ1Cz7x07XT/pbEBh1d1di1VAZ3J/C9CGcvjyXLhLkH8bBctx/IPmDCX497SwY+siHI8OmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mRnU2GLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE939C32782;
+	Mon,  5 Aug 2024 17:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722880758;
-	bh=9ksv/G/aFOuCm5jYIeueKidNCRidn+d+FACT/CaLoco=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jsdTJP3TPkdZvYzHgwTwO1itvvEzA6DWLBQeapwGdof7bO7MA0ltFFQTWcFoQbxCw
-	 TPvGjH+TqxG6qwccmlBX/IhMWQ8jmW+WoWm06oHC6ZW7QzJTBcUaE22CeDyX/hBd8g
-	 VWdUD1adWekF2vIs5lQKq82sXd9G6ZxwRYXOHO9WX8x9q9M4Z1TbY/7UbXw2WCef33
-	 JceKftE5gjybR6xXDf2xcaixX2VLBa358Ezw7N0YmcYFf7K7FWplsWXWo531MCMdnh
-	 Dq5G41xOKJr37ClKIG8bn0JLZDxEgIWltj2sTmqQ+XJ0QSxjX+Aad4XpsUpLlkK8e0
-	 Z63Kmegm3rnKA==
+	s=k20201202; t=1722880762;
+	bh=ZVJ7VDq597zPx97wDGqG57CW7ubgGhk7+LXHOkck35o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mRnU2GLFVEmd4d3/C5nuUe7WvXdrUgd3qD/4ivQnKztVZtRAelg7BXDOMlMyAkU1C
+	 1+B9WPmJHYNThEghEcExngRJSRfxaX+frKyNCKWUGZH6vM6zX9s5sKRpWoT1STTZSe
+	 DqLGf4KZ+0TgCvmaYa1NiG6VxE5dX5oyIHZFOKA1GYrsNUqKwKZrx1pSAG0AxhOq2y
+	 LcIx0qb1jYGZtm3RBHLE2MF+N2pl0qwniOfBJTnBT+EY+yG76lglDHwJWv2+U6nSTs
+	 8FRnvIk1gh2DYLOohZ3JfriRF5kQM9R2C/RGM4p7XdPpD9iVJwBFDGNclGiLjJlLD2
+	 QRWN2bRYkzO1w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philip Mueller <philm@manjaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.10 1/4] drm: panel-orientation-quirks: Add quirk for OrangePi Neo
-Date: Mon,  5 Aug 2024 13:59:08 -0400
-Message-ID: <20240805175916.3257027-1-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	hkallweit1@gmail.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 2/4] ALSA: hda/generic: Add a helper to mute speakers at suspend/shutdown
+Date: Mon,  5 Aug 2024 13:59:09 -0400
+Message-ID: <20240805175916.3257027-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240805175916.3257027-1-sashal@kernel.org>
+References: <20240805175916.3257027-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,39 +67,112 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Philip Mueller <philm@manjaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit d60c429610a14560085d98fa6f4cdb43040ca8f0 ]
+[ Upstream commit 6cd23b26b348fa52c88e1adf9c0e48d68e13f95e ]
 
-This adds a DMI orientation quirk for the OrangePi Neo Linux Gaming
-Handheld.
+Some devices indicate click noises at suspend or shutdown when the
+speakers are unmuted.  This patch adds a helper,
+snd_hda_gen_shutup_speakers(), to work around it.  The new function is
+supposed to be called at suspend or shutdown by the codec driver, and
+it mutes the speakers.
 
-Signed-off-by: Philip Mueller <philm@manjaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240715045818.1019979-1-philm@manjaro.org
+The mute status isn't cached, hence the original mute state will be
+restored at resume again.
+
+Link: https://patch.msgid.link/20240726142625.2460-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/pci/hda/hda_generic.c | 63 +++++++++++++++++++++++++++++++++++++
+ sound/pci/hda/hda_generic.h |  1 +
+ 2 files changed, 64 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 43de9dfcba19a..f1091cb87de0c 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -318,6 +318,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_leftside_up,
-+	}, {	/* OrangePi Neo */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "OrangePi"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "NEO-01"),
-+		},
-+		.driver_data = (void *)&lcd1200x1920_rightside_up,
- 	}, {	/* Samsung GalaxyBook 10.6 */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
+diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
+index 35113fa84a0fd..733dc9953a38b 100644
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -5067,6 +5067,69 @@ void snd_hda_gen_stream_pm(struct hda_codec *codec, hda_nid_t nid, bool on)
+ }
+ EXPORT_SYMBOL_GPL(snd_hda_gen_stream_pm);
+ 
++/* forcibly mute the speaker output without caching; return true if updated */
++static bool force_mute_output_path(struct hda_codec *codec, hda_nid_t nid)
++{
++	if (!nid)
++		return false;
++	if (!nid_has_mute(codec, nid, HDA_OUTPUT))
++		return false; /* no mute, skip */
++	if (snd_hda_codec_amp_read(codec, nid, 0, HDA_OUTPUT, 0) &
++	    snd_hda_codec_amp_read(codec, nid, 1, HDA_OUTPUT, 0) &
++	    HDA_AMP_MUTE)
++		return false; /* both channels already muted, skip */
++
++	/* direct amp update without caching */
++	snd_hda_codec_write(codec, nid, 0, AC_VERB_SET_AMP_GAIN_MUTE,
++			    AC_AMP_SET_OUTPUT | AC_AMP_SET_LEFT |
++			    AC_AMP_SET_RIGHT | HDA_AMP_MUTE);
++	return true;
++}
++
++/**
++ * snd_hda_gen_shutup_speakers - Forcibly mute the speaker outputs
++ * @codec: the HDA codec
++ *
++ * Forcibly mute the speaker outputs, to be called at suspend or shutdown.
++ *
++ * The mute state done by this function isn't cached, hence the original state
++ * will be restored at resume.
++ *
++ * Return true if the mute state has been changed.
++ */
++bool snd_hda_gen_shutup_speakers(struct hda_codec *codec)
++{
++	struct hda_gen_spec *spec = codec->spec;
++	const int *paths;
++	const struct nid_path *path;
++	int i, p, num_paths;
++	bool updated = false;
++
++	/* if already powered off, do nothing */
++	if (!snd_hdac_is_power_on(&codec->core))
++		return false;
++
++	if (spec->autocfg.line_out_type == AUTO_PIN_SPEAKER_OUT) {
++		paths = spec->out_paths;
++		num_paths = spec->autocfg.line_outs;
++	} else {
++		paths = spec->speaker_paths;
++		num_paths = spec->autocfg.speaker_outs;
++	}
++
++	for (i = 0; i < num_paths; i++) {
++		path = snd_hda_get_path_from_idx(codec, paths[i]);
++		if (!path)
++			continue;
++		for (p = 0; p < path->depth; p++)
++			if (force_mute_output_path(codec, path->path[p]))
++				updated = true;
++	}
++
++	return updated;
++}
++EXPORT_SYMBOL_GPL(snd_hda_gen_shutup_speakers);
++
+ /**
+  * snd_hda_gen_parse_auto_config - Parse the given BIOS configuration and
+  * set up the hda_gen_spec
+diff --git a/sound/pci/hda/hda_generic.h b/sound/pci/hda/hda_generic.h
+index 578faa9adcdcd..fc00f8bc0d78d 100644
+--- a/sound/pci/hda/hda_generic.h
++++ b/sound/pci/hda/hda_generic.h
+@@ -364,5 +364,6 @@ int snd_hda_gen_add_mute_led_cdev(struct hda_codec *codec,
+ int snd_hda_gen_add_micmute_led_cdev(struct hda_codec *codec,
+ 				     int (*callback)(struct led_classdev *,
+ 						     enum led_brightness));
++bool snd_hda_gen_shutup_speakers(struct hda_codec *codec);
+ 
+ #endif /* __SOUND_HDA_GENERIC_H */
 -- 
 2.43.0
 
