@@ -1,119 +1,149 @@
-Return-Path: <stable+bounces-65375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF075947B1E
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 14:42:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DF3947B2F
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 14:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C91D11C20F9B
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 12:42:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE013281EE6
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 12:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCB415666C;
-	Mon,  5 Aug 2024 12:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2889156F3C;
+	Mon,  5 Aug 2024 12:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="SvVeTsqg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dZYgCsyN"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F663159568
-	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 12:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156E838DCF;
+	Mon,  5 Aug 2024 12:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722861722; cv=none; b=gcFU8bPJDyekrpC3Pbw0edCIdq75nvgP4t69IC6R2ikDRMotHuC2X1gfYNXpsuiwfP2Au1hwRs8MIyQ6AMf6yf8xAcBABrIyNRbur3AEtq3ecG0hYgs+M3B7WuUxZR0zY8GuGaLmCDopp37weTLCMlWc/W5fGnikxi30qy4rvv0=
+	t=1722861923; cv=none; b=emMhdWnPiBY1VWsxSqx2BQi4DnXwr7gtl0TkNm6Q6Tv9tPhjQLjWk2O8FynmY/9oIIbMbACbtdO3dbH8ml+LQU1VvEZmFNDdhoRTRQsvpwAS/G9QUcZCuJCz+7N7E7srddecL1hiiu0XE0/o3LZh16T+MdOUEyiIAk+B6AHuMq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722861722; c=relaxed/simple;
-	bh=2oeDCd43gj3tEVG9acz79y7We8C38uo5aN+ARIR8P5k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=l9860e5mfrpKwq1HdPtX5sanOc6M0mHo3ENec1ppAfBZWcU0yDBFPqbZnG8ABekhzgXZe9b8K4H+Yq9xKRGRJlvDrToR/8iE1D7YAJSvDW4EL+529gEsrcgL/aM3BBPO010EMYv3v8irjfBseCIUSk9TtroNCDp+95tAenDfWSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=SvVeTsqg; arc=none smtp.client-ip=185.136.65.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 2024080512415263718c6cdba77d0c76
-        for <stable@vger.kernel.org>;
-        Mon, 05 Aug 2024 14:41:52 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=felix.moessbauer@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=sS9nfVqlSth+qJIirvho6CZ3s4rCPhOH4Nl/w1oH1ms=;
- b=SvVeTsqgVS6d8YDOBWAVZD2yAZdKEZeXb78g4MnbhGBBl2pDGFbGZlt0iZ1TFQsczUxLQN
- qe1R4T9Q3ax6gJ0U2O3JyRjeudPavxH7B84CnQtWEtbFbJbRtly5yZoDrcVU4bQ5S1xcA8VU
- Rd0bybvZhs5KpyLL03CR11Jp+/vFk0Yz1aa0UFdfDWmNHKjdt6V0mfcnRL2veQZ+9+dJkNMA
- lCYYX2m4e95OScjG21PflqgrhJl6u25AdmNddoSrlBsbHEhBDdUMSEda8Q0JTIeDTz5lPPiv
- y42VhNgkbwPT4HsLV6kvjlyMOqjA3a8h4ftl2TXC86bg5ZViQ4ga0qow==;
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
-To: linux-kernel@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	jan.kiszka@siemens.com,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] hrtimer: Ignore slack time for RT tasks in hrtimer_start_range_ns()
-Date: Mon,  5 Aug 2024 14:41:16 +0200
-Message-Id: <20240805124116.21394-3-felix.moessbauer@siemens.com>
-In-Reply-To: <20240805124116.21394-1-felix.moessbauer@siemens.com>
-References: <20240805124116.21394-1-felix.moessbauer@siemens.com>
+	s=arc-20240116; t=1722861923; c=relaxed/simple;
+	bh=BEn+I+gciu0ebkc79/DNxsbZZq27qQyC9sL4IRvi4iA=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=JIhNUbKMHMgkfewiWDiU4Q4Tk9gPIs1jkc/yRlZd4WD5s1lsjy+iDTBXHfeX9toCssTeGOtWkNxINgd586uu+SqGWzY7DCUnkWP1MHzDBl4VLe2c2v8EVAZj/lcV/NpNM2YSFk8QSDu8bDWICNLQhExxasqyQ7HbME+Gd4DM9rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dZYgCsyN; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-428e0d18666so31138395e9.3;
+        Mon, 05 Aug 2024 05:45:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722861920; x=1723466720; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Kq+a8Y8J7LSOmGovatkbCSe+K+SAGbPs9LTgvAV1mho=;
+        b=dZYgCsyNnffFW4a7268QtzLzj8tMYMnqhdTjMIbmP/KZ+e7K4663SGrg1jor3aU4BO
+         kfSutyRz1neCwWOgqeC8QMFkWASYmRCJ/6eJO1hlIPseSW1vZAJQsBUJ08xBFbQ9wBck
+         /bQYExr1LcofmziEQyGMvjR7BMS9qIyxXf+TE5rSBLBIFXL/OcHwbBsesn2uG6s7d5TU
+         IUgvTYuCSPZ2gIzca7zW+Hc8mJ9wgkDsmOQs3L7Blrg1rw+bA67aeIJs7qAwzPQLDulS
+         NXBL3/AS6oXaax6S0VQHzk2Y98yVam7hanttwzwzoNmxEY02j+tywsxkJ61dDwVwvsF5
+         A70g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722861920; x=1723466720;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kq+a8Y8J7LSOmGovatkbCSe+K+SAGbPs9LTgvAV1mho=;
+        b=f7SWoJbcCQykniQC0xGjb4ZnQybB79zWxYO0csGkUqhLsLCatZlxlNyqzZSmfBP9Ir
+         NgABiSpaKcfEtxxQA+oeUohbySfJIaxGX/GZwnpLmnf8WMqRR64Ey5seZBiqNnPAkG5i
+         2nH0pCZ64sEC1hFdvrMx259qE4Sjj4C9+HnJabh15e+WnYw3+R+KXo8de8462DvBG3yI
+         DeAbc+rzEVSD4AQe8ifO8WU6N7skX11+1mk6KMAHDmHwB286d3lGzLMmpbPPYTjGTNFK
+         G+0RSGcNTsn0zaBn2PiTySVUDk2seM9gty09qUNgUKlWOi5lmM4EZ8UrjrUQX+1ikx8R
+         FO/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVAIdiw15zXqcn6Rs3qqcy0nhbl9y7QeSsDaraSE0Mz97sgdMcvIZYBlBWp/SDwTcSxMLGNiOradRqlWtlEmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDP53Cq1c6IuH6uoXHudAeyBdCce0s98mJ8qk8JPXYC/niMKMY
+	vMAkdrZxv0JYHjY1JDAhNSuvizq08AcW1sPnWmpEo25zkzOBRE4/
+X-Google-Smtp-Source: AGHT+IEV3hOwO3flNf7fxsxAPilr7sqD/koHb1mByKca1pnfbvKtJymRAz0CkKPZmocsbBaWGTzXVA==
+X-Received: by 2002:a05:600c:4449:b0:426:6618:146a with SMTP id 5b1f17b1804b1-428e6af1afcmr81173025e9.2.1722861920088;
+        Mon, 05 Aug 2024 05:45:20 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bb63f21sm196787135e9.29.2024.08.05.05.45.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Aug 2024 05:45:19 -0700 (PDT)
+Subject: Re: Patch "net: move ethtool-related netdev state into its own
+ struct" has been added to the 6.10-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jiawen Wu <jiawenwu@trustnetic.com>, Mengyuan Lou
+ <mengyuanlou@net-swift.com>, Andrew Lunn <andrew@lunn.ch>,
+ Russell King <linux@armlinux.org.uk>, Sasha Levin <sashal@kernel.org>
+References: <20240805121930.2475956-1-sashal@kernel.org>
+From: Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <65f0f054-2de7-572e-d6aa-926a0f3598f4@gmail.com>
+Date: Mon, 5 Aug 2024 13:45:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20240805121930.2475956-1-sashal@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1321639:519-21489:flowmailer
 
-RT tasks do not have any timerslack, as this induces jitter. By
-that, the timer slack is already ignored in the nanosleep family and
-schedule_hrtimeout_range() (fixed in 0c52310f2600).
+On 05/08/2024 13:19, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     net: move ethtool-related netdev state into its own struct
+> 
+> to the 6.10-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      net-move-ethtool-related-netdev-state-into-its-own-s.patch
+> and it can be found in the queue-6.10 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-The hrtimer_start_range_ns function is indirectly used by glibc-2.33+
-for timed waits on condition variables. These are sometimes used in
-RT applications for realtime queue processing. At least on the
-combination of kernel 5.10 and glibc-2.31, the timed wait on condition
-variables in rt tasks was precise (no slack), however glibc-2.33
-changed the internal wait implementation, exposing the kernel bug.
+This, and the series it's from, are absolutely not -stable material.
+The commits do not fix any existing bugs, they are in support of new
+ features (netlink dumping of RSS contexts), and are a fairly large
+ and complex set of changes, which have not even stabilised yet — we
+ have already found issues both within the set and exposed by it in
+ other code, which are being fixed for 6.11.
 
-This patch makes the timer slack consistent across all hrtimer
-programming code, by ignoring the timerslack for rt tasks also in the
-last remaining location in hrtimer_start_range_ns().
+> commit e331e73ff4c5c89a7f51a465ae40a7ad9fcd7a28
+> Author: Edward Cree <ecree.xilinx@gmail.com>
+> Date:   Thu Jun 27 16:33:46 2024 +0100
+> 
+>     net: move ethtool-related netdev state into its own struct
+>     
+>     [ Upstream commit 3ebbd9f6de7ec6d538639ebb657246f629ace81e ]
+>     
+>     net_dev->ethtool is a pointer to new struct ethtool_netdev_state, which
+>      currently contains only the wol_enabled field.
+>     
+>     Suggested-by: Jakub Kicinski <kuba@kernel.org>
+>     Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
+>     Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+>     Link: https://patch.msgid.link/293a562278371de7534ed1eb17531838ca090633.1719502239.git.ecree.xilinx@gmail.com
+>     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>     Stable-dep-of: 7195f0ef7f5b ("ethtool: fix setting key and resetting indir at once")
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Similar to 0c52310f2600, this fix should be backported as well.
+As far as I can tell, 7195f0ef7f5b should backport fairly cleanly
+ to 6.10 with only simple textual fuzz.
+It should not be necessary to backport the "ethtool: track custom
+ RSS contexts in the core" series to support this.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
----
- kernel/time/hrtimer.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+The above NAK also applies to the backports of:
+     net-ethtool-attach-an-xarray-of-custom-rss-contexts-.patch
+     net-ethtool-record-custom-rss-contexts-in-the-xarray.patch
+     net-ethtool-add-a-mutex-protecting-rss-contexts.patch
+ which were notified at the same time.
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 2b1469f61d9c..1b26e095114d 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1274,7 +1274,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
-  * hrtimer_start_range_ns - (re)start an hrtimer
-  * @timer:	the timer to be added
-  * @tim:	expiry time
-- * @delta_ns:	"slack" range for the timer
-+ * @delta_ns:	"slack" range for the timer for SCHED_OTHER tasks
-  * @mode:	timer mode: absolute (HRTIMER_MODE_ABS) or
-  *		relative (HRTIMER_MODE_REL), and pinned (HRTIMER_MODE_PINNED);
-  *		softirq based mode is considered for debug purpose only!
-@@ -1299,6 +1299,10 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 
- 	base = lock_hrtimer_base(timer, &flags);
- 
-+	/* rt-tasks do not have a timer slack for obvious reasons */
-+	if (rt_task(current))
-+		delta_ns = 0;
-+
- 	if (__hrtimer_start_range_ns(timer, tim, delta_ns, mode, base))
- 		hrtimer_reprogram(timer, true);
- 
--- 
-2.39.2
-
+-ed
 
