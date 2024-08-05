@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-65416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0B39480E5
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 19:59:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877639480E8
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 19:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36E241F232BD
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 17:59:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4D251C21D8C
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 17:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDED165F09;
-	Mon,  5 Aug 2024 17:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1061E16DED1;
+	Mon,  5 Aug 2024 17:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SF5cl8VF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1K6SQjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEEA16D9A4;
-	Mon,  5 Aug 2024 17:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA8A15F400;
+	Mon,  5 Aug 2024 17:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722880615; cv=none; b=kDHtbJxGGG5LovzVSJXOi/omzsAh9pWeYDqVChArgOqgoe0vdPNKJ2GNW+msIcv7znBdGIzuL9I7YZ8nQaxwu/Sq2v5zz/2P0z94ObULb2SIVBnQ0IDu0fYgAIfqB81WcqTmSqXj9/zuYSF9BFp8vebCP4kE6rFubfwPGgBKAs4=
+	t=1722880619; cv=none; b=pqRL9imWWN2Gn0IXq5mpLK6iBpLg+J6ZJAvuFiegKjVROh75IK0GquNg8Y/ublh1X3gC+9q6eR1pVhVnZZfKzidmU+BpRqHo4w8IzqDQYr0Ts25OojjzG9aKLnknKgemW2qFLcjSUdZ/4xL1zdKlruTN4CRVV57NoeuRGHjGAUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722880615; c=relaxed/simple;
-	bh=vJF7D1iUV0VYUegsMQkLBmm10/owjT3+4xHH5xVaR/Y=;
+	s=arc-20240116; t=1722880619; c=relaxed/simple;
+	bh=QYW/ByXxs15zy8E3OX+AodlaN05WuichpEps84+m0aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ts4/InGzjzRqcgLPXeoB/2uS9tBRGtyNCgZZY9kMnek40TO3Z2V6tkijSPS2IQAfhKSAhoQi50KoR1x6PAGuoKi8hNYnbn/NilKdDU5cGlQr8Uw1aF8+y8LhTNKyxfLWM7rrsbJxekdap4U54B9dYYYjqMAfrbXOMThlWGeMgMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SF5cl8VF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E1AC32782;
-	Mon,  5 Aug 2024 17:56:54 +0000 (UTC)
+	 MIME-Version; b=a3JNOTOLipVEwQ4u4ZleCXzMNuRR9Zex30Jpos/KdzmcTlvTS5utDyFGP9EALfexBmlLuzNNadDUwaLo23CQOG8VC7FbnAY/F0Y/zEVHedtOiA5xtXs8MaHJGk3tyQYGeG035kdaOjcSfp8R1fl5EdCv2/5WZE4KaSnKh5OBPso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1K6SQjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DF8C32782;
+	Mon,  5 Aug 2024 17:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722880615;
-	bh=vJF7D1iUV0VYUegsMQkLBmm10/owjT3+4xHH5xVaR/Y=;
+	s=k20201202; t=1722880619;
+	bh=QYW/ByXxs15zy8E3OX+AodlaN05WuichpEps84+m0aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SF5cl8VFzP4zZdgWQK+NfHCYOAHz7pc8RvHCjIBhUTXC5/3Zlt4VSYJ9aHsbXxjp2
-	 ewOO/uJuJm74iMzOdSq5LyI0QTW7ezApzCCNzqTFINFMCQSz/CQvWR6ySi/6GtIdbO
-	 zNJHJFB/c6v/PYLGVEk2FZHEKAhL3NzqOR/8Q/9vdEzsGQF6vGFyu68Rg7ViWgOqr+
-	 GSJPySEen4G9aaWM6wJBPe9JQM4Rai6BR2IBEUgDZCxuy9X+mxNx2XpnZR/BfbIwuR
-	 msmWZQXLSyrTdTPo3G/vKnVG54WG9S9eRWJO82TfBTutDigvJOPbDIO3Pv0kq/3cCK
-	 UaKZCCNRtWA1Q==
+	b=f1K6SQjtWKJxA3QUhljsljv0TIiFp2TTxCm7XTKB2O2G26MnD+tJclM6JCGJh8XEa
+	 56kgcOrh6mH8vcOWLTXFydz7F0eO9mZSxltA0IHtkhlJgnhqjj/QfeF0I1rOfS73FP
+	 Bp8X8h0dv/dTXFGYDqFdJAiZ33bPO+Zjg45twwHXoNH+I89awVqWOyq5l+PkoCGyWl
+	 RcpOOWE3bukwIQCEhS/ljKpQ/k/tDaSdgJjOgxBNVPnPxCrKVkIs1ymO0vt5e7XHAf
+	 vaYPhy/QTpdm6vfz8mPvMvfRDxn7oqqwrHZ0pOtdmD8lRZHTlF0Z4h/UkQVqHvu0t9
+	 gfQRLuvDc1jnA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Takashi Iwai <tiwai@suse.de>,
 	perex@perex.cz,
 	tiwai@suse.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 11/16] ALSA: ump: Explicitly reset RPN with Null RPN
-Date: Mon,  5 Aug 2024 13:55:43 -0400
-Message-ID: <20240805175618.3249561-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 12/16] ALSA: seq: ump: Use the common RPN/bank conversion context
+Date: Mon,  5 Aug 2024 13:55:44 -0400
+Message-ID: <20240805175618.3249561-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805175618.3249561-1-sashal@kernel.org>
 References: <20240805175618.3249561-1-sashal@kernel.org>
@@ -68,69 +68,109 @@ Content-Transfer-Encoding: 8bit
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 50a6dd19dca9446475f023eaa652016bfe5b1cbe ]
+[ Upstream commit a683030606fa5ff8b722a5e28839d19288011ede ]
 
-RPN with 127:127 is treated as a Null RPN, just to reset the
-parameters, and it's not translated to MIDI2.  Although the current
-code can work as is in most cases, better to implement the RPN reset
-explicitly for Null message.
+The UMP core conversion helper API already defines the context needed
+to record the bank and RPN/NRPN values, and we can simply re-use the
+same struct instead of re-defining the same content as a different
+name.
 
-Link: https://patch.msgid.link/20240731130528.12600-3-tiwai@suse.de
+Link: https://patch.msgid.link/20240731130528.12600-4-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/ump_convert.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ sound/core/seq/seq_ports.h       | 14 ++------------
+ sound/core/seq/seq_ump_convert.c | 10 +++++-----
+ 2 files changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/sound/core/ump_convert.c b/sound/core/ump_convert.c
-index 5d1b85e7ac165..0fe13d0316568 100644
---- a/sound/core/ump_convert.c
-+++ b/sound/core/ump_convert.c
-@@ -287,6 +287,15 @@ static int cvt_legacy_system_to_ump(struct ump_cvt_to_ump *cvt,
- 	return 4;
+diff --git a/sound/core/seq/seq_ports.h b/sound/core/seq/seq_ports.h
+index b111382f697aa..9e36738c0dd04 100644
+--- a/sound/core/seq/seq_ports.h
++++ b/sound/core/seq/seq_ports.h
+@@ -7,6 +7,7 @@
+ #define __SND_SEQ_PORTS_H
+ 
+ #include <sound/seq_kernel.h>
++#include <sound/ump_convert.h>
+ #include "seq_lock.h"
+ 
+ /* list of 'exported' ports */
+@@ -42,17 +43,6 @@ struct snd_seq_port_subs_info {
+ 	int (*close)(void *private_data, struct snd_seq_port_subscribe *info);
+ };
+ 
+-/* context for converting from legacy control event to UMP packet */
+-struct snd_seq_ump_midi2_bank {
+-	bool rpn_set;
+-	bool nrpn_set;
+-	bool bank_set;
+-	unsigned char cc_rpn_msb, cc_rpn_lsb;
+-	unsigned char cc_nrpn_msb, cc_nrpn_lsb;
+-	unsigned char cc_data_msb, cc_data_lsb;
+-	unsigned char cc_bank_msb, cc_bank_lsb;
+-};
+-
+ struct snd_seq_client_port {
+ 
+ 	struct snd_seq_addr addr;	/* client/port number */
+@@ -88,7 +78,7 @@ struct snd_seq_client_port {
+ 	unsigned char ump_group;
+ 
+ #if IS_ENABLED(CONFIG_SND_SEQ_UMP)
+-	struct snd_seq_ump_midi2_bank midi2_bank[16]; /* per channel */
++	struct ump_cvt_to_ump_bank midi2_bank[16]; /* per channel */
+ #endif
+ };
+ 
+diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
+index e90b27a135e6f..a63005da2195d 100644
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -368,7 +368,7 @@ static int cvt_ump_midi1_to_midi2(struct snd_seq_client *dest,
+ 	struct snd_seq_ump_event ev_cvt;
+ 	const union snd_ump_midi1_msg *midi1 = (const union snd_ump_midi1_msg *)event->ump;
+ 	union snd_ump_midi2_msg *midi2 = (union snd_ump_midi2_msg *)ev_cvt.ump;
+-	struct snd_seq_ump_midi2_bank *cc;
++	struct ump_cvt_to_ump_bank *cc;
+ 
+ 	ev_cvt = *event;
+ 	memset(&ev_cvt.ump, 0, sizeof(ev_cvt.ump));
+@@ -790,7 +790,7 @@ static int paf_ev_to_ump_midi2(const struct snd_seq_event *event,
  }
  
-+static void reset_rpn(struct ump_cvt_to_ump_bank *cc)
-+{
-+	cc->rpn_set = 0;
-+	cc->nrpn_set = 0;
-+	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
-+	cc->cc_data_msb = cc->cc_data_lsb = 0;
-+	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
-+}
-+
- static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
- 		    union snd_ump_midi2_msg *midi2,
- 		    bool flush)
-@@ -312,11 +321,7 @@ static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
- 	midi2->rpn.data = upscale_14_to_32bit((cc->cc_data_msb << 7) |
- 					      cc->cc_data_lsb);
+ /* set up the MIDI2 RPN/NRPN packet data from the parsed info */
+-static void fill_rpn(struct snd_seq_ump_midi2_bank *cc,
++static void fill_rpn(struct ump_cvt_to_ump_bank *cc,
+ 		     union snd_ump_midi2_msg *data,
+ 		     unsigned char channel)
+ {
+@@ -822,7 +822,7 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
+ 	unsigned char channel = event->data.control.channel & 0x0f;
+ 	unsigned char index = event->data.control.param & 0x7f;
+ 	unsigned char val = event->data.control.value & 0x7f;
+-	struct snd_seq_ump_midi2_bank *cc = &dest_port->midi2_bank[channel];
++	struct ump_cvt_to_ump_bank *cc = &dest_port->midi2_bank[channel];
  
--	cc->rpn_set = 0;
--	cc->nrpn_set = 0;
--	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
--	cc->cc_data_msb = cc->cc_data_lsb = 0;
--	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
-+	reset_rpn(cc);
- 	return 1;
- }
+ 	/* process special CC's (bank/rpn/nrpn) */
+ 	switch (index) {
+@@ -887,7 +887,7 @@ static int pgm_ev_to_ump_midi2(const struct snd_seq_event *event,
+ 			       unsigned char status)
+ {
+ 	unsigned char channel = event->data.control.channel & 0x0f;
+-	struct snd_seq_ump_midi2_bank *cc = &dest_port->midi2_bank[channel];
++	struct ump_cvt_to_ump_bank *cc = &dest_port->midi2_bank[channel];
  
-@@ -374,11 +379,15 @@ static int cvt_legacy_cmd_to_ump(struct ump_cvt_to_ump *cvt,
- 			ret = fill_rpn(cc, midi2, true);
- 			cc->rpn_set = 1;
- 			cc->cc_rpn_msb = buf[2];
-+			if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
-+				reset_rpn(cc);
- 			return ret;
- 		case UMP_CC_RPN_LSB:
- 			ret = fill_rpn(cc, midi2, true);
- 			cc->rpn_set = 1;
- 			cc->cc_rpn_lsb = buf[2];
-+			if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
-+				reset_rpn(cc);
- 			return ret;
- 		case UMP_CC_NRPN_MSB:
- 			ret = fill_rpn(cc, midi2, true);
+ 	data->pg.status = status;
+ 	data->pg.channel = channel;
+@@ -924,7 +924,7 @@ static int ctrl14_ev_to_ump_midi2(const struct snd_seq_event *event,
+ {
+ 	unsigned char channel = event->data.control.channel & 0x0f;
+ 	unsigned char index = event->data.control.param & 0x7f;
+-	struct snd_seq_ump_midi2_bank *cc = &dest_port->midi2_bank[channel];
++	struct ump_cvt_to_ump_bank *cc = &dest_port->midi2_bank[channel];
+ 	unsigned char msb, lsb;
+ 
+ 	msb = (event->data.control.value >> 7) & 0x7f;
 -- 
 2.43.0
 
