@@ -1,127 +1,150 @@
-Return-Path: <stable+bounces-65358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8302947524
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 08:17:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF991947530
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 08:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D1B11F21825
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 06:17:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F26B1F21BC8
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 06:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C531428E3;
-	Mon,  5 Aug 2024 06:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7761E143880;
+	Mon,  5 Aug 2024 06:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QEVVe2ew"
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="WNr3s5s2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="m1l8IFN2"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fhigh3-smtp.messagingengine.com (fhigh3-smtp.messagingengine.com [103.168.172.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA71912B6C
-	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 06:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8C013C9D3;
+	Mon,  5 Aug 2024 06:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722838671; cv=none; b=s6nCXmhfe9zTTotNToZHtJsq9i3ijaTVty9EPIKadhTsyIR6bSQZgsIfQr4RR0n63fd2BjB/f/omFex+qYYHhSkxfpv6sZtLO2qks68bmCloK5AyVEZQJgIa1j5eLBzZehkE+DwMuRnGg/K/NOpbQdq57QEQBM8d8+hb9JGp2Co=
+	t=1722839155; cv=none; b=VXG6kkGtWjfufM9vhOEguhCtlIcl7hsEfmGdSEfCTII6h4zWEAY2MMwYVUtgHc6MwDvxOZWrjiREN+BAdT6GQ/wx8MzlCOgz709UHYVMpsC2QIUAu607v+FgPH3CgqkeZCY9qH9CCCDT3ImJg7hjLJ1rOwNd94KHnJRP1oAiyYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722838671; c=relaxed/simple;
-	bh=OBA8h6YnctrlscFmyJCXMpOvIXpjcoz5dL6gZTt39+I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FxN8WELcHexkN9lLOHd3qrdYV+tKp+NWytmFIVLH3oSubI7u+uYWOO7W/tEdgLm2R0BSlxRvh7dObJXD9DwqMy6GaqoCZaXF6lTeeO7O4vkPpFKe00HG0lPdnqJOAn1uMtSysZ7zBXTW8PBRJ6flEKAmwjOGKRRm/CmwlNoV5H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QEVVe2ew; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722838668;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OBA8h6YnctrlscFmyJCXMpOvIXpjcoz5dL6gZTt39+I=;
-	b=QEVVe2ewn6cd81CfxULmjYXPTVoAgev0Q+hIREOurfdJ4OLvAhQ/Zrs62hRnyweyuO0zmu
-	MZ6PpS5IO1ijDqNJhpvy0nXfovx6aWIrNw18w5ssuXugP6zO7oE3IlvIF1nuXqnhBaHyPx
-	zEJjiKndiJefdp8EuEAUucO1vAvVFOM=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678--Ju0XenBOG2hjjrv3HpnJw-1; Mon, 05 Aug 2024 02:17:47 -0400
-X-MC-Unique: -Ju0XenBOG2hjjrv3HpnJw-1
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2cb5ab2f274so12900395a91.3
-        for <stable@vger.kernel.org>; Sun, 04 Aug 2024 23:17:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722838666; x=1723443466;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OBA8h6YnctrlscFmyJCXMpOvIXpjcoz5dL6gZTt39+I=;
-        b=DGLYufYdgVtyIyWft8GSzjML6cTkjBVeALwSIu7a8XAHv1Va25IPtfFAjRWJCcP3N0
-         nZD0mfXEocusPZ4OPDPl9JAw6pMJ0DykiPCCMmOVyCwx6zOGvIPXnMnEu19aw+k9qRWB
-         YkIv/kBD2zNWupTqLTBcThBP1axLlESSQRR0oJ9+lbzmpAMoKQyFG+JrU8EDPFb8FJaO
-         YljvggwLs0F2k79yUB9s6LWd3uaKYdWm/z8fWOjLDdz7Zx3CULYsENT/Jlzm2FoD27na
-         UkI/BdqbeNqesZBlSSoILA//+TfKJ8XLH9/QTqRhutktQ5mbMdqD6T312pnjCuP/Kpd0
-         iUXg==
-X-Forwarded-Encrypted: i=1; AJvYcCXwPiK4VwcO1OQgDZoqkMmciVw/bwuF85WEgZ7Rr2C2eBzO4KlBzHOPZz2ZjSr3+wL63Vse7U7hZKUehd16fczxd8/s6ITB
-X-Gm-Message-State: AOJu0YzSnFzhPLsiwLaZGXuFzqSbXrpRfbfCMeEbO8jxuVJh3M5xkG4n
-	wIESyEOb3huLLh7ztU5qcaz6sA2mm+fuK6sH7p/nD34cgg+ElTJTNPWsxhwL7j8QAw3dTcBCPxU
-	BXz1MO3+9XmufUY3Q4/iQi5l0h7n3LxLlGDjgimd4ynrV5TCCYqYnJbq06iCd0CJXut5tR6QWOf
-	MOofVrzNh1Mv9lviD8/Sn9O/76fq8b
-X-Received: by 2002:a17:90b:1e4d:b0:2c8:ac1:d8c3 with SMTP id 98e67ed59e1d1-2cff952d301mr12719466a91.29.1722838666410;
-        Sun, 04 Aug 2024 23:17:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7dJm/uMCP9r6q57lSVrYZLF63noAuWOfwLCATXXwoh5VA0D6Hltrsmz9fS/EuEEhz+BVCozQtHiZGOMVa9T4=
-X-Received: by 2002:a17:90b:1e4d:b0:2c8:ac1:d8c3 with SMTP id
- 98e67ed59e1d1-2cff952d301mr12719452a91.29.1722838665905; Sun, 04 Aug 2024
- 23:17:45 -0700 (PDT)
+	s=arc-20240116; t=1722839155; c=relaxed/simple;
+	bh=NFKvwhMYxv6H12ucH+V7Tz+LDXlTONBEHssLV55FCFw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=MWUrAC5ecueuQNGLpvZ3n0Ubtz0pMZ8FGHmpFEO1aTbxrnwqG/O+Lgo/uZFedtYuya5jOXgbiGPY8vI92EwSckQ1pY1gGO+dytwenazeBF9bCR0LTbwr/vYRudOIlftClEVW3KWrwD32ZsIN5uCTNuL8Wa8uvnO70H0RVm0PtEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=WNr3s5s2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=m1l8IFN2; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 87F711151E4E;
+	Mon,  5 Aug 2024 02:25:52 -0400 (EDT)
+Received: from wimap26 ([10.202.2.86])
+  by compute6.internal (MEProxy); Mon, 05 Aug 2024 02:25:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1722839152;
+	 x=1722925552; bh=NFKvwhMYxv6H12ucH+V7Tz+LDXlTONBEHssLV55FCFw=; b=
+	WNr3s5s2DNlO/DPFFhXdkIG/dxcIAVuFMJM2l+SFj35fqOei+irmzgAaaT8PwI/H
+	QU89IPh/mdURGwcdrlR7ptwFmnfci0wnMpLLJL4uPkS1+rtkoaqFgWqTrdktb7X+
+	K7zYdGFb1/KAzvuPexDtbaxKNYFPYryV78Jy4yO/dQOlA+OCb3O+7JLWipETbihg
+	bWPjYkva17cWZvsQrOaMKvv06jYPRsocM8rm1exz6xQYyiosHD1reYMUSldm1gp6
+	fcg11Ss6Ahzn4gmxosxGVnIq/qFYuO06xuh9VDTWgN65FpZKlzqxQETqx10cmFYJ
+	V6qYFYCifMQGPZST1UTXWA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1722839152; x=
+	1722925552; bh=NFKvwhMYxv6H12ucH+V7Tz+LDXlTONBEHssLV55FCFw=; b=m
+	1l8IFN2VirG95gejjfEhwu3WzNrPE/oHDFzcl5YwkBEZJwM6oH9kAe2XNTV6/Cp2
+	bfj6RRZHv+20UyW+pR9Vw2vWDnaMF5z1FbfqlfuhPmYFVX6i3A2H2yri4LWMHaFi
+	vbhUnwV+tJ2B2mEaFcigv00ACnBmbqjLu0JMKh6391DYb+EvDTrxG7/aSDCn4Ynl
+	IulAwdekeyVeKR0i8zhzTjMEp+dX6IjxmY2nT8vZT4uHRGmNR99xvK9F6aI+ZGSw
+	36uLZ6AmoYBdSWkTKws97d0j53DBk1HbolD4pH4pAQUS1jPhxn9Z9UD2zO/KrTgc
+	GnnRVjgE5X8+tsO6iQJ/g==
+X-ME-Sender: <xms:b3CwZqKf3CXFc9I-9TyQ-S9ZsJiNVEvRDOdu2mT9PQBTPV3WA62fbA>
+    <xme:b3CwZiKgqUPz6Ef9zdUsMIrpAZkA4ScCAD3byTolg7k1edVnERPq0oAVy6mB6Rvey
+    IhiUx_preVx-jONlvA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeehgdduuddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedflfgr
+    nhhnvgcuifhruhhnrghufdcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvg
+    hrnhephfeguddvheevvedtueelkefgfeeijeetgffffedtleetgfeuueetudelleffgeel
+    necuffhomhgrihhnpehprghsthgvsghinhdrtghomhdpfidurdhfihdpihhnfhhrrgguvg
+    grugdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+    ohhmpehjsehjrghnnhgruhdrnhgvthdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:cHCwZqsS0EfwtTYHvBVuM8mf2Z1QLY7HB-cKdpjyAmv3olJMW8ECIw>
+    <xmx:cHCwZvYA5UjO9dbEP04yPZBETxI17CV11Y2OD5zTnjyR1vVymocnKw>
+    <xmx:cHCwZhYxajsE4Ut6xBLI1jh7axP13Hl3keLKyASnlCTPj57U8EKHnA>
+    <xmx:cHCwZrBGf4mYCwfqAu1YUvvf-ipNZNJMwJwxyJn3vaZfXNLwOsCU4Q>
+    <xmx:cHCwZnBlNC4tjCll2sg_DyeRp_MY81asWItW3wqX1F70uRLfZg-mxL6R>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id E06E219C0069; Mon,  5 Aug 2024 02:25:51 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGRfhukVR4V9GFmdV71QfM2OLW3G=BQoOM1U1cK0ENFZvLTLyw@mail.gmail.com>
-In-Reply-To: <CAGRfhukVR4V9GFmdV71QfM2OLW3G=BQoOM1U1cK0ENFZvLTLyw@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Mon, 5 Aug 2024 14:17:34 +0800
-Message-ID: <CACGkMEvpB0zP+okrst-_mAxKq2eVwpdxQ5WTA07FBzRrs3uGaA@mail.gmail.com>
-Subject: Re: [REGRESSION] [PATCH v2] net: missing check virtio
-To: Blake Sperling <breakingspell@gmail.com>
-Cc: arefev@swemel.ru, edumazet@google.com, eperezma@redhat.com, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, mst@redhat.com, 
-	netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	xuanzhuo@linux.alibaba.com, stable@vger.kernel.org, 
-	regressions@lists.linux.dev, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Mon, 05 Aug 2024 08:25:31 +0200
+From: "Janne Grunau" <j@jannau.net>
+To: "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>,
+ "Aditya Garg" <gargaditya08@live.com>,
+ "devnull+j.jannau.net@kernel.org" <devnull+j.jannau.net@kernel.org>
+Cc: asahi@lists.linux.dev,
+ "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
+ "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
+ "kvalo@kernel.org" <kvalo@kernel.org>,
+ "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "Hector Martin" <marcan@marcan.st>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Message-Id: <9ed78539-35ca-4643-9a38-ac2c0379f395@app.fastmail.com>
+In-Reply-To: <ac9f0cb4-ba12-44f1-b32f-d17e24fe426a@app.fastmail.com>
+References: 
+ <MA0P287MB021718EE92FC809CB2BB0F82B8BD2@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
+ <306c3010-a6ac-4f8a-a986-88c1a137ed84@app.fastmail.com>
+ <MA0P287MB021725DE596EF4E5294FA5DDB8BD2@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
+ <1911d0fdea8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <ac9f0cb4-ba12-44f1-b32f-d17e24fe426a@app.fastmail.com>
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Handle SSID based pmksa deletion
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 5, 2024 at 2:10=E2=80=AFPM Blake Sperling <breakingspell@gmail.=
-com> wrote:
->
-> Hello, I noticed a regression from v.6.6.43 to v6.6.44 caused by this com=
-mit.
->
-> When using virtio NIC with a QEMU/KVM Windows guest, network traffic from=
- the VM stalls in the outbound (upload) direction.This affects remote acces=
-s and file shares most noticeably, and the inbound (download) direction doe=
-s not have the issue.
->
-> iperf3 will show consistent results, 0 bytes/sec when initiating a test w=
-ithin the guest to a server on LAN, and reverse will be full speed. Nothing=
- out of the ordinary in host dmesg or guest Event Viewer while the behavior=
- is being displayed.
->
-> Crucially, this only seems to affect Windows guests, Ubuntu guest with th=
-e same NIC configuration tests fine both directions.
-> I wonder if NetKVM guest drivers may be related, the current latest versi=
-on of the drivers (v248) did not make a difference, but it is several month=
-s old.
->
-> Let me know if there are any further tests or info I can provide, thanks!
+Hej,
 
-Does Willem's patch fix the issue?
+On Sun, Aug 4, 2024, at 13:37, Janne Grunau wrote:
+> On Sun, Aug 4, 2024, at 13:04, Arend Van Spriel wrote:
+>> On August 4, 2024 8:27:04 AM Aditya Garg <gargaditya08@live.com> wrote:
+>>>
+>>> WPA3 is broken on T2 Macs (atleast on 4364) for a long time. I was
+>>> under the impression brcmfmac doesn't support it.
+>>>
+>>> Anyways, I've asked a fedora user to compile a kernel with
+>>> CONFIG_BRCMDBG.
+>>>
+>>> If you want logs without it, look over here:
+>>> https://pastebin.com/fnhH30JA
+>>
+>> Not sure what to make of this. The interface comes up without any
+>> obvious error and then another interface is created by another
+>> driver:
+>
+> I've bisected the authentication timeouts for WPA2-PSK and WPA3-SAE
+> (and probably every other authentication method) down to
+>
+> https://w1.fi/cgit/hostap/commit/?id=41638606054a09867fe3f9a2b5523aa4678cbfa5
 
-https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=
-=3D89add40066f9ed9abe5f7f886fe5789ff7e0c50e
+this is reported upstream in
+http://lists.infradead.org/pipermail/hostap/2024-August/042893.html
 
-Thanks
+Disabling offloading in brcmfmac with "brcmfmac.feature_disable=0x82000"
+on the kernel command line works around both the kernel and
+wpa_supplicant issue.
 
+HTH,
+Janne
 
