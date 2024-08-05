@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-65445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748A494813A
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:07:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A02D194813D
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3067928CEBF
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:07:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39660B22A56
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E4B17C23D;
-	Mon,  5 Aug 2024 17:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247CA16D9B7;
+	Mon,  5 Aug 2024 17:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZdf67Wo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsdTJP3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154AE17C230;
-	Mon,  5 Aug 2024 17:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63AD16D9A8;
+	Mon,  5 Aug 2024 17:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722880751; cv=none; b=AUGH2ULKvulBOs3+IYWytjOiUyCXbjv8kAM8d406ZvyDNzVJ9VsZ7K9HfegTAWjuMAlZm/t17ZOKCSS8oMFwL+ZBUHnPzR6Fk+m82UnxOcv8YqolDniFbcPRUtZUSmm6GRNH3f0rLMvAzOrX9pkwilDxgFy237cWClyOXTy+3PQ=
+	t=1722880758; cv=none; b=mRacYyOaNPKj0JnU2WebTj8BdQQUSWU1FAMNC4rit9Pjo/2+713jmieJZdPFX2r5PrrFDh1tboGRy8MJfKG9JxLIdfwcX2+tKIWQzXPyCMzug2fFGo2JAbdE2ITww5lo8+DXGVtXgEnmEwUsLNB0KdDylaS3nCizZ76sFIbjnzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722880751; c=relaxed/simple;
-	bh=xlrR3WwL+cXJc1lqxFYvNtOrzzq8EIlyhO6U+rAUZkc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlRUASLGUoPSBf3fVTGWoFmi6U/zFF+gy2jyj7JOM7phR3mrwNX74FTYnNIkC0Lpjb5YCrUNNYIQg364OMJlGbTtbYbTMAW/LEQpwsaPohjEe+uedj2+bYbW4ciT8ikyQ4bYLCEkHP51oqPK5Dkujqj21jnC5CtV6vA2axoyj3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZdf67Wo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CF3C4AF0B;
-	Mon,  5 Aug 2024 17:59:09 +0000 (UTC)
+	s=arc-20240116; t=1722880758; c=relaxed/simple;
+	bh=9ksv/G/aFOuCm5jYIeueKidNCRidn+d+FACT/CaLoco=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VecmObCzQcN9AqINrR3GFmVuKxi/70YP+80TFwrsJFaAi9FEtBvco3HNnXvw8NyAW80UzFIKt8us2u3OKfPzDddAaw+3Z5HiFqsYZgThCdLaoG+1Ba8uY1nE02ppIs/+TJDq0C06JW4bihgDQXInwmP+xdEwZ3ZJ153jiQh8FcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsdTJP3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6763CC32782;
+	Mon,  5 Aug 2024 17:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722880750;
-	bh=xlrR3WwL+cXJc1lqxFYvNtOrzzq8EIlyhO6U+rAUZkc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZdf67WolOzIGqpfbckZs+dBHZPEzaxFO8IqJB3zs3CZCqVWRP0tSWzObzwHSIYP+
-	 qglFo7cWjkOxhmZqMc9dOKBCTWeLFXDqlXG8+QfJsq7RMHMvweJmRlFj9zUkQx2REm
-	 6+C0cgwn+yfpmBr/GjOfre7hlH1njWMTz9ZoxLx5l+2D/lZUpbTx2M1yyIG8gzMiGR
-	 cRAYAmlyGAVYbyDvd8IsU37iTrq/rLr1l/9NBmNnYMpoKnGYJ/l3x4so6gH6sIGUI/
-	 P+8cli1kgLxVg0EkepnVGG5j4uSWYlag7BBvZ7ftXArN+Iuus2ghpFM9tV8jSq5PCA
-	 hgZPoggj10CXA==
+	s=k20201202; t=1722880758;
+	bh=9ksv/G/aFOuCm5jYIeueKidNCRidn+d+FACT/CaLoco=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jsdTJP3TPkdZvYzHgwTwO1itvvEzA6DWLBQeapwGdof7bO7MA0ltFFQTWcFoQbxCw
+	 TPvGjH+TqxG6qwccmlBX/IhMWQ8jmW+WoWm06oHC6ZW7QzJTBcUaE22CeDyX/hBd8g
+	 VWdUD1adWekF2vIs5lQKq82sXd9G6ZxwRYXOHO9WX8x9q9M4Z1TbY/7UbXw2WCef33
+	 JceKftE5gjybR6xXDf2xcaixX2VLBa358Ezw7N0YmcYFf7K7FWplsWXWo531MCMdnh
+	 Dq5G41xOKJr37ClKIG8bn0JLZDxEgIWltj2sTmqQ+XJ0QSxjX+Aad4XpsUpLlkK8e0
+	 Z63Kmegm3rnKA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Philip Mueller <philm@manjaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 4/4] Input: MT - limit max slots
-Date: Mon,  5 Aug 2024 13:58:52 -0400
-Message-ID: <20240805175857.3256338-4-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.10 1/4] drm: panel-orientation-quirks: Add quirk for OrangePi Neo
+Date: Mon,  5 Aug 2024 13:59:08 -0400
+Message-ID: <20240805175916.3257027-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240805175857.3256338-1-sashal@kernel.org>
-References: <20240805175857.3256338-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,42 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.164
+X-stable-base: Linux 5.10.223
 Content-Transfer-Encoding: 8bit
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Philip Mueller <philm@manjaro.org>
 
-[ Upstream commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb ]
+[ Upstream commit d60c429610a14560085d98fa6f4cdb43040ca8f0 ]
 
-syzbot is reporting too large allocation at input_mt_init_slots(), for
-num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
+This adds a DMI orientation quirk for the OrangePi Neo Linux Gaming
+Handheld.
 
-Since nobody knows possible max slots, this patch chose 1024.
-
-Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Philip Mueller <philm@manjaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240715045818.1019979-1-philm@manjaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/input-mt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/input/input-mt.c b/drivers/input/input-mt.c
-index 44fe6f2f063ce..d0f8c31d7cc04 100644
---- a/drivers/input/input-mt.c
-+++ b/drivers/input/input-mt.c
-@@ -45,6 +45,9 @@ int input_mt_init_slots(struct input_dev *dev, unsigned int num_slots,
- 		return 0;
- 	if (mt)
- 		return mt->num_slots != num_slots ? -EINVAL : 0;
-+	/* Arbitrary limit for avoiding too large memory allocation. */
-+	if (num_slots > 1024)
-+		return -EINVAL;
- 
- 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
- 	if (!mt)
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 43de9dfcba19a..f1091cb87de0c 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -318,6 +318,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
+ 		},
+ 		.driver_data = (void *)&lcd1600x2560_leftside_up,
++	}, {	/* OrangePi Neo */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "OrangePi"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "NEO-01"),
++		},
++		.driver_data = (void *)&lcd1200x1920_rightside_up,
+ 	}, {	/* Samsung GalaxyBook 10.6 */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "SAMSUNG ELECTRONICS CO., LTD."),
 -- 
 2.43.0
 
