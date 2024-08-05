@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-65438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F60948125
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:05:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A83E94812A
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:05:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 305EEB23A2E
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:05:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2420828C082
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5527817A5BC;
-	Mon,  5 Aug 2024 17:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB69B17B4E1;
+	Mon,  5 Aug 2024 17:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YHsKDxgq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="El/E7Tco"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6EF165EF4;
-	Mon,  5 Aug 2024 17:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DBC17B437;
+	Mon,  5 Aug 2024 17:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722880723; cv=none; b=DC6HFZOa3dvyxQM0kco8qNrIBS27QK1feFBD74oLKpWU028ulX1o9QusM3wpMbJJ0Qv3XH8FouAjtRRsQTffpnSDN9VUEwDEE/nrU5do3CS+HNSE0ZhkrCW8fPnnY7ZOLAnDHjEyDEwUvFikWa2iZ8oXtoqkF19459lAL09BpSg=
+	t=1722880727; cv=none; b=UyLS07wsh6rMGWDNd03b251wUhBN5F2qamunCF5Jr2P1Vs1AJO2I2QB1rGLKVUtnG0EbSb3RB2qctVZCT9EzuDTmrD9W2me9lo9xZgXtvEVgP+DH4dzC7HOND9nfTdPG9s312Uu3KOd+ogMK3asXJ2265m3XMMLgsnvzdYBUOBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722880723; c=relaxed/simple;
-	bh=bIZe5Jvq1zs/7HsxziOkORbDxZYEuv1y3vFfSPzIUpE=;
+	s=arc-20240116; t=1722880727; c=relaxed/simple;
+	bh=P6GgOUVtySuKP7ua3LE4vrD+CSXXYg8O0OnVCtMQAYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meul2kXfO0MniPeYjizAn1EShlz58F1lESjM6iu39pi8xGyMLvsYkd0mE/0fBiUJVjwYFa7vm2EWO102GoIhnRDG4LlfrkKBJIQduW4C1V8f0FthbHnOn76SxaFcADv5mD/CHjXVyatBs+RCY1YF6Sr2/p1y0yCHGOOR9AmBb5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YHsKDxgq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CA7C4AF0B;
-	Mon,  5 Aug 2024 17:58:40 +0000 (UTC)
+	 MIME-Version; b=dU+a3op0VW8BANtQ0cM0tz+vhOTYMfdT+35XsMYNZuxmDChlY4dPvNNC7/y4joqNTfWLJAsWvNVp3lcW3VVDIl0BKg4SvsM+R5kSQQ1JuJTeCvfRzQZr9kXkc9DeX8fjNfXGb/7ArKnAdOndhSSzPlFC5j7ybLQGYNI/f+13M1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=El/E7Tco; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D2FC4AF0C;
+	Mon,  5 Aug 2024 17:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722880722;
-	bh=bIZe5Jvq1zs/7HsxziOkORbDxZYEuv1y3vFfSPzIUpE=;
+	s=k20201202; t=1722880727;
+	bh=P6GgOUVtySuKP7ua3LE4vrD+CSXXYg8O0OnVCtMQAYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHsKDxgqWZhJdABtZ5fNwO23z2dRDO1b/pp94rkJO6l2ZqFHd+FILt+5zmwF+kAcy
-	 Ir7vImLmyL/iG7LFSArULYA8wjOYBRxysfmjItk5hiB5+cvf4N0AMM6yBZuxSWo0c4
-	 RUt4bdbUnU83XERJyBb0i9bezyRaT9SagW3M4xH/vu0R5NhHVdIWFywGAJliPvnnn2
-	 Q0ZXJG9r7HXR9zNkYALQ9jofzrPYUB3WPFg4U9HPN0M1JQ8wq3fRG2+xy4grSkuKAk
-	 5F3M7dybcdvvll57R1VuQNlSj5aTk3eGbQvnO1nm5gjn06tDdLwW198FDI0x7Sx0x2
-	 x9sc6BGQw3vVg==
+	b=El/E7Tcov5n2v/x+NPrg+xsF+MTalaxlwa8D/Wh67N6DEzmhvPBDt6a9e5OHgc1/7
+	 GJaRIr7gbaGFFvWs4e4vKyJNvueBhOcVdWVMGTYA4Iluut2/vfQed0C4ZkZFIYfjCJ
+	 70FpXY5rZgHUujPrqiwgeBy4JivvaHDP4PZAluov9ASr781zyQs/QnmFvmxi29+msG
+	 kvWBZBpl7EnI8PETEfmgp17AHGfAHPwFZuZiX7snD5NUwhJ23+aPGCt/SQ1duPnO8T
+	 UHFK9S3T1l++xFaUruyQ6HyJdgI0axDYt0LBRiAVkz/dRisqiQfYTTNDFe9DTXdWh0
+	 KnZ3msVj8PAhg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Wang <peter.wang@mediatek.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	manivannan.sadhasivam@linaro.org,
-	avri.altman@wdc.com,
-	ahalaney@redhat.com,
-	linux-scsi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 2/5] scsi: ufs: core: Bypass quick recovery if force reset is needed
-Date: Mon,  5 Aug 2024 13:58:25 -0400
-Message-ID: <20240805175835.3255397-2-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	hkallweit1@gmail.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 3/5] ALSA: hda/generic: Add a helper to mute speakers at suspend/shutdown
+Date: Mon,  5 Aug 2024 13:58:26 -0400
+Message-ID: <20240805175835.3255397-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805175835.3255397-1-sashal@kernel.org>
 References: <20240805175835.3255397-1-sashal@kernel.org>
@@ -75,37 +67,112 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.103
 Content-Transfer-Encoding: 8bit
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 022587d8aec3da1d1698ddae9fb8cfe35f3ad49c ]
+[ Upstream commit 6cd23b26b348fa52c88e1adf9c0e48d68e13f95e ]
 
-If force_reset is true, bypass quick recovery.  This will shorten error
-recovery time.
+Some devices indicate click noises at suspend or shutdown when the
+speakers are unmuted.  This patch adds a helper,
+snd_hda_gen_shutup_speakers(), to work around it.  The new function is
+supposed to be called at suspend or shutdown by the codec driver, and
+it mutes the speakers.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20240712094506.11284-1-peter.wang@mediatek.com
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The mute status isn't cached, hence the original mute state will be
+restored at resume again.
+
+Link: https://patch.msgid.link/20240726142625.2460-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/hda_generic.c | 63 +++++++++++++++++++++++++++++++++++++
+ sound/pci/hda/hda_generic.h |  1 +
+ 2 files changed, 64 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 5922cb5a1de0d..aba1f239099c2 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6302,7 +6302,8 @@ static void ufshcd_err_handler(struct work_struct *work)
- 	if (ufshcd_err_handling_should_stop(hba))
- 		goto skip_err_handling;
+diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
+index dbf7aa88e0e31..992cf82da1024 100644
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -4952,6 +4952,69 @@ void snd_hda_gen_stream_pm(struct hda_codec *codec, hda_nid_t nid, bool on)
+ }
+ EXPORT_SYMBOL_GPL(snd_hda_gen_stream_pm);
  
--	if (hba->dev_quirks & UFS_DEVICE_QUIRK_RECOVERY_FROM_DL_NAC_ERRORS) {
-+	if ((hba->dev_quirks & UFS_DEVICE_QUIRK_RECOVERY_FROM_DL_NAC_ERRORS) &&
-+	    !hba->force_reset) {
- 		bool ret;
++/* forcibly mute the speaker output without caching; return true if updated */
++static bool force_mute_output_path(struct hda_codec *codec, hda_nid_t nid)
++{
++	if (!nid)
++		return false;
++	if (!nid_has_mute(codec, nid, HDA_OUTPUT))
++		return false; /* no mute, skip */
++	if (snd_hda_codec_amp_read(codec, nid, 0, HDA_OUTPUT, 0) &
++	    snd_hda_codec_amp_read(codec, nid, 1, HDA_OUTPUT, 0) &
++	    HDA_AMP_MUTE)
++		return false; /* both channels already muted, skip */
++
++	/* direct amp update without caching */
++	snd_hda_codec_write(codec, nid, 0, AC_VERB_SET_AMP_GAIN_MUTE,
++			    AC_AMP_SET_OUTPUT | AC_AMP_SET_LEFT |
++			    AC_AMP_SET_RIGHT | HDA_AMP_MUTE);
++	return true;
++}
++
++/**
++ * snd_hda_gen_shutup_speakers - Forcibly mute the speaker outputs
++ * @codec: the HDA codec
++ *
++ * Forcibly mute the speaker outputs, to be called at suspend or shutdown.
++ *
++ * The mute state done by this function isn't cached, hence the original state
++ * will be restored at resume.
++ *
++ * Return true if the mute state has been changed.
++ */
++bool snd_hda_gen_shutup_speakers(struct hda_codec *codec)
++{
++	struct hda_gen_spec *spec = codec->spec;
++	const int *paths;
++	const struct nid_path *path;
++	int i, p, num_paths;
++	bool updated = false;
++
++	/* if already powered off, do nothing */
++	if (!snd_hdac_is_power_on(&codec->core))
++		return false;
++
++	if (spec->autocfg.line_out_type == AUTO_PIN_SPEAKER_OUT) {
++		paths = spec->out_paths;
++		num_paths = spec->autocfg.line_outs;
++	} else {
++		paths = spec->speaker_paths;
++		num_paths = spec->autocfg.speaker_outs;
++	}
++
++	for (i = 0; i < num_paths; i++) {
++		path = snd_hda_get_path_from_idx(codec, paths[i]);
++		if (!path)
++			continue;
++		for (p = 0; p < path->depth; p++)
++			if (force_mute_output_path(codec, path->path[p]))
++				updated = true;
++	}
++
++	return updated;
++}
++EXPORT_SYMBOL_GPL(snd_hda_gen_shutup_speakers);
++
+ /**
+  * snd_hda_gen_parse_auto_config - Parse the given BIOS configuration and
+  * set up the hda_gen_spec
+diff --git a/sound/pci/hda/hda_generic.h b/sound/pci/hda/hda_generic.h
+index 34eba40cc6e67..fb3ce68e2d717 100644
+--- a/sound/pci/hda/hda_generic.h
++++ b/sound/pci/hda/hda_generic.h
+@@ -352,5 +352,6 @@ int snd_hda_gen_add_mute_led_cdev(struct hda_codec *codec,
+ int snd_hda_gen_add_micmute_led_cdev(struct hda_codec *codec,
+ 				     int (*callback)(struct led_classdev *,
+ 						     enum led_brightness));
++bool snd_hda_gen_shutup_speakers(struct hda_codec *codec);
  
- 		spin_unlock_irqrestore(hba->host->host_lock, flags);
+ #endif /* __SOUND_HDA_GENERIC_H */
 -- 
 2.43.0
 
