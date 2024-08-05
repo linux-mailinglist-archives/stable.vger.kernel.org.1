@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-65412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E349480DA
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 19:58:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159959480DD
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 19:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 290B1B23185
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 17:58:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76E5B28543C
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 17:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7639116BE11;
-	Mon,  5 Aug 2024 17:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D849416BE37;
+	Mon,  5 Aug 2024 17:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5xsrZLw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kG5V7Nlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F41116B75B;
-	Mon,  5 Aug 2024 17:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8876C16BE1F;
+	Mon,  5 Aug 2024 17:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722880605; cv=none; b=TEL+jK7tzuKkRHiNtfBpmOIDthcuXbLJPdtDuy1TtLIn8VwdPUC8wJfDN5AjOaiLwKrBduSQKlDWUDA1UJtFxjs03lcu2tLI6thZrLz5A2LrB/PW0Zo/6Cv3rcl0+9G99cEl/f6l6EzGz5cZzO3sjI30O2JMDFYoyxuZAalbIWw=
+	t=1722880606; cv=none; b=fAoLHaw57RJhJiglx45sN6DJ8iVm9VwZwfpg3IwUD2khbEPmJn/fajhK9LshIJuP0KIuo8CDtrP59TumcYm4Yer/Q/dnn5jShUnazcMgW759/p5FCGTCWDVanMcqjQ/mRmzPwJpv4ixxJtMm9g1nqGIg9rFQyLFT7V3b2w1JgIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722880605; c=relaxed/simple;
-	bh=Q1RCKHSdifpnj4Bqi4RUYY5LoE8tNU04hLeNQkuo3zE=;
+	s=arc-20240116; t=1722880606; c=relaxed/simple;
+	bh=QfPQ79UfnIJTGo1nlLJ6KcIGISQvLfhthjpThhd5tJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBK2MehOnTJzaDvAePj6i6NsQsBA6DyAEoHn8oqvh7Lao+BndOOehdn3jOo3pUkqOxMqB7JVouvZ5ulVwR/IHmOXCMQfmmvhn4XnWAqDnSN1BPCBmRlbwoubZCqsCRkkPjphui4jC+DDqD4X6+AuKhJ2WUNQF7U8SV2Lzcw0bOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5xsrZLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF000C4AF0E;
-	Mon,  5 Aug 2024 17:56:43 +0000 (UTC)
+	 MIME-Version; b=WTIchdKx3ddxwYNLu2lDBMAorWFmeFMBYPASYiS7JsUTjAjSWDYz+Ownb2NfMNPG1SsNBQYAjG+K9hr47pGKzBu8B5UqpCZ20Cjp2lALCEE8MmJMgNlj7G1uwusGVWClU6R1xrzuGYGYS1HRFI1Idi6wc+nm0SK1m7N6oxzGXJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kG5V7Nlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53071C32782;
+	Mon,  5 Aug 2024 17:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722880604;
-	bh=Q1RCKHSdifpnj4Bqi4RUYY5LoE8tNU04hLeNQkuo3zE=;
+	s=k20201202; t=1722880606;
+	bh=QfPQ79UfnIJTGo1nlLJ6KcIGISQvLfhthjpThhd5tJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V5xsrZLwV7pxFLSAu5AP25nQieKGT8eIky/rai4AbmKa/vfUvkYuQDL6XXJLMaM6w
-	 +zDTi7yYrsLPf0ipsEagWKWAyQ5sH4urCmEoiY1isYm3Hmq+SPXZmgIvBFHP26Fzhs
-	 IQKH6tzvTjF67KEgbDfyvUUMV9SmdRV/OPyd3Rb0pzBmHSOTihOLlRx0P17hYTzH+t
-	 J/vuFagBZZ5qfdgWk2G/isAKoSuO2XkxrSjFUE3DS9+JO0KnXQ3dFdncmxnJTyqSQO
-	 UTODnwGm7nVs8eCvYaYTTrSS2AHK6osddlX9DydW5BDYMaem2kpI/WKDWH7MLKaZCA
-	 z9InJGEVp7KAQ==
+	b=kG5V7NlwPTFJITs9al6H9rdBey8yNlYp10Sla6aNfxOjg0p8M0lVNJ4s7/BCX7eX4
+	 u03GbFR5m77m9dq/fh1StBSsgg5J4o6m9R+0tbKURAkb0vrkiIcoDeyffRIMwqIox8
+	 h9+yKXT4/CIHD5yY3jde9L0q9KNtCFh4cSjsACTIb8nWDjWHm9sapbDyzaxt2RxxyK
+	 4IYo+E86IYuW8HzYUv4bBBDs4zomkBgeYApBqEgp3HeF+AC4cFxs69a0xAfi3PyZfH
+	 JkeX9ZsDa7hjiLCtRvH0FHG7bDiqFSxNrqxxo9vzMhJEKxeDdOeE9xD+Z/5DJxJaiU
+	 3F22hNR/njd4w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	bo.liu@senarytech.com,
-	songxiebing@kylinos.cn,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 07/16] ALSA: hda/conexant: Mute speakers at suspend / shutdown
-Date: Mon,  5 Aug 2024 13:55:39 -0400
-Message-ID: <20240805175618.3249561-7-sashal@kernel.org>
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 08/16] Input: MT - limit max slots
+Date: Mon,  5 Aug 2024 13:55:40 -0400
+Message-ID: <20240805175618.3249561-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805175618.3249561-1-sashal@kernel.org>
 References: <20240805175618.3249561-1-sashal@kernel.org>
@@ -68,34 +67,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.3
 Content-Transfer-Encoding: 8bit
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 4f61c8fe35202702426cfc0003e15116a01ba885 ]
+[ Upstream commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb ]
 
-Use the new helper to mute speakers at suspend / shutdown for avoiding
-click noises.
+syzbot is reporting too large allocation at input_mt_init_slots(), for
+num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1228269
-Link: https://patch.msgid.link/20240726142625.2460-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Since nobody knows possible max slots, this patch chose 1024.
+
+Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/input-mt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index 17389a3801bd1..ae12b47332201 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -212,6 +212,8 @@ static void cx_auto_shutdown(struct hda_codec *codec)
- {
- 	struct conexant_spec *spec = codec->spec;
+diff --git a/drivers/input/input-mt.c b/drivers/input/input-mt.c
+index 14b53dac1253b..6b04a674f832a 100644
+--- a/drivers/input/input-mt.c
++++ b/drivers/input/input-mt.c
+@@ -46,6 +46,9 @@ int input_mt_init_slots(struct input_dev *dev, unsigned int num_slots,
+ 		return 0;
+ 	if (mt)
+ 		return mt->num_slots != num_slots ? -EINVAL : 0;
++	/* Arbitrary limit for avoiding too large memory allocation. */
++	if (num_slots > 1024)
++		return -EINVAL;
  
-+	snd_hda_gen_shutup_speakers(codec);
-+
- 	/* Turn the problematic codec into D3 to avoid spurious noises
- 	   from the internal speaker during (and after) reboot */
- 	cx_auto_turn_eapd(codec, spec->num_eapds, spec->eapds, false);
+ 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
+ 	if (!mt)
 -- 
 2.43.0
 
