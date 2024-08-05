@@ -1,169 +1,183 @@
-Return-Path: <stable+bounces-65399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6FA947E76
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 17:46:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B58C947EE8
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 095A01C21D3A
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 15:46:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAABEB21C7D
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 16:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9768F159217;
-	Mon,  5 Aug 2024 15:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6169F1547E7;
+	Mon,  5 Aug 2024 16:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UOxsqe3c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xi/lQ76t"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59004D8AF
-	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 15:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEB64D8B7;
+	Mon,  5 Aug 2024 16:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722872782; cv=none; b=EQEJ1+N8Pcx41arbC5prMqNBBXHLR7c4hHHAEnk+8Rtfw3ygiewvjuyXqQhQa34h7uZeh09ingpFzOiNyXIVd5I8X4Qapc8wkD20jVJPqjUS/budWnhTTjrkTEo8cL/VR8OAvD+Q+SF/8DSazc0kNUfcBZdYcqEte9btafAFgnA=
+	t=1722873712; cv=none; b=G+q9u67vrtpY19C/5FSKCdut9Vy33FFSAIVnw/FfYo3Sihr6K9AHqyZ8kpLQ7vLYhxCe9jyD5M8tWk78bEDymkUGFkRcrgjAg/r8a8dU5ljmeg+eWzdb8i0xmnomqoOgqT9igXArxGVe+O3DQJXXbaZlr3RgyHBxiSIvj6M0JWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722872782; c=relaxed/simple;
-	bh=5wjHU1wKHRRchFX2cqWEk5v6q0TdpGyDqI3gFeTqBiY=;
+	s=arc-20240116; t=1722873712; c=relaxed/simple;
+	bh=wQlaWS+ZJw+znmW/REtXUrDGbAzMh8uUsewhxjdkwIU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=clgomRp2zvHDmaX0U4F8sGd2eNAFppqSNMhWzixf+obpippuiSrO5XBuUY2+y74C9yFFAlfzNpWxrk1Kz3W/pkyStXRxuHqo6TCRaUd2FqfvtOF2PN7uMYGlambOuBj33YNdK/eEBR2MSZfTBd7vNTdWKncvziKTQGP1xS4l5bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UOxsqe3c; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4519383592aso17769751cf.3
-        for <stable@vger.kernel.org>; Mon, 05 Aug 2024 08:46:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1722872779; x=1723477579; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FqOaptwxc12t3A/k1QIs7JMco9pX/hGJo5YaprxUknE=;
-        b=UOxsqe3cbqludNtOBbYkk/wjzak5Sst16gQvEGUWEK3sclUoWL+DeodBNdSEBlouZK
-         J1uEhdL01XbyWqbCSsZkMy850FTnvcS1oTC7rSFOML/hdXmFl2kkDxgZ1tZFaCMmWe7D
-         RATHh4qapcb4ZPs9bJD9ZKCNAj0a7vS8oHCWU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722872779; x=1723477579;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FqOaptwxc12t3A/k1QIs7JMco9pX/hGJo5YaprxUknE=;
-        b=TNLfnFlNHflBQwBM/C0f1dmQc9Bpg607nIjo5mXyMQQb8tPcUoeenTa99X8d5uQ0Yb
-         /XL4iq8P1w/olBd1Zd6Ykpe8IRPCjZiJHzs/VSqQZl/pC9ABVlstLAEs+bueLfLHi1hw
-         EutJ4UOEUSxgeeQsDO+zB9SYRtYSnf8aIRna11zpoO8WS3aEp+yNKDNZt/Z35japsAH+
-         sNFuu6k1LroanJeQN1bbIHGdJZKBpXdeebU7Z/lmj7PQgs1Ha26CGpO6ZjFqzZmuIUfw
-         wCSbNe13Sjc69mrRM1qpdzDLP7cXHAl5nnoTKzK1x9MaiHHT8Zdcy2+Z48gdxea2GqHv
-         dl/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXDQ7yuAz2gcXWs/g+R9omm3c3GSrlURfLZX1T/9oK0uUb88YAuOVrR6dyXaKG7KQ7NLaOU2qgiMGHb0/qUW9x0dhMXjV/5
-X-Gm-Message-State: AOJu0Ywo5xaJz2UKpMSgBrLooM6TKE5GiINF05x1QMVWkJnSR/ezc0IW
-	RAd8ZZYs0WUmcXJP9/E1lReIUeVDdpfkinTITr+BW+uDiceBEd56TC3q011pmce/2Jx+X983oN8
-	=
-X-Google-Smtp-Source: AGHT+IEVYifPXnJi156vlAP5L6WU/vWfD51EWXAofK3X+D8Jv7YRclu04S2uSzGrWtqaZMbgLcy8Sw==
-X-Received: by 2002:a05:622a:1920:b0:44f:f92b:6026 with SMTP id d75a77b69052e-45189206accmr165957601cf.3.1722872778746;
-        Mon, 05 Aug 2024 08:46:18 -0700 (PDT)
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com. [209.85.160.171])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4518a577bd0sm30604701cf.0.2024.08.05.08.46.17
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Aug 2024 08:46:18 -0700 (PDT)
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-44fee2bfd28so463421cf.1
-        for <stable@vger.kernel.org>; Mon, 05 Aug 2024 08:46:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW9ZycW6uvmxxuqfZ3zEcddao/q2SdUWmUXG62j8KcBPJEwkCej9+5+DweXFK9b8PGx9iF3qSbikRWdthcSQhkwPLt3Zs4T
-X-Received: by 2002:a05:622a:282:b0:447:e542:93a7 with SMTP id
- d75a77b69052e-4519ad00ecbmr5909431cf.12.1722872777503; Mon, 05 Aug 2024
- 08:46:17 -0700 (PDT)
+	 To:Cc:Content-Type; b=p6OxXHjR0XNne1UTxwKBlO6epmBicC4Z9txChZ7xVi39SzuPuMAqLadAUgxwIn0G8unCLIV/0unlqR8emSsxzd+nGwmSyxryvdZe1DODIV4EKrf0l73uUXQ8wWDK8k6EwchKb0WZ7uemXUX2yRQLKHKwtA0dgQvEB2n7uQlBsB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xi/lQ76t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A712BC32782;
+	Mon,  5 Aug 2024 16:01:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722873711;
+	bh=wQlaWS+ZJw+znmW/REtXUrDGbAzMh8uUsewhxjdkwIU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Xi/lQ76trQtHCxk7rjn10khILW1A3BwjI4ze73DdvzYH00ssbgkJhFzSAO1KIdV+T
+	 l9o8sekqfaIs9E2WsdOuy/x7mDaZgCBNkyO0l+94u5vqkZYroJlBoNSPiC20Isc2hi
+	 lNb/KBXkNqaYcpgCH4CLKKCQiasCHb3nPTivxozIsNRpH7YuWSzn0jJoqndtq/Msd0
+	 60pJ4Lot/TZaqNjTCi0ObJB6mjX7F62lsEW0o44BXqXRWQLQWOroYOpRBXIgpx1iF0
+	 yxbMFewg1bUPcAX1boJ3fYSgNqCKmwysDPGUQRcCeqiDhX3Sd1vgRLZLcZ48zLL3Lj
+	 ICKBdzUEgVXKQ==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2f16767830dso30468011fa.0;
+        Mon, 05 Aug 2024 09:01:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVDoHLQmQgpxOVTVOuoj6shc/HKZyZ9ID82qMdQ3nHkxz6cz6pN3gSbG2jSOdEYQAzG1uQHDDfkzWTfiOComkjCE18Ncsbldo9qY0cJoaFECpADXfTjm5tbdrSPQjGRDMRyvV4MQ44vVkYR2GoWA/ts4wJYIBGnADaargFHbQy+
+X-Gm-Message-State: AOJu0YyWBChKDj2qGPNQVawGAjrSH1YUeyCVB3n7ZmkjvsT1j/Tzvz+w
+	tlto4orRhZO0E0WA5m+HVrietxVi3xC7daU/v/1pKHx1lKQ0nvGzSNndYnc1QyHCX5HPQGV1Fgh
+	mpgRMCbIxdTXgIwyKXpglp1H2Aw==
+X-Google-Smtp-Source: AGHT+IF1QA0WkvZdYK3NgKnb5MSPFABqtD9PrMB9+H/W4psXiYBBzJeuRnqchv3x9eFCYkaDnOsHnRQmvcJbJ6tn/NI=
+X-Received: by 2002:a2e:8096:0:b0:2ef:3250:d0d4 with SMTP id
+ 38308e7fff4ca-2f15ab5c7c8mr77836851fa.48.1722873710032; Mon, 05 Aug 2024
+ 09:01:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240805102046.307511-1-jirislaby@kernel.org> <20240805102046.307511-4-jirislaby@kernel.org>
- <84af065c-b1a1-dc84-4c28-4596c3803fd2@linux.intel.com>
-In-Reply-To: <84af065c-b1a1-dc84-4c28-4596c3803fd2@linux.intel.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 5 Aug 2024 08:46:06 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WeekuQXzjk90K8jn=Evn8dMaT1RyctbT7gwEZYYgA9Aw@mail.gmail.com>
-Message-ID: <CAD=FV=WeekuQXzjk90K8jn=Evn8dMaT1RyctbT7gwEZYYgA9Aw@mail.gmail.com>
-Subject: Re: [PATCH 03/13] serial: don't use uninitialized value in uart_poll_init()
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	linux-serial <linux-serial@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	stable@vger.kernel.org
+References: <20240724065048.285838-1-s-vadapalli@ti.com> <20240724161916.GG3349@thinkpad>
+ <20240725042001.GC2317@thinkpad> <93e864fb-cf52-4cc0-84a0-d689dd829afb@ti.com>
+ <20240726115609.GF2628@thinkpad>
+In-Reply-To: <20240726115609.GF2628@thinkpad>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 5 Aug 2024 10:01:37 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ-mfU88E_Ri=BzH6nAFg405gkPPJTtjdp7UR2n96QMkw@mail.gmail.com>
+Message-ID: <CAL_JsqJ-mfU88E_Ri=BzH6nAFg405gkPPJTtjdp7UR2n96QMkw@mail.gmail.com>
+Subject: Re: [PATCH] PCI: j721e: Set .map_irq and .swizzle_irq to NULL
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Siddharth Vadapalli <s-vadapalli@ti.com>, bhelgaas@google.com, lpieralisi@kernel.org, 
+	kw@linux.com, vigneshr@ti.com, kishon@kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	stable@vger.kernel.org, ahalaney@redhat.com, srk@ti.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-On Mon, Aug 5, 2024 at 7:28=E2=80=AFAM Ilpo J=C3=A4rvinen
-<ilpo.jarvinen@linux.intel.com> wrote:
+On Fri, Jul 26, 2024 at 5:56=E2=80=AFAM Manivannan Sadhasivam
+<manivannan.sadhasivam@linaro.org> wrote:
 >
-> On Mon, 5 Aug 2024, Jiri Slaby (SUSE) wrote:
+> On Thu, Jul 25, 2024 at 01:50:16PM +0530, Siddharth Vadapalli wrote:
+> > On Thu, Jul 25, 2024 at 09:50:01AM +0530, Manivannan Sadhasivam wrote:
+> > > On Wed, Jul 24, 2024 at 09:49:21PM +0530, Manivannan Sadhasivam wrote=
+:
+> > > > On Wed, Jul 24, 2024 at 12:20:48PM +0530, Siddharth Vadapalli wrote=
+:
+> > > > > Since the configuration of Legacy Interrupts (INTx) is not suppor=
+ted, set
+> > > > > the .map_irq and .swizzle_irq callbacks to NULL. This fixes the e=
+rror:
+> > > > >   of_irq_parse_pci: failed with rc=3D-22
+> > > > > due to the absence of Legacy Interrupts in the device-tree.
+> > > > >
+> > > >
+> > > > Do you really need to set 'swizzle_irq' to NULL? pci_assign_irq() w=
+ill bail out
+> > > > if 'map_irq' is set to NULL.
+> > > >
+> > >
+> > > Hold on. The errono of of_irq_parse_pci() is not -ENOENT. So the INTx=
+ interrupts
+> > > are described in DT? Then why are they not supported?
+> >
+> > No, the INTx interrupts are not described in the DT. It is the pcieport
+> > driver that is attempting to setup INTx via "of_irq_parse_and_map_pci()=
+"
+> > which is the .map_irq callback. The sequence of execution leading to th=
+e
+> > error is as follows:
+> >
+> > pcie_port_probe_service()
+> >   pci_device_probe()
+> >     pci_assign_irq()
+> >       hbrg->map_irq
+> >         of_pciof_irq_parse_and_map_pci()
+> >         of_irq_parse_pci()
+> >           of_irq_parse_raw()
+> >             rc =3D -EINVAL
+> >             ...
+> >             [DEBUG] OF: of_irq_parse_raw: ipar=3D/bus@100000/interrupt-=
+controller@1800000, size=3D3
+> >             if (out_irq->args_count !=3D intsize)
+> >               goto fail
+> >                 return rc
+> >
+> > The call to of_irq_parse_raw() results in the Interrupt-Parent for the
+> > PCIe node in the device-tree being found via of_irq_find_parent(). The
+> > Interrupt-Parent for the PCIe node for MSI happens to be GIC_ITS:
+> > msi-map =3D <0x0 &gic_its 0x0 0x10000>;
+> > and the parent of GIC_ITS is:
+> > gic500: interrupt-controller@1800000
+> > which has the following:
+> > #interrupt-cells =3D <3>;
+> >
+> > The "size=3D3" portion of the DEBUG print above corresponds to the
+> > #interrupt-cells property above. Now, "out_irq->args_count" is set to 1
+> > as __assumed__ by of_irq_parse_pci() and mentioned as a comment in that
+> > function:
+> >       /*
+> >        * Ok, we don't, time to have fun. Let's start by building up an
+> >        * interrupt spec.  we assume #interrupt-cells is 1, which is sta=
+ndard
+> >        * for PCI. If you do different, then don't use that routine.
+> >        */
+> >
+> > In of_irq_parse_pci(), since the PCIe-Port driver doesn't have a
+> > device-tree node, the following doesn't apply:
+> >   dn =3D pci_device_to_OF_node(pdev);
+> > and we skip to the __assumption__ above and proceed as explained in the
+> > execution sequence above.
+> >
+> > If the device-tree nodes for the INTx interrupts were present, the
+> > "ipar" sequence to find the interrupt parent would be skipped and we
+> > wouldn't end up with the -22 (-EINVAL) error code.
+> >
+> > I hope this clarifies the relation between the -22 error code and the
+> > missing device-tree nodes for INTx.
+> >
 >
-> > Coverity reports (as CID 1536978) that uart_poll_init() passes
-> > uninitialized pm_state to uart_change_pm(). It is in case the first 'if=
-'
-> > takes the true branch (does "goto out;").
-> >
-> > Fix this and simplify the function by simple guard(mutex). The code
-> > needs no labels after this at all. And it is pretty clear that the code
-> > has not fiddled with pm_state at that point.
-> >
-> > Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> > Fixes: 5e227ef2aa38 (serial: uart_poll_init() should power on the UART)
-> > Cc: stable@vger.kernel.org
-> > Cc: Douglas Anderson <dianders@chromium.org>
-> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >  drivers/tty/serial/serial_core.c | 13 ++++++-------
-> >  1 file changed, 6 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/seri=
-al_core.c
-> > index 3afe77f05abf..d63e9b636e02 100644
-> > --- a/drivers/tty/serial/serial_core.c
-> > +++ b/drivers/tty/serial/serial_core.c
-> > @@ -2690,14 +2690,13 @@ static int uart_poll_init(struct tty_driver *dr=
-iver, int line, char *options)
-> >       int ret =3D 0;
-> >
-> >       tport =3D &state->port;
-> > -     mutex_lock(&tport->mutex);
-> > +
-> > +     guard(mutex)(&tport->mutex);
-> >
-> >       port =3D uart_port_check(state);
-> >       if (!port || port->type =3D=3D PORT_UNKNOWN ||
-> > -         !(port->ops->poll_get_char && port->ops->poll_put_char)) {
-> > -             ret =3D -1;
-> > -             goto out;
-> > -     }
-> > +         !(port->ops->poll_get_char && port->ops->poll_put_char))
-> > +             return -1;
-> >
-> >       pm_state =3D state->pm_state;
-> >       uart_change_pm(state, UART_PM_STATE_ON);
-> > @@ -2717,10 +2716,10 @@ static int uart_poll_init(struct tty_driver *dr=
-iver, int line, char *options)
-> >               ret =3D uart_set_options(port, NULL, baud, parity, bits, =
-flow);
-> >               console_list_unlock();
-> >       }
-> > -out:
-> > +
-> >       if (ret)
-> >               uart_change_pm(state, pm_state);
-> > -     mutex_unlock(&tport->mutex);
-> > +
-> >       return ret;
-> >  }
+> Thanks for explaining the logic. Still I think the logic is flawed. Becau=
+se the
+> parent (host bridge) doesn't have 'interrupt-map', which means INTx is no=
+t
+> supported. But parsing one level up to the GIC node and not returning -EN=
+OENT
+> doesn't make sense to me.
 >
-> This too needs #include.
+> Rob, what is your opinion on this behavior?
 
-Why? I see in "mutex.h" (which is already included by serial_core.c):
+Not sure I get the question. How should we handle/determine no INTx? I
+suppose that's either based on the platform (as this patch did) or by
+failing to parse the interrupts. The interrupt parsing code is pretty
+tricky as it has to deal with some ancient DTs, so I'm a little
+hesitant to rely on that failing. Certainly I wouldn't rely on a
+specific errno value. The downside to doing that is also if someone
+wants interrupts, but has an error in their DT, then all we can do is
+print 'INTx not supported' or something. So we couldn't fail probe as
+the common code wouldn't be able to distinguish. I suppose we could
+just check for 'interrupt-map' present in the host bridge node or not.
+Need to check the Marvell binding which is a bit weird with child
+nodes.
 
-DEFINE_GUARD(mutex, struct mutex *, mutex_lock(_T), mutex_unlock(_T))
-
-...so we're using the mutex guard and including the header file that
-defines the mutex guard. Seems like it's all legit to me.
+Rob
 
