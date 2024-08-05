@@ -1,102 +1,127 @@
-Return-Path: <stable+bounces-65357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BF9947521
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 08:17:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8302947524
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 08:17:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED686B21416
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 06:17:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D1B11F21825
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 06:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129E6146A67;
-	Mon,  5 Aug 2024 06:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C531428E3;
+	Mon,  5 Aug 2024 06:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hLIeWOrR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QEVVe2ew"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536DF143880;
-	Mon,  5 Aug 2024 06:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA71912B6C
+	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 06:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722838632; cv=none; b=g6xd2D/uorzBRdhqZxzf2EM47LF23Oeb4b4ofDFikEZZjNZa6RcANB0OW4p6G6XfGrgDPZAVCHJ0hJpALi0lJW9N+2wuFqnegcSKSCT02mcuSCv9bG80bPWAKB8O49DqBK0YVoVRukx+/ShsU9f+GVdZLa1lFLflbq/FG0RqlFU=
+	t=1722838671; cv=none; b=s6nCXmhfe9zTTotNToZHtJsq9i3ijaTVty9EPIKadhTsyIR6bSQZgsIfQr4RR0n63fd2BjB/f/omFex+qYYHhSkxfpv6sZtLO2qks68bmCloK5AyVEZQJgIa1j5eLBzZehkE+DwMuRnGg/K/NOpbQdq57QEQBM8d8+hb9JGp2Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722838632; c=relaxed/simple;
-	bh=ZjgDYjq7powx6dku1RjeF1PGGwTeU3pln+4TmeKsj4w=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=oJN17daE/3pmlDaFXy/xC5Bz5kNUOZ8ckF0PV2d0i3GgwSKXur9IneIwoOqrdqMGyCRdgGPHr+z2CSimAjJBe7wn+VdP6Nil5FhuuXZIgxtL5Q7oKu6s1HFKUsU3b51A4H+yiGxBBhrH2zZabGTVTPHQxYxfpTWEm3nHPIw9tSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hLIeWOrR; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5b8c2a6135dso2722857a12.1;
-        Sun, 04 Aug 2024 23:17:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722838630; x=1723443430; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZjgDYjq7powx6dku1RjeF1PGGwTeU3pln+4TmeKsj4w=;
-        b=hLIeWOrRK6h9bwBVYjZQQ8pwQYG3rtWdWVa9ei+QGuUQUA7b3cE3jOkoOXgUwktpQn
-         0zObKcz7gZjfNEkjySuOXw9tlwzav5ezvtW6mIlllcapp3nkbFASaie7m1L+RmooxwS5
-         eor5pb4x84PpLPoOgZWQh7UvBUPzPHgdmcx8KkwuQsTKRRgHjBTFM0Dwjyz0XdZmxamM
-         GALeMXVcCxesxj59U8xsDcrpxV3tzf5HD2wWDov6wJgID2dbe8x+ILWGVWvBOFuKPpBH
-         xC9lLMAObv0S7/q3+L3EY7e4riI70t3wS9pDWuzd+D4jpZY3UKyqGTz49cGRUYbaIoDe
-         H2Pw==
+	s=arc-20240116; t=1722838671; c=relaxed/simple;
+	bh=OBA8h6YnctrlscFmyJCXMpOvIXpjcoz5dL6gZTt39+I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FxN8WELcHexkN9lLOHd3qrdYV+tKp+NWytmFIVLH3oSubI7u+uYWOO7W/tEdgLm2R0BSlxRvh7dObJXD9DwqMy6GaqoCZaXF6lTeeO7O4vkPpFKe00HG0lPdnqJOAn1uMtSysZ7zBXTW8PBRJ6flEKAmwjOGKRRm/CmwlNoV5H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QEVVe2ew; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722838668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OBA8h6YnctrlscFmyJCXMpOvIXpjcoz5dL6gZTt39+I=;
+	b=QEVVe2ewn6cd81CfxULmjYXPTVoAgev0Q+hIREOurfdJ4OLvAhQ/Zrs62hRnyweyuO0zmu
+	MZ6PpS5IO1ijDqNJhpvy0nXfovx6aWIrNw18w5ssuXugP6zO7oE3IlvIF1nuXqnhBaHyPx
+	zEJjiKndiJefdp8EuEAUucO1vAvVFOM=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-678--Ju0XenBOG2hjjrv3HpnJw-1; Mon, 05 Aug 2024 02:17:47 -0400
+X-MC-Unique: -Ju0XenBOG2hjjrv3HpnJw-1
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2cb5ab2f274so12900395a91.3
+        for <stable@vger.kernel.org>; Sun, 04 Aug 2024 23:17:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722838630; x=1723443430;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZjgDYjq7powx6dku1RjeF1PGGwTeU3pln+4TmeKsj4w=;
-        b=hlZWOb0JasKE8P2prvyUmxwLtO/SVCCnIthaLHif2EMTOaO9cbBMModNcmc7LVN3cV
-         xVXC/Ay0RPaW55ETYBMo7tRet3oIvrgL8/yowTKV95noWQdX9aA5biwEYj+AgWfR5ObI
-         qvzgEfkJN2LIxNkLOkDhNHfJ5zV6Fp4b0IkszEBO9rojKc31EQdk97BtKbMhCeT+QPMC
-         ganYeuGqqzBRRLg1GAf+/q4tUxBJlPvu5L5AHG55EXrKa3ZgcZ6eBRMgT6AoBK/1Iuad
-         THTIeAbZP9xfPq6aMXOSHE/YoAhiZdiv259xEpRXWO4DhzVm7KNQmTb7xCwmgy1bupbs
-         kACA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+qj0cRbbXiFlEcvmym+zvjfoJ82ohvPF8wjqQwrJaduyEnNaX75QnhIztnkomVHMfmDt6AyDpd35lITe8H6l2NiktDVjz+lf1mrl5pcr6jhrVpdZj8Hfm3rnBWZ+TuJ5P3wtQa+4Ss1B16Veq6C0qBdZ5Ho6179Jx0Y6T
-X-Gm-Message-State: AOJu0Yw3vLThze+bjWoQ4ggzueS+todtxsdY8mRYwI/sFq/frpA9yE47
-	MiWnYx4/twSX6HD2WGB778JrbVW5QQIzt2ZlRctOVD+vKVu8c2MjKDQjpduOMsX1TtRm5C6OAAe
-	7cGnz+qpNvpdgcX9gXfaSLaxLgLw=
-X-Google-Smtp-Source: AGHT+IH2X+IzhQIlgRtIy+23FBJcyC76pAnuCJKL1BEcOA5ltqEPwE/yzKrKToEs9l3ENoVBbVuHzWjyCgNPj4ajEAM=
-X-Received: by 2002:aa7:c50e:0:b0:5a2:87d3:6ee6 with SMTP id
- 4fb4d7f45d1cf-5b7f57f41f4mr7296865a12.32.1722838629097; Sun, 04 Aug 2024
- 23:17:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722838666; x=1723443466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OBA8h6YnctrlscFmyJCXMpOvIXpjcoz5dL6gZTt39+I=;
+        b=DGLYufYdgVtyIyWft8GSzjML6cTkjBVeALwSIu7a8XAHv1Va25IPtfFAjRWJCcP3N0
+         nZD0mfXEocusPZ4OPDPl9JAw6pMJ0DykiPCCMmOVyCwx6zOGvIPXnMnEu19aw+k9qRWB
+         YkIv/kBD2zNWupTqLTBcThBP1axLlESSQRR0oJ9+lbzmpAMoKQyFG+JrU8EDPFb8FJaO
+         YljvggwLs0F2k79yUB9s6LWd3uaKYdWm/z8fWOjLDdz7Zx3CULYsENT/Jlzm2FoD27na
+         UkI/BdqbeNqesZBlSSoILA//+TfKJ8XLH9/QTqRhutktQ5mbMdqD6T312pnjCuP/Kpd0
+         iUXg==
+X-Forwarded-Encrypted: i=1; AJvYcCXwPiK4VwcO1OQgDZoqkMmciVw/bwuF85WEgZ7Rr2C2eBzO4KlBzHOPZz2ZjSr3+wL63Vse7U7hZKUehd16fczxd8/s6ITB
+X-Gm-Message-State: AOJu0YzSnFzhPLsiwLaZGXuFzqSbXrpRfbfCMeEbO8jxuVJh3M5xkG4n
+	wIESyEOb3huLLh7ztU5qcaz6sA2mm+fuK6sH7p/nD34cgg+ElTJTNPWsxhwL7j8QAw3dTcBCPxU
+	BXz1MO3+9XmufUY3Q4/iQi5l0h7n3LxLlGDjgimd4ynrV5TCCYqYnJbq06iCd0CJXut5tR6QWOf
+	MOofVrzNh1Mv9lviD8/Sn9O/76fq8b
+X-Received: by 2002:a17:90b:1e4d:b0:2c8:ac1:d8c3 with SMTP id 98e67ed59e1d1-2cff952d301mr12719466a91.29.1722838666410;
+        Sun, 04 Aug 2024 23:17:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7dJm/uMCP9r6q57lSVrYZLF63noAuWOfwLCATXXwoh5VA0D6Hltrsmz9fS/EuEEhz+BVCozQtHiZGOMVa9T4=
+X-Received: by 2002:a17:90b:1e4d:b0:2c8:ac1:d8c3 with SMTP id
+ 98e67ed59e1d1-2cff952d301mr12719452a91.29.1722838665905; Sun, 04 Aug 2024
+ 23:17:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Blake Sperling <breakingspell@gmail.com>
-Date: Mon, 5 Aug 2024 01:16:32 -0500
-Message-ID: <CAGRfhun+pAYRjS8p9066HYV+wjyvCWoLtK03Nr0GXmYHzFDPpA@mail.gmail.com>
-Subject: [REGRESSION] [PATCH v2] net: missing check virtio
-To: arefev@swemel.ru
-Cc: edumazet@google.com, eperezma@redhat.com, jasowang@redhat.com, 
+References: <CAGRfhukVR4V9GFmdV71QfM2OLW3G=BQoOM1U1cK0ENFZvLTLyw@mail.gmail.com>
+In-Reply-To: <CAGRfhukVR4V9GFmdV71QfM2OLW3G=BQoOM1U1cK0ENFZvLTLyw@mail.gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 5 Aug 2024 14:17:34 +0800
+Message-ID: <CACGkMEvpB0zP+okrst-_mAxKq2eVwpdxQ5WTA07FBzRrs3uGaA@mail.gmail.com>
+Subject: Re: [REGRESSION] [PATCH v2] net: missing check virtio
+To: Blake Sperling <breakingspell@gmail.com>
+Cc: arefev@swemel.ru, edumazet@google.com, eperezma@redhat.com, 
 	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, mst@redhat.com, 
 	netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	xuanzhuo@linux.alibaba.com, regressions@lists.linux.dev, 
-	stable@vger.kernel.org
+	xuanzhuo@linux.alibaba.com, stable@vger.kernel.org, 
+	regressions@lists.linux.dev, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello, I noticed a regression from v.6.6.43 to v6.6.44 caused by this commit.
+On Mon, Aug 5, 2024 at 2:10=E2=80=AFPM Blake Sperling <breakingspell@gmail.=
+com> wrote:
+>
+> Hello, I noticed a regression from v.6.6.43 to v6.6.44 caused by this com=
+mit.
+>
+> When using virtio NIC with a QEMU/KVM Windows guest, network traffic from=
+ the VM stalls in the outbound (upload) direction.This affects remote acces=
+s and file shares most noticeably, and the inbound (download) direction doe=
+s not have the issue.
+>
+> iperf3 will show consistent results, 0 bytes/sec when initiating a test w=
+ithin the guest to a server on LAN, and reverse will be full speed. Nothing=
+ out of the ordinary in host dmesg or guest Event Viewer while the behavior=
+ is being displayed.
+>
+> Crucially, this only seems to affect Windows guests, Ubuntu guest with th=
+e same NIC configuration tests fine both directions.
+> I wonder if NetKVM guest drivers may be related, the current latest versi=
+on of the drivers (v248) did not make a difference, but it is several month=
+s old.
+>
+> Let me know if there are any further tests or info I can provide, thanks!
 
-When using virtio NIC with a QEMU/KVM Windows guest, network traffic
-from the VM stalls in the outbound (upload) direction.This affects
-remote access and file shares most noticeably, and the inbound
-(download) direction does not have the issue.
+Does Willem's patch fix the issue?
 
-iperf3 will show consistent results, 0 bytes/sec when initiating a
-test within the guest to a server on LAN, and reverse will be full
-speed. Nothing out of the ordinary in host dmesg or guest Event Viewer
-while the behavior is being displayed.
+https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=
+=3D89add40066f9ed9abe5f7f886fe5789ff7e0c50e
 
-Crucially, this only seems to affect Windows guests, a Ubuntu guest
-with the same NIC configuration works fine in both directions.
-I wonder if NetKVM guest drivers may be related, the current latest
-version of the drivers (v248) did not make a difference, but it is
-several months old.
+Thanks
 
-Let me know if there are any further tests or info I can provide, thanks!
 
