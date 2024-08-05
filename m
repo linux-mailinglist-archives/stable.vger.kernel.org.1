@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-65418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17479480EB
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 19:59:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3380E9480ED
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 20:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7945B28488E
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 17:59:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63EB41C21D69
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 18:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A7216EBE9;
-	Mon,  5 Aug 2024 17:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC3216F26D;
+	Mon,  5 Aug 2024 17:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BON5cttK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVEXTMvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DE816EB63;
-	Mon,  5 Aug 2024 17:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF81C16EC0C;
+	Mon,  5 Aug 2024 17:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722880622; cv=none; b=WhOY+hOfgnkJCRGsWasImh4ugFHq0v+qsYXiYsSKMes+SkG26+lbFVGGQ9wiBP5/cmPQjdNtgiWdM6aydInas2a7/APVdexQIvPXzpCQUGQL39T5ihfv8sjzxa5/4Q+9XC1VTSM9ccE53Sd7T8awZpsFwyA7UUaScW5+Px2v8Cg=
+	t=1722880625; cv=none; b=VYRO33+RXd5Ur1AXs1z3sDR9+l7FgmbXrDIE841Baj6HXn64vg+HgqswNjY72O3SniBsG6zQkxsd7HqCTwKudUO14r2uC+MsUwujwHbih2OrRTx7FOBSIRY7MgR1gGLnHEGV/Kzufz4335oy788mXCGz+dMGFuhKyEkcNugA8is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722880622; c=relaxed/simple;
-	bh=n/wU2YW68muNGA7d5ai6shq3WQO2nljTYc965BpU1Xc=;
+	s=arc-20240116; t=1722880625; c=relaxed/simple;
+	bh=xBTX0nsqSZKq03J1AoMBXer2WviaQP7T3jueQEcAQ6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdUrCc4ACZFOlruKqaDGCuGj9XG3TmGep7iBr+7ICXWqt5wmhn/o0uwlZgski7kYo3VQxvqz34qVpDGfbBFPwOV8gPryN0MfT908paxbbYcWx3+T/SOy8IAuGtvnJK1j01RI1TFm/FSxfryooC+1QkU2EVm69/1BwSQ8cIue7W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BON5cttK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95277C32782;
-	Mon,  5 Aug 2024 17:57:01 +0000 (UTC)
+	 MIME-Version; b=GlSRmzm19FQCpTqKJVrKNWlfONunbduI+p78JZgWFTA/phmzvt+7gl20b4WVI+PdBlCWM8NtVPMa6px1NYYWYTj50dmuJqKbYkH+xOgliWsvveWdMP+jt5nnX+BAHfKZgV1RvZTVdzO4amQiqWRyu/+gdPlpkHfd3Wdv7pk0b7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVEXTMvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F33C4AF0B;
+	Mon,  5 Aug 2024 17:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722880622;
-	bh=n/wU2YW68muNGA7d5ai6shq3WQO2nljTYc965BpU1Xc=;
+	s=k20201202; t=1722880625;
+	bh=xBTX0nsqSZKq03J1AoMBXer2WviaQP7T3jueQEcAQ6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BON5cttK7WTyFsHPiMSW1Vi79IC3eQyqzJoX7VRJ9UtW3qz5IWfSCnM6SSaOG6bgV
-	 GYwQaf9mysghkLAtaZeY89ho5+ouzvVQRifceLTLQwNAUHMvUlF5JEenilY+KmrjxQ
-	 ZO9XCTk6AmnrXUWDGL4EdUo6O6lUEd+eAcuuwNxMb8OCypWujrH0yY7faHEP6LqCrU
-	 GyeujrcENEqVDij/V5aFxlkgB7/Nfi/VM/JeW5j5m32+QpeO5RLVSexDiUm3hmgbKH
-	 O7esYeifBSgXHBz8K9BttJ4CFLVlYLM0H+82QL1/Jc+3ZT+itHPuHkLbh7KqusuXl/
-	 kD1pd2IufjPog==
+	b=HVEXTMvhcFTCMO/S78SvnY7oq4GNoeQSYq808UpdwVGVtdd859x5gv8htEyHi2lrF
+	 LV/IDzah+es3YUnhYKbybOFceyoqifUZLFyxQrK9qkxFvfPB8OlBMSBC/qP5nsRV9L
+	 yU/d0xYEZB2SwHIXpmrncIiEnLuMJ1/E39HEo/BBvg/dgiqo8JQ7pvm1PgAKWgZCKg
+	 v1H4ZqGq8uDIbDfGVCY+aTf0R9dJxLlLzEbPfTAWZL8B7UIonSqkJelmRlHvo9s5kL
+	 NgHXwqyNkyh7pGWrocKoKJvjlgJFSrnGtAF+/yuSMAquULorbTcU3BP0aOsVwMBCs8
+	 UdwXEjLwI4lYg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Takashi Iwai <tiwai@suse.de>,
 	perex@perex.cz,
 	tiwai@suse.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 13/16] ALSA: seq: ump: Transmit RPN/NRPN message at each MSB/LSB data reception
-Date: Mon,  5 Aug 2024 13:55:45 -0400
-Message-ID: <20240805175618.3249561-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 14/16] ALSA: seq: ump: Explicitly reset RPN with Null RPN
+Date: Mon,  5 Aug 2024 13:55:46 -0400
+Message-ID: <20240805175618.3249561-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805175618.3249561-1-sashal@kernel.org>
 References: <20240805175618.3249561-1-sashal@kernel.org>
@@ -68,172 +68,78 @@ Content-Transfer-Encoding: 8bit
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit a4ff92ff0bdd731eca9f0b50b1cbb5aba89be4b2 ]
+[ Upstream commit 98ea612dd1150adb61cd2a0e93875e1cc77e6b87 ]
 
-Just like the core UMP conversion helper, we need to deal with the
-partially-filled RPN/NRPN data in the sequencer UMP converter as
-well.
+RPN with 127:127 is treated as a Null RPN, just to reset the
+parameters, and it's not translated to MIDI2.  Although the current
+code can work as is in most cases, better to implement the RPN reset
+explicitly for Null message.
 
-Link: https://patch.msgid.link/20240731130528.12600-5-tiwai@suse.de
+Link: https://patch.msgid.link/20240731130528.12600-6-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_convert.c | 74 +++++++++++++++++++-------------
- 1 file changed, 44 insertions(+), 30 deletions(-)
+ sound/core/seq/seq_ump_convert.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
 diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index a63005da2195d..b4d78710966dd 100644
+index b4d78710966dd..3d266f301deee 100644
 --- a/sound/core/seq/seq_ump_convert.c
 +++ b/sound/core/seq/seq_ump_convert.c
-@@ -790,27 +790,39 @@ static int paf_ev_to_ump_midi2(const struct snd_seq_event *event,
+@@ -789,6 +789,15 @@ static int paf_ev_to_ump_midi2(const struct snd_seq_event *event,
+ 	return 1;
  }
  
- /* set up the MIDI2 RPN/NRPN packet data from the parsed info */
--static void fill_rpn(struct ump_cvt_to_ump_bank *cc,
--		     union snd_ump_midi2_msg *data,
--		     unsigned char channel)
-+static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
-+		    union snd_ump_midi2_msg *data,
-+		    unsigned char channel,
-+		    bool flush)
- {
-+	if (!(cc->cc_data_lsb_set || cc->cc_data_msb_set))
-+		return 0; // skip
-+	/* when not flushing, wait for complete data set */
-+	if (!flush && (!cc->cc_data_lsb_set || !cc->cc_data_msb_set))
-+		return 0; // skip
-+
- 	if (cc->rpn_set) {
- 		data->rpn.status = UMP_MSG_STATUS_RPN;
- 		data->rpn.bank = cc->cc_rpn_msb;
- 		data->rpn.index = cc->cc_rpn_lsb;
--		cc->rpn_set = 0;
--		cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
--	} else {
-+	} else if (cc->nrpn_set) {
- 		data->rpn.status = UMP_MSG_STATUS_NRPN;
- 		data->rpn.bank = cc->cc_nrpn_msb;
- 		data->rpn.index = cc->cc_nrpn_lsb;
--		cc->nrpn_set = 0;
--		cc->cc_nrpn_msb = cc->cc_nrpn_lsb = 0;
-+	} else {
-+		return 0; // skip
- 	}
-+
- 	data->rpn.data = upscale_14_to_32bit((cc->cc_data_msb << 7) |
- 					     cc->cc_data_lsb);
- 	data->rpn.channel = channel;
-+
++static void reset_rpn(struct ump_cvt_to_ump_bank *cc)
++{
 +	cc->rpn_set = 0;
 +	cc->nrpn_set = 0;
 +	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
- 	cc->cc_data_msb = cc->cc_data_lsb = 0;
++	cc->cc_data_msb = cc->cc_data_lsb = 0;
 +	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
-+	return 1;
++}
++
+ /* set up the MIDI2 RPN/NRPN packet data from the parsed info */
+ static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
+ 		    union snd_ump_midi2_msg *data,
+@@ -817,11 +826,7 @@ static int fill_rpn(struct ump_cvt_to_ump_bank *cc,
+ 					     cc->cc_data_lsb);
+ 	data->rpn.channel = channel;
+ 
+-	cc->rpn_set = 0;
+-	cc->nrpn_set = 0;
+-	cc->cc_rpn_msb = cc->cc_rpn_lsb = 0;
+-	cc->cc_data_msb = cc->cc_data_lsb = 0;
+-	cc->cc_data_msb_set = cc->cc_data_lsb_set = 0;
++	reset_rpn(cc);
+ 	return 1;
  }
  
- /* convert CC event to MIDI 2.0 UMP */
-@@ -823,28 +835,34 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
- 	unsigned char index = event->data.control.param & 0x7f;
- 	unsigned char val = event->data.control.value & 0x7f;
- 	struct ump_cvt_to_ump_bank *cc = &dest_port->midi2_bank[channel];
-+	int ret;
- 
- 	/* process special CC's (bank/rpn/nrpn) */
- 	switch (index) {
- 	case UMP_CC_RPN_MSB:
-+		ret = fill_rpn(cc, data, channel, true);
+@@ -843,11 +848,15 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
+ 		ret = fill_rpn(cc, data, channel, true);
  		cc->rpn_set = 1;
  		cc->cc_rpn_msb = val;
--		return 0; // skip
-+		return ret;
++		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
++			reset_rpn(cc);
+ 		return ret;
  	case UMP_CC_RPN_LSB:
-+		ret = fill_rpn(cc, data, channel, true);
+ 		ret = fill_rpn(cc, data, channel, true);
  		cc->rpn_set = 1;
  		cc->cc_rpn_lsb = val;
--		return 0; // skip
-+		return ret;
++		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
++			reset_rpn(cc);
+ 		return ret;
  	case UMP_CC_NRPN_MSB:
-+		ret = fill_rpn(cc, data, channel, true);
- 		cc->nrpn_set = 1;
- 		cc->cc_nrpn_msb = val;
--		return 0; // skip
-+		return ret;
- 	case UMP_CC_NRPN_LSB:
-+		ret = fill_rpn(cc, data, channel, true);
- 		cc->nrpn_set = 1;
- 		cc->cc_nrpn_lsb = val;
--		return 0; // skip
-+		return ret;
- 	case UMP_CC_DATA:
-+		cc->cc_data_msb_set = 1;
- 		cc->cc_data_msb = val;
--		return 0; // skip
-+		return fill_rpn(cc, data, channel, false);
- 	case UMP_CC_BANK_SELECT:
- 		cc->bank_set = 1;
- 		cc->cc_bank_msb = val;
-@@ -854,11 +872,9 @@ static int cc_ev_to_ump_midi2(const struct snd_seq_event *event,
- 		cc->cc_bank_lsb = val;
- 		return 0; // skip
- 	case UMP_CC_DATA_LSB:
-+		cc->cc_data_lsb_set = 1;
- 		cc->cc_data_lsb = val;
--		if (!(cc->rpn_set || cc->nrpn_set))
--			return 0; // skip
--		fill_rpn(cc, data, channel);
--		return 1;
-+		return fill_rpn(cc, data, channel, false);
- 	}
- 
- 	data->cc.status = status;
-@@ -926,6 +942,7 @@ static int ctrl14_ev_to_ump_midi2(const struct snd_seq_event *event,
- 	unsigned char index = event->data.control.param & 0x7f;
- 	struct ump_cvt_to_ump_bank *cc = &dest_port->midi2_bank[channel];
- 	unsigned char msb, lsb;
-+	int ret;
- 
- 	msb = (event->data.control.value >> 7) & 0x7f;
- 	lsb = event->data.control.value & 0x7f;
-@@ -939,28 +956,25 @@ static int ctrl14_ev_to_ump_midi2(const struct snd_seq_event *event,
- 		cc->cc_bank_lsb = lsb;
- 		return 0; // skip
- 	case UMP_CC_RPN_MSB:
--		cc->cc_rpn_msb = msb;
--		fallthrough;
- 	case UMP_CC_RPN_LSB:
--		cc->rpn_set = 1;
-+		ret = fill_rpn(cc, data, channel, true);
-+		cc->cc_rpn_msb = msb;
+ 		ret = fill_rpn(cc, data, channel, true);
+@@ -961,6 +970,8 @@ static int ctrl14_ev_to_ump_midi2(const struct snd_seq_event *event,
+ 		cc->cc_rpn_msb = msb;
  		cc->cc_rpn_lsb = lsb;
--		return 0; // skip
-+		cc->rpn_set = 1;
-+		return ret;
+ 		cc->rpn_set = 1;
++		if (cc->cc_rpn_msb == 0x7f && cc->cc_rpn_lsb == 0x7f)
++			reset_rpn(cc);
+ 		return ret;
  	case UMP_CC_NRPN_MSB:
--		cc->cc_nrpn_msb = msb;
--		fallthrough;
  	case UMP_CC_NRPN_LSB:
-+		ret = fill_rpn(cc, data, channel, true);
-+		cc->cc_nrpn_msb = msb;
- 		cc->nrpn_set = 1;
- 		cc->cc_nrpn_lsb = lsb;
--		return 0; // skip
-+		return ret;
- 	case UMP_CC_DATA:
--		cc->cc_data_msb = msb;
--		fallthrough;
- 	case UMP_CC_DATA_LSB:
-+		cc->cc_data_msb_set = cc->cc_data_lsb_set = 1;
-+		cc->cc_data_msb = msb;
- 		cc->cc_data_lsb = lsb;
--		if (!(cc->rpn_set || cc->nrpn_set))
--			return 0; // skip
--		fill_rpn(cc, data, channel);
--		return 1;
-+		return fill_rpn(cc, data, channel, false);
- 	}
- 
- 	data->cc.status = UMP_MSG_STATUS_CC;
 -- 
 2.43.0
 
