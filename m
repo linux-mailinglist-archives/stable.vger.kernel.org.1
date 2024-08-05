@@ -1,96 +1,119 @@
-Return-Path: <stable+bounces-65374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A50947A55
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 13:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF075947B1E
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 14:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C88A41C21287
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 11:24:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C91D11C20F9B
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 12:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4906F1547E0;
-	Mon,  5 Aug 2024 11:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCB415666C;
+	Mon,  5 Aug 2024 12:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uaAo72g4"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="SvVeTsqg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta-65-225.siemens.flowmailer.net (mta-65-225.siemens.flowmailer.net [185.136.65.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02411311AC;
-	Mon,  5 Aug 2024 11:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F663159568
+	for <stable@vger.kernel.org>; Mon,  5 Aug 2024 12:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722857048; cv=none; b=oZPiIYY0xPdpiQ1RB7/Fyb3i/z8/g57DIGlcz15jeixMTfM6JK8VK83bG9H+SFA1/xVLkJSCXwOS2Lt9+RvfaUiV8+fa8fs7umb/CfGW5SFJzhM2myAYXouVU9fHYKnAmiBtjVv8iTNYGC1w5TfMpy54BPc1wTze+wHvvz+Zqf4=
+	t=1722861722; cv=none; b=gcFU8bPJDyekrpC3Pbw0edCIdq75nvgP4t69IC6R2ikDRMotHuC2X1gfYNXpsuiwfP2Au1hwRs8MIyQ6AMf6yf8xAcBABrIyNRbur3AEtq3ecG0hYgs+M3B7WuUxZR0zY8GuGaLmCDopp37weTLCMlWc/W5fGnikxi30qy4rvv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722857048; c=relaxed/simple;
-	bh=p/frup+udAqQkQeYSiiiwNw37v9VGmao5sFjuiWT6Zw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mVg3SrhKs1UomDE3Hco8UOXxqHnVf6ArfzS5VDk9ApiiwI3TNRHyvyOOLJJG2bSONRViZT1zziVF4lSOWukTS0THnbFb6Gue98Wz8mJPWXbsRtVgc5zXeTjmrdZvp2/5eheLDyL1O0rw3G+bcmaxvF1tS0ICjg47at9mGaBX2i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uaAo72g4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC97C32782;
-	Mon,  5 Aug 2024 11:24:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722857047;
-	bh=p/frup+udAqQkQeYSiiiwNw37v9VGmao5sFjuiWT6Zw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uaAo72g40LW4FUQ/hk7n/W5ymwcEOz/JiKnPZo5wPBI5Snj5y7SxlRGVtFTzdYgjP
-	 eRxen4pbtOiAdiarvDb791OY8mKeuTpkD/gXtvxzFW/rGEkYqBSHv90JLFpoHfPbri
-	 wnc2tTr/m3q9kVY+3ua7YANpbhEKFcF9txJXfuNashjO+FiM0jl4WK742gz3/DsHtf
-	 AIAqPXEgqlkIFiWR+q5lyRY3JnIRqweWpBQXeArq058pWPMYVv4YIMGebyUmeSlOoN
-	 j5JHQiDzVNIsSrjrRx5TM2zgBC/3GsnpfIvAymm37LkLAWEgprZiIW5huMLvLjD1IZ
-	 gI8291vR4iUyQ==
-Date: Mon, 5 Aug 2024 07:24:05 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: Patch "ipv4: fix source address selection with route leak" has
- been added to the 5.15-stable tree
-Message-ID: <ZrC2VY4GfDRv5T5i@sashalap>
-References: <20240803145547.888173-1-sashal@kernel.org>
- <fa631c09-60e4-4fec-98ce-3f02fd412408@6wind.com>
+	s=arc-20240116; t=1722861722; c=relaxed/simple;
+	bh=2oeDCd43gj3tEVG9acz79y7We8C38uo5aN+ARIR8P5k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=l9860e5mfrpKwq1HdPtX5sanOc6M0mHo3ENec1ppAfBZWcU0yDBFPqbZnG8ABekhzgXZe9b8K4H+Yq9xKRGRJlvDrToR/8iE1D7YAJSvDW4EL+529gEsrcgL/aM3BBPO010EMYv3v8irjfBseCIUSk9TtroNCDp+95tAenDfWSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=SvVeTsqg; arc=none smtp.client-ip=185.136.65.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-225.siemens.flowmailer.net with ESMTPSA id 2024080512415263718c6cdba77d0c76
+        for <stable@vger.kernel.org>;
+        Mon, 05 Aug 2024 14:41:52 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=felix.moessbauer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
+ bh=sS9nfVqlSth+qJIirvho6CZ3s4rCPhOH4Nl/w1oH1ms=;
+ b=SvVeTsqgVS6d8YDOBWAVZD2yAZdKEZeXb78g4MnbhGBBl2pDGFbGZlt0iZ1TFQsczUxLQN
+ qe1R4T9Q3ax6gJ0U2O3JyRjeudPavxH7B84CnQtWEtbFbJbRtly5yZoDrcVU4bQ5S1xcA8VU
+ Rd0bybvZhs5KpyLL03CR11Jp+/vFk0Yz1aa0UFdfDWmNHKjdt6V0mfcnRL2veQZ+9+dJkNMA
+ lCYYX2m4e95OScjG21PflqgrhJl6u25AdmNddoSrlBsbHEhBDdUMSEda8Q0JTIeDTz5lPPiv
+ y42VhNgkbwPT4HsLV6kvjlyMOqjA3a8h4ftl2TXC86bg5ZViQ4ga0qow==;
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
+To: linux-kernel@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	jan.kiszka@siemens.com,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/2] hrtimer: Ignore slack time for RT tasks in hrtimer_start_range_ns()
+Date: Mon,  5 Aug 2024 14:41:16 +0200
+Message-Id: <20240805124116.21394-3-felix.moessbauer@siemens.com>
+In-Reply-To: <20240805124116.21394-1-felix.moessbauer@siemens.com>
+References: <20240805124116.21394-1-felix.moessbauer@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fa631c09-60e4-4fec-98ce-3f02fd412408@6wind.com>
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1321639:519-21489:flowmailer
 
-On Mon, Aug 05, 2024 at 09:43:53AM +0200, Nicolas Dichtel wrote:
->Le 03/08/2024 à 16:55, Sasha Levin a écrit :
->> This is a note to let you know that I've just added the patch titled
->>
->>     ipv4: fix source address selection with route leak
->>
->> to the 5.15-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->> The filename of the patch is:
->>      ipv4-fix-source-address-selection-with-route-leak.patch
->> and it can be found in the queue-5.15 subdirectory.
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->I'm not sure I fully understand the process, but Greg already sent a mail
->because this patch doesn't compile on the 5.15 stable branch.
->
->I sent a backport:
->https://lore.kernel.org/stable/20240802085305.2749750-1-nicolas.dichtel@6wind.com/
+RT tasks do not have any timerslack, as this induces jitter. By
+that, the timer slack is already ignored in the nanosleep family and
+schedule_hrtimeout_range() (fixed in 0c52310f2600).
 
-Appologies, I haven't seen your backport, but instead I've picked up
-40867d74c374 ("net: Add l3mdev index to flow struct and avoid oif reset
-for port devices") as a dependency to address the build failure.
+The hrtimer_start_range_ns function is indirectly used by glibc-2.33+
+for timed waits on condition variables. These are sometimes used in
+RT applications for realtime queue processing. At least on the
+combination of kernel 5.10 and glibc-2.31, the timed wait on condition
+variables in rt tasks was precise (no slack), however glibc-2.33
+changed the internal wait implementation, exposing the kernel bug.
 
+This patch makes the timer slack consistent across all hrtimer
+programming code, by ignoring the timerslack for rt tasks also in the
+last remaining location in hrtimer_start_range_ns().
+
+Similar to 0c52310f2600, this fix should be backported as well.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+---
+ kernel/time/hrtimer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 2b1469f61d9c..1b26e095114d 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1274,7 +1274,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+  * hrtimer_start_range_ns - (re)start an hrtimer
+  * @timer:	the timer to be added
+  * @tim:	expiry time
+- * @delta_ns:	"slack" range for the timer
++ * @delta_ns:	"slack" range for the timer for SCHED_OTHER tasks
+  * @mode:	timer mode: absolute (HRTIMER_MODE_ABS) or
+  *		relative (HRTIMER_MODE_REL), and pinned (HRTIMER_MODE_PINNED);
+  *		softirq based mode is considered for debug purpose only!
+@@ -1299,6 +1299,10 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 
+ 	base = lock_hrtimer_base(timer, &flags);
+ 
++	/* rt-tasks do not have a timer slack for obvious reasons */
++	if (rt_task(current))
++		delta_ns = 0;
++
+ 	if (__hrtimer_start_range_ns(timer, tim, delta_ns, mode, base))
+ 		hrtimer_reprogram(timer, true);
+ 
 -- 
-Thanks,
-Sasha
+2.39.2
+
 
