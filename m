@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCEB9485F2
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 01:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1FB9485F3
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 01:31:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76FFF283D57
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 23:31:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7F3283CCF
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 23:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1B016EC02;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F66916F288;
 	Mon,  5 Aug 2024 23:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pNCsYQGd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sk1EJWeX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2D115ECEE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C33816CD0E;
 	Mon,  5 Aug 2024 23:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722900652; cv=none; b=SIYvjEa4ZVeFKBXrZDbfzuRSoh0YD0iEj+gHlp8oSMAKR5JVa2U+RYT30dhRoClLhKWr5s9MBBtYDZ4bNIoGei8QB/RIBPXjPX5xXUukbfURzejxVfYaI+T6qefm3V9JKTjobuRtyF5H1mfeBUajMirv4fvs722jYMRxjAO7bn8=
+	t=1722900652; cv=none; b=Ec4tu8lobHdNBVGYeCHsHcwl7gBTvHq43/IqqZdC9GeqDL4iC2eGLExTwO8Ja0nbxlmcd42/kbHi5/u6dTBqbjf+UNiW2exw7XlYd2XcwZ2RO8iKtATsjElGTUp5prbvqlGq+4oOSgEvRFQ/TGu7pmBleOl+2YsyC292Ycjg/yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1722900652; c=relaxed/simple;
-	bh=kGm5LA15IuGcTFdaGxlr/xX0h027GMbeDIqGZRv/szI=;
+	bh=J7HlvM9ebl2LhQNjxB74nmObesaFPxmrkJCZVoV4R2A=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hH8yPnxYPvg5Ns/a3BNLPb02Sb9cfUCx9lfxSDqm7LEoLMEctY5oAErxDx69r06FclHqooBsr9P3MerkoZ/rFgjSIL8XXH5d7HZauLbM5OKwR2DoYXEJVqh6BiIGrDSW2b7siNj42G9Kphjs5h27KJ9wZnctS4+OdlvWpX7Op7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pNCsYQGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F030AC4AF15;
+	 In-Reply-To:To:Cc; b=Csu8fbnuI4+QQQVHqmUotY8mhFAYm+IAJtJsO0EOqJ5z6VU0wV7l4RlDyVLiczgaGh5/lBwySjNyafoQhvCjvznNGenkia1H+xgJYitkbKGmwtdG8+6ewuIK/jA/PjHhfZ8l6gZ9u4rR76zWhwMcSezTwt9zUGb8hMpOzJbRumw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sk1EJWeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F036FC4AF17;
 	Mon,  5 Aug 2024 23:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1722900652;
-	bh=kGm5LA15IuGcTFdaGxlr/xX0h027GMbeDIqGZRv/szI=;
+	bh=J7HlvM9ebl2LhQNjxB74nmObesaFPxmrkJCZVoV4R2A=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=pNCsYQGdTv20TztN7Ki6TaV9wrW4JDW20yNtwQ7eGyriZwmo1kOCI6tRETgYqm0Xk
-	 2uu61mVWp1ABXiGwWu9wMb3ex+r7A+RR7W28qW/I5Kzv9MYDH6ly53MJaiEGQj7uTM
-	 kAILh2L4EOhU3R6Yz7wRX7mFXcwTgMLnTeGoJzF8a+otiNJkbUiNlhMgUT6kBdCgIZ
-	 nI5zxOcRuixs/M1IN1WyHFArFPLWUIzki6z2xlVVs3KDr2SHaSS58rO+cEBJ3u2Dmo
-	 0MttebndKHJyTWsqSvRi0PwTlD6DIipiHVUM+j6cOfheogUO0alnUPQbndYz9e09WZ
-	 3giJcq+hGeJ8A==
+	b=Sk1EJWeXRNZlVvwBXBskZ+EXiatDYRtVUsxFyKu/e6egYDHg6PIZ2JE8wkMW55GWq
+	 tSaFMWuqLz6ynzKZc8eKQ48PIcgGDr6S6sdftHhhKDqlTFdKU1KeqcUbG5D3AyUKez
+	 XPOwV6Ja4T0VryfMuzKfsma5cO3kfH9M4HLdU8QCcmY/kYel0P4RDFFQqeSlaY5G9v
+	 WMf7gC1Qk6Zynqv0Ru8teQJ/GFpeh7GrqSEIXIJP1EyLRdbsWeM5WZ336rAtSQ7n2Z
+	 tu55kE09kCxxz8OLY4ttQVdDAArZOqnj3FfzArIRD0FelmUCQzCRO3LWgxnjd64MpT
+	 igP/e6BCYfG3A==
 Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DF85EC43337;
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E7CB6C43140;
 	Mon,  5 Aug 2024 23:30:51 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
@@ -52,15 +52,17 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH] f2fs: fix to wait dio completion
+Subject: Re: [f2fs-dev] [PATCH] f2fs: fix several potential integer overflows in
+ file offsets
 From: patchwork-bot+f2fs@kernel.org
 Message-Id: 
- <172290065191.2803.3335621723887091762.git-patchwork-notify@kernel.org>
+ <172290065194.2803.2752541342354642319.git-patchwork-notify@kernel.org>
 Date: Mon, 05 Aug 2024 23:30:51 +0000
-References: <20240627071711.1563420-1-chao@kernel.org>
-In-Reply-To: <20240627071711.1563420-1-chao@kernel.org>
-To: Chao Yu <chao@kernel.org>
-Cc: jaegeuk@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+References: <20240724172838.11614-1-n.zhandarovich@fintech.ru>
+In-Reply-To: <20240724172838.11614-1-n.zhandarovich@fintech.ru>
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc: jaegeuk@kernel.org, chao@kernel.org, lvc-project@linuxtesting.org,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-f2fs-devel@lists.sourceforge.net
 
 Hello:
@@ -68,19 +70,20 @@ Hello:
 This patch was applied to jaegeuk/f2fs.git (dev)
 by Jaegeuk Kim <jaegeuk@kernel.org>:
 
-On Thu, 27 Jun 2024 15:17:11 +0800 you wrote:
-> It should wait all existing dio write IOs before block removal,
-> otherwise, previous direct write IO may overwrite data in the
-> block which may be reused by other inode.
+On Wed, 24 Jul 2024 10:28:38 -0700 you wrote:
+> When dealing with large extents and calculating file offsets by
+> summing up according extent offsets and lengths of unsigned int type,
+> one may encounter possible integer overflow if the values are
+> big enough.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chao Yu <chao@kernel.org>
+> Prevent this from happening by expanding one of the addends to
+> (pgoff_t) type.
 > 
 > [...]
 
 Here is the summary with links:
-  - [f2fs-dev] f2fs: fix to wait dio completion
-    https://git.kernel.org/jaegeuk/f2fs/c/e60776860678
+  - [f2fs-dev] f2fs: fix several potential integer overflows in file offsets
+    https://git.kernel.org/jaegeuk/f2fs/c/1cade98cf641
 
 You are awesome, thank you!
 -- 
