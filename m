@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-65372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C33947A1E
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 12:59:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831DA947A3C
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 13:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3D91B21A4A
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 10:59:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3986A1F22234
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 11:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE94154C0F;
-	Mon,  5 Aug 2024 10:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F3115575D;
+	Mon,  5 Aug 2024 11:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=radojevic.rs header.i=@radojevic.rs header.b="T7/eKliz"
+	dkim=pass (2048-bit key) header.d=radojevic.rs header.i=@radojevic.rs header.b="owarYTnu"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.radojevic.rs (radojevic.rs [139.162.187.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CA41311AC;
-	Mon,  5 Aug 2024 10:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AB2154BE4;
+	Mon,  5 Aug 2024 11:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.187.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722855534; cv=none; b=q3A2Yq4/8TsyLdYU3WKzWGqAl4b8LhVQYPqB5kOWJ5sXqXvdRGtxx036Rh4V3xq70E/fp5/+6GFD5CbEwy3axm4/Aflq9zpJvuVXvmqGeUqsManUKnaYWaB8tHze+DqJ8/s54n5ywynSGLMs3HL1cUtyMvZGwEY5G/4WwgFECF4=
+	t=1722856035; cv=none; b=OX2iGVFQoqo/pdPD92cLB/jNWqssPg1ZsdfxeAq3Y4lpOSdTCnla/K/DZcjpPYsYWxiQJgH1xZmIXrQkKd2VCAG28Rh/pJjcplYR1MAJtyehE4JCg/+BVSL5d7l7ZoJr/SaYF2o8i12aBbbUdgjrAT40S6zVOHfB7RgG7KectIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722855534; c=relaxed/simple;
+	s=arc-20240116; t=1722856035; c=relaxed/simple;
 	bh=FsKABYar5tCCmqGtOJLbGI3S+bt2cKoGgq3u7smejfU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j4B3P2C+murJkn5WwTeO+/2cibB3SQ8a338q6sxeC+QFa0FU/AHeFc9ouvK6hm9IwuFsZA6erTnRs9/JEaCFyG8/Z3UW8zWmUnLYiNYH8OAoTitjzPHxK2/4QfqLQSnVPdcAibz0UHWK0QHtYalcoc4kktizcSOETrNtnQR/eh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=radojevic.rs; spf=pass smtp.mailfrom=radojevic.rs; dkim=pass (2048-bit key) header.d=radojevic.rs header.i=@radojevic.rs header.b=T7/eKliz; arc=none smtp.client-ip=139.162.187.67
+	 Content-Type:Content-Disposition:In-Reply-To; b=MZpjkcV8gze+Xd7Q1mT0g+fcNnTLkpagQKkbgqWhtHdK2U/gtXwiPlIfWIq837KzIl/lcLw6XZtBHDws+YAFKWsGYgZIIrU+otYqIuhwUSBhveEbzDuAaEczhhBTseP0DtciwGLnAg57ZTLpLc60Af1UI/Cotkche6iZ6Z9sy08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=radojevic.rs; spf=pass smtp.mailfrom=radojevic.rs; dkim=pass (2048-bit key) header.d=radojevic.rs header.i=@radojevic.rs header.b=owarYTnu; arc=none smtp.client-ip=139.162.187.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=radojevic.rs
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=radojevic.rs
 Received: from localhost (unknown [91.143.223.193])
-	by mail.radojevic.rs (Postfix) with ESMTPSA id 587A52FC6D;
-	Mon,  5 Aug 2024 12:58:50 +0200 (CEST)
+	by mail.radojevic.rs (Postfix) with ESMTPSA id 618D51E1DF;
+	Mon,  5 Aug 2024 13:07:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=radojevic.rs; s=mail;
-	t=1722855530; bh=FsKABYar5tCCmqGtOJLbGI3S+bt2cKoGgq3u7smejfU=;
+	t=1722856032; bh=FsKABYar5tCCmqGtOJLbGI3S+bt2cKoGgq3u7smejfU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T7/eKlizt7sdBNlSEix9YYz9TnlL5rIMAc2bi8FiZVnjgXQ6W3cIbuX3WM3cHra1l
-	 WzF3iMB30c+NtbhxFeiJiHtRFdahyRMi8hO9anLs39LOIuNZYSSt7DjuV8DqfOvJAU
-	 sq+mCtg+yUU1qg8brul9grOd9JBVtRi1MJd/lDpZsGd22OPY5dTC5egbEbzxoWw2jm
-	 Uu6nk4ZnQkPm60M6jhoJirs47BJSDuqcl8YoTMMNyf3/eovCI59Kv3VSstph0ruGQY
-	 OpRoZ99cFEk6TvfxkZrA5vgykJRkratRwqXvLluNFYLYfiDA3fFo8Z9tDR03aEEnzx
-	 JrERVef+hHZfQ==
-Date: Mon, 5 Aug 2024 12:58:45 +0200
+	b=owarYTnudqNQj3zzqpcAD1STQ5bEUj0ILZjbSJvK0hNiUpvR/Gyyr7fOKhAuPST7P
+	 50I9jyCORzNZQkrEHXd4qLRwe4wKHlUxj/pgpTMHJT+wNJnaRq8OOhY23W1Ngo1vJw
+	 mSOTWt9halv0WWjvcZGVoxo+x2E6twuW5NZSPcDgzZIcWoliVNWZWHg1vncDX0G5Q1
+	 zHjt7MfuOIS0P+rG+fETO9650G55ciXpUVEtQacydvaEfJcvPRuALMEGmu9M3OIESD
+	 c9gPjB8H3MbMj53XGqavnBdUn+Aaq1PDQBgQtokbDxHEw1mGYlsxNp7oQLlWlZ6SKy
+	 VGz+H3+7llQ+Q==
+Date: Mon, 5 Aug 2024 13:07:11 +0200
 From: Nikola Radojevic <nikola@radojevic.rs>
 To: Dragan Simic <dsimic@manjaro.org>
 Cc: linux-rockchip@lists.infradead.org, heiko@sntech.de, 
@@ -51,7 +51,7 @@ Cc: linux-rockchip@lists.infradead.org, heiko@sntech.de,
 	conor+dt@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH] arm64: dts: rockchip: Raise Pinebook Pro's panel
  backlight PWM frequency
-Message-ID: <xzzqimycxuwu7yg55pxfgb7sgtmxkjhsltpcst7y7toiwspjeg@jsahtppev3kg>
+Message-ID: <fkiauvfki7kvmhs3g4aqatqcdtf6cko7xpgg7zfhgojnhoxa36@ruz5ywsdgr4c>
 References: <2a23b6cfd8c0513e5b233b4006ee3d3ed09b824f.1722805655.git.dsimic@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
