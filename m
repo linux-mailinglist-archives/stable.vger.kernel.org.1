@@ -1,135 +1,167 @@
-Return-Path: <stable+bounces-65380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C998947B83
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 15:05:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B51947C5D
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 16:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 383642819C3
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 13:05:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DF53284806
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 14:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6335615746B;
-	Mon,  5 Aug 2024 13:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5CA55C3E;
+	Mon,  5 Aug 2024 14:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kg4ikPJt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ahjw1xw3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Cj15Aucu"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26CA1514C9;
-	Mon,  5 Aug 2024 13:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288D533080;
+	Mon,  5 Aug 2024 14:01:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722863146; cv=none; b=A/VnWmBEDI3MYH2ARbPbj3fGsPFdXfQitGMRhYyIIWrmcYjlWALq6AdJVFQOvGcOf2+cX2eemwegETdTlfUgUriyRXZdGPrvW7b+IBPt9qEUrn2OqA3rdbiKjFl3fiKYYG69nBYyRSP7QNX0DopBNoR98fiEcMC0QW/YLIihr8o=
+	t=1722866506; cv=none; b=U63XTn0zDCBxQ33diZKTU/gBry5qsDKLdKtGYOJza8KB/OjucZK78bs2xdKRnaX5Da5T+jrBq0JzV+QZxgjsfcplCMyMS6JuzdNPobkwbL/Yhb7DWSRojveMGM3z0RMCl/twVVoH3NRcNhiJBB039fawFZLEuYb+/zaYSrHgKaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722863146; c=relaxed/simple;
-	bh=eFN2sPjVj5Yl+84tJnzvzW2EDQWSMAAqlSRg3KNu8UE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gzdhwzkZXTqstNCiC378sX3hszEwyjbCFLA1o7cZmb1II4kgtvQTdQ6mDk52L1aS1/PvU0aSLoaMZVKb1/YGnCPNCorbIFI/7YH7FWFFCBqGQK7d5L8SN1YQIrYtyCdfvdotmI5O8T4EJwTgwPXfRB3nJUlvNZkOFa7osyqMU+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kg4ikPJt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ahjw1xw3; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722863143;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+te1bapzfw1K0ACXvja14/L2YeBsUai9y6dAgdsVyfs=;
-	b=kg4ikPJtXUVsT0uC1mLh6dKyr+y6H8wz1zNyFBgvZpjTKm0O1qUO7ZQhlCTaEY74SCt64I
-	C+Dn1ALQz7pf3G0Ylg3YN4GwarHEovSWCmQvYs79me//GsVCmzNt2f62ni0zOf1ZEzueDI
-	bqFktrgjwlgJccyEpBiZxAz0FvxS0PJjB4cFoPqwQnFAalqN8lvxwgcXHvX9LiX473vNUq
-	JoWCbAJ4djAOyfAxQgCIhzMQ83xm8mn9wn3YhFyqFg+K/tlmrWgYph7KoCE2wJz6woZ90r
-	yfg0reLK6fGi2YorzcChUk6Zv4E9u9LCnqRsva/rq4+t2G7CT+eDMKzq3q+hjg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722863143;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+te1bapzfw1K0ACXvja14/L2YeBsUai9y6dAgdsVyfs=;
-	b=Ahjw1xw3snzg3wiknX1wLQcRTZkcZgwxGwmNUfQz9AmQlm5S1SnDLMn5LxYSGRtBLCZGZ6
-	30sl+5IuabXuc8Cg==
-To: Felix Moessbauer <felix.moessbauer@siemens.com>,
- linux-kernel@vger.kernel.org
-Cc: Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, jan.kiszka@siemens.com, Felix Moessbauer
- <felix.moessbauer@siemens.com>, stable@vger.kernel.org, Sebastian Andrzej
- Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH 2/2] hrtimer: Ignore slack time for RT tasks in
- hrtimer_start_range_ns()
-In-Reply-To: <20240805124116.21394-3-felix.moessbauer@siemens.com>
-References: <20240805124116.21394-1-felix.moessbauer@siemens.com>
- <20240805124116.21394-3-felix.moessbauer@siemens.com>
-Date: Mon, 05 Aug 2024 15:05:42 +0200
-Message-ID: <87a5hr5dcp.ffs@tglx>
+	s=arc-20240116; t=1722866506; c=relaxed/simple;
+	bh=7sUgatBDskJqUnx8+ur3ga8RFhAtS/mr25ctjJF+9fk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=aThcW4qVI6R7Ugp59VQZyBcruvVz7Tgvsuq9825ZcfuQVyRt8WnScVLhZ6ROS4ykBEv8Xrn66UnR2JxJyihtUC+6O/UB5gG2cApF1wVrC+49gwut96yRzKVjeGu133X8V3XydKq5+nLNjdCIF5Axs9XlSOLcktVpJxy5R5V1gGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Cj15Aucu; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 475CNFmc019897;
+	Mon, 5 Aug 2024 14:01:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	K4Tiis6dmOiCm866RJSL9aIC0QOcW+tOWM8V2CSXDrY=; b=Cj15AucuhSvhdyg2
+	QW8Fo2ccnLtecFzgE/blvI6u5D8V6KVvdxl2fRLPYne9Q3dqDfeJWOSm1iUnCauY
+	NXsj9FAzqAAR4P2qxs5TAHUskyZmuO7Zkx8fZnUFVVvyjRWFuq7YtJGWYDBt99Rq
+	GhUIr5tMFmnJQtpNyM2tK43A9IyCEXpRG9BN1+lHIztM8IWAeAtfQlC5ZMKywEb9
+	CdV0I5iDFmZnOy4S7au00onWOg6b/eM853qyA6T7kkdLGWiIYKb2en0lxEItPinf
+	4XLYPyz9npTsWTFprZ52WAwotiNymFtY7JmCrWm5iqzGeH5OUlos54doncKGCqcG
+	FTnEOQ==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40scs2v4r8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Aug 2024 14:01:31 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 475E1Voq012941
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 5 Aug 2024 14:01:31 GMT
+Received: from [10.217.219.66] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 5 Aug 2024
+ 07:01:27 -0700
+Message-ID: <6faa27be-54eb-ca00-f2a8-de3eb6fa7547@quicinc.com>
+Date: Mon, 5 Aug 2024 19:30:14 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 1/2] dmaengine: dw-edma: Fix unmasking STOP and ABORT
+ interrupts for HDMA
+Content-Language: en-US
+To: Serge Semin <fancer.lancer@gmail.com>
+CC: <manivannan.sadhasivam@linaro.org>, <vkoul@kernel.org>,
+        <quic_shazhuss@quicinc.com>, <quic_nitegupt@quicinc.com>,
+        <quic_ramkri@quicinc.com>, <quic_nayiluri@quicinc.com>,
+        <quic_krichai@quicinc.com>, <quic_vbadigan@quicinc.com>,
+        <stable@vger.kernel.org>, Cai Huoqing <cai.huoqing@linux.dev>,
+        <dmaengine@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <1721740773-23181-1-git-send-email-quic_msarkar@quicinc.com>
+ <1721740773-23181-2-git-send-email-quic_msarkar@quicinc.com>
+ <dnvoktjxx2m5oy2m5ocrgyd4veypnjbjnth364hl32ou4gm3t2@tjxrsowsabgr>
+From: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+In-Reply-To: <dnvoktjxx2m5oy2m5ocrgyd4veypnjbjnth364hl32ou4gm3t2@tjxrsowsabgr>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Cbmd1yMSee1QOYIsrlaTexI_98MEIkG-
+X-Proofpoint-GUID: Cbmd1yMSee1QOYIsrlaTexI_98MEIkG-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-05_02,2024-08-02_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ suspectscore=0 adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 mlxlogscore=520 phishscore=0 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408050100
 
-On Mon, Aug 05 2024 at 14:41, Felix Moessbauer wrote:
-> RT tasks do not have any timerslack, as this induces jitter. By
-> that, the timer slack is already ignored in the nanosleep family and
-> schedule_hrtimeout_range() (fixed in 0c52310f2600).
+
+On 8/2/2024 5:12 AM, Serge Semin wrote:
+> On Tue, Jul 23, 2024 at 06:49:31PM +0530, Mrinmay Sarkar wrote:
+>> The current logic is enabling both STOP_INT_MASK and ABORT_INT_MASK
+>> bit. This is apparently masking those particular interrupts rather than
+>> unmasking the same. If the interrupts are masked, they would never get
+>> triggered.
+>>
+>> So fix the issue by unmasking the STOP and ABORT interrupts properly.
+>>
+>> Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
+>> cc: stable@vger.kernel.org
+>> Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+>> ---
+>>   drivers/dma/dw-edma/dw-hdma-v0-core.c | 9 +++++----
+>>   1 file changed, 5 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+>> index 10e8f07..fa89b3a 100644
+>> --- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
+>> +++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
+>> @@ -247,10 +247,11 @@ static void dw_hdma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+>>   	if (first) {
+>>   		/* Enable engine */
+>>   		SET_CH_32(dw, chan->dir, chan->id, ch_en, BIT(0));
+>> -		/* Interrupt enable&unmask - done, abort */
+>> -		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup) |
+>> -		      HDMA_V0_STOP_INT_MASK | HDMA_V0_ABORT_INT_MASK |
+>> -		      HDMA_V0_LOCAL_STOP_INT_EN | HDMA_V0_LOCAL_ABORT_INT_EN;
+> Just curious, if all the interrupts were actually masked, how has this
+> been even working?.. In other words if it affected both local and
+> remote interrupts, then the HDMA driver has never actually worked,
+> right?
+
+Agreed, it should not work as interrupts were masked.
+
+But as we are enabling LIE/RIE bits (LWIE/RWIE) that eventually enabling 
+watermark
+interrupt in HDMA case and somehow on device I could see interrupt was
+generating with watermark and stop bit set and it was working.
+Since we were not clearing watermark interrupt, it was also causing 
+storm of interrupt.
+
+>> +		/* Interrupt unmask - STOP, ABORT */
+>> +		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup) &
+>> +		      ~HDMA_V0_STOP_INT_MASK & ~HDMA_V0_ABORT_INT_MASK;
+> Please convert this to:
+> +		/* Interrupt unmask - stop, abort */
+> +		tmp = GET_CH_32(dw, chan->dir, chan->id, int_setup);
+> +		tmp &= ~(HDMA_V0_STOP_INT_MASK | HDMA_V0_ABORT_INT_MASK);
 >
-> The hrtimer_start_range_ns function is indirectly used by glibc-2.33+
-> for timed waits on condition variables. These are sometimes used in
-> RT applications for realtime queue processing. At least on the
-> combination of kernel 5.10 and glibc-2.31, the timed wait on condition
-> variables in rt tasks was precise (no slack), however glibc-2.33
-> changed the internal wait implementation, exposing the kernel bug.
+> -Serge(y)
 
-That's hardly a bug. It's an oversight.
-
-> This patch makes the timer slack consistent across all hrtimer
-
-"This patch" ....
-
-> programming code, by ignoring the timerslack for rt tasks also in the
-> last remaining location in hrtimer_start_range_ns().
->
-> Similar to 0c52310f2600, this fix should be backported as well.
-
-This is not part of the change log.
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-> ---
->  kernel/time/hrtimer.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-> index 2b1469f61d9c..1b26e095114d 100644
-> --- a/kernel/time/hrtimer.c
-> +++ b/kernel/time/hrtimer.c
-> @@ -1274,7 +1274,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
->   * hrtimer_start_range_ns - (re)start an hrtimer
->   * @timer:	the timer to be added
->   * @tim:	expiry time
-> - * @delta_ns:	"slack" range for the timer
-> + * @delta_ns:	"slack" range for the timer for SCHED_OTHER tasks
->   * @mode:	timer mode: absolute (HRTIMER_MODE_ABS) or
->   *		relative (HRTIMER_MODE_REL), and pinned (HRTIMER_MODE_PINNED);
->   *		softirq based mode is considered for debug purpose only!
-> @@ -1299,6 +1299,10 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
->  
->  	base = lock_hrtimer_base(timer, &flags);
->  
-> +	/* rt-tasks do not have a timer slack for obvious reasons */
-> +	if (rt_task(current))
-> +		delta_ns = 0;
-
-        task_is_realtime()
-
-please
+Sure. Will do
 
 Thanks,
+Mrinmay
 
-        tglx
+>> +		/* Interrupt enable - STOP, ABORT */
+>> +		tmp |= HDMA_V0_LOCAL_STOP_INT_EN | HDMA_V0_LOCAL_ABORT_INT_EN;
+>>   		if (!(dw->chip->flags & DW_EDMA_CHIP_LOCAL))
+>>   			tmp |= HDMA_V0_REMOTE_STOP_INT_EN | HDMA_V0_REMOTE_ABORT_INT_EN;
+>>   		SET_CH_32(dw, chan->dir, chan->id, int_setup, tmp);
+>> -- 
+>> 2.7.4
+>>
 
