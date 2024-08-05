@@ -1,154 +1,157 @@
-Return-Path: <stable+bounces-65387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6D4947CCE
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 16:28:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD8A947CD4
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 16:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3A11C21D8E
-	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 14:28:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BD18283C83
+	for <lists+stable@lfdr.de>; Mon,  5 Aug 2024 14:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B3613A884;
-	Mon,  5 Aug 2024 14:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0019A139CFA;
+	Mon,  5 Aug 2024 14:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BJ7rhVVY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AiYsRYdI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B7D3EA64;
-	Mon,  5 Aug 2024 14:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA0F39FE5;
+	Mon,  5 Aug 2024 14:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722868099; cv=none; b=apRCEaBYjWV3bWOUaTXY0JxSQ+T72uZO1qatRlKQpCnOr51MzrzTtpw1E5NtS2FMat/6Lt6bY4EjTBBk2W1BoggrMqo8jtMIpndSoRGQtjjzj2bdsfT3tIjSTwnqTYXSABQirr8vkpyOA89huWUgxo+qFsNgDIS2rjH2orjDHho=
+	t=1722868236; cv=none; b=AgPubTkEnpJuAtiF+jQmYkSVOyahNb0JA0NkkxrOEB13aJmbejO35j9Sh3fAhFO3lgpx8Ei5m90MWtsdvf/ljnURwscngjbErwFGpGZayKPU+0WOLS/IwZ7ELdeV8AaNC9P5WJy6aEOg9N7C45czxbR1TSgcg+iDmHZBIiIAbmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722868099; c=relaxed/simple;
-	bh=yKbtl95xINhTP7J1jRhAX6V0rXoLD64gANcmv8E/gsw=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=HROIrX8XtjoUXo+0iEMojhvdrA1kuL2jHG2ZC7XDvcdZXkRFCNPYvTGgLSO9xEXXuFWNuWJbGGF7myUufjMbcYprTmzG3QnJdGhk+QHed8BSowsqeRo6AjzCbt0iTFJHIyiHt9whfJchEu5KDWOgIbF2bBvrxZF4ldWKX58TL3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BJ7rhVVY; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722868098; x=1754404098;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=yKbtl95xINhTP7J1jRhAX6V0rXoLD64gANcmv8E/gsw=;
-  b=BJ7rhVVYY51YFMXoMkRwJ28qoJ/lPLumbUEs0NoZ9bB03cfO6HtNrx9M
-   fP2+rRQUaqwVw6S+C2CrB0CrT2XC2vwv4aNwTUFKISf5YdYF3+CMbfo/q
-   8Y+nqLRXiVAbJPGIl5YRbo40IEUwGt39qNG8/GzukyPg7Sc/K1CHa5URd
-   qGDFNNK8fTBiTJTiOolFjCTJFxWT1QJ+KpofPQfqLkNHShRwXFcMwKeXx
-   E69wXbfLknT3LHaA8yXhjIL6d2G3K45y6AFUAoob+3IzZAIHWez8q6LVh
-   +JfCRChzKXiPKylhcpNnC5HT7N/UfcBnJ+aTWxdB+VhInce/G7xzCaacR
-   Q==;
-X-CSE-ConnectionGUID: UmpTSRWKSSiSNy/80IELHA==
-X-CSE-MsgGUID: P5K+ZroUQQ2oGeQRNr2HVA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="38340355"
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; 
-   d="scan'208";a="38340355"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2024 07:28:11 -0700
-X-CSE-ConnectionGUID: Ric531ExQP+mpO47+vxDCg==
-X-CSE-MsgGUID: /6vJNaXKRhipark9yiKOQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; 
-   d="scan'208";a="56123772"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.244.5])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2024 07:28:09 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 5 Aug 2024 17:28:05 +0300 (EEST)
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    linux-serial <linux-serial@vger.kernel.org>, 
-    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org, 
-    Douglas Anderson <dianders@chromium.org>
-Subject: Re: [PATCH 03/13] serial: don't use uninitialized value in
- uart_poll_init()
-In-Reply-To: <20240805102046.307511-4-jirislaby@kernel.org>
-Message-ID: <84af065c-b1a1-dc84-4c28-4596c3803fd2@linux.intel.com>
-References: <20240805102046.307511-1-jirislaby@kernel.org> <20240805102046.307511-4-jirislaby@kernel.org>
+	s=arc-20240116; t=1722868236; c=relaxed/simple;
+	bh=ZcXsli7Wq6O+TcwcCL2GIts9fcHa+mNkbfZaKZu+1d0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JdGXDQJFCIs1zT6xCzQmQJyIEOfKYamwglKYZCFfFypT43QAS5uGCqK7VmlRgE4pUgS+DYftA6SNaWTtwoglu40aNyPdUWIga39nz0/Sy9HUUBiA09C0QXCBU8EwcnZv7aLSMjWWnqKT8RfoGqaayjMO4N8gyV/C1k1ZhNVp7Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AiYsRYdI; arc=none smtp.client-ip=209.85.166.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-39b04f0b486so23121875ab.0;
+        Mon, 05 Aug 2024 07:30:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722868234; x=1723473034; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+yrOWpOCkkddMkiXMLdz+46OmmK+WGMbSxxPYuQdxYE=;
+        b=AiYsRYdI7sqjUS23zfAqSLuWN9Q/4/4vAV+covR6PUpgHOI0BlgvkIIZ14LO6aBUkm
+         ovfVyKwky0/oXC/yXzn7aVoiWV2/0IWhA9OEcTkcme6I+AkPNdffQyuaoP+oCBJRCUBK
+         G6D3bCdw+/YBwdig0GlEnTHA1UNVsJnrChIk6/SuPhkaa4hqqh2+qsoTeiJmFoMMDNd3
+         CmbYPRGhrPacam4aq9ADRY5P0hpdyQV3cCypc6825upIa7qrpuuyUSacYZhHOhPB97HZ
+         iGKmc/Qe3UjWE1WQNJwwjlhTdxu9LGoDO+WZUwY8A1qzbZRUZMVY4v5pOTmjmY2RfzYi
+         m/Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722868234; x=1723473034;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+yrOWpOCkkddMkiXMLdz+46OmmK+WGMbSxxPYuQdxYE=;
+        b=AoO14asyHqMKm9qWQbTs9xnKN/cddgjoWNoZO5QyWuU2D4uaVluwG5glb/3zDYrln3
+         ByQj12MCdL6662KmH4tY6+k8zdeuCoHhV991tnd57sDCfbfpMilg7wBnt5qzoKtgZopw
+         4+I9Kk5Wdv6YhhzRy6PqGvRemBtLqjjZI184JQ8Yo8jC6Ofzm0lbbAx43a6BGhTrlTlh
+         NIO9Mf5mEkCojlTXYF6KQVcSho5YipxJYdf4oUf+xoYzNLIz4SK87qiVKy71WEIvJHrr
+         QZ4nBk17fpdVVho3f3ta6wzgvuhedH/hZPilAAdncyDdAiqPPnYSELJa/5lBHVTzlgDb
+         WEgg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9JcfSwrIDbonD4nvMRnIlQ2MdnhzC2q5/Y7U7Fb1cE9PFWy2eomYShHdZuDbohJZIDmjPGuK+1vbL88ngAPJdcfojbpCHRYRIdEmTZWCTDCoJfheNi2Ecqo+CoVRjABD9ChEl+w9eQzaBbrSf2RCCuuZz6SstKZ0dMELtVNo25mF53vLb1VeF
+X-Gm-Message-State: AOJu0Yw1vbk2xYxoYF/D35XrKutVGuOOYqb1c10S5eztWg34n84Mi3fX
+	jsMvfTfVpAP8pa/6sGUilY+rBnmXvlqUcWVjEmV7+bJx41lf4OZQ5TB5RA==
+X-Google-Smtp-Source: AGHT+IEsKEn4rwrAz2co2tT9ngMnFMLGY4PnwV73FVaRcsOY2AX1t501mMa2iwMP96ahqra9Kvvilg==
+X-Received: by 2002:a92:6e01:0:b0:374:aa60:a5c3 with SMTP id e9e14a558f8ab-39b1fc3b201mr119278905ab.28.1722868234250;
+        Mon, 05 Aug 2024 07:30:34 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:22e4:17a:28a:7497])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7bb80ef3f8asm1015226a12.58.2024.08.05.07.30.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Aug 2024 07:30:33 -0700 (PDT)
+Date: Mon, 5 Aug 2024 07:30:31 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Ike Panhc <ike.pan@canonical.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	platform-driver-x86@vger.kernel.org, linux-input@vger.kernel.org,
+	Jonathan Denose <jdenose@chromium.org>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] platform/x86: ideapad-laptop: Stop calling
+ i8042_command()
+Message-ID: <ZrDiBxZ7ZiNrwB9c@google.com>
+References: <20240805141608.170844-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-792570173-1722868085=:1238"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240805141608.170844-1-hdegoede@redhat.com>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Aug 05, 2024 at 04:16:08PM +0200, Hans de Goede wrote:
+> Commit 07a4a4fc83dd ("ideapad: add Lenovo IdeaPad Z570 support (part 2)")
+> added an i8042_command(..., I8042_CMD_AUX_[EN|DIS]ABLE) call to
+> the ideapad-laptop driver to suppress the touchpad events at the PS/2
+> AUX controller level.
+> 
+> Commit c69e7d843d2c ("platform/x86: ideapad-laptop: Only toggle ps2 aux
+> port on/off on select models") limited this to only do this by default
+> on the IdeaPad Z570 to replace a growing list of models on which
+> the i8042_command() call was disabled by quirks because it was causing
+> issues.
+> 
+> A recent report shows that this is causing issues even on the Z570 for
+> which it was originally added because it can happen on resume before
+> the i8042 controller's own resume() method has run:
+> 
+> [   50.241235] ideapad_acpi VPC2004:00: PM: calling acpi_subsys_resume+0x0/0x5d @ 4492, parent: PNP0C09:00
+> [   50.242055] snd_hda_intel 0000:00:0e.0: PM: pci_pm_resume+0x0/0xed returned 0 after 13511 usecs
+> [   50.242120] snd_hda_codec_realtek hdaudioC0D0: PM: calling hda_codec_pm_resume+0x0/0x19 [snd_hda_codec] @ 4518, parent: 0000:00:0e.0
+> [   50.247406] i8042: [49434] a8 -> i8042 (command)
+> [   50.247468] ideapad_acpi VPC2004:00: PM: acpi_subsys_resume+0x0/0x5d returned 0 after 6220 usecs
+> ...
+> [   50.247883] i8042 kbd 00:01: PM: calling pnp_bus_resume+0x0/0x9d @ 4492, parent: pnp0
+> [   50.247894] i8042 kbd 00:01: PM: pnp_bus_resume+0x0/0x9d returned 0 after 0 usecs
+> [   50.247906] i8042 aux 00:02: PM: calling pnp_bus_resume+0x0/0x9d @ 4492, parent: pnp0
+> [   50.247916] i8042 aux 00:02: PM: pnp_bus_resume+0x0/0x9d returned 0 after 0 usecs
+> ...
+> [   50.248301] i8042 i8042: PM: calling platform_pm_resume+0x0/0x41 @ 4492, parent: platform
+> [   50.248377] i8042: [49434] 55 <- i8042 (flush, kbd)
+> [   50.248407] i8042: [49435] aa -> i8042 (command)
+> [   50.248601] i8042: [49435] 00 <- i8042 (return)
+> [   50.248604] i8042: [49435] i8042 controller selftest: 0x0 != 0x55
+> 
+> Dmitry (input subsys maintainer) pointed out that just sending
+> KEY_TOUCHPAD_OFF/KEY_TOUCHPAD_ON which the ideapad-laptop driver
+> already does should be sufficient and that it then is up to userspace
+> to filter out touchpad events after having received a KEY_TOUCHPAD_OFF.
+> 
+> Given all the problems the i8042_command() call has been causing just
+> removing it indeed seems best, so this removes it completely. Note that
+> this only impacts the Ideapad Z570 since it was already disabled by
+> default on all other models.
 
---8323328-792570173-1722868085=:1238
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Right, I think stopping using it here is the best. I also had a draft of
+a patch to allow establishing a link between i8042 driver and users of
+i8042_command() so that they do not disturb resuming of the keyboard
+controller. I need to finish it.
 
-On Mon, 5 Aug 2024, Jiri Slaby (SUSE) wrote:
-
-> Coverity reports (as CID 1536978) that uart_poll_init() passes
-> uninitialized pm_state to uart_change_pm(). It is in case the first 'if'
-> takes the true branch (does "goto out;").
->=20
-> Fix this and simplify the function by simple guard(mutex). The code
-> needs no labels after this at all. And it is pretty clear that the code
-> has not fiddled with pm_state at that point.
->=20
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> Fixes: 5e227ef2aa38 (serial: uart_poll_init() should power on the UART)
+> 
+> Fixes: c69e7d843d2c ("platform/x86: ideapad-laptop: Only toggle ps2 aux port on/off on select models")
+> Reported-by: Jonathan Denose <jdenose@chromium.org>
+> Closes: https://lore.kernel.org/linux-input/20231102075243.1.Idb37ff8043a29f607beab6440c32b9ae52525825@changeid/
+> Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Maxim Mikityanskiy <maxtram95@gmail.com>
 > Cc: stable@vger.kernel.org
-> Cc: Douglas Anderson <dianders@chromium.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/tty/serial/serial_core.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
->=20
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial=
-_core.c
-> index 3afe77f05abf..d63e9b636e02 100644
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -2690,14 +2690,13 @@ static int uart_poll_init(struct tty_driver *driv=
-er, int line, char *options)
->  =09int ret =3D 0;
-> =20
->  =09tport =3D &state->port;
-> -=09mutex_lock(&tport->mutex);
-> +
-> +=09guard(mutex)(&tport->mutex);
-> =20
->  =09port =3D uart_port_check(state);
->  =09if (!port || port->type =3D=3D PORT_UNKNOWN ||
-> -=09    !(port->ops->poll_get_char && port->ops->poll_put_char)) {
-> -=09=09ret =3D -1;
-> -=09=09goto out;
-> -=09}
-> +=09    !(port->ops->poll_get_char && port->ops->poll_put_char))
-> +=09=09return -1;
-> =20
->  =09pm_state =3D state->pm_state;
->  =09uart_change_pm(state, UART_PM_STATE_ON);
-> @@ -2717,10 +2716,10 @@ static int uart_poll_init(struct tty_driver *driv=
-er, int line, char *options)
->  =09=09ret =3D uart_set_options(port, NULL, baud, parity, bits, flow);
->  =09=09console_list_unlock();
->  =09}
-> -out:
-> +
->  =09if (ret)
->  =09=09uart_change_pm(state, pm_state);
-> -=09mutex_unlock(&tport->mutex);
-> +
->  =09return ret;
->  }
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-This too needs #include.
+FWIW:
 
-Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
---=20
- i.
+Thanks.
 
---8323328-792570173-1722868085=:1238--
+-- 
+Dmitry
 
