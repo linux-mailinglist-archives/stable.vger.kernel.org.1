@@ -1,126 +1,128 @@
-Return-Path: <stable+bounces-65484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15258948ED2
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 14:15:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2543948EE1
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 14:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38B328B8D5
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 12:14:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF5728C59D
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 12:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0121C8238;
-	Tue,  6 Aug 2024 12:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485281C4617;
+	Tue,  6 Aug 2024 12:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T1tJDbWH"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="R2XSasi1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09801C7B85;
-	Tue,  6 Aug 2024 12:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E511C0DE7;
+	Tue,  6 Aug 2024 12:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722946298; cv=none; b=vGrzvvXv+ipif//VCVZ53zPpWfg+SvmMv4vV+8At1BPvuTFORyurNv6HbqyCpqBj3y6PusAXO1Qjc+Yjed3P9357UeRn0ICrpr7UrZh8BhmB0+RjJGvp9DrimY3P/1tz6XDy/QkmBPiNuoxMv85F2bZsFswc5vkvu4pc+fC2mMQ=
+	t=1722946357; cv=none; b=cGapSfcmXZg26pp+62MkUc8BYFhzXIhqrvama7wwVRTT9NcGYGbLstKR+sHgG9DJuoMhxU0iOLifl4IYLtHP4zntzcckWCIMJoWTvRdKwaaiivw9VaguE1F6rfk6NTePEK4KFxCVDGqIfznzcOQJAIdaUjuCglJcQUOdm2j1iNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722946298; c=relaxed/simple;
-	bh=yZCPxec+Nt05+vFpfuZAEIwPsSYT72gElqKmIsVcVcs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoeNv0qBGvo2/v7BhOVZo+87nAdfdbzB/BVBldS0kGdLW7lZYnQxY0Z2hhE5+JoTVKCU6E7XgLDgdlz/tpibGXNd10V7zZTSI1JFvus6GuDfMZrtR9ddiq40Q+9oqhCIaeRQD0BrEV/U+wGY90WyKIzDBpT98Hza0yTtysWOD2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T1tJDbWH; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a7d89bb07e7so62099566b.3;
-        Tue, 06 Aug 2024 05:11:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722946295; x=1723551095; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F0aRz/NvzMoGMcs/X68qWsjTCXJVKjTHjK/Kr5hohQg=;
-        b=T1tJDbWHdi2cFDidBSlo6wc+Pln3/aWY51Um+tAzq7GRDzfB5Ze5hVk3p0vPq27Mo7
-         TtpC9gJXx8qRCUzvBcf2I+DN3TwGS2wSHlBddUpgoyFlTTRJQ3wk/FGtFwYJ2qKzYOzY
-         ngh+2G3SwBOjwsBHK1v4S/tEnooQOZyzAQIIv5dMfY0nao7y1+h+0U+IdzaG9pBsEq7U
-         1+oFp8nTUSSBSwIdgOd6XyRiQYTxjnKxvCGT7+qapB7QJubxFIMEX6PIJdXMkO1EbhyQ
-         GdMW3q+cP37deDDGbqcB46NlmWaVdAyocJ4xW98cuLMoopLCOqHfh79lDXYU2XTgzDSm
-         PnOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722946295; x=1723551095;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F0aRz/NvzMoGMcs/X68qWsjTCXJVKjTHjK/Kr5hohQg=;
-        b=Rem72XxpD6J2U3F/MMzLwnurpNfrQQeancxd4pOxscFN/r8xz51DLLhnUQL71zg4l8
-         IuhU1N82OVExKNPUDKSRpsp9EVvcdWpVUUzsuIYJLAyGAYptqbnb0sEaS6iIwZ4o0U1I
-         0HhMUKcvWX6u+ASYa7k4F5Xact5SKDcgW9eR8rnWSzleM1HPpOEuVBCwPhOraXbObyJP
-         mC7Qg/EUDl8f7K7eNpm4fU/H2fvBy5sMaEZCuIimqGKgH5BVeC+U4HG/B5Qt/tefPZmZ
-         RZdTuXrm+o4WquUdbHJFp/iCecB89FP9wbpO1IhyT6nAROr5C+7W11wvnRkGiICD/F9s
-         Y7BA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpHA/x4gOIm1MQ0OrvsXXzQjZe6A//gSVmHZFXuqhGeErMbuMLulP+obTNp94+DhQDbKkOlV1VeFtOjWUcBnpFNmW9YNE/zhXtI5hrwnON7nSdVMWzA78ol6znFRjr85UrmjQYWSLjHisw1dVK9VUxTm2YLbY46eVlWJ7Nvn4KHD/4gSBJvmE8jofYLSUugrm2hWcVaW1NGwNj3IOZzwpP/DPruc2Z
-X-Gm-Message-State: AOJu0Yx6H/tsBIUrJ7BB8MfxrYbJbfvv2See7aTLv9Jm15oNLaTuq8tq
-	Tgn8qL8277OhSc4Pwh9ZidBxf0IWULAWLxcE2lZM/M1Ru1tWXTVT
-X-Google-Smtp-Source: AGHT+IE1jURrKaQSilbk7NTpniLbZ+h6z1PD5RRA56U41hrhim0QfQbdfC/eEjpHZUkMW++bMWlMXA==
-X-Received: by 2002:a17:907:a01:b0:a7a:b73f:7583 with SMTP id a640c23a62f3a-a7dc4da5044mr1158998766b.6.1722946294708;
-        Tue, 06 Aug 2024 05:11:34 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:ab88:3711:c80:e7a7:e025:f1a5:ef78])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a7dc9ecb546sm542080366b.224.2024.08.06.05.11.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Aug 2024 05:11:34 -0700 (PDT)
-From: David Virag <virag.david003@gmail.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Virag <virag.david003@gmail.com>
-Cc: stable@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v2 4/7] clk: samsung: exynos7885: Update CLKS_NR_FSYS after bindings fix
-Date: Tue,  6 Aug 2024 14:11:47 +0200
-Message-ID: <20240806121157.479212-5-virag.david003@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240806121157.479212-1-virag.david003@gmail.com>
-References: <20240806121157.479212-1-virag.david003@gmail.com>
+	s=arc-20240116; t=1722946357; c=relaxed/simple;
+	bh=4Jlvs3s8D6Puqz4utkMELxCxHzvLhaMPn3o/pdA9IeU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IS0Jm0T2Z6AxLurFEy5wmBXGVZwXFVKx/bxnsM5b6dnf3YHiega4AZAklIxI8Qckyakn86VDJLYE4MiG0hEjimX/HCpoFNVP9sD+HqMo/eeAMnvjR7Z1TiA0DpcimOBqNr7lEPQG+p3rtNiPJSLA5eSwgVy3kr7f4BKrXOurglo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=R2XSasi1; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 476CCCaf024746;
+	Tue, 6 Aug 2024 07:12:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1722946332;
+	bh=g5gDMigbTHL+jxXCwUmh5fa9wrLaoK43+KxVX/dTfvM=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=R2XSasi1RETGNZJLKD+HlKf2YrLQ9lVUdZw30x0ETjPuLH8ZB+8tQsaQuzUGXXeVd
+	 UIX5DyA9XMLSx7eRRj7tWI/+bq1ggXBJaFha7q2wHMf4nrZia9RabqUen0Y/15Af4C
+	 X4P9gV6Rjjag9ZBvf17l5ykFhTBRv8R7MGG72F/E=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 476CCCL7055008
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 6 Aug 2024 07:12:12 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 6
+ Aug 2024 07:12:12 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 6 Aug 2024 07:12:12 -0500
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 476CCCbA081755;
+	Tue, 6 Aug 2024 07:12:12 -0500
+From: Nishanth Menon <nm@ti.com>
+To: Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Francesco Dolcini <francesco@dolcini.it>
+CC: Nishanth Menon <nm@ti.com>,
+        Francesco Dolcini
+	<francesco.dolcini@toradex.com>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v1] arm64: dts: ti: k3-am62-verdin-dahlia: Keep CTRL_SLEEP_MOCI# regulator on
+Date: Tue, 6 Aug 2024 07:12:10 -0500
+Message-ID: <172294632012.366302.5768922280079626594.b4-ty@ti.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240731054804.6061-1-francesco@dolcini.it>
+References: <20240731054804.6061-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-Update CLKS_NR_FSYS to the proper value after a fix in DT bindings.
-This should always be the last clock in a CMU + 1.
+Hi Francesco Dolcini,
 
-Fixes: cd268e309c29 ("dt-bindings: clock: Add bindings for Exynos7885 CMU_FSYS")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Virag <virag.david003@gmail.com>
----
- drivers/clk/samsung/clk-exynos7885.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, 31 Jul 2024 07:48:04 +0200, Francesco Dolcini wrote:
+> This reverts commit 3935fbc87ddebea5439f3ab6a78b1e83e976bf88.
+> 
+> CTRL_SLEEP_MOCI# is a signal that is defined for all the SoM
+> implementing the Verdin family specification, this signal is supposed to
+> control the power enable in the carrier board when the system is in deep
+> sleep mode. However this is not possible with Texas Instruments AM62
+> SoC, IOs output buffer is disabled in deep sleep and IOs are in
+> tri-state mode.
+> 
+> [...]
 
-diff --git a/drivers/clk/samsung/clk-exynos7885.c b/drivers/clk/samsung/clk-exynos7885.c
-index f7d7427a558b..87387d4cbf48 100644
---- a/drivers/clk/samsung/clk-exynos7885.c
-+++ b/drivers/clk/samsung/clk-exynos7885.c
-@@ -20,7 +20,7 @@
- #define CLKS_NR_TOP			(CLK_GOUT_FSYS_USB30DRD + 1)
- #define CLKS_NR_CORE			(CLK_GOUT_TREX_P_CORE_PCLK_P_CORE + 1)
- #define CLKS_NR_PERI			(CLK_GOUT_WDT1_PCLK + 1)
--#define CLKS_NR_FSYS			(CLK_GOUT_MMC_SDIO_SDCLKIN + 1)
-+#define CLKS_NR_FSYS			(CLK_MOUT_FSYS_USB30DRD_USER + 1)
- 
- /* ---- CMU_TOP ------------------------------------------------------------- */
- 
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
+
+[1/1] arm64: dts: ti: k3-am62-verdin-dahlia: Keep CTRL_SLEEP_MOCI# regulator on
+      commit: 9438f970296f9c3a6dd340ae0ad01d2f056c88e6
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
 -- 
-2.46.0
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
 
 
