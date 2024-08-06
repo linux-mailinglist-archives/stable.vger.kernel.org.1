@@ -1,202 +1,223 @@
-Return-Path: <stable+bounces-65501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620E89497FB
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 21:06:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2048E94983E
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 21:28:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E32171F21663
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 19:06:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 812FFB22DE3
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 19:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05FF7BB17;
-	Tue,  6 Aug 2024 19:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA9B13C90F;
+	Tue,  6 Aug 2024 19:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WYI+mZo4"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="D2zJEINw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11020113.outbound.protection.outlook.com [52.101.193.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB9818D62B;
-	Tue,  6 Aug 2024 19:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722971187; cv=none; b=Jpn5Odm0eVFoE9/Q7N2lgMJGCdEPv5Lnszldso0Qfj6Ysl/w3U+2mmEQWBo3gM3MVSgPD0ZuNDSmMudjhxeSoiSDQzWlIzJocXE7G0Tkr9wyCUK7oKWygy89TGplT9d4OtP7ZGTjlSH8ZGxPzlNucXWI2kSqPpZyxrk60uz1lyI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722971187; c=relaxed/simple;
-	bh=9v9g/FUYd44DLzUPElmwCFrQstsp2TndbPYKGS71fcg=;
-	h=Date:To:From:Subject:Message-Id; b=aJ0yv+yzFC7mrVfanviLRxmwEfUgQeGV5F3g+eu85Z1LTQekmqe8nkX7Nh4OyDp1GFnz1Qq7W2ncMCqL4LquKYiPRGe6llHzuJL88RP761q1YbBSS7FWGIEOAeRd8awzyYHAQAw64sizIarj9tLE2n7P2HPwN3nenD7YK8Pjlc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WYI+mZo4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88EAC32786;
-	Tue,  6 Aug 2024 19:06:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1722971187;
-	bh=9v9g/FUYd44DLzUPElmwCFrQstsp2TndbPYKGS71fcg=;
-	h=Date:To:From:Subject:From;
-	b=WYI+mZo4kgjM9oH1z7tQMh1UhyOgdUyqAlKSz4fRHZMlApavOwmbb9i59QY3z6UN5
-	 VPA1jigGZ8h0OYCl5s2K4WdX8zZbMHaooma0UCH6EcuXJ2KpSKictE4eOWX74J49I5
-	 iEZLKSxTt67C9sdKxBRV+4/i9N5IwL3qr/xKYfZQ=
-Date: Tue, 06 Aug 2024 12:06:26 -0700
-To: mm-commits@vger.kernel.org,ying.huang@intel.com,stable@vger.kernel.org,nao.horiguchi@gmail.com,linmiaohe@huawei.com,len.brown@intel.com,juri.lelli@redhat.com,longman@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory-failure-use-raw_spinlock_t-in-struct-memory_failure_cpu.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240806190626.E88EAC32786@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF8C83CC7;
+	Tue,  6 Aug 2024 19:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.113
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722972500; cv=fail; b=M5dNkb3sjMX3fhOeUAhv/qn9bENfihK3Kedrl+82XZgxRW1Rd5bwPYv1+e8hgmxz5DLOI8Rn/v8hneCu6lQOo7aPZYupcr8jANbnp6W/3g1N5+wOpCrIINPH6pkkbDMoFlt/goyO0rwjmLE8sbzP4i8cIcT53UhAuEFJUUx85ps=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722972500; c=relaxed/simple;
+	bh=jr5DqbMaXOH8Ft/N5UulJFTQki24YXP2/7pzzhDx3Ew=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=k5s7jnboMlCMbtAgcEOwPMWlit59ldNE9gG731rXTkF6k3/cj/q7yJXnE6ObEKuiAhag6Q7uIHhukNpX3px3T1L705y00H2OJe+yLP4ZokI41C1ODfeh660EE8TQ5fkK7mKFmuHd6+rrkbRD0leSCNfBC5fPxHdlTTnOpgummMc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=D2zJEINw; arc=fail smtp.client-ip=52.101.193.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tO7Ek+qAzzH+5C9qNwZScwMKTGMnxk+4v4+fZlmOENpigmr33OqlZ2UyeVZTIguSEQ4Oi83msfl8ayE0BkYgJvQ7FA6qzZb4Thosbuv+AK9sN//LofM51lx6K+vWhkgGM/lcmTCLss2MNuHnGD8A2DGqipnlxnnczexkFj4jplscb8s6Zt+Rl1ofzvANw/Ot0KUNJqy81JNFqmQQeaARbEZZFfMh/KZsTiHJv8V2qN61JnEELpXKlUaQRgHUGHllP6HCU8qKByqOcqFEf65ZecCSdhog6z4oL02iVIs+/5lIU3JVEdaoR122eXLrD7QQOt0FG0BXDSvNsfZ6StKq0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UQACX2t6M+GHBtvt52JrAMlUhOpmzb4vwcK9Ts4HnTE=;
+ b=yLAI5PiHq7x2KnmJ4unCpinrla+tWa7uuCGzuBgM6ALQpFloMkSPaxhDHzkv+3Uw9TAhaMCPZM3aSiYeu01qLWPvBvwxqUU3WuZBosAd9I0R5XnGPGqKKN6jVFEdgAslmyRps5RtPEJfuSNVrQgDvHMqjeDrpPGr3LRZ4r59IYStJFplTD3looBdP6pxMKyyPp9npeRbmrgJoBlXAK6NN4CXrBbPoGSjTpRdj0eDKOH+PkOJ93knUi1aGejdVkTZeeyWmkfUlZxWPyCO3w1b8fFMOzEmAmKWyxSUJsGmih1+hKSnXCuQOyRUmuN+YVLE3zj7L4HK+ocPW2fybjFB7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UQACX2t6M+GHBtvt52JrAMlUhOpmzb4vwcK9Ts4HnTE=;
+ b=D2zJEINwQpfJCgs5YKvICkOldvCaAgjPo3KgsUxXWWQWWaOwmxNPg3Br1AmdN9WdkWvhv7nAqh/i8QvgW8F0QtBkYfC3BUsS6Wzk/buTMaVZaDz7AKD3dgYcqe4X5A9qRxzTyPQDqNhELWxEBsJy8TYKXkiH1AX9SKeXEZIjPXE=
+Received: from SJ0PR21MB1324.namprd21.prod.outlook.com (2603:10b6:a03:3f0::13)
+ by BY5PR21MB1460.namprd21.prod.outlook.com (2603:10b6:a03:21d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.6; Tue, 6 Aug
+ 2024 19:28:16 +0000
+Received: from SJ0PR21MB1324.namprd21.prod.outlook.com
+ ([fe80::dc0d:bf6d:3ec8:3742]) by SJ0PR21MB1324.namprd21.prod.outlook.com
+ ([fe80::dc0d:bf6d:3ec8:3742%6]) with mapi id 15.20.7875.001; Tue, 6 Aug 2024
+ 19:28:16 +0000
+From: Dexuan Cui <decui@microsoft.com>
+To: Long Li <longli@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Haiyang
+ Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shradha Gupta
+	<shradhagupta@linux.microsoft.com>, Simon Horman <horms@kernel.org>,
+	Konstantin Taranov <kotaranov@microsoft.com>, Souradeep Chakrabarti
+	<schakrabarti@linux.microsoft.com>, Erick Archer <erick.archer@outlook.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH net] net: mana: Fix doorbell out of order violation and
+ avoid unnecessary doorbell rings
+Thread-Topic: [PATCH net] net: mana: Fix doorbell out of order violation and
+ avoid unnecessary doorbell rings
+Thread-Index: AQHa6DbIU1SxtHhW50+unVG74GtuGA==
+Date: Tue, 6 Aug 2024 19:28:15 +0000
+Message-ID:
+ <SJ0PR21MB1324B5BD9AFCE00B271F198ABFBF2@SJ0PR21MB1324.namprd21.prod.outlook.com>
+References: <1722901088-12115-1-git-send-email-longli@linuxonhyperv.com>
+In-Reply-To: <1722901088-12115-1-git-send-email-longli@linuxonhyperv.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=5173a82d-6447-4e63-9127-5972695b92d9;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-08-06T18:43:29Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR21MB1324:EE_|BY5PR21MB1460:EE_
+x-ms-office365-filtering-correlation-id: bcc566f0-db8a-4ad2-737d-08dcb64deb8a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018|921020;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?mHEBniwp7Ei2DmwBW12Hn9by1B6VdO7brlRJUKtVotjggjHUTFDf2VAyUEJu?=
+ =?us-ascii?Q?DpGrdVwXP+rD7Mf7STrWDxjDGHHhaM94eY9tAF3Rm4cG8tnHBolR+8YsYsZl?=
+ =?us-ascii?Q?4DEWr7zmV08oSJXA4xTDQQq+hWYn1pwczxydvhL4VelPyVSanY7txGWbG1uv?=
+ =?us-ascii?Q?SA5u04xf3gWwXi9tGCDiuGJILPjXbM2+w1kNavWQtm2PqVvaivxn3eZM91Hj?=
+ =?us-ascii?Q?Z3nlD/VzhSx4/atCXTZNEd64bQ9688OL+7+zSkXACZ+L3Ljrg+Itohfo45S9?=
+ =?us-ascii?Q?fIWCB7C81mcijOa8F1prXv/3/r9dTZ+DwKOwtXYyYvt0ez25xJK4i64co74l?=
+ =?us-ascii?Q?VP4ef0mS98PFGSwmLIhOcLf/CdQGT7jwcMCyM4XjBZAm7CcCGy8xT8rmRodO?=
+ =?us-ascii?Q?IG76N/1/AGK2v3VfP4v2zdwbbuCMW7xdNTcc5Vd+wuolpDLRnn2bPjLON3NN?=
+ =?us-ascii?Q?+PEWDlufcNtFetmphbeZw+o/Hp6vI2Ea9iZpQpIHpStWiuhcqbjSu/eru2QE?=
+ =?us-ascii?Q?HX21tHvTuDJ2Bq8SKxzHWytGmBE5xjrcWy+9iBzP3oMto48LHgdpNM2dE12g?=
+ =?us-ascii?Q?LwyKWQU0Q1r7cj8/kJnMgTc7Z3oTSTAczQFLK01OqC9WbMwzJGgNtrHLg2Td?=
+ =?us-ascii?Q?8aEEP91HbnJS3NgOqhrCrzHkInpyS6aLadxd6AiOYdSH4j2PybGBq2WzZC+r?=
+ =?us-ascii?Q?MzsVOXDGVyZkGhpXKGVwX58PXuo+bbeKwxBV7agJrRRIxNJeVE/8RkEjSK4U?=
+ =?us-ascii?Q?y8rjQwSJN5RjotEPL+vvlVIUEFqemDMUSQf7dJ0yQNKHfEk0Qr73qua6KUca?=
+ =?us-ascii?Q?JHd+TE8+V5HSynAK3iKt11IGTEIKClWikwro9BkeOphJ5lxdKyN6jxs73hXm?=
+ =?us-ascii?Q?TxPr0MZHak4l6pfFkHqmaERIZgMqvU9nL78VwKjrjiiuIJuAq8I7ddyw8FOR?=
+ =?us-ascii?Q?6OOC+GYJV1HRk3d+Z5a8sM4pX7vaQUFF5JeZBs9OxF+Z3L2DUBeWg2WXXAQE?=
+ =?us-ascii?Q?8X2IcEWbCHD1LyxiOMPwe7Ao6s9TluldcpoFXmM+sAduc3X7aymyI2qEnf0G?=
+ =?us-ascii?Q?XGyQgfxorcbGociXQftb4wCOhECjrnRnFyRu2DFx3BN7tk3YBOcf9GQjOgI0?=
+ =?us-ascii?Q?a/gAm25N1afiFpPEm/ZB7dr1zc2fxjt99IMwi3wPcCKaV3VKkAmUuHTpdQTU?=
+ =?us-ascii?Q?9TaMav+y0wCzYG7+YjpxO2RpQBPyBSlkY1yPc3Jwi4dRKFO4UpJ0INHOXXwF?=
+ =?us-ascii?Q?Mx3f/yBgPeu5Kctn7JVegr7yuXnj7UwKM8PzX+v7g7tFVHyTWYHcCq5y2Nyv?=
+ =?us-ascii?Q?8Q7mLoX4hB7agY5FnPn2AiRDtUbXfRdoibPVUc2ZIrqJAVKE34MKQwTI77PY?=
+ =?us-ascii?Q?c9fLiPdIOI+cFf/kK0A9kzhpIRSBFlMQRuk1hNb0IKyiiLsriECmNcXYtYDG?=
+ =?us-ascii?Q?+SovW2kZ+7Q=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR21MB1324.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018)(921020);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?r9Hm87PIlihQO+43tIM0Wjyv2FoO63GDJcWbrZXdhjZfCLSWtmYpStQqKXoc?=
+ =?us-ascii?Q?LVxAc4TpWwPVYEL6AC+EyfRI0otB6vnnpT8dkw2mxd9rNi7W8Jupweclh2+A?=
+ =?us-ascii?Q?t5m46ld4B5d0yqtAQN/4IzIO37YdvvUcEBOyq5fDctG3h2vPzG5TxyJuTEew?=
+ =?us-ascii?Q?hyRG4LcPL5snFU01y7aMP9ZHcNctA1sccD9FRTD9mHKHcglmJq1HQyzwQjE1?=
+ =?us-ascii?Q?m5dA/Pd+ncVkboDMMQJSw10M8kgtM91VE0Hz44/GTJa7TsvxtZpPXXC/H2ca?=
+ =?us-ascii?Q?mJbPjMmhmR5xpVrxwlNo7j8tV+gveeIuBSNKdglFwTsGMYvAZGxlHJIxED8H?=
+ =?us-ascii?Q?RDK4P095SBfqNYT9T5xHd007ZJLzNlERxQAvKCJRFFvCZYAT+ZkTQWQinDTy?=
+ =?us-ascii?Q?aZVxqIVx7AC+puhP2jKIVTaSdX23+ucQ8av1R0ekV/L9ukoWfaJL4EF8BN1z?=
+ =?us-ascii?Q?rT4FD5AjdnQOSuH01ipOhzgBUPl43y6l1LpKkkVC16eMh0KR7Juz5BLoAa0J?=
+ =?us-ascii?Q?r5ZSz7oDM6ZkMWQmlLoakpzwccPKTjdmC+HOs4cCBaH7FBh+NN2aGV3Jp8A7?=
+ =?us-ascii?Q?09VJ0N5MCFL9LcGBZh60ZWums08HoS61m24YhM0zV3H5DK7gm7VmzpaJ0Ybw?=
+ =?us-ascii?Q?qG5FuHN6Mz2Q9AaBAJguGrv43sntDadXRt8t+QyW0sRYl+/yweHHduFfzrAA?=
+ =?us-ascii?Q?/VOVf0Xr0iuPoHgO7bf1J8giWNZfn7dbc3tWLuyDfFpqyoAcEHyzF1ZpUGsD?=
+ =?us-ascii?Q?PX+r9RPg926bywNHZgH5ebJkPkuClbe81MRYZ3xR92KYL4madeGOfmQa8/eV?=
+ =?us-ascii?Q?GtIZ6PeDNestoJUCuIWJrtWyHbH57a0HzsKsgcTeF5ZIcBy5FBFqZR6bhc1K?=
+ =?us-ascii?Q?szgW1eqEPSXh4vdbAzvcDEfNMh9PybgVSXR5XKclnDQygGpQx0GQ+iM6pF5i?=
+ =?us-ascii?Q?iJp4QgxfIwLtXd53pm3D0eN62w5bCLPWOJ9qVOOg6A5PCf4hA6UdPXmku3eH?=
+ =?us-ascii?Q?dCmS+vYwyFcAuT09gFDOv60ddcB+uDkL6yuJaU9Q09Va15pDffztiS0vt365?=
+ =?us-ascii?Q?aXP0AP59G0f69ZeAhAhbUTImbCE/6ExRNZSWoV7wuUsNX1byfiJtBK/s9Djj?=
+ =?us-ascii?Q?teXOJOPuap6aY3EoMOvz+cNfvT2vs2REO0UDhre7GUO3jI+I4rEqClQbUhFA?=
+ =?us-ascii?Q?rS1kgUXsf5ArWjpdXcW3ro+EQbPvmQXCMCEdEraU9ECgv05V1u4H+VzYmU9R?=
+ =?us-ascii?Q?X3hJ9zhDaaL6KwhPnssP89xP78/YWc/05sxyVQn5xZ9ikl0Wmtq2xPrAurJ3?=
+ =?us-ascii?Q?QWBdTzQezHNqVns4JJd9LWHKDKLATb/y64XpBYnxyZdsDSrTWyEqFU5zyuof?=
+ =?us-ascii?Q?494X0pr8YMjHYP479l+LFSQ+7gvoWbe+hDD6AIXCySlp1THSTNViLnL6Lik2?=
+ =?us-ascii?Q?GNB4ur7rf1Bm4Nosxm9abQpNvU78roqzarCz3BxyrA1cuRWqYlk1LkAtH8YG?=
+ =?us-ascii?Q?feWwg0vEPC4FQiDTDBEPcSwTT8KeqqJP3RIz583uNgxEBEoENR1NRdLNZ8VZ?=
+ =?us-ascii?Q?zyVg+rt8O7tCcQJN2qo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR21MB1324.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bcc566f0-db8a-4ad2-737d-08dcb64deb8a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Aug 2024 19:28:16.0074
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: AVnnQshjYMVMCn2MXAVlWQFmIq+kRQCTsJ/fDLA59SSKK+9zEMjoPnpu6MEosZTHEDNPoKJs10MjfcRQ5NSilQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR21MB1460
 
+> From: longli@linuxonhyperv.com <longli@linuxonhyperv.com>
+> Sent: Monday, August 5, 2024 4:38 PM
+> [...]
+> After napi_complete_done() is called, another NAPI may be running on
+> another CPU and ring the doorbell before the current CPU does. When
 
-The patch titled
-     Subject: mm/memory-failure: use raw_spinlock_t in struct memory_failure_cpu
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memory-failure-use-raw_spinlock_t-in-struct-memory_failure_cpu.patch
+Can you please share more details about "another NAPI"? Is it about busy_po=
+ll?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-failure-use-raw_spinlock_t-in-struct-memory_failure_cpu.patch
+> combined with unnecessary rings when there is no need to ARM the CQ, this
+> triggers error paths in the hardware.
+>
+> Fix this by always ring the doorbell in sequence and avoid unnecessary
+> rings.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I'm not sure what "error paths in the hardware" means. It's better to descr=
+ibe
+the user-visible consequence.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Maybe this is clearer:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+When there is no need to arm the CQ from NAPI's perspective, the driver mus=
+t
+not combine "too many" arming operations due to a MANA hardware requirement=
+:
+the driver must ring the doorbell at least once within every 8 wraparounds =
+of the CQ,
+otherwise "XXX" would happen. //Dexuan: I don't know what the "XXX" is
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Add a per-CQ counter cq->work_done_since_doorbell, and make sure the CQ is
+armed within 4 wraparounds of the CQ. //Dexuan: why not 8 or 7?
 
-------------------------------------------------------
-From: Waiman Long <longman@redhat.com>
-Subject: mm/memory-failure: use raw_spinlock_t in struct memory_failure_cpu
-Date: Tue, 6 Aug 2024 12:41:07 -0400
+=20
+> +	if (w < cq->budget) {
+> +		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
+> +		cq->work_done_since_doorbell =3D 0;
+> +		napi_complete_done(&cq->napi, w);
+> +	} else if (cq->work_done_since_doorbell >
+> +		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
+> +		/* MANA hardware requires at least one doorbell ring every 8
+s/ring every 8/arming within every 8/ ?
 
-The memory_failure_cpu structure is a per-cpu structure.  Access to its
-content requires the use of get_cpu_var() to lock in the current CPU and
-disable preemption.  The use of a regular spinlock_t for locking purpose
-is fine for a non-RT kernel.
+> +		 * wraparounds of CQ even there is no need to ARM. This
+> driver
 
-Since the integration of RT spinlock support into the v5.15 kernel, a
-spinlock_t in a RT kernel becomes a sleeping lock and taking a sleeping
-lock in a preemption disabled context is illegal resulting in the
-following kind of warning.
+s/ARM/arming/ ?
+s/even/even if/ ?
 
-  [12135.732244] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  [12135.732248] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 270076, name: kworker/0:0
-  [12135.732252] preempt_count: 1, expected: 0
-  [12135.732255] RCU nest depth: 2, expected: 2
-    :
-  [12135.732420] Hardware name: Dell Inc. PowerEdge R640/0HG0J8, BIOS 2.10.2 02/24/2021
-  [12135.732423] Workqueue: kacpi_notify acpi_os_execute_deferred
-  [12135.732433] Call Trace:
-  [12135.732436]  <TASK>
-  [12135.732450]  dump_stack_lvl+0x57/0x81
-  [12135.732461]  __might_resched.cold+0xf4/0x12f
-  [12135.732479]  rt_spin_lock+0x4c/0x100
-  [12135.732491]  memory_failure_queue+0x40/0xe0
-  [12135.732503]  ghes_do_memory_failure+0x53/0x390
-  [12135.732516]  ghes_do_proc.constprop.0+0x229/0x3e0
-  [12135.732575]  ghes_proc+0xf9/0x1a0
-  [12135.732591]  ghes_notify_hed+0x6a/0x150
-  [12135.732602]  notifier_call_chain+0x43/0xb0
-  [12135.732626]  blocking_notifier_call_chain+0x43/0x60
-  [12135.732637]  acpi_ev_notify_dispatch+0x47/0x70
-  [12135.732648]  acpi_os_execute_deferred+0x13/0x20
-  [12135.732654]  process_one_work+0x41f/0x500
-  [12135.732695]  worker_thread+0x192/0x360
-  [12135.732715]  kthread+0x111/0x140
-  [12135.732733]  ret_from_fork+0x29/0x50
-  [12135.732779]  </TASK>
-
-Fix it by using a raw_spinlock_t for locking instead. Also move the
-pr_err() out of the lock critical section to avoid indeterminate latency
-of this call.
-
-Link: https://lkml.kernel.org/r/20240806164107.1044956-1-longman@redhat.com
-Fixes: ea8f5fb8a71f ("HWPoison: add memory_failure_queue()")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Len Brown <len.brown@intel.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memory-failure.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
-
---- a/mm/memory-failure.c~mm-memory-failure-use-raw_spinlock_t-in-struct-memory_failure_cpu
-+++ a/mm/memory-failure.c
-@@ -2417,7 +2417,7 @@ struct memory_failure_entry {
- struct memory_failure_cpu {
- 	DECLARE_KFIFO(fifo, struct memory_failure_entry,
- 		      MEMORY_FAILURE_FIFO_SIZE);
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	struct work_struct work;
- };
- 
-@@ -2443,19 +2443,21 @@ void memory_failure_queue(unsigned long
- {
- 	struct memory_failure_cpu *mf_cpu;
- 	unsigned long proc_flags;
-+	bool buffer_overflow;
- 	struct memory_failure_entry entry = {
- 		.pfn =		pfn,
- 		.flags =	flags,
- 	};
- 
- 	mf_cpu = &get_cpu_var(memory_failure_cpu);
--	spin_lock_irqsave(&mf_cpu->lock, proc_flags);
--	if (kfifo_put(&mf_cpu->fifo, entry))
-+	raw_spin_lock_irqsave(&mf_cpu->lock, proc_flags);
-+	buffer_overflow = !kfifo_put(&mf_cpu->fifo, entry);
-+	if (!buffer_overflow)
- 		schedule_work_on(smp_processor_id(), &mf_cpu->work);
--	else
-+	raw_spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
-+	if (buffer_overflow)
- 		pr_err("buffer overflow when queuing memory failure at %#lx\n",
- 		       pfn);
--	spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
- 	put_cpu_var(memory_failure_cpu);
- }
- EXPORT_SYMBOL_GPL(memory_failure_queue);
-@@ -2469,9 +2471,9 @@ static void memory_failure_work_func(str
- 
- 	mf_cpu = container_of(work, struct memory_failure_cpu, work);
- 	for (;;) {
--		spin_lock_irqsave(&mf_cpu->lock, proc_flags);
-+		raw_spin_lock_irqsave(&mf_cpu->lock, proc_flags);
- 		gotten = kfifo_get(&mf_cpu->fifo, &entry);
--		spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
-+		raw_spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
- 		if (!gotten)
- 			break;
- 		if (entry.flags & MF_SOFT_OFFLINE)
-@@ -2501,7 +2503,7 @@ static int __init memory_failure_init(vo
- 
- 	for_each_possible_cpu(cpu) {
- 		mf_cpu = &per_cpu(memory_failure_cpu, cpu);
--		spin_lock_init(&mf_cpu->lock);
-+		raw_spin_lock_init(&mf_cpu->lock);
- 		INIT_KFIFO(mf_cpu->fifo);
- 		INIT_WORK(&mf_cpu->work, memory_failure_work_func);
- 	}
-_
-
-Patches currently in -mm which might be from longman@redhat.com are
-
-padata-fix-possible-divide-by-0-panic-in-padata_mt_helper.patch
-mm-memory-failure-use-raw_spinlock_t-in-struct-memory_failure_cpu.patch
-watchdog-handle-the-enodev-failure-case-of-lockup_detector_delay_init-separately.patch
-
+Thanks,
+Dexuan
 
