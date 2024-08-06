@@ -1,95 +1,180 @@
-Return-Path: <stable+bounces-65489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1239491F5
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 15:47:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BE19492A2
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 16:07:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDC982823F3
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 13:47:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20CC31C2118D
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 14:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4E41D47AA;
-	Tue,  6 Aug 2024 13:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF0818D631;
+	Tue,  6 Aug 2024 14:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mptp3n8N"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bd/5vX9C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CDA1D54C1
-	for <stable@vger.kernel.org>; Tue,  6 Aug 2024 13:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771A918D627
+	for <stable@vger.kernel.org>; Tue,  6 Aug 2024 14:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722951989; cv=none; b=BOLjF54NFWVn5tYQt3/ZMQ7Hazb4ONn6CuCFvXVYHVDLZE4H27Sppm1zvpcxZjP0If8iGThkCp5oTlxjpEYG43nIObcVCv13MYBjGWMdChiegSpQxEmCfYZJ13PC9KFrrF+k0qRgD/I/Cm8ZJPIl8XNJTQivUiLTH7axCcsGss0=
+	t=1722953251; cv=none; b=pJ7rX1w/5VywjGkr784hsaFvDQ+qOFS9B4ks/IC66lYQ2QKwJgBBT4oRi6kjM21BVWnpmwf/jF0k7l+4w48YgKFWpNBwKh4k1NToqpFr+pcIv6Mcn5D4qLiakGdi+t+OM5m4ZpzAqmBoM20UE+E6uHhkMG6ttOAUaSeQzy67ydI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722951989; c=relaxed/simple;
-	bh=n2B5+WTR5fHsn5YvtfTT61S48+OsOawPtKzrF6Q/zeA=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=nXWagM7Y2SyGv+E9mR6mKOk9pn/VFhkf0kSJ1U2jtcGmZOQIOT4Z8q40CEoSN+jx2tmPaiTj3b95wlZlkf05ogubmJDSutumVTrFdZ7meBLrPGEd7dNdR4owNdgO4tDZoLSingBDG1lrpbE8a/Ne3pVMEY8xA0NrRFZfzp5MBtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mptp3n8N; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-369f68f63b1so374837f8f.2
-        for <stable@vger.kernel.org>; Tue, 06 Aug 2024 06:46:27 -0700 (PDT)
+	s=arc-20240116; t=1722953251; c=relaxed/simple;
+	bh=ZXE8YRwRjRlnWnbKZwcnN363Dx2ojCKLeGL5iZ9KS0A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E6mdQyCxiTIk3NAv3HbUIlPlAZ8HkuCOs0VB97zxDjfk33o1r4rOkuu1hQjjQ6HadnZVwFg2/lPoGdgEIzi/KI2ub13wHQwBHjLxiI4UOJZ1XnCYtcXpCbEm3Hhtg8PbNbxElGeR1F2onJbOomsSMOqttmLz1vlg9IYhf5I3dmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bd/5vX9C; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-428063f4d71so58825e9.1
+        for <stable@vger.kernel.org>; Tue, 06 Aug 2024 07:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722951986; x=1723556786; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:to:from:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=n2B5+WTR5fHsn5YvtfTT61S48+OsOawPtKzrF6Q/zeA=;
-        b=mptp3n8NZswL1FQDNJamYZ9RV2o1kGKkydYLQFBd70iSnUYJ2vrWSFOkRSHwBOOjTv
-         3IDOq7/jR4fUiW1OEcn4vMj+Acn4WsEhB24/EE7+7xz0V02SfbWEoBGRr70RUIE9lZme
-         4Inm6lUEKV71pFADQ8pjM8G9Nkt69H2DEmT83kkt10vLAY2jS3H9BmvuKKfT+dY3wHIR
-         XnmaWm32VJD8ZZUGNyVclj2NzNFu6FI2H+mHiBre9lgPJQEoCFdy5ENSI5dLAa5uF4zs
-         6F61gfg52+B07ZJnmgeXiLAuqIPr3RnlGsCCzU2sWhBQ7PPUT58PVpJrEUrsPlpGy6Dl
-         K/ww==
+        d=google.com; s=20230601; t=1722953248; x=1723558048; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mNJXmqdg/wrODcSMNLZaLEyt49+/cc65vl/68WJpwIU=;
+        b=bd/5vX9CmlCx+Tm5P9KiMIRZ9kfvIN/qbYIzp4OHCYFpWYOr4/VpXAndmZ4G+EsmUd
+         4cwE+5CsqmLANmYT6oSfJ1IuZrTYoRs2V6HddNpmopaqUJET/J4bWUxOlQUdNtXW1LUg
+         MsAGDwTrHQB3X044c8mSQIZGtknOMZNBZfC8qZoM5MgT532ocGeTbsdlTLueoO3b747X
+         KV7PSMyG5XBnwoWE7RJR1HGf5+l/K7G1iSUdtiZHODlc9RstD/SQl0uPQ2tCxkm64Ard
+         Xf691TJPFBnA6QIgsbQTJItl1EdLSbSuEM33YltQdmrxzDs+gQCm1d4O/LRTScT9GlTk
+         8FAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722951986; x=1723556786;
-        h=content-transfer-encoding:subject:to:from:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1722953248; x=1723558048;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=n2B5+WTR5fHsn5YvtfTT61S48+OsOawPtKzrF6Q/zeA=;
-        b=KsR590d+ozg6N24t75EnMp4CDgUy+eE2lD3Tj/1+NdFhwsGxW0qfPL+NjZP5pVESUA
-         bu/4FgDuKVZE6Cu3byMxSoNCCXW3tupRuGFWKwiwWkRfwjAqFScAeaBks82NAd75LemP
-         RvoJFibZDkjUG1yRkyxskizpxyH9SAigHtdCnxQHQ4P2s3CVLlo3mshhC3FYzt2Vtolt
-         +aGpguUuYsEqxdu6Z4/PUOVNgHk7E3h4tU8Sm17o2sM2+yL/YZmuHG8+46krKAGvG1OD
-         1HXWlnEUteLi7JtV3YpfL80iqE3jO09M7XI8Ybm75FSez/5ktimx/OC9aCmXAw7rg/4O
-         DOOQ==
-X-Gm-Message-State: AOJu0YyggnwZwmXx4kLiW/vwaEAaExTeNPn6s3/zumLZOW60W/RGKnb4
-	8ec5Z4nQYMLJvvSYDziv9UOnctX+RaVGj/FNAgnzGDKe/2twobUCSU1QeT21
-X-Google-Smtp-Source: AGHT+IHLOXf5zpKi1lF8AlCFg+8nyoGSFqHomRggPyripO/6zKTtZrO29gukL8JtIuN41I/l+2BB9w==
-X-Received: by 2002:a5d:490c:0:b0:368:6596:c60c with SMTP id ffacd0b85a97d-36bbc0fc73cmr7632353f8f.30.1722951985727;
-        Tue, 06 Aug 2024 06:46:25 -0700 (PDT)
-Received: from DESKTOP-KPV6ART ([39.45.132.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbcf0cc9csm13133075f8f.17.2024.08.06.06.46.24
-        for <stable@vger.kernel.org>
-        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
-        Tue, 06 Aug 2024 06:46:25 -0700 (PDT)
-Message-ID: <66b22931.5d0a0220.200175.53d6@mx.google.com>
-Date: Tue, 06 Aug 2024 06:46:25 -0700 (PDT)
-X-Google-Original-Date: 6 Aug 2024 18:46:26 +0500
+        bh=mNJXmqdg/wrODcSMNLZaLEyt49+/cc65vl/68WJpwIU=;
+        b=JdVVWtfRW9RT9xBOEEnId0wpl173JEgI/IhkA2+SF4FyZwLN9BU9/ZoJOkzKd6Kv6C
+         0LSzsAhO/Yb0u1wrPBTA8gLsnrkfymi9fNimWXlhHHUJgJ1dn6Jv2GDk3Md7WlOuiAA1
+         ISdcOtSldr6WMh3x6J+7/KS3Xz8pnUL5f2GpIALZVvSZO/V0ASUnDqCinkUHv/n5aB9C
+         ho34RfanI+i5ILjHLP1We0Dt4RAcg6cOPlgC5tiMHWOGXPQdWeDNOuDEIjYJ4Y0rCsuI
+         Ppo+/RLvLTy2kl7xatryeFMpaQlP9sJW5rqi1/weYOOFcnyEbvJfmFv/o4jG3EO54i0a
+         IkCA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1OYDw96c4QO9MNENgrAe5CH2ff8HGKrNv8LH0rPIdGlAgcJCNjCMgGs1nOT7nJajqIVnVASfxn0baTyT3v4B1L+xEjYGt
+X-Gm-Message-State: AOJu0Ywu5FPC2Ty9yTCuEpLcTkgBa3dhvzviQ9LkSNCjkfJYN5zV1pSN
+	4rI3PbAZgSaw2ZAa32Z3ic4ivXh1UM6avi6LerOpT8TRemWkbEh1MpxhUmIclQ==
+X-Google-Smtp-Source: AGHT+IEjnmj/9A++4g9dfV6Pp5GNvDhemkB90CQw2gg7OgKrBntYsLFfW3sjJJPh92DYzEUk/xDxtQ==
+X-Received: by 2002:a05:600c:34cc:b0:424:898b:522b with SMTP id 5b1f17b1804b1-429008aeed2mr671265e9.1.1722953247161;
+        Tue, 06 Aug 2024 07:07:27 -0700 (PDT)
+Received: from localhost ([2a00:79e0:9d:4:5649:bc4b:84ff:8e24])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282b89a862sm245809365e9.4.2024.08.06.07.07.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Aug 2024 07:07:25 -0700 (PDT)
+From: Jann Horn <jannh@google.com>
+Date: Tue, 06 Aug 2024 16:07:16 +0200
+Subject: [PATCH] f2fs: Require FMODE_WRITE for atomic write ioctls
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: elvislehmann891@gmail.com
-To: stable@vger.kernel.org
-Subject: Bidding Services
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240806-f2fs-atomic-write-v1-1-8a586e194fd7@google.com>
+X-B4-Tracking: v=1; b=H4sIABMusmYC/x3MTQqAIBBA4avErBtQk/6uEi3ExppFGRoViHdPW
+ n6L9xJECkwRxipBoJsj+6NA1hXYzRwrIS/FoITSohctOuUimsvvbPEJfBGSkIPRXa+ahaB0ZyD
+ H7/+c5pw/6hSYXWMAAAA=
+To: Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>
+Cc: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Jann Horn <jannh@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722953241; l=2816;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=ZXE8YRwRjRlnWnbKZwcnN363Dx2ojCKLeGL5iZ9KS0A=;
+ b=SxfzSCKBN2CpOmUQWWZjQ5m95ZMD/8Nc/Bg14dR57k3AQ9SY3Tax9bjw9lERq5jyGZ+VNKsFd
+ ifymP+MITBHAOG7F4Nz5fmKNmyoz1AZJSdbipNYf16uAOKdf1JpdDtw
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-SGksDQoNCkNhbm5vbiBFc3RpbWF0aW9uLExMQyBicmluZ3MgeW91IGEgbWFqb3IgZGlz
-Y291bnQgb24gQ29zdCBFc3RpbWF0aW5nICYgUXVhbnRpdGllcyBUYWtlLU9mZiBTZXJ2
-aWNlcy4gV2UgY2xhaW0gYSA5OCUgYWNjdXJhY3kgZ3VhcmFudGVlIHdpdGggYSByZWZ1
-bmQgcG9saWN5IGluIGNhc2Ugb2YgYW55IGVycm9yIGluIHF1YW50aXRpZXMuIFdlIGFy
-ZSB1c2luZyBjZXJ0aWZpZWQgc29mdHdhcmXigJlzIGxpa2UgUGxhblN3aWZ0LCBCbHVl
-QmVhbXMsIEFjY3UtQmlkLCBBdXRvLUJpZCAmIFJTbWVhbnMgZXRjDQoNClNlbmQgdXMg
-eW91ciBwbGFucyBmb3IgYSBxdW90ZSBvbiBvdXIgc2VydmljZSBjaGFyZ2VzIGJlZm9y
-ZSBnZXR0aW5nIHN0YXJ0ZWQuIFBsZWFzZSByZXBseSB0byB0aGF0IGVtYWlsLCBzbyBJ
-IGNhbiBzaGFyZSBzb21lIHNhbXBsZSBlc3RpbWF0ZXMuDQoNClRoYW5rcyAmIEhhdmUg
-YSBHcmVhdCBEYXkuDQoNClJlZ2FyZHMsDQpFbHZpcyBMZWhtYW5uDQpCdXNpbmVzcyBE
-ZXZlbG9wbWVudCBNYW5hZ2VyIA0KQ2Fubm9uIEVzdGltYXRpb24sIExMQw==
+The F2FS ioctls for starting and committing atomic writes check for
+inode_owner_or_capable(), but this does not give LSMs like SELinux or
+Landlock an opportunity to deny the write access - if the caller's FSUID
+matches the inode's UID, inode_owner_or_capable() immediately returns true.
+
+There are scenarios where LSMs want to deny a process the ability to write
+particular files, even files that the FSUID of the process owns; but this
+can currently partially be bypassed using atomic write ioctls in two ways:
+
+ - F2FS_IOC_START_ATOMIC_REPLACE + F2FS_IOC_COMMIT_ATOMIC_WRITE can
+   truncate an inode to size 0
+ - F2FS_IOC_START_ATOMIC_WRITE + F2FS_IOC_ABORT_ATOMIC_WRITE can revert
+   changes another process concurrently made to a file
+
+Fix it by requiring FMODE_WRITE for these operations, just like for
+F2FS_IOC_MOVE_RANGE. Since any legitimate caller should only be using these
+ioctls when intending to write into the file, that seems unlikely to break
+anything.
+
+Fixes: 88b88a667971 ("f2fs: support atomic writes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+ fs/f2fs/file.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 168f08507004..a662392c5d8b 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2117,12 +2117,15 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
+ 	struct f2fs_inode_info *fi = F2FS_I(inode);
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	struct inode *pinode;
+ 	loff_t isize;
+ 	int ret;
+ 
++	if (!(filp->f_mode & FMODE_WRITE))
++		return -EBADF;
++
+ 	if (!inode_owner_or_capable(idmap, inode))
+ 		return -EACCES;
+ 
+ 	if (!S_ISREG(inode->i_mode))
+ 		return -EINVAL;
+ 
+@@ -2225,12 +2228,15 @@ static int f2fs_ioc_start_atomic_write(struct file *filp, bool truncate)
+ static int f2fs_ioc_commit_atomic_write(struct file *filp)
+ {
+ 	struct inode *inode = file_inode(filp);
+ 	struct mnt_idmap *idmap = file_mnt_idmap(filp);
+ 	int ret;
+ 
++	if (!(filp->f_mode & FMODE_WRITE))
++		return -EBADF;
++
+ 	if (!inode_owner_or_capable(idmap, inode))
+ 		return -EACCES;
+ 
+ 	ret = mnt_want_write_file(filp);
+ 	if (ret)
+ 		return ret;
+@@ -2257,12 +2263,15 @@ static int f2fs_ioc_commit_atomic_write(struct file *filp)
+ static int f2fs_ioc_abort_atomic_write(struct file *filp)
+ {
+ 	struct inode *inode = file_inode(filp);
+ 	struct mnt_idmap *idmap = file_mnt_idmap(filp);
+ 	int ret;
+ 
++	if (!(filp->f_mode & FMODE_WRITE))
++		return -EBADF;
++
+ 	if (!inode_owner_or_capable(idmap, inode))
+ 		return -EACCES;
+ 
+ 	ret = mnt_want_write_file(filp);
+ 	if (ret)
+ 		return ret;
+
+---
+base-commit: b446a2dae984fa5bd56dd7c3a02a426f87e05813
+change-id: 20240806-f2fs-atomic-write-e019a47823de
+-- 
+Jann Horn <jannh@google.com>
 
 
