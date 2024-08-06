@@ -1,210 +1,128 @@
-Return-Path: <stable+bounces-65469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DADE9489E1
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 09:18:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A92BA948A4B
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 09:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6371F24289
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 07:18:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51F61285B59
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 07:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD9E166F1F;
-	Tue,  6 Aug 2024 07:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CB8165F1C;
+	Tue,  6 Aug 2024 07:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="aB9FlyEf"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECAFBA53;
-	Tue,  6 Aug 2024 07:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DF8166F0C
+	for <stable@vger.kernel.org>; Tue,  6 Aug 2024 07:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722928728; cv=none; b=E4/Ehem8+/DOSAvEPheLCvz9erlTqw0MTaGUsIJFFdoYXr/LHKHJ+xl9e67CY9MEjtFvL0vgrE1aiHVWOEXxgXldq7K2WYO5iAkikZ0f1JeQG9PongmPf4nthRuakPcAjVtLYAuF7D3ISnGXFPve223CGgtOPkvSyQ70VSYTsJg=
+	t=1722930034; cv=none; b=gQIsStOvnCkXNAvkvhl4f8WrDFhKEp9yL84FCVRS2qq5rNRJiPJgbAw8ahB9sKbPWC1RXC0X4SEfpc0WDVaGlQKXKstT7Lpbc39z+RLM9ccEgg/tA28q9LWXgTQ52iZUQ0MmLOGytvcK7LMlVjLwOlCEMybLvj1b2975uUB+uwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722928728; c=relaxed/simple;
-	bh=y9+kEBGrMzk+TKK3/t5Gg0IJdmbU11DUVR0TmBjqAXw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cBoeXkziZC02am+IBRE8HowsZtZST68thrxMaS2XnPfJCF8CYYNRSBCB4VXJ1JJ2cfVHxs3z0rczckoQ2qUILSjNCFpt701Hllzm8fbQ6xdn1ZcGFqA6n3bdHX+NyoFMi8EQP4Q52KzFDRJJ12T/2NRoRXdbFDy06nsI9+lYCK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WdPlJ26SfzpStY;
-	Tue,  6 Aug 2024 15:17:32 +0800 (CST)
-Received: from kwepemi100008.china.huawei.com (unknown [7.221.188.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id A35AE180105;
-	Tue,  6 Aug 2024 15:18:40 +0800 (CST)
-Received: from huawei.com (10.67.174.55) by kwepemi100008.china.huawei.com
- (7.221.188.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 6 Aug
- 2024 15:18:39 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <dennis@kernel.org>, <tj@kernel.org>, <cl@linux.com>,
-	<mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
-	<christophe.leroy@csgroup.eu>, <mahesh@linux.ibm.com>,
-	<gregkh@linuxfoundation.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v5.10 v2] powerpc: Avoid nmi_enter/nmi_exit in real mode interrupt.
-Date: Tue, 6 Aug 2024 07:16:16 +0000
-Message-ID: <20240806071616.1671691-1-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1722930034; c=relaxed/simple;
+	bh=e7q7PuGomUmc8mDA+PRh5mc/fuHtDvXpByuSLXKRUw8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=eX8QbZ0aWD1uo0l2Chp6IGcJYBAw3hF407CBAs+TFWZFybNwaDuhcgB2CkgL45rOsk40ZDIpWtMXcIfjzM5mp1bosYxeez6htFYmXeYh8H9+eT8/M22iYACeMgfmASrBq36sa1AkLAXtl3NPL+A73jsM47BuMw+wqAjEJEHJYcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=aB9FlyEf; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4266dc7591fso1775115e9.0
+        for <stable@vger.kernel.org>; Tue, 06 Aug 2024 00:40:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1722930031; x=1723534831; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :references:cc:to:from:subject:reply-to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=e7q7PuGomUmc8mDA+PRh5mc/fuHtDvXpByuSLXKRUw8=;
+        b=aB9FlyEf/P5azZR3cr7l3DvW3QsgokJ3o/Wwxxtpq9veWPxDSe6LXuyG+8IMouNnXK
+         OhoPyCH66r8xFgmi9sU2IPZXGqASY0DSONBy2GTaVEWZFSNMDlx0COu+j2jrta5Z355V
+         W+q7spufC8g7BC5ntDkr/hrjTUpmllQJq7CHJk6XR6pnf88+DKEQzxbOxHGKByImoifD
+         RHywDtTn2SWxA4OP1aUPG0bUvJ18fXcLNzhQ92iBBaaljSZEFXSnANT/VCy/ZUceq6d6
+         kdQq0gPqM3a1rzwjnUC/5ypdeCZOcxD32ZVSHc5Vu133deAvl8UUqFVzPSxwsDExRTAm
+         NyQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722930031; x=1723534831;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :references:cc:to:from:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e7q7PuGomUmc8mDA+PRh5mc/fuHtDvXpByuSLXKRUw8=;
+        b=EkYLa2h4y23OIr54YBOWDHDAtDb0SqQcDWENKfGe6xGTu2x9cZJa+2W0nMdg9DaA+v
+         t9BTzqOsPIJpyr7TFpM6u6TMyBs+mNkki5vFMeBSkEB0z547O3eAOZv7Xu7S/ZtaKhOR
+         vS3yC25CL8+4kYO4gAE+PcEEyVYmrTYJayBpi7TO/vRWpSpMvXtPQ5SGIP34ZiA0n/Nl
+         wBITI4YLBLEvsiR4E5J3X3Crvp7/YfvKXVoevuRFCBIrFic2VT0MIB9UDw6QYTiwFoTS
+         b+D+bGZM+m3JOw8PpGajTzl6cIj+XlThbAkaq8WL4Uphgcd29i60IY6qsoo9XBgdH3iF
+         njKA==
+X-Gm-Message-State: AOJu0Yz8oxY2vHomFz4hNaKGe0xPLntfW7uA0OGPVFQLgx1Q5bBNcdC8
+	xRQuAcfRQwt/7WR5X1wN9qNFj6Vsz1dal2qQKFle0NOtHrB/uU+3aA+ChLdrSog7W91YYSs79/0
+	+
+X-Google-Smtp-Source: AGHT+IGCY7coCo4klSW6TQMqTFP1OGf4TPjvcIgkTlVlpPcsZBm6uOYHcXnWmJU+do3cp6jMXSuOaw==
+X-Received: by 2002:a05:600c:4f06:b0:426:6d1a:d497 with SMTP id 5b1f17b1804b1-428e6af9d21mr96092185e9.12.1722930031495;
+        Tue, 06 Aug 2024 00:40:31 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:b41:c160:400c:6f2d:f80c:1b34? ([2a01:e0a:b41:c160:400c:6f2d:f80c:1b34])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282babaa39sm225750505e9.27.2024.08.06.00.40.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Aug 2024 00:40:30 -0700 (PDT)
+Message-ID: <1a575070-6590-48ee-b157-e994a889fcdd@6wind.com>
+Date: Tue, 6 Aug 2024 09:40:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: Patch "ipv4: fix source address selection with route leak" has
+ been added to the 5.15-stable tree
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+References: <20240803145547.888173-1-sashal@kernel.org>
+ <fa631c09-60e4-4fec-98ce-3f02fd412408@6wind.com> <ZrC2VY4GfDRv5T5i@sashalap>
+ <1d3b8483-446a-427a-b987-ed88248ede55@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <1d3b8483-446a-427a-b987-ed88248ede55@6wind.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemi100008.china.huawei.com (7.221.188.57)
 
-From: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-
-[ Upstream commit 0db880fc865ffb522141ced4bfa66c12ab1fbb70 ]
-
-nmi_enter()/nmi_exit() touches per cpu variables which can lead to kernel
-crash when invoked during real mode interrupt handling (e.g. early HMI/MCE
-interrupt handler) if percpu allocation comes from vmalloc area.
-
-Early HMI/MCE handlers are called through DEFINE_INTERRUPT_HANDLER_NMI()
-wrapper which invokes nmi_enter/nmi_exit calls. We don't see any issue when
-percpu allocation is from the embedded first chunk. However with
-CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there are chances where percpu
-allocation can come from the vmalloc area.
-
-With kernel command line "percpu_alloc=page" we can force percpu allocation
-to come from vmalloc area and can see kernel crash in machine_check_early:
-
-[    1.215714] NIP [c000000000e49eb4] rcu_nmi_enter+0x24/0x110
-[    1.215717] LR [c0000000000461a0] machine_check_early+0xf0/0x2c0
-[    1.215719] --- interrupt: 200
-[    1.215720] [c000000fffd73180] [0000000000000000] 0x0 (unreliable)
-[    1.215722] [c000000fffd731b0] [0000000000000000] 0x0
-[    1.215724] [c000000fffd73210] [c000000000008364] machine_check_early_common+0x134/0x1f8
-
-Fix this by avoiding use of nmi_enter()/nmi_exit() in real mode if percpu
-first chunk is not embedded.
-
-CVE-2024-42126
-Cc: stable@vger.kernel.org#5.10.x
-Cc: gregkh@linuxfoundation.org
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Shirisha Ganta <shirisha@linux.ibm.com>
-Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240410043006.81577-1-mahesh@linux.ibm.com
-[ Conflicts in arch/powerpc/include/asm/interrupt.h
-  because machine_check_early() and machine_check_exception()
-  has been refactored. ]
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
-v2:
-- Also fix for CONFIG_PPC_BOOK3S_64 not enabled.
-- Add Upstream.
-- Cc stable@vger.kernel.org.
----
- arch/powerpc/include/asm/percpu.h | 10 ++++++++++
- arch/powerpc/kernel/mce.c         | 14 +++++++++++---
- arch/powerpc/kernel/setup_64.c    |  2 ++
- arch/powerpc/kernel/traps.c       |  8 +++++++-
- 4 files changed, 30 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/percpu.h b/arch/powerpc/include/asm/percpu.h
-index 8e5b7d0b851c..634970ce13c6 100644
---- a/arch/powerpc/include/asm/percpu.h
-+++ b/arch/powerpc/include/asm/percpu.h
-@@ -15,6 +15,16 @@
- #endif /* CONFIG_SMP */
- #endif /* __powerpc64__ */
- 
-+#if defined(CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK) && defined(CONFIG_SMP)
-+#include <linux/jump_label.h>
-+DECLARE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
-+
-+#define percpu_first_chunk_is_paged	\
-+		(static_key_enabled(&__percpu_first_chunk_is_paged.key))
-+#else
-+#define percpu_first_chunk_is_paged	false
-+#endif /* CONFIG_PPC64 && CONFIG_SMP */
-+
- #include <asm-generic/percpu.h>
- 
- #include <asm/paca.h>
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index 63702c0badb9..259343040e1b 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -594,8 +594,15 @@ long notrace machine_check_early(struct pt_regs *regs)
- 	u8 ftrace_enabled = this_cpu_get_ftrace_enabled();
- 
- 	this_cpu_set_ftrace_enabled(0);
--	/* Do not use nmi_enter/exit for pseries hpte guest */
--	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
-+	/*
-+	 * Do not use nmi_enter/exit for pseries hpte guest
-+	 *
-+	 * Likewise, do not use it in real mode if percpu first chunk is not
-+	 * embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled there
-+	 * are chances where percpu allocation can come from vmalloc area.
-+	 */
-+	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
-+	    !percpu_first_chunk_is_paged)
- 		nmi_enter();
- 
- 	hv_nmi_check_nonrecoverable(regs);
-@@ -606,7 +613,8 @@ long notrace machine_check_early(struct pt_regs *regs)
- 	if (ppc_md.machine_check_early)
- 		handled = ppc_md.machine_check_early(regs);
- 
--	if (radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR))
-+	if ((radix_enabled() || !firmware_has_feature(FW_FEATURE_LPAR)) &&
-+	    !percpu_first_chunk_is_paged)
- 		nmi_exit();
- 
- 	this_cpu_set_ftrace_enabled(ftrace_enabled);
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index 3f8426bccd16..899d87de0165 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -824,6 +824,7 @@ static int pcpu_cpu_distance(unsigned int from, unsigned int to)
- 
- unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
- EXPORT_SYMBOL(__per_cpu_offset);
-+DEFINE_STATIC_KEY_FALSE(__percpu_first_chunk_is_paged);
- 
- static void __init pcpu_populate_pte(unsigned long addr)
- {
-@@ -903,6 +904,7 @@ void __init setup_per_cpu_areas(void)
- 	if (rc < 0)
- 		panic("cannot initialize percpu area (err=%d)", rc);
- 
-+	static_key_enable(&__percpu_first_chunk_is_paged.key);
- 	delta = (unsigned long)pcpu_base_addr - (unsigned long)__per_cpu_start;
- 	for_each_possible_cpu(cpu) {
-                 __per_cpu_offset[cpu] = delta + pcpu_unit_offsets[cpu];
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index b0e87dce2b9a..b4d108bef814 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -835,8 +835,14 @@ void machine_check_exception(struct pt_regs *regs)
- 	 * This is silly. The BOOK3S_64 should just call a different function
- 	 * rather than expecting semantics to magically change. Something
- 	 * like 'non_nmi_machine_check_exception()', perhaps?
-+	 *
-+	 * Do not use nmi_enter/exit in real mode if percpu first chunk is
-+	 * not embedded. With CONFIG_NEED_PER_CPU_PAGE_FIRST_CHUNK enabled
-+	 * there are chances where percpu allocation can come from
-+	 * vmalloc area.
- 	 */
--	const bool nmi = !IS_ENABLED(CONFIG_PPC_BOOK3S_64);
-+	const bool nmi = !IS_ENABLED(CONFIG_PPC_BOOK3S_64) &&
-+			 !percpu_first_chunk_is_paged;
- 
- 	if (nmi) nmi_enter();
- 
--- 
-2.34.1
-
+Le 05/08/2024 à 14:56, Nicolas Dichtel a écrit :
+> Le 05/08/2024 à 13:24, Sasha Levin a écrit :
+>> On Mon, Aug 05, 2024 at 09:43:53AM +0200, Nicolas Dichtel wrote:
+>>> Le 03/08/2024 à 16:55, Sasha Levin a écrit :
+>>>> This is a note to let you know that I've just added the patch titled
+>>>>
+>>>>     ipv4: fix source address selection with route leak
+>>>>
+>>>> to the 5.15-stable tree which can be found at:
+>>>>    
+>>>> http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>>>
+>>>> The filename of the patch is:
+>>>>      ipv4-fix-source-address-selection-with-route-leak.patch
+>>>> and it can be found in the queue-5.15 subdirectory.
+>>>>
+>>>> If you, or anyone else, feels it should not be added to the stable tree,
+>>>> please let <stable@vger.kernel.org> know about it.
+>>> I'm not sure I fully understand the process, but Greg already sent a mail
+>>> because this patch doesn't compile on the 5.15 stable branch.
+>>>
+>>> I sent a backport:
+>>> https://lore.kernel.org/stable/20240802085305.2749750-1-nicolas.dichtel@6wind.com/
+>>
+>> Appologies, I haven't seen your backport, but instead I've picked up
+>> 40867d74c374 ("net: Add l3mdev index to flow struct and avoid oif reset
+>> for port devices") as a dependency to address the build failure.
+>>
+> No problem, it's fine for me. I will launch the selftests to check the backport.
+Tested-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
