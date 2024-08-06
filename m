@@ -1,55 +1,44 @@
-Return-Path: <stable+bounces-65474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D4B948C1D
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 11:23:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC01948D31
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 12:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E6BE1F248F8
-	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 09:23:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7768C287AA8
+	for <lists+stable@lfdr.de>; Tue,  6 Aug 2024 10:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9162A1BDA80;
-	Tue,  6 Aug 2024 09:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE481BF339;
+	Tue,  6 Aug 2024 10:50:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mblankhorst.nl (lankhorst.se [141.105.120.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41291607BD;
-	Tue,  6 Aug 2024 09:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817F11BF321
+	for <stable@vger.kernel.org>; Tue,  6 Aug 2024 10:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722936195; cv=none; b=p22dXJwLp3vUU2M8mBW8rN17iCBYA6Ni/tlPS8g+03hKZitVTIO1DJ9aUWPgz03+v13mqTqcVSDWH02owv2h/4TFlZqcA3Rx+ZXzo2MpqKkKWclig1zLOfOWzx+SqZEEqAZ+bO9bIRLyF1HAxfjfPwx9WcWLPmRRckZTr9s7+Qk=
+	t=1722941454; cv=none; b=g0xk/UZuBPaSQwN7MGgLBaD6CN2gjFCncUU20USCCidpO0ctyAaG8LRtQ1PZ3jYmibHO6yhWwf4HoHZJz4qOqMpvl6iJX3LCC1wLB2Tl0HQbRIkhkLT/+MB4nvk4BaKUHwQzNcS3f/MKpR5MjcbDAtECJ1cmz5wDxRD3moQ1qHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722936195; c=relaxed/simple;
-	bh=1nZEE/R5Jbb3keFbXoWB0AAm+u6TPnfskG8wpL9BoyI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qQ0xaDTvkBTY3+twpppJ+Skh6CL3MsgEVSBLxIwafuQ4WSZEGcaSY7Rmxw1I5hOyjEszacSWjGCwZd0IE1/AjT0RAr6ePKll9Wo7H/Am7CduLUvSDmPMJariUa3BCjfMUyGtZwrLkZlta4XVhQs5IM0goh6O4g4Ten7IIqjp2ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowABXfQBq67Fm3g3cAw--.39396S2;
-	Tue, 06 Aug 2024 17:22:57 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: jani.nikula@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	joonas.lahtinen@linux.intel.com,
-	tursulin@ursulin.net,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	ville.syrjala@linux.intel.com,
-	stanislav.lisovskiy@intel.com
-Cc: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
+	s=arc-20240116; t=1722941454; c=relaxed/simple;
+	bh=cC4B+hvw6askto5FkqoOzswBBUFt9KKsfAOX1kNG664=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TazcqoPAdj11XaxKbxEKmhswiLyRGpbSXAika1W0gvMKhAHqzqNQy8xIkDblh+rTFg5ggWwaJLru2P6g/98Ws9xnzn5C4B04mWuVN90NjerZ8dcw8924w20CkNDdYnbwWRQ51ky98glTvjO0IZWqewH/3gN7Ws1DoyC+MV8VUd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=mblankhorst.nl; arc=none smtp.client-ip=141.105.120.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mblankhorst.nl
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/i915: Fix NULL ptr deref in intel_async_flip_check_uapi()
-Date: Tue,  6 Aug 2024 17:22:49 +0800
-Message-Id: <20240806092249.2407555-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH v2 2/2] drm/xe/display: Make display suspend/resume work on discrete
+Date: Tue,  6 Aug 2024 12:50:44 +0200
+Message-ID: <20240806105044.596842-3-maarten.lankhorst@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240806105044.596842-1-maarten.lankhorst@linux.intel.com>
+References: <20240806105044.596842-1-maarten.lankhorst@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,51 +46,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABXfQBq67Fm3g3cAw--.39396S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFy3JF48Aw4UCF1rury3Jwb_yoWkKrgEgF
-	1UArnayry5AFs0va17Crs3uFyFka4qvFWxZ340qa4ava42k348u3yfur1rWw1S9FyjyrWU
-	Za1jgF92kwsa9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbSkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-intel_atomic_get_new_crtc_state can return NULL, unless crtc state wasn't
-obtained previously with intel_atomic_get_crtc_state. We should check it
-for NULLness here, just as in many other places, where we can't guarantee
-that intel_atomic_get_crtc_state was called.
+We should unpin before evicting all memory, and repin after GT resume.
+This way, we preserve the contents of the framebuffers, and won't hang
+on resume due to migration engine not being restored yet.
 
-Cc: stable@vger.kernel.org
-Fixes: b0b2bed2a130 ("drm/i915: Check async flip capability early on")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Cc: <stable@vger.kernel.org> # v6.8+
 ---
- drivers/gpu/drm/i915/display/intel_display.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/display/xe_display.c | 23 +++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_pm.c              | 11 ++++++-----
+ 2 files changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index c2c388212e2e..9dd7b5985d57 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -6115,7 +6115,7 @@ static int intel_async_flip_check_uapi(struct intel_atomic_state *state,
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+index d544d18ad1ecc..4b9ce1f34f4c7 100644
+--- a/drivers/gpu/drm/xe/display/xe_display.c
++++ b/drivers/gpu/drm/xe/display/xe_display.c
+@@ -283,6 +283,27 @@ static bool suspend_to_idle(void)
+ 	return false;
+ }
+ 
++static void xe_display_flush_cleanup_work(struct xe_device *xe)
++{
++	struct intel_crtc *crtc;
++
++	for_each_intel_crtc(&xe->drm, crtc) {
++		struct drm_crtc_commit *commit;
++
++		spin_lock(&crtc->base.commit_lock);
++		commit = list_first_entry_or_null(&crtc->base.commit_list,
++						  struct drm_crtc_commit, commit_entry);
++		if (commit)
++			drm_crtc_commit_get(commit);
++		spin_unlock(&crtc->base.commit_lock);
++
++		if (commit) {
++			wait_for_completion(&commit->cleanup_done);
++			drm_crtc_commit_put(commit);
++		}
++	}
++}
++
+ void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
+ {
+ 	bool s2idle = suspend_to_idle();
+@@ -303,6 +324,8 @@ void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
+ 	if (!runtime)
+ 		intel_display_driver_suspend(xe);
+ 
++	xe_display_flush_cleanup_work(xe);
++
+ 	intel_dp_mst_suspend(xe);
+ 
+ 	intel_hpd_cancel_work(xe);
+diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+index 9f3c14fd9f337..fcfb49af8c891 100644
+--- a/drivers/gpu/drm/xe/xe_pm.c
++++ b/drivers/gpu/drm/xe/xe_pm.c
+@@ -93,13 +93,13 @@ int xe_pm_suspend(struct xe_device *xe)
+ 	for_each_gt(gt, xe, id)
+ 		xe_gt_suspend_prepare(gt);
+ 
++	xe_display_pm_suspend(xe, false);
++
+ 	/* FIXME: Super racey... */
+ 	err = xe_bo_evict_all(xe);
+ 	if (err)
+ 		goto err;
+ 
+-	xe_display_pm_suspend(xe, false);
+-
+ 	for_each_gt(gt, xe, id) {
+ 		err = xe_gt_suspend(gt);
+ 		if (err) {
+@@ -154,11 +154,11 @@ int xe_pm_resume(struct xe_device *xe)
+ 
+ 	xe_irq_resume(xe);
+ 
+-	xe_display_pm_resume(xe, false);
+-
+ 	for_each_gt(gt, xe, id)
+ 		xe_gt_resume(gt);
+ 
++	xe_display_pm_resume(xe, false);
++
+ 	err = xe_bo_restore_user(xe);
+ 	if (err)
+ 		goto err;
+@@ -367,10 +367,11 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
+ 	mutex_unlock(&xe->mem_access.vram_userfault.lock);
+ 
+ 	if (xe->d3cold.allowed) {
++		xe_display_pm_suspend(xe, true);
++
+ 		err = xe_bo_evict_all(xe);
+ 		if (err)
+ 			goto out;
+-		xe_display_pm_suspend(xe, true);
  	}
  
--	if (intel_crtc_needs_modeset(new_crtc_state)) {
-+	if (new_crtc_state && intel_crtc_needs_modeset(new_crtc_state)) {
- 		drm_dbg_kms(&i915->drm,
- 			    "[CRTC:%d:%s] modeset required\n",
- 			    crtc->base.base.id, crtc->base.name);
+ 	for_each_gt(gt, xe, id) {
 -- 
-2.25.1
+2.45.2
 
 
