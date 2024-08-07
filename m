@@ -1,171 +1,178 @@
-Return-Path: <stable+bounces-65529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0628894A495
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 11:41:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838CE94A61A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 12:46:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF7F82818A4
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 09:41:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6E0B1C22947
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 10:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C151D0DDC;
-	Wed,  7 Aug 2024 09:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6881B9B2F;
+	Wed,  7 Aug 2024 10:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PAwZRDXD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eQEG66Vw"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6D81AE87B;
-	Wed,  7 Aug 2024 09:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420661E2891
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 10:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723023685; cv=none; b=Xq5GSUVDeyVqhwbBlyc5BhvhLkKaLWJmJkF6575TnZ+lyUrMCIxdna8g3NzJIrBmp7ZrVpO4NtYwUGHqjGdjocdBDpWa02Zn1U3aPiSAx8mmt+7RYXdIMtdnCSkoUZhuY9RYDraiqlgw30EPDCL3VzUe43Kv5D035WYTMk+P/tA=
+	t=1723027460; cv=none; b=jYn8bO44YUKLl7v21+JLOGs/qpTih5AwHRbQS5jbUQIiWTix5viXCVPOEtV4ClfEcCsY/IkQTfhShm2bsU7AXWSmlsHzvIqEMX/71AiZmBHBqIVnpu+COoUMuowyzH4tftkZ69F4XbfpGn61juowVC7RLIL5SadoW4vdcCOAri0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723023685; c=relaxed/simple;
-	bh=13PfPwaqWfV0SZIb5VZIEOqUcw2cc8yCIcW5grujzAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=bHS0uBIZMhtf/Xv4Dnb/8QJ4Epp6i03HcbMTepaKed469WdHaQXF5plwRS5PzYKeTwAkCu4NehU1yPEdcZZWfebJAjHNGAWtJjIvvp+7kl9K5TYG4rcafUN9uJwKuO3Z8w+w+ukYrP5Hf/9JN/sSP2Cd/pPTAU+Ic7Chkuc4mj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PAwZRDXD; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 477873DK002852;
-	Wed, 7 Aug 2024 09:41:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	w4f2akm3PLX0q66J2hNtvC4aFfjKnQkbdbfkY2Cic3c=; b=PAwZRDXDOHCNFTqL
-	n4O/eJeVuo+T9X9kpuNsgYokm6eHqHESzKBJs8Wum4wRHjbKz3qzLVmPmA4kkC/V
-	W/5hfaOQJiZI83hBmdDCIGue0YPBAUZzplWzVrqR8kEH4vkUoZO0xjbqeE+5sLxc
-	/DY3rS6YTd8rnngym1cvkmVxp2p4HMndyF7fNTSdvjy598vS42+XQhqcHN9DZ7pL
-	uRAY5wsqduTmR6QhN46DqAPhMHxNucGEiPhX1Tx8BhJimVqixeyzFNZg5S6RqEUM
-	Ssom/ODBrSRTfO4cwSacAbSWJw4AINFElWP33D8CGqoOo2dzrFTT4G8c0AHDu7d1
-	QXrK0g==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40sdu9a4cq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Aug 2024 09:41:19 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4779fI28008697
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 7 Aug 2024 09:41:18 GMT
-Received: from [10.218.35.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 7 Aug 2024
- 02:41:16 -0700
-Message-ID: <ec99fcdc-9404-8cd9-6a30-95e4f5c1edcd@quicinc.com>
-Date: Wed, 7 Aug 2024 15:11:13 +0530
+	s=arc-20240116; t=1723027460; c=relaxed/simple;
+	bh=7F2dgW4FuJsClw6RwBczzLtLul8AUYM2EWM8QMsAPjU=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=Fc7aW0+iAh2lr5ectNqq/IHSJhGodc05R4ech56Ikw2u8eBj2Kor09k43OXIjw13sD8qrHhTGACFHggGJ2rfNMwoEaSjpc+lznsxMvkakbnvGcntFWlbJjE0Zc0aBgjJQ+RzfgOmr1m+u9Z9e7b44Dm72yjZMBJPLzij4SRKQqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eQEG66Vw; arc=none smtp.client-ip=209.85.214.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-1fc56fd4de1so5646425ad.0
+        for <stable@vger.kernel.org>; Wed, 07 Aug 2024 03:44:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723027457; x=1723632257; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=F3o02Xw7ezzA14Pd+Lgc2BLB9SvalP82R9YVWF/sDxk=;
+        b=eQEG66Vwf4gwAYtdaF9HPk1L4L+dBqzCKMONQnz8rR1WzM1b8ZZ85xLIh1QuEwRU+l
+         uQ8U+SsAsydm3JgxcPZIshMx1mJa02gO4eZ2GMzHDhHS0ksZxIyDQO7QDWirGi3dGhHb
+         7mTgICeuaHy75sqEGS35/Xa3yQYIyvR8I+cyjSMmDsPJM2OV1aL7wIbzf78RzMevTyls
+         uqOaNNAJBQquMIg0zr1plyUb5UxseIjUeebIsUtEM76TTQ3Fvc37sgWuMEnyIPy+HhDI
+         /YL216wDGRsn6zoIs+XBY2Aq6/EwzJ7wD1zf9c+vGcTEi+eqGa256Dk7QAtpR15WxXkx
+         Ifxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723027457; x=1723632257;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=F3o02Xw7ezzA14Pd+Lgc2BLB9SvalP82R9YVWF/sDxk=;
+        b=Iyc3METnphKm5bS4Tu1rXVfZybkPKJq8tIXqD6szU4L5FVq5H7IwbkEMYEY1cfanNq
+         Pcq70smdXVcZkpG7pIwIMoItO+BpOgFLZ5ZKCk1JtFcLZtRdjIAvZhDx4L7UUtS65fQi
+         wm+ky2iqG4Ho0aX5MayZIRRPYJAYEWcDM79/1iWsIkM9RzKLG2x81JkKG9iniWolk5h4
+         0hxyKwSzvT+kQEebgaBEdI32HWB8/01zycGLBQU0GYef6plHsq1dOgG9yOIjOQx0okAI
+         AtqX9b/aWgmyHTDIqM0V3rrWR8dNGQutB915fGwOmtyb4QY3Wpqp2N1LUlj99PpbiW4X
+         dV+g==
+X-Forwarded-Encrypted: i=1; AJvYcCXLl4x+gSWBUMG+z3v2TEYB2qNRzk/+MiMx7ICQC3/Nsh1BEkDM1ThVAaRugtUxdrGg3YxoXK9nbsUYtPQFmBe3pD3EDnc4
+X-Gm-Message-State: AOJu0YyUmpqHxMtMGCQmI/yOuIn77jXVjrd7bEX9I5/FRy/pRkBdERv7
+	sJLYDcO9U5lyA+NrEujqFgRGOwBRZI9AYAMSAE11ZFUhB0cf3jRourVtiN/BPE0=
+X-Google-Smtp-Source: AGHT+IFoNLrt1GaF+yeaFvmCHadWYdmm/RDr/6D/Md5qSi81mcUQk94i8uHGUfoK6lIe9cztu7TiAg==
+X-Received: by 2002:a17:903:a88:b0:1f9:ad91:f8d0 with SMTP id d9443c01a7336-200853de85cmr23075065ad.8.1723027457532;
+        Wed, 07 Aug 2024 03:44:17 -0700 (PDT)
+Received: from [127.0.0.1] ([182.232.168.81])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff5905e58fsm103268695ad.177.2024.08.07.03.44.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Aug 2024 03:44:17 -0700 (PDT)
+Date: Wed, 07 Aug 2024 17:44:12 +0700
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Leonard Lausen <leonard@lausen.nl>, Rob Clark <robdclark@gmail.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
+CC: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/2=5D_drm/msm/dpu1=3A_don=27t_c?=
+ =?US-ASCII?Q?hoke_on_disabling_the_writeback_connector?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <57cdac1a-1c4d-4299-8fde-92ae054fc6c0@lausen.nl>
+References: <20240802-dpu-fix-wb-v2-0-7eac9eb8e895@linaro.org> <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org> <57cdac1a-1c4d-4299-8fde-92ae054fc6c0@lausen.nl>
+Message-ID: <61D52432-DD30-4C43-BD5E-1CC9F84DF5B9@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] usb: dwc3: Fix latency of DSTS while receiving wakeup
- event
-Content-Language: en-US
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240730124742.561408-1-quic_prashk@quicinc.com>
- <20240806235142.cem5f635wmds4bt4@synopsys.com>
-From: Prashanth K <quic_prashk@quicinc.com>
-In-Reply-To: <20240806235142.cem5f635wmds4bt4@synopsys.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: jcU0xN1rCS7mNrX7N5CpaDDZyLpmtpsw
-X-Proofpoint-GUID: jcU0xN1rCS7mNrX7N5CpaDDZyLpmtpsw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-07_06,2024-08-06_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
- clxscore=1015 phishscore=0 spamscore=0 bulkscore=0 mlxscore=0
- impostorscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408070067
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+On August 5, 2024 9:27:39 AM GMT+07:00, Leonard Lausen <leonard@lausen=2Enl=
+> wrote:
+>Dear Dmitry,
+>
+>Thank you for the patch=2E Unfortunately, the patch triggers a regression=
+ with
+>respect to DRM CRTC state handling=2E With the patch applied, suspending =
+and
+>resuming a lazor sc7180 with external display connected, looses CRTC stat=
+e on
+>resume and prevents applying a new CRTC state=2E Without the patch, CRTC =
+state is
+>preserved across suspend and resume and it remains possible to change CRT=
+C
+>settings after resume=2E This means the patch regresses the user experien=
+ce,
+>preventing "Night Light" mode to work as expected=2E I've validated this =
+on
+>v6=2E10=2E2 vs=2E v6=2E10=2E2 with this patch applied=2E
+>
+
+Could you please clarify, I was under the impression that currently whole =
+suspend/resume is broken, so it's more than a dmesg message=2E
+
+>While the cause for the bug uncovered by this change is likely separate, =
+given
+>it's impact, would it be prudent to delay the application of this patch u=
+ntil
+>the related bug is identified and fixed? Otherwise we would be fixing a d=
+mesg
+>error message "[dpu error]connector not connected 3" that appears to do n=
+o harm
+>but thereby break more critical user visible behavior=2E
+>
+>Best regards
+>Leonard
+>
+>On 8/2/24 15:47, Dmitry Baryshkov wrote:
+>> During suspend/resume process all connectors are explicitly disabled an=
+d
+>> then reenabled=2E However resume fails because of the connector_status =
+check:
+>>=20
+>> [ 1185=2E831970] [dpu error]connector not connected 3
+>>=20
+>> It doesn't make sense to check for the Writeback connected status (and
+>> other drivers don't perform such check), so drop the check=2E
+>>=20
+>> Fixes: 71174f362d67 ("drm/msm/dpu: move writeback's atomic_check to dpu=
+_writeback=2Ec")
+>> Cc: stable@vger=2Ekernel=2Eorg
+>> Reported-by: Leonard Lausen <leonard@lausen=2Enl>
+>> Closes: https://gitlab=2Efreedesktop=2Eorg/drm/msm/-/issues/57
+>> Signed-off-by: Dmitry Baryshkov <dmitry=2Ebaryshkov@linaro=2Eorg>
+>> ---
+>>  drivers/gpu/drm/msm/disp/dpu1/dpu_writeback=2Ec | 3 ---
+>>  1 file changed, 3 deletions(-)
+>>=20
+>> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback=2Ec b/drivers/=
+gpu/drm/msm/disp/dpu1/dpu_writeback=2Ec
+>> index 16f144cbc0c9=2E=2E8ff496082902 100644
+>> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback=2Ec
+>> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_writeback=2Ec
+>> @@ -42,9 +42,6 @@ static int dpu_wb_conn_atomic_check(struct drm_connec=
+tor *connector,
+>>  	if (!conn_state || !conn_state->connector) {
+>>  		DPU_ERROR("invalid connector state\n");
+>>  		return -EINVAL;
+>> -	} else if (conn_state->connector->status !=3D connector_status_connec=
+ted) {
+>> -		DPU_ERROR("connector not connected %d\n", conn_state->connector->sta=
+tus);
+>> -		return -EINVAL;
+>>  	}
+>> =20
+>>  	crtc =3D conn_state->crtc;
+>>=20
+>
 
 
-
-On 07-08-24 05:21 am, Thinh Nguyen wrote:
-> Hi,
-> 
-> On Tue, Jul 30, 2024, Prashanth K wrote:
->> When operating in High-Speed, it is observed that DSTS[USBLNKST] doesn't
->> update link state immediately after receiving the wakeup interrupt. Since
->> wakeup event handler calls the resume callbacks, there is a chance that
->> function drivers can perform an ep queue. Which in turn tries to perform
->> remote wakeup from send_gadget_ep_cmd(), this happens because DSTS[[21:18]
->> wasn't updated to U0 yet. It is observed that the latency of DSTS can be
->> in order of milli-seconds. Hence update the dwc->link_state from evtinfo,
->> and use this variable to prevent calling remote wakup unnecessarily.
->>
->> Fixes: ecba9bc9946b ("usb: dwc3: gadget: Check for L1/L2/U3 for Start Transfer")
-> 
-> This commit ID is corrupted. Please check.
-> 
-Will fix it, was supposed to be 63c4c320ccf7, thanks for pointing out.
-
-> While operating in usb2 speed, if the device is in low power link state
-> (L1/L2), CMDACT may not complete and time out. The programming guide
-> suggested to initiate remote wakeup to bring the device to ON state,
-> allowing the command to go through. However, clearing the
-
-Yea true, we need ensure that the linkstate is not in L1/L2/U3 for 
-HS/SS. But since we are relying on DSTS for this, we may issue 
-remote-wakeup to host even when not needed. During host initiated wakeup 
-scenario, we get a wakeup interrupt which calls function driver resume 
-calls. If function driver queues something, then startxfer has to be 
-issued, but DSTS was still showing U3 instead of U0. When checked with 
-our design team, they mentioned the latency in DSTS is expected since 
-and latency would be in msec order from Resume to U0. Can you please 
-confirm this once, I simply added a polling mechanism in wakeup handler.
-
-@@ -4175,6 +4177,14 @@ static void dwc3_gadget_wakeup_interrupt(struct 
-dwc3 *dwc, unsigned int evtinfo)
-          * TODO take core out of low power mode when that's
-          * implemented.
-          */
-+       while (retries++ < 20000) {
-+               reg = dwc3_readl(dwc->regs, DWC3_DSTS);
-+               /* in HS, means ON */
-+               if (DWC3_DSTS_USBLNKST(reg) == DWC3_LINK_STATE_U0)
-+                       break;
-+               udelay(2);
-+       }
-+       pr_info("DWC3 Wakeup: %d", retries);
-
-And turns out, retries 1500 to 15000 (worst case), which can range from 
-3ms to 30ms. By this time, control can reach startXfer, where it tries 
-to perform remote-wakeup even if host just resumed the gadget.
-
-For SS case, this retries count was consistently 1, it was passing in 
-first try itself. But unfortunately doesn't behave the same way in HS.
-
-> GUSB2PHYCFG.suspendusb2 turns on the signal required to complete a
-> command within 50us. This happens within the timeout required for an
-> endpoint command. As a result, there's no need to perform remote wakeup.
-> 
-> For usb3 speed, if it's in U3, the gadget is in suspend anyway. There
-> will be no ep_queue to trigger the Start Transfer command.
-> 
-> You can just remove the whole Start Transfer check for remote wakeup
-> completely.
-> 
-Sorry, i didnt understand your suggestion. The startxfer check is needed 
-as per databook, but we also need to handle the latency seen in DSTS 
-when operating in HS.
-
-Thanks,
-Prashanth K
+--=20
+With best wishes
+Dmitry
 
