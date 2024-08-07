@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-65551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A78694A97D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:10:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277C594A97C
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 16:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90272B291FA
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:10:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6B11F28381
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 14:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD34E2E419;
-	Wed,  7 Aug 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CD650271;
+	Wed,  7 Aug 2024 14:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjjnMkop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJtPknkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B83339B1
-	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6530F21373
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 14:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723039788; cv=none; b=jDEXvZk/ttx4TpRA9xr44b7so5Acu6Klv86KutFDmc29apKly6Hp0tUc1Jtgsdob3DnxVsAQ8+mqZnzp0VZI9V3iQMcjjXkkwGOnBK3j00EKNMljvr2yDS/7FkcQvM7xCoKNBQdp/X2xsDdMUkc/pHpiF8mZ05slhLgTTfjNcd4=
+	t=1723039797; cv=none; b=Ypo7dmcZIeWDOyVi9daqlhi8pADnp0WW6zEtoDDg+Mj2mcR1nLd3ps4giJWh4VKS6/WievJeyv737TA72/07Y+btFTRgUqVqhum3ZqPBm62z7UjlSf693t8plEEK80+oZ2bPosQysd6ohVRm3ionYuDjqHALXWm7Re4/MPaF9sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723039788; c=relaxed/simple;
-	bh=yQiD9aro0OB+c5O0v0/slQ6PGAv17/ykgpgEX2TfpVw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PrNnasyG/9Awa3LdLiTphg8xRu+SSBiLAeReDQ8oPi3M7dCB/zPT+hL/ObKvpF2bdCnGhInIe4gGc6smIA038aPzb9jd3v+H9g1wCHDzUqSShG8AfSV/TbdJUizwTrc1inLg8h3Pl8UxSFPXHWV4ht7S6fZ91fuT+N6/EFWPX00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjjnMkop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FBEC32781;
-	Wed,  7 Aug 2024 14:09:47 +0000 (UTC)
+	s=arc-20240116; t=1723039797; c=relaxed/simple;
+	bh=P2gXR4Bgf3+j5LsxR5zpOFyoWC+0pft5d6/Mo3xGGT8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HvPoeDFsUgPz3PApQItbbcZl/8xjIN7zIa3bnjtZrXheYrVWbSAkUfZS6jGsbFXvYo4PL57P+cRtRSjODe8difsM6EDlsNDnBJFo5lEm/9Xf1223jpOXOxzmAqhHnCEg1QW7Dfk8EC7Xet82EyYyzDg/w9eD2waVrKnK8KA67Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJtPknkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E03C32781;
+	Wed,  7 Aug 2024 14:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723039788;
-	bh=yQiD9aro0OB+c5O0v0/slQ6PGAv17/ykgpgEX2TfpVw=;
+	s=korg; t=1723039796;
+	bh=P2gXR4Bgf3+j5LsxR5zpOFyoWC+0pft5d6/Mo3xGGT8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DjjnMkopV/wrP0kYB6xug+GhCspC/rwJHsp947EWShR1guYYSoOLUm/cJmHs6OQgW
-	 OpogJ4QQMfSgOHebpCmKO8euXjgIySBgxmzvLJdgN17Sq4z3ONcNdg0fkzHYfjSVHD
-	 BzvUr/OqoPHgwH9dleu7Ku83LFoKfiTFnto7onM4=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Attempt to avoid empty TUs when endpoint is" failed to apply to 6.10-stable tree
+	b=xJtPknkhxOqtsfrkHvpXRG41MV4PBzhBkoZQxwuT2yBrNA8vU2XwWIQQqMHOYnYFo
+	 xxKaxpBhzEbrWEYsKI6PmKcP2/x5UC2gU62rh4Liu4ft8nL1qxR+inEVBi2eQIOuhW
+	 Cj8qWpsFNZ7SDKR3+3mTwT6gv9YFly+Of0pvHViw=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Attempt to avoid empty TUs when endpoint is" failed to apply to 6.6-stable tree
 To: michael.strauss@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 07 Aug 2024 16:09:44 +0200
-Message-ID: <2024080744-managing-spotted-b0f4@gregkh>
+Date: Wed, 07 Aug 2024 16:09:45 +0200
+Message-ID: <2024080745-radiation-faucet-f866@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 37256027b45fe48d1cd23954db90d1c53401e29a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080744-managing-spotted-b0f4@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024080745-radiation-faucet-f866@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,22 @@ Possible dependencies:
 532a0d2ad292 ("drm/amd/display: Revert "dc: Keep VBios pixel rate div setting util next mode set"")
 47745acc5e8d ("drm/amd/display: Add trigger FIFO resync path for DCN35")
 4d4d3ff16db2 ("drm/amd/display: Keep VBios pixel rate div setting util next mode set")
+eed4edda910f ("drm/amd/display: Support long vblank feature")
+2d7f3d1a5866 ("drm/amd/display: Implement wait_for_odm_update_pending_complete")
+c7b33856139d ("drm/amd/display: Drop some unnecessary guards")
+6a068e64fb25 ("drm/amd/display: Update phantom pipe enable / disable sequence")
+db8391479f44 ("drm/amd/display: correct static screen event mask")
+9af68235ad3d ("drm/amd/display: Fix static screen event mask definition change")
+f6154d8babbb ("drm/amd/display: Refactor INIT into component folder")
+a71e1310a43f ("drm/amd/display: Add more mechanisms for tests")
+85fce153995e ("drm/amd/display: change static screen wait frame_count for ips")
+09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
+ec39a6d00382 ("drm/amd/display: add debug option for ExtendedVBlank DLG adjust")
+198891fd2902 ("drm/amd/display: Create one virtual connector in DC")
+abd26a3252cb ("drm/amd/display: Add dml2 copy functions")
+43484c4bdb6e ("drm/amd/display: Added delay to DPM log")
+3d0fe4945465 ("drm/amd/display: Refactor OPTC into component folder")
+6c22fb07e0c2 ("drm/amd/display: Refactor DSC into component folder")
 
 thanks,
 
