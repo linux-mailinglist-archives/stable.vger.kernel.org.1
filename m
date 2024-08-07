@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-65765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA66194ABCF
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0D894AB46
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0681C2265E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC1121C21B88
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B2178C92;
-	Wed,  7 Aug 2024 15:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296BC78C92;
+	Wed,  7 Aug 2024 15:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngOsBUDZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKAM+gNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BF12AF07;
-	Wed,  7 Aug 2024 15:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D645478C67;
+	Wed,  7 Aug 2024 15:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043347; cv=none; b=s9A3rNGCjsNSGawmmoaPqDBLtjYArbUS9IS+tOyH4u6s1NQlHa0QwPlLsXbaLdtJvRm/r7gYEKZlSzkHw19uyBVnkt6zsXNqzRuNh/zTm/RB8DduUyTn1dAJOcIcgyu4jfHd783wBqn2hovcP8VBqojnrBaaA/OoYenVF6AdcMw=
+	t=1723043048; cv=none; b=gpbwXkth/3V+5hzyK6WS86L/8laYNpzWNjTwzEPa64Hck284U86XG9ZNHTBwG0y0P7UJ6r2lijWDsHk8rL63UvEyltRDrkpx4/L+WoAHSpMPvspyi99lorWzALxqj4qDeDZVyOZG35W897z+xhC1rops+jz6uMqrm7orOj/Yo4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043347; c=relaxed/simple;
-	bh=0wqAqoSfSLqxvYX/U1zqspuWv+OovESFLJ94iqLOBUQ=;
+	s=arc-20240116; t=1723043048; c=relaxed/simple;
+	bh=HuZY87EYQIX9UyPqsF8XivNRW1YTGS3vvFx+/qqksTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRjNTOfAYejGJa0fJEJYbDYuC+z5UBMLc3ovr3HxZZj/9SdGtBekeRu/0nz7L9mV9zwRzEq8zGlYpR/Nj3LNkS9ZnZLnEp6OUlL0/7vdzJdrfwO1Z/cb+1bePjUcTQoAj0qKtyguxy9mFWyyCLH7dkcBMYpUoW5BWYBh+hwawlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngOsBUDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8898C32781;
-	Wed,  7 Aug 2024 15:09:06 +0000 (UTC)
+	 MIME-Version; b=qhzrCfnluCsWElSTVQkdENaKV4+3Bv6852DNpH+VMJVQXPp0zwy4MlLH3zM9fCbhaiFwTdsW1Q1DCMIplHAhWJujkF4IbT1NDP2uxaaxrk39Y9DB/prlVeBp3fhNCfcbZSn/I7AqlR5qaDsy2jZoewY04uQ+pybCpbB72jei5io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKAM+gNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B00AC4AF0D;
+	Wed,  7 Aug 2024 15:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043347;
-	bh=0wqAqoSfSLqxvYX/U1zqspuWv+OovESFLJ94iqLOBUQ=;
+	s=korg; t=1723043048;
+	bh=HuZY87EYQIX9UyPqsF8XivNRW1YTGS3vvFx+/qqksTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngOsBUDZVaVIVsl/4PhYgROHmclXMmO/LO90tEVUE78vAdTHDVH1xAaeVnS5/ZE8n
-	 1fSSZr8fb87rBXpNuKX7RM2WyZ37qtdPmcBY7/7p8U/7AboMDyz4mPTTh6ItEaGAtw
-	 lMg2I4vHcTOXoeh6okjXA7p+1rctYoY5caVOTtJs=
+	b=mKAM+gNiB80dD/smY8lTLbqSrYPF1Zf2tCBojUW/tD73zIXeR2MZ4ppn1UzmmX51T
+	 SxxeiywkNeXSq1RXcB8xEJo9U35wrS8FSUgpAhsRUKiyiOSeD3t7N4x2mBKwKMO0Ku
+	 w1c8goZhcFZn+sSksYNGongEbtYC4FxVXHbM0IFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Chris Mi <cmi@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/121] ARM: 9406/1: Fix callchain_trace() return value
-Date: Wed,  7 Aug 2024 16:59:42 +0200
-Message-ID: <20240807150021.041113666@linuxfoundation.org>
+Subject: [PATCH 6.10 064/123] net/mlx5e: Fix CT entry update leaks of modify header context
+Date: Wed,  7 Aug 2024 16:59:43 +0200
+Message-ID: <20240807150022.873653074@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Chris Mi <cmi@nvidia.com>
 
-[ Upstream commit 4e7b4ff2dcaed228cb2fb7bfe720262c98ec1bb9 ]
+[ Upstream commit 025f2b85a5e5a46df14ecf162c3c80a957a36d0b ]
 
-perf_callchain_store() return 0 on success, -1 otherwise, fix
-callchain_trace() to return correct bool value. So walk_stackframe() can
-have a chance to stop walking the stack ahead.
+The cited commit allocates a new modify header to replace the old
+one when updating CT entry. But if failed to allocate a new one, eg.
+exceed the max number firmware can support, modify header will be
+an error pointer that will trigger a panic when deallocating it. And
+the old modify header point is copied to old attr. When the old
+attr is freed, the old modify header is lost.
 
-Fixes: 70ccc7c0667b ("ARM: 9258/1: stacktrace: Make stack walk callback consistent with generic code")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fix it by restoring the old attr to attr when failed to allocate a
+new modify header context. So when the CT entry is freed, the right
+modify header context will be freed. And the panic of accessing
+error pointer is also fixed.
+
+Fixes: 94ceffb48eac ("net/mlx5e: Implement CT entry update")
+Signed-off-by: Chris Mi <cmi@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/20240730061638.1831002-8-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/perf_callchain.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/kernel/perf_callchain.c b/arch/arm/kernel/perf_callchain.c
-index 7147edbe56c67..1d230ac9d0eb5 100644
---- a/arch/arm/kernel/perf_callchain.c
-+++ b/arch/arm/kernel/perf_callchain.c
-@@ -85,8 +85,7 @@ static bool
- callchain_trace(void *data, unsigned long pc)
- {
- 	struct perf_callchain_entry_ctx *entry = data;
--	perf_callchain_store(entry, pc);
--	return true;
-+	return perf_callchain_store(entry, pc) == 0;
- }
- 
- void
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+index fadfa8b50bebe..8c4e3ecef5901 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+@@ -920,6 +920,7 @@ mlx5_tc_ct_entry_replace_rule(struct mlx5_tc_ct_priv *ct_priv,
+ 	mlx5_tc_ct_entry_destroy_mod_hdr(ct_priv, zone_rule->attr, mh);
+ 	mlx5_put_label_mapping(ct_priv, attr->ct_attr.ct_labels_id);
+ err_mod_hdr:
++	*attr = *old_attr;
+ 	kfree(old_attr);
+ err_attr:
+ 	kvfree(spec);
 -- 
 2.43.0
 
