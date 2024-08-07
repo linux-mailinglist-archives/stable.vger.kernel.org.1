@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-65692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A55994AB7D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA66194ABCF
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30741B22A1F
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0681C2265E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98E012D1EA;
-	Wed,  7 Aug 2024 15:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B2178C92;
+	Wed,  7 Aug 2024 15:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyXbi9y7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngOsBUDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B7381AB1;
-	Wed,  7 Aug 2024 15:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BF12AF07;
+	Wed,  7 Aug 2024 15:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043151; cv=none; b=d5e2Rrvmj6Y4mNXwNUrLDR7ENy88oe15LCb7hvD64cCaH1mhGRvGW6mXScCN/rT8Xo3L6EGQD1GOh45iTD7gXsUufDIc4Pj9bxK8xsTDyjIDiuasBWoiLh2LJbeEI1DRjTCeGa4Qns/gIxoY2XodqbpyrCtXvT8L+y53BKQswoI=
+	t=1723043347; cv=none; b=s9A3rNGCjsNSGawmmoaPqDBLtjYArbUS9IS+tOyH4u6s1NQlHa0QwPlLsXbaLdtJvRm/r7gYEKZlSzkHw19uyBVnkt6zsXNqzRuNh/zTm/RB8DduUyTn1dAJOcIcgyu4jfHd783wBqn2hovcP8VBqojnrBaaA/OoYenVF6AdcMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043151; c=relaxed/simple;
-	bh=Z0vOEVCmiVGsCWLiJWfs53H3ybiQeHZjNnVoD+GQh3w=;
+	s=arc-20240116; t=1723043347; c=relaxed/simple;
+	bh=0wqAqoSfSLqxvYX/U1zqspuWv+OovESFLJ94iqLOBUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYg5AkMcqxB623E0eHFYttjIZ/lnR61j0jir/iSY11wLs4AboK0w2b4ZAnctchbFn2HL6Cp7coch0Igf9NbqsPyeW5RftyswMAZKY9KLp2iSU2KctuCLwSg3dmj/lxYtFT5yay5Q48kvtSk7ipZDPvVxyjHXcpcWYrCmw9Pa61c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyXbi9y7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E87C32781;
-	Wed,  7 Aug 2024 15:05:50 +0000 (UTC)
+	 MIME-Version; b=RRjNTOfAYejGJa0fJEJYbDYuC+z5UBMLc3ovr3HxZZj/9SdGtBekeRu/0nz7L9mV9zwRzEq8zGlYpR/Nj3LNkS9ZnZLnEp6OUlL0/7vdzJdrfwO1Z/cb+1bePjUcTQoAj0qKtyguxy9mFWyyCLH7dkcBMYpUoW5BWYBh+hwawlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngOsBUDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8898C32781;
+	Wed,  7 Aug 2024 15:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043151;
-	bh=Z0vOEVCmiVGsCWLiJWfs53H3ybiQeHZjNnVoD+GQh3w=;
+	s=korg; t=1723043347;
+	bh=0wqAqoSfSLqxvYX/U1zqspuWv+OovESFLJ94iqLOBUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hyXbi9y7doGPor4Y0edDMMoCPk3ewzIe/u74yl1UbmzooS9HE/evzsmNx1XTyRlU7
-	 sAvqz5OLz1lsCImMf771JJFwWQtky8UroeYaDcSKT24/zpUO2//NlMTjKe8oueK/vT
-	 PUoSCSTUVeDWmdYSVBkD+E9xJZhVduAIfQ8n7j7E=
+	b=ngOsBUDZVaVIVsl/4PhYgROHmclXMmO/LO90tEVUE78vAdTHDVH1xAaeVnS5/ZE8n
+	 1fSSZr8fb87rBXpNuKX7RM2WyZ37qtdPmcBY7/7p8U/7AboMDyz4mPTTh6ItEaGAtw
+	 lMg2I4vHcTOXoeh6okjXA7p+1rctYoY5caVOTtJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 063/123] net/mlx5e: Require mlx5 tc classifier action support for IPsec prio capability
+Subject: [PATCH 6.6 050/121] ARM: 9406/1: Fix callchain_trace() return value
 Date: Wed,  7 Aug 2024 16:59:42 +0200
-Message-ID: <20240807150022.835765625@linuxfoundation.org>
+Message-ID: <20240807150021.041113666@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 06827e27fdcd197557be72b2229dbd362303794f ]
+[ Upstream commit 4e7b4ff2dcaed228cb2fb7bfe720262c98ec1bb9 ]
 
-Require mlx5 classifier action support when creating IPSec chains in
-offload path. MLX5_IPSEC_CAP_PRIO should only be set if CONFIG_MLX5_CLS_ACT
-is enabled. If CONFIG_MLX5_CLS_ACT=n and MLX5_IPSEC_CAP_PRIO is set,
-configuring IPsec offload will fail due to the mlxx5 ipsec chain rules
-failing to be created due to lack of classifier action support.
+perf_callchain_store() return 0 on success, -1 otherwise, fix
+callchain_trace() to return correct bool value. So walk_stackframe() can
+have a chance to stop walking the stack ahead.
 
-Fixes: fa5aa2f89073 ("net/mlx5e: Use chains for IPsec policy priority offload")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://patch.msgid.link/20240730061638.1831002-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 70ccc7c0667b ("ARM: 9258/1: stacktrace: Make stack walk callback consistent with generic code")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c   | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm/kernel/perf_callchain.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-index 6e00afe4671b7..797db853de363 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-@@ -51,9 +51,10 @@ u32 mlx5_ipsec_device_caps(struct mlx5_core_dev *mdev)
- 		    MLX5_CAP_FLOWTABLE_NIC_RX(mdev, decap))
- 			caps |= MLX5_IPSEC_CAP_PACKET_OFFLOAD;
+diff --git a/arch/arm/kernel/perf_callchain.c b/arch/arm/kernel/perf_callchain.c
+index 7147edbe56c67..1d230ac9d0eb5 100644
+--- a/arch/arm/kernel/perf_callchain.c
++++ b/arch/arm/kernel/perf_callchain.c
+@@ -85,8 +85,7 @@ static bool
+ callchain_trace(void *data, unsigned long pc)
+ {
+ 	struct perf_callchain_entry_ctx *entry = data;
+-	perf_callchain_store(entry, pc);
+-	return true;
++	return perf_callchain_store(entry, pc) == 0;
+ }
  
--		if ((MLX5_CAP_FLOWTABLE_NIC_TX(mdev, ignore_flow_level) &&
--		     MLX5_CAP_FLOWTABLE_NIC_RX(mdev, ignore_flow_level)) ||
--		    MLX5_CAP_ESW_FLOWTABLE_FDB(mdev, ignore_flow_level))
-+		if (IS_ENABLED(CONFIG_MLX5_CLS_ACT) &&
-+		    ((MLX5_CAP_FLOWTABLE_NIC_TX(mdev, ignore_flow_level) &&
-+		      MLX5_CAP_FLOWTABLE_NIC_RX(mdev, ignore_flow_level)) ||
-+		     MLX5_CAP_ESW_FLOWTABLE_FDB(mdev, ignore_flow_level)))
- 			caps |= MLX5_IPSEC_CAP_PRIO;
- 
- 		if (MLX5_CAP_FLOWTABLE_NIC_TX(mdev,
+ void
 -- 
 2.43.0
 
