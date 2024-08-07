@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5113794ABE0
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2C994AC5F
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D19D28452E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C399A283BFD
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95310823C8;
-	Wed,  7 Aug 2024 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD84A84A2F;
+	Wed,  7 Aug 2024 15:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I32oCxzy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwSM3TVt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54ECC78C67;
-	Wed,  7 Aug 2024 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6876B374CC;
+	Wed,  7 Aug 2024 15:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043394; cv=none; b=MBWLxQbMHXayrgn/TeCtCRbPNXBjOyO4dWHn3Ub0JQN4Jn1phRWSZbnv6X9EzGEOTz9poOWVPa+GJvhFYZRYcwhu07xIDncyofVe4COwrwuBByKXtxfgPyQP6ObBge5OZ3b5YaRqnixqj3JdyBpnOmgzv19KV6l8DYO/XSCXS90=
+	t=1723043666; cv=none; b=PgxZL8QDAZVG7UPpMwAkbpo/QS4PamierBwgjuOoWD5lvWdCYCnP59J3zUYsZ+xu9Bme48XXfh9xjl2WHe6ECZzktk3i1Gqrsb4BkANrHB561C2ECdhGp4ZadyA/Feze9U+CxlnRULgqadm759uY/jhCUurXlhVjkjvnnkv/1gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043394; c=relaxed/simple;
-	bh=3emXs9g3qLZ5oBCxqDhuyllD0aqGXHSO/Aky3frNW9w=;
+	s=arc-20240116; t=1723043666; c=relaxed/simple;
+	bh=PW5wO4VGH2iIjnaBdEIpNBk6mJ1z+vajlFevrWCrAvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SC42Zt6sM0Ekt5a4oN5kXVHzPMAHO2C+iBAfQl8Ahtrs+I+fgO1VBdwAU2v28A82lGl5TR5gwOHNNTnXv/9gwQBeqN7/M3SnIqk3HWiFW8vli6oI6YyCyaOaCAYZX+m2KeuKF/OfKY1cc6nsKf8UHKM04zJlr3BfNIR8fBS1VrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I32oCxzy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AA4C32781;
-	Wed,  7 Aug 2024 15:09:53 +0000 (UTC)
+	 MIME-Version; b=jp8G16BWLasy0W4nKCaZ31xwg7mBfabq32iPP637XMJYpUTvTlP1k7Kt4TGSLM63L4WOVwacPSVrXm2EhAtmHig1nCO/16wFdwMXhFYpRv3UuBIelZX+ngxJx9bxOIThb7L+7WCRgZRzmMo8/ac63NUZ0qKFXg4emUM713zskrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwSM3TVt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FEFC4AF0E;
+	Wed,  7 Aug 2024 15:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043394;
-	bh=3emXs9g3qLZ5oBCxqDhuyllD0aqGXHSO/Aky3frNW9w=;
+	s=korg; t=1723043666;
+	bh=PW5wO4VGH2iIjnaBdEIpNBk6mJ1z+vajlFevrWCrAvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I32oCxzy9ao9CFyQuAbPYbfsx2HfD5HIajsetY47mFHvQJFspRUa2bOegItIPcAot
-	 V1I5bp/4h32T6cffEVB7x28uXgFUvZ9k7qoASzfFs3h8eRllZONdENsxScva0iWXdH
-	 2V2eowYyQS/pCJU6MTnhE1AyaTCRlLWt94evxITk=
+	b=DwSM3TVtVUjhDlAlD2BAkscwYIs1mi9UdeSUekCSQr23+dHweXTQQw13/BFcKkHXW
+	 KFW/qCuURrnwL0Mm8PNPvwo7XEsZY2rn6Szhe6x5LBpdtWJ9ZFSGJGnZf7eMnIzlwW
+	 8IZZDpP6hyrLDNK2WNsQp6diJG32LrT3rgfnzK5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/121] drm/i915/hdcp: Fix HDCP2_STREAM_STATUS macro
+Subject: [PATCH 6.1 27/86] drm/udl: Rename struct udl_drm_connector to struct udl_connector
 Date: Wed,  7 Aug 2024 17:00:06 +0200
-Message-ID: <20240807150021.829804716@linuxfoundation.org>
+Message-ID: <20240807150040.133835254@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Kandpal <suraj.kandpal@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 555069117390a5d581863bc797fb546bb4417c31 ]
+[ Upstream commit 59a811faa74f4326fe2d48d2b334c0ee95922628 ]
 
-Fix HDCP2_STREAM_STATUS macro, it called pipe instead of port never
-threw a compile error as no one used it.
+Remove the _drm_ infix from struct udl_drm_connector and introduce a
+macro for upcasting from struct drm_connector. No functional changes.
 
---v2
--Add Fixes [Jani]
-
-Fixes: d631b984cc90 ("drm/i915/hdcp: Add HDCP 2.2 stream register")
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240730035505.3759899-1-suraj.kandpal@intel.com
-(cherry picked from commit 73d7cd542bbd0a7c6881ea0df5255f190a1e7236)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20221006095355.23579-2-tzimmermann@suse.de
+Stable-dep-of: 5aed213c7c6c ("drm/udl: Remove DRM_CONNECTOR_POLL_HPD")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_hdcp_regs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/udl/udl_connector.c | 19 +++++--------------
+ drivers/gpu/drm/udl/udl_connector.h | 10 ++++++++--
+ 2 files changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_hdcp_regs.h b/drivers/gpu/drm/i915/display/intel_hdcp_regs.h
-index 8023c85c7fa0e..74059384892af 100644
---- a/drivers/gpu/drm/i915/display/intel_hdcp_regs.h
-+++ b/drivers/gpu/drm/i915/display/intel_hdcp_regs.h
-@@ -249,7 +249,7 @@
- #define HDCP2_STREAM_STATUS(dev_priv, trans, port) \
- 					(GRAPHICS_VER(dev_priv) >= 12 ? \
- 					 TRANS_HDCP2_STREAM_STATUS(trans) : \
--					 PIPE_HDCP2_STREAM_STATUS(pipe))
-+					 PIPE_HDCP2_STREAM_STATUS(port))
+diff --git a/drivers/gpu/drm/udl/udl_connector.c b/drivers/gpu/drm/udl/udl_connector.c
+index fade4c7adbf78..3c80686263848 100644
+--- a/drivers/gpu/drm/udl/udl_connector.c
++++ b/drivers/gpu/drm/udl/udl_connector.c
+@@ -46,10 +46,7 @@ static int udl_get_edid_block(void *data, u8 *buf, unsigned int block,
  
- #define _PORTA_HDCP2_AUTH_STREAM		0x66F00
- #define _PORTB_HDCP2_AUTH_STREAM		0x66F04
+ static int udl_get_modes(struct drm_connector *connector)
+ {
+-	struct udl_drm_connector *udl_connector =
+-					container_of(connector,
+-					struct udl_drm_connector,
+-					connector);
++	struct udl_connector *udl_connector = to_udl_connector(connector);
+ 
+ 	drm_connector_update_edid_property(connector, udl_connector->edid);
+ 	if (udl_connector->edid)
+@@ -74,10 +71,7 @@ static enum drm_connector_status
+ udl_detect(struct drm_connector *connector, bool force)
+ {
+ 	struct udl_device *udl = to_udl(connector->dev);
+-	struct udl_drm_connector *udl_connector =
+-					container_of(connector,
+-					struct udl_drm_connector,
+-					connector);
++	struct udl_connector *udl_connector = to_udl_connector(connector);
+ 
+ 	/* cleanup previous edid */
+ 	if (udl_connector->edid != NULL) {
+@@ -94,10 +88,7 @@ udl_detect(struct drm_connector *connector, bool force)
+ 
+ static void udl_connector_destroy(struct drm_connector *connector)
+ {
+-	struct udl_drm_connector *udl_connector =
+-					container_of(connector,
+-					struct udl_drm_connector,
+-					connector);
++	struct udl_connector *udl_connector = to_udl_connector(connector);
+ 
+ 	drm_connector_cleanup(connector);
+ 	kfree(udl_connector->edid);
+@@ -120,10 +111,10 @@ static const struct drm_connector_funcs udl_connector_funcs = {
+ 
+ struct drm_connector *udl_connector_init(struct drm_device *dev)
+ {
+-	struct udl_drm_connector *udl_connector;
++	struct udl_connector *udl_connector;
+ 	struct drm_connector *connector;
+ 
+-	udl_connector = kzalloc(sizeof(struct udl_drm_connector), GFP_KERNEL);
++	udl_connector = kzalloc(sizeof(*udl_connector), GFP_KERNEL);
+ 	if (!udl_connector)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/drivers/gpu/drm/udl/udl_connector.h b/drivers/gpu/drm/udl/udl_connector.h
+index 7f2d392df1737..74ad68fd3cc9f 100644
+--- a/drivers/gpu/drm/udl/udl_connector.h
++++ b/drivers/gpu/drm/udl/udl_connector.h
+@@ -1,15 +1,21 @@
+ #ifndef __UDL_CONNECTOR_H__
+ #define __UDL_CONNECTOR_H__
+ 
+-#include <drm/drm_crtc.h>
++#include <linux/container_of.h>
++
++#include <drm/drm_connector.h>
+ 
+ struct edid;
+ 
+-struct udl_drm_connector {
++struct udl_connector {
+ 	struct drm_connector connector;
+ 	/* last udl_detect edid */
+ 	struct edid *edid;
+ };
+ 
++static inline struct udl_connector *to_udl_connector(struct drm_connector *connector)
++{
++	return container_of(connector, struct udl_connector, connector);
++}
+ 
+ #endif //__UDL_CONNECTOR_H__
 -- 
 2.43.0
 
