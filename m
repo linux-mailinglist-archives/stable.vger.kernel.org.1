@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-65893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990F094AC68
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D134F94AC22
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99F31C214AE
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83AEF1F210A7
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C085E3A1C4;
-	Wed,  7 Aug 2024 15:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18948823AF;
+	Wed,  7 Aug 2024 15:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvFObzAZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZ5TPiId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9CB81751;
-	Wed,  7 Aug 2024 15:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3717F7F5;
+	Wed,  7 Aug 2024 15:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043687; cv=none; b=WOJ2wZKlbEZzWOviYX7M9p6x5ACkBFJoy7aml3HBUbz8vdG68rFsl4B3vfrUqbT94vRptw+kntfquWVtUrYxr8Pl63hiWqKAYYx9yn7V2bW1nNxf2TWWkYggO1hv29JR1lbRTl83G/L2hsA7UGzZJQ8NEDU1THGUpYeulvBBDwA=
+	t=1723043540; cv=none; b=Wt5/HjwHP7LAZ6tGsJrwKmm0r7kBp9hkJ3NmeyZfhaMJHOio3OUDW9vMD5IikGmJO+i15kixypFaL9H4rdXB9AHmxPxNGDThBqetRemCKiJaec242QbH6+hGQ+oUbNAQMMufOX6CkGTy9EGWavS0yZnuVqKsRZcKjZEbrAd/e0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043687; c=relaxed/simple;
-	bh=LTGYOUuFvxQwtR9BmE1byuz1cUIUsbzZ+tFU70agGo0=;
+	s=arc-20240116; t=1723043540; c=relaxed/simple;
+	bh=7okaDeJbe/27T9TAzPkoMr0kaZwNrONwcLXAxMwi8lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qik9ws2gM8j+7waSe1MW+AlLgA06cnHp7OGp8eqB7tyExXWUzIiX42npcm163axoYH17CULPZUO7oHB3vJnkYRR0FzYWK8osGpdFGruAvOdhLdGOdxJP0feLfuok9cgJ4cvuwSmWdqBYdfm6KhPQpyZZ3Y02DyBfqRrBo2H3g1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvFObzAZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F9DC32781;
-	Wed,  7 Aug 2024 15:14:46 +0000 (UTC)
+	 MIME-Version; b=ig4oZOz9Vtp2LpmahYkJ7vjCktQnLCStkcSKYo2PgY/LinK5IL+wkJLcHbTSNngarl+XOkfHjP2sAWyGYUOop3MKiJwA14NBMY9QuRXKxZUe80QDB7uAMVhquvCEExutKBE6l/IrOhcQtEFgmCsVdHFyjlg0jKAfDr5KBodcgN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZ5TPiId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F124C32781;
+	Wed,  7 Aug 2024 15:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043687;
-	bh=LTGYOUuFvxQwtR9BmE1byuz1cUIUsbzZ+tFU70agGo0=;
+	s=korg; t=1723043540;
+	bh=7okaDeJbe/27T9TAzPkoMr0kaZwNrONwcLXAxMwi8lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvFObzAZA5cCENHKX2qh/rAVXhNDURJyxVTrQLE6GFb4K0DMQ4IMnCm3E069GlWOi
-	 oTDg+sxwa5p2PiItMc3Qs6qLJgH1bThVvjPEY6SSZ0nigQm0XCyVksgAeYGBUBSa1E
-	 8kVWtf3/CjBQiHxeT1w8V9acyxPLrQKrIdi6fx/Y=
+	b=XZ5TPiIdal64eBMtKLEAMA17zQ5zbgog4MBCqjVbGpLmbvgwjt33MpV+NwsaCHSvX
+	 5zFu0wiBqFRhpY665M/nWEMv5VkZYUwYkP2izJxa1Nqz864ufBLWfLA3KaqzL6v3LY
+	 q8M3fRh7DMB1aX4Sqnzx/zIa1up4Gsi7EmO/Mt38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jen Linkova <furry@google.com>,
-	Lorenzo Colitti <lorenzo@google.com>,
-	Patrick Rohr <prohr@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	=?UTF-8?q?YOSHIFUJI=20Hideaki=20/=20=E5=90=89=E8=97=A4=E8=8B=B1=E6=98=8E?= <yoshfuji@linux-ipv6.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 63/86] ipv6: fix ndisc_is_useropt() handling for PIO
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>
+Subject: [PATCH 6.6 110/121] r8169: dont increment tx_dropped in case of NETDEV_TX_BUSY
 Date: Wed,  7 Aug 2024 17:00:42 +0200
-Message-ID: <20240807150041.335155011@linuxfoundation.org>
+Message-ID: <20240807150022.999876259@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Żenczykowski <maze@google.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit a46c68debf3be3a477a69ccbf0a1d050df841676 ]
+commit d516b187a9cc2e842030dd005be2735db3e8f395 upstream.
 
-The current logic only works if the PIO is between two
-other ND user options.  This fixes it so that the PIO
-can also be either before or after other ND user options
-(for example the first or last option in the RA).
+The skb isn't consumed in case of NETDEV_TX_BUSY, therefore don't
+increment the tx_dropped counter.
 
-side note: there's actually Android tests verifying
-a portion of the old broken behaviour, so:
-  https://android-review.googlesource.com/c/kernel/tests/+/3196704
-fixes those up.
-
-Cc: Jen Linkova <furry@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: Patrick Rohr <prohr@google.com>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: YOSHIFUJI Hideaki / 吉藤英明 <yoshfuji@linux-ipv6.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Fixes: 048c796beb6e ("ipv6: adjust ndisc_is_useropt() to also return true for PIO")
-Link: https://patch.msgid.link/20240730001748.147636-1-maze@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 188f4af04618 ("r8169: use NETDEV_TX_{BUSY/OK}")
+Cc: stable@vger.kernel.org
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/bbba9c48-8bac-4932-9aa1-d2ed63bc9433@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ndisc.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 8c5a99fe68030..cfb4cf6e66549 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -227,6 +227,7 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 		return NULL;
- 	memset(ndopts, 0, sizeof(*ndopts));
- 	while (opt_len) {
-+		bool unknown = false;
- 		int l;
- 		if (opt_len < sizeof(struct nd_opt_hdr))
- 			return NULL;
-@@ -262,22 +263,23 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 			break;
- #endif
- 		default:
--			if (ndisc_is_useropt(dev, nd_opt)) {
--				ndopts->nd_useropts_end = nd_opt;
--				if (!ndopts->nd_useropts)
--					ndopts->nd_useropts = nd_opt;
--			} else {
--				/*
--				 * Unknown options must be silently ignored,
--				 * to accommodate future extension to the
--				 * protocol.
--				 */
--				ND_PRINTK(2, notice,
--					  "%s: ignored unsupported option; type=%d, len=%d\n",
--					  __func__,
--					  nd_opt->nd_opt_type,
--					  nd_opt->nd_opt_len);
--			}
-+			unknown = true;
-+		}
-+		if (ndisc_is_useropt(dev, nd_opt)) {
-+			ndopts->nd_useropts_end = nd_opt;
-+			if (!ndopts->nd_useropts)
-+				ndopts->nd_useropts = nd_opt;
-+		} else if (unknown) {
-+			/*
-+			 * Unknown options must be silently ignored,
-+			 * to accommodate future extension to the
-+			 * protocol.
-+			 */
-+			ND_PRINTK(2, notice,
-+				  "%s: ignored unsupported option; type=%d, len=%d\n",
-+				  __func__,
-+				  nd_opt->nd_opt_type,
-+				  nd_opt->nd_opt_len);
- 		}
- next_opt:
- 		opt_len -= l;
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4256,7 +4256,8 @@ static netdev_tx_t rtl8169_start_xmit(st
+ 	if (unlikely(!rtl_tx_slots_avail(tp))) {
+ 		if (net_ratelimit())
+ 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
+-		goto err_stop_0;
++		netif_stop_queue(dev);
++		return NETDEV_TX_BUSY;
+ 	}
+ 
+ 	opts[1] = rtl8169_tx_vlan_tag(skb);
+@@ -4312,11 +4313,6 @@ err_dma_0:
+ 	dev_kfree_skb_any(skb);
+ 	dev->stats.tx_dropped++;
+ 	return NETDEV_TX_OK;
+-
+-err_stop_0:
+-	netif_stop_queue(dev);
+-	dev->stats.tx_dropped++;
+-	return NETDEV_TX_BUSY;
+ }
+ 
+ static unsigned int rtl_last_frag_len(struct sk_buff *skb)
 
 
 
