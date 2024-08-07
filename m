@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D32694AC86
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:16:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4759094AB84
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43C43B22DD8
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E425D1F24A6E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179E684A22;
-	Wed,  7 Aug 2024 15:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EBB784A5E;
+	Wed,  7 Aug 2024 15:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjLX3Xah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1YPGeUl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DDD52F62;
-	Wed,  7 Aug 2024 15:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C201227448;
+	Wed,  7 Aug 2024 15:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043750; cv=none; b=J0FNQndywKQm73JIcxBaKkjYangqRolSZEuG6ksomPEmR9k7GVLXiRkkINbQ87xiFHCW3t4ODG8iMbOSZtRDDCLlwfe/PZpVV+o6avoLu1CGFvaWVdWoQ7a83Sm1RTd5vjlKXXabCy2upmIp+1ih5283j5sfRPEeX4F67uA89BY=
+	t=1723043175; cv=none; b=eoBEbeyBzQQDtCecawltSFM3NUanVugIZRuAUn5lF5kW8iHqVeidHRa4jss5K1JkJ/ugKAaUOa0YC3FE+Ess5xsd/wpWKqGBDO86ocyX6BlO3kM/8Vnf8mbh7gdI4p1Oxxk/+eIaAiUkIYu/xzpj+8x2PRvLHq8RSsWprzgq068=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043750; c=relaxed/simple;
-	bh=846lUJ+rO/bDq47+6KdkTH0J9SQB8roi9vpy6lBdFLE=;
+	s=arc-20240116; t=1723043175; c=relaxed/simple;
+	bh=aDbrvKhPUxjQmiNHaEOhIE4rfoVz1hHKSPUZ3zXWvhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7XeDtsr8ubO7D7rx76lU1kKcI6/BA9Jn5taIKQkD/FurPE2Kor7jXoyz0DFbonTDSjX4kLE5PPeOtb5PMVUgTqixEG9K7YI574gIcrl7Fvx2wNLoGla+VOoIwnrWFpnr/sELVgf2DSNV0ctlHUfbndxCPoyCdO/8WJL0pJiL74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjLX3Xah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E2EC32781;
-	Wed,  7 Aug 2024 15:15:50 +0000 (UTC)
+	 MIME-Version; b=PFA6wCWNhYcTFlFbCbZO6ltid2Ghr3FGIeVKP6FLt10ZcFQgxBiHIF25rWFQJXXHRaoiY2bHe54lgyhHqGFjqDNjK9jVRoA6gpnRd27UsxXb1aRyEKQC8bwms4EeK71MeFx7Co5w6y2SoNjvR2PBlna8+zcBiEVc6cnOBfiObCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1YPGeUl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FEDC32781;
+	Wed,  7 Aug 2024 15:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043750;
-	bh=846lUJ+rO/bDq47+6KdkTH0J9SQB8roi9vpy6lBdFLE=;
+	s=korg; t=1723043175;
+	bh=aDbrvKhPUxjQmiNHaEOhIE4rfoVz1hHKSPUZ3zXWvhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjLX3XahrNuz4dpItRd/otBqVoN7HR6k0qwxaoHmM5YL9AyE6Aye71CqUSP06BY0W
-	 MB1ZAZlo2pQq1MeWkp21y9dqavPVF2n0v6qRtCZKfjsqI8Bd3hdMYieB2pG5CzwhbY
-	 qYGm34MvRKrSW+Gcxhvhosnb/+U2nBEa50C4L5Fw=
+	b=u1YPGeUlVjkOhgF2l6dq/KY9dPF+AaNjDc1Y8I36GK43BnqFMz1WCSK6RGyxcCtB7
+	 tF1SmOEeYTWlfE2wka5zXi8C63TXgbh3AWyf132NfzBaV4/H9OnqLfUbP1+pxmuRrE
+	 G+7K3WdH5GsFDghfzmofmB5LMDs3cYSLe8fQNlcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 59/86] netfilter: iptables: Fix potential null-ptr-deref in ip6table_nat_table_init().
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.10 119/123] mptcp: fix duplicate data handling
 Date: Wed,  7 Aug 2024 17:00:38 +0200
-Message-ID: <20240807150041.199776081@linuxfoundation.org>
+Message-ID: <20240807150024.775354485@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit c22921df777de5606f1047b1345b8d22ef1c0b34 ]
+commit 68cc924729ffcfe90d0383177192030a9aeb2ee4 upstream.
 
-ip6table_nat_table_init() accesses net->gen->ptr[ip6table_nat_net_ops.id],
-but the function is exposed to user space before the entry is allocated
-via register_pernet_subsys().
+When a subflow receives and discards duplicate data, the mptcp
+stack assumes that the consumed offset inside the current skb is
+zero.
 
-Let's call register_pernet_subsys() before xt_register_template().
+With multiple subflows receiving data simultaneously such assertion
+does not held true. As a result the subflow-level copied_seq will
+be incorrectly increased and later on the same subflow will observe
+a bad mapping, leading to subflow reset.
 
-Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address the issue taking into account the skb consumed offset in
+mptcp_subflow_discard_data().
+
+Fixes: 04e4cd4f7ca4 ("mptcp: cleanup mptcp_subflow_discard_data()")
+Cc: stable@vger.kernel.org
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/501
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/ip6table_nat.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/mptcp/subflow.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
-index bf3cb3a13600c..52d597b16b658 100644
---- a/net/ipv6/netfilter/ip6table_nat.c
-+++ b/net/ipv6/netfilter/ip6table_nat.c
-@@ -147,23 +147,27 @@ static struct pernet_operations ip6table_nat_net_ops = {
- 
- static int __init ip6table_nat_init(void)
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1230,14 +1230,22 @@ static void mptcp_subflow_discard_data(s
  {
--	int ret = xt_register_template(&nf_nat_ipv6_table,
--				       ip6table_nat_table_init);
-+	int ret;
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+ 	bool fin = TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN;
+-	u32 incr;
++	struct tcp_sock *tp = tcp_sk(ssk);
++	u32 offset, incr, avail_len;
  
-+	/* net->gen->ptr[ip6table_nat_net_id] must be allocated
-+	 * before calling ip6t_nat_register_lookups().
-+	 */
-+	ret = register_pernet_subsys(&ip6table_nat_net_ops);
- 	if (ret < 0)
- 		return ret;
+-	incr = limit >= skb->len ? skb->len + fin : limit;
++	offset = tp->copied_seq - TCP_SKB_CB(skb)->seq;
++	if (WARN_ON_ONCE(offset > skb->len))
++		goto out;
  
--	ret = register_pernet_subsys(&ip6table_nat_net_ops);
-+	ret = xt_register_template(&nf_nat_ipv6_table,
-+				   ip6table_nat_table_init);
- 	if (ret)
--		xt_unregister_template(&nf_nat_ipv6_table);
-+		unregister_pernet_subsys(&ip6table_nat_net_ops);
- 
- 	return ret;
- }
- 
- static void __exit ip6table_nat_exit(void)
- {
--	unregister_pernet_subsys(&ip6table_nat_net_ops);
- 	xt_unregister_template(&nf_nat_ipv6_table);
-+	unregister_pernet_subsys(&ip6table_nat_net_ops);
- }
- 
- module_init(ip6table_nat_init);
--- 
-2.43.0
-
+-	pr_debug("discarding=%d len=%d seq=%d", incr, skb->len,
+-		 subflow->map_subflow_seq);
++	avail_len = skb->len - offset;
++	incr = limit >= avail_len ? avail_len + fin : limit;
++
++	pr_debug("discarding=%d len=%d offset=%d seq=%d", incr, skb->len,
++		 offset, subflow->map_subflow_seq);
+ 	MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DUPDATA);
+ 	tcp_sk(ssk)->copied_seq += incr;
++
++out:
+ 	if (!before(tcp_sk(ssk)->copied_seq, TCP_SKB_CB(skb)->end_seq))
+ 		sk_eat_skb(ssk, skb);
+ 	if (mptcp_subflow_get_map_offset(subflow) >= subflow->map_data_len)
 
 
 
