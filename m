@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF6C94AC61
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DB394ABE2
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F8301C22A00
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D56C91C21C2B
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4719C85260;
-	Wed,  7 Aug 2024 15:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432F381751;
+	Wed,  7 Aug 2024 15:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7I2nXU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm7ZyTcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0559585270;
-	Wed,  7 Aug 2024 15:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FF378C67;
+	Wed,  7 Aug 2024 15:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043669; cv=none; b=e+I15NOjjOPRzgrwWsjDcM+XYDIJGXBLcWEiPo1I7fRLKoSjHd+f6qw3au85GBaR9cvFZxrYPJ0Ze2zb0FOA3VopuzHXIV+og809v59d7wFWiSWVDEyS4xnx2u3/ii5cRxhkju/WF71F9xhsU+qO3IJyuKuQGUvcq3NSCWOCB+M=
+	t=1723043397; cv=none; b=O1BCPDUjUcvzntxEvDyiDiqxWKZuVOXrK4dOZpGQhxAoXpXV+utEiBuvKGvCftncLxC/mBMH7rLFQV4hg3sQotlz/MNg3Wfga9IKw2i3HwnjMi152KfnwXb/PHg7y+oUnv8CoSQ8KL60zWIcjgbd62TDf2j7xAhHNmKPpl5PJ9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043669; c=relaxed/simple;
-	bh=7zZFeAPEZzi70YYw7hXBI5/iFksfJjILxWB7dqZcnw0=;
+	s=arc-20240116; t=1723043397; c=relaxed/simple;
+	bh=AdGQAX7s+s0RpEL5LYiU7EF+/lzLvG2x+UnKkJfTUPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hE2K2zkC4ZGagovanydrYQnpOKLi94EJQKS8bl5eRMGVRfMOy2rL8So1IPT4dWiG8r4UqaUAqZsEDMtz4KabtJ3tPqk/uVgBLCGSVUEu79acyZ81/r1eWOWhHT45/7Iqaqv+9iKpW89Q41l2JlGqmFByc1py+l7h/ddAwjQQ8lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7I2nXU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A818C32781;
-	Wed,  7 Aug 2024 15:14:28 +0000 (UTC)
+	 MIME-Version; b=k5Ru76T55msCRPvN55AtWOeksCNP4mckrWfIsoCGLGuSjGJ3izIwCF/7JpBoK7QSTGkZGgCPSl78paWr+aiOq2nYjkay5b+YQgiqNHNcHT+7BddzNqrkpsrqDuyIRCWaWfWS5ut2hNftQnYinQpYgZNTpehpOXwrkrZ2Lk3TT9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm7ZyTcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855FEC32781;
+	Wed,  7 Aug 2024 15:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043668;
-	bh=7zZFeAPEZzi70YYw7hXBI5/iFksfJjILxWB7dqZcnw0=;
+	s=korg; t=1723043396;
+	bh=AdGQAX7s+s0RpEL5LYiU7EF+/lzLvG2x+UnKkJfTUPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7I2nXU0MD3a+jgzG2j5bTX2fdOCpjRu/CVPV48P1SWYodkEobpO9Nv3A7U0RilnP
-	 Zd+qqxRClCuCy8MOxtTy/Pju4kQFath4ZUqXDv9UWgpxkSHJ3cgcMQAWD8YZflCVbb
-	 LSaTXPZpdwZfpZbAj3dEOBEdlxNRnRfYgTtReOPk=
+	b=gm7ZyTcUTdiC1CB3gvOuuMoTKn61IhnT8dC1wvt6tD91NIQWvPhn0SJc21EeiRU8m
+	 aQrVUbDZQaJ8m3y/I66ovuDomjJVyQiuGSsZdXzWbUFC2X98uDQfxLhTXzh2rsQurs
+	 TH9MEueY6xMNVrhZYEgPMpUSfDRgQIT45X8fuUA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/86] drm/udl: Test pixel limit in mode-configs mode-valid function
+Subject: [PATCH 6.6 075/121] net: mvpp2: Dont re-use loop iterator
 Date: Wed,  7 Aug 2024 17:00:07 +0200
-Message-ID: <20240807150040.163924276@linuxfoundation.org>
+Message-ID: <20240807150021.864385815@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c020f66013b6136a68a3a4ad74cc7af3b3310586 ]
+[ Upstream commit 0aa3ca956c46d849775eae1816cef8fe4bc8b50e ]
 
-The sku_pixel_limit is a per-device property, similar to the amount
-of available video memory. Move the respective mode-valid test from
-the connector to the mode-config structure.
+This function has a nested loop.  The problem is that both the inside
+and outside loop use the same variable as an iterator.  I found this
+via static analysis so I'm not sure the impact.  It could be that it
+loops forever or, more likely, the loop exits early.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20221006095355.23579-3-tzimmermann@suse.de
-Stable-dep-of: 5aed213c7c6c ("drm/udl: Remove DRM_CONNECTOR_POLL_HPD")
+Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/eaa8f403-7779-4d81-973d-a9ecddc0bf6f@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/udl/udl_connector.c | 14 --------------
- drivers/gpu/drm/udl/udl_modeset.c   | 14 ++++++++++++++
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/udl/udl_connector.c b/drivers/gpu/drm/udl/udl_connector.c
-index 3c80686263848..e9539829032c5 100644
---- a/drivers/gpu/drm/udl/udl_connector.c
-+++ b/drivers/gpu/drm/udl/udl_connector.c
-@@ -54,19 +54,6 @@ static int udl_get_modes(struct drm_connector *connector)
- 	return 0;
- }
- 
--static enum drm_mode_status udl_mode_valid(struct drm_connector *connector,
--			  struct drm_display_mode *mode)
--{
--	struct udl_device *udl = to_udl(connector->dev);
--	if (!udl->sku_pixel_limit)
--		return 0;
--
--	if (mode->vdisplay * mode->hdisplay > udl->sku_pixel_limit)
--		return MODE_VIRTUAL_Y;
--
--	return 0;
--}
--
- static enum drm_connector_status
- udl_detect(struct drm_connector *connector, bool force)
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 05f4aa11b95c3..34051c9abd97d 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -953,13 +953,13 @@ static void mvpp2_bm_pool_update_fc(struct mvpp2_port *port,
+ static void mvpp2_bm_pool_update_priv_fc(struct mvpp2 *priv, bool en)
  {
-@@ -97,7 +84,6 @@ static void udl_connector_destroy(struct drm_connector *connector)
+ 	struct mvpp2_port *port;
+-	int i;
++	int i, j;
  
- static const struct drm_connector_helper_funcs udl_connector_helper_funcs = {
- 	.get_modes = udl_get_modes,
--	.mode_valid = udl_mode_valid,
- };
- 
- static const struct drm_connector_funcs udl_connector_funcs = {
-diff --git a/drivers/gpu/drm/udl/udl_modeset.c b/drivers/gpu/drm/udl/udl_modeset.c
-index ec6876f449f31..c7adc29a53a18 100644
---- a/drivers/gpu/drm/udl/udl_modeset.c
-+++ b/drivers/gpu/drm/udl/udl_modeset.c
-@@ -407,8 +407,22 @@ static const struct drm_simple_display_pipe_funcs udl_simple_display_pipe_funcs
-  * Modesetting
-  */
- 
-+static enum drm_mode_status udl_mode_config_mode_valid(struct drm_device *dev,
-+						       const struct drm_display_mode *mode)
-+{
-+	struct udl_device *udl = to_udl(dev);
-+
-+	if (udl->sku_pixel_limit) {
-+		if (mode->vdisplay * mode->hdisplay > udl->sku_pixel_limit)
-+			return MODE_MEM;
-+	}
-+
-+	return MODE_OK;
-+}
-+
- static const struct drm_mode_config_funcs udl_mode_funcs = {
- 	.fb_create = drm_gem_fb_create_with_dirty,
-+	.mode_valid = udl_mode_config_mode_valid,
- 	.atomic_check  = drm_atomic_helper_check,
- 	.atomic_commit = drm_atomic_helper_commit,
- };
+ 	for (i = 0; i < priv->port_count; i++) {
+ 		port = priv->port_list[i];
+ 		if (port->priv->percpu_pools) {
+-			for (i = 0; i < port->nrxqs; i++)
+-				mvpp2_bm_pool_update_fc(port, &port->priv->bm_pools[i],
++			for (j = 0; j < port->nrxqs; j++)
++				mvpp2_bm_pool_update_fc(port, &port->priv->bm_pools[j],
+ 							port->tx_fc & en);
+ 		} else {
+ 			mvpp2_bm_pool_update_fc(port, port->pool_long, port->tx_fc & en);
 -- 
 2.43.0
 
