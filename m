@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-65874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B0394AC50
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89BD594ABF2
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AEBA1F22FFD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:14:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36FA01F22908
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98692823DE;
-	Wed,  7 Aug 2024 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1400823DE;
+	Wed,  7 Aug 2024 15:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gO25PDik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pbTUey2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549EF7E0E9;
-	Wed,  7 Aug 2024 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F67B78C67;
+	Wed,  7 Aug 2024 15:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043637; cv=none; b=seyj67YwmHb1hhYVAyIS7E2t4zncNGGJfgqGKGCJr60Wqnsx9sHDLg1QmDxv0XIWjhSE/woA/7G4KGIUK31+bH0D2RWGyrKmzce5zNtdj9WozQ1Q+eDTjtTPcBRpfSxnTCdsHd5Dn4F5Iom5LiMwAGSADHFeok986+Owsm1k45A=
+	t=1723043437; cv=none; b=HQE7F66nL0V6uDGUaE1E89ZFw4M3yIAgBlTj5KY7QY69KGXOyEvez1q8LLYtdm5Y+MZVBjnK6+vowmMssR2Rqk9OYhSPustclPvN9n9VSwcBDLYKpyFq0e4AvPGlJub4moXDjm53H196Df5kVHpVpXyaRl/0rpH3oGjslhuu0u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043637; c=relaxed/simple;
-	bh=7kucE2R/RG5u67+9cvOKlLSO7Q9ljCYXQB7b9D/HtPE=;
+	s=arc-20240116; t=1723043437; c=relaxed/simple;
+	bh=WpighMgvia2Jlq/fZFM+efLEuiJWvETMsOlY0Rryc34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2MOZd5l7k2T5/fWItTwW4WG/WwSYl7GYBf+yIK0zz3/RyW1QLMjWidq5BSmPwcQ36Jo62rd4hwuSKiIkfjeTHmDCzLESwlkYgtOFQdBPt3++Mm9A8WIb0myAPEkEncoQvUmfjavZN2rbpDwj/byGd6GIZ9LuelIVi7UX/32Izo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gO25PDik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D567BC4AF0E;
-	Wed,  7 Aug 2024 15:13:56 +0000 (UTC)
+	 MIME-Version; b=C8oXYbEvjKr/j7/mCiJAfpSWcrnGc6gHNH0QHjeNSFVs+veWEu5wkm5fLeU407lz70xkCUbLzpo8TYav0KmCbXSFk9i0pNtVRecZNaxZohADUvVb1CbOhKI30yzJfrzT1w0ZwAce+qalSqksbDifoyc9qGH77Qh4ssaokwh726Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pbTUey2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BA9C4AF0E;
+	Wed,  7 Aug 2024 15:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043637;
-	bh=7kucE2R/RG5u67+9cvOKlLSO7Q9ljCYXQB7b9D/HtPE=;
+	s=korg; t=1723043437;
+	bh=WpighMgvia2Jlq/fZFM+efLEuiJWvETMsOlY0Rryc34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gO25PDikjJ1cvHQsaSUjd5lm9ZW1L3izM2c0UVsrb/bNt3UmwEFZ5ZqyoYG15fRe/
-	 RVYKhJsVME7it435ioRJseJxv+WjeY/xEEBpCLs+VAgdu0uu2OOndk6SlJeFRQTRgY
-	 2kkE/h4X3c6U0NG5+pYVZ18FK1b2a/2YzUUwV/2w=
+	b=0pbTUey2waM+XNH/sztOKb4rCD3cgNlGto6w6BjCM2JeBKEx/08kBmoyPApdHMGS5
+	 yIZtdBH/B49TvfiW+laNB5qUmrEd55+/oBmxk+lzVTJORzLU+cPg08Eh5MAujhmb8y
+	 LJASatkJ0OiMde5E4P5grJ8uCRNFyYEe02DiYkpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Zhe Qiao <qiaozhe@iscas.ac.cn>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/86] drm/vmwgfx: Trigger a modeset when the screen moves
-Date: Wed,  7 Aug 2024 17:00:22 +0200
-Message-ID: <20240807150040.653753928@linuxfoundation.org>
+Subject: [PATCH 6.6 091/121] riscv/mm: Add handling for VM_FAULT_SIGSEGV in mm_fault_error()
+Date: Wed,  7 Aug 2024 17:00:23 +0200
+Message-ID: <20240807150022.382645693@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
-[ Upstream commit 75c3e8a26a35d4f3eee299b3cc7e465f166f4e2d ]
+[ Upstream commit 0c710050c47d45eb77b28c271cddefc5c785cb40 ]
 
-When multi-monitor is cycled the X,Y position of the Screen Target will
-likely change but the resolution will not. We need to trigger a modeset
-when this occurs in order to recreate the Screen Target with the correct
-X,Y position.
+Handle VM_FAULT_SIGSEGV in the page fault path so that we correctly
+kill the process and we don't BUG() the kernel.
 
-Fixes a bug where multiple displays are shown in a single scrollable
-host window rather than in 2+ windows on separate host displays.
-
-Fixes: 426826933109 ("drm/vmwgfx: Filter modes which exceed graphics memory")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240624205951.23343-1-ian.forbes@broadcom.com
+Fixes: 07037db5d479 ("RISC-V: Paging and MMU")
+Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240731084547.85380-1-qiaozhe@iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 29 +++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ arch/riscv/mm/fault.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-index 6dd33d1258d11..e98fde90f4e0c 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-@@ -1015,6 +1015,32 @@ vmw_stdu_connector_mode_valid(struct drm_connector *connector,
- 	return MODE_OK;
+diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
+index 90d4ba36d1d06..655b2b1bb529f 100644
+--- a/arch/riscv/mm/fault.c
++++ b/arch/riscv/mm/fault.c
+@@ -61,26 +61,27 @@ static inline void no_context(struct pt_regs *regs, unsigned long addr)
+ 
+ static inline void mm_fault_error(struct pt_regs *regs, unsigned long addr, vm_fault_t fault)
+ {
++	if (!user_mode(regs)) {
++		no_context(regs, addr);
++		return;
++	}
++
+ 	if (fault & VM_FAULT_OOM) {
+ 		/*
+ 		 * We ran out of memory, call the OOM killer, and return the userspace
+ 		 * (which will retry the fault, or kill us if we got oom-killed).
+ 		 */
+-		if (!user_mode(regs)) {
+-			no_context(regs, addr);
+-			return;
+-		}
+ 		pagefault_out_of_memory();
+ 		return;
+ 	} else if (fault & (VM_FAULT_SIGBUS | VM_FAULT_HWPOISON | VM_FAULT_HWPOISON_LARGE)) {
+ 		/* Kernel mode? Handle exceptions or die */
+-		if (!user_mode(regs)) {
+-			no_context(regs, addr);
+-			return;
+-		}
+ 		do_trap(regs, SIGBUS, BUS_ADRERR, addr);
+ 		return;
++	} else if (fault & VM_FAULT_SIGSEGV) {
++		do_trap(regs, SIGSEGV, SEGV_MAPERR, addr);
++		return;
+ 	}
++
+ 	BUG();
  }
- 
-+/*
-+ * Trigger a modeset if the X,Y position of the Screen Target changes.
-+ * This is needed when multi-mon is cycled. The original Screen Target will have
-+ * the same mode but its relative X,Y position in the topology will change.
-+ */
-+static int vmw_stdu_connector_atomic_check(struct drm_connector *conn,
-+					   struct drm_atomic_state *state)
-+{
-+	struct drm_connector_state *conn_state;
-+	struct vmw_screen_target_display_unit *du;
-+	struct drm_crtc_state *new_crtc_state;
-+
-+	conn_state = drm_atomic_get_connector_state(state, conn);
-+	du = vmw_connector_to_stdu(conn);
-+
-+	if (!conn_state->crtc)
-+		return 0;
-+
-+	new_crtc_state = drm_atomic_get_new_crtc_state(state, conn_state->crtc);
-+	if (du->base.gui_x != du->base.set_gui_x ||
-+	    du->base.gui_y != du->base.set_gui_y)
-+		new_crtc_state->mode_changed = true;
-+
-+	return 0;
-+}
-+
- static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
- 	.dpms = vmw_du_connector_dpms,
- 	.detect = vmw_du_connector_detect,
-@@ -1029,7 +1055,8 @@ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
- static const struct
- drm_connector_helper_funcs vmw_stdu_connector_helper_funcs = {
- 	.get_modes = vmw_connector_get_modes,
--	.mode_valid = vmw_stdu_connector_mode_valid
-+	.mode_valid = vmw_stdu_connector_mode_valid,
-+	.atomic_check = vmw_stdu_connector_atomic_check,
- };
- 
  
 -- 
 2.43.0
