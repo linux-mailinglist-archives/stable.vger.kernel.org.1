@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A2594AB90
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC72194AC12
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 820131C2191D
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B0C1C21704
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E5884E14;
-	Wed,  7 Aug 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8B8823A9;
+	Wed,  7 Aug 2024 15:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gK+tpmrI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vgj7GC71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7572B78C92;
-	Wed,  7 Aug 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E3E7E0E9;
+	Wed,  7 Aug 2024 15:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043210; cv=none; b=kYo36NKxNMqO//l7cAhW9Oi/FMsnXRuQkoJVozsKGsZ1jPujAzHghYAD4kyXYf2zv7YReCzGtkanPg7cm1TltLjuQbWhBusYDRMoBAhMkq0HHzd7XW1YmQ1DihgT9YgyTg/BKESaD2KURm4mvFX5t87qClYjZt/w3P9t55oIAao=
+	t=1723043506; cv=none; b=pYGEdT94WyqA7A9rpREZP/ArWBWUBa2wK1oZxPEosv1UcxXW/xpRP4lTw/GGjzXqy3haaN5AaXtHFSkzWg4MWE7H5xDJ6JtD3BSUPTimg1pfm0wo9QzTyWkXrDKzeHKyiDeAgdzLMz3ESyIxCAfwqvPBptTfO6ZvlFYUaeUh+tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043210; c=relaxed/simple;
-	bh=1Rrakb5Ehev8qEaNZugvlTgPKyIWq/48y8hG9Qqq0TE=;
+	s=arc-20240116; t=1723043506; c=relaxed/simple;
+	bh=axM/TX5HSrjXuD7QGp2rMMTzB9HMm9e8ZQ+LY4T/SFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A0Z7tub4rAR0JRdJQyqFb6reKtEnn1VOJnGeSvJtQ7MOEYblFpaQIm5PbGFI/XvUwlJDG8fSKA+4LVWY/1RMR+DIO8H3a5XMzsRQ3c3PqXf4Nq2QcC0WZ0gwoLWKgvVxAo6LLmYWTBHITgBPH0gGXWMYHBUrmeqqKzr4J1q69Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gK+tpmrI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C4FC32781;
-	Wed,  7 Aug 2024 15:06:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pfCnNsS4b/kdc3z3WT+uPJnC5UPob9uWgxIWSfwouG4+sL+6pZgSRP2hi3mphgT2OSjRs1CPTLaMJp41qciIndC+MpI5rPG+ULRGonlI00mMRRcBH7htRIcOInJ3W21OiZW3eLatQ/JF1DQECW9iXLbXedB5Jwiza8tAQz5txK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vgj7GC71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE78C32781;
+	Wed,  7 Aug 2024 15:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043210;
-	bh=1Rrakb5Ehev8qEaNZugvlTgPKyIWq/48y8hG9Qqq0TE=;
+	s=korg; t=1723043506;
+	bh=axM/TX5HSrjXuD7QGp2rMMTzB9HMm9e8ZQ+LY4T/SFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gK+tpmrI9NxqB/rLlGkGAwy3pAJcvlfSJ+Qn1vsKxFNlgTBSsgqNzKvDZpSe3TrQC
-	 5rMjNaK5Zof2FXqZ9+sgb0UyQ8QChlN1yWM63TSoZIjW3gX+1E+GDS2G9wpOUBfJD2
-	 QGQcJH/c3fQCYDGr3RYqcXm5EZK8uWS7i5ZDkwNs=
+	b=Vgj7GC71MEez7cxMyFoDX1ydlxj4+Flib5vFylrxAm6yiH+hj13Y2PnuzyLJj8+4U
+	 V1wRIdqUv1X4yrJLkml3uytQpOaeg8k3mMcMlzm9Lz1ruHH2VHTIDZreUnOayyt/vS
+	 2yIYBoani4hUNTN8Me1l55Napzf9N55D5qbI6DFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 6.10 102/123] drm/v3d: Validate passed in drm syncobj handles in the performance extension
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 089/121] riscv: remove unused functions in traps_misaligned.c
 Date: Wed,  7 Aug 2024 17:00:21 +0200
-Message-ID: <20240807150024.155950293@linuxfoundation.org>
+Message-ID: <20240807150022.317079443@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,91 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Clément Léger <cleger@rivosinc.com>
 
-commit 4ecc24a84d7e0254efd150ec23e0b89638386516 upstream.
+[ Upstream commit f19c3b4239f5bfb69aacbaf75d4277c095e7aa7d ]
 
-If userspace provides an unknown or invalid handle anywhere in the handle
-array the rest of the driver will not handle that well.
+Replace macros by the only two function calls that are done from this
+file, store_u8() and load_u8().
 
-Fix it by checking handle was looked up successfully or otherwise fail the
-extension by jumping into the existing unwind.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: bae7cb5d6800 ("drm/v3d: Create a CPU job extension for the reset performance query job")
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: Iago Toral Quiroga <itoral@igalia.com>
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240711135340.84617-6-tursulin@igalia.com
-(cherry picked from commit a546b7e4d73c23838d7e4d2c92882b3ca902d213)
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Link: https://lore.kernel.org/r/20231004151405.521596-2-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Stable-dep-of: fb197c5d2fd2 ("riscv/purgatory: align riscv_kernel_entry")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_submit.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/riscv/kernel/traps_misaligned.c | 46 +++++-----------------------
+ 1 file changed, 7 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_submit.c b/drivers/gpu/drm/v3d/v3d_submit.c
-index 9a3e32075ebe..4cdfabbf4964 100644
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -710,6 +710,10 @@ v3d_get_cpu_reset_performance_params(struct drm_file *file_priv,
- 		}
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index 5348d842c7453..e867fe465164e 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -151,51 +151,19 @@
+ #define PRECISION_S 0
+ #define PRECISION_D 1
  
- 		job->performance_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-+		if (!job->performance_query.queries[i].syncobj) {
-+			err = -ENOENT;
-+			goto error;
-+		}
- 	}
- 	job->performance_query.count = reset.count;
- 	job->performance_query.nperfmons = reset.nperfmons;
-@@ -790,6 +794,10 @@ v3d_get_cpu_copy_performance_query_params(struct drm_file *file_priv,
- 		}
+-#define DECLARE_UNPRIVILEGED_LOAD_FUNCTION(type, insn)			\
+-static inline type load_##type(const type *addr)			\
+-{									\
+-	type val;							\
+-	asm (#insn " %0, %1"						\
+-	: "=&r" (val) : "m" (*addr));					\
+-	return val;							\
+-}
++static inline u8 load_u8(const u8 *addr)
++{
++	u8 val;
  
- 		job->performance_query.queries[i].syncobj = drm_syncobj_find(file_priv, sync);
-+		if (!job->performance_query.queries[i].syncobj) {
-+			err = -ENOENT;
-+			goto error;
-+		}
- 	}
- 	job->performance_query.count = copy.count;
- 	job->performance_query.nperfmons = copy.nperfmons;
+-#define DECLARE_UNPRIVILEGED_STORE_FUNCTION(type, insn)			\
+-static inline void store_##type(type *addr, type val)			\
+-{									\
+-	asm volatile (#insn " %0, %1\n"					\
+-	: : "r" (val), "m" (*addr));					\
+-}
++	asm volatile("lbu %0, %1" : "=&r" (val) : "m" (*addr));
+ 
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u8, lbu)
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u16, lhu)
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(s8, lb)
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(s16, lh)
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(s32, lw)
+-DECLARE_UNPRIVILEGED_STORE_FUNCTION(u8, sb)
+-DECLARE_UNPRIVILEGED_STORE_FUNCTION(u16, sh)
+-DECLARE_UNPRIVILEGED_STORE_FUNCTION(u32, sw)
+-#if defined(CONFIG_64BIT)
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u32, lwu)
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u64, ld)
+-DECLARE_UNPRIVILEGED_STORE_FUNCTION(u64, sd)
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(ulong, ld)
+-#else
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(u32, lw)
+-DECLARE_UNPRIVILEGED_LOAD_FUNCTION(ulong, lw)
+-
+-static inline u64 load_u64(const u64 *addr)
+-{
+-	return load_u32((u32 *)addr)
+-		+ ((u64)load_u32((u32 *)addr + 1) << 32);
++	return val;
+ }
+ 
+-static inline void store_u64(u64 *addr, u64 val)
++static inline void store_u8(u8 *addr, u8 val)
+ {
+-	store_u32((u32 *)addr, val);
+-	store_u32((u32 *)addr + 1, val >> 32);
++	asm volatile ("sb %0, %1\n" : : "r" (val), "m" (*addr));
+ }
+-#endif
+ 
+ static inline ulong get_insn(ulong mepc)
+ {
 -- 
-2.46.0
+2.43.0
 
 
 
