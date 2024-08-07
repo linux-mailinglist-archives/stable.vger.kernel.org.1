@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-65915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C0C94AC7E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3949294AC04
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A9441F2201A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A33E1C23521
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77117E76F;
-	Wed,  7 Aug 2024 15:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE8E81751;
+	Wed,  7 Aug 2024 15:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jk2GSGtZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Olz/4v0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BAE33CD2;
-	Wed,  7 Aug 2024 15:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5928F81AB1;
+	Wed,  7 Aug 2024 15:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043745; cv=none; b=UomErEbbnHGusQyh2jzcM3YnB+SugsNdeS+ZJgvnLSTMHOfZt2ntys948R6+HJjcKzsKgHnaFdJ4DQPlnkOfBLAyuR94ZF3eQdb9EIoNlnTMVkOlAfGoUwafrE/iJdbV5Q0lb3D3GSGy1tdzu0+h0iMElctQbHg1POzEqwqw/Ks=
+	t=1723043474; cv=none; b=GMhijgy1ZJIUcLH5tH6WJ6Ik9ChOAwPSoONaGs5D+6els50Ae+lxQ9VSya7ahafIZVpuQ9bdfeG7ET6KD4PLL98unUG42cZoMnd4DV8VoGtNH3X8unrbM++Sw2KZ8rJDC2Lg70i4y/kTTLgl2jkrPl/xgnlaj1arqOoVK4h7UGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043745; c=relaxed/simple;
-	bh=SjxM0MfBqgfxv4ygZQzJhKlkHGoNMOwE4jUfqsFR+DA=;
+	s=arc-20240116; t=1723043474; c=relaxed/simple;
+	bh=xhNjBEjg8I7IBYYaMx3QDgYXL7BDL6cY94utN7/H1bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxAEzGSF3OMvsjOSzQ45ceSM52PEoZvBhpv/UzpuhN+hHGzIFA2BQxWtPx1miAN7/xz4Mx2+FmtjLRv6CxMJLTnMcIyshYgDQUxPd/Wkj4NqPcL9DeunsnfgeiO7rvpAMhyLs9uEHcj9fMZcdYci+1DKovim+w3SsBfJWv1XXVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jk2GSGtZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130ABC32781;
-	Wed,  7 Aug 2024 15:15:44 +0000 (UTC)
+	 MIME-Version; b=Pt/CCLaj79ICa5GX457sZY+Zc5IJIMXhHILSvqg4zDuSVCp/CmlNEaiglxHUsuyGp30W76T/fbc8oY+LFjsvrdem02lXiAKM3pwvgehtBHUzGIVyikcOLU0Ufc6KMZgfLCEBTVjAizjKLLdo0k71M5Lw5wpbku84S0f5wK7sXUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Olz/4v0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E102DC32781;
+	Wed,  7 Aug 2024 15:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043745;
-	bh=SjxM0MfBqgfxv4ygZQzJhKlkHGoNMOwE4jUfqsFR+DA=;
+	s=korg; t=1723043474;
+	bh=xhNjBEjg8I7IBYYaMx3QDgYXL7BDL6cY94utN7/H1bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jk2GSGtZcG6S4/Ha8n7aBL8Mbn4n9Hd0VjdbrNfI8h0h9DAHM6kzUTLiXHfTflW5a
-	 GGUk702FSa5j1LiHKNlher9WpxqBcB+40hEqRrUvLbQvr5SWH4jngMGDUBSInoA6kM
-	 xGzSCNHMo6dTdSGzsqAXXiwrKJs7FAMuIKP9Mr8M=
+	b=Olz/4v0eOsgWqWY5aLoOyenNWK1mxOX7q7qWc72ysRan4TepaRgk/BMxmiMRuOeiV
+	 xW/A4OO7fTv59wgh3U2KBno1n9kz1ow8X64AEGADIwSgfwhQs2P+uUQhFv8gwYEAio
+	 Ok/+Z6yUT7CK3SZydC3bVBtJ5tuYP2WJeVqi7kLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 57/86] ALSA: hda: Conditionally use snooping for AMD HDMI
+	Edmund Raile <edmund.raile@protonmail.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 104/121] Revert "ALSA: firewire-lib: obsolete workqueue for period update"
 Date: Wed,  7 Aug 2024 17:00:36 +0200
-Message-ID: <20240807150041.123848718@linuxfoundation.org>
+Message-ID: <20240807150022.799748507@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Edmund Raile <edmund.raile@protonmail.com>
 
-[ Upstream commit 478689b5990deb626a0b3f1ebf165979914d6be4 ]
+commit 6ccf9984d6be3c2f804087b736db05c2ec42664b upstream.
 
-The recent regression report revealed that the use of WC pages for AMD
-HDMI device together with AMD IOMMU leads to unexpected truncation or
-noises.  The issue seems triggered by the change in the kernel core
-memory allocation that enables IOMMU driver to use always S/G
-buffers.  Meanwhile, the use of WC pages has been a workaround for the
-similar issue with standard pages in the past.  So, now we need to
-apply the workaround conditionally, namely, only when IOMMU isn't in
-place.
+prepare resolution of AB/BA deadlock competition for substream lock:
+restore workqueue previously used for process context:
 
-This patch modifies the workaround code to check the DMA ops at first
-and apply the snoop-off only when needed.
+revert commit b5b519965c4c ("ALSA: firewire-lib: obsolete workqueue
+for period update")
 
-Fixes: f5ff79fddf0e ("dma-mapping: remove CONFIG_DMA_REMAP")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219087
-Link: https://patch.msgid.link/20240731170521.31714-1-tiwai@suse.de
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/kwryofzdmjvzkuw6j3clftsxmoolynljztxqwg76hzeo4simnl@jn3eo7pe642q/
+Signed-off-by: Edmund Raile <edmund.raile@protonmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20240730195318.869840-2-edmund.raile@protonmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_controller.h |  2 +-
- sound/pci/hda/hda_intel.c      | 10 +++++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ sound/firewire/amdtp-stream.c |   15 +++++++++++++++
+ sound/firewire/amdtp-stream.h |    1 +
+ 2 files changed, 16 insertions(+)
 
-diff --git a/sound/pci/hda/hda_controller.h b/sound/pci/hda/hda_controller.h
-index 8556031bcd68e..f31cb31d46362 100644
---- a/sound/pci/hda/hda_controller.h
-+++ b/sound/pci/hda/hda_controller.h
-@@ -28,7 +28,7 @@
- #else
- #define AZX_DCAPS_I915_COMPONENT 0		/* NOP */
- #endif
--/* 14 unused */
-+#define AZX_DCAPS_AMD_ALLOC_FIX	(1 << 14)	/* AMD allocation workaround */
- #define AZX_DCAPS_CTX_WORKAROUND (1 << 15)	/* X-Fi workaround */
- #define AZX_DCAPS_POSFIX_LPIB	(1 << 16)	/* Use LPIB as default */
- #define AZX_DCAPS_AMD_WORKAROUND (1 << 17)	/* AMD-specific workaround */
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index a26f2a2d44cf2..695026c647e1e 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -40,6 +40,7 @@
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -77,6 +77,8 @@
+ // overrun. Actual device can skip more, then this module stops the packet streaming.
+ #define IR_JUMBO_PAYLOAD_MAX_SKIP_CYCLES	5
  
- #ifdef CONFIG_X86
- /* for snoop control */
-+#include <linux/dma-map-ops.h>
- #include <asm/set_memory.h>
- #include <asm/cpufeature.h>
- #endif
-@@ -300,7 +301,7 @@ enum {
- 
- /* quirks for ATI HDMI with snoop off */
- #define AZX_DCAPS_PRESET_ATI_HDMI_NS \
--	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_SNOOP_OFF)
-+	(AZX_DCAPS_PRESET_ATI_HDMI | AZX_DCAPS_AMD_ALLOC_FIX)
- 
- /* quirks for AMD SB */
- #define AZX_DCAPS_PRESET_AMD_SB \
-@@ -1718,6 +1719,13 @@ static void azx_check_snoop_available(struct azx *chip)
- 	if (chip->driver_caps & AZX_DCAPS_SNOOP_OFF)
- 		snoop = false;
- 
-+#ifdef CONFIG_X86
-+	/* check the presence of DMA ops (i.e. IOMMU), disable snoop conditionally */
-+	if ((chip->driver_caps & AZX_DCAPS_AMD_ALLOC_FIX) &&
-+	    !get_dma_ops(chip->card->dev))
-+		snoop = false;
-+#endif
++static void pcm_period_work(struct work_struct *work);
 +
- 	chip->snoop = snoop;
- 	if (!snoop) {
- 		dev_info(chip->card->dev, "Force to non-snoop mode\n");
--- 
-2.43.0
-
+ /**
+  * amdtp_stream_init - initialize an AMDTP stream structure
+  * @s: the AMDTP stream to initialize
+@@ -105,6 +107,7 @@ int amdtp_stream_init(struct amdtp_strea
+ 	s->flags = flags;
+ 	s->context = ERR_PTR(-1);
+ 	mutex_init(&s->mutex);
++	INIT_WORK(&s->period_work, pcm_period_work);
+ 	s->packet_index = 0;
+ 
+ 	init_waitqueue_head(&s->ready_wait);
+@@ -347,6 +350,7 @@ EXPORT_SYMBOL(amdtp_stream_get_max_paylo
+  */
+ void amdtp_stream_pcm_prepare(struct amdtp_stream *s)
+ {
++	cancel_work_sync(&s->period_work);
+ 	s->pcm_buffer_pointer = 0;
+ 	s->pcm_period_pointer = 0;
+ }
+@@ -624,6 +628,16 @@ static void update_pcm_pointers(struct a
+ 	}
+ }
+ 
++static void pcm_period_work(struct work_struct *work)
++{
++	struct amdtp_stream *s = container_of(work, struct amdtp_stream,
++					      period_work);
++	struct snd_pcm_substream *pcm = READ_ONCE(s->pcm);
++
++	if (pcm)
++		snd_pcm_period_elapsed(pcm);
++}
++
+ static int queue_packet(struct amdtp_stream *s, struct fw_iso_packet *params,
+ 			bool sched_irq)
+ {
+@@ -1912,6 +1926,7 @@ static void amdtp_stream_stop(struct amd
+ 		return;
+ 	}
+ 
++	cancel_work_sync(&s->period_work);
+ 	fw_iso_context_stop(s->context);
+ 	fw_iso_context_destroy(s->context);
+ 	s->context = ERR_PTR(-1);
+--- a/sound/firewire/amdtp-stream.h
++++ b/sound/firewire/amdtp-stream.h
+@@ -191,6 +191,7 @@ struct amdtp_stream {
+ 
+ 	/* For a PCM substream processing. */
+ 	struct snd_pcm_substream *pcm;
++	struct work_struct period_work;
+ 	snd_pcm_uframes_t pcm_buffer_pointer;
+ 	unsigned int pcm_period_pointer;
+ 	unsigned int pcm_frame_multiplier;
 
 
 
