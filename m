@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-65764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1C694ABCE
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4901B94ABA6
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBB861F2546A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793C61C220B6
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE1682499;
-	Wed,  7 Aug 2024 15:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35AE84A4D;
+	Wed,  7 Aug 2024 15:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4f5AaNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klgfkp+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764363A1C4;
-	Wed,  7 Aug 2024 15:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B038D84A27;
+	Wed,  7 Aug 2024 15:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043344; cv=none; b=mD01gQk8eJed4PB7xC1h5jb+hPvzUTwrNsQoIe+/SL7OBHIM5UYcCm96ZW3LU7j0kAy5W/V2gPy21ms9jhkKo6PmkDudPp9QyF/E8Q/KWHoz5eDfM5rPDJfP7X45b3XP7jhJ+khKZo+61Qcoif5CF8PzpkucPpfhgRSkbtlSL68=
+	t=1723043259; cv=none; b=BFdRh5KwBXBHjrFT+6YePEdEMfWv2fCWqrMi7kV72mDZZLLm74iK9luAw/dVLRkHhe7wVxaOimLArfplYHd/jwou1i4jv5gO7SEl2XAwvMyjOToiTzRR8EjflBsgqG+k8sRf1KeeAUprPeXVsLt2ft8tl4ViBhkjPDHESiHcjRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043344; c=relaxed/simple;
-	bh=BqPLF8Pt9ffq+GZRzdf/luOpTo8yOry1QpFeqazGOM4=;
+	s=arc-20240116; t=1723043259; c=relaxed/simple;
+	bh=2BWpkG1OsDcZcBy3Isk8MUKfdWqbcdU2VEo7bTLpPgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMQsvQwEchJaZEsYEYD6jYuHn1keREOYCnpnaGDPi4WxV6a+9sp2jMD34uT1Cz3Us6wzELWsLQU4SnazCXOfkraUh1hMsvP33UwUerQnKENhNv2n1WHWxUaTmpS9xsWGOPip7bi2ezazD6okc3gf9zNjA2aBfX2Va+W7Q4B7tGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4f5AaNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0645BC32781;
-	Wed,  7 Aug 2024 15:09:03 +0000 (UTC)
+	 MIME-Version; b=P/0UnRhl4UibsoxrK8PKoWsmT/P2IJt9mivWLblSMUZOUbHodVbf0jlLp/6uZkslJgHAnSzEHpQehVhixO3ldVwnq4wvbx075kQQ16mWmVwSE6NL09VrPUeHFX0bu5XWgTP1G49EXHEZYGXQE2pD6IAQLiozD/7LaFqWRjLYSfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klgfkp+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A758DC32781;
+	Wed,  7 Aug 2024 15:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043344;
-	bh=BqPLF8Pt9ffq+GZRzdf/luOpTo8yOry1QpFeqazGOM4=;
+	s=korg; t=1723043259;
+	bh=2BWpkG1OsDcZcBy3Isk8MUKfdWqbcdU2VEo7bTLpPgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4f5AaNkTKDLxhpTTa1D9t93Qc9IADaOxTqNPmlp7WrK1XKIsSWiTJOMJIW5saiXD
-	 KUTVQErRmoaZkXcYG8vJOwl4DTOfdLK03yffmxiAeONSVZzVuEcYWX24mWmz+MJFVS
-	 gs0aYMAvCT3W29CF7ZaxtyVXsQsEJw17/nRKlLvs=
+	b=klgfkp+i7fEK/RQnOYBHliHBCAcqa5baUEiTvdfexYsK62tRqaAiQtCCRObJNv0dZ
+	 bmZygst/1aobxrcaskEt6rBm+xiaVykhebvsJ6XCc1c73es6fTfIvSjgT8O7iWcrUt
+	 Pc/GB414tLy2clfaeicZja24HbWOO4udRWsAcbv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/121] ext4: refactor ext4_da_map_blocks()
-Date: Wed,  7 Aug 2024 16:59:09 +0200
-Message-ID: <20240807150019.920637810@linuxfoundation.org>
+Subject: [PATCH 6.6 018/121] ext4: convert to exclusive lock while inserting delalloc extents
+Date: Wed,  7 Aug 2024 16:59:10 +0200
+Message-ID: <20240807150019.949699165@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
 References: <20240807150019.412911622@linuxfoundation.org>
@@ -69,86 +69,107 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 3fcc2b887a1ba4c1f45319cd8c54daa263ecbc36 ]
+[ Upstream commit acf795dc161f3cf481db20f05db4250714e375e5 ]
 
-Refactor and cleanup ext4_da_map_blocks(), reduce some unnecessary
-parameters and branches, no logic changes.
+ext4_da_map_blocks() only hold i_data_sem in shared mode and i_rwsem
+when inserting delalloc extents, it could be raced by another querying
+path of ext4_map_blocks() without i_rwsem, .e.g buffered read path.
+Suppose we buffered read a file containing just a hole, and without any
+cached extents tree, then it is raced by another delayed buffered write
+to the same area or the near area belongs to the same hole, and the new
+delalloc extent could be overwritten to a hole extent.
 
+ pread()                           pwrite()
+  filemap_read_folio()
+   ext4_mpage_readpages()
+    ext4_map_blocks()
+     down_read(i_data_sem)
+     ext4_ext_determine_hole()
+     //find hole
+     ext4_ext_put_gap_in_cache()
+      ext4_es_find_extent_range()
+      //no delalloc extent
+                                    ext4_da_map_blocks()
+                                     down_read(i_data_sem)
+                                     ext4_insert_delayed_block()
+                                     //insert delalloc extent
+      ext4_es_insert_extent()
+      //overwrite delalloc extent to hole
+
+This race could lead to inconsistent delalloc extents tree and
+incorrect reserved space counter. Fix this by converting to hold
+i_data_sem in exclusive mode when adding a new delalloc extent in
+ext4_da_map_blocks().
+
+Cc: stable@vger.kernel.org
 Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Suggested-by: Jan Kara <jack@suse.cz>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240127015825.1608160-2-yi.zhang@huaweicloud.com
+Link: https://lore.kernel.org/r/20240127015825.1608160-3-yi.zhang@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 39 +++++++++++++++++----------------------
- 1 file changed, 17 insertions(+), 22 deletions(-)
+ fs/ext4/inode.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
 diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index d5eb8d44c6c81..b8eab9cf36b98 100644
+index b8eab9cf36b98..c8a1db2164dfb 100644
 --- a/fs/ext4/inode.c
 +++ b/fs/ext4/inode.c
-@@ -1706,7 +1706,6 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+@@ -1705,10 +1705,8 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 
  	/* Lookup extent status tree firstly */
  	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
- 		if (ext4_es_is_hole(&es)) {
--			retval = 0;
- 			down_read(&EXT4_I(inode)->i_data_sem);
+-		if (ext4_es_is_hole(&es)) {
+-			down_read(&EXT4_I(inode)->i_data_sem);
++		if (ext4_es_is_hole(&es))
  			goto add_delayed;
- 		}
-@@ -1751,26 +1750,9 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+-		}
+ 
+ 		/*
+ 		 * Delayed extent could be allocated by fallocate.
+@@ -1750,8 +1748,10 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
  		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
  	else
  		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
--
--add_delayed:
--	if (retval == 0) {
--		int ret;
--
--		/*
--		 * XXX: __block_prepare_write() unmaps passed block,
--		 * is it OK?
--		 */
--
--		ret = ext4_insert_delayed_block(inode, map->m_lblk);
--		if (ret != 0) {
--			retval = ret;
--			goto out_unlock;
--		}
--
--		map_bh(bh, inode->i_sb, invalid_block);
--		set_buffer_new(bh);
--		set_buffer_delay(bh);
--	} else if (retval > 0) {
-+	if (retval < 0)
-+		goto out_unlock;
-+	if (retval > 0) {
+-	if (retval < 0)
+-		goto out_unlock;
++	if (retval < 0) {
++		up_read(&EXT4_I(inode)->i_data_sem);
++		return retval;
++	}
+ 	if (retval > 0) {
  		unsigned int status;
  
- 		if (unlikely(retval != map->m_len)) {
-@@ -1785,11 +1767,24 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+@@ -1767,24 +1767,21 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
  				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
  		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
  				      map->m_pblk, status);
-+		goto out_unlock;
+-		goto out_unlock;
++		up_read(&EXT4_I(inode)->i_data_sem);
++		return retval;
  	}
++	up_read(&EXT4_I(inode)->i_data_sem);
  
-+add_delayed:
-+	/*
-+	 * XXX: __block_prepare_write() unmaps passed block,
-+	 * is it OK?
-+	 */
-+	retval = ext4_insert_delayed_block(inode, map->m_lblk);
-+	if (retval)
-+		goto out_unlock;
-+
-+	map_bh(bh, inode->i_sb, invalid_block);
-+	set_buffer_new(bh);
-+	set_buffer_delay(bh);
-+
- out_unlock:
- 	up_read((&EXT4_I(inode)->i_data_sem));
+ add_delayed:
+-	/*
+-	 * XXX: __block_prepare_write() unmaps passed block,
+-	 * is it OK?
+-	 */
++	down_write(&EXT4_I(inode)->i_data_sem);
+ 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
++	up_write(&EXT4_I(inode)->i_data_sem);
+ 	if (retval)
+-		goto out_unlock;
++		return retval;
+ 
+ 	map_bh(bh, inode->i_sb, invalid_block);
+ 	set_buffer_new(bh);
+ 	set_buffer_delay(bh);
 -
+-out_unlock:
+-	up_read((&EXT4_I(inode)->i_data_sem));
  	return retval;
  }
  
