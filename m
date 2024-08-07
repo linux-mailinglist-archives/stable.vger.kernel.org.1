@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-65652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC6A94AB43
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B5394AB1A
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A3392818AA
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9356F28491E
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B1D12C7FB;
-	Wed,  7 Aug 2024 15:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB5181AB6;
+	Wed,  7 Aug 2024 15:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIqScBD8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rJmcUNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9A782C8E;
-	Wed,  7 Aug 2024 15:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D0774055;
+	Wed,  7 Aug 2024 15:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043043; cv=none; b=SZi4ekp9jbA+jB2tDcDWMW4wQqD+tuDblCxNjuA1wWRw/PlFgAmqWzztvyq1TLyp/cqxnV75TIBgjs0C2DbrrltrnA81UcHO6H366zWHpZZ365CnpTA260kC54VCp4dE7ILxN+tvAuu1p4CJIJ5+Q+uhB+GzlJx5YXzbC/S3oc0=
+	t=1723042965; cv=none; b=KoFlZFAIGPCkjYk4K/f3a1nhZ/pNWtysdudXgv3hGLdQ99AzGsxw3+n/5sXx8Am5dmkgJuKWWXpimihNox5zTf6jqmxuMcPkStH6A/eg7FbBKfsYBPnGKXQkwETGm+y6DfZPyTOyOumYg57KMx4fYVqqWFF0jdJIQtwL25a7JKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043043; c=relaxed/simple;
-	bh=Tze8yVLIQWSijxihUJZWrxgFJbw/9WZ8etzbZ9fIS+4=;
+	s=arc-20240116; t=1723042965; c=relaxed/simple;
+	bh=d5eUhAfmjb72PvIxRP3e/raB4j42KWsNHXbPq8d/bQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g95rbDjgW8L8xT1134pYtJzBJ2dxcikZ/mfvqnPZNpSogs2YaGHt1heZG2A+ATvZDPLNHyDMScfZsdP6ag4Ok5PRkHS0ibYBvFa37GsI67qk3heyPw/Au7rvcdBeV3MWSsnED7ka4VRNKe28Rd6/9MXzyH6gm/+oPahcS9zP7zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIqScBD8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05282C32781;
-	Wed,  7 Aug 2024 15:04:02 +0000 (UTC)
+	 MIME-Version; b=sezWzKwf1yLnp3TWiXQ4oqvaca3Sfbt108HFbK29SLsq4zcDsXs6A+SXuW5ojEwnES7jnHcKmNiMMZQWlAU09FXdkEBRg38ad+6ra7OiFWIgWBdhfHKKMZjfIF4uhWO3A2Jj5/Nh2En3qDfEWipO+zfI/YIJIT3NCpaq+kIbEdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rJmcUNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC2FC4AF0F;
+	Wed,  7 Aug 2024 15:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043043;
-	bh=Tze8yVLIQWSijxihUJZWrxgFJbw/9WZ8etzbZ9fIS+4=;
+	s=korg; t=1723042964;
+	bh=d5eUhAfmjb72PvIxRP3e/raB4j42KWsNHXbPq8d/bQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIqScBD8Lv4yiGozLijCqoibGWD/cD5ZN99yVzFteHSblWMrQ6B0BAfgRkKiJhg6G
-	 mo+uHR3QwllikoM4sGjrsGka1YioVk5CmYijfn7okQVi6GK684q7EtDgr9r2+eZNo6
-	 YpoPMMRsmrheUUNl2cj8RWpdRKMzcYPALSItv4ts=
+	b=0rJmcUNWFjvOY0NA539oo9+Lhd8eM7QDneACrkwKNgXZv0hHvHnF0Mk93SpPmryjy
+	 47j+gaCmzL9l5azFYrAdMb1YPZYldZlt1L2LyYVMqY9uAa5bVU5kEYjQNkKMpbk5lp
+	 SXFu++o317riQ4vx2L+3BfkgC+6oeaYsH10OLeUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 040/123] i915/perf: Remove code to update PWR_CLK_STATE for gen12
-Date: Wed,  7 Aug 2024 16:59:19 +0200
-Message-ID: <20240807150022.137534924@linuxfoundation.org>
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.10 041/123] ice: respect netif readiness in AF_XDP ZC related ndos
+Date: Wed,  7 Aug 2024 16:59:20 +0200
+Message-ID: <20240807150022.170041420@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
 References: <20240807150020.790615758@linuxfoundation.org>
@@ -67,90 +69,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-[ Upstream commit 4bc14b9cfaa2149d41baef2f2620e9f82d9847d7 ]
+[ Upstream commit ec145a18687fec8dd97eeb4f30057fa4debef577 ]
 
-PWR_CLK_STATE only needs to be modified up until gen11. For gen12 this
-code is not applicable. Remove code to update context image with
-PWR_CLK_STATE for gen12.
+Address a scenario in which XSK ZC Tx produces descriptors to XDP Tx
+ring when link is either not yet fully initialized or process of
+stopping the netdev has already started. To avoid this, add checks
+against carrier readiness in ice_xsk_wakeup() and in ice_xmit_zc().
+One could argue that bailing out early in ice_xsk_wakeup() would be
+sufficient but given the fact that we produce Tx descriptors on behalf
+of NAPI that is triggered for Rx traffic, the latter is also needed.
 
-Fixes: 00a7f0d7155c ("drm/i915/tgl: Add perf support on TGL")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240629005643.3050678-1-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 7b5bdae7740eb6a3d09f9cd4e4b07362a15b86b3)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Bringing link up is an asynchronous event executed within
+ice_service_task so even though interface has been brought up there is
+still a time frame where link is not yet ok.
+
+Without this patch, when AF_XDP ZC Tx is used simultaneously with stack
+Tx, Tx timeouts occur after going through link flap (admin brings
+interface down then up again). HW seem to be unable to transmit
+descriptor to the wire after HW tail register bump which in turn causes
+bit __QUEUE_STATE_STACK_XOFF to be set forever as
+netdev_tx_completed_queue() sees no cleaned bytes on the input.
+
+Fixes: 126cdfe1007a ("ice: xsk: Improve AF_XDP ZC Tx and use batching API")
+Fixes: 2d4238f55697 ("ice: Add support for AF_XDP")
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_perf.c | 33 --------------------------------
- 1 file changed, 33 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_xsk.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_perf.c b/drivers/gpu/drm/i915/i915_perf.c
-index 0b1cd4c7a525f..025a79fe5920e 100644
---- a/drivers/gpu/drm/i915/i915_perf.c
-+++ b/drivers/gpu/drm/i915/i915_perf.c
-@@ -2748,26 +2748,6 @@ oa_configure_all_contexts(struct i915_perf_stream *stream,
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index a65955eb23c0b..72738b8b8a68e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -1048,6 +1048,10 @@ bool ice_xmit_zc(struct ice_tx_ring *xdp_ring)
  
--static int
--gen12_configure_all_contexts(struct i915_perf_stream *stream,
--			     const struct i915_oa_config *oa_config,
--			     struct i915_active *active)
--{
--	struct flex regs[] = {
--		{
--			GEN8_R_PWR_CLK_STATE(RENDER_RING_BASE),
--			CTX_R_PWR_CLK_STATE,
--		},
--	};
--
--	if (stream->engine->class != RENDER_CLASS)
--		return 0;
--
--	return oa_configure_all_contexts(stream,
--					 regs, ARRAY_SIZE(regs),
--					 active);
--}
--
- static int
- lrc_configure_all_contexts(struct i915_perf_stream *stream,
- 			   const struct i915_oa_config *oa_config,
-@@ -2874,7 +2854,6 @@ gen12_enable_metric_set(struct i915_perf_stream *stream,
- {
- 	struct drm_i915_private *i915 = stream->perf->i915;
- 	struct intel_uncore *uncore = stream->uncore;
--	struct i915_oa_config *oa_config = stream->oa_config;
- 	bool periodic = stream->periodic;
- 	u32 period_exponent = stream->period_exponent;
- 	u32 sqcnt1;
-@@ -2918,15 +2897,6 @@ gen12_enable_metric_set(struct i915_perf_stream *stream,
+ 	ice_clean_xdp_irq_zc(xdp_ring);
  
- 	intel_uncore_rmw(uncore, GEN12_SQCNT1, 0, sqcnt1);
++	if (!netif_carrier_ok(xdp_ring->vsi->netdev) ||
++	    !netif_running(xdp_ring->vsi->netdev))
++		return true;
++
+ 	budget = ICE_DESC_UNUSED(xdp_ring);
+ 	budget = min_t(u16, budget, ICE_RING_QUARTER(xdp_ring));
  
--	/*
--	 * Update all contexts prior writing the mux configurations as we need
--	 * to make sure all slices/subslices are ON before writing to NOA
--	 * registers.
--	 */
--	ret = gen12_configure_all_contexts(stream, oa_config, active);
--	if (ret)
--		return ret;
--
- 	/*
- 	 * For Gen12, performance counters are context
- 	 * saved/restored. Only enable it for the context that
-@@ -2980,9 +2950,6 @@ static void gen12_disable_metric_set(struct i915_perf_stream *stream)
- 				   _MASKED_BIT_DISABLE(GEN12_DISABLE_DOP_GATING));
- 	}
+@@ -1091,7 +1095,7 @@ ice_xsk_wakeup(struct net_device *netdev, u32 queue_id,
+ 	struct ice_vsi *vsi = np->vsi;
+ 	struct ice_tx_ring *ring;
  
--	/* Reset all contexts' slices/subslices configurations. */
--	gen12_configure_all_contexts(stream, NULL, NULL);
--
- 	/* disable the context save/restore or OAR counters */
- 	if (stream->ctx)
- 		gen12_configure_oar_context(stream, NULL);
+-	if (test_bit(ICE_VSI_DOWN, vsi->state))
++	if (test_bit(ICE_VSI_DOWN, vsi->state) || !netif_carrier_ok(netdev))
+ 		return -ENETDOWN;
+ 
+ 	if (!ice_is_xdp_ena_vsi(vsi))
 -- 
 2.43.0
 
