@@ -1,108 +1,125 @@
-Return-Path: <stable+bounces-65924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E1894AC88
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:16:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643FB94AB96
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 078641C21D31
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23BFA282614
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9364384D12;
-	Wed,  7 Aug 2024 15:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A9980043;
+	Wed,  7 Aug 2024 15:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohHZY4p/"
+	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="02apBj7D"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B5284A40;
-	Wed,  7 Aug 2024 15:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E784B78C92
+	for <stable@vger.kernel.org>; Wed,  7 Aug 2024 15:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043769; cv=none; b=oT0aLKhofdO6XboYNZYOIqqxcWY2LieCxFD5hlwGZTTgl5ojDBoT2umytjk1lOM78G+r/xUSF6loH721N4kNtrIZ+10pPYQSKg8dsxZl2aSUuca/rqEeUjx1g8pgM1DuLv4keefX3V2Q2La/yF1Gy7KAIsm5fp5Tfneu8sLGJq0=
+	t=1723043223; cv=none; b=Vo+iFYQw+mJzh2MRr5fOpTxw0wXdHUHKK5OoNJK6KpFjj3zfsMu8WDWU6YLi7rd2aLgqeBSYrySfCqQrJey8jgkg6yafQYRlWCUf1UacYl4H9H+9lexWbklRuzrRQm5BT5XFz+y/D8ardi07UayYriZ15VZ/B8n4GZoXQ/1+7u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043769; c=relaxed/simple;
-	bh=PKvbZotSyvJWE6Qm7rAo/EFehEmeIjcDAVFIzCPIPjw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/qphDbts6M/N365APKoxh4moPPFspZMl2iTkSeqs7h9YIIQbZ4n2lyVJXL//ejx50NnvDP8euUZOxuONeY5zGYUeQytDY5TYnaKKz/OimYA3rSX4sPPQqCZqIzl806lb1d1T2+4FT47gU34rNnyJAosKePflOUtLVYq27xyCNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohHZY4p/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C781EC32781;
-	Wed,  7 Aug 2024 15:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043769;
-	bh=PKvbZotSyvJWE6Qm7rAo/EFehEmeIjcDAVFIzCPIPjw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohHZY4p/CZI/8tA4nqPVUxQqsVcDUCjtd8HxEu18FjnSalbpILP0buPJWAlFLWBva
-	 w7aQMqotJNmcCxgO8JMOvNoEGs9DdigTQ7vtXnxjC8Uz/9ri1ibpb1txiw9wzjimPJ
-	 OnjynkraOJXvIYTgNEbUCkbxM3MTr6kZFpUIZY7s=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Liu Jing <liujing@cmss.chinamobile.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 86/86] selftests: mptcp: always close inputs FD if opened
-Date: Wed,  7 Aug 2024 17:01:05 +0200
-Message-ID: <20240807150042.129045376@linuxfoundation.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
-References: <20240807150039.247123516@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1723043223; c=relaxed/simple;
+	bh=HD8hrV4gIHuxpAFIzfROM1BuDx1AYrUPGttLpTR1FvY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=avLXDD8Y3r2ex8wpWZNAOAPDiclRfZT9e47/TVKYAPuVPiiOoPLc8sbfeNmivFyJMaNC0bmF0WhGSLxHE5LvjsLaK7rkM/Bm/qh435AuUIGULFZNX1wRiTf18ez4mHJMLCUrXSVeR1C/WKbxPfuvpc1ok3lMes9TcsKAzMW80DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=02apBj7D; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
+Message-ID: <27a85289-1fe4-4131-b5d6-6608ef699632@holm.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
+	t=1723043217;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S8ttu6TLJyke3ECLcjRhYkI8l7Hm4bTOSkREYhvq7OE=;
+	b=02apBj7D5qMfz0zV5VLertTj2zbCK6UOxZZ6sqINVLpfBy2jclLwyAU6eHHHDrIR6vvYgn
+	GVPJpFLLb8/hUmLqpiQz0o8OuVLssuJLH1SfgNtGp9raxr7+9nQKKl+wURRhBkQJwRzbns
+	X5RI5MHf/DMts7o9AZ0VylZdiCf0TWhaN8tvEzX0Q/5OE72WTSv9fle4v1ZJzs+RYt25jg
+	DLT6uIjjqWSUmisH9NOA323TMIrUKN5Ix8aZCh29jS4GpO1jCMYCzO4vGM1PWB4EmqeU3B
+	jAeR39wSSt+3jzI87KEq8DBj5jyTwI9AexszqLQ1roSRc3NhkMe6mEx9i+AP3A==
+Date: Wed, 7 Aug 2024 17:06:54 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 6.10 001/123] mm/huge_memory: mark racy access
+ onhuge_anon_orders_always
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Ran Xiaokai <ran.xiaokai@zte.com.cn>,
+ David Hildenbrand <david@redhat.com>, Lu Zhongjun <lu.zhongjun@zte.com.cn>,
+ xu xin <xu.xin16@zte.com.cn>, Yang Yang <yang.yang29@zte.com.cn>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Yang Shi <shy828301@gmail.com>, Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>
+References: <20240807150020.790615758@linuxfoundation.org>
+ <20240807150020.834416694@linuxfoundation.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kevin Holm <kevin@holm.dev>
+In-Reply-To: <20240807150020.834416694@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+On 8/7/24 16:58, Greg Kroah-Hartman wrote:
+> 6.10-stable review patch.  If anyone has any objections, please let me know.
+Did the back port [1] I submit just get missed? It fixes a regression I reported 
+[2] with high resolution displays on a dp link after a hub in the amdgpu driver.
 
-------------------
-
-From: Liu Jing <liujing@cmss.chinamobile.com>
-
-commit 7c70bcc2a84cf925f655ea1ac4b8088062b144a3 upstream.
-
-In main_loop_s function, when the open(cfg_input, O_RDONLY) function is
-run, the last fd is not closed if the "--cfg_repeat > 0" branch is not
-taken.
-
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1040,11 +1040,11 @@ again:
- 		return 1;
- 	}
- 
--	if (--cfg_repeat > 0) {
--		if (cfg_input)
--			close(fd);
-+	if (cfg_input)
-+		close(fd);
-+
-+	if (--cfg_repeat > 0)
- 		goto again;
--	}
- 
- 	return 0;
- }
-
+[1] https://lore.kernel.org/stable/20240730185339.543359-1-kevin@holm.dev/
+[2] 
+https://lore.kernel.org/stable/d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev/T/#u
+> 
+> ------------------
+> 
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> 
+> [ Upstream commit 7f83bf14603ef41a44dc907594d749a283e22c37 ]
+> 
+> huge_anon_orders_always is accessed lockless, it is better to use the
+> READ_ONCE() wrapper.  This is not fixing any visible bug, hopefully this
+> can cease some KCSAN complains in the future.  Also do that for
+> huge_anon_orders_madvise.
+> 
+> Link: https://lkml.kernel.org/r/20240515104754889HqrahFPePOIE1UlANHVAh@zte.com.cn
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Lu Zhongjun <lu.zhongjun@zte.com.cn>
+> Reviewed-by: xu xin <xu.xin16@zte.com.cn>
+> Cc: Yang Yang <yang.yang29@zte.com.cn>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Yang Shi <shy828301@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Stable-dep-of: 00f58104202c ("mm: fix khugepaged activation policy")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   include/linux/huge_mm.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index c73ad77fa33d3..71945cf4c7a8d 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -140,8 +140,8 @@ static inline bool hugepage_flags_enabled(void)
+>   	 * So we don't need to look at huge_anon_orders_inherit.
+>   	 */
+>   	return hugepage_global_enabled() ||
+> -	       huge_anon_orders_always ||
+> -	       huge_anon_orders_madvise;
+> +	       READ_ONCE(huge_anon_orders_always) ||
+> +	       READ_ONCE(huge_anon_orders_madvise);
+>   }
+>   
+>   static inline int highest_order(unsigned long orders)
 
 
