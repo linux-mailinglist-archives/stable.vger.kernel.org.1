@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-65755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9138F94ABC0
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ACB94AB54
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3521C21C13
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF833B289DC
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417FB839E4;
-	Wed,  7 Aug 2024 15:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E6182871;
+	Wed,  7 Aug 2024 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCfptUYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9/1edz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23E980BF8;
-	Wed,  7 Aug 2024 15:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4167183CD9;
+	Wed,  7 Aug 2024 15:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043320; cv=none; b=TB8OpOn/b06Rts8g+M/11IHKiYwGpo06HO7x2GSSwPJ8W6sAezWeWgkzOPpZ9QtB9wcsegr5K7SVNAulo0yk1utRJXXU+Ot/PtE8E9T9ISwp1TKgxngg9t4osc+4vP9TNV/FvxUAGbk3IDFBU0YMyrTgX8bCPu+XufvWq1lzqEY=
+	t=1723043022; cv=none; b=tJYZNc3nVRHHwgnaUD1OLLc+hPhfpvpwOGGu+Qo9wlKGsmrvrtcMXYdX0STpGLj3UcqcNfp/WkvRxTX6Awnn51G5fRebmCFT7/ah3oyBRd5EbUMSVCFcTJqQbhwFnLG0a+rgKCTCDtmzAaqAj5dLgdNR5yZ4ksyRtIsP4gxzb9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043320; c=relaxed/simple;
-	bh=6wlUB9OwwChZiK1SSdZwPIfOnvycNg67iKrw/tIrH74=;
+	s=arc-20240116; t=1723043022; c=relaxed/simple;
+	bh=HjLeaVVUIaS/JAaIBjOCzl/zD0GuYABCzW2N2I8eSxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LXmYQ5yX543V6NHTCREuEnVUHKvN+eFaaUhi5SOWgzsLvwPHpb/DJfBMKVUxKnpIdLI5jvp53Ki7QR0dRbARszVZNa1QdYXieuPaja/+1dleCZRE2BG10mcwRtEaGm2jaZP9BRlXiZg2wK/c7Z2cBo2T6dQT1fM8XcG3QZjc62s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCfptUYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D71C4AF0D;
-	Wed,  7 Aug 2024 15:08:39 +0000 (UTC)
+	 MIME-Version; b=otacBLMGI0m7VSOH+RlKQAW9I2TQXAa5PLjm8bOY4ZcqRJNEx3/v9LqPX0tSozoWGQc2ZvtVPhI0qAhslMNwJDto3picvWR0BUwLJCHSL0+ZNlQEeHs59+/gKBcMOOH5GPtWFyRstFsUNlV4euywL+uiGVoezVB1otdQNzhQJvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9/1edz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A3AC32781;
+	Wed,  7 Aug 2024 15:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043319;
-	bh=6wlUB9OwwChZiK1SSdZwPIfOnvycNg67iKrw/tIrH74=;
+	s=korg; t=1723043021;
+	bh=HjLeaVVUIaS/JAaIBjOCzl/zD0GuYABCzW2N2I8eSxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCfptUYzbxo5owICQDM2gTJr9+j1IMdtneTYuOv9SnAq7SwhxGkT8shuiV9mwl82E
-	 G+H2/wyIXKjhYRZvTCseSR0dNdfCbb4FJyX26854PoeV/XruqFwcssInOvpVhYUeTw
-	 XwBYptWZhxY6EyZxmMzUzHa75vghizs+LFgnIxUY=
+	b=s9/1edz2rM/4itmEkIgtl2aFVI/dmELvA9STIeEs2XBJMQyVGeGCAVtSnqVqqqCmq
+	 kWHZPO5A1qrLplxhPDJrxSZwGAM+eDpTYu+wmu6PkhdzNmgZvic7iKQqlgA4aX41mI
+	 yTVmE7424E+8A8/WUpXq6nbsgsgmD0cYFML9B6Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/121] ext4: check the extent status again before inserting delalloc block
-Date: Wed,  7 Aug 2024 16:59:12 +0200
-Message-ID: <20240807150020.017770397@linuxfoundation.org>
+Subject: [PATCH 6.10 034/123] Bluetooth: hci_sync: Fix suspending with wrong filter policy
+Date: Wed,  7 Aug 2024 16:59:13 +0200
+Message-ID: <20240807150021.928967998@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
+References: <20240807150020.790615758@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 0ea6560abb3bac1ffcfa4bf6b2c4d344fdc27b3c ]
+[ Upstream commit 96b82af36efaa1787946e021aa3dc5410c05beeb ]
 
-ext4_da_map_blocks looks up for any extent entry in the extent status
-tree (w/o i_data_sem) and then the looks up for any ondisk extent
-mapping (with i_data_sem in read mode).
+When suspending the scan filter policy cannot be 0x00 (no acceptlist)
+since that means the host has to process every advertisement report
+waking up the system, so this attempts to check if hdev is marked as
+suspended and if the resulting filter policy would be 0x00 (no
+acceptlist) then skip passive scanning if thre no devices in the
+acceptlist otherwise reset the filter policy to 0x01 so the acceptlist
+is used since the devices programmed there can still wakeup be system.
 
-If it finds a hole in the extent status tree or if it couldn't find any
-entry at all, it then takes the i_data_sem in write mode to add a da
-entry into the extent status tree. This can actually race with page
-mkwrite & fallocate path.
-
-Note that this is ok between
-1. ext4 buffered-write path v/s ext4_page_mkwrite(), because of the
-   folio lock
-2. ext4 buffered write path v/s ext4 fallocate because of the inode
-   lock.
-
-But this can race between ext4_page_mkwrite() & ext4 fallocate path
-
-ext4_page_mkwrite()             ext4_fallocate()
- block_page_mkwrite()
-  ext4_da_map_blocks()
-   //find hole in extent status tree
-                                 ext4_alloc_file_blocks()
-                                  ext4_map_blocks()
-                                   //allocate block and unwritten extent
-   ext4_insert_delayed_block()
-    ext4_da_reserve_space()
-     //reserve one more block
-    ext4_es_insert_delayed_block()
-     //drop unwritten extent and add delayed extent by mistake
-
-Then, the delalloc extent is wrong until writeback and the extra
-reserved block can't be released any more and it triggers below warning:
-
- EXT4-fs (pmem2): Inode 13 (00000000bbbd4d23): i_reserved_data_blocks(1) not cleared!
-
-Fix the problem by looking up extent status tree again while the
-i_data_sem is held in write mode. If it still can't find any entry, then
-we insert a new da entry into the extent status tree.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240517124005.347221-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 21 +++++++++++++++++++++
+ net/bluetooth/hci_sync.c | 21 +++++++++++++++++++++
  1 file changed, 21 insertions(+)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index b8b2f731f1d0e..cef119a2476bb 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1737,6 +1737,7 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 		if (ext4_es_is_hole(&es))
- 			goto add_delayed;
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index bb704088559fb..2f26147fdf3c9 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -2929,6 +2929,27 @@ static int hci_passive_scan_sync(struct hci_dev *hdev)
+ 	 */
+ 	filter_policy = hci_update_accept_list_sync(hdev);
  
-+found:
- 		/*
- 		 * Delayed extent could be allocated by fallocate.
- 		 * So we need to check it.
-@@ -1781,6 +1782,26 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 
- add_delayed:
- 	down_write(&EXT4_I(inode)->i_data_sem);
-+	/*
-+	 * Page fault path (ext4_page_mkwrite does not take i_rwsem)
-+	 * and fallocate path (no folio lock) can race. Make sure we
-+	 * lookup the extent status tree here again while i_data_sem
-+	 * is held in write mode, before inserting a new da entry in
-+	 * the extent status tree.
++	/* If suspended and filter_policy set to 0x00 (no acceptlist) then
++	 * passive scanning cannot be started since that would require the host
++	 * to be woken up to process the reports.
 +	 */
-+	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
-+		if (!ext4_es_is_hole(&es)) {
-+			up_write(&EXT4_I(inode)->i_data_sem);
-+			goto found;
-+		}
-+	} else if (!ext4_has_inline_data(inode)) {
-+		retval = ext4_map_query_blocks(NULL, inode, map);
-+		if (retval) {
-+			up_write(&EXT4_I(inode)->i_data_sem);
-+			return retval;
-+		}
++	if (hdev->suspended && !filter_policy) {
++		/* Check if accept list is empty then there is no need to scan
++		 * while suspended.
++		 */
++		if (list_empty(&hdev->le_accept_list))
++			return 0;
++
++		/* If there are devices is the accept_list that means some
++		 * devices could not be programmed which in non-suspended case
++		 * means filter_policy needs to be set to 0x00 so the host needs
++		 * to filter, but since this is treating suspended case we
++		 * can ignore device needing host to filter to allow devices in
++		 * the acceptlist to be able to wakeup the system.
++		 */
++		filter_policy = 0x01;
 +	}
 +
- 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
- 	up_write(&EXT4_I(inode)->i_data_sem);
- 	if (retval)
+ 	/* When the controller is using random resolvable addresses and
+ 	 * with that having LE privacy enabled, then controllers with
+ 	 * Extended Scanner Filter Policies support can now enable support
 -- 
 2.43.0
 
