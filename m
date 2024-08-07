@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-65651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B5294AB42
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F2C94ABCD
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C79F280E08
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:05:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D606D2857D9
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF3A83CD9;
-	Wed,  7 Aug 2024 15:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C6682C8E;
+	Wed,  7 Aug 2024 15:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrktD4Tg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IL/gCpRS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C098F78C67;
-	Wed,  7 Aug 2024 15:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FAB27448;
+	Wed,  7 Aug 2024 15:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043040; cv=none; b=Gi745lMsdukYhfHnibaGpm1HX+ebQ0PzBjHmFt0gdDdcy5SP2NOAtH59jLTctV1iXGTHxO0AlZHEkOM/4pOlCcA4ncxtr9FnjJxBjRsjVQsw6Sn865HtqqdN1gJTaJUOohp7yB6+UJXwUnAVjh/J0k0HAaEq28A2A7bWZiBUjuM=
+	t=1723043341; cv=none; b=tRXU3xf+9DcG2h4xgYDyHYz90zVG4o0wzkDI0OfdPfKWYsCkVOyfijd1r5ua91toEZOLR/OE4iA4Yt4auuUt1gE7lrzN0+YD3h32n+eYlvOhbJyQOeM0FeUrrWddLsb2WFyMYfigs0zmPYLnd9nvnZLGPvhRqbJI5nDq3NmMhjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043040; c=relaxed/simple;
-	bh=RmvtXaU0R1jnu15JODOIbTUOldm/QYr4DbnSZx7+LsE=;
+	s=arc-20240116; t=1723043341; c=relaxed/simple;
+	bh=aN5NKphGwea0f774GGKh8HjsBQTPquQAprJhF1XbzgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hd5tUluhcjezPAcZRbWCCqu4brIWzJIqV7A3VhXU8pP52KMUey0/WUuLTTeJzOKbY4kM/kZUgvtA+f/6lFQ4mZptx0wwD/Rcgssd5bzltQ/Qpii9I2e+fawnP7zx/DxA1g7UhysfHgZ1ZcsfJQ9TowvaRixvxxRJVfEnsw8BMyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrktD4Tg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527F3C32781;
-	Wed,  7 Aug 2024 15:04:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YyTBy6bul1qh3xkX+FJqe5rPN+2xFZfpxWFA2rRTUz19jQs+SIBBa7cPLsErorXyy6bZojTJ4/BnqiNujFJM9PWrKanaJ3awUyqHvvaXJZDSRx/yBI5Ob9BHDM0O7eQbBl64CXDAjOLzimIuQs/yyec7xf/Bv1yETdE605qhYjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IL/gCpRS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5CFC4AF0D;
+	Wed,  7 Aug 2024 15:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043040;
-	bh=RmvtXaU0R1jnu15JODOIbTUOldm/QYr4DbnSZx7+LsE=;
+	s=korg; t=1723043341;
+	bh=aN5NKphGwea0f774GGKh8HjsBQTPquQAprJhF1XbzgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VrktD4TgXCuEhlyZrUEJJ41mZ51WR6SWev0p6iOvYhHxSqkEOXADMLnBR8X98zy4e
-	 10mGLnTffY/BEXd0D3jypcUhO3HfIQQ7TiWgVOdFZuLgQXotpLym23SAqywSouYJUX
-	 NbUp9PhINlRwpENUn/27sovdFlt4jZCF2SKzBSr0=
+	b=IL/gCpRSxLWY5SGgkTClXMESoKsw80NH3PieZVT5UZ0//4Y1UR0ETAwC8G3kQDBvJ
+	 PoARxz8NsSY2La7tYDVurp9FBQkJ4OU9KdT8zUEmUG6z0VXqVLDgKvdo2aDhu9Lyma
+	 rRBvsPRcFOCro2dPidGKCFBb+vysHrY96rBVCLZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Dustin L. Howett" <dustin@howett.net>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 039/123] rtnetlink: Dont ignore IFLA_TARGET_NETNSID when ifname is specified in rtnl_dellink().
+Subject: [PATCH 6.6 026/121] leds: triggers: Flush pending brightness before activating trigger
 Date: Wed,  7 Aug 2024 16:59:18 +0200
-Message-ID: <20240807150022.105765682@linuxfoundation.org>
+Message-ID: <20240807150020.200342432@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 9415d375d8520e0ed55f0c0b058928da9a5b5b3d ]
+[ Upstream commit ab477b766edd3bfb6321a6e3df4c790612613fae ]
 
-The cited commit accidentally replaced tgt_net with net in rtnl_dellink().
+The race fixed in timer_trig_activate() between a blocking
+set_brightness() call and trigger->activate() can affect any trigger.
+So move the call to flush_work() into led_trigger_set() where it can
+avoid the race for all triggers.
 
-As a result, IFLA_TARGET_NETNSID is ignored if the interface is specified
-with IFLA_IFNAME or IFLA_ALT_IFNAME.
-
-Let's pass tgt_net to rtnl_dev_get().
-
-Fixes: cc6090e985d7 ("net: rtnetlink: introduce helper to get net_device instance by ifname")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 0db37915d912 ("leds: avoid races with workqueue")
+Fixes: 8c0f693c6eff ("leds: avoid flush_work in atomic context")
+Cc: stable@vger.kernel.org
+Tested-by: Dustin L. Howett <dustin@howett.net>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20240613-led-trigger-flush-v2-1-f4f970799d77@weissschuh.net
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/led-triggers.c          | 6 ++++++
+ drivers/leds/trigger/ledtrig-timer.c | 5 -----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 4668d67180407..5e589f0a62bc5 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3288,7 +3288,7 @@ static int rtnl_dellink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (ifm->ifi_index > 0)
- 		dev = __dev_get_by_index(tgt_net, ifm->ifi_index);
- 	else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME])
--		dev = rtnl_dev_get(net, tb);
-+		dev = rtnl_dev_get(tgt_net, tb);
- 	else if (tb[IFLA_GROUP])
- 		err = rtnl_group_dellink(tgt_net, nla_get_u32(tb[IFLA_GROUP]));
- 	else
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index baa5365c26047..72fd2fe8f6fe8 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -201,6 +201,12 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+ 		 */
+ 		synchronize_rcu();
+ 
++		/*
++		 * If "set brightness to 0" is pending in workqueue,
++		 * we don't want that to be reordered after ->activate()
++		 */
++		flush_work(&led_cdev->set_brightness_work);
++
+ 		ret = 0;
+ 		if (trig->activate)
+ 			ret = trig->activate(led_cdev);
+diff --git a/drivers/leds/trigger/ledtrig-timer.c b/drivers/leds/trigger/ledtrig-timer.c
+index b4688d1d9d2b2..1d213c999d40a 100644
+--- a/drivers/leds/trigger/ledtrig-timer.c
++++ b/drivers/leds/trigger/ledtrig-timer.c
+@@ -110,11 +110,6 @@ static int timer_trig_activate(struct led_classdev *led_cdev)
+ 		led_cdev->flags &= ~LED_INIT_DEFAULT_TRIGGER;
+ 	}
+ 
+-	/*
+-	 * If "set brightness to 0" is pending in workqueue, we don't
+-	 * want that to be reordered after blink_set()
+-	 */
+-	flush_work(&led_cdev->set_brightness_work);
+ 	led_blink_set(led_cdev, &led_cdev->blink_delay_on,
+ 		      &led_cdev->blink_delay_off);
+ 
 -- 
 2.43.0
 
