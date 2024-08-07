@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-65688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BE894AB77
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2138A94AC25
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EEC028352C
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF0021F210A7
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3218212D1FA;
-	Wed,  7 Aug 2024 15:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580FF823AF;
+	Wed,  7 Aug 2024 15:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkGiXW4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyLiZgpu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E612712CDBE;
-	Wed,  7 Aug 2024 15:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1381E81751;
+	Wed,  7 Aug 2024 15:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043141; cv=none; b=rlRSt9RUTOw+HDj/JtE9762o1i3BKgJKXy5KzF0Eqjdbwt6hprJYWjUq2l3gSYCL2Lrk+v9Hd2Z7XArAfHIxzNuRLT10D+c6DFNHwpAHhZBunkWulrji/jMXhbg7O2nNymtQAdMJYPZm4bbXe3SwpLiCw5Gdhy74q2DOFlDtPvI=
+	t=1723043546; cv=none; b=lUF2ks2CV+/hx45CcJgi772rvmA/ZL/n4im+2/GQJMIHp33jYXh1zwVKu5mRq9XwklQL+dUCh/TRPvUb1CRU4Myv+fYA+FkhqN9EJpSsuCwTsAbV8C9AX0u4fhaNN4K2KW7SMN3elQ25FOEHwhaaFoFrdTQ1pgkh5p9lZq8gFCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043141; c=relaxed/simple;
-	bh=7PmBBi/Vr4n0ucY9QtrsjRWAcCnRixPT2CdvfUoUxQ0=;
+	s=arc-20240116; t=1723043546; c=relaxed/simple;
+	bh=gNq9oV1FFmMi0KApP1XdENPJKhnOYBp3+vsvY2aPQzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrPzmhvPFM4NyHwqDz85TA7rA0RhDCV0FWMPbFJg5E86Q9+Xi6DwrEp5rz56Ne/DRJdldudkzet2jjdnKTFmSd5rEELNbYsljfP0ncwVkvkEJ3+nKvYkx/sKpgKbtaioNyr7kXP/ZLfaYX1YN004+Ne4PU+u7oTTnTdpuhxSQg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkGiXW4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E40C32781;
-	Wed,  7 Aug 2024 15:05:40 +0000 (UTC)
+	 MIME-Version; b=nbrKS84UPsps7sbvJDt6E/cEoNAeNe1rQO8Gut40y1BcEnWnRpxCzJesDcLKV3JYcu98XL14oBXGkijbwuw5nhKZpsCZtxPOecKhaGk8F4nmuiF9ee11UyP2e6FR6oDlfxqHAwlctmPk9entj8/3+QzRvlwGzCb7lJytkgRjp2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyLiZgpu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B704C32781;
+	Wed,  7 Aug 2024 15:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043140;
-	bh=7PmBBi/Vr4n0ucY9QtrsjRWAcCnRixPT2CdvfUoUxQ0=;
+	s=korg; t=1723043546;
+	bh=gNq9oV1FFmMi0KApP1XdENPJKhnOYBp3+vsvY2aPQzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkGiXW4VCDagqYkFvPt0OXNk59x8JIKPr2xOA+Nrf9zb8Pu3+NPS2Ctp1v342S6jw
-	 pcEBJDTy3P/te9XSYoXwGq3w0F5y3qf48hEjdSjdzmG76ydn+8Ntu4Rh2cPechqKSY
-	 eT4E7Ml7ah2ENxOBNtSfEtLw1rELXJxCoLATJyvI=
+	b=lyLiZgpusPX6h46sRE5wmzS94AKRZfwblpbCeeVE3E/ObNC5xssmQ8qaHgO4i8Sna
+	 OF1y7j+KjwAVZb7Cvw6ZFqKcjw/p2eHC3CPdjRq4wrmOiISAkwGIfL93sRZa1Hht7+
+	 AbkJvCGG7BUtReLXU5rI934H7YiGFi9rUL501l58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Lin <eric.lin@sifive.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Inochi Amaoto <inochiama@outlook.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 069/123] perf arch events: Fix duplicate RISC-V SBI firmware event name
-Date: Wed,  7 Aug 2024 16:59:48 +0200
-Message-ID: <20240807150023.035274793@linuxfoundation.org>
+Subject: [PATCH 6.1 10/86] ext4: convert to exclusive lock while inserting delalloc extents
+Date: Wed,  7 Aug 2024 16:59:49 +0200
+Message-ID: <20240807150039.589135241@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,140 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Lin <eric.lin@sifive.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 63ba5b0fb4f54db256ec43b3062b2606b383055d ]
+[ Upstream commit acf795dc161f3cf481db20f05db4250714e375e5 ]
 
-Currently, the RISC-V firmware JSON file has duplicate event name
-"FW_SFENCE_VMA_RECEIVED". According to the RISC-V SBI PMU extension[1],
-the event name should be "FW_SFENCE_VMA_ASID_SENT".
+ext4_da_map_blocks() only hold i_data_sem in shared mode and i_rwsem
+when inserting delalloc extents, it could be raced by another querying
+path of ext4_map_blocks() without i_rwsem, .e.g buffered read path.
+Suppose we buffered read a file containing just a hole, and without any
+cached extents tree, then it is raced by another delayed buffered write
+to the same area or the near area belongs to the same hole, and the new
+delalloc extent could be overwritten to a hole extent.
 
-Before this patch:
-$ perf list
+ pread()                           pwrite()
+  filemap_read_folio()
+   ext4_mpage_readpages()
+    ext4_map_blocks()
+     down_read(i_data_sem)
+     ext4_ext_determine_hole()
+     //find hole
+     ext4_ext_put_gap_in_cache()
+      ext4_es_find_extent_range()
+      //no delalloc extent
+                                    ext4_da_map_blocks()
+                                     down_read(i_data_sem)
+                                     ext4_insert_delayed_block()
+                                     //insert delalloc extent
+      ext4_es_insert_extent()
+      //overwrite delalloc extent to hole
 
-firmware:
-  fw_access_load
-       [Load access trap event. Unit: cpu]
-  fw_access_store
-       [Store access trap event. Unit: cpu]
-....
- fw_set_timer
-       [Set timer event. Unit: cpu]
-  fw_sfence_vma_asid_received
-       [Received SFENCE.VMA with ASID request from other HART event. Unit: cpu]
-  fw_sfence_vma_received
-       [Sent SFENCE.VMA with ASID request to other HART event. Unit: cpu]
+This race could lead to inconsistent delalloc extents tree and
+incorrect reserved space counter. Fix this by converting to hold
+i_data_sem in exclusive mode when adding a new delalloc extent in
+ext4_da_map_blocks().
 
-After this patch:
-$ perf list
-
-firmware:
-  fw_access_load
-       [Load access trap event. Unit: cpu]
-  fw_access_store
-       [Store access trap event. Unit: cpu]
-.....
-  fw_set_timer
-       [Set timer event. Unit: cpu]
-  fw_sfence_vma_asid_received
-       [Received SFENCE.VMA with ASID request from other HART event. Unit: cpu]
-  fw_sfence_vma_asid_sent
-       [Sent SFENCE.VMA with ASID request to other HART event. Unit: cpu]
-  fw_sfence_vma_received
-       [Received SFENCE.VMA request from other HART event. Unit: cpu]
-
-Link: https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/src/ext-pmu.adoc#event-firmware-events-type-15 [1]
-Fixes: 8f0dcb4e7364 ("perf arch events: riscv sbi firmware std event files")
-Fixes: c4f769d4093d ("perf vendor events riscv: add Sifive U74 JSON file")
-Fixes: acbf6de674ef ("perf vendor events riscv: Add StarFive Dubhe-80 JSON file")
-Fixes: 7340c6df49df ("perf vendor events riscv: add T-HEAD C9xx JSON file")
-Fixes: f5102e31c209 ("riscv: andes: Support specifying symbolic firmware and hardware raw event")
-Signed-off-by: Eric Lin <eric.lin@sifive.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Inochi Amaoto <inochiama@outlook.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20240719115018.27356-1-eric.lin@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Suggested-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240127015825.1608160-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 0ea6560abb3b ("ext4: check the extent status again before inserting delalloc block")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json       | 2 +-
- tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json        | 2 +-
- tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json       | 2 +-
- .../perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json  | 2 +-
- .../perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json  | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ fs/ext4/inode.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json b/tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json
-index 9b4a032186a7b..7149caec4f80e 100644
---- a/tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json
-+++ b/tools/perf/pmu-events/arch/riscv/andes/ax45/firmware.json
-@@ -36,7 +36,7 @@
-     "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
-   },
-   {
--    "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
-+    "ArchStdEvent": "FW_SFENCE_VMA_ASID_SENT"
-   },
-   {
-     "ArchStdEvent": "FW_SFENCE_VMA_ASID_RECEIVED"
-diff --git a/tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json b/tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json
-index a9939823b14b5..0c9b9a2d2958a 100644
---- a/tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json
-+++ b/tools/perf/pmu-events/arch/riscv/riscv-sbi-firmware.json
-@@ -74,7 +74,7 @@
-   {
-     "PublicDescription": "Sent SFENCE.VMA with ASID request to other HART event",
-     "ConfigCode": "0x800000000000000c",
--    "EventName": "FW_SFENCE_VMA_RECEIVED",
-+    "EventName": "FW_SFENCE_VMA_ASID_SENT",
-     "BriefDescription": "Sent SFENCE.VMA with ASID request to other HART event"
-   },
-   {
-diff --git a/tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json b/tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json
-index 9b4a032186a7b..7149caec4f80e 100644
---- a/tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json
-+++ b/tools/perf/pmu-events/arch/riscv/sifive/u74/firmware.json
-@@ -36,7 +36,7 @@
-     "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
-   },
-   {
--    "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
-+    "ArchStdEvent": "FW_SFENCE_VMA_ASID_SENT"
-   },
-   {
-     "ArchStdEvent": "FW_SFENCE_VMA_ASID_RECEIVED"
-diff --git a/tools/perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json b/tools/perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json
-index 9b4a032186a7b..7149caec4f80e 100644
---- a/tools/perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json
-+++ b/tools/perf/pmu-events/arch/riscv/starfive/dubhe-80/firmware.json
-@@ -36,7 +36,7 @@
-     "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
-   },
-   {
--    "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
-+    "ArchStdEvent": "FW_SFENCE_VMA_ASID_SENT"
-   },
-   {
-     "ArchStdEvent": "FW_SFENCE_VMA_ASID_RECEIVED"
-diff --git a/tools/perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json b/tools/perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json
-index 9b4a032186a7b..7149caec4f80e 100644
---- a/tools/perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json
-+++ b/tools/perf/pmu-events/arch/riscv/thead/c900-legacy/firmware.json
-@@ -36,7 +36,7 @@
-     "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
-   },
-   {
--    "ArchStdEvent": "FW_SFENCE_VMA_RECEIVED"
-+    "ArchStdEvent": "FW_SFENCE_VMA_ASID_SENT"
-   },
-   {
-     "ArchStdEvent": "FW_SFENCE_VMA_ASID_RECEIVED"
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index eab9aefe96ce6..d6f7525a796c0 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1740,10 +1740,8 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 
+ 	/* Lookup extent status tree firstly */
+ 	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
+-		if (ext4_es_is_hole(&es)) {
+-			down_read(&EXT4_I(inode)->i_data_sem);
++		if (ext4_es_is_hole(&es))
+ 			goto add_delayed;
+-		}
+ 
+ 		/*
+ 		 * Delayed extent could be allocated by fallocate.
+@@ -1785,8 +1783,10 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
+ 	else
+ 		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
+-	if (retval < 0)
+-		goto out_unlock;
++	if (retval < 0) {
++		up_read(&EXT4_I(inode)->i_data_sem);
++		return retval;
++	}
+ 	if (retval > 0) {
+ 		unsigned int status;
+ 
+@@ -1802,24 +1802,21 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
+ 		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
+ 				      map->m_pblk, status);
+-		goto out_unlock;
++		up_read(&EXT4_I(inode)->i_data_sem);
++		return retval;
+ 	}
++	up_read(&EXT4_I(inode)->i_data_sem);
+ 
+ add_delayed:
+-	/*
+-	 * XXX: __block_prepare_write() unmaps passed block,
+-	 * is it OK?
+-	 */
++	down_write(&EXT4_I(inode)->i_data_sem);
+ 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
++	up_write(&EXT4_I(inode)->i_data_sem);
+ 	if (retval)
+-		goto out_unlock;
++		return retval;
+ 
+ 	map_bh(bh, inode->i_sb, invalid_block);
+ 	set_buffer_new(bh);
+ 	set_buffer_delay(bh);
+-
+-out_unlock:
+-	up_read((&EXT4_I(inode)->i_data_sem));
+ 	return retval;
+ }
+ 
 -- 
 2.43.0
 
