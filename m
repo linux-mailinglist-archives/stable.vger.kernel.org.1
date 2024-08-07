@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-65623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B5394AB1A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:03:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA9094ABA8
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9356F28491E
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:03:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73CE42856C3
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB5181AB6;
-	Wed,  7 Aug 2024 15:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FF38563E;
+	Wed,  7 Aug 2024 15:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rJmcUNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qztbQOm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D0774055;
-	Wed,  7 Aug 2024 15:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B332984DF8;
+	Wed,  7 Aug 2024 15:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042965; cv=none; b=KoFlZFAIGPCkjYk4K/f3a1nhZ/pNWtysdudXgv3hGLdQ99AzGsxw3+n/5sXx8Am5dmkgJuKWWXpimihNox5zTf6jqmxuMcPkStH6A/eg7FbBKfsYBPnGKXQkwETGm+y6DfZPyTOyOumYg57KMx4fYVqqWFF0jdJIQtwL25a7JKM=
+	t=1723043265; cv=none; b=OaPlRyU4SCo1SWSknXWm3kB0orA1qP6Nju7LxzmgOmktUQHgwG/3fjVTommpKSOpjnLC3FQQlmYXELdD+TqA3M20v7cj033MJ8em/ZXGtRum8+Txtw3vY8jEuO7HvReI/jlTJR+pcVtELKFFF/2gmNg80u1/xWvf1YWslJxX/S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042965; c=relaxed/simple;
-	bh=d5eUhAfmjb72PvIxRP3e/raB4j42KWsNHXbPq8d/bQQ=;
+	s=arc-20240116; t=1723043265; c=relaxed/simple;
+	bh=fiZWRMKmesf1TKSKfCKg+i/tY/h4/fpzZ8vIjgEndQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sezWzKwf1yLnp3TWiXQ4oqvaca3Sfbt108HFbK29SLsq4zcDsXs6A+SXuW5ojEwnES7jnHcKmNiMMZQWlAU09FXdkEBRg38ad+6ra7OiFWIgWBdhfHKKMZjfIF4uhWO3A2Jj5/Nh2En3qDfEWipO+zfI/YIJIT3NCpaq+kIbEdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rJmcUNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC2FC4AF0F;
-	Wed,  7 Aug 2024 15:02:44 +0000 (UTC)
+	 MIME-Version; b=pzjyiIVi34WgVXasPSA6CkEHvVsiL0h75KjucwXWkwWzN6VrUNZubQwsYPSo+9voMVYbVZ+TVP6kdcxot8VfJ2O+3lPx1qJjUl/IferETSoSBDcmX4F+G+gtNnD+Mo2n36Zco2IxpSsPTGmGLKy+WYhqdPEbkMWJJZPNYOTpuR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qztbQOm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2ADC32781;
+	Wed,  7 Aug 2024 15:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723042964;
-	bh=d5eUhAfmjb72PvIxRP3e/raB4j42KWsNHXbPq8d/bQQ=;
+	s=korg; t=1723043265;
+	bh=fiZWRMKmesf1TKSKfCKg+i/tY/h4/fpzZ8vIjgEndQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rJmcUNWFjvOY0NA539oo9+Lhd8eM7QDneACrkwKNgXZv0hHvHnF0Mk93SpPmryjy
-	 47j+gaCmzL9l5azFYrAdMb1YPZYldZlt1L2LyYVMqY9uAa5bVU5kEYjQNkKMpbk5lp
-	 SXFu++o317riQ4vx2L+3BfkgC+6oeaYsH10OLeUM=
+	b=qztbQOm2XRT39K68MhvAQnGaqThnd4qy4KfKJDt7WSBLGIjxmxzUAvw+0jA3tcgft
+	 E80iCrScIG8Ucfg2nIQUqn3b8Dq5OfhqZH6gr2N89SOoWBmCk4oHEJ0lofoLRM/74z
+	 9BXeKQ9ViUkJtNkyQO0IBeBA6irRj+L5ZI7FfRMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.10 041/123] ice: respect netif readiness in AF_XDP ZC related ndos
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 028/121] KVM: VMX: Move posted interrupt descriptor out of VMX code
 Date: Wed,  7 Aug 2024 16:59:20 +0200
-Message-ID: <20240807150022.170041420@linuxfoundation.org>
+Message-ID: <20240807150020.259390292@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+From: Jacob Pan <jacob.jun.pan@linux.intel.com>
 
-[ Upstream commit ec145a18687fec8dd97eeb4f30057fa4debef577 ]
+[ Upstream commit 699f67512f04cbaee965fad872702c06eaf440f6 ]
 
-Address a scenario in which XSK ZC Tx produces descriptors to XDP Tx
-ring when link is either not yet fully initialized or process of
-stopping the netdev has already started. To avoid this, add checks
-against carrier readiness in ice_xsk_wakeup() and in ice_xmit_zc().
-One could argue that bailing out early in ice_xsk_wakeup() would be
-sufficient but given the fact that we produce Tx descriptors on behalf
-of NAPI that is triggered for Rx traffic, the latter is also needed.
+To prepare native usage of posted interrupts, move the PID declarations out
+of VMX code such that they can be shared.
 
-Bringing link up is an asynchronous event executed within
-ice_service_task so even though interface has been brought up there is
-still a time frame where link is not yet ok.
-
-Without this patch, when AF_XDP ZC Tx is used simultaneously with stack
-Tx, Tx timeouts occur after going through link flap (admin brings
-interface down then up again). HW seem to be unable to transmit
-descriptor to the wire after HW tail register bump which in turn causes
-bit __QUEUE_STATE_STACK_XOFF to be set forever as
-netdev_tx_completed_queue() sees no cleaned bytes on the input.
-
-Fixes: 126cdfe1007a ("ice: xsk: Improve AF_XDP ZC Tx and use batching API")
-Fixes: 2d4238f55697 ("ice: Add support for AF_XDP")
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20240423174114.526704-2-jacob.jun.pan@linux.intel.com
+Stable-dep-of: d83c36d822be ("KVM: nVMX: Add a helper to get highest pending from Posted Interrupt vector")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_xsk.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/posted_intr.h | 88 ++++++++++++++++++++++++++++
+ arch/x86/kvm/vmx/posted_intr.h     | 93 +-----------------------------
+ arch/x86/kvm/vmx/vmx.c             |  1 +
+ arch/x86/kvm/vmx/vmx.h             |  2 +-
+ 4 files changed, 91 insertions(+), 93 deletions(-)
+ create mode 100644 arch/x86/include/asm/posted_intr.h
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index a65955eb23c0b..72738b8b8a68e 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -1048,6 +1048,10 @@ bool ice_xmit_zc(struct ice_tx_ring *xdp_ring)
- 
- 	ice_clean_xdp_irq_zc(xdp_ring);
- 
-+	if (!netif_carrier_ok(xdp_ring->vsi->netdev) ||
-+	    !netif_running(xdp_ring->vsi->netdev))
-+		return true;
+diff --git a/arch/x86/include/asm/posted_intr.h b/arch/x86/include/asm/posted_intr.h
+new file mode 100644
+index 0000000000000..f0324c56f7af5
+--- /dev/null
++++ b/arch/x86/include/asm/posted_intr.h
+@@ -0,0 +1,88 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _X86_POSTED_INTR_H
++#define _X86_POSTED_INTR_H
 +
- 	budget = ICE_DESC_UNUSED(xdp_ring);
- 	budget = min_t(u16, budget, ICE_RING_QUARTER(xdp_ring));
++#define POSTED_INTR_ON  0
++#define POSTED_INTR_SN  1
++
++#define PID_TABLE_ENTRY_VALID 1
++
++/* Posted-Interrupt Descriptor */
++struct pi_desc {
++	u32 pir[8];     /* Posted interrupt requested */
++	union {
++		struct {
++				/* bit 256 - Outstanding Notification */
++			u16	on	: 1,
++				/* bit 257 - Suppress Notification */
++				sn	: 1,
++				/* bit 271:258 - Reserved */
++				rsvd_1	: 14;
++				/* bit 279:272 - Notification Vector */
++			u8	nv;
++				/* bit 287:280 - Reserved */
++			u8	rsvd_2;
++				/* bit 319:288 - Notification Destination */
++			u32	ndst;
++		};
++		u64 control;
++	};
++	u32 rsvd[6];
++} __aligned(64);
++
++static inline bool pi_test_and_set_on(struct pi_desc *pi_desc)
++{
++	return test_and_set_bit(POSTED_INTR_ON, (unsigned long *)&pi_desc->control);
++}
++
++static inline bool pi_test_and_clear_on(struct pi_desc *pi_desc)
++{
++	return test_and_clear_bit(POSTED_INTR_ON, (unsigned long *)&pi_desc->control);
++}
++
++static inline bool pi_test_and_clear_sn(struct pi_desc *pi_desc)
++{
++	return test_and_clear_bit(POSTED_INTR_SN, (unsigned long *)&pi_desc->control);
++}
++
++static inline bool pi_test_and_set_pir(int vector, struct pi_desc *pi_desc)
++{
++	return test_and_set_bit(vector, (unsigned long *)pi_desc->pir);
++}
++
++static inline bool pi_is_pir_empty(struct pi_desc *pi_desc)
++{
++	return bitmap_empty((unsigned long *)pi_desc->pir, NR_VECTORS);
++}
++
++static inline void pi_set_sn(struct pi_desc *pi_desc)
++{
++	set_bit(POSTED_INTR_SN, (unsigned long *)&pi_desc->control);
++}
++
++static inline void pi_set_on(struct pi_desc *pi_desc)
++{
++	set_bit(POSTED_INTR_ON, (unsigned long *)&pi_desc->control);
++}
++
++static inline void pi_clear_on(struct pi_desc *pi_desc)
++{
++	clear_bit(POSTED_INTR_ON, (unsigned long *)&pi_desc->control);
++}
++
++static inline void pi_clear_sn(struct pi_desc *pi_desc)
++{
++	clear_bit(POSTED_INTR_SN, (unsigned long *)&pi_desc->control);
++}
++
++static inline bool pi_test_on(struct pi_desc *pi_desc)
++{
++	return test_bit(POSTED_INTR_ON, (unsigned long *)&pi_desc->control);
++}
++
++static inline bool pi_test_sn(struct pi_desc *pi_desc)
++{
++	return test_bit(POSTED_INTR_SN, (unsigned long *)&pi_desc->control);
++}
++
++#endif /* _X86_POSTED_INTR_H */
+diff --git a/arch/x86/kvm/vmx/posted_intr.h b/arch/x86/kvm/vmx/posted_intr.h
+index 26992076552ef..6b2a0226257ea 100644
+--- a/arch/x86/kvm/vmx/posted_intr.h
++++ b/arch/x86/kvm/vmx/posted_intr.h
+@@ -1,98 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef __KVM_X86_VMX_POSTED_INTR_H
+ #define __KVM_X86_VMX_POSTED_INTR_H
+-
+-#define POSTED_INTR_ON  0
+-#define POSTED_INTR_SN  1
+-
+-#define PID_TABLE_ENTRY_VALID 1
+-
+-/* Posted-Interrupt Descriptor */
+-struct pi_desc {
+-	u32 pir[8];     /* Posted interrupt requested */
+-	union {
+-		struct {
+-				/* bit 256 - Outstanding Notification */
+-			u16	on	: 1,
+-				/* bit 257 - Suppress Notification */
+-				sn	: 1,
+-				/* bit 271:258 - Reserved */
+-				rsvd_1	: 14;
+-				/* bit 279:272 - Notification Vector */
+-			u8	nv;
+-				/* bit 287:280 - Reserved */
+-			u8	rsvd_2;
+-				/* bit 319:288 - Notification Destination */
+-			u32	ndst;
+-		};
+-		u64 control;
+-	};
+-	u32 rsvd[6];
+-} __aligned(64);
+-
+-static inline bool pi_test_and_set_on(struct pi_desc *pi_desc)
+-{
+-	return test_and_set_bit(POSTED_INTR_ON,
+-			(unsigned long *)&pi_desc->control);
+-}
+-
+-static inline bool pi_test_and_clear_on(struct pi_desc *pi_desc)
+-{
+-	return test_and_clear_bit(POSTED_INTR_ON,
+-			(unsigned long *)&pi_desc->control);
+-}
+-
+-static inline bool pi_test_and_clear_sn(struct pi_desc *pi_desc)
+-{
+-	return test_and_clear_bit(POSTED_INTR_SN,
+-			(unsigned long *)&pi_desc->control);
+-}
+-
+-static inline bool pi_test_and_set_pir(int vector, struct pi_desc *pi_desc)
+-{
+-	return test_and_set_bit(vector, (unsigned long *)pi_desc->pir);
+-}
+-
+-static inline bool pi_is_pir_empty(struct pi_desc *pi_desc)
+-{
+-	return bitmap_empty((unsigned long *)pi_desc->pir, NR_VECTORS);
+-}
+-
+-static inline void pi_set_sn(struct pi_desc *pi_desc)
+-{
+-	set_bit(POSTED_INTR_SN,
+-		(unsigned long *)&pi_desc->control);
+-}
+-
+-static inline void pi_set_on(struct pi_desc *pi_desc)
+-{
+-	set_bit(POSTED_INTR_ON,
+-		(unsigned long *)&pi_desc->control);
+-}
+-
+-static inline void pi_clear_on(struct pi_desc *pi_desc)
+-{
+-	clear_bit(POSTED_INTR_ON,
+-		(unsigned long *)&pi_desc->control);
+-}
+-
+-static inline void pi_clear_sn(struct pi_desc *pi_desc)
+-{
+-	clear_bit(POSTED_INTR_SN,
+-		(unsigned long *)&pi_desc->control);
+-}
+-
+-static inline bool pi_test_on(struct pi_desc *pi_desc)
+-{
+-	return test_bit(POSTED_INTR_ON,
+-			(unsigned long *)&pi_desc->control);
+-}
+-
+-static inline bool pi_test_sn(struct pi_desc *pi_desc)
+-{
+-	return test_bit(POSTED_INTR_SN,
+-			(unsigned long *)&pi_desc->control);
+-}
++#include <asm/posted_intr.h>
  
-@@ -1091,7 +1095,7 @@ ice_xsk_wakeup(struct net_device *netdev, u32 queue_id,
- 	struct ice_vsi *vsi = np->vsi;
- 	struct ice_tx_ring *ring;
+ void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu);
+ void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 09d26b46800d4..2e0106d9d371c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -67,6 +67,7 @@
+ #include "x86.h"
+ #include "smm.h"
+ #include "vmx_onhyperv.h"
++#include "posted_intr.h"
  
--	if (test_bit(ICE_VSI_DOWN, vsi->state))
-+	if (test_bit(ICE_VSI_DOWN, vsi->state) || !netif_carrier_ok(netdev))
- 		return -ENETDOWN;
+ MODULE_AUTHOR("Qumranet");
+ MODULE_LICENSE("GPL");
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 912b0c4697429..6be1627d888e5 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -7,10 +7,10 @@
+ #include <asm/kvm.h>
+ #include <asm/intel_pt.h>
+ #include <asm/perf_event.h>
++#include <asm/posted_intr.h>
  
- 	if (!ice_is_xdp_ena_vsi(vsi))
+ #include "capabilities.h"
+ #include "../kvm_cache_regs.h"
+-#include "posted_intr.h"
+ #include "vmcs.h"
+ #include "vmx_ops.h"
+ #include "../cpuid.h"
 -- 
 2.43.0
 
