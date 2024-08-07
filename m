@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-65691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0681E94AB7A
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:07:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4A694ABD0
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36EBC1C20ECD
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8E9D1F25847
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E1180043;
-	Wed,  7 Aug 2024 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B291C823AF;
+	Wed,  7 Aug 2024 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B87V/E5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oU7ivUHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E585B27448;
-	Wed,  7 Aug 2024 15:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7049278C67;
+	Wed,  7 Aug 2024 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043149; cv=none; b=EWVJtmYGQTj5ZA9dBLw9ooSobLpNQdXeNXviKx/rwFvkKm5Bh7x13VZ29q8jp8HR2y9LPDqiyx6XXISjLQHmwKxX7y13J74tNbCWU7FROhQqY1ak+n+sdPjwLCXfMeX+M97jdV0BZ+9+igMCTHLs+amjxwvNHOoCApUqyxWjYM4=
+	t=1723043350; cv=none; b=ND4+N9AW/4Dy/Io4CeL3oUlgIqTtfPvM5Oz9xvaCM1HDXPn4ZgT4ZpeK39kFLEqpBm/MnGsKIyq+i/KD9I9Os9b8ORKWE0PvB5zp9apuyqytuWNK7A7qt04kcTN11koHuEnsRGU8Ygx/7GT7fq1nPx/G8HlFAZDbBro7OG/pbL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043149; c=relaxed/simple;
-	bh=v48d8U20Gnvo+Ftx7tUwXDgkkEfJ4v5NPe/vdvJ3qGg=;
+	s=arc-20240116; t=1723043350; c=relaxed/simple;
+	bh=zryoGE/9+RV8BixOQKYt1Hvor0X61YZBq2o4CKrutYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pj3uAgUcAILdk5f4pmAmBEAgaz9MCPcut17AmOeH8iQ1D6Y8Vpcpi7bfFnJHOAFU2dcY+smN0dAiFITxVOCA8gHKsP3NPTFjXv+G7d2LRvYva564iT18ituR4CrAFJC/Epa2BXmmOLiU8UBUMx3j67Nc8vJ3R//XS8afJPqfPmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B87V/E5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EB8C32781;
-	Wed,  7 Aug 2024 15:05:48 +0000 (UTC)
+	 MIME-Version; b=BC0aiBAk2TUHUchCiqMDq9FXbtjFz3/IKq9uj1npAa9si6YoKIZzJ4GJXrOS27nHLdHWwwyyvhwLEHC3bLj2Rz8AzWNKB8n4vNnAd7Le1dcxGLBF+lRE/fHDahIjaLMTBAyMLWLRJ0h/rimFCW2ZVoM+B1FAK9jvFhGNPlmSrb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oU7ivUHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1A4C32781;
+	Wed,  7 Aug 2024 15:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043148;
-	bh=v48d8U20Gnvo+Ftx7tUwXDgkkEfJ4v5NPe/vdvJ3qGg=;
+	s=korg; t=1723043349;
+	bh=zryoGE/9+RV8BixOQKYt1Hvor0X61YZBq2o4CKrutYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B87V/E5lYquCCZXOlPwBB5FfWs7DmKaKgwTzYKbS0y3BdJ/hVORUmLBaXjTsvp1Mt
-	 GPn4Aa5GDqMtxpsZWd9SZVv6NfpViZfJAWKf+ahTgrrwe3AShoQkyrGO3TQ1ALzTC7
-	 LzKHFxzAtMLfy2hjfXoYPab67bVNDbZ6YLBZNzEI=
+	b=oU7ivUHBQblKLX9/6nIdQgHNoXtxTq91fbRfC/P2nEEZ6Jqa4MduhjsDsxDfEMJss
+	 Mk1Yu/CJSKhduoz12oUnn1G6fiPdWxI0oOhylnhr4KE8QdbetgfkhLYcYAUXyyUgOE
+	 TTWQFbkK9f2vk1IO3QwtjuFcso5g0TFlIayJ4A1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Hu <nick.hu@sifive.com>,
-	Anup Patel <anup@brainfault.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 072/123] RISC-V: Enable the IPI before workqueue_online_cpu()
+Subject: [PATCH 6.6 059/121] ALSA: hda: conexant: Reduce CONFIG_PM dependencies
 Date: Wed,  7 Aug 2024 16:59:51 +0200
-Message-ID: <20240807150023.134133059@linuxfoundation.org>
+Message-ID: <20240807150021.344256396@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
+References: <20240807150019.412911622@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Hu <nick.hu@sifive.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3908ba2e0b2476e2ec13e15967bf6a37e449f2af ]
+[ Upstream commit 29d57f6dc62485ee0752767debdfa2783d162beb ]
 
-Sometimes the hotplug cpu stalls at the arch_cpu_idle() for a while after
-workqueue_online_cpu(). When cpu stalls at the idle loop, the reschedule
-IPI is pending. However the enable bit is not enabled yet so the cpu stalls
-at WFI until watchdog timeout. Therefore enable the IPI before the
-workqueue_online_cpu() to fix the issue.
+CONFIG_PM dependencies got reduced in HD-audio codec core driver, and
+now it's time to reduce in HD-audio conexant codec driver, too.
 
-Fixes: 63c5484e7495 ("workqueue: Add multiple affinity scopes and interface to select them")
-Signed-off-by: Nick Hu <nick.hu@sifive.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20240717031714.1946036-1-nick.hu@sifive.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Simply drop CONFIG_PM ifdefs.
+
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240506161359.6960-8-tiwai@suse.de
+Stable-dep-of: e60dc9812211 ("ALSA: hda: conexant: Fix headset auto detect fail in the polling mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/sbi-ipi.c | 2 +-
- include/linux/cpuhotplug.h  | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_conexant.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/riscv/kernel/sbi-ipi.c b/arch/riscv/kernel/sbi-ipi.c
-index 1026e22955ccc..0cc5559c08d8f 100644
---- a/arch/riscv/kernel/sbi-ipi.c
-+++ b/arch/riscv/kernel/sbi-ipi.c
-@@ -71,7 +71,7 @@ void __init sbi_ipi_init(void)
- 	 * the masking/unmasking of virtual IPIs is done
- 	 * via generic IPI-Mux
- 	 */
--	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
-+	cpuhp_setup_state(CPUHP_AP_IRQ_RISCV_SBI_IPI_STARTING,
- 			  "irqchip/sbi-ipi:starting",
- 			  sbi_ipi_starting_cpu, NULL);
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index e8209178d87bb..17389a3801bd1 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -294,13 +294,11 @@ static void cx_jack_unsol_event(struct hda_codec *codec, unsigned int res)
+ 	snd_hda_jack_unsol_event(codec, res);
+ }
  
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index 7a5785f405b62..0a8fd4a3d04c9 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -147,6 +147,7 @@ enum cpuhp_state {
- 	CPUHP_AP_IRQ_LOONGARCH_STARTING,
- 	CPUHP_AP_IRQ_SIFIVE_PLIC_STARTING,
- 	CPUHP_AP_IRQ_RISCV_IMSIC_STARTING,
-+	CPUHP_AP_IRQ_RISCV_SBI_IPI_STARTING,
- 	CPUHP_AP_ARM_MVEBU_COHERENCY,
- 	CPUHP_AP_PERF_X86_AMD_UNCORE_STARTING,
- 	CPUHP_AP_PERF_X86_STARTING,
+-#ifdef CONFIG_PM
+ static int cx_auto_suspend(struct hda_codec *codec)
+ {
+ 	cx_auto_shutdown(codec);
+ 	return 0;
+ }
+-#endif
+ 
+ static const struct hda_codec_ops cx_auto_patch_ops = {
+ 	.build_controls = snd_hda_gen_build_controls,
+@@ -308,10 +306,8 @@ static const struct hda_codec_ops cx_auto_patch_ops = {
+ 	.init = cx_auto_init,
+ 	.free = cx_auto_free,
+ 	.unsol_event = cx_jack_unsol_event,
+-#ifdef CONFIG_PM
+ 	.suspend = cx_auto_suspend,
+ 	.check_power_status = snd_hda_gen_check_power_status,
+-#endif
+ };
+ 
+ /*
 -- 
 2.43.0
 
