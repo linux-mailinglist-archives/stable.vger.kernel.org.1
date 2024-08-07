@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-65682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCAA94AB71
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:06:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1140694AC49
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4B51C228B9
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:06:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41FF91C22157
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F4412C522;
-	Wed,  7 Aug 2024 15:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F1482C8E;
+	Wed,  7 Aug 2024 15:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E34Axw40"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iynGaEqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E6382D66;
-	Wed,  7 Aug 2024 15:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053F082499;
+	Wed,  7 Aug 2024 15:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043125; cv=none; b=gjZU9padD8f2KPpupr+uN2h6o5rLq4vGz90MxY8JyDOAyFery7j8j8qIqH2mWKF+lDPt7Z7oVL0Acy6QL6ESV1Sf68vkoywjCXVAZLymeK1j1g8XQkJiI79h3aIIVhLNJx0f72G9sDbDxNUc33PY7xCzIoWAxpUTeK/eA/PcDSg=
+	t=1723043621; cv=none; b=NPaSLAndTr/me1iQlmX+LX/l680OsCYD9hZHn50pJZCqk4nEHKhRUikL3eiaOg6iIpigESFRYKCinFn4fo6a/a+mhpWTCl36l+8VCd0bdn1dsyj1Jdz75Wy1N5T/bN5RC0DJVSwiI96QOf4GoIFLA0cmtOs6HjvixTSQq6qZt18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043125; c=relaxed/simple;
-	bh=ihfaLr+S5BjVF9wzNa/lhvfeRt1HTluPjvkOKb8wGCc=;
+	s=arc-20240116; t=1723043621; c=relaxed/simple;
+	bh=Svfokq+rrJghC83j1sVymGbbi73pkeg5bQhwdUbPEQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NsikQvPpwP+sMArFGq2O1ON0Eq6J4O9HeGiTWDP/ZjcAMIjvUex6CJENu+D2TBAsQ7xVlvCD5iYEEWZIlRLGkEKo0wxxIk7gq5tYoue+NUKF3VZlX7wsWyHCQMgPMrxMJGPQ8rW1+0HF1zTxFJ4JlDxd2Y3ESaKuYs0qaqvF2kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E34Axw40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC30C4AF0D;
-	Wed,  7 Aug 2024 15:05:24 +0000 (UTC)
+	 MIME-Version; b=JV2obnVaPNLw2McN4JMUg4kG+Ofh6BnLf2/HfqGmhideO+ETzApaIq8RcG44ti+2IUk9RH2cUR7fCQckfCLmr1OeQ9XQKwVDzYwEXhnwstunzyXzEipqG6WqwbylCZ53lwmiqy15MQilchgmCwjfYrECPuNejGuqyjhX7YfLAD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iynGaEqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD7CC32781;
+	Wed,  7 Aug 2024 15:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043124;
-	bh=ihfaLr+S5BjVF9wzNa/lhvfeRt1HTluPjvkOKb8wGCc=;
+	s=korg; t=1723043620;
+	bh=Svfokq+rrJghC83j1sVymGbbi73pkeg5bQhwdUbPEQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E34Axw4074qHLczocrpBxzJ3ojl+IkivFll0M0qGkVNXLqXMAzy4AlN7ZOUfmnIN0
-	 U0zmhgc3hXoYIRf78hBhPoLgGYAyb3i/HJMiQJ6Ez5U+otKeOJZKTyFFGkBSpprO5S
-	 coargHqgY8pnMdWCa0IUtOIm7SGnVdjXgzNbK/Ss=
+	b=iynGaEqCvYSFEkRSf4baEd85v/y0UuddjnZX7EqDEaylskODmVxTl7GL94G5f37zj
+	 1JEpu99qNMCxDBsKtlIZvd/8iqXFzfA6zhcy+x33Dli5rZVusmtMSiV+aZwyqrT23l
+	 KdkVixB2JOAe/w0ox2V5ITsTVS5OkdCNm9WolH/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 6.10 098/123] drm/v3d: Prevent out of bounds access in performance query extensions
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 38/86] HID: amd_sfh: Remove duplicate cleanup
 Date: Wed,  7 Aug 2024 17:00:17 +0200
-Message-ID: <20240807150024.010194126@linuxfoundation.org>
+Message-ID: <20240807150040.490068613@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150020.790615758@linuxfoundation.org>
-References: <20240807150020.790615758@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-commit 6ce9efd12ae81cf46bf44eb0348594558dfbb9d2 upstream.
+[ Upstream commit e295709054d59e35be44794dd125efee528ccceb ]
 
-Check that the number of perfmons userspace is passing in the copy and
-reset extensions is not greater than the internal kernel storage where
-the ids will be copied into.
+A number of duplicate cleanups are performed that are not necessary. As a
+result, remove duplicate cleanups and use common cleanup.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: bae7cb5d6800 ("drm/v3d: Create a CPU job extension for the reset performance query job")
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: Iago Toral Quiroga <itoral@igalia.com>
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240711135340.84617-2-tursulin@igalia.com
-(cherry picked from commit f32b5128d2c440368b5bf3a7a356823e235caabb)
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Stable-dep-of: 8031b001da70 ("HID: amd_sfh: Move sensor discovery before HID device initialization")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_submit.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/amd-sfh-hid/amd_sfh_client.c | 27 ++++--------------------
+ 1 file changed, 4 insertions(+), 23 deletions(-)
 
---- a/drivers/gpu/drm/v3d/v3d_submit.c
-+++ b/drivers/gpu/drm/v3d/v3d_submit.c
-@@ -637,6 +637,9 @@ v3d_get_cpu_reset_performance_params(str
- 	if (copy_from_user(&reset, ext, sizeof(reset)))
- 		return -EFAULT;
+diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+index c751d12f5df89..34eb419b225ed 100644
+--- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
++++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
+@@ -291,18 +291,8 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 			cl_data->is_any_sensor_enabled = true;
+ 			cl_data->sensor_sts[i] = SENSOR_ENABLED;
+ 			rc = amdtp_hid_probe(cl_data->cur_hid_dev, cl_data);
+-			if (rc) {
+-				mp2_ops->stop(privdata, cl_data->sensor_idx[i]);
+-				status = amd_sfh_wait_for_response
+-					(privdata, cl_data->sensor_idx[i], SENSOR_DISABLED);
+-				if (status != SENSOR_ENABLED)
+-					cl_data->sensor_sts[i] = SENSOR_DISABLED;
+-				dev_dbg(dev, "sid 0x%x (%s) status 0x%x\n",
+-					cl_data->sensor_idx[i],
+-					get_sensor_name(cl_data->sensor_idx[i]),
+-					cl_data->sensor_sts[i]);
++			if (rc)
+ 				goto cleanup;
+-			}
+ 		} else {
+ 			cl_data->sensor_sts[i] = SENSOR_DISABLED;
+ 			dev_dbg(dev, "sid 0x%x (%s) status 0x%x\n",
+@@ -316,25 +306,16 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev *privdata)
+ 	}
+ 	if (!cl_data->is_any_sensor_enabled ||
+ 	   (mp2_ops->discovery_status && mp2_ops->discovery_status(privdata) == 0)) {
+-		amd_sfh_hid_client_deinit(privdata);
+-		for (i = 0; i < cl_data->num_hid_devices; i++) {
+-			devm_kfree(dev, cl_data->feature_report[i]);
+-			devm_kfree(dev, in_data->input_report[i]);
+-			devm_kfree(dev, cl_data->report_descr[i]);
+-		}
+ 		dev_warn(dev, "Failed to discover, sensors not enabled is %d\n", cl_data->is_any_sensor_enabled);
+-		return -EOPNOTSUPP;
++		rc = -EOPNOTSUPP;
++		goto cleanup;
+ 	}
+ 	schedule_delayed_work(&cl_data->work_buffer, msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
+ 	return 0;
  
-+	if (reset.nperfmons > V3D_MAX_PERFMONS)
-+		return -EINVAL;
-+
- 	job->job_type = V3D_CPU_JOB_TYPE_RESET_PERFORMANCE_QUERY;
- 
- 	job->performance_query.queries = kvmalloc_array(reset.count,
-@@ -708,6 +711,9 @@ v3d_get_cpu_copy_performance_query_param
- 	if (copy.pad)
- 		return -EINVAL;
- 
-+	if (copy.nperfmons > V3D_MAX_PERFMONS)
-+		return -EINVAL;
-+
- 	job->job_type = V3D_CPU_JOB_TYPE_COPY_PERFORMANCE_QUERY;
- 
- 	job->performance_query.queries = kvmalloc_array(copy.count,
+ cleanup:
++	amd_sfh_hid_client_deinit(privdata);
+ 	for (i = 0; i < cl_data->num_hid_devices; i++) {
+-		if (in_data->sensor_virt_addr[i]) {
+-			dma_free_coherent(&privdata->pdev->dev, 8 * sizeof(int),
+-					  in_data->sensor_virt_addr[i],
+-					  cl_data->sensor_dma_addr[i]);
+-		}
+ 		devm_kfree(dev, cl_data->feature_report[i]);
+ 		devm_kfree(dev, in_data->input_report[i]);
+ 		devm_kfree(dev, cl_data->report_descr[i]);
+-- 
+2.43.0
+
 
 
 
