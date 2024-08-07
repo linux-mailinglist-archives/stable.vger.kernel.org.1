@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-65836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C112D94AC20
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:12:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8052A94AC72
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 17:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DCB7282698
-	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:12:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B16B51C2112D
+	for <lists+stable@lfdr.de>; Wed,  7 Aug 2024 15:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A2C7E0E9;
-	Wed,  7 Aug 2024 15:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA8881741;
+	Wed,  7 Aug 2024 15:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nc0/6Buz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGBrxGPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801CF374CC;
-	Wed,  7 Aug 2024 15:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23FF52F62;
+	Wed,  7 Aug 2024 15:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723043535; cv=none; b=B4NyURB5N14kktZfLjIramcJhgIUgvG5x+xdGiS05nGMIxyXuk8K69jtpkrint/nXW6Zzs+fJls03E/0x/GKYQ241qMxY/xgCixm13yqCUIAzAfzCNS8a0J7EXEdgYD7EWWChZCm9yUV9mg2mvTVDkp5J1esXH48ftJh4nYLKjQ=
+	t=1723043713; cv=none; b=Pfp7iC54N77gJ/VD/5T1Nqx7OeYyBx+ALeTCwi3nbhi/dDtLAEpaDVEsPDW1tOdc2d7Xwa9AeIAlN7NBcIsanwoc8DrpwwuZ8bVXL8j/q1ZZA0nh08dg00jRQysNYVqP1aoY730bp3CnJOrdZbiwuRtmRikJjN30fWuQccYTiUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723043535; c=relaxed/simple;
-	bh=n471YNAvsZZZz0Kay9mHMYt/rgXEYyFYrPug7oGcjW0=;
+	s=arc-20240116; t=1723043713; c=relaxed/simple;
+	bh=Wr0Rh+AycZhSOmzMhoy6+OctnJCRYzaLOexGPPDgP34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeli7YzbAQ+MKXPlT4NUhc+cwSI7G/qsN/sQlK3X2CGalE03uLsSnNlaD6xNatc1igYYN6aRlZA9pgL+326ATkA+UT0/SFS7Y+slOJgFOI3MGo88Nm1Ny29d1X6Ve4QOPE3HjN8WAlWgUNvgiD9c9QU05yNc+ilaHw0IVg4rmVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nc0/6Buz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B13C32781;
-	Wed,  7 Aug 2024 15:12:14 +0000 (UTC)
+	 MIME-Version; b=LPMB5sxdwX2KXiBscLR3VLTjd1Tzg5meTcrpzhHdA4T8jXUVhboAp9Ew/Y0zZ7Vvy2lsWs1+fw9dfa5WHzcS+ajjp1oh2yGCSNOjueN7UlZV4QZsEnNCBaPQNXfwQbLE6z1lP2diyDTzT5pB/n614GZcOJkD4oR10Wp8iX9s62U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGBrxGPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59961C32781;
+	Wed,  7 Aug 2024 15:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723043535;
-	bh=n471YNAvsZZZz0Kay9mHMYt/rgXEYyFYrPug7oGcjW0=;
+	s=korg; t=1723043713;
+	bh=Wr0Rh+AycZhSOmzMhoy6+OctnJCRYzaLOexGPPDgP34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nc0/6BuzLBR4a09KeOuHV/csQQo4DuXm5d3TN3Yf4NpADDHucAkah0elkA3J/6BWA
-	 B7fkO/Z+DcWlOmqJSrZ1QLqukMJx48KzcgY4L/BGZirsAz2l7RC6cExi75zfBe4frD
-	 TeqrRj8PqI0AtyuCVgztC3pqIBVdHD9QExvBCIk0=
+	b=LGBrxGPA+c8j0bsA16vGFBoSvbgO6L4VUfWPriSJp/K5sYsKugCAaPZrMMrqSBaxO
+	 XUSuwEWM7DmpL+54enEoyQPaeuGFWykrJ2ZstrwKNAbBp7VBvpnEsYqtNtwIDqkbVt
+	 CgRD/UjTUl+ywFSQjjnGAbp+NJ3dExiU+qQIl64Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Jing <liujing@cmss.chinamobile.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 118/121] selftests: mptcp: always close inputs FD if opened
-Date: Wed,  7 Aug 2024 17:00:50 +0200
-Message-ID: <20240807150023.261941213@linuxfoundation.org>
+	Sylvain BERTRAND <sylvain.bertrand@legeek.net>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 72/86] ALSA: usb-audio: Correct surround channels in UAC1 channel map
+Date: Wed,  7 Aug 2024 17:00:51 +0200
+Message-ID: <20240807150041.649209214@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240807150019.412911622@linuxfoundation.org>
-References: <20240807150019.412911622@linuxfoundation.org>
+In-Reply-To: <20240807150039.247123516@linuxfoundation.org>
+References: <20240807150039.247123516@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jing <liujing@cmss.chinamobile.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 7c70bcc2a84cf925f655ea1ac4b8088062b144a3 upstream.
+commit b7b7e1ab7619deb3b299b5e5c619c3e6f183a12d upstream.
 
-In main_loop_s function, when the open(cfg_input, O_RDONLY) function is
-run, the last fd is not closed if the "--cfg_repeat > 0" branch is not
-taken.
+USB-audio driver puts SNDRV_CHMAP_SL and _SR as left and right
+surround channels for UAC1 channel map, respectively.  But they should
+have been SNDRV_CHMAP_RL and _RR; the current value *_SL and _SR are
+rather "side" channels, not "surround".  I guess I took those
+mistakenly when I read the spec mentioning "surround left".
 
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Liu Jing <liujing@cmss.chinamobile.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This patch corrects those entries to be the right channels.
+
+Suggested-by: Sylvain BERTRAND <sylvain.bertrand@legeek.net>
+Closes: https://lore.kernel.orgZ/qIyJD8lhd8hFhlC@freedom
+Fixes: 04324ccc75f9 ("ALSA: usb-audio: add channel map support")
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240731142018.24750-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/usb/stream.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1115,11 +1115,11 @@ again:
- 		return 1;
- 	}
- 
--	if (--cfg_repeat > 0) {
--		if (cfg_input)
--			close(fd);
-+	if (cfg_input)
-+		close(fd);
-+
-+	if (--cfg_repeat > 0)
- 		goto again;
--	}
- 
- 	return 0;
- }
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -244,8 +244,8 @@ static struct snd_pcm_chmap_elem *conver
+ 		SNDRV_CHMAP_FR,		/* right front */
+ 		SNDRV_CHMAP_FC,		/* center front */
+ 		SNDRV_CHMAP_LFE,	/* LFE */
+-		SNDRV_CHMAP_SL,		/* left surround */
+-		SNDRV_CHMAP_SR,		/* right surround */
++		SNDRV_CHMAP_RL,		/* left surround */
++		SNDRV_CHMAP_RR,		/* right surround */
+ 		SNDRV_CHMAP_FLC,	/* left of center */
+ 		SNDRV_CHMAP_FRC,	/* right of center */
+ 		SNDRV_CHMAP_RC,		/* surround */
 
 
 
